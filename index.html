@@ -14,13 +14,27 @@
       height: calc(100vh - 72px);
     }
     #preview {
-      flex-grow: 1; background: #d1d8e0;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; height: calc(100vh - 72px);
+  width: 900px;
+  height: 1200px;
+  background: #d1d8e0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
     }
     #uniformCanvas {
-      position: relative; width: 900px; height: 1200px;
-    }
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 900px;
+  height: 1200px;
+  transform: scale(1);
+  transform-origin: top left;
+}
+
     .layer { position: absolute; }
     label, select, button {
       display: block; margin: 0.5rem 0; width: 100%;
@@ -213,19 +227,21 @@ function renderRibbons() {
   const startTop = 402;
   const startLeft = 303;
 
-  const first15 = sorted.slice(0, 15);
-  const extra = sorted.slice(15);
+  const ribbonsPerRow = 3;
+  const rowCount = Math.ceil(total / ribbonsPerRow);
 
-  // Render rows 1–5 (up to 15 ribbons)
-  for (let i = 0; i < first15.length; i++) {
-    const row = Math.floor(i / 3);
-    const indexInRow = i % 3;
-    const ribbonsInThisRow = Math.min(3, first15.length - row * 3);
+  for (let i = 0; i < total; i++) {
+    const row = Math.floor(i / ribbonsPerRow);
+    const indexInRow = i % ribbonsPerRow;
+    const ribbonsInRow =
+      row === rowCount - 1 && total % ribbonsPerRow !== 0
+        ? total % ribbonsPerRow
+        : ribbonsPerRow;
 
     let xOffset;
-    if (ribbonsInThisRow === 3) {
+    if (ribbonsInRow === 3) {
       xOffset = startLeft;
-    } else if (ribbonsInThisRow === 2) {
+    } else if (ribbonsInRow === 2) {
       xOffset = startLeft + ribbonWidth / 2;
     } else {
       xOffset = startLeft + ribbonWidth + spacing;
@@ -234,35 +250,7 @@ function renderRibbons() {
     const x = xOffset + indexInRow * (ribbonWidth + spacing);
     const y = startTop - row * (ribbonHeight + spacing);
 
-    const original = document.getElementById(`ribbons-${first15[i]}`);
-    if (!original) continue;
-    const clone = original.cloneNode();
-    clone.className = "layer ribbon";
-    clone.style.top = `${y - ribbonHeight}px`;
-    clone.style.left = `${x}px`;
-    clone.style.width = `${ribbonWidth}px`;
-    clone.style.height = `${ribbonHeight}px`;
-    clone.style.display = "block";
-    uniformCanvas.appendChild(clone);
-  }
-
-  // Render rows beyond the 5th row (16+)
-  for (let j = 0; j < extra.length; j++) {
-    const rowOffset = Math.floor(j / 2);
-    const indexInRow = j % 2;
-    const ribbonsInRow = Math.min(2, extra.length - rowOffset * 2);
-
-    let xOffset;
-    if (ribbonsInRow === 2) {
-      xOffset = startLeft + ribbonWidth / 2;
-    } else {
-      xOffset = startLeft + ribbonWidth + spacing;
-    }
-
-    const x = xOffset + indexInRow * (ribbonWidth + spacing);
-    const y = startTop - (5 + rowOffset) * (ribbonHeight + spacing);
-
-    const original = document.getElementById(`ribbons-${extra[j]}`);
+    const original = document.getElementById(`ribbons-${sorted[i]}`);
     if (!original) continue;
     const clone = original.cloneNode();
     clone.className = "layer ribbon";
@@ -274,6 +262,7 @@ function renderRibbons() {
     uniformCanvas.appendChild(clone);
   }
 }
+
 
 
 
