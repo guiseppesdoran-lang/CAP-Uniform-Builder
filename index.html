@@ -73,6 +73,50 @@
     let currentGender = "male";
     const selectedRibbons = [];
 
+    function renderRibbons() {
+      document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
+      const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
+      const ribbonWidth = 90;
+      const ribbonHeight = 30;
+      const ribbonsPerRow = 3;
+      const spacingX = 5;
+      const spacingY = 5;
+      const offsetX = 135;
+      const offsetY = currentGender === "female" ? 210 : 200;
+
+      sorted.forEach((key, i) => {
+        const col = i % ribbonsPerRow;
+        const row = Math.floor(i / ribbonsPerRow);
+        let leftOffset;
+
+        const total = sorted.length;
+        const lastRowCount = total % ribbonsPerRow;
+        const isLastRow = row === Math.floor((total - 1) / ribbonsPerRow);
+
+        if (isLastRow && lastRowCount !== 0 && i >= total - lastRowCount) {
+          if (lastRowCount === 1) {
+            leftOffset = offsetX + ribbonWidth + spacingX; // center
+          } else if (lastRowCount === 2) {
+            leftOffset = offsetX + (ribbonWidth / 2 + spacingX / 2) * col;
+          }
+        } else {
+          leftOffset = offsetX + col * (ribbonWidth + spacingX);
+        }
+
+        const top = offsetY + row * (ribbonHeight + spacingY);
+        const original = document.getElementById(`ribbons-${key}`);
+        if (!original) return;
+        const clone = original.cloneNode();
+        clone.className = "layer ribbon";
+        clone.style.top = `${top}px`;
+        clone.style.left = `${leftOffset}px`;
+        clone.style.width = `${ribbonWidth}px`;
+        clone.style.height = `${ribbonHeight}px`;
+        clone.style.display = "block";
+        uniformCanvas.appendChild(clone);
+      });
+    }
+
     const ribbonList = [
       "afa_award", "air_search_and_rescue_ribbon", "armstrong_achievment",
       "bronze_medal_of_valor", "cadet_advisory_council_ribbon",
