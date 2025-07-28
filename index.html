@@ -83,14 +83,15 @@
 
     let currentGender = "male";
     const selectedRibbons = [];
-    const ribbonDevices = {};
 
-    const ribbonList = [...]; // use your full list
-    const deviceList = [...];
-    const rankList = [...];
-    const badgeList = [...];
+    const ribbonList = ["silver_medal_of_valor", "bronze_medal_of_valor", "distinguished_service_award", "exceptional_service_award", "meritorious_service_award", "commander_commendation_award", "cap_achievement_award", "lifesaving_award", "national_commander_unit_citation_award", "unit_citation_award", "spaatz_award", "eaker_award", "earhart_award", "mitchell_award", "armstrong_achievment", "goddard_achievement", "dolittle_achievement", "lindbergh_achievement", "rickenbacker_achievement", "wright_brothers_award", "mary_feik_achievement", "hap_arnold_achievement", "curry_achievment", "afa_award", "afsa_award", "vfw_officer_award", "vfw_nco_award", "red_service_ribbon", "search_find_ribbon", "air_search_and_rescue_ribbon", "disaster_relief_ribbon", "homeland_security_ribbon", "community_service_ribbon", "iace_ribbon", "national_cadet_competition_ribbon", "national_color_guard_competition_ribbon", "cadet_advisory_council_ribbon", "cadet_special_activity_ribbon", "encampment_ribbon", "cadet_recruiter_ribbon", "crisis_ribbon"];
+
+    const deviceList = ["1_Bronze_Star_Device", "1_Silver_Star_Device"];
+    const rankList = ["c_ab", "c_amn", "c_a1c", "c_sra", "c_ssgt", "c_tsgt", "c_msgt", "c_smsgt", "c_cmsgt", "c_2dlt", "c_1stlt", "c_capt", "c_maj", "c_ltcol", "c_col"];
+    const badgeList = ["aviation_badge", "gtm_badge"];
 
     function populateDropdown(selectElement, list) {
+      selectElement.innerHTML = "";
       list.forEach(item => {
         const option = document.createElement("option");
         option.value = item;
@@ -137,30 +138,44 @@
       document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
       const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
       const total = sorted.length;
-      sorted.forEach((key, i) => {
-        const row = Math.floor(i / 3);
-        const col = i % 3;
+      const fullRows = Math.floor(total / 3);
+      const topRowCount = total % 3;
+      let i = 0;
 
-        const isLastRow = row === Math.floor((total - 1) / 3);
-        const remaining = total % 3;
-        let leftOffset;
-        if (isLastRow && remaining !== 0 && i >= total - remaining) {
-          leftOffset = remaining === 1 ? 255 : 210 + col * 95;
-        } else {
-          leftOffset = 210 + col * 95;
+      if (topRowCount > 0) {
+        const row = 0;
+        for (let col = 0; col < topRowCount; col++) {
+          const key = sorted[i++];
+          const leftOffset = 210 + ((3 - topRowCount) * 47.5) + col * 95;
+          const topOffset = 510;
+          const original = document.getElementById(`ribbons-${key}`);
+          const clone = original.cloneNode();
+          clone.className = "layer ribbon";
+          clone.style.top = `${topOffset}px`;
+          clone.style.left = `${leftOffset}px`;
+          clone.style.width = "90px";
+          clone.style.height = "30px";
+          clone.style.display = "block";
+          uniformCanvas.appendChild(clone);
         }
+      }
 
-        const topOffset = currentGender === "female" ? 550 : 540;
-        const original = document.getElementById(`ribbons-${key}`);
-        const clone = original.cloneNode();
-        clone.className = "layer ribbon";
-        clone.style.top = `${topOffset + row * 32}px`;
-        clone.style.left = `${leftOffset}px`;
-        clone.style.width = "90px";
-        clone.style.height = "30px";
-        clone.style.display = "block";
-        uniformCanvas.appendChild(clone);
-      });
+      for (let row = 0; row < fullRows; row++) {
+        for (let col = 0; col < 3; col++) {
+          const key = sorted[i++];
+          const leftOffset = 210 + col * 95;
+          const topOffset = 510 + (topRowCount + row) * 32;
+          const original = document.getElementById(`ribbons-${key}`);
+          const clone = original.cloneNode();
+          clone.className = "layer ribbon";
+          clone.style.top = `${topOffset}px`;
+          clone.style.left = `${leftOffset}px`;
+          clone.style.width = "90px";
+          clone.style.height = "30px";
+          clone.style.display = "block";
+          uniformCanvas.appendChild(clone);
+        }
+      }
     }
 
     function renderBadge(key) {
