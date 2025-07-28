@@ -84,10 +84,33 @@
     let currentGender = "male";
     const selectedRibbons = [];
 
-    const ribbonList = [...]; // Use the full ribbon list you already have.
-    const deviceList = ["1_Bronze_Star_Device", "1_Silver_Star_Device"];
-    const rankList = [...]; // Use the full rank list you already have.
-    const badgeList = ["aviation_badge", "gtm_badge"];
+    const ribbonList = [
+      "silver_medal_of_valor", "bronze_medal_of_valor", "distinguished_service_award",
+      "exceptional_service_award", "meritorious_service_award", "commander_commendation_award",
+      "cap_achievement_award", "lifesaving_award", "national_commander_unit_citation_award",
+      "unit_citation_award", "spaatz_award", "eaker_award", "earhart_award", "mitchell_award",
+      "armstrong_achievment", "goddard_achievement", "dolittle_achievement", "lindbergh_achievement",
+      "rickenbacker_achievement", "wright_brothers_award", "mary_feik_achievement", "hap_arnold_achievement",
+      "curry_achievment", "afa_award", "afsa_award", "vfw_officer_award", "vfw_nco_award", "red_service_ribbon",
+      "search_find_ribbon", "air_search_and_rescue_ribbon", "disaster_relief_ribbon",
+      "homeland_security_ribbon", "community_service_ribbon", "iace_ribbon",
+      "national_cadet_competition_ribbon", "national_color_guard_competition_ribbon",
+      "cadet_advisory_council_ribbon", "cadet_special_activity_ribbon", "encampment_ribbon",
+      "cadet_recruiter_ribbon", "crisis_ribbon"
+    ];
+
+    const deviceList = [
+      "1_Bronze_Star_Device", "1_Silver_Star_Device"
+    ];
+
+    const rankList = [
+      "c_ab", "c_amn", "c_a1c", "c_sra", "c_ssgt", "c_tsgt", "c_msgt",
+      "c_smsgt", "c_cmsgt", "c_2dlt", "c_1stlt", "c_capt", "c_maj", "c_ltcol", "c_col"
+    ];
+
+    const badgeList = [
+      "aviation_badge", "gtm_badge"
+    ];
 
     function populateDropdown(selectElement, list) {
       selectElement.innerHTML = "";
@@ -137,18 +160,17 @@
       document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
       const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
       const total = sorted.length;
-      const fullRows = Math.floor((total - 1) / 3);
-      const extraCount = total % 3 === 0 ? 3 : total % 3;
+      const rows = Math.floor((total + 2) / 3);
 
       sorted.forEach((key, index) => {
         const row = Math.floor(index / 3);
         const col = index % 3;
-        const isLastRow = row === fullRows;
+        const isLastRow = row === rows - 1;
+        const remaining = total % 3;
 
         let left;
-        if (isLastRow && extraCount !== 3 && row * 3 + col >= total - extraCount) {
-          if (extraCount === 1) left = 255;
-          else if (extraCount === 2) left = 210 + col * 95;
+        if (isLastRow && remaining !== 0 && index >= total - remaining) {
+          left = remaining === 1 ? 255 : 210 + col * 95;
         } else {
           left = 210 + col * 95;
         }
