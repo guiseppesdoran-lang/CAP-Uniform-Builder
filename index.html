@@ -52,12 +52,9 @@
       <select id="rankSelect"></select>
       <button id="addRank">Add Rank</button>
 
-      
+      <button id="addNameplate">Add Nameplate</button>
       <button id="addUSInsignia">Add U.S. Collar Insignia</button>
       <button id="addCAPInsignia">Add CAP Collar Insignia</button>
-      <button id="addCutouts">Add CAP Cutouts</button>
-      <button id="addInsignia">Add U.S. Insignia</button>
-      <button id="addFlagPatch">Add Flag Patch</button>
       <label for="jacketSelect">Jacket</label>
       <select id="jacketSelect">
         <option value="male">Male</option>
@@ -65,41 +62,26 @@
       </select>
       <button id="changeJacket">Apply Jacket</button>
       <button id="downloadImage">Download Image</button>
-      
     </section>
-
+    <section id="preview">
       <div id="uniformCanvas"></div>
     </section>
-  <div class="hidden-assets" id="assets"></div>
-$1
+  </main>
 
-  
-    <!-- Rank Image References -->
-    <img id="ranks-c_ab" src="images/ranks/c_ab.png" style="display:none;">
-    <img id="ranks-c_amn" src="images/ranks/c_amn.png" style="display:none;">
-    <img id="ranks-c_a1c" src="images/ranks/c_a1c.png" style="display:none;">
-    <img id="ranks-c_sra" src="images/ranks/c_sra.png" style="display:none;">
-    <img id="ranks-c_ssgt" src="images/ranks/c_ssgt.png" style="display:none;">
-    <img id="ranks-c_tsgt" src="images/ranks/c_tsgt.png" style="display:none;">
-    <img id="ranks-c_msgt" src="images/ranks/c_msgt.png" style="display:none;">
-    <img id="ranks-c_smsgt" src="images/ranks/c_smsgt.png" style="display:none;">
-    <img id="ranks-c_cmsgt" src="images/ranks/c_cmsgt.png" style="display:none;">
-    <img id="ranks-c_2dlt" src="images/ranks/c_2dlt.png" style="display:none;">
-    <img id="ranks-c_1stlt" src="images/ranks/c_1stlt.png" style="display:none;">
-    <img id="ranks-c_capt" src="images/ranks/c_capt.png" style="display:none;">
-    <img id="ranks-c_maj" src="images/ranks/c_maj.png" style="display:none;">
-    <img id="ranks-c_ltcol" src="images/ranks/c_ltcol.png" style="display:none;">
-    <img id="ranks-c_col" src="images/ranks/c_col.png" style="display:none;"><img id="jacket-male" src="images/base/jacket_male.png" style="display:none;">
+  <div class="hidden-assets" id="assets">
+    <!-- Jacket Base -->
+    <img id="jacket-male" src="images/base/jacket_male.png" style="display:none;">
     <img id="jacket-female" src="images/base/jacket_female.png" style="display:none;">
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script>
-    const uniformCanvas = document.getElementById("uniformCanvas");
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
     const ribbonSelect = document.getElementById("ribbonSelect");
     const badgeSelect = document.getElementById("badgeSelect");
     const rankSelect = document.getElementById("rankSelect");
     const deviceSelect = document.getElementById("deviceSelect");
+    const uniformCanvas = document.getElementById("uniformCanvas");
 
     let currentGender = "male";
 
@@ -118,206 +100,122 @@ $1
       "cadet_recruiter_ribbon", "crisis_ribbon"
     ];
 
-    const loadOptions = (selectElement, list, prefix) => {
-      list.forEach(item => {
+    const badgeList = ["aviation_badge", "gtm_badge"];
+    const rankList = [
+      "c_ab", "c_amn", "c_a1c", "c_sra", "c_ssgt", "c_tsgt", "c_msgt",
+      "c_smsgt", "c_cmsgt", "c_2dlt", "c_1stlt", "c_capt", "c_maj", "c_ltcol", "c_col"
+    ];
+    const deviceList = ["bronze_star", "silver_star"];
+
+    function loadOptions(select, list, category) {
+      list.forEach(name => {
         const option = document.createElement("option");
-        option.value = item;
-        option.textContent = item.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-        selectElement.appendChild(option);
+        option.value = name;
+        option.textContent = name.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+        select.appendChild(option);
 
         const img = document.createElement("img");
-        img.id = `${prefix}-${item}`;
-        img.src = `images/${prefix}/${item}.png`;
+        img.id = `${category}-${name}`;
+        img.src = `images/${category}/${name}.png`;
+        img.style.display = "none";
         document.getElementById("assets").appendChild(img);
       });
-    };
+    }
+
+    loadOptions(ribbonSelect, ribbonList, "ribbons");
+    loadOptions(badgeSelect, badgeList, "badges");
+    loadOptions(rankSelect, rankList, "ranks");
+    loadOptions(deviceSelect, deviceList, "devices");
 
     function applyJacket(type) {
       currentGender = type;
       document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
-      const jacketImg = document.getElementById(`jacket-${type}`);
-      const clone = jacketImg.cloneNode();
+      const img = document.getElementById(`jacket-${type}`);
+      const clone = img.cloneNode();
       clone.className = "layer jacket";
       clone.style.top = "0px";
       clone.style.left = "0px";
       clone.style.width = "100%";
-      clone.style.height = "auto";
-      clone.style.display = "block";
       clone.style.position = "absolute";
+      clone.style.display = "block";
       uniformCanvas.appendChild(clone);
     }
 
     document.getElementById("changeJacket").onclick = () => {
-      const jacketType = document.getElementById("jacketSelect").value;
-      applyJacket(jacketType);
+      const type = document.getElementById("jacketSelect").value;
+      applyJacket(type);
     };
-
-    loadOptions(ribbonSelect, ribbonList, "ribbons");
-    loadOptions(deviceSelect, ["bronze_star", "silver_star"], "devices");
-    loadOptions(badgeSelect, ["aviation_badge", "gtm_badge"], "badges");
-    loadOptions(rankSelect, [
-      "c_ab", "c_amn", "c_a1c", "c_sra", "c_ssgt", "c_tsgt", "c_msgt",
-      "c_smsgt", "c_cmsgt", "c_2dlt", "c_1stlt", "c_capt", "c_maj", "c_ltcol", "c_col"
-    ], "ranks");
-
-    const selectedRibbons = [];
-
-    function renderRibbons() {
-  document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
-  const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
-  const total = sorted.length;
-
-  sorted.forEach((key, i) => {
-    const col = i % 3;
-    const row = Math.floor(i / 3);
-    let leftOffset;
-
-    const isLastRow = row === Math.floor((total - 1) / 3);
-    const remaining = total % 3;
-
-    if (isLastRow && remaining !== 0 && i >= total - remaining) {
-      if (remaining === 1) {
-        leftOffset = 180;
-      } else if (remaining === 2) {
-        leftOffset = 135 + col * 95;
-      }
-    } else {
-      leftOffset = 135 + col * 95;
-    }
-
-    const top = currentGender === "female" ? 215 + row * 32 : 202 + row * 32;
-    const original = document.getElementById(`ribbons-${key}`);
-    const clone = original.cloneNode();
-    clone.className = "layer ribbon";
-    clone.style.zIndex = 10 + i;
-    clone.style.top = `${top}px`;
-    clone.style.left = `${leftOffset}px`;
-    clone.style.width = "90px";
-    clone.style.height = "30px";
-    clone.style.display = "block";
-    clone.style.position = "absolute";
-    uniformCanvas.appendChild(clone);
-  });
-}
-    } else {
-      leftOffset = 135 + col * 95;
-    }
-
-    const top = currentGender === "female" ? 210 + row * 30 : 200 + row * 30;
-    const original = document.getElementById(`ribbons-${key}`);
-    const clone = original.cloneNode();
-    clone.className = "layer ribbon";
-    clone.style.zIndex = 10 + i; // Ensure ribbons layer over the jacket but under badges/devices
-    clone.style.top = `${top}px`;
-    clone.style.left = `${leftOffset}px`;
-    clone.style.width = "90px";
-    clone.style.height = "30px";
-    clone.style.display = "block";
-      clone.style.position = "absolute";
-    uniformCanvas.appendChild(clone);
-  });
-}
-        } else {
-          leftOffset = 135 + col * 95;
-        }
-
-        const top = currentGender === "female" ? 210 + row * 30 : 200 + row * 30;
-        const original = document.getElementById(`ribbons-${key}`);
-        const clone = original.cloneNode();
-        clone.className = "layer ribbon";
-        clone.style.top = `${top}px`;
-        clone.style.left = `${leftOffset}px`;
-        clone.style.width = "90px";
-        clone.style.height = "30px";
-        clone.style.display = "block";
-      clone.style.position = "absolute";
-        uniformCanvas.appendChild(clone);
-      });
-    }
 
     document.getElementById("addRibbon").onclick = () => {
       const key = ribbonSelect.value;
-      if (!selectedRibbons.includes(key)) {
-        selectedRibbons.push(key);
-        renderRibbons();
-      } else {
-        alert("Ribbon already added.");
-      }
-    };
-
-    document.getElementById("clearRibbons").onclick = () => {
-      selectedRibbons.length = 0;
-      renderRibbons();
+      const original = document.getElementById(`ribbons-${key}`);
+      if (!original) return;
+      const clone = original.cloneNode();
+      clone.className = "layer ribbon";
+      clone.style.top = currentGender === "female" ? "200px" : "190px";
+      clone.style.left = "135px";
+      clone.style.width = "90px";
+      clone.style.height = "30px";
+      clone.style.display = "block";
+      uniformCanvas.appendChild(clone);
     };
 
     document.getElementById("addBadge").onclick = () => {
       const key = badgeSelect.value;
       const original = document.getElementById(`badges-${key}`);
+      if (!original) return;
       const clone = original.cloneNode();
       clone.className = "layer badge";
-      clone.style.zIndex = 30;
       clone.style.top = currentGender === "female" ? "280px" : "270px";
       clone.style.left = currentGender === "female" ? "60px" : "70px";
       clone.style.width = "60px";
       clone.style.height = "60px";
       clone.style.display = "block";
-      clone.style.position = "absolute";
       uniformCanvas.appendChild(clone);
     };
 
-    
+    document.getElementById("addRank").onclick = () => {
+      const key = rankSelect.value;
+      const original = document.getElementById(`ranks-${key}`);
+      if (!original) return;
+      const clone = original.cloneNode();
+      clone.className = "layer rank";
+      clone.style.top = currentGender === "female" ? "120px" : "110px";
+      clone.style.left = currentGender === "female" ? "200px" : "210px";
+      clone.style.width = "50px";
+      clone.style.height = "50px";
+      clone.style.display = "block";
+      uniformCanvas.appendChild(clone);
+    };
+
+    document.getElementById("addDevice").onclick = () => {
+      const key = deviceSelect.value;
+      const original = document.getElementById(`devices-${key}`);
+      if (!original) return;
+      const clone = original.cloneNode();
+      clone.className = "layer device";
+      clone.style.top = currentGender === "female" ? "235px" : "225px";
+      clone.style.left = "180px";
+      clone.style.width = "25px";
+      clone.style.height = "25px";
+      clone.style.display = "block";
+      uniformCanvas.appendChild(clone);
+    };
 
     document.getElementById("addNameplate").onclick = () => {
       const nameplate = document.createElement("div");
       nameplate.className = "layer nameplate";
-      nameplate.style.zIndex = 20;
-      nameplate.style.top = currentGender === "female" ? "222px" : "208px";
-      nameplate.style.left = "275px";
-      nameplate.style.width = "100px";
+      nameplate.style.position = "absolute";
+      nameplate.style.top = currentGender === "female" ? "320px" : "310px";
+      nameplate.style.left = "270px";
+      nameplate.style.width = "120px";
       nameplate.style.height = "20px";
-      nameplate.style.backgroundColor = "#000";
-      nameplate.style.border = "2px solid white";
-      nameplate.style.color = "white";
-      nameplate.style.fontSize = "12px";
+      nameplate.style.background = "#000";
+      nameplate.style.color = "#fff";
       nameplate.style.textAlign = "center";
-      nameplate.innerText = "LASTNAME";
+      nameplate.style.lineHeight = "20px";
+      nameplate.textContent = "LASTNAME";
       uniformCanvas.appendChild(nameplate);
-    };
-
-    document.getElementById("addUSInsignia").onclick = () => {
-      const us = document.createElement("div");
-      us.className = "layer us-insignia";
-      us.style.zIndex = 25;
-      us.style.top = currentGender === "female" ? "155px" : "145px";
-      us.style.left = "95px";
-      us.style.width = "30px";
-      us.style.height = "30px";
-      us.style.backgroundColor = "#ccc";
-      us.style.borderRadius = "50%";
-      us.innerText = "U.S.";
-      us.style.fontWeight = "bold";
-      us.style.fontSize = "10px";
-      us.style.textAlign = "center";
-      us.style.lineHeight = "30px";
-      uniformCanvas.appendChild(us);
-    };
-
-    document.getElementById("addCAPInsignia").onclick = () => {
-      const cap = document.createElement("div");
-      cap.className = "layer cap-insignia";
-      cap.style.zIndex = 25;
-      cap.style.top = currentGender === "female" ? "155px" : "145px";
-      cap.style.left = "320px";
-      cap.style.width = "30px";
-      cap.style.height = "30px";
-      cap.style.backgroundColor = "#ccc";
-      cap.style.borderRadius = "50%";
-      cap.innerText = "CAP";
-      cap.style.fontWeight = "bold";
-      cap.style.fontSize = "10px";
-      cap.style.textAlign = "center";
-      cap.style.lineHeight = "30px";
-      uniformCanvas.appendChild(cap);
     };
   </script>
 </body>
