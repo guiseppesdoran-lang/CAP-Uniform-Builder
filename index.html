@@ -2,28 +2,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAP Uniform Builder</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CAP Class A Uniform Builder</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 2rem;
-      text-align: center;
-    }
-    h1 {
-      color: #002855;
-    }
-    p {
-      font-size: 1.2rem;
-    }
+    body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 2rem; }
+    h1 { color: #002855; text-align: center; }
+    .section { margin-top: 2rem; text-align: center; }
+    .preview img { width: 90px; margin: 0.5rem; border: 1px solid #ccc; }
+    label, select, button { font-size: 1rem; display: block; margin: 0.5rem auto; }
   </style>
 </head>
 <body>
-  <h1>It Works!</h1>
-  <p>This is the corrected version of the CAP Class A Uniform Builder.</p>
-  <p>Once you upload this to your GitHub repository, it will display here.</p>
+  <h1>CAP Class A Uniform Builder</h1>
+
+  <div class="section">
+    <label for="ribbonSelect">Select Ribbon</label>
+    <select id="ribbonSelect">
+      <option value="silver_medal_of_valor">Silver Medal Of Valor</option><option value="bronze_medal_of_valor">Bronze Medal Of Valor</option><option value="distinguished_service_award">Distinguished Service Award</option><option value="exceptional_service_award">Exceptional Service Award</option><option value="meritorious_service_award">Meritorious Service Award</option><option value="commanders_commendation_award">Commanders Commendation Award</option><option value="cap_achievement_award">Cap Achievement Award</option><option value="lifesaving_award">Lifesaving Award</option><option value="national_commanders_unit_citation_award">National Commanders Unit Citation Award</option><option value="unit_citation_award">Unit Citation Award</option><option value="spaatz_award">Spaatz Award</option><option value="eaker_award">Eaker Award</option><option value="earhart_award">Earhart Award</option><option value="mitchell_award">Mitchell Award</option><option value="armstrong_achievement">Armstrong Achievement</option><option value="goddard_achievement">Goddard Achievement</option><option value="doolittle_achievement">Doolittle Achievement</option><option value="lindbergh_achievement">Lindbergh Achievement</option><option value="rickenbacker_achievement">Rickenbacker Achievement</option><option value="wright_brothers_award">Wright Brothers Award</option><option value="mary_feik_achievement">Mary Feik Achievement</option><option value="hap_arnold_achievement">Hap Arnold Achievement</option><option value="curry_achievement">Curry Achievement</option><option value="afa_award">Afa Award</option><option value="afsa_award">Afsa Award</option><option value="vfw_officer_award">Vfw Officer Award</option><option value="vfw_nco_award">Vfw Nco Award</option><option value="red_service_ribbon">Red Service Ribbon</option><option value="search_find_ribbon">Search Find Ribbon</option><option value="air_search_and_rescue_ribbon">Air Search And Rescue Ribbon</option><option value="disaster_relief_ribbon">Disaster Relief Ribbon</option><option value="homeland_security_ribbon">Homeland Security Ribbon</option><option value="community_service_ribbon">Community Service Ribbon</option><option value="iace_ribbon">Iace Ribbon</option><option value="national_cadet_competition_ribbon">National Cadet Competition Ribbon</option><option value="national_color_guard_competition_ribbon">National Color Guard Competition Ribbon</option><option value="cadet_advisory_council_ribbon">Cadet Advisory Council Ribbon</option><option value="cadet_special_activity_ribbon">Cadet Special Activity Ribbon</option><option value="encampment_ribbon">Encampment Ribbon</option><option value="cadet_recruiter_ribbon">Cadet Recruiter Ribbon</option><option value="crisis_ribbon">Crisis Ribbon</option>
+    </select>
+    <button onclick="addItem('ribbons', 'ribbonSelect')">Add Ribbon</button>
+  </div>
+
+  <div class="section">
+    <label for="badgeSelect">Select Badge</label>
+    <select id="badgeSelect">
+      <option value="aviation_badge">Aviation Badge</option><option value="gtm_badge">Gtm Badge</option><option value="emergency_services_badge">Emergency Services Badge</option><option value="cadet_programs_badge">Cadet Programs Badge</option><option value="recruiting_badge">Recruiting Badge</option><option value="solo_badge">Solo Badge</option><option value="pre_solo_badge">Pre Solo Badge</option><option value="senior_badge">Senior Badge</option><option value="master_badge">Master Badge</option><option value="observer_badge">Observer Badge</option><option value="health_services_badge">Health Services Badge</option><option value="cyber_badge">Cyber Badge</option><option value="communications_badge">Communications Badge</option><option value="aerospace_education_badge">Aerospace Education Badge</option>
+    </select>
+    <button onclick="addItem('badges', 'badgeSelect')">Add Badge</button>
+  </div>
+
+  <div class="section">
+    <label for="rankSelect">Select Rank</label>
+    <select id="rankSelect">
+      <option value="c_ab">C AB</option><option value="c_amn">C AMN</option><option value="c_a1c">C A1C</option><option value="c_sra">C SRA</option><option value="c_ssgt">C SSGT</option><option value="c_tsgt">C TSGT</option><option value="c_msgt">C MSGT</option><option value="c_smsgt">C SMSGT</option><option value="c_cmsgt">C CMSGT</option><option value="c_2dlt">C 2DLT</option><option value="c_1stlt">C 1STLT</option><option value="c_capt">C CAPT</option><option value="c_maj">C MAJ</option><option value="c_ltcol">C LTCOL</option><option value="c_col">C COL</option>
+    </select>
+    <button onclick="addItem('ranks', 'rankSelect')">Add Rank</button>
+  </div>
+
+  <div class="section">
+    <label for="deviceSelect">Select Device</label>
+    <select id="deviceSelect">
+      <option value="bronze_star">Bronze Star</option><option value="silver_star">Silver Star</option><option value="gold_clasp">Gold Clasp</option><option value="oak_leaf_cluster_bronze">Oak Leaf Cluster Bronze</option><option value="oak_leaf_cluster_silver">Oak Leaf Cluster Silver</option><option value="year_service_star">Year Service Star</option><option value="prop_device">Prop Device</option><option value="command_device">Command Device</option>
+    </select>
+    <button onclick="addItem('devices', 'deviceSelect')">Add Device</button>
+  </div>
+
+  <div class="section preview" id="uniformPreview">
+    <h2>Uniform Preview</h2>
+  </div>
+
+  <script>
+    function addItem(type, selectId) {
+      const select = document.getElementById(selectId);
+      const value = select.value;
+      const img = document.createElement("img");
+      img.src = "images/" + type + "/" + value + ".png";
+      img.alt = value;
+      document.getElementById("uniformPreview").appendChild(img);
+    }
+  </script>
 </body>
 </html>
