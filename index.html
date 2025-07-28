@@ -201,7 +201,7 @@
       uniformCanvas.appendChild(clone);
     }
 
- function renderRibbons() {
+function renderRibbons() {
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
   const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(b) - ribbonList.indexOf(a));
   const total = sorted.length;
@@ -212,33 +212,42 @@
   const startTop = 402;
   const startLeft = 303;
 
-  const fullRows = Math.min(5, Math.floor(total / 3));
-  const extra = total - (fullRows * 3);
-  const remaining = total - fullRows * 3;
-
   for (let i = 0; i < total; i++) {
     const indexFromTop = i;
-    let row, col;
 
-    if (indexFromTop < fullRows * 3) {
-      row = Math.floor(indexFromTop / 3);
-      col = indexFromTop % 3;
+    let row, col;
+    if (i < 15) {
+      // Rows 0-4 (5 full rows of 3)
+      row = Math.floor(i / 3);
+      col = i % 3;
     } else {
-      row = fullRows + Math.floor((indexFromTop - fullRows * 3) / 2);
-      col = (indexFromTop - fullRows * 3) % 2;
+      // Rows 5 and beyond: 2-per row max
+      const overflowIndex = i - 15;
+      row = 5 + Math.floor(overflowIndex / 2);
+      col = overflowIndex % 2;
     }
 
-    let x = startLeft + col * (ribbonWidth + spacing);
-    let y = startTop - row * (ribbonHeight + spacing);
+    let ribbonsInRow;
+    if (row < 5) {
+      ribbonsInRow = 3;
+    } else {
+      const ribbonsLeft = total - (row * 2 + (row > 5 ? 5 : 0));
+      ribbonsInRow = Math.min(2, ribbonsLeft);
+    }
 
-    const ribbonsInRow = (row < 5) ? 3 : ((remaining - (row - 5) * 2 >= 2) ? 2 : 1);
+    let x;
+    if (ribbonsInRow === 3) {
+      x = startLeft + col * (ribbonWidth + spacing);
+    } else if (ribbonsInRow === 2) {
+      x = startLeft + (ribbonWidth / 2) + col * (ribbonWidth + spacing);
+    } else {
+      x = startLeft + ribbonWidth + spacing;
+    }
 
-    // Center rows with < 3 ribbons
-    if (ribbonsInRow === 1) x = startLeft + ribbonWidth + spacing;
-    if (ribbonsInRow === 2 && col === 0) x = startLeft + (ribbonWidth / 2);
-    if (ribbonsInRow === 2 && col === 1) x = startLeft + (ribbonWidth * 1.5) + spacing;
+    const y = startTop - row * (ribbonHeight + spacing);
 
     const original = document.getElementById(`ribbons-${sorted[i]}`);
+    if (!original) continue;
     const clone = original.cloneNode();
     clone.className = "layer ribbon";
     clone.style.top = `${y - ribbonHeight}px`;
@@ -249,6 +258,7 @@
     uniformCanvas.appendChild(clone);
   }
 }
+
 
 
     function renderBadge(key) {
