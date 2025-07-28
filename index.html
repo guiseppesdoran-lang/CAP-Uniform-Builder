@@ -38,6 +38,7 @@
       <label for="ribbonSelect">Ribbons</label>
       <select id="ribbonSelect"></select>
       <button id="addRibbon">Add Ribbon</button>
+      <button id="clearRibbons">Clear Ribbons</button>
 
       <label for="deviceSelect">Devices</label>
       <select id="deviceSelect"></select>
@@ -56,6 +57,7 @@
       <button id="addInsignia">Add U.S. Insignia</button>
       <button id="addFlagPatch">Add Flag Patch</button>
       <button id="downloadImage">Download Image</button>
+      <button id="downloadPDF">Download PDF</button>
     </section>
     <section id="preview">
       <div id="uniformCanvas"></div>
@@ -65,6 +67,7 @@
   <div class="hidden-assets" id="assets"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     const uniformCanvas = document.getElementById("uniformCanvas");
     const ribbonSelect = document.getElementById("ribbonSelect");
@@ -129,16 +132,31 @@
     function renderRibbons() {
       document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
       const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
+      const total = sorted.length;
       sorted.forEach((key, i) => {
         const col = i % 3;
         const row = Math.floor(i / 3);
+        let leftOffset;
+
+        const isLastRow = row === Math.floor((total - 1) / 3);
+        const remaining = total % 3;
+
+        if (isLastRow && remaining !== 0 && i >= total - remaining) {
+          if (remaining === 1) {
+            leftOffset = 180;
+          } else if (remaining === 2) {
+            leftOffset = 135 + col * 95;
+          }
+        } else {
+          leftOffset = 135 + col * 95;
+        }
+
         const top = 200 + row * 30;
-        const left = 135 + col * 95;
         const original = document.getElementById(`ribbons-${key}`);
         const clone = original.cloneNode();
         clone.className = "layer ribbon";
         clone.style.top = `${top}px`;
-        clone.style.left = `${left}px`;
+        clone.style.left = `${leftOffset}px`;
         clone.style.width = "90px";
         clone.style.height = "30px";
         clone.style.display = "block";
@@ -151,7 +169,14 @@
       if (!selectedRibbons.includes(key)) {
         selectedRibbons.push(key);
         renderRibbons();
+      } else {
+        alert("Ribbon already added.");
       }
+    };
+
+    document.getElementById("clearRibbons").onclick = () => {
+      selectedRibbons = [];
+      renderRibbons();
     };
 
     document.getElementById("addDevice").onclick = () => {
@@ -195,6 +220,16 @@
         a.href = canvas.toDataURL("image/png");
         a.download = "CAP_ClassA_Uniform.png";
         a.click();
+      });
+    };
+
+    document.getElementById("downloadPDF").onclick = () => {
+      html2canvas(uniformCanvas).then(canvas => {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF();
+        const imgData = canvas.toDataURL("image/png");
+        pdf.addImage(imgData, "PNG", 10, 10, 180, 280);
+        pdf.save("CAP_ClassA_Uniform.pdf");
       });
     };
 
