@@ -201,35 +201,42 @@
       uniformCanvas.appendChild(clone);
     }
 
-  function renderRibbons() {
+ function renderRibbons() {
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
   const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(b) - ribbonList.indexOf(a));
-
   const total = sorted.length;
 
-  let ribbonWidth = 25;
-  let ribbonHeight = 8;
-  let spacing = 0;
-  let startTop = 402;
-  let startLeft = 303;
+  const ribbonWidth = 25;
+  const ribbonHeight = 8;
+  const spacing = 0;
+  const startTop = 402;
+  const startLeft = 303;
+
+  const fullRows = Math.min(5, Math.floor(total / 3));
+  const extra = total - (fullRows * 3);
+  const remaining = total - fullRows * 3;
 
   for (let i = 0; i < total; i++) {
-    let row, col, x, y;
+    const indexFromTop = i;
+    let row, col;
 
-    if (i < 15) {
-      // First 5 rows: full rows of 3
-      row = Math.floor(i / 3);
-      col = i % 3;
-      x = startLeft + col * (ribbonWidth + spacing);
+    if (indexFromTop < fullRows * 3) {
+      row = Math.floor(indexFromTop / 3);
+      col = indexFromTop % 3;
     } else {
-      // After 5 rows (15 ribbons): switch to rows of 2
-      let newIndex = i - 15;
-      row = 5 + Math.floor(newIndex / 2);
-      col = newIndex % 2;
-      x = startLeft + (ribbonWidth / 2) + col * (ribbonWidth + spacing); // Offset for 2-ribbon center alignment
+      row = fullRows + Math.floor((indexFromTop - fullRows * 3) / 2);
+      col = (indexFromTop - fullRows * 3) % 2;
     }
 
-    y = startTop - row * (ribbonHeight + spacing);
+    let x = startLeft + col * (ribbonWidth + spacing);
+    let y = startTop - row * (ribbonHeight + spacing);
+
+    const ribbonsInRow = (row < 5) ? 3 : ((remaining - (row - 5) * 2 >= 2) ? 2 : 1);
+
+    // Center rows with < 3 ribbons
+    if (ribbonsInRow === 1) x = startLeft + ribbonWidth + spacing;
+    if (ribbonsInRow === 2 && col === 0) x = startLeft + (ribbonWidth / 2);
+    if (ribbonsInRow === 2 && col === 1) x = startLeft + (ribbonWidth * 1.5) + spacing;
 
     const original = document.getElementById(`ribbons-${sorted[i]}`);
     const clone = original.cloneNode();
