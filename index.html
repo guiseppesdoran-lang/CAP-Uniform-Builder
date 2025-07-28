@@ -180,7 +180,7 @@
   function renderRibbons() {
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
 
-  const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
+  const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b)); // Highest precedence first
   const total = sorted.length;
 
   const ribbonWidth = 25;
@@ -189,50 +189,40 @@
   const startTop = 402;
   const startLeft = 303;
 
-  const rows = [];
-  let index = 0;
+  for (let i = 0; i < total; i++) {
+    const reverseIndex = total - 1 - i; // Start from the highest precedence
+    const row = Math.floor(i / 3);
+    const rowRibbons = total - row * 3 >= 3 ? 3 : (total - row * 3);
 
-  // First 5 rows: max 3 per row
-  for (let r = 0; r < 5 && index < total; r++) {
-    rows.push(sorted.slice(index, index + 3));
-    index += 3;
-  }
+    const currentRowIndex = Math.floor(reverseIndex / 3);
+    const currentRowRibbons = Math.min(3, total - currentRowIndex * 3);
+    const indexInRow = reverseIndex % 3;
 
-  // Remaining rows: max 2 per row
-  while (index < total) {
-    rows.push(sorted.slice(index, index + 2));
-    index += 2;
-  }
-
-  rows.reverse(); // So highest precedence ends up at the top
-
-  rows.forEach((row, rowIndex) => {
     let xOffset;
-    if (row.length === 3) {
+    if (currentRowRibbons === 3) {
       xOffset = startLeft;
-    } else if (row.length === 2) {
+    } else if (currentRowRibbons === 2) {
       xOffset = startLeft + ribbonWidth / 2;
     } else {
       xOffset = startLeft + ribbonWidth + spacing;
     }
 
-    row.forEach((ribbon, colIndex) => {
-      const x = xOffset + colIndex * (ribbonWidth + spacing);
-      const y = startTop - rowIndex * (ribbonHeight + spacing);
+    const x = xOffset + (indexInRow % currentRowRibbons) * (ribbonWidth + spacing);
+    const y = startTop - currentRowIndex * (ribbonHeight + spacing);
 
-      const original = document.getElementById(`ribbons-${ribbon}`);
-      if (!original) return;
-      const clone = original.cloneNode();
-      clone.className = "layer ribbon";
-      clone.style.top = `${y - ribbonHeight}px`;
-      clone.style.left = `${x}px`;
-      clone.style.width = `${ribbonWidth}px`;
-      clone.style.height = `${ribbonHeight}px`;
-      clone.style.display = "block";
-      uniformCanvas.appendChild(clone);
-    });
-  });
+    const original = document.getElementById(`ribbons-${sorted[i]}`);
+    if (!original) continue;
+    const clone = original.cloneNode();
+    clone.className = "layer ribbon";
+    clone.style.top = `${y - ribbonHeight}px`;
+    clone.style.left = `${x}px`;
+    clone.style.width = `${ribbonWidth}px`;
+    clone.style.height = `${ribbonHeight}px`;
+    clone.style.display = "block";
+    uniformCanvas.appendChild(clone);
+  }
 }
+
 
 
 
