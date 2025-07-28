@@ -56,6 +56,12 @@
       <button id="addCutouts">Add CAP Cutouts</button>
       <button id="addInsignia">Add U.S. Insignia</button>
       <button id="addFlagPatch">Add Flag Patch</button>
+      <label for="jacketSelect">Jacket</label>
+      <select id="jacketSelect">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <button id="changeJacket">Apply Jacket</button>
       <button id="downloadImage">Download Image</button>
       <button id="downloadPDF">Download PDF</button>
     </section>
@@ -64,7 +70,10 @@
     </section>
   </main>
 
-  <div class="hidden-assets" id="assets"></div>
+  <div class="hidden-assets" id="assets">
+    <img id="jacket-male" src="images/base/jacket_male.png" style="display:none;">
+    <img id="jacket-female" src="images/base/jacket_female.png" style="display:none;">
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -90,23 +99,6 @@
       "cadet_recruiter_ribbon", "crisis_ribbon"
     ];
 
-    const deviceList = [
-      "bronze_star", "silver_star", "gold_clasp", "oak_leaf_cluster_bronze", "oak_leaf_cluster_silver",
-      "year_service_star", "prop_device", "command_device"
-    ];
-
-    const badgeList = [
-      "aviation_badge", "gtm_badge", "emergency_services_badge", "cadet_programs_badge",
-      "recruiting_badge", "solo_badge", "pre_solo_badge", "senior_badge", "master_badge",
-      "observer_badge", "health_services_badge", "cyber_badge", "communications_badge",
-      "aerospace_education_badge"
-    ];
-
-    const rankList = [
-      "c_ab", "c_amn", "c_a1c", "c_sra", "c_ssgt", "c_tsgt", "c_msgt", "c_smsgt", "c_cmsgt",
-      "c_2dlt", "c_1stlt", "c_capt", "c_maj", "c_ltcol", "c_col"
-    ];
-
     const loadOptions = (selectElement, list, prefix) => {
       list.forEach(item => {
         const option = document.createElement("option");
@@ -121,129 +113,28 @@
       });
     };
 
-    loadOptions(ribbonSelect, ribbonList, "ribbons");
-    loadOptions(deviceSelect, deviceList, "devices");
-    loadOptions(badgeSelect, badgeList, "badges");
-    loadOptions(rankSelect, rankList, "ranks");
-
-    let selectedRibbons = [];
-    let badgeCount = 0;
-
-    function renderRibbons() {
-      document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
-      const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
-      const total = sorted.length;
-      sorted.forEach((key, i) => {
-        const col = i % 3;
-        const row = Math.floor(i / 3);
-        let leftOffset;
-
-        const isLastRow = row === Math.floor((total - 1) / 3);
-        const remaining = total % 3;
-
-        if (isLastRow && remaining !== 0 && i >= total - remaining) {
-          if (remaining === 1) {
-            leftOffset = 180;
-          } else if (remaining === 2) {
-            leftOffset = 135 + col * 95;
-          }
-        } else {
-          leftOffset = 135 + col * 95;
-        }
-
-        const top = 200 + row * 30;
-        const original = document.getElementById(`ribbons-${key}`);
-        const clone = original.cloneNode();
-        clone.className = "layer ribbon";
-        clone.style.top = `${top}px`;
-        clone.style.left = `${leftOffset}px`;
-        clone.style.width = "90px";
-        clone.style.height = "30px";
-        clone.style.display = "block";
-        uniformCanvas.appendChild(clone);
-      });
-    }
-
-    document.getElementById("addRibbon").onclick = () => {
-      const key = ribbonSelect.value;
-      if (!selectedRibbons.includes(key)) {
-        selectedRibbons.push(key);
-        renderRibbons();
-      } else {
-        alert("Ribbon already added.");
-      }
-    };
-
-    document.getElementById("clearRibbons").onclick = () => {
-      selectedRibbons = [];
-      renderRibbons();
-    };
-
-    document.getElementById("addDevice").onclick = () => {
-      const key = deviceSelect.value;
-      addClonedImage(`devices-${key}`, "195px", "210px", 20, 20);
-    };
-
-    document.getElementById("addBadge").onclick = () => {
-      const key = badgeSelect.value;
-      const top = 150 - (badgeCount * 35);
-      addClonedImage(`badges-${key}`, `${top}px`, "180px", 90, 30);
-      badgeCount++;
-    };
-
-    document.getElementById("addRank").onclick = () => {
-      const key = rankSelect.value;
-      addClonedImage(`ranks-${key}`, "80px", "200px", 40, 40);
-    };
-
-    document.getElementById("addNameplate").onclick = () => {
-      addClonedImage("nameplate", "235px", "90px", 120, 20);
-    };
-
-    document.getElementById("addCutouts").onclick = () => {
-      addClonedImage("cutouts-cap_left", "100px", "140px", 25, 25);
-      addClonedImage("cutouts-cap_right", "100px", "275px", 25, 25);
-    };
-
-    document.getElementById("addInsignia").onclick = () => {
-      addClonedImage("insignia-us_insignia_left", "105px", "125px", 20, 20);
-      addClonedImage("insignia-us_insignia_right", "105px", "300px", 20, 20);
-    };
-
-    document.getElementById("addFlagPatch").onclick = () => {
-      addClonedImage("flag_patch", "60px", "360px", 40, 25);
-    };
-
-    document.getElementById("downloadImage").onclick = () => {
-      html2canvas(uniformCanvas).then(canvas => {
-        const a = document.createElement("a");
-        a.href = canvas.toDataURL("image/png");
-        a.download = "CAP_ClassA_Uniform.png";
-        a.click();
-      });
-    };
-
-    document.getElementById("downloadPDF").onclick = () => {
-      html2canvas(uniformCanvas).then(canvas => {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF();
-        const imgData = canvas.toDataURL("image/png");
-        pdf.addImage(imgData, "PNG", 10, 10, 180, 280);
-        pdf.save("CAP_ClassA_Uniform.pdf");
-      });
-    };
-
-    function addClonedImage(id, top, left, width, height) {
-      const original = document.getElementById(id);
-      const clone = original.cloneNode();
-      clone.className = "layer";
-      clone.style.top = top;
-      clone.style.left = left;
-      clone.style.width = width + "px";
-      clone.style.height = height + "px";
+    function applyJacket(type) {
+      document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
+      const jacketImg = document.getElementById(`jacket-${type}`);
+      const clone = jacketImg.cloneNode();
+      clone.className = "layer jacket";
+      clone.style.top = "0px";
+      clone.style.left = "0px";
+      clone.style.width = "100%";
+      clone.style.height = "auto";
       clone.style.display = "block";
       uniformCanvas.appendChild(clone);
     }
+
+    document.getElementById("changeJacket").onclick = () => {
+      const jacketType = document.getElementById("jacketSelect").value;
+      applyJacket(jacketType);
+    };
+
+    loadOptions(ribbonSelect, ribbonList, "ribbons");
+    loadOptions(deviceSelect, ["bronze_star", "silver_star"], "devices");
+    loadOptions(badgeSelect, ["aviation_badge", "gtm_badge"], "badges");
+    loadOptions(rankSelect, ["c_ab", "c_amn"], "ranks");
   </script>
 </body>
 </html>
