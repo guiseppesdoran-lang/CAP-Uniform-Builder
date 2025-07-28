@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CAP Class A Uniform Builder</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 2rem; }
+    h1 { color: #002855; text-align: center; }
+    .section { margin-top: 2rem; }
+    .preview img { width: 100px; margin: 1rem; border: 1px solid #ccc; }
+    label, select, button { font-size: 1rem; display: block; margin: 0.5rem auto; }
+  </style>
+</head>
+<body>
+  <h1>CAP Class A Uniform Builder</h1>
+
+  <div class="section">
+    <label for="ribbonSelect">Select Ribbon</label>
+    <select id="ribbonSelect">
+      <option value="mitchell_award">Mitchell Award</option>
+      <option value="earhart_award">Earhart Award</option>
+      <option value="spaatz_award">Spaatz Award</option>
+    </select>
+    <button onclick="addRibbon()">Add Ribbon</button>
+  </div>
+
+  <div class="section preview" id="ribbonPreview">
+    <h2>Preview Area</h2>
+  </div>
+
+  <script>
+    function addRibbon() {
+      const select = document.getElementById("ribbonSelect");
+      const value = select.value;
+      const img = document.createElement("img");
+      img.src = "images/ribbons/" + value + ".png";
+      img.alt = value;
+      document.getElementById("ribbonPreview").appendChild(img);
+    }
+  </script>
+</body>
+</html>
