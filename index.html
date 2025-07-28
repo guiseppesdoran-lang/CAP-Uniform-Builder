@@ -13,27 +13,24 @@
       border-right: 1px solid #ccc; overflow-y: auto;
       height: calc(100vh - 72px);
     }
-    #preview {
-  width: 900px;
-  height: 1200px;
+   #preview {
+  flex-grow: 1;
   background: #d1d8e0;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  height: calc(100vh - 72px);
 }
 
+
     }
-    #uniformCanvas {
-  position: absolute;
-  top: 0;
-  left: 0;
+   #uniformCanvas {
+  position: relative;
   width: 900px;
   height: 1200px;
-  transform: scale(1);
-  transform-origin: top left;
 }
+
 
     .layer { position: absolute; }
     label, select, button {
