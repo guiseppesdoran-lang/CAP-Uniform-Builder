@@ -179,7 +179,7 @@
         const original = document.getElementById(`ribbons-${sorted[i]}`);
         const clone = original.cloneNode();
         clone.className = "layer ribbon";
-        clone.style.top = `${y}px`;
+        clone.style.top = `${y - ribbonHeight}px`;
         clone.style.left = `${x}px`;
         clone.style.width = `${ribbonWidth}px`;
         clone.style.height = `${ribbonHeight}px`;
