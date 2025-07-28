@@ -1,65 +1,213 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CAP Class A Uniform Builder</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAP Class A Blues Uniform Builder</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 2rem; }
-    h1 { color: #002855; text-align: center; }
-    .section { margin-top: 2rem; text-align: center; }
-    .preview img { width: 90px; margin: 0.5rem; border: 1px solid #ccc; }
-    label, select, button { font-size: 1rem; display: block; margin: 0.5rem auto; }
+    body { font-family: Arial, sans-serif; margin: 0; background: #eef1f5; }
+    header { background-color: #002855; color: white; padding: 1rem; text-align: center; }
+    main { display: flex; }
+    #controls {
+      width: 320px; background: white; padding: 1rem;
+      border-right: 1px solid #ccc; overflow-y: auto;
+      height: calc(100vh - 72px);
+    }
+    #preview {
+      flex-grow: 1; background: #d1d8e0;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; height: calc(100vh - 72px);
+    }
+    #uniformCanvas {
+      position: relative; width: 450px; height: 700px;
+    }
+    .layer { position: absolute; }
+    label, select, button {
+      display: block; margin: 0.5rem 0; width: 100%;
+    }
+    select, button { padding: 0.3rem; }
+    .hidden-assets { display: none; }
   </style>
 </head>
 <body>
-  <h1>CAP Class A Uniform Builder</h1>
+  <header>
+    <h1>CAP Class A Blues Uniform Builder</h1>
+  </header>
+  <main>
+    <section id="controls">
+      <label for="ribbonSelect">Ribbons</label>
+      <select id="ribbonSelect"></select>
+      <button id="addRibbon">Add Ribbon</button>
 
-  <div class="section">
-    <label for="ribbonSelect">Select Ribbon</label>
-    <select id="ribbonSelect">
-      <option value="silver_medal_of_valor">Silver Medal Of Valor</option><option value="bronze_medal_of_valor">Bronze Medal Of Valor</option><option value="distinguished_service_award">Distinguished Service Award</option><option value="exceptional_service_award">Exceptional Service Award</option><option value="meritorious_service_award">Meritorious Service Award</option><option value="commanders_commendation_award">Commanders Commendation Award</option><option value="cap_achievement_award">Cap Achievement Award</option><option value="lifesaving_award">Lifesaving Award</option><option value="national_commanders_unit_citation_award">National Commanders Unit Citation Award</option><option value="unit_citation_award">Unit Citation Award</option><option value="spaatz_award">Spaatz Award</option><option value="eaker_award">Eaker Award</option><option value="earhart_award">Earhart Award</option><option value="mitchell_award">Mitchell Award</option><option value="armstrong_achievement">Armstrong Achievement</option><option value="goddard_achievement">Goddard Achievement</option><option value="doolittle_achievement">Doolittle Achievement</option><option value="lindbergh_achievement">Lindbergh Achievement</option><option value="rickenbacker_achievement">Rickenbacker Achievement</option><option value="wright_brothers_award">Wright Brothers Award</option><option value="mary_feik_achievement">Mary Feik Achievement</option><option value="hap_arnold_achievement">Hap Arnold Achievement</option><option value="curry_achievement">Curry Achievement</option><option value="afa_award">Afa Award</option><option value="afsa_award">Afsa Award</option><option value="vfw_officer_award">Vfw Officer Award</option><option value="vfw_nco_award">Vfw Nco Award</option><option value="red_service_ribbon">Red Service Ribbon</option><option value="search_find_ribbon">Search Find Ribbon</option><option value="air_search_and_rescue_ribbon">Air Search And Rescue Ribbon</option><option value="disaster_relief_ribbon">Disaster Relief Ribbon</option><option value="homeland_security_ribbon">Homeland Security Ribbon</option><option value="community_service_ribbon">Community Service Ribbon</option><option value="iace_ribbon">Iace Ribbon</option><option value="national_cadet_competition_ribbon">National Cadet Competition Ribbon</option><option value="national_color_guard_competition_ribbon">National Color Guard Competition Ribbon</option><option value="cadet_advisory_council_ribbon">Cadet Advisory Council Ribbon</option><option value="cadet_special_activity_ribbon">Cadet Special Activity Ribbon</option><option value="encampment_ribbon">Encampment Ribbon</option><option value="cadet_recruiter_ribbon">Cadet Recruiter Ribbon</option><option value="crisis_ribbon">Crisis Ribbon</option>
-    </select>
-    <button onclick="addItem('ribbons', 'ribbonSelect')">Add Ribbon</button>
-  </div>
+      <label for="deviceSelect">Devices</label>
+      <select id="deviceSelect"></select>
+      <button id="addDevice">Add Device</button>
 
-  <div class="section">
-    <label for="badgeSelect">Select Badge</label>
-    <select id="badgeSelect">
-      <option value="aviation_badge">Aviation Badge</option><option value="gtm_badge">Gtm Badge</option><option value="emergency_services_badge">Emergency Services Badge</option><option value="cadet_programs_badge">Cadet Programs Badge</option><option value="recruiting_badge">Recruiting Badge</option><option value="solo_badge">Solo Badge</option><option value="pre_solo_badge">Pre Solo Badge</option><option value="senior_badge">Senior Badge</option><option value="master_badge">Master Badge</option><option value="observer_badge">Observer Badge</option><option value="health_services_badge">Health Services Badge</option><option value="cyber_badge">Cyber Badge</option><option value="communications_badge">Communications Badge</option><option value="aerospace_education_badge">Aerospace Education Badge</option>
-    </select>
-    <button onclick="addItem('badges', 'badgeSelect')">Add Badge</button>
-  </div>
+      <label for="badgeSelect">Badges</label>
+      <select id="badgeSelect"></select>
+      <button id="addBadge">Add Badge</button>
 
-  <div class="section">
-    <label for="rankSelect">Select Rank</label>
-    <select id="rankSelect">
-      <option value="c_ab">C AB</option><option value="c_amn">C AMN</option><option value="c_a1c">C A1C</option><option value="c_sra">C SRA</option><option value="c_ssgt">C SSGT</option><option value="c_tsgt">C TSGT</option><option value="c_msgt">C MSGT</option><option value="c_smsgt">C SMSGT</option><option value="c_cmsgt">C CMSGT</option><option value="c_2dlt">C 2DLT</option><option value="c_1stlt">C 1STLT</option><option value="c_capt">C CAPT</option><option value="c_maj">C MAJ</option><option value="c_ltcol">C LTCOL</option><option value="c_col">C COL</option>
-    </select>
-    <button onclick="addItem('ranks', 'rankSelect')">Add Rank</button>
-  </div>
+      <label for="rankSelect">Rank Insignia</label>
+      <select id="rankSelect"></select>
+      <button id="addRank">Add Rank</button>
 
-  <div class="section">
-    <label for="deviceSelect">Select Device</label>
-    <select id="deviceSelect">
-      <option value="bronze_star">Bronze Star</option><option value="silver_star">Silver Star</option><option value="gold_clasp">Gold Clasp</option><option value="oak_leaf_cluster_bronze">Oak Leaf Cluster Bronze</option><option value="oak_leaf_cluster_silver">Oak Leaf Cluster Silver</option><option value="year_service_star">Year Service Star</option><option value="prop_device">Prop Device</option><option value="command_device">Command Device</option>
-    </select>
-    <button onclick="addItem('devices', 'deviceSelect')">Add Device</button>
-  </div>
+      <button id="addNameplate">Add Nameplate</button>
+      <button id="addCutouts">Add CAP Cutouts</button>
+      <button id="addInsignia">Add U.S. Insignia</button>
+      <button id="addFlagPatch">Add Flag Patch</button>
+      <button id="downloadImage">Download Image</button>
+    </section>
+    <section id="preview">
+      <div id="uniformCanvas"></div>
+    </section>
+  </main>
 
-  <div class="section preview" id="uniformPreview">
-    <h2>Uniform Preview</h2>
-  </div>
+  <div class="hidden-assets" id="assets"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
-    function addItem(type, selectId) {
-      const select = document.getElementById(selectId);
-      const value = select.value;
-      const img = document.createElement("img");
-      img.src = "images/" + type + "/" + value + ".png";
-      img.alt = value;
-      document.getElementById("uniformPreview").appendChild(img);
+    const uniformCanvas = document.getElementById("uniformCanvas");
+    const ribbonSelect = document.getElementById("ribbonSelect");
+    const badgeSelect = document.getElementById("badgeSelect");
+    const rankSelect = document.getElementById("rankSelect");
+    const deviceSelect = document.getElementById("deviceSelect");
+
+    const ribbonList = [
+      "silver_medal_of_valor", "bronze_medal_of_valor", "distinguished_service_award",
+      "exceptional_service_award", "meritorious_service_award", "commanders_commendation_award",
+      "cap_achievement_award", "lifesaving_award", "national_commanders_unit_citation_award",
+      "unit_citation_award", "spaatz_award", "eaker_award", "earhart_award", "mitchell_award",
+      "armstrong_achievement", "goddard_achievement", "doolittle_achievement", "lindbergh_achievement",
+      "rickenbacker_achievement", "wright_brothers_award", "mary_feik_achievement", "hap_arnold_achievement",
+      "curry_achievement", "afa_award", "afsa_award", "vfw_officer_award", "vfw_nco_award", "red_service_ribbon",
+      "search_find_ribbon", "air_search_and_rescue_ribbon", "disaster_relief_ribbon",
+      "homeland_security_ribbon", "community_service_ribbon", "iace_ribbon",
+      "national_cadet_competition_ribbon", "national_color_guard_competition_ribbon",
+      "cadet_advisory_council_ribbon", "cadet_special_activity_ribbon", "encampment_ribbon",
+      "cadet_recruiter_ribbon", "crisis_ribbon"
+    ];
+
+    const deviceList = [
+      "bronze_star", "silver_star", "gold_clasp", "oak_leaf_cluster_bronze", "oak_leaf_cluster_silver",
+      "year_service_star", "prop_device", "command_device"
+    ];
+
+    const badgeList = [
+      "aviation_badge", "gtm_badge", "emergency_services_badge", "cadet_programs_badge",
+      "recruiting_badge", "solo_badge", "pre_solo_badge", "senior_badge", "master_badge",
+      "observer_badge", "health_services_badge", "cyber_badge", "communications_badge",
+      "aerospace_education_badge"
+    ];
+
+    const rankList = [
+      "c_ab", "c_amn", "c_a1c", "c_sra", "c_ssgt", "c_tsgt", "c_msgt", "c_smsgt", "c_cmsgt",
+      "c_2dlt", "c_1stlt", "c_capt", "c_maj", "c_ltcol", "c_col"
+    ];
+
+    const loadOptions = (selectElement, list, prefix) => {
+      list.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item;
+        option.textContent = item.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+        selectElement.appendChild(option);
+
+        const img = document.createElement("img");
+        img.id = `${prefix}-${item}`;
+        img.src = `images/${prefix}/${item}.png`;
+        document.getElementById("assets").appendChild(img);
+      });
+    };
+
+    loadOptions(ribbonSelect, ribbonList, "ribbons");
+    loadOptions(deviceSelect, deviceList, "devices");
+    loadOptions(badgeSelect, badgeList, "badges");
+    loadOptions(rankSelect, rankList, "ranks");
+
+    let selectedRibbons = [];
+    let badgeCount = 0;
+
+    function renderRibbons() {
+      document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
+      const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
+      sorted.forEach((key, i) => {
+        const col = i % 3;
+        const row = Math.floor(i / 3);
+        const top = 200 + row * 30;
+        const left = 135 + col * 95;
+        const original = document.getElementById(`ribbons-${key}`);
+        const clone = original.cloneNode();
+        clone.className = "layer ribbon";
+        clone.style.top = `${top}px`;
+        clone.style.left = `${left}px`;
+        clone.style.width = "90px";
+        clone.style.height = "30px";
+        clone.style.display = "block";
+        uniformCanvas.appendChild(clone);
+      });
+    }
+
+    document.getElementById("addRibbon").onclick = () => {
+      const key = ribbonSelect.value;
+      if (!selectedRibbons.includes(key)) {
+        selectedRibbons.push(key);
+        renderRibbons();
+      }
+    };
+
+    document.getElementById("addDevice").onclick = () => {
+      const key = deviceSelect.value;
+      addClonedImage(`devices-${key}`, "195px", "210px", 20, 20);
+    };
+
+    document.getElementById("addBadge").onclick = () => {
+      const key = badgeSelect.value;
+      const top = 150 - (badgeCount * 35);
+      addClonedImage(`badges-${key}`, `${top}px`, "180px", 90, 30);
+      badgeCount++;
+    };
+
+    document.getElementById("addRank").onclick = () => {
+      const key = rankSelect.value;
+      addClonedImage(`ranks-${key}`, "80px", "200px", 40, 40);
+    };
+
+    document.getElementById("addNameplate").onclick = () => {
+      addClonedImage("nameplate", "235px", "90px", 120, 20);
+    };
+
+    document.getElementById("addCutouts").onclick = () => {
+      addClonedImage("cutouts-cap_left", "100px", "140px", 25, 25);
+      addClonedImage("cutouts-cap_right", "100px", "275px", 25, 25);
+    };
+
+    document.getElementById("addInsignia").onclick = () => {
+      addClonedImage("insignia-us_insignia_left", "105px", "125px", 20, 20);
+      addClonedImage("insignia-us_insignia_right", "105px", "300px", 20, 20);
+    };
+
+    document.getElementById("addFlagPatch").onclick = () => {
+      addClonedImage("flag_patch", "60px", "360px", 40, 25);
+    };
+
+    document.getElementById("downloadImage").onclick = () => {
+      html2canvas(uniformCanvas).then(canvas => {
+        const a = document.createElement("a");
+        a.href = canvas.toDataURL("image/png");
+        a.download = "CAP_ClassA_Uniform.png";
+        a.click();
+      });
+    };
+
+    function addClonedImage(id, top, left, width, height) {
+      const original = document.getElementById(id);
+      const clone = original.cloneNode();
+      clone.className = "layer";
+      clone.style.top = top;
+      clone.style.left = left;
+      clone.style.width = width + "px";
+      clone.style.height = height + "px";
+      clone.style.display = "block";
+      uniformCanvas.appendChild(clone);
     }
   </script>
 </body>
