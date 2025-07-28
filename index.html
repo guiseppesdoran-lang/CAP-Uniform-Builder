@@ -1,76 +1,152 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CAP Class A Uniform Builder - Preview Version</title>
+  <meta charset="UTF-8">
+  <title>CAP Class A Uniform Builder</title>
   <style>
-    body { font-family: Arial; margin: 0; background: #e3e8ee; }
-    #builder { display: flex; }
-    #controls { width: 300px; padding: 1rem; background: #fff; border-right: 1px solid #ccc; }
-    #canvasArea { flex-grow: 1; display: flex; justify-content: center; align-items: center; background: #d0d7de; position: relative; }
-    #uniformCanvas { position: relative; width: 450px; height: 700px; background-color: white; }
-    .layer { position: absolute; }
-    select, button { width: 100%; margin: 0.5rem 0; padding: 0.4rem; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+    }
+    #uniformCanvas {
+      border: 1px solid #000;
+      background-color: #fff;
+      display: block;
+      margin-bottom: 20px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .controls select, .controls button {
+      padding: 6px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
-  <h1 style="text-align:center; background:#002855; color:white; margin:0; padding:1rem;">CAP Class A Uniform Builder</h1>
-  <div id="builder">
-    <div id="controls">
-      <label for="jacketType">Select Gender</label>
-      <select id="jacketType">
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-      </select>
-      <button onclick="changeJacket()">Change Jacket</button>
+  <h1>CAP Class A Uniform Builder</h1>
 
-      <label for="ribbonSelect">Add Ribbon</label>
-      <select id="ribbonSelect">
-        <option value="mitchell_award">Mitchell Award</option>
-        <option value="earhart_award">Earhart Award</option>
-        <option value="spaatz_award">Spaatz Award</option>
-      </select>
-      <button onclick="addRibbon()">Add Ribbon</button>
-    </div>
-    <div id="canvasArea">
-      <div id="uniformCanvas">
-        <img id="jacketImage" src="images/base/jacket_male.png" class="layer" style="width:100%; height:auto;">
-      </div>
-    </div>
+  <canvas id="uniformCanvas" width="800" height="600"></canvas>
+
+  <div class="controls">
+    <select id="ribbonSelect">
+      <option value="">-- Select Ribbon --</option>
+      <option value="wright_brothers_award">Wright Brothers</option>
+      <option value="unit_citation_award">Unit Citation</option>
+      <option value="vfw_nco_award">VFW NCO Award</option>
+      <option value="vfw_officer_award">VFW Officer Award</option>
+    </select>
+
+    <select id="deviceSelect">
+      <option value="">-- Select Device --</option>
+      <option value="1_Bronze_Star_Device">1 Bronze Star</option>
+      <option value="1_Gold_Star_Device">1 Gold Star</option>
+      <option value="1_Silver_Star_Device">1 Silver Star</option>
+      <option value="1_Bronze_Propeller_Device">1 Bronze Propeller</option>
+      <option value="2_Bronze_Propeller_Device">2 Bronze Propeller</option>
+    </select>
+
+    <select id="rankSelect">
+      <option value="">-- Select Rank --</option>
+      <option value="c_amn">C/Amn</option>
+      <option value="c_a1c">C/A1C</option>
+      <option value="c_sra">C/SrA</option>
+      <option value="c_ssgt">C/SSgt</option>
+      <option value="c_tsgt">C/TSgt</option>
+      <option value="c_msgt">C/MSgt</option>
+      <option value="c_smsgt">C/SMSgt</option>
+      <option value="c_cmsgt">C/CMSgt</option>
+      <option value="c_2dlt">C/2d Lt</option>
+      <option value="c_1stlt">C/1st Lt</option>
+      <option value="c_capt">C/Capt</option>
+      <option value="c_maj">C/Maj</option>
+      <option value="c_ltcol">C/Lt Col</option>
+      <option value="c_col">C/Col</option>
+    </select>
+
+    <button onclick="addItem()">Add to Uniform</button>
+    <button onclick="clearCanvas()">Reset</button>
   </div>
 
   <script>
-    let currentGender = "male";
-    let ribbons = [];
+    const canvas = document.getElementById('uniformCanvas');
+    const ctx = canvas.getContext('2d');
 
-    function changeJacket() {
-      currentGender = document.getElementById("jacketType").value;
-      const jacketImage = document.getElementById("jacketImage");
-      jacketImage.src = "images/base/jacket_" + currentGender + ".png";
+    const assets = {};
+    const loadImage = (name, src) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          assets[name] = img;
+          resolve();
+        };
+        img.src = src;
+      });
+    };
+
+    const base64Assets = {
+      'wright_brothers_award': 'data:image/png;base64,',
+      'unit_citation_award': 'data:image/png;base64,',
+      'vfw_nco_award': 'data:image/png;base64,',
+      'vfw_officer_award': 'data:image/png;base64,',
+      'c_amn': 'data:image/png;base64,',
+      'c_a1c': 'data:image/png;base64,',
+      'c_sra': 'data:image/png;base64,',
+      'c_ssgt': 'data:image/png;base64,',
+      'c_tsgt': 'data:image/png;base64,',
+      'c_msgt': 'data:image/png;base64,',
+      'c_smsgt': 'data:image/png;base64,',
+      'c_cmsgt': 'data:image/png;base64,',
+      'c_2dlt': 'data:image/png;base64,',
+      'c_1stlt': 'data:image/png;base64,',
+      'c_capt': 'data:image/png;base64,',
+      'c_maj': 'data:image/png;base64,',
+      'c_ltcol': 'data:image/png;base64,',
+      'c_col': 'data:image/png;base64,',
+      '1_Bronze_Star_Device': 'data:image/webp;base64,',
+      '1_Gold_Star_Device': 'data:image/webp;base64,',
+      '1_Silver_Star_Device': 'data:image/webp;base64,',
+      '1_Bronze_Propeller_Device': 'data:image/webp;base64,',
+      '2_Bronze_Propeller_Device': 'data:image/webp;base64,'
+    };
+
+    async function preloadAssets() {
+      const promises = [];
+      for (const [key, value] of Object.entries(base64Assets)) {
+        promises.push(loadImage(key, value));
+      }
+      await Promise.all(promises);
     }
 
-    function addRibbon() {
-      const select = document.getElementById("ribbonSelect");
-      const value = select.value;
-      if (ribbons.includes(value)) return;
-      ribbons.push(value);
+    let currentY = 20;
 
-      const ribbon = document.createElement("img");
-      ribbon.src = "images/ribbons/" + value + ".png";
-      ribbon.className = "layer";
-      const row = Math.floor((ribbons.length - 1) / 3);
-      const col = (ribbons.length - 1) % 3;
-      let left = 135 + col * 95;
-      if (ribbons.length % 3 === 1 && ribbons.length === 1) left = 180;
-      if (ribbons.length % 3 === 2 && ribbons.length <= 2) left = 135 + col * 95;
-      ribbon.style.top = currentGender === "female" ? (215 + row * 33) + "px" : (200 + row * 33) + "px";
-      ribbon.style.left = left + "px";
-      ribbon.style.width = "90px";
-      ribbon.style.height = "30px";
-      document.getElementById("uniformCanvas").appendChild(ribbon);
+    function addItem() {
+      const ribbon = document.getElementById('ribbonSelect').value;
+      const device = document.getElementById('deviceSelect').value;
+      const rank = document.getElementById('rankSelect').value;
+
+      if (ribbon) {
+        ctx.drawImage(assets[ribbon], 50, currentY);
+        if (device) {
+          ctx.drawImage(assets[device], 80, currentY + 5);
+        }
+        currentY += 35;
+      }
+
+      if (rank) {
+        ctx.drawImage(assets[rank], 600, 50);
+      }
     }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      currentY = 20;
+    }
+
+    preloadAssets();
   </script>
 </body>
 </html>
