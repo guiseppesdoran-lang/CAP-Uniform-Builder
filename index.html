@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CAP Class A Blues Uniform Builder</title>
-  style>
+  <style>
     #uniformCanvas {
       position: relative;
       width: 600px;
@@ -72,9 +72,10 @@
 
     let currentGender = "male";
     const selectedRibbons = [];
+    const ribbonDevices = {}; // key: ribbon, value: array of device names
 
     function renderRibbons() {
-      document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
+      document.querySelectorAll(".layer.ribbon, .layer.device").forEach(el => el.remove());
       const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
       const ribbonWidth = 90;
       const ribbonHeight = 30;
@@ -114,75 +115,33 @@
         clone.style.height = `${ribbonHeight}px`;
         clone.style.display = "block";
         uniformCanvas.appendChild(clone);
+
+        // Add all devices for this ribbon
+        const devices = ribbonDevices[key] || [];
+        devices.forEach((device, dIndex) => {
+          const devImg = document.getElementById(`devices-${device}`)?.cloneNode();
+          if (!devImg) return;
+          devImg.className = "layer device";
+          devImg.style.top = `${top + 5}px`;
+          devImg.style.left = `${leftOffset + 20 + dIndex * 15}px`;
+          devImg.style.width = "20px";
+          devImg.style.height = "20px";
+          devImg.style.display = "block";
+          uniformCanvas.appendChild(devImg);
+        });
       });
     }
 
-    const ribbonList = [
-      "afa_award", "air_search_and_rescue_ribbon", "armstrong_achievment",
-      "bronze_medal_of_valor", "cadet_advisory_council_ribbon",
-      "cadet_recruiter_ribbon", "cadet_special_activity_ribbon", "cap_achievement_award",
-      "commander_commendation_award", "community_service_ribbon", "crisis_ribbon",
-      "curry_achievment", "disaster_relief_ribbon", "distinguished_service_award",
-      "dolittle_achievement", "earhart_award", "eaker_award", "encampment_ribbon",
-      "exceptional_service_award", "goddard_achievement", "hap_arnold_achievement",
-      "homeland_security_ribbon", "iace_ribbon", "lifesaving_award", "lindbergh_achievement",
-      "mary_feik_achievement", "meritorious_service_award", "mitchell_award",
-      "national_cadet_competition_ribbon", "national_color_guard_competition_ribbon",
-      "national_commander_unit_citation_award", "red_service_ribbon", "rickenbacker_achievement",
-      "search_find_ribbon", "silver_medal_of_valor", "spaatz_award", "unit_citation_award",
-      "vfw_nco_award", "vfw_officer_award", "wright_brothers_award"
-    ];
-
-    const badgeList = [
-      "aviation_badge", "gtm_badge", "cyber_badge", "chaplain_badge",
-      "medical_badge", "communications_badge", "finance_badge", "safety_badge"
-    ];
-
-    const rankList = [
-      "c_ab", "c_amn", "c_a1c", "c_sra", "c_ssgt", "c_tsgt", "c_msgt", "c_smsgt", "c_cmsgt",
-      "c_2dlt", "c_1stlt", "c_capt", "c_maj", "c_ltcol", "c_col"
-    ];
-
-    const deviceList = [
-      "1_Bronze_Star_Device", "1_Silver_Star_Device", "2_Bronze_Star_Device",
-      "2_Silver_Star_Device", "3_Gold_Star_Device", "4_Gold_Star_Device"
-    ];
-
-    function loadOptions(select, list, category) {
-      list.forEach(name => {
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-        select.appendChild(option);
-
-        const img = document.createElement("img");
-        img.id = `${category}-${name}`;
-        img.src = `images/${category}/${name}.png`;
-        img.style.display = "none";
-        document.getElementById("assets").appendChild(img);
-      });
-    }
-
-    function applyJacket(type) {
-      currentGender = type;
-      document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
-      const jacketImg = document.getElementById(`jacket-${type}`);
-      const clone = jacketImg.cloneNode();
-      clone.className = "layer jacket";
-      clone.style.top = "0px";
-      clone.style.left = "0px";
-      clone.style.width = "100%";
-      clone.style.height = "auto";
-      clone.style.display = "block";
-      uniformCanvas.appendChild(clone);
-    }
-
-    loadOptions(ribbonSelect, ribbonList, "ribbons");
-    loadOptions(badgeSelect, badgeList, "badges");
-    loadOptions(rankSelect, rankList, "ranks");
-    loadOptions(deviceSelect, deviceList, "devices");
-
-    applyJacket("male");
+    // UI logic to bind device to a selected ribbon
+    document.getElementById("addDevice").onclick = () => {
+      const ribbon = ribbonSelect.value;
+      const device = deviceSelect.value;
+      if (!ribbonDevices[ribbon]) ribbonDevices[ribbon] = [];
+      if (!ribbonDevices[ribbon].includes(device)) {
+        ribbonDevices[ribbon].push(device);
+        renderRibbons();
+      }
+    };
   </script>
 </body>
 </html>
