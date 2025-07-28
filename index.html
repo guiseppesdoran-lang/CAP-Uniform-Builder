@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CAP Class A Blues Uniform Builder</title>
-  600px900px;
+  style>
+    #uniformCanvas {
+      position: relative;
+      width: 600px;
+      height: 900px;
     }
     .layer { position: absolute; }
     label, select, button {
@@ -70,8 +74,8 @@
     const selectedRibbons = [];
 
     const ribbonList = [
-      "afa_award", "afsa_award", "air_search_and_rescue_ribbon", "armstrong_achievment",
-      "afsa_award", "badges", "bronze_medal_of_valor", "cadet_advisory_council_ribbon",
+      "afa_award", "air_search_and_rescue_ribbon", "armstrong_achievment",
+      "bronze_medal_of_valor", "cadet_advisory_council_ribbon",
       "cadet_recruiter_ribbon", "cadet_special_activity_ribbon", "cap_achievement_award",
       "commander_commendation_award", "community_service_ribbon", "crisis_ribbon",
       "curry_achievment", "disaster_relief_ribbon", "distinguished_service_award",
@@ -115,7 +119,19 @@
       });
     }
 
-    // Remaining script unchanged ...
+    function applyJacket(type) {
+      currentGender = type;
+      document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
+      const jacketImg = document.getElementById(`jacket-${type}`);
+      const clone = jacketImg.cloneNode();
+      clone.className = "layer jacket";
+      clone.style.top = "0px";
+      clone.style.left = "0px";
+      clone.style.width = "100%";
+      clone.style.height = "auto";
+      clone.style.display = "block";
+      uniformCanvas.appendChild(clone);
+    }
 
     loadOptions(ribbonSelect, ribbonList, "ribbons");
     loadOptions(badgeSelect, badgeList, "badges");
