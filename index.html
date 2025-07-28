@@ -85,18 +85,15 @@
     const selectedRibbons = [];
 
     const ribbonList = [
-      "silver_medal_of_valor", "bronze_medal_of_valor", "distinguished_service_award",
-      "exceptional_service_award", "meritorious_service_award", "commander_commendation_award",
-      "cap_achievement_award", "lifesaving_award", "national_commander_unit_citation_award",
-      "unit_citation_award", "spaatz_award", "eaker_award", "earhart_award", "mitchell_award",
-      "armstrong_achievment", "goddard_achievement", "dolittle_achievement", "lindbergh_achievement",
-      "rickenbacker_achievement", "wright_brothers_award", "mary_feik_achievement", "hap_arnold_achievement",
-      "curry_achievment", "afa_award", "afsa_award", "vfw_officer_award", "vfw_nco_award", "red_service_ribbon",
-      "search_find_ribbon", "air_search_and_rescue_ribbon", "disaster_relief_ribbon",
-      "homeland_security_ribbon", "community_service_ribbon", "iace_ribbon",
-      "national_cadet_competition_ribbon", "national_color_guard_competition_ribbon",
-      "cadet_advisory_council_ribbon", "cadet_special_activity_ribbon", "encampment_ribbon",
-      "cadet_recruiter_ribbon", "crisis_ribbon"
+      "air_search_and_rescue_ribbon", "afa_award", "afsa_award", "armstrong_achievement", "bronze_medal_of_valor",
+      "cadet_advisory_council_ribbon", "cadet_recruiter_ribbon", "cadet_special_activity_ribbon", "commander_commendation_award",
+      "community_service_ribbon", "crisis_ribbon", "curry_achievement", "disaster_relief_ribbon", "dolittle_achievement",
+      "distinguished_service_award", "earhart_award", "eaker_award", "encampment_ribbon", "exceptional_service_award",
+      "goddard_achievement", "hap_arnold_achievement", "homeland_security_ribbon", "iace_ribbon", "lifesaving_award",
+      "lindbergh_achievement", "mary_feik_achievement", "meritorious_service_award", "mitchell_award",
+      "national_cadet_competition_ribbon", "national_color_guard_competition_ribbon", "national_commander_unit_citation_award",
+      "red_service_ribbon", "rickenbacker_achievement", "search_find_ribbon", "silver_medal_of_valor", "spaatz_award",
+      "unit_citation_award", "vfw_nco_award", "vfw_officer_award", "wright_brothers_award"
     ];
 
     const deviceList = [
@@ -160,32 +157,35 @@
       document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
       const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
       const total = sorted.length;
-      const rows = Math.floor((total + 2) / 3);
 
-      sorted.forEach((key, index) => {
-        const row = Math.floor(index / 3);
-        const col = index % 3;
-        const isLastRow = row === rows - 1;
-        const remaining = total % 3;
+      let ribbonWidth = 90;
+      let ribbonHeight = 30;
+      let spacing = 4;
+      let startTop = 555;
+      let startLeft = 205;
 
-        let left;
-        if (isLastRow && remaining !== 0 && index >= total - remaining) {
-          left = remaining === 1 ? 255 : 210 + col * 95;
-        } else {
-          left = 210 + col * 95;
-        }
+      let rows = Math.ceil(total / 3);
+      for (let i = 0; i < total; i++) {
+        let indexFromBottom = total - 1 - i;
+        let row = Math.floor(indexFromBottom / 3);
+        let col = indexFromBottom % 3;
+        let x = startLeft + col * (ribbonWidth + spacing);
+        let y = startTop - row * (ribbonHeight + spacing);
 
-        const top = 510 + row * 32;
-        const original = document.getElementById(`ribbons-${key}`);
+        if (total % 3 === 1 && i === 0) x = startLeft + ribbonWidth + spacing;
+        if (total % 3 === 2 && i === 0) x = startLeft + (ribbonWidth / 2);
+        if (total % 3 === 2 && i === 1) x = startLeft + (ribbonWidth * 1.5) + spacing;
+
+        const original = document.getElementById(`ribbons-${sorted[i]}`);
         const clone = original.cloneNode();
         clone.className = "layer ribbon";
-        clone.style.top = `${top}px`;
-        clone.style.left = `${left}px`;
-        clone.style.width = "90px";
-        clone.style.height = "30px";
+        clone.style.top = `${y}px`;
+        clone.style.left = `${x}px`;
+        clone.style.width = `${ribbonWidth}px`;
+        clone.style.height = `${ribbonHeight}px`;
         clone.style.display = "block";
         uniformCanvas.appendChild(clone);
-      });
+      }
     }
 
     function renderBadge(key) {
