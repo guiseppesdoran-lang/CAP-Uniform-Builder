@@ -180,7 +180,7 @@
   function renderRibbons() {
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
 
-  const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b)); // Highest precedence first
+  const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
   const total = sorted.length;
 
   const ribbonWidth = 25;
@@ -189,48 +189,52 @@
   const startTop = 402;
   const startLeft = 303;
 
-  const ribbonsPerRow = 3;
-  const fullRows = Math.floor((total - 1) / ribbonsPerRow); // rows with 3 ribbons after the top partial
-  const topRowCount = total % ribbonsPerRow || ribbonsPerRow;
+  const rows = [];
+  let remaining = total;
 
-  for (let i = 0; i < total; i++) {
-    let row, indexInRow, ribbonsInRow;
+  // First, remove top partial row if any (1 or 2 ribbons)
+  let topPartial = [];
+  if (total % 3 !== 0) {
+    topPartial = sorted.slice(0, total % 3);
+    sorted.splice(0, topPartial.length);
+    rows.push(topPartial); // Top row
+  }
 
-    if (i < topRowCount) {
-      row = 0;
-      indexInRow = i;
-      ribbonsInRow = topRowCount;
-    } else {
-      const offset = i - topRowCount;
-      row = 1 + Math.floor(offset / ribbonsPerRow);
-      indexInRow = offset % ribbonsPerRow;
-      ribbonsInRow = ribbonsPerRow;
-    }
+  // Then add full rows of 3
+  for (let i = 0; i < sorted.length; i += 3) {
+    rows.push(sorted.slice(i, i + 3));
+  }
 
+  rows.reverse(); // Bottom-up drawing
+
+  rows.forEach((row, rowIndex) => {
     let xOffset;
-    if (ribbonsInRow === 3) {
+    if (row.length === 3) {
       xOffset = startLeft;
-    } else if (ribbonsInRow === 2) {
+    } else if (row.length === 2) {
       xOffset = startLeft + ribbonWidth / 2;
     } else {
       xOffset = startLeft + ribbonWidth + spacing;
     }
 
-    const x = xOffset + indexInRow * (ribbonWidth + spacing);
-    const y = startTop - row * (ribbonHeight + spacing);
+    const y = startTop - rowIndex * (ribbonHeight + spacing);
 
-    const original = document.getElementById(`ribbons-${sorted[i]}`);
-    if (!original) continue;
-    const clone = original.cloneNode();
-    clone.className = "layer ribbon";
-    clone.style.top = `${y - ribbonHeight}px`;
-    clone.style.left = `${x}px`;
-    clone.style.width = `${ribbonWidth}px`;
-    clone.style.height = `${ribbonHeight}px`;
-    clone.style.display = "block";
-    uniformCanvas.appendChild(clone);
-  }
+    row.forEach((ribbon, i) => {
+      const x = xOffset + i * (ribbonWidth + spacing);
+      const original = document.getElementById(`ribbons-${ribbon}`);
+      if (!original) return;
+      const clone = original.cloneNode();
+      clone.className = "layer ribbon";
+      clone.style.top = `${y - ribbonHeight}px`;
+      clone.style.left = `${x}px`;
+      clone.style.width = `${ribbonWidth}px`;
+      clone.style.height = `${ribbonHeight}px`;
+      clone.style.display = "block";
+      uniformCanvas.appendChild(clone);
+    });
+  });
 }
+
 
 
 
