@@ -83,21 +83,21 @@
 
     let currentGender = "male";
     const selectedRibbons = [];
-    const ribbonDevices = {}; // key: ribbon, value: array of device names
+    const ribbonDevices = {};
 
     const ribbonList = [
-      "silver_medal_of_valor", "bronze_medal_of_valor", "distinguished_service_award",
-      "exceptional_service_award", "meritorious_service_award", "commanders_commendation_award",
-      "cap_achievement_award", "lifesaving_award", "national_commanders_unit_citation_award",
-      "unit_citation_award", "spaatz_award", "eaker_award", "earhart_award", "mitchell_award",
-      "armstrong_achievement", "goddard_achievement", "doolittle_achievement", "lindbergh_achievement",
-      "rickenbacker_achievement", "wright_brothers_award", "mary_feik_achievement", "hap_arnold_achievement",
-      "curry_achievement", "afa_award", "afsa_award", "vfw_officer_award", "vfw_nco_award", "red_service_ribbon",
-      "search_find_ribbon", "air_search_and_rescue_ribbon", "disaster_relief_ribbon",
-      "homeland_security_ribbon", "community_service_ribbon", "iace_ribbon",
+      "afa_award", "afsa_award", "air_search_and_rescue_ribbon", "armstrong_achievement",
+      "bronze_medal_of_valor", "cadet_advisory_council_ribbon", "cadet_recruiter_ribbon",
+      "cadet_special_activity_ribbon", "cap_achievement_award", "commanders_commendation_award",
+      "community_service_ribbon", "crisis_ribbon", "curry_achievement", "disaster_relief_ribbon",
+      "distinguished_service_award", "doolittle_achievement", "earhart_award", "eaker_award",
+      "encampment_ribbon", "exceptional_service_award", "goddard_achievement", "hap_arnold_achievement",
+      "homeland_security_ribbon", "iace_ribbon", "lifesaving_award", "lindbergh_achievement",
+      "mary_feik_achievement", "meritorious_service_award", "mitchell_award",
       "national_cadet_competition_ribbon", "national_color_guard_competition_ribbon",
-      "cadet_advisory_council_ribbon", "cadet_special_activity_ribbon", "encampment_ribbon",
-      "cadet_recruiter_ribbon", "crisis_ribbon"
+      "national_commanders_unit_citation_award", "red_service_ribbon", "rickenbacker_achievement",
+      "search_find_ribbon", "silver_medal_of_valor", "spaatz_award", "unit_citation_award",
+      "vfw_nco_award", "vfw_officer_award", "wright_brothers_award"
     ];
 
     const deviceList = [
@@ -109,19 +109,17 @@
       "35_Year_Serice_Device", "40_Year_Serice_Device"
     ];
 
-    ribbonList.forEach(r => {
-      const option = document.createElement("option");
-      option.value = r;
-      option.textContent = r.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-      ribbonSelect.appendChild(option);
-    });
+    function populateDropdown(selectElement, list) {
+      list.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item;
+        option.textContent = item.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+        selectElement.appendChild(option);
+      });
+    }
 
-    deviceList.forEach(d => {
-      const option = document.createElement("option");
-      option.value = d;
-      option.textContent = d.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-      deviceSelect.appendChild(option);
-    });
+    populateDropdown(ribbonSelect, ribbonList);
+    populateDropdown(deviceSelect, deviceList);
   </script>
 </body>
 </html>
