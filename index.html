@@ -1,253 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAP Class A Blues Uniform Builder</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #eef1f5; }
-    header { background-color: #002855; color: white; padding: 1rem; text-align: center; }
-    main { display: flex; }
-    #controls {
-      width: 320px; background: white; padding: 1rem;
-      border-right: 1px solid #ccc; overflow-y: auto;
-      height: calc(100vh - 72px);
-    }
-   #preview {
-  flex-grow: 1;
-  background: #d1d8e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  height: calc(100vh - 72px);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAP Class A Blues Uniform Builder</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 0; background: #eef1f5; }
+header { background-color: #002855; color: white; padding: 1rem; text-align: center; }
+main { display: flex; }
+#controls {
+width: 320px; background: white; padding: 1rem;
+border-right: 1px solid #ccc; overflow-y: auto;
+height: calc(100vh - 72px);
 }
-
-
-    }
-   #uniformCanvas {
-  position: relative;
-  width: 900px;
-  height: 1200px;
+#preview {
+flex-grow: 1; background: #d1d8e0;
+display: flex; align-items: center; justify-content: center;
+position: relative; height: calc(100vh - 72px);
 }
-
-
-    .layer { position: absolute; }
-    label, select, button {
-      display: block; margin: 0.5rem 0; width: 100%;
-    }
-    select, button { padding: 0.3rem; }
-    .hidden-assets { display: none; }
-  </style>
+#uniformCanvas {
+position: relative; width: 900px; height: 1200px;
+}
+.layer { position: absolute; }
+label, select, button {
+display: block; margin: 0.5rem 0; width: 100%;
+}
+select, button { padding: 0.3rem; }
+.hidden-assets { display: none; }
+</style>
 </head>
 <body>
-  <header>
-    <h1>CAP Class A Blues Uniform Builder</h1>
-  </header>
-  <main>
-    <section id="controls">
-      <label for="ribbonSelect">Ribbons</label>
-      <select id="ribbonSelect"></select>
-      <button id="addRibbon">Add Ribbon</button>
-      <button id="clearRibbons">Clear Ribbons</button>
+<header>
+<h1>CAP Class A Blues Uniform Builder</h1>
+</header>
+<main>
+<section id="controls">
+<label for="ribbonSelect">Ribbons</label>
+<select id="ribbonSelect"></select>
+<button id="addRibbon">Add Ribbon</button>
+<button id="clearRibbons">Clear Ribbons</button>
 
-      <label for="deviceSelect">Devices</label>
-      <select id="deviceSelect"></select>
-      <button id="addDevice">Add Device</button>
+<label for="deviceSelect">Devices</label>
+<select id="deviceSelect"></select>
+<button id="addDevice">Add Device</button>
 
-      <label for="badgeSelect">Badges</label>
-      <select id="badgeSelect"></select>
-      <button id="addBadge">Add Badge</button>
+<label for="badgeSelect">Badges</label>
+<select id="badgeSelect"></select>
+<button id="addBadge">Add Badge</button>
 
-      <label for="rankSelect">Rank Insignia</label>
-      <select id="rankSelect"></select>
-      <button id="addRank">Add Rank</button>
+<label for="rankSelect">Rank Insignia</label>
+<select id="rankSelect"></select>
+<button id="addRank">Add Rank</button>
 
-      <button id="addNameplate">Add Nameplate</button>
-      <button id="addUSInsignia">Add U.S. Collar Insignia</button>
-      <button id="addCAPInsignia">Add CAP Collar Insignia</button>
-      <label for="jacketSelect">Jacket</label>
-      <select id="jacketSelect">
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-      </select>
-      <button id="changeJacket">Apply Jacket</button>
-      <button id="downloadImage">Download Image</button>
-    </section>
-    <section id="preview">
-      <div id="uniformCanvas"></div>
-    </section>
-  </main>
+<button id="addNameplate">Add Nameplate</button>
+<button id="addUSInsignia">Add U.S. Collar Insignia</button>
+<button id="addCAPInsignia">Add CAP Collar Insignia</button>
+<label for="jacketSelect">Jacket</label>
+<select id="jacketSelect">
+<option value="male">Male</option>
+<option value="female">Female</option>
+</select>
+<button id="changeJacket">Apply Jacket</button>
+<button id="downloadImage">Download Image</button>
+</section>
+<section id="preview">
+<div id="uniformCanvas"></div>
+</section>
+</main>
 
-  <div class="hidden-assets" id="assets">
-    <img id="jacket-male" src="images/base/jacket_male.png" style="display:none;">
-    <img id="jacket-female" src="images/base/jacket_female.png" style="display:none;">
-  </div>
+<div class="hidden-assets" id="assets">
+<img id="jacket-male" src="images/base/jacket_male.png" style="display:none;">
+<img id="jacket-female" src="images/base/jacket_female.png" style="display:none;">
+</div>
 
-  <script>
-    const ribbonSelect = document.getElementById("ribbonSelect");
-    const badgeSelect = document.getElementById("badgeSelect");
-    const rankSelect = document.getElementById("rankSelect");
-    const deviceSelect = document.getElementById("deviceSelect");
-    const uniformCanvas = document.getElementById("uniformCanvas");
-    const assetsContainer = document.getElementById("assets");
+<script>
+const ribbonSelect = document.getElementById("ribbonSelect");
+const badgeSelect = document.getElementById("badgeSelect");
+const rankSelect = document.getElementById("rankSelect");
+const deviceSelect = document.getElementById("deviceSelect");
+const uniformCanvas = document.getElementById("uniformCanvas");
+const assetsContainer = document.getElementById("assets");
 
-    let currentGender = "male";
-    const selectedRibbons = [];
+let currentGender = "male";
+const selectedRibbons = [];
 
-    const ribbonList = [
-  // Valor Awards
-  "silver_medal_of_valor",
-  "bronze_medal_of_valor",
+const ribbonList = [
+// Valor Awards
+"silver_medal_of_valor",
+"bronze_medal_of_valor",
 
-  // Exceptional Service
-  "distinguished_service_award",
-  "exceptional_service_award",
-  "meritorious_service_award",
-  "commander_commendation_award",
-  "lifesaving_award",
-  "cap_achievment_award",
+// Exceptional Service
+"distinguished_service_award",
+"exceptional_service_award",
+"meritorious_service_award",
+"commander_commendation_award",
+"lifesaving_award",
+"cap_achievment_award",
 
-  // Cadet Program Milestone Awards
-  "spaatz_award",
-  "eaker_award",
-  "earhart_award",
-  "mitchell_award",
+// Cadet Program Milestone Awards
+"spaatz_award",
+"eaker_award",
+"earhart_award",
+"mitchell_award",
 
-  // Cadet Achievements
-  "armstrong_achievement",
-  "goddard_achievement",
-  "doolittle_achievement",
-  "rickenbacker_achievement",
-  "lindbergh_achievement",
-  "wright_brothers_award",
-  "mary_feik_achievement",
-  "hap_arnold_achievement",
-  "curry_achievement",
+// Cadet Achievements
+"armstrong_achievement",
+"goddard_achievement",
+"doolittle_achievement",
+"rickenbacker_achievement",
+"lindbergh_achievement",
+"wright_brothers_award",
+"mary_feik_achievement",
+"hap_arnold_achievement",
+"curry_achievement",
 
-  // Activity/Service Awards
-  "encampment_ribbon",
-  "cadet_special_activity_ribbon",
-  "cadet_advisory_council_ribbon",
-  "iace_ribbon",
-  "national_cadet_competition_ribbon",
-  "national_color_guard_competition_ribbon",
-  "red_service_ribbon",
-  "community_service_ribbon",
-  "search_find_ribbon",
-  "air_search_and_rescue_ribbon",
-  "disaster_relief_ribbon",
-  "homeland_security_ribbon",
-  "cadet_recruiter_ribbon",
+// Activity/Service Awards
+"encampment_ribbon",
+"cadet_special_activity_ribbon",
+"cadet_advisory_council_ribbon",
+"iace_ribbon",
+"national_cadet_competition_ribbon",
+"national_color_guard_competition_ribbon",
+"red_service_ribbon",
+"community_service_ribbon",
+"search_find_ribbon",
+"air_search_and_rescue_ribbon",
+"disaster_relief_ribbon",
+"homeland_security_ribbon",
+"cadet_recruiter_ribbon",
 
-  // Professional Organization Awards
-  "afa_award",
-  "afsa_award",
-  "vfw_officer_award",
-  "vfw_nco_award",
+// Professional Organization Awards
+"afa_award",
+"afsa_award",
+"vfw_officer_award",
+"vfw_nco_award",
 
-  // Crisis/Temporary
-  "crisis_ribbon",
+// Crisis/Temporary
+"crisis_ribbon",
 
-  // Unit Citations
-  "national_commander_unit_citation_award",
-  "unit_citation_award"
+// Unit Citations
+"national_commander_unit_citation_award",
+"unit_citation_award"
 ];
 
 
-    const deviceList = [
-      "1_Bronze_Star_Device", "1_Silver_Star_Device"
-    ];
+const deviceList = [
+"1_Bronze_Star_Device", "1_Silver_Star_Device"
+];
 
-    const rankList = [
-      "C/AB", "C/Amn", "C/A1C", "C/SrA", "C/SSgt", "C/TSgt", "C/MSgt",
-      "C/SMSgt", "C/CMSgt", "C/2d Lt", "C/1st Lt", "C/Capt", "C/Maj", "C/Lt Col", "C/Col"
-    ];
+const rankList = [
+"C/AB", "C/Amn", "C/A1C", "C/SrA", "C/SSgt", "C/TSgt", "C/MSgt",
+"C/SMSgt", "C/CMSgt", "C/2d Lt", "C/1st Lt", "C/Capt", "C/Maj", "C/Lt Col", "C/Col"
+];
 
-    const badgeList = [
-      "aviation_badge", "gtm_badge"
-    ];
+const badgeList = [
+"aviation_badge", "gtm_badge"
+];
 
-    function populateDropdown(selectElement, list) {
-      selectElement.innerHTML = "";
-      list.forEach(item => {
-        const option = document.createElement("option");
-        option.value = item;
-        option.textContent = item.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-        selectElement.appendChild(option);
-      });
-    }
+function populateDropdown(selectElement, list) {
+selectElement.innerHTML = "";
+list.forEach(item => {
+const option = document.createElement("option");
+option.value = item;
+option.textContent = item.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+selectElement.appendChild(option);
+});
+}
 
-    function preloadImages(prefix, list, folder) {
-      list.forEach(item => {
-        const img = document.createElement("img");
-        img.id = `${prefix}-${item}`;
-        img.src = `images/${folder}/${item}.png`;
-        img.style.display = "none";
-        assetsContainer.appendChild(img);
-      });
-    }
+function preloadImages(prefix, list, folder) {
+list.forEach(item => {
+const img = document.createElement("img");
+img.id = `${prefix}-${item}`;
+img.src = `images/${folder}/${item}.png`;
+img.style.display = "none";
+assetsContainer.appendChild(img);
+});
+}
 
-    populateDropdown(ribbonSelect, ribbonList);
-    populateDropdown(deviceSelect, deviceList);
-    populateDropdown(rankSelect, rankList);
-    populateDropdown(badgeSelect, badgeList);
+populateDropdown(ribbonSelect, ribbonList);
+populateDropdown(deviceSelect, deviceList);
+populateDropdown(rankSelect, rankList);
+populateDropdown(badgeSelect, badgeList);
 
-    preloadImages("ribbons", ribbonList, "ribbons");
-    preloadImages("devices", deviceList, "devices");
-    preloadImages("ranks", rankList, "ranks");
-    preloadImages("badges", badgeList, "badges");
+preloadImages("ribbons", ribbonList, "ribbons");
+preloadImages("devices", deviceList, "devices");
+preloadImages("ranks", rankList, "ranks");
+preloadImages("badges", badgeList, "badges");
 
-    function applyJacket(type) {
-      currentGender = type;
-      document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
-      const jacketImg = document.getElementById(`jacket-${type}`);
-      const clone = jacketImg.cloneNode();
-      clone.className = "layer jacket";
-      clone.style.top = "150px";
-      clone.style.left = "0px";
-      clone.style.width = "100%";
-      clone.style.height = "auto";
-      clone.style.display = "block";
-      uniformCanvas.appendChild(clone);
-    }
+function applyJacket(type) {
+currentGender = type;
+document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
+const jacketImg = document.getElementById(`jacket-${type}`);
+const clone = jacketImg.cloneNode();
+clone.className = "layer jacket";
+clone.style.top = "150px";
+clone.style.left = "0px";
+clone.style.width = "100%";
+clone.style.height = "auto";
+clone.style.display = "block";
+uniformCanvas.appendChild(clone);
+}
 
 function renderRibbons() {
-  document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
+document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
+  const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(b) - ribbonList.indexOf(a));
 
   const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
-  const total = sorted.length;
+const total = sorted.length;
 
-  const ribbonWidth = 25;
-  const ribbonHeight = 8;
-  const spacing = 0;
-  const startTop = 402;
-  const startLeft = 303;
-
-  const ribbonsPerRow = 3;
-  const rowCount = Math.ceil(total / ribbonsPerRow);
+const ribbonWidth = 25;
+const ribbonHeight = 8;
+const spacing = 0;
+const startTop = 402;
+const startLeft = 303;
 
   for (let i = 0; i < total; i++) {
-    const row = Math.floor(i / ribbonsPerRow);
-    const indexInRow = i % ribbonsPerRow;
-    const ribbonsInRow =
-      row === rowCount - 1 && total % ribbonsPerRow !== 0
-        ? total % ribbonsPerRow
-        : ribbonsPerRow;
+    const indexFromTop = i;
+  const first15 = sorted.slice(0, 15);
+  const extra = sorted.slice(15);
 
-    let xOffset;
-    if (ribbonsInRow === 3) {
-      xOffset = startLeft;
-    } else if (ribbonsInRow === 2) {
-      xOffset = startLeft + ribbonWidth / 2;
+    let row, col;
+    if (i < 15) {
+      // Rows 0-4 (5 full rows of 3)
+      row = Math.floor(i / 3);
+      col = i % 3;
     } else {
-      xOffset = startLeft + ribbonWidth + spacing;
+      // Rows 5 and beyond: 2-per row max
+      const overflowIndex = i - 15;
+      row = 5 + Math.floor(overflowIndex / 2);
+      col = overflowIndex % 2;
     }
+  // Render rows 1–5 (up to 15 ribbons)
+  for (let i = 0; i < first15.length; i++) {
+    const row = Math.floor(i / 3);
+    const indexInRow = i % 3;
+    const ribbonsInThisRow = Math.min(3, first15.length - row * 3);
 
+    let ribbonsInRow;
+    if (row < 5) {
+      ribbonsInRow = 3;
+    let xOffset;
+    if (ribbonsInThisRow === 3) {
+      xOffset = startLeft;
+    } else if (ribbonsInThisRow === 2) {
+      xOffset = startLeft + ribbonWidth / 2;
+} else {
+      const ribbonsLeft = total - (row * 2 + (row > 5 ? 5 : 0));
+      ribbonsInRow = Math.min(2, ribbonsLeft);
+      xOffset = startLeft + ribbonWidth + spacing;
+}
+
+    let x;
+    if (ribbonsInRow === 3) {
+      x = startLeft + col * (ribbonWidth + spacing);
+    } else if (ribbonsInRow === 2) {
+      x = startLeft + (ribbonWidth / 2) + col * (ribbonWidth + spacing);
     const x = xOffset + indexInRow * (ribbonWidth + spacing);
     const y = startTop - row * (ribbonHeight + spacing);
 
-    const original = document.getElementById(`ribbons-${sorted[i]}`);
+    const original = document.getElementById(`ribbons-${first15[i]}`);
     if (!original) continue;
     const clone = original.cloneNode();
     clone.className = "layer ribbon";
@@ -258,66 +269,96 @@ function renderRibbons() {
     clone.style.display = "block";
     uniformCanvas.appendChild(clone);
   }
+
+  // Render rows beyond the 5th row (16+)
+  for (let j = 0; j < extra.length; j++) {
+    const rowOffset = Math.floor(j / 2);
+    const indexInRow = j % 2;
+    const ribbonsInRow = Math.min(2, extra.length - rowOffset * 2);
+
+    let xOffset;
+    if (ribbonsInRow === 2) {
+      xOffset = startLeft + ribbonWidth / 2;
+} else {
+      x = startLeft + ribbonWidth + spacing;
+      xOffset = startLeft + ribbonWidth + spacing;
+}
+
+    const y = startTop - row * (ribbonHeight + spacing);
+    const x = xOffset + indexInRow * (ribbonWidth + spacing);
+    const y = startTop - (5 + rowOffset) * (ribbonHeight + spacing);
+
+    const original = document.getElementById(`ribbons-${sorted[i]}`);
+    const original = document.getElementById(`ribbons-${extra[j]}`);
+if (!original) continue;
+const clone = original.cloneNode();
+clone.className = "layer ribbon";
+clone.style.top = `${y - ribbonHeight}px`;
+clone.style.left = `${x}px`;
+clone.style.width = `${ribbonWidth}px`;
+clone.style.height = `${ribbonHeight}px`;
+clone.style.display = "block";
+uniformCanvas.appendChild(clone);
+}
 }
 
 
 
+function renderBadge(key) {
+const original = document.getElementById(`badges-${key}`);
+const clone = original.cloneNode();
+clone.className = "layer badge";
+clone.style.top = currentGender === "female" ? "670px" : "660px";
+clone.style.left = currentGender === "female" ? "100px" : "110px";
+clone.style.width = "60px";
+clone.style.height = "60px";
+clone.style.display = "block";
+uniformCanvas.appendChild(clone);
+}
 
-    function renderBadge(key) {
-      const original = document.getElementById(`badges-${key}`);
-      const clone = original.cloneNode();
-      clone.className = "layer badge";
-      clone.style.top = currentGender === "female" ? "670px" : "660px";
-      clone.style.left = currentGender === "female" ? "100px" : "110px";
-      clone.style.width = "60px";
-      clone.style.height = "60px";
-      clone.style.display = "block";
-      uniformCanvas.appendChild(clone);
-    }
+function renderRank(key) {
+const original = document.getElementById(`ranks-${key}`);
+const clone = original.cloneNode();
+clone.className = "layer rank";
+clone.style.top = currentGender === "female" ? "180px" : "170px";
+clone.style.left = currentGender === "female" ? "270px" : "280px";
+clone.style.width = "50px";
+clone.style.height = "50px";
+clone.style.display = "block";
+uniformCanvas.appendChild(clone);
+}
 
-    function renderRank(key) {
-      const original = document.getElementById(`ranks-${key}`);
-      const clone = original.cloneNode();
-      clone.className = "layer rank";
-      clone.style.top = currentGender === "female" ? "180px" : "170px";
-      clone.style.left = currentGender === "female" ? "270px" : "280px";
-      clone.style.width = "50px";
-      clone.style.height = "50px";
-      clone.style.display = "block";
-      uniformCanvas.appendChild(clone);
-    }
+applyJacket(currentGender);
 
-    applyJacket(currentGender);
+document.getElementById("changeJacket").onclick = () => {
+const jacketType = document.getElementById("jacketSelect").value;
+applyJacket(jacketType);
+};
 
-    document.getElementById("changeJacket").onclick = () => {
-      const jacketType = document.getElementById("jacketSelect").value;
-      applyJacket(jacketType);
-    };
+document.getElementById("addRibbon").onclick = () => {
+const key = ribbonSelect.value;
+if (!selectedRibbons.includes(key)) {
+selectedRibbons.push(key);
+renderRibbons();
+} else {
+alert("Ribbon already added.");
+}
+};
 
-    document.getElementById("addRibbon").onclick = () => {
-      const key = ribbonSelect.value;
-      if (!selectedRibbons.includes(key)) {
-        selectedRibbons.push(key);
-        renderRibbons();
-      } else {
-        alert("Ribbon already added.");
-      }
-    };
+document.getElementById("clearRibbons").onclick = () => {
+selectedRibbons.length = 0;
+renderRibbons();
+};
 
-    document.getElementById("clearRibbons").onclick = () => {
-      selectedRibbons.length = 0;
-      renderRibbons();
-    };
+document.getElementById("addBadge").onclick = () => {
+const key = badgeSelect.value;
+renderBadge(key);
+};
 
-    document.getElementById("addBadge").onclick = () => {
-      const key = badgeSelect.value;
-      renderBadge(key);
-    };
-
-    document.getElementById("addRank").onclick = () => {
-      const key = rankSelect.value;
-      renderRank(key);
-    };
-  </script>
+document.getElementById("addRank").onclick = () => {
+const key = rankSelect.value;
+renderRank(key);
+};
+</script>
 </body>
 </html>
