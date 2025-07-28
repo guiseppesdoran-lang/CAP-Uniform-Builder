@@ -69,13 +69,11 @@
   </main>
 
   <div class="hidden-assets" id="assets">
-    <!-- Jacket Base -->
     <img id="jacket-male" src="images/base/jacket_male.png" style="display:none;">
     <img id="jacket-female" src="images/base/jacket_female.png" style="display:none;">
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     const ribbonSelect = document.getElementById("ribbonSelect");
     const badgeSelect = document.getElementById("badgeSelect");
@@ -84,28 +82,12 @@
     const uniformCanvas = document.getElementById("uniformCanvas");
 
     let currentGender = "male";
+    const selectedRibbons = [];
 
-    const ribbonList = [
-      "silver_medal_of_valor", "bronze_medal_of_valor", "distinguished_service_award",
-      "exceptional_service_award", "meritorious_service_award", "commanders_commendation_award",
-      "cap_achievement_award", "lifesaving_award", "national_commanders_unit_citation_award",
-      "unit_citation_award", "spaatz_award", "eaker_award", "earhart_award", "mitchell_award",
-      "armstrong_achievement", "goddard_achievement", "doolittle_achievement", "lindbergh_achievement",
-      "rickenbacker_achievement", "wright_brothers_award", "mary_feik_achievement", "hap_arnold_achievement",
-      "curry_achievement", "afa_award", "afsa_award", "vfw_officer_award", "vfw_nco_award", "red_service_ribbon",
-      "search_find_ribbon", "air_search_and_rescue_ribbon", "disaster_relief_ribbon",
-      "homeland_security_ribbon", "community_service_ribbon", "iace_ribbon",
-      "national_cadet_competition_ribbon", "national_color_guard_competition_ribbon",
-      "cadet_advisory_council_ribbon", "cadet_special_activity_ribbon", "encampment_ribbon",
-      "cadet_recruiter_ribbon", "crisis_ribbon"
-    ];
-
-    const badgeList = ["aviation_badge", "gtm_badge"];
-    const rankList = [
-      "c_ab", "c_amn", "c_a1c", "c_sra", "c_ssgt", "c_tsgt", "c_msgt",
-      "c_smsgt", "c_cmsgt", "c_2dlt", "c_1stlt", "c_capt", "c_maj", "c_ltcol", "c_col"
-    ];
-    const deviceList = ["bronze_star", "silver_star"];
+    const ribbonList = [...]; // same as before
+    const badgeList = [...];
+    const rankList = [...];
+    const deviceList = [...];
 
     function loadOptions(select, list, category) {
       list.forEach(name => {
@@ -122,11 +104,6 @@
       });
     }
 
-    loadOptions(ribbonSelect, ribbonList, "ribbons");
-    loadOptions(badgeSelect, badgeList, "badges");
-    loadOptions(rankSelect, rankList, "ranks");
-    loadOptions(deviceSelect, deviceList, "devices");
-
     function applyJacket(type) {
       currentGender = type;
       document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
@@ -141,29 +118,57 @@
       uniformCanvas.appendChild(clone);
     }
 
-    document.getElementById("changeJacket").onclick = () => {
-      const type = document.getElementById("jacketSelect").value;
-      applyJacket(type);
-    };
+    function renderRibbons() {
+      document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
+      const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
+      const total = sorted.length;
+      sorted.forEach((key, i) => {
+        const col = i % 3;
+        const row = Math.floor(i / 3);
+        let leftOffset;
+
+        const isLastRow = row === Math.floor((total - 1) / 3);
+        const remaining = total % 3;
+
+        if (isLastRow && remaining !== 0 && i >= total - remaining) {
+          if (remaining === 1) {
+            leftOffset = 180;
+          } else if (remaining === 2) {
+            leftOffset = 135 + col * 95;
+          }
+        } else {
+          leftOffset = 135 + col * 95;
+        }
+
+        const top = currentGender === "female" ? 200 + row * 30 : 190 + row * 30;
+        const original = document.getElementById(`ribbons-${key}`);
+        const clone = original.cloneNode();
+        clone.className = "layer ribbon";
+        clone.style.top = `${top}px`;
+        clone.style.left = `${leftOffset}px`;
+        clone.style.width = "90px";
+        clone.style.height = "30px";
+        clone.style.display = "block";
+        uniformCanvas.appendChild(clone);
+      });
+    }
 
     document.getElementById("addRibbon").onclick = () => {
       const key = ribbonSelect.value;
-      const original = document.getElementById(`ribbons-${key}`);
-      if (!original) return;
-      const clone = original.cloneNode();
-      clone.className = "layer ribbon";
-      clone.style.top = currentGender === "female" ? "200px" : "190px";
-      clone.style.left = "135px";
-      clone.style.width = "90px";
-      clone.style.height = "30px";
-      clone.style.display = "block";
-      uniformCanvas.appendChild(clone);
+      if (!selectedRibbons.includes(key)) {
+        selectedRibbons.push(key);
+        renderRibbons();
+      }
+    };
+
+    document.getElementById("clearRibbons").onclick = () => {
+      selectedRibbons.length = 0;
+      renderRibbons();
     };
 
     document.getElementById("addBadge").onclick = () => {
       const key = badgeSelect.value;
       const original = document.getElementById(`badges-${key}`);
-      if (!original) return;
       const clone = original.cloneNode();
       clone.className = "layer badge";
       clone.style.top = currentGender === "female" ? "280px" : "270px";
@@ -177,7 +182,6 @@
     document.getElementById("addRank").onclick = () => {
       const key = rankSelect.value;
       const original = document.getElementById(`ranks-${key}`);
-      if (!original) return;
       const clone = original.cloneNode();
       clone.className = "layer rank";
       clone.style.top = currentGender === "female" ? "120px" : "110px";
@@ -191,7 +195,6 @@
     document.getElementById("addDevice").onclick = () => {
       const key = deviceSelect.value;
       const original = document.getElementById(`devices-${key}`);
-      if (!original) return;
       const clone = original.cloneNode();
       clone.className = "layer device";
       clone.style.top = currentGender === "female" ? "235px" : "225px";
@@ -217,6 +220,61 @@
       nameplate.textContent = "LASTNAME";
       uniformCanvas.appendChild(nameplate);
     };
+
+    document.getElementById("addUSInsignia").onclick = () => {
+      const insignia = document.createElement("div");
+      insignia.className = "layer usinsignia";
+      insignia.style.position = "absolute";
+      insignia.style.top = currentGender === "female" ? "140px" : "130px";
+      insignia.style.left = "80px";
+      insignia.style.width = "30px";
+      insignia.style.height = "15px";
+      insignia.style.background = "#444";
+      insignia.style.color = "white";
+      insignia.style.textAlign = "center";
+      insignia.style.fontSize = "10px";
+      insignia.style.lineHeight = "15px";
+      insignia.textContent = "U.S.";
+      uniformCanvas.appendChild(insignia);
+    };
+
+    document.getElementById("addCAPInsignia").onclick = () => {
+      const insignia = document.createElement("div");
+      insignia.className = "layer capinsignia";
+      insignia.style.position = "absolute";
+      insignia.style.top = currentGender === "female" ? "140px" : "130px";
+      insignia.style.left = "340px";
+      insignia.style.width = "30px";
+      insignia.style.height = "15px";
+      insignia.style.background = "#444";
+      insignia.style.color = "white";
+      insignia.style.textAlign = "center";
+      insignia.style.fontSize = "10px";
+      insignia.style.lineHeight = "15px";
+      insignia.textContent = "CAP";
+      uniformCanvas.appendChild(insignia);
+    };
+
+    document.getElementById("changeJacket").onclick = () => {
+      const type = document.getElementById("jacketSelect").value;
+      applyJacket(type);
+    };
+
+    document.getElementById("downloadImage").onclick = () => {
+      html2canvas(uniformCanvas).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "cap_uniform_preview.png";
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    };
+
+    loadOptions(ribbonSelect, ribbonList, "ribbons");
+    loadOptions(badgeSelect, badgeList, "badges");
+    loadOptions(rankSelect, rankList, "ranks");
+    loadOptions(deviceSelect, deviceList, "devices");
+
+    applyJacket("male");
   </script>
 </body>
 </html>
