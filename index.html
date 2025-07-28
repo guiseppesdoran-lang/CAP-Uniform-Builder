@@ -84,10 +84,30 @@
     let currentGender = "male";
     const selectedRibbons = [];
 
-    const ribbonList = [...]; // same as before
-    const badgeList = [...];
-    const rankList = [...];
-    const deviceList = [...];
+    const ribbonList = [
+      "silver_medal_of_valor", "bronze_medal_of_valor", "distinguished_service_award",
+      "exceptional_service_award", "meritorious_service_award", "commander_commendation_award",
+      "cap_achievement_award", "lifesaving_award", "national_commander_unit_citation_award",
+      "unit_citation_award", "spaatz_award", "eaker_award", "earhart_award", "mitchell_award",
+      "armstrong_achievment", "goddard_achievement", "dolittle_achievement", "lindbergh_achievement",
+      "rickenbacker_achievement", "wright_brothers_award", "mary_feik_achievement", "hap_arnold_achievement",
+      "curry_achievment", "afa_award", "afsa_award", "vfw_officer_award", "vfw_nco_award", "red_service_ribbon",
+      "search_find_ribbon", "air_search_and_rescue_ribbon", "disaster_relief_ribbon",
+      "homeland_security_ribbon", "community_service_ribbon", "iace_ribbon",
+      "national_cadet_competition_ribbon", "national_color_guard_competition_ribbon",
+      "cadet_advisory_council_ribbon", "cadet_special_activity_ribbon", "encampment_ribbon",
+      "cadet_recruiter_ribbon", "crisis_ribbon"
+    ];
+
+    const badgeList = ["aviation_badge", "gtm_badge"];
+    const rankList = [
+      "c_ab", "c_amn", "c_a1c", "c_sra", "c_ssgt", "c_tsgt", "c_msgt", "c_smsgt", "c_cmsgt",
+      "c_2dlt", "c_1stlt", "c_capt", "c_maj", "c_ltcol", "c_col"
+    ];
+    const deviceList = [
+      "1_Bronze_Star_Device", "1_Silver_Star_Device", "2_Bronze_Star_Device",
+      "2_Silver_Star_Device", "3_Gold_Star_Device", "4_Gold_Star_Device"
+    ];
 
     function loadOptions(select, list, category) {
       list.forEach(name => {
