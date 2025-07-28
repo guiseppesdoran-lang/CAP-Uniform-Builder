@@ -84,6 +84,8 @@
     const rankSelect = document.getElementById("rankSelect");
     const deviceSelect = document.getElementById("deviceSelect");
 
+    let currentGender = "male";
+
     const ribbonList = [
       "silver_medal_of_valor", "bronze_medal_of_valor", "distinguished_service_award",
       "exceptional_service_award", "meritorious_service_award", "commanders_commendation_award",
@@ -114,6 +116,7 @@
     };
 
     function applyJacket(type) {
+      currentGender = type;
       document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
       const jacketImg = document.getElementById(`jacket-${type}`);
       const clone = jacketImg.cloneNode();
@@ -135,6 +138,84 @@
     loadOptions(deviceSelect, ["bronze_star", "silver_star"], "devices");
     loadOptions(badgeSelect, ["aviation_badge", "gtm_badge"], "badges");
     loadOptions(rankSelect, ["c_ab", "c_amn"], "ranks");
+
+    const selectedRibbons = [];
+
+    function renderRibbons() {
+      document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
+      const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
+      const total = sorted.length;
+      sorted.forEach((key, i) => {
+        const col = i % 3;
+        const row = Math.floor(i / 3);
+        let leftOffset;
+
+        const isLastRow = row === Math.floor((total - 1) / 3);
+        const remaining = total % 3;
+
+        if (isLastRow && remaining !== 0 && i >= total - remaining) {
+          if (remaining === 1) {
+            leftOffset = 180;
+          } else if (remaining === 2) {
+            leftOffset = 135 + col * 95;
+          }
+        } else {
+          leftOffset = 135 + col * 95;
+        }
+
+        const top = currentGender === "female" ? 210 + row * 30 : 200 + row * 30;
+        const original = document.getElementById(`ribbons-${key}`);
+        const clone = original.cloneNode();
+        clone.className = "layer ribbon";
+        clone.style.top = `${top}px`;
+        clone.style.left = `${leftOffset}px`;
+        clone.style.width = "90px";
+        clone.style.height = "30px";
+        clone.style.display = "block";
+        uniformCanvas.appendChild(clone);
+      });
+    }
+
+    document.getElementById("addRibbon").onclick = () => {
+      const key = ribbonSelect.value;
+      if (!selectedRibbons.includes(key)) {
+        selectedRibbons.push(key);
+        renderRibbons();
+      } else {
+        alert("Ribbon already added.");
+      }
+    };
+
+    document.getElementById("clearRibbons").onclick = () => {
+      selectedRibbons.length = 0;
+      renderRibbons();
+    };
+
+    document.getElementById("addBadge").onclick = () => {
+      const key = badgeSelect.value;
+      const original = document.getElementById(`badges-${key}`);
+      const clone = original.cloneNode();
+      clone.className = "layer badge";
+      clone.style.top = currentGender === "female" ? "280px" : "270px";
+      clone.style.left = currentGender === "female" ? "60px" : "70px";
+      clone.style.width = "60px";
+      clone.style.height = "60px";
+      clone.style.display = "block";
+      uniformCanvas.appendChild(clone);
+    };
+
+    document.getElementById("addRank").onclick = () => {
+      const key = rankSelect.value;
+      const original = document.getElementById(`ranks-${key}`);
+      const clone = original.cloneNode();
+      clone.className = "layer rank";
+      clone.style.top = currentGender === "female" ? "120px" : "110px";
+      clone.style.left = currentGender === "female" ? "200px" : "210px";
+      clone.style.width = "50px";
+      clone.style.height = "50px";
+      clone.style.display = "block";
+      uniformCanvas.appendChild(clone);
+    };
   </script>
 </body>
 </html>
