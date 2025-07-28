@@ -189,26 +189,35 @@
   const startTop = 402;
   const startLeft = 303;
 
-  for (let i = 0; i < total; i++) {
-    const reverseIndex = total - 1 - i; // Start from the highest precedence
-    const row = Math.floor(i / 3);
-    const rowRibbons = total - row * 3 >= 3 ? 3 : (total - row * 3);
+  const ribbonsPerRow = 3;
+  const fullRows = Math.floor((total - 1) / ribbonsPerRow); // rows with 3 ribbons after the top partial
+  const topRowCount = total % ribbonsPerRow || ribbonsPerRow;
 
-    const currentRowIndex = Math.floor(reverseIndex / 3);
-    const currentRowRibbons = Math.min(3, total - currentRowIndex * 3);
-    const indexInRow = reverseIndex % 3;
+  for (let i = 0; i < total; i++) {
+    let row, indexInRow, ribbonsInRow;
+
+    if (i < topRowCount) {
+      row = 0;
+      indexInRow = i;
+      ribbonsInRow = topRowCount;
+    } else {
+      const offset = i - topRowCount;
+      row = 1 + Math.floor(offset / ribbonsPerRow);
+      indexInRow = offset % ribbonsPerRow;
+      ribbonsInRow = ribbonsPerRow;
+    }
 
     let xOffset;
-    if (currentRowRibbons === 3) {
+    if (ribbonsInRow === 3) {
       xOffset = startLeft;
-    } else if (currentRowRibbons === 2) {
+    } else if (ribbonsInRow === 2) {
       xOffset = startLeft + ribbonWidth / 2;
     } else {
       xOffset = startLeft + ribbonWidth + spacing;
     }
 
-    const x = xOffset + (indexInRow % currentRowRibbons) * (ribbonWidth + spacing);
-    const y = startTop - currentRowIndex * (ribbonHeight + spacing);
+    const x = xOffset + indexInRow * (ribbonWidth + spacing);
+    const y = startTop - row * (ribbonHeight + spacing);
 
     const original = document.getElementById(`ribbons-${sorted[i]}`);
     if (!original) continue;
