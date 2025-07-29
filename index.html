@@ -252,6 +252,7 @@ const customBadgeSizes = {
   uniformCanvas.appendChild(clone);
   
   badgeCount = 0; // 🔁 Reset badge stacking position
+
 }
 
 
@@ -327,15 +328,22 @@ function renderBadge(key) {
   const clone = original.cloneNode();
   clone.className = "layer badge";
 
-  const size = customBadgeSizes[key] || { width: 60, height: 60 };
-  clone.style.top = currentGender === "female" ? "670px" : "660px";
-  clone.style.left = currentGender === "female" ? "100px" : "110px";
+  const size = customBadgeSizes[key] || { width: 60, height: 25 };
+  const baseTop = currentGender === "female" ? 670 : 660;
+  const left = currentGender === "female" ? 100 : 110;
+
+  const topOffset = baseTop + badgeCount * (size.height + 6); // Add space between stacked badges
+
+  clone.style.top = `${topOffset}px`;
+  clone.style.left = `${left}px`;
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
   clone.style.display = "block";
 
   uniformCanvas.appendChild(clone);
+  badgeCount++;
 }
+
 
 
 
@@ -371,20 +379,23 @@ function renderBadge(key) {
 
   document.getElementById("clearRibbons").onclick = () => {
   selectedRibbons.length = 0;
+  document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
   renderRibbons();
-  badgeCount = 0; // 🔁 Optionally reset badges when clearing ribbons
+  badgeCount = 0;
 };
+
 
 
   document.getElementById("addBadge").onclick = () => {
   const key = badgeSelect.value;
   if (!selectedBadges.includes(key)) {
     selectedBadges.push(key);
-    renderBadges();
+    renderBadge(key); // ✅ This matches your actual function name
   } else {
     alert("Badge already added.");
   }
 };
+
 
 
   document.getElementById("addRank").onclick = () => {
