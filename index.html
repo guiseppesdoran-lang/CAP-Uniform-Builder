@@ -111,7 +111,8 @@
   const assetsContainer = document.getElementById("assets");
 
   let currentGender = "male";
-  const selectedRibbons = [];
+  const selectedRibbons = []; const selectedBadges = [];
+
 
   const ribbonList = [
     "silver_medal_of_valor", "bronze_medal_of_valor", "distinguished_service_award",
@@ -281,29 +282,41 @@
 
   let badgeCount = 0;
 
-function renderBadge(key) {
-  const original = document.getElementById(`badges-${key}`);
-  if (!original) return;
+function renderBadges() {
+  document.querySelectorAll(".layer.badge").forEach(el => el.remove());
 
-  const clone = original.cloneNode();
-  clone.className = "layer badge";
+  const baseTop = currentGender === "female" ? 660 : 650;
+  const baseLeft = currentGender === "female" ? 100 : 110;
+  const badgeWidth = 60;
+  const badgeHeight = 60;
+  const verticalSpacing = 2;
+  const horizontalSpacing = 10;
 
-  // Base Y positions
-  const baseTopMale = 660;
-  const baseTopFemale = 670;
-  const verticalSpacing = 70;
+  for (let i = 0; i < selectedBadges.length; i++) {
+    const original = document.getElementById(`badges-${selectedBadges[i]}`);
+    if (!original) continue;
 
-  const top = (currentGender === "female" ? baseTopFemale : baseTopMale) + badgeCount * verticalSpacing;
-  const left = currentGender === "female" ? 100 : 110;
+    const clone = original.cloneNode();
+    clone.className = "layer badge";
+    clone.style.width = `${badgeWidth}px`;
+    clone.style.height = `${badgeHeight}px`;
+    clone.style.display = "block";
 
-  clone.style.top = `${top}px`;
-  clone.style.left = `${left}px`;
-  clone.style.width = "60px";
-  clone.style.height = "60px";
-  clone.style.display = "block";
+    let top, left;
+    if (i < 2) {
+      // Vertically stacked badges
+      top = baseTop + i * (badgeHeight + verticalSpacing);
+      left = baseLeft;
+    } else {
+      // Additional badges placed horizontally
+      top = baseTop;
+      left = baseLeft + (i - 1) * (badgeWidth + horizontalSpacing);
+    }
 
-  uniformCanvas.appendChild(clone);
-  badgeCount++;
+    clone.style.top = `${top}px`;
+    clone.style.left = `${left}px`;
+    uniformCanvas.appendChild(clone);
+  }
 }
 
 
@@ -345,9 +358,15 @@ function renderBadge(key) {
 
 
   document.getElementById("addBadge").onclick = () => {
-    const key = badgeSelect.value;
-    renderBadge(key);
-  };
+  const key = badgeSelect.value;
+  if (!selectedBadges.includes(key)) {
+    selectedBadges.push(key);
+    renderBadges();
+  } else {
+    alert("Badge already added.");
+  }
+};
+
 
   document.getElementById("addRank").onclick = () => {
     const key = rankSelect.value;
