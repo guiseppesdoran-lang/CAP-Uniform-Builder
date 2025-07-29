@@ -128,7 +128,8 @@ const badgeLocations = {
   "stem_badges": "upper-left",
   "communications_technician_badge": "upper-left",
   "information_technology_technician_badge": "upper-left",
-  "nra_marksman_badge": "upper-left",
+  
+  "nra_marksman_badge": "mid-left",
 
   "MasterObserver1_1B88D5071FD5C": "lower-left",
   "SeniorObserver1_0E35802A29801": "lower-left",
@@ -416,7 +417,8 @@ function renderBadge(key) {
     "upper-left": { top: currentGender === "female" ? 660 : 650, left: 120 },
     "lower-left": { top: currentGender === "female" ? 705 : 695, left: 120 },
     "upper-right": { top: currentGender === "female" ? 660 : 650, left: 660 },
-    "lower-right": { top: currentGender === "female" ? 705 : 695, left: 660 }
+    "lower-right": { top: currentGender === "female" ? 705 : 695, left: 660 },
+    "mid-left": { top: currentGender === "female" ? 660 : 600, left: 120 }
   };
 
   const offset = badgeSlots[location].length * 35;
