@@ -400,6 +400,7 @@ function renderBadge(key) {
   const location = badgeLocations[key] || "upper-left";
   if (!badgeSlots[location]) badgeSlots[location] = [];
 
+  // If max badges already present, prompt for replacement
   if (badgeSlots[location].length >= 2) {
     promptBadgeReplacement(location, key);
     return;
@@ -414,18 +415,24 @@ function renderBadge(key) {
   const size = customBadgeSizes[key] || { width: 60, height: 25 };
 
   const positionMap = {
-    "upper-left": { top: currentGender === "female" ? 660 : 450, left: 500 },
-    "lower-left": { top: currentGender === "female" ? 705 : 300, left: 500 },
+    "upper-left": { top: currentGender === "female" ? 660 : 450, left: 350 },
+    "lower-left": { top: currentGender === "female" ? 705 : 300, left: 350 },
     "upper-right": { top: currentGender === "female" ? 660 : 650, left: 100 },
     "lower-right": { top: currentGender === "female" ? 705 : 695, left: 100 },
-    "mid-left": { top: currentGender === "female" ? 660 : 520, left: 500 }
+    "mid-left": { top: currentGender === "female" ? 660 : 520, left: 350 }
   };
 
-  const offset = badgeSlots[location].length * 35;
-  const pos = positionMap[location];
+  const basePos = positionMap[location];
 
-  clone.style.top = `${pos.top + offset}px`;
-  clone.style.left = `${pos.left}px`;
+  // Calculate vertical offset based on heights of existing badges in this location
+  let offset = 0;
+  for (const existingKey of badgeSlots[location]) {
+    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+    offset += existingSize.height + 5; // 5px spacing between badges
+  }
+
+  clone.style.top = `${basePos.top + offset}px`;
+  clone.style.left = `${basePos.left}px`;
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
   clone.style.display = "block";
