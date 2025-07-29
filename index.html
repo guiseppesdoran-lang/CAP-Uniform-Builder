@@ -112,6 +112,51 @@
 
   let currentGender = "male";
   const selectedRibbons = []; const selectedBadges = [];
+const badgeLocations = {
+  "AirCrew1_DB3F0FCC3650F": "upper-left",
+  "BalloonPilot1_442D89C94185B": "upper-left",
+  "CAPMasterPilot1_621A0E2ED15DA": "upper-left",
+  "CAPPilot1_FA9D33EA587D8": "upper-left",
+  "CAPSeniorPilot1_D9725AE959752": "upper-left",
+  "GliderPilot1_7BFB287379918": "upper-left",
+  "MasterAirCrew1_72AC4CAE7A310": "upper-left",
+  "SeniorAirCrew1_B289BAE6E515C": "upper-left",
+  "pre_solo_badge": "upper-left",
+  "solo_badge": "upper-left",
+  "model_rocketry_badge": "upper-left",
+  "cyber_badges": "upper-left",
+  "stem_badges": "upper-left",
+  "communications_technician_badge": "upper-left",
+  "information_technology_technician_badge": "upper-left",
+  "nra_marksman_badge": "upper-left",
+
+  "MasterObserver1_1B88D5071FD5C": "lower-left",
+  "SeniorObserver1_0E35802A29801": "lower-left",
+  "observer_badge": "lower-left",
+  "ground_team_basic_badge": "lower-left",
+  "senior_ground_team_badge": "lower-left",
+  "master_ground_team_badge": "lower-left",
+  "emergency_services_badge": "lower-left",
+  "emt_basic_badge": "lower-left",
+  "emt_intermediate": "lower-left",
+  "emt_paramedic": "lower-left",
+
+  "medical_officer": "upper-right",
+  "nurse_officer": "upper-right",
+  "legal_officer": "upper-right",
+  "historian_technicianIbadge": "upper-right",
+  "buddist_chaplin": "upper-right",
+  "christian_chaplin": "upper-right",
+  "jewish_chaplin": "upper-right",
+  "muslim_chaplin": "upper-right"
+};
+
+const badgeSlots = {
+  "upper-left": [],
+  "lower-left": [],
+  "upper-right": [],
+  "lower-right": []
+};
 
 
   const ribbonList = [
@@ -332,52 +377,59 @@ const maxBadgesPerSide = 2;
 const leftBadges = [];
 const rightBadges = [];
 
+function promptBadgeReplacement(location, newBadgeKey) {
+  const currentBadges = badgeSlots[location];
+  const names = currentBadges.map(b => b.replace(/_/g, " "));
+  const choice = prompt(
+    `The ${location.replace("-", " ")} badge area is full.\nChoose a badge to remove:\n` +
+    names.map((n, i) => `${i + 1}. ${n}`).join("\n")
+  );
+  const index = parseInt(choice) - 1;
+  if (!isNaN(index) && index >= 0 && index < currentBadges.length) {
+    const toRemove = currentBadges[index];
+    selectedBadges.splice(selectedBadges.indexOf(toRemove), 1);
+    badgeSlots[location].splice(index, 1);
+    document.querySelectorAll(".layer.badge").forEach(el => el.remove());
+    selectedBadges.forEach(b => renderBadge(b));
+    renderBadge(newBadgeKey);
+  }
+}
+
 function renderBadge(key) {
+  const location = badgeLocations[key] || "upper-left";
+  if (!badgeSlots[location]) badgeSlots[location] = [];
+
+  if (badgeSlots[location].length >= 2) {
+    promptBadgeReplacement(location, key);
+    return;
+  }
+
   const original = document.getElementById(`badges-${key}`);
   if (!original) return;
 
-  const size = customBadgeSizes[key] || { width: 60, height: 25 };
-  const spacing = 30;
-  const baseTop = currentGender === "female" ? 660 : 650;
-
-  const isRight = badgeCountRight <= badgeCountLeft;
-  const targetArray = isRight ? rightBadges : leftBadges;
-  const side = isRight ? "right" : "left";
-
-  // If the side is full, prompt before removing oldest badge
-  if (targetArray.length >= maxBadgesPerSide) {
-    const confirmReplace = confirm(`You already have ${maxBadgesPerSide} badge(s) on the ${side} side. Adding this will remove the first one. Continue?`);
-    if (!confirmReplace) return;
-
-    // Remove oldest badge on this side
-    const removed = targetArray.shift();
-    if (removed && removed.element) {
-      removed.element.remove();
-    }
-
-    if (isRight) badgeCountRight--;
-    else badgeCountLeft--;
-  }
-
-  // Calculate vertical stacking
-  const stackIndex = isRight ? badgeCountRight : badgeCountLeft;
-  const top = baseTop + spacing * stackIndex;
-  const left = isRight
-    ? (currentGender === "female" ? 545 : 540)
-    : (currentGender === "female" ? 115 : 125);
-
   const clone = original.cloneNode();
   clone.className = "layer badge";
-  clone.style.top = `${top}px`;
-  clone.style.left = `${left}px`;
+
+  const size = customBadgeSizes[key] || { width: 60, height: 25 };
+
+  const positionMap = {
+    "upper-left": { top: currentGender === "female" ? 660 : 650, left: 120 },
+    "lower-left": { top: currentGender === "female" ? 705 : 695, left: 120 },
+    "upper-right": { top: currentGender === "female" ? 660 : 650, left: 660 },
+    "lower-right": { top: currentGender === "female" ? 705 : 695, left: 660 }
+  };
+
+  const offset = badgeSlots[location].length * 35;
+  const pos = positionMap[location];
+
+  clone.style.top = `${pos.top + offset}px`;
+  clone.style.left = `${pos.left}px`;
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
   clone.style.display = "block";
-  uniformCanvas.appendChild(clone);
 
-  targetArray.push({ key, element: clone });
-  if (isRight) badgeCountRight++;
-  else badgeCountLeft++;
+  uniformCanvas.appendChild(clone);
+  badgeSlots[location].push(key);
 }
 
 
@@ -450,11 +502,12 @@ function renderNameplate() {
   const key = badgeSelect.value;
   if (!selectedBadges.includes(key)) {
     selectedBadges.push(key);
-    renderBadge(key); // ✅ This matches your actual function name
+    renderBadge(key);
   } else {
     alert("Badge already added.");
   }
 };
+
 
 document.getElementById("addNameplate").onclick = () => {
   renderNameplate();
