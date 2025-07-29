@@ -414,11 +414,11 @@ function renderBadge(key) {
   const size = customBadgeSizes[key] || { width: 60, height: 25 };
 
   const positionMap = {
-    "upper-left": { top: currentGender === "female" ? 660 : 650, left: 120 },
-    "lower-left": { top: currentGender === "female" ? 705 : 695, left: 120 },
-    "upper-right": { top: currentGender === "female" ? 660 : 650, left: 660 },
-    "lower-right": { top: currentGender === "female" ? 705 : 695, left: 660 },
-    "mid-left": { top: currentGender === "female" ? 660 : 600, left: 120 }
+    "upper-left": { top: currentGender === "female" ? 660 : 450, left: 500 },
+    "lower-left": { top: currentGender === "female" ? 705 : 300, left: 500 },
+    "upper-right": { top: currentGender === "female" ? 660 : 650, left: 100 },
+    "lower-right": { top: currentGender === "female" ? 705 : 695, left: 100 },
+    "mid-left": { top: currentGender === "female" ? 660 : 520, left: 500 }
   };
 
   const offset = badgeSlots[location].length * 35;
