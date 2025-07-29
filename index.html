@@ -240,7 +240,7 @@ const customBadgeSizes = {
 
   function applyJacket(type) {
   currentGender = type;
-  document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
+  document.querySelectorAll(".layer").forEach(el => el.remove()); // Removes all existing layers
   const jacketImg = document.getElementById(`jacket-${type}`);
   const clone = jacketImg.cloneNode();
   clone.className = "layer jacket";
@@ -250,9 +250,12 @@ const customBadgeSizes = {
   clone.style.height = "auto";
   clone.style.display = "block";
   uniformCanvas.appendChild(clone);
-  
-  badgeCount = 0; // 🔁 Reset badge stacking position
 
+  // 🔁 Reset badge tracking
+  badgeCountLeft = 0;
+  badgeCountRight = 0;
+  leftBadges.length = 0;
+  rightBadges.length = 0;
 }
 
 
@@ -320,65 +323,64 @@ const customBadgeSizes = {
 
 
 
-let badgeCount = 0;
+
+
+let badgeCountLeft = 0;
+let badgeCountRight = 0;
+const maxBadgesPerSide = 2;
+
+const leftBadges = [];
+const rightBadges = [];
 
 function renderBadge(key) {
   const original = document.getElementById(`badges-${key}`);
   if (!original) return;
 
-  const clone = original.cloneNode();
-  clone.className = "layer badge";
-
   const size = customBadgeSizes[key] || { width: 60, height: 25 };
+  const spacing = 30;
+  const baseTop = currentGender === "female" ? 660 : 650;
 
-  // Determine side: left, right, or collar
-  const leftBadges = [
-    "AirCrew1_DB3F0FCC3650F", "BalloonPilot1_442D89C94185B", "CAPMasterPilot1_621A0E2ED15DA",
-    "CAPPilot1_FA9D33EA587D8", "CAPSeniorPilot1_D9725AE959752", "GliderPilot1_7BFB287379918",
-    "MasterAirCrew1_72AC4CAE7A310", "MasterObserver1_1B88D5071FD5C", "SeniorAirCrew1_B289BAE6E515C",
-    "SeniorObserver1_0E35802A29801", "observer_badge"
-  ];
+  const isRight = badgeCountRight <= badgeCountLeft;
+  const targetArray = isRight ? rightBadges : leftBadges;
+  const side = isRight ? "right" : "left";
 
-  const rightBadges = [
-    "communications_technician_badge", "cyber_badges", "emergency_services_badge",
-    "emt_basic_badge", "emt_intermediate", "emt_paramedic", "ground_team_basic_badge",
-    "historian_technicianIbadge", "information_technology_technician_badge",
-    "legal_officer", "master_ground_team_badge", "medical_officer", "model_rocketry_badge",
-    "nra_marksman_badge", "nurse_officer", "pre_solo_badge", "senior_ground_team_badge",
-    "solo_badge", "stem_badges"
-  ];
+  // If the side is full, prompt before removing oldest badge
+  if (targetArray.length >= maxBadgesPerSide) {
+    const confirmReplace = confirm(`You already have ${maxBadgesPerSide} badge(s) on the ${side} side. Adding this will remove the first one. Continue?`);
+    if (!confirmReplace) return;
 
-  const collarBadges = [
-    "buddist_chaplin", "christian_chaplin", "jewish_chaplin", "muslim_chaplin"
-  ];
+    // Remove oldest badge on this side
+    const removed = targetArray.shift();
+    if (removed && removed.element) {
+      removed.element.remove();
+    }
 
-  let top = 0;
-  let left = 0;
-
-  if (leftBadges.includes(key)) {
-    top = currentGender === "female" ? 400 + (badgeCount * 30) : 390 + (badgeCount * 30);
-    left = currentGender === "female" ? 120 : 130;
-  } else if (rightBadges.includes(key)) {
-    top = currentGender === "female" ? 400 + (badgeCount * 30) : 390 + (badgeCount * 30);
-    left = currentGender === "female" ? 570 : 560;
-  } else if (collarBadges.includes(key)) {
-    top = currentGender === "female" ? 340 + (badgeCount * 30) : 330 + (badgeCount * 30);
-    left = currentGender === "female" ? 135 : 140;
-  } else {
-    // Default: treat as left badge
-    top = currentGender === "female" ? 400 + (badgeCount * 30) : 390 + (badgeCount * 30);
-    left = currentGender === "female" ? 120 : 130;
+    if (isRight) badgeCountRight--;
+    else badgeCountLeft--;
   }
 
+  // Calculate vertical stacking
+  const stackIndex = isRight ? badgeCountRight : badgeCountLeft;
+  const top = baseTop + spacing * stackIndex;
+  const left = isRight
+    ? (currentGender === "female" ? 545 : 540)
+    : (currentGender === "female" ? 115 : 125);
+
+  const clone = original.cloneNode();
+  clone.className = "layer badge";
   clone.style.top = `${top}px`;
   clone.style.left = `${left}px`;
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
   clone.style.display = "block";
-
   uniformCanvas.appendChild(clone);
-  badgeCount++;
+
+  targetArray.push({ key, element: clone });
+  if (isRight) badgeCountRight++;
+  else badgeCountLeft++;
 }
+
+
 
 
 
