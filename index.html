@@ -103,6 +103,21 @@
 </div>
 
 <script>
+  window.onload = () => {
+  preloadImages("ribbons", ribbonList, "ribbons");
+  preloadImages("devices", deviceList, "devices");
+  preloadImages("ranks", rankList, "ranks");
+  preloadImages("badges", badgeList, "badges");
+
+  applyJacket(currentGender);
+
+  // Add preloaded elements after DOM fully built
+  setTimeout(() => {
+    renderRibbons();
+    selectedBadges.forEach(renderBadge);
+  }, 500); // wait for assets to load
+};
+
   const ribbonSelect = document.getElementById("ribbonSelect");
   const badgeSelect = document.getElementById("badgeSelect");
   const rankSelect = document.getElementById("rankSelect");
