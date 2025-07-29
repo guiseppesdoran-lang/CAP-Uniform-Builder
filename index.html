@@ -400,7 +400,6 @@ function renderBadge(key) {
   const location = badgeLocations[key] || "upper-left";
   if (!badgeSlots[location]) badgeSlots[location] = [];
 
-  // If max badges already present, prompt for replacement
   if (badgeSlots[location].length >= 2) {
     promptBadgeReplacement(location, key);
     return;
@@ -413,43 +412,41 @@ function renderBadge(key) {
   clone.className = "layer badge";
 
   const size = customBadgeSizes[key] || { width: 60, height: 25 };
+  const badgeSpacing = 5;
 
   const positionMap = {
-    "upper-left": { top: currentGender === "female" ? 660 : 450, left: 350 },
-    "lower-left": { top: currentGender === "female" ? 705 : 300, left: 350 },
+    "upper-left": { left: 350 },
+    "lower-left": { top: currentGender === "female" ? 705 : 695, left: 350 },
     "upper-right": { top: currentGender === "female" ? 660 : 650, left: 100 },
     "lower-right": { top: currentGender === "female" ? 705 : 695, left: 100 },
     "mid-left": { top: currentGender === "female" ? 660 : 520, left: 350 }
   };
 
-    let topOffset;
+  let topOffset;
 
   if (location === "upper-left") {
     const baseRibbonTop = 394;
-    const baseRibbonHeight = 8;
-    const badgeSpacing = 5;
+    const ribbonHeight = 8;
 
     if (selectedRibbons.length > 0) {
-      // Place below the *last ribbon row*
       const rows = Math.ceil(selectedRibbons.length / 3);
-      const ribbonStackHeight = (baseRibbonHeight + 0) * rows; // spacing is 0
+      const ribbonStackHeight = rows * (ribbonHeight);
       topOffset = baseRibbonTop + ribbonStackHeight + badgeSpacing;
     } else {
-      // No ribbons: align badge where first ribbon would go
       topOffset = baseRibbonTop;
     }
 
-    // Stack additional badges in this location vertically
+    // Stack other badges vertically
     for (const existingKey of badgeSlots[location]) {
       const existingSize = customBadgeSizes[existingKey] || { height: 25 };
       topOffset += existingSize.height + badgeSpacing;
     }
 
     clone.style.top = `${topOffset}px`;
+    clone.style.left = `${positionMap[location].left}px`;
 
   } else {
     const basePos = positionMap[location];
-    const badgeSpacing = 5;
     let offset = 0;
 
     for (const existingKey of badgeSlots[location]) {
@@ -458,9 +455,9 @@ function renderBadge(key) {
     }
 
     clone.style.top = `${basePos.top + offset}px`;
+    clone.style.left = `${basePos.left}px`;
   }
 
-  clone.style.left = `${basePos.left}px`;
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
   clone.style.display = "block";
@@ -468,6 +465,7 @@ function renderBadge(key) {
   uniformCanvas.appendChild(clone);
   badgeSlots[location].push(key);
 }
+
 
 
 
