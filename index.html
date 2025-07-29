@@ -422,16 +422,44 @@ function renderBadge(key) {
     "mid-left": { top: currentGender === "female" ? 660 : 520, left: 350 }
   };
 
-  const basePos = positionMap[location];
+    let topOffset;
 
-  // Calculate vertical offset based on heights of existing badges in this location
-  let offset = 0;
-  for (const existingKey of badgeSlots[location]) {
-    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-    offset += existingSize.height + 5; // 5px spacing between badges
+  if (location === "upper-left") {
+    const baseRibbonTop = 394;
+    const baseRibbonHeight = 8;
+    const badgeSpacing = 5;
+
+    if (selectedRibbons.length > 0) {
+      // Place below the *last ribbon row*
+      const rows = Math.ceil(selectedRibbons.length / 3);
+      const ribbonStackHeight = (baseRibbonHeight + 0) * rows; // spacing is 0
+      topOffset = baseRibbonTop + ribbonStackHeight + badgeSpacing;
+    } else {
+      // No ribbons: align badge where first ribbon would go
+      topOffset = baseRibbonTop;
+    }
+
+    // Stack additional badges in this location vertically
+    for (const existingKey of badgeSlots[location]) {
+      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+      topOffset += existingSize.height + badgeSpacing;
+    }
+
+    clone.style.top = `${topOffset}px`;
+
+  } else {
+    const basePos = positionMap[location];
+    const badgeSpacing = 5;
+    let offset = 0;
+
+    for (const existingKey of badgeSlots[location]) {
+      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+      offset += existingSize.height + badgeSpacing;
+    }
+
+    clone.style.top = `${basePos.top + offset}px`;
   }
 
-  clone.style.top = `${basePos.top + offset}px`;
   clone.style.left = `${basePos.left}px`;
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
