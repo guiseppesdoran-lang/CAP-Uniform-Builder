@@ -396,75 +396,68 @@ function promptBadgeReplacement(location, newBadgeKey) {
   }
 }
 
-function renderBadge(key) {
-  const location = badgeLocations[key] || "upper-left";
-  if (!badgeSlots[location]) badgeSlots[location] = [];
+function renderRibbons() {
+  document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
 
-  if (badgeSlots[location].length >= 2) {
-    promptBadgeReplacement(location, key);
-    return;
+  const sorted = [...selectedRibbons].sort((a, b) => ribbonList.indexOf(a) - ribbonList.indexOf(b));
+  const total = sorted.length;
+
+  const ribbonWidth = 25;
+  const ribbonHeight = 8;
+  const spacing = 0;
+  const startTop = 402;
+  const startLeft = 303;
+
+  const rows = [];
+  let remaining = total;
+
+  let topPartial = [];
+  if (total % 3 !== 0) {
+    topPartial = sorted.slice(0, total % 3);
+    sorted.splice(0, topPartial.length);
+    rows.push(topPartial);
   }
 
-  const original = document.getElementById(`badges-${key}`);
-  if (!original) return;
+  for (let i = 0; i < sorted.length; i += 3) {
+    rows.push(sorted.slice(i, i + 3));
+  }
 
-  const clone = original.cloneNode();
-  clone.className = "layer badge";
+  rows.reverse();
 
-  const size = customBadgeSizes[key] || { width: 60, height: 25 };
-  const badgeSpacing = 5;
-
-  const positionMap = {
-    "upper-left": { left: 350 },
-    "lower-left": { top: currentGender === "female" ? 705 : 695, left: 350 },
-    "upper-right": { top: currentGender === "female" ? 660 : 650, left: 100 },
-    "lower-right": { top: currentGender === "female" ? 705 : 695, left: 100 },
-    "mid-left": { top: currentGender === "female" ? 660 : 520, left: 350 }
-  };
-
-  let topOffset;
-
-  if (location === "upper-left") {
-    const baseRibbonTop = 394;
-    const ribbonHeight = 8;
-
-    if (selectedRibbons.length > 0) {
-      const rows = Math.ceil(selectedRibbons.length / 3);
-      const ribbonStackHeight = rows * (ribbonHeight);
-      topOffset = baseRibbonTop + ribbonStackHeight + badgeSpacing;
+  rows.forEach((row, rowIndex) => {
+    let xOffset;
+    if (row.length === 3) {
+      xOffset = startLeft;
+    } else if (row.length === 2) {
+      xOffset = startLeft + ribbonWidth / 2;
     } else {
-      topOffset = baseRibbonTop;
+      xOffset = startLeft + ribbonWidth + spacing;
     }
 
-    // Stack other badges vertically
-    for (const existingKey of badgeSlots[location]) {
-      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-      topOffset += existingSize.height + badgeSpacing;
-    }
+    const y = startTop - rowIndex * (ribbonHeight + spacing);
 
-    clone.style.top = `${topOffset}px`;
-    clone.style.left = `${positionMap[location].left}px`;
+    row.forEach((ribbon, i) => {
+      const x = xOffset + i * (ribbonWidth + spacing);
+      const original = document.getElementById(`ribbons-${ribbon}`);
+      if (!original) return;
+      const clone = original.cloneNode();
+      clone.className = "layer ribbon";
+      clone.style.top = `${y - ribbonHeight}px`;
+      clone.style.left = `${x}px`;
+      clone.style.width = `${ribbonWidth}px`;
+      clone.style.height = `${ribbonHeight}px`;
+      clone.style.display = "block";
+      uniformCanvas.appendChild(clone);
+    });
+  });
 
-  } else {
-    const basePos = positionMap[location];
-    let offset = 0;
-
-    for (const existingKey of badgeSlots[location]) {
-      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-      offset += existingSize.height + badgeSpacing;
-    }
-
-    clone.style.top = `${basePos.top + offset}px`;
-    clone.style.left = `${basePos.left}px`;
+  // 🔁 Re-render upper-left badges to move them with new ribbon height
+  document.querySelectorAll(".layer.badge").forEach(el => el.remove());
+  for (const loc in badgeSlots) {
+    badgeSlots[loc].forEach(key => renderBadge(key));
   }
-
-  clone.style.width = `${size.width}px`;
-  clone.style.height = `${size.height}px`;
-  clone.style.display = "block";
-
-  uniformCanvas.appendChild(clone);
-  badgeSlots[location].push(key);
 }
+
 
 
 
@@ -528,8 +521,8 @@ function renderNameplate() {
   selectedRibbons.length = 0;
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
   renderRibbons();
-  badgeCount = 0;
 };
+
 
 
 
