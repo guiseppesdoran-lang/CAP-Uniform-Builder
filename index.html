@@ -364,37 +364,72 @@ const customBadgeSizes = {
 }
 
 
+function renderBadge(key) {
+  const location = badgeLocations[key] || "upper-left";
+  if (!badgeSlots[location]) badgeSlots[location] = [];
 
-
-
-
-
-
-
-let badgeCountLeft = 0;
-let badgeCountRight = 0;
-const maxBadgesPerSide = 2;
-
-const leftBadges = [];
-const rightBadges = [];
-
-function promptBadgeReplacement(location, newBadgeKey) {
-  const currentBadges = badgeSlots[location];
-  const names = currentBadges.map(b => b.replace(/_/g, " "));
-  const choice = prompt(
-    `The ${location.replace("-", " ")} badge area is full.\nChoose a badge to remove:\n` +
-    names.map((n, i) => `${i + 1}. ${n}`).join("\n")
-  );
-  const index = parseInt(choice) - 1;
-  if (!isNaN(index) && index >= 0 && index < currentBadges.length) {
-    const toRemove = currentBadges[index];
-    selectedBadges.splice(selectedBadges.indexOf(toRemove), 1);
-    badgeSlots[location].splice(index, 1);
-    document.querySelectorAll(".layer.badge").forEach(el => el.remove());
-    selectedBadges.forEach(b => renderBadge(b));
-    renderBadge(newBadgeKey);
+  // Enforce max 2 per slot
+  if (badgeSlots[location].length >= 2) {
+    promptBadgeReplacement(location, key);
+    return;
   }
+
+  const original = document.getElementById(`badges-${key}`);
+  if (!original) return;
+
+  const clone = original.cloneNode();
+  clone.className = "layer badge";
+
+  const size = customBadgeSizes[key] || { width: 60, height: 25 };
+  const badgeSpacing = 35;
+  const offset = badgeSlots[location].length * badgeSpacing;
+
+  // Ribbon height calculation
+  const startRibbonTop = 402;
+  const ribbonHeight = 8;
+  const ribbonSpacing = 0;
+  const rowCount = Math.ceil(selectedRibbons.length / 3);
+  const totalRibbonHeight = rowCount * (ribbonHeight + ribbonSpacing);
+  const ribbonBuffer = 12;
+
+  const topAboveRibbons = startRibbonTop - totalRibbonHeight - size.height - ribbonBuffer;
+  const topNoRibbons = startRibbonTop - size.height - ribbonBuffer;
+
+  // Per-location positioning with gender adjustment
+  const positionMap = {
+    "upper-left": {
+      top: selectedRibbons.length > 0 ? topAboveRibbons : topNoRibbons,
+      left: 500
+    },
+    "lower-left": {
+      top: currentGender === "female" ? 710 : 690,
+      left: 500
+    },
+    "upper-right": {
+      top: currentGender === "female" ? 660 : 640,
+      left: 100
+    },
+    "lower-right": {
+      top: currentGender === "female" ? 710 : 690,
+      left: 100
+    },
+    "mid-left": {
+      top: currentGender === "female" ? 590 : 580,
+      left: 500
+    }
+  };
+
+  const pos = positionMap[location];
+  clone.style.top = `${pos.top + offset}px`;
+  clone.style.left = `${pos.left}px`;
+  clone.style.width = `${size.width}px`;
+  clone.style.height = `${size.height}px`;
+  clone.style.display = "block";
+
+  uniformCanvas.appendChild(clone);
+  badgeSlots[location].push(key);
 }
+
 
 function renderRibbons() {
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
