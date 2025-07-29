@@ -131,7 +131,43 @@
   const deviceList = ["1_Bronze_Star_Device", "1_Silver_Star_Device"];
   const rankList = ["C/AB", "C/Amn", "C/A1C", "C/SrA", "C/SSgt", "C/TSgt", "C/MSgt",
                     "C/SMSgt", "C/CMSgt", "C/2d Lt", "C/1st Lt", "C/Capt", "C/Maj", "C/Lt Col", "C/Col"];
-  const badgeList = ["aviation_badge", "gtm_badge"];
+  const badgeList = [
+  "AirCrew1_DB3F0FCC3650F",
+  "BalloonPilot1_442D89C94185B",
+  "CAPMasterPilot1_621A0E2ED15DA",
+  "CAPPilot1_FA9D33EA587D8",
+  "CAPSeniorPilot1_D9725AE959752",
+  "GliderPilot1_7BFB287379918",
+  "MasterAirCrew1_72AC4CAE7A310",
+  "MasterObserver1_1B88D5071FD5C",
+  "SeniorAirCrew1_B289BAE6E515C",
+  "SeniorObserver1_0E35802A29801",
+  "buddist_chaplin",
+  "christian_chaplin",
+  "communications_technician_badge",
+  "cyber_badges",
+  "emergency_services_badge",
+  "emt_basic_badge",
+  "emt_intermediate",
+  "emt_paramedic",
+  "ground_team_basic_badge",
+  "historian_technicianIbadge",
+  "information_technology_technician_badge",
+  "jewish_chaplin",
+  "legal_officer",
+  "master_ground_team_badge",
+  "medical_officer",
+  "model_rocketry_badge",
+  "muslim_chaplin",
+  "nra_marksman_badge",
+  "nurse_officer",
+  "observer_badge",
+  "pre_solo_badge",
+  "senior_ground_team_badge",
+  "solo_badge",
+  "stem_badges"
+];
+
 
   function populateDropdown(selectElement, list) {
     selectElement.innerHTML = "";
@@ -251,12 +287,15 @@ function renderBadge(key) {
 
   const clone = original.cloneNode();
   clone.className = "layer badge";
-  
-  const baseTop = currentGender === "female" ? 670 : 660;
-  const left = currentGender === "female" ? 100 : 110;
-  const verticalSpacing = 65; // Space between stacked badges
 
-  const top = baseTop + badgeCount * verticalSpacing;
+  // Base Y positions
+  const baseTopMale = 660;
+  const baseTopFemale = 670;
+  const verticalSpacing = 70;
+
+  const top = (currentGender === "female" ? baseTopFemale : baseTopMale) + badgeCount * verticalSpacing;
+  const left = currentGender === "female" ? 100 : 110;
+
   clone.style.top = `${top}px`;
   clone.style.left = `${left}px`;
   clone.style.width = "60px";
@@ -266,6 +305,7 @@ function renderBadge(key) {
   uniformCanvas.appendChild(clone);
   badgeCount++;
 }
+
 
 
   function renderRank(key) {
