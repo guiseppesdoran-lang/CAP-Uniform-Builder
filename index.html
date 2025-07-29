@@ -321,6 +321,8 @@ const customBadgeSizes = {
 
   let badgeCount = 0;
 
+let badgeCount = 0;
+
 function renderBadge(key) {
   const original = document.getElementById(`badges-${key}`);
   if (!original) return;
@@ -329,12 +331,14 @@ function renderBadge(key) {
   clone.className = "layer badge";
 
   const size = customBadgeSizes[key] || { width: 60, height: 25 };
-  const baseTop = currentGender === "female" ? 670 : 660;
-  const left = currentGender === "female" ? 100 : 110;
 
-  const topOffset = baseTop + badgeCount * (size.height + 6); // Add space between stacked badges
+  const baseTop = currentGender === "female" ? 660 : 650;
+  const spacing = 30; // vertical gap between badges
+  const left = currentGender === "female" ? 115 : 125;
 
-  clone.style.top = `${topOffset}px`;
+  const top = baseTop - badgeCount * spacing;
+
+  clone.style.top = `${top}px`;
   clone.style.left = `${left}px`;
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
@@ -343,6 +347,7 @@ function renderBadge(key) {
   uniformCanvas.appendChild(clone);
   badgeCount++;
 }
+
 
 
 
@@ -360,6 +365,27 @@ function renderBadge(key) {
     uniformCanvas.appendChild(clone);
   }
 
+function renderNameplate() {
+  const existing = document.querySelector(".layer.nameplate");
+  if (existing) existing.remove();
+
+  const img = document.createElement("img");
+  img.src = "images/nameplate/CAP_Nameplate.webp";
+  img.className = "layer nameplate";
+  img.style.width = "100px";
+  img.style.height = "20px";
+
+  const top = currentGender === "female" ? 440 : 430;
+  const left = currentGender === "female" ? 545 : 540;
+
+  img.style.top = `${top}px`;
+  img.style.left = `${left}px`;
+  img.style.display = "block";
+
+  uniformCanvas.appendChild(img);
+}
+
+  
   applyJacket(currentGender);
 
   document.getElementById("changeJacket").onclick = () => {
@@ -396,6 +422,9 @@ function renderBadge(key) {
   }
 };
 
+document.getElementById("addNameplate").onclick = () => {
+  renderNameplate();
+};
 
 
   document.getElementById("addRank").onclick = () => {
