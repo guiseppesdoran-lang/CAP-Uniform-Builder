@@ -169,6 +169,44 @@
   "stem_badges"
 ];
 
+const customBadgeSizes = {
+  "AirCrew1_DB3F0FCC3650F": { width: 60, height: 25 },
+  "BalloonPilot1_442D89C94185B": { width: 60, height: 25 },
+  "CAPMasterPilot1_621A0E2ED15DA": { width: 60, height: 25 },
+  "CAPPilot1_FA9D33EA587D8": { width: 60, height: 25 },
+  "CAPSeniorPilot1_D9725AE959752": { width: 60, height: 25 },
+  "GliderPilot1_7BFB287379918": { width: 60, height: 25 },
+  "MasterAirCrew1_72AC4CAE7A310": { width: 60, height: 25 },
+  "MasterObserver1_1B88D5071FD5C": { width: 60, height: 25 },
+  "SeniorAirCrew1_B289BAE6E515C": { width: 60, height: 25 },
+  "SeniorObserver1_0E35802A29801": { width: 60, height: 25 },
+  "buddist_chaplin": { width: 60, height: 30 },
+  "christian_chaplin": { width: 60, height: 30 },
+  "communications_technician_badge": { width: 60, height: 25 },
+  "cyber_badges": { width: 60, height: 25 },
+  "emergency_services_badge": { width: 60, height: 25 },
+  "emt_basic_badge": { width: 60, height: 25 },
+  "emt_intermediate": { width: 60, height: 25 },
+  "emt_paramedic": { width: 60, height: 25 },
+  "ground_team_basic_badge": { width: 60, height: 25 },
+  "historian_technicianIbadge": { width: 60, height: 25 },
+  "information_technology_technician_badge": { width: 60, height: 25 },
+  "jewish_chaplin": { width: 60, height: 30 },
+  "legal_officer": { width: 60, height: 25 },
+  "master_ground_team_badge": { width: 60, height: 25 },
+  "medical_officer": { width: 60, height: 25 },
+  "model_rocketry_badge": { width: 60, height: 25 },
+  "muslim_chaplin": { width: 60, height: 30 },
+  "nra_marksman_badge": { width: 60, height: 25 },
+  "nurse_officer": { width: 60, height: 25 },
+  "observer_badge": { width: 60, height: 25 },
+  "pre_solo_badge": { width: 60, height: 25 },
+  "senior_ground_team_badge": { width: 60, height: 25 },
+  "solo_badge": { width: 60, height: 25 },
+  "stem_badges": { width: 60, height: 25 }
+};
+
+
 
   function populateDropdown(selectElement, list) {
     selectElement.innerHTML = "";
@@ -282,42 +320,23 @@
 
   let badgeCount = 0;
 
-function renderBadges() {
-  document.querySelectorAll(".layer.badge").forEach(el => el.remove());
+function renderBadge(key) {
+  const original = document.getElementById(`badges-${key}`);
+  if (!original) return;
 
-  const baseTop = currentGender === "female" ? 660 : 650;
-  const baseLeft = currentGender === "female" ? 100 : 110;
-  const badgeWidth = 60;
-  const badgeHeight = 60;
-  const verticalSpacing = 2;
-  const horizontalSpacing = 10;
+  const clone = original.cloneNode();
+  clone.className = "layer badge";
 
-  for (let i = 0; i < selectedBadges.length; i++) {
-    const original = document.getElementById(`badges-${selectedBadges[i]}`);
-    if (!original) continue;
+  const size = customBadgeSizes[key] || { width: 60, height: 60 };
+  clone.style.top = currentGender === "female" ? "670px" : "660px";
+  clone.style.left = currentGender === "female" ? "100px" : "110px";
+  clone.style.width = `${size.width}px`;
+  clone.style.height = `${size.height}px`;
+  clone.style.display = "block";
 
-    const clone = original.cloneNode();
-    clone.className = "layer badge";
-    clone.style.width = `${badgeWidth}px`;
-    clone.style.height = `${badgeHeight}px`;
-    clone.style.display = "block";
-
-    let top, left;
-    if (i < 2) {
-      // Vertically stacked badges
-      top = baseTop + i * (badgeHeight + verticalSpacing);
-      left = baseLeft;
-    } else {
-      // Additional badges placed horizontally
-      top = baseTop;
-      left = baseLeft + (i - 1) * (badgeWidth + horizontalSpacing);
-    }
-
-    clone.style.top = `${top}px`;
-    clone.style.left = `${left}px`;
-    uniformCanvas.appendChild(clone);
-  }
+  uniformCanvas.appendChild(clone);
 }
+
 
 
 
