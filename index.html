@@ -164,18 +164,21 @@
   preloadImages("badges", badgeList, "badges");
 
   function applyJacket(type) {
-    currentGender = type;
-    document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
-    const jacketImg = document.getElementById(`jacket-${type}`);
-    const clone = jacketImg.cloneNode();
-    clone.className = "layer jacket";
-    clone.style.top = "150px";
-    clone.style.left = "0px";
-    clone.style.width = "100%";
-    clone.style.height = "auto";
-    clone.style.display = "block";
-    uniformCanvas.appendChild(clone);
-  }
+  currentGender = type;
+  document.querySelectorAll(".layer.jacket").forEach(el => el.remove());
+  const jacketImg = document.getElementById(`jacket-${type}`);
+  const clone = jacketImg.cloneNode();
+  clone.className = "layer jacket";
+  clone.style.top = "150px";
+  clone.style.left = "0px";
+  clone.style.width = "100%";
+  clone.style.height = "auto";
+  clone.style.display = "block";
+  uniformCanvas.appendChild(clone);
+  
+  badgeCount = 0; // 🔁 Reset badge stacking position
+}
+
 
   function renderRibbons() {
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
@@ -240,17 +243,30 @@
 
 
 
-  function renderBadge(key) {
-    const original = document.getElementById(`badges-${key}`);
-    const clone = original.cloneNode();
-    clone.className = "layer badge";
-    clone.style.top = currentGender === "female" ? "670px" : "660px";
-    clone.style.left = currentGender === "female" ? "100px" : "110px";
-    clone.style.width = "60px";
-    clone.style.height = "60px";
-    clone.style.display = "block";
-    uniformCanvas.appendChild(clone);
-  }
+  let badgeCount = 0;
+
+function renderBadge(key) {
+  const original = document.getElementById(`badges-${key}`);
+  if (!original) return;
+
+  const clone = original.cloneNode();
+  clone.className = "layer badge";
+  
+  const baseTop = currentGender === "female" ? 670 : 660;
+  const left = currentGender === "female" ? 100 : 110;
+  const verticalSpacing = 65; // Space between stacked badges
+
+  const top = baseTop + badgeCount * verticalSpacing;
+  clone.style.top = `${top}px`;
+  clone.style.left = `${left}px`;
+  clone.style.width = "60px";
+  clone.style.height = "60px";
+  clone.style.display = "block";
+
+  uniformCanvas.appendChild(clone);
+  badgeCount++;
+}
+
 
   function renderRank(key) {
     const original = document.getElementById(`ranks-${key}`);
@@ -282,9 +298,11 @@
   };
 
   document.getElementById("clearRibbons").onclick = () => {
-    selectedRibbons.length = 0;
-    renderRibbons();
-  };
+  selectedRibbons.length = 0;
+  renderRibbons();
+  badgeCount = 0; // 🔁 Optionally reset badges when clearing ribbons
+};
+
 
   document.getElementById("addBadge").onclick = () => {
     const key = badgeSelect.value;
