@@ -107,6 +107,8 @@
   const badgeSelect = document.getElementById("badgeSelect");
   const rankSelect = document.getElementById("rankSelect");
   const deviceSelect = document.getElementById("deviceSelect");
+  let nameplatePresent = false;
+  let ribbonsPresent = false;
   const uniformCanvas = document.getElementById("uniformCanvas");
   const assetsContainer = document.getElementById("assets");
 
@@ -428,23 +430,45 @@ function renderBadge(key) {
   let topOffset;
 
   if (location === "upper-left") {
-    const baseRibbonTop = 394;
-    const ribbonHeight = 8;
+  const baseRibbonTop = 394;
+  const ribbonHeight = 8;
+  const badgeSpacing = 5;
 
-    if (selectedRibbons.length > 0) {
-      const rows = Math.ceil(selectedRibbons.length / 3);
-      const ribbonStackHeight = rows * (ribbonHeight);
-      topOffset = baseRibbonTop + ribbonStackHeight + badgeSpacing;
-    } else {
-      topOffset = baseRibbonTop;
-    }
+  if (ribbonsPresent && selectedRibbons.length > 0) {
+    const rows = Math.ceil(selectedRibbons.length / 3);
+    topOffset = baseRibbonTop - rows * ribbonHeight - size.height - badgeSpacing;
+  } else {
+    topOffset = baseRibbonTop - size.height - badgeSpacing;
+  }
 
-    // Stack other badges vertically
-    for (const existingKey of badgeSlots[location]) {
-      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-      topOffset += existingSize.height + badgeSpacing;
-    }
+  for (const existingKey of badgeSlots[location]) {
+    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+    topOffset += existingSize.height + badgeSpacing;
+  }
 
+  clone.style.top = `${topOffset}px`;
+  clone.style.left = `${positionMap[location].left}px`;
+
+} else if (location === "upper-right") {
+  const baseNameplateTop = 390;
+  const badgeSpacing = 5;
+
+  if (nameplatePresent) {
+    topOffset = baseNameplateTop - size.height - badgeSpacing;
+  } else {
+    topOffset = 375; // fallback top if nameplate not present
+  }
+
+  for (const existingKey of badgeSlots[location]) {
+    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+    topOffset += existingSize.height + badgeSpacing;
+  }
+
+  clone.style.top = `${topOffset}px`;
+  clone.style.left = `${positionMap[location].left}px`;
+}
+
+    
     clone.style.top = `${topOffset}px`;
     clone.style.left = `${positionMap[location].left}px`;
 
@@ -491,6 +515,10 @@ function renderBadge(key) {
 
 function renderNameplate() {
   const existing = document.querySelector(".layer.nameplate");
+if (existing) return; // prevent re-adding
+
+  nameplatePresent = true;
+  const existing = document.querySelector(".layer.nameplate");
   if (existing) existing.remove();
 
   const img = document.createElement("img");
@@ -521,6 +549,7 @@ function renderNameplate() {
     const key = ribbonSelect.value;
     if (!selectedRibbons.includes(key)) {
       selectedRibbons.push(key);
+      ribbonsPresent = true;
       renderRibbons();
     } else {
       alert("Ribbon already added.");
@@ -528,6 +557,7 @@ function renderNameplate() {
   };
 
   document.getElementById("clearRibbons").onclick = () => {
+  ribbonsPresent = false;
   selectedRibbons.length = 0;
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
   renderRibbons();
