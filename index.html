@@ -429,62 +429,7 @@ function renderBadge(key) {
 
   let topOffset;
 
-  if (location === "upper-left") {
-  const baseRibbonTop = 394;
-  const ribbonHeight = 8;
-  const badgeSpacing = 5;
-
-  if (ribbonsPresent && selectedRibbons.length > 0) {
-    const rows = Math.ceil(selectedRibbons.length / 3);
-    topOffset = baseRibbonTop - rows * ribbonHeight - size.height - badgeSpacing;
-  } else {
-    topOffset = baseRibbonTop - size.height - badgeSpacing;
-  }
-
-  for (const existingKey of badgeSlots[location]) {
-    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-    topOffset += existingSize.height + badgeSpacing;
-  }
-
-  clone.style.top = `${topOffset}px`;
-  clone.style.left = `${positionMap[location].left}px`;
-
-} else if (location === "upper-right") {
-  const baseNameplateTop = 390;
-  const badgeSpacing = 5;
-
-  if (nameplatePresent) {
-    topOffset = baseNameplateTop - size.height - badgeSpacing;
-  } else {
-    topOffset = 375; // fallback top if nameplate not present
-  }
-
-  for (const existingKey of badgeSlots[location]) {
-    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-    topOffset += existingSize.height + badgeSpacing;
-  }
-
-  clone.style.top = `${topOffset}px`;
-  clone.style.left = `${positionMap[location].left}px`;
-}
-
-    
-    clone.style.top = `${topOffset}px`;
-    clone.style.left = `${positionMap[location].left}px`;
-
-  } else {
-    const basePos = positionMap[location];
-    let offset = 0;
-
-    for (const existingKey of badgeSlots[location]) {
-      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-      offset += existingSize.height + badgeSpacing;
-    }
-
-    clone.style.top = `${basePos.top + offset}px`;
-    clone.style.left = `${basePos.left}px`;
-  }
-
+  const existing = document.querySelector(".layer.nameplate");
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
   clone.style.display = "block";
@@ -515,11 +460,9 @@ function renderBadge(key) {
 
 function renderNameplate() {
   const existing = document.querySelector(".layer.nameplate");
-if (existing) return; // prevent re-adding
+  if (existing) return; // prevent re-adding
 
   nameplatePresent = true;
-  const existing = document.querySelector(".layer.nameplate");
-  if (existing) existing.remove();
 
   const img = document.createElement("img");
   img.src = "images/nameplate/CAP_Nameplate.png";
@@ -536,6 +479,7 @@ if (existing) return; // prevent re-adding
 
   uniformCanvas.appendChild(img);
 }
+
 
   
   applyJacket(currentGender);
