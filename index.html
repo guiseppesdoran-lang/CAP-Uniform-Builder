@@ -429,7 +429,55 @@ function renderBadge(key) {
 
   let topOffset;
 
-  const existing = document.querySelector(".layer.nameplate");
+  // 🎯 Handle upper-left dynamic placement
+  if (location === "upper-left") {
+    const baseRibbonTop = 394;
+    if (ribbonsPresent && selectedRibbons.length > 0) {
+      const rows = Math.ceil(selectedRibbons.length / 3);
+      topOffset = baseRibbonTop - rows * 8 - size.height - badgeSpacing;
+    } else {
+      topOffset = baseRibbonTop - size.height - badgeSpacing;
+    }
+
+    for (const existingKey of badgeSlots[location]) {
+      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+      topOffset += existingSize.height + badgeSpacing;
+    }
+
+    clone.style.top = `${topOffset}px`;
+    clone.style.left = `${positionMap[location].left}px`;
+
+  // 🎯 Handle upper-right dynamic placement
+  } else if (location === "upper-right") {
+    const baseNameplateTop = 390;
+    if (nameplatePresent) {
+      topOffset = baseNameplateTop - size.height - badgeSpacing;
+    } else {
+      topOffset = 375;
+    }
+
+    for (const existingKey of badgeSlots[location]) {
+      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+      topOffset += existingSize.height + badgeSpacing;
+    }
+
+    clone.style.top = `${topOffset}px`;
+    clone.style.left = `${positionMap[location].left}px`;
+
+  // ✅ Default static positions for other slots
+  } else {
+    const basePos = positionMap[location];
+    let offset = 0;
+
+    for (const existingKey of badgeSlots[location]) {
+      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+      offset += existingSize.height + badgeSpacing;
+    }
+
+    clone.style.top = `${basePos.top + offset}px`;
+    clone.style.left = `${basePos.left}px`;
+  }
+
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
   clone.style.display = "block";
