@@ -80,7 +80,7 @@
     <select id="rankSelect"></select>
     <button id="addRank">Add Rank</button>
 
-    <button id="addNameplate">Add plate</button>
+    <button id="addNameplate">Add Nameplate</button>
     <button id="addUSInsignia">Add U.S. Collar Insignia</button>
     <button id="addCAPInsignia">Add CAP Collar Insignia</button>
 
@@ -289,7 +289,7 @@ const customBadgeSizes = {
   document.querySelectorAll(".layer").forEach(el => el.remove()); // Removes all existing layers
   const jacketImg = document.getElementById(`jacket-${type}`);
   const clone = jacketImg.cloneNode();
-  clone.class = "layer jacket";
+  clone.className = "layer jacket";
   clone.style.top = "150px";
   clone.style.left = "0px";
   clone.style.width = "100%";
@@ -352,7 +352,7 @@ const customBadgeSizes = {
       const original = document.getElementById(`ribbons-${ribbon}`);
       if (!original) return;
       const clone = original.cloneNode();
-      clone.class = "layer ribbon";
+      clone.className = "layer ribbon";
       clone.style.top = `${y - ribbonHeight}px`;
       clone.style.left = `${x}px`;
       clone.style.width = `${ribbonWidth}px`;
@@ -380,10 +380,10 @@ const rightBadges = [];
 
 function promptBadgeReplacement(location, newBadgeKey) {
   const currentBadges = badgeSlots[location];
-  const s = currentBadges.map(b => b.replace(/_/g, " "));
+  const names = currentBadges.map(b => b.replace(/_/g, " "));
   const choice = prompt(
     `The ${location.replace("-", " ")} badge area is full.\nChoose a badge to remove:\n` +
-    s.map((n, i) => `${i + 1}. ${n}`).join("\n")
+    names.map((n, i) => `${i + 1}. ${n}`).join("\n")
   );
   const index = parseInt(choice) - 1;
   if (!isNaN(index) && index >= 0 && index < currentBadges.length) {
@@ -409,7 +409,7 @@ function renderBadge(key) {
   if (!original) return;
 
   const clone = original.cloneNode();
-  clone.class = "layer badge";
+  clone.className = "layer badge";
 
   const size = customBadgeSizes[key] || { width: 60, height: 25 };
   const badgeSpacing = 5;
@@ -477,7 +477,7 @@ function renderBadge(key) {
   function renderRank(key) {
     const original = document.getElementById(`ranks-${key}`);
     const clone = original.cloneNode();
-    clone.class = "layer rank";
+    clone.className = "layer rank";
     clone.style.top = currentGender === "female" ? "180px" : "170px";
     clone.style.left = currentGender === "female" ? "270px" : "280px";
     clone.style.width = "50px";
@@ -486,7 +486,7 @@ function renderBadge(key) {
     uniformCanvas.appendChild(clone);
   }
 
-function renderplate() {
+function renderNameplate() {
   const existing = document.querySelector(".layer.nameplate");
   if (existing) existing.remove();
 
