@@ -157,7 +157,7 @@ const badgeLocations = {
 
 const badgeSlots = {
   "upper-left": [],
-  "lower-left": [],
+  "lower-left": { left: 350 },
   "upper-right": [],
   "lower-right": [],
   "low-left": []
@@ -395,8 +395,8 @@ function promptBadgeReplacement(location, newBadgeKey) {
     selectedBadges.splice(selectedBadges.indexOf(toRemove), 1);
     badgeSlots[location].splice(index, 1);
     document.querySelectorAll(".layer.badge").forEach(el => el.remove());
-    selectedBadges.forEach(b => renderBadge(b));
-    renderBadge(newBadgeKey);
+    selectedBadges.forEach(b => adge(b));
+    adge(newBadgeKey);
   }
 }
 
@@ -463,6 +463,27 @@ function renderBadge(key) {
 
     clone.style.top = `${topOffset}px`;
     clone.style.left = `${positionMap[location].left}px`;
+
+  
+  } else if (location === "lower-left") {
+  let baseTop;
+
+  if (ribbonsPresent && selectedRibbons.length > 0) {
+    const rows = Math.ceil(selectedRibbons.length / 3);
+    const bottomRibbonY = 402 - (rows - 1) * 8; // Y of bottom ribbon row
+    baseTop = bottomRibbonY + 8 + 50; // 8 for ribbon height, +50px padding
+  } else {
+    baseTop = 402 + 50; // fallback if no ribbons
+  }
+
+  let topOffset = baseTop;
+  for (const existingKey of badgeSlots[location]) {
+    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+    topOffset += existingSize.height + badgeSpacing;
+  }
+
+  clone.style.top = `${topOffset}px`;
+  clone.style.left = `${positionMap[location].left}px`;
 
   // ✅ Default static positions for other slots
   } else {
