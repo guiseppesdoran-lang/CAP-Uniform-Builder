@@ -417,6 +417,8 @@ renderBadge(newBadgeKey);
   }
 }
 
+
+  
 function renderBadge(key) {
   const location = badgeLocations[key] || "upper-left";
   if (!badgeSlots[location]) badgeSlots[location] = [];
@@ -571,7 +573,6 @@ function renderNameplate() {
 
 const top = 390;
 const left = 150;
-  const left = currentGender === "female" ? 150 : 150;
 
   img.style.top = `${top}px`;
   img.style.left = `${left}px`;
