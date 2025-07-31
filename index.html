@@ -289,6 +289,9 @@ const customBadgeSizes = {
   preloadImages("devices", deviceList, "devices");
   preloadImages("ranks", rankList, "ranks");
   preloadImages("badges", badgeList, "badges");
+  preloadImages("nameplate", ["CAP_Nameplate"], "nameplate");
+  preloadImages("collar", ["us_insignia", "cap_insignia"], "collar");
+
 
   function applyJacket(type) {
   currentGender = type;
@@ -537,17 +540,11 @@ function renderBadge(key) {
   clone.style.display = "block";
 
   uniformCanvas.appendChild(clone);
+  if (!badgeSlots[location].includes(key)) {
   badgeSlots[location].push(key);
 }
 
-
-
-
-
-
-
-
-
+  
   function renderRank(key) {
     const original = document.getElementById(`ranks-${key}`);
     const clone = original.cloneNode();
@@ -572,7 +569,8 @@ function renderNameplate() {
   img.style.width = "56.25px";
   img.style.height = "13.6px";
 
-  const top = currentGender === "female" ? 390 : 390;
+const top = 390;
+const left = 150;
   const left = currentGender === "female" ? 150 : 150;
 
   img.style.top = `${top}px`;
