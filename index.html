@@ -531,11 +531,7 @@ function renderBadge(key) {
       topOffset = baseRibbonTop - size.height - badgeSpacing;
     }
 
-    for (const existingKey of badgeSlots[location]) {
-      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-      topOffset += existingSize.height + badgeSpacing;
-    }
-
+   
     clone.style.top = `${topOffset}px`;
     clone.style.left = `${positionMap[location].left}px`;
 
@@ -548,11 +544,7 @@ function renderBadge(key) {
       topOffset = 375;
     }
 
-    for (const existingKey of badgeSlots[location]) {
-      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-      topOffset += existingSize.height + badgeSpacing;
-    }
-
+    
     clone.style.top = `${topOffset}px`;
     clone.style.left = `${positionMap[location].left}px`;
 
@@ -588,15 +580,7 @@ function renderBadge(key) {
 }
 
 
-    for (const existingKey of badgeSlots[location]) {
-      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-      offset += existingSize.height + badgeSpacing;
-    }
-
-    clone.style.top = `${basePos.top + offset}px`;
-    clone.style.left = `${basePos.left}px`;
-  }
-
+    
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
   clone.style.display = "block";
