@@ -403,6 +403,20 @@ const maxBadgesPerSide = 2;
 const leftBadges = [];
 const rightBadges = [];
 
+function getTopRibbonY() {
+  const ribbonLayers = Array.from(document.querySelectorAll(".layer.ribbon"));
+  if (ribbonLayers.length === 0) return null;
+
+  let minY = Infinity;
+  ribbonLayers.forEach(ribbon => {
+    const y = parseInt(ribbon.style.top.replace("px", ""));
+    if (y < minY) minY = y;
+  });
+
+  return minY;
+}
+
+  
 function promptBadgeReplacement(location, newBadgeKey) {
   const currentBadges = badgeSlots[location];
   const names = currentBadges.map(b => b.replace(/_/g, " "));
@@ -543,9 +557,36 @@ function renderBadge(key) {
     clone.style.left = `${positionMap[location].left}px`;
 
   // ✅ Default static positions for other slots
-  } else {
-    const basePos = positionMap[location];
-    let offset = 0;
+ } else {
+  const basePos = positionMap[location];
+  let offset = 0;
+
+  // 🎯 Special rule: shift certain badges 36px above top ribbon row
+  const shiftAboveRibbonBadges = new Set([
+    "ground_team_basic_badge",
+    "senior_ground_team_badge",
+    "master_ground_team_badge",
+    "emt_basic_badge",
+    "emt_intermediate",
+    "emt_paramedic"
+  ]);
+
+  if (shiftAboveRibbonBadges.has(key)) {
+    const topRibbonY = getTopRibbonY();
+    if (topRibbonY !== null) {
+      basePos.top = topRibbonY - 36;
+    }
+  }
+
+  for (const existingKey of badgeSlots[location]) {
+    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+    offset += existingSize.height + badgeSpacing;
+  }
+
+  clone.style.top = `${basePos.top + offset}px`;
+  clone.style.left = `${basePos.left}px`;
+}
+
 
     for (const existingKey of badgeSlots[location]) {
       const existingSize = customBadgeSizes[existingKey] || { height: 25 };
