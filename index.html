@@ -389,6 +389,11 @@ const customBadgeSizes = {
 
   // 🔁 Re-render badges after ribbons are updated
   document.querySelectorAll(".layer.badge").forEach(el => el.remove());
+
+     for (const slot in badgeSlots) {
+    badgeSlots[slot] = [];
+  }
+    
   for (const badgeKey of selectedBadges) {
     renderBadge(badgeKey);
   }
@@ -531,12 +536,8 @@ function renderBadge(key) {
   // 🎯 Handle upper-left dynamic placement
   if (location === "upper-left") {
     const baseRibbonTop = 394;
-    if (ribbonsPresent && selectedRibbons.length > 0) {
-      const rows = Math.ceil(selectedRibbons.length / 3);
-      topOffset = baseRibbonTop - rows * 8 - size.height - badgeSpacing;
-    } else {
-      topOffset = baseRibbonTop - size.height - badgeSpacing;
-    }
+    const rows = Math.ceil(selectedRibbons.length / 3);
+topOffset = 394 - (rows > 0 ? rows * 8 : 8) - size.height - badgeSpacing;
 
    
     clone.style.top = `${topOffset}px`;
