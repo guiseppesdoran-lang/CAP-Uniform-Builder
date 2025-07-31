@@ -307,6 +307,22 @@ const customBadgeSizes = {
   leftBadges.length = 0;
   rightBadges.length = 0;
 }
+  
+function downloadUniformImage() {
+  const canvasEl = document.getElementById("uniformCanvas");
+
+  html2canvas(canvasEl, {
+    backgroundColor: "#ffffff",  // ensures white background
+    useCORS: true,
+    scale: 2                     // increase resolution (2x canvas size)
+  }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "CAP_Uniform.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
+
 
 
   function renderRibbons() {
@@ -395,8 +411,9 @@ function promptBadgeReplacement(location, newBadgeKey) {
     selectedBadges.splice(selectedBadges.indexOf(toRemove), 1);
     badgeSlots[location].splice(index, 1);
     document.querySelectorAll(".layer.badge").forEach(el => el.remove());
-    selectedBadges.forEach(b => adge(b));
-    adge(newBadgeKey);
+    selectedBadges.forEach(b => renderBadge(b));
+renderBadge(newBadgeKey);
+
   }
 }
 
@@ -468,35 +485,26 @@ function renderBadge(key) {
   } else if (location === "lower-left") {
   let baseTop;
 
+  const ribbonRowHeight = 8;
+  const ribbonStartTop = 402;
+
   if (ribbonsPresent && selectedRibbons.length > 0) {
     const rows = Math.ceil(selectedRibbons.length / 3);
-    const bottomRibbonY = 402 - (rows - 1) * 8; // Y of bottom ribbon row
-    baseTop = bottomRibbonY + 8 + 50; // 8 for ribbon height, +50px padding
+    const topRibbonY = ribbonStartTop - (rows - 1) * ribbonRowHeight;
+    baseTop = topRibbonY - 50; // 50px above top ribbon
   } else {
-    baseTop = 402 + 50; // fallback if no ribbons
+    baseTop = ribbonStartTop - 50; // 50px above where ribbons would start
   }
 
   let topOffset = baseTop;
   for (const existingKey of badgeSlots[location]) {
     const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-    topOffset += existingSize.height + badgeSpacing;
+    topOffset -= existingSize.height + badgeSpacing;
   }
 
   clone.style.top = `${topOffset}px`;
   clone.style.left = `${positionMap[location].left}px`;
 
-  // ✅ Default static positions for other slots
-  } else {
-    const basePos = positionMap[location];
-    let offset = 0;
-
-    for (const existingKey of badgeSlots[location]) {
-      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-      offset += existingSize.height + badgeSpacing;
-    }
-
-    clone.style.top = `${basePos.top + offset}px`;
-    clone.style.left = `${basePos.left}px`;
   }
 
   clone.style.width = `${size.width}px`;
@@ -594,11 +602,16 @@ document.getElementById("addNameplate").onclick = () => {
   renderNameplate();
 };
 
-
+document.getElementById("downloadImage").onclick = downloadUniformImage;
+};
   document.getElementById("addRank").onclick = () => {
     const key = rankSelect.value;
     renderRank(key);
   };
+
+  
 </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 </body>
 </html>
