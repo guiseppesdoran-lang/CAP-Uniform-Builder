@@ -103,7 +103,14 @@
 </div>
 
 <script>
+  let currentGender = "male";
+
+  
+
+  
 document.addEventListener("DOMContentLoaded", () => {
+
+  
 
   const ribbonSelect = document.getElementById("ribbonSelect");
   const badgeSelect = document.getElementById("badgeSelect");
@@ -112,9 +119,39 @@ document.addEventListener("DOMContentLoaded", () => {
   let nameplatePresent = false;
   let ribbonsPresent = false;
   const uniformCanvas = document.getElementById("uniformCanvas");
+
+  document.getElementById("addUSInsignia").onclick = () => {
+  const existing = document.querySelector(".layer.us_insignia");
+  if (!existing) {
+    const img = document.createElement("img");
+    img.src = "images/collar/us_insignia.png";
+    img.className = "layer us_insignia";
+    img.style.top = currentGender === "female" ? "200px" : "190px";
+    img.style.left = "130px";
+    img.style.width = "30px";
+    img.style.height = "30px";
+    img.style.display = "block";
+    uniformCanvas.appendChild(img);
+  }
+};
+
+document.getElementById("addCAPInsignia").onclick = () => {
+  const existing = document.querySelector(".layer.cap_insignia");
+  if (!existing) {
+    const img = document.createElement("img");
+    img.src = "images/collar/cap_insignia.png";
+    img.className = "layer cap_insignia";
+    img.style.top = currentGender === "female" ? "200px" : "190px";
+    img.style.left = "340px";
+    img.style.width = "30px";
+    img.style.height = "30px";
+    img.style.display = "block";
+    uniformCanvas.appendChild(img);
+  }
+};
+  
   const assetsContainer = document.getElementById("assets");
 
-  let currentGender = "male";
   const selectedRibbons = []; const selectedBadges = [];
 const badgeLocations = {
   "AirCrew1_DB3F0FCC3650F": "upper-left",
