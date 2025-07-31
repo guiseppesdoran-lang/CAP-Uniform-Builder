@@ -386,7 +386,14 @@ const customBadgeSizes = {
       uniformCanvas.appendChild(clone);
     });
   });
+
+  // 🔁 Re-render badges after ribbons are updated
+  document.querySelectorAll(".layer.badge").forEach(el => el.remove());
+  for (const badgeKey of selectedBadges) {
+    renderBadge(badgeKey);
+  }
 }
+
 
 
 
