@@ -312,9 +312,9 @@ function downloadUniformImage() {
   const canvasEl = document.getElementById("uniformCanvas");
 
   html2canvas(canvasEl, {
-    backgroundColor: "#ffffff",  // ensures white background
+    backgroundColor: "#ffffff",  // Optional: white background
     useCORS: true,
-    scale: 2                     // increase resolution (2x canvas size)
+    scale: 2                     // Optional: 2x resolution
   }).then(canvas => {
     const link = document.createElement("a");
     link.download = "CAP_Uniform.png";
@@ -322,6 +322,9 @@ function downloadUniformImage() {
     link.click();
   });
 }
+
+document.getElementById("downloadImage").onclick = downloadUniformImage;
+
 
 
 
@@ -602,7 +605,6 @@ document.getElementById("addNameplate").onclick = () => {
   renderNameplate();
 };
 
-document.getElementById("downloadImage").onclick = downloadUniformImage;
 };
   document.getElementById("addRank").onclick = () => {
     const key = rankSelect.value;
