@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CAP Class A Blues Uniform Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #eef1f5;
+    }
+    header {
+      background-color: #002855;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      display: flex;
+    }
+    #controls {
+      width: 320px;
+      background: white;
+      padding: 1rem;
+      border-right: 1px solid #ccc;
+      overflow-y: auto;
+      height: calc(100vh - 72px);
+    }
+    #preview {
+      flex-grow: 1;
+      background: #d1d8e0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      position: relative;
+      height: calc(100vh - 72px);
+    }
+    #uniformCanvas {
+      position: relative;
+      width: 900px;
+      height: 1200px;
+    }
+    .layer {
+      position: absolute;
+    }
+    label, select, button {
+      display: block;
+      margin: 0.5rem 0;
+      width: 100%;
+    }
+    select, button {
+      padding: 0.3rem;
+    }
+    .hidden-assets {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>CAP Class A Blues Uniform Builder</h1>
+</header>
+<main>
+  <section id="controls">
+    <label for="ribbonSelect">Ribbons</label>
+    <select id="ribbonSelect"></select>
+    <button id="addRibbon">Add Ribbon</button>
+    <button id="clearRibbons">Clear Ribbons</button>
+
+    <label for="deviceSelect">Devices</label>
+    <select id="deviceSelect"></select>
+    <button id="addDevice">Add Device</button>
+
+    <label for="badgeSelect">Badges</label>
+    <select id="badgeSelect"></select>
+    <button id="addBadge">Add Badge</button>
+
+    <label for="rankSelect">Rank Insignia</label>
+    <select id="rankSelect"></select>
+    <button id="addRank">Add Rank</button>
+
+    <button id="addNameplate">Add Nameplate</button>
+    <button id="addUSInsignia">Add U.S. Collar Insignia</button>
+    <button id="addCAPInsignia">Add CAP Collar Insignia</button>
+
+    <label for="jacketSelect">Jacket</label>
+    <select id="jacketSelect">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+    <button id="changeJacket">Apply Jacket</button>
+    <button id="downloadImage">Download Image</button>
+  </section>
+  <section id="preview">
+    <div id="uniformCanvas"></div>
+  </section>
+</main>
+
+<!-- ✅ Move this above script so preloaded assets exist before JS runs -->
+<div class="hidden-assets" id="assets">
+  <img id="jacket-male" src="images/base/jacket_male.png" style="display:none;">
+  <img id="jacket-female" src="images/base/jacket_female.png" style="display:none;">
+</div>
+
+<!-- The script block with logic will be embedded here -->
+<!-- This placeholder comment removed as per request -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="builder-final-script.js"></script>
+</body>
+</html>
