@@ -111,14 +111,8 @@
   let ribbonsPresent = false;
   const uniformCanvas = document.getElementById("uniformCanvas");
  
-  const mouseCoordsDisplay = document.getElementById("mouseCoords");
 
-uniformCanvas.addEventListener("mousemove", (e) => {
-  const rect = uniformCanvas.getBoundingClientRect();
-  const x = Math.round(e.clientX - rect.left);
-  const y = Math.round(e.clientY - rect.top);
-  mouseCoordsDisplay.textContent = `X: ${x}, Y: ${y}`;
-});
+
 
   const assetsContainer = document.getElementById("assets");
 
@@ -649,29 +643,10 @@ document.getElementById("addNameplate").onclick = () => {
   };
 
 
-<!-- Coordinate display box -->
-<div id="mouseCoords"
-     style="position: fixed; bottom: 5px; left: 5px; background: rgba(0,0,0,0.75); color: white;
-            padding: 4px 8px; font-size: 14px; font-family: monospace; z-index: 9999;">
-  X: 0, Y: 0
-</div>
 
-<!-- html2canvas for image download -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-<!-- Coordinate tracker -->
-<script>
-  window.onload = () => {
-    const uniformCanvas = document.getElementById("uniformCanvas");
-    const mouseCoordsDisplay = document.getElementById("mouseCoords");
-
-    uniformCanvas.addEventListener("mousemove", (e) => {
-      const rect = uniformCanvas.getBoundingClientRect();
-      const x = Math.round(e.clientX - rect.left);
-      const y = Math.round(e.clientY - rect.top);
-      mouseCoordsDisplay.textContent = `X: ${x}, Y: ${y}`;
-    });
-  };
+  
 </script>
 
 </body>
