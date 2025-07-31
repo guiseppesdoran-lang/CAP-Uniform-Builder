@@ -103,6 +103,7 @@
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
   const ribbonSelect = document.getElementById("ribbonSelect");
   const badgeSelect = document.getElementById("badgeSelect");
   const rankSelect = document.getElementById("rankSelect");
@@ -110,10 +111,6 @@
   let nameplatePresent = false;
   let ribbonsPresent = false;
   const uniformCanvas = document.getElementById("uniformCanvas");
- 
-
-
-
   const assetsContainer = document.getElementById("assets");
 
   let currentGender = "male";
@@ -304,12 +301,13 @@ const customBadgeSizes = {
   clone.style.height = "auto";
   clone.style.display = "block";
   uniformCanvas.appendChild(clone);
+  
+    // 🔁 Re-render elements after resetting canvas
+  if (nameplatePresent) renderNameplate();
+  renderRibbons();
+  selectedBadges.forEach(renderBadge);
 
-  // 🔁 Reset badge tracking
-  badgeCountLeft = 0;
-  badgeCountRight = 0;
-  leftBadges.length = 0;
-  rightBadges.length = 0;
+
 }
   
 function downloadUniformImage() {
@@ -392,18 +390,9 @@ document.getElementById("downloadImage").onclick = downloadUniformImage;
 
 
 
-
-
-
-
-
-
-let badgeCountLeft = 0;
-let badgeCountRight = 0;
 const maxBadgesPerSide = 2;
 
-const leftBadges = [];
-const rightBadges = [];
+
 
 function promptBadgeReplacement(location, newBadgeKey) {
   const currentBadges = badgeSlots[location];
@@ -506,7 +495,7 @@ function renderBadge(key) {
   let topOffset = baseTop;
   for (const existingKey of badgeSlots[location]) {
     const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-    topOffset -= existingSize.height + badgeSpacing;
+    topOffset += existingSize.height + badgeSpacing;
   }
 
   clone.style.top = `${topOffset}px`;
@@ -642,6 +631,8 @@ document.getElementById("addNameplate").onclick = () => {
     renderRank(key);
   };
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+  
 </body>
 </html>
