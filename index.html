@@ -103,6 +103,27 @@
 </div>
 
 <script>
+
+  const allowedCadetBadges = new Set([
+  "solo_badge", "pre_solo_badge", "ground_team_basic_badge", "senior_ground_team_badge", "master_ground_team_badge",
+  "emt_basic_badge", "emt_intermediate", "emt_paramedic", "aerospace", "model_rocketry_badge", "communications_technician_badge",
+  "information_technology_technician_badge", "cyber_badges", "stem_badges", "cadetadvisory", "cd", "nra_marksman_badge",
+  "AirCrew1_DB3F0FCC3650F", "BalloonPilot1_442D89C94185B", "CAPMasterPilot1_621A0E2ED15DA",
+  "CAPPilot1_FA9D33EA587D8", "CAPSeniorPilot1_D9725AE959752", "GliderPilot1_7BFB287379918",
+  "MasterAirCrew1_72AC4CAE7A310", "SeniorAirCrew1_B289BAE6E515C", "MasterObserver1_1B88D5071FD5C",
+  "SeniorObserver1_0E35802A29801", "observer_badge"
+]);
+
+function isBadgeCadetAuthorized(badgeID) {
+  return allowedCadetBadges.has(badgeID);
+}
+
+  const exclusiveBadges = [
+  ['emt_basic_badge', 'ground_team_basic_badge'],
+  ['emt_intermediate', 'senior_ground_team_badge'],
+  ['emt_paramedic', 'master_ground_team_badge']
+];
+
   const ribbonSelect = document.getElementById("ribbonSelect");
   const badgeSelect = document.getElementById("badgeSelect");
   const rankSelect = document.getElementById("rankSelect");
@@ -114,7 +135,7 @@
 
   let currentGender = "male";
   const selectedRibbons = []; const selectedBadges = [];
-const badgeLocations = {
+  const badgeLocations = {
   "AirCrew1_DB3F0FCC3650F": "upper-left",
   "BalloonPilot1_442D89C94185B": "upper-left",
   "CAPMasterPilot1_621A0E2ED15DA": "upper-left",
@@ -400,6 +421,62 @@ function promptBadgeReplacement(location, newBadgeKey) {
   }
 }
 
+function enforceExclusiveBadgeConflicts(selectedBadge) {
+  exclusiveBadges.forEach(pair => {
+    if (pair.includes(selectedBadge)) {
+      pair.forEach(conflicting => {
+        if (conflicting !== selectedBadge && selectedBadges.includes(conflicting)) {
+          selectedBadges.splice(selectedBadges.indexOf(conflicting), 1);
+          for (const slot in badgeSlots) {
+            const index = badgeSlots[slot].indexOf(conflicting);
+            if (index !== -1) badgeSlots[slot].splice(index, 1);
+          }
+          document.querySelectorAll(".layer.badge").forEach(el => el.remove());
+          selectedBadges.forEach(b => renderBadge(b));
+          alert(`"${selectedBadge.replace(/_/g, " ")}" and "${conflicting.replace(/_/g, " ")}" cannot be worn together. "${conflicting.replace(/_/g, " ")}" was removed.`);
+        }
+      });
+    }
+  });
+}
+
+function renderNRABadgeAdjustments() {
+  const nraBadge = document.getElementById("badges-nra_marksman_badge");
+  if (!nraBadge) return;
+
+  const existing = document.getElementById("nra-layer");
+  if (existing) return; // Avoid duplicates
+
+  const clone = nraBadge.cloneNode();
+  clone.className = "layer badge";
+  clone.id = "nra-layer";
+  clone.style.top = "405px";  // Pocket position
+  clone.style.left = "335px";
+  clone.style.width = "40px";
+  clone.style.height = "60px";
+  clone.style.display = "block";
+  uniformCanvas.appendChild(clone);
+
+  // Shift any low-left badge down to make room
+  if (badgeSlots["low-left"]) {
+    badgeSlots["low-left"].forEach(badgeID => {
+      const badgeElement = document.getElementById(`badges-${badgeID}`);
+      if (badgeElement) {
+        const badgeLayers = document.querySelectorAll(".layer.badge");
+        badgeLayers.forEach(badgeLayer => {
+          if (badgeLayer.src === badgeElement.src) {
+            const currentTop = parseInt(badgeLayer.style.top.replace("px", ""));
+            badgeLayer.style.top = `${currentTop + 40}px`;
+          }
+        });
+      }
+    });
+  }
+}
+
+
+  
+  
 function renderBadge(key) {
   const location = badgeLocations[key] || "upper-left";
   if (!badgeSlots[location]) badgeSlots[location] = [];
@@ -484,6 +561,11 @@ function renderBadge(key) {
 
   uniformCanvas.appendChild(clone);
   badgeSlots[location].push(key);
+
+  if (key === "nra_marksman_badge") {
+  renderNRABadgeAdjustments();
+}
+
 }
 
 
@@ -553,15 +635,19 @@ function renderNameplate() {
   selectedRibbons.length = 0;
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
   renderRibbons();
-  badgeCount = 0;
 };
 
 
 
   document.getElementById("addBadge").onclick = () => {
   const key = badgeSelect.value;
-  if (!selectedBadges.includes(key)) {
-    selectedBadges.push(key);
+if (!isBadgeCadetAuthorized(key)) {
+  alert("This badge is not authorized for cadets.");
+  return;
+}
+if (!selectedBadges.includes(key)) {
+enforceExclusiveBadgeConflicts(key);
+selectedBadges.push(key);
     renderBadge(key);
   } else {
     alert("Badge already added.");
