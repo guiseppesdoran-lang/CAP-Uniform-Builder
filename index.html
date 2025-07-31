@@ -518,6 +518,34 @@ function renderBadge(key) {
   clone.style.top = `${topOffset}px`;
   clone.style.left = `${positionMap[location].left}px`;
 
+} else if (location === "low-left") {
+  let baseTop = positionMap[location].top;
+  let topOffset = baseTop;
+
+  for (const existingKey of badgeSlots[location]) {
+    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+    topOffset += existingSize.height + badgeSpacing;
+  }
+
+  clone.style.top = `${topOffset}px`;
+  clone.style.left = `${positionMap[location].left}px`;
+
+
+    } else if (location === "mid-left") {
+  let baseTop = positionMap[location].top;
+  let topOffset = baseTop;
+
+  for (const existingKey of badgeSlots[location]) {
+    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+    topOffset += existingSize.height + badgeSpacing;
+  }
+
+  clone.style.top = `${topOffset}px`;
+  clone.style.left = `${positionMap[location].left}px`;
+}
+
+
+    
   }
 
   clone.style.width = `${size.width}px`;
