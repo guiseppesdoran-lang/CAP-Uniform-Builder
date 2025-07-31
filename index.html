@@ -103,15 +103,6 @@
 </div>
 
 <script>
-  let currentGender = "male";
-
-  
-
-  
-document.addEventListener("DOMContentLoaded", () => {
-
-  
-
   const ribbonSelect = document.getElementById("ribbonSelect");
   const badgeSelect = document.getElementById("badgeSelect");
   const rankSelect = document.getElementById("rankSelect");
@@ -119,39 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let nameplatePresent = false;
   let ribbonsPresent = false;
   const uniformCanvas = document.getElementById("uniformCanvas");
-
-  document.getElementById("addUSInsignia").onclick = () => {
-  const existing = document.querySelector(".layer.us_insignia");
-  if (!existing) {
-    const img = document.createElement("img");
-    img.src = "images/collar/us_insignia.png";
-    img.className = "layer us_insignia";
-    img.style.top = currentGender === "female" ? "200px" : "190px";
-    img.style.left = "130px";
-    img.style.width = "30px";
-    img.style.height = "30px";
-    img.style.display = "block";
-    uniformCanvas.appendChild(img);
-  }
-};
-
-document.getElementById("addCAPInsignia").onclick = () => {
-  const existing = document.querySelector(".layer.cap_insignia");
-  if (!existing) {
-    const img = document.createElement("img");
-    img.src = "images/collar/cap_insignia.png";
-    img.className = "layer cap_insignia";
-    img.style.top = currentGender === "female" ? "200px" : "190px";
-    img.style.left = "340px";
-    img.style.width = "30px";
-    img.style.height = "30px";
-    img.style.display = "block";
-    uniformCanvas.appendChild(img);
-  }
-};
-  
   const assetsContainer = document.getElementById("assets");
 
+  let currentGender = "male";
   const selectedRibbons = []; const selectedBadges = [];
 const badgeLocations = {
   "AirCrew1_DB3F0FCC3650F": "upper-left",
@@ -185,7 +146,7 @@ const badgeLocations = {
   "medical_officer": "upper-right",
   "nurse_officer": "upper-right",
   "legal_officer": "upper-right",
-  "historian_technician_badge": "upper-right",
+  "historian_technicianIbadge": "upper-right",
   "buddist_chaplin": "upper-right",
   "christian_chaplin": "upper-right",
   "jewish_chaplin": "upper-right",
@@ -241,7 +202,7 @@ const badgeSlots = {
   "emt_intermediate",
   "emt_paramedic",
   "ground_team_basic_badge",
-  "historian_technician_badge",
+  "historian_technicianIbadge",
   "information_technology_technician_badge",
   "jewish_chaplin",
   "legal_officer",
@@ -278,7 +239,7 @@ const customBadgeSizes = {
   "emt_intermediate": { width: 60, height: 60 },
   "emt_paramedic": { width: 60, height: 60 },
   "ground_team_basic_badge": { width: 60, height: 60 },
-  "historian_technician_badge": { width: 60, height: 60 },
+  "historian_technicianIbadge": { width: 60, height: 60 },
   "information_technology_technician_badge": { width: 60, height: 60 },
   "jewish_chaplin": { width: 60, height: 60 },
   "legal_officer": { width: 60, height: 25 },
@@ -286,7 +247,7 @@ const customBadgeSizes = {
   "medical_officer": { width: 60, height: 60 },
   "model_rocketry_badge": { width: 7, height: 28.125 },
   "muslim_chaplin": { width: 60, height: 60 },
-  "nra_marksman_badge": { width: 40, height: 60 },
+  "nra_marksman_badge": { width: 60, height: 60 },
   "nurse_officer": { width: 60, height: 60 },
   "observer_badge": { width: 60, height: 25 },
   "pre_solo_badge": { width: 60, height: 25 },
@@ -326,9 +287,6 @@ const customBadgeSizes = {
   preloadImages("devices", deviceList, "devices");
   preloadImages("ranks", rankList, "ranks");
   preloadImages("badges", badgeList, "badges");
-  preloadImages("nameplate", ["CAP_Nameplate"], "nameplate");
-  preloadImages("collar", ["us_insignia", "cap_insignia"], "collar");
-
 
   function applyJacket(type) {
   currentGender = type;
@@ -342,33 +300,13 @@ const customBadgeSizes = {
   clone.style.height = "auto";
   clone.style.display = "block";
   uniformCanvas.appendChild(clone);
-  
-    // 🔁 Re-render elements after resetting canvas
-  if (nameplatePresent) renderNameplate();
-  renderRibbons();
-  selectedBadges.forEach(renderBadge);
 
-
+  // 🔁 Reset badge tracking
+  badgeCountLeft = 0;
+  badgeCountRight = 0;
+  leftBadges.length = 0;
+  rightBadges.length = 0;
 }
-  
-function downloadUniformImage() {
-  const canvasEl = document.getElementById("uniformCanvas");
-
-  html2canvas(canvasEl, {
-    backgroundColor: "#ffffff",  // Optional: white background
-    useCORS: true,
-    scale: 2                     // Optional: 2x resolution
-  }).then(canvas => {
-    const link = document.createElement("a");
-    link.download = "CAP_Uniform.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  });
-}
-
-document.getElementById("downloadImage").onclick = downloadUniformImage;
-
-
 
 
   function renderRibbons() {
@@ -431,9 +369,18 @@ document.getElementById("downloadImage").onclick = downloadUniformImage;
 
 
 
+
+
+
+
+
+
+let badgeCountLeft = 0;
+let badgeCountRight = 0;
 const maxBadgesPerSide = 2;
 
-
+const leftBadges = [];
+const rightBadges = [];
 
 function promptBadgeReplacement(location, newBadgeKey) {
   const currentBadges = badgeSlots[location];
@@ -449,13 +396,10 @@ function promptBadgeReplacement(location, newBadgeKey) {
     badgeSlots[location].splice(index, 1);
     document.querySelectorAll(".layer.badge").forEach(el => el.remove());
     selectedBadges.forEach(b => renderBadge(b));
-renderBadge(newBadgeKey);
-
+    renderBadge(newBadgeKey);
   }
 }
 
-
-  
 function renderBadge(key) {
   const location = badgeLocations[key] || "upper-left";
   if (!badgeSlots[location]) badgeSlots[location] = [];
@@ -480,7 +424,7 @@ function renderBadge(key) {
     "upper-right": { top: currentGender === "female" ? 660 : 650, left: 100 },
     "lower-right": { top: currentGender === "female" ? 705 : 300, left: 100 },
     "mid-left": { top: currentGender === "female" ? 660 : 500, left: 350 },
-    "low-left": { top: 335, left: 450 }
+    "low-left": { top: 450, left: 335 }
   };
 
   let topOffset;
@@ -520,58 +464,18 @@ function renderBadge(key) {
     clone.style.top = `${topOffset}px`;
     clone.style.left = `${positionMap[location].left}px`;
 
-  
-  } else if (location === "lower-left") {
-  let baseTop;
-
-  const ribbonRowHeight = 8;
-  const ribbonStartTop = 402;
-
-  if (ribbonsPresent && selectedRibbons.length > 0) {
-    const rows = Math.ceil(selectedRibbons.length / 3);
-    const topRibbonY = ribbonStartTop - (rows - 1) * ribbonRowHeight;
-    baseTop = topRibbonY - 50; // 50px above top ribbon
+  // ✅ Default static positions for other slots
   } else {
-    baseTop = ribbonStartTop - 50; // 50px above where ribbons would start
-  }
+    const basePos = positionMap[location];
+    let offset = 0;
 
-  let topOffset = baseTop;
-  for (const existingKey of badgeSlots[location]) {
-    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-    topOffset += existingSize.height + badgeSpacing;
-  }
+    for (const existingKey of badgeSlots[location]) {
+      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+      offset += existingSize.height + badgeSpacing;
+    }
 
-  clone.style.top = `${topOffset}px`;
-  clone.style.left = `${positionMap[location].left}px`;
-
-} else if (location === "low-left") {
-  let baseTop = positionMap[location].top;
-  let topOffset = baseTop;
-
-  for (const existingKey of badgeSlots[location]) {
-    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-    topOffset += existingSize.height + badgeSpacing;
-  }
-
-  clone.style.top = `${topOffset}px`;
-  clone.style.left = `${positionMap[location].left}px`;
-
-
-    } else if (location === "mid-left") {
-  let baseTop = positionMap[location].top;
-  let topOffset = baseTop;
-
-  for (const existingKey of badgeSlots[location]) {
-    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-    topOffset += existingSize.height + badgeSpacing;
-  }
-
-  clone.style.top = `${topOffset}px`;
-  clone.style.left = `${positionMap[location].left}px`;
-}
-
-
-    
+    clone.style.top = `${basePos.top + offset}px`;
+    clone.style.left = `${basePos.left}px`;
   }
 
   clone.style.width = `${size.width}px`;
@@ -579,11 +483,17 @@ function renderBadge(key) {
   clone.style.display = "block";
 
   uniformCanvas.appendChild(clone);
-  if (!badgeSlots[location].includes(key)) {
   badgeSlots[location].push(key);
 }
 
-  
+
+
+
+
+
+
+
+
   function renderRank(key) {
     const original = document.getElementById(`ranks-${key}`);
     const clone = original.cloneNode();
@@ -608,8 +518,8 @@ function renderNameplate() {
   img.style.width = "56.25px";
   img.style.height = "13.6px";
 
-const top = 390;
-const left = 150;
+  const top = currentGender === "female" ? 390 : 390;
+  const left = currentGender === "female" ? 150 : 150;
 
   img.style.top = `${top}px`;
   img.style.left = `${left}px`;
@@ -643,6 +553,7 @@ const left = 150;
   selectedRibbons.length = 0;
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
   renderRibbons();
+  badgeCount = 0;
 };
 
 
@@ -662,12 +573,11 @@ document.getElementById("addNameplate").onclick = () => {
   renderNameplate();
 };
 
-    document.getElementById("addRank").onclick = () => {
+
+  document.getElementById("addRank").onclick = () => {
     const key = rankSelect.value;
     renderRank(key);
   };
 </script>
-
-  
 </body>
 </html>
