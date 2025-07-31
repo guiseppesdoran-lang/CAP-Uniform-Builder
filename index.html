@@ -104,6 +104,7 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
   const ribbonSelect = document.getElementById("ribbonSelect");
   const badgeSelect = document.getElementById("badgeSelect");
   const rankSelect = document.getElementById("rankSelect");
@@ -147,7 +148,7 @@ const badgeLocations = {
   "medical_officer": "upper-right",
   "nurse_officer": "upper-right",
   "legal_officer": "upper-right",
-  "historian_technicianIbadge": "upper-right",
+  "historian_technician_badge": "upper-right",
   "buddist_chaplin": "upper-right",
   "christian_chaplin": "upper-right",
   "jewish_chaplin": "upper-right",
@@ -203,7 +204,7 @@ const badgeSlots = {
   "emt_intermediate",
   "emt_paramedic",
   "ground_team_basic_badge",
-  "historian_technicianIbadge",
+  "historian_technician_badge",
   "information_technology_technician_badge",
   "jewish_chaplin",
   "legal_officer",
@@ -240,7 +241,7 @@ const customBadgeSizes = {
   "emt_intermediate": { width: 60, height: 60 },
   "emt_paramedic": { width: 60, height: 60 },
   "ground_team_basic_badge": { width: 60, height: 60 },
-  "historian_technicianIbadge": { width: 60, height: 60 },
+  "historian_technician_badge": { width: 60, height: 60 },
   "information_technology_technician_badge": { width: 60, height: 60 },
   "jewish_chaplin": { width: 60, height: 60 },
   "legal_officer": { width: 60, height: 25 },
@@ -606,7 +607,6 @@ function renderNameplate() {
   selectedRibbons.length = 0;
   document.querySelectorAll(".layer.ribbon").forEach(el => el.remove());
   renderRibbons();
-  badgeCount = 0;
 };
 
 
@@ -631,7 +631,6 @@ document.getElementById("addNameplate").onclick = () => {
     renderRank(key);
   };
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   
 </body>
