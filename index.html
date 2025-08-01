@@ -136,53 +136,55 @@ function isBadgeCadetAuthorized(badgeID) {
   let currentGender = "male";
   const selectedRibbons = []; const selectedBadges = [];
   const badgeLocations = {
-  "AirCrew1_DB3F0FCC3650F": "upper-left",
-  "BalloonPilot1_442D89C94185B": "upper-left",
-  "CAPMasterPilot1_621A0E2ED15DA": "upper-left",
-  "CAPPilot1_FA9D33EA587D8": "upper-left",
-  "CAPSeniorPilot1_D9725AE959752": "upper-left",
-  "GliderPilot1_7BFB287379918": "upper-left",
-  "MasterAirCrew1_72AC4CAE7A310": "upper-left",
-  "SeniorAirCrew1_B289BAE6E515C": "upper-left",
-  "pre_solo_badge": "upper-left",
-  "solo_badge": "upper-left",
-  "cyber_badges": "upper-left",
-  "stem_badges": "upper-left",
-  "communications_technician_badge": "upper-left",
-  "information_technology_technician_badge": "upper-left",
+  "AirCrew1_DB3F0FCC3650F": "OLPA",
+  "BalloonPilot1_442D89C94185B": "OLPA",
+  "CAPMasterPilot1_621A0E2ED15DA": "OLPA",
+  "CAPPilot1_FA9D33EA587D8": "OLPA",
+  "CAPSeniorPilot1_D9725AE959752": "OLPA",
+  "GliderPilot1_7BFB287379918": "OLPA",
+  "MasterAirCrew1_72AC4CAE7A310": "OLPA",
+  "SeniorAirCrew1_B289BAE6E515C": "OLPA",
+  "pre_solo_badge": "OLPA",
+  "solo_badge": "OLPA",
+  "cyber_badges": "OLPA",
+  "stem_badges": "OLPA",
+  "communications_technician_badge": "OLPA",
+  "information_technology_technician_badge": "OLPA",
   
-  "nra_marksman_badge": "mid-left",
+  "nra_marksman_badge": "ON",
 
-  "MasterObserver1_1B88D5071FD5C": "lower-left",
-  "SeniorObserver1_0E35802A29801": "lower-left",
-  "observer_badge": "lower-left",
-  "ground_team_basic_badge": "lower-left",
-  "senior_ground_team_badge": "lower-left",
-  "master_ground_team_badge": "lower-left",
-  "emergency_services_badge": "lower-left",
-  "emt_basic_badge": "lower-left",
-  "emt_intermediate": "lower-left",
-  "emt_paramedic": "lower-left",
+  "MasterObserver1_1B88D5071FD5C": "OLPU",
+  "SeniorObserver1_0E35802A29801": "OLPU",
+  "observer_badge": "OLPU",
+  "ground_team_basic_badge": "OLPU",
+  "senior_ground_team_badge": "OLPU",
+  "master_ground_team_badge": "OLPU",
+  "emergency_services_badge": "OLPU",
+  "emt_basic_badge": "OLPU",
+  "emt_intermediate": "OLPU",
+  "emt_paramedic": "OLPU",
 
-  "medical_officer": "upper-right",
-  "nurse_officer": "upper-right",
-  "legal_officer": "upper-right",
-  "historian_technicianIbadge": "upper-right",
-  "buddist_chaplin": "upper-right",
-  "christian_chaplin": "upper-right",
-  "jewish_chaplin": "upper-right",
-  "muslim_chaplin": "upper-right",
+  "medical_officer": "ORP",
+  "nurse_officer": "ORP",
+  "legal_officer": "ORP",
+  "historian_technicianIbadge": "ORP",
+  "buddist_chaplin": "ORP",
+  "christian_chaplin": "ORP",
+  "jewish_chaplin": "ORP",
+  "muslim_chaplin": "ORP",
 
-  "model_rocketry_badge": "low-left",
+  "model_rocketry_badge": "LRP",
 };
 
 const badgeSlots = {
-  "upper-left": [],
-  "lower-left": [],
-  "upper-right": [],
-  "lower-right": [],
-  "low-left": []
+  "OLPA": [],   // Over Left Pocket Above Aviation
+  "OLPU": [],   // Over Left Pocket Under Aviation
+  "ORP": [],    // Over Right Pocket
+  "URBP": [],   // Under Right Breast Pocket
+  "ON": [],     // Over Name Tag
+  "LRP": []     // On Left or Right Pocket (e.g., NRA)
 };
+
 
 
   const ribbonList = [
@@ -484,8 +486,8 @@ function renderNRABadgeAdjustments() {
   uniformCanvas.appendChild(clone);
 
   // Shift any low-left badge down to make room
-  if (badgeSlots["low-left"]) {
-    badgeSlots["low-left"].forEach(badgeID => {
+  if (badgeSlots["LRP"]) {
+    badgeSlots["LRP"].forEach(badgeID => {
       const badgeElement = document.getElementById(`badges-${badgeID}`);
       if (badgeElement) {
         const badgeLayers = document.querySelectorAll(".layer.badge");
@@ -505,7 +507,7 @@ function renderNRABadgeAdjustments() {
   
   
 function renderBadge(key) {
-  const location = badgeLocations[key] || "upper-left";
+  const location = badgeLocations[key] || "OLPA";
   if (!badgeSlots[location]) badgeSlots[location] = [];
 
   if (badgeSlots[location].length >= 2) {
@@ -523,84 +525,75 @@ function renderBadge(key) {
   const badgeSpacing = 5;
 
   const positionMap = {
-    "upper-left": { left: 150 },
-    "lower-left": { top: currentGender === "female" ? 705 : 300, left: 350 },
-    "upper-right": { top: currentGender === "female" ? 660 : 650, left: 100 },
-    "lower-right": { top: currentGender === "female" ? 705 : 300, left: 100 },
-    "mid-left": { top: currentGender === "female" ? 660 : 500, left: 350 },
-    "low-left": { top: 450, left: 335 }
+    "ORP": { top: 660, left: 100 },  // Over Right Pocket
+    "OLP": { top: 300, left: 350 },  // Over Left Pocket
+    "UN":  { top: 390, left: 150 },  // Under Name Tag
+    "ON":  { top: 350, left: 150 },  // Over Name Tag
+    "URBP": { top: 450, left: 100 }, // Under Right Breast Pocket
+    "OLPA": { left: 150 },           // Over Left Pocket Above Aviation
+    "OLPU": { top: 300, left: 350 }, // Over Left Pocket Under Aviation
+    "LRP": { top: 405, left: 335 }   // Left/Right Pocket (e.g., NRA)
   };
 
   let topOffset;
 
-  // 🎯 Handle upper-left dynamic placement
-  if (location === "upper-left") {
-    const baseRibbonTop = 394;
+  // 🎯 Special: OLPA (Over Left Pocket Above Aviation) → dynamic based on ribbons
+  if (location === "OLPA") {
     const rows = Math.ceil(selectedRibbons.length / 3);
-topOffset = 394 - (rows > 0 ? rows * 8 : 8) - size.height - badgeSpacing;
-
-   
+    topOffset = 394 - (rows > 0 ? rows * 8 : 8) - size.height - badgeSpacing;
     clone.style.top = `${topOffset}px`;
     clone.style.left = `${positionMap[location].left}px`;
 
-  // 🎯 Handle upper-right dynamic placement
-  } else if (location === "upper-right") {
-    const baseNameplateTop = 390;
-    if (nameplatePresent) {
-      topOffset = baseNameplateTop - size.height - badgeSpacing;
-    } else {
-      topOffset = 375;
-    }
-
-    
+  // 🎯 Special: ORP & ON → dynamic nameplate-awareness
+  } else if (location === "ORP" || location === "ON") {
+    const base = location === "ON" ? 375 : 390;
+    topOffset = nameplatePresent ? base - size.height - badgeSpacing : base;
     clone.style.top = `${topOffset}px`;
     clone.style.left = `${positionMap[location].left}px`;
 
-  // ✅ Default static positions for other slots
- } else {
-  const basePos = positionMap[location];
-  let offset = 0;
+  // ✅ Default placement for all others
+  } else {
+    const basePos = positionMap[location];
+    let offset = 0;
 
-  // 🎯 Special rule: shift certain badges 36px above top ribbon row
-  const shiftAboveRibbonBadges = new Set([
-    "ground_team_basic_badge",
-    "senior_ground_team_badge",
-    "master_ground_team_badge",
-    "emt_basic_badge",
-    "emt_intermediate",
-    "emt_paramedic"
-  ]);
+    // 🎯 Special shift for Ground Team / EMS when used in OLPU
+    const shiftAboveRibbonBadges = new Set([
+      "ground_team_basic_badge",
+      "senior_ground_team_badge",
+      "master_ground_team_badge",
+      "emt_basic_badge",
+      "emt_intermediate",
+      "emt_paramedic"
+    ]);
 
-  if (shiftAboveRibbonBadges.has(key)) {
-    const topRibbonY = getTopRibbonY();
-    if (topRibbonY !== null) {
-      basePos.top = topRibbonY - 36;
+    if (shiftAboveRibbonBadges.has(key) && location === "OLPU") {
+      const topRibbonY = getTopRibbonY();
+      if (topRibbonY !== null) {
+        basePos.top = topRibbonY - 36;
+      }
     }
+
+    for (const existingKey of badgeSlots[location]) {
+      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
+      offset += existingSize.height + badgeSpacing;
+    }
+
+    clone.style.top = `${basePos.top + offset}px`;
+    clone.style.left = `${basePos.left}px`;
   }
 
-  for (const existingKey of badgeSlots[location]) {
-    const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-    offset += existingSize.height + badgeSpacing;
-  }
-
-  clone.style.top = `${basePos.top + offset}px`;
-  clone.style.left = `${basePos.left}px`;
-}
-
-
-    
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
   clone.style.display = "block";
-
   uniformCanvas.appendChild(clone);
+
   badgeSlots[location].push(key);
 
   if (key === "nra_marksman_badge") {
-  renderNRABadgeAdjustments();
+    renderNRABadgeAdjustments();
+  }
 }
 
-}
 
 
 
