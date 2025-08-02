@@ -75,6 +75,10 @@
     <label for="badgeSelect">Badges</label>
     <select id="badgeSelect"></select>
     <button id="addBadge">Add Badge</button>
+    <label for="removeBadgeSelect">Remove Badge</label>
+    <select id="removeBadgeSelect"></select>
+    <button id="removeBadge">Remove Badge</button>
+
 
     <label for="rankSelect">Rank Insignia</label>
     <select id="rankSelect"></select>
@@ -284,6 +288,18 @@ const customBadgeSizes = {
     });
   }
 
+  function updateRemoveBadgeDropdown() {
+  const dropdown = document.getElementById("removeBadgeSelect");
+  dropdown.innerHTML = "";
+  selectedBadges.forEach(badge => {
+    const option = document.createElement("option");
+    option.value = badge;
+    option.textContent = badge.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+    dropdown.appendChild(option);
+  });
+}
+
+
   function preloadImages(prefix, list, folder) {
     list.forEach(item => {
       const img = document.createElement("img");
@@ -298,6 +314,8 @@ const customBadgeSizes = {
   populateDropdown(deviceSelect, deviceList);
   populateDropdown(rankSelect, rankList);
   populateDropdown(badgeSelect, badgeList);
+  updateRemoveBadgeDropdown();
+
 
   preloadImages("ribbons", ribbonList, "ribbons");
   preloadImages("devices", deviceList, "devices");
@@ -499,95 +517,116 @@ function renderNRABadgeAdjustments() {
 
   
   
-function renderBadge(key) {
-  const location = badgeLocations[key] || "OLPA";
-  if (!badgeSlots[location]) badgeSlots[location] = [];
+function renderAllBadges() {
+  document.querySelectorAll(".layer.badge").forEach(el => el.remove());
 
-  if (badgeSlots[location].length >= 2) {
-    promptBadgeReplacement(location, key);
-    return;
-  }
+  // Clear badge slot tracking
+  for (const slot in badgeSlots) badgeSlots[slot] = [];
 
-  const original = document.getElementById(`badges-${key}`);
-  if (!original) return;
+  selectedBadges.forEach(badge => {
+    placeBadgeByCategory(badge);
+  });
+}
 
-  const clone = original.cloneNode();
+function placeBadgeByCategory(badgeKey) {
+  const badgeImage = document.getElementById(`badges-${badgeKey}`);
+  if (!badgeImage) return;
+
+  const isModelRocketry = badgeKey === "model_rocketry_badge";
+  const isMarksmanship = badgeKey === "nra_marksman_badge";
+
+  const size = customBadgeSizes[badgeKey] || { width: 60, height: 25 };
+  const spacing = 5;
+  const clone = badgeImage.cloneNode();
   clone.className = "layer badge";
-
-  const size = customBadgeSizes[key] || { width: 60, height: 25 };
-  const badgeSpacing = 5;
-
-  const positionMap = {
-    "ORP": { top: 660, left: 100 },  // Over Right Pocket
-    "OLP": { top: 300, left: 350 },  // Over Left Pocket
-    "UN":  { top: 390, left: 150 },  // Under Name Tag
-    "ON":  { top: 350, left: 150 },  // Over Name Tag
-    "URBP": { top: 450, left: 100 }, // Under Right Breast Pocket
-    "OLPA": { left: 150 },           // Over Left Pocket Above Aviation
-    "OLPU": { top: 300, left: 350 }, // Over Left Pocket Under Aviation
-    "LRP": { top: 405, left: 335 },   // Left/Right Pocket (e.g., NRA)
-    "LP": { top: 450, left: 350 }
-
-  };
-
-  let topOffset;
-
-  // 🎯 Special: OLPA (Over Left Pocket Above Aviation) → dynamic based on ribbons
-  if (location === "OLPA") {
-    const rows = Math.ceil(selectedRibbons.length / 3);
-    topOffset = 394 - (rows > 0 ? rows * 8 : 8) - size.height - badgeSpacing;
-    clone.style.top = `${topOffset}px`;
-    clone.style.left = `${positionMap[location].left}px`;
-
-  // 🎯 Special: ORP & ON → dynamic nameplate-awareness
-  } else if (location === "ORP" || location === "ON") {
-    const base = location === "ON" ? 375 : 390;
-    topOffset = nameplatePresent ? base - size.height - badgeSpacing : base;
-    clone.style.top = `${topOffset}px`;
-    clone.style.left = `${positionMap[location].left}px`;
-
-  // ✅ Default placement for all others
-  } else {
-    const basePos = positionMap[location];
-    let offset = 0;
-
-    // 🎯 Special shift for Ground Team / EMS when used in OLPU
-    const shiftAboveRibbonBadges = new Set([
-      "ground_team_basic_badge",
-      "senior_ground_team_badge",
-      "master_ground_team_badge",
-      "emt_basic_badge",
-      "emt_intermediate",
-      "emt_paramedic"
-    ]);
-
-    if (shiftAboveRibbonBadges.has(key) && location === "OLPU") {
-      const topRibbonY = getTopRibbonY();
-      if (topRibbonY !== null) {
-        basePos.top = topRibbonY - 36;
-      }
-    }
-
-    for (const existingKey of badgeSlots[location]) {
-      const existingSize = customBadgeSizes[existingKey] || { height: 25 };
-      offset += existingSize.height + badgeSpacing;
-    }
-
-    clone.style.top = `${basePos.top + offset}px`;
-    clone.style.left = `${basePos.left}px`;
-  }
-
   clone.style.width = `${size.width}px`;
   clone.style.height = `${size.height}px`;
   clone.style.display = "block";
+
+  let slot = "";
+
+  // 🚀 Model Rocketry → LP only, bumps others
+  if (isModelRocketry) {
+    slot = "LP";
+    if (badgeSlots[slot].length > 0) {
+      alert("Model Rocketry badge must be worn on the left pocket. Please remove the existing badge first.");
+      return;
+    }
+  }
+
+  // 🎯 Marksmanship → on flap (LRP)
+  else if (isMarksmanship) {
+    slot = "LRP";
+    if (badgeSlots[slot].length >= 1) {
+      alert("Only one marksmanship badge may be worn.");
+      return;
+    }
+  }
+
+  // 🛩️ Aviation → Left Pocket (OLP)
+  else if (badgeLocations[badgeKey] === "OLP") {
+    slot = "OLP";
+  }
+
+  // 🛠️ Occupational → Right Pocket (ORP)
+  else if (badgeLocations[badgeKey] === "LP" || badgeLocations[badgeKey] === "ORP") {
+    slot = "ORP";
+  }
+
+  // 📚 Specialty Tracks → Over Nametag (ON)
+  else if (badgeLocations[badgeKey] === "ON" || badgeKey.includes("chaplin") || badgeKey.includes("officer")) {
+    slot = "ON";
+  }
+
+  // 🧪 Other → Under Nameplate
+  else {
+    slot = "UN";
+  }
+
+  if (!badgeSlots[slot]) badgeSlots[slot] = [];
+
+  if (badgeSlots[slot].length >= 1 && !["UN", "ON"].includes(slot)) {
+    alert(`Only one badge allowed in slot ${slot}. Please remove an existing badge.`);
+    return;
+  }
+
+  // Stack if allowed (ON and UN)
+  let yOffset = {
+    "OLP": 300,
+    "ORP": 300,
+    "ON": 350,
+    "UN": 390,
+    "LRP": 405,
+    "LP": 450
+  }[slot] || 390;
+
+  let xOffset = {
+    "OLP": 350,
+    "ORP": 100,
+    "ON": 150,
+    "UN": 150,
+    "LRP": 335,
+    "LP": 350
+  }[slot] || 150;
+
+  if (slot === "ON" || slot === "UN") {
+    // Stack vertically if more than one
+    const stackOffset = badgeSlots[slot].reduce((acc, b) => {
+      const bSize = customBadgeSizes[b] || { height: 25 };
+      return acc + bSize.height + spacing;
+    }, 0);
+    yOffset += stackOffset;
+  }
+
+  clone.style.top = `${yOffset}px`;
+  clone.style.left = `${xOffset}px`;
   uniformCanvas.appendChild(clone);
 
-  badgeSlots[location].push(key);
-
-  if (key === "nra_marksman_badge") {
-    renderNRABadgeAdjustments();
-  }
+  badgeSlots[slot].push(badgeKey);
 }
+
+
+  
 
 
 
@@ -670,7 +709,10 @@ if (!isBadgeCadetAuthorized(key)) {
 if (!selectedBadges.includes(key)) {
 enforceExclusiveBadgeConflicts(key);
 selectedBadges.push(key);
-    renderBadge(key);
+renderAllBadges();     // ✅ Replace with full re-render
+updateRemoveBadgeDropdown(); // ✅ Sync dropdown
+
+
   } else {
     alert("Badge already added.");
   }
@@ -686,6 +728,18 @@ document.getElementById("addNameplate").onclick = () => {
     const key = rankSelect.value;
     renderRank(key);
   };
+
+document.getElementById("removeBadge").onclick = () => {
+  const key = document.getElementById("removeBadgeSelect").value;
+  const index = selectedBadges.indexOf(key);
+  if (index !== -1) {
+    selectedBadges.splice(index, 1);
+    renderAllBadges();
+    updateRemoveBadgeDropdown();
+  }
+};
+
+  
 </script>
 </body>
 </html>
