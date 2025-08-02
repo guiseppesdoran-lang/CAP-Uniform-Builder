@@ -516,9 +516,16 @@ function renderAllBadges() {
   // Clear badge slot tracking
   for (const slot in badgeSlots) badgeSlots[slot] = [];
 
-  selectedBadges.forEach(badge => {
-    placeBadgeByCategory(badge);
-  });
+  const aviationFirst = selectedBadges.slice().sort((a, b) => {
+  const aviSet = new Set(["OLP", "LP", "OLPU", "OLPA"]);
+  const aSlot = badgeLocations[a] || "UN";
+  const bSlot = badgeLocations[b] || "UN";
+  return aviSet.has(aSlot) && !aviSet.has(bSlot) ? -1 : 1;
+});
+aviationFirst.forEach(badge => {
+  placeBadgeByCategory(badge);
+});
+
 }
 
 function placeBadgeByCategory(badgeKey) {
@@ -694,6 +701,11 @@ if (!isBadgeCadetAuthorized(key)) {
   return;
 }
 if (!selectedBadges.includes(key)) {
+  if (selectedBadges.length >= 5) {
+  alert("You may only wear a total of 4 badges on the uniform.");
+  return;
+}
+
 enforceExclusiveBadgeConflicts(key);
 selectedBadges.push(key);
 renderAllBadges();     // ✅ Replace with full re-render
