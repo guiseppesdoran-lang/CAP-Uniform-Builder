@@ -400,16 +400,9 @@ const customBadgeSizes = {
     });
   });
 
-  // 🔁 Re-render badges after ribbons are updated
-  document.querySelectorAll(".layer.badge").forEach(el => el.remove());
+      
+ renderAllBadges();
 
-     for (const slot in badgeSlots) {
-    badgeSlots[slot] = [];
-  }
-    
-  for (const badgeKey of selectedBadges) {
-    renderBadge(badgeKey);
-  }
 }
 
 
