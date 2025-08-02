@@ -549,12 +549,47 @@ function placeBadgeByCategory(badgeKey) {
   // 🚀 Model Rocketry → LP only, bumps others
   // Model Rocketry → Left Pocket only
 if (badgeKey === "model_rocketry_badge") {
-  slot = "LP";
-  if (badgeSlots[slot].length > 0) {
-    alert("Model Rocketry badge must be worn on the left pocket. Please remove the existing badge first.");
-    return;
+  const currentLP = badgeSlots["LP"];
+  const currentORP = badgeSlots["ORP"];
+
+  if (currentLP.length === 0) {
+    slot = "LP";
+  } else if (currentORP.length === 0) {
+    // Move badge from LP to ORP
+    const displaced = currentLP.pop();
+    badgeSlots["ORP"].push(displaced);
+    slot = "LP";
+
+    // Re-render without the moved badge
+    selectedBadges.splice(selectedBadges.indexOf(displaced), 1);
+    selectedBadges.push(displaced);
+    renderAllBadges();
+
+    alert(`"${displaced.replace(/_/g, " ")}" was moved to the right pocket to make space for the Model Rocketry badge.`);
+  } else {
+    // Both LP and ORP are full, prompt user to remove one
+    const options = [currentLP[0], currentORP[0]];
+    const choice = prompt(
+      `Model Rocketry badge must go on the left pocket, but it's full.\n` +
+      `Choose a badge to remove:\n` +
+      options.map((b, i) => `${i + 1}. ${b.replace(/_/g, " ")}`).join("\n")
+    );
+    const index = parseInt(choice) - 1;
+    if (!isNaN(index) && index >= 0 && index < options.length) {
+      const toRemove = options[index];
+      selectedBadges.splice(selectedBadges.indexOf(toRemove), 1);
+      if (badgeSlots["LP"].includes(toRemove)) badgeSlots["LP"] = [];
+      if (badgeSlots["ORP"].includes(toRemove)) badgeSlots["ORP"] = [];
+      renderAllBadges();
+      updateRemoveBadgeDropdown();
+      slot = "LP"; // Proceed with adding model rocketry
+    } else {
+      alert("No valid badge selection made. Model Rocketry badge not added.");
+      return;
+    }
   }
 }
+
 
 // Marksmanship → flap
 else if (badgeKey === "nra_marksman_badge") {
