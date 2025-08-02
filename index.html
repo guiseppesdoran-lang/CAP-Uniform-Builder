@@ -591,19 +591,24 @@ function placeBadgeByCategory(badgeKey) {
   }
 
   // Stack if allowed (ON and UN)
-  let yOffset = {
-    "OLP": 328,
-    "OLPU":384,
-    "ORP": 300,
-    "ON": 350,
-    "UN": 390,
-    "LRP": 405,
-    "LP": 450
-  }[slot] || 390;
+  let baseRibbonY = getTopRibbonY(); // returns null if no ribbons
+
+let yOffset = {
+  "OLP": baseRibbonY !== null ? baseRibbonY - 50 : 394,
+  "OLPU": baseRibbonY !== null ? baseRibbonY - 20 : 424,
+  "OLPA": baseRibbonY !== null ? baseRibbonY - 80 : 364,
+  "ORP": 300,
+  "ON": 350,
+  "UN": 390,
+  "LRP": 405,
+  "LP": 450
+}[slot] || 390;
+
 
   let xOffset = {
-    "OLP": 350,
+    "OLP": 328,
     "OLPU":328,
+    "OLPA":328,
     "ORP": 100,
     "ON": 150,
     "UN": 150,
