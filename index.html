@@ -174,7 +174,8 @@ const badgeSlots = {
   "ORP": [],    // Over Right Pocket
   "URBP": [],   // Under Right Breast Pocket
   "ON": [],     // Over Name Tag
-  "LRP": []     // On Left or Right Pocket (e.g., NRA)
+  "LRP": [],    // On Left or Right Pocket (e.g., NRA)
+  "LP": []
 };
 
 
@@ -524,7 +525,9 @@ function renderBadge(key) {
     "URBP": { top: 450, left: 100 }, // Under Right Breast Pocket
     "OLPA": { left: 150 },           // Over Left Pocket Above Aviation
     "OLPU": { top: 300, left: 350 }, // Over Left Pocket Under Aviation
-    "LRP": { top: 405, left: 335 }   // Left/Right Pocket (e.g., NRA)
+    "LRP": { top: 405, left: 335 },   // Left/Right Pocket (e.g., NRA)
+    "LP": { top: 450, left: 350 }
+
   };
 
   let topOffset;
