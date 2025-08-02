@@ -546,42 +546,29 @@ function placeBadgeByCategory(badgeKey) {
   let slot = "";
 
   // 🚀 Model Rocketry → LP only, bumps others
-  if (isModelRocketry) {
-    slot = "LP";
-    if (badgeSlots[slot].length > 0) {
-      alert("Model Rocketry badge must be worn on the left pocket. Please remove the existing badge first.");
-      return;
-    }
+  // Model Rocketry → Left Pocket only
+if (badgeKey === "model_rocketry_badge") {
+  slot = "LP";
+  if (badgeSlots[slot].length > 0) {
+    alert("Model Rocketry badge must be worn on the left pocket. Please remove the existing badge first.");
+    return;
   }
+}
 
-  // 🎯 Marksmanship → on flap (LRP)
-  else if (isMarksmanship) {
-    slot = "LRP";
-    if (badgeSlots[slot].length >= 1) {
-      alert("Only one marksmanship badge may be worn.");
-      return;
-    }
+// Marksmanship → flap
+else if (badgeKey === "nra_marksman_badge") {
+  slot = "LRP";
+  if (badgeSlots[slot].length >= 1) {
+    alert("Only one marksmanship badge may be worn.");
+    return;
   }
+}
 
-  // 🛩️ Aviation → Left Pocket (OLP)
-  else if (badgeLocations[badgeKey] === "OLP") {
-    slot = "OLP";
-  }
+// All others → use badgeLocations as defined
+else {
+  slot = badgeLocations[badgeKey] || "UN";
+}
 
-  // 🛠️ Occupational → Right Pocket (ORP)
-  else if (badgeLocations[badgeKey] === "LP" || badgeLocations[badgeKey] === "ORP") {
-    slot = "ORP";
-  }
-
-  // 📚 Specialty Tracks → Over Nametag (ON)
-  else if (badgeLocations[badgeKey] === "ON" || badgeKey.includes("chaplin") || badgeKey.includes("officer")) {
-    slot = "ON";
-  }
-
-  // 🧪 Other → Under Nameplate
-  else {
-    slot = "UN";
-  }
 
   if (!badgeSlots[slot]) badgeSlots[slot] = [];
 
