@@ -113,6 +113,9 @@
     <button id="addRank">Add Rank</button>
 
     <button id="addNameplate">Add Nameplate</button>
+    <label for="nameInput">Nameplate Text</label>
+    <input id="nameInput" type="text" placeholder="Enter name" />
+
     <button id="addUSInsignia">Add U.S. Collar Insignia</button>
     <button id="addCAPInsignia">Add CAP Collar Insignia</button>
 
@@ -377,12 +380,7 @@ const customBadgeSizes = {
   clone.style.display = "block";
   uniformCanvas.appendChild(clone);
 
-  // 🔁 Reset badge tracking
-  badgeCountLeft = 0;
-  badgeCountRight = 0;
-  leftBadges.length = 0;
-  rightBadges.length = 0;
-}
+ }
 
 
   function renderRibbons() {
@@ -731,8 +729,42 @@ let yOffset = {
 
   return; // Important: don't continue to enlisted logic
 }
+
+    // Below the officer rank logic in renderRank()
+const rankImg = document.getElementById(`ranks-${key}`);
+if (rankImg) {
+  const clone = rankImg.cloneNode();
+  clone.className = "layer rank";
+  clone.style.top = "200px";
+  clone.style.left = "420px";
+  clone.style.width = "50px";
+  clone.style.height = "50px";
+  clone.style.display = "block";
+  uniformCanvas.appendChild(clone);
 }
 
+}
+
+function renderNameplate() {
+  document.querySelectorAll(".layer.nameplate").forEach(el => el.remove());
+
+  const nameplateText = document.getElementById("nameInput").value || "LAST NAME";
+  const nameplate = document.createElement("div");
+  nameplate.className = "layer nameplate";
+  nameplate.style.top = "470px";
+  nameplate.style.left = "150px";
+  nameplate.style.width = "100px";
+  nameplate.style.height = "15px";
+  nameplate.style.backgroundColor = "#002855";
+  nameplate.style.border = "1px solid white";
+  nameplate.style.color = "white";
+  nameplate.style.fontSize = "10px";
+  nameplate.style.display = "flex";
+  nameplate.style.alignItems = "center";
+  nameplate.style.justifyContent = "center";
+  nameplate.textContent = nameplateText.toUpperCase();
+  uniformCanvas.appendChild(nameplate);
+}
 
 
   
@@ -787,6 +819,8 @@ updateRemoveBadgeDropdown(); // ✅ Sync dropdown
     alert("Badge already added.");
   }
 };
+
+ 
 
 
 document.getElementById("addNameplate").onclick = () => {
