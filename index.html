@@ -319,6 +319,28 @@ const customBadgeSizes = {
   "stem_badges": { width: 60, height: 25 }
 };
 
+const customRankSizes = {
+  // Airman/NCO ranks (displayed on jacket)
+  "C/AB": { width: 50, height: 50 },
+  "C/Amn": { width: 50, height: 50 },
+  "C/A1C": { width: 50, height: 50 },
+  "C/SrA": { width: 50, height: 50 },
+  "C/SSgt": { width: 50, height: 50 },
+  "C/TSgt": { width: 50, height: 50 },
+  "C/MSgt": { width: 50, height: 50 },
+  "C/SMSgt": { width: 50, height: 50 },
+  "C/CMSgt": { width: 50, height: 50 },
+
+  // Officer insignia (on shoulder board)
+  "C/2d Lt": { width: 40, height: 16 },
+  "C/1st Lt": { width: 40, height: 16 },
+  "C/Capt": { width: 40, height: 16 },
+  "C/Maj": { width: 40, height: 16 },
+  "C/Lt Col": { width: 40, height: 16 },
+  "C/Col": { width: 40, height: 16 }
+};
+
+const shoulderBoardSize = { width: 60, height: 20 }; // Common for both sides
 
 
   function populateDropdown(selectElement, list) {
@@ -694,66 +716,61 @@ let yOffset = {
 
   function renderRank(key) {
   const officerRanks = ["C/2d Lt", "C/1st Lt", "C/Capt", "C/Maj", "C/Lt Col", "C/Col"];
-
-  // Remove previous rank layers before adding new ones
   document.querySelectorAll(".layer.rank").forEach(el => el.remove());
 
-  if (officerRanks.includes(key)) {
-  const imgSrc = "images/ranks/C/shoulder_board.png";
   const rankImg = document.getElementById(`ranks-${key}`);
-  if (!rankImg) return;
+  const rankSize = customRankSizes[key];
 
-  // Render left and right shoulder boards with overlaid insignia
-  ["100px", "670px"].forEach((left, index) => {
-    const board = document.createElement("img");
-    board.src = imgSrc;
-    board.className = "layer rank";
-    board.style.top = "160px";
-    board.style.left = left;
-    board.style.width = "60px";
-    board.style.height = "20px";
-    board.style.display = "block";
-    uniformCanvas.appendChild(board);
+  if (!rankImg || !rankSize) {
+    alert(`Missing image or size config for rank: ${key}`);
+    return;
+  }
 
-    const insignia = rankImg.cloneNode();
-    insignia.className = "layer rank";
-    insignia.style.top = "162px"; // slightly adjusted to center vertically
-    insignia.style.left = `${parseInt(left) + 10}px`; // offset inside board
-    insignia.style.width = "40px";
-    insignia.style.height = "16px";
-    insignia.style.display = "block";
-    uniformCanvas.appendChild(insignia);
-  });
+  if (officerRanks.includes(key)) {
+    // Shoulder boards (left and right)
+    ["100px", "670px"].forEach((left) => {
+      const board = document.createElement("img");
+      board.src = "images/ranks/C/shoulder_board.png";
+      board.className = "layer rank";
+      board.style.top = "160px";
+      board.style.left = left;
+      board.style.width = `${shoulderBoardSize.width}px`;
+      board.style.height = `${shoulderBoardSize.height}px`;
+      board.style.display = "block";
+      uniformCanvas.appendChild(board);
 
-  return; // Important: don't continue to enlisted logic
+      const insignia = rankImg.cloneNode();
+      insignia.className = "layer rank";
+      insignia.style.top = "162px";
+      insignia.style.left = `${parseInt(left) + 10}px`;
+      insignia.style.width = `${rankSize.width}px`;
+      insignia.style.height = `${rankSize.height}px`;
+      insignia.style.display = "block";
+      uniformCanvas.appendChild(insignia);
+    });
+  } else {
+    // Airman/NCO: single overlay on jacket
+    const clone = rankImg.cloneNode();
+    clone.className = "layer rank";
+    clone.style.top = "200px";
+    clone.style.left = "420px";
+    clone.style.width = `${rankSize.width}px`;
+    clone.style.height = `${rankSize.height}px`;
+    clone.style.display = "block";
+    uniformCanvas.appendChild(clone);
+  }
 }
 
-    // Below the officer rank logic in renderRank()
-const rankImg = document.getElementById(`ranks-${key}`);
-if (rankImg) {
-  const clone = rankImg.cloneNode();
-  clone.className = "layer rank";
-  clone.style.top = "200px";
-  clone.style.left = "420px";
-  clone.style.width = "50px";
-  clone.style.height = "50px";
-  clone.style.display = "block";
-  uniformCanvas.appendChild(clone);
-}
-
-}
 
 function renderNameplate() {
-  // Remove existing nameplate layers
   document.querySelectorAll(".layer.nameplate").forEach(el => el.remove());
 
-  // Load the image from preloaded assets
   const nameplateImg = document.createElement("img");
-  nameplateImg.src = "images/nameplate/nameplate.png"; // ✅ use your provided path
+  nameplateImg.src = "images/nameplate/nameplate.png";
   nameplateImg.className = "layer nameplate";
-  nameplateImg.style.top = "390px";   // adjust if needed for alignment
-  nameplateImg.style.left = "150px";  // adjust for nameplate centering
-  nameplateImg.style.width = "56.25px";
+  nameplateImg.style.top = "390px";
+  nameplateImg.style.left = "150px";
+  nameplateImg.style.width = "56.25px";   // Locked to CAPR 39-1 scaled size
   nameplateImg.style.height = "13.6px";
   nameplateImg.style.display = "block";
 
