@@ -174,14 +174,15 @@ function isBadgeCadetAuthorized(badgeID) {
 };
 
 const badgeSlots = {
-  "OLPA": [],   // Over Left Pocket Above Aviation
-  "OLPU": [],   // Over Left Pocket Under Aviation
-  "ORP": [],    // Over Right Pocket
-  "URBP": [],   // Under Right Breast Pocket
-  "ON": [],     // Over Name Tag
-  "LRP": [],    // On Left or Right Pocket (e.g., NRA)
-  "LP": []
+  "OLPA": [],   // Over Left Pocket Above Aviation (1 max)
+  "OLPU": [],   // Over Left Pocket Under Aviation (1 max)
+  "ORP": [],    // Over Right Pocket (1 max)
+  "ON": [],     // Over Name Tag (max 2 stacked)
+  "UN": [],     // Under Name Tag (max 2 stacked)
+  "LRP": [],    // On Pocket Flap (Marksmanship) (1 max)
+  "LP": []      // Left Pocket (e.g., Model Rocketry) (1 max)
 };
+
 
 
 
@@ -655,19 +656,35 @@ let yOffset = {
   badgeSlots[slot].push(badgeKey);
 }
 
-
-  
-
-
-
-
-
-
-
-
-
-
   function renderRank(key) {
+  const officerRanks = ["C/2d Lt", "C/1st Lt", "C/Capt", "C/Maj", "C/Lt Col", "C/Col"];
+
+  // Remove previous rank layers before adding new ones
+  document.querySelectorAll(".layer.rank").forEach(el => el.remove());
+
+  if (officerRanks.includes(key)) {
+    const imgSrc = "images/ranks/C/shoulder_board.png";
+
+    const left = document.createElement("img");
+    left.src = imgSrc;
+    left.className = "layer rank";
+    left.style.top = "160px";
+    left.style.left = "100px";
+    left.style.width = "60px";
+    left.style.height = "20px";
+    left.style.display = "block";
+    uniformCanvas.appendChild(left);
+
+    const right = document.createElement("img");
+    right.src = imgSrc;
+    right.className = "layer rank";
+    right.style.top = "160px";
+    right.style.left = "670px";
+    right.style.width = "60px";
+    right.style.height = "20px";
+    right.style.display = "block";
+    uniformCanvas.appendChild(right);
+  } else {
     const original = document.getElementById(`ranks-${key}`);
     const clone = original.cloneNode();
     clone.className = "layer rank";
@@ -678,28 +695,8 @@ let yOffset = {
     clone.style.display = "block";
     uniformCanvas.appendChild(clone);
   }
-
-function renderNameplate() {
-  const existing = document.querySelector(".layer.nameplate");
-  if (existing) return; // prevent re-adding
-
-  nameplatePresent = true;
-
-  const img = document.createElement("img");
-  img.src = "images/nameplate/CAP_Nameplate.png";
-  img.className = "layer nameplate";
-  img.style.width = "56.25px";
-  img.style.height = "13.6px";
-
-  const top = currentGender === "female" ? 390 : 390;
-  const left = currentGender === "female" ? 150 : 150;
-
-  img.style.top = `${top}px`;
-  img.style.left = `${left}px`;
-  img.style.display = "block";
-
-  uniformCanvas.appendChild(img);
 }
+
 
 
   
@@ -737,10 +734,12 @@ if (!isBadgeCadetAuthorized(key)) {
   return;
 }
 if (!selectedBadges.includes(key)) {
-  if (selectedBadges.length >= 5) {
-  alert("You may only wear a total of 4 badges on the uniform.");
+  const totalBadgesWorn = Object.values(badgeSlots).reduce((sum, arr) => sum + arr.length, 0);
+if (totalBadgesWorn >= 5) {
+  alert("You may only wear a total of 5 badges per CAPR 39-1.");
   return;
 }
+
 
 enforceExclusiveBadgeConflicts(key);
 selectedBadges.push(key);
