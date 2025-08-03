@@ -1,10 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CAP Class A Blues Uniform Builder</title>
   <style>
+
+    @media (max-width: 768px) {
+  main {
+    flex-direction: column;
+  }
+
+  #controls {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
+
+  #preview {
+    overflow-x: auto;
+  }
+
+  #uniformCanvas {
+    width: 600px;
+    height: 900px;
+  }
+}
+
+    
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -108,6 +136,18 @@
 
 <script>
 
+document.getElementById("downloadImage").onclick = () => {
+  html2canvas(uniformCanvas, { scale: 3 }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = `CAP_Uniform_${Date.now()}.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+};
+
+
+
+  
   const allowedCadetBadges = new Set([
   "solo_badge", "pre_solo_badge", "ground_team_basic_badge", "senior_ground_team_badge", "master_ground_team_badge",
   "emt_basic_badge", "emt_intermediate", "emt_paramedic", "aerospace", "model_rocketry_badge", "communications_technician_badge",
@@ -663,38 +703,34 @@ let yOffset = {
   document.querySelectorAll(".layer.rank").forEach(el => el.remove());
 
   if (officerRanks.includes(key)) {
-    const imgSrc = "images/ranks/C/shoulder_board.png";
+  const imgSrc = "images/ranks/C/shoulder_board.png";
+  const rankImg = document.getElementById(`ranks-${key}`);
+  if (!rankImg) return;
 
-    const left = document.createElement("img");
-    left.src = imgSrc;
-    left.className = "layer rank";
-    left.style.top = "160px";
-    left.style.left = "100px";
-    left.style.width = "60px";
-    left.style.height = "20px";
-    left.style.display = "block";
-    uniformCanvas.appendChild(left);
+  // Render left and right shoulder boards with overlaid insignia
+  ["100px", "670px"].forEach((left, index) => {
+    const board = document.createElement("img");
+    board.src = imgSrc;
+    board.className = "layer rank";
+    board.style.top = "160px";
+    board.style.left = left;
+    board.style.width = "60px";
+    board.style.height = "20px";
+    board.style.display = "block";
+    uniformCanvas.appendChild(board);
 
-    const right = document.createElement("img");
-    right.src = imgSrc;
-    right.className = "layer rank";
-    right.style.top = "160px";
-    right.style.left = "670px";
-    right.style.width = "60px";
-    right.style.height = "20px";
-    right.style.display = "block";
-    uniformCanvas.appendChild(right);
-  } else {
-    const original = document.getElementById(`ranks-${key}`);
-    const clone = original.cloneNode();
-    clone.className = "layer rank";
-    clone.style.top = currentGender === "female" ? "180px" : "170px";
-    clone.style.left = currentGender === "female" ? "270px" : "280px";
-    clone.style.width = "50px";
-    clone.style.height = "50px";
-    clone.style.display = "block";
-    uniformCanvas.appendChild(clone);
-  }
+    const insignia = rankImg.cloneNode();
+    insignia.className = "layer rank";
+    insignia.style.top = "162px"; // slightly adjusted to center vertically
+    insignia.style.left = `${parseInt(left) + 10}px`; // offset inside board
+    insignia.style.width = "40px";
+    insignia.style.height = "16px";
+    insignia.style.display = "block";
+    uniformCanvas.appendChild(insignia);
+  });
+
+  return; // Important: don't continue to enlisted logic
+}
 }
 
 
