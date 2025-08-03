@@ -654,9 +654,9 @@ else {
   let baseRibbonY = getTopRibbonY(); // returns null if no ribbons
 
 let yOffset = {
-  "OLP": baseRibbonY !== null ? baseRibbonY - 50 : 394,
-  "OLPU": baseRibbonY !== null ? baseRibbonY - 20 : 424,
-  "OLPA": baseRibbonY !== null ? baseRibbonY - 80 : 364,
+  "OLP": baseRibbonY !== null ? baseRibbonY - 75 : 394,
+  "OLPU": baseRibbonY !== null ? baseRibbonY - 75 : 424,
+  "OLPA": baseRibbonY !== null ? baseRibbonY - 75 : 364,
   "ORP": 300,
   "ON": 350,
   "UN": 390,
@@ -751,10 +751,10 @@ function renderNameplate() {
   const nameplateImg = document.createElement("img");
   nameplateImg.src = "images/nameplate/nameplate.png"; // ✅ use your provided path
   nameplateImg.className = "layer nameplate";
-  nameplateImg.style.top = "440px";   // adjust if needed for alignment
-  nameplateImg.style.left = "120px";  // adjust for nameplate centering
-  nameplateImg.style.width = "100px";
-  nameplateImg.style.height = "20px";
+  nameplateImg.style.top = "390px";   // adjust if needed for alignment
+  nameplateImg.style.left = "150px";  // adjust for nameplate centering
+  nameplateImg.style.width = "56.25px";
+  nameplateImg.style.height = "13.6px";
   nameplateImg.style.display = "block";
 
   uniformCanvas.appendChild(nameplateImg);
