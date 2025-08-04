@@ -645,6 +645,9 @@ renderAllBadges();
   clone.style.left = `${xOffset}px`;
   uniformCanvas.appendChild(clone);
 
+  console.log(`Placed badge: ${badgeKey} at slot ${slot}`);
+
+  
   badgeSlots[slot].push(badgeKey);
 }
 
@@ -718,6 +721,18 @@ function renderNameplate() {
   nameplatePresent = true;
 }
 
+function renderAllBadges() {
+  // Clear existing badge layers
+  document.querySelectorAll(".layer.badge").forEach(el => el.remove());
+
+  // Clear badgeSlots to ensure fresh placement
+  for (const slot in badgeSlots) {
+    badgeSlots[slot] = [];
+  }
+
+  // Place each selected badge again
+  selectedBadges.forEach(badge => placeBadgeByCategory(badge));
+}
 
   
   applyJacket(currentGender);
