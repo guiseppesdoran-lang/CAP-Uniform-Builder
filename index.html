@@ -653,54 +653,67 @@ renderAllBadges();
 
 
   function renderRank(key) {
-  const officerRanks = ["C/2d Lt", "C/1st Lt", "C/Capt", "C/Maj", "C/Lt Col", "C/Col"];
+const officerRanks = ["C/2d Lt", "C/1st Lt", "C/Capt", "C/Maj", "C/Lt Col", "C/Col"];
 
-  // Remove previous rank layers before adding new ones
-  document.querySelectorAll(".layer.rank").forEach(el => el.remove());
 
-  if (officerRanks.includes(key)) {
-  const imgSrc = "images/ranks/C/shoulder_board.png";
-  const rankImg = document.getElementById(`ranks-${key}`);
-  if (!rankImg) return;
+// Remove previous rank layers before adding new ones
+document.querySelectorAll(".layer.rank").forEach(el => el.remove());
 
-  // Render left and right shoulder boards with overlaid insignia
-  ["100px", "670px"].forEach((left, index) => {
-    const board = document.createElement("img");
-    board.src = imgSrc;
-    board.className = "layer rank";
-    board.style.top = "160px";
-    board.style.left = left;
-    board.style.width = "60px";
-    board.style.height = "20px";
-    board.style.display = "block";
-    uniformCanvas.appendChild(board);
 
-    const insignia = rankImg.cloneNode();
-    insignia.className = "layer rank";
-    insignia.style.top = "162px"; // slightly adjusted to center vertically
-    insignia.style.left = `${parseInt(left) + 10}px`; // offset inside board
-    insignia.style.width = "40px";
-    insignia.style.height = "16px";
-    insignia.style.display = "block";
-    uniformCanvas.appendChild(insignia);
-  });
+if (officerRanks.includes(key)) {
+const imgSrc = "images/ranks/C/shoulder_board.png";
+const rankImg = document.getElementById(`ranks-${key}`);
+if (!rankImg) return;
 
-  return; // Important: don't continue to enlisted logic
+
+// Left board rotates 90° clockwise, right board rotates 90° counter-clockwise
+[
+{ left: 100, rotation: 90 }, // Left board
+{ left: 670, rotation: -90 } // Right board
+].forEach(({ left, rotation }) => {
+const board = document.createElement("img");
+board.src = imgSrc;
+board.className = "layer rank";
+board.style.top = "160px";
+board.style.left = `${left}px`;
+board.style.width = "50px"; // requested width
+board.style.height = "100px"; // requested height
+board.style.transform = `rotate(${rotation}deg)`;
+board.style.transformOrigin = "center center";
+board.style.display = "block";
+uniformCanvas.appendChild(board);
+
+
+// Insignia overlay: match board rotation and center within the board
+const insignia = rankImg.cloneNode();
+insignia.className = "layer rank";
+insignia.style.top = `${160 + 35}px`; // approximate center vertically
+insignia.style.left = `${left + 10}px`; // approximate center horizontally
+insignia.style.width = "30px";
+insignia.style.height = "30px";
+insignia.style.transform = `rotate(${rotation}deg)`;
+insignia.style.transformOrigin = "center center";
+insignia.style.display = "block";
+uniformCanvas.appendChild(insignia);
+});
+
+
+return; // Important: don't continue to enlisted logic
 }
 
-    // Below the officer rank logic in renderRank()
+
+// Enlisted/Airman ranks overlay directly on the jacket
 const rankImg = document.getElementById(`ranks-${key}`);
 if (rankImg) {
-  const clone = rankImg.cloneNode();
-  clone.className = "layer rank";
-  clone.style.top = "200px";
-  clone.style.left = "420px";
-  clone.style.width = "50px";
-  clone.style.height = "50px";
-  clone.style.display = "block";
-  uniformCanvas.appendChild(clone);
+const clone = rankImg.cloneNode();
+clone.className = "layer rank";
+clone.style.top = "200px";
+clone.style.left = "420px";
+clone.style.width = "50px";
+clone.style.height = "50px";
+clone.style.display = "block";
+uniformCanvas.appendChild(clone);
 }
-
 }
 
 function renderNameplate() {
