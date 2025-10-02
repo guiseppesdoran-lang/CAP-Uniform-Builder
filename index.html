@@ -321,7 +321,7 @@ function placeBadgeByCategory(id){
 /******************** Rank & Nameplate ********************/
 function renderRank(id){
   clearLayers('rank'); if(!id) return;
-  const insigniaEl = document.querySelector(`#ranks-${CSS.escape(id)}`);
+  const insigniaEl = document.getElementById('ranks-' + id);
   if(!insigniaEl) return;
 
   const isOfficer = officerRanks.has(id);
