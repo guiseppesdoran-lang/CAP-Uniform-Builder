@@ -358,7 +358,18 @@ function renderRank(id){
   icon.style.left=`${pos.left}px`; icon.style.top=`${pos.top}px`; icon.style.width=`${size.w}px`; icon.style.height=`${size.h}px`;
   uniformCanvas.appendChild(icon);
 }
-function renderNameplate(){ clearLayers('nameplate'); const el=document.createElement('img'); el.src=ASSET('nameplate/nameplate.png'); el.className='layer nameplate'; el.style.display='block'; el.style.top='440px'; el.style.left='120px'; el.style.width='100px'; el.style.height='20px'; uniformCanvas.appendChild(el); }(){ clearLayers('nameplate'); const el=document.createElement('img'); el.src=ASSET('nameplate/nameplate.png'); el.className='layer nameplate'; el.style.display='block'; el.style.top='440px'; el.style.left='120px'; el.style.width='100px'; el.style.height='20px'; uniformCanvas.appendChild(el); }
+function renderNameplate(){
+  clearLayers('nameplate');
+  const el = document.createElement('img');
+  el.src = ASSET('nameplate/nameplate.png');
+  el.className = 'layer nameplate';
+  el.style.display = 'block';
+  el.style.top = '440px';
+  el.style.left = '120px';
+  el.style.width = '100px';
+  el.style.height = '20px';
+  uniformCanvas.appendChild(el);
+}
 
 /******************** Persistence (optional quick save) ********************/
 function quickSave(){ localStorage.setItem('cap_uniform', JSON.stringify(State)); }
