@@ -298,9 +298,9 @@ function placeBadgeByCategory(id){
   const spacing=5;
   const baseRibbonY = getTopRibbonY();
   const yMap = {
-    OLP: baseRibbonY!==null? baseRibbonY-50:394,
-    OLPU: baseRibbonY!==null? baseRibbonY-20:424,
-    OLPA: baseRibbonY!==null? baseRibbonY-80:364,
+    OLP: baseRibbonY!==null? baseRibbonY - 25 : 394,   // 25px above highest ribbon row
+    OLPU: baseRibbonY!==null? baseRibbonY - 5  : 424,   // just under aviation (closer to ribbons)
+    OLPA: baseRibbonY!==null? baseRibbonY - 55 : 364,   // higher than OLP
     ORP: 300, ON: 350, UN: 390, LRP: 405, LP: 450
   };
   const xMap = { OLP:328, OLPU:328, OLPA:328, ORP:100, ON:150, UN:150, LRP:335, LP:350 };
@@ -321,25 +321,44 @@ function placeBadgeByCategory(id){
 /******************** Rank & Nameplate ********************/
 function renderRank(id){
   clearLayers('rank'); if(!id) return;
-  if(officerRanks.has(id)){
-    const boardSrc = ASSET('ranks/C/shoulder_board.png');
-    const cfg = {width:50,height:100};
-    [ {left:350,top:160,rot:90}, {left:100,top:160,rot:-90} ].forEach(({left,top,rot})=>{
-      const board=document.createElement('img'); board.src=boardSrc; board.className='layer rank'; board.style.display='block';
-      board.style.left=`${left}px`; board.style.top=`${top}px`; board.style.width=`${cfg.width}px`; board.style.height=`${cfg.height}px`; board.style.transform=`rotate(${rot}deg)`; board.style.transformOrigin='center center';
-      uniformCanvas.appendChild(board);
-    });
-  }
-  const insignia = $(`#ranks-${id}`); if(!insignia) return;
+  const insigniaEl = document.querySelector(`#ranks-${CSS.escape(id)}`);
+  if(!insigniaEl) return;
+
   const isOfficer = officerRanks.has(id);
-  const size = isOfficer? {w:34,h:34} : {w:60,h:60};
-  const pos = isOfficer? {left:430, top:115} : {left:420, top:200};
-  const icon=insignia.cloneNode(); icon.className='layer rank'; icon.style.display='block';
+  if(isOfficer){
+    const boardSrc = ASSET('ranks/C/shoulder_board.png');
+    const boardCfg = {width:50,height:100};
+    const insigniaCfg = {width:32,height:32};
+    const placements = [
+      {left:350, top:160, rot:90},    // left shoulder board
+      {left:100, top:160, rot:-90}    // right shoulder board
+    ];
+    placements.forEach(({left,top,rot})=>{
+      // Board
+      const board=document.createElement('img');
+      board.src=boardSrc; board.className='layer rank'; board.style.display='block';
+      board.style.left=`${left}px`; board.style.top=`${top}px`;
+      board.style.width=`${boardCfg.width}px`; board.style.height=`${boardCfg.height}px`;
+      board.style.transform=`rotate(${rot}deg)`; board.style.transformOrigin='center center';
+      uniformCanvas.appendChild(board);
+      // Insignia centered on the board with same rotation
+      const ins=insigniaEl.cloneNode(); ins.className='layer rank'; ins.style.display='block';
+      ins.style.left=`${left + (boardCfg.width/2 - insigniaCfg.width/2)}px`;
+      ins.style.top=`${top + (boardCfg.height/2 - insigniaCfg.height/2)}px`;
+      ins.style.width=`${insigniaCfg.width}px`; ins.style.height=`${insigniaCfg.height}px`;
+      ins.style.transform=`rotate(${rot}deg)`; ins.style.transformOrigin='center center';
+      uniformCanvas.appendChild(ins);
+    });
+    return;
+  }
+  // Enlisted
+  const size = {w:60,h:60};
+  const pos = {left:420, top:200};
+  const icon=insigniaEl.cloneNode(); icon.className='layer rank'; icon.style.display='block';
   icon.style.left=`${pos.left}px`; icon.style.top=`${pos.top}px`; icon.style.width=`${size.w}px`; icon.style.height=`${size.h}px`;
-  if(isOfficer){ icon.style.transform='rotate(0deg)'; }
   uniformCanvas.appendChild(icon);
 }
-function renderNameplate(){ clearLayers('nameplate'); const el=document.createElement('img'); el.src=ASSET('nameplate/nameplate.png'); el.className='layer nameplate'; el.style.display='block'; el.style.top='440px'; el.style.left='120px'; el.style.width='100px'; el.style.height='20px'; uniformCanvas.appendChild(el); }
+function renderNameplate(){ clearLayers('nameplate'); const el=document.createElement('img'); el.src=ASSET('nameplate/nameplate.png'); el.className='layer nameplate'; el.style.display='block'; el.style.top='440px'; el.style.left='120px'; el.style.width='100px'; el.style.height='20px'; uniformCanvas.appendChild(el); }(){ clearLayers('nameplate'); const el=document.createElement('img'); el.src=ASSET('nameplate/nameplate.png'); el.className='layer nameplate'; el.style.display='block'; el.style.top='440px'; el.style.left='120px'; el.style.width='100px'; el.style.height='20px'; uniformCanvas.appendChild(el); }
 
 /******************** Persistence (optional quick save) ********************/
 function quickSave(){ localStorage.setItem('cap_uniform', JSON.stringify(State)); }
