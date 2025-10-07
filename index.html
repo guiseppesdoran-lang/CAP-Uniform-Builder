@@ -1,4 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CAP Uniform Builder — Full Program</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+<style>
+:root{
+  --bg:#eef1f5; --ink:#0d1b2a; --muted:#516079; --panel:#ffffff; --line:#cfd6df; --brand:#002855;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--ink)}
+header{background:var(--brand);color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:18px;letter-spacing:.3px}
+main{display:flex}
+#controls{width:340px;background:var(--panel);padding:14px;border-right:1px solid var(--line);overflow:auto;height:calc(100vh - 58px)}
+#preview{flex:1;background:#d1d8e0;display:flex;align-items:flex-start;justify-content:center;position:relative;height:calc(100vh - 58px)}
+#uniformCanvas{position:relative;width:900px;height:1200px}
+.layer{position:absolute;image-rendering:auto}
+label{font-size:12px;color:var(--muted);margin-top:8px;display:block}
+select,button,input{width:100%;margin-top:6px;padding:8px;border:1px solid var(--line);border-radius:10px;background:#f8fafc}
+button{cursor:pointer;background:#0f2a54;color:#fff;border-color:#163766}
+button.ghost{background:#ffffff;color:var(--ink)}
+.row{display:flex;gap:8px}
+.two .col{flex:1}
+
+@media (max-width: 1024px){
+  main{flex-direction:column}
+  #controls{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--line)}
+  #preview{height:auto}
+  #uniformCanvas{width:600px;height:900px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>CAP Uniform Builder — Full Program (images/ path)</h1>
+</header>
+
+<main>
+  <section id="controls">
+    <div class="row two">
+      <div class="col">
+        <label>Member</label>
+        <select id="memberSelect">
+          <option value="cadet">Cadet</option>
+          <option value="senior">Senior</option>
+        </select>
+      </div>
+      <div class="col">
+        <label>Gender</label>
+        <select id="jacketSelect">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+    </div>
+
+    <label>Uniform</label>
+    <select id="uniformSelect">
+      <option value="blues_a">Blues: Class A</option>
+      <option value="blues_b">Blues: Class B</option>
+      <option value="mess_dress">Mess Dress (Senior)</option>
+      <option value="semi_formal">Semi-formal</option>
+      <option value="aviator">Aviator (Senior)</option>
+      <option value="aviator_blazer">Aviator + Blazer (Senior)</option>
+      <option value="corporate_field">Corporate Field</option>
+      <option value="abu">ABUs</option>
+      <option value="flight_suit">Flight Suit</option>
+      <option value="polo">Polo (Senior)</option>
+    </select>
+
+    <div class="row two">
+      <div class="col">
+        <label>Asset Base</label>
+        <input id="assetBase" value="images" placeholder="images"/>
+      </div>
+      <div class="col">
+        <label>&nbsp;</label>
+        <button id="applyJacket" class="ghost">Apply Jacket</button>
+      </div>
+    </div>
+
+    <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
+
+    <label>Ribbons</label>
+    <div class="row two">
+      <div class="col"><select id="ribbonSelect"></select></div>
+      <div class="col"><select id="deviceSelect"></select></div>
+    </div>
+    <div class="row two" style="margin-top:6px">
+      <div class="col"><button id="addRibbon">Add Ribbon</button></div>
+      <div class="col"><button id="clearRibbons" class="ghost">Clear Ribbons</button></div>
+    </div>
+    <label><input type="checkbox" id="autoMini" checked> Auto-convert ribbons → mini-medals on Mess/Semi-formal</label>
+
+    <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
+
+    <label>Badges</label>
+    <div class="row two">
+      <div class="col"><select id="badgeSelect"></select></div>
+      <div class="col"><button id="addBadge">Add Badge</button></div>
+    </div>
+    <div class="row two" style="margin-top:6px">
+      <div class="col"><select id="removeBadgeSelect"></select></div>
+      <div class="col"><button id="removeBadge" class="ghost">Remove Badge</button></div>
+    </div>
+
+    <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
+
+    <label>Rank Insignia</label>
+    <div class="row two">
+      <div class="col"><select id="rankSelect"></select></div>
+      <div class="col"><button id="addRank">Set Rank</button></div>
+    </div>
+
+    <div class="row two" style="margin-top:6px">
+      <div class="col"><button id="addNameplate" class="ghost">Add Nameplate</button></div>
+      <div class="col"><button id="downloadImage">Download PNG</button></div>
+    </div>
+  </section>
+
+  <section id="preview">
+    <div id="uniformCanvas"></div>
+  </section>
+</main>
+
+<!-- Hidden assets root -->
+<div class="layer" id="assets" style="display:none"></div>
+
 <script>
+document.addEventListener('DOMContentLoaded', function(){
+
 /************** Config & Catalogs (IDs map to images under images/ …) **************/
 const State = {
   member:'cadet', gender:'male', uniform:'blues_a', assetBase:'images',
@@ -16,7 +149,7 @@ function ASSET(p){ const b=(State.assetBase||'images').replace(/\/$/,''); return
 const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award','spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon'
 ];
-const precedence = (id)=> ribbonList.indexOf(id);
+const precedence = (id)=> ribbonList.indexOf(id); // simple precedence by order in list
 const deviceList = ['1_Bronze_Star_Device','1_Silver_Star_Device'];
 const deviceImg = {
   '1_Bronze_Star_Device':'devices/1_Bronze_Star_Device.png',
@@ -120,7 +253,6 @@ function getTopRibbonY(){
 }
 
 function renderRack(){
-  // remove old
   clearLayers('ribbon'); clearLayers('mini');
   const allowMini = UNIFORMS[State.uniform].mini && $('#autoMini').checked;
   const showRibbons = UNIFORMS[State.uniform].ribbons && !allowMini;
@@ -142,7 +274,7 @@ function renderRack(){
         const el=orig.cloneNode(); el.className='layer ribbon'; el.style.display='block';
         el.style.top=`${y-h}px`; el.style.left=`${x0 + i*(w+pad)}px`; el.style.width=`${w}px`; el.style.height=`${h}px`;
         uniformCanvas.appendChild(el);
-        // device overlay if this ribbon has one
+        // device overlay if present
         const rn = State.ribbons.find(r=>r.id===rid);
         if(rn && rn.device && rn.device!=='none'){
           const dev=$(`#devices-${rn.device}`);
@@ -177,7 +309,6 @@ function renderRack(){
 }
 
 /******************** Badges ********************/
-// slots with arrays of ids
 const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[] };
 function resetBadgeSlots(){ Object.keys(badgeSlots).forEach(k=> badgeSlots[k]=[] ); }
 function isCadetAuthorized(id){ return allowedCadetBadges.has(id); }
@@ -195,7 +326,6 @@ function enforceExclusive(newId){
 
 function renderAllBadges(){
   clearLayers('badge'); resetBadgeSlots();
-  // recompute total limit per uniform (simple starter: max 5 total; 1 each non-stack slot; ON/UN stack up to 2)
   const maxTotal=5;
   const applied=[];
   for(const id of State.badges){
@@ -207,23 +337,20 @@ function renderAllBadges(){
 function placeBadgeByCategory(id){
   const img=$(`#badges-${id}`); if(!img) return;
   let slot = badgeLocations[id] || 'UN';
-  // Marksmanship always LRP single
   if(id==='nra_marksman_badge') slot='LRP';
-  // Model Rocketry must be LP (special)
   if(id==='model_rocketry_badge') slot='LP';
-  // single-occupancy slots
+
   const single = new Set(['OLP','OLPU','OLPA','ORP','LRP','LP']);
-  if(single.has(slot) && badgeSlots[slot].length>=1) return; // already occupied
-  // stack limits
+  if(single.has(slot) && badgeSlots[slot].length>=1) return;
   if((slot==='ON' || slot==='UN') && badgeSlots[slot].length>=2) return;
 
   const size = customBadgeSizes[id] || {width:60,height:25};
   const spacing=5;
   const baseRibbonY = getTopRibbonY();
   const yMap = {
-    OLP: baseRibbonY!==null? baseRibbonY - 25 : 394,   // 25px above highest ribbon row
-    OLPU: baseRibbonY!==null? baseRibbonY - 5  : 424,   // just under aviation (closer to ribbons)
-    OLPA: baseRibbonY!==null? baseRibbonY - 55 : 364,   // higher than OLP
+    OLP: baseRibbonY!==null? baseRibbonY - 25 : 394,
+    OLPU: baseRibbonY!==null? baseRibbonY - 5  : 424,
+    OLPA: baseRibbonY!==null? baseRibbonY - 55 : 364,
     ORP: 300, ON: 350, UN: 390, LRP: 405, LP: 450
   };
   const xMap = { OLP:328, OLPU:328, OLPA:328, ORP:100, ON:150, UN:150, LRP:335, LP:350 };
@@ -257,18 +384,17 @@ function renderRank(id){
     const boardCfg = {width:50,height:100};
     const insigniaCfg = {width:32,height:32};
     const placements = [
-      {left:350, top:160, rot:90},    // left shoulder board
-      {left:100, top:160, rot:-90}    // right shoulder board
+      {left:350, top:160, rot:90},   // left shoulder board (rotated right)
+      {left:100, top:160, rot:-90}   // right shoulder board (rotated left)
     ];
     placements.forEach(({left,top,rot})=>{
-      // Board
       const board=document.createElement('img');
       board.src=boardSrc; board.className='layer rank'; board.style.display='block';
       board.style.left=`${left}px`; board.style.top=`${top}px`;
       board.style.width=`${boardCfg.width}px`; board.style.height=`${boardCfg.height}px`;
       board.style.transform=`rotate(${rot}deg)`; board.style.transformOrigin='center center';
       uniformCanvas.appendChild(board);
-      // Insignia centered on the board with same rotation
+
       const ins=insigniaEl.cloneNode(); ins.className='layer rank'; ins.style.display='block';
       ins.style.left=`${left + (boardCfg.width/2 - insigniaCfg.width/2)}px`;
       ins.style.top=`${top + (boardCfg.height/2 - insigniaCfg.height/2)}px`;
@@ -278,7 +404,7 @@ function renderRank(id){
     });
     return;
   }
-  // Enlisted
+  // Enlisted on jacket
   const size = {w:60,h:60};
   const pos = {left:420, top:200};
   const icon=insigniaEl.cloneNode(); icon.className='layer rank'; icon.style.display='block';
@@ -319,17 +445,14 @@ function refreshUI(){
 /******************** Handlers ********************/
 $('#applyJacket').onclick=()=>{ State.assetBase=$('#assetBase').value.trim()||'images'; State.gender=$('#jacketSelect').value; applyJacket(); };
 $('#memberSelect').onchange=(e)=>{ State.member=e.target.value;
-  // enforce cadet restrictions
   if(State.member==='cadet' && (State.uniform==='polo' || State.uniform==='mess_dress')){
     alert('Cadets are not authorized Polo or Mess Dress. Switching to Blues A.');
     State.uniform='blues_a'; $('#uniformSelect').value='blues_a';
   }
-  // strip non-authorized badges
   if(State.member==='cadet'){ State.badges = State.badges.filter(isCadetAuthorized); populateBadgesRemove(); fullRender(); }
 };
 $('#jacketSelect').onchange=(e)=>{ State.gender=e.target.value; applyJacket(); };
 $('#uniformSelect').onchange=(e)=>{ State.uniform=e.target.value;
-  // clear rack on uniforms that don’t show anything on chest
   if(!UNIFORMS[State.uniform].ribbons && !UNIFORMS[State.uniform].mini){ State.ribbons=[]; }
   fullRender();
 };
@@ -368,4 +491,46 @@ $('#downloadImage').onclick=()=>{ html2canvas(uniformCanvas,{scale:3}).then(c=>{
   applyJacket();
   renderRack();
 })();
+  
+/* ======== Emergency Diagnostics (error banner + safe boot) ======== */
+(function diagnostics(){
+  function showError(msg, src, line, col){
+    const b=document.createElement('div');
+    b.style.cssText='position:fixed;left:0;top:0;right:0;background:#b00020;color:#fff;padding:8px 12px;font:14px/1.4 system-ui;z-index:99999';
+    b.textContent = '[JS Error] ' + msg + (src? (' — ' + src + ':' + line + ':' + col):'');
+    document.body.appendChild(b);
+    console.error('[CAP Builder]', msg, src, line, col);
+  }
+  window.addEventListener('error', e => showError(e.message, e.filename, e.lineno, e.colno));
+
+  function safeInit(){
+    try {
+      if(typeof refreshUI==='function' && typeof applyJacket==='function'){
+        refreshUI();
+        applyJacket();
+        if(typeof renderRack==='function') renderRack();
+        if(typeof renderAllBadges==='function') renderAllBadges();
+        if(State && State.rank && typeof renderRank==='function') renderRank(State.rank);
+        console.log('[CAP Builder] Safe init complete.');
+      } else {
+        showError('Core functions not found. Is the <script> truncated or blocked?');
+      }
+    } catch(err){
+      showError(err && err.message ? err.message : String(err));
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', safeInit);
+  } else {
+    safeInit();
+  }
+  const hb = document.createElement('div');
+  hb.textContent = 'CAP Builder loaded';
+  hb.style.cssText='position:fixed;right:8px;bottom:8px;background:#0f2a54;color:#fff;padding:6px 10px;border-radius:8px;opacity:.85;z-index:99998';
+  document.body.appendChild(hb);
+  setTimeout(()=>hb.remove(), 2000);
+})();
+}); // DOMContentLoaded end
 </script>
+</body>
+</html>
