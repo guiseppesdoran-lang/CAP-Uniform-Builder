@@ -173,35 +173,17 @@ const officerRanks = new Set(['C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','
 
 // Uniform bases (images/base/*.png)
 const UNIFORMS = {
-  blues_a:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true,mini:false},
-  blues_b:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true,mini:false},
-  mess_dress:{male:'base/mess_male.png',female:'base/mess_female.png',ribbons:false,mini:true},
-  semi_formal:{male:'base/semi_male.png',female:'base/semi_female.png',ribbons:false,mini:true},
-  aviator:{male:'base/aviator_male.png',female:'base/aviator_female.png',ribbons:true,mini:false},
-  aviator_blazer:{male:'base/aviator_blazer_male.png',female:'base/aviator_blazer_female.png',ribbons:true,mini:false},
-  corporate_field:{male:'base/corporate_field_male.png',female:'base/corporate_field_female.png',ribbons:true,mini:false},
-  abu:{male:'base/abu_male.png',female:'base/abu_female.png',ribbons:false,mini:false},
-  flight_suit:{male:'base/flight_suit_male.png',female:'base/flight_suit_female.png',ribbons:false,mini:false},
-  polo:{male:'base/polo_male.png',female:'base/polo_female.png',ribbons:false,mini:false}
-  // Ribbons on (rack), NO minis
-  blues_a:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true, mini:false, cadetAuthorized:true},
-  blues_b:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true, mini:false, cadetAuthorized:true},
-
-  // Cadet semi-formal uses RIBBONS (not minis)
-  semi_formal:{male:'base/semi_male.png',female:'base/semi_female.png',ribbons:true, mini:false, cadetAuthorized:true},
-
-  // Utility / flight uniforms: no ribbon racks
-  corporate_field:{male:'base/corporate_field_male.png',female:'base/corporate_field_female.png',ribbons:false, mini:false, cadetAuthorized:true},
-  abu:{male:'base/abu_male.png',female:'base/abu_female.png',ribbons:false, mini:false, cadetAuthorized:true},
-  flight_suit:{male:'base/flight_suit_male.png',female:'base/flight_suit_female.png',ribbons:false, mini:false, cadetAuthorized:true},
-
-  // Senior-only combos (kept for future; hidden for cadets)
-  mess_dress:{male:'base/mess_male.png',female:'base/mess_female.png',ribbons:false, mini:true, cadetAuthorized:false},
-  aviator:{male:'base/aviator_male.png',female:'base/aviator_female.png',ribbons:true, mini:false, cadetAuthorized:false},
-  aviator_blazer:{male:'base/aviator_blazer_male.png',female:'base/aviator_blazer_female.png',ribbons:true, mini:false, cadetAuthorized:false},
-  polo:{male:'base/polo_male.png',female:'base/polo_female.png',ribbons:false, mini:false, cadetAuthorized:false}
+blues_a:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true,mini:false},
+blues_b:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true,mini:false},
+mess_dress:{male:'base/mess_male.png',female:'base/mess_female.png',ribbons:false,mini:true},
+semi_formal:{male:'base/semi_male.png',female:'base/semi_female.png',ribbons:false,mini:true},
+aviator:{male:'base/aviator_male.png',female:'base/aviator_female.png',ribbons:true,mini:false},
+aviator_blazer:{male:'base/aviator_blazer_male.png',female:'base/aviator_blazer_female.png',ribbons:true,mini:false},
+corporate_field:{male:'base/corporate_field_male.png',female:'base/corporate_field_female.png',ribbons:true,mini:false},
+abu:{male:'base/abu_male.png',female:'base/abu_female.png',ribbons:false,mini:false},
+flight_suit:{male:'base/flight_suit_male.png',female:'base/flight_suit_female.png',ribbons:false,mini:false},
+polo:{male:'base/polo_male.png',female:'base/polo_female.png',ribbons:false,mini:false}
 };
-
 
 /******************** UI populate ********************/
 function populate(sel, list){ sel.innerHTML=''; list.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); sel.appendChild(o); }); }
@@ -294,8 +276,7 @@ State.badges = State.badges.filter(b=>b!==conf);
 function renderAllBadges(){
 clearLayers('badge'); resetBadgeSlots();
 // recompute total limit per uniform (simple starter: max 5 total; 1 each non-stack slot; ON/UN stack up to 2)
-  const maxTotal=5;
-  const maxTotal=4;
+const maxTotal=5;
 const applied=[];
 for(const id of State.badges){ if(applied.length>=maxTotal) break; placeBadgeByCategory(id); applied.push(id); }
 }
@@ -377,17 +358,18 @@ const icon=insigniaEl.cloneNode(); icon.className='layer rank'; icon.style.displ
 icon.style.left=`${pos.left}px`; icon.style.top=`${pos.top}px`; icon.style.width=`${size.w}px`; icon.style.height=`${size.h}px`;
 uniformCanvas.appendChild(icon);
 }
+function renderNameplate(){ clearLayers('nameplate'); const el=document.createElement('img'); el.src=ASSET('nameplate/nameplate.png'); el.className='layer nameplate'; el.style.display='block'; el.style.top='440px'; el.style.left='120px'; el.style.width='100px'; el.style.height='20px'; uniformCanvas.appendChild(el); }(){ clearLayers('nameplate'); const el=document.createElement('img'); el.src=ASSET('nameplate/nameplate.png'); el.className='layer nameplate'; el.style.display='block'; el.style.top='440px'; el.style.left='120px'; el.style.width='100px'; el.style.height='20px'; uniformCanvas.appendChild(el); }
 function renderNameplate(){
-clearLayers('nameplate');
-const el = document.createElement('img');
-el.src = ASSET('nameplate/nameplate.png');
-el.className = 'layer nameplate';
-el.style.display = 'block';
-el.style.top = '440px';
-el.style.left = '120px';
-el.style.width = '100px';
-el.style.height = '20px';
-uniformCanvas.appendChild(el);
+  clearLayers('nameplate');
+  const el = document.createElement('img');
+  el.src = ASSET('nameplate/nameplate.png');
+  el.className = 'layer nameplate';
+  el.style.display = 'block';
+  el.style.top = '440px';
+  el.style.left = '120px';
+  el.style.width = '100px';
+  el.style.height = '20px';
+  uniformCanvas.appendChild(el);
 }
 
 /******************** Persistence (optional quick save) ********************/
