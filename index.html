@@ -259,6 +259,7 @@
   preload('ranks', rankList, 'ranks');
   preload('badges', badgeList, 'badges');
 
+  // Wait for all hidden preloaded <img>s to finish before first render
   async function preloadAll(){
     const imgs = Array.from(assetsContainer.querySelectorAll('img'));
     await Promise.all(imgs.map(i => i.complete ? Promise.resolve() : new Promise(res => { i.onload = i.onerror = res; })));
@@ -295,7 +296,9 @@
   }
 
   function renderRack(){
-    clearLayers('ribbon'); clearLayers('mini');
+    // remove old
+    clearLayers('ribbon');
+    clearLayers('mini');
 
     const allowMini = UNIFORMS[State.uniform].mini && $('#autoMini').checked;
     const showRibbons = UNIFORMS[State.uniform].ribbons && !allowMini;
@@ -305,6 +308,7 @@
     if(showRibbons){
       const w=25,h=8, pad=0;
       const startTop=402, startLeft=303;
+      // chunk rows of 3; top partial centered
       const ids = items.map(x=>x.id);
       const rows=[];
       if(ids.length%3!==0){ rows.push(ids.slice(0, ids.length%3)); }
@@ -314,7 +318,8 @@
         let x0 = (row.length===3) ? startLeft : (row.length===2 ? startLeft + w/2 : startLeft + w + pad);
         const y = startTop - ri*(h+pad);
         row.forEach((rid,i)=>{
-          const orig=$(`#ribbons-${rid}`); if(!orig) return;
+          const orig=$(`#ribbons-${rid}`);
+          if(!orig) return;
           const el=orig.cloneNode();
           el.className='layer ribbon';
           el.style.display='block';
@@ -324,6 +329,7 @@
           el.style.height=`${h}px`;
           uniformCanvas.appendChild(el);
 
+          // device overlay
           const rn = State.ribbons.find(r=>r.id===rid);
           if(rn && rn.device && rn.device!=='none'){
             const dev=$(`#devices-${rn.device}`);
@@ -341,6 +347,7 @@
         });
       });
     } else {
+      // mini medals (rows of 5; top partial centered)
       const w=20,h=28, pad=6;
       const startTop=400, startLeft=280;
       const ids = items.map(x=>x.id);
@@ -349,7 +356,8 @@
       for(let i=ids.length%5;i<ids.length;i+=5) rows.push(ids.slice(i,i+5));
       rows.reverse();
       rows.forEach((row,ri)=>{
-        let x0 = (row.length===5) ? startLeft : startLeft + Math.round((5-row.length)*(w+pad)/2);
+        let x0;
+        if(row.length===5) x0=startLeft; else x0=startLeft + Math.round((5-row.length)*(w+pad)/2);
         const y = startTop - ri*(h+pad);
         row.forEach((rid,i)=>{
           const imgPath = ASSET(`mini_medals/${rid}.png`);
@@ -369,7 +377,7 @@
 
   /******************** Gender-aware placement maps ********************/
   function getPlacementMaps(baseRibbonY){
-    // Male baseline
+    // Defaults (male baseline)
     const male = {
       yMap: {
         OLP: baseRibbonY!==null? baseRibbonY - 25 : 394,
@@ -383,7 +391,9 @@
       },
       xMap: { OLP:328, OLPU:328, OLPA:328, ORP:100, ON:150, UN:150, LRP:335, LP:350 }
     };
-    // Female adjustments
+
+    // Female adjustments (tuned for provided base art)
+    // - pockets slightly higher and a touch closer to center
     const female = {
       yMap: {
         OLP: male.yMap.OLP - 6,
@@ -406,14 +416,15 @@
         LP:  male.xMap.LP  - 4
       }
     };
+
+    // Future hook: if (State.uniform==='aviator') { tweak offsets here }
     return (State.gender === 'female') ? female : male;
   }
 
   /******************** Badges (order-independent with caps) ********************/
   // slots with arrays of ids
   const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[] };
-  // NOTE: UN now capped at 1 so it's the single “fourth counted” spot under the nameplate
-  const SLOT_CAPS = { OLPA:1, OLPU:1, OLP:1, ORP:1, LP:1, LRP:1, ON:2, UN:1 };
+  const SLOT_CAPS = { OLPA:1, OLPU:1, OLP:1, ORP:1, LP:1, LRP:1, ON:2, UN:2 };
 
   // Total counted cap for above-pocket/nameplate badges (per 39-1)
   const TOTAL_CAP = 4;
@@ -445,24 +456,21 @@
     });
   }
 
-  // Return ordered list of preferred slots for a badge id
   function preferredSlotsFor(id){
-    if(id==='nra_marksman_badge') return ['LRP'];            // pocket flap only (exempt)
-    if(id==='model_rocketry_badge') return ['LP'];           // LP only (exempt)
+    if(id==='nra_marksman_badge') return ['LRP'];            // pocket flap only
+    if(id==='model_rocketry_badge') return ['LP'];           // LP only
     const hint = badgeLocations[id];
     const cat = BADGE_CATEGORY[id] || 'specialty';
     if(hint==='ORP' || cat==='occupational') return ['ORP']; // right pocket
     if(hint==='OLP' || hint==='OLPU' || hint==='OLPA' || cat==='aviation') return ['OLP','OLPU','OLPA']; // over left pocket family
     if(hint==='LP') return ['LP','ORP'];                     // left pocket, fallback to right
-    // ↓ SPECIALTY prefers UN first (the 4th counted spot), then ON
-    if(hint==='ON' || hint==='UN' || cat==='specialty') return ['UN','ON']; 
+    if(hint==='ON' || hint==='UN' || cat==='specialty') return ['ON','UN']; // nameplate stack
     return [hint || 'UN'];
   }
 
-  // Compute placements for a set of badge ids (order-independent)
   function planBadgePlacements(ids){
     resetBadgeSlots();
-    const applied=[]; let appliedCount = 0; // only non-exempt increment this
+    const applied=[]; let appliedCount = 0;
     const withPri = ids.map(id=>({id, pri: CATEGORY_ORDER[BADGE_CATEGORY[id]||'specialty'] ?? 99}));
     withPri.sort((a,b)=> a.pri - b.pri || a.id.localeCompare(b.id));
 
@@ -616,7 +624,7 @@
 
     // Slot caps (planner enforces; panel reflects)
     for(const slot in badgeSlots){
-      const cap = (slot==='ON')?2:(slot==='UN')?1:1;
+      const cap = (slot==='ON'||slot==='UN')?2:1;
       if(badgeSlots[slot].length > cap){
         addViolation('SLOT_OVER', `Too many badges in ${slot}`, {slot, count: badgeSlots[slot].length, cap});
       }
