@@ -38,7 +38,6 @@
   .badge{position:absolute;image-rendering:auto}
   .nameplate{position:absolute;background:#0b273f;color:#fff;border-radius:2px;padding:2px 6px;font-size:12px;letter-spacing:.3px}
 
-  /* Epaulets / shoulder boards for officers */
   #epauletLayer .board{position:absolute;width:100px;height:50px;image-rendering:auto}
   #epauletLayer .insignia{position:absolute;image-rendering:auto}
 
@@ -88,7 +87,7 @@
         </label>
         <button id="downloadBtn" class="btn primary">Download High-Res PNG</button>
       </div>
-      <small class="hint">Uniform list is filtered by member type per CAPR 39-1 (e.g., cadets not offered Mess Dress).</small>
+      <small class="hint">Uniform list is filtered by member type per CAPR 39-1.</small>
     </fieldset>
 
     <fieldset>
@@ -98,37 +97,14 @@
         <button id="addRibbonBtn" class="btn primary">Add</button>
         <button id="clearRibbonsBtn" class="btn">Clear All</button>
       </div>
-      <small class="hint">Rack: rows of 3. Any partial row (1–2) is the top row and centered. Highest precedence at top-left.</small>
+      <small class="hint">Rack: rows of 3. Partial row (1–2) is top row and centered. Highest precedence at top-left.</small>
     </fieldset>
 
     <section id="deviceTool" style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
       <h3 style="margin:0 0 8px 0;font-size:14px">Ribbon Devices (Click-to-Apply)</h3>
 
       <div id="devicePicker">
-        <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="star_bronze"/><span>Bronze Star</span>
-          <input type="number" min="1" max="10" value="1" data-qty="star_bronze" style="width:54px;margin-left:auto">
-        </label>
-        <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="star_silver"/><span>Silver Star</span>
-          <input type="number" min="1" max="10" value="1" data-qty="star_silver" style="width:54px;margin-left:auto">
-        </label>
-        <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="clasp_bronze"/><span>Bronze Clasp</span>
-          <input type="number" min="1" max="10" value="1" data-qty="clasp_bronze" style="width:54px;margin-left:auto">
-        </label>
-        <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="clasp_silver"/><span>Silver Clasp</span>
-          <input type="number" min="1" max="10" value="1" data-qty="clasp_silver" style="width:54px;margin-left:auto">
-        </label>
-        <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="propeller"/><span>Propeller</span>
-          <input type="number" min="1" max="10" value="1" data-qty="propeller" style="width:54px;margin-left:auto">
-        </label>
-        <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="leaf_bronze"/><span>Bronze Leaf</span>
-          <input type="number" min="1" max="10" value="1" data-qty="leaf_bronze" style="width:54px;margin-left:auto">
-        </label>
+        <!-- Device checkboxes are built from ASSETS.devices below -->
       </div>
 
       <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
@@ -146,7 +122,7 @@
         <button id="addBadgeBtn" class="btn">Add</button>
         <button id="clearBadgesBtn" class="btn">Clear</button>
       </div>
-      <small class="hint">Placement follows slot logic for the selected uniform (OLP/OLPA/OLPU/ORP/ON/UN/LP/LRP). Category + precedence decide order.</small>
+      <small class="hint">Placement follows CAPR 39-1 slot logic (OLP/OLPA/OLPU/ORP/ON/UN/LP/LRP).</small>
     </fieldset>
 
     <fieldset style="margin-top:16px">
@@ -166,96 +142,72 @@
           <div id="epauletLayer" class="layer" aria-label="Epaulet/Rank Layer"></div>
         </div>
       </div>
-      <div class="hint" style="margin-top:8px">Tip: Set grade to an officer to see shoulder boards; enlisted/cadet grades render on collar.</div>
+      <div class="hint" style="margin-top:8px">Tip: Officer grades show shoulder boards; enlisted/cadet grades render on collar.</div>
     </fieldset>
   </section>
 </main>
 
 <script>
 /* =========================================================
-   ASSETS — REPLACE PATHS WITH YOUR REAL FILES
+   ASSETS — update/add to match your repo.
+   ABU images set per your paths.
    ========================================================= */
 const ASSETS = {
   jackets: {
-    blues_classA: { male:"images/jackets/blues_classA_male.png", female:"images/jackets/blues_classA_female.png" },
-    blues_classB: { male:"images/jackets/blues_classB_male.png", female:"images/jackets/blues_classB_female.png" },
-    corporate:    { male:"images/jackets/corporate_male.png",    female:"images/jackets/corporate_female.png" },
-    flightsuit:   { male:"images/jackets/flightsuit_male.png",   female:"images/jackets/flightsuit_female.png" },
-    abu:          { male:"images/jackets/abu_male.png",          female:"images/jackets/abu_female.png" },
-    mess:         { male:"images/jackets/mess_male.png",         female:"images/jackets/mess_female.png" } // hidden for cadets
+    // Use your specific ABU art:
+    abu:          { male:"images/base/ABU_male.png",    female:"images/base/ABU_female.png" },
+
+    // For other uniforms, point to your current base art (replace these if you have specific coats/shirts):
+    blues_classA: { male:"images/base/jacket_male.png", female:"images/base/jacket_female.png" },
+    blues_classB: { male:"images/base/jacket_male.png", female:"images/base/jacket_female.png" },
+    corporate:    { male:"images/base/jacket_male.png", female:"images/base/jacket_female.png" },
+    flightsuit:   { male:"images/base/jacket_male.png", female:"images/base/jacket_female.png" },
+    mess:         { male:"images/base/jacket_male.png", female:"images/base/jacket_female.png" }
   },
 
+  /* Example ribbons; extend with your full set */
   ribbons: [
-    { id:'earhart',    name:'Earhart',         img:'images/ribbons/earhart.png',    precedence:1 },
-    { id:'mitchell',   name:'Mitchell',        img:'images/ribbons/mitchell.png',   precedence:2 },
-    { id:'ach1',       name:'Achievement 1',   img:'images/ribbons/ach1.png',       precedence:50 },
-    { id:'ach2',       name:'Achievement 2',   img:'images/ribbons/ach2.png',       precedence:60 },
-    { id:'community',  name:'Community Svc',   img:'images/ribbons/community.png',  precedence:120 },
-    { id:'gen_service',name:'General Service', img:'images/ribbons/gen_service.png',precedence:150 },
+    { id:'earhart',   name:'Earhart',    img:'images/ribbons/earhart_award.png',               precedence:1 },
+    { id:'mitchell',  name:'Mitchell',   img:'images/ribbons/mitchell_award.png',              precedence:2 },
+    { id:'dist_svc',  name:'Distinguished Service', img:'images/ribbons/distinguished_service_award.png', precedence:10 },
+    { id:'community', name:'Community Service', img:'images/ribbons/community_service_ribbon.png',        precedence:120 }
   ],
 
+  /* Devices — these three exist in your repo; add more if you add files */
   devices: {
-    star_bronze: { label:"Bronze Star",  src:"images/devices/star_bronze.png",  width:12, height:12, weight:1 },
-    star_silver: { label:"Silver Star",  src:"images/devices/star_silver.png",  width:12, height:12, weight:2 },
-    clasp_bronze:{ label:"Bronze Clasp", src:"images/devices/clasp_bronze.png", width:14, height: 8, weight:1 },
-    clasp_silver:{ label:"Silver Clasp", src:"images/devices/clasp_silver.png", width:14, height: 8, weight:2 },
-    propeller:   { label:"Propeller",    src:"images/devices/propeller.png",    width:14, height:14, weight:3 },
-    leaf_bronze: { label:"Bronze Leaf",  src:"images/devices/leaf_bronze.png",  width:12, height:12, weight:1 },
+    star_bronze: { label:"Bronze Star",  src:"images/devices/1_Bronze_Star_Device.webp",      width:12, height:12, weight:1 },
+    star_silver: { label:"Silver Star",  src:"images/devices/1_Silver_Star_Device.webp",      width:12, height:12, weight:2 },
+    propeller:   { label:"Propeller",    src:"images/devices/1_Bronze_Propeller_Device.webp", width:14, height:14, weight:3 }
+    // If you add clasp/leaf images later, put them here and they'll auto-appear in the picker.
   },
 
-  /* Badge catalog. Add every badge you support. category drives placement rules. */
+  /* Badges — seed set mapped to your filenames; add the rest from images/badges/ */
   badges: {
-    aviation_basic: { name:"Aviation Badge (Basic)", src:"images/badges/aviation_basic.png", w:70, h:22, category:"aviation", precedence:100 },
-    aviation_senior:{ name:"Aviation Badge (Senior)",src:"images/badges/aviation_senior.png",w:72, h:24, category:"aviation", precedence:90 },
-    aviation_master:{ name:"Aviation Badge (Master)",src:"images/badges/aviation_master.png",w:74,h:26, category:"aviation", precedence:80 },
-
-    ground_team:    { name:"Ground Team",   src:"images/badges/ground_team.png",    w:64,h:24, category:"occupational", precedence:200 },
-    ems:            { name:"EMS",           src:"images/badges/ems.png",            w:64,h:24, category:"occupational", precedence:210 },
-    chaplain:       { name:"Chaplain",      src:"images/badges/chaplain.png",       w:64,h:24, category:"occupational", precedence:220 },
-
-    specialty_pd:   { name:"Professional Dev", src:"images/badges/specialty_pd.png", w:64,h:24, category:"specialty_over_name", precedence:300 },
-
-    model_rocketry: { name:"Model Rocketry",src:"images/badges/model_rocketry.png", w:58,h:20, category:"lp_only", precedence:400 },
-    marksmanship:   { name:"Marksmanship",  src:"images/badges/marksmanship.png",   w:58,h:20, category:"flap_only", precedence:500 },
+    aviation_basic: { name:"Aviation (Basic)", src:"images/badges/CAPPilot1_FA9D33EA587D8.png", w:70, h:22, category:"aviation", precedence:100 },
+    ground_team:    { name:"Ground Team",      src:"images/badges/ground_team_basic_badge.png", w:64, h:24, category:"occupational", precedence:200 },
+    ems:            { name:"EMS",              src:"images/badges/emt_basic_badge.png",         w:64, h:24, category:"occupational", precedence:210 },
+    model_rocketry: { name:"Model Rocketry",   src:"images/badges/model_rocketry_badge.png",    w:58, h:20, category:"lp_only", precedence:400 },
+    marksmanship:   { name:"Marksmanship",     src:"images/badges/nra_marksman_badge.png",      w:58, h:20, category:"flap_only", precedence:500 }
   },
 
-  /* Rank & epaulets — sample set; expand with your full rank images */
+  /* Officer boards: your single board file used for both shoulders */
   officerBoards: {
-    boardLeft:  { src:"images/ranks/boards/shoulder_board_left.png",  w:100, h:50, left:140, top:155, rotate:90 },
-    boardRight: { src:"images/ranks/boards/shoulder_board_right.png", w:100, h:50, left:500, top:155, rotate:-90 }
+    boardLeft:  { src:"images/ranks/C/shoulder_board.png", w:100, h:50, left:140, top:155, rotate:90 },
+    boardRight: { src:"images/ranks/C/shoulder_board.png", w:100, h:50, left:500, top:155, rotate:-90 }
   },
-  officerInsignia: {
-    "2dLt": { src:"images/ranks/officer/2dLt.png", w:24, h:24, left:0, top:0 },
-    "1stLt":{ src:"images/ranks/officer/1stLt.png",w:24, h:24, left:0, top:0 },
-    "Capt": { src:"images/ranks/officer/Capt.png", w:26, h:26, left:0, top:0 },
-    "Maj":  { src:"images/ranks/officer/Maj.png",  w:26, h:26, left:0, top:0 },
-    "LtCol":{ src:"images/ranks/officer/LtCol.png",w:28, h:28, left:0, top:0 },
-    "Col":  { src:"images/ranks/officer/Col.png",  w:30, h:30, left:0, top:0 },
-  },
-  enlistedCollar: {
-    male:   { left: 280, top: 175 },   // tweak these per your base jacket
-    female: { left: 280, top: 175 }
-  },
-  enlistedInsignia: {
-    "C/AB":   { src:"images/ranks/enlisted/C-AB.png",   w:32, h:32, dx:0, dy:0 },
-    "C/Amn":  { src:"images/ranks/enlisted/C-Amn.png",  w:32, h:32, dx:0, dy:0 },
-    "C/A1C":  { src:"images/ranks/enlisted/C-A1C.png",  w:32, h:32, dx:0, dy:0 },
-    "C/SrA":  { src:"images/ranks/enlisted/C-SrA.png",  w:32, h:32, dx:0, dy:0 },
-    "C/SSgt": { src:"images/ranks/enlisted/C-SSgt.png", w:36, h:36, dx:0, dy:0 },
-    "C/TSgt": { src:"images/ranks/enlisted/C-TSgt.png", w:36, h:36, dx:0, dy:0 },
-    "C/MSgt": { src:"images/ranks/enlisted/C-MSGT.png", w:38, h:38, dx:0, dy:0 },
-    "C/SMSgt":{ src:"images/ranks/enlisted/C-SMSgt.png",w:38, h:38, dx:0, dy:0 },
-    "C/CMSgt":{ src:"images/ranks/enlisted/C-CMSgt.png",w:40, h:40, dx:0, dy:0 },
 
-    // Senior Member enlisted (if used)
-    "A1C":  { src:"images/ranks/enlisted/A1C.png",  w:32, h:32, dx:0, dy:0 },
-    "SSgt": { src:"images/ranks/enlisted/SSgt.png", w:36, h:36, dx:0, dy:0 },
-    // etc...
+  /* If/when you add officer/enlisted insignia files, map them here and they'll render automatically */
+  officerInsignia: {
+    // "2dLt": { src:"images/ranks/officer/2dLt.png", w:24, h:24, left:0, top:0 },
+  },
+  enlistedCollar: { male:{ left:280, top:175 }, female:{ left:280, top:175 } },
+  enlistedInsignia: {
+    // "C/AB":   { src:"images/ranks/enlisted/C-AB.png",   w:32, h:32, dx:0, dy:0 },
   }
 };
 
 /* =========================================================
-   UNIFORMS (filter by member type)
+   UNIFORMS (cadet vs senior availability)
    ========================================================= */
 const UNIFORMS = [
   { id:"blues_classA", label:"Blues — Class A (Service Dress Coat)", cadet:true, senior:true },
@@ -263,86 +215,73 @@ const UNIFORMS = [
   { id:"corporate",    label:"Corporate (Aviator Gray)",             cadet:false, senior:true },
   { id:"flightsuit",   label:"Flight Suit",                           cadet:true, senior:true },
   { id:"abu",          label:"ABU / Utility",                         cadet:true, senior:true },
-  { id:"mess",         label:"Mess Dress",                            cadet:false, senior:true } // CAPR 39-1: not for cadets
+  { id:"mess",         label:"Mess Dress",                            cadet:false, senior:true } // Cadets not authorized
 ];
 
 /* =========================================================
-   SLOTS (per uniform) + per-gender micro offsets
+   SLOT MAPS & OFFSETS (tweak to match your art exactly)
    ========================================================= */
 const UNIFORM_SLOTS = {
   blues_classA: {
     ribbonAnchor:{ x:370, y:500 },
     genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{
-      OLP:{x:320,y:460}, OLPA:{x:320,y:440}, OLPU:{x:320,y:480},
-      ORP:{x:470,y:460}, ON:{x:470,y:422},  UN:{x:470,y:485},
-      LP:{x:320,y:548}, RP:{x:470,y:548},   LRP:{x:320,y:536}
-    }
+    slot:{ OLP:{x:320,y:460}, OLPA:{x:320,y:440}, OLPU:{x:320,y:480},
+           ORP:{x:470,y:460}, ON:{x:470,y:422},  UN:{x:470,y:485},
+           LP:{x:320,y:548}, RP:{x:470,y:548},   LRP:{x:320,y:536} }
   },
   blues_classB: {
     ribbonAnchor:{ x:370, y:450 },
     genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{
-      OLP:{x:320,y:402}, OLPA:{x:320,y:382}, OLPU:{x:320,y:422},
-      ORP:{x:470,y:402}, ON:{x:470,y:364},  UN:{x:470,y:426},
-      LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:494}
-    }
+    slot:{ OLP:{x:320,y:402}, OLPA:{x:320,y:382}, OLPU:{x:320,y:422},
+           ORP:{x:470,y:402}, ON:{x:470,y:364},  UN:{x:470,y:426},
+           LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:494} }
   },
   corporate: {
     ribbonAnchor:{ x:370, y:450 },
     genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{
-      OLP:{x:320,y:405}, OLPA:{x:320,y:385}, OLPU:{x:320,y:425},
-      ORP:{x:470,y:405}, ON:{x:470,y:368},  UN:{x:470,y:430},
-      LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:495}
-    }
+    slot:{ OLP:{x:320,y:405}, OLPA:{x:320,y:385}, OLPU:{x:320,y:425},
+           ORP:{x:470,y:405}, ON:{x:470,y:368},  UN:{x:470,y:430},
+           LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:495} }
   },
   flightsuit: {
     ribbonAnchor:{ x:370, y:450 },
     genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{
-      OLP:{x:320,y:395}, OLPA:{x:320,y:375}, OLPU:{x:320,y:415},
-      ORP:{x:470,y:395}, ON:{x:470,y:358},  UN:{x:470,y:420},
-      LP:{x:320,y:495}, RP:{x:470,y:495},   LRP:{x:320,y:485}
-    }
+    slot:{ OLP:{x:320,y:395}, OLPA:{x:320,y:375}, OLPU:{x:320,y:415},
+           ORP:{x:470,y:395}, ON:{x:470,y:358},  UN:{x:470,y:420},
+           LP:{x:320,y:495}, RP:{x:470,y:495},   LRP:{x:320,y:485} }
   },
   abu: {
     ribbonAnchor:{ x:370, y:450 },
     genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{
-      OLP:{x:320,y:402}, OLPA:{x:320,y:382}, OLPU:{x:320,y:422},
-      ORP:{x:470,y:402}, ON:{x:470,y:364},  UN:{x:470,y:426},
-      LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:494}
-    }
+    slot:{ OLP:{x:320,y:402}, OLPA:{x:320,y:382}, OLPU:{x:320,y:422},
+           ORP:{x:470,y:402}, ON:{x:470,y:364},  UN:{x:470,y:426},
+           LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:494} }
   },
   mess: {
     ribbonAnchor:{ x:370, y:450 },
     genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{
-      OLP:{x:320,y:405}, OLPA:{x:320,y:385}, OLPU:{x:320,y:425},
-      ORP:{x:470,y:405}, ON:{x:470,y:368},  UN:{x:470,y:430},
-      LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:495}
-    }
+    slot:{ OLP:{x:320,y:405}, OLPA:{x:320,y:385}, OLPU:{x:320,y:425},
+           ORP:{x:470,y:405}, ON:{x:470,y:368},  UN:{x:470,y:430},
+           LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:495} }
   }
 };
 
 /* =========================================================
-   RULES & BADGE PRECEDENCE (Attachment 4 style)
+   RULES (CAPR 39-1 subset for layout checks)
    ========================================================= */
 const RULES_39_1 = {
   cadet: { disallowedUniforms: new Set(["mess"]) },
   senior:{ disallowedUniforms: new Set([]) },
 
   caps: {
-    maxAboveLeftPocket: 2, // OLP family
-    maxAboveRightPocket:2, // ORP
-    maxOnNameArea: 2,      // ON+UN
-    maxFlapMarksman: 1,    // LRP
-    maxModelRocketry:1,    // LP
+    maxAboveLeftPocket: 2,
+    maxAboveRightPocket:2,
+    maxOnNameArea: 2,
+    maxFlapMarksman: 1,
+    maxModelRocketry:1,
     maxTotalBadges: 5
   },
 
-  // Category → preferred slots (left/right/name areas) respecting CAPR 39-1
   badgePlacement: {
     aviation:            { slots:["OLPU","OLPA","OLP"], perSlotMax:2 },
     occupational:        { slots:["ORP"],               perSlotMax:2 },
@@ -351,39 +290,28 @@ const RULES_39_1 = {
     flap_only:           { slots:["LRP"],               perSlotMax:1 }
   },
 
-  // Category precedence (lower = renders lower/closer to pocket if stacked)
   categoryOrder: ["aviation","occupational","specialty_over_name","lp_only","flap_only"]
 };
 
-/* FULL badge precedence table (expand here).
-   Use ASSETS.badges keys; lower 'precedence' number shows first if same slot.
-*/
-const BADGE_TABLE = Object.entries(ASSETS.badges).map(([key,meta])=>({
-  key, category: meta.category, precedence: meta.precedence ?? 999
-}));
-
 /* =========================================================
-   GRADES (officer boards vs enlisted/cadet collar)
+   GRADES (officer vs enlisted/cadet)
    ========================================================= */
 const GRADES = [
-  // Cadet officer + senior officer
   { id:"2dLt",  label:"2d Lt (Officer)", officer:true },
   { id:"1stLt", label:"1st Lt (Officer)", officer:true },
   { id:"Capt",  label:"Captain (Officer)", officer:true },
   { id:"Maj",   label:"Major (Officer)", officer:true },
   { id:"LtCol", label:"Lt Col (Officer)", officer:true },
   { id:"Col",   label:"Colonel (Officer)", officer:true },
-
-  // Cadet enlisted (sample)
-  { id:"C/AB",   label:"C/AB", officer:false },
-  { id:"C/Amn",  label:"C/Amn", officer:false },
-  { id:"C/A1C",  label:"C/A1C", officer:false },
-  { id:"C/SrA",  label:"C/SrA", officer:false },
+  { id:"C/AB",   label:"C/AB",   officer:false },
+  { id:"C/Amn",  label:"C/Amn",  officer:false },
+  { id:"C/A1C",  label:"C/A1C",  officer:false },
+  { id:"C/SrA",  label:"C/SrA",  officer:false },
   { id:"C/SSgt", label:"C/SSgt", officer:false },
   { id:"C/TSgt", label:"C/TSgt", officer:false },
   { id:"C/MSgt", label:"C/MSgt", officer:false },
   { id:"C/SMSgt",label:"C/SMSgt", officer:false },
-  { id:"C/CMSgt",label:"C/CMSgt", officer:false },
+  { id:"C/CMSgt",label:"C/CMSgt", officer:false }
 ];
 
 /* =========================================================
@@ -394,8 +322,8 @@ let state = {
   gender:"male",
   uniformType:"blues_classA",
   grade:"C/Amn",
-  rack:[],       // ribbons with devices
-  badges:[],     // { key, category, slot, x,y,w,h, precedence }
+  rack:[],
+  badges:[],
   deviceApplyMode:false,
   deviceRemoveMode:false,
   selectedDevices:{}
@@ -407,7 +335,6 @@ let state = {
 document.addEventListener('DOMContentLoaded', () => init());
 
 function init(){
-  // Controls
   populateUniforms();
   populateRibbons();
   populateBadges();
@@ -415,7 +342,7 @@ function init(){
 
   document.getElementById('memberType').addEventListener('change', e=>{
     state.memberType = e.target.value;
-    populateUniforms(); // enforce cadet filters
+    populateUniforms();
     renderAll();
   });
   document.getElementById('gender').addEventListener('change', e=>{
@@ -426,7 +353,6 @@ function init(){
     state.uniformType = e.target.value;
     renderAll();
   });
-
   document.getElementById('gradeSelect').addEventListener('change', e=>{
     state.grade = e.target.value;
     renderEpauletsAndRank();
@@ -439,6 +365,7 @@ function init(){
   });
 
   wireDeviceUI();
+  buildDevicePicker();
 
   document.getElementById('addBadgeBtn').addEventListener('click', onAddBadge);
   document.getElementById('clearBadgesBtn').addEventListener('click', ()=>{
@@ -464,7 +391,6 @@ function populateUniforms(){
       o.value=u.id; o.textContent=u.label; sel.appendChild(o);
     }
   });
-  // keep or reset selection
   if (![...sel.options].some(o=>o.value===state.uniformType)){
     state.uniformType = sel.options[0]?.value || "blues_classA";
   }
@@ -473,15 +399,13 @@ function populateUniforms(){
 
 function populateRibbons(){
   const sel = document.getElementById('ribbonSelect');
-  sel.innerHTML = ASSETS.ribbons
-    .sort((a,b)=>a.precedence-b.precedence)
-    .map(r=>`<option value="${r.id}">${r.name}</option>`).join('');
+  const arr = [...ASSETS.ribbons].sort((a,b)=>a.precedence-b.precedence);
+  sel.innerHTML = arr.map(r=>`<option value="${r.id}">${r.name||r.id}</option>`).join('');
 }
 
 function populateBadges(){
   const sel = document.getElementById('badgeSelect');
   sel.innerHTML = "";
-  // show only badges allowed for current member type (if you need filtering, add here)
   for (const [key,meta] of Object.entries(ASSETS.badges)){
     const opt = document.createElement('option');
     opt.value = key;
@@ -497,79 +421,22 @@ function populateGrades(){
 }
 
 /* =========================================================
-   RENDER PIPELINE
+   DEVICE UI
    ========================================================= */
-function renderAll(){
-  renderJacket();
-  renderRibbons();
-  renderBadges();
-  renderEpauletsAndRank();
-  runRegulationCheck();
-}
-
-function renderJacket(){
-  const img = document.getElementById('jacketImg');
-  const table = ASSETS.jackets[state.uniformType] || {};
-  img.src = table[state.gender] || "";
-  img.onerror = ()=>{ img.style.opacity=.15; };
-}
-
-/* ---------- RIBBONS ---------- */
-function onAddRibbon(){
-  const id = document.getElementById('ribbonSelect').value;
-  const meta = ASSETS.ribbons.find(r=>r.id===id);
-  if (!meta) return;
-  state.rack.push({ ...meta, devices:{} });
-  renderRibbons();
-  renderBadges(); // some badge y-offsets are relative to ribbons
-  runRegulationCheck();
-}
-
-function renderRibbons(){
-  const layer = document.getElementById('ribbonLayer');
-  layer.innerHTML = '';
-  const slots = UNIFORM_SLOTS[state.uniformType] || UNIFORM_SLOTS.blues_classA;
-  const gOff = slots.genderOffset?.[state.gender] || {x:0,y:0};
-  const anchor = { x: (slots.ribbonAnchor.x + gOff.x), y: (slots.ribbonAnchor.y + gOff.y) };
-
-  const sorted = [...state.rack].sort((a,b)=>a.precedence-b.precedence);
-  const N=sorted.length, perRow=3, rem=N%perRow, topCount=(rem===0?perRow:rem);
-  const vGap=8, tileW=120, tileH=35;
-
-  const rows=[];
-  if (N>0){
-    rows.push(sorted.slice(0, topCount));
-    for (let i=topCount;i<N;i+=perRow) rows.push(sorted.slice(i,i+perRow));
-  }
-  rows.forEach((rowItems, rIdx)=>{
-    const totalW = rowItems.length*tileW + (rowItems.length-1)*6;
-    let x = Math.round(anchor.x - totalW/2);
-    const y = anchor.y + rIdx*(tileH+vGap);
-    rowItems.forEach(ribbon=>{
-      const tile = createRibbonTile(ribbon);
-      tile.style.left = `${x}px`;
-      tile.style.top  = `${y}px`;
-      layer.appendChild(tile);
-      x += tileW + 6;
-    });
+function buildDevicePicker(){
+  const wrap=document.getElementById('devicePicker');
+  wrap.innerHTML="";
+  Object.entries(ASSETS.devices).forEach(([id,meta])=>{
+    const row=document.createElement('label');
+    row.style.cssText="display:flex;align-items:center;gap:8px";
+    row.innerHTML=`
+      <input type="checkbox" data-device="${id}"/><span>${meta.label||id}</span>
+      <input type="number" min="1" max="10" value="1" data-qty="${id}" style="width:54px;margin-left:auto">
+    `;
+    wrap.appendChild(row);
   });
 }
 
-function createRibbonTile(ribbon){
-  const tile = document.createElement('div');
-  tile.className='ribbon-tile';
-  const img = document.createElement('img');
-  img.className='ribbon';
-  img.alt=ribbon.name; img.src=ribbon.img;
-  img.onerror=function(){ this.style.display='none'; tile.style.background='linear-gradient(90deg,#9bbcff,#6aa3ff)'; };
-  tile.appendChild(img);
-  // click to apply/remove devices
-  makeRibbonClickableForDevices(tile, ribbon);
-  drawDevicesOnTile(tile, ribbon);
-  return tile;
-}
-
-/* ---------- DEVICES ---------- */
 function wireDeviceUI(){
   const applyBtn = document.getElementById('deviceApplyModeBtn');
   const clearBtn = document.getElementById('deviceClearSelectionBtn');
@@ -619,6 +486,63 @@ function readDevicePicker(){
   return bundle;
 }
 
+/* =========================================================
+   RIBBONS (rack rendering + click-to-apply devices)
+   ========================================================= */
+function onAddRibbon(){
+  const id = document.getElementById('ribbonSelect').value;
+  const meta = ASSETS.ribbons.find(r=>r.id===id);
+  if (!meta) return;
+  state.rack.push({ ...meta, devices:{} });
+  renderRibbons();
+  renderBadges(); // some badge offsets are relative
+  runRegulationCheck();
+}
+
+function renderRibbons(){
+  const layer = document.getElementById('ribbonLayer');
+  layer.innerHTML = '';
+  const slots = UNIFORM_SLOTS[state.uniformType] || UNIFORM_SLOTS.blues_classA;
+  const gOff = slots.genderOffset?.[state.gender] || {x:0,y:0};
+  const anchor = { x: (slots.ribbonAnchor.x + gOff.x), y: (slots.ribbonAnchor.y + gOff.y) };
+
+  const sorted = [...state.rack].sort((a,b)=>a.precedence-b.precedence);
+  const N=sorted.length, perRow=3, rem=N%perRow, topCount=(rem===0?perRow:rem);
+  const vGap=8, tileW=120, tileH=35;
+
+  const rows=[];
+  if (N>0){
+    rows.push(sorted.slice(0, topCount));
+    for (let i=topCount;i<N;i+=perRow) rows.push(sorted.slice(i,i+perRow));
+  }
+  rows.forEach((rowItems, rIdx)=>{
+    const totalW = rowItems.length*tileW + (rowItems.length-1)*6;
+    let x = Math.round(anchor.x - totalW/2);
+    const y = anchor.y + rIdx*(tileH+vGap);
+    rowItems.forEach(ribbon=>{
+      const tile = createRibbonTile(ribbon);
+      tile.style.left = `${x}px`;
+      tile.style.top  = `${y}px`;
+      layer.appendChild(tile);
+      x += tileW + 6;
+    });
+  });
+}
+
+function createRibbonTile(ribbon){
+  const tile = document.createElement('div');
+  tile.className='ribbon-tile';
+  const img = document.createElement('img');
+  img.className='ribbon';
+  img.alt=ribbon.name||ribbon.id; img.src=ribbon.img;
+  img.onerror=function(){ this.style.display='none'; tile.style.background='linear-gradient(90deg,#9bbcff,#6aa3ff)'; };
+  tile.appendChild(img);
+  // click to apply/remove devices
+  makeRibbonClickableForDevices(tile, ribbon);
+  drawDevicesOnTile(tile, ribbon);
+  return tile;
+}
+
 function makeRibbonClickableForDevices(tileEl, ribbonObj){
   tileEl.style.cursor='pointer';
   tileEl.onclick = ()=>{
@@ -647,7 +571,7 @@ function drawDevicesOnTile(tileEl, ribbonObj){
     if (!meta) continue;
     for (let i=0;i<count;i++) flat.push({ id:devId, ...meta });
   }
-  flat.sort((a,b)=> (b.weight-a.weight) || a.label.localeCompare(b.label));
+  flat.sort((a,b)=> (b.weight-a.weight) || (a.label||a.id).localeCompare(b.label||b.id));
 
   const tileW=tileEl.clientWidth||120, tileH=tileEl.clientHeight||35, gap=3;
   const totalW = flat.reduce((s,d,i)=> s+d.width+(i>0?gap:0),0);
@@ -657,7 +581,7 @@ function drawDevicesOnTile(tileEl, ribbonObj){
   flat.forEach(d=>{
     const im=document.createElement('img');
     im.className='device-overlay';
-    im.src=d.src; im.alt=d.label;
+    im.src=d.src; im.alt=d.label||d.id;
     im.style.left=`${x}px`; im.style.top=`${y}px`;
     im.style.width=`${d.width}px`; im.style.height=`${d.height}px`;
     im.onerror=function(){ this.remove(); const stub=document.createElement('div'); stub.className='device-overlay';
@@ -668,20 +592,21 @@ function drawDevicesOnTile(tileEl, ribbonObj){
   });
 }
 
-/* ---------- BADGES ---------- */
+/* =========================================================
+   BADGES
+   ========================================================= */
 function onAddBadge(){
   const key = document.getElementById('badgeSelect').value;
   if (!key) return;
   const meta = ASSETS.badges[key];
   if (!meta) return;
 
-  // Choose slot by category rules + caps
   const chosen = chooseBadgeSlot(key, meta);
   if (!chosen){
     alert("No available slot for this badge based on CAPR 39-1 limits for the current uniform.");
     return;
   }
-  state.badges.push({ key, category: meta.category, precedence: meta.precedence ?? 999,
+  state.badges.push({ key, category: meta.category, precedence: meta.precedence ?? 200,
     slot:chosen.slot, x:chosen.x, y:chosen.y, w:meta.w, h:meta.h });
 
   renderBadges();
@@ -694,7 +619,6 @@ function chooseBadgeSlot(key, meta){
   const rule    = RULES_39_1.badgePlacement[meta.category];
   const caps    = RULES_39_1.caps;
 
-  // Globals
   const aboveLeft = countSlots(["OLP","OLPA","OLPU"]);
   const aboveRight= countSlots(["ORP"]);
   const nameArea  = countSlots(["ON","UN"]);
@@ -702,7 +626,6 @@ function chooseBadgeSlot(key, meta){
 
   if (total >= caps.maxTotalBadges) return null;
 
-  // Category special-cases
   if (meta.category==="lp_only"){
     if (countSlot("LP") >= caps.maxModelRocketry) return null;
     const p = slotsMap["LP"]; if (!p) return null;
@@ -714,7 +637,6 @@ function chooseBadgeSlot(key, meta){
     return { slot:"LRP", x:p.x+gOff.x, y:p.y+gOff.y };
   }
 
-  // Standard categories
   const pref = rule?.slots || [];
   for (const s of pref){
     const perSlotMax = rule.perSlotMax ?? 2;
@@ -738,7 +660,6 @@ function renderBadges(){
   const layer = document.getElementById('badgeLayer');
   layer.innerHTML = '';
 
-  // Sort by: 1) slot band (aviation closer to pocket), 2) category order, 3) precedence
   const catIndex = (c)=> RULES_39_1.categoryOrder.indexOf(c);
   const sorted = [...state.badges].sort((a,b)=>{
     const ca = catIndex(a.category), cb = catIndex(b.category);
@@ -763,7 +684,6 @@ function renderBadges(){
   });
 }
 
-// Example: keep aviation stack ~36px above top ribbon row if needed
 function badgeVerticalAdjust(slot){
   if (["OLP","OLPA","OLPU"].includes(slot)) return -36;
   return 0;
@@ -779,22 +699,22 @@ function renderEpauletsAndRank(){
   const isOfficer = GRADES.find(g=>g.id===grade)?.officer;
 
   if (isOfficer){
-    // Boards
-    const L = ASSETS.officerBoards.boardLeft;
-    const R = ASSETS.officerBoards.boardRight;
-    [ {b:L, cls:'left'}, {b:R, cls:'right'} ].forEach(({b,cls})=>{
-      const board = document.createElement('img');
-      board.className='board';
-      board.src=b.src; board.style.left=`${b.left}px`; board.style.top=`${b.top}px`;
-      board.style.width=`${b.w}px`; board.style.height=`${b.h}px`;
-      board.style.transform=`rotate(${b.rotate}deg)`;
-      board.onerror=()=>{ board.style.display='none'; };
-      layer.appendChild(board);
-    });
+    const L = ASSETS.officerBoards?.boardLeft;
+    const R = ASSETS.officerBoards?.boardRight;
+    if (L && R){
+      [L,R].forEach(b=>{
+        const board = document.createElement('img');
+        board.className='board';
+        board.src=b.src; board.style.left=`${b.left}px`; board.style.top=`${b.top}px`;
+        board.style.width=`${b.w}px`; board.style.height=`${b.h}px`;
+        board.style.transform=`rotate(${b.rotate}deg)`;
+        board.onerror=()=>{ board.style.display='none'; };
+        layer.appendChild(board);
+      });
+    }
 
-    // Insignia centered on each board
-    const ins = ASSETS.officerInsignia[grade];
-    if (ins){
+    const ins = ASSETS.officerInsignia?.[grade];
+    if (ins && L && R){
       const leftIns = document.createElement('img');
       leftIns.className='insignia';
       leftIns.src=ins.src;
@@ -816,9 +736,8 @@ function renderEpauletsAndRank(){
       layer.appendChild(rightIns);
     }
   } else {
-    // Enlisted/cadet collar insignia — single example position (tune per uniform/gender as needed)
-    const base = ASSETS.enlistedCollar[state.gender];
-    const ins  = ASSETS.enlistedInsignia[grade];
+    const base = ASSETS.enlistedCollar?.[state.gender];
+    const ins  = ASSETS.enlistedInsignia?.[grade];
     if (base && ins){
       const collar = document.createElement('img');
       collar.className='insignia';
@@ -834,19 +753,17 @@ function renderEpauletsAndRank(){
 }
 
 /* =========================================================
-   REGULATION CHECKER
+   REGULATION CHECK
    ========================================================= */
 function runRegulationCheck(){
   const list = document.getElementById('regList');
   list.innerHTML = '';
   const issues = [];
 
-  // Uniform access
-  if (state.memberType==="cadet" && RULES_39_1.cadet.disallowedUniforms.has(state.uniformType)){
-    issues.push({level:'err', text:'Cadets may not wear Mess Dress (CAPR 39-1).' });
+  if (state.memberType==="cadet" && state.uniformType==="mess"){
+    issues.push({level:'err', text:'Cadets may not wear Mess Dress (CAPR 39-1).'});
   }
 
-  // Caps
   const caps = RULES_39_1.caps;
   const aboveLeft = countSlots(["OLP","OLPA","OLPU"]);
   const aboveRight= countSlots(["ORP"]);
@@ -861,16 +778,6 @@ function runRegulationCheck(){
   if (lrp > caps.maxFlapMarksman) issues.push({level:'err', text:'Only one Marksmanship badge allowed on pocket flap (LRP).'});
   if (lp  > caps.maxModelRocketry) issues.push({level:'err', text:'Only one Model Rocketry badge allowed on left pocket (LP).'});
   if (total > caps.maxTotalBadges) issues.push({level:'err', text:`Total badges exceed ${caps.maxTotalBadges}.`});
-
-  // Category placement checks
-  state.badges.forEach(b=>{
-    if (b.category==="lp_only" && b.slot!=="LP"){
-      issues.push({level:'err', text:`${ASSETS.badges[b.key].name} must be on the left pocket (LP).`});
-    }
-    if (b.category==="flap_only" && b.slot!=="LRP"){
-      issues.push({level:'err', text:`${ASSETS.badges[b.key].name} must be on the pocket flap (LRP).`});
-    }
-  });
 
   if (!issues.length) issues.push({level:'ok', text:'No violations detected with current rule set.'});
 
