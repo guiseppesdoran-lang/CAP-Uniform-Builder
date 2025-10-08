@@ -12,7 +12,7 @@
   header{background:var(--brand);color:#fff;padding:14px 16px;text-align:center}
   header h1{margin:0;font-size:18px;letter-spacing:.3px}
   main{display:flex}
-  #controls{width:340px;background:var(--panel);padding:14px;border-right:1px solid var(--line);overflow:auto;height:calc(100vh - 58px)}
+  #controls{width:360px;background:var(--panel);padding:14px;border-right:1px solid var(--line);overflow:auto;height:calc(100vh - 58px)}
   #preview{flex:1;background:#d1d8e0;display:flex;align-items:flex-start;justify-content:center;position:relative;height:calc(100vh - 58px)}
   #uniformCanvas{position:relative;width:900px;height:1200px}
   .layer{position:absolute;image-rendering:auto}
@@ -22,6 +22,12 @@
   button.ghost{background:#ffffff;color:var(--ink)}
   .row{display:flex;gap:8px}
   .two .col{flex:1}
+
+  /* Device tool */
+  #deviceTool{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fefefe}
+  #devicePicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  #deviceTool button{width:auto}
+
   @media (max-width: 1024px){
     main{flex-direction:column}
     #controls{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--line)}
@@ -92,6 +98,20 @@
     </div>
     <label><input type="checkbox" id="autoMini" checked> Auto-convert ribbons → mini-medals on Mess/Semi-formal</label>
 
+    <!-- Advanced device tool (multi-select + quantities + click-to-apply) -->
+    <div id="deviceTool">
+      <strong>Ribbon Devices — Multi-Apply</strong>
+      <div id="devicePicker"></div>
+      <div class="row" style="margin-top:8px">
+        <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
+        <button id="deviceRemoveModeBtn" type="button" class="ghost">Enable Remove Mode</button>
+        <button id="deviceClearSelectionBtn" type="button" class="ghost">Clear Selection</button>
+      </div>
+      <small style="color:#516079;display:block;margin-top:6px">
+        Choose devices + quantities → Enable Apply Mode → click a ribbon to add them. Use Remove Mode to clear devices from a ribbon.
+      </small>
+    </div>
+
     <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
 
     <label>Badges</label>
@@ -126,54 +146,58 @@
 <div class="layer" id="assets" style="display:none"></div>
 
 <script>
-/************** Config & Catalogs (IDs map to images under images/ …) **************/
+/************** Config & Catalogs (kept exactly as in your first file) **************/
 const State = {
   member:'cadet',
   gender:'male',
   uniform:'blues_a',
   assetBase:'images',
-  ribbons:[],      // [{id, device}]
-  badges:[],       // [id]
+  // ribbons: [{id, devices:{ deviceId: qty, ... }}]
+  ribbons:[],
+  badges:[],
   rank:null,
+  // device tool state
+  deviceApplyMode:false,
+  deviceRemoveMode:false,
+  selectedDevices:{} // {deviceId: qty}
 };
 
-const $ = s => document.querySelector(s);
-const byId = id => document.getElementById(id); // safer for IDs that may include '/'
-const uniformCanvas = byId('uniformCanvas');
-const assetsContainer = byId('assets');
+const $  = s => document.querySelector(s);
+const by = id => document.getElementById(id);
+const uniformCanvas  = by('uniformCanvas');
+const assetsContainer= by('assets');
 
 function ASSET(p){
   const b=(State.assetBase||'images').replace(/\/$/,'');
   return `${b}/${p}`;
 }
 
-// Ribbons (id must match images/ribbons/<id>.png and mini at images/mini_medals/<id>.png)
+/* ---------- Ribbons (unchanged list & precedence) ---------- */
 const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award','spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon'
 ];
-const precedence = (id)=> ribbonList.indexOf(id); // simple index precedence
+const precedence = id => ribbonList.indexOf(id);
+
+/* ---------- Devices (kept list & .webp paths) ---------- */
 const deviceList = ['1_Bronze_Star_Device','1_Silver_Star_Device'];
-const deviceImg = {
-  '1_Bronze_Star_Device':'devices/1_Bronze_Star_Device.png',
-  '1_Silver_Star_Device':'devices/1_Silver_Star_Device.png'
+const deviceMeta = {
+  '1_Bronze_Star_Device': { label:'Bronze Star', src:'devices/1_Bronze_Star_Device.webp', w:10, h:10, weight:1 },
+  '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 }
 };
 
-// Badges & rules
+/* ---------- Badges & rules (kept as in your first file) ---------- */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
   'buddist_chaplin','christian_chaplin','communications_technician_badge','cyber_badges','emergency_services_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges'
 ];
-
 const allowedCadetBadges = new Set([
-  'solo_badge','pre_solo_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge','emt_basic_badge','emt_intermediate','emt_paramedic','aerospace','model_rocketry_badge','communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges','cadetadvisory','cd','nra_marksman_badge','AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_0E35802A29801','MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge','emergency_services_badge','historian_technicianIbadge'
+  'solo_badge','pre_solo_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge','emt_basic_badge','emt_intermediate','emt_paramedic','aerospace','model_rocketry_badge','communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges','cadetadvisory','cd','nra_marksman_badge','AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge','emergency_services_badge','historian_technicianIbadge'
 ]);
-
 const exclusiveBadges = [
   ['emt_basic_badge','ground_team_basic_badge'],
   ['emt_intermediate','senior_ground_team_badge'],
   ['emt_paramedic','master_ground_team_badge']
 ];
-
 const badgeLocations = {
   'AirCrew1_DB3F0FCC3650F':'OLP','BalloonPilot1_442D89C94185B':'OLP','CAPMasterPilot1_621A0E2ED15DA':'OLP','CAPPilot1_FA9D33EA587D8':'OLP','CAPSeniorPilot1_D9725AE959752':'OLP','GliderPilot1_7BFB287379918':'OLP','MasterAirCrew1_72AC4CAE7A310':'OLP',
   'SeniorAirCrew1_B289BAE6E515C':'OLP','pre_solo_badge':'OLP','solo_badge':'OLP',
@@ -184,7 +208,6 @@ const badgeLocations = {
   'historian_technicianIbadge':'LP','model_rocketry_badge':'LP',
   'buddist_chaplin':'ORP','christian_chaplin':'ORP','jewish_chaplin':'ORP','legal_officer':'ORP','medical_officer':'ORP','nurse_officer':'ORP','muslim_chaplin':'ORP'
 };
-
 const customBadgeSizes = {
   'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
   'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:60,height:60},
@@ -197,26 +220,26 @@ const customBadgeSizes = {
   'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25}
 };
 
-// Ranks (images/ranks/<id>.png; shoulder board at images/ranks/C/shoulder_board.png)
+/* ---------- Ranks (unchanged) ---------- */
 const rankList = ['C/AB','C/Amn','C/A1C','C/SrA','C/SSgt','C/TSgt','C/MSgt','C/SMSgt','C/CMSgt','C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col'];
 const officerRanks = new Set(['C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col']);
 
-// Uniform bases (images/base/*.png)
+/* ---------- Uniform bases (kept capitalized ABU as in your first file) ---------- */
 const UNIFORMS = {
-  blues_a:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true,mini:false},
-  blues_b:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true,mini:false},
-  mess_dress:{male:'base/mess_male.png',female:'base/mess_female.png',ribbons:false,mini:true},
-  semi_formal:{male:'base/semi_male.png',female:'base/semi_female.png',ribbons:false,mini:true},
-  aviator:{male:'base/aviator_male.png',female:'base/aviator_female.png',ribbons:true,mini:false},
-  aviator_blazer:{male:'base/aviator_blazer_male.png',female:'base/aviator_blazer_female.png',ribbons:true,mini:false},
-  corporate_field:{male:'base/corporate_field_male.png',female:'base/corporate_field_female.png',ribbons:true,mini:false},
-  abu:{male:'base/abu_male.png',female:'base/abu_female.png',ribbons:false,mini:false},
-  flight_suit:{male:'base/flight_suit_male.png',female:'base/flight_suit_female.png',ribbons:false,mini:false},
-  polo:{male:'base/polo_male.png',female:'base/polo_female.png',ribbons:false,mini:false}
+  blues_a:{male:'base/jacket_male.png',         female:'base/jacket_female.png',         ribbons:true,  mini:false},
+  blues_b:{male:'base/jacket_male.png',         female:'base/jacket_female.png',         ribbons:true,  mini:false},
+  mess_dress:{male:'base/mess_male.png',        female:'base/mess_female.png',           ribbons:false, mini:true},
+  semi_formal:{male:'base/semi_male.png',       female:'base/semi_female.png',           ribbons:false, mini:true},
+  aviator:{male:'base/aviator_male.png',        female:'base/aviator_female.png',        ribbons:true,  mini:false},
+  aviator_blazer:{male:'base/aviator_blazer_male.png',female:'base/aviator_blazer_female.png', ribbons:true, mini:false},
+  corporate_field:{male:'base/corporate_field_male.png',female:'base/corporate_field_female.png', ribbons:true, mini:false},
+  abu:{male:'base/ABU_male.png',                female:'base/ABU_female.png',            ribbons:false, mini:false},
+  flight_suit:{male:'base/flight_suit_male.png',female:'base/flight_suit_female.png',    ribbons:false, mini:false},
+  polo:{male:'base/polo_male.png',              female:'base/polo_female.png',           ribbons:false, mini:false}
 };
 
 /******************** UI populate ********************/
-function populate(sel, list){
+function optionize(sel, list){
   sel.innerHTML='';
   list.forEach(v=>{
     const o=document.createElement('option');
@@ -226,7 +249,7 @@ function populate(sel, list){
   });
 }
 function populateBadgesRemove(){
-  const sel=byId('removeBadgeSelect');
+  const sel=by('removeBadgeSelect');
   if(!sel) return;
   sel.innerHTML='';
   State.badges.forEach(id=>{
@@ -237,11 +260,12 @@ function populateBadgesRemove(){
   });
 }
 
-function preload(prefix, list, folder){
+/* Preload helpers (robust; tolerate missing) */
+function preloadSimple(prefix, list, folder, ext=".png"){
   list.forEach(id=>{
     const img=document.createElement('img');
     img.id = `${prefix}-${id}`;
-    img.src = ASSET(`${folder}/${id}.png`);
+    img.src = ASSET(`${folder}/${id}${ext}`);
     img.style.display='none';
     img.loading='eager';
     img.decoding='sync';
@@ -249,22 +273,35 @@ function preload(prefix, list, folder){
     assetsContainer.appendChild(img);
   });
 }
+function preloadWithResolver(prefix, list, resolver){
+  list.forEach(id=>{
+    const src = resolver(id);
+    const img=document.createElement('img');
+    img.id = `${prefix}-${id}`;
+    img.src = ASSET(src);
+    img.style.display='none';
+    img.loading='eager';
+    img.decoding='sync';
+    img.onerror=()=>{};
+    assetsContainer.appendChild(img);
+  });
+}
 
-populate(byId('ribbonSelect'), ribbonList);
-populate(byId('deviceSelect'), deviceList);
-populate(byId('rankSelect'), rankList);
-populate(byId('badgeSelect'), badgeList);
-preload('ribbons', ribbonList, 'ribbons');
-preload('devices', deviceList, 'devices');
-preload('ranks', rankList, 'ranks');
-preload('badges', badgeList, 'badges');
+/* Populate & preload */
+optionize(by('ribbonSelect'), ribbonList);
+optionize(by('deviceSelect'), ['none', ...deviceList]);
+optionize(by('rankSelect'), rankList);
+optionize(by('badgeSelect'), badgeList);
+preloadSimple('ribbons', ribbonList, 'ribbons', '.png');
+preloadWithResolver('devices', deviceList, id => deviceMeta[id].src);
+preloadSimple('ranks', rankList, 'ranks', '.png');
+preloadSimple('badges', badgeList, 'badges', '.png');
 
 /******************** Base & layers ********************/
 function clearLayers(cls){
   const sel = cls ? `.layer.${cls}` : '.layer';
   uniformCanvas.querySelectorAll(sel).forEach(n=>n.remove());
 }
-
 function applyJacket(){
   clearLayers('jacket');
   const base = UNIFORMS[State.uniform][State.gender];
@@ -280,24 +317,31 @@ function applyJacket(){
 }
 
 /******************** Ribbons / Mini-Medals ********************/
-function sortRibbons(arr){ return [...arr].sort((a,b)=> precedence(a.id)-precedence(b.id)); }
-
+function sortRibbons(arr){
+  return [...arr].sort((a,b)=> precedence(a.id)-precedence(b.id));
+}
 function getTopRibbonY(){
-  const layers=[...uniformCanvas.querySelectorAll('.layer.ribbon')];
+  const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile')];
   if(!layers.length) return null;
   return Math.min(...layers.map(l=>parseInt(l.style.top)));
 }
-
+function ensureRibbonObj(id){
+  let r = State.ribbons.find(x=>x.id===id);
+  if(!r){ r={id,devices:{}}; State.ribbons.push(r); }
+  if(!r.devices) r.devices={};
+  return r;
+}
 function renderRack(){
-  clearLayers('ribbon');
-  clearLayers('mini');
-  const allowMini = UNIFORMS[State.uniform].mini && byId('autoMini').checked;
+  // remove all ribbon tiles and device overlays
+  [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
+
+  const allowMini = UNIFORMS[State.uniform].mini && by('autoMini').checked;
   const showRibbons = UNIFORMS[State.uniform].ribbons && !allowMini;
   const items = sortRibbons(State.ribbons);
   if(!items.length) return;
 
   if(showRibbons){
-    const w=25,h=8, pad=0;
+    const w=25,h=8,pad=0;
     const startTop=402, startLeft=303;
     const ids = items.map(x=>x.id);
 
@@ -310,30 +354,25 @@ function renderRack(){
       const x0 = (row.length===3)? startLeft : (row.length===2? startLeft + w/2 : startLeft + w + pad);
       const y = startTop - ri*(h+pad);
       row.forEach((rid,i)=>{
-        const orig=byId(`ribbons-${rid}`); if(!orig) return;
+        const orig=by(`ribbons-${rid}`); if(!orig) return;
+
+        // ribbon tile
         const el=orig.cloneNode();
-        el.className='layer ribbon';
+        el.className='layer ribbonTile';
         el.style.display='block';
-        el.style.top=`${y-h}px`;
-        el.style.left=`${x0 + i*(w+pad)}px`;
+        const topPx = (y-h);
+        const leftPx= (x0 + i*(w+pad));
+        el.style.top=`${topPx}px`;
+        el.style.left=`${leftPx}px`;
         el.style.width=`${w}px`;
         el.style.height=`${h}px`;
+        el.dataset.rid = rid;
+        el.style.pointerEvents='auto';
+        el.onclick = () => onRibbonTileClick(rid);
         uniformCanvas.appendChild(el);
 
-        const rn = State.ribbons.find(r=>r.id===rid);
-        if(rn && rn.device && rn.device!=='none'){
-          const dev=byId(`devices-${rn.device}`);
-          if(dev){
-            const d=dev.cloneNode();
-            d.className='layer ribbon';
-            d.style.display='block';
-            d.style.top=`${y-h+1}px`;
-            d.style.left=`${x0 + i*(w+pad) + (w/2 - 5)}px`;
-            d.style.width='10px';
-            d.style.height='10px';
-            uniformCanvas.appendChild(d);
-          }
-        }
+        // draw devices for this ribbon
+        drawDevicesOnRibbon(rid, leftPx, topPx, w, h);
       });
     });
   } else {
@@ -353,7 +392,7 @@ function renderRack(){
       row.forEach((rid,i)=>{
         const el=document.createElement('img');
         el.src=ASSET(`mini_medals/${rid}.png`);
-        el.className='layer mini';
+        el.className='layer ribbonMini';
         el.style.display='block';
         el.style.top=`${y-h}px`;
         el.style.left=`${x0 + i*(w+pad)}px`;
@@ -365,14 +404,121 @@ function renderRack(){
     });
   }
 }
+function onRibbonTileClick(rid){
+  if(State.deviceRemoveMode){
+    const r = ensureRibbonObj(rid);
+    r.devices = {};
+    renderRack();
+    return;
+  }
+  if(!State.deviceApplyMode) return;
+  const r = ensureRibbonObj(rid);
+  for(const [devId,qty] of Object.entries(State.selectedDevices)){
+    r.devices[devId] = (r.devices[devId]||0) + qty;
+  }
+  renderRack();
+}
+function drawDevicesOnRibbon(rid, leftPx, topPx, w, h){
+  const r = ensureRibbonObj(rid);
+  const flat=[];
+  for(const [devId,count] of Object.entries(r.devices||{})){
+    const meta = deviceMeta[devId];
+    if(!meta) continue;
+    for(let i=0;i<count;i++){
+      flat.push({id:devId, ...meta});
+    }
+  }
+  if(!flat.length) return;
+
+  // sort: heavier (silver) first, then label
+  flat.sort((a,b)=>(b.weight-a.weight)|| (a.label||a.id).localeCompare(b.label||b.id));
+
+  const gap = 3;
+  const totalW = flat.reduce((s,d,i)=> s + d.w + (i>0?gap:0), 0);
+  let x = Math.round(leftPx + (w-totalW)/2);
+  const y = Math.round(topPx + (h-10)/2) - 1;
+
+  flat.forEach(d=>{
+    const im=document.createElement('img');
+    im.className='layer ribbonDevice';
+    im.src = ASSET(d.src);
+    im.alt = d.label || d.id;
+    im.style.display='block';
+    im.style.left = `${x}px`;
+    im.style.top  = `${y}px`;
+    im.style.width = `${d.w}px`;
+    im.style.height= `${d.h}px`;
+    im.onerror=()=>{ im.remove(); };
+    uniformCanvas.appendChild(im);
+    x += d.w + gap;
+  });
+}
+
+/******************** Advanced Device Tool ********************/
+function buildDevicePicker(){
+  const wrap = by('devicePicker');
+  wrap.innerHTML = '';
+  deviceList.forEach(id=>{
+    const row=document.createElement('label');
+    row.style.cssText="display:flex;align-items:center;gap:8px";
+    row.innerHTML = `
+      <input type="checkbox" data-device="${id}"/>
+      <span>${deviceMeta[id].label}</span>
+      <input type="number" min="1" max="10" value="1" data-qty="${id}" style="width:70px;margin-left:auto">
+    `;
+    wrap.appendChild(row);
+  });
+}
+function readDevicePicker(){
+  const wrap=by('devicePicker');
+  const bundle={};
+  wrap.querySelectorAll('input[type="checkbox"][data-device]').forEach(chk=>{
+    const id=chk.getAttribute('data-device');
+    if(chk.checked){
+      const qty=parseInt(wrap.querySelector(`input[type="number"][data-qty="${id}"]`).value||"1",10);
+      if(qty>0) bundle[id]=qty;
+    }
+  });
+  return bundle;
+}
+function wireDeviceUI(){
+  const applyBtn = by('deviceApplyModeBtn');
+  const removeBtn= by('deviceRemoveModeBtn');
+  const clearBtn = by('deviceClearSelectionBtn');
+
+  applyBtn.addEventListener('click', ()=>{
+    State.selectedDevices = readDevicePicker();
+    const hasAny = Object.keys(State.selectedDevices).length>0;
+    State.deviceApplyMode = hasAny;
+    State.deviceRemoveMode = false;
+    applyBtn.textContent = State.deviceApplyMode ? 'Apply Mode: ON' : 'Enable Apply Mode';
+    applyBtn.classList.toggle('ghost', !State.deviceApplyMode);
+    removeBtn.classList.add('ghost');
+  });
+  removeBtn.addEventListener('click', ()=>{
+    State.deviceRemoveMode = !State.deviceRemoveMode;
+    State.deviceApplyMode = false;
+    removeBtn.textContent = State.deviceRemoveMode ? 'Remove Mode: ON' : 'Enable Remove Mode';
+    removeBtn.classList.toggle('ghost', !State.deviceRemoveMode);
+    by('deviceApplyModeBtn').textContent = 'Enable Apply Mode';
+  });
+  clearBtn.addEventListener('click', ()=>{
+    by('devicePicker').querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);
+    by('devicePicker').querySelectorAll('input[type="number"]').forEach(n=>n.value=1);
+    State.selectedDevices = {};
+    State.deviceApplyMode = false;
+    State.deviceRemoveMode = false;
+    applyBtn.textContent='Enable Apply Mode';
+    removeBtn.textContent='Enable Remove Mode';
+    applyBtn.classList.add('ghost');
+    removeBtn.classList.add('ghost');
+  });
+}
 
 /******************** Badges ********************/
-// slots with arrays of ids
 const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[] };
 function resetBadgeSlots(){ Object.keys(badgeSlots).forEach(k=> badgeSlots[k]=[] ); }
-
 function isCadetAuthorized(id){ return allowedCadetBadges.has(id); }
-
 function enforceExclusive(newId){
   exclusiveBadges.forEach(pair=>{
     if(pair.includes(newId)){
@@ -384,7 +530,6 @@ function enforceExclusive(newId){
     }
   });
 }
-
 function renderAllBadges(){
   clearLayers('badge');
   resetBadgeSlots();
@@ -396,9 +541,8 @@ function renderAllBadges(){
     applied.push(id);
   }
 }
-
 function placeBadgeByCategory(id){
-  const img=byId(`badges-${id}`);
+  const img=by(`badges-${id}`);
   if(!img) return;
 
   let slot = badgeLocations[id] || 'UN';
@@ -448,7 +592,7 @@ function renderRank(id){
   clearLayers('rank');
   if(!id) return;
 
-  const insigniaEl = byId('ranks-' + id);
+  const insigniaEl = by('ranks-' + id);
   if(!insigniaEl) return;
 
   const isOfficer = officerRanks.has(id);
@@ -458,8 +602,8 @@ function renderRank(id){
     const boardCfg = {width:50,height:100};
     const insigniaCfg = {width:32,height:32};
     const placements = [
-      {left:350, top:160, rot:90},   // left shoulder board
-      {left:100, top:160, rot:-90}   // right shoulder board
+      {left:350, top:160, rot:90},   // left shoulder board (rotated right)
+      {left:100, top:160, rot:-90}   // right shoulder board (rotated left)
     ];
     placements.forEach(({left,top,rot})=>{
       const board=document.createElement('img');
@@ -488,7 +632,7 @@ function renderRank(id){
     return;
   }
 
-  // Enlisted
+  // Enlisted (single overlay spot)
   const size = {w:60,h:60};
   const pos = {left:420, top:200};
   const icon=insigniaEl.cloneNode();
@@ -500,7 +644,6 @@ function renderRank(id){
   icon.style.height=`${size.h}px`;
   uniformCanvas.appendChild(icon);
 }
-
 function renderNameplate(){
   clearLayers('nameplate');
   const el=document.createElement('img');
@@ -514,8 +657,8 @@ function renderNameplate(){
   uniformCanvas.appendChild(el);
 }
 
-/******************** Persistence (optional quick save) ********************/
-function quickSave(){ localStorage.setItem('cap_uniform', JSON.stringify(State)); }
+/******************** Persistence (optional) ********************/
+function quickSave(){ try{ localStorage.setItem('cap_uniform', JSON.stringify(State)); }catch{} }
 function quickLoad(){
   const t=localStorage.getItem('cap_uniform');
   if(!t) return;
@@ -529,28 +672,27 @@ function fullRender(){
   renderAllBadges();
   renderRank(State.rank);
 }
-
 function refreshUI(){
-  byId('memberSelect').value=State.member;
-  byId('jacketSelect').value=State.gender;
-  byId('uniformSelect').value=State.uniform;
-  byId('assetBase').value=State.assetBase;
+  by('memberSelect').value=State.member;
+  by('jacketSelect').value=State.gender;
+  by('uniformSelect').value=State.uniform;
+  by('assetBase').value=State.assetBase;
   populateBadgesRemove();
 }
 
 /******************** Handlers ********************/
-byId('applyJacket').onclick=()=>{
-  State.assetBase=byId('assetBase').value.trim()||'images';
-  State.gender=byId('jacketSelect').value;
+by('applyJacket').onclick=()=>{
+  State.assetBase=by('assetBase').value.trim()||'images';
+  State.gender=by('jacketSelect').value;
   applyJacket();
 };
 
-byId('memberSelect').onchange=(e)=>{
+by('memberSelect').onchange=(e)=>{
   State.member=e.target.value;
   if(State.member==='cadet' && (State.uniform==='polo' || State.uniform==='mess_dress')){
     alert('Cadets are not authorized Polo or Mess Dress. Switching to Blues A.');
     State.uniform='blues_a';
-    byId('uniformSelect').value='blues_a';
+    by('uniformSelect').value='blues_a';
   }
   if(State.member==='cadet'){
     State.badges = State.badges.filter(isCadetAuthorized);
@@ -559,9 +701,9 @@ byId('memberSelect').onchange=(e)=>{
   }
 };
 
-byId('jacketSelect').onchange=(e)=>{ State.gender=e.target.value; applyJacket(); };
+by('jacketSelect').onchange=(e)=>{ State.gender=e.target.value; applyJacket(); };
 
-byId('uniformSelect').onchange=(e)=>{
+by('uniformSelect').onchange=(e)=>{
   State.uniform=e.target.value;
   if(!UNIFORMS[State.uniform].ribbons && !UNIFORMS[State.uniform].mini){
     State.ribbons=[];
@@ -569,20 +711,26 @@ byId('uniformSelect').onchange=(e)=>{
   fullRender();
 };
 
-byId('assetBase').onchange=(e)=>{ State.assetBase=e.target.value.trim()||'images'; fullRender(); };
+by('assetBase').onchange=(e)=>{ State.assetBase=e.target.value.trim()||'images'; fullRender(); };
 
-byId('addRibbon').onclick=()=>{
-  const id=byId('ribbonSelect').value;
-  const dev=byId('deviceSelect').value||'none';
-  if(!State.ribbons.find(r=>r.id===id)) State.ribbons.push({id,device:dev});
-  else State.ribbons=State.ribbons.map(r=> r.id===id? {...r,device:dev}:r);
+by('addRibbon').onclick=()=>{
+  const id=by('ribbonSelect').value;
+  const dev=by('deviceSelect').value||'none';
+  const r = ensureRibbonObj(id);
+  if(dev && dev!=='none'){
+    r.devices[dev] = (r.devices[dev]||0) + 1; // quick single add
+  }
   renderRack();
 };
 
-byId('clearRibbons').onclick=()=>{ State.ribbons=[]; renderRack(); };
+by('clearRibbons').onclick=()=>{ State.ribbons=[]; renderRack(); };
 
-byId('addBadge').onclick=()=>{
-  const id=byId('badgeSelect').value;
+/* Device tool wiring */
+buildDevicePicker();
+wireDeviceUI();
+
+by('addBadge').onclick=()=>{
+  const id=by('badgeSelect').value;
   if(State.member==='cadet' && !isCadetAuthorized(id)) { alert('This badge is not authorized for cadets.'); return; }
   enforceExclusive(id);
   if(!State.badges.includes(id)) State.badges.push(id);
@@ -590,18 +738,18 @@ byId('addBadge').onclick=()=>{
   renderAllBadges();
 };
 
-byId('removeBadge').onclick=()=>{
-  const id=byId('removeBadgeSelect').value;
+by('removeBadge').onclick=()=>{
+  const id=by('removeBadgeSelect').value;
   State.badges=State.badges.filter(b=>b!==id);
   populateBadgesRemove();
   renderAllBadges();
 };
 
-byId('addRank').onclick=()=>{ State.rank=byId('rankSelect').value; renderRank(State.rank); };
-byId('addNameplate').onclick=()=> renderNameplate();
+by('addRank').onclick=()=>{ State.rank=by('rankSelect').value; renderRank(State.rank); };
+by('addNameplate').onclick=()=> renderNameplate();
 
-byId('downloadImage').onclick=()=>{
-  html2canvas(uniformCanvas,{scale:3}).then(c=>{
+by('downloadImage').onclick=()=>{
+  html2canvas(uniformCanvas,{scale:3, backgroundColor:'#ffffff'}).then(c=>{
     const a=document.createElement('a');
     a.download=`CAP_Uniform_${Date.now()}.png`;
     a.href=c.toDataURL();
