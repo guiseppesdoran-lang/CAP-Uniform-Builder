@@ -1,805 +1,620 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>CAP Uniform Builder — All Variants (CAPR 39-1)</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CAP Uniform Builder — Full Program</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
-  :root{
-    --bg:#eef1f5; --ink:#0d1b2a; --muted:#516079; --panel:#ffffff; --line:#cfd6df; --brand:#002855;
-    --tileW:120px; --tileH:35px;
-  }
+  :root{ --bg:#eef1f5; --ink:#0d1b2a; --muted:#516079; --panel:#ffffff; --line:#cfd6df; --brand:#002855; }
   *{box-sizing:border-box}
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--ink)}
   header{background:var(--brand);color:#fff;padding:14px 16px;text-align:center}
-  header h1{margin:0;font-size:18px}
-  main{display:flex;gap:16px;align-items:stretch;min-height:calc(100vh - 60px)}
-  #controls{width:410px;background:var(--panel);padding:14px;border-right:1px solid var(--line);overflow:auto}
-  #stage{flex:1;padding:16px;display:flex;flex-direction:column;gap:14px}
-  fieldset{border:1px solid var(--line);border-radius:10px;padding:10px}
-  legend{padding:0 6px;color:var(--muted);font-size:12px}
-  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  select,input[type="number"],input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;min-height:34px}
-  .btn{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
-  .btn.primary{background:#0b5cff;color:#fff;border-color:#0b5cff}
-  .hint{color:var(--muted);font-size:12px}
-
-  #previewWrap{position:relative;display:inline-block;margin:auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
-  #jacketStage{position:relative;width:740px;height:1100px;background:#f8f9fb;overflow:hidden;border-radius:10px}
-  #jacketImg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-
-  .layer{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
-  #ribbonLayer{pointer-events:auto}
-  .ribbon-tile{position:absolute;width:var(--tileW);height:var(--tileH);border-radius:6px;overflow:hidden;
-    box-shadow:0 1px 1px rgba(0,0,0,.05), inset 0 0 0 1px #dcdcdc;background:linear-gradient(180deg,#e6e6e6,#d8d8d8)}
-  .ribbon-tile img.ribbon{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .device-overlay{position:absolute;pointer-events:none;filter:drop-shadow(0 0 .5px rgba(0,0,0,.35))}
-  .badge{position:absolute;image-rendering:auto}
-  .nameplate{position:absolute;background:#0b273f;color:#fff;border-radius:2px;padding:2px 6px;font-size:12px;letter-spacing:.3px}
-
-  #epauletLayer .board{position:absolute;width:100px;height:50px;image-rendering:auto}
-  #epauletLayer .insignia{position:absolute;image-rendering:auto}
-
-  #deviceTool button{padding:6px 10px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer}
-  #deviceTool button.active{outline:2px solid #2b7fff}
-  #devicePicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-
-  #regList{display:grid;gap:6px;margin-top:6px}
-  .reg-ok{color:#0a7f2e}
-  .reg-warn{color:#a66b00}
-  .reg-err{color:#b00020}
-
-  @media (max-width: 980px){
+  header h1{margin:0;font-size:18px;letter-spacing:.3px}
+  main{display:flex}
+  #controls{width:340px;background:var(--panel);padding:14px;border-right:1px solid var(--line);overflow:auto;height:calc(100vh - 58px)}
+  #preview{flex:1;background:#d1d8e0;display:flex;align-items:flex-start;justify-content:center;position:relative;height:calc(100vh - 58px)}
+  #uniformCanvas{position:relative;width:900px;height:1200px}
+  .layer{position:absolute;image-rendering:auto}
+  label{font-size:12px;color:var(--muted);margin-top:8px;display:block}
+  select,button,input{width:100%;margin-top:6px;padding:8px;border:1px solid var(--line);border-radius:10px;background:#f8fafc}
+  button{cursor:pointer;background:#0f2a54;color:#fff;border-color:#163766}
+  button.ghost{background:#ffffff;color:var(--ink)}
+  .row{display:flex;gap:8px}
+  .two .col{flex:1}
+  @media (max-width: 1024px){
     main{flex-direction:column}
-    #controls{width:auto;border-right:none;border-bottom:1px solid var(--line)}
-    #jacketStage{width:92vw;height:calc(92vw*1.48)}
+    #controls{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--line)}
+    #preview{height:auto}
+    #uniformCanvas{width:600px;height:900px}
   }
 </style>
 </head>
 <body>
-<header><h1>CAP Uniform Builder — All Cadet & Senior Variants (CAPR 39-1)</h1></header>
+<header>
+  <h1>CAP Uniform Builder — Full Program (images/ path)</h1>
+</header>
 
 <main>
-  <aside id="controls">
-    <fieldset>
-      <legend>Member & Uniform</legend>
-      <div class="row">
-        <label>Member
-          <select id="memberType">
-            <option value="cadet">Cadet</option>
-            <option value="senior">Senior Member</option>
-          </select>
-        </label>
-        <label>Gender
-          <select id="gender">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-        </label>
-        <label>Uniform
-          <select id="uniformType"></select>
-        </label>
+  <section id="controls">
+    <div class="row two">
+      <div class="col">
+        <label>Member</label>
+        <select id="memberSelect">
+          <option value="cadet">Cadet</option>
+          <option value="senior">Senior</option>
+        </select>
       </div>
-      <div class="row">
-        <label>Grade
-          <select id="gradeSelect"></select>
-        </label>
-        <button id="downloadBtn" class="btn primary">Download High-Res PNG</button>
+      <div class="col">
+        <label>Gender</label>
+        <select id="jacketSelect">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
       </div>
-      <small class="hint">Uniform list is filtered by member type per CAPR 39-1.</small>
-    </fieldset>
+    </div>
 
-    <fieldset>
-      <legend>Ribbons</legend>
-      <div class="row">
-        <select id="ribbonSelect"></select>
-        <button id="addRibbonBtn" class="btn primary">Add</button>
-        <button id="clearRibbonsBtn" class="btn">Clear All</button>
+    <label>Uniform</label>
+    <select id="uniformSelect">
+      <option value="blues_a">Blues: Class A</option>
+      <option value="blues_b">Blues: Class B</option>
+      <option value="mess_dress">Mess Dress (Senior)</option>
+      <option value="semi_formal">Semi-formal</option>
+      <option value="aviator">Aviator (Senior)</option>
+      <option value="aviator_blazer">Aviator + Blazer (Senior)</option>
+      <option value="corporate_field">Corporate Field</option>
+      <option value="abu">ABUs</option>
+      <option value="flight_suit">Flight Suit</option>
+      <option value="polo">Polo (Senior)</option>
+    </select>
+
+    <div class="row two">
+      <div class="col">
+        <label>Asset Base</label>
+        <input id="assetBase" value="images" placeholder="images"/>
       </div>
-      <small class="hint">Rack: rows of 3. Partial row (1–2) is top row and centered. Highest precedence at top-left.</small>
-    </fieldset>
-
-    <section id="deviceTool" style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
-      <h3 style="margin:0 0 8px 0;font-size:14px">Ribbon Devices (Click-to-Apply)</h3>
-
-      <div id="devicePicker">
-        <!-- Device checkboxes are built from ASSETS.devices below -->
+      <div class="col">
+        <label>&nbsp;</label>
+        <button id="applyJacket" class="ghost">Apply Jacket</button>
       </div>
+    </div>
 
-      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-        <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
-        <button id="deviceClearSelectionBtn" type="button">Clear Selection</button>
-        <button id="deviceRemoveModeBtn" type="button">Enable Remove Mode</button>
-      </div>
-      <small class="hint">Choose devices + quantities → Enable → click a ribbon to apply. Remove Mode clears devices.</small>
-    </section>
+    <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
 
-    <fieldset style="margin-top:16px">
-      <legend>Badges & Insignia</legend>
-      <div class="row">
-        <select id="badgeSelect"></select>
-        <button id="addBadgeBtn" class="btn">Add</button>
-        <button id="clearBadgesBtn" class="btn">Clear</button>
-      </div>
-      <small class="hint">Placement follows CAPR 39-1 slot logic (OLP/OLPA/OLPU/ORP/ON/UN/LP/LRP).</small>
-    </fieldset>
+    <label>Ribbons</label>
+    <div class="row two">
+      <div class="col"><select id="ribbonSelect"></select></div>
+      <div class="col"><select id="deviceSelect"></select></div>
+    </div>
+    <div class="row two" style="margin-top:6px">
+      <div class="col"><button id="addRibbon">Add Ribbon</button></div>
+      <div class="col"><button id="clearRibbons" class="ghost">Clear Ribbons</button></div>
+    </div>
+    <label><input type="checkbox" id="autoMini" checked> Auto-convert ribbons → mini-medals on Mess/Semi-formal</label>
 
-    <fieldset style="margin-top:16px">
-      <legend>Regulation Checker (CAPR 39-1)</legend>
-      <div id="regList"></div>
-    </fieldset>
-  </aside>
+    <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
 
-  <section id="stage">
-    <fieldset>
-      <legend>Preview</legend>
-      <div id="previewWrap">
-        <div id="jacketStage" aria-label="Uniform Preview">
-          <img id="jacketImg" alt="Jacket"/>
-          <div id="ribbonLayer" class="layer" aria-label="Ribbon Layer"></div>
-          <div id="badgeLayer" class="layer" aria-label="Badge Layer"></div>
-          <div id="epauletLayer" class="layer" aria-label="Epaulet/Rank Layer"></div>
-        </div>
-      </div>
-      <div class="hint" style="margin-top:8px">Tip: Officer grades show shoulder boards; enlisted/cadet grades render on collar.</div>
-    </fieldset>
+    <label>Badges</label>
+    <div class="row two">
+      <div class="col"><select id="badgeSelect"></select></div>
+      <div class="col"><button id="addBadge">Add Badge</button></div>
+    </div>
+    <div class="row two" style="margin-top:6px">
+      <div class="col"><select id="removeBadgeSelect"></select></div>
+      <div class="col"><button id="removeBadge" class="ghost">Remove Badge</button></div>
+    </div>
+
+    <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
+
+    <label>Rank Insignia</label>
+    <div class="row two">
+      <div class="col"><select id="rankSelect"></select></div>
+      <div class="col"><button id="addRank">Set Rank</button></div>
+    </div>
+    <div class="row two" style="margin-top:6px">
+      <div class="col"><button id="addNameplate" class="ghost">Add Nameplate</button></div>
+      <div class="col"><button id="downloadImage">Download PNG</button></div>
+    </div>
+  </section>
+
+  <section id="preview">
+    <div id="uniformCanvas"></div>
   </section>
 </main>
 
+<!-- Hidden assets root -->
+<div class="layer" id="assets" style="display:none"></div>
+
 <script>
-/* =========================================================
-   ASSETS — update/add to match your repo.
-   ABU images set per your paths.
-   ========================================================= */
-const ASSETS = {
-  jackets: {
-    // Use your specific ABU art:
-    abu:          { male:"images/base/ABU_male.png",    female:"images/base/ABU_female.png" },
-
-    // For other uniforms, point to your current base art (replace these if you have specific coats/shirts):
-    blues_classA: { male:"images/base/jacket_male.png", female:"images/base/jacket_female.png" },
-    blues_classB: { male:"images/base/jacket_male.png", female:"images/base/jacket_female.png" },
-    corporate:    { male:"images/base/jacket_male.png", female:"images/base/jacket_female.png" },
-    flightsuit:   { male:"images/base/jacket_male.png", female:"images/base/jacket_female.png" },
-    mess:         { male:"images/base/jacket_male.png", female:"images/base/jacket_female.png" }
-  },
-
-  /* Example ribbons; extend with your full set */
-  ribbons: [
-    { id:'earhart',   name:'Earhart',    img:'images/ribbons/earhart_award.png',               precedence:1 },
-    { id:'mitchell',  name:'Mitchell',   img:'images/ribbons/mitchell_award.png',              precedence:2 },
-    { id:'dist_svc',  name:'Distinguished Service', img:'images/ribbons/distinguished_service_award.png', precedence:10 },
-    { id:'community', name:'Community Service', img:'images/ribbons/community_service_ribbon.png',        precedence:120 }
-  ],
-
-  /* Devices — these three exist in your repo; add more if you add files */
-  devices: {
-    star_bronze: { label:"Bronze Star",  src:"images/devices/1_Bronze_Star_Device.webp",      width:12, height:12, weight:1 },
-    star_silver: { label:"Silver Star",  src:"images/devices/1_Silver_Star_Device.webp",      width:12, height:12, weight:2 },
-    propeller:   { label:"Propeller",    src:"images/devices/1_Bronze_Propeller_Device.webp", width:14, height:14, weight:3 }
-    // If you add clasp/leaf images later, put them here and they'll auto-appear in the picker.
-  },
-
-  /* Badges — seed set mapped to your filenames; add the rest from images/badges/ */
-  badges: {
-    aviation_basic: { name:"Aviation (Basic)", src:"images/badges/CAPPilot1_FA9D33EA587D8.png", w:70, h:22, category:"aviation", precedence:100 },
-    ground_team:    { name:"Ground Team",      src:"images/badges/ground_team_basic_badge.png", w:64, h:24, category:"occupational", precedence:200 },
-    ems:            { name:"EMS",              src:"images/badges/emt_basic_badge.png",         w:64, h:24, category:"occupational", precedence:210 },
-    model_rocketry: { name:"Model Rocketry",   src:"images/badges/model_rocketry_badge.png",    w:58, h:20, category:"lp_only", precedence:400 },
-    marksmanship:   { name:"Marksmanship",     src:"images/badges/nra_marksman_badge.png",      w:58, h:20, category:"flap_only", precedence:500 }
-  },
-
-  /* Officer boards: your single board file used for both shoulders */
-  officerBoards: {
-    boardLeft:  { src:"images/ranks/C/shoulder_board.png", w:100, h:50, left:140, top:155, rotate:90 },
-    boardRight: { src:"images/ranks/C/shoulder_board.png", w:100, h:50, left:500, top:155, rotate:-90 }
-  },
-
-  /* If/when you add officer/enlisted insignia files, map them here and they'll render automatically */
-  officerInsignia: {
-    // "2dLt": { src:"images/ranks/officer/2dLt.png", w:24, h:24, left:0, top:0 },
-  },
-  enlistedCollar: { male:{ left:280, top:175 }, female:{ left:280, top:175 } },
-  enlistedInsignia: {
-    // "C/AB":   { src:"images/ranks/enlisted/C-AB.png",   w:32, h:32, dx:0, dy:0 },
-  }
+/************** Config & Catalogs (IDs map to images under images/ …) **************/
+const State = {
+  member:'cadet',
+  gender:'male',
+  uniform:'blues_a',
+  assetBase:'images',
+  ribbons:[],      // [{id, device}]
+  badges:[],       // [id]
+  rank:null,
 };
 
-/* =========================================================
-   UNIFORMS (cadet vs senior availability)
-   ========================================================= */
-const UNIFORMS = [
-  { id:"blues_classA", label:"Blues — Class A (Service Dress Coat)", cadet:true, senior:true },
-  { id:"blues_classB", label:"Blues — Class B (Shirt)",              cadet:true, senior:true },
-  { id:"corporate",    label:"Corporate (Aviator Gray)",             cadet:false, senior:true },
-  { id:"flightsuit",   label:"Flight Suit",                           cadet:true, senior:true },
-  { id:"abu",          label:"ABU / Utility",                         cadet:true, senior:true },
-  { id:"mess",         label:"Mess Dress",                            cadet:false, senior:true } // Cadets not authorized
+const $ = s => document.querySelector(s);
+const byId = id => document.getElementById(id); // safer for IDs that may include '/'
+const uniformCanvas = byId('uniformCanvas');
+const assetsContainer = byId('assets');
+
+function ASSET(p){
+  const b=(State.assetBase||'images').replace(/\/$/,'');
+  return `${b}/${p}`;
+}
+
+// Ribbons (id must match images/ribbons/<id>.png and mini at images/mini_medals/<id>.png)
+const ribbonList = [
+  'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award','spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon'
+];
+const precedence = (id)=> ribbonList.indexOf(id); // simple index precedence
+const deviceList = ['1_Bronze_Star_Device','1_Silver_Star_Device'];
+const deviceImg = {
+  '1_Bronze_Star_Device':'devices/1_Bronze_Star_Device.png',
+  '1_Silver_Star_Device':'devices/1_Silver_Star_Device.png'
+};
+
+// Badges & rules
+const badgeList = [
+  'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
+  'buddist_chaplin','christian_chaplin','communications_technician_badge','cyber_badges','emergency_services_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges'
 ];
 
-/* =========================================================
-   SLOT MAPS & OFFSETS (tweak to match your art exactly)
-   ========================================================= */
-const UNIFORM_SLOTS = {
-  blues_classA: {
-    ribbonAnchor:{ x:370, y:500 },
-    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{ OLP:{x:320,y:460}, OLPA:{x:320,y:440}, OLPU:{x:320,y:480},
-           ORP:{x:470,y:460}, ON:{x:470,y:422},  UN:{x:470,y:485},
-           LP:{x:320,y:548}, RP:{x:470,y:548},   LRP:{x:320,y:536} }
-  },
-  blues_classB: {
-    ribbonAnchor:{ x:370, y:450 },
-    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{ OLP:{x:320,y:402}, OLPA:{x:320,y:382}, OLPU:{x:320,y:422},
-           ORP:{x:470,y:402}, ON:{x:470,y:364},  UN:{x:470,y:426},
-           LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:494} }
-  },
-  corporate: {
-    ribbonAnchor:{ x:370, y:450 },
-    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{ OLP:{x:320,y:405}, OLPA:{x:320,y:385}, OLPU:{x:320,y:425},
-           ORP:{x:470,y:405}, ON:{x:470,y:368},  UN:{x:470,y:430},
-           LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:495} }
-  },
-  flightsuit: {
-    ribbonAnchor:{ x:370, y:450 },
-    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{ OLP:{x:320,y:395}, OLPA:{x:320,y:375}, OLPU:{x:320,y:415},
-           ORP:{x:470,y:395}, ON:{x:470,y:358},  UN:{x:470,y:420},
-           LP:{x:320,y:495}, RP:{x:470,y:495},   LRP:{x:320,y:485} }
-  },
-  abu: {
-    ribbonAnchor:{ x:370, y:450 },
-    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{ OLP:{x:320,y:402}, OLPA:{x:320,y:382}, OLPU:{x:320,y:422},
-           ORP:{x:470,y:402}, ON:{x:470,y:364},  UN:{x:470,y:426},
-           LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:494} }
-  },
-  mess: {
-    ribbonAnchor:{ x:370, y:450 },
-    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
-    slot:{ OLP:{x:320,y:405}, OLPA:{x:320,y:385}, OLPU:{x:320,y:425},
-           ORP:{x:470,y:405}, ON:{x:470,y:368},  UN:{x:470,y:430},
-           LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:495} }
-  }
-};
+const allowedCadetBadges = new Set([
+  'solo_badge','pre_solo_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge','emt_basic_badge','emt_intermediate','emt_paramedic','aerospace','model_rocketry_badge','communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges','cadetadvisory','cd','nra_marksman_badge','AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_0E35802A29801','MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge','emergency_services_badge','historian_technicianIbadge'
+]);
 
-/* =========================================================
-   RULES (CAPR 39-1 subset for layout checks)
-   ========================================================= */
-const RULES_39_1 = {
-  cadet: { disallowedUniforms: new Set(["mess"]) },
-  senior:{ disallowedUniforms: new Set([]) },
-
-  caps: {
-    maxAboveLeftPocket: 2,
-    maxAboveRightPocket:2,
-    maxOnNameArea: 2,
-    maxFlapMarksman: 1,
-    maxModelRocketry:1,
-    maxTotalBadges: 5
-  },
-
-  badgePlacement: {
-    aviation:            { slots:["OLPU","OLPA","OLP"], perSlotMax:2 },
-    occupational:        { slots:["ORP"],               perSlotMax:2 },
-    specialty_over_name: { slots:["ON","UN"],           perSlotMax:2 },
-    lp_only:             { slots:["LP"],                perSlotMax:1 },
-    flap_only:           { slots:["LRP"],               perSlotMax:1 }
-  },
-
-  categoryOrder: ["aviation","occupational","specialty_over_name","lp_only","flap_only"]
-};
-
-/* =========================================================
-   GRADES (officer vs enlisted/cadet)
-   ========================================================= */
-const GRADES = [
-  { id:"2dLt",  label:"2d Lt (Officer)", officer:true },
-  { id:"1stLt", label:"1st Lt (Officer)", officer:true },
-  { id:"Capt",  label:"Captain (Officer)", officer:true },
-  { id:"Maj",   label:"Major (Officer)", officer:true },
-  { id:"LtCol", label:"Lt Col (Officer)", officer:true },
-  { id:"Col",   label:"Colonel (Officer)", officer:true },
-  { id:"C/AB",   label:"C/AB",   officer:false },
-  { id:"C/Amn",  label:"C/Amn",  officer:false },
-  { id:"C/A1C",  label:"C/A1C",  officer:false },
-  { id:"C/SrA",  label:"C/SrA",  officer:false },
-  { id:"C/SSgt", label:"C/SSgt", officer:false },
-  { id:"C/TSgt", label:"C/TSgt", officer:false },
-  { id:"C/MSgt", label:"C/MSgt", officer:false },
-  { id:"C/SMSgt",label:"C/SMSgt", officer:false },
-  { id:"C/CMSgt",label:"C/CMSgt", officer:false }
+const exclusiveBadges = [
+  ['emt_basic_badge','ground_team_basic_badge'],
+  ['emt_intermediate','senior_ground_team_badge'],
+  ['emt_paramedic','master_ground_team_badge']
 ];
 
-/* =========================================================
-   STATE
-   ========================================================= */
-let state = {
-  memberType:"cadet",
-  gender:"male",
-  uniformType:"blues_classA",
-  grade:"C/Amn",
-  rack:[],
-  badges:[],
-  deviceApplyMode:false,
-  deviceRemoveMode:false,
-  selectedDevices:{}
+const badgeLocations = {
+  'AirCrew1_DB3F0FCC3650F':'OLP','BalloonPilot1_442D89C94185B':'OLP','CAPMasterPilot1_621A0E2ED15DA':'OLP','CAPPilot1_FA9D33EA587D8':'OLP','CAPSeniorPilot1_D9725AE959752':'OLP','GliderPilot1_7BFB287379918':'OLP','MasterAirCrew1_72AC4CAE7A310':'OLP',
+  'SeniorAirCrew1_B289BAE6E515C':'OLP','pre_solo_badge':'OLP','solo_badge':'OLP',
+  'cyber_badges':'LP','stem_badges':'LP','communications_technician_badge':'LP','information_technology_technician_badge':'LP',
+  'nra_marksman_badge':'LRP',
+  'MasterObserver1_1B88D5071FD5C':'LP','SeniorObserver1_0E35802A29801':'LP','observer_badge':'LP',
+  'ground_team_basic_badge':'OLPU','senior_ground_team_badge':'OLPU','master_ground_team_badge':'OLPU','emergency_services_badge':'OLPU','emt_basic_badge':'OLPU','emt_intermediate':'OLPU','emt_paramedic':'OLPU',
+  'historian_technicianIbadge':'LP','model_rocketry_badge':'LP',
+  'buddist_chaplin':'ORP','christian_chaplin':'ORP','jewish_chaplin':'ORP','legal_officer':'ORP','medical_officer':'ORP','nurse_officer':'ORP','muslim_chaplin':'ORP'
 };
 
-/* =========================================================
-   INIT
-   ========================================================= */
-document.addEventListener('DOMContentLoaded', () => init());
+const customBadgeSizes = {
+  'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
+  'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:60,height:60},
+  'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:60,height:60},'emt_basic_badge':{width:60,height:60},
+  'emt_intermediate':{width:60,height:60},'emt_paramedic':{width:60,height:60},'ground_team_basic_badge':{width:25,height:20},
+  'historian_technicianIbadge':{width:60,height:60},'information_technology_technician_badge':{width:60,height:60},
+  'jewish_chaplin':{width:60,height:60},'legal_officer':{width:60,height:25},'master_ground_team_badge':{width:25,height:20},
+  'medical_officer':{width:60,height:60},'model_rocketry_badge':{width:7,height:28.125},'muslim_chaplin':{width:60,height:60},
+  'nra_marksman_badge':{width:40,height:60},'nurse_officer':{width:60,height:60},'observer_badge':{width:60,height:25},
+  'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25}
+};
 
-function init(){
-  populateUniforms();
-  populateRibbons();
-  populateBadges();
-  populateGrades();
+// Ranks (images/ranks/<id>.png; shoulder board at images/ranks/C/shoulder_board.png)
+const rankList = ['C/AB','C/Amn','C/A1C','C/SrA','C/SSgt','C/TSgt','C/MSgt','C/SMSgt','C/CMSgt','C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col'];
+const officerRanks = new Set(['C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col']);
 
-  document.getElementById('memberType').addEventListener('change', e=>{
-    state.memberType = e.target.value;
-    populateUniforms();
-    renderAll();
+// Uniform bases (images/base/*.png)
+const UNIFORMS = {
+  blues_a:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true,mini:false},
+  blues_b:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true,mini:false},
+  mess_dress:{male:'base/mess_male.png',female:'base/mess_female.png',ribbons:false,mini:true},
+  semi_formal:{male:'base/semi_male.png',female:'base/semi_female.png',ribbons:false,mini:true},
+  aviator:{male:'base/aviator_male.png',female:'base/aviator_female.png',ribbons:true,mini:false},
+  aviator_blazer:{male:'base/aviator_blazer_male.png',female:'base/aviator_blazer_female.png',ribbons:true,mini:false},
+  corporate_field:{male:'base/corporate_field_male.png',female:'base/corporate_field_female.png',ribbons:true,mini:false},
+  abu:{male:'base/abu_male.png',female:'base/abu_female.png',ribbons:false,mini:false},
+  flight_suit:{male:'base/flight_suit_male.png',female:'base/flight_suit_female.png',ribbons:false,mini:false},
+  polo:{male:'base/polo_male.png',female:'base/polo_female.png',ribbons:false,mini:false}
+};
+
+/******************** UI populate ********************/
+function populate(sel, list){
+  sel.innerHTML='';
+  list.forEach(v=>{
+    const o=document.createElement('option');
+    o.value=v;
+    o.textContent=v.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    sel.appendChild(o);
   });
-  document.getElementById('gender').addEventListener('change', e=>{
-    state.gender = e.target.value;
-    renderAll();
-  });
-  document.getElementById('uniformType').addEventListener('change', e=>{
-    state.uniformType = e.target.value;
-    renderAll();
-  });
-  document.getElementById('gradeSelect').addEventListener('change', e=>{
-    state.grade = e.target.value;
-    renderEpauletsAndRank();
-  });
-
-  document.getElementById('addRibbonBtn').addEventListener('click', onAddRibbon);
-  document.getElementById('clearRibbonsBtn').addEventListener('click', ()=>{
-    state.rack = [];
-    renderAll();
-  });
-
-  wireDeviceUI();
-  buildDevicePicker();
-
-  document.getElementById('addBadgeBtn').addEventListener('click', onAddBadge);
-  document.getElementById('clearBadgesBtn').addEventListener('click', ()=>{
-    state.badges = [];
-    renderAll();
-  });
-
-  document.getElementById('downloadBtn').addEventListener('click', downloadHighRes);
-
-  renderAll();
 }
-
-/* =========================================================
-   POPULATE CONTROLS
-   ========================================================= */
-function populateUniforms(){
-  const sel = document.getElementById('uniformType');
-  const isCadet = state.memberType==="cadet";
-  sel.innerHTML = "";
-  UNIFORMS.forEach(u=>{
-    if ((isCadet && u.cadet) || (!isCadet && u.senior)){
-      const o = document.createElement('option');
-      o.value=u.id; o.textContent=u.label; sel.appendChild(o);
-    }
-  });
-  if (![...sel.options].some(o=>o.value===state.uniformType)){
-    state.uniformType = sel.options[0]?.value || "blues_classA";
-  }
-  sel.value = state.uniformType;
-}
-
-function populateRibbons(){
-  const sel = document.getElementById('ribbonSelect');
-  const arr = [...ASSETS.ribbons].sort((a,b)=>a.precedence-b.precedence);
-  sel.innerHTML = arr.map(r=>`<option value="${r.id}">${r.name||r.id}</option>`).join('');
-}
-
-function populateBadges(){
-  const sel = document.getElementById('badgeSelect');
-  sel.innerHTML = "";
-  for (const [key,meta] of Object.entries(ASSETS.badges)){
-    const opt = document.createElement('option');
-    opt.value = key;
-    opt.textContent = meta.name || key.replace(/_/g,' ');
-    sel.appendChild(opt);
-  }
-}
-
-function populateGrades(){
-  const sel = document.getElementById('gradeSelect');
-  sel.innerHTML = GRADES.map(g=>`<option value="${g.id}">${g.label}</option>`).join('');
-  sel.value = state.grade;
-}
-
-/* =========================================================
-   DEVICE UI
-   ========================================================= */
-function buildDevicePicker(){
-  const wrap=document.getElementById('devicePicker');
-  wrap.innerHTML="";
-  Object.entries(ASSETS.devices).forEach(([id,meta])=>{
-    const row=document.createElement('label');
-    row.style.cssText="display:flex;align-items:center;gap:8px";
-    row.innerHTML=`
-      <input type="checkbox" data-device="${id}"/><span>${meta.label||id}</span>
-      <input type="number" min="1" max="10" value="1" data-qty="${id}" style="width:54px;margin-left:auto">
-    `;
-    wrap.appendChild(row);
+function populateBadgesRemove(){
+  const sel=byId('removeBadgeSelect');
+  if(!sel) return;
+  sel.innerHTML='';
+  State.badges.forEach(id=>{
+    const o=document.createElement('option');
+    o.value=id;
+    o.textContent=id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    sel.appendChild(o);
   });
 }
 
-function wireDeviceUI(){
-  const applyBtn = document.getElementById('deviceApplyModeBtn');
-  const clearBtn = document.getElementById('deviceClearSelectionBtn');
-  const removeBtn= document.getElementById('deviceRemoveModeBtn');
-
-  applyBtn.addEventListener('click', ()=>{
-    state.selectedDevices = readDevicePicker();
-    const hasAny = Object.keys(state.selectedDevices).length>0;
-    state.deviceApplyMode = hasAny;
-    state.deviceRemoveMode = false;
-    applyBtn.classList.toggle('active', state.deviceApplyMode);
-    removeBtn.classList.remove('active');
-    applyBtn.textContent = state.deviceApplyMode ? "Apply Mode: ON" : "Enable Apply Mode";
-  });
-
-  clearBtn.addEventListener('click', ()=>{
-    const picker=document.getElementById('devicePicker');
-    picker.querySelectorAll('input[type="checkbox"][data-device]').forEach(c=>c.checked=false);
-    picker.querySelectorAll('input[type="number"][data-qty]').forEach(n=>n.value=1);
-    state.selectedDevices = {};
-    state.deviceApplyMode = false;
-    state.deviceRemoveMode = false;
-    document.getElementById('deviceApplyModeBtn').classList.remove('active');
-    document.getElementById('deviceRemoveModeBtn').classList.remove('active');
-    document.getElementById('deviceApplyModeBtn').textContent = "Enable Apply Mode";
-  });
-
-  removeBtn.addEventListener('click', ()=>{
-    state.deviceRemoveMode = !state.deviceRemoveMode;
-    state.deviceApplyMode = false;
-    removeBtn.classList.toggle('active', state.deviceRemoveMode);
-    applyBtn.classList.remove('active');
-    applyBtn.textContent = "Enable Apply Mode";
+function preload(prefix, list, folder){
+  list.forEach(id=>{
+    const img=document.createElement('img');
+    img.id = `${prefix}-${id}`;
+    img.src = ASSET(`${folder}/${id}.png`);
+    img.style.display='none';
+    img.loading='eager';
+    img.decoding='sync';
+    img.onerror=()=>{}; // tolerate missing assets
+    assetsContainer.appendChild(img);
   });
 }
 
-function readDevicePicker(){
-  const picker=document.getElementById('devicePicker');
-  const bundle={};
-  picker.querySelectorAll('input[type="checkbox"][data-device]').forEach(chk=>{
-    const id = chk.getAttribute('data-device');
-    if (chk.checked){
-      const qty = parseInt(picker.querySelector(`input[type="number"][data-qty="${id}"]`).value||"1",10);
-      if (qty>0) bundle[id]=qty;
-    }
-  });
-  return bundle;
+populate(byId('ribbonSelect'), ribbonList);
+populate(byId('deviceSelect'), deviceList);
+populate(byId('rankSelect'), rankList);
+populate(byId('badgeSelect'), badgeList);
+preload('ribbons', ribbonList, 'ribbons');
+preload('devices', deviceList, 'devices');
+preload('ranks', rankList, 'ranks');
+preload('badges', badgeList, 'badges');
+
+/******************** Base & layers ********************/
+function clearLayers(cls){
+  const sel = cls ? `.layer.${cls}` : '.layer';
+  uniformCanvas.querySelectorAll(sel).forEach(n=>n.remove());
 }
 
-/* =========================================================
-   RIBBONS (rack rendering + click-to-apply devices)
-   ========================================================= */
-function onAddRibbon(){
-  const id = document.getElementById('ribbonSelect').value;
-  const meta = ASSETS.ribbons.find(r=>r.id===id);
-  if (!meta) return;
-  state.rack.push({ ...meta, devices:{} });
-  renderRibbons();
-  renderBadges(); // some badge offsets are relative
-  runRegulationCheck();
+function applyJacket(){
+  clearLayers('jacket');
+  const base = UNIFORMS[State.uniform][State.gender];
+  const img=document.createElement('img');
+  img.className='layer jacket';
+  img.src=ASSET(base);
+  img.style.top='150px';
+  img.style.left='0px';
+  img.style.width='100%';
+  img.style.height='auto';
+  img.style.display='block';
+  uniformCanvas.appendChild(img);
 }
 
-function renderRibbons(){
-  const layer = document.getElementById('ribbonLayer');
-  layer.innerHTML = '';
-  const slots = UNIFORM_SLOTS[state.uniformType] || UNIFORM_SLOTS.blues_classA;
-  const gOff = slots.genderOffset?.[state.gender] || {x:0,y:0};
-  const anchor = { x: (slots.ribbonAnchor.x + gOff.x), y: (slots.ribbonAnchor.y + gOff.y) };
+/******************** Ribbons / Mini-Medals ********************/
+function sortRibbons(arr){ return [...arr].sort((a,b)=> precedence(a.id)-precedence(b.id)); }
 
-  const sorted = [...state.rack].sort((a,b)=>a.precedence-b.precedence);
-  const N=sorted.length, perRow=3, rem=N%perRow, topCount=(rem===0?perRow:rem);
-  const vGap=8, tileW=120, tileH=35;
+function getTopRibbonY(){
+  const layers=[...uniformCanvas.querySelectorAll('.layer.ribbon')];
+  if(!layers.length) return null;
+  return Math.min(...layers.map(l=>parseInt(l.style.top)));
+}
 
-  const rows=[];
-  if (N>0){
-    rows.push(sorted.slice(0, topCount));
-    for (let i=topCount;i<N;i+=perRow) rows.push(sorted.slice(i,i+perRow));
-  }
-  rows.forEach((rowItems, rIdx)=>{
-    const totalW = rowItems.length*tileW + (rowItems.length-1)*6;
-    let x = Math.round(anchor.x - totalW/2);
-    const y = anchor.y + rIdx*(tileH+vGap);
-    rowItems.forEach(ribbon=>{
-      const tile = createRibbonTile(ribbon);
-      tile.style.left = `${x}px`;
-      tile.style.top  = `${y}px`;
-      layer.appendChild(tile);
-      x += tileW + 6;
+function renderRack(){
+  clearLayers('ribbon');
+  clearLayers('mini');
+  const allowMini = UNIFORMS[State.uniform].mini && byId('autoMini').checked;
+  const showRibbons = UNIFORMS[State.uniform].ribbons && !allowMini;
+  const items = sortRibbons(State.ribbons);
+  if(!items.length) return;
+
+  if(showRibbons){
+    const w=25,h=8, pad=0;
+    const startTop=402, startLeft=303;
+    const ids = items.map(x=>x.id);
+
+    const rows=[];
+    if(ids.length%3!==0){ rows.push(ids.slice(0, ids.length%3)); }
+    for(let i=ids.length%3;i<ids.length;i+=3) rows.push(ids.slice(i,i+3));
+    rows.reverse();
+
+    rows.forEach((row,ri)=>{
+      const x0 = (row.length===3)? startLeft : (row.length===2? startLeft + w/2 : startLeft + w + pad);
+      const y = startTop - ri*(h+pad);
+      row.forEach((rid,i)=>{
+        const orig=byId(`ribbons-${rid}`); if(!orig) return;
+        const el=orig.cloneNode();
+        el.className='layer ribbon';
+        el.style.display='block';
+        el.style.top=`${y-h}px`;
+        el.style.left=`${x0 + i*(w+pad)}px`;
+        el.style.width=`${w}px`;
+        el.style.height=`${h}px`;
+        uniformCanvas.appendChild(el);
+
+        const rn = State.ribbons.find(r=>r.id===rid);
+        if(rn && rn.device && rn.device!=='none'){
+          const dev=byId(`devices-${rn.device}`);
+          if(dev){
+            const d=dev.cloneNode();
+            d.className='layer ribbon';
+            d.style.display='block';
+            d.style.top=`${y-h+1}px`;
+            d.style.left=`${x0 + i*(w+pad) + (w/2 - 5)}px`;
+            d.style.width='10px';
+            d.style.height='10px';
+            uniformCanvas.appendChild(d);
+          }
+        }
+      });
     });
-  });
-}
+  } else {
+    // mini medals (rows of 5; top partial centered)
+    const w=20,h=28, pad=6;
+    const startTop=400, startLeft=280;
+    const ids = items.map(x=>x.id);
 
-function createRibbonTile(ribbon){
-  const tile = document.createElement('div');
-  tile.className='ribbon-tile';
-  const img = document.createElement('img');
-  img.className='ribbon';
-  img.alt=ribbon.name||ribbon.id; img.src=ribbon.img;
-  img.onerror=function(){ this.style.display='none'; tile.style.background='linear-gradient(90deg,#9bbcff,#6aa3ff)'; };
-  tile.appendChild(img);
-  // click to apply/remove devices
-  makeRibbonClickableForDevices(tile, ribbon);
-  drawDevicesOnTile(tile, ribbon);
-  return tile;
-}
+    const rows=[];
+    if(ids.length%5!==0){ rows.push(ids.slice(0, ids.length%5)); }
+    for(let i=ids.length%5;i<ids.length;i+=5) rows.push(ids.slice(i,i+5));
+    rows.reverse();
 
-function makeRibbonClickableForDevices(tileEl, ribbonObj){
-  tileEl.style.cursor='pointer';
-  tileEl.onclick = ()=>{
-    if (state.deviceRemoveMode){
-      ribbonObj.devices = {};
-      renderRibbons();
-      return;
-    }
-    if (!state.deviceApplyMode) return;
-    ribbonObj.devices = ribbonObj.devices || {};
-    for (const [devId,qty] of Object.entries(state.selectedDevices)){
-      ribbonObj.devices[devId] = (ribbonObj.devices[devId]||0) + qty;
-    }
-    renderRibbons();
-  };
-}
-
-function drawDevicesOnTile(tileEl, ribbonObj){
-  tileEl.querySelectorAll('.device-overlay').forEach(n=>n.remove());
-  const map = ribbonObj.devices||{};
-  if (!Object.keys(map).length) return;
-
-  const flat=[];
-  for (const [devId,count] of Object.entries(map)){
-    const meta = ASSETS.devices[devId];
-    if (!meta) continue;
-    for (let i=0;i<count;i++) flat.push({ id:devId, ...meta });
+    rows.forEach((row,ri)=>{
+      const x0 = (row.length===5) ? startLeft : startLeft + Math.round((5-row.length)*(w+pad)/2);
+      const y = startTop - ri*(h+pad);
+      row.forEach((rid,i)=>{
+        const el=document.createElement('img');
+        el.src=ASSET(`mini_medals/${rid}.png`);
+        el.className='layer mini';
+        el.style.display='block';
+        el.style.top=`${y-h}px`;
+        el.style.left=`${x0 + i*(w+pad)}px`;
+        el.style.width=`${w}px`;
+        el.style.height=`${h}px`;
+        el.onerror=()=>{}; // tolerate missing mini
+        uniformCanvas.appendChild(el);
+      });
+    });
   }
-  flat.sort((a,b)=> (b.weight-a.weight) || (a.label||a.id).localeCompare(b.label||b.id));
-
-  const tileW=tileEl.clientWidth||120, tileH=tileEl.clientHeight||35, gap=3;
-  const totalW = flat.reduce((s,d,i)=> s+d.width+(i>0?gap:0),0);
-  let x = Math.round((tileW-totalW)/2);
-  const y = Math.round((tileH-12)/2)-1;
-
-  flat.forEach(d=>{
-    const im=document.createElement('img');
-    im.className='device-overlay';
-    im.src=d.src; im.alt=d.label||d.id;
-    im.style.left=`${x}px`; im.style.top=`${y}px`;
-    im.style.width=`${d.width}px`; im.style.height=`${d.height}px`;
-    im.onerror=function(){ this.remove(); const stub=document.createElement('div'); stub.className='device-overlay';
-      stub.style.left=`${x}px`; stub.style.top=`${y}px`; stub.style.width=`${d.width}px`; stub.style.height=`${d.height}px`; stub.style.background="#222"; tileEl.appendChild(stub);
-    };
-    tileEl.appendChild(im);
-    x += d.width + gap;
-  });
 }
 
-/* =========================================================
-   BADGES
-   ========================================================= */
-function onAddBadge(){
-  const key = document.getElementById('badgeSelect').value;
-  if (!key) return;
-  const meta = ASSETS.badges[key];
-  if (!meta) return;
+/******************** Badges ********************/
+// slots with arrays of ids
+const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[] };
+function resetBadgeSlots(){ Object.keys(badgeSlots).forEach(k=> badgeSlots[k]=[] ); }
 
-  const chosen = chooseBadgeSlot(key, meta);
-  if (!chosen){
-    alert("No available slot for this badge based on CAPR 39-1 limits for the current uniform.");
-    return;
-  }
-  state.badges.push({ key, category: meta.category, precedence: meta.precedence ?? 200,
-    slot:chosen.slot, x:chosen.x, y:chosen.y, w:meta.w, h:meta.h });
+function isCadetAuthorized(id){ return allowedCadetBadges.has(id); }
 
-  renderBadges();
-  runRegulationCheck();
-}
-
-function chooseBadgeSlot(key, meta){
-  const slotsMap = UNIFORM_SLOTS[state.uniformType]?.slot || {};
-  const gOff    = UNIFORM_SLOTS[state.uniformType]?.genderOffset?.[state.gender] || {x:0,y:0};
-  const rule    = RULES_39_1.badgePlacement[meta.category];
-  const caps    = RULES_39_1.caps;
-
-  const aboveLeft = countSlots(["OLP","OLPA","OLPU"]);
-  const aboveRight= countSlots(["ORP"]);
-  const nameArea  = countSlots(["ON","UN"]);
-  const total     = state.badges.length;
-
-  if (total >= caps.maxTotalBadges) return null;
-
-  if (meta.category==="lp_only"){
-    if (countSlot("LP") >= caps.maxModelRocketry) return null;
-    const p = slotsMap["LP"]; if (!p) return null;
-    return { slot:"LP", x:p.x+gOff.x, y:p.y+gOff.y };
-  }
-  if (meta.category==="flap_only"){
-    if (countSlot("LRP") >= caps.maxFlapMarksman) return null;
-    const p = slotsMap["LRP"]; if (!p) return null;
-    return { slot:"LRP", x:p.x+gOff.x, y:p.y+gOff.y };
-  }
-
-  const pref = rule?.slots || [];
-  for (const s of pref){
-    const perSlotMax = rule.perSlotMax ?? 2;
-    if (countSlot(s) >= perSlotMax) continue;
-
-    if (["OLP","OLPA","OLPU"].includes(s) && aboveLeft >= caps.maxAboveLeftPocket) continue;
-    if (s==="ORP" && aboveRight >= caps.maxAboveRightPocket) continue;
-    if (["ON","UN"].includes(s) && nameArea >= caps.maxOnNameArea) continue;
-
-    const p = slotsMap[s];
-    if (!p) continue;
-    return { slot:s, x:p.x+gOff.x, y:p.y+gOff.y };
-  }
-  return null;
-}
-
-function countSlot(slot){ return state.badges.filter(b=>b.slot===slot).length; }
-function countSlots(list){ return state.badges.filter(b=>list.includes(b.slot)).length; }
-
-function renderBadges(){
-  const layer = document.getElementById('badgeLayer');
-  layer.innerHTML = '';
-
-  const catIndex = (c)=> RULES_39_1.categoryOrder.indexOf(c);
-  const sorted = [...state.badges].sort((a,b)=>{
-    const ca = catIndex(a.category), cb = catIndex(b.category);
-    if (ca!==cb) return ca-cb;
-    if (a.precedence!==b.precedence) return a.precedence-b.precedence;
-    return a.key.localeCompare(b.key);
-  });
-
-  sorted.forEach(b=>{
-    const meta = ASSETS.badges[b.key];
-    if (!meta) return;
-    const img = document.createElement('img');
-    img.className='badge';
-    img.src = meta.src;
-    img.alt = meta.name || b.key;
-    img.style.left = `${b.x}px`;
-    img.style.top  = `${b.y + badgeVerticalAdjust(b.slot)}px`;
-    img.style.width = `${b.w}px`;
-    img.style.height= `${b.h}px`;
-    img.onerror = ()=>{ img.style.display='none'; };
-    layer.appendChild(img);
-  });
-}
-
-function badgeVerticalAdjust(slot){
-  if (["OLP","OLPA","OLPU"].includes(slot)) return -36;
-  return 0;
-}
-
-/* =========================================================
-   EPAULETS & RANK
-   ========================================================= */
-function renderEpauletsAndRank(){
-  const layer = document.getElementById('epauletLayer');
-  layer.innerHTML = '';
-  const grade = state.grade;
-  const isOfficer = GRADES.find(g=>g.id===grade)?.officer;
-
-  if (isOfficer){
-    const L = ASSETS.officerBoards?.boardLeft;
-    const R = ASSETS.officerBoards?.boardRight;
-    if (L && R){
-      [L,R].forEach(b=>{
-        const board = document.createElement('img');
-        board.className='board';
-        board.src=b.src; board.style.left=`${b.left}px`; board.style.top=`${b.top}px`;
-        board.style.width=`${b.w}px`; board.style.height=`${b.h}px`;
-        board.style.transform=`rotate(${b.rotate}deg)`;
-        board.onerror=()=>{ board.style.display='none'; };
-        layer.appendChild(board);
+function enforceExclusive(newId){
+  exclusiveBadges.forEach(pair=>{
+    if(pair.includes(newId)){
+      pair.forEach(conf=>{
+        if(conf!==newId && State.badges.includes(conf)){
+          State.badges = State.badges.filter(b=>b!==conf);
+        }
       });
     }
-
-    const ins = ASSETS.officerInsignia?.[grade];
-    if (ins && L && R){
-      const leftIns = document.createElement('img');
-      leftIns.className='insignia';
-      leftIns.src=ins.src;
-      leftIns.style.left = `${L.left + (L.w-ins.w)/2}px`;
-      leftIns.style.top  = `${L.top  + (L.h-ins.h)/2}px`;
-      leftIns.style.width = `${ins.w}px`;
-      leftIns.style.height= `${ins.h}px`;
-      leftIns.onerror=()=>{ leftIns.style.display='none'; };
-      layer.appendChild(leftIns);
-
-      const rightIns = document.createElement('img');
-      rightIns.className='insignia';
-      rightIns.src=ins.src;
-      rightIns.style.left = `${R.left + (R.w-ins.w)/2}px`;
-      rightIns.style.top  = `${R.top  + (R.h-ins.h)/2}px`;
-      rightIns.style.width = `${ins.w}px`;
-      rightIns.style.height= `${ins.h}px`;
-      rightIns.onerror=()=>{ rightIns.style.display='none'; };
-      layer.appendChild(rightIns);
-    }
-  } else {
-    const base = ASSETS.enlistedCollar?.[state.gender];
-    const ins  = ASSETS.enlistedInsignia?.[grade];
-    if (base && ins){
-      const collar = document.createElement('img');
-      collar.className='insignia';
-      collar.src=ins.src;
-      collar.style.left = `${base.left + (ins.dx||0)}px`;
-      collar.style.top  = `${base.top  + (ins.dy||0)}px`;
-      collar.style.width = `${ins.w}px`;
-      collar.style.height= `${ins.h}px`;
-      collar.onerror=()=>{ collar.style.display='none'; };
-      layer.appendChild(collar);
-    }
-  }
-}
-
-/* =========================================================
-   REGULATION CHECK
-   ========================================================= */
-function runRegulationCheck(){
-  const list = document.getElementById('regList');
-  list.innerHTML = '';
-  const issues = [];
-
-  if (state.memberType==="cadet" && state.uniformType==="mess"){
-    issues.push({level:'err', text:'Cadets may not wear Mess Dress (CAPR 39-1).'});
-  }
-
-  const caps = RULES_39_1.caps;
-  const aboveLeft = countSlots(["OLP","OLPA","OLPU"]);
-  const aboveRight= countSlots(["ORP"]);
-  const nameArea  = countSlots(["ON","UN"]);
-  const lrp       = countSlot("LRP");
-  const lp        = countSlot("LP");
-  const total     = state.badges.length;
-
-  if (aboveLeft > caps.maxAboveLeftPocket) issues.push({level:'err', text:`Left pocket area > ${caps.maxAboveLeftPocket} badges.`});
-  if (aboveRight> caps.maxAboveRightPocket) issues.push({level:'err', text:`Right pocket area > ${caps.maxAboveRightPocket} badges.`});
-  if (nameArea  > caps.maxOnNameArea) issues.push({level:'err', text:`Over/Under name area > ${caps.maxOnNameArea} badges.`});
-  if (lrp > caps.maxFlapMarksman) issues.push({level:'err', text:'Only one Marksmanship badge allowed on pocket flap (LRP).'});
-  if (lp  > caps.maxModelRocketry) issues.push({level:'err', text:'Only one Model Rocketry badge allowed on left pocket (LP).'});
-  if (total > caps.maxTotalBadges) issues.push({level:'err', text:`Total badges exceed ${caps.maxTotalBadges}.`});
-
-  if (!issues.length) issues.push({level:'ok', text:'No violations detected with current rule set.'});
-
-  issues.forEach(it=>{
-    const div=document.createElement('div');
-    div.textContent = `• ${it.text}`;
-    div.className = it.level==='ok' ? 'reg-ok' : (it.level==='warn' ? 'reg-warn' : 'reg-err');
-    list.appendChild(div);
   });
 }
 
-/* =========================================================
-   DOWNLOAD
-   ========================================================= */
-async function downloadHighRes(){
-  const target = document.getElementById('jacketStage');
-  const canvas = await html2canvas(target, { scale:2, backgroundColor:'#ffffff', useCORS:true });
-  const link = document.createElement('a');
-  link.download = `CAP_${state.memberType}_${state.uniformType}_${state.gender}.png`;
-  link.href = canvas.toDataURL('image/png');
-  link.click();
+function renderAllBadges(){
+  clearLayers('badge');
+  resetBadgeSlots();
+  const maxTotal=5;
+  const applied=[];
+  for(const id of State.badges){
+    if(applied.length>=maxTotal) break;
+    placeBadgeByCategory(id);
+    applied.push(id);
+  }
 }
+
+function placeBadgeByCategory(id){
+  const img=byId(`badges-${id}`);
+  if(!img) return;
+
+  let slot = badgeLocations[id] || 'UN';
+  if(id==='nra_marksman_badge') slot='LRP';
+  if(id==='model_rocketry_badge') slot='LP';
+
+  const single = new Set(['OLP','OLPU','OLPA','ORP','LRP','LP']);
+  if(single.has(slot) && badgeSlots[slot].length>=1) return;
+  if((slot==='ON' || slot==='UN') && badgeSlots[slot].length>=2) return;
+
+  const size = customBadgeSizes[id] || {width:60,height:25};
+  const spacing=5;
+  const baseRibbonY = getTopRibbonY();
+  const yMap = {
+    OLP: baseRibbonY!==null? baseRibbonY - 25 : 394,
+    OLPU: baseRibbonY!==null? baseRibbonY - 5 : 424,
+    OLPA: baseRibbonY!==null? baseRibbonY - 55 : 364,
+    ORP: 300, ON: 350, UN: 390, LRP: 405, LP: 450
+  };
+  const xMap = { OLP:328, OLPU:328, OLPA:328, ORP:100, ON:150, UN:150, LRP:335, LP:350 };
+
+  let y=yMap[slot]||390, x=xMap[slot]||150;
+
+  if(slot==='ON' || slot==='UN'){
+    const stackIdx = badgeSlots[slot].length;
+    for(let i=0;i<stackIdx;i++){
+      const prev = badgeSlots[slot][i];
+      const ps = customBadgeSizes[prev]||{height:25};
+      y += ps.height + spacing;
+    }
+  }
+  if(id==='model_rocketry_badge' && State.badges.includes('nra_marksman_badge')) y += 50;
+
+  const clone = img.cloneNode();
+  clone.className='layer badge';
+  clone.style.display='block';
+  clone.style.top=`${y}px`;
+  clone.style.left=`${x}px`;
+  clone.style.width=`${size.width}px`;
+  clone.style.height=`${size.height}px`;
+  uniformCanvas.appendChild(clone);
+  badgeSlots[slot].push(id);
+}
+
+/******************** Rank & Nameplate ********************/
+function renderRank(id){
+  clearLayers('rank');
+  if(!id) return;
+
+  const insigniaEl = byId('ranks-' + id);
+  if(!insigniaEl) return;
+
+  const isOfficer = officerRanks.has(id);
+
+  if(isOfficer){
+    const boardSrc = ASSET('ranks/C/shoulder_board.png');
+    const boardCfg = {width:50,height:100};
+    const insigniaCfg = {width:32,height:32};
+    const placements = [
+      {left:350, top:160, rot:90},   // left shoulder board
+      {left:100, top:160, rot:-90}   // right shoulder board
+    ];
+    placements.forEach(({left,top,rot})=>{
+      const board=document.createElement('img');
+      board.src=boardSrc;
+      board.className='layer rank';
+      board.style.display='block';
+      board.style.left=`${left}px`;
+      board.style.top=`${top}px`;
+      board.style.width=`${boardCfg.width}px`;
+      board.style.height=`${boardCfg.height}px`;
+      board.style.transform=`rotate(${rot}deg)`;
+      board.style.transformOrigin='center center';
+      uniformCanvas.appendChild(board);
+
+      const ins=insigniaEl.cloneNode();
+      ins.className='layer rank';
+      ins.style.display='block';
+      ins.style.left=`${left + (boardCfg.width/2 - insigniaCfg.width/2)}px`;
+      ins.style.top=`${top + (boardCfg.height/2 - insigniaCfg.height/2)}px`;
+      ins.style.width=`${insigniaCfg.width}px`;
+      ins.style.height=`${insigniaCfg.height}px`;
+      ins.style.transform=`rotate(${rot}deg)`;
+      ins.style.transformOrigin='center center';
+      uniformCanvas.appendChild(ins);
+    });
+    return;
+  }
+
+  // Enlisted
+  const size = {w:60,h:60};
+  const pos = {left:420, top:200};
+  const icon=insigniaEl.cloneNode();
+  icon.className='layer rank';
+  icon.style.display='block';
+  icon.style.left=`${pos.left}px`;
+  icon.style.top=`${pos.top}px`;
+  icon.style.width=`${size.w}px`;
+  icon.style.height=`${size.h}px`;
+  uniformCanvas.appendChild(icon);
+}
+
+function renderNameplate(){
+  clearLayers('nameplate');
+  const el=document.createElement('img');
+  el.src=ASSET('nameplate/nameplate.png');
+  el.className='layer nameplate';
+  el.style.display='block';
+  el.style.top='440px';
+  el.style.left='120px';
+  el.style.width='100px';
+  el.style.height='20px';
+  uniformCanvas.appendChild(el);
+}
+
+/******************** Persistence (optional quick save) ********************/
+function quickSave(){ localStorage.setItem('cap_uniform', JSON.stringify(State)); }
+function quickLoad(){
+  const t=localStorage.getItem('cap_uniform');
+  if(!t) return;
+  try{ Object.assign(State, JSON.parse(t)); refreshUI(); fullRender(); }catch{}
+}
+
+/******************** Rendering orchestrator ********************/
+function fullRender(){
+  applyJacket();
+  renderRack();
+  renderAllBadges();
+  renderRank(State.rank);
+}
+
+function refreshUI(){
+  byId('memberSelect').value=State.member;
+  byId('jacketSelect').value=State.gender;
+  byId('uniformSelect').value=State.uniform;
+  byId('assetBase').value=State.assetBase;
+  populateBadgesRemove();
+}
+
+/******************** Handlers ********************/
+byId('applyJacket').onclick=()=>{
+  State.assetBase=byId('assetBase').value.trim()||'images';
+  State.gender=byId('jacketSelect').value;
+  applyJacket();
+};
+
+byId('memberSelect').onchange=(e)=>{
+  State.member=e.target.value;
+  if(State.member==='cadet' && (State.uniform==='polo' || State.uniform==='mess_dress')){
+    alert('Cadets are not authorized Polo or Mess Dress. Switching to Blues A.');
+    State.uniform='blues_a';
+    byId('uniformSelect').value='blues_a';
+  }
+  if(State.member==='cadet'){
+    State.badges = State.badges.filter(isCadetAuthorized);
+    populateBadgesRemove();
+    fullRender();
+  }
+};
+
+byId('jacketSelect').onchange=(e)=>{ State.gender=e.target.value; applyJacket(); };
+
+byId('uniformSelect').onchange=(e)=>{
+  State.uniform=e.target.value;
+  if(!UNIFORMS[State.uniform].ribbons && !UNIFORMS[State.uniform].mini){
+    State.ribbons=[];
+  }
+  fullRender();
+};
+
+byId('assetBase').onchange=(e)=>{ State.assetBase=e.target.value.trim()||'images'; fullRender(); };
+
+byId('addRibbon').onclick=()=>{
+  const id=byId('ribbonSelect').value;
+  const dev=byId('deviceSelect').value||'none';
+  if(!State.ribbons.find(r=>r.id===id)) State.ribbons.push({id,device:dev});
+  else State.ribbons=State.ribbons.map(r=> r.id===id? {...r,device:dev}:r);
+  renderRack();
+};
+
+byId('clearRibbons').onclick=()=>{ State.ribbons=[]; renderRack(); };
+
+byId('addBadge').onclick=()=>{
+  const id=byId('badgeSelect').value;
+  if(State.member==='cadet' && !isCadetAuthorized(id)) { alert('This badge is not authorized for cadets.'); return; }
+  enforceExclusive(id);
+  if(!State.badges.includes(id)) State.badges.push(id);
+  populateBadgesRemove();
+  renderAllBadges();
+};
+
+byId('removeBadge').onclick=()=>{
+  const id=byId('removeBadgeSelect').value;
+  State.badges=State.badges.filter(b=>b!==id);
+  populateBadgesRemove();
+  renderAllBadges();
+};
+
+byId('addRank').onclick=()=>{ State.rank=byId('rankSelect').value; renderRank(State.rank); };
+byId('addNameplate').onclick=()=> renderNameplate();
+
+byId('downloadImage').onclick=()=>{
+  html2canvas(uniformCanvas,{scale:3}).then(c=>{
+    const a=document.createElement('a');
+    a.download=`CAP_Uniform_${Date.now()}.png`;
+    a.href=c.toDataURL();
+    a.click();
+  });
+};
+
+/******************** Boot ********************/
+(function init(){
+  refreshUI();
+  applyJacket();
+  renderRack();
+})();
 </script>
 </body>
 </html>
