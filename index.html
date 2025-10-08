@@ -133,6 +133,23 @@
   const previewEl = document.getElementById('preview');
   const BASE_W = 900, BASE_H = 1200; // intrinsic canvas size
 
+  /* ===== URL state encode/decode ===== */
+  function encodeStateToURL(){
+    try{
+      const s = btoa(unescape(encodeURIComponent(JSON.stringify(State))));
+      history.replaceState(null, '', `?s=${s}`);
+    }catch(e){ /* noop */ }
+  }
+  function tryLoadStateFromURL(){
+    const qs = new URL(location.href).searchParams.get('s');
+    if(!qs) return false;
+    try{
+      const obj = JSON.parse(decodeURIComponent(escape(atob(qs))));
+      Object.assign(State, obj);
+      return true;
+    }catch(e){ return false; }
+  }
+
   function ASSET(p){
     const b=(State.assetBase||'images').replace(/\/$/,'');
     return `${b}/${p}`;
@@ -240,6 +257,12 @@
   preload('devices', deviceList, 'devices');
   preload('ranks', rankList, 'ranks');
   preload('badges', badgeList, 'badges');
+
+  // Wait for all hidden preloaded <img>s to finish before first render
+  async function preloadAll(){
+    const imgs = Array.from(assetsContainer.querySelectorAll('img'));
+    await Promise.all(imgs.map(i => i.complete ? Promise.resolve() : new Promise(res => { i.onload = i.onerror = res; })));
+  }
 
   /******************** Base & layers ********************/
   function clearLayers(cls){
@@ -447,6 +470,39 @@
     badgeSlots[slot].push(id);
   }
 
+  /******************** Validator (rules & issues) ********************/
+  const Violations = [];
+  function addViolation(code, msg, ctx){ Violations.push({code, msg, ctx}); }
+  function validateAfterRender(){
+    Violations.length = 0;
+    // Unauthorized badges for cadets
+    if(State.member==='cadet'){
+      const bad = State.badges.filter(b=>!isCadetAuthorized(b));
+      if(bad.length){ addViolation('UNAUTH_BADGE', 'Badge not authorized for cadets', {bad}); }
+    }
+    // Slot caps (defaults: ON/UN max 2, single slots max 1)
+    const defaultCap = (slot)=> (slot==='ON'||slot==='UN')?2:1;
+    for(const slot in badgeSlots){
+      const cap = defaultCap(slot);
+      if(badgeSlots[slot].length > cap){
+        addViolation('SLOT_OVER', `Too many badges in ${slot}`, {slot, count: badgeSlots[slot].length, cap});
+      }
+    }
+    renderViolationsPanel();
+  }
+  function renderViolationsPanel(){
+    let panel = document.getElementById('violations');
+    if(!panel){
+      panel = document.createElement('div');
+      panel.id='violations';
+      Object.assign(panel.style, {position:'fixed', right:'10px', bottom:'10px', background:'#ffffff', border:'1px solid #cfd6df', padding:'8px 10px', borderRadius:'8px', maxWidth:'320px', boxShadow:'0 2px 10px rgba(0,0,0,.08)', fontSize:'12px', zIndex:'9999'});
+      document.body.appendChild(panel);
+    }
+    if(!Violations.length){ panel.style.display='none'; panel.innerHTML=''; return; }
+    panel.style.display='block';
+    panel.innerHTML = `<strong>Issues (${Violations.length})</strong><ul style="margin:6px 0 0 16px;">${Violations.map(v=>`<li>${v.msg}</li>`).join('')}</ul>`;
+  }
+
   /******************** Rank & Nameplate ********************/
   function renderRank(id){
     clearLayers('rank');
@@ -531,6 +587,8 @@
     renderAllBadges();
     renderRank(State.rank);
     fitCanvas();
+    validateAfterRender();
+    encodeStateToURL();
   }
   function refreshUI(){
     $('#memberSelect').value=State.member;
@@ -607,10 +665,12 @@
 
   /******************** Boot ********************/
   (function init(){
+    tryLoadStateFromURL();
     refreshUI();
-    applyJacket();
-    renderRack();
-    fitCanvas();
+    // Preload all assets, then do the first full render so nothing flashes missing
+    preloadAll().then(()=>{
+      fullRender();
+    });
   })();
   </script>
 </body>
