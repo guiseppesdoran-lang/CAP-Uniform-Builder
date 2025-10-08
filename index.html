@@ -1,109 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CAP Class A Uniform Builder — Full Program (with Device Click-to-Apply)</title>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <style>
-    :root{
-      --bg:#eef1f5; --ink:#0d1b2a; --muted:#516079; --panel:#ffffff; --line:#cfd6df; --brand:#002855;
-      --tileW:120px; --tileH:35px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--ink)}
-    header{background:var(--brand);color:#fff;padding:14px 16px;text-align:center}
-    header h1{margin:0;font-size:18px;letter-spacing:.3px}
-    main{display:flex;gap:16px;align-items:stretch;min-height:calc(100vh - 60px)}
-    #controls{width:360px;background:var(--panel);padding:14px;border-right:1px solid var(--line);overflow:auto}
-    #stage{flex:1;padding:16px;display:flex;flex-direction:column;gap:14px}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CAP Uniform Builder — All Variants (CAPR 39-1)</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+  :root{
+    --bg:#eef1f5; --ink:#0d1b2a; --muted:#516079; --panel:#ffffff; --line:#cfd6df; --brand:#002855;
+    --tileW:120px; --tileH:35px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--ink)}
+  header{background:var(--brand);color:#fff;padding:14px 16px;text-align:center}
+  header h1{margin:0;font-size:18px}
+  main{display:flex;gap:16px;align-items:stretch;min-height:calc(100vh - 60px)}
+  #controls{width:410px;background:var(--panel);padding:14px;border-right:1px solid var(--line);overflow:auto}
+  #stage{flex:1;padding:16px;display:flex;flex-direction:column;gap:14px}
+  fieldset{border:1px solid var(--line);border-radius:10px;padding:10px}
+  legend{padding:0 6px;color:var(--muted);font-size:12px}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  select,input[type="number"],input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;min-height:34px}
+  .btn{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
+  .btn.primary{background:#0b5cff;color:#fff;border-color:#0b5cff}
+  .hint{color:var(--muted);font-size:12px}
 
-    fieldset{border:1px solid var(--line);border-radius:10px;padding:10px}
-    legend{padding:0 6px;color:var(--muted);font-size:12px}
-    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    select,input[type="number"],input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;min-height:34px}
-    .btn{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
-    .btn.primary{background:#0b5cff;color:#fff;border-color:#0b5cff}
+  #previewWrap{position:relative;display:inline-block;margin:auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
+  #jacketStage{position:relative;width:740px;height:1100px;background:#f8f9fb;overflow:hidden;border-radius:10px}
+  #jacketImg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 
-    /* Canvas / preview area */
-    #previewWrap{
-      position:relative;
-      display:inline-block;
-      margin:auto;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:12px;
-    }
-    #jacketStage{
-      position:relative;
-      width:600px;   /* tweak to your base image */
-      height:900px;  /* tweak to your base image */
-      background:#f8f9fb;
-      overflow:hidden;
-      border-radius:10px;
-    }
-    #jacketImg{
-      position:absolute; inset:0; width:100%; height:100%; object-fit:contain; image-rendering:auto;
-    }
+  .layer{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+  #ribbonLayer{pointer-events:auto}
+  .ribbon-tile{position:absolute;width:var(--tileW);height:var(--tileH);border-radius:6px;overflow:hidden;
+    box-shadow:0 1px 1px rgba(0,0,0,.05), inset 0 0 0 1px #dcdcdc;background:linear-gradient(180deg,#e6e6e6,#d8d8d8)}
+  .ribbon-tile img.ribbon{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .device-overlay{position:absolute;pointer-events:none;filter:drop-shadow(0 0 .5px rgba(0,0,0,.35))}
+  .badge{position:absolute;image-rendering:auto}
+  .nameplate{position:absolute;background:#0b273f;color:#fff;border-radius:2px;padding:2px 6px;font-size:12px;letter-spacing:.3px}
 
-    /* Layers */
-    .layer{position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none}
-    #ribbonLayer{pointer-events:auto} /* needed for click handlers */
+  /* Epaulets / shoulder boards for officers */
+  #epauletLayer .board{position:absolute;width:100px;height:50px;image-rendering:auto}
+  #epauletLayer .insignia{position:absolute;image-rendering:auto}
 
-    /* Ribbon tiles rendered on the jacket */
-    .ribbon-tile{
-      position:absolute;
-      width:var(--tileW);
-      height:var(--tileH);
-      border-radius:6px;
-      overflow:hidden;
-      box-shadow:0 1px 1px rgba(0,0,0,.05), inset 0 0 0 1px #dcdcdc;
-      background:linear-gradient(180deg,#e6e6e6,#d8d8d8);
-      image-rendering:auto;
-    }
-    .ribbon-tile img.ribbon{
-      position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block;
-    }
-    .device-overlay{position:absolute; pointer-events:none; filter:drop-shadow(0 0 0.5px rgba(0,0,0,.35))}
-    .hint{color:var(--muted);font-size:12px}
+  #deviceTool button{padding:6px 10px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer}
+  #deviceTool button.active{outline:2px solid #2b7fff}
+  #devicePicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 
-    /* Devices UI */
-    #deviceTool button{padding:6px 10px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer}
-    #deviceTool button.active{outline:2px solid #2b7fff}
-    #devicePicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  #regList{display:grid;gap:6px;margin-top:6px}
+  .reg-ok{color:#0a7f2e}
+  .reg-warn{color:#a66b00}
+  .reg-err{color:#b00020}
 
-    @media (max-width: 900px){
-      main{flex-direction:column}
-      #controls{width:auto;border-right:none;border-bottom:1px solid var(--line)}
-      #jacketStage{width:92vw; height:calc(92vw*1.5)}
-    }
-  </style>
+  @media (max-width: 980px){
+    main{flex-direction:column}
+    #controls{width:auto;border-right:none;border-bottom:1px solid var(--line)}
+    #jacketStage{width:92vw;height:calc(92vw*1.48)}
+  }
+</style>
 </head>
 <body>
-<header><h1>CAP Class A Uniform Builder — Full Program</h1></header>
+<header><h1>CAP Uniform Builder — All Cadet & Senior Variants (CAPR 39-1)</h1></header>
 
 <main>
   <aside id="controls">
     <fieldset>
-      <legend>Uniform</legend>
+      <legend>Member & Uniform</legend>
       <div class="row">
+        <label>Member
+          <select id="memberType">
+            <option value="cadet">Cadet</option>
+            <option value="senior">Senior Member</option>
+          </select>
+        </label>
         <label>Gender
-          <select id="genderSelect">
+          <select id="gender">
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
         </label>
-        <label>Jacket
-          <select id="jacketSelect">
-            <option value="images/jackets/classA_male.png">Class A (Male)</option>
-            <option value="images/jackets/classA_female.png">Class A (Female)</option>
-          </select>
+        <label>Uniform
+          <select id="uniformType"></select>
         </label>
       </div>
       <div class="row">
+        <label>Grade
+          <select id="gradeSelect"></select>
+        </label>
         <button id="downloadBtn" class="btn primary">Download High-Res PNG</button>
       </div>
+      <small class="hint">Uniform list is filtered by member type per CAPR 39-1 (e.g., cadets not offered Mess Dress).</small>
     </fieldset>
 
     <fieldset>
@@ -113,76 +98,61 @@
         <button id="addRibbonBtn" class="btn primary">Add</button>
         <button id="clearRibbonsBtn" class="btn">Clear All</button>
       </div>
-      <small class="hint">Rack rules: rows of 3; any partial row (1–2) appears at the top and is centered. Highest precedence is top-left.</small>
+      <small class="hint">Rack: rows of 3. Any partial row (1–2) is the top row and centered. Highest precedence at top-left.</small>
     </fieldset>
 
     <section id="deviceTool" style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
-      <h3 style="margin:0 0 8px 0;font-size:14px">Ribbon Devices</h3>
+      <h3 style="margin:0 0 8px 0;font-size:14px">Ribbon Devices (Click-to-Apply)</h3>
 
       <div id="devicePicker">
         <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="star_bronze" />
-          <span>Bronze Star</span>
+          <input type="checkbox" data-device="star_bronze"/><span>Bronze Star</span>
           <input type="number" min="1" max="10" value="1" data-qty="star_bronze" style="width:54px;margin-left:auto">
         </label>
-
         <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="star_silver" />
-          <span>Silver Star</span>
+          <input type="checkbox" data-device="star_silver"/><span>Silver Star</span>
           <input type="number" min="1" max="10" value="1" data-qty="star_silver" style="width:54px;margin-left:auto">
         </label>
-
         <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="clasp_bronze" />
-          <span>Bronze Clasp</span>
+          <input type="checkbox" data-device="clasp_bronze"/><span>Bronze Clasp</span>
           <input type="number" min="1" max="10" value="1" data-qty="clasp_bronze" style="width:54px;margin-left:auto">
         </label>
-
         <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="clasp_silver" />
-          <span>Silver Clasp</span>
+          <input type="checkbox" data-device="clasp_silver"/><span>Silver Clasp</span>
           <input type="number" min="1" max="10" value="1" data-qty="clasp_silver" style="width:54px;margin-left:auto">
         </label>
-
         <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="propeller" />
-          <span>Propeller</span>
+          <input type="checkbox" data-device="propeller"/><span>Propeller</span>
           <input type="number" min="1" max="10" value="1" data-qty="propeller" style="width:54px;margin-left:auto">
         </label>
-
         <label style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" data-device="leaf_bronze" />
-          <span>Bronze Leaf</span>
+          <input type="checkbox" data-device="leaf_bronze"/><span>Bronze Leaf</span>
           <input type="number" min="1" max="10" value="1" data-qty="leaf_bronze" style="width:54px;margin-left:auto">
         </label>
       </div>
 
       <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-        <button id="deviceApplyModeBtn" type="button">Enable Device Apply Mode</button>
+        <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
         <button id="deviceClearSelectionBtn" type="button">Clear Selection</button>
         <button id="deviceRemoveModeBtn" type="button">Enable Remove Mode</button>
       </div>
-
-      <small id="deviceHint" class="hint" style="display:block;margin-top:6px">
-        Pick devices + quantities → Enable → click a ribbon to apply. Remove Mode clears devices from a clicked ribbon.
-      </small>
+      <small class="hint">Choose devices + quantities → Enable → click a ribbon to apply. Remove Mode clears devices.</small>
     </section>
 
     <fieldset style="margin-top:16px">
-      <legend>Badges (placeholder wiring)</legend>
+      <legend>Badges & Insignia</legend>
       <div class="row">
-        <select id="badgeSelect">
-          <option value="">-- choose badge --</option>
-          <option value="aviation_basic">Aviation (Basic)</option>
-          <option value="ground_team">Ground Team</option>
-          <option value="ems">EMS</option>
-        </select>
+        <select id="badgeSelect"></select>
         <button id="addBadgeBtn" class="btn">Add</button>
         <button id="clearBadgesBtn" class="btn">Clear</button>
       </div>
-      <small class="hint">Rendered over left/right pocket areas. You can plug in your full CAPR 39-1 logic later — hooks are ready.</small>
+      <small class="hint">Placement follows slot logic for the selected uniform (OLP/OLPA/OLPU/ORP/ON/UN/LP/LRP). Category + precedence decide order.</small>
     </fieldset>
 
+    <fieldset style="margin-top:16px">
+      <legend>Regulation Checker (CAPR 39-1)</legend>
+      <div id="regList"></div>
+    </fieldset>
   </aside>
 
   <section id="stage">
@@ -192,295 +162,475 @@
         <div id="jacketStage" aria-label="Uniform Preview">
           <img id="jacketImg" alt="Jacket"/>
           <div id="ribbonLayer" class="layer" aria-label="Ribbon Layer"></div>
-          <div id="badgeLayer"  class="layer" aria-label="Badge Layer"></div>
-          <!-- You can add epaulet/rank layers here -->
+          <div id="badgeLayer" class="layer" aria-label="Badge Layer"></div>
+          <div id="epauletLayer" class="layer" aria-label="Epaulet/Rank Layer"></div>
         </div>
       </div>
-      <div class="hint" style="margin-top:8px">
-        Tip: Devices are centered across each ribbon. Mix anything (e.g., 3 silver stars + 1 bronze star).
-      </div>
+      <div class="hint" style="margin-top:8px">Tip: Set grade to an officer to see shoulder boards; enlisted/cadet grades render on collar.</div>
     </fieldset>
   </section>
 </main>
 
 <script>
-/* =========================
-   SAFE STARTUP
-========================= */
-document.addEventListener('DOMContentLoaded', () => init());
+/* =========================================================
+   ASSETS — REPLACE PATHS WITH YOUR REAL FILES
+   ========================================================= */
+const ASSETS = {
+  jackets: {
+    blues_classA: { male:"images/jackets/blues_classA_male.png", female:"images/jackets/blues_classA_female.png" },
+    blues_classB: { male:"images/jackets/blues_classB_male.png", female:"images/jackets/blues_classB_female.png" },
+    corporate:    { male:"images/jackets/corporate_male.png",    female:"images/jackets/corporate_female.png" },
+    flightsuit:   { male:"images/jackets/flightsuit_male.png",   female:"images/jackets/flightsuit_female.png" },
+    abu:          { male:"images/jackets/abu_male.png",          female:"images/jackets/abu_female.png" },
+    mess:         { male:"images/jackets/mess_male.png",         female:"images/jackets/mess_female.png" } // hidden for cadets
+  },
 
-/* =========================
-   DATA (replace paths)
-========================= */
-const JACKETS = {
-  male:   "images/jackets/classA_male.png",
-  female: "images/jackets/classA_female.png"
+  ribbons: [
+    { id:'earhart',    name:'Earhart',         img:'images/ribbons/earhart.png',    precedence:1 },
+    { id:'mitchell',   name:'Mitchell',        img:'images/ribbons/mitchell.png',   precedence:2 },
+    { id:'ach1',       name:'Achievement 1',   img:'images/ribbons/ach1.png',       precedence:50 },
+    { id:'ach2',       name:'Achievement 2',   img:'images/ribbons/ach2.png',       precedence:60 },
+    { id:'community',  name:'Community Svc',   img:'images/ribbons/community.png',  precedence:120 },
+    { id:'gen_service',name:'General Service', img:'images/ribbons/gen_service.png',precedence:150 },
+  ],
+
+  devices: {
+    star_bronze: { label:"Bronze Star",  src:"images/devices/star_bronze.png",  width:12, height:12, weight:1 },
+    star_silver: { label:"Silver Star",  src:"images/devices/star_silver.png",  width:12, height:12, weight:2 },
+    clasp_bronze:{ label:"Bronze Clasp", src:"images/devices/clasp_bronze.png", width:14, height: 8, weight:1 },
+    clasp_silver:{ label:"Silver Clasp", src:"images/devices/clasp_silver.png", width:14, height: 8, weight:2 },
+    propeller:   { label:"Propeller",    src:"images/devices/propeller.png",    width:14, height:14, weight:3 },
+    leaf_bronze: { label:"Bronze Leaf",  src:"images/devices/leaf_bronze.png",  width:12, height:12, weight:1 },
+  },
+
+  /* Badge catalog. Add every badge you support. category drives placement rules. */
+  badges: {
+    aviation_basic: { name:"Aviation Badge (Basic)", src:"images/badges/aviation_basic.png", w:70, h:22, category:"aviation", precedence:100 },
+    aviation_senior:{ name:"Aviation Badge (Senior)",src:"images/badges/aviation_senior.png",w:72, h:24, category:"aviation", precedence:90 },
+    aviation_master:{ name:"Aviation Badge (Master)",src:"images/badges/aviation_master.png",w:74,h:26, category:"aviation", precedence:80 },
+
+    ground_team:    { name:"Ground Team",   src:"images/badges/ground_team.png",    w:64,h:24, category:"occupational", precedence:200 },
+    ems:            { name:"EMS",           src:"images/badges/ems.png",            w:64,h:24, category:"occupational", precedence:210 },
+    chaplain:       { name:"Chaplain",      src:"images/badges/chaplain.png",       w:64,h:24, category:"occupational", precedence:220 },
+
+    specialty_pd:   { name:"Professional Dev", src:"images/badges/specialty_pd.png", w:64,h:24, category:"specialty_over_name", precedence:300 },
+
+    model_rocketry: { name:"Model Rocketry",src:"images/badges/model_rocketry.png", w:58,h:20, category:"lp_only", precedence:400 },
+    marksmanship:   { name:"Marksmanship",  src:"images/badges/marksmanship.png",   w:58,h:20, category:"flap_only", precedence:500 },
+  },
+
+  /* Rank & epaulets — sample set; expand with your full rank images */
+  officerBoards: {
+    boardLeft:  { src:"images/ranks/boards/shoulder_board_left.png",  w:100, h:50, left:140, top:155, rotate:90 },
+    boardRight: { src:"images/ranks/boards/shoulder_board_right.png", w:100, h:50, left:500, top:155, rotate:-90 }
+  },
+  officerInsignia: {
+    "2dLt": { src:"images/ranks/officer/2dLt.png", w:24, h:24, left:0, top:0 },
+    "1stLt":{ src:"images/ranks/officer/1stLt.png",w:24, h:24, left:0, top:0 },
+    "Capt": { src:"images/ranks/officer/Capt.png", w:26, h:26, left:0, top:0 },
+    "Maj":  { src:"images/ranks/officer/Maj.png",  w:26, h:26, left:0, top:0 },
+    "LtCol":{ src:"images/ranks/officer/LtCol.png",w:28, h:28, left:0, top:0 },
+    "Col":  { src:"images/ranks/officer/Col.png",  w:30, h:30, left:0, top:0 },
+  },
+  enlistedCollar: {
+    male:   { left: 280, top: 175 },   // tweak these per your base jacket
+    female: { left: 280, top: 175 }
+  },
+  enlistedInsignia: {
+    "C/AB":   { src:"images/ranks/enlisted/C-AB.png",   w:32, h:32, dx:0, dy:0 },
+    "C/Amn":  { src:"images/ranks/enlisted/C-Amn.png",  w:32, h:32, dx:0, dy:0 },
+    "C/A1C":  { src:"images/ranks/enlisted/C-A1C.png",  w:32, h:32, dx:0, dy:0 },
+    "C/SrA":  { src:"images/ranks/enlisted/C-SrA.png",  w:32, h:32, dx:0, dy:0 },
+    "C/SSgt": { src:"images/ranks/enlisted/C-SSgt.png", w:36, h:36, dx:0, dy:0 },
+    "C/TSgt": { src:"images/ranks/enlisted/C-TSgt.png", w:36, h:36, dx:0, dy:0 },
+    "C/MSgt": { src:"images/ranks/enlisted/C-MSGT.png", w:38, h:38, dx:0, dy:0 },
+    "C/SMSgt":{ src:"images/ranks/enlisted/C-SMSgt.png",w:38, h:38, dx:0, dy:0 },
+    "C/CMSgt":{ src:"images/ranks/enlisted/C-CMSgt.png",w:40, h:40, dx:0, dy:0 },
+
+    // Senior Member enlisted (if used)
+    "A1C":  { src:"images/ranks/enlisted/A1C.png",  w:32, h:32, dx:0, dy:0 },
+    "SSgt": { src:"images/ranks/enlisted/SSgt.png", w:36, h:36, dx:0, dy:0 },
+    // etc...
+  }
 };
 
-// Example ribbon catalog with precedence (lower number = higher precedence)
-const RIBBON_CATALOG = [
-  { id:'gen_billy_mitchell', name:'Billy Mitchell', img:'images/ribbons/billy_mitchell.png', precedence:1 },
-  { id:'ach_1',              name:'Achievement 1', img:'images/ribbons/achievement_1.png',   precedence:50 },
-  { id:'ach_2',              name:'Achievement 2', img:'images/ribbons/achievement_2.png',   precedence:60 },
-  { id:'community',          name:'Community Svc', img:'images/ribbons/community.png',       precedence:120 },
-  { id:'general_service',    name:'General Service', img:'images/ribbons/general_service.png', precedence:150 },
+/* =========================================================
+   UNIFORMS (filter by member type)
+   ========================================================= */
+const UNIFORMS = [
+  { id:"blues_classA", label:"Blues — Class A (Service Dress Coat)", cadet:true, senior:true },
+  { id:"blues_classB", label:"Blues — Class B (Shirt)",              cadet:true, senior:true },
+  { id:"corporate",    label:"Corporate (Aviator Gray)",             cadet:false, senior:true },
+  { id:"flightsuit",   label:"Flight Suit",                           cadet:true, senior:true },
+  { id:"abu",          label:"ABU / Utility",                         cadet:true, senior:true },
+  { id:"mess",         label:"Mess Dress",                            cadet:false, senior:true } // CAPR 39-1: not for cadets
 ];
 
-const DEVICE_SPRITES = {
-  star_bronze: { label:"Bronze Star",  src:"images/devices/star_bronze.png",  width:12, height:12, weight:1 },
-  star_silver: { label:"Silver Star",  src:"images/devices/star_silver.png",  width:12, height:12, weight:2 },
-  clasp_bronze:{ label:"Bronze Clasp", src:"images/devices/clasp_bronze.png", width:14, height: 8, weight:1 },
-  clasp_silver:{ label:"Silver Clasp", src:"images/devices/clasp_silver.png", width:14, height: 8, weight:2 },
-  propeller:   { label:"Propeller",    src:"images/devices/propeller.png",    width:14, height:14, weight:3 },
-  leaf_bronze: { label:"Bronze Leaf",  src:"images/devices/leaf_bronze.png",  width:12, height:12, weight:1 },
+/* =========================================================
+   SLOTS (per uniform) + per-gender micro offsets
+   ========================================================= */
+const UNIFORM_SLOTS = {
+  blues_classA: {
+    ribbonAnchor:{ x:370, y:500 },
+    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
+    slot:{
+      OLP:{x:320,y:460}, OLPA:{x:320,y:440}, OLPU:{x:320,y:480},
+      ORP:{x:470,y:460}, ON:{x:470,y:422},  UN:{x:470,y:485},
+      LP:{x:320,y:548}, RP:{x:470,y:548},   LRP:{x:320,y:536}
+    }
+  },
+  blues_classB: {
+    ribbonAnchor:{ x:370, y:450 },
+    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
+    slot:{
+      OLP:{x:320,y:402}, OLPA:{x:320,y:382}, OLPU:{x:320,y:422},
+      ORP:{x:470,y:402}, ON:{x:470,y:364},  UN:{x:470,y:426},
+      LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:494}
+    }
+  },
+  corporate: {
+    ribbonAnchor:{ x:370, y:450 },
+    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
+    slot:{
+      OLP:{x:320,y:405}, OLPA:{x:320,y:385}, OLPU:{x:320,y:425},
+      ORP:{x:470,y:405}, ON:{x:470,y:368},  UN:{x:470,y:430},
+      LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:495}
+    }
+  },
+  flightsuit: {
+    ribbonAnchor:{ x:370, y:450 },
+    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
+    slot:{
+      OLP:{x:320,y:395}, OLPA:{x:320,y:375}, OLPU:{x:320,y:415},
+      ORP:{x:470,y:395}, ON:{x:470,y:358},  UN:{x:470,y:420},
+      LP:{x:320,y:495}, RP:{x:470,y:495},   LRP:{x:320,y:485}
+    }
+  },
+  abu: {
+    ribbonAnchor:{ x:370, y:450 },
+    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
+    slot:{
+      OLP:{x:320,y:402}, OLPA:{x:320,y:382}, OLPU:{x:320,y:422},
+      ORP:{x:470,y:402}, ON:{x:470,y:364},  UN:{x:470,y:426},
+      LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:494}
+    }
+  },
+  mess: {
+    ribbonAnchor:{ x:370, y:450 },
+    genderOffset:{ male:{x:0,y:0}, female:{x:0,y:-6} },
+    slot:{
+      OLP:{x:320,y:405}, OLPA:{x:320,y:385}, OLPU:{x:320,y:425},
+      ORP:{x:470,y:405}, ON:{x:470,y:368},  UN:{x:470,y:430},
+      LP:{x:320,y:505}, RP:{x:470,y:505},   LRP:{x:320,y:495}
+    }
+  }
 };
 
-// Badge demo — swap to your full table later
-const BADGE_SPRITES = {
-  aviation_basic: { src:"images/badges/aviation_basic.png", w:70, h:22, side:"left",  yOffset:-36 },
-  ground_team:    { src:"images/badges/ground_team.png",    w:64, h:24, side:"left",  yOffset:-36 },
-  ems:            { src:"images/badges/ems.png",            w:64, h:24, side:"right", yOffset:-36 },
+/* =========================================================
+   RULES & BADGE PRECEDENCE (Attachment 4 style)
+   ========================================================= */
+const RULES_39_1 = {
+  cadet: { disallowedUniforms: new Set(["mess"]) },
+  senior:{ disallowedUniforms: new Set([]) },
+
+  caps: {
+    maxAboveLeftPocket: 2, // OLP family
+    maxAboveRightPocket:2, // ORP
+    maxOnNameArea: 2,      // ON+UN
+    maxFlapMarksman: 1,    // LRP
+    maxModelRocketry:1,    // LP
+    maxTotalBadges: 5
+  },
+
+  // Category → preferred slots (left/right/name areas) respecting CAPR 39-1
+  badgePlacement: {
+    aviation:            { slots:["OLPU","OLPA","OLP"], perSlotMax:2 },
+    occupational:        { slots:["ORP"],               perSlotMax:2 },
+    specialty_over_name: { slots:["ON","UN"],           perSlotMax:2 },
+    lp_only:             { slots:["LP"],                perSlotMax:1 },
+    flap_only:           { slots:["LRP"],               perSlotMax:1 }
+  },
+
+  // Category precedence (lower = renders lower/closer to pocket if stacked)
+  categoryOrder: ["aviation","occupational","specialty_over_name","lp_only","flap_only"]
 };
 
-/* =========================
+/* FULL badge precedence table (expand here).
+   Use ASSETS.badges keys; lower 'precedence' number shows first if same slot.
+*/
+const BADGE_TABLE = Object.entries(ASSETS.badges).map(([key,meta])=>({
+  key, category: meta.category, precedence: meta.precedence ?? 999
+}));
+
+/* =========================================================
+   GRADES (officer boards vs enlisted/cadet collar)
+   ========================================================= */
+const GRADES = [
+  // Cadet officer + senior officer
+  { id:"2dLt",  label:"2d Lt (Officer)", officer:true },
+  { id:"1stLt", label:"1st Lt (Officer)", officer:true },
+  { id:"Capt",  label:"Captain (Officer)", officer:true },
+  { id:"Maj",   label:"Major (Officer)", officer:true },
+  { id:"LtCol", label:"Lt Col (Officer)", officer:true },
+  { id:"Col",   label:"Colonel (Officer)", officer:true },
+
+  // Cadet enlisted (sample)
+  { id:"C/AB",   label:"C/AB", officer:false },
+  { id:"C/Amn",  label:"C/Amn", officer:false },
+  { id:"C/A1C",  label:"C/A1C", officer:false },
+  { id:"C/SrA",  label:"C/SrA", officer:false },
+  { id:"C/SSgt", label:"C/SSgt", officer:false },
+  { id:"C/TSgt", label:"C/TSgt", officer:false },
+  { id:"C/MSgt", label:"C/MSgt", officer:false },
+  { id:"C/SMSgt",label:"C/SMSgt", officer:false },
+  { id:"C/CMSgt",label:"C/CMSgt", officer:false },
+];
+
+/* =========================================================
    STATE
-========================= */
-let gender = "male";
-let jacketPath = JACKETS[gender];
+   ========================================================= */
+let state = {
+  memberType:"cadet",
+  gender:"male",
+  uniformType:"blues_classA",
+  grade:"C/Amn",
+  rack:[],       // ribbons with devices
+  badges:[],     // { key, category, slot, x,y,w,h, precedence }
+  deviceApplyMode:false,
+  deviceRemoveMode:false,
+  selectedDevices:{}
+};
 
-let rack = [];     // array of ribbons on the jacket: {id, name, img, precedence, devices:{}}
-let badges = [];   // array of badges: { key, side, x, y, w, h }
+/* =========================================================
+   INIT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => init());
 
-let deviceApplyMode = false;
-let deviceRemoveMode = false;
-let selectedDeviceBundle = {}; // e.g., { star_silver:3, star_bronze:1 }
-
-/* =========================
-   INIT & WIRING
-========================= */
 function init(){
-  // Populate selects
-  const ribbonSel = document.getElementById('ribbonSelect');
-  ribbonSel.innerHTML = RIBBON_CATALOG
-    .sort((a,b)=>a.precedence-b.precedence)
-    .map(r=>`<option value="${r.id}">${r.name}</option>`).join('');
+  // Controls
+  populateUniforms();
+  populateRibbons();
+  populateBadges();
+  populateGrades();
 
-  // Set jacket
-  document.getElementById('genderSelect')?.addEventListener('change', (e)=>{
-    gender = e.target.value;
-    const suggested = JACKETS[gender];
-    document.getElementById('jacketSelect').value = suggested;
-    jacketPath = suggested;
-    renderJacket();
+  document.getElementById('memberType').addEventListener('change', e=>{
+    state.memberType = e.target.value;
+    populateUniforms(); // enforce cadet filters
+    renderAll();
   });
-  document.getElementById('jacketSelect')?.addEventListener('change', (e)=>{
-    jacketPath = e.target.value;
-    renderJacket();
+  document.getElementById('gender').addEventListener('change', e=>{
+    state.gender = e.target.value;
+    renderAll();
   });
-
-  document.getElementById('addRibbonBtn')?.addEventListener('click', onAddRibbon);
-  document.getElementById('clearRibbonsBtn')?.addEventListener('click', ()=>{
-    rack = [];
+  document.getElementById('uniformType').addEventListener('change', e=>{
+    state.uniformType = e.target.value;
     renderAll();
   });
 
-  // Devices UI
+  document.getElementById('gradeSelect').addEventListener('change', e=>{
+    state.grade = e.target.value;
+    renderEpauletsAndRank();
+  });
+
+  document.getElementById('addRibbonBtn').addEventListener('click', onAddRibbon);
+  document.getElementById('clearRibbonsBtn').addEventListener('click', ()=>{
+    state.rack = [];
+    renderAll();
+  });
+
   wireDeviceUI();
 
-  // Badges
-  document.getElementById('addBadgeBtn')?.addEventListener('click', ()=>{
-    const key = document.getElementById('badgeSelect').value;
-    if (!key) return;
-    const meta = BADGE_SPRITES[key];
-    if (!meta) return;
-    // Simple placement: relative to ribbon top left; refined logic can use your final rules
-    const anchor = computeRibbonAnchor();
-    const x = meta.side === "left" ? anchor.left - meta.w - 10 : anchor.right + 10;
-    const y = anchor.top + meta.yOffset;
-    badges.push({ key, x, y, w: meta.w, h: meta.h, side: meta.side });
-    renderBadges();
-  });
-  document.getElementById('clearBadgesBtn')?.addEventListener('click', ()=>{
-    badges = [];
-    renderBadges();
+  document.getElementById('addBadgeBtn').addEventListener('click', onAddBadge);
+  document.getElementById('clearBadgesBtn').addEventListener('click', ()=>{
+    state.badges = [];
+    renderAll();
   });
 
-  // Download
-  document.getElementById('downloadBtn')?.addEventListener('click', downloadHighRes);
+  document.getElementById('downloadBtn').addEventListener('click', downloadHighRes);
 
-  // Initial
   renderAll();
 }
 
-/* =========================
-   DEVICES UI
-========================= */
-function wireDeviceUI(){
-  const applyBtn = document.getElementById('deviceApplyModeBtn');
-  const clearBtn = document.getElementById('deviceClearSelectionBtn');
-  const removeBtn= document.getElementById('deviceRemoveModeBtn');
-
-  applyBtn?.addEventListener('click', ()=>{
-    selectedDeviceBundle = buildSelectedDeviceBundleFromUI();
-    const hasAny = Object.keys(selectedDeviceBundle).length>0;
-    deviceApplyMode = hasAny;
-    deviceRemoveMode = false;
-    applyBtn.classList.toggle('active', deviceApplyMode);
-    removeBtn?.classList.remove('active');
-    applyBtn.textContent = deviceApplyMode ? "Device Apply Mode: ON" : "Enable Device Apply Mode";
-  });
-
-  clearBtn?.addEventListener('click', ()=>{
-    const picker = document.getElementById('devicePicker');
-    picker?.querySelectorAll('input[type="checkbox"][data-device]').forEach(c=>c.checked=false);
-    picker?.querySelectorAll('input[type="number"][data-qty]').forEach(n=>n.value=1);
-    selectedDeviceBundle = {};
-    deviceApplyMode = false;
-    deviceRemoveMode = false;
-    document.getElementById('deviceApplyModeBtn')?.classList.remove('active');
-    document.getElementById('deviceRemoveModeBtn')?.classList.remove('active');
-    document.getElementById('deviceApplyModeBtn').textContent = "Enable Device Apply Mode";
-  });
-
-  removeBtn?.addEventListener('click', ()=>{
-    deviceRemoveMode = !deviceRemoveMode;
-    deviceApplyMode = false;
-    removeBtn.classList.toggle('active', deviceRemoveMode);
-    applyBtn?.classList.remove('active');
-    if (applyBtn) applyBtn.textContent = "Enable Device Apply Mode";
-  });
-}
-
-function buildSelectedDeviceBundleFromUI(){
-  const picker = document.getElementById('devicePicker');
-  const checks = picker?.querySelectorAll('input[type="checkbox"][data-device]') || [];
-  const bundle = {};
-  checks.forEach(chk=>{
-    const id = chk.getAttribute('data-device');
-    if (chk.checked){
-      const qty = parseInt(picker.querySelector(`input[type="number"][data-qty="${id}"]`)?.value||"1",10);
-      if (qty>0) bundle[id] = qty;
+/* =========================================================
+   POPULATE CONTROLS
+   ========================================================= */
+function populateUniforms(){
+  const sel = document.getElementById('uniformType');
+  const isCadet = state.memberType==="cadet";
+  sel.innerHTML = "";
+  UNIFORMS.forEach(u=>{
+    if ((isCadet && u.cadet) || (!isCadet && u.senior)){
+      const o = document.createElement('option');
+      o.value=u.id; o.textContent=u.label; sel.appendChild(o);
     }
   });
-  return bundle;
+  // keep or reset selection
+  if (![...sel.options].some(o=>o.value===state.uniformType)){
+    state.uniformType = sel.options[0]?.value || "blues_classA";
+  }
+  sel.value = state.uniformType;
 }
 
-/* =========================
+function populateRibbons(){
+  const sel = document.getElementById('ribbonSelect');
+  sel.innerHTML = ASSETS.ribbons
+    .sort((a,b)=>a.precedence-b.precedence)
+    .map(r=>`<option value="${r.id}">${r.name}</option>`).join('');
+}
+
+function populateBadges(){
+  const sel = document.getElementById('badgeSelect');
+  sel.innerHTML = "";
+  // show only badges allowed for current member type (if you need filtering, add here)
+  for (const [key,meta] of Object.entries(ASSETS.badges)){
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = meta.name || key.replace(/_/g,' ');
+    sel.appendChild(opt);
+  }
+}
+
+function populateGrades(){
+  const sel = document.getElementById('gradeSelect');
+  sel.innerHTML = GRADES.map(g=>`<option value="${g.id}">${g.label}</option>`).join('');
+  sel.value = state.grade;
+}
+
+/* =========================================================
    RENDER PIPELINE
-========================= */
+   ========================================================= */
 function renderAll(){
   renderJacket();
   renderRibbons();
   renderBadges();
+  renderEpauletsAndRank();
+  runRegulationCheck();
 }
 
 function renderJacket(){
   const img = document.getElementById('jacketImg');
-  if (!img) return;
-  img.src = jacketPath || JACKETS[gender] || "";
-  img.onerror = ()=>{ img.style.opacity=.15; img.alt="Jacket image missing"; };
+  const table = ASSETS.jackets[state.uniformType] || {};
+  img.src = table[state.gender] || "";
+  img.onerror = ()=>{ img.style.opacity=.15; };
 }
 
-/* RIBBONS */
+/* ---------- RIBBONS ---------- */
 function onAddRibbon(){
-  const id = document.getElementById('ribbonSelect')?.value;
-  const meta = RIBBON_CATALOG.find(r=>r.id===id);
+  const id = document.getElementById('ribbonSelect').value;
+  const meta = ASSETS.ribbons.find(r=>r.id===id);
   if (!meta) return;
-  rack.push({ ...meta, devices:{} });
+  state.rack.push({ ...meta, devices:{} });
   renderRibbons();
-  renderBadges(); // badges may reposition relative to ribbons
+  renderBadges(); // some badge y-offsets are relative to ribbons
+  runRegulationCheck();
 }
 
 function renderRibbons(){
   const layer = document.getElementById('ribbonLayer');
-  if (!layer) return;
   layer.innerHTML = '';
+  const slots = UNIFORM_SLOTS[state.uniformType] || UNIFORM_SLOTS.blues_classA;
+  const gOff = slots.genderOffset?.[state.gender] || {x:0,y:0};
+  const anchor = { x: (slots.ribbonAnchor.x + gOff.x), y: (slots.ribbonAnchor.y + gOff.y) };
 
-  // Sort by precedence (lower = higher precedence)
-  const sorted = [...rack].sort((a,b)=>a.precedence - b.precedence);
+  const sorted = [...state.rack].sort((a,b)=>a.precedence-b.precedence);
+  const N=sorted.length, perRow=3, rem=N%perRow, topCount=(rem===0?perRow:rem);
+  const vGap=8, tileW=120, tileH=35;
 
-  // Row of 3, partial row (1–2) sits on top and centered
-  const N = sorted.length;
-  const perRow = 3;
-  const remainder = N % perRow;
-  const topCount = remainder === 0 ? perRow : remainder;
-
-  // Coordinates (tweak to your jacket): anchor for top row
-  const anchorX = 300; // center X of jacket ribbons area
-  const startY  = 420; // Y position of top row
-  const vGap    = 8;   // vertical spacing between rows
-  const tileW   = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tileW')) || 120;
-  const tileH   = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tileH')) || 35;
-
-  // Helper to place a row centered on anchorX
-  function placeRow(items, rowIndex, y){
-    const count = items.length;
-    const totalW = count*tileW + (count-1)*6;
-    let x = Math.round(anchorX - totalW/2);
-    items.forEach((ribbonObj, i)=>{
-      const tile = createRibbonTile(ribbonObj);
+  const rows=[];
+  if (N>0){
+    rows.push(sorted.slice(0, topCount));
+    for (let i=topCount;i<N;i+=perRow) rows.push(sorted.slice(i,i+perRow));
+  }
+  rows.forEach((rowItems, rIdx)=>{
+    const totalW = rowItems.length*tileW + (rowItems.length-1)*6;
+    let x = Math.round(anchor.x - totalW/2);
+    const y = anchor.y + rIdx*(tileH+vGap);
+    rowItems.forEach(ribbon=>{
+      const tile = createRibbonTile(ribbon);
       tile.style.left = `${x}px`;
       tile.style.top  = `${y}px`;
       layer.appendChild(tile);
       x += tileW + 6;
     });
-  }
-
-  // Build rows
-  const rows = [];
-  if (N>0){
-    rows.push(sorted.slice(0, topCount)); // top row (1–3)
-    let idx = topCount;
-    while (idx < N){
-      rows.push(sorted.slice(idx, idx+perRow));
-      idx += perRow;
-    }
-  }
-
-  // Render rows
-  rows.forEach((rowItems, rIdx)=>{
-    const y = startY + rIdx*(tileH+vGap);
-    placeRow(rowItems, rIdx, y);
   });
 }
 
-function createRibbonTile(ribbonObj){
+function createRibbonTile(ribbon){
   const tile = document.createElement('div');
-  tile.className = 'ribbon-tile';
+  tile.className='ribbon-tile';
   const img = document.createElement('img');
-  img.className = 'ribbon';
-  img.alt = ribbonObj.name;
-  img.src = ribbonObj.img;
-  img.decoding = 'async';
-  img.loading  = 'lazy';
-  img.onerror = function(){
-    tile.style.background = 'linear-gradient(90deg,#9bbcff,#6aa3ff)';
-    this.style.display='none';
-  };
+  img.className='ribbon';
+  img.alt=ribbon.name; img.src=ribbon.img;
+  img.onerror=function(){ this.style.display='none'; tile.style.background='linear-gradient(90deg,#9bbcff,#6aa3ff)'; };
   tile.appendChild(img);
-
-  // Make clickable for device actions
-  makeRibbonClickableForDevices(tile, ribbonObj);
-
-  // Draw devices overlay
-  drawDevicesOnTile(tile, ribbonObj);
-
+  // click to apply/remove devices
+  makeRibbonClickableForDevices(tile, ribbon);
+  drawDevicesOnTile(tile, ribbon);
   return tile;
 }
 
+/* ---------- DEVICES ---------- */
+function wireDeviceUI(){
+  const applyBtn = document.getElementById('deviceApplyModeBtn');
+  const clearBtn = document.getElementById('deviceClearSelectionBtn');
+  const removeBtn= document.getElementById('deviceRemoveModeBtn');
+
+  applyBtn.addEventListener('click', ()=>{
+    state.selectedDevices = readDevicePicker();
+    const hasAny = Object.keys(state.selectedDevices).length>0;
+    state.deviceApplyMode = hasAny;
+    state.deviceRemoveMode = false;
+    applyBtn.classList.toggle('active', state.deviceApplyMode);
+    removeBtn.classList.remove('active');
+    applyBtn.textContent = state.deviceApplyMode ? "Apply Mode: ON" : "Enable Apply Mode";
+  });
+
+  clearBtn.addEventListener('click', ()=>{
+    const picker=document.getElementById('devicePicker');
+    picker.querySelectorAll('input[type="checkbox"][data-device]').forEach(c=>c.checked=false);
+    picker.querySelectorAll('input[type="number"][data-qty]').forEach(n=>n.value=1);
+    state.selectedDevices = {};
+    state.deviceApplyMode = false;
+    state.deviceRemoveMode = false;
+    document.getElementById('deviceApplyModeBtn').classList.remove('active');
+    document.getElementById('deviceRemoveModeBtn').classList.remove('active');
+    document.getElementById('deviceApplyModeBtn').textContent = "Enable Apply Mode";
+  });
+
+  removeBtn.addEventListener('click', ()=>{
+    state.deviceRemoveMode = !state.deviceRemoveMode;
+    state.deviceApplyMode = false;
+    removeBtn.classList.toggle('active', state.deviceRemoveMode);
+    applyBtn.classList.remove('active');
+    applyBtn.textContent = "Enable Apply Mode";
+  });
+}
+
+function readDevicePicker(){
+  const picker=document.getElementById('devicePicker');
+  const bundle={};
+  picker.querySelectorAll('input[type="checkbox"][data-device]').forEach(chk=>{
+    const id = chk.getAttribute('data-device');
+    if (chk.checked){
+      const qty = parseInt(picker.querySelector(`input[type="number"][data-qty="${id}"]`).value||"1",10);
+      if (qty>0) bundle[id]=qty;
+    }
+  });
+  return bundle;
+}
+
 function makeRibbonClickableForDevices(tileEl, ribbonObj){
-  tileEl.style.cursor = 'pointer';
-  tileEl.onclick = () => {
-    if (deviceRemoveMode){
+  tileEl.style.cursor='pointer';
+  tileEl.onclick = ()=>{
+    if (state.deviceRemoveMode){
       ribbonObj.devices = {};
       renderRibbons();
       return;
     }
-    if (!deviceApplyMode) return;
-
+    if (!state.deviceApplyMode) return;
     ribbonObj.devices = ribbonObj.devices || {};
-    for (const [devId, qty] of Object.entries(selectedDeviceBundle)){
-      ribbonObj.devices[devId] = (ribbonObj.devices[devId] || 0) + qty;
+    for (const [devId,qty] of Object.entries(state.selectedDevices)){
+      ribbonObj.devices[devId] = (ribbonObj.devices[devId]||0) + qty;
     }
     renderRibbons();
   };
@@ -488,96 +638,258 @@ function makeRibbonClickableForDevices(tileEl, ribbonObj){
 
 function drawDevicesOnTile(tileEl, ribbonObj){
   tileEl.querySelectorAll('.device-overlay').forEach(n=>n.remove());
-  const map = ribbonObj.devices || {};
+  const map = ribbonObj.devices||{};
   if (!Object.keys(map).length) return;
 
-  const flat = [];
+  const flat=[];
   for (const [devId,count] of Object.entries(map)){
-    const meta = DEVICE_SPRITES[devId];
+    const meta = ASSETS.devices[devId];
     if (!meta) continue;
     for (let i=0;i<count;i++) flat.push({ id:devId, ...meta });
   }
-  flat.sort((a,b)=> (b.weight - a.weight) || a.label.localeCompare(b.label));
+  flat.sort((a,b)=> (b.weight-a.weight) || a.label.localeCompare(b.label));
 
-  const tileW = tileEl.clientWidth || 120;
-  const tileH = tileEl.clientHeight || 35;
-  const gap = 3;
-
-  const totalW = flat.reduce((sum,d,idx)=> sum + d.width + (idx>0?gap:0), 0);
-  let x = Math.round((tileW - totalW)/2);
-  const y = Math.round((tileH - 12)/2) - 1;
+  const tileW=tileEl.clientWidth||120, tileH=tileEl.clientHeight||35, gap=3;
+  const totalW = flat.reduce((s,d,i)=> s+d.width+(i>0?gap:0),0);
+  let x = Math.round((tileW-totalW)/2);
+  const y = Math.round((tileH-12)/2)-1;
 
   flat.forEach(d=>{
-    const im = document.createElement('img');
-    im.className = 'device-overlay';
-    im.src = d.src;
-    im.alt = d.label;
-    im.style.left = `${x}px`;
-    im.style.top  = `${y}px`;
-    im.style.width = `${d.width}px`;
-    im.style.height= `${d.height}px`;
-    im.draggable = false;
-    im.onerror = function(){
-      this.remove();
-      const dot = document.createElement('div');
-      dot.className = 'device-overlay';
-      dot.style.left = `${x}px`;
-      dot.style.top  = `${y}px`;
-      dot.style.width = `${d.width}px`;
-      dot.style.height= `${d.height}px`;
-      dot.style.background = '#222';
-      dot.style.borderRadius = '2px';
-      tileEl.appendChild(dot);
+    const im=document.createElement('img');
+    im.className='device-overlay';
+    im.src=d.src; im.alt=d.label;
+    im.style.left=`${x}px`; im.style.top=`${y}px`;
+    im.style.width=`${d.width}px`; im.style.height=`${d.height}px`;
+    im.onerror=function(){ this.remove(); const stub=document.createElement('div'); stub.className='device-overlay';
+      stub.style.left=`${x}px`; stub.style.top=`${y}px`; stub.style.width=`${d.width}px`; stub.style.height=`${d.height}px`; stub.style.background="#222"; tileEl.appendChild(stub);
     };
     tileEl.appendChild(im);
     x += d.width + gap;
   });
 }
 
-/* BADGES (placeholder layout; plug in your full rules) */
+/* ---------- BADGES ---------- */
+function onAddBadge(){
+  const key = document.getElementById('badgeSelect').value;
+  if (!key) return;
+  const meta = ASSETS.badges[key];
+  if (!meta) return;
+
+  // Choose slot by category rules + caps
+  const chosen = chooseBadgeSlot(key, meta);
+  if (!chosen){
+    alert("No available slot for this badge based on CAPR 39-1 limits for the current uniform.");
+    return;
+  }
+  state.badges.push({ key, category: meta.category, precedence: meta.precedence ?? 999,
+    slot:chosen.slot, x:chosen.x, y:chosen.y, w:meta.w, h:meta.h });
+
+  renderBadges();
+  runRegulationCheck();
+}
+
+function chooseBadgeSlot(key, meta){
+  const slotsMap = UNIFORM_SLOTS[state.uniformType]?.slot || {};
+  const gOff    = UNIFORM_SLOTS[state.uniformType]?.genderOffset?.[state.gender] || {x:0,y:0};
+  const rule    = RULES_39_1.badgePlacement[meta.category];
+  const caps    = RULES_39_1.caps;
+
+  // Globals
+  const aboveLeft = countSlots(["OLP","OLPA","OLPU"]);
+  const aboveRight= countSlots(["ORP"]);
+  const nameArea  = countSlots(["ON","UN"]);
+  const total     = state.badges.length;
+
+  if (total >= caps.maxTotalBadges) return null;
+
+  // Category special-cases
+  if (meta.category==="lp_only"){
+    if (countSlot("LP") >= caps.maxModelRocketry) return null;
+    const p = slotsMap["LP"]; if (!p) return null;
+    return { slot:"LP", x:p.x+gOff.x, y:p.y+gOff.y };
+  }
+  if (meta.category==="flap_only"){
+    if (countSlot("LRP") >= caps.maxFlapMarksman) return null;
+    const p = slotsMap["LRP"]; if (!p) return null;
+    return { slot:"LRP", x:p.x+gOff.x, y:p.y+gOff.y };
+  }
+
+  // Standard categories
+  const pref = rule?.slots || [];
+  for (const s of pref){
+    const perSlotMax = rule.perSlotMax ?? 2;
+    if (countSlot(s) >= perSlotMax) continue;
+
+    if (["OLP","OLPA","OLPU"].includes(s) && aboveLeft >= caps.maxAboveLeftPocket) continue;
+    if (s==="ORP" && aboveRight >= caps.maxAboveRightPocket) continue;
+    if (["ON","UN"].includes(s) && nameArea >= caps.maxOnNameArea) continue;
+
+    const p = slotsMap[s];
+    if (!p) continue;
+    return { slot:s, x:p.x+gOff.x, y:p.y+gOff.y };
+  }
+  return null;
+}
+
+function countSlot(slot){ return state.badges.filter(b=>b.slot===slot).length; }
+function countSlots(list){ return state.badges.filter(b=>list.includes(b.slot)).length; }
+
 function renderBadges(){
   const layer = document.getElementById('badgeLayer');
-  if (!layer) return;
   layer.innerHTML = '';
 
-  badges.forEach(b=>{
-    const meta = BADGE_SPRITES[b.key];
+  // Sort by: 1) slot band (aviation closer to pocket), 2) category order, 3) precedence
+  const catIndex = (c)=> RULES_39_1.categoryOrder.indexOf(c);
+  const sorted = [...state.badges].sort((a,b)=>{
+    const ca = catIndex(a.category), cb = catIndex(b.category);
+    if (ca!==cb) return ca-cb;
+    if (a.precedence!==b.precedence) return a.precedence-b.precedence;
+    return a.key.localeCompare(b.key);
+  });
+
+  sorted.forEach(b=>{
+    const meta = ASSETS.badges[b.key];
     if (!meta) return;
     const img = document.createElement('img');
+    img.className='badge';
     img.src = meta.src;
-    img.alt = b.key;
-    img.style.position = 'absolute';
+    img.alt = meta.name || b.key;
     img.style.left = `${b.x}px`;
-    img.style.top  = `${b.y}px`;
+    img.style.top  = `${b.y + badgeVerticalAdjust(b.slot)}px`;
     img.style.width = `${b.w}px`;
     img.style.height= `${b.h}px`;
-    img.draggable = false;
     img.onerror = ()=>{ img.style.display='none'; };
     layer.appendChild(img);
   });
 }
 
-/* Simple anchor near the ribbon rack for badge placement math */
-function computeRibbonAnchor(){
-  // Mirror the anchor used in renderRibbons()
-  const anchorX = 300;
-  const startY  = 420;
-  const tileW = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tileW')) || 120;
-  const left  = Math.round(anchorX - tileW/2);
-  const right = Math.round(anchorX + tileW/2);
-  const top   = startY;
-  return { left, right, top };
+// Example: keep aviation stack ~36px above top ribbon row if needed
+function badgeVerticalAdjust(slot){
+  if (["OLP","OLPA","OLPU"].includes(slot)) return -36;
+  return 0;
 }
 
-/* =========================
+/* =========================================================
+   EPAULETS & RANK
+   ========================================================= */
+function renderEpauletsAndRank(){
+  const layer = document.getElementById('epauletLayer');
+  layer.innerHTML = '';
+  const grade = state.grade;
+  const isOfficer = GRADES.find(g=>g.id===grade)?.officer;
+
+  if (isOfficer){
+    // Boards
+    const L = ASSETS.officerBoards.boardLeft;
+    const R = ASSETS.officerBoards.boardRight;
+    [ {b:L, cls:'left'}, {b:R, cls:'right'} ].forEach(({b,cls})=>{
+      const board = document.createElement('img');
+      board.className='board';
+      board.src=b.src; board.style.left=`${b.left}px`; board.style.top=`${b.top}px`;
+      board.style.width=`${b.w}px`; board.style.height=`${b.h}px`;
+      board.style.transform=`rotate(${b.rotate}deg)`;
+      board.onerror=()=>{ board.style.display='none'; };
+      layer.appendChild(board);
+    });
+
+    // Insignia centered on each board
+    const ins = ASSETS.officerInsignia[grade];
+    if (ins){
+      const leftIns = document.createElement('img');
+      leftIns.className='insignia';
+      leftIns.src=ins.src;
+      leftIns.style.left = `${L.left + (L.w-ins.w)/2}px`;
+      leftIns.style.top  = `${L.top  + (L.h-ins.h)/2}px`;
+      leftIns.style.width = `${ins.w}px`;
+      leftIns.style.height= `${ins.h}px`;
+      leftIns.onerror=()=>{ leftIns.style.display='none'; };
+      layer.appendChild(leftIns);
+
+      const rightIns = document.createElement('img');
+      rightIns.className='insignia';
+      rightIns.src=ins.src;
+      rightIns.style.left = `${R.left + (R.w-ins.w)/2}px`;
+      rightIns.style.top  = `${R.top  + (R.h-ins.h)/2}px`;
+      rightIns.style.width = `${ins.w}px`;
+      rightIns.style.height= `${ins.h}px`;
+      rightIns.onerror=()=>{ rightIns.style.display='none'; };
+      layer.appendChild(rightIns);
+    }
+  } else {
+    // Enlisted/cadet collar insignia — single example position (tune per uniform/gender as needed)
+    const base = ASSETS.enlistedCollar[state.gender];
+    const ins  = ASSETS.enlistedInsignia[grade];
+    if (base && ins){
+      const collar = document.createElement('img');
+      collar.className='insignia';
+      collar.src=ins.src;
+      collar.style.left = `${base.left + (ins.dx||0)}px`;
+      collar.style.top  = `${base.top  + (ins.dy||0)}px`;
+      collar.style.width = `${ins.w}px`;
+      collar.style.height= `${ins.h}px`;
+      collar.onerror=()=>{ collar.style.display='none'; };
+      layer.appendChild(collar);
+    }
+  }
+}
+
+/* =========================================================
+   REGULATION CHECKER
+   ========================================================= */
+function runRegulationCheck(){
+  const list = document.getElementById('regList');
+  list.innerHTML = '';
+  const issues = [];
+
+  // Uniform access
+  if (state.memberType==="cadet" && RULES_39_1.cadet.disallowedUniforms.has(state.uniformType)){
+    issues.push({level:'err', text:'Cadets may not wear Mess Dress (CAPR 39-1).' });
+  }
+
+  // Caps
+  const caps = RULES_39_1.caps;
+  const aboveLeft = countSlots(["OLP","OLPA","OLPU"]);
+  const aboveRight= countSlots(["ORP"]);
+  const nameArea  = countSlots(["ON","UN"]);
+  const lrp       = countSlot("LRP");
+  const lp        = countSlot("LP");
+  const total     = state.badges.length;
+
+  if (aboveLeft > caps.maxAboveLeftPocket) issues.push({level:'err', text:`Left pocket area > ${caps.maxAboveLeftPocket} badges.`});
+  if (aboveRight> caps.maxAboveRightPocket) issues.push({level:'err', text:`Right pocket area > ${caps.maxAboveRightPocket} badges.`});
+  if (nameArea  > caps.maxOnNameArea) issues.push({level:'err', text:`Over/Under name area > ${caps.maxOnNameArea} badges.`});
+  if (lrp > caps.maxFlapMarksman) issues.push({level:'err', text:'Only one Marksmanship badge allowed on pocket flap (LRP).'});
+  if (lp  > caps.maxModelRocketry) issues.push({level:'err', text:'Only one Model Rocketry badge allowed on left pocket (LP).'});
+  if (total > caps.maxTotalBadges) issues.push({level:'err', text:`Total badges exceed ${caps.maxTotalBadges}.`});
+
+  // Category placement checks
+  state.badges.forEach(b=>{
+    if (b.category==="lp_only" && b.slot!=="LP"){
+      issues.push({level:'err', text:`${ASSETS.badges[b.key].name} must be on the left pocket (LP).`});
+    }
+    if (b.category==="flap_only" && b.slot!=="LRP"){
+      issues.push({level:'err', text:`${ASSETS.badges[b.key].name} must be on the pocket flap (LRP).`});
+    }
+  });
+
+  if (!issues.length) issues.push({level:'ok', text:'No violations detected with current rule set.'});
+
+  issues.forEach(it=>{
+    const div=document.createElement('div');
+    div.textContent = `• ${it.text}`;
+    div.className = it.level==='ok' ? 'reg-ok' : (it.level==='warn' ? 'reg-warn' : 'reg-err');
+    list.appendChild(div);
+  });
+}
+
+/* =========================================================
    DOWNLOAD
-========================= */
+   ========================================================= */
 async function downloadHighRes(){
   const target = document.getElementById('jacketStage');
-  if (!target) return;
-  const canvas = await html2canvas(target, { scale: 2, backgroundColor:'#ffffff', useCORS:true });
+  const canvas = await html2canvas(target, { scale:2, backgroundColor:'#ffffff', useCORS:true });
   const link = document.createElement('a');
-  link.download = 'CAP_Uniform.png';
+  link.download = `CAP_${state.memberType}_${state.uniformType}_${state.gender}.png`;
   link.href = canvas.toDataURL('image/png');
   link.click();
 }
