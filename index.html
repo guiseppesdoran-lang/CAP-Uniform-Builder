@@ -14,7 +14,7 @@
     main{display:flex}
     #controls{width:340px;background:var(--panel);padding:14px;border-right:1px solid var(--line);overflow:auto;height:calc(100vh - 58px)}
     #preview{flex:1;background:#d1d8e0;display:flex;align-items:flex-start;justify-content:center;position:relative;height:calc(100vh - 58px)}
-    #uniformCanvas{position:relative;width:900px;height:1200px}
+    #uniformCanvas{position:relative;width:900px;height:1200px;transform-origin: top left;}
     .layer{position:absolute;image-rendering:auto}
     label{font-size:12px;color:var(--muted);margin-top:8px;display:block}
     select,button,input{width:100%;margin-top:6px;padding:8px;border:1px solid var(--line);border-radius:10px;background:#f8fafc}
@@ -130,6 +130,8 @@
   const $ = (s)=>document.querySelector(s);
   const uniformCanvas = $('#uniformCanvas');
   const assetsContainer = $('#assets');
+  const previewEl = document.getElementById('preview');
+  const BASE_W = 900, BASE_H = 1200; // intrinsic canvas size
 
   function ASSET(p){
     const b=(State.assetBase||'images').replace(/\/$/,'');
@@ -257,6 +259,18 @@
     img.style.display='block';
     uniformCanvas.appendChild(img);
   }
+
+  /******************** Responsive scaling ********************/
+  function fitCanvas(){
+    if(!previewEl) return;
+    const availW = Math.max(0, previewEl.clientWidth - 16);
+    const scale = Math.min(availW / BASE_W, 1);
+    uniformCanvas.style.transform = `scale(${scale})`;
+    const scaledH = Math.ceil(BASE_H * scale);
+    previewEl.style.minHeight = (scaledH + 40) + 'px';
+  }
+  window.addEventListener('resize', fitCanvas);
+  window.addEventListener('orientationchange', fitCanvas);
 
   /******************** Ribbons / Mini‑Medals ********************/
   function sortRibbons(arr){
@@ -446,8 +460,8 @@
       const boardCfg = {width:50,height:100};
       const insigniaCfg = {width:32,height:32};
       const placements = [
-        {left:350, top:160, rot:-90},   // left shoulder board
-        {left:100, top:160, rot:90}   // right shoulder board
+        {left:350, top:160, rot:90},   // left shoulder board
+        {left:100, top:160, rot:-90}   // right shoulder board
       ];
       placements.forEach(({left,top,rot})=>{
         const board=document.createElement('img');
@@ -511,7 +525,13 @@
   }
 
   /******************** Rendering orchestrator ********************/
-  function fullRender(){ applyJacket(); renderRack(); renderAllBadges(); renderRank(State.rank); }
+  function fullRender(){
+    applyJacket();
+    renderRack();
+    renderAllBadges();
+    renderRank(State.rank);
+    fitCanvas();
+  }
   function refreshUI(){
     $('#memberSelect').value=State.member;
     $('#jacketSelect').value=State.gender;
@@ -590,6 +610,7 @@
     refreshUI();
     applyJacket();
     renderRack();
+    fitCanvas();
   })();
   </script>
 </body>
