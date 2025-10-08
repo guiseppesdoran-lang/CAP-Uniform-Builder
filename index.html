@@ -379,7 +379,11 @@
   // slots with arrays of ids
   const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[] };
   const SLOT_CAPS = { OLPA:1, OLPU:1, OLP:1, ORP:1, LP:1, LRP:1, ON:2, UN:2 };
-  const TOTAL_CAP = 5;
+
+  // Total counted cap for above-pocket/nameplate badges (per 39-1)
+  const TOTAL_CAP = 4;
+  // Exempt from total cap per 39-1 (special pocket positions)
+  const EXEMPT_BADGES = new Set(['model_rocketry_badge','nra_marksman_badge']);
 
   // Category mapping for precedence & legal slots
   const BADGE_CATEGORY = {
@@ -422,12 +426,17 @@
   // Compute placements for a set of badge ids (order-independent)
   function planBadgePlacements(ids){
     resetBadgeSlots();
-    const applied=[];
+    const applied=[]; // all placed (for reference)
+    let appliedCount = 0; // counts toward TOTAL_CAP only
     const withPri = ids.map(id=>({id, pri: CATEGORY_ORDER[BADGE_CATEGORY[id]||'specialty'] ?? 99}));
     withPri.sort((a,b)=> a.pri - b.pri || a.id.localeCompare(b.id));
 
     for(const {id} of withPri){
-      if(applied.length>=TOTAL_CAP) { addViolation('TOTAL_CAP','Total badge cap reached', {cap:TOTAL_CAP}); break; }
+      const countsTowardCap = !EXEMPT_BADGES.has(id);
+      if(countsTowardCap && appliedCount >= TOTAL_CAP){
+        addViolation('TOTAL_CAP','Only 4 badges may be worn above the pockets (excludes Model Rocketry & Marksmanship).', {cap:TOTAL_CAP});
+        break;
+      }
       const slots = preferredSlotsFor(id);
       let placed=false;
       for(const slot of slots){
@@ -435,6 +444,7 @@
         if(badgeSlots[slot].length < cap){
           badgeSlots[slot].push(id);
           applied.push(id);
+          if(countsTowardCap) appliedCount++;
           placed=true; break;
         }
       }
@@ -573,7 +583,15 @@
     panel.innerHTML = `<strong>Issues (${Violations.length})</strong><ul style="margin:6px 0 0 16px;">${Violations.map(v=>`<li>${v.msg}</li>`).join('')}</ul>`;
   }
   function validateAfterRender(){
-    // Slot caps (defaults enforced by planner; panel just reflects state)
+    // Total cap across non-exempt badges in non-exempt slots (exclude LP & LRP specials)
+    const nonExemptCount = Object.entries(badgeSlots)
+      .filter(([slot]) => slot !== 'LP' && slot !== 'LRP')
+      .reduce((sum,[,ids]) => sum + ids.filter(id => !EXEMPT_BADGES.has(id)).length, 0);
+    if(nonExemptCount > TOTAL_CAP){
+      addViolation('TOTAL_CAP','Only 4 badges may be worn above the pockets (excludes Model Rocketry & Marksmanship).', {count:nonExemptCount, cap:TOTAL_CAP});
+    }
+
+    // Slot caps (planner enforces; panel reflects)
     for(const slot in badgeSlots){
       const cap = (slot==='ON'||slot==='UN')?2:1;
       if(badgeSlots[slot].length > cap){
