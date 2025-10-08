@@ -6,6 +6,11 @@
 <title>CAP Uniform Builder — Full Program (All CAPR 39-1 Rules + Alternates)</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
+  /* ======= App theme + layout =======
+     - CSS variables for colors
+     - Basic layout with control sidebar and preview canvas
+     - Responsive scaling targets 900x1200 "canvas" art
+  */
   :root{ --bg:#eef1f5; --ink:#0d1b2a; --muted:#516079; --panel:#ffffff; --line:#cfd6df; --brand:#002855; }
   *{box-sizing:border-box}
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--ink)}
@@ -35,13 +40,16 @@
 </head>
 <body>
 <header>
+  <!-- App title -->
   <h1>CAP Uniform Builder — CAPR 39-1 Rules (with Alternates)</h1>
 </header>
 
 <main>
+  <!-- ======= Control panel (left) ======= -->
   <section id="controls">
     <div class="row two">
       <div class="col">
+        <!-- Member type affects authorization and filtering -->
         <label>Member</label>
         <select id="memberSelect">
           <option value="cadet">Cadet</option>
@@ -49,6 +57,7 @@
         </select>
       </div>
       <div class="col">
+        <!-- Gender informs small placement offsets -->
         <label>Gender</label>
         <select id="genderSelect">
           <option value="male">Male</option>
@@ -57,6 +66,12 @@
       </div>
     </div>
 
+    <!-- Uniform drives:
+         - Which items are visible (ribbons vs patches vs badges)
+         - Badge slot caps & coordinates
+         - Auto-swapping alternates (field vs service)
+         - Mini-medals rendering on mess/semi
+    -->
     <label>Uniform</label>
     <select id="uniformSelect">
       <option value="blues_a">Blues: Class A (Service Dress)</option>
@@ -71,6 +86,7 @@
       <option value="polo">Polo (Senior)</option>
     </select>
 
+    <!-- Asset path switcher (lets you point to a different /images dir) -->
     <div class="row two">
       <div class="col">
         <label>Asset Base</label>
@@ -84,6 +100,7 @@
 
     <hr class="group" style="border:none;border-top:1px solid var(--line)">
 
+    <!-- Ribbons control group (hidden automatically on ABU/flight suit; minis appear on mess/semi in render step) -->
     <div id="groupRibbons" class="group">
       <label>Ribbons / Devices</label>
       <div class="row two">
@@ -94,11 +111,13 @@
         <div class="col"><button id="addRibbon">Add Ribbon</button></div>
         <div class="col"><button id="clearRibbons" class="ghost">Clear Ribbons</button></div>
       </div>
+      <!-- If checked, renderRack() shows mini-medals on mess/semi instead of ribbons -->
       <label><input type="checkbox" id="autoMini" checked> Auto-convert ribbons → mini-medals on Mess/Semi-formal</label>
     </div>
 
     <hr class="group" style="border:none;border-top:1px solid var(--line)">
 
+    <!-- Badges control group (hidden on field uniforms per UI_AUTHZ) -->
     <div id="groupBadges" class="group">
       <label>Badges</label>
       <div class="row two">
@@ -113,6 +132,7 @@
 
     <hr class="group" style="border:none;border-top:1px solid var(--line)">
 
+    <!-- Patches control group (hidden on service dress per UI_AUTHZ) -->
     <div id="groupPatches" class="group">
       <label>Patches</label>
       <div class="row two">
@@ -123,11 +143,13 @@
         <div class="col"><select id="removePatchSelect"></select></div>
         <div class="col"><button id="removePatch" class="ghost">Remove Patch</button></div>
       </div>
+      <!-- Explains auto swap: certain badges/ribbons have patch equivalents on field uniforms -->
       <div class="hint">Field uniforms swap certain badges/ribbons into their patch equivalents automatically.</div>
     </div>
 
     <hr class="group" style="border:none;border-top:1px solid var(--line)">
 
+    <!-- Rank + nameplate + export -->
     <div class="group">
       <label>Rank Insignia</label>
       <div class="row two">
@@ -141,17 +163,21 @@
     </div>
   </section>
 
+  <!-- ======= Canvas preview (right) ======= -->
   <section id="preview">
     <div id="uniformCanvas" aria-label="Uniform canvas"></div>
   </section>
 </main>
 
-<!-- hidden preloads -->
+<!-- hidden preloads (all images load here, then cloned into the canvas layers) -->
 <div id="assets" style="display:none"></div>
 
 <script>
 /* =========================
    STATE & HELPERS
+   - Central state object for UI and rendering
+   - Helper to build asset paths
+   - URL encode/decode so designs can be shared
 ========================= */
 const State = {
   member: 'cadet',
@@ -171,12 +197,14 @@ const BASE_W = 900, BASE_H = 1200;
 
 function ASSET(p){ const b=(State.assetBase||'images').replace(/\/$/,''); return `${b}/${p}`; }
 
-/* Save/restore via URL */
+/* Save/restore via URL (base64 of JSON state for shareable links) */
 function encodeStateToURL(){ try{ const s=btoa(unescape(encodeURIComponent(JSON.stringify(State)))); history.replaceState(null,'',`?s=${s}`);}catch{} }
 function tryLoadStateFromURL(){ const qs=new URL(location.href).searchParams.get('s'); if(!qs) return false; try{ Object.assign(State, JSON.parse(decodeURIComponent(escape(atob(qs))))); return true; }catch{ return false; } }
 
 /* =========================
    UNIFORM BASES & UI AUTHZ
+   - UNIFORMS: selects which base art to use and whether ribbons/mini are supported
+   - UI_AUTHZ: toggles which control groups are visible/usable per uniform
 ========================= */
 const UNIFORMS = {
   blues_a:{male:'base/jacket_male.png',female:'base/jacket_female.png',ribbons:true,mini:false},
@@ -191,7 +219,7 @@ const UNIFORMS = {
   polo:{male:'base/polo_male.png',female:'base/polo_female.png',ribbons:false,mini:false}
 };
 
-// UI/placement authorization per uniform
+// UI/placement authorization per uniform (drives group visibility and picker filtering)
 const UI_AUTHZ = {
   // service dress styles
   blues_a:{ showRibbons:true, showPatches:false, showBadges:true },
@@ -199,10 +227,10 @@ const UI_AUTHZ = {
   aviator:{ showRibbons:true, showPatches:false, showBadges:true },
   aviator_blazer:{ showRibbons:true, showPatches:false, showBadges:true },
   corporate_field:{ showRibbons:true, showPatches:true,  showBadges:true }, // hybrid per user ask
-  // mess/semi: no ribbons, minis auto
+  // mess/semi: no ribbons, minis auto (ribbons data kept; minis render)
   mess_dress:{ showRibbons:false, showPatches:false, showBadges:true },
   semi_formal:{ showRibbons:false, showPatches:false, showBadges:true },
-  // field uniforms (no ribbons UI)
+  // field uniforms (no ribbons UI, patches visible; badges hidden in picker)
   abu:{ showRibbons:false, showPatches:true, showBadges:false },
   flight_suit:{ showRibbons:false, showPatches:true, showBadges:false },
   polo:{ showRibbons:false, showPatches:false, showBadges:false }
@@ -210,10 +238,12 @@ const UI_AUTHZ = {
 
 /* =========================
    RIBBONS / MINIS / DEVICES
+   - ribbonList defines precedence order
+   - renderRack() handles both ribbons and mini-medals based on uniform + checkbox
 ========================= */
 const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award','spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon',
-  // Added so the Orientation Pilot patch alternate can demo
+  // Added so the Orientation Pilot patch alternate can demo (alternate map uses this)
   'orientation_pilot_ribbon'
 ];
 const precedence = (id)=> ribbonList.indexOf(id);
@@ -225,6 +255,9 @@ const deviceImg = {
 
 /* =========================
    BADGES / PATCHES / RANK META
+   - badgeList + BADGE_CATEGORY categorize for slot preferences
+   - BADGE_META defines image and size for draw
+   - PATCH_META defines authorized slot hints and sizes
 ========================= */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_0E35802A29801','SeniorObserver1_0E35802A29801',
@@ -246,10 +279,12 @@ const BADGE_CATEGORY = {
 };
 
 const allowedCadetBadges = new Set([
+  // Only these remain when member = 'cadet'
   'solo_badge','pre_solo_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge','emt_basic_badge','emt_intermediate','emt_paramedic','model_rocketry_badge','communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges','nra_marksman_badge','AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_0E35802A29801','MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge','emergency_services_badge','historian_technicianIbadge'
 ]);
 
 const BADGE_META = Object.fromEntries(badgeList.map(id=>{
+  // sizes: how big to draw each badge; img path used by preloader and render
   const defaults = {w:60,h:25};
   const sizes = {
     'buddist_chaplin':{w:60,h:60},'christian_chaplin':{w:60,h:60},'jewish_chaplin':{w:60,h:60},'muslim_chaplin':{w:60,h:60},
@@ -265,7 +300,7 @@ const BADGE_META = Object.fromEntries(badgeList.map(id=>{
   return [id, {cat: BADGE_CATEGORY[id]||'OTHER', img:`badges/${id}.png`, ...metaSize}];
 }));
 
-// Patches (added two alternates)
+// Patches (added two alternates for field uniforms demo)
 const patchList = ['us_flag_patch','command_patch','wing_patch','unit_patch','aerospace_education_patch','communications_patch','orientation_pilot_patch'];
 const PATCH_META = {
   'us_flag_patch':{slotHint:'R_SHOULDER', w:60,h:40, img:'patches/us_flag_patch.png'},
@@ -278,7 +313,7 @@ const PATCH_META = {
   'orientation_pilot_patch':{slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/orientation_pilot_patch.png'}
 };
 
-// Alternates map: what to swap when moving to/from field uniforms.
+// Alternates pairs used on uniform transitions (service ↔ field)
 const ALTERNATES = {
   // badge ↔ patch
   badgeToPatch: {
@@ -296,12 +331,14 @@ const ALTERNATES = {
   }
 };
 
-// Ranks
+// Ranks list (cadet examples) + set for officer shoulder boards logic
 const rankList = ['C/AB','C/Amn','C/A1C','C/SrA','C/SSgt','C/TSgt','C/MSgt','C/SMSgt','C/CMSgt','C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col'];
 const officerRanks = new Set(['C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col']);
 
 /* =========================
    UI POPULATE & PRELOADS
+   - Populate all selects from the catalogs above
+   - Preload all images into a hidden container for instant cloning
 ========================= */
 function populate(sel, list){ sel.innerHTML=''; list.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); sel.appendChild(o); }); }
 function populateRemovers(){
@@ -310,7 +347,8 @@ function populateRemovers(){
 }
 function preloadList(prefix, list, folder){ list.forEach(id=>{ const img=document.createElement('img'); img.id=`${prefix}-${id}`; img.src=ASSET(`${folder}/${id}.png`); img.style.display='none'; assetsContainer.appendChild(img); }); }
 function preloadMeta(prefix, metaMap){
-  Object.entries(metaMap).forEach(([id,m])=>{ const img=document.createElement('img'); img.id=`${prefix}-${id}`; img.src=ASSET(m.img); img.style.display='none'; assetsContainer.appendChild(img); });
+  Object.entries(metaMap).forEach(([id,m])=>{ const img=document.createElement('img'); img.id=`${prefix}-${id}`; img.src=ASSET(m.img); img.style.display='none'; assetsContainer.appendChild(img);
+  });
 }
 populate($('#ribbonSelect'), ribbonList);
 populate($('#deviceSelect'), deviceList);
@@ -328,6 +366,8 @@ async function preloadAll(){ const imgs = Array.from(assetsContainer.querySelect
 
 /* =========================
    CANVAS LAYERS & BASE
+   - clearLayers(): removes either all layers or just a class (e.g., 'ribbon')
+   - applyBase(): places the selected uniform base image
 ========================= */
 function clearLayers(cls){ uniformCanvas.querySelectorAll(cls?`.layer.${cls}`:'.layer').forEach(n=>n.remove()); }
 function applyBase(){
@@ -346,6 +386,8 @@ function applyBase(){
 
 /* =========================
    RIBBON / MINI RENDER
+   - sortRibbons(): precedence
+   - renderRack(): draws ribbons OR mini-medals (mess/semi) using same ribbons list
 ========================= */
 function sortRibbons(arr){ return [...arr].sort((a,b)=> precedence(a.id)-precedence(b.id)); }
 function getTopRibbonY(){
@@ -360,6 +402,7 @@ function renderRack(){
   const items = sortRibbons(State.ribbons);
   if(!items.length) return;
   if(showRibbons){
+    // 3-wide ribbon rack geometry
     const w=25,h=8,pad=0, startTop=402, startLeft=303;
     const ids = items.map(x=>x.id);
     const rows=[];
@@ -374,6 +417,7 @@ function renderRack(){
         const el=orig.cloneNode(); el.className='layer ribbon'; el.style.display='block';
         el.style.top=`${y-h}px`; el.style.left=`${x0 + i*(w+pad)}px`; el.style.width=`${w}px`; el.style.height=`${h}px`;
         uniformCanvas.appendChild(el);
+        // overlay devices if the ribbon has one selected
         const rn = State.ribbons.find(r=>r.id===rid);
         if(rn && rn.device && rn.device!=='none'){
           const dev=$(`#devices-${rn.device}`); if(dev){
@@ -385,6 +429,7 @@ function renderRack(){
       });
     });
   } else {
+    // 5-wide mini-medal geometry (used on mess/semi when autoMini checked)
     const w=20,h=28,pad=6, startTop=400, startLeft=280;
     const ids = items.map(x=>x.id); const rows=[];
     if(ids.length%5!==0){ rows.push(ids.slice(0, ids.length%5)); }
@@ -405,6 +450,8 @@ function renderRack(){
 
 /* =========================
    BADGE RULES (per-uniform)
+   - Slot caps & total cap (UNIFORM_RULES)
+   - preferredSlotsForCategory(): placement priorities by category
 ========================= */
 const SLOT_CAPS_DEFAULT = { OLPA:1, OLPU:1, OLP:1, ORP:2, LP:1, LRP:1, ON:2, UN:1 };
 const TOTAL_CAP_DEFAULT = 4;
@@ -427,6 +474,12 @@ function preferredSlotsForCategory(cat){
   }
 }
 
+/* UNIFORM_RULES:
+   - totalCap: max countable badges (exempt items ignored)
+   - slotCaps: per-slot limits (e.g., ORP can allow 2)
+   - coords(): returns {slot:{x,y}} for the selected gender and ribbon baseline
+   - precedence(): optional sorter when multiple badges compete
+*/
 const UNIFORM_RULES = {
   blues_a: {
     totalCap: 4, slotCaps: {...SLOT_CAPS_DEFAULT, ORP:2},
@@ -469,11 +522,14 @@ function offsetXY(map, dx, dy){ const out={}; Object.entries(map).forEach(([k,v]
 
 /* =========================
    BADGE PLANNER / RENDER
+   - planBadgesPerUniform(): assigns badges to slots within caps and total count
+   - renderBadges(): draws badges at slot coordinates (stacks vertically on ON/UN)
 ========================= */
 const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[] };
 function resetBadgeSlots(){ Object.keys(badgeSlots).forEach(k=> badgeSlots[k]=[] ); }
 
 function enforceExclusive(newId){
+  // Enforce mutual exclusion between EMT and ground team progression items
   [['emt_basic_badge','ground_team_basic_badge'],['emt_intermediate','senior_ground_team_badge'],['emt_paramedic','master_ground_team_badge']]
     .forEach(pair=>{ if(pair.includes(newId)){ pair.forEach(conf=>{ if(conf!==newId && State.badges.includes(conf)){ State.badges = State.badges.filter(b=>b!==conf); } }); } });
 }
@@ -485,7 +541,7 @@ function planBadgesPerUniform(ids){
   const slotCaps = rule.slotCaps || SLOT_CAPS_DEFAULT;
   const totalCap = rule.totalCap ?? TOTAL_CAP_DEFAULT;
 
-  // order with optional uniform precedence
+  // Optional uniform-specific precedence
   const ordered = [...ids];
   if (typeof rule.precedence === 'function'){ ordered.sort((a,b)=> rule.precedence(a,b)); }
 
@@ -496,10 +552,11 @@ function planBadgesPerUniform(ids){
 
     const cat = meta.cat;
     let prefs = preferredSlotsForCategory(cat);
-    // force-sides
+    // Force-side logic for specific categories
     if(cat==='NSTF') prefs = ['ORP','ON'];
     if(cat==='COUNCIL') prefs = ['OLP','OLPU','OLPA'];
 
+    // Some badges don't count toward total
     const counts = !(EXEMPT_BADGES.has(id) || meta.cat==='NRA' || meta.cat==='ROCK');
     if(counts && counted >= totalCap) continue;
 
@@ -540,6 +597,7 @@ function renderBadges(){
       el.style.width  = `${meta.w}px`;
       el.style.height = `${meta.h}px`;
       uniformCanvas.appendChild(el);
+      // Stack vertically for ON/UN
       if(slot==='ON' || slot==='UN'){ y += meta.h + spacing; }
     }
   }
@@ -547,11 +605,14 @@ function renderBadges(){
 
 /* =========================
    PATCH PLANNER / RENDER
+   - planPatches(): check per-uniform caps and slot hints
+   - renderPatches(): draw patches and stack them vertically
 ========================= */
 const patchSlots = { L_SHOULDER:[], R_SHOULDER:[], CHEST_LEFT:[], CHEST_RIGHT:[] };
 function resetPatchSlots(){ Object.keys(patchSlots).forEach(k=> patchSlots[k]=[] ); }
 function planPatches(ids){
   resetPatchSlots();
+  // Per-uniform patch caps and allowed areas
   const capsPerUniform = {
     blues_a:{L_SHOULDER:1, R_SHOULDER:1, CHEST_LEFT:1, CHEST_RIGHT:1},
     blues_b:{L_SHOULDER:1, R_SHOULDER:1, CHEST_LEFT:1, CHEST_RIGHT:1},
@@ -577,6 +638,7 @@ function planPatches(ids){
 function renderPatches(){
   clearLayers('patch');
   planPatches(State.patches);
+  // Approximate coordinates for patches; stacked by slot
   const coords = { L_SHOULDER:{x:95,y:250, dy:80}, R_SHOULDER:{x:505,y:250, dy:80}, CHEST_LEFT:{x:260,y:420, dy:70}, CHEST_RIGHT:{x:580,y:420, dy:70} };
   for(const slot of Object.keys(patchSlots)){
     const ids = patchSlots[slot];
@@ -600,6 +662,8 @@ function renderPatches(){
 
 /* =========================
    RANK & NAMEPLATE
+   - renderRank(): places boards/chevrons/collar based on uniform style
+   - renderNameplate(): right-pocket nameplate image
 ========================= */
 const officerRanks = new Set(['C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col']);
 function renderRank(){
@@ -612,6 +676,7 @@ function renderRank(){
   if(!rankImg) return;
 
   if(rule==='blues_a' || rule==='blues_b' || rule==='aviator' || rule==='aviator_blazer' || rule==='corporate_field'){
+    // Officer: shoulder boards (rotated), Enlisted: chevrons on sleeve area
     if(isOfficer){
       [{left:350, top:160, rot:-90},{left:100, top:160, rot:90}].forEach(({left,top,rot})=>{
         const board = imgEl(boardSrc,'rank',{left,top,width:50,height:100,rot});
@@ -626,6 +691,7 @@ function renderRank(){
       uniformCanvas.appendChild(icon);
     }
   } else if(rule==='abu' || rule==='flight_suit'){
+    // Collar rank both sides with slight opposing tilt
     const coords = (UNIFORM_RULES[rule].coords(State.gender) || {});
     const L = coords.COLLAR_L || {x:210,y:250}; const R = coords.COLLAR_R || {x:410,y:250};
     [L,R].forEach(({x,y},i)=>{
@@ -634,6 +700,7 @@ function renderRank(){
       uniformCanvas.appendChild(ins);
     });
   } else if(rule==='mess_dress' || rule==='semi_formal'){
+    // Approx small boards near shoulder seam (visual stand-in)
     [{left:355, top:165, rot:-90},{left:95, top:165, rot:90}].forEach(({left,top,rot})=>{
       const board=imgEl(boardSrc,'rank',{left,top,width:45,height:95,rot}); uniformCanvas.appendChild(board);
       const ins=rankImg.cloneNode(); ins.className='layer rank'; ins.style.display='block';
@@ -647,20 +714,22 @@ function renderNameplate(){ clearLayers('nameplate'); const el=imgEl(ASSET('name
 
 /* =========================
    UI AVAILABILITY & FILTERS
+   - updateAvailabilityUI(): show/hide groups; filter pickers; run alternates on change
+   - filterBadgePicker()/filterPatchPicker(): keep pickers scoped to current uniform/member
 ========================= */
 function isFieldUniform(u){ return u==='abu' || u==='flight_suit' || u==='corporate_field'; }
 function updateAvailabilityUI(prevUniform){
   const a = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
-  // Show/Hide groups
+  // Show/Hide groups per uniform
   $('#groupRibbons').classList.toggle('hidden', !a.showRibbons);
   $('#groupPatches').classList.toggle('hidden', !a.showPatches);
   $('#groupBadges').classList.toggle('hidden', !a.showBadges);
 
-  // Filter options in pickers based on member & uniform
+  // Filter options in pickers (authorization + uniform context)
   filterBadgePicker();
   filterPatchPicker();
 
-  // Alternate swapping on uniform change
+  // Perform alternate swapping when uniform actually changed
   if(prevUniform && prevUniform!==State.uniform){
     applyAlternates(prevUniform, State.uniform);
   }
@@ -670,7 +739,7 @@ function filterBadgePicker(){
   const sel = $('#badgeSelect'); const cur = sel.value;
   const allowed = badgeList.filter(id=>{
     if(State.member==='cadet' && !allowedCadetBadges.has(id)) return false;
-    // Field uniforms don't wear metal badges for this tool → hide badges when field uniform AND UI hides badges
+    // Hide metal badges on field uniforms when UI forbids badges
     if(isFieldUniform(State.uniform) && !UI_AUTHZ[State.uniform].showBadges) return false;
     return true;
   });
@@ -681,7 +750,7 @@ function filterBadgePicker(){
 function filterPatchPicker(){
   const sel = $('#patchSelect'); const cur = sel.value;
   const allowed = patchList.filter(id=>{
-    // Service dress (except corporate_field setting here) hides patch UI
+    // Service dress hides patches (except corporate_field which allows)
     if(!UI_AUTHZ[State.uniform].showPatches) return false;
     return true;
   });
@@ -691,15 +760,17 @@ function filterPatchPicker(){
 
 /* =========================
    ALTERNATE CARRYOVER LOGIC
+   - applyAlternates(): on uniform switch, map certain badges/ribbons to patches (and back)
+   - Keeps ribbons list intact; renderRack() decides ribbons vs minis
 ========================= */
 function applyAlternates(fromU, toU){
   const fromField = isFieldUniform(fromU);
   const toField = isFieldUniform(toU);
 
-  // Ribbons ⇄ Mini-medals handled in render, but keep ribbons list intact (we still show same IDs).
-  // Badge ↔ Patch alternates (field ↔ service)
+  // Ribbons ⇄ Mini-medals handled by renderRack() (no list change needed)
+
+  // Service → Field: add patch equivalents if the badge/ribbon is present
   if(!fromField && toField){
-    // Going into field: swap certain badges/ribbons into patches
     // badges → patches
     Object.entries(ALTERNATES.badgeToPatch).forEach(([badge,patch])=>{
       if(State.badges.includes(badge) && !State.patches.includes(patch)){ State.patches.push(patch); }
@@ -709,7 +780,7 @@ function applyAlternates(fromU, toU){
       if(State.ribbons.find(r=>r.id===ribbon) && !State.patches.includes(patch)){ State.patches.push(patch); }
     });
   } else if(fromField && !toField){
-    // Leaving field: swap patches back to their equivalents
+    // Field → Service: restore badge/ribbon equivalents if their patches are present
     Object.entries(ALTERNATES.patchToBadge).forEach(([patch,badge])=>{
       if(State.patches.includes(patch) && !State.badges.includes(badge)){ State.badges.push(badge); }
     });
@@ -718,7 +789,7 @@ function applyAlternates(fromU, toU){
     });
   }
 
-  // Trim disallowed by role when moving Senior → Cadet (Cadet → Senior retains items)
+  // Maintain cadet-only set when member=Cadet
   if(State.member==='cadet'){
     State.badges = State.badges.filter(isCadetAuthorized);
   }
@@ -727,6 +798,7 @@ function applyAlternates(fromU, toU){
 
 /* =========================
    VALIDATOR (lightweight)
+   - fitCanvas(): scale preview for screen size
 ========================= */
 function fitCanvas(){
   if(!previewEl) return;
@@ -741,12 +813,14 @@ window.addEventListener('orientationchange', fitCanvas);
 
 /* =========================
    ORCHESTRATION
+   - fullRender(): single call to rebuild the scene
+   - refreshUI(): syncs selectors to State
 ========================= */
 function fullRender(prevUniform){
   applyBase();
-  // Render controls-aware
+  // Render controls-aware (visibility and alternates)
   updateAvailabilityUI(prevUniform);
-  // Respect visibility
+  // Respect per-uniform visibility when drawing
   if(UI_AUTHZ[State.uniform]?.showPatches) renderPatches();
   if(UI_AUTHZ[State.uniform]?.showBadges)  renderBadges();
   if(UI_AUTHZ[State.uniform]?.showRibbons || UNIFORMS[State.uniform].mini) renderRack();
@@ -764,12 +838,14 @@ function refreshUI(){
 
 /* =========================
    HANDLERS
+   - Wire up all UI controls to mutate State and call fullRender()
 ========================= */
 $('#applyBase').onclick=()=>{ State.assetBase=$('#assetBase').value.trim()||'images'; fullRender(); };
 
 $('#memberSelect').onchange=(e)=>{
   const was = State.member;
   State.member=e.target.value;
+  // Cadets cannot wear Polo or Mess Dress → auto-switch to Blues A and trim badges
   if(State.member==='cadet' && (State.uniform==='polo' || State.uniform==='mess_dress')){
     alert('Cadets are not authorized Polo or Mess Dress. Switching to Blues A.');
     const prevU = State.uniform;
@@ -780,7 +856,7 @@ $('#memberSelect').onchange=(e)=>{
     fullRender(prevU);
     return;
   }
-  // Senior → Cadet trims; Cadet → Senior keeps all
+  // Senior → Cadet trims; Cadet → Senior retains
   if(State.member==='cadet'){ State.badges = State.badges.filter(isCadetAuthorized); }
   populateRemovers();
   fullRender();
@@ -791,7 +867,7 @@ $('#genderSelect').onchange=(e)=>{ State.gender=e.target.value; fullRender(); };
 $('#uniformSelect').onchange=(e)=>{
   const prevU = State.uniform;
   State.uniform=e.target.value;
-  // If new uniform cannot display ribbons/medals, we keep data but the UI hides them.
+  // Data retained; visibility + alternates handled in fullRender(prevU)
   fullRender(prevU);
 };
 
@@ -832,6 +908,7 @@ $('#setRank').onclick=()=>{ State.rank=$('#rankSelect').value; fullRender(); };
 $('#addNameplate').onclick=()=>{ renderNameplate(); };
 
 $('#downloadImage').onclick=()=>{
+  // Export the current canvas as a high-res PNG
   html2canvas(uniformCanvas,{scale:3}).then(c=>{
     const a=document.createElement('a');
     a.download=`CAP_Uniform_${Date.now()}.png`;
@@ -842,6 +919,9 @@ $('#downloadImage').onclick=()=>{
 
 /* =========================
    BOOT
+   - Try to load state from URL
+   - Preload assets
+   - Initial full render
 ========================= */
 (async function init(){
   tryLoadStateFromURL();
