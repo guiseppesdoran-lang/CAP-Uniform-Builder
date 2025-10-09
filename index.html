@@ -22,6 +22,7 @@
   button.ghost{background:#ffffff;color:var(--ink)}
   .row{display:flex;gap:8px}
   .two .col{flex:1}
+  .hidden{display:none !important}
 
   /* Device tool */
   #deviceTool{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fefefe}
@@ -87,29 +88,31 @@
 
     <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
 
-    <label>Ribbons</label>
-    <div class="row two">
-      <div class="col"><select id="ribbonSelect"></select></div>
-      <div class="col"><select id="deviceSelect"></select></div>
-    </div>
-    <div class="row two" style="margin-top:6px">
-      <div class="col"><button id="addRibbon">Add Ribbon</button></div>
-      <div class="col"><button id="clearRibbons" class="ghost">Clear Ribbons</button></div>
-    </div>
-    <label><input type="checkbox" id="autoMini" checked> Auto-convert ribbons → mini-medals on Mess/Semi-formal</label>
-
-    <!-- Advanced device tool (multi-select + quantities + click-to-apply) -->
-    <div id="deviceTool">
-      <strong>Ribbon Devices — Multi-Apply</strong>
-      <div id="devicePicker"></div>
-      <div class="row" style="margin-top:8px">
-        <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
-        <button id="deviceRemoveModeBtn" type="button" class="ghost">Enable Remove Mode</button>
-        <button id="deviceClearSelectionBtn" type="button" class="ghost">Clear Selection</button>
+    <div id="groupRibbons">
+      <label>Ribbons</label>
+      <div class="row two">
+        <div class="col"><select id="ribbonSelect"></select></div>
+        <div class="col"><select id="deviceSelect"></select></div>
       </div>
-      <small style="color:#516079;display:block;margin-top:6px">
-        Choose devices + quantities → Enable Apply Mode → click a ribbon to add them. Use Remove Mode to clear devices from a ribbon.
-      </small>
+      <div class="row two" style="margin-top:6px">
+        <div class="col"><button id="addRibbon">Add Ribbon</button></div>
+        <div class="col"><button id="clearRibbons" class="ghost">Clear Ribbons</button></div>
+      </div>
+      <label><input type="checkbox" id="autoMini" checked> Auto-convert ribbons → mini-medals on Mess/Semi-formal</label>
+
+      <!-- Advanced device tool (multi-select + quantities + click-to-apply) -->
+      <div id="deviceTool">
+        <strong>Ribbon Devices — Multi-Apply</strong>
+        <div id="devicePicker"></div>
+        <div class="row" style="margin-top:8px">
+          <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
+          <button id="deviceRemoveModeBtn" type="button" class="ghost">Enable Remove Mode</button>
+          <button id="deviceClearSelectionBtn" type="button" class="ghost">Clear Selection</button>
+        </div>
+        <small style="color:#516079;display:block;margin-top:6px">
+          Choose devices + quantities → Enable Apply Mode → click a ribbon to add them. Use Remove Mode to clear devices from a ribbon.
+        </small>
+      </div>
     </div>
 
     <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
@@ -122,6 +125,21 @@
     <div class="row two" style="margin-top:6px">
       <div class="col"><select id="removeBadgeSelect"></select></div>
       <div class="col"><button id="removeBadge" class="ghost">Remove Badge</button></div>
+    </div>
+
+    <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
+
+    <div id="groupPatches">
+      <label>Patches</label>
+      <div class="row two">
+        <div class="col"><select id="patchSelect"></select></div>
+        <div class="col"><button id="addPatch">Add Patch</button></div>
+      </div>
+      <div class="row two" style="margin-top:6px">
+        <div class="col"><select id="removePatchSelect"></select></div>
+        <div class="col"><button id="removePatch" class="ghost">Remove Patch</button></div>
+      </div>
+      <div class="hint">Field uniforms swap certain badges/ribbons into their patch equivalents automatically.</div>
     </div>
 
     <hr style="margin:14px 0;border:none;border-top:1px solid var(--line)">
@@ -146,7 +164,7 @@
 <div class="layer" id="assets" style="display:none"></div>
 
 <script>
-/************** Config & Catalogs (kept exactly as in your first file) **************/
+/* ============ State ============ */
 const State = {
   member:'cadet',
   gender:'male',
@@ -155,6 +173,7 @@ const State = {
   // ribbons: [{id, devices:{ deviceId: qty, ... }}]
   ribbons:[],
   badges:[],
+  patches:[],
   rank:null,
   // device tool state
   deviceApplyMode:false,
@@ -167,31 +186,64 @@ const by = id => document.getElementById(id);
 const uniformCanvas  = by('uniformCanvas');
 const assetsContainer= by('assets');
 
+/* ============ Helpers ============ */
 function ASSET(p){
   const b=(State.assetBase||'images').replace(/\/$/,'');
   return `${b}/${p}`;
 }
+function isFieldUniform(u){ return u==='abu' || u==='flight_suit' || u==='corporate_field'; }
 
-/* ---------- Ribbons (unchanged list & precedence) ---------- */
+/* ============ UNIFORMS + UI Authz (what controls show) ============ */
+const UNIFORMS = {
+  blues_a:{male:'base/jacket_male.png',         female:'base/jacket_female.png',         ribbons:true,  mini:false},
+  blues_b:{male:'base/blues_class_b_male.png',  female:'base/blues_class_b_female.png',  ribbons:true,  mini:false},
+  mess_dress:{male:'base/mess_dress_male.png',  female:'base/mess_dress_female.png',     ribbons:false, mini:true},
+  semi_formal:{male:'base/semi_male.png',       female:'base/semi_female.png',           ribbons:false, mini:true},
+  aviator:{male:'base/aviator_shirt_male.png',  female:'base/aviator_shirt_female.png',  ribbons:true,  mini:false},
+  aviator_blazer:{male:'base/aviator_blazer_male.png',female:'base/aviator_blazer_female.png', ribbons:true, mini:false},
+  corporate_field:{male:'base/corporate_field_male.png',female:'base/corporate_field_female.png', ribbons:true, mini:false},
+  abu:{male:'base/ABU_male.png',                female:'base/ABU_female.png',            ribbons:false, mini:false},
+  flight_suit:{male:'base/flight_suit_male.png',female:'base/flight_suit_female.png',    ribbons:false, mini:false},
+  polo:{male:'base/polo_male.png',              female:'base/polo_female.png',           ribbons:false, mini:false}
+};
+
+const UI_AUTHZ = {
+  // Service/uniforms that show ribbons & badges, hide patches
+  blues_a:{ showRibbons:true, showBadges:true,  showPatches:false },
+  blues_b:{ showRibbons:true, showBadges:true,  showPatches:false },
+  aviator:{ showRibbons:true, showBadges:true,  showPatches:false },
+  aviator_blazer:{ showRibbons:true, showBadges:true, showPatches:false },
+  corporate_field:{ showRibbons:true, showBadges:false, showPatches:true }, // treat as field for badges
+  // Mess/semi use mini-medals (no ribbon UI)
+  mess_dress:{ showRibbons:false, showBadges:true,  showPatches:false },
+  semi_formal:{ showRibbons:false, showBadges:true, showPatches:false },
+  // Field uniforms show patches, hide ribbons and metal badges for this tool
+  abu:{ showRibbons:false, showBadges:false, showPatches:true },
+  flight_suit:{ showRibbons:false, showBadges:false, showPatches:true },
+  polo:{ showRibbons:false, showBadges:false, showPatches:false }
+};
+
+/* ============ RIBBONS / DEVICES ============ */
 const ribbonList = [
-  'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award','spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon'
+  'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award','spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon',
+  // include for alt demo
+  'orientation_pilot_ribbon'
 ];
 const precedence = id => ribbonList.indexOf(id);
 
-/* ---------- Devices (kept list & .webp paths) ---------- */
 const deviceList = ['1_Bronze_Star_Device','1_Silver_Star_Device'];
 const deviceMeta = {
   '1_Bronze_Star_Device': { label:'Bronze Star', src:'devices/1_Bronze_Star_Device.webp', w:10, h:10, weight:1 },
   '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 }
 };
 
-/* ---------- Badges & rules (kept as in your first file) ---------- */
+/* ============ BADGES (subset) ============ */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
   'buddist_chaplin','christian_chaplin','communications_technician_badge','cyber_badges','emergency_services_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges'
 ];
 const allowedCadetBadges = new Set([
-  'solo_badge','pre_solo_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge','emt_basic_badge','emt_intermediate','emt_paramedic','aerospace','model_rocketry_badge','communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges','cadetadvisory','cd','nra_marksman_badge','AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge','emergency_services_badge','historian_technicianIbadge'
+  'solo_badge','pre_solo_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge','emt_basic_badge','emt_intermediate','emt_paramedic','aerospace','model_rocketry_badge','communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges','cadetadvisory','cd','nra_marksman_badge','AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C','observer_badge','emergency_services_badge','historian_technicianIbadge'
 ]);
 const exclusiveBadges = [
   ['emt_basic_badge','ground_team_basic_badge'],
@@ -209,7 +261,7 @@ const badgeLocations = {
   'buddist_chaplin':'ORP','christian_chaplin':'ORP','jewish_chaplin':'ORP','legal_officer':'ORP','medical_officer':'ORP','nurse_officer':'ORP','muslim_chaplin':'ORP'
 };
 const customBadgeSizes = {
-  'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_0E35802A29801':{width:60,height:25},
+  'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_0E35802A29801':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
   'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:60,height:60},
   'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:60,height:60},'emt_basic_badge':{width:60,height:60},
   'emt_intermediate':{width:60,height:60},'emt_paramedic':{width:60,height:60},'ground_team_basic_badge':{width:25,height:20},
@@ -220,25 +272,42 @@ const customBadgeSizes = {
   'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25}
 };
 
-/* ---------- Ranks (unchanged) ---------- */
+/* ============ PATCHES + Alternates ============ */
+const patchList = ['us_flag_patch','command_patch','wing_patch','unit_patch','aerospace_education_patch','communications_patch','orientation_pilot_patch'];
+const PATCH_META = {
+  'us_flag_patch':{slotHint:'R_SHOULDER', w:60,h:40, img:'patches/us_flag_patch.png'},
+  'command_patch':{slotHint:'L_SHOULDER', w:70,h:70, img:'patches/command_patch.png'},
+  'wing_patch':{slotHint:'L_SHOULDER', w:60,h:60, img:'patches/wing_patch.png'},
+  'unit_patch':{slotHint:'R_SHOULDER', w:60,h:60, img:'patches/unit_patch.png'},
+  'aerospace_education_patch':{slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/aerospace_education_patch.png'},
+  // Alternates for field uniforms:
+  'communications_patch':{slotHint:'CHEST_RIGHT', w:60,h:60, img:'patches/communications_patch.png'},
+  'orientation_pilot_patch':{slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/orientation_pilot_patch.png'}
+};
+
+// Alternates map: swap when moving to/from field uniforms.
+const ALTERNATES = {
+  // badge ↔ patch
+  badgeToPatch: {
+    'communications_technician_badge':'communications_patch'
+  },
+  patchToBadge: {
+    'communications_patch':'communications_technician_badge'
+  },
+  // ribbon ↔ patch
+  ribbonToPatch: {
+    'orientation_pilot_ribbon':'orientation_pilot_patch'
+  },
+  patchToRibbon: {
+    'orientation_pilot_patch':'orientation_pilot_ribbon'
+  }
+};
+
+/* ============ Ranks ============ */
 const rankList = ['C/AB','C/Amn','C/A1C','C/SrA','C/SSgt','C/TSgt','C/MSgt','C/SMSgt','C/CMSgt','C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col'];
 const officerRanks = new Set(['C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col']);
 
-/* ---------- Uniform bases (kept capitalized ABU as in your first file) ---------- */
-const UNIFORMS = {
-  blues_a:{male:'base/jacket_male.png',         female:'base/jacket_female.png',         ribbons:true,  mini:false},
-  blues_b:{male:'base/blues_class_b_male.png',female:'base/blues_class_b_female.png',ribbons:true,mini:false},
-  mess_dress:{male:'base/mess_dress_male.png',female:'base/mess_dress_female.png',ribbons:false,mini:true},
-  semi_formal:{male:'base/semi_male.png',       female:'base/semi_female.png',           ribbons:false, mini:true},
-  aviator:{male:'base/aviator_shirt_male.png',female:'base/aviator_shirt_female.png',ribbons:true,mini:false},
-  aviator_blazer:{male:'base/aviator_blazer_male.png',female:'base/aviator_blazer_female.png', ribbons:true, mini:false},
-  corporate_field:{male:'base/corporate_field_male.png',female:'base/corporate_field_female.png', ribbons:true, mini:false},
-  abu:{male:'base/ABU_male.png',                female:'base/ABU_female.png',            ribbons:false, mini:false},
-  flight_suit:{male:'base/flight_suit_male.png',female:'base/flight_suit_female.png',    ribbons:false, mini:false},
-  polo:{male:'base/polo_male.png',              female:'base/polo_female.png',           ribbons:false, mini:false}
-};
-
-/******************** UI populate ********************/
+/* ============ Populators & Preloaders ============ */
 function optionize(sel, list){
   sel.innerHTML='';
   list.forEach(v=>{
@@ -249,8 +318,7 @@ function optionize(sel, list){
   });
 }
 function populateBadgesRemove(){
-  const sel=by('removeBadgeSelect');
-  if(!sel) return;
+  const sel=by('removeBadgeSelect'); if(!sel) return;
   sel.innerHTML='';
   State.badges.forEach(id=>{
     const o=document.createElement('option');
@@ -259,8 +327,17 @@ function populateBadgesRemove(){
     sel.appendChild(o);
   });
 }
+function populatePatchesRemove(){
+  const sel=by('removePatchSelect'); if(!sel) return;
+  sel.innerHTML='';
+  State.patches.forEach(id=>{
+    const o=document.createElement('option');
+    o.value=id;
+    o.textContent=id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    sel.appendChild(o);
+  });
+}
 
-/* Preload helpers (robust; tolerate missing) */
 function preloadSimple(prefix, list, folder, ext=".png"){
   list.forEach(id=>{
     const img=document.createElement('img');
@@ -287,17 +364,26 @@ function preloadWithResolver(prefix, list, resolver){
   });
 }
 
-/* Populate & preload */
+/* Initial UI & Preloads */
 optionize(by('ribbonSelect'), ribbonList);
 optionize(by('deviceSelect'), ['none', ...deviceList]);
 optionize(by('rankSelect'), rankList);
 optionize(by('badgeSelect'), badgeList);
+optionize(by('patchSelect'), patchList);
+
 preloadSimple('ribbons', ribbonList, 'ribbons', '.png');
 preloadWithResolver('devices', deviceList, id => deviceMeta[id].src);
 preloadSimple('ranks', rankList, 'ranks', '.png');
 preloadSimple('badges', badgeList, 'badges', '.png');
+Object.entries(PATCH_META).forEach(([id,m])=>{
+  const img=document.createElement('img');
+  img.id=`patch-${id}`;
+  img.src=ASSET(m.img);
+  img.style.display='none';
+  assetsContainer.appendChild(img);
+});
 
-/******************** Base & layers ********************/
+/* ============ Base & layers ============ */
 function clearLayers(cls){
   const sel = cls ? `.layer.${cls}` : '.layer';
   uniformCanvas.querySelectorAll(sel).forEach(n=>n.remove());
@@ -316,10 +402,8 @@ function applyJacket(){
   uniformCanvas.appendChild(img);
 }
 
-/******************** Ribbons / Mini-Medals ********************/
-function sortRibbons(arr){
-  return [...arr].sort((a,b)=> precedence(a.id)-precedence(b.id));
-}
+/* ============ Ribbons / Mini-Medals (Centered at 580, 507) ============ */
+function sortRibbons(arr){ return [...arr].sort((a,b)=> precedence(a.id)-precedence(b.id)); }
 function getTopRibbonY(){
   const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile')];
   if(!layers.length) return null;
@@ -332,9 +416,8 @@ function ensureRibbonObj(id){
   return r;
 }
 
-/* ======= UPDATED: centers rack at (580,507) with 60×19.2 ribbons ======= */
 function renderRack(){
-  // Clear prior ribbon tiles, minis, and device overlays
+  // Clean ribbon-related layers
   [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
 
   const allowMini = UNIFORMS[State.uniform].mini && by('autoMini').checked;
@@ -343,106 +426,68 @@ function renderRack(){
   if(!items.length) return;
 
   if(showRibbons){
-    // Anchor for the center of the entire rack
-    const ANCHOR_CX = 580;
-    const ANCHOR_CY = 507;
-
-    // Ribbon geometry (from your sample element)
-    const RIB_W = 60;
-    const RIB_H = 19.2;
-    const RIB_PAD = 2;
-
-    // Device geometry (centered on each ribbon)
-    const DEV_W = 10;
-    const DEV_H = 10;
-    const DEV_Y_OFFSET = Math.round((RIB_H - DEV_H) / 2);
-
-    // Build rows of 3; top partial row (if any) comes first
+    // Center the rack at (cx, baseTop) with 60x19.2 tiles in rows of 3
+    const W=60, H=19.2, PAD=0;
+    const cx = 580;      // horizontal center
+    const baseTop = 507; // top of bottom row
     const ids = items.map(x=>x.id);
+
+    // Build rows (bottom to top), width 3 per row
     const rows=[];
     if(ids.length%3!==0){ rows.push(ids.slice(0, ids.length%3)); }
     for(let i=ids.length%3;i<ids.length;i+=3) rows.push(ids.slice(i,i+3));
-
-    // Total rack height to vertically center at ANCHOR_CY
-    const totalRows = rows.length;
-    const totalHeight = totalRows * RIB_H + (totalRows - 1) * RIB_PAD;
-    const rackTopY = ANCHOR_CY - totalHeight/2;
+    rows.reverse(); // bottom row first
 
     rows.forEach((row,ri)=>{
-      const rowWidth = row.length * RIB_W + (row.length - 1) * RIB_PAD;
-      const rowLeftX = ANCHOR_CX - rowWidth/2;
-      const rowTopY  = rackTopY + ri * (RIB_H + RIB_PAD);
-
+      // compute left for this row so the row is centered at cx
+      const totalW = row.length*W + (row.length-1)*PAD;
+      const rowLeft = Math.round(cx - totalW/2);
+      const rowTop  = Math.round(baseTop - ri*(H+PAD));
       row.forEach((rid,i)=>{
         const orig=by(`ribbons-${rid}`); if(!orig) return;
 
-        // Ribbon tile (clickable for device tool)
+        // tile
         const el=orig.cloneNode();
         el.className='layer ribbonTile';
         el.style.display='block';
-        const leftPx = rowLeftX + i*(RIB_W + RIB_PAD);
-        const topPx  = rowTopY;
-        el.style.left = `${leftPx}px`;
-        el.style.top  = `${topPx}px`;
-        el.style.width  = `${RIB_W}px`;
-        el.style.height = `${RIB_H}px`;
+        const leftPx = rowLeft + i*(W+PAD);
+        const topPx  = rowTop;
+        el.style.left=`${leftPx}px`;
+        el.style.top =`${topPx}px`;
+        el.style.width =`${W}px`;
+        el.style.height=`${H}px`;
         el.dataset.rid = rid;
         el.style.pointerEvents='auto';
         el.onclick = () => onRibbonTileClick(rid);
         uniformCanvas.appendChild(el);
 
-        // Devices for this ribbon (centered horizontally)
-        const r = ensureRibbonObj(rid);
-        const flat=[];
-        for(const [devId,count] of Object.entries(r.devices||{})){
-          const meta = deviceMeta[devId]; if(!meta) continue;
-          for(let k=0;k<count;k++) flat.push({id:devId,label:meta.label,src:meta.src,w:DEV_W,h:DEV_H,weight:meta.weight});
-        }
-        if(flat.length){
-          flat.sort((a,b)=> (b.weight-a.weight) || (a.label||a.id).localeCompare(b.label||b.id));
-          const GAP = 3;
-          const totalW = flat.reduce((s,d,ix)=> s + d.w + (ix?GAP:0), 0);
-          let dx = Math.round(leftPx + (RIB_W - totalW)/2);
-          const dy = Math.round(topPx + DEV_Y_OFFSET);
-          flat.forEach(d=>{
-            const im=document.createElement('img');
-            im.className='layer ribbonDevice';
-            im.src = ASSET(d.src);
-            im.alt = d.label || d.id;
-            im.style.display='block';
-            im.style.left = `${dx}px`;
-            im.style.top  = `${dy}px`;
-            im.style.width  = `${d.w}px`;
-            im.style.height = `${d.h}px`;
-            im.onerror=()=>{ im.remove(); };
-            uniformCanvas.appendChild(im);
-            dx += d.w + GAP;
-          });
-        }
+        // devices for this tile
+        drawDevicesOnRibbon(rid, leftPx, topPx, W, H);
       });
     });
   } else {
-    // Mini-medals (unchanged layout)
+    // Mini-medals (keep existing geometry)
     const w=20,h=28, pad=6;
     const startTop=400, startLeft=280;
     const ids = items.map(x=>x.id);
+
     const rows=[];
     if(ids.length%5!==0){ rows.push(ids.slice(0, ids.length%5)); }
     for(let i=ids.length%5;i<ids.length;i+=5) rows.push(ids.slice(i,i+5));
     rows.reverse();
+
     rows.forEach((row,ri)=>{
-      const totalW = row.length * w + (row.length-1)*pad;
-      const x0 = startLeft + Math.round((5*w + 4*pad - totalW)/2);
-      const y  = startTop - ri*(h+pad);
+      const x0 = (row.length===5) ? startLeft : startLeft + Math.round((5-row.length)*(w+pad)/2);
+      const y = startTop - ri*(h+pad);
       row.forEach((rid,i)=>{
         const el=document.createElement('img');
         el.src=ASSET(`mini_medals/${rid}.png`);
         el.className='layer ribbonMini';
         el.style.display='block';
-        el.style.top  = `${y-h}px`;
-        el.style.left = `${x0 + i*(w+pad)}px`;
-        el.style.width  = `${w}px`;
-        el.style.height = `${h}px`;
+        el.style.top=`${y-h}px`;
+        el.style.left=`${x0 + i*(w+pad)}px`;
+        el.style.width=`${w}px`;
+        el.style.height=`${h}px`;
         el.onerror=()=>{}; // tolerate missing mini
         uniformCanvas.appendChild(el);
       });
@@ -464,19 +509,17 @@ function onRibbonTileClick(rid){
   }
   renderRack();
 }
+
 function drawDevicesOnRibbon(rid, leftPx, topPx, w, h){
-  // (kept for compatibility if called elsewhere)
   const r = ensureRibbonObj(rid);
   const flat=[];
   for(const [devId,count] of Object.entries(r.devices||{})){
     const meta = deviceMeta[devId];
     if(!meta) continue;
-    for(let i=0;i<count;i++){
-      flat.push({id:devId, ...meta});
-    }
+    for(let i=0;i<count;i++){ flat.push({id:devId, ...meta}); }
   }
   if(!flat.length) return;
-
+  // Order: heavier first, then name
   flat.sort((a,b)=>(b.weight-a.weight)|| (a.label||a.id).localeCompare(b.label||b.id));
 
   const gap = 3;
@@ -492,7 +535,7 @@ function drawDevicesOnRibbon(rid, leftPx, topPx, w, h){
     im.style.display='block';
     im.style.left = `${x}px`;
     im.style.top  = `${y}px`;
-    im.style.width  = `${d.w}px`;
+    im.style.width = `${d.w}px`;
     im.style.height= `${d.h}px`;
     im.onerror=()=>{ im.remove(); };
     uniformCanvas.appendChild(im);
@@ -500,7 +543,7 @@ function drawDevicesOnRibbon(rid, leftPx, topPx, w, h){
   });
 }
 
-/******************** Advanced Device Tool ********************/
+/* ============ Advanced Device Tool ============ */
 function buildDevicePicker(){
   const wrap = by('devicePicker');
   wrap.innerHTML = '';
@@ -561,7 +604,7 @@ function wireDeviceUI(){
   });
 }
 
-/******************** Badges ********************/
+/* ============ Badges (basic placement) ============ */
 const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[] };
 function resetBadgeSlots(){ Object.keys(badgeSlots).forEach(k=> badgeSlots[k]=[] ); }
 function isCadetAuthorized(id){ return allowedCadetBadges.has(id); }
@@ -579,18 +622,20 @@ function enforceExclusive(newId){
 function renderAllBadges(){
   clearLayers('badge');
   resetBadgeSlots();
+  // Service uniforms can show; field uniforms hide badges by UI_AUTHZ
+  if(!UI_AUTHZ[State.uniform]?.showBadges) return;
+
   const maxTotal=5;
   const applied=[];
   for(const id of State.badges){
+    if(State.member==='cadet' && !isCadetAuthorized(id)) continue;
     if(applied.length>=maxTotal) break;
     placeBadgeByCategory(id);
     applied.push(id);
   }
 }
 function placeBadgeByCategory(id){
-  const img=by(`badges-${id}`);
-  if(!img) return;
-
+  const img=by(`badges-${id}`); if(!img) return;
   let slot = badgeLocations[id] || 'UN';
   if(id==='nra_marksman_badge') slot='LRP';
   if(id==='model_rocketry_badge') slot='LP';
@@ -604,14 +649,13 @@ function placeBadgeByCategory(id){
   const baseRibbonY = getTopRibbonY();
   const yMap = {
     OLP: baseRibbonY!==null? baseRibbonY - 25 : 394,
-    OLPU: baseRibbonY!==null? baseRibbonY - 5 : 424,
+    OLPU: baseRibbonY!==null? baseRibbonY -  5 : 424,
     OLPA: baseRibbonY!==null? baseRibbonY - 55 : 364,
     ORP: 300, ON: 350, UN: 390, LRP: 405, LP: 450
   };
   const xMap = { OLP:328, OLPU:328, OLPA:328, ORP:100, ON:150, UN:150, LRP:335, LP:350 };
 
   let y=yMap[slot]||390, x=xMap[slot]||150;
-
   if(slot==='ON' || slot==='UN'){
     const stackIdx = badgeSlots[slot].length;
     for(let i=0;i<stackIdx;i++){
@@ -633,7 +677,65 @@ function placeBadgeByCategory(id){
   badgeSlots[slot].push(id);
 }
 
-/******************** Rank & Nameplate ********************/
+/* ============ Patches ============ */
+const patchSlots = { L_SHOULDER:[], R_SHOULDER:[], CHEST_LEFT:[], CHEST_RIGHT:[] };
+function resetPatchSlots(){ Object.keys(patchSlots).forEach(k=> patchSlots[k]=[] ); }
+function planPatches(ids){
+  resetPatchSlots();
+  const capsPerUniform = {
+    blues_a:{L_SHOULDER:1, R_SHOULDER:1, CHEST_LEFT:1, CHEST_RIGHT:1},
+    blues_b:{L_SHOULDER:1, R_SHOULDER:1, CHEST_LEFT:1, CHEST_RIGHT:1},
+    aviator:{L_SHOULDER:1, R_SHOULDER:1, CHEST_LEFT:1, CHEST_RIGHT:1},
+    aviator_blazer:{L_SHOULDER:1, R_SHOULDER:1, CHEST_LEFT:0, CHEST_RIGHT:0},
+    corporate_field:{L_SHOULDER:2, R_SHOULDER:2, CHEST_LEFT:1, CHEST_RIGHT:1},
+    abu:{L_SHOULDER:2, R_SHOULDER:2, CHEST_LEFT:1, CHEST_RIGHT:1},
+    flight_suit:{L_SHOULDER:2, R_SHOULDER:2, CHEST_LEFT:2, CHEST_RIGHT:2},
+    semi_formal:{L_SHOULDER:0, R_SHOULDER:0, CHEST_LEFT:0, CHEST_RIGHT:0},
+    mess_dress:{L_SHOULDER:0, R_SHOULDER:0, CHEST_LEFT:0, CHEST_RIGHT:0},
+    polo:{L_SHOULDER:0, R_SHOULDER:0, CHEST_LEFT:0, CHEST_RIGHT:0}
+  }[State.uniform] || {L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1};
+
+  for(const id of ids){
+    const meta = PATCH_META[id]; if(!meta) continue;
+    const hint = meta.slotHint || 'L_SHOULDER';
+    const cap = capsPerUniform[hint] ?? 0;
+    if(cap===0) continue;
+    if(patchSlots[hint].length >= cap) continue;
+    patchSlots[hint].push(id);
+  }
+}
+function renderPatches(){
+  clearLayers('patch');
+  if(!UI_AUTHZ[State.uniform]?.showPatches) return;
+
+  planPatches(State.patches);
+  const coords = {
+    L_SHOULDER:{x:95,y:250, dy:80},
+    R_SHOULDER:{x:505,y:250, dy:80},
+    CHEST_LEFT:{x:260,y:420, dy:70},
+    CHEST_RIGHT:{x:580,y:420, dy:70}
+  };
+  for(const slot of Object.keys(patchSlots)){
+    const ids = patchSlots[slot];
+    let {x,y,dy} = coords[slot]||{x:0,y:0,dy:70};
+    for(const id of ids){
+      const meta = PATCH_META[id];
+      const src = document.getElementById('patch-'+id);
+      const el = (src? src.cloneNode(): new Image());
+      if(!src){ el.src = ASSET(meta.img); }
+      el.className='layer patch';
+      el.style.display='block';
+      el.style.left = `${x - meta.w/2}px`;
+      el.style.top  = `${y - meta.h/2}px`;
+      el.style.width = `${meta.w}px`;
+      el.style.height= `${meta.h}px`;
+      uniformCanvas.appendChild(el);
+      y += dy;
+    }
+  }
+}
+
+/* ============ Rank & Nameplate ============ */
 function renderRank(id){
   clearLayers('rank');
   if(!id) return;
@@ -703,19 +805,59 @@ function renderNameplate(){
   uniformCanvas.appendChild(el);
 }
 
-/******************** Persistence (optional) ********************/
-function quickSave(){ try{ localStorage.setItem('cap_uniform', JSON.stringify(State)); }catch{} }
-function quickLoad(){
-  const t=localStorage.getItem('cap_uniform');
-  if(!t) return;
-  try{ Object.assign(State, JSON.parse(t)); refreshUI(); fullRender(); }catch{}
+/* ============ UI Availability + Alternates on Uniform Change ============ */
+function updateAvailabilityUI(prevUniform){
+  const a = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
+  $('#groupRibbons').classList.toggle('hidden', !a.showRibbons);
+  $('#groupPatches').classList.toggle('hidden', !a.showPatches);
+
+  // Apply alternates when crossing service ↔ field
+  if(prevUniform && prevUniform!==State.uniform){
+    applyAlternates(prevUniform, State.uniform);
+  }
+
+  populatePatchesRemove();
+  populateBadgesRemove();
 }
 
-/******************** Rendering orchestrator ********************/
-function fullRender(){
+function applyAlternates(fromU, toU){
+  const fromField = isFieldUniform(fromU);
+  const toField = isFieldUniform(toU);
+
+  if(!fromField && toField){
+    // badges → patches
+    Object.entries(ALTERNATES.badgeToPatch).forEach(([badge,patch])=>{
+      if(State.badges.includes(badge) && !State.patches.includes(patch)) State.patches.push(patch);
+    });
+    // ribbons → patches
+    Object.entries(ALTERNATES.ribbonToPatch).forEach(([ribbon,patch])=>{
+      if(State.ribbons.find(r=>r.id===ribbon) && !State.patches.includes(patch)) State.patches.push(patch);
+    });
+  } else if(fromField && !toField){
+    // patches → badges
+    Object.entries(ALTERNATES.patchToBadge).forEach(([patch,badge])=>{
+      if(State.patches.includes(patch) && !State.badges.includes(badge)) State.badges.push(badge);
+    });
+    // patches → ribbons
+    Object.entries(ALTERNATES.patchToRibbon).forEach(([patch,ribbon])=>{
+      if(State.patches.includes(patch) && !State.ribbons.find(r=>r.id===ribbon)) State.ribbons.push({id:ribbon,devices:{}});
+    });
+  }
+
+  // Role trim when landing as cadet (Cadet→Senior keeps)
+  if(State.member==='cadet'){
+    State.badges = State.badges.filter(isCadetAuthorized);
+  }
+}
+
+/* ============ Render Orchestrator ============ */
+function fullRender(prevUniform){
   applyJacket();
-  renderRack();
+  updateAvailabilityUI(prevUniform);
+
+  renderPatches();
   renderAllBadges();
+  renderRack();
   renderRank(State.rank);
 }
 function refreshUI(){
@@ -724,9 +866,10 @@ function refreshUI(){
   by('uniformSelect').value=State.uniform;
   by('assetBase').value=State.assetBase;
   populateBadgesRemove();
+  populatePatchesRemove();
 }
 
-/******************** Handlers ********************/
+/* ============ Handlers ============ */
 by('applyJacket').onclick=()=>{
   State.assetBase=by('assetBase').value.trim()||'images';
   State.gender=by('jacketSelect').value;
@@ -734,27 +877,32 @@ by('applyJacket').onclick=()=>{
 };
 
 by('memberSelect').onchange=(e)=>{
+  const was = State.member;
   State.member=e.target.value;
   if(State.member==='cadet' && (State.uniform==='polo' || State.uniform==='mess_dress')){
     alert('Cadets are not authorized Polo or Mess Dress. Switching to Blues A.');
+    const prevU = State.uniform;
     State.uniform='blues_a';
     by('uniformSelect').value='blues_a';
-  }
-  if(State.member==='cadet'){
+    // trim unauthorized for cadet
     State.badges = State.badges.filter(isCadetAuthorized);
     populateBadgesRemove();
-    fullRender();
+    populatePatchesRemove();
+    fullRender(prevU);
+    return;
   }
+  // Senior → Cadet trims; Cadet → Senior keeps
+  if(State.member==='cadet'){ State.badges = State.badges.filter(isCadetAuthorized); }
+  populateBadgesRemove();
+  fullRender();
 };
 
-by('jacketSelect').onchange=(e)=>{ State.gender=e.target.value; applyJacket(); };
+by('jacketSelect').onchange=(e)=>{ State.gender=e.target.value; fullRender(); };
 
 by('uniformSelect').onchange=(e)=>{
+  const prevU = State.uniform;
   State.uniform=e.target.value;
-  if(!UNIFORMS[State.uniform].ribbons && !UNIFORMS[State.uniform].mini){
-    State.ribbons=[];
-  }
-  fullRender();
+  fullRender(prevU);
 };
 
 by('assetBase').onchange=(e)=>{ State.assetBase=e.target.value.trim()||'images'; fullRender(); };
@@ -768,7 +916,6 @@ by('addRibbon').onclick=()=>{
   }
   renderRack();
 };
-
 by('clearRibbons').onclick=()=>{ State.ribbons=[]; renderRack(); };
 
 /* Device tool wiring */
@@ -791,6 +938,19 @@ by('removeBadge').onclick=()=>{
   renderAllBadges();
 };
 
+by('addPatch').onclick=()=>{
+  const id=by('patchSelect').value;
+  if(!State.patches.includes(id)) State.patches.push(id);
+  populatePatchesRemove();
+  renderPatches();
+};
+by('removePatch').onclick=()=>{
+  const id=by('removePatchSelect').value;
+  State.patches = State.patches.filter(p=>p!==id);
+  populatePatchesRemove();
+  renderPatches();
+};
+
 by('addRank').onclick=()=>{ State.rank=by('rankSelect').value; renderRank(State.rank); };
 by('addNameplate').onclick=()=> renderNameplate();
 
@@ -803,11 +963,10 @@ by('downloadImage').onclick=()=>{
   });
 };
 
-/******************** Boot ********************/
+/* ============ Boot ============ */
 (function init(){
   refreshUI();
-  applyJacket();
-  renderRack();
+  fullRender();
 })();
 </script>
 </body>
