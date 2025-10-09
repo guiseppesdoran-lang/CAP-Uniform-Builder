@@ -209,7 +209,7 @@ const badgeLocations = {
   'buddist_chaplin':'ORP','christian_chaplin':'ORP','jewish_chaplin':'ORP','legal_officer':'ORP','medical_officer':'ORP','nurse_officer':'ORP','muslim_chaplin':'ORP'
 };
 const customBadgeSizes = {
-  'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
+  'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_0E35802A29801':{width:60,height:25},
   'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:60,height:60},
   'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:60,height:60},'emt_basic_badge':{width:60,height:60},
   'emt_intermediate':{width:60,height:60},'emt_paramedic':{width:60,height:60},'ground_team_basic_badge':{width:25,height:20},
@@ -331,8 +331,10 @@ function ensureRibbonObj(id){
   if(!r.devices) r.devices={};
   return r;
 }
+
+/* ======= UPDATED: centers rack at (580,507) with 60×19.2 ribbons ======= */
 function renderRack(){
-  // remove all ribbon tiles and device overlays
+  // Clear prior ribbon tiles, minis, and device overlays
   [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
 
   const allowMini = UNIFORMS[State.uniform].mini && by('autoMini').checked;
@@ -341,69 +343,113 @@ function renderRack(){
   if(!items.length) return;
 
   if(showRibbons){
-    const w=25,h=8,pad=0;
-    const startTop=402, startLeft=303;
-    const ids = items.map(x=>x.id);
+    // Anchor for the center of the entire rack
+    const ANCHOR_CX = 580;
+    const ANCHOR_CY = 507;
 
+    // Ribbon geometry (from your sample element)
+    const RIB_W = 60;
+    const RIB_H = 19.2;
+    const RIB_PAD = 2;
+
+    // Device geometry (centered on each ribbon)
+    const DEV_W = 10;
+    const DEV_H = 10;
+    const DEV_Y_OFFSET = Math.round((RIB_H - DEV_H) / 2);
+
+    // Build rows of 3; top partial row (if any) comes first
+    const ids = items.map(x=>x.id);
     const rows=[];
     if(ids.length%3!==0){ rows.push(ids.slice(0, ids.length%3)); }
     for(let i=ids.length%3;i<ids.length;i+=3) rows.push(ids.slice(i,i+3));
-    rows.reverse();
+
+    // Total rack height to vertically center at ANCHOR_CY
+    const totalRows = rows.length;
+    const totalHeight = totalRows * RIB_H + (totalRows - 1) * RIB_PAD;
+    const rackTopY = ANCHOR_CY - totalHeight/2;
 
     rows.forEach((row,ri)=>{
-      const x0 = (row.length===3)? startLeft : (row.length===2? startLeft + w/2 : startLeft + w + pad);
-      const y = startTop - ri*(h+pad);
+      const rowWidth = row.length * RIB_W + (row.length - 1) * RIB_PAD;
+      const rowLeftX = ANCHOR_CX - rowWidth/2;
+      const rowTopY  = rackTopY + ri * (RIB_H + RIB_PAD);
+
       row.forEach((rid,i)=>{
         const orig=by(`ribbons-${rid}`); if(!orig) return;
 
-        // ribbon tile
+        // Ribbon tile (clickable for device tool)
         const el=orig.cloneNode();
         el.className='layer ribbonTile';
         el.style.display='block';
-        const topPx = (y-h);
-        const leftPx= (x0 + i*(w+pad));
-        el.style.top=`${topPx}px`;
-        el.style.left=`${leftPx}px`;
-        el.style.width=`${w}px`;
-        el.style.height=`${h}px`;
+        const leftPx = rowLeftX + i*(RIB_W + RIB_PAD);
+        const topPx  = rowTopY;
+        el.style.left = `${leftPx}px`;
+        el.style.top  = `${topPx}px`;
+        el.style.width  = `${RIB_W}px`;
+        el.style.height = `${RIB_H}px`;
         el.dataset.rid = rid;
         el.style.pointerEvents='auto';
         el.onclick = () => onRibbonTileClick(rid);
         uniformCanvas.appendChild(el);
 
-        // draw devices for this ribbon
-        drawDevicesOnRibbon(rid, leftPx, topPx, w, h);
+        // Devices for this ribbon (centered horizontally)
+        const r = ensureRibbonObj(rid);
+        const flat=[];
+        for(const [devId,count] of Object.entries(r.devices||{})){
+          const meta = deviceMeta[devId]; if(!meta) continue;
+          for(let k=0;k<count;k++) flat.push({id:devId,label:meta.label,src:meta.src,w:DEV_W,h:DEV_H,weight:meta.weight});
+        }
+        if(flat.length){
+          flat.sort((a,b)=> (b.weight-a.weight) || (a.label||a.id).localeCompare(b.label||b.id));
+          const GAP = 3;
+          const totalW = flat.reduce((s,d,ix)=> s + d.w + (ix?GAP:0), 0);
+          let dx = Math.round(leftPx + (RIB_W - totalW)/2);
+          const dy = Math.round(topPx + DEV_Y_OFFSET);
+          flat.forEach(d=>{
+            const im=document.createElement('img');
+            im.className='layer ribbonDevice';
+            im.src = ASSET(d.src);
+            im.alt = d.label || d.id;
+            im.style.display='block';
+            im.style.left = `${dx}px`;
+            im.style.top  = `${dy}px`;
+            im.style.width  = `${d.w}px`;
+            im.style.height = `${d.h}px`;
+            im.onerror=()=>{ im.remove(); };
+            uniformCanvas.appendChild(im);
+            dx += d.w + GAP;
+          });
+        }
       });
     });
   } else {
-    // mini medals (rows of 5; top partial centered)
+    // Mini-medals (unchanged layout)
     const w=20,h=28, pad=6;
     const startTop=400, startLeft=280;
     const ids = items.map(x=>x.id);
-
     const rows=[];
     if(ids.length%5!==0){ rows.push(ids.slice(0, ids.length%5)); }
     for(let i=ids.length%5;i<ids.length;i+=5) rows.push(ids.slice(i,i+5));
     rows.reverse();
-
     rows.forEach((row,ri)=>{
-      const x0 = (row.length===5) ? startLeft : startLeft + Math.round((5-row.length)*(w+pad)/2);
-      const y = startTop - ri*(h+pad);
+      const totalW = row.length * w + (row.length-1)*pad;
+      const x0 = startLeft + Math.round((5*w + 4*pad - totalW)/2);
+      const y  = startTop - ri*(h+pad);
       row.forEach((rid,i)=>{
         const el=document.createElement('img');
         el.src=ASSET(`mini_medals/${rid}.png`);
         el.className='layer ribbonMini';
         el.style.display='block';
-        el.style.top=`${y-h}px`;
-        el.style.left=`${x0 + i*(w+pad)}px`;
-        el.style.width=`${w}px`;
-        el.style.height=`${h}px`;
+        el.style.top  = `${y-h}px`;
+        el.style.left = `${x0 + i*(w+pad)}px`;
+        el.style.width  = `${w}px`;
+        el.style.height = `${h}px`;
         el.onerror=()=>{}; // tolerate missing mini
         uniformCanvas.appendChild(el);
       });
     });
   }
 }
+
 function onRibbonTileClick(rid){
   if(State.deviceRemoveMode){
     const r = ensureRibbonObj(rid);
@@ -419,6 +465,7 @@ function onRibbonTileClick(rid){
   renderRack();
 }
 function drawDevicesOnRibbon(rid, leftPx, topPx, w, h){
+  // (kept for compatibility if called elsewhere)
   const r = ensureRibbonObj(rid);
   const flat=[];
   for(const [devId,count] of Object.entries(r.devices||{})){
@@ -430,7 +477,6 @@ function drawDevicesOnRibbon(rid, leftPx, topPx, w, h){
   }
   if(!flat.length) return;
 
-  // sort: heavier (silver) first, then label
   flat.sort((a,b)=>(b.weight-a.weight)|| (a.label||a.id).localeCompare(b.label||b.id));
 
   const gap = 3;
@@ -446,7 +492,7 @@ function drawDevicesOnRibbon(rid, leftPx, topPx, w, h){
     im.style.display='block';
     im.style.left = `${x}px`;
     im.style.top  = `${y}px`;
-    im.style.width = `${d.w}px`;
+    im.style.width  = `${d.w}px`;
     im.style.height= `${d.h}px`;
     im.onerror=()=>{ im.remove(); };
     uniformCanvas.appendChild(im);
