@@ -59,10 +59,12 @@
     display:flex;
     flex-direction:column;
     z-index:10;
-    transition:width .2s ease,
-               min-width .2s ease,
-               max-width .2s ease,
-               transform .2s ease;
+    transition:
+      width .2s ease,
+      min-width .2s ease,
+      max-width .2s ease,
+      transform .2s ease;
+    overflow:hidden;
   }
 
   .controlsHeader {
@@ -316,15 +318,18 @@
   /* ===============================
      COLLAPSED SIDEBAR STATE
      =============================== */
-  #layoutShell.sidebar-open .expandBtn{
+
+  /* default: sidebar OPEN */
+  #layoutShell.sidebar-open .reopenTab{
     opacity:0;
     pointer-events:none;
   }
-  #layoutShell.sidebar-collapsed .expandBtn{
+  #layoutShell.sidebar-collapsed .reopenTab{
     opacity:1;
     pointer-events:auto;
   }
 
+  /* desktop collapse */
   #layoutShell.sidebar-collapsed #controls{
     width:0;
     min-width:0;
@@ -334,21 +339,30 @@
     overflow:hidden;
   }
 
-  .expandBtn{
-    position:absolute;
-    left:8px;
-    top:8px;
-    z-index:20;
+  /* The little arrow tab that reopens the controls */
+  .reopenTab{
+    position:fixed;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:9999;
     background:var(--brand);
     color:#fff;
     border:1px solid var(--line);
-    border-radius:6px;
+    border-left:none;
+    border-radius:0 8px 8px 0;
     font-size:14px;
     line-height:1;
-    padding:8px 10px;
+    padding:10px 8px;
     cursor:pointer;
     box-shadow:0 10px 25px rgb(0 0 0 / .25);
     transition:opacity .2s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width:24px;
+    min-height:44px;
+    font-weight:600;
   }
 
   /* GUIDE DOTS (positioning overlay helpers, still optional later) */
@@ -411,9 +425,11 @@
       flex:1;
     }
 
-    .expandBtn{
-      left:8px;
-      top:8px;
+    /* tab still pinned left on mobile */
+    .reopenTab{
+      left:0;
+      top:50%;
+      transform:translateY(-50%);
     }
   }
 </style>
@@ -644,14 +660,13 @@
     </div>
 
     <div id="sideDisplay">
-      <!-- epauletContainer, coverContainer if you want to render side items later -->
       <div id="epauletContainer"></div>
       <div id="coverContainer"></div>
     </div>
   </section>
 
-  <!-- FLOATING EXPAND BUTTON (visible when collapsed) -->
-  <button id="expandBtn" class="expandBtn" aria-label="Show Controls">☰</button>
+  <!-- LEFT EDGE REOPEN TAB -->
+  <button id="reopenTab" class="reopenTab" aria-label="Show Controls">⟩</button>
 
   <!-- GLOBAL HOVER TOOLTIP -->
   <div id="tooltip" class="tooltipBubble" style="display:none;"></div>
@@ -663,7 +678,7 @@
 
 <!-- COPYRIGHT FOOTER (fixed bottom) -->
 <footer id="pageFooter">
-  © <span id="footerYear"></span> Civil Air Patrol Uniform Builder – Developed by C/Capt. Guiseppe Doran
+  © <span id="footerYear"></span> Civil Air Patrol Uniform Builder – Developed by C/1st Lt. Guiseppe Doran
 </footer>
 
 <script>
@@ -690,14 +705,13 @@ const by = id => document.getElementById(id);
 
 const layoutShell      = by('layoutShell');
 const collapseBtn      = by('collapseBtn');
-const expandBtn        = by('expandBtn');
+const reopenTab        = by('reopenTab');
 const uniformCanvas    = by('uniformCanvas');
 const assetsContainer  = by('assets');
 const uniformListEl    = by('uniformList');
 const memberSelect     = by('memberSelect');
 const jacketSelect     = by('jacketSelect');
 const assetBaseInput   = by('assetBase');
-const uniformSelectFake = null; // we no longer use <select> for uniform; it's now the uniformList buttons.
 
 /* ===========================
    YEAR AUTOFILL (copyright)
@@ -785,14 +799,26 @@ const exclusiveBadges = [
   ['emt_paramedic','master_ground_team_badge']
 ];
 
+/*
+  Badge slots meaning:
+  OLP  - Over Left Pocket (wings/pilot etc)
+  OLPU - Over Left Pocket Upper (ES etc)
+  OLPA - Over Left Pocket Above (one step higher)
+  ORP  - Over Right Pocket (chaplain/legal/etc)
+  LP   - Left Pocket
+  LRP  - Lower Right Pocket-ish (marksman type hangers)
+  ON/UN fallback stacks
+*/
 const badgeLocations = {
   'AirCrew1_DB3F0FCC3650F':'OLP','BalloonPilot1_442D89C94185B':'OLP','CAPMasterPilot1_621A0E2ED15DA':'OLP','CAPPilot1_FA9D33EA587D8':'OLP','CAPSeniorPilot1_D9725AE959752':'OLP','GliderPilot1_7BFB287379918':'OLP','MasterAirCrew1_72AC4CAE7A310':'OLP',
   'SeniorAirCrew1_B289BAE6E515C':'OLP','pre_solo_badge':'OLP','solo_badge':'OLP',
-  'cyber_badges':'LP','stem_badges':'LP','communications_technician_badge':'LP','information_technology_technician_badge':'LP',
+
+  'cyber_badges':'LP','stem_badges':'LP','communications_technician_badge':'LP','information_technology_technician_badge':'LP','MasterObserver1_1B88D5071FD5C':'LP','SeniorObserver1_0E35802A29801':'LP','observer_badge':'LP','historian_technicianIbadge':'LP','model_rocketry_badge':'LP',
+
   'nra_marksman_badge':'LRP',
-  'MasterObserver1_1B88D5071FD5C':'LP','SeniorAirCrew1_B289BAE6E515C':'LP','SeniorObserver1_0E35802A29801':'LP','observer_badge':'LP',
+
   'ground_team_basic_badge':'OLPU','senior_ground_team_badge':'OLPU','master_ground_team_badge':'OLPU','emergency_services_badge':'OLPU','emt_basic_badge':'OLPU','emt_intermediate':'OLPU','emt_paramedic':'OLPU',
-  'historian_technicianIbadge':'LP','model_rocketry_badge':'LP',
+
   'buddist_chaplin':'ORP','christian_chaplin':'ORP','jewish_chaplin':'ORP','legal_officer':'ORP','medical_officer':'ORP','nurse_officer':'ORP','muslim_chaplin':'ORP'
 };
 
@@ -827,7 +853,7 @@ const PATCH_META = {
 
 const ALTERNATES = {
   badgeToPatch: { 'communications_technician_badge':'communications_patch' },
-  patchToBadge: { 'communications_patch':'communications_technician_badage' /* note typo? keep logic placeholder */ },
+  patchToBadge: { 'communications_patch':'communications_technician_badge' },
   ribbonToPatch:{ 'orientation_pilot_ribbon':'orientation_pilot_patch' },
   patchToRibbon:{ 'orientation_pilot_patch':'orientation_pilot_ribbon' }
 };
@@ -922,7 +948,7 @@ Object.entries(PATCH_META).forEach(([id,m])=>{
 });
 
 /* ===========================
-   COLLAPSIBLE SIDEBAR TOGGLE
+   SIDEBAR TOGGLE / REOPEN TAB
    =========================== */
 layoutShell.classList.add('sidebar-open'); // default open
 
@@ -930,14 +956,13 @@ collapseBtn.addEventListener('click', ()=>{
   layoutShell.classList.remove('sidebar-open');
   layoutShell.classList.add('sidebar-collapsed');
 });
-expandBtn.addEventListener('click', ()=>{
+reopenTab.addEventListener('click', ()=>{
   layoutShell.classList.remove('sidebar-collapsed');
   layoutShell.classList.add('sidebar-open');
 });
 
 /* ===========================
    TOOLTIP HOVER SYSTEM
-   (data-tooltip-* on rendered items)
    =========================== */
 const tooltipEl = by('tooltip');
 
@@ -988,7 +1013,6 @@ function applyJacket(){
   img.style.width='100%';
   img.style.height='100%';
   img.style.display='block';
-  // tooltip info example on base uniform
   img.dataset.tooltipTitle = State.uniform.replace(/_/g,' ').toUpperCase();
   img.dataset.tooltipReg   = "Base uniform image";
   img.dataset.tooltipWhy   = "Selected uniform template for preview / alignment.";
@@ -1001,11 +1025,17 @@ function applyJacket(){
 function sortRibbons(arr){
   return [...arr].sort((a,b)=>precedence(a.id)-precedence(b.id));
 }
+
+// SAFE fallback Y so badges can anchor even with 0 ribbons
 function getTopRibbonY(){
   const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile')];
-  if(!layers.length) return null;
-  return Math.min(...layers.map(l=>parseInt(l.style.top)));
+  if(!layers.length) {
+    // about mid-chest in our 600px canvas
+    return 360;
+  }
+  return Math.min(...layers.map(l=>parseFloat(l.style.top)||0));
 }
+
 function ensureRibbonObj(id){
   let r=State.ribbons.find(x=>x.id===id);
   if(!r){
@@ -1043,7 +1073,6 @@ function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
     im.style.width =`${d.w}px`;
     im.style.height=`${d.h}px`;
     im.onerror=()=>{ im.remove(); };
-    // tooltip for the device
     im.dataset.tooltipTitle = d.label||d.id;
     im.dataset.tooltipReg   = "Device on ribbon";
     im.dataset.tooltipWhy   = "Represents additional awards/credit per CAPR 39-3.";
@@ -1067,81 +1096,123 @@ function onRibbonTileClick(rid){
   renderRack();
 }
 
+// UPDATED dynamic rack renderer
 function renderRack(){
+  // clear old rack layers
   [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
 
-  const allowMini = UNIFORMS[State.uniform].mini && by('autoMini').checked;
+  const allowMini   = UNIFORMS[State.uniform].mini && by('autoMini').checked;
   const showRibbons = UNIFORMS[State.uniform].ribbons && !allowMini;
-  const items = sortRibbons(State.ribbons);
+  const items       = sortRibbons(State.ribbons);
   if(!items.length) return;
 
-  if(showRibbons){
-    // Rack geometry (center ~613, baseTop ~507) using 60x19.2
-    const W=60,H=19.2,PAD=0;
-    const cx=200;
-    const baseTop=200;
-    const ids=items.map(x=>x.id);
+  const canvasRect = uniformCanvas.getBoundingClientRect();
+  const canvasW = canvasRect.width;
+  const canvasH = canvasRect.height;
 
-    const rows=[];
-    if(ids.length%3!==0){ rows.push(ids.slice(0,ids.length%3)); }
-    for(let i=ids.length%3;i<ids.length;i+=3){ rows.push(ids.slice(i,i+3)); }
+  if(showRibbons){
+    // Service ribbons
+    const TILE_W = 60;
+    const TILE_H = 19.2;
+    const PER_ROW = 3;
+    const PAD = 0;
+
+    // Anchor lower right chest
+    const rackBaseY   = canvasH * 0.65;
+    const rackCenterX = canvasW * 0.55;
+
+    const ids = items.map(x=>x.id);
+
+    const rows = [];
+    if(ids.length % PER_ROW !== 0){
+      rows.push(ids.slice(0, ids.length % PER_ROW));
+    }
+    for(let i=ids.length % PER_ROW; i<ids.length; i+=PER_ROW){
+      rows.push(ids.slice(i,i+PER_ROW));
+    }
     rows.reverse();
 
     rows.forEach((row,ri)=>{
-      const totalW=row.length*W+(row.length-1)*PAD;
-      const rowLeft=Math.round(cx-totalW/2);
-      const rowTop =Math.round(baseTop - ri*(H+PAD));
+      const totalW = row.length*TILE_W + (row.length-1)*PAD;
+      const rowLeft = Math.round(rackCenterX - totalW/2);
+      const rowTop  = Math.round(rackBaseY - ri*(TILE_H+PAD));
+
       row.forEach((rid,i)=>{
-        const orig=by(`ribbons-${rid}`); if(!orig)return;
+        const orig=by(`ribbons-${rid}`);
+        if(!orig) return;
+
         const tile=orig.cloneNode();
         tile.className='layer ribbonTile';
         tile.style.display='block';
-        const leftPx=rowLeft+i*(W+PAD);
+
+        const leftPx=rowLeft + i*(TILE_W+PAD);
         const topPx =rowTop;
-        tile.style.left=`${leftPx}px`;
-        tile.style.top =`${topPx}px`;
-        tile.style.width =`${W}px`;
-        tile.style.height=`${H}px`;
+
+        tile.style.left   = `${leftPx}px`;
+        tile.style.top    = `${topPx}px`;
+        tile.style.width  = `${TILE_W}px`;
+        tile.style.height = `${TILE_H}px`;
+
         tile.dataset.rid=rid;
         tile.style.pointerEvents='auto';
         tile.onclick=()=>onRibbonTileClick(rid);
 
-        // Tooltip for ribbon tile
         tile.dataset.tooltipTitle = rid.replace(/_/g,' ').toUpperCase();
         tile.dataset.tooltipReg   = "CAPR 39-3 precedence applies";
         tile.dataset.tooltipWhy   = "Displayed in order of precedence, highest top left.";
+
         uniformCanvas.appendChild(tile);
 
-        drawDevicesOnRibbon(rid,leftPx,topPx,W,H);
+        drawDevicesOnRibbon(rid,leftPx,topPx,TILE_W,TILE_H);
       });
     });
-  } else {
-    // Mini medals (5 per row style)
-    const w=20,h=28,pad=6;
-    const startTop=400, startLeft=280;
-    const ids=items.map(x=>x.id);
 
-    const rows=[];
-    if(ids.length%5!==0){ rows.push(ids.slice(0,ids.length%5)); }
-    for(let i=ids.length%5;i<ids.length;i+=5){ rows.push(ids.slice(i,i+5)); }
+  } else {
+    // Mini-medals (mess / semi-formal)
+    const MINI_W = 20;
+    const MINI_H = 28;
+    const PER_ROW = 5;
+    const PAD = 6;
+
+    const medalBaseY   = canvasH * 0.58;
+    const medalCenterX = canvasW * 0.5;
+
+    const ids = items.map(x=>x.id);
+
+    const rows = [];
+    if(ids.length % PER_ROW !== 0){
+      rows.push(ids.slice(0, ids.length % PER_ROW));
+    }
+    for(let i=ids.length % PER_ROW; i<ids.length; i+=PER_ROW){
+      rows.push(ids.slice(i,i+PER_ROW));
+    }
     rows.reverse();
 
     rows.forEach((row,ri)=>{
-      const x0=(row.length===5)?startLeft:startLeft+Math.round((5-row.length)*(w+pad)/2);
-      const y=startTop - ri*(h+pad);
+      const rowW   = row.length * MINI_W + (row.length-1)*PAD;
+      const rowX0  = Math.round(medalCenterX - rowW/2);
+      const rowTop = Math.round(medalBaseY - ri*(MINI_H+PAD));
+
       row.forEach((rid,i)=>{
         const mimg=document.createElement('img');
         mimg.src=ASSET(`mini_medals/${rid}.png`);
         mimg.className='layer ribbonMini';
         mimg.style.display='block';
-        mimg.style.top =`${y-h}px`;
-        mimg.style.left=`${x0 + i*(w+pad)}px`;
-        mimg.style.width =`${w}px`;
-        mimg.style.height=`${h}px`;
+
+        const leftPx = rowX0 + i*(MINI_W+PAD);
+        const topPx  = rowTop - MINI_H;
+
+        mimg.style.left   = `${leftPx}px`;
+        mimg.style.top    = `${topPx}px`;
+        mimg.style.width  = `${MINI_W}px`;
+        mimg.style.height = `${MINI_H}px`;
+
         mimg.onerror=()=>{};
+
         mimg.dataset.tooltipTitle = rid.replace(/_/g,' ').toUpperCase();
         mimg.dataset.tooltipReg   = "Miniature medal arrangement";
         mimg.dataset.tooltipWhy   = "Used for mess dress / semi-formal vice ribbons.";
+
         uniformCanvas.appendChild(mimg);
       });
     });
@@ -1263,13 +1334,27 @@ function placeBadgeByCategory(id){
   const spacing=5;
   const baseRibbonY=getTopRibbonY();
 
+  // These coordinates are tuned to our 450x600 canvas coordinates.
   const yMap={
-    OLP: baseRibbonY!==null? baseRibbonY - 25 : 394,
-    OLPU:baseRibbonY!==null? baseRibbonY -  5 : 424,
-    OLPA:baseRibbonY!==null? baseRibbonY - 55 : 364,
-    ORP:300, ON:350, UN:390, LRP:405, LP:450
+    OLP: baseRibbonY - 25,
+    OLPU:baseRibbonY -  5,
+    OLPA:baseRibbonY - 55,
+    ORP:300,
+    ON:350,
+    UN:390,
+    LRP:405,
+    LP:450
   };
-  const xMap={ OLP:328, OLPU:328, OLPA:328, ORP:100, ON:150, UN:150, LRP:335, LP:350 };
+  const xMap={
+    OLP:328,
+    OLPU:328,
+    OLPA:328,
+    ORP:100,
+    ON:150,
+    UN:150,
+    LRP:335,
+    LP:350
+  };
 
   let y=yMap[slot]||390, x=xMap[slot]||150;
   if(slot==='ON'||slot==='UN'){
@@ -1292,7 +1377,6 @@ function placeBadgeByCategory(id){
   clone.style.width =`${size.width}px`;
   clone.style.height=`${size.height}px`;
 
-  // tooltip for badge
   clone.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
   clone.dataset.tooltipReg   = "CAPR 39-1 badge placement";
   clone.dataset.tooltipWhy   = "Auto-placed above/over pocket per category rules.";
@@ -1338,6 +1422,7 @@ function renderPatches(){
 
   planPatches(State.patches);
 
+  // tuned approx for 450x600 base art
   const coords={
     L_SHOULDER:{x:95,y:250,dy:80},
     R_SHOULDER:{x:505,y:250,dy:80},
@@ -1362,7 +1447,6 @@ function renderPatches(){
       el.style.height=`${meta.h}px`;
       el.onerror=()=>{};
 
-      // tooltip for patch
       el.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
       el.dataset.tooltipReg   = "Field/utility patch placement";
       el.dataset.tooltipWhy   = "Displayed on sleeve/chest per OCP/ABU/corporate field rules.";
@@ -1596,19 +1680,16 @@ function highlightActiveUniformButton(){
 
 /* Member type change */
 memberSelect.addEventListener('change', ()=>{
-  const prevMember = State.member;
   State.member = memberSelect.value;
 
-  // cadet restriction example:
+  // enforce uniform auth
   if(State.member==='cadet' && !isUniformAllowedFor(State.uniform,'cadet')){
     const fallback=findFirstAllowedUniform('cadet') || 'blues_a';
     const prevU=State.uniform;
     State.uniform=fallback;
-    // trim badges if needed
     State.badges = State.badges.filter(isCadetAuthorized);
     fullRender(prevU);
   }else{
-    // if switching to cadet, trim any not allowed
     if(State.member==='cadet'){
       State.badges = State.badges.filter(isCadetAuthorized);
     }
@@ -1659,6 +1740,7 @@ by('addRibbon').addEventListener('click', ()=>{
   }
   renderRack();
 });
+
 /* Clear ribbons */
 by('clearRibbons').addEventListener('click', ()=>{
   State.ribbons=[];
