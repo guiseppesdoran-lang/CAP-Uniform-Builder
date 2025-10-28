@@ -1678,53 +1678,125 @@ function renderAllBadges(){
 }
 
 function placeBadgeByCategory(id){
-  const img=by(`badges-${id}`); if(!img) return;
+  const img=by(`badges-${id}`); 
+  if(!img) return;
+
+  // What slot/category does this badge belong to?
   let slot = badgeLocations[id] || 'UN';
+
+  // Special-cased remaps you already had:
   if(id==='nra_marksman_badge') slot='LRP';
   if(id==='model_rocketry_badge') slot='LP';
 
-  const single = new Set(['OLP','OLPU','OLPA','ORP','LRP','LP']);
-  if(single.has(slot) && badgeSlots[slot].length>=1) return;
-  if((slot==='ON'||slot==='UN') && badgeSlots[slot].length>=2) return;
+  // reuse custom size or default
+  const size = customBadgeSizes[id] || { width:60, height:25 };
+  const spacing = 5;
 
-  const size=customBadgeSizes[id]||{width:60,height:25};
-  const spacing=5;
+  // we'll need this a lot
+  const baseRibbonY = getTopRibbonY(); // <-- highest/top ribbon row Y
+  // We also need the rack center for horizontal centering:
+  const RACK_CENTER_X = 293.5; // same value we used in renderRack()
 
-  // base Y ties to first ribbon row Y so badges track rack movement
-  const baseRibbonY=getTopRibbonY();
+  // ---------------------------------
+  // 1. OVER-RIBBON BADGES (pilot wings, etc.)
+  // Slots that go above the ribbon rack:
+  // OLP  (over left pocket / top of ribbons)
+  // OLPU (over left pocket upper)
+  // OLPA (over left pocket ABOVE upper)
+  // ORP  (over right pocket, historically, but you said "over the ribbons"
+  //       so we’ll center ORP the same way unless you need right pocket separate later)
+  //
+  // Rule you gave:
+  // "All badges that belong over the ribbons should be 25px above the highest ribbon row
+  //  and centered over the top center ribbon."
+  //
+  // Interpretation:
+  // - bottom edge of the badge sits 25px above the TOP row of ribbons.
+  //   So top edge = (baseRibbonY - 25) - badgeHeight
+  //
+  // - horizontally centered: rack center minus half badge width.
+  //
+  // We'll also vertical-stack multiples in this category: first one closest to ribbons,
+  // next one goes above it, etc.
+  // ---------------------------------
 
+  const overRibbonSlots = new Set(['OLP','OLPU','OLPA','ORP']);
+
+  if(overRibbonSlots.has(slot)){
+    // how many badges have we already placed in ANY of the over-ribbon slots?
+    // we want to stack them upward in the order they are added.
+    // We'll treat them as a single stack group "OVERSTACK".
+    if(!badgeSlots.OVERSTACK){ badgeSlots.OVERSTACK = []; }
+
+    const stackIdx = badgeSlots.OVERSTACK.length; // 0 for first, 1 for second, etc.
+
+    // bottom edge of the first badge: 25px above highest ribbon row
+    const bottomEdgeY = baseRibbonY - 25 - (stackIdx * (size.height + spacing));
+    const topY = bottomEdgeY - size.height;
+
+    const leftX = RACK_CENTER_X - (size.width / 2);
+
+    const clone = img.cloneNode();
+    clone.className='layer badge';
+    clone.style.display='block';
+    clone.style.top  = `${topY}px`;
+    clone.style.left = `${leftX}px`;
+    clone.style.width = `${size.width}px`;
+    clone.style.height= `${size.height}px`;
+
+    clone.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
+    clone.dataset.tooltipReg   = "Over-rack qualification badge";
+    clone.dataset.tooltipWhy   = "Centered above ribbon rack per spec (25px gap).";
+
+    uniformCanvas.appendChild(clone);
+
+    badgeSlots.OVERSTACK.push(id);
+    return;
+  }
+
+  // ---------------------------------
+  // 2. EVERYTHING ELSE (nameplate side, lower pocket, etc.)
+  // Keep your old behavior for those.
+  // ---------------------------------
+
+  const single = new Set(['LRP','LP']); // also ORP/OLP/etc were here but we already handled those above
+  if(single.has(slot) && badgeSlots[slot] && badgeSlots[slot].length>=1){
+    return;
+  }
+
+  // initialize tracking array if needed
+  if(!badgeSlots[slot]) badgeSlots[slot] = [];
+
+  // Original fallback maps anchored off rackBaseX etc.
+  // We keep these for badges not over the ribbons, like marksmanship, chaplain on right pocket if you later want it back there, etc.
   const yMap={
-    OLP: baseRibbonY - 25,
-    OLPU:baseRibbonY -  5,
-    OLPA:baseRibbonY - 55,
-    ORP: baseRibbonY - 25,
+    // NOTE: OLP/OLPU/OLPA/ORP used to be here, but we've already handled them above
     ON:  baseRibbonY + 140,
     UN:  baseRibbonY + 180,
     LRP: baseRibbonY + 199,
     LP:  baseRibbonY + 244
   };
   const xMap={
-    OLP: rackBaseX + (RIBBON_WIDTH*1.5) - 30,
-    OLPU:rackBaseX + (RIBBON_WIDTH*1.5) - 30,
-    OLPA:rackBaseX + (RIBBON_WIDTH*1.5) - 30,
-    ORP: rackBaseX - 140,
     ON:  rackBaseX - 105,
     UN:  rackBaseX - 105,
     LRP: rackBaseX + (RIBBON_WIDTH*3) + 60,
     LP:  rackBaseX + (RIBBON_WIDTH*3) + 80
   };
 
-  let y=yMap[slot]|| (baseRibbonY+180);
-  let x=xMap[slot]|| (rackBaseX-105);
+  let y = yMap[slot] !== undefined ? yMap[slot] : (baseRibbonY+180);
+  let x = xMap[slot] !== undefined ? xMap[slot] : (rackBaseX-105);
 
+  // stack vertical if multiple in ON/UN
   if(slot==='ON'||slot==='UN'){
-    const stackIdx=badgeSlots[slot].length;
+    const stackIdx = badgeSlots[slot].length;
     for(let i=0;i<stackIdx;i++){
       const prev=badgeSlots[slot][i];
       const ps=customBadgeSizes[prev]||{height:25};
       y+=ps.height+spacing;
     }
   }
+
+  // special case you already had
   if(id==='model_rocketry_badge' && State.badges.includes('nra_marksman_badge')){
     y+=50;
   }
@@ -1732,16 +1804,17 @@ function placeBadgeByCategory(id){
   const clone=img.cloneNode();
   clone.className='layer badge';
   clone.style.display='block';
-  clone.style.top =`${y}px`;
-  clone.style.left=`${x}px`;
-  clone.style.width =`${size.width}px`;
-  clone.style.height=`${size.height}px`;
+  clone.style.top  = `${y}px`;
+  clone.style.left = `${x}px`;
+  clone.style.width = `${size.width}px`;
+  clone.style.height= `${size.height}px`;
 
   clone.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
   clone.dataset.tooltipReg   = "CAPR 39-1 badge placement";
-  clone.dataset.tooltipWhy   = "Auto-placed above/over pocket per category rules.";
+  clone.dataset.tooltipWhy   = "Auto-placed relative to pockets / nameplate.";
 
   uniformCanvas.appendChild(clone);
+
   badgeSlots[slot].push(id);
 }
 
