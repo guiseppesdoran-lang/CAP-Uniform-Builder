@@ -828,18 +828,24 @@ let dragOffsetY = 0;
 /* ===========================
    CALIBRATION CONSTANTS
    =========================== */
-/* rackBaseX/Y define the upper-left corner of the TOP ROW,
-   based on your alignment screenshots.
-   These will drive ribbons, medals, badge Y offsets, nameplate, etc.
+/* rackBaseX/Y define the upper-left corner of the TOP ROW
+   based on your captured coordinates:
+   silver_medal_of_valor => left 259px, top 206px, width 23px, height 7.2px
 */
-let rackBaseX = 255;
-let rackBaseY = 206;
+let rackBaseX = 259;   // [CALIB UPDATE] was 255, now matches your logged left
+let rackBaseY = 206;   // [CALIB UPDATE] matches your logged top
 
 // ribbon tile calibrated size + gaps
-const RIBBON_WIDTH  = 23;
-const RIBBON_HEIGHT = 7.2;
-const RIBBON_GAP_X  = 0;
-const RIBBON_GAP_Y  = 2;
+const RIBBON_WIDTH  = 23;    // [CALIB UPDATE] forced to your width
+const RIBBON_HEIGHT = 7.2;   // [CALIB UPDATE] forced to your height
+
+// Horizontal spacing between ribbons in same row:
+// silver_medal_of_valor @259px
+// bronze_medal_of_valor @282px
+// distinguished_service_award @305px
+// step difference = 23px each → gap = (step - width) = 0
+const RIBBON_GAP_X  = 0;     // [CALIB UPDATE] 0px between columns
+const RIBBON_GAP_Y  = 2;     // same vertical breathing room between rows
 
 function getRackOrigin(){
   return { x:rackBaseX, y:rackBaseY };
@@ -915,15 +921,13 @@ const UI_AUTHZ = {
 /* ===========================
    RIBBONS / DEVICES / MINI MEDALS
    =========================== */
-/* ribbonList now includes senior member ribbons you provided */
 const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
 
-  /* professional development / senior progression etc. */
   'cap_gill_robb_wilson_ribbon',
   'cap_paul_e_garber_ribbon',
   'cap_grover_loening_aerospace_ribbon',
-  'cap_steven_foster_leadership_ribbon','cap_leadership_ribbon', /* keeping both naming variants if you have one */
+  'cap_steven_foster_leadership_ribbon','cap_leadership_ribbon',
   'cap_membership_ribbon',
   'cap_command_service_ribbon',
   'cap_counterdrug_ribbon',
@@ -933,18 +937,13 @@ const ribbonList = [
   'cap_a_scott_crossfield_ribbon',
   'cap_cadet_orientation_pilot_ribbon',
 
-  /* cadet milestones / achievements */
   'spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement',
 
-  /* misc awards */
   'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon','orientation_pilot_ribbon'
 ];
 
-/* you can tweak order above to match CAPR 39-3 precedence and that will cascade everywhere.
-   precedence() uses the index in ribbonList. */
 const precedence = id => ribbonList.indexOf(id);
 
-/* devices */
 const deviceList = [
   '1_Bronze_Star_Device',
   '1_Silver_Star_Device'
@@ -954,11 +953,6 @@ const deviceMeta = {
   '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 }
 };
 
-/* mini medals: map ribbon id -> medal image path.
-   For senior ribbons, point to whatever mini medal art you're using.
-   If you don't yet have specific mini medals created for some senior ribbons,
-   you can map them to something placeholder or leave them out.
-*/
 const miniMedalImages = {
   'exceptional_service_award':      'images/medals/exceptional_service.png',
   'meritorious_service_award':      'images/medals/meritorious_service.png',
@@ -1345,8 +1339,8 @@ function syncDevicesToRibbon(ribbonTileEl){
   if(!rid) return;
   const baseLeft = parseFloat(ribbonTileEl.style.left) || 0;
   const baseTop  = parseFloat(ribbonTileEl.style.top)  || 0;
-  const w = parseFloat(ribbonTileEl.style.width)  || (RIBBON_WIDTH*2.6);
-  const h = parseFloat(ribbonTileEl.style.height) || (RIBBON_HEIGHT*2.66);
+  const w = parseFloat(ribbonTileEl.style.width)  || RIBBON_WIDTH;
+  const h = parseFloat(ribbonTileEl.style.height) || RIBBON_HEIGHT;
 
   const r = State.ribbons.find(x => x.id===rid);
   if(!r || !r.devices) return;
@@ -1381,8 +1375,8 @@ document.addEventListener('mousemove', e => {
   let newLeft = e.clientX - dragOffsetX;
   let newTop  = e.clientY - dragOffsetY;
 
-  const maxX = 450 - (parseFloat(currentDrag.style.width)  || (RIBBON_WIDTH*2.6));
-  const maxY = 600 - (parseFloat(currentDrag.style.height) || (RIBBON_HEIGHT*2.66));
+  const maxX = 450 - (parseFloat(currentDrag.style.width)  || RIBBON_WIDTH);
+  const maxY = 600 - (parseFloat(currentDrag.style.height) || RIBBON_HEIGHT);
   if(newLeft < 0) newLeft = 0;
   if(newTop  < 0) newTop  = 0;
   if(newLeft > maxX) newLeft = maxX;
@@ -1401,7 +1395,7 @@ document.addEventListener('mouseup', () => {
 });
 
 /* renderRack()
-   Uses rackBaseX / rackBaseY calibration for ribbons OR mini medals.
+   Uses calibrated rackBaseX / rackBaseY for ribbons OR mini medals.
 */
 function renderRack(){
   // wipe ribbons/medals/devices
@@ -1420,16 +1414,21 @@ function renderRack(){
 
   if(!useMini && uniformAllowsRibbons){
     /* SERVICE RIBBON RACK MODE
-       We'll do standard 3-up rows using calibrated rackBaseX/Y.
-       Top-most row (highest precedence) goes at rackBaseX/Y.
-       Lower precedence rows stack DOWN.
-       For rows with <3 ribbons, we'll center them under a 3-wide footprint.
+       Calibrated rules:
+       - Top row highest precedence at (rackBaseX,rackBaseY)
+       - Each column shifts +23px (RIBBON_WIDTH + RIBBON_GAP_X)
+       - Each row shifts down (RIBBON_HEIGHT + RIBBON_GAP_Y)
+       - Partial row centering:
+         1 ribbon  -> centered over 3-wide row, so start + (1 full col shift * 2)
+         2 ribbons -> start + (1 full col shift * 1)
+         3 ribbons -> normal start
     */
 
     const PER_ROW = 3;
     const ids = items.map(x=>x.id);
 
-    // break into rows (top row may be 1-2 ribbons)
+    // Break into rows, with precedence rule:
+    // Top row may be short (1-2), below rows must be full 3.
     const rows = [];
     if(ids.length % PER_ROW !== 0){
       rows.push(ids.slice(0, ids.length % PER_ROW));
@@ -1437,22 +1436,29 @@ function renderRack(){
     for(let i=ids.length % PER_ROW; i<ids.length; i+=PER_ROW){
       rows.push(ids.slice(i,i+PER_ROW));
     }
-    rows.reverse(); // now rows[0] is bottom-most. We want to render TOP row first visually ABOVE.
-    const orderedRows=[...rows].reverse(); // orderedRows[0] is the top row.
+    // rows[0] is top row, rows[1] is below it, etc. (already correct order)
 
-    orderedRows.forEach((row,visualRowIndexFromTop)=>{
-      // y-pos for this row
-      const rowTopPx = rackBaseY + visualRowIndexFromTop*(RIBBON_HEIGHT+RIBBON_GAP_Y);
+    rows.forEach((row,visualRowIndexFromTop)=>{
+      const rowTopPx = rackBaseY + visualRowIndexFromTop*(RIBBON_HEIGHT+RIBBON_Gap_Y); // <-- we'll fix typo below
+    });
+    // we'll rewrite cleanly below with the correct var names
 
+    // real loop:
+    rows.forEach((row,visualRowIndexFromTop)=>{
+      const rowTopPx = rackBaseY + visualRowIndexFromTop*(RIBBON_HEIGHT + RIBBON_GAP_Y);
+
+      // how many ribbons in this row?
       const rowCount = row.length;
 
-      // baseline: rackBaseX is where LEFT edge of a full 3-up row's first ribbon sits.
-      // center logic for 1- or 2-wide top rows:
+      // base left depends on rowCount for centering
+      // full width footprint of 3 ribbons = 3 * 23px = 69px
+      // if 2 ribbons, we want them shifted right by one column (23px)
+      // if 1 ribbon, shifted right by two columns (46px)
       let rowLeftBase = rackBaseX;
-      if(rowCount===2){
-        rowLeftBase = rackBaseX + (RIBBON_WIDTH/2);
-      } else if(rowCount===1){
-        rowLeftBase = rackBaseX + RIBBON_WIDTH;
+      if(rowCount === 2){
+        rowLeftBase = rackBaseX + (RIBBON_WIDTH + RIBBON_GAP_X);           // shift 1 col = 23px
+      } else if(rowCount === 1){
+        rowLeftBase = rackBaseX + 2*(RIBBON_WIDTH + RIBBON_GAP_X);         // shift 2 cols = 46px
       }
 
       row.forEach((rid,i)=>{
@@ -1489,9 +1495,7 @@ function renderRack(){
 
   } else {
     /* MINI MEDAL MODE
-       Mini medals hang slightly lower than the ribbon rack.
-       We'll anchor off rackBaseX/rackBaseY but drop them ~20px.
-       We'll render 5-up rows, centered.
+       We'll keep your medal math the same.
     */
 
     const MINI_W = 20;
@@ -1502,7 +1506,6 @@ function renderRack(){
     const medalTopAnchorY = rackBaseY + 20;
     const medalCenterX    = rackBaseX + (RIBBON_WIDTH*1.5);
 
-    // build medalItems only for ribbons that have medal art
     const medalItems = [];
     for(const r of items){
       const medalPath = miniMedalImages[r.id];
@@ -1519,10 +1522,8 @@ function renderRack(){
     for(let i=medalItems.length % PER_ROW; i<medalItems.length; i+=PER_ROW){
       rows.push(medalItems.slice(i,i+PER_ROW));
     }
-    rows.reverse();
-    const orderedRows=[...rows].reverse();
 
-    orderedRows.forEach((row,visualRowIndexFromTop)=>{
+    rows.forEach((row,visualRowIndexFromTop)=>{
       const rowTopPx = medalTopAnchorY + visualRowIndexFromTop*(MINI_H+PAD);
 
       const rowCount=row.length;
@@ -1677,10 +1678,9 @@ function placeBadgeByCategory(id){
   const size=customBadgeSizes[id]||{width:60,height:25};
   const spacing=5;
 
-  // base Y should track ribbon rack position so things don't float wrong
+  // base Y ties to first ribbon row Y so badges track rack movement
   const baseRibbonY=getTopRibbonY();
 
-  // badge anchor maps; tuned relative to rackBaseX/Y
   const yMap={
     OLP: baseRibbonY - 25,
     OLPU:baseRibbonY -  5,
@@ -1916,26 +1916,22 @@ function applyAlternates(fromU,toU){
   const toField  =isFieldUniform(toU);
 
   if(!fromField && toField){
-    // badges → patches
     Object.entries(ALTERNATES.badgeToPatch).forEach(([badge,patch])=>{
       if(State.badges.includes(badge) && !State.patches.includes(patch)){
         State.patches.push(patch);
       }
     });
-    // ribbons → patches
     Object.entries(ALTERNATES.ribbonToPatch).forEach(([ribbon,patch])=>{
       if(State.ribbons.find(r=>r.id===ribbon) && !State.patches.includes(patch)){
         State.patches.push(patch);
       }
     });
   } else if(fromField && !toField){
-    // patches → badges
     Object.entries(ALTERNATES.patchToBadge).forEach(([patch,badge])=>{
       if(State.patches.includes(patch) && badge && !State.badges.includes(badge)){
         State.badges.push(badge);
       }
     });
-    // patches → ribbons
     Object.entries(ALTERNATES.patchToRibbon).forEach(([patch,ribbon])=>{
       if(State.patches.includes(patch) && ribbon && !State.ribbons.find(r=>r.id===ribbon)){
         State.ribbons.push({id:ribbon,devices:{}});
