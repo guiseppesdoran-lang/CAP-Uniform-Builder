@@ -1412,9 +1412,9 @@ function renderRack(){
   const items = sortRibbons(State.ribbons); // highest precedence first
   if(!items.length) return;
 
-  // constants from calibration
-  const BOTTOM_ROW_Y   = 206;    // locked Y of the lowest row you observed
-  const RACK_CENTER_X  = 293.5;  // horizontal centerline over the pocket
+  // calibration/constants
+  const BOTTOM_ROW_Y   = 206;    // locked y for the *bottom* ribbon row
+  const RACK_CENTER_X  = 293.5;  // horizontal center of the rack over the pocket
 
   function getRowLeftPositions(count){
     const totalWidth = count * RIBBON_WIDTH + (count-1)*RIBBON_GAP_X;
@@ -1428,46 +1428,41 @@ function renderRack(){
 
   // ---- FULL SIZE RIBBONS MODE ----
   if(!useMini && uniformAllowsRibbons){
-    // Goal:
     // bottom row = lowest precedence, up to 3 ribbons
-    // row above that = next 3 higher, etc.
-    // top row = highest precedence (may have 1 or 2 ribbons)
+    // row above = next 3 higher, etc.
+    // top row = highest precedence (maybe 1-2 ribbons)
 
-    // 1) take items (highest first) and flip to lowest-first
-    const lowestFirst = [...items].reverse(); // now [lowest ... highest]
+    // 1) items is [highest ... lowest]; flip to [lowest ... highest]
+    const lowestFirst = [...items].reverse();
 
-    // 2) chunk into groups of up to 3 from start to end => bottom row first
+    // 2) chunk into groups of 3 from start -> bottom row first
     const rowsBottomFirst = [];
     for(let i=0;i<lowestFirst.length;i+=3){
       rowsBottomFirst.push(lowestFirst.slice(i,i+3));
     }
-    // rowsBottomFirst[0] is truly the bottom row (lowest precedence),
-    // rowsBottomFirst[rowsBottomFirst.length-1] is the TOP row (highest precedence)
 
-    // 3) flip so we can render from TOP -> BOTTOM visually
+    // 3) flip rows so we render from top row down
     const rowsTopFirst = [...rowsBottomFirst].reverse();
     const totalRows = rowsTopFirst.length;
 
     rowsTopFirst.forEach((row,topIndex)=>{
-      // how far is THIS row from the bottom row?
+      // how far this row is from the bottom:
       const indexFromBottom = (totalRows - 1 - topIndex);
 
-      // compute this row's Y
-      const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * (RIBBON_HEIGHT + RIBBON_GAP_Y);
+      // ***** VERTICAL PLACEMENT WITH NO GAP *****
+      // each row is exactly one ribbon height above the next
+      const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * RIBBON_HEIGHT;
 
-      // compute horizontal lefts for this row count, centered
-      const leftPositions = getRowLeftPositions(row.length);
+      // We want within-row order: highest precedence on the LEFT.
+      // After the transformations above, `row` (currently from rowsTopFirst)
+      // still has lower precedence first and higher precedence last.
+      // Reverse it so left -> right = higher -> lower.
+      const rowSortedForDisplay = [...row].reverse();
 
-      // IMPORTANT: within each row, leftPositions[0] should hold the higher-precedence ribbon.
-      // Currently, 'row' is coming from rowsTopFirst, where:
-      //   rowsTopFirst[0] is high-precedence row (because we reversed).
-      //   Within that row slice, order is still "lowestFirst" order from earlier,
-      //   which at this point actually means: left→right = LOWER → HIGHER.
-      // We want left→right = HIGHER → LOWER.
-      // So we need to reverse EACH row so highest of that row ends up on the left.
-      const rowSortedForDisplay = [...row].reverse(); // now left is higher precedence
+      // horizontal centering for this row count
+      const leftPositions = getRowLeftPositions(rowSortedForDisplay.length);
 
-      rowSortedForDisplay.forEach((ribbonObj, i)=>{
+      rowSortedForDisplay.forEach((ribbonObj,i)=>{
         const rid = ribbonObj.id;
         const orig=by(`ribbons-${rid}`);
         if(!orig) return;
@@ -1490,12 +1485,13 @@ function renderRack(){
 
         tile.dataset.tooltipTitle = rid.replace(/_/g,' ').toUpperCase();
         tile.dataset.tooltipReg   = "CAPR 39-3 precedence applies";
-        tile.dataset.tooltipWhy   = "Highest awards appear on upper row, centered.";
+        tile.dataset.tooltipWhy   = "Highest awards sit top row, leftward.";
 
         initRibbonDragHandlers(tile);
 
         uniformCanvas.appendChild(tile);
 
+        // lay devices on top
         drawDevicesOnRibbon(rid,leftPx,topPx,RIBBON_WIDTH,RIBBON_HEIGHT);
       });
     });
@@ -1504,13 +1500,12 @@ function renderRack(){
   }
 
   // ---- MINI MEDAL MODE ----
-  // We'll adapt mini medals to follow same bottom-row anchoring and centering logic.
   const MINI_W = 20;
   const MINI_H = 28;
   const MEDAL_PER_ROW = 5;
   const PAD = 6;
 
-  // build medalItems only for ribbons that have medal art, keeping precedence (highest first)
+  // Build medal list for awards that have mini medal art (still highest-first order from items)
   const medalItems = [];
   for(const r of items){
     const medalPath = miniMedalImages[r.id];
@@ -1520,7 +1515,7 @@ function renderRack(){
   }
   if(!medalItems.length) return;
 
-  // same bottom-up logic for medals
+  // Same precedence logic bottom→top, but we'll keep vertical spacing for medals (PAD) unless you tell me otherwise.
   const lowestFirstMedals = [...medalItems].reverse();
   const medalRowsBottomFirst = [];
   for(let i=0;i<lowestFirstMedals.length;i+=MEDAL_PER_ROW){
@@ -1528,6 +1523,9 @@ function renderRack(){
   }
   const medalRowsTopFirst = [...medalRowsBottomFirst].reverse();
   const totalMedalRows = medalRowsTopFirst.length;
+
+  // anchor medals lower than ribbons
+  const BOTTOM_ROW_Y_MEDALS = BOTTOM_ROW_Y + 20;
 
   function getMedalRowLeftPositions(count){
     const totalWidth = count * MINI_W + (count-1)*PAD;
@@ -1542,11 +1540,8 @@ function renderRack(){
   medalRowsTopFirst.forEach((row,topIndex)=>{
     const indexFromBottom = (totalMedalRows - 1 - topIndex);
 
-    // medals hang a bit lower than ribbons, so bottom row Y should be (206 + 20)
-    const BOTTOM_ROW_Y_MEDALS = 206 + 20;
     const rowTopPx = BOTTOM_ROW_Y_MEDALS - indexFromBottom * (MINI_H + PAD);
 
-    // reverse row so highest-precedence (within that row) sits left
     const rowSortedForDisplay = [...row].reverse();
     const leftPositions = getMedalRowLeftPositions(rowSortedForDisplay.length);
 
@@ -1574,7 +1569,7 @@ function renderRack(){
 
       mimg.dataset.tooltipTitle = entry.id.replace(/_/g,' ').toUpperCase();
       mimg.dataset.tooltipReg   = "Miniature medal arrangement";
-      mimg.dataset.tooltipWhy   = "Highest awards uppermost, centered.";
+      mimg.dataset.tooltipWhy   = "Highest awards sit top row, centered.";
 
       uniformCanvas.appendChild(mimg);
     });
