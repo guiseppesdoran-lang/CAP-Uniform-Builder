@@ -114,7 +114,8 @@
   .controlsScrollArea{
     flex:1;
     overflow-y:auto;
-    padding:12px 14px 48px; /* leave room above footer bar */
+    padding:12px 14px 200px; /* leave room above footer & calibration export */
+    position:relative;
   }
 
   .panelBlock {
@@ -384,7 +385,7 @@
     z-index:5;
   }
 
-  /* CALIBRATOR WRAPPER */
+  /* FLOATING RACK CALIB TAB (legacy rack-only control) */
   #calibratorWrapper {
     position:fixed;
     top:80px;
@@ -477,6 +478,72 @@
     padding:0;
   }
 
+  /* === SIDEBAR CALIBRATION PANEL (new full system) === */
+  .panelSection{
+    background:var(--panel,#fff);
+    border:1px solid var(--line,#cfd6df);
+    border-radius:10px;
+    padding:12px 12px 16px;
+    margin-bottom:12px;
+    box-shadow:0 8px 20px rgb(0 0 0 / .04);
+  }
+  .tinyNote{
+    font-size:12px;
+    line-height:1.4;
+    color:var(--muted,#516079);
+    margin:0 0 8px;
+  }
+  .calGroup{
+    border:1px solid var(--line,#cfd6df);
+    border-radius:6px;
+    padding:8px;
+    margin-bottom:10px;
+    background:#f9fafc;
+  }
+  .calHeader{
+    font-size:13px;
+    font-weight:600;
+    margin:0 0 6px;
+    color:var(--ink,#0d1b2a);
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+  }
+  .calRow{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:6px;
+    flex-wrap:wrap;
+  }
+  .calRow label{
+    min-width:40px;
+    font-size:12px;
+    color:var(--muted,#516079);
+  }
+  .calRow input[type="range"]{
+    flex:1;
+  }
+  .calVal{
+    font-size:12px;
+    min-width:38px;
+    text-align:right;
+    color:var(--ink,#0d1b2a);
+    font-family:system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    font-variant-numeric:tabular-nums;
+  }
+  #calibrationExport{
+    width:100%;
+    min-height:120px;
+    font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+    font-size:12px;
+    border:1px solid var(--line,#cfd6df);
+    border-radius:6px;
+    padding:6px;
+    background:#f6f8fa;
+    resize:vertical;
+  }
+
   /* MOBILE */
   @media (max-width:768px){
     #layoutShell{
@@ -522,7 +589,7 @@
   <span></span><span></span><span></span>
 </button>
 
-<!-- Ribbon Rack Calibrator UI -->
+<!-- Floating rack-only calibrator (legacy) -->
 <div id="calibratorWrapper">
   <div id="calibratorTab">
     <span>RACK</span>
@@ -766,6 +833,26 @@
         <div class="hintText">Download will export a high-res PNG of the uniform preview.</div>
       </section>
 
+      <!-- === NEW: FULL CALIBRATION PANEL === -->
+      <section id="calibrationPanelSidebar" class="panelSection">
+        <h2 style="margin-top:0;font-size:13px;font-weight:600;color:var(--ink);">
+          Calibration (All Items)
+        </h2>
+        <p class="tinyNote">
+          Move & rotate overlays live. Copy the JSON when you're done and hardcode the numbers.
+        </p>
+
+        <div id="calibrationControls"></div>
+
+        <div style="margin-top:16px;">
+          <label for="calibrationExport" class="tinyNote"
+                 style="display:block;margin-bottom:4px;">
+            Export current calibration (copy/paste into constants):
+          </label>
+          <textarea id="calibrationExport"></textarea>
+        </div>
+      </section>
+
       <!-- COPYRIGHT -->
       <section class="panelBlock" style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3;">
         <div id="sidebarCopyrightLine">
@@ -773,6 +860,7 @@
           Developed by C/Capt. Guiseppe Doran
         </div>
       </section>
+
     </div>
   </aside>
 
@@ -826,26 +914,181 @@ let dragOffsetX = 0;
 let dragOffsetY = 0;
 
 /* ===========================
-   CALIBRATION CONSTANTS
+   CALIBRATION STATE (NEW)
    =========================== */
-/* rackBaseX/Y define the upper-left corner of the TOP ROW
-   based on your captured coordinates:
-   silver_medal_of_valor => left 259px, top 206px, width 23px, height 7.2px
+/*
+calibrationData maps elementId -> {name, x, y, rotation}
+We generate sliders for each, and update DOM/live JSON.
 */
-let rackBaseX = 259;   // [CALIB UPDATE] was 255, now matches your logged left
-let rackBaseY = 206;   // [CALIB UPDATE] matches your logged top
+const calibrationData = {};
 
-// ribbon tile calibrated size + gaps
-const RIBBON_WIDTH  = 23;    // [CALIB UPDATE] forced to your width
-const RIBBON_HEIGHT = 7.2;   // [CALIB UPDATE] forced to your height
+// helper: ensure DOM element has absolute + transform from calibrationData
+function applyCalibrationToElement(elementId){
+  const entry = calibrationData[elementId];
+  const el = document.getElementById(elementId);
+  if(!el || !entry) return;
 
-// Horizontal spacing between ribbons in same row:
-// silver_medal_of_valor @259px
-// bronze_medal_of_valor @282px
-// distinguished_service_award @305px
-// step difference = 23px each → gap = (step - width) = 0
-const RIBBON_GAP_X  = 0;     // [CALIB UPDATE] 0px between columns
-const RIBBON_GAP_Y  = 2;     // same vertical breathing room between rows
+  el.style.position = "absolute";
+  el.style.left = entry.x + "px";
+  el.style.top = entry.y + "px";
+  el.style.transformOrigin = "center center";
+  el.style.transform = "rotate(" + entry.rotation + "deg)";
+}
+
+// create/update a calibratable entry and rebuild UI
+function registerCalibratable(elementId, displayName, initialX, initialY, initialRot=0){
+  if(!calibrationData[elementId]){
+    calibrationData[elementId] = {
+      name: displayName,
+      x: initialX,
+      y: initialY,
+      rotation: initialRot
+    };
+  }
+  applyCalibrationToElement(elementId);
+  rebuildCalibrationUI();
+  exportCalibrationJSON();
+}
+
+// build sidebar slider UI for all calibrationData
+function rebuildCalibrationUI(){
+  const wrap = document.getElementById("calibrationControls");
+  if(!wrap) return;
+  wrap.innerHTML = "";
+
+  Object.keys(calibrationData).forEach(elementId=>{
+    const item = calibrationData[elementId];
+
+    const group = document.createElement("div");
+    group.className = "calGroup";
+
+    const header = document.createElement("div");
+    header.className = "calHeader";
+    header.innerHTML = `
+      <span>${item.name}</span>
+      <span style="font-size:11px;color:var(--muted,#516079);">id: ${elementId}</span>
+    `;
+    group.appendChild(header);
+
+    // X row
+    const rowX = document.createElement("div");
+    rowX.className = "calRow";
+
+    const labelX = document.createElement("label");
+    labelX.textContent = "X";
+    rowX.appendChild(labelX);
+
+    const sliderX = document.createElement("input");
+    sliderX.type = "range";
+    sliderX.min = -200;
+    sliderX.max = 400;
+    sliderX.step = 1;
+    sliderX.value = item.x;
+    rowX.appendChild(sliderX);
+
+    const valX = document.createElement("div");
+    valX.className = "calVal";
+    valX.textContent = item.x + "px";
+    rowX.appendChild(valX);
+
+    sliderX.addEventListener("input", ()=>{
+      item.x = parseInt(sliderX.value,10);
+      applyCalibrationToElement(elementId);
+      valX.textContent = item.x + "px";
+      exportCalibrationJSON();
+    });
+
+    group.appendChild(rowX);
+
+    // Y row
+    const rowY = document.createElement("div");
+    rowY.className = "calRow";
+
+    const labelY = document.createElement("label");
+    labelY.textContent = "Y";
+    rowY.appendChild(labelY);
+
+    const sliderY = document.createElement("input");
+    sliderY.type = "range";
+    sliderY.min = 0;
+    sliderY.max = 600;
+    sliderY.step = 1;
+    sliderY.value = item.y;
+    rowY.appendChild(sliderY);
+
+    const valY = document.createElement("div");
+    valY.className = "calVal";
+    valY.textContent = item.y + "px";
+    rowY.appendChild(valY);
+
+    sliderY.addEventListener("input", ()=>{
+      item.y = parseInt(sliderY.value,10);
+      applyCalibrationToElement(elementId);
+      valY.textContent = item.y + "px";
+      exportCalibrationJSON();
+    });
+
+    group.appendChild(rowY);
+
+    // ROT row
+    const rowR = document.createElement("div");
+    rowR.className = "calRow";
+
+    const labelR = document.createElement("label");
+    labelR.textContent = "ROT";
+    rowR.appendChild(labelR);
+
+    const sliderR = document.createElement("input");
+    sliderR.type = "range";
+    sliderR.min = -30;
+    sliderR.max = 30;
+    sliderR.step = 0.5;
+    sliderR.value = item.rotation;
+    rowR.appendChild(sliderR);
+
+    const valR = document.createElement("div");
+    valR.className = "calVal";
+    valR.textContent = item.rotation + "°";
+    rowR.appendChild(valR);
+
+    sliderR.addEventListener("input", ()=>{
+      item.rotation = parseFloat(sliderR.value);
+      applyCalibrationToElement(elementId);
+      valR.textContent = item.rotation + "°";
+      exportCalibrationJSON();
+    });
+
+    group.appendChild(rowR);
+
+    wrap.appendChild(group);
+  });
+}
+
+// dump calibrationData -> textarea for copy/paste
+function exportCalibrationJSON(){
+  const out = document.getElementById("calibrationExport");
+  if(!out) return;
+  const slim = {};
+  Object.keys(calibrationData).forEach(id=>{
+    const {x,y,rotation} = calibrationData[id];
+    slim[id] = {x,y,rotation};
+  });
+  out.value = JSON.stringify(slim, null, 2);
+}
+
+/* ===========================
+   CALIBRATION CONSTANTS (rack baseline)
+   =========================== */
+/* rackBaseX/Y define upper-left corner of the TOP ROW
+   (still exposed in the floating RACK tab for quick coarse tuning)
+*/
+let rackBaseX = 259;
+let rackBaseY = 206;
+
+const RIBBON_WIDTH  = 23;
+const RIBBON_HEIGHT = 7.2;
+const RIBBON_GAP_X  = 0;
+const RIBBON_GAP_Y  = 2;
 
 function getRackOrigin(){
   return { x:rackBaseX, y:rackBaseY };
@@ -1235,7 +1478,10 @@ function applyJacket(){
   img.dataset.tooltipTitle = State.uniform.replace(/_/g,' ').toUpperCase();
   img.dataset.tooltipReg   = "Base uniform image";
   img.dataset.tooltipWhy   = "Selected uniform template for preview / alignment.";
+  img.id = "jacketBaseImage";
   uniformCanvas.appendChild(img);
+
+  // Register jacket? no. We don't calibrate the base.
 }
 
 /* ===========================
@@ -1245,11 +1491,10 @@ function sortRibbons(arr){
   return [...arr].sort((a,b)=>precedence(a.id)-precedence(b.id));
 }
 
-/* Scan current rack or fallback */
+/* find top Y for rack, fallback */
 function getTopRibbonY(){
   const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini')];
   if(!layers.length) {
-    // fallback mid-chest
     return rackBaseY + 150;
   }
   return Math.min(...layers.map(l=>parseFloat(l.style.top)||0));
@@ -1265,7 +1510,6 @@ function ensureRibbonObj(id){
   return r;
 }
 
-/* place devices on each single ribbon tile */
 function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   const r=ensureRibbonObj(rid);
   const flat=[];
@@ -1302,10 +1546,8 @@ function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   });
 }
 
-/* click logic for ribbons: device apply/remove mode */
 function onRibbonTileClick(rid){
   if(State.ribbonDragMode) return;
-
   if(State.deviceRemoveMode){
     const r=ensureRibbonObj(rid);
     r.devices={};
@@ -1320,7 +1562,6 @@ function onRibbonTileClick(rid){
   renderRack();
 }
 
-/* drag handlers for calibration mode */
 function initRibbonDragHandlers(tileEl){
   tileEl.addEventListener('mousedown', e => {
     if(!State.ribbonDragMode) return;
@@ -1369,7 +1610,7 @@ function syncDevicesToRibbon(ribbonTileEl){
   });
 }
 
-/* global pointer move/up for dragging */
+/* global drag move/up handlers */
 document.addEventListener('mousemove', e => {
   if(!currentDrag || !State.ribbonDragMode) return;
   let newLeft = e.clientX - dragOffsetX;
@@ -1386,6 +1627,24 @@ document.addEventListener('mousemove', e => {
   currentDrag.style.top  = newTop  + 'px';
 
   syncDevicesToRibbon(currentDrag);
+
+  // update calibration entry for that specific ribbon tile
+  const rid = currentDrag.dataset.rid;
+  if(rid){
+    const elId = "ribbonRack"; // we treat the rack as one logical block
+    // We'll update rackBaseX/rackBaseY based on the TOP LEFT of highest-precedence tile.
+    // Grab that tile's coords as new rack origin.
+    rackBaseX = newLeft;
+    rackBaseY = newTop;
+    // reflect this in calibrationData too if exists
+    if(calibrationData[elId]){
+      calibrationData[elId].x = rackBaseX;
+      calibrationData[elId].y = rackBaseY;
+      applyCalibrationToElement(elId);
+      exportCalibrationJSON();
+      rebuildCalibrationUI();
+    }
+  }
 });
 document.addEventListener('mouseup', () => {
   if(currentDrag){
@@ -1395,26 +1654,29 @@ document.addEventListener('mouseup', () => {
 });
 
 /* renderRack()
-   Uses calibrated rackBaseX / rackBaseY for ribbons OR mini medals.
+   builds ribbons OR mini medals, enforces rack layout,
+   THEN registers "ribbonRack" in calibrationData using rackBaseX/Y.
 */
 function renderRack(){
-  // wipe ribbons/medals/devices
   [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
 
   const baseCfg = UNIFORMS[State.uniform];
-
   const uniformPrefersMini   = baseCfg.mini;
   const uniformAllowsRibbons = baseCfg.ribbons;
   const autoMini   = by('autoMini').checked;
   const manualMini = State.forceMini;
   const useMini = (uniformPrefersMini && autoMini) || manualMini;
 
-  const items = sortRibbons(State.ribbons); // highest precedence first
-  if(!items.length) return;
+  const items = sortRibbons(State.ribbons);
+  if(!items.length){
+    // still register rack placeholder so you can calibrate empty rack
+    ensureRackCalibrationElement();
+    return;
+  }
 
-  // calibration/constants
-  const BOTTOM_ROW_Y   = 206;    // locked y for the *bottom* ribbon row
-  const RACK_CENTER_X  = 293.5;  // horizontal center of the rack over the pocket
+  // shared anchors
+  const BOTTOM_ROW_Y   = 206;
+  const RACK_CENTER_X  = 293.5;
 
   function getRowLeftPositions(count){
     const totalWidth = count * RIBBON_WIDTH + (count-1)*RIBBON_GAP_X;
@@ -1426,40 +1688,25 @@ function renderRack(){
     return arr;
   }
 
-  // ---- FULL SIZE RIBBONS MODE ----
+  // ===== FULL-SIZE RIBBONS =====
   if(!useMini && uniformAllowsRibbons){
-    // bottom row = lowest precedence, up to 3 ribbons
-    // row above = next 3 higher, etc.
-    // top row = highest precedence (maybe 1-2 ribbons)
-
-    // 1) items is [highest ... lowest]; flip to [lowest ... highest]
+    // bottom row = lowest precedence, 3 per row
     const lowestFirst = [...items].reverse();
-
-    // 2) chunk into groups of 3 from start -> bottom row first
     const rowsBottomFirst = [];
     for(let i=0;i<lowestFirst.length;i+=3){
       rowsBottomFirst.push(lowestFirst.slice(i,i+3));
     }
-
-    // 3) flip rows so we render from top row down
     const rowsTopFirst = [...rowsBottomFirst].reverse();
     const totalRows = rowsTopFirst.length;
 
     rowsTopFirst.forEach((row,topIndex)=>{
-      // how far this row is from the bottom:
       const indexFromBottom = (totalRows - 1 - topIndex);
 
-      // ***** VERTICAL PLACEMENT WITH NO GAP *****
-      // each row is exactly one ribbon height above the next
+      // no vertical gap: rows stack directly
       const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * RIBBON_HEIGHT;
 
-      // We want within-row order: highest precedence on the LEFT.
-      // After the transformations above, `row` (currently from rowsTopFirst)
-      // still has lower precedence first and higher precedence last.
-      // Reverse it so left -> right = higher -> lower.
+      // reverse so highest precedence ends up LEFT
       const rowSortedForDisplay = [...row].reverse();
-
-      // horizontal centering for this row count
       const leftPositions = getRowLeftPositions(rowSortedForDisplay.length);
 
       rowSortedForDisplay.forEach((ribbonObj,i)=>{
@@ -1491,21 +1738,20 @@ function renderRack(){
 
         uniformCanvas.appendChild(tile);
 
-        // lay devices on top
         drawDevicesOnRibbon(rid,leftPx,topPx,RIBBON_WIDTH,RIBBON_HEIGHT);
       });
     });
 
+    ensureRackCalibrationElement();
     return;
   }
 
-  // ---- MINI MEDAL MODE ----
+  // ===== MINI MEDALS =====
   const MINI_W = 20;
   const MINI_H = 28;
   const MEDAL_PER_ROW = 5;
   const PAD = 6;
 
-  // Build medal list for awards that have mini medal art (still highest-first order from items)
   const medalItems = [];
   for(const r of items){
     const medalPath = miniMedalImages[r.id];
@@ -1513,9 +1759,11 @@ function renderRack(){
       medalItems.push({ id:r.id, path:medalPath });
     }
   }
-  if(!medalItems.length) return;
+  if(!medalItems.length){
+    ensureRackCalibrationElement();
+    return;
+  }
 
-  // Same precedence logic bottom→top, but we'll keep vertical spacing for medals (PAD) unless you tell me otherwise.
   const lowestFirstMedals = [...medalItems].reverse();
   const medalRowsBottomFirst = [];
   for(let i=0;i<lowestFirstMedals.length;i+=MEDAL_PER_ROW){
@@ -1524,7 +1772,6 @@ function renderRack(){
   const medalRowsTopFirst = [...medalRowsBottomFirst].reverse();
   const totalMedalRows = medalRowsTopFirst.length;
 
-  // anchor medals lower than ribbons
   const BOTTOM_ROW_Y_MEDALS = BOTTOM_ROW_Y + 20;
 
   function getMedalRowLeftPositions(count){
@@ -1539,7 +1786,6 @@ function renderRack(){
 
   medalRowsTopFirst.forEach((row,topIndex)=>{
     const indexFromBottom = (totalMedalRows - 1 - topIndex);
-
     const rowTopPx = BOTTOM_ROW_Y_MEDALS - indexFromBottom * (MINI_H + PAD);
 
     const rowSortedForDisplay = [...row].reverse();
@@ -1574,6 +1820,25 @@ function renderRack(){
       uniformCanvas.appendChild(mimg);
     });
   });
+
+  ensureRackCalibrationElement();
+}
+
+// ensure we have an invisible anchor div for rack calibrationData
+function ensureRackCalibrationElement(){
+  let el = document.getElementById("ribbonRack");
+  if(!el){
+    el = document.createElement("div");
+    el.id = "ribbonRack";
+    el.style.position="absolute";
+    el.style.width="1px";
+    el.style.height="1px";
+    el.style.pointerEvents="none";
+    uniformCanvas.appendChild(el);
+  }
+  el.style.left = rackBaseX + "px";
+  el.style.top  = rackBaseY + "px";
+  registerCalibratable("ribbonRack","Ribbon Rack",rackBaseX,rackBaseY,0);
 }
 
 /* ===========================
@@ -1645,7 +1910,7 @@ function wireDeviceUI(){
 /* ===========================
    BADGES
    =========================== */
-const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[] };
+const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[], OVERSTACK:[] };
 function resetBadgeSlots(){ Object.keys(badgeSlots).forEach(k=>badgeSlots[k]=[]); }
 
 function isCadetAuthorized(id){ return allowedCadetBadges.has(id); }
@@ -1677,63 +1942,26 @@ function renderAllBadges(){
   }
 }
 
+// helper for "over ribbon" group stacking, will register calibratables
 function placeBadgeByCategory(id){
   const img=by(`badges-${id}`); 
   if(!img) return;
 
-  // What slot/category does this badge belong to?
   let slot = badgeLocations[id] || 'UN';
-
-  // Special-cased remaps you already had:
   if(id==='nra_marksman_badge') slot='LRP';
   if(id==='model_rocketry_badge') slot='LP';
 
-  // reuse custom size or default
   const size = customBadgeSizes[id] || { width:60, height:25 };
   const spacing = 5;
 
-  // we'll need this a lot
-  const baseRibbonY = getTopRibbonY(); // <-- highest/top ribbon row Y
-  // We also need the rack center for horizontal centering:
-  const RACK_CENTER_X = 293.5; // same value we used in renderRack()
-
-  // ---------------------------------
-  // 1. OVER-RIBBON BADGES (pilot wings, etc.)
-  // Slots that go above the ribbon rack:
-  // OLP  (over left pocket / top of ribbons)
-  // OLPU (over left pocket upper)
-  // OLPA (over left pocket ABOVE upper)
-  // ORP  (over right pocket, historically, but you said "over the ribbons"
-  //       so we’ll center ORP the same way unless you need right pocket separate later)
-  //
-  // Rule you gave:
-  // "All badges that belong over the ribbons should be 25px above the highest ribbon row
-  //  and centered over the top center ribbon."
-  //
-  // Interpretation:
-  // - bottom edge of the badge sits 25px above the TOP row of ribbons.
-  //   So top edge = (baseRibbonY - 25) - badgeHeight
-  //
-  // - horizontally centered: rack center minus half badge width.
-  //
-  // We'll also vertical-stack multiples in this category: first one closest to ribbons,
-  // next one goes above it, etc.
-  // ---------------------------------
+  const baseRibbonY = getTopRibbonY();
+  const RACK_CENTER_X = 293.5;
 
   const overRibbonSlots = new Set(['OLP','OLPU','OLPA','ORP']);
-
   if(overRibbonSlots.has(slot)){
-    // how many badges have we already placed in ANY of the over-ribbon slots?
-    // we want to stack them upward in the order they are added.
-    // We'll treat them as a single stack group "OVERSTACK".
-    if(!badgeSlots.OVERSTACK){ badgeSlots.OVERSTACK = []; }
-
-    const stackIdx = badgeSlots.OVERSTACK.length; // 0 for first, 1 for second, etc.
-
-    // bottom edge of the first badge: 25px above highest ribbon row
+    const stackIdx = badgeSlots.OVERSTACK.length;
     const bottomEdgeY = baseRibbonY - 25 - (stackIdx * (size.height + spacing));
     const topY = bottomEdgeY - size.height;
-
     const leftX = RACK_CENTER_X - (size.width / 2);
 
     const clone = img.cloneNode();
@@ -1748,29 +1976,23 @@ function placeBadgeByCategory(id){
     clone.dataset.tooltipReg   = "Over-rack qualification badge";
     clone.dataset.tooltipWhy   = "Centered above ribbon rack per spec (25px gap).";
 
+    // give unique DOM id for calibration
+    const elId = `badge-${slot}-${stackIdx}`;
+    clone.id = elId;
+
     uniformCanvas.appendChild(clone);
 
     badgeSlots.OVERSTACK.push(id);
+
+    // register calibratable so you can fine tune x/y/rot for that slot level
+    registerCalibratable(elId, `${slot} Badge ${stackIdx}`, leftX, topY, 0);
     return;
   }
 
-  // ---------------------------------
-  // 2. EVERYTHING ELSE (nameplate side, lower pocket, etc.)
-  // Keep your old behavior for those.
-  // ---------------------------------
-
-  const single = new Set(['LRP','LP']); // also ORP/OLP/etc were here but we already handled those above
-  if(single.has(slot) && badgeSlots[slot] && badgeSlots[slot].length>=1){
-    return;
-  }
-
-  // initialize tracking array if needed
+  // below / nameplate / pockets logic
   if(!badgeSlots[slot]) badgeSlots[slot] = [];
 
-  // Original fallback maps anchored off rackBaseX etc.
-  // We keep these for badges not over the ribbons, like marksmanship, chaplain on right pocket if you later want it back there, etc.
   const yMap={
-    // NOTE: OLP/OLPU/OLPA/ORP used to be here, but we've already handled them above
     ON:  baseRibbonY + 140,
     UN:  baseRibbonY + 180,
     LRP: baseRibbonY + 199,
@@ -1786,7 +2008,6 @@ function placeBadgeByCategory(id){
   let y = yMap[slot] !== undefined ? yMap[slot] : (baseRibbonY+180);
   let x = xMap[slot] !== undefined ? xMap[slot] : (rackBaseX-105);
 
-  // stack vertical if multiple in ON/UN
   if(slot==='ON'||slot==='UN'){
     const stackIdx = badgeSlots[slot].length;
     for(let i=0;i<stackIdx;i++){
@@ -1796,7 +2017,6 @@ function placeBadgeByCategory(id){
     }
   }
 
-  // special case you already had
   if(id==='model_rocketry_badge' && State.badges.includes('nra_marksman_badge')){
     y+=50;
   }
@@ -1813,9 +2033,15 @@ function placeBadgeByCategory(id){
   clone.dataset.tooltipReg   = "CAPR 39-1 badge placement";
   clone.dataset.tooltipWhy   = "Auto-placed relative to pockets / nameplate.";
 
+  const stackPos = badgeSlots[slot].length;
+  const elId = `badge-${slot}-${stackPos}`;
+  clone.id = elId;
+
   uniformCanvas.appendChild(clone);
 
   badgeSlots[slot].push(id);
+
+  registerCalibratable(elId, `${slot} Badge ${stackPos}`, x, y, 0);
 }
 
 /* ===========================
@@ -1855,7 +2081,6 @@ function renderPatches(){
 
   planPatches(State.patches);
 
-  // approximate coords for canvas size (450x600)
   const coords={
     L_SHOULDER:{x:95,y:250,dy:80},
     R_SHOULDER:{x:505,y:250,dy:80},
@@ -1866,7 +2091,7 @@ function renderPatches(){
   for(const slot of Object.keys(patchSlots)){
     const ids=patchSlots[slot];
     let {x,y,dy}=coords[slot]||{x:0,y:0,dy:70};
-    for(const id of ids){
+    ids.forEach((id,idx)=>{
       const meta=PATCH_META[id];
       const src = by('patch-'+id);
       const el  = (src?src.cloneNode():new Image());
@@ -1884,9 +2109,15 @@ function renderPatches(){
       el.dataset.tooltipReg   = "Field/utility patch placement";
       el.dataset.tooltipWhy   = "Displayed on sleeve/chest per OCP/ABU/corporate field rules.";
 
+      const elId=`patch-${slot}-${idx}`;
+      el.id = elId;
+
       uniformCanvas.appendChild(el);
+
+      registerCalibratable(elId, `Patch ${slot} ${idx}`, (x - meta.w/2), (y - meta.h/2), 0);
+
       y+=dy;
-    }
+    });
   }
 }
 
@@ -1907,10 +2138,10 @@ function renderRank(id){
     const boardCfg={width:50,height:100};
     const insigniaCfg={width:32,height:32};
     const placements=[
-      {left:350,top:160,rot:90},
-      {left:100,top:160,rot:-90}
+      {left:350,top:160,rot:90,side:"right"},
+      {left:100,top:160,rot:-90,side:"left"}
     ];
-    placements.forEach(({left,top,rot})=>{
+    placements.forEach(({left,top,rot,side})=>{
       const board=document.createElement('img');
       board.src=boardSrc;
       board.className='layer rank';
@@ -1924,7 +2155,11 @@ function renderRank(id){
       board.dataset.tooltipTitle = id;
       board.dataset.tooltipReg   = "Officer shoulder board";
       board.dataset.tooltipWhy   = "Displayed for cadet/senior officer grades.";
+      const boardId = `shoulder-${side}-board`;
+      board.id = boardId;
       uniformCanvas.appendChild(board);
+
+      registerCalibratable(boardId, `Shoulder Board ${side}`, left, top, rot);
 
       const ins=insigniaEl.cloneNode();
       ins.className='layer rank';
@@ -1938,7 +2173,11 @@ function renderRank(id){
       ins.dataset.tooltipTitle = id;
       ins.dataset.tooltipReg   = "Rank insignia";
       ins.dataset.tooltipWhy   = "Placed on shoulder boards for officer grades.";
+      const insId = `shoulder-${side}-insignia`;
+      ins.id = insId;
       uniformCanvas.appendChild(ins);
+
+      registerCalibratable(insId, `Shoulder Insignia ${side}`, parseFloat(ins.style.left), parseFloat(ins.style.top), rot);
     });
     return;
   }
@@ -1955,7 +2194,11 @@ function renderRank(id){
   icon.dataset.tooltipTitle = id;
   icon.dataset.tooltipReg   = "Enlisted/NCO rank placement";
   icon.dataset.tooltipWhy   = "Displayed directly on the coat / sleeve area.";
+  const rankId="enlisted-rank";
+  icon.id=rankId;
   uniformCanvas.appendChild(icon);
+
+  registerCalibratable(rankId, "Enlisted Rank", pos.left, pos.top, 0);
 }
 
 function renderNameplate(){
@@ -1975,7 +2218,11 @@ function renderNameplate(){
   el.dataset.tooltipTitle="Nameplate";
   el.dataset.tooltipReg="CAPR 39-1 nameplate location";
   el.dataset.tooltipWhy="Centered on pocket / aligned per spec.";
+  const npId="nameplate-el";
+  el.id=npId;
   uniformCanvas.appendChild(el);
+
+  registerCalibratable(npId, "Nameplate", npLeft, npTop, 0);
 }
 
 /* ===========================
@@ -1984,7 +2231,6 @@ function renderNameplate(){
 function updateAvailabilityUI(prevUniform){
   const auth = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
 
-  // even if showRibbons=false, keep groupRibbons visible on mess/mini so user can still edit awards
   by('groupRibbons').classList.toggle('hidden', !auth.showRibbons && !UNIFORMS[State.uniform].mini);
   by('groupPatches').classList.toggle('hidden', !auth.showPatches);
 
@@ -2040,6 +2286,7 @@ function fullRender(prevUniform){
   renderRack();
   renderAllBadges();
   renderRank(State.rank);
+  // nameplate render is user-triggered so we don't spam multiple copies
 }
 function refreshUI(){
   memberSelect.value=State.member;
@@ -2107,7 +2354,7 @@ function highlightActiveUniformButton(){
 }
 
 /* ===========================
-   CALIBRATOR PANEL WIRING
+   FLOATING RACK CALIB PANEL INIT
    =========================== */
 function initCalibratorUI(){
   const tab          = by('calibratorTab');
@@ -2123,7 +2370,6 @@ function initCalibratorUI(){
   const readY        = by('readY');
   const readSize     = by('readSize');
 
-  // init control defaults
   rackXRange.value  = rackBaseX;
   rackXNumber.value = rackBaseX;
   rackYRange.value  = rackBaseY;
@@ -2335,6 +2581,9 @@ logRibbonCoordsBtn.addEventListener('click', ()=>{
   refreshUI();
   fullRender();
   initCalibratorUI();
+  // make sure calibration panel shows initial state:
+  rebuildCalibrationUI();
+  exportCalibrationJSON();
 })();
 </script>
 </body>
