@@ -1153,8 +1153,8 @@ function syncDevicesToRibbon(ribbonTileEl){
 
   const baseLeft = parseFloat(ribbonTileEl.style.left) || 0;
   const baseTop  = parseFloat(ribbonTileEl.style.top)  || 0;
-  const w = parseFloat(ribbonTileEl.style.width)  || 23.3;
-  const h = parseFloat(ribbonTileEl.style.height) || 7.5;
+  const w = parseFloat(ribbonTileEl.style.width)  || 23;
+  const h = parseFloat(ribbonTileEl.style.height) || 7.2;
 
   // replicate drawDevicesOnRibbon layout math
   const r = State.ribbons.find(x => x.id===rid);
@@ -1229,8 +1229,8 @@ function renderRack(){
 
   if(showRibbons){
     // Service ribbons
-    const TILE_W = 23.3;
-    const TILE_H = 7.5;
+    const TILE_W = 23;
+    const TILE_H = 7.2;
     const PER_ROW = 3;
     const PAD = 0;
 
