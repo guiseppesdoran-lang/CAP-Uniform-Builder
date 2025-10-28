@@ -1409,55 +1409,66 @@ function renderRack(){
   const manualMini = State.forceMini;
   const useMini = (uniformPrefersMini && autoMini) || manualMini;
 
-  const items = sortRibbons(State.ribbons);
+  const items = sortRibbons(State.ribbons); // highest precedence first
   if(!items.length) return;
 
-  // --- RIBBON RACK MODE (full-size ribbons) ---
+  // constants from calibration
+  const BOTTOM_ROW_Y   = 206;    // locked Y of the lowest row you observed
+  const RACK_CENTER_X  = 293.5;  // horizontal centerline over the pocket
+
+  function getRowLeftPositions(count){
+    const totalWidth = count * RIBBON_WIDTH + (count-1)*RIBBON_GAP_X;
+    const rowLeftBase = RACK_CENTER_X - totalWidth/2;
+    const arr=[];
+    for(let i=0;i<count;i++){
+      arr.push(rowLeftBase + i*(RIBBON_WIDTH+RIBBON_GAP_X));
+    }
+    return arr;
+  }
+
+  // ---- FULL SIZE RIBBONS MODE ----
   if(!useMini && uniformAllowsRibbons){
+    // Goal:
+    // bottom row = lowest precedence, up to 3 ribbons
+    // row above that = next 3 higher, etc.
+    // top row = highest precedence (may have 1 or 2 ribbons)
 
-    const PER_ROW = 3;
-    const ids = items.map(x=>x.id);
+    // 1) take items (highest first) and flip to lowest-first
+    const lowestFirst = [...items].reverse(); // now [lowest ... highest]
 
-    // Build rows like your old code did:
-    // - First row may be 1-2 ribbons (the "short" row)
-    // - All following rows are full 3-wide groups
-    const rows = [];
-    if(ids.length % PER_ROW !== 0){
-      rows.push(ids.slice(0, ids.length % PER_ROW));
+    // 2) chunk into groups of up to 3 from start to end => bottom row first
+    const rowsBottomFirst = [];
+    for(let i=0;i<lowestFirst.length;i+=3){
+      rowsBottomFirst.push(lowestFirst.slice(i,i+3));
     }
-    for(let i=ids.length % PER_ROW; i<ids.length; i+=PER_ROW){
-      rows.push(ids.slice(i,i+PER_ROW));
-    }
+    // rowsBottomFirst[0] is truly the bottom row (lowest precedence),
+    // rowsBottomFirst[rowsBottomFirst.length-1] is the TOP row (highest precedence)
 
-    // rows[0] is actually the TOP row already in this scheme.
-    // BUT in your previous code you reversed twice:
-    //   rows.reverse(); const orderedRows=[...rows].reverse();
-    // which just got you back to the original order.
-    // So we can just keep rows as-is.
-    const orderedRows = rows;
+    // 3) flip so we can render from TOP -> BOTTOM visually
+    const rowsTopFirst = [...rowsBottomFirst].reverse();
+    const totalRows = rowsTopFirst.length;
 
-    orderedRows.forEach((row,visualRowIndexFromTop)=>{
-      // vertical position for this row
-      const rowTopPx = rackBaseY + visualRowIndexFromTop * (RIBBON_HEIGHT + RIBBON_GAP_Y);
+    rowsTopFirst.forEach((row,topIndex)=>{
+      // how far is THIS row from the bottom row?
+      const indexFromBottom = (totalRows - 1 - topIndex);
 
-      // how many ribbons in this row?
-      const rowCount = row.length;
+      // compute this row's Y
+      const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * (RIBBON_HEIGHT + RIBBON_GAP_Y);
 
-      // Calibrated horizontal math:
-      // rackBaseX is where a FULL 3-wide row's first ribbon sits.
-      // We need to center short rows (1 or 2 ribbons) over that 3-wide footprint.
-      //
-      // Full row width footprint = 3 ribbons * 23px each = 69px
-      // For 2 ribbons -> shift right by 1 column (23px)
-      // For 1 ribbon  -> shift right by 2 columns (46px)
-      let rowLeftBase = rackBaseX;
-      if(rowCount === 2){
-        rowLeftBase = rackBaseX + (RIBBON_WIDTH + RIBBON_GAP_X); // +23
-      } else if(rowCount === 1){
-        rowLeftBase = rackBaseX + 2 * (RIBBON_WIDTH + RIBBON_GAP_X); // +46
-      }
+      // compute horizontal lefts for this row count, centered
+      const leftPositions = getRowLeftPositions(row.length);
 
-      row.forEach((rid,i)=>{
+      // IMPORTANT: within each row, leftPositions[0] should hold the higher-precedence ribbon.
+      // Currently, 'row' is coming from rowsTopFirst, where:
+      //   rowsTopFirst[0] is high-precedence row (because we reversed).
+      //   Within that row slice, order is still "lowestFirst" order from earlier,
+      //   which at this point actually means: left→right = LOWER → HIGHER.
+      // We want left→right = HIGHER → LOWER.
+      // So we need to reverse EACH row so highest of that row ends up on the left.
+      const rowSortedForDisplay = [...row].reverse(); // now left is higher precedence
+
+      rowSortedForDisplay.forEach((ribbonObj, i)=>{
+        const rid = ribbonObj.id;
         const orig=by(`ribbons-${rid}`);
         if(!orig) return;
 
@@ -1465,10 +1476,9 @@ function renderRack(){
         tile.className='layer ribbonTile';
         tile.style.display='block';
 
-        const leftPx = rowLeftBase + i * (RIBBON_WIDTH + RIBBON_GAP_X);
+        const leftPx = leftPositions[i];
         const topPx  = rowTopPx;
 
-        // apply calibrated size + position
         tile.style.left   = `${leftPx}px`;
         tile.style.top    = `${topPx}px`;
         tile.style.width  = `${RIBBON_WIDTH}px`;
@@ -1480,31 +1490,27 @@ function renderRack(){
 
         tile.dataset.tooltipTitle = rid.replace(/_/g,' ').toUpperCase();
         tile.dataset.tooltipReg   = "CAPR 39-3 precedence applies";
-        tile.dataset.tooltipWhy   = "Displayed in order of precedence, highest top left.";
+        tile.dataset.tooltipWhy   = "Highest awards appear on upper row, centered.";
 
         initRibbonDragHandlers(tile);
 
         uniformCanvas.appendChild(tile);
 
-        // devices on top of this ribbon
         drawDevicesOnRibbon(rid,leftPx,topPx,RIBBON_WIDTH,RIBBON_HEIGHT);
       });
     });
 
-    return; // we're done with ribbon mode
+    return;
   }
 
-  // --- MINI MEDAL MODE ---
+  // ---- MINI MEDAL MODE ----
+  // We'll adapt mini medals to follow same bottom-row anchoring and centering logic.
   const MINI_W = 20;
   const MINI_H = 28;
-  const PER_ROW = 5;
+  const MEDAL_PER_ROW = 5;
   const PAD = 6;
 
-  // anchor: medals hang slightly lower than ribbons
-  const medalTopAnchorY = rackBaseY + 20;
-  const medalCenterX    = rackBaseX + (RIBBON_WIDTH * 1.5);
-
-  // build medalItems only for ribbons that have medal art
+  // build medalItems only for ribbons that have medal art, keeping precedence (highest first)
   const medalItems = [];
   for(const r of items){
     const medalPath = miniMedalImages[r.id];
@@ -1514,26 +1520,39 @@ function renderRack(){
   }
   if(!medalItems.length) return;
 
-  const medalRows = [];
-  if(medalItems.length % PER_ROW !== 0){
-    medalRows.push(medalItems.slice(0, medalItems.length % PER_ROW));
+  // same bottom-up logic for medals
+  const lowestFirstMedals = [...medalItems].reverse();
+  const medalRowsBottomFirst = [];
+  for(let i=0;i<lowestFirstMedals.length;i+=MEDAL_PER_ROW){
+    medalRowsBottomFirst.push(lowestFirstMedals.slice(i,i+MEDAL_PER_ROW));
   }
-  for(let i=medalItems.length % PER_ROW; i<medalItems.length; i+=PER_ROW){
-    medalRows.push(medalItems.slice(i,i+PER_ROW));
+  const medalRowsTopFirst = [...medalRowsBottomFirst].reverse();
+  const totalMedalRows = medalRowsTopFirst.length;
+
+  function getMedalRowLeftPositions(count){
+    const totalWidth = count * MINI_W + (count-1)*PAD;
+    const rowLeftBase = RACK_CENTER_X - totalWidth/2;
+    const arr=[];
+    for(let i=0;i<count;i++){
+      arr.push(rowLeftBase + i*(MINI_W+PAD));
+    }
+    return arr;
   }
 
-  medalRows.forEach((row,visualRowIndexFromTop)=>{
-    const rowTopPx = medalTopAnchorY + visualRowIndexFromTop*(MINI_H+PAD);
+  medalRowsTopFirst.forEach((row,topIndex)=>{
+    const indexFromBottom = (totalMedalRows - 1 - topIndex);
 
-    const rowCount=row.length;
-    const totalRowWidth=rowCount*MINI_W+(rowCount-1)*PAD;
+    // medals hang a bit lower than ribbons, so bottom row Y should be (206 + 20)
+    const BOTTOM_ROW_Y_MEDALS = 206 + 20;
+    const rowTopPx = BOTTOM_ROW_Y_MEDALS - indexFromBottom * (MINI_H + PAD);
 
-    const rowLeftBase = medalCenterX - (totalRowWidth/2);
+    // reverse row so highest-precedence (within that row) sits left
+    const rowSortedForDisplay = [...row].reverse();
+    const leftPositions = getMedalRowLeftPositions(rowSortedForDisplay.length);
 
-    row.forEach((entry,i)=>{
+    rowSortedForDisplay.forEach((entry,i)=>{
       const mimg=document.createElement('img');
 
-      // remove leading 'images/' because ASSET() adds assetBase
       let relPath = entry.path;
       if(relPath.startsWith('images/')){
         relPath = relPath.slice('images/'.length);
@@ -1543,7 +1562,7 @@ function renderRack(){
       mimg.className='layer ribbonMini';
       mimg.style.display='block';
 
-      const leftPx=rowLeftBase + i*(MINI_W+PAD);
+      const leftPx=leftPositions[i];
       const topPx =rowTopPx;
 
       mimg.style.left   = `${leftPx}px`;
@@ -1555,7 +1574,7 @@ function renderRack(){
 
       mimg.dataset.tooltipTitle = entry.id.replace(/_/g,' ').toUpperCase();
       mimg.dataset.tooltipReg   = "Miniature medal arrangement";
-      mimg.dataset.tooltipWhy   = "Used for mess dress / semi-formal vice ribbons.";
+      mimg.dataset.tooltipWhy   = "Highest awards uppermost, centered.";
 
       uniformCanvas.appendChild(mimg);
     });
