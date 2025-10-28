@@ -1412,23 +1412,15 @@ function renderRack(){
   const items = sortRibbons(State.ribbons);
   if(!items.length) return;
 
+  // --- RIBBON RACK MODE (full-size ribbons) ---
   if(!useMini && uniformAllowsRibbons){
-    /* SERVICE RIBBON RACK MODE
-       Calibrated rules:
-       - Top row highest precedence at (rackBaseX,rackBaseY)
-       - Each column shifts +23px (RIBBON_WIDTH + RIBBON_GAP_X)
-       - Each row shifts down (RIBBON_HEIGHT + RIBBON_GAP_Y)
-       - Partial row centering:
-         1 ribbon  -> centered over 3-wide row, so start + (1 full col shift * 2)
-         2 ribbons -> start + (1 full col shift * 1)
-         3 ribbons -> normal start
-    */
 
     const PER_ROW = 3;
     const ids = items.map(x=>x.id);
 
-    // Break into rows, with precedence rule:
-    // Top row may be short (1-2), below rows must be full 3.
+    // Build rows like your old code did:
+    // - First row may be 1-2 ribbons (the "short" row)
+    // - All following rows are full 3-wide groups
     const rows = [];
     if(ids.length % PER_ROW !== 0){
       rows.push(ids.slice(0, ids.length % PER_ROW));
@@ -1436,29 +1428,33 @@ function renderRack(){
     for(let i=ids.length % PER_ROW; i<ids.length; i+=PER_ROW){
       rows.push(ids.slice(i,i+PER_ROW));
     }
-    // rows[0] is top row, rows[1] is below it, etc. (already correct order)
 
-    rows.forEach((row,visualRowIndexFromTop)=>{
-      const rowTopPx = rackBaseY + visualRowIndexFromTop*(RIBBON_HEIGHT+RIBBON_Gap_Y); // <-- we'll fix typo below
-    });
-    // we'll rewrite cleanly below with the correct var names
+    // rows[0] is actually the TOP row already in this scheme.
+    // BUT in your previous code you reversed twice:
+    //   rows.reverse(); const orderedRows=[...rows].reverse();
+    // which just got you back to the original order.
+    // So we can just keep rows as-is.
+    const orderedRows = rows;
 
-    // real loop:
-    rows.forEach((row,visualRowIndexFromTop)=>{
-      const rowTopPx = rackBaseY + visualRowIndexFromTop*(RIBBON_HEIGHT + RIBBON_GAP_Y);
+    orderedRows.forEach((row,visualRowIndexFromTop)=>{
+      // vertical position for this row
+      const rowTopPx = rackBaseY + visualRowIndexFromTop * (RIBBON_HEIGHT + RIBBON_GAP_Y);
 
       // how many ribbons in this row?
       const rowCount = row.length;
 
-      // base left depends on rowCount for centering
-      // full width footprint of 3 ribbons = 3 * 23px = 69px
-      // if 2 ribbons, we want them shifted right by one column (23px)
-      // if 1 ribbon, shifted right by two columns (46px)
+      // Calibrated horizontal math:
+      // rackBaseX is where a FULL 3-wide row's first ribbon sits.
+      // We need to center short rows (1 or 2 ribbons) over that 3-wide footprint.
+      //
+      // Full row width footprint = 3 ribbons * 23px each = 69px
+      // For 2 ribbons -> shift right by 1 column (23px)
+      // For 1 ribbon  -> shift right by 2 columns (46px)
       let rowLeftBase = rackBaseX;
       if(rowCount === 2){
-        rowLeftBase = rackBaseX + (RIBBON_WIDTH + RIBBON_GAP_X);           // shift 1 col = 23px
+        rowLeftBase = rackBaseX + (RIBBON_WIDTH + RIBBON_GAP_X); // +23
       } else if(rowCount === 1){
-        rowLeftBase = rackBaseX + 2*(RIBBON_WIDTH + RIBBON_GAP_X);         // shift 2 cols = 46px
+        rowLeftBase = rackBaseX + 2 * (RIBBON_WIDTH + RIBBON_GAP_X); // +46
       }
 
       row.forEach((rid,i)=>{
@@ -1469,9 +1465,10 @@ function renderRack(){
         tile.className='layer ribbonTile';
         tile.style.display='block';
 
-        const leftPx=rowLeftBase + i*(RIBBON_WIDTH+RIBBON_GAP_X);
-        const topPx =rowTopPx;
+        const leftPx = rowLeftBase + i * (RIBBON_WIDTH + RIBBON_GAP_X);
+        const topPx  = rowTopPx;
 
+        // apply calibrated size + position
         tile.style.left   = `${leftPx}px`;
         tile.style.top    = `${topPx}px`;
         tile.style.width  = `${RIBBON_WIDTH}px`;
@@ -1489,79 +1486,80 @@ function renderRack(){
 
         uniformCanvas.appendChild(tile);
 
+        // devices on top of this ribbon
         drawDevicesOnRibbon(rid,leftPx,topPx,RIBBON_WIDTH,RIBBON_HEIGHT);
       });
     });
 
-  } else {
-    /* MINI MEDAL MODE
-       We'll keep your medal math the same.
-    */
-
-    const MINI_W = 20;
-    const MINI_H = 28;
-    const PER_ROW = 5;
-    const PAD = 6;
-
-    const medalTopAnchorY = rackBaseY + 20;
-    const medalCenterX    = rackBaseX + (RIBBON_WIDTH*1.5);
-
-    const medalItems = [];
-    for(const r of items){
-      const medalPath = miniMedalImages[r.id];
-      if(medalPath){
-        medalItems.push({ id:r.id, path:medalPath });
-      }
-    }
-    if(!medalItems.length) return;
-
-    const rows = [];
-    if(medalItems.length % PER_ROW !== 0){
-      rows.push(medalItems.slice(0, medalItems.length % PER_ROW));
-    }
-    for(let i=medalItems.length % PER_ROW; i<medalItems.length; i+=PER_ROW){
-      rows.push(medalItems.slice(i,i+PER_ROW));
-    }
-
-    rows.forEach((row,visualRowIndexFromTop)=>{
-      const rowTopPx = medalTopAnchorY + visualRowIndexFromTop*(MINI_H+PAD);
-
-      const rowCount=row.length;
-      const totalRowWidth=rowCount*MINI_W+(rowCount-1)*PAD;
-
-      const rowLeftBase = medalCenterX - (totalRowWidth/2);
-
-      row.forEach((entry,i)=>{
-        const mimg=document.createElement('img');
-
-        // strip leading images/ because ASSET() will add assetBase
-        let relPath = entry.path;
-        if(relPath.startsWith('images/')){
-          relPath = relPath.slice('images/'.length);
-        }
-        mimg.src=ASSET(relPath);
-
-        mimg.className='layer ribbonMini';
-        mimg.style.display='block';
-
-        const leftPx=rowLeftBase + i*(MINI_W+PAD);
-        const topPx =rowTopPx;
-
-        mimg.style.left   = `${leftPx}px`;
-        mimg.style.top    = `${topPx}px`;
-        mimg.style.width  = `${MINI_W}px`;
-        mimg.style.height = `${MINI_H}px`;
-
-        mimg.onerror=()=>{};
-
-        mimg.dataset.tooltipTitle = entry.id.replace(/_/g,' ').toUpperCase();
-        mimg.dataset.tooltipReg   = "Miniature medal arrangement";
-        mimg.dataset.tooltipWhy   = "Used for mess dress / semi-formal vice ribbons.";
-
-        uniformCanvas.appendChild(mimg);
-      });
-    });
+    return; // we're done with ribbon mode
   }
+
+  // --- MINI MEDAL MODE ---
+  const MINI_W = 20;
+  const MINI_H = 28;
+  const PER_ROW = 5;
+  const PAD = 6;
+
+  // anchor: medals hang slightly lower than ribbons
+  const medalTopAnchorY = rackBaseY + 20;
+  const medalCenterX    = rackBaseX + (RIBBON_WIDTH * 1.5);
+
+  // build medalItems only for ribbons that have medal art
+  const medalItems = [];
+  for(const r of items){
+    const medalPath = miniMedalImages[r.id];
+    if(medalPath){
+      medalItems.push({ id:r.id, path:medalPath });
+    }
+  }
+  if(!medalItems.length) return;
+
+  const medalRows = [];
+  if(medalItems.length % PER_ROW !== 0){
+    medalRows.push(medalItems.slice(0, medalItems.length % PER_ROW));
+  }
+  for(let i=medalItems.length % PER_ROW; i<medalItems.length; i+=PER_ROW){
+    medalRows.push(medalItems.slice(i,i+PER_ROW));
+  }
+
+  medalRows.forEach((row,visualRowIndexFromTop)=>{
+    const rowTopPx = medalTopAnchorY + visualRowIndexFromTop*(MINI_H+PAD);
+
+    const rowCount=row.length;
+    const totalRowWidth=rowCount*MINI_W+(rowCount-1)*PAD;
+
+    const rowLeftBase = medalCenterX - (totalRowWidth/2);
+
+    row.forEach((entry,i)=>{
+      const mimg=document.createElement('img');
+
+      // remove leading 'images/' because ASSET() adds assetBase
+      let relPath = entry.path;
+      if(relPath.startsWith('images/')){
+        relPath = relPath.slice('images/'.length);
+      }
+      mimg.src=ASSET(relPath);
+
+      mimg.className='layer ribbonMini';
+      mimg.style.display='block';
+
+      const leftPx=rowLeftBase + i*(MINI_W+PAD);
+      const topPx =rowTopPx;
+
+      mimg.style.left   = `${leftPx}px`;
+      mimg.style.top    = `${topPx}px`;
+      mimg.style.width  = `${MINI_W}px`;
+      mimg.style.height = `${MINI_H}px`;
+
+      mimg.onerror=()=>{};
+
+      mimg.dataset.tooltipTitle = entry.id.replace(/_/g,' ').toUpperCase();
+      mimg.dataset.tooltipReg   = "Miniature medal arrangement";
+      mimg.dataset.tooltipWhy   = "Used for mess dress / semi-formal vice ribbons.";
+
+      uniformCanvas.appendChild(mimg);
+    });
+  });
 }
 
 /* ===========================
