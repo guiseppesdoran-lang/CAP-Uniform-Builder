@@ -579,9 +579,9 @@
         <div class="hintText">Change this if your image folder path changes.</div>
       </section>
 
-      <!-- RIBBONS / DEVICES -->
+      <!-- RIBBONS / DEVICES / MINI MEDALS -->
       <section id="groupRibbons" class="panelBlock">
-        <label class="fieldLabel">Ribbons</label>
+        <label class="fieldLabel">Ribbons / Mini Medals</label>
         <div class="row two">
           <div class="col"><select id="ribbonSelect"></select></div>
           <div class="col"><select id="deviceSelect"></select></div>
@@ -590,6 +590,14 @@
           <div class="col"><button id="addRibbon">Add Ribbon</button></div>
           <div class="col"><button id="clearRibbons" class="ghost">Clear Ribbons</button></div>
         </div>
+
+        <!-- toggle: force medals view regardless of uniform -->
+        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+          <input type="checkbox" id="toggleMini">
+          Show Mini Medals (override)
+        </label>
+
+        <!-- auto mini for formal uniforms -->
         <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
           <input type="checkbox" id="autoMini" checked>
           Auto-convert ribbons → mini-medals on Mess/Semi-formal
@@ -718,7 +726,10 @@ const State = {
   selectedDevices:{},      // { deviceId: qty }
 
   // drag calibration
-  ribbonDragMode:false
+  ribbonDragMode:false,
+
+  // mini medals override checkbox
+  forceMini:false
 };
 
 let currentDrag = null;
@@ -794,6 +805,11 @@ const UI_AUTHZ = {
 /* ===========================
    RIBBONS / DEVICES
    =========================== */
+/*
+  ribbonList:
+  - IDs here are used for ribbons, precedence, and now also for mini medal mapping.
+  - You add ribbons by pushing {id, devices:{}} into State.ribbons.
+*/
 const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award','spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon',
   'orientation_pilot_ribbon'
@@ -805,6 +821,73 @@ const deviceList = ['1_Bronze_Star_Device','1_Silver_Star_Device'];
 const deviceMeta = {
   '1_Bronze_Star_Device': { label:'Bronze Star', src:'devices/1_Bronze_Star_Device.webp', w:10, h:10, weight:1 },
   '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 }
+};
+
+/* ===========================
+   MINI MEDAL IMAGE MAP
+   ===========================
+   This maps ribbon IDs in State.ribbons -> actual mini medal art.
+
+   You gave actual new medal art paths like images/medals/amelia_earhart.png etc.
+   We associate each ribbon-level ID to the correct medal image.
+
+   Any ribbon without a matching medal will just be skipped in medal mode.
+*/
+const miniMedalImages = {
+  // High decorations / service
+  'exceptional_service_award':      'images/medals/exceptional_service.png',
+  'meritorious_service_award':      'images/medals/meritorious_service.png',
+  'commander_commendation_award':   'images/medals/commanders_comendation.png',
+  'cap_achievment_award':           'images/medals/achievement.png',
+  'lifesaving_award':               'images/medals/crisis.png', // if you want a dedicated lifesaving mini, update here
+  'national_commander_unit_citation_award': 'images/medals/commanders_citation.png',
+  'unit_citation_award':            'images/medals/unit_citation.png',
+  'crisis_ribbon':                  'images/medals/crisis.png',
+  'red_service_ribbon':             'images/medals/red_service.png',
+  'search_find_ribbon':             'images/medals/find.png',
+  'air_search_and_rescue_ribbon':   'images/medals/search_and_rescue.png',
+  'disaster_relief_ribbon':         'images/medals/wartime_service.png', // adjust if you have a disaster_relief.png
+  'homeland_security_ribbon':       'images/medals/wartime_service.png', // placeholder unless you have a homeland_security mini
+  'community_service_ribbon':       'images/medals/membership.png',      // placeholder unless you have community_service mini
+  'iace_ribbon':                    'images/medals/iace.png',
+
+  // Cadet milestone awards
+  'spaatz_award':                   'images/medals/carl_a_spaatz.png',
+  'eaker_award':                    'images/medals/ira_c_eaker.png',
+  'earhart_award':                  'images/medals/amelia_earhart.png',
+  'mitchell_award':                 'images/medals/billy_mitchell.png',
+
+  // Cadet achievements (phase ribbons)
+  'armstrong_achievement':          'images/medals/aerospace_award.png',       // map as desired
+  'goddard_achievement':            'images/medals/a_scott_crossfield.png',    // map as desired
+  'doolittle_achievement':          'images/medals/aerospace_education.png',   // map as desired
+  'lindbergh_achievement':          'images/medals/leadership.png',            // map as desired
+  'rickenbacker_achievement':       'images/medals/proficency.png',            // map as desired
+  'wright_brothers_award':          'images/medals/leadership.png',
+  'mary_feik_achievement':          'images/medals/leadership.png',
+  'hap_arnold_achievement':         'images/medals/leadership.png',
+  'curry_achievement':              'images/medals/leadership.png',
+
+  // Activities / participation
+  'national_cadet_competition_ribbon':     'images/medals/cadet_compeition.png',
+  'national_color_guard_competition_ribbon':'images/medals/color_guard_competition.png',
+  'cadet_advisory_council_ribbon':         'images/medals/command_service.png', // placeholder
+  'cadet_special_activity_ribbon':         'images/medals/aerospace_award.png', // placeholder
+  'encampment_ribbon':                     'images/medals/encampment.png',
+  'cadet_recruiter_ribbon':                'images/medals/recruiting.png',
+  'orientation_pilot_ribbon':              'images/medals/aerospace_award.png', // placeholder
+
+  // external partner awards
+  'afa_award':                      'images/medals/aerospace_award.png', // placeholder
+  'afsa_award':                     'images/medals/paul_e_garber.png',   // placeholder
+  'vfw_officer_award':              'images/medals/wartime_service.png', // placeholder
+  'vfw_nco_award':                  'images/medals/wartime_service.png', // placeholder
+
+  // professional development / membership style
+  'national_commander_unit_citation_award':'images/medals/commanders_citation.png',
+  'unit_citation_award':'images/medals/unit_citation.png',
+  'red_service_ribbon':'images/medals/red_service.png',
+  'membership_ribbon':'images/medals/membership.png' // if you later add membership_ribbon to ribbonList
 };
 
 /* ===========================
@@ -833,7 +916,7 @@ const exclusiveBadges = [
   ORP  - Over Right Pocket (chaplain/legal/etc)
   LP   - Left Pocket
   LRP  - Lower Right Pocket-ish (marksman type hangers)
-  ON/UN fallback stacks
+  ON / UN - Over / Under Nameplate stacks
 */
 const badgeLocations = {
   'AirCrew1_DB3F0FCC3650F':'OLP','BalloonPilot1_442D89C94185B':'OLP','CAPMasterPilot1_621A0E2ED15DA':'OLP','CAPPilot1_FA9D33EA587D8':'OLP','CAPSeniorPilot1_D9725AE959752':'OLP','GliderPilot1_7BFB287379918':'OLP','MasterAirCrew1_72AC4CAE7A310':'OLP',
@@ -1046,22 +1129,28 @@ function applyJacket(){
 }
 
 /* ===========================
-   RIBBONS / MINI MEDALS
+   RIBBONS / MINI MEDALS CORE
    =========================== */
+
+/* sortRibbons:
+   returns a copy of State.ribbons sorted by precedence() so the rack
+   (and medals) always render in CAPR 39-3 order (highest precedence first).
+*/
 function sortRibbons(arr){
   return [...arr].sort((a,b)=>precedence(a.id)-precedence(b.id));
 }
 
-// SAFE fallback Y so badges can anchor even with 0 ribbons
+// helper to approximate where ribbons live vertically for badge offsets
 function getTopRibbonY(){
-  const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile')];
+  const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini')];
   if(!layers.length) {
-    // about mid-chest in our 600px canvas
+    // fallback Y mid-chest if no rack
     return 360;
   }
   return Math.min(...layers.map(l=>parseFloat(l.style.top)||0));
 }
 
+// guarantee ribbon object for devices
 function ensureRibbonObj(id){
   let r=State.ribbons.find(x=>x.id===id);
   if(!r){
@@ -1072,6 +1161,9 @@ function ensureRibbonObj(id){
   return r;
 }
 
+/* drawDevicesOnRibbon:
+   draws tiny star/etc devices aligned on top of the ribbon image.
+*/
 function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   const r=ensureRibbonObj(rid);
   const flat=[];
@@ -1091,7 +1183,7 @@ function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   flat.forEach(d=>{
     const im=document.createElement('img');
     im.className='layer ribbonDevice';
-    im.dataset.parentRid = rid; // tie device to its ribbon for dragging sync
+    im.dataset.parentRid = rid;
     im.src=ASSET(d.src);
     im.alt=d.label||d.id;
     im.style.display='block';
@@ -1108,8 +1200,13 @@ function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   });
 }
 
+/* onRibbonTileClick:
+   When you click a ribbon in the preview:
+   - If Apply Mode is ON we add the selected devices.
+   - If Remove Mode is ON we clear all devices.
+   - If Drag Mode is ON we do nothing here so dragging still works.
+*/
 function onRibbonTileClick(rid){
-  // If drag mode is on, clicking should not apply/remove devices.
   if(State.ribbonDragMode) return;
 
   if(State.deviceRemoveMode){
@@ -1128,22 +1225,19 @@ function onRibbonTileClick(rid){
 
 /* ===== DRAG HELPERS FOR RIBBONS ===== */
 function initRibbonDragHandlers(tileEl){
-  // mouse down = begin drag, but only if drag mode is ON
   tileEl.addEventListener('mousedown', e => {
     if(!State.ribbonDragMode) return;
 
     currentDrag = tileEl;
     currentDrag.classList.add('dragging');
 
-    // current computed left/top in px
     const startLeft = parseFloat(currentDrag.style.left) || 0;
     const startTop  = parseFloat(currentDrag.style.top)  || 0;
 
-    // where the mouse hit relative to the tile's top-left
     dragOffsetX = e.clientX - startLeft;
     dragOffsetY = e.clientY - startTop;
 
-    e.preventDefault(); // stop text selection
+    e.preventDefault();
   });
 }
 
@@ -1153,10 +1247,9 @@ function syncDevicesToRibbon(ribbonTileEl){
 
   const baseLeft = parseFloat(ribbonTileEl.style.left) || 0;
   const baseTop  = parseFloat(ribbonTileEl.style.top)  || 0;
-  const w = parseFloat(ribbonTileEl.style.width)  || 23;
-  const h = parseFloat(ribbonTileEl.style.height) || 7.2;
+  const w = parseFloat(ribbonTileEl.style.width)  || 60;
+  const h = parseFloat(ribbonTileEl.style.height) || 19.2;
 
-  // replicate drawDevicesOnRibbon layout math
   const r = State.ribbons.find(x => x.id===rid);
   if(!r || !r.devices) return;
 
@@ -1191,7 +1284,6 @@ document.addEventListener('mousemove', e => {
   let newLeft = e.clientX - dragOffsetX;
   let newTop  = e.clientY - dragOffsetY;
 
-  // clamp within 450x600 canvas bounds
   const maxX = 450 - (parseFloat(currentDrag.style.width)  || 60);
   const maxY = 600 - (parseFloat(currentDrag.style.height) || 20);
 
@@ -1213,33 +1305,52 @@ document.addEventListener('mouseup', () => {
   }
 });
 
-/* ===== RACK RENDERER ===== */
+/* ===== RACK RENDERER =====
+   renderRack():
+   - Clears any existing ribbon / medal / device layers.
+   - Figures out if we're in "ribbon rack mode" or "mini medal mode".
+   - Renders either:
+     A) service ribbons in 3-wide rows from the top row down, centered
+     B) mini medals in up to 5-wide rows, centered.
+*/
 function renderRack(){
-  // clear old rack layers
   [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
 
-  const allowMini   = UNIFORMS[State.uniform].mini && by('autoMini').checked;
-  const showRibbons = UNIFORMS[State.uniform].ribbons && !allowMini;
-  const items       = sortRibbons(State.ribbons);
+  const baseCfg = UNIFORMS[State.uniform];
+
+  // determine whether to display mini medals
+  const uniformPrefersMini = baseCfg.mini; // mess_dress / semi_formal
+  const uniformAllowsRibbons = baseCfg.ribbons;
+  const autoMini = by('autoMini').checked;
+  const manualMini = State.forceMini;
+
+  const useMini = (uniformPrefersMini && autoMini) || manualMini;
+
+  const items = sortRibbons(State.ribbons);
   if(!items.length) return;
 
   const canvasRect = uniformCanvas.getBoundingClientRect();
   const canvasW = canvasRect.width;
   const canvasH = canvasRect.height;
 
-  if(showRibbons){
-    // Service ribbons
-    const TILE_W = 23;
-    const TILE_H = 7.2;
+  if(!useMini && uniformAllowsRibbons){
+    /* ---------------------------
+       SERVICE RIBBON RACK MODE
+       --------------------------- */
+    const TILE_W = 60;
+    const TILE_H = 19.2;
     const PER_ROW = 3;
     const PAD = 0;
 
-    // Anchor lower right chest
+    // anchor lower right chest
     const rackBaseY   = canvasH * 0.65;
     const rackCenterX = canvasW * 0.55;
 
+    // ribbon IDs in precedence order
     const ids = items.map(x=>x.id);
 
+    // row building:
+    // top row might be 1 or 2 ribbons centered, then all lower rows forced full 3
     const rows = [];
     if(ids.length % PER_ROW !== 0){
       rows.push(ids.slice(0, ids.length % PER_ROW));
@@ -1278,7 +1389,6 @@ function renderRack(){
         tile.dataset.tooltipReg   = "CAPR 39-3 precedence applies";
         tile.dataset.tooltipWhy   = "Displayed in order of precedence, highest top left.";
 
-        // make draggable in calibration mode
         initRibbonDragHandlers(tile);
 
         uniformCanvas.appendChild(tile);
@@ -1288,23 +1398,38 @@ function renderRack(){
     });
 
   } else {
-    // Mini-medals (mess / semi-formal)
+    /* ---------------------------
+       MINI MEDAL MODE
+       ---------------------------
+       We use miniMedalImages[] to translate each ribbon to its matching
+       miniature medal art. We skip ribbons that don't have a medal image.
+    */
     const MINI_W = 20;
     const MINI_H = 28;
     const PER_ROW = 5;
     const PAD = 6;
 
+    // anchor medals slightly lower than ribbons would sit
     const medalBaseY   = canvasH * 0.58;
     const medalCenterX = canvasW * 0.5;
 
-    const ids = items.map(x=>x.id);
-
-    const rows = [];
-    if(ids.length % PER_ROW !== 0){
-      rows.push(ids.slice(0, ids.length % PER_ROW));
+    // Build medal list from ribbons in precedence order, but only keep those we have art for
+    const medalItems = [];
+    for(const r of items){
+      const medalPath = miniMedalImages[r.id];
+      if(medalPath){
+        medalItems.push({ id:r.id, path:medalPath });
+      }
     }
-    for(let i=ids.length % PER_ROW; i<ids.length; i+=PER_ROW){
-      rows.push(ids.slice(i,i+PER_ROW));
+    if(!medalItems.length) return;
+
+    // Build rows of up to 5 medals
+    const rows = [];
+    if(medalItems.length % PER_ROW !== 0){
+      rows.push(medalItems.slice(0, medalItems.length % PER_ROW));
+    }
+    for(let i=medalItems.length % PER_ROW; i<medalItems.length; i+=PER_ROW){
+      rows.push(medalItems.slice(i,i+PER_ROW));
     }
     rows.reverse();
 
@@ -1313,9 +1438,19 @@ function renderRack(){
       const rowX0  = Math.round(medalCenterX - rowW/2);
       const rowTop = Math.round(medalBaseY - ri*(MINI_H+PAD));
 
-      row.forEach((rid,i)=>{
+      row.forEach((entry,i)=>{
         const mimg=document.createElement('img');
-        mimg.src=ASSET(`mini_medals/${rid}.png`);
+        // Use provided medal path exactly (already full path "images/medals/...png")
+        // We still route through ASSET() so base folder overrides still work.
+        // ASSET() will prepend State.assetBase, so we strip leading "images/" first.
+        // We'll detect if path starts with "images/" and remove that to avoid double "images/images".
+        let relPath = entry.path;
+        const basePrefix = (State.assetBase||'images').replace(/\/$/,'') + '/';
+        if(relPath.startsWith('images/')){
+          relPath = relPath.slice('images/'.length);
+        }
+        mimg.src=ASSET(relPath);
+
         mimg.className='layer ribbonMini';
         mimg.style.display='block';
 
@@ -1329,7 +1464,7 @@ function renderRack(){
 
         mimg.onerror=()=>{};
 
-        mimg.dataset.tooltipTitle = rid.replace(/_/g,' ').toUpperCase();
+        mimg.dataset.tooltipTitle = entry.id.replace(/_/g,' ').toUpperCase();
         mimg.dataset.tooltipReg   = "Miniature medal arrangement";
         mimg.dataset.tooltipWhy   = "Used for mess dress / semi-formal vice ribbons.";
 
@@ -1454,7 +1589,7 @@ function placeBadgeByCategory(id){
   const spacing=5;
   const baseRibbonY=getTopRibbonY();
 
-  // These coordinates are tuned to our 450x600 canvas coordinates.
+  // Tuned coords against 450x600 canvas
   const yMap={
     OLP: baseRibbonY - 25,
     OLPU:baseRibbonY -  5,
@@ -1542,7 +1677,7 @@ function renderPatches(){
 
   planPatches(State.patches);
 
-  // tuned approx for 450x600 base art
+  // approx coords for 450x600 canvas
   const coords={
     L_SHOULDER:{x:95,y:250,dy:80},
     R_SHOULDER:{x:505,y:250,dy:80},
@@ -1668,7 +1803,7 @@ function renderNameplate(){
 function updateAvailabilityUI(prevUniform){
   const auth = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
 
-  by('groupRibbons').classList.toggle('hidden', !auth.showRibbons);
+  by('groupRibbons').classList.toggle('hidden', !auth.showRibbons && !UNIFORMS[State.uniform].mini);
   by('groupPatches').classList.toggle('hidden', !auth.showPatches);
 
   if(prevUniform && prevUniform!==State.uniform){
@@ -1711,7 +1846,6 @@ function applyAlternates(fromU,toU){
     });
   }
 
-  // cadet cleanup
   if(State.member==='cadet'){
     State.badges = State.badges.filter(isCadetAuthorized);
   }
@@ -1725,8 +1859,8 @@ function fullRender(prevUniform){
   updateAvailabilityUI(prevUniform);
 
   renderPatches();
-  renderAllBadges();
   renderRack();
+  renderAllBadges();
   renderRank(State.rank);
 }
 function refreshUI(){
@@ -1802,7 +1936,6 @@ function highlightActiveUniformButton(){
 memberSelect.addEventListener('change', ()=>{
   State.member = memberSelect.value;
 
-  // enforce uniform auth
   if(State.member==='cadet' && !isUniformAllowedFor(State.uniform,'cadet')){
     const fallback=findFirstAllowedUniform('cadet') || 'blues_a';
     const prevU=State.uniform;
@@ -1829,7 +1962,7 @@ jacketSelect.addEventListener('change', ()=>{
 uniformListEl.addEventListener('click', e=>{
   const btn=e.target.closest('.uniformOption');
   if(!btn) return;
-  if(btn.classList.contains('locked')) return; // can't select unauthorized
+  if(btn.classList.contains('locked')) return;
 
   const newUniform=btn.dataset.uniformId;
   const prevU=State.uniform;
@@ -1850,7 +1983,7 @@ assetBaseInput.addEventListener('change', ()=>{
   fullRender();
 });
 
-/* Add ribbon */
+/* Ribbon add */
 by('addRibbon').addEventListener('click', ()=>{
   const id=by('ribbonSelect').value;
   const dev=by('deviceSelect').value||'none';
@@ -1859,12 +1992,21 @@ by('addRibbon').addEventListener('click', ()=>{
     r.devices[dev]=(r.devices[dev]||0)+1;
   }
   renderRack();
+  renderAllBadges(); // badges depend on ribbon Y offset
 });
 
 /* Clear ribbons */
 by('clearRibbons').addEventListener('click', ()=>{
   State.ribbons=[];
   renderRack();
+  renderAllBadges();
+});
+
+/* mini medal manual override toggle */
+by('toggleMini').addEventListener('change', e=>{
+  State.forceMini = e.target.checked;
+  renderRack();
+  renderAllBadges();
 });
 
 /* Build and wire the device picker UI */
