@@ -277,6 +277,16 @@
     image-rendering:auto;
   }
 
+  /* Drag calibration visual modes */
+  .drag-mode-on .ribbonTile{
+    outline:1px dashed rgba(0,40,85,.6);
+    cursor:move;
+    z-index:9999;
+  }
+  .dragging{
+    opacity:.7;
+  }
+
   #sideDisplay{
     display:flex;
     flex-direction:column;
@@ -599,6 +609,15 @@
             Use Remove Mode to clear devices from a ribbon.
           </small>
         </div>
+
+        <!-- Drag calibration controls -->
+        <div class="row two" style="margin-top:10px">
+          <div class="col"><button id="toggleRibbonDrag" class="ghost">Enable Drag Mode</button></div>
+          <div class="col"><button id="logRibbonCoords" class="ghost">Log Ribbon Coords</button></div>
+        </div>
+        <div class="hintText">
+          Drag Mode lets you reposition ribbons on the jacket for calibration. "Log Ribbon Coords" prints their exact left/top to console.
+        </div>
       </section>
 
       <!-- BADGES -->
@@ -696,8 +715,15 @@ const State = {
   rank:null,
   deviceApplyMode:false,
   deviceRemoveMode:false,
-  selectedDevices:{}       // { deviceId: qty }
+  selectedDevices:{},      // { deviceId: qty }
+
+  // drag calibration
+  ribbonDragMode:false
 };
+
+let currentDrag = null;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
 
 /* quick DOM helpers */
 const $ = s => document.querySelector(s);
@@ -1065,6 +1091,7 @@ function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   flat.forEach(d=>{
     const im=document.createElement('img');
     im.className='layer ribbonDevice';
+    im.dataset.parentRid = rid; // tie device to its ribbon for dragging sync
     im.src=ASSET(d.src);
     im.alt=d.label||d.id;
     im.style.display='block';
@@ -1082,6 +1109,9 @@ function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
 }
 
 function onRibbonTileClick(rid){
+  // If drag mode is on, clicking should not apply/remove devices.
+  if(State.ribbonDragMode) return;
+
   if(State.deviceRemoveMode){
     const r=ensureRibbonObj(rid);
     r.devices={};
@@ -1096,7 +1126,94 @@ function onRibbonTileClick(rid){
   renderRack();
 }
 
-// UPDATED dynamic rack renderer
+/* ===== DRAG HELPERS FOR RIBBONS ===== */
+function initRibbonDragHandlers(tileEl){
+  // mouse down = begin drag, but only if drag mode is ON
+  tileEl.addEventListener('mousedown', e => {
+    if(!State.ribbonDragMode) return;
+
+    currentDrag = tileEl;
+    currentDrag.classList.add('dragging');
+
+    // current computed left/top in px
+    const startLeft = parseFloat(currentDrag.style.left) || 0;
+    const startTop  = parseFloat(currentDrag.style.top)  || 0;
+
+    // where the mouse hit relative to the tile's top-left
+    dragOffsetX = e.clientX - startLeft;
+    dragOffsetY = e.clientY - startTop;
+
+    e.preventDefault(); // stop text selection
+  });
+}
+
+function syncDevicesToRibbon(ribbonTileEl){
+  const rid = ribbonTileEl.dataset.rid;
+  if(!rid) return;
+
+  const baseLeft = parseFloat(ribbonTileEl.style.left) || 0;
+  const baseTop  = parseFloat(ribbonTileEl.style.top)  || 0;
+  const w = parseFloat(ribbonTileEl.style.width)  || 60;
+  const h = parseFloat(ribbonTileEl.style.height) || 19.2;
+
+  // replicate drawDevicesOnRibbon layout math
+  const r = State.ribbons.find(x => x.id===rid);
+  if(!r || !r.devices) return;
+
+  const flat=[];
+  for(const [devId,count] of Object.entries(r.devices)){
+    const meta=deviceMeta[devId];
+    if(!meta) continue;
+    for(let i=0;i<count;i++){ flat.push({id:devId,...meta}); }
+  }
+  flat.sort((a,b)=>(b.weight-a.weight)|| (a.label||a.id).localeCompare(b.label||b.id));
+
+  const gap=3;
+  const totalW=flat.reduce((s,d,i)=>s+d.w+(i>0?gap:0),0);
+  let x=Math.round(baseLeft+(w-totalW)/2);
+  const y=Math.round(baseTop+(h-10)/2)-1;
+
+  const devEls=[...uniformCanvas.querySelectorAll('.ribbonDevice')].filter(el=>el.dataset.parentRid===rid);
+
+  devEls.forEach((el,idx)=>{
+    const dv=flat[idx];
+    if(!dv) return;
+    el.style.left = x+'px';
+    el.style.top  = y+'px';
+    x+=dv.w+gap;
+  });
+}
+
+/* global mousemove/mouseup for dragging */
+document.addEventListener('mousemove', e => {
+  if(!currentDrag || !State.ribbonDragMode) return;
+
+  let newLeft = e.clientX - dragOffsetX;
+  let newTop  = e.clientY - dragOffsetY;
+
+  // clamp within 450x600 canvas bounds
+  const maxX = 450 - (parseFloat(currentDrag.style.width)  || 60);
+  const maxY = 600 - (parseFloat(currentDrag.style.height) || 20);
+
+  if(newLeft < 0) newLeft = 0;
+  if(newTop  < 0) newTop  = 0;
+  if(newLeft > maxX) newLeft = maxX;
+  if(newTop  > maxY) newTop  = maxY;
+
+  currentDrag.style.left = newLeft + 'px';
+  currentDrag.style.top  = newTop  + 'px';
+
+  syncDevicesToRibbon(currentDrag);
+});
+
+document.addEventListener('mouseup', () => {
+  if(currentDrag){
+    currentDrag.classList.remove('dragging');
+    currentDrag = null;
+  }
+});
+
+/* ===== RACK RENDERER ===== */
 function renderRack(){
   // clear old rack layers
   [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
@@ -1160,6 +1277,9 @@ function renderRack(){
         tile.dataset.tooltipTitle = rid.replace(/_/g,' ').toUpperCase();
         tile.dataset.tooltipReg   = "CAPR 39-3 precedence applies";
         tile.dataset.tooltipWhy   = "Displayed in order of precedence, highest top left.";
+
+        // make draggable in calibration mode
+        initRibbonDragHandlers(tile);
 
         uniformCanvas.appendChild(tile);
 
@@ -1807,6 +1927,39 @@ by('downloadImage').addEventListener('click', ()=>{
     a.href=c.toDataURL();
     a.click();
   });
+});
+
+/* Drag Mode toggle + coord logger */
+const toggleRibbonDragBtn = by('toggleRibbonDrag');
+const logRibbonCoordsBtn  = by('logRibbonCoords');
+
+toggleRibbonDragBtn.addEventListener('click', ()=>{
+  State.ribbonDragMode = !State.ribbonDragMode;
+
+  if(State.ribbonDragMode){
+    toggleRibbonDragBtn.textContent = 'Disable Drag Mode';
+    toggleRibbonDragBtn.classList.remove('ghost');
+    uniformCanvas.classList.add('drag-mode-on');
+  }else{
+    toggleRibbonDragBtn.textContent = 'Enable Drag Mode';
+    toggleRibbonDragBtn.classList.add('ghost');
+    uniformCanvas.classList.remove('drag-mode-on');
+  }
+});
+
+logRibbonCoordsBtn.addEventListener('click', ()=>{
+  const data=[];
+  uniformCanvas.querySelectorAll('.ribbonTile').forEach(tile=>{
+    data.push({
+      rid: tile.dataset.rid,
+      left: tile.style.left,
+      top: tile.style.top,
+      width: tile.style.width,
+      height: tile.style.height
+    });
+  });
+  console.log('RIBBON_COORD_REPORT', data);
+  alert('Ribbon coordinates logged to console.');
 });
 
 /* ===========================
