@@ -37,10 +37,7 @@
     letter-spacing:.3px
   }
 
-  /* ===============================
-     HAMBURGER MENU BUTTON
-     fixed in top-left above everything
-     =============================== */
+  /* HAMBURGER MENU BUTTON */
   .hamburgerBtn{
     position:fixed;
     left:12px;
@@ -67,9 +64,7 @@
     border-radius:1px;
   }
 
-  /* ===============================
-     LAYOUT SHELL / COLLAPSIBLE SIDEBAR
-     =============================== */
+  /* MAIN LAYOUT SHELL */
   #layoutShell {
     display:flex;
     height:calc(100vh - 58px); /* minus header height */
@@ -122,7 +117,6 @@
     padding:12px 14px 48px; /* leave room above footer bar */
   }
 
-  /* panel block sections in sidebar */
   .panelBlock {
     background:var(--panel);
     border:1px solid var(--line);
@@ -262,9 +256,7 @@
     font-size:12px;
   }
 
-  /* ===============================
-     PREVIEW WRAPPER
-     =============================== */
+  /* PREVIEW WRAPPER */
   #previewWrapper{
     flex:1;
     position:relative;
@@ -289,7 +281,6 @@
     overflow:hidden;
   }
 
-  /* Your uniformCanvas lives INSIDE previewArea and holds all layers */
   #uniformCanvas{
     position:relative;
     width:100%;
@@ -300,7 +291,7 @@
     image-rendering:auto;
   }
 
-  /* Drag calibration visual modes */
+  /* Drag calibration visuals */
   .drag-mode-on .ribbonTile{
     outline:1px dashed rgba(0,40,85,.6);
     cursor:move;
@@ -317,9 +308,7 @@
     min-width:140px;
   }
 
-  /* ===============================
-     TOOLTIP BUBBLE
-     =============================== */
+  /* TOOLTIP BUBBLE */
   .tooltipBubble{
     position:fixed;
     z-index:9999;
@@ -348,11 +337,7 @@
     font-size:11px;
   }
 
-  /* ===============================
-     COLLAPSED SIDEBAR STATE
-     =============================== */
-
-  /* when sidebar is OPEN: controls visible */
+  /* COLLAPSED SIDEBAR STATE */
   #layoutShell.sidebar-open #controls{
     width:340px;
     max-width:340px;
@@ -361,7 +346,6 @@
     border-right:1px solid var(--line);
   }
 
-  /* when sidebar is COLLAPSED on desktop: shrink to 0 */
   #layoutShell.sidebar-collapsed #controls{
     width:0;
     min-width:0;
@@ -371,9 +355,7 @@
     overflow:hidden;
   }
 
-  /* We no longer use reopenTab, so hide its style block entirely */
-
-  /* GUIDE DOTS (optional debug overlays) */
+  /* GUIDE DOT (debug aid) */
   .guideDot{
     position:absolute;
     background:rgba(0,40,85,.15);
@@ -402,7 +384,100 @@
     z-index:5;
   }
 
-  /* mobile adjustments */
+  /* CALIBRATOR WRAPPER */
+  #calibratorWrapper {
+    position:fixed;
+    top:80px;
+    left:0;
+    z-index:10001;
+    display:flex;
+    align-items:flex-start;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
+    color:var(--ink);
+  }
+  #calibratorTab {
+    background:var(--brand);
+    color:#fff;
+    padding:8px 6px;
+    font-size:12px;
+    font-weight:600;
+    border-top-right-radius:6px;
+    border-bottom-right-radius:6px;
+    cursor:pointer;
+    user-select:none;
+    line-height:1.2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    box-shadow:2px 2px 6px rgb(0 0 0 / .2);
+  }
+  #calibratorTab span.arrow {
+    font-size:16px;
+    line-height:16px;
+  }
+  #calibratorPanel {
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-left:none;
+    border-top-right-radius:8px;
+    border-bottom-right-radius:8px;
+    min-width:180px;
+    padding:12px;
+    box-shadow:2px 2px 10px rgb(0 0 0 / .25);
+    display:none;
+  }
+  #calibratorPanel h3 {
+    margin:0 0 8px 0;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .calib-row {
+    font-size:12px;
+    margin-bottom:10px;
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:center;
+    column-gap:6px;
+  }
+  .calib-row label {
+    display:block;
+    font-weight:500;
+    color:var(--muted);
+    grid-column:1 / span 2;
+    margin-bottom:4px;
+  }
+  .calib-row input[type="range"] {
+    width:100%;
+  }
+  .calib-row .numField {
+    width:48px;
+    font-size:12px;
+    padding:2px 4px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    text-align:center;
+    background:#fff;
+    color:var(--ink);
+  }
+  #calibReadout {
+    font-size:11px;
+    line-height:1.4;
+    background:#f6f8fa;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:6px;
+    white-space:nowrap;
+  }
+  #calibReadout code {
+    font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+    font-size:11px;
+    background:none;
+    padding:0;
+  }
+
+  /* MOBILE */
   @media (max-width:768px){
     #layoutShell{
       flex-direction:column;
@@ -426,7 +501,6 @@
       transition:transform .2s ease;
     }
 
-    /* mobile slide effect */
     #layoutShell.sidebar-open    #controls{ transform:translateX(0); }
     #layoutShell.sidebar-collapsed #controls{ transform:translateX(-100%); }
 
@@ -448,6 +522,36 @@
   <span></span><span></span><span></span>
 </button>
 
+<!-- Ribbon Rack Calibrator UI -->
+<div id="calibratorWrapper">
+  <div id="calibratorTab">
+    <span>RACK</span>
+    <span class="arrow" id="calibratorArrow">›</span>
+  </div>
+
+  <div id="calibratorPanel">
+    <h3>Ribbon Rack Cal</h3>
+
+    <div class="calib-row">
+      <label for="rackXRange">X Offset (left px)</label>
+      <input type="range" id="rackXRange" min="150" max="400" step="1">
+      <input type="number" id="rackXNumber" class="numField">
+    </div>
+
+    <div class="calib-row">
+      <label for="rackYRange">Y Offset (top px)</label>
+      <input type="range" id="rackYRange" min="150" max="320" step="1">
+      <input type="number" id="rackYNumber" class="numField">
+    </div>
+
+    <div id="calibReadout">
+      <div>Base X: <code id="readX"></code> px</div>
+      <div>Base Y: <code id="readY"></code> px</div>
+      <div>Ribbon W×H: <code id="readSize"></code> px</div>
+    </div>
+  </div>
+</div>
+
 <!-- MAIN APP LAYOUT -->
 <main id="layoutShell" class="sidebar-open">
 
@@ -455,7 +559,6 @@
   <aside id="controls">
     <div class="controlsHeader">
       <h2 class="controlsTitle">Uniform Builder Controls</h2>
-      <!-- collapseBtn removed -->
     </div>
 
     <div class="controlsScrollArea">
@@ -685,8 +788,6 @@
     </div>
   </section>
 
-  <!-- we REMOVED the old left reopenTab button -->
-
   <!-- GLOBAL HOVER TOOLTIP -->
   <div id="tooltip" class="tooltipBubble" style="display:none;"></div>
 
@@ -702,7 +803,7 @@
 
 <script>
 /* ===========================
-   STATE
+   GLOBAL STATE
    =========================== */
 const State = {
   member:'cadet',
@@ -724,7 +825,29 @@ let currentDrag = null;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
 
-/* quick DOM helpers */
+/* ===========================
+   CALIBRATION CONSTANTS
+   =========================== */
+/* rackBaseX/Y define the upper-left corner of the TOP ROW,
+   based on your alignment screenshots.
+   These will drive ribbons, medals, badge Y offsets, nameplate, etc.
+*/
+let rackBaseX = 255;
+let rackBaseY = 206;
+
+// ribbon tile calibrated size + gaps
+const RIBBON_WIDTH  = 23;
+const RIBBON_HEIGHT = 7.2;
+const RIBBON_GAP_X  = 0;
+const RIBBON_GAP_Y  = 2;
+
+function getRackOrigin(){
+  return { x:rackBaseX, y:rackBaseY };
+}
+
+/* ===========================
+   DOM SHORTCUTS
+   =========================== */
 const $ = s => document.querySelector(s);
 const by = id => document.getElementById(id);
 
@@ -757,7 +880,7 @@ function ASSET(p){
 }
 
 /* ===========================
-   UNIFORMS / AUTHZ
+   UNIFORM DEFINITIONS
    =========================== */
 function isFieldUniform(u){
   return u==='abu' || u==='flight_suit' || u==='corporate_field';
@@ -790,22 +913,52 @@ const UI_AUTHZ = {
 };
 
 /* ===========================
-   RIBBONS, DEVICES, MINI MEDALS
+   RIBBONS / DEVICES / MINI MEDALS
    =========================== */
+/* ribbonList now includes senior member ribbons you provided */
 const ribbonList = [
-  'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award','spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon',
-  'orientation_pilot_ribbon'
+  'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
+
+  /* professional development / senior progression etc. */
+  'cap_gill_robb_wilson_ribbon',
+  'cap_paul_e_garber_ribbon',
+  'cap_grover_loening_aerospace_ribbon',
+  'cap_steven_foster_leadership_ribbon','cap_leadership_ribbon', /* keeping both naming variants if you have one */
+  'cap_membership_ribbon',
+  'cap_command_service_ribbon',
+  'cap_counterdrug_ribbon',
+  'cap_world_war_2_service_ribbon',
+  'cap_senior_recruiter_ribbon',
+  'cap_bridgadier_general_charles_yaeger_ribbon',
+  'cap_a_scott_crossfield_ribbon',
+  'cap_cadet_orientation_pilot_ribbon',
+
+  /* cadet milestones / achievements */
+  'spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement',
+
+  /* misc awards */
+  'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon','orientation_pilot_ribbon'
 ];
 
+/* you can tweak order above to match CAPR 39-3 precedence and that will cascade everywhere.
+   precedence() uses the index in ribbonList. */
 const precedence = id => ribbonList.indexOf(id);
 
-const deviceList = ['1_Bronze_Star_Device','1_Silver_Star_Device'];
+/* devices */
+const deviceList = [
+  '1_Bronze_Star_Device',
+  '1_Silver_Star_Device'
+];
 const deviceMeta = {
   '1_Bronze_Star_Device': { label:'Bronze Star', src:'devices/1_Bronze_Star_Device.webp', w:10, h:10, weight:1 },
   '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 }
 };
 
-/* Mini medal map (same as previous message) */
+/* mini medals: map ribbon id -> medal image path.
+   For senior ribbons, point to whatever mini medal art you're using.
+   If you don't yet have specific mini medals created for some senior ribbons,
+   you can map them to something placeholder or leave them out.
+*/
 const miniMedalImages = {
   'exceptional_service_award':      'images/medals/exceptional_service.png',
   'meritorious_service_award':      'images/medals/meritorious_service.png',
@@ -814,6 +967,20 @@ const miniMedalImages = {
   'lifesaving_award':               'images/medals/crisis.png',
   'national_commander_unit_citation_award': 'images/medals/commanders_citation.png',
   'unit_citation_award':            'images/medals/unit_citation.png',
+
+  'cap_gill_robb_wilson_ribbon':    'images/medals/gill_robb_wilson.png',
+  'cap_paul_e_garber_ribbon':       'images/medals/paul_e_garber.png',
+  'cap_grover_loening_aerospace_ribbon':'images/medals/grover_loening.png',
+  'cap_leadership_ribbon':          'images/medals/leadership.png',
+  'cap_membership_ribbon':          'images/medals/membership.png',
+  'cap_command_service_ribbon':     'images/medals/command_service.png',
+  'cap_counterdrug_ribbon':         'images/medals/counterdrug.png',
+  'cap_world_war_2_service_ribbon': 'images/medals/world_war_2_service.png',
+  'cap_senior_recruiter_ribbon':    'images/medals/recruiting.png',
+  'cap_bridgadier_general_charles_yaeger_ribbon':'images/medals/charles_yaeger.png',
+  'cap_a_scott_crossfield_ribbon':  'images/medals/a_scott_crossfield.png',
+  'cap_cadet_orientation_pilot_ribbon':'images/medals/orientation_pilot.png',
+
   'crisis_ribbon':                  'images/medals/crisis.png',
   'red_service_ribbon':             'images/medals/red_service.png',
   'search_find_ribbon':             'images/medals/find.png',
@@ -822,10 +989,12 @@ const miniMedalImages = {
   'homeland_security_ribbon':       'images/medals/wartime_service.png',
   'community_service_ribbon':       'images/medals/membership.png',
   'iace_ribbon':                    'images/medals/iace.png',
+
   'spaatz_award':                   'images/medals/carl_a_spaatz.png',
   'eaker_award':                    'images/medals/ira_c_eaker.png',
   'earhart_award':                  'images/medals/amelia_earhart.png',
   'mitchell_award':                 'images/medals/billy_mitchell.png',
+
   'armstrong_achievement':          'images/medals/aerospace_award.png',
   'goddard_achievement':            'images/medals/a_scott_crossfield.png',
   'doolittle_achievement':          'images/medals/aerospace_education.png',
@@ -835,6 +1004,7 @@ const miniMedalImages = {
   'mary_feik_achievement':          'images/medals/leadership.png',
   'hap_arnold_achievement':         'images/medals/leadership.png',
   'curry_achievement':              'images/medals/leadership.png',
+
   'national_cadet_competition_ribbon':      'images/medals/cadet_compeition.png',
   'national_color_guard_competition_ribbon':'images/medals/color_guard_competition.png',
   'cadet_advisory_council_ribbon':          'images/medals/command_service.png',
@@ -842,6 +1012,7 @@ const miniMedalImages = {
   'encampment_ribbon':                      'images/medals/encampment.png',
   'cadet_recruiter_ribbon':                 'images/medals/recruiting.png',
   'orientation_pilot_ribbon':               'images/medals/aerospace_award.png',
+
   'afa_award':                              'images/medals/aerospace_award.png',
   'afsa_award':                             'images/medals/paul_e_garber.png',
   'vfw_officer_award':                      'images/medals/wartime_service.png',
@@ -849,8 +1020,7 @@ const miniMedalImages = {
 };
 
 /* ===========================
-   BADGES / PATCHES / RANK
-   (unchanged logic)
+   BADGES
    =========================== */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
@@ -892,6 +1062,9 @@ const customBadgeSizes = {
   'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25}
 };
 
+/* ===========================
+   PATCHES
+   =========================== */
 const patchList = [
   'us_flag_patch','command_patch','wing_patch','unit_patch','aerospace_education_patch','communications_patch','orientation_pilot_patch'
 ];
@@ -913,6 +1086,9 @@ const ALTERNATES = {
   patchToRibbon:{ 'orientation_pilot_patch':'orientation_pilot_ribbon' }
 };
 
+/* ===========================
+   RANKS
+   =========================== */
 const rankList = [
   'C/AB','C/Amn','C/A1C','C/SrA','C/SSgt','C/TSgt','C/MSgt','C/SMSgt','C/CMSgt',
   'C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col'
@@ -920,7 +1096,7 @@ const rankList = [
 const officerRanks = new Set(['C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','C/Col']);
 
 /* ===========================
-   POPULATE & PRELOAD
+   POPULATE SELECTS & PRELOAD
    =========================== */
 function optionize(sel,list){
   sel.innerHTML='';
@@ -931,7 +1107,6 @@ function optionize(sel,list){
     sel.appendChild(o);
   });
 }
-
 function populateBadgesRemove(){
   const sel=by('removeBadgeSelect'); if(!sel) return;
   sel.innerHTML='';
@@ -952,7 +1127,6 @@ function populatePatchesRemove(){
     sel.appendChild(o);
   });
 }
-
 function preloadSimple(prefix,list,folder,ext=".png"){
   list.forEach(id=>{
     const img=document.createElement('img');
@@ -998,9 +1172,9 @@ Object.entries(PATCH_META).forEach(([id,m])=>{
 });
 
 /* ===========================
-   HAMBURGER TOGGLE LOGIC
+   SIDEBAR TOGGLE (HAMBURGER)
    =========================== */
-layoutShell.classList.add('sidebar-open'); // default open
+layoutShell.classList.add('sidebar-open'); // default state
 
 hamburgerBtn.addEventListener('click', ()=>{
   if(layoutShell.classList.contains('sidebar-open')){
@@ -1077,10 +1251,12 @@ function sortRibbons(arr){
   return [...arr].sort((a,b)=>precedence(a.id)-precedence(b.id));
 }
 
+/* Scan current rack or fallback */
 function getTopRibbonY(){
   const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini')];
   if(!layers.length) {
-    return 360;
+    // fallback mid-chest
+    return rackBaseY + 150;
   }
   return Math.min(...layers.map(l=>parseFloat(l.style.top)||0));
 }
@@ -1095,6 +1271,7 @@ function ensureRibbonObj(id){
   return r;
 }
 
+/* place devices on each single ribbon tile */
 function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   const r=ensureRibbonObj(rid);
   const flat=[];
@@ -1131,6 +1308,7 @@ function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   });
 }
 
+/* click logic for ribbons: device apply/remove mode */
 function onRibbonTileClick(rid){
   if(State.ribbonDragMode) return;
 
@@ -1148,6 +1326,7 @@ function onRibbonTileClick(rid){
   renderRack();
 }
 
+/* drag handlers for calibration mode */
 function initRibbonDragHandlers(tileEl){
   tileEl.addEventListener('mousedown', e => {
     if(!State.ribbonDragMode) return;
@@ -1166,8 +1345,8 @@ function syncDevicesToRibbon(ribbonTileEl){
   if(!rid) return;
   const baseLeft = parseFloat(ribbonTileEl.style.left) || 0;
   const baseTop  = parseFloat(ribbonTileEl.style.top)  || 0;
-  const w = parseFloat(ribbonTileEl.style.width)  || 60;
-  const h = parseFloat(ribbonTileEl.style.height) || 19.2;
+  const w = parseFloat(ribbonTileEl.style.width)  || (RIBBON_WIDTH*2.6);
+  const h = parseFloat(ribbonTileEl.style.height) || (RIBBON_HEIGHT*2.66);
 
   const r = State.ribbons.find(x => x.id===rid);
   if(!r || !r.devices) return;
@@ -1196,21 +1375,24 @@ function syncDevicesToRibbon(ribbonTileEl){
   });
 }
 
+/* global pointer move/up for dragging */
 document.addEventListener('mousemove', e => {
   if(!currentDrag || !State.ribbonDragMode) return;
   let newLeft = e.clientX - dragOffsetX;
   let newTop  = e.clientY - dragOffsetY;
-  const maxX = 450 - (parseFloat(currentDrag.style.width)  || 60);
-  const maxY = 600 - (parseFloat(currentDrag.style.height) || 20);
+
+  const maxX = 450 - (parseFloat(currentDrag.style.width)  || (RIBBON_WIDTH*2.6));
+  const maxY = 600 - (parseFloat(currentDrag.style.height) || (RIBBON_HEIGHT*2.66));
   if(newLeft < 0) newLeft = 0;
   if(newTop  < 0) newTop  = 0;
   if(newLeft > maxX) newLeft = maxX;
   if(newTop  > maxY) newTop  = maxY;
+
   currentDrag.style.left = newLeft + 'px';
   currentDrag.style.top  = newTop  + 'px';
+
   syncDevicesToRibbon(currentDrag);
 });
-
 document.addEventListener('mouseup', () => {
   if(currentDrag){
     currentDrag.classList.remove('dragging');
@@ -1218,34 +1400,36 @@ document.addEventListener('mouseup', () => {
   }
 });
 
+/* renderRack()
+   Uses rackBaseX / rackBaseY calibration for ribbons OR mini medals.
+*/
 function renderRack(){
+  // wipe ribbons/medals/devices
   [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
 
   const baseCfg = UNIFORMS[State.uniform];
-  const uniformPrefersMini = baseCfg.mini;
+
+  const uniformPrefersMini   = baseCfg.mini;
   const uniformAllowsRibbons = baseCfg.ribbons;
-  const autoMini = by('autoMini').checked;
+  const autoMini   = by('autoMini').checked;
   const manualMini = State.forceMini;
   const useMini = (uniformPrefersMini && autoMini) || manualMini;
 
   const items = sortRibbons(State.ribbons);
   if(!items.length) return;
 
-  const canvasRect = uniformCanvas.getBoundingClientRect();
-  const canvasW = canvasRect.width;
-  const canvasH = canvasRect.height;
-
   if(!useMini && uniformAllowsRibbons){
-    const TILE_W = 60;
-    const TILE_H = 19.2;
+    /* SERVICE RIBBON RACK MODE
+       We'll do standard 3-up rows using calibrated rackBaseX/Y.
+       Top-most row (highest precedence) goes at rackBaseX/Y.
+       Lower precedence rows stack DOWN.
+       For rows with <3 ribbons, we'll center them under a 3-wide footprint.
+    */
+
     const PER_ROW = 3;
-    const PAD = 0;
-
-    const rackBaseY   = canvasH * 0.65;
-    const rackCenterX = canvasW * 0.55;
-
     const ids = items.map(x=>x.id);
 
+    // break into rows (top row may be 1-2 ribbons)
     const rows = [];
     if(ids.length % PER_ROW !== 0){
       rows.push(ids.slice(0, ids.length % PER_ROW));
@@ -1253,12 +1437,23 @@ function renderRack(){
     for(let i=ids.length % PER_ROW; i<ids.length; i+=PER_ROW){
       rows.push(ids.slice(i,i+PER_ROW));
     }
-    rows.reverse();
+    rows.reverse(); // now rows[0] is bottom-most. We want to render TOP row first visually ABOVE.
+    const orderedRows=[...rows].reverse(); // orderedRows[0] is the top row.
 
-    rows.forEach((row,ri)=>{
-      const totalW = row.length*TILE_W + (row.length-1)*PAD;
-      const rowLeft = Math.round(rackCenterX - totalW/2);
-      const rowTop  = Math.round(rackBaseY - ri*(TILE_H+PAD));
+    orderedRows.forEach((row,visualRowIndexFromTop)=>{
+      // y-pos for this row
+      const rowTopPx = rackBaseY + visualRowIndexFromTop*(RIBBON_HEIGHT+RIBBON_GAP_Y);
+
+      const rowCount = row.length;
+
+      // baseline: rackBaseX is where LEFT edge of a full 3-up row's first ribbon sits.
+      // center logic for 1- or 2-wide top rows:
+      let rowLeftBase = rackBaseX;
+      if(rowCount===2){
+        rowLeftBase = rackBaseX + (RIBBON_WIDTH/2);
+      } else if(rowCount===1){
+        rowLeftBase = rackBaseX + RIBBON_WIDTH;
+      }
 
       row.forEach((rid,i)=>{
         const orig=by(`ribbons-${rid}`);
@@ -1268,13 +1463,13 @@ function renderRack(){
         tile.className='layer ribbonTile';
         tile.style.display='block';
 
-        const leftPx=rowLeft + i*(TILE_W+PAD);
-        const topPx =rowTop;
+        const leftPx=rowLeftBase + i*(RIBBON_WIDTH+RIBBON_GAP_X);
+        const topPx =rowTopPx;
 
         tile.style.left   = `${leftPx}px`;
         tile.style.top    = `${topPx}px`;
-        tile.style.width  = `${TILE_W}px`;
-        tile.style.height = `${TILE_H}px`;
+        tile.style.width  = `${RIBBON_WIDTH}px`;
+        tile.style.height = `${RIBBON_HEIGHT}px`;
 
         tile.dataset.rid=rid;
         tile.style.pointerEvents='auto';
@@ -1288,20 +1483,26 @@ function renderRack(){
 
         uniformCanvas.appendChild(tile);
 
-        drawDevicesOnRibbon(rid,leftPx,topPx,TILE_W,TILE_H);
+        drawDevicesOnRibbon(rid,leftPx,topPx,RIBBON_WIDTH,RIBBON_HEIGHT);
       });
     });
 
   } else {
-    // MINI MEDAL MODE
+    /* MINI MEDAL MODE
+       Mini medals hang slightly lower than the ribbon rack.
+       We'll anchor off rackBaseX/rackBaseY but drop them ~20px.
+       We'll render 5-up rows, centered.
+    */
+
     const MINI_W = 20;
     const MINI_H = 28;
     const PER_ROW = 5;
     const PAD = 6;
 
-    const medalBaseY   = canvasH * 0.58;
-    const medalCenterX = canvasW * 0.5;
+    const medalTopAnchorY = rackBaseY + 20;
+    const medalCenterX    = rackBaseX + (RIBBON_WIDTH*1.5);
 
+    // build medalItems only for ribbons that have medal art
     const medalItems = [];
     for(const r of items){
       const medalPath = miniMedalImages[r.id];
@@ -1319,16 +1520,20 @@ function renderRack(){
       rows.push(medalItems.slice(i,i+PER_ROW));
     }
     rows.reverse();
+    const orderedRows=[...rows].reverse();
 
-    rows.forEach((row,ri)=>{
-      const rowW   = row.length * MINI_W + (row.length-1)*PAD;
-      const rowX0  = Math.round(medalCenterX - rowW/2);
-      const rowTop = Math.round(medalBaseY - ri*(MINI_H+PAD));
+    orderedRows.forEach((row,visualRowIndexFromTop)=>{
+      const rowTopPx = medalTopAnchorY + visualRowIndexFromTop*(MINI_H+PAD);
+
+      const rowCount=row.length;
+      const totalRowWidth=rowCount*MINI_W+(rowCount-1)*PAD;
+
+      const rowLeftBase = medalCenterX - (totalRowWidth/2);
 
       row.forEach((entry,i)=>{
         const mimg=document.createElement('img');
 
-        // keep assetBase override: strip leading "images/" to avoid double prefix
+        // strip leading images/ because ASSET() will add assetBase
         let relPath = entry.path;
         if(relPath.startsWith('images/')){
           relPath = relPath.slice('images/'.length);
@@ -1338,8 +1543,8 @@ function renderRack(){
         mimg.className='layer ribbonMini';
         mimg.style.display='block';
 
-        const leftPx = rowX0 + i*(MINI_W+PAD);
-        const topPx  = rowTop - MINI_H;
+        const leftPx=rowLeftBase + i*(MINI_W+PAD);
+        const topPx =rowTopPx;
 
         mimg.style.left   = `${leftPx}px`;
         mimg.style.top    = `${topPx}px`;
@@ -1425,7 +1630,7 @@ function wireDeviceUI(){
 }
 
 /* ===========================
-   BADGE RENDER
+   BADGES
    =========================== */
 const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[] };
 function resetBadgeSlots(){ Object.keys(badgeSlots).forEach(k=>badgeSlots[k]=[]); }
@@ -1471,30 +1676,35 @@ function placeBadgeByCategory(id){
 
   const size=customBadgeSizes[id]||{width:60,height:25};
   const spacing=5;
+
+  // base Y should track ribbon rack position so things don't float wrong
   const baseRibbonY=getTopRibbonY();
 
+  // badge anchor maps; tuned relative to rackBaseX/Y
   const yMap={
     OLP: baseRibbonY - 25,
     OLPU:baseRibbonY -  5,
     OLPA:baseRibbonY - 55,
-    ORP:300,
-    ON:350,
-    UN:390,
-    LRP:405,
-    LP:450
+    ORP: baseRibbonY - 25,
+    ON:  baseRibbonY + 140,
+    UN:  baseRibbonY + 180,
+    LRP: baseRibbonY + 199,
+    LP:  baseRibbonY + 244
   };
   const xMap={
-    OLP:328,
-    OLPU:328,
-    OLPA:328,
-    ORP:100,
-    ON:150,
-    UN:150,
-    LRP:335,
-    LP:350
+    OLP: rackBaseX + (RIBBON_WIDTH*1.5) - 30,
+    OLPU:rackBaseX + (RIBBON_WIDTH*1.5) - 30,
+    OLPA:rackBaseX + (RIBBON_WIDTH*1.5) - 30,
+    ORP: rackBaseX - 140,
+    ON:  rackBaseX - 105,
+    UN:  rackBaseX - 105,
+    LRP: rackBaseX + (RIBBON_WIDTH*3) + 60,
+    LP:  rackBaseX + (RIBBON_WIDTH*3) + 80
   };
 
-  let y=yMap[slot]||390, x=xMap[slot]||150;
+  let y=yMap[slot]|| (baseRibbonY+180);
+  let x=xMap[slot]|| (rackBaseX-105);
+
   if(slot==='ON'||slot==='UN'){
     const stackIdx=badgeSlots[slot].length;
     for(let i=0;i<stackIdx;i++){
@@ -1524,7 +1734,7 @@ function placeBadgeByCategory(id){
 }
 
 /* ===========================
-   PATCH RENDER
+   PATCHES
    =========================== */
 const patchSlots = { L_SHOULDER:[], R_SHOULDER:[], CHEST_LEFT:[], CHEST_RIGHT:[] };
 function resetPatchSlots(){ Object.keys(patchSlots).forEach(k=>patchSlots[k]=[]); }
@@ -1560,6 +1770,7 @@ function renderPatches(){
 
   planPatches(State.patches);
 
+  // approximate coords for canvas size (450x600)
   const coords={
     L_SHOULDER:{x:95,y:250,dy:80},
     R_SHOULDER:{x:505,y:250,dy:80},
@@ -1664,12 +1875,16 @@ function renderRank(id){
 
 function renderNameplate(){
   [...uniformCanvas.querySelectorAll('.layer.nameplate')].forEach(n=>n.remove());
+  const baseRibbonY=getTopRibbonY();
+  const npTop  = baseRibbonY + 150;
+  const npLeft = rackBaseX - 120;
+
   const el=document.createElement('img');
   el.src=ASSET('nameplate/nameplate.png');
   el.className='layer nameplate';
   el.style.display='block';
-  el.style.top='440px';
-  el.style.left='120px';
+  el.style.top  = npTop+'px';
+  el.style.left = npLeft+'px';
   el.style.width='100px';
   el.style.height='20px';
   el.dataset.tooltipTitle="Nameplate";
@@ -1684,7 +1899,7 @@ function renderNameplate(){
 function updateAvailabilityUI(prevUniform){
   const auth = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
 
-  // for mess/mini uniforms, we still show groupRibbons because it's how you add awards
+  // even if showRibbons=false, keep groupRibbons visible on mess/mini so user can still edit awards
   by('groupRibbons').classList.toggle('hidden', !auth.showRibbons && !UNIFORMS[State.uniform].mini);
   by('groupPatches').classList.toggle('hidden', !auth.showPatches);
 
@@ -1701,22 +1916,26 @@ function applyAlternates(fromU,toU){
   const toField  =isFieldUniform(toU);
 
   if(!fromField && toField){
+    // badges → patches
     Object.entries(ALTERNATES.badgeToPatch).forEach(([badge,patch])=>{
       if(State.badges.includes(badge) && !State.patches.includes(patch)){
         State.patches.push(patch);
       }
     });
+    // ribbons → patches
     Object.entries(ALTERNATES.ribbonToPatch).forEach(([ribbon,patch])=>{
       if(State.ribbons.find(r=>r.id===ribbon) && !State.patches.includes(patch)){
         State.patches.push(patch);
       }
     });
   } else if(fromField && !toField){
+    // patches → badges
     Object.entries(ALTERNATES.patchToBadge).forEach(([patch,badge])=>{
       if(State.patches.includes(patch) && badge && !State.badges.includes(badge)){
         State.badges.push(badge);
       }
     });
+    // patches → ribbons
     Object.entries(ALTERNATES.patchToRibbon).forEach(([patch,ribbon])=>{
       if(State.patches.includes(patch) && ribbon && !State.ribbons.find(r=>r.id===ribbon)){
         State.ribbons.push({id:ribbon,devices:{}});
@@ -1730,7 +1949,7 @@ function applyAlternates(fromU,toU){
 }
 
 /* ===========================
-   FULL RENDER PIPELINE
+   RENDER PIPELINE
    =========================== */
 function fullRender(prevUniform){
   applyJacket();
@@ -1807,10 +2026,78 @@ function highlightActiveUniformButton(){
 }
 
 /* ===========================
+   CALIBRATOR PANEL WIRING
+   =========================== */
+function initCalibratorUI(){
+  const tab          = by('calibratorTab');
+  const arrow        = by('calibratorArrow');
+  const panel        = by('calibratorPanel');
+
+  const rackXRange   = by('rackXRange');
+  const rackXNumber  = by('rackXNumber');
+  const rackYRange   = by('rackYRange');
+  const rackYNumber  = by('rackYNumber');
+
+  const readX        = by('readX');
+  const readY        = by('readY');
+  const readSize     = by('readSize');
+
+  // init control defaults
+  rackXRange.value  = rackBaseX;
+  rackXNumber.value = rackBaseX;
+  rackYRange.value  = rackBaseY;
+  rackYNumber.value = rackBaseY;
+  readX.textContent = rackBaseX;
+  readY.textContent = rackBaseY;
+  readSize.textContent = RIBBON_WIDTH + "×" + RIBBON_HEIGHT;
+
+  let open=false;
+  function togglePanel(){
+    open=!open;
+    panel.style.display=open?'block':'none';
+    arrow.textContent=open?'‹':'›';
+  }
+  tab.addEventListener('click', togglePanel);
+
+  function applyAndRerender(){
+    readX.textContent=rackBaseX;
+    readY.textContent=rackBaseY;
+
+    renderRack();
+    renderAllBadges();
+    renderNameplate();
+    renderRank(State.rank);
+  }
+
+  rackXRange.addEventListener('input', e=>{
+    rackBaseX = parseInt(e.target.value,10);
+    rackXNumber.value = rackBaseX;
+    applyAndRerender();
+  });
+  rackXNumber.addEventListener('input', e=>{
+    rackBaseX = parseInt(e.target.value,10) || 0;
+    rackXRange.value = rackBaseX;
+    applyAndRerender();
+  });
+
+  rackYRange.addEventListener('input', e=>{
+    rackBaseY = parseInt(e.target.value,10);
+    rackYNumber.value = rackBaseY;
+    applyAndRerender();
+  });
+  rackYNumber.addEventListener('input', e=>{
+    rackBaseY = parseInt(e.target.value,10) || 0;
+    rackYRange.value = rackBaseY;
+    applyAndRerender();
+  });
+}
+
+/* ===========================
    EVENT WIRING
    =========================== */
 memberSelect.addEventListener('change', ()=>{
   State.member = memberSelect.value;
+
   if(State.member==='cadet' && !isUniformAllowedFor(State.uniform,'cadet')){
     const fallback=findFirstAllowedUniform('cadet') || 'blues_a';
     const prevU=State.uniform;
@@ -1966,6 +2253,7 @@ logRibbonCoordsBtn.addEventListener('click', ()=>{
 (function init(){
   refreshUI();
   fullRender();
+  initCalibratorUI();
 })();
 </script>
 </body>
