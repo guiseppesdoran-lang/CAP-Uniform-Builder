@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CAP Uniform Builder — Integrated (+Reg/Slots/Sizes)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+  :root{--bg:#eef1f5;--ink:#0d1b2a;--muted:#516079;--panel:#ffffff;--line:#cfd6df;--brand:#002855}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--ink)}
+  header{background:var(--brand);color:#fff;padding:14px 16px 14px 48px;text-align:center;position:relative;box-shadow:0 2px 4px rgb(0 0 0 / .3)}
+  header h1{font-size:18px;font-weight:700}
+  header .subtitle{font-size:12px;opacity:.85}
+  .hamburgerBtn{position:fixed;left:12px;top:12px;z-index:10000;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;box-shadow:0 10px 25px rgb(0 0 0 / .3)}
+  .hamburgerBtn span{display:block;width:18px;height:2px;background:#fff;border-radius:1px}
+  #layoutShell{display:flex;height:calc(100vh - 58px);background:var(--bg);overflow:hidden}
+  .panel-shell{display:flex;min-width:260px;max-width:480px;position:relative;z-index:10}
+  #controls{background:var(--panel);border-right:1px solid var(--line);box-shadow:0 0 20px rgb(0 0 0 / .07);display:flex;flex-direction:column;width:360px}
+  #panelResizer{flex:0 0 6px;cursor:ew-resize;background:transparent;position:relative}
+  #panelResizer::after{content:"";position:absolute;top:50%;left:2px;width:2px;height:40px;background:var(--line);border-radius:1px;transform:translateY(-50%)}
+  .controlsHeader{background:var(--brand);color:#fff;padding:12px 14px}
+  .controlsTitle{font-size:14px;font-weight:700}
+  .controlsSub{font-size:11px;opacity:.8}
+  .controlsScrollArea{flex:1;overflow:auto;padding:12px 14px 120px}
+  .panelBlock,.panelSection{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 12px 10px;margin-bottom:12px;box-shadow:0 8px 20px rgb(0 0 0 / .04)}
+  .fieldLabel{font-size:13px;font-weight:700;margin-bottom:6px}
+  .hintText{font-size:11px;color:var(--muted);margin-top:6px}
+  select,button,input{width:100%;margin-top:6px;padding:8px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;font-size:13px;color:var(--ink)}
+  button{cursor:pointer;background:#0f2a54;color:#fff;border-color:#163766}
+  button.ghost{background:#fff;color:var(--ink)}
+  .row{display:flex;gap:8px;flex-wrap:wrap}.two .col{flex:1}
+  #previewWrapper{flex:1;position:relative;padding:16px;display:flex;gap:16px;overflow:auto;align-items:flex-start;justify-content:center}
+  #previewArea{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:12px;width:480px;height:640px;box-shadow:0 30px 60px rgb(0 0 0 / .12);overflow:hidden}
+  #uniformCanvas{position:relative;width:100%;height:100%}
+  .layer{position:absolute;image-rendering:auto}
+  .sizeTag{position:absolute;background:rgba(0,0,0,.55);color:#fff;font-size:9px;padding:1px 3px;border-radius:3px;transform:translate(-2px,-12px);pointer-events:none}
+  .coordTag{position:absolute;background:rgba(0,40,85,.6);color:#fff;font-size:9px;padding:1px 3px;border-radius:3px;transform:translate(0, -14px);pointer-events:none}
+  #sideDisplay{display:flex;flex-direction:column;gap:16px;min-width:160px}
+  .uniformList{display:flex;flex-direction:column;gap:8px}
+  .uniformOption{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 12px;text-align:left;box-shadow:0 4px 12px rgb(0 0 0 / .03)}
+  .uniformOption.locked{opacity:.45;filter:grayscale(1);border-style:dashed;cursor:not-allowed}
+  .ribbonGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+  .ribbonCard{border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 4px 12px rgb(0 0 0 / .05);padding:10px;display:flex;flex-direction:column;font-size:12px}
+  .ribbonHeader{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:8px}
+  .ribbonImg{width:48px;height:14px;background:#999;border-radius:2px;border:1px solid #000;flex-shrink:0;background-size:cover;background-position:center}
+  .ribbonName{font-size:11px;font-weight:700}
+  .deviceField label{font-size:10px;color:var(--muted);margin-bottom:2px;display:block}
+  .deviceField select{font-size:12px;padding:4px 6px;border-radius:6px}
+  #deviceTool{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fefefe;font-size:12px}
+  #devicePicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  #pageFooter{text-align:center;font-size:11px;color:var(--muted);background:var(--panel);border-top:1px solid var(--line);padding:8px 0;position:fixed;bottom:0;left:0;right:0}
+  #calibratorWrapper{position:fixed;top:80px;left:0;z-index:10001;display:flex}
+  #calibratorTab{background:var(--brand);color:#fff;padding:8px 6px;border-top-right-radius:6px;border-bottom-right-radius:6px;cursor:pointer;user-select:none;box-shadow:2px 2px 6px rgb(0 0 0 / .2)}
+  #calibratorPanel{background:var(--panel);border:1px solid var(--line);border-left:none;border-top-right-radius:8px;border-bottom-right-radius:8px;min-width:220px;padding:12px;box-shadow:2px 2px 10px rgb(0 0 0 / .25);display:none}
+  .calib-row{font-size:12px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:6px}
+  .calib-row input[type="range"]{width:100%}
+  .numField{width:56px;font-size:12px;padding:2px 4px;border:1px solid var(--line);border-radius:4px;text-align:center}
+  .drag-mode-on .ribbonTile{outline:1px dashed rgba(0,40,85,.6);cursor:move;z-index:9999}
+  .guideDot{position:absolute;background:rgba(0,40,85,.15);border:1px solid rgba(0,40,85,.4);font-size:10px;padding:2px 4px;border-radius:4px;pointer-events:none}
+  @media (max-width:768px){
+    #layoutShell{flex-direction:column;height:auto;min-height:calc(100vh - 58px)}
+    .panel-shell{position:absolute;left:0;top:0;bottom:0;width:80%;max-width:80%;min-width:260px;box-shadow:0 30px 60px rgb(0 0 0 / .4);z-index:10002}
+    #panelResizer{display:none}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>CAP Uniform Builder</h1>
+  <div class="subtitle">CAPR 39-1 placement • ribbons • devices • badges • ranks • validation • sizes</div>
+</header>
+<button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+
+<div id="calibratorWrapper">
+  <div id="calibratorTab"><span>RACK</span></div>
+  <div id="calibratorPanel">
+    <h3 style="margin:0 0 8px 0;font-size:13px">Ribbon Rack Calibration</h3>
+    <div class="calib-row">
+      <label for="rackXRange">X Offset (px)</label>
+      <input type="range" id="rackXRange" min="120" max="420" step="1">
+      <input type="number" id="rackXNumber" class="numField">
+    </div>
+    <div class="calib-row">
+      <label for="rackYRange">Y Offset (px)</label>
+      <input type="range" id="rackYRange" min="140" max="340" step="1">
+      <input type="number" id="rackYNumber" class="numField">
+    </div>
+    <div id="calibReadout" style="font-size:11px;line-height:1.4;background:#f6f8fa;border:1px solid var(--line);border-radius:4px;padding:6px">
+      <div>Base X: <code id="readX"></code> px</div>
+      <div>Base Y: <code id="readY"></code> px</div>
+      <div>Ribbon W×H: <code id="readSize"></code> px</div>
+    </div>
+  </div>
+</div>
+
+<main id="layoutShell" class="sidebar-open">
+  <div class="panel-shell" id="panelShell">
+    <aside id="controls">
+      <div class="controlsHeader">
+        <div>
+          <div class="controlsTitle">Uniform Builder Controls</div>
+          <div class="controlsSub">Member type governs authorization. Panel is resizable & mobile-aware.</div>
+        </div>
+      </div>
+
+      <div class="controlsScrollArea">
+        <section class="panelBlock">
+          <label class="fieldLabel">Member Type</label>
+          <select id="memberSelect">
+            <option value="cadet" selected>Cadet</option>
+            <option value="senior">Senior Member / Officer</option>
+            <option value="senior_nco">Senior Member NCO</option>
+          </select>
+          <div class="hintText">Filters senior-only ribbons/badges when “Cadet.”</div>
+        </section>
+
+        <section class="panelBlock">
+          <label class="fieldLabel">Gender / Cut</label>
+          <select id="jacketSelect">
+            <option value="male" selected>Male Cut</option>
+            <option value="female">Female Cut</option>
+          </select>
+        </section>
+
+        <section class="panelBlock">
+          <label class="fieldLabel">Uniform</label>
+          <div id="uniformList" class="uniformList"></div>
+          <div class="hintText">Unavailable options grey out for the selected member type.</div>
+        </section>
+
+        <section class="panelBlock">
+          <div class="row two">
+            <div class="col">
+              <label class="fieldLabel">Asset Base Path</label>
+              <input id="assetBase" value="images" placeholder="images"/>
+            </div>
+            <div class="col">
+              <label class="fieldLabel" style="visibility:hidden">Apply</label>
+              <button id="applyJacket" class="ghost">Apply Jacket</button>
+            </div>
+          </div>
+          <div class="hintText">Change if your image folder path changes.</div>
+        </section>
+
+        <section class="panelBlock">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:12px;font-weight:800">Ribbons / Devices</div>
+              <div class="hintText">3-per-row; partial row centered at top; precedence auto-sorts; mini-medals on Mess/Semi.</div>
+            </div>
+            <button id="clearRibbons" class="ghost" style="font-size:11px;line-height:1;padding:4px 8px;border-radius:6px">Clear</button>
+          </div>
+          <div class="ribbonGrid" id="ribbonGrid"></div>
+          <label style="font-size:12px;color:var(--muted);display:block;margin-top:10px;">
+            <input type="checkbox" id="toggleMini"> Force Mini Medals (override)
+          </label>
+          <label style="font-size:12px;color:var(--muted);display:block;margin-top:6px;">
+            <input type="checkbox" id="autoMini" checked> Auto-convert ribbons → mini-medals on Mess/Semi-formal
+          </label>
+
+          <div id="deviceTool">
+            <strong style="font-size:12px;">Ribbon Devices — Multi-Apply</strong>
+            <div id="devicePicker"></div>
+            <div class="row" style="margin-top:8px">
+              <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
+              <button id="deviceRemoveModeBtn" type="button" class="ghost">Enable Remove Mode</button>
+              <button id="deviceClearSelectionBtn" type="button" class="ghost">Clear Selection</button>
+            </div>
+            <small style="color:#516079;display:block;margin-top:6px;font-size:11px;line-height:1.3">
+              Choose devices & quantities → Apply Mode → click a ribbon in preview to add. Remove Mode clears devices for the clicked ribbon.
+            </small>
+          </div>
+
+          <div class="row two" style="margin-top:12px">
+            <div class="col"><button id="toggleRibbonDrag" class="ghost">Enable Drag Mode</button></div>
+            <div class="col"><button id="logRibbonCoords" class="ghost">Log Ribbon Coords</button></div>
+          </div>
+          <div class="hintText">Drag Mode lets you reposition the rack for calibration. “Log” prints exact left/top to console.</div>
+        </section>
+
+        <section class="panelBlock">
+          <label class="fieldLabel">Badges</label>
+          <div class="row two">
+            <div class="col"><select id="badgeSelect"></select></div>
+            <div class="col"><button id="addBadge">Add Badge</button></div>
+          </div>
+          <div class="row two" style="margin-top:6px">
+            <div class="col"><select id="removeBadgeSelect"></select></div>
+            <div class="col"><button id="removeBadge" class="ghost">Remove Badge</button></div>
+          </div>
+          <div class="hintText">CAPR 39‑1 slot rules & cadet vs SM authorizations enforced. Max 5 total; 2 max above rack; 2 max per side.</div>
+        </section>
+
+        <section class="panelBlock" id="groupPatches">
+          <label class="fieldLabel">Patches</label>
+          <div class="row two">
+            <div class="col"><select id="patchSelect"></select></div>
+            <div class="col"><button id="addPatch">Add Patch</button></div>
+          </div>
+          <div class="row two" style="margin-top:6px">
+            <div class="col"><select id="removePatchSelect"></select></div>
+            <div class="col"><button id="removePatch" class="ghost">Remove Patch</button></div>
+          </div>
+          <div class="hintText">Field uniforms swap certain badges/ribbons into patch/tape equivalents.</div>
+        </section>
+
+        <section class="panelBlock">
+          <label class="fieldLabel">Rank Insignia & Output</label>
+          <div class="row two">
+            <div class="col"><select id="rankSelect"></select></div>
+            <div class="col"><button id="addRank">Set Rank</button></div>
+          </div>
+          <div class="row two" style="margin-top:6px">
+            <div class="col"><label style="font-size:12px"><input type="checkbox" id="toggleSizes" checked> Show image sizes</label></div>
+            <div class="col"><label style="font-size:12px"><input type="checkbox" id="toggleCoords"> Show coordinates</label></div>
+          </div>
+          <div class="row two" style="margin-top:6px">
+            <div class="col"><button id="downloadImage">Download PNG</button></div>
+            <div class="col"><button id="runValidation" class="ghost">Run Regulation Validation</button></div>
+          </div>
+          <div id="validationOutput" class="hintText" style="margin-top:6px"></div>
+          <div class="hintText">Officer ranks render on epaulets; airman/NCO ranks overlay on jacket. Download creates a high-res PNG.</div>
+        </section>
+
+        <section class="panelBlock" style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3">
+          © <span id="sidebarYear"></span> CAP Uniform Builder • Built by C/Capt. G. Doran
+        </section>
+      </div>
+    </aside>
+    <div id="panelResizer" title="Drag to resize panel"></div>
+  </div>
+
+  <section id="previewWrapper">
+    <div id="previewArea"><div id="uniformCanvas"></div></div>
+    <div id="sideDisplay">
+      <div id="epauletContainer"></div>
+      <div id="coverContainer"></div>
+    </div>
+  </section>
+</main>
+
+<footer id="pageFooter">
+  © <span id="footerYear"></span> CAP Uniform Builder – C/Capt. G. Doran
+</footer>
+
+<script>
+/* ===== Global State ===== */
+const State = {
+  member:'cadet',
+  gender:'male',
+  uniform:'blues_a',
+  assetBase:'images',
+  ribbons:[],          // [{id, devices:{key:qty}}]
+  badges:[],           // [{id, slot}]
+  patches:[],
+  rank:null,           // {id, isOfficer:boolean}
+  deviceApplyMode:false,
+  deviceRemoveMode:false,
+  selectedDevices:{},
+  ribbonDragMode:false,
+  forceMini:false,
+  showSizes:true,
+  showCoords:false
+};
+let currentDrag=null, dragOffsetX=0, dragOffsetY=0;
+
+/* ===== Calibration ===== */
+let rackBaseX=259, rackBaseY=206;
+const RIBBON_WIDTH=23, RIBBON_HEIGHT=7.2;
+const RIBBON_GAP_X=0, RIBBON_GAP_Y=2;
+function getRackOrigin(){ return {x:rackBaseX,y:rackBaseY}; }
+
+/* ===== Utils ===== */
+const $ = s=>document.querySelector(s);
+const by = id=>document.getElementById(id);
+const uniformCanvas = by('uniformCanvas');
+(function setYears(){ const y=new Date().getFullYear(); ['sidebarYear','footerYear'].forEach(i=>{const el=by(i); if(el) el.textContent=y;}); })();
+function ASSET(p){ const b=(State.assetBase||'images').replace(/\/$/,''); return `${b}/${p}`; }
+
+/* ===== Uniforms & UI visibility ===== */
+const UNIFORMS = {
+  blues_a:{male:'base/jacket_male.png', female:'base/jacket_female.png', ribbons:true, mini:false},
+  blues_b:{male:'base/blues_class_b_male.png', female:'base/blues_class_b_female.png', ribbons:true, mini:false},
+  mess_dress:{male:'base/mess_dress_male.png', female:'base/mess_dress_female.png', ribbons:false, mini:true},
+  semi_formal:{male:'base/semi_male.png', female:'base/semi_female.png', ribbons:false, mini:true},
+  aviator:{male:'base/aviator_shirt_male.png', female:'base/aviator_shirt_female.png', ribbons:true, mini:false},
+  aviator_blazer:{male:'base/aviator_blazer_male.png', female:'aviator_blazer_female.png', ribbons:true, mini:false},
+  corporate_field:{male:'base/corporate_field_male.png', female:'base/corporate_field_female.png', ribbons:true, mini:false},
+  abu:{male:'base/ABU_male.png', female:'base/ABU_female.png', ribbons:false, mini:false},
+  flight_suit:{male:'base/flight_suit_male.png', female:'base/flight_suit_female.png', ribbons:false, mini:false},
+  polo:{male:'base/polo_male.png', female:'base/polo_female.png', ribbons:false, mini:false}
+};
+const UI_AUTHZ = {
+  blues_a:{ showRibbons:true, showBadges:true,  showPatches:false },
+  blues_b:{ showRibbons:true, showBadges:true,  showPatches:false },
+  aviator:{ showRibbons:true, showBadges:true,  showPatches:false },
+  aviator_blazer:{ showRibbons:true, showBadges:true, showPatches:false },
+  corporate_field:{ showRibbons:true, showBadges:false, showPatches:true },
+  mess_dress:{ showRibbons:false, showBadges:true,  showPatches:false },
+  semi_formal:{ showRibbons:false, showBadges:true, showPatches:false },
+  abu:{ showRibbons:false, showBadges:false, showPatches:true },
+  flight_suit:{ showRibbons:false, showBadges:false, showPatches:true },
+  polo:{ showRibbons:false, showBadges:false, showPatches:false }
+};
+
+/* ===== Ribbons / Precedence (subset for demo) ===== */
+const SM_ONLY_RIBBONS = new Set([
+  "Gill Robb Wilson Award Ribbon","Paul E. Garber Award Ribbon","Grover Loening Aerospace Award Ribbon",
+  "Leadership Award Ribbon","CAP Membership Award Ribbon","A. Scott Crossfield Award Ribbon",
+  "Brig Gen Charles E. Yeager Aerospace Education Achievement Ribbon","Command Service Ribbon",
+  "Cadet Orientation Pilot Ribbon","Senior Recruiter Ribbon","World War II Service Ribbon"
+]);
+const RIBBONS = [
+  {id:"silver_medal_of_valor",    name:"Silver Medal of Valor", precedence:1,  img:"ribbons/silver_medal_of_valor.png", devices:[]},
+  {id:"bronze_medal_of_valor",    name:"Bronze Medal of Valor", precedence:2,  img:"ribbons/bronze_medal_of_valor.png", devices:[]},
+  {id:"lifesaving_award",         name:"Lifesaving Award Ribbon", precedence:3, img:"ribbons/lifesaving_award.png", devices:[]},
+  {id:"distinguished_service_award",name:"Distinguished Service Award", precedence:6, img:"ribbons/distinguished_service_award.png", devices:[]},
+  {id:"commander_commendation_award",name:"Commander's Commendation Award", precedence:9, img:"ribbons/commander_commendation_award.png", devices:["1_Bronze_Star_Device","1_Silver_Star_Device"]},
+  {id:"cap_achievement_award",    name:"CAP Achievement Award", precedence:10, img:"ribbons/cap_achievement_award.png", devices:["1_Bronze_Star_Device"]},
+  {id:"red_service_ribbon",       name:"Red Service Ribbon", precedence:12, img:"ribbons/red_service_ribbon.png", devices:["bronze_clasp","silver_clasp","gold_clasp"]},
+  {id:"unit_citation_award",      name:"Unit Citation Award", precedence:14, img:"ribbons/unit_citation_award.png", devices:["1_Bronze_Star_Device","1_Silver_Star_Device"]},
+  {id:"homeland_security_ribbon", name:"Homeland Security Ribbon", precedence:26, img:"ribbons/homeland_security_ribbon.png", devices:["v_device","numeral"]},
+  {id:"disaster_relief_ribbon",   name:"Disaster Relief Ribbon", precedence:27, img:"ribbons/disaster_relief_ribbon.png", devices:["v_device"]},
+  {id:"air_search_and_rescue_ribbon",name:"Air Search and Rescue Ribbon", precedence:28, img:"ribbons/air_search_and_rescue_ribbon.png", devices:["bronze_clasp","silver_clasp"]},
+  {id:"search_find_ribbon",       name:"Find Ribbon", precedence:29, img:"ribbons/search_find_ribbon.png", devices:["bronze_clasp"]},
+  {id:"community_service_ribbon", name:"Community Service Ribbon", precedence:31, img:"ribbons/community_service_ribbon.png", devices:["bronze_clasp","silver_clasp"]},
+  {id:"spaatz_award", name:"General Carl A. Spaatz Award Ribbon", precedence:33, img:"ribbons/spaatz_award.png", devices:[]},
+  {id:"eaker_award",  name:"Ira C. Eaker Award Ribbon", precedence:34, img:"ribbons/eaker_award.png", devices:[]},
+  {id:"earhart_award",name:"Amelia Earhart Award Ribbon", precedence:35, img:"ribbons/earhart_award.png", devices:[]},
+  {id:"mitchell_award",name:"General Billy Mitchell Award Ribbon", precedence:36, img:"ribbons/mitchell_award.png", devices:[]},
+  {id:"wright_brothers_award", name:"Wright Brothers Achievement Ribbon", precedence:37, img:"ribbons/wright_brothers_award.png", devices:[]},
+  {id:"curry_achievement", name:"Curry Achievement Ribbon", precedence:45, img:"ribbons/curry_achievement.png", devices:[]},
+  {id:"encampment_ribbon", name:"Encampment Ribbon", precedence:46, img:"ribbons/encampment_ribbon.png", devices:["bronze_clasp","silver_clasp"]}
+];
+const miniMedalImages = {
+  "silver_medal_of_valor":"images/medals/silver_medal_of_valor.png",
+  "bronze_medal_of_valor":"images/medals/bronze_medal_of_valor.png",
+  "lifesaving_award":"images/medals/lifesaving.png",
+  "distinguished_service_award":"images/medals/distinguished_service.png",
+  "commander_commendation_award":"images/medals/commanders_commendation.png",
+  "cap_achievement_award":"images/medals/achievement.png",
+  "red_service_ribbon":"images/medals/red_service.png",
+  "unit_citation_award":"images/medals/unit_citation.png",
+  "homeland_security_ribbon":"images/medals/homeland_security.png",
+  "disaster_relief_ribbon":"images/medals/disaster_relief.png",
+  "air_search_and_rescue_ribbon":"images/medals/search_and_rescue.png",
+  "search_find_ribbon":"images/medals/find.png",
+  "community_service_ribbon":"images/medals/community_service.png",
+  "spaatz_award":"images/medals/carl_a_spaatz.png",
+  "eaker_award":"images/medals/ira_c_eaker.png",
+  "earhart_award":"images/medals/amelia_earhart.png",
+  "mitchell_award":"images/medals/billy_mitchell.png",
+  "wright_brothers_award":"images/medals/wright_brothers.png",
+  "curry_achievement":"images/medals/curry.png",
+  "encampment_ribbon":"images/medals/encampment.png"
+};
+const deviceMeta = {
+  '1_Bronze_Star_Device': { label:'Bronze Star', src:'devices/1_Bronze_Star_Device.webp', w:10, h:10, weight:1 },
+  '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 },
+  'bronze_clasp':         { label:'Bronze Clasp', src:'devices/bronze_clasp.webp', w:10, h:10, weight:1 },
+  'silver_clasp':         { label:'Silver Clasp', src:'devices/silver_clasp.webp', w:10, h:10, weight:2 },
+  'gold_clasp':           { label:'Gold Clasp', src:'devices/gold_clasp.webp', w:10, h:10, weight:3 },
+  'v_device':             { label:'"V" Device', src:'devices/v_device.webp', w:10, h:10, weight:4 },
+  'numeral':              { label:'Numeral', src:'devices/numeral.webp', w:10, h:10, weight:5 }
+};
+
+/* ===== Badges ===== */
+const badgeList = [
+  'solo_badge','pre_solo_badge',
+  'ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
+  'emt_basic_badge','emt_intermediate','emt_paramedic',
+  'emergency_services_badge','observer_badge',
+  'aerospace','communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges',
+  'model_rocketry_badge','nra_marksman_badge',
+  'CAPPilot','CAPSeniorPilot','CAPMasterPilot','GliderPilot','AirCrew','SeniorAirCrew','MasterAirCrew','Observer','SeniorObserver','MasterObserver'
+];
+const allowedCadetBadges = new Set([
+  'solo_badge','pre_solo_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
+  'emt_basic_badge','emt_intermediate','emt_paramedic','aerospace','model_rocketry_badge','communications_technician_badge',
+  'information_technology_technician_badge','cyber_badges','stem_badges','nra_marksman_badge',
+  'AirCrew','SeniorAirCrew','MasterAirCrew','Observer','SeniorObserver','MasterObserver'
+]);
+const exclusiveBadges = [
+  ['emt_basic_badge','ground_team_basic_badge'],
+  ['emt_intermediate','senior_ground_team_badge'],
+  ['emt_paramedic','master_ground_team_badge']
+];
+const badgeCategory = {
+  'CAPPilot':'aviation','CAPSeniorPilot':'aviation','CAPMasterPilot':'aviation','GliderPilot':'aviation',
+  'AirCrew':'aviation','SeniorAirCrew':'aviation','MasterAirCrew':'aviation','Observer':'aviation','SeniorObserver':'aviation','MasterObserver':'aviation',
+  'emergency_services_badge':'occupational','observer_badge':'occupational','communications_technician_badge':'occupational','information_technology_technician_badge':'occupational',
+  'ground_team_basic_badge':'es','senior_ground_team_badge':'es','master_ground_team_badge':'es',
+  'emt_basic_badge':'medical','emt_intermediate':'medical','emt_paramedic':'medical',
+  'aerospace':'ae','cyber_badges':'ae','stem_badges':'ae',
+  'solo_badge':'flight','pre_solo_badge':'flight',
+  'model_rocketry_badge':'special','nra_marksman_badge':'marksmanship'
+};
+const badgeImages = (id)=> ASSET('badges/'+id+'.png');
+
+const badgePreferredSlot = {
+  'aviation':'OLP',
+  'occupational':'ORP',
+  'es':'OLPU',
+  'medical':'OLPU',
+  'ae':'ON',
+  'flight':'OLPU',
+  'special':'LP',
+  'marksmanship':'LRP'
+};
+const ABOVE_RACK_SLOTS = new Set(['OLP','OLPA','OLPU','ORP']);
+const LEFT_SIDE_SLOTS = new Set(['OLP','OLPA','OLPU','LP']);
+const RIGHT_SIDE_SLOTS = new Set(['ORP','RP']);
+
+/* ===== Ranks ===== */
+const RANKS = [
+  {id:'c_airman', name:'C/Airman', isOfficer:false, img:'ranks/c/airman.png', w:40, h:40},
+  {id:'c_msgt', name:'C/MSgt', isOfficer:false, img:'ranks/c/msgt.png', w:44, h:44},
+  {id:'c_capt', name:'C/Capt', isOfficer:true, shoulder:'ranks/C/shoulder_board.png', insignia:'ranks/C/capt.png', epw:90, eph:24, iw:28, ih:12},
+  {id:'c_maj', name:'C/Maj', isOfficer:true, shoulder:'ranks/C/shoulder_board.png', insignia:'ranks/C/maj.png', epw:90, eph:24, iw:18, ih:18}
+];
+
+/* ===== UI Wiring ===== */
+const layoutShell=by('layoutShell'), hamburgerBtn=by('hamburgerBtn');
+const panelShell=by('panelShell'), panelResizer=by('panelResizer'), controlsPanel=by('controls');
+const memberSelect=by('memberSelect'), jacketSelect=by('jacketSelect'), assetBaseInput=by('assetBase');
+const uniformListEl=by('uniformList');
+const ribbonGrid=by('ribbonGrid'), clearRibbonsBtn=by('clearRibbons');
+const toggleMini=by('toggleMini'), autoMini=by('autoMini');
+const devicePicker=by('devicePicker'), deviceApplyModeBtn=by('deviceApplyModeBtn'), deviceRemoveModeBtn=by('deviceRemoveModeBtn'), deviceClearSelectionBtn=by('deviceClearSelectionBtn');
+const badgeSelect=by('badgeSelect'), addBadgeBtn=by('addBadge'), removeBadgeSelect=by('removeBadgeSelect'), removeBadgeBtn=by('removeBadge');
+const patchSelect=by('patchSelect'), addPatchBtn=by('addPatch'), removePatchSelect=by('removePatchSelect'), removePatchBtn=by('removePatch');
+const rankSelect=by('rankSelect'), addRankBtn=by('addRank');
+const toggleSizes=by('toggleSizes'), toggleCoords=by('toggleCoords');
+const downloadImageBtn=by('downloadImage'), runValidationBtn=by('runValidation'), validationOutput=by('validationOutput');
+const rackXRange=by('rackXRange'), rackYRange=by('rackYRange'), rackXNumber=by('rackXNumber'), rackYNumber=by('rackYNumber');
+const readX=by('readX'), readY=by('readY'), readSize=by('readSize');
+const toggleRibbonDrag=by('toggleRibbonDrag'), logRibbonCoords=by('logRibbonCoords');
+
+hamburgerBtn.addEventListener('click',()=>{
+  layoutShell.classList.toggle('sidebar-open');
+  layoutShell.classList.toggle('sidebar-collapsed');
+});
+
+let resizing=false;
+panelResizer.addEventListener('mousedown',()=>{ resizing=true; document.body.style.cursor="ew-resize"; });
+window.addEventListener('mouseup',()=>{ resizing=false; document.body.style.cursor=""; });
+window.addEventListener('mousemove',e=>{
+  if(!resizing) return;
+  const min=260,max=480;
+  const rect=panelShell.getBoundingClientRect();
+  const newW = Math.min(max,Math.max(min,e.clientX-rect.left));
+  controlsPanel.style.width=newW+'px';
+});
+
+/* Calibrator floating tab */
+const calibratorTab = by('calibratorTab'), calibratorPanel = by('calibratorPanel');
+calibratorTab.addEventListener('click',()=>{
+  const open = calibratorPanel.style.display === 'block';
+  calibratorPanel.style.display = open ? 'none':'block';
+});
+
+/* Rack controls */
+function syncRackControls(){
+  rackXRange.value=rackBaseX; rackYRange.value=rackBaseY;
+  rackXNumber.value=rackBaseX; rackYNumber.value=rackBaseY;
+  readX.textContent=rackBaseX; readY.textContent=rackBaseY;
+  readSize.textContent=RIBBON_WIDTH+'×'+RIBBON_HEIGHT;
+}
+[rackXRange,rackXNumber].forEach(el=>el.addEventListener('input',()=>{ rackBaseX=parseInt(el.value,10); syncRackControls(); render(); }));
+[rackYRange,rackYNumber].forEach(el=>el.addEventListener('input',()=>{ rackBaseY=parseInt(el.value,10); syncRackControls(); render(); }));
+
+/* Build lists */
+function buildUniformList(){
+  uniformListEl.innerHTML='';
+  Object.keys(UNIFORMS).forEach(uid=>{
+    const btn=document.createElement('button');
+    btn.className='uniformOption';
+    btn.dataset.uniformId=uid;
+    btn.innerHTML=`<div class="uName">${uid.replace(/_/g,' ').toUpperCase()}</div><div class="uDesc smallText">${UNIFORMS[uid].ribbons?'Ribbons/Medals':'No ribbons'}</div>`;
+    btn.addEventListener('click',()=>{ State.uniform=uid; render(); });
+    uniformListEl.appendChild(btn);
+  });
+}
+function buildRibbonGrid(){
+  ribbonGrid.innerHTML='';
+  const isCadet=State.member==='cadet';
+  const list=RIBBONS.filter(r=>!isCadet || !SM_ONLY_RIBBONS.has(r.name)).sort((a,b)=>a.precedence-b.precedence);
+  list.forEach(r=>{
+    const card=document.createElement('div'); card.className='ribbonCard';
+    const header=document.createElement('div'); header.className='ribbonHeader';
+    const left=document.createElement('div'); left.style.display='flex'; left.style.gap='6px';
+    const checkbox=document.createElement('input'); checkbox.type='checkbox';
+    checkbox.checked=State.ribbons.some(rr=>rr.id===r.id);
+    checkbox.addEventListener('change',()=>{ checkbox.checked?addRibbon(r.id):removeRibbon(r.id); });
+    const img=document.createElement('div'); img.className='ribbonImg'; img.style.backgroundImage=`url(${ASSET(r.img)})`;
+    const name=document.createElement('div'); name.className='ribbonName'; name.textContent=r.name;
+    left.appendChild(checkbox); left.appendChild(img); left.appendChild(name); header.appendChild(left); card.appendChild(header);
+    const devWrap=document.createElement('div'); devWrap.className='ribbonBody';
+    const df=document.createElement('div'); df.className='deviceField'; df.innerHTML='<label>Devices</label>';
+    const sel=document.createElement('select'); sel.multiple=true; sel.size=Math.min(4,(r.devices||[]).length||1);
+    (r.devices||[]).forEach(d=>{ const opt=document.createElement('option'); opt.value=d; opt.textContent=(deviceMeta[d]?.label)||d; if(getRibbonDeviceQty(r.id,d)>0) opt.selected=true; sel.appendChild(opt); });
+    sel.addEventListener('change',()=>{
+      const selected=Array.from(sel.selectedOptions).map(o=>o.value);
+      State.ribbons=State.ribbons.map(rr=> rr.id===r.id ? {...rr, devices:selected.reduce((acc,k)=>{acc[k]=1;return acc;}, {})}:rr);
+      render();
+    });
+    df.appendChild(sel); devWrap.appendChild(df); card.appendChild(devWrap);
+    ribbonGrid.appendChild(card);
+  });
+}
+function buildBadgeSelects(){
+  badgeSelect.innerHTML=''; removeBadgeSelect.innerHTML='';
+  badgeList.forEach(id=>{
+    if(State.member==='cadet' && !allowedCadetBadges.has(id) && (badgeCategory[id]!=='aviation')) return;
+    const opt=document.createElement('option'); opt.value=id; opt.textContent=id.replace(/_/g,' ');
+    badgeSelect.appendChild(opt);
+  });
+  State.badges.forEach((b,i)=>{
+    const opt=document.createElement('option'); opt.value=i; opt.textContent=`${b.id} — ${b.slot}`;
+    removeBadgeSelect.appendChild(opt);
+  });
+}
+function buildPatchSelects(){
+  patchSelect.innerHTML='<option value="wing_patch">Wing Patch</option>';
+  removePatchSelect.innerHTML='';
+  State.patches.forEach((p,i)=>{ const opt=document.createElement('option'); opt.value=i; opt.textContent=p.id; removePatchSelect.appendChild(opt); });
+}
+function buildRankSelect(){
+  rankSelect.innerHTML='';
+  RANKS.forEach(r=>{ const opt=document.createElement('option'); opt.value=r.id; opt.textContent=r.name; rankSelect.appendChild(opt); });
+}
+
+/* Ribbon helpers */
+function getRibbonDeviceQty(rid,dev){ const r=State.ribbons.find(x=>x.id===rid); return r?.devices?.[dev]||0; }
+function addRibbon(id){ if(!State.ribbons.some(r=>r.id===id)){ State.ribbons.push({id,devices:{}}); render(); } }
+function removeRibbon(id){ State.ribbons=State.ribbons.filter(r=>r.id!==id); render(); }
+clearRibbonsBtn.addEventListener('click',()=>{ State.ribbons=[]; render(); });
+
+/* Device multi-apply */
+function buildDevicePicker(){
+  devicePicker.innerHTML='';
+  Object.keys(deviceMeta).forEach(key=>{
+    const row=document.createElement('div');
+    const label=document.createElement('label'); label.textContent=deviceMeta[key].label;
+    const qty=document.createElement('input'); qty.type='number'; qty.min=0; qty.max=5; qty.value=0; qty.style.width='64px';
+    qty.addEventListener('input',()=>{ const v=Math.max(0,Math.min(5,parseInt(qty.value||'0',10))); if(v>0) State.selectedDevices[key]=v; else delete State.selectedDevices[key]; });
+    row.appendChild(label); row.appendChild(qty); devicePicker.appendChild(row);
+  });
+}
+deviceApplyModeBtn.addEventListener('click',()=>{ State.deviceApplyMode=true; State.deviceRemoveMode=false; });
+deviceRemoveModeBtn.addEventListener('click',()=>{ State.deviceRemoveMode=true; State.deviceApplyMode=false; });
+deviceClearSelectionBtn.addEventListener('click',()=>{ State.selectedDevices={}; State.deviceApplyMode=false; State.deviceRemoveMode=false; });
+
+/* Badges add/remove with CAPR logic */
+function promptRemoveFromSlot(slot){
+  const choices=State.badges.map((b,i)=>({i,b})).filter(x=>x.b.slot===slot);
+  if(!choices.length) return null;
+  const labels=choices.map(c=>`${c.i}: ${c.b.id}`).join('\\n');
+  const ans=prompt(`Slot ${slot} is full. Choose index to remove:\\n${labels}`);
+  const idx=parseInt(ans,10);
+  if(!isNaN(idx) && choices.some(c=>c.i===idx)){ return idx; }
+  return null;
+}
+function addBadgeLogic(id){
+  // exclusives
+  exclusiveBadges.forEach(pair=>{ if(pair.includes(id)){ const conflict=pair.find(x=>x!==id); State.badges=State.badges.filter(b=>b.id!==conflict); }});
+  // cadet auth
+  if(State.member==='cadet' && !allowedCadetBadges.has(id) && (badgeCategory[id]!=='aviation')){ alert('Cadets are not authorized for this badge.'); return; }
+
+  const cat=badgeCategory[id]||'other';
+  let slot=badgePreferredSlot[cat]||'ORP';
+  if(id==='model_rocketry_badge') slot='LP';
+  if(id==='nra_marksman_badge') slot='LRP';
+
+  // Total cap
+  if(State.badges.length>=5){ alert('Max 5 total badges. Remove one to add.'); return; }
+
+  // Special rules: Model Rocketry -> LP else try ORP, else prompt remove
+  if(id==='model_rocketry_badge'){
+    const lpCount=State.badges.filter(b=>b.slot==='LP').length;
+    if(lpCount>=1){
+      const orpCount=State.badges.filter(b=>b.slot==='ORP').length;
+      if(orpCount<2){ slot='ORP'; }
+      else{
+        const idx=promptRemoveFromSlot('LP');
+        if(idx===null){ alert('No space for Model Rocketry (LP full, ORP full).'); return; }
+        State.badges.splice(idx,1);
+        slot='LP';
+      }
+    }
+  }
+
+  // NRA marksmanship exclusive in LRP (displaces others)
+  if(id==='nra_marksman_badge'){
+    State.badges = State.badges.filter(b=>b.slot!=='LRP');
+    slot='LRP';
+  }
+
+  // Counts prior to adding
+  const aboveCount=State.badges.filter(b=>ABOVE_RACK_SLOTS.has(b.slot)).length;
+  const leftCount=State.badges.filter(b=>LEFT_SIDE_SLOTS.has(b.slot)).length;
+  const rightCount=State.badges.filter(b=>RIGHT_SIDE_SLOTS.has(b.slot)).length;
+  const slotCount=State.badges.filter(b=>b.slot===slot).length;
+
+  // Enforce caps
+  if(ABOVE_RACK_SLOTS.has(slot) && aboveCount>=2){
+    const idx=promptRemoveFromSlot(Array.from(ABOVE_RACK_SLOTS)[0]) ?? promptRemoveFromSlot(Array.from(ABOVE_RACK_SLOTS)[1]) ;
+    if(idx===null){ alert('Max 2 badges above the rack.'); return; }
+    State.badges.splice(idx,1);
+  }
+  if(LEFT_SIDE_SLOTS.has(slot) && leftCount>=2){
+    const idx=promptRemoveFromSlot('OLP') ?? promptRemoveFromSlot('OLPU') ?? promptRemoveFromSlot('LP');
+    if(idx===null){ alert('Left side is full (max 2).'); return; }
+    State.badges.splice(idx,1);
+  }
+  if(RIGHT_SIDE_SLOTS.has(slot) && rightCount>=2){
+    const idx=promptRemoveFromSlot('ORP') ?? promptRemoveFromSlot('RP');
+    if(idx===null){ alert('Right side is full (max 2).'); return; }
+    State.badges.splice(idx,1);
+  }
+  // Slot cap 2
+  if(slotCount>=2){
+    const idx=promptRemoveFromSlot(slot);
+    if(idx===null){ alert(`Slot ${slot} is full.`); return; }
+    State.badges.splice(idx,1);
+  }
+
+  State.badges.push({id,slot});
+}
+addBadgeBtn.addEventListener('click',()=>{ const id=badgeSelect.value; if(!id) return; addBadgeLogic(id); render(); });
+removeBadgeBtn.addEventListener('click',()=>{
+  const idx=parseInt(removeBadgeSelect.value,10);
+  if(isNaN(idx)) return;
+  State.badges.splice(idx,1); render();
+});
+
+/* Patches */
+addPatchBtn?.addEventListener('click',()=>{ State.patches.push({id:patchSelect.value}); render(); });
+removePatchBtn?.addEventListener('click',()=>{ const idx=parseInt(removePatchSelect.value,10); if(isNaN(idx)) return; State.patches.splice(idx,1); render(); });
+
+/* Ranks */
+addRankBtn.addEventListener('click',()=>{
+  const id=rankSelect.value;
+  const r=RANKS.find(x=>x.id===id);
+  if(!r) return;
+  State.rank={id:r.id, isOfficer:!!r.isOfficer};
+  render();
+});
+
+/* Drag mode */
+toggleRibbonDrag.addEventListener('click',()=>{
+  State.ribbonDragMode=!State.ribbonDragMode;
+  toggleRibbonDrag.textContent=State.ribbonDragMode?'Disable Drag Mode':'Enable Drag Mode';
+  document.body.classList.toggle('drag-mode-on', State.ribbonDragMode);
+});
+logRibbonCoords.addEventListener('click',()=>{
+  const tiles=uniformCanvas.querySelectorAll('.ribbonTile');
+  const coords=Array.from(tiles).map(t=>({id:t.dataset.id,left:t.style.left,top:t.style.top}));
+  console.log('Ribbon Coords:', coords);
+  alert('Ribbon coordinates logged to console.');
+});
+
+/* Toggles */
+toggleSizes.addEventListener('change',()=>{ State.showSizes=toggleSizes.checked; render(); });
+toggleCoords.addEventListener('change',()=>{ State.showCoords=toggleCoords.checked; render(); });
+
+/* Member/Uniform changes */
+memberSelect.addEventListener('change',()=>{ State.member=memberSelect.value; buildRibbonGrid(); buildBadgeSelects(); render(); });
+jacketSelect.addEventListener('change',()=>{ State.gender=jacketSelect.value; render(); });
+by('applyJacket').addEventListener('click',()=>{ State.assetBase=assetBaseInput.value||'images'; render(); });
+toggleMini.addEventListener('change',()=>{ State.forceMini=toggleMini.checked; render(); });
+autoMini.addEventListener('change',()=>{ render(); });
+
+/* Validation */
+runValidationBtn.addEventListener('click',()=>{
+  const msgs=[];
+  if(State.member==='cadet'){
+    const bad=State.badges.filter(b=>!allowedCadetBadges.has(b.id) && badgeCategory[b.id]!=='aviation');
+    if(bad.length){ msgs.push(`Unauthorized badges for cadet: ${bad.map(b=>b.id).join(', ')}`); }
+  }
+  const aboveCount=State.badges.filter(b=>ABOVE_RACK_SLOTS.has(b.slot)).length;
+  if(aboveCount>2) msgs.push('More than 2 badges above the ribbon rack.');
+  const leftCount=State.badges.filter(b=>LEFT_SIDE_SLOTS.has(b.slot)).length;
+  if(leftCount>2) msgs.push('More than 2 badges on left side.');
+  const rightCount=State.badges.filter(b=>RIGHT_SIDE_SLOTS.has(b.slot)).length;
+  if(rightCount>2) msgs.push('More than 2 badges on right side.');
+  if(State.badges.length>5) msgs.push('More than 5 total badges.');
+  // Slot caps
+  const slotCounts={}; State.badges.forEach(b=>{ slotCounts[b.slot]=(slotCounts[b.slot]||0)+1; });
+  Object.entries(slotCounts).forEach(([s,c])=>{ if(c>2) msgs.push(`More than 2 in slot ${s}.`); });
+  if(!msgs.length) msgs.push('✅ No violations detected based on implemented checks.');
+  validationOutput.textContent=msgs.join(' ');
+});
+
+/* ===== Rendering ===== */
+function clearCanvas(){ uniformCanvas.innerHTML=''; }
+
+function render(){
+  clearCanvas();
+  const U=UNIFORMS[State.uniform];
+  // base
+  const base=document.createElement('img');
+  base.src=ASSET(U[State.gender]); base.className='layer'; base.id='baseJacket';
+  base.style.left='0px'; base.style.top='0px'; base.style.width='100%'; base.style.height='100%';
+  uniformCanvas.appendChild(base);
+
+  // ribbons vs mini
+  const showRibbons=UI_AUTHZ[State.uniform].showRibbons;
+  const autoMiniOn = autoMini.checked && (State.uniform==='mess_dress'||State.uniform==='semi_formal');
+  const renderMedals = (!showRibbons) || State.forceMini || autoMiniOn;
+  if(renderMedals){ renderMiniMedals(); } else { renderRibbons(); }
+
+  // badges
+  renderBadges();
+
+  // rank
+  renderRank();
+
+  // patches (placeholder)
+  State.patches.forEach((p,idx)=>{
+    const el=document.createElement('div');
+    el.className='layer'; el.style.left='40px'; el.style.top=(80+idx*46)+'px';
+    el.style.width='46px'; el.style.height='46px'; el.style.background='#94a3b8'; el.style.border='1px solid #0f172a';
+    el.textContent=p.id; el.style.fontSize='9px'; el.style.color='#111'; el.style.display='flex'; el.style.alignItems='center'; el.style.justifyContent='center';
+    uniformCanvas.appendChild(el);
+    maybeAddSizeTag(el,46,46);
+    maybeAddCoordTag(el);
+  });
+
+  buildBadgeSelects();
+  buildPatchSelects();
+}
+
+function renderRibbons(){
+  const origin=getRackOrigin();
+  const sorted=[...State.ribbons].sort((a,b)=>{
+    const A=RIBBONS.find(r=>r.id===a.id)?.precedence||999;
+    const B=RIBBONS.find(r=>r.id===b.id)?.precedence||999;
+    return A-B;
+  });
+  const rows=[];
+  for(let i=0;i<sorted.length;i+=3){ rows.push(sorted.slice(i,i+3)); }
+  if(rows.length>1 && rows[rows.length-1].length<3){ const last=rows.pop(); rows.unshift(last); }
+  rows.forEach((row,ri)=>{
+    const rowY=origin.y + ri*(RIBBON_HEIGHT);
+    const rowWidth=row.length*RIBBON_WIDTH + (row.length-1)*RIBBON_GAP_X;
+    const rowX=origin.x + (3*RIBBON_WIDTH - rowWidth)/2;
+    row.forEach((r,ci)=>{
+      const x=rowX + ci*(RIBBON_WIDTH+RIBBON_GAP_X);
+      const y=rowY;
+      const tile=document.createElement('img');
+      tile.className='layer ribbonTile'; tile.dataset.id=r.id;
+      tile.src=ASSET(RIBBONS.find(rr=>rr.id===r.id)?.img||''); tile.style.left=x+'px'; tile.style.top=y+'px';
+      tile.style.width=RIBBON_WIDTH+'px'; tile.style.height=RIBBON_HEIGHT+'px';
+      uniformCanvas.appendChild(tile);
+      if(State.ribbonDragMode){ makeDraggable(tile,(dx,dy)=>{ tile.style.left=(x+dx)+'px'; tile.style.top=(y+dy)+'px'; }); }
+      maybeAddSizeTag(tile,RIBBON_WIDTH,RIBBON_HEIGHT);
+      maybeAddCoordTag(tile);
+      renderRibbonDevices(r,x,y);
+    });
+  });
+  const guide=document.createElement('div'); guide.className='guideDot'; guide.style.left=(origin.x-8)+'px'; guide.style.top=(origin.y-10)+'px'; guide.textContent='Rack';
+  uniformCanvas.appendChild(guide);
+  syncRackControls();
+}
+
+function renderRibbonDevices(ribbon,x,y){
+  const devs=Object.entries(ribbon.devices||{}).sort((a,b)=> (deviceMeta[a[0]]?.weight||0)-(deviceMeta[b[0]]?.weight||0));
+  devs.forEach(([key,qty],i)=>{
+    for(let n=0;n<qty;n++){
+      const d=document.createElement('img'); d.className='layer';
+      d.src=ASSET(deviceMeta[key]?.src||''); d.style.width='8px'; d.style.height='8px';
+      d.style.left=(x + 7 + n*8)+'px'; d.style.top=(y - 6 - i*9)+'px';
+      uniformCanvas.appendChild(d);
+      maybeAddSizeTag(d,8,8);
+      maybeAddCoordTag(d);
+    }
+  });
+}
+
+function renderMiniMedals(){
+  const medals=State.ribbons.map(r=>r.id).filter(id=>!!miniMedalImages[id]);
+  const origin=getRackOrigin();
+  medals.forEach((id,idx)=>{
+    const col=idx%3, row=Math.floor(idx/3);
+    const x=origin.x + col*(RIBBON_WIDTH+4);
+    const y=origin.y + row*(RIBBON_HEIGHT+10);
+    const m=document.createElement('img');
+    m.className='layer'; m.src=miniMedalImages[id]; m.style.left=x+'px'; m.style.top=y+'px'; m.style.width='18px'; m.style.height='24px';
+    uniformCanvas.appendChild(m);
+    maybeAddSizeTag(m,18,24);
+    maybeAddCoordTag(m);
+  });
+}
+
+/* Size & Coord overlays */
+function maybeAddSizeTag(el,w,h){
+  if(!State.showSizes) return;
+  const tag=document.createElement('div'); tag.className='sizeTag'; tag.textContent=`${Math.round(w)}×${Math.round(h)}`;
+  el.parentElement.appendChild(tag);
+  const update=()=>{ tag.style.left=el.style.left; tag.style.top=el.style.top; };
+  update();
+}
+function maybeAddCoordTag(el){
+  if(!State.showCoords) return;
+  const tag=document.createElement('div'); tag.className='coordTag';
+  const updateText=()=>{ tag.textContent=`${parseInt(el.style.left)||0},${parseInt(el.style.top)||0}`; };
+  el.parentElement.appendChild(tag);
+  const update=()=>{ tag.style.left=el.style.left; tag.style.top=(parseInt(el.style.top||'0')-12)+'px'; updateText(); };
+  update();
+}
+
+/* Draggable */
+function makeDraggable(el,ondrag){
+  el.addEventListener('mousedown',e=>{
+    currentDrag=el; const rect=el.getBoundingClientRect(); const parent=uniformCanvas.getBoundingClientRect();
+    dragOffsetX=e.clientX-rect.left; dragOffsetY=e.clientY-rect.top;
+    function move(ev){
+      if(!currentDrag) return;
+      const x=ev.clientX-parent.left-dragOffsetX;
+      const y=ev.clientY-parent.top-dragOffsetY;
+      ondrag(x-parseFloat(el.style.left), y-parseFloat(el.style.top));
+    }
+    function up(){ currentDrag=null; window.removeEventListener('mousemove',move); window.removeEventListener('mouseup',up); }
+    window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
+  });
+}
+
+/* Device apply/remove click */
+uniformCanvas.addEventListener('click',e=>{
+  const t=e.target;
+  if(!t.classList.contains('ribbonTile')) return;
+  const id=t.dataset.id;
+  if(State.deviceApplyMode){ State.ribbons=State.ribbons.map(r=> r.id===id ? {...r, devices:{...r.devices, ...State.selectedDevices}}:r); render(); }
+  else if(State.deviceRemoveMode){ State.ribbons=State.ribbons.map(r=> r.id===id ? {...r, devices:{}}:r); render(); }
+});
+
+/* Badge rendering */
+function topRibbonY(){ return getRackOrigin().y; }
+function renderBadges(){
+  // Sort badges by category precedence: aviation -> medical/es -> occupational -> ae -> special/marksmanship
+  const orderWeight=(id)=>({aviation:1,medical:2,es:2,occupational:3,ae:4,flight:5,special:6,marksmanship:7}[badgeCategory[id]||'occupational']||9);
+  const list=[...State.badges].sort((a,b)=> orderWeight(a.id)-orderWeight(b.id));
+
+  const origin=getRackOrigin();
+  const overBaseY=topRibbonY()-25;
+  const leftX=origin.x-80, rightX=origin.x+90;
+  const nameX=origin.x+8, nameY=origin.y+36;
+
+  list.forEach(b=>{
+    const el=document.createElement('img'); el.className='layer';
+    el.src=badgeImages(b.id); const w=40,h=40; el.style.width=w+'px'; el.style.height=h+'px';
+    let x=0,y=0;
+    switch(b.slot){
+      case 'OLP': x=leftX; y=overBaseY; break;
+      case 'OLPU': x=leftX; y=overBaseY+32; break;
+      case 'OLPA': x=leftX; y=overBaseY-18; break;
+      case 'ORP': x=rightX; y=overBaseY; break;
+      case 'ON': x=nameX; y=nameY-18; break;
+      case 'UN': x=nameX; y=nameY+18; break;
+      case 'LP': x=origin.x-90; y=origin.y+18; break;
+      case 'RP': x=origin.x+120; y=origin.y+18; break;
+      case 'LRP': x=origin.x-86; y=origin.y+44; break;
+      default: x=rightX; y=overBaseY+18;
+    }
+    // Special vertical offset for GT & EMS: 36px above top ribbon row
+    if(['ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge','emt_basic_badge','emt_intermediate','emt_paramedic'].includes(b.id)){
+      y = topRibbonY() - 36;
+      x = (LEFT_SIDE_SLOTS.has(b.slot) ? leftX : rightX);
+    }
+    el.style.left=x+'px'; el.style.top=y+'px';
+    uniformCanvas.appendChild(el);
+    maybeAddSizeTag(el,w,h);
+    maybeAddCoordTag(el);
+  });
+}
+
+/* Rank rendering */
+function renderRank(){
+  const epCont=by('epauletContainer'); epCont.innerHTML='';
+  if(!State.rank) return;
+  const r=RANKS.find(x=>x.id===State.rank.id); if(!r) return;
+  if(r.isOfficer){
+    const card=document.createElement('div');
+    card.style.border='1px solid var(--line)'; card.style.borderRadius='10px'; card.style.padding='8px'; card.style.background='#fff';
+    const ep=document.createElement('img'); ep.src=ASSET(r.shoulder||'ranks/C/shoulder_board.png'); ep.style.width=(r.epw||90)+'px'; ep.style.height=(r.eph||24)+'px';
+    const ins=document.createElement('img'); ins.src=ASSET(r.insignia); ins.style.width=(r.iw||24)+'px'; ins.style.height=(r.ih||12)+'px'; ins.style.marginTop='6px';
+    card.appendChild(ep); card.appendChild(ins); epCont.appendChild(card);
+  }else{
+    const el=document.createElement('img'); el.className='layer';
+    el.src=ASSET(r.img); el.style.left='340px'; el.style.top='90px'; el.style.width=(r.w||40)+'px'; el.style.height=(r.h||40)+'px';
+    uniformCanvas.appendChild(el);
+    maybeAddSizeTag(el,(r.w||40),(r.h||40));
+    maybeAddCoordTag(el);
+  }
+}
+
+/* Download */
+downloadImageBtn.addEventListener('click', async()=>{
+  const node=by('previewArea'); const scale=3;
+  const canvas=await html2canvas(node,{scale});
+  const link=document.createElement('a'); link.download='CAP_Uniform.png'; link.href=canvas.toDataURL('image/png'); link.click();
+});
+
+/* Init */
+function init(){
+  buildUniformList(); buildRibbonGrid(); buildDevicePicker(); buildBadgeSelects(); buildPatchSelects(); buildRankSelect();
+  syncRackControls(); render();
+}
+init();
+</script>
+</body>
+</html>
