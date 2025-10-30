@@ -1291,234 +1291,51 @@ const assetBaseInput   = by('assetBase');
 })();
 
 /* ===========================
-   ASSET PATH HELPER
+   UNIFORM DEFINITIONS & ASSET RESOLVER
    =========================== */
-function ASSET(p){
-  const b=(State.assetBase||'images').replace(/\/$/,'');
-  return `${b}/${p}`;
-}
-
-/* ===========================
-   UNIFORMS
-   =========================== */
-function isFieldUniform(u){
-  return u==='abu' || u==='flight_suit' || u==='corporate_field';
+function ASSET(rel){
+  // Allow absolute http(s) as-is
+  if(/^https?:\/\//i.test(rel)) return rel;
+  // Strip any leading slashes to keep it relative to assetBase
+  rel = (rel||"").replace(/^\/+/,"");
+  return `${State.assetBase}/${rel}`;
 }
 
 const UNIFORMS = {
-  blues_a:{male:'base/jacket_male.png',         female:'base/jacket_female.png',         ribbons:true,  mini:false},
-  blues_b:{male:'base/blues_class_b_male.png',  female:'base/blues_class_b_female.png',  ribbons:true,  mini:false},
-  mess_dress:{male:'base/mess_dress_male.png',  female:'base/mess_dress_female.png',     ribbons:false, mini:true},
-  semi_formal:{male:'base/semi_male.png',       female:'base/semi_female.png',           ribbons:false, mini:true},
-  aviator:{male:'base/aviator_shirt_male.png',  female:'base/aviator_shirt_female.png',  ribbons:true,  mini:false},
-  aviator_blazer:{male:'base/aviator_blazer_male.png',female:'base/aviator_blazer_female.png', ribbons:true,mini:false},
-  corporate_field:{male:'base/corporate_field_male.png',female:'base/corporate_field_female.png', ribbons:true, mini:false},
-  abu:{male:'base/ABU_male.png',                female:'base/ABU_female.png',            ribbons:false, mini:false},
-  flight_suit:{male:'base/flight_suit_male.png',female:'base/flight_suit_female.png',    ribbons:false, mini:false},
-  polo:{male:'base/polo_male.png',              female:'base/polo_female.png',           ribbons:false, mini:false}
+  blues_a: { male: 'uniforms/blues_a_male.png', female: 'uniforms/blues_a_female.png', mini:false, ribbons:true },
+  blues_b: { male: 'uniforms/blues_b_male.png', female: 'uniforms/blues_b_female.png', mini:false, ribbons:true },
+  mess_dress: { male: 'uniforms/mess_male.png', female: 'uniforms/mess_female.png', mini:true, ribbons:false },
+  semi_formal: { male: 'uniforms/semi_male.png', female: 'uniforms/semi_female.png', mini:true, ribbons:false },
+  aviator: { male: 'uniforms/aviator_male.png', female: 'uniforms/aviator_female.png', mini:false, ribbons:true },
+  aviator_blazer: { male: 'uniforms/aviator_blazer_male.png', female: 'uniforms/aviator_blazer_female.png', mini:false, ribbons:true },
+  corporate_field: { male: 'uniforms/corporate_field_male.png', female: 'uniforms/corporate_field_female.png', mini:false, ribbons:false },
+  abu: { male: 'uniforms/abu_male.png', female: 'uniforms/abu_female.png', mini:false, ribbons:false },
+  flight_suit: { male: 'uniforms/flight_suit_male.png', female: 'uniforms/flight_suit_female.png', mini:false, ribbons:false },
+  polo: { male: 'uniforms/polo_male.png', female: 'uniforms/polo_female.png', mini:false, ribbons:false }
 };
 
 const UI_AUTHZ = {
-  blues_a:{ showRibbons:true, showBadges:true,  showPatches:false },
-  blues_b:{ showRibbons:true, showBadges:true,  showPatches:false },
-  aviator:{ showRibbons:true, showBadges:true,  showPatches:false },
-  aviator_blazer:{ showRibbons:true, showBadges:true, showPatches:false },
-  corporate_field:{ showRibbons:true, showBadges:false, showPatches:true },
-  mess_dress:{ showRibbons:false, showBadges:true,  showPatches:false },
-  semi_formal:{ showRibbons:false, showBadges:true, showPatches:false },
-  abu:{ showRibbons:false, showBadges:false, showPatches:true },
-  flight_suit:{ showRibbons:false, showBadges:false, showPatches:true },
-  polo:{ showRibbons:false, showBadges:false, showPatches:false }
+  blues_a:{showPatches:false, showBadges:true, showRibbons:true},
+  blues_b:{showPatches:false, showBadges:true, showRibbons:true},
+  mess_dress:{showPatches:false, showBadges:true, showRibbons:false},
+  semi_formal:{showPatches:false, showBadges:true, showRibbons:false},
+  aviator:{showPatches:false, showBadges:true, showRibbons:true},
+  aviator_blazer:{showPatches:false, showBadges:true, showRibbons:true},
+  corporate_field:{showPatches:true, showBadges:true, showRibbons:false},
+  abu:{showPatches:true, showBadges:true, showRibbons:false},
+  flight_suit:{showPatches:true, showBadges:true, showRibbons:false},
+  polo:{showPatches:false, showBadges:false, showRibbons:false}
 };
 
+function isFieldUniform(uid){
+  return uid==='corporate_field' || uid==='abu' || uid==='flight_suit';
+}
+
 /* ===========================
-   RIBBONS & DEVICES DATA
+   RIBBONS, MINI MEDALS, DEVICES (combined from your 3 messages)
    =========================== */
-
-/* Senior Member only ribbons list for filtering in UI when cadet is selected */
-const SM_ONLY_RIBBONS = [
-  "Gill Robb Wilson Award Ribbon",
-  "Paul E. Garber Award Ribbon",
-  "Grover Loening Aerospace Award Ribbon",
-  "Leadership Award Ribbon",
-  "CAP Membership Award Ribbon",
-  "A. Scott Crossfield Award Ribbon",
-  "Brig Gen Charles E. Yeager Aerospace Education Achievement Ribbon",
-  "Command Service Ribbon",
-  "Cadet Orientation Pilot Ribbon",
-  "Senior Recruiter Ribbon",
-  "World War II Service Ribbon"
-];
-
-/*
-Each ribbon object in RIBBONS:
-id          unique key (also used for image lookup)
-name        display label
-img         relative path in images/ribbons
-smOnly      true if seniors-only
-precedence  1 = highest precedence in rack
-devices     array of {value,label} for per-ribbon dropdown
-*/
 const RIBBONS = [
-  /* === Valor / Lifesaving / Highest Decorations === */
-  {
-    id:"silver_medal_of_valor",
-    name:"Silver Medal of Valor",
-    img:"ribbons/silver_medal_of_valor.png",
-    smOnly:false,
-    precedence:1,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"bronze_medal_of_valor",
-    name:"Bronze Medal of Valor",
-    img:"ribbons/bronze_medal_of_valor.png",
-    smOnly:false,
-    precedence:2,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"lifesaving_award",
-    name:"Lifesaving Award Ribbon",
-    img:"ribbons/lifesaving_award.png",
-    smOnly:false,
-    precedence:3,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"silver_lifesaving_medal",
-    name:"Silver Lifesaving Medal",
-    img:"ribbons/silver_lifesaving_medal.png",
-    smOnly:false,
-    precedence:4,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"bronze_lifesaving_medal",
-    name:"Bronze Lifesaving Medal",
-    img:"ribbons/bronze_lifesaving_medal.png",
-    smOnly:false,
-    precedence:5,
-    devices:[{value:"",label:"None"}]
-  },
-
-  /* === National/Organizational-Level Service & Achievement === */
-  {
-    id:"distinguished_service_award",
-    name:"Distinguished Service Award",
-    img:"ribbons/distinguished_service_award.png",
-    smOnly:false,
-    precedence:6,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"exceptional_service_award",
-    name:"Exceptional Service Award",
-    img:"ribbons/exceptional_service_award.png",
-    smOnly:false,
-    precedence:7,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"meritorious_service_award",
-    name:"Meritorious Service Award",
-    img:"ribbons/meritorious_service_award.png",
-    smOnly:false,
-    precedence:8,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"commander_commendation_award",
-    name:"Commander's Commendation Award",
-    img:"ribbons/commander_commendation_award.png",
-    smOnly:false,
-    precedence:9,
-    devices:[
-      {value:"",label:"None"},
-      {value:"bronze_star",label:"Bronze Star Device"},
-      {value:"silver_star",label:"Silver Star Device"}
-    ]
-  },
-  {
-    id:"cap_achievement_award",
-    name:"CAP Achievement Award",
-    img:"ribbons/cap_achievement_award.png",
-    smOnly:false,
-    precedence:10,
-    devices:[
-      {value:"",label:"None"},
-      {value:"bronze_star",label:"Bronze Star Device"}
-    ]
-  },
-  {
-    id:"crisis_ribbon",
-    name:"Crisis Service Ribbon",
-    img:"ribbons/crisis_ribbon.png",
-    smOnly:false,
-    precedence:11,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"red_service_ribbon",
-    name:"Red Service Ribbon (Longevity)",
-    img:"ribbons/red_service_ribbon.png",
-    smOnly:false,
-    precedence:12,
-    devices:[
-      {value:"",label:"None"},
-      {value:"bronze_clasp",label:"Bronze Clasp"},
-      {value:"silver_clasp",label:"Silver Clasp"},
-      {value:"gold_clasp",label:"Gold Clasp"}
-    ]
-  },
-  {
-    id:"national_commander_unit_citation_award",
-    name:"National Commander’s Unit Citation",
-    img:"ribbons/national_commander_unit_citation_award.png",
-    smOnly:false,
-    precedence:13,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"unit_citation_award",
-    name:"Unit Citation Award",
-    img:"ribbons/unit_citation_award.png",
-    smOnly:false,
-    precedence:14,
-    devices:[
-      {value:"",label:"None"},
-      {value:"bronze_star",label:"Bronze Star Device"},
-      {value:"silver_star",label:"Silver Star Device"}
-    ]
-  },
-
-  /* === Professional Development / Senior Member PD & Specialty === */
-  {
-    id:"gill_robb_wilson_ribbon",
-    name:"Gill Robb Wilson Award Ribbon",
-    img:"ribbons/gill_robb_wilson_ribbon.png",
-    smOnly:true,
-    precedence:15,
-    devices:[
-      {value:"",label:"None"},
-      {value:"bronze_star",label:"Bronze Star Device"},
-      {value:"silver_star",label:"Silver Star Device"},
-      {value:"gold_star",label:"Gold Star Device"}
-    ]
-  },
-  {
-    id:"paul_e_garber_ribbon",
-    name:"Paul E. Garber Award Ribbon",
-    img:"ribbons/paul_e_garber_ribbon.png",
-    smOnly:true,
-    precedence:16,
-    devices:[
-      {value:"",label:"None"},
-      {value:"bronze_star",label:"Bronze Star Device"},
-      {value:"silver_star",label:"Silver Star Device"},
-      {value:"gold_star",label:"Gold Star Device"}
-    ]
-  },
+  /* We start at precedence 17 here per your snippet; earlier decorations may be added above later */
   {
     id:"grover_loening_aerospace_ribbon",
     name:"Grover Loening Aerospace Award Ribbon",
@@ -1727,70 +1544,14 @@ const RIBBONS = [
   },
 
   /* === Cadet Phase / Achievement Ribbons === */
-  {
-    id:"armstrong_achievement",
-    name:"Armstrong Achievement Ribbon",
-    img:"ribbons/armstrong_achievement.png",
-    smOnly:false,
-    precedence:38,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"goddard_achievement",
-    name:"Goddard Achievement Ribbon",
-    img:"ribbons/goddard_achievement.png",
-    smOnly:false,
-    precedence:39,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"doolittle_achievement",
-    name:"Doolittle Achievement Ribbon",
-    img:"ribbons/doolittle_achievement.png",
-    smOnly:false,
-    precedence:40,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"lindbergh_achievement",
-    name:"Lindbergh Achievement Ribbon",
-    img:"ribbons/lindbergh_achievement.png",
-    smOnly:false,
-    precedence:41,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"rickenbacker_achievement",
-    name:"Rickenbacker Achievement Ribbon",
-    img:"ribbons/rickenbacker_achievement.png",
-    smOnly:false,
-    precedence:42,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"mary_feik_achievement",
-    name:"Mary Feik Achievement Ribbon",
-    img:"ribbons/mary_feik_achievement.png",
-    smOnly:false,
-    precedence:43,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"hap_arnold_achievement",
-    name:"Hap Arnold Achievement Ribbon",
-    img:"ribbons/hap_arnold_achievement.png",
-    smOnly:false,
-    precedence:44,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"curry_achievement",
-    name:"Curry Achievement Ribbon",
-    img:"ribbons/curry_achievement.png",
-    smOnly:false,
-    precedence:45,
-    devices:[{value:"",label:"None"}]
-  },
+  { id:"armstrong_achievement", name:"Armstrong Achievement Ribbon", img:"ribbons/armstrong_achievement.png", smOnly:false, precedence:38, devices:[{value:"",label:"None"}] },
+  { id:"goddard_achievement", name:"Goddard Achievement Ribbon", img:"ribbons/goddard_achievement.png", smOnly:false, precedence:39, devices:[{value:"",label:"None"}] },
+  { id:"doolittle_achievement", name:"Doolittle Achievement Ribbon", img:"ribbons/doolittle_achievement.png", smOnly:false, precedence:40, devices:[{value:"",label:"None"}] },
+  { id:"lindbergh_achievement", name:"Lindbergh Achievement Ribbon", img:"ribbons/lindbergh_achievement.png", smOnly:false, precedence:41, devices:[{value:"",label:"None"}] },
+  { id:"rickenbacker_achievement", name:"Rickenbacker Achievement Ribbon", img:"ribbons/rickenbacker_achievement.png", smOnly:false, precedence:42, devices:[{value:"",label:"None"}] },
+  { id:"mary_feik_achievement", name:"Mary Feik Achievement Ribbon", img:"ribbons/mary_feik_achievement.png", smOnly:false, precedence:43, devices:[{value:"",label:"None"}] },
+  { id:"hap_arnold_achievement", name:"Hap Arnold Achievement Ribbon", img:"ribbons/hap_arnold_achievement.png", smOnly:false, precedence:44, devices:[{value:"",label:"None"}] },
+  { id:"curry_achievement", name:"Curry Achievement Ribbon", img:"ribbons/curry_achievement.png", smOnly:false, precedence:45, devices:[{value:"",label:"None"}] },
 
   /* === Cadet / Participation / Activities / External Awards === */
   {
@@ -1860,54 +1621,20 @@ const RIBBONS = [
       {value:"bronze_star",label:"Bronze Star Device"}
     ]
   },
-  {
-    id:"afa_award",
-    name:"Air Force Association Award",
-    img:"ribbons/afa_award.png",
-    smOnly:false,
-    precedence:52,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"afsa_award",
-    name:"Air Force Sergeants Association Award",
-    img:"ribbons/afsa_award.png",
-    smOnly:false,
-    precedence:53,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"vfw_officer_award",
-    name:"VFW Cadet Officer Award",
-    img:"ribbons/vfw_officer_award.png",
-    smOnly:false,
-    precedence:54,
-    devices:[{value:"",label:"None"}]
-  },
-  {
-    id:"vfw_nco_award",
-    name:"VFW Cadet NCO Award",
-    img:"ribbons/vfw_nco_award.png",
-    smOnly:false,
-    precedence:55,
-    devices:[{value:"",label:"None"}]
-  }
+  { id:"afa_award", name:"Air Force Association Award", img:"ribbons/afa_award.png", smOnly:false, precedence:52, devices:[{value:"",label:"None"}] },
+  { id:"afsa_award", name:"Air Force Sergeants Association Award", img:"ribbons/afsa_award.png", smOnly:false, precedence:53, devices:[{value:"",label:"None"}] },
+  { id:"vfw_officer_award", name:"VFW Cadet Officer Award", img:"ribbons/vfw_officer_award.png", smOnly:false, precedence:54, devices:[{value:"",label:"None"}] },
+  { id:"vfw_nco_award", name:"VFW Cadet NCO Award", img:"ribbons/vfw_nco_award.png", smOnly:false, precedence:55, devices:[{value:"",label:"None"}] }
 ];
 
-/*
-miniMedalImages maps ribbon id -> miniature medal image path.
-Used when we render Mess Dress / Semi-formal (mini medals instead of ribbons).
-Any ribbon without an entry here will just not show in mini-medal mode, which is fine.
-*/
+/* Mini medal artwork map */
 const miniMedalImages = {
-  /* Valor / lifesaving / high decorations */
   "silver_medal_of_valor":"images/medals/silver_medal_of_valor.png",
   "bronze_medal_of_valor":"images/medals/bronze_medal_of_valor.png",
   "lifesaving_award":"images/medals/lifesaving.png",
   "silver_lifesaving_medal":"images/medals/lifesaving_silver.png",
   "bronze_lifesaving_medal":"images/medals/lifesaving_bronze.png",
 
-  /* High service & commendation */
   "distinguished_service_award":"images/medals/distinguished_service.png",
   "exceptional_service_award":"images/medals/exceptional_service.png",
   "meritorious_service_award":"images/medals/meritorious_service.png",
@@ -1918,7 +1645,6 @@ const miniMedalImages = {
   "crisis_ribbon":"images/medals/crisis_service.png",
   "red_service_ribbon":"images/medals/red_service.png",
 
-  /* Ops / mission / specialty / qualification / community */
   "homeland_security_ribbon":"images/medals/homeland_security.png",
   "disaster_relief_ribbon":"images/medals/disaster_relief.png",
   "air_search_and_rescue_ribbon":"images/medals/search_and_rescue.png",
@@ -1932,7 +1658,6 @@ const miniMedalImages = {
   "cap_membership_award_ribbon":"images/medals/membership.png",
   "senior_recruiter_ribbon":"images/medals/recruiting.png",
 
-  /* Aerospace / PD / academics / AE achievements */
   "yeager_ribbon":"images/medals/charles_yaeger.png",
   "a_scott_crossfield_ribbon":"images/medals/a_scott_crossfield.png",
   "grover_loening_aerospace_ribbon":"images/medals/grover_loening.png",
@@ -1940,14 +1665,12 @@ const miniMedalImages = {
   "gill_robb_wilson_ribbon":"images/medals/gill_robb_wilson.png",
   "leadership_award_ribbon":"images/medals/leadership.png",
 
-  /* Cadet milestone awards */
   "spaatz_award":"images/medals/carl_a_spaatz.png",
   "eaker_award":"images/medals/ira_c_eaker.png",
   "earhart_award":"images/medals/amelia_earhart.png",
   "mitchell_award":"images/medals/billy_mitchell.png",
   "wright_brothers_award":"images/medals/wright_brothers.png",
 
-  /* Phase achievements (optional miniature art if you have it) */
   "armstrong_achievement":"images/medals/armstrong.png",
   "goddard_achievement":"images/medals/goddard.png",
   "doolittle_achievement":"images/medals/doolittle.png",
@@ -1957,7 +1680,6 @@ const miniMedalImages = {
   "hap_arnold_achievement":"images/medals/hap_arnold.png",
   "curry_achievement":"images/medals/curry.png",
 
-  /* Participation / activities / competitions */
   "national_cadet_competition_ribbon":"images/medals/cadet_competition.png",
   "national_color_guard_competition_ribbon":"images/medals/color_guard_competition.png",
   "cadet_advisory_council_ribbon":"images/medals/cadet_advisory_council.png",
@@ -1965,14 +1687,13 @@ const miniMedalImages = {
   "encampment_ribbon":"images/medals/encampment.png",
   "cadet_recruiter_ribbon":"images/medals/recruiting.png",
 
-  /* External org awards */
   "afa_award":"images/medals/afa_award.png",
   "afsa_award":"images/medals/afsa_award.png",
   "vfw_officer_award":"images/medals/vfw_officer_award.png",
   "vfw_nco_award":"images/medals/vfw_nco_award.png"
 };
 
-/* per-device metadata for multi-apply tool and per-ribbon devices */
+/* device master list (visible in Multi-Apply) */
 const deviceList = [
   '1_Bronze_Star_Device',
   '1_Silver_Star_Device',
@@ -1982,6 +1703,14 @@ const deviceList = [
   'v_device',
   'numeral'
 ];
+
+/* Aliases so ribbon dropdown values from your data map to actual device images */
+const deviceAlias = {
+  bronze_star: '1_Bronze_Star_Device',
+  silver_star: '1_Silver_Star_Device',
+  gold_star:   'gold_clasp' // using gold clasp art as proxy if gold star art not present
+};
+
 const deviceMeta = {
   '1_Bronze_Star_Device': { label:'Bronze Star', src:'devices/1_Bronze_Star_Device.webp', w:10, h:10, weight:1 },
   '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 },
@@ -1993,7 +1722,7 @@ const deviceMeta = {
 };
 
 /* ===========================
-   BADGES / PATCHES / RANKS DATA
+   BADGES / PATCHES / RANKS (from your snippets)
    =========================== */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
@@ -2066,6 +1795,7 @@ const officerRanks = new Set(['C/2d Lt','C/1st Lt','C/Capt','C/Maj','C/Lt Col','
    HELPERS / PRELOAD
    =========================== */
 function optionize(sel,list){
+  if(!sel) return;
   sel.innerHTML='';
   list.forEach(v=>{
     const o=document.createElement('option');
@@ -2144,7 +1874,10 @@ preloadWithResolver('ribbons', RIBBONS.map(r=>r.id), id=>{
   const rb = RIBBONS.find(x=>x.id===id);
   return rb ? rb.img : `ribbons/${id}.png`;
 });
-preloadWithResolver('devices', deviceList, id => deviceMeta[id].src);
+preloadWithResolver('devices', [...deviceList, ...Object.keys(deviceAlias)], id=>{
+  const resolved = deviceMeta[id] ? id : (deviceAlias[id] || id);
+  return deviceMeta[resolved]?.src || `devices/${resolved}.webp`;
+});
 
 /* ===========================
    SIDEBAR TOGGLE
@@ -2170,7 +1903,6 @@ hamburgerBtn.addEventListener('click', ()=>{
   let startWidth = 0;
 
   panelResizer.addEventListener('mousedown',(e)=>{
-    // only allow on desktop layout (panelResizer hidden on <768px)
     if(window.matchMedia("(max-width:768px)").matches) return;
     isDragging = true;
     startX = e.clientX;
@@ -2257,8 +1989,6 @@ function applyJacket(){
    RIBBON / MEDAL RENDER LOGIC
    =========================== */
 function sortRibbonsByPrecedence(){
-  // State.ribbons is [{id,devices:{...}}]
-  // Join info from RIBBONS to sort
   const arr = State.ribbons.map(r=>{
     const meta = RIBBONS.find(x=>x.id===r.id);
     return {...r, precedence: meta?meta.precedence:9999};
@@ -2271,7 +2001,7 @@ function getTopRibbonY(){
   const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini')];
   if(!layers.length) {
     // fallback "where ribbons would be"
-    return rackBaseY + 150;
+    return rackBaseY - (2*RIBBON_HEIGHT); // slight upward baseline
   }
   return Math.min(...layers.map(l=>parseFloat(l.style.top)||0));
 }
@@ -2289,10 +2019,11 @@ function ensureRibbonObj(id){
 function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   const r=ensureRibbonObj(rid);
   const flat=[];
-  for(const [devId,count] of Object.entries(r.devices||{})){
-    const meta=deviceMeta[devId];
+  for(const [devIdRaw,count] of Object.entries(r.devices||{})){
+    const key = deviceMeta[devIdRaw] ? devIdRaw : (deviceAlias[devIdRaw] || devIdRaw);
+    const meta=deviceMeta[key];
     if(!meta) continue;
-    for(let i=0;i<count;i++){ flat.push({id:devId,...meta}); }
+    for(let i=0;i<count;i++){ flat.push({id:key,...meta}); }
   }
   if(!flat.length) return;
 
@@ -2333,7 +2064,8 @@ function onRibbonTileClick(rid){
   if(!State.deviceApplyMode)return;
   const r=ensureRibbonObj(rid);
   for(const [devId,qty] of Object.entries(State.selectedDevices)){
-    r.devices[devId]=(r.devices[devId]||0)+qty;
+    const key = deviceMeta[devId] ? devId : (deviceAlias[devId] || devId);
+    r.devices[key]=(r.devices[key]||0)+qty;
   }
   renderRack();
 }
@@ -2363,10 +2095,11 @@ function syncDevicesToRibbon(ribbonTileEl){
   if(!r || !r.devices) return;
 
   const flat=[];
-  for(const [devId,count] of Object.entries(r.devices)){
-    const meta=deviceMeta[devId];
+  for(const [devIdRaw,count] of Object.entries(r.devices)){
+    const key = deviceMeta[devIdRaw] ? devIdRaw : (deviceAlias[devIdRaw] || devIdRaw);
+    const meta=deviceMeta[key];
     if(!meta) continue;
-    for(let i=0;i<count;i++){ flat.push({id:devId,...meta}); }
+    for(let i=0;i<count;i++){ flat.push({id:key,...meta}); }
   }
   flat.sort((a,b)=>(b.weight-a.weight)|| (a.label||a.id).localeCompare(b.label||b.id));
 
@@ -2450,8 +2183,8 @@ function renderRack(){
   }
 
   // Anchors
-  const BOTTOM_ROW_Y   = 206;
-  const RACK_CENTER_X  = 293.5;
+  const BOTTOM_ROW_Y   = rackBaseY;
+  const RACK_CENTER_X  = rackBaseX + (RIBBON_WIDTH*1.5); // center of a 3-wide rack anchored at rackBaseX
 
   function rowLeftPositions(count, itemW){
     const totalWidth = count * itemW;
@@ -2476,8 +2209,7 @@ function renderRack(){
 
     rowsTopFirst.forEach((row,topIndex)=>{
       const indexFromBottom = (totalRows - 1 - topIndex);
-
-      // vertical stacking: each row sits exactly one ribbon-height above
+      // Each row sits exactly one ribbon-height above (touching)
       const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * RIBBON_HEIGHT;
 
       // reverse so highest precedence in the row is leftmost
@@ -2506,7 +2238,7 @@ function renderRack(){
         tile.style.pointerEvents='auto';
         tile.onclick=()=>onRibbonTileClick(rid);
 
-        tile.dataset.tooltipTitle = rid.replace(/_/g,' ').toUpperCase();
+        tile.dataset.tooltipTitle = (RIBBONS.find(r=>r.id===rid)?.name || rid).toUpperCase();
         tile.dataset.tooltipReg   = "CAPR 39-3 precedence applies";
         tile.dataset.tooltipWhy   = "Highest awards sit top row, leftward.";
 
@@ -2548,11 +2280,11 @@ function renderRack(){
   const medalRowsTopFirst = [...medalRowsBottomFirst].reverse();
   const totalMedalRows = medalRowsTopFirst.length;
 
-  const BOTTOM_ROW_Y_MEDALS = BOTTOM_ROW_Y + 20;
+  const BOTTOM_ROW_Y_MEDALS = rackBaseY + 20;
 
   function medalRowLeftPositions(count){
     const totalWidth = count * MINI_W + (count-1)*PAD;
-    const rowLeftBase = RACK_CENTER_X - totalWidth/2;
+    const rowLeftBase = (rackBaseX + (RIBBON_WIDTH*1.5)) - totalWidth/2;
     const arr=[];
     for(let i=0;i<count;i++){
       arr.push(rowLeftBase + i*(MINI_W+PAD));
@@ -2589,7 +2321,7 @@ function renderRack(){
 
       mimg.onerror=()=>{};
 
-      mimg.dataset.tooltipTitle = entry.id.replace(/_/g,' ').toUpperCase();
+      mimg.dataset.tooltipTitle = (RIBBONS.find(r=>r.id===entry.id)?.name || entry.id).toUpperCase();
       mimg.dataset.tooltipReg   = "Miniature medal arrangement";
       mimg.dataset.tooltipWhy   = "Highest awards sit top row, centered.";
 
@@ -2623,12 +2355,12 @@ function ensureRackCalibrationElement(){
 function buildDevicePicker(){
   const wrap=by('devicePicker');
   wrap.innerHTML='';
-  deviceList.forEach(id=>{
+  [...new Set([...deviceList, ...Object.values(deviceAlias)])].forEach(id=>{
     const row=document.createElement('label');
     row.style.cssText="display:flex;align-items:center;gap:8px;font-size:12px;";
     row.innerHTML=`
       <input type="checkbox" data-device="${id}"/>
-      <span>${deviceMeta[id].label}</span>
+      <span>${deviceMeta[id]?.label || id}</span>
       <input type="number" min="1" max="10" value="1" data-qty="${id}" style="width:70px;margin-left:auto">
     `;
     wrap.appendChild(row);
@@ -2640,7 +2372,7 @@ function readDevicePicker(){
   wrap.querySelectorAll('input[type="checkbox"][data-device]').forEach(chk=>{
     const id=chk.getAttribute('data-device');
     if(chk.checked){
-      const qty=parseInt(wrap.querySelector(`input[type="number"][data-qty="${id}"]`).value||"1",10);
+      const qty=parseInt(wrap.querySelector(`input[data-qty="${id}"]`).value||"1",10);
       if(qty>0) bundle[id]=qty;
     }
   });
@@ -2684,7 +2416,7 @@ function wireDeviceUI(){
 }
 
 /* ===========================
-   BADGE RENDERING
+   BADGE RENDERING (with per-badge sliders via calibration registry)
    =========================== */
 const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[], OVERSTACK:[] };
 function resetBadgeSlots(){ Object.keys(badgeSlots).forEach(k=>badgeSlots[k]=[]); }
@@ -2730,14 +2462,14 @@ function placeBadgeByCategory(id){
   const spacing = 5;
 
   const baseRibbonY = getTopRibbonY();
-  const RACK_CENTER_X = 293.5;
 
   const overRibbonSlots = new Set(['OLP','OLPU','OLPA','ORP']);
   if(overRibbonSlots.has(slot)){
     const stackIdx = badgeSlots.OVERSTACK.length;
     const bottomEdgeY = baseRibbonY - 25 - (stackIdx * (size.height + spacing));
     const topY = bottomEdgeY - size.height;
-    const leftX = RACK_CENTER_X - (size.width / 2);
+    // center above rack: use rackBaseX + 1.5 ribbons
+    const leftX = (rackBaseX + (RIBBON_WIDTH*1.5)) - (size.width/2);
 
     const clone = img.cloneNode();
     clone.className='layer badge';
@@ -3053,7 +2785,6 @@ function highlightActiveUniformButton(){
 function updateAvailabilityUI(prevUniform){
   const auth = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
 
-  // groupPatches block is already its own panelBlock
   by('groupPatches').classList.toggle('hidden', !auth.showPatches);
 
   if(prevUniform && prevUniform!==State.uniform){
@@ -3126,7 +2857,6 @@ function refreshUI(){
 /* ===========================
    RIBBON GRID UI (checkbox + device)
    =========================== */
-
 function isRibbonSelected(id){
   return !!State.ribbons.find(r=>r.id===id);
 }
@@ -3134,7 +2864,6 @@ function isRibbonSelected(id){
 function getRibbonDevice(ribbonId){
   const r = State.ribbons.find(x=>x.id===ribbonId);
   if(!r) return "";
-  // if exactly one device type with qty>0, return that
   const keys = Object.keys(r.devices||{});
   if(keys.length===1 && r.devices[keys[0]]>0){
     return keys[0];
@@ -3148,7 +2877,8 @@ function setRibbonDevice(ribbonId, deviceVal){
     r.devices={};
   }else{
     r.devices={};
-    r.devices[deviceVal]=1; // default qty 1
+    const mapped = deviceMeta[deviceVal] ? deviceVal : (deviceAlias[deviceVal] || deviceVal);
+    r.devices[mapped]=1;
   }
 }
 
@@ -3158,7 +2888,6 @@ function buildRibbonGrid(){
 
   const isCadet = (State.member === "cadet");
 
-  // sort by precedence high → low
   const sorted = [...RIBBONS].sort((a,b)=>a.precedence-b.precedence);
 
   sorted.forEach(rib=>{
@@ -3214,27 +2943,21 @@ function buildRibbonGrid(){
       dSel.appendChild(opt);
     });
 
-    // set initial dropdown from State
     dSel.value = getRibbonDevice(rib.id);
 
-    // checkbox change
     check.addEventListener('change',()=>{
       if(check.checked){
         ensureRibbonObj(rib.id);
-        // keep selected device
         setRibbonDevice(rib.id, dSel.value);
       }else{
-        // remove ribbon entirely
         State.ribbons = State.ribbons.filter(r=>r.id!==rib.id);
       }
       renderRack();
       renderAllBadges();
     });
 
-    // device change
     dSel.addEventListener('change',()=>{
       if(!isRibbonSelected(rib.id)){
-        // selecting a device auto-adds ribbon
         ensureRibbonObj(rib.id);
         check.checked = true;
       }
@@ -3254,7 +2977,7 @@ function buildRibbonGrid(){
 }
 
 /* ===========================
-   FLOATING RACK CALIB PANEL INIT
+   FLOATING RACK CALIB PANEL INIT (Rack sliders)
    =========================== */
 function initCalibratorUI(){
   const tab          = by('calibratorTab');
@@ -3321,17 +3044,17 @@ function initCalibratorUI(){
 /* ===========================
    EVENT WIRING
    =========================== */
+
+  
 memberSelect.addEventListener('change', ()=>{
   State.member = memberSelect.value;
 
-  // if cadet picks a SM-only uniform, bounce to first allowed
   if(State.member==='cadet' && !isUniformAllowedFor(State.uniform,'cadet')){
     const fallback=findFirstAllowedUniform('cadet') || 'blues_a';
     const prevU=State.uniform;
     State.uniform=fallback;
     State.badges = State.badges.filter(isCadetAuthorized);
 
-    // purge SM-only ribbons while switching to cadet
     State.ribbons = State.ribbons.filter(r=>{
       const meta=RIBBONS.find(x=>x.id===r.id);
       if(!meta) return true;
@@ -3488,3 +3211,6 @@ logRibbonCoordsBtn.addEventListener('click', ()=>{
 </script>
 </body>
 </html>
+
+  
+  
