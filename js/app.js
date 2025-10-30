@@ -1,8 +1,3 @@
-/* CAP Uniform Builder — app.js (extracted from your monolithic HTML)
-   All selectors, IDs, and behavior preserved 1:1. */
-
-'use strict';
-
 /* ===========================
    GLOBAL STATE
    =========================== */
@@ -303,73 +298,537 @@ devices     array of {value,label} for per-ribbon dropdown
 */
 const RIBBONS = [
   /* === Valor / Lifesaving / Highest Decorations === */
-  { id:"silver_medal_of_valor", name:"Silver Medal of Valor", img:"ribbons/silver_medal_of_valor.png", smOnly:false, precedence:1, devices:[{value:"",label:"None"}] },
-  { id:"bronze_medal_of_valor", name:"Bronze Medal of Valor", img:"ribbons/bronze_medal_of_valor.png", smOnly:false, precedence:2, devices:[{value:"",label:"None"}] },
-  { id:"lifesaving_award", name:"Lifesaving Award Ribbon", img:"ribbons/lifesaving_award.png", smOnly:false, precedence:3, devices:[{value:"",label:"None"}] },
-  { id:"silver_lifesaving_medal", name:"Silver Lifesaving Medal", img:"ribbons/silver_lifesaving_medal.png", smOnly:false, precedence:4, devices:[{value:"",label:"None"}] },
-  { id:"bronze_lifesaving_medal", name:"Bronze Lifesaving Medal", img:"ribbons/bronze_lifesaving_medal.png", smOnly:false, precedence:5, devices:[{value:"",label:"None"}] },
+  {
+    id:"silver_medal_of_valor",
+    name:"Silver Medal of Valor",
+    img:"ribbons/silver_medal_of_valor.png",
+    smOnly:false,
+    precedence:1,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"bronze_medal_of_valor",
+    name:"Bronze Medal of Valor",
+    img:"ribbons/bronze_medal_of_valor.png",
+    smOnly:false,
+    precedence:2,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"lifesaving_award",
+    name:"Lifesaving Award Ribbon",
+    img:"ribbons/lifesaving_award.png",
+    smOnly:false,
+    precedence:3,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"silver_lifesaving_medal",
+    name:"Silver Lifesaving Medal",
+    img:"ribbons/silver_lifesaving_medal.png",
+    smOnly:false,
+    precedence:4,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"bronze_lifesaving_medal",
+    name:"Bronze Lifesaving Medal",
+    img:"ribbons/bronze_lifesaving_medal.png",
+    smOnly:false,
+    precedence:5,
+    devices:[{value:"",label:"None"}]
+  },
 
   /* === National/Organizational-Level Service & Achievement === */
-  { id:"distinguished_service_award", name:"Distinguished Service Award", img:"ribbons/distinguished_service_award.png", smOnly:false, precedence:6, devices:[{value:"",label:"None"}] },
-  { id:"exceptional_service_award", name:"Exceptional Service Award", img:"ribbons/exceptional_service_award.png", smOnly:false, precedence:7, devices:[{value:"",label:"None"}] },
-  { id:"meritorious_service_award", name:"Meritorious Service Award", img:"ribbons/meritorious_service_award.png", smOnly:false, precedence:8, devices:[{value:"",label:"None"}] },
-  { id:"commander_commendation_award", name:"Commander's Commendation Award", img:"ribbons/commander_commendation_award.png", smOnly:false, precedence:9, devices:[{value:"",label:"None"},{value:"bronze_star",label:"Bronze Star Device"},{value:"silver_star",label:"Silver Star Device"}] },
-  { id:"cap_achievement_award", name:"CAP Achievement Award", img:"ribbons/cap_achievement_award.png", smOnly:false, precedence:10, devices:[{value:"",label:"None"},{value:"bronze_star",label:"Bronze Star Device"}] },
-  { id:"crisis_ribbon", name:"Crisis Service Ribbon", img:"ribbons/crisis_ribbon.png", smOnly:false, precedence:11, devices:[{value:"",label:"None"}] },
-  { id:"red_service_ribbon", name:"Red Service Ribbon (Longevity)", img:"ribbons/red_service_ribbon.png", smOnly:false, precedence:12, devices:[{value:"",label:"None"},{value:"bronze_clasp",label:"Bronze Clasp"},{value:"silver_clasp",label:"Silver Clasp"},{value:"gold_clasp",label:"Gold Clasp"}] },
-  { id:"national_commander_unit_citation_award", name:"National Commander’s Unit Citation", img:"ribbons/national_commander_unit_citation_award.png", smOnly:false, precedence:13, devices:[{value:"",label:"None"}] },
-  { id:"unit_citation_award", name:"Unit Citation Award", img:"ribbons/unit_citation_award.png", smOnly:false, precedence:14, devices:[{value:"",label:"None"},{value:"bronze_star",label:"Bronze Star Device"},{value:"silver_star",label:"Silver Star Device"}] },
+  {
+    id:"distinguished_service_award",
+    name:"Distinguished Service Award",
+    img:"ribbons/distinguished_service_award.png",
+    smOnly:false,
+    precedence:6,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"exceptional_service_award",
+    name:"Exceptional Service Award",
+    img:"ribbons/exceptional_service_award.png",
+    smOnly:false,
+    precedence:7,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"meritorious_service_award",
+    name:"Meritorious Service Award",
+    img:"ribbons/meritorious_service_award.png",
+    smOnly:false,
+    precedence:8,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"commander_commendation_award",
+    name:"Commander's Commendation Award",
+    img:"ribbons/commander_commendation_award.png",
+    smOnly:false,
+    precedence:9,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_star",label:"Bronze Star Device"},
+      {value:"silver_star",label:"Silver Star Device"}
+    ]
+  },
+  {
+    id:"cap_achievement_award",
+    name:"CAP Achievement Award",
+    img:"ribbons/cap_achievement_award.png",
+    smOnly:false,
+    precedence:10,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_star",label:"Bronze Star Device"}
+    ]
+  },
+  {
+    id:"crisis_ribbon",
+    name:"Crisis Service Ribbon",
+    img:"ribbons/crisis_ribbon.png",
+    smOnly:false,
+    precedence:11,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"red_service_ribbon",
+    name:"Red Service Ribbon (Longevity)",
+    img:"ribbons/red_service_ribbon.png",
+    smOnly:false,
+    precedence:12,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_clasp",label:"Bronze Clasp"},
+      {value:"silver_clasp",label:"Silver Clasp"},
+      {value:"gold_clasp",label:"Gold Clasp"}
+    ]
+  },
+  {
+    id:"national_commander_unit_citation_award",
+    name:"National Commander’s Unit Citation",
+    img:"ribbons/national_commander_unit_citation_award.png",
+    smOnly:false,
+    precedence:13,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"unit_citation_award",
+    name:"Unit Citation Award",
+    img:"ribbons/unit_citation_award.png",
+    smOnly:false,
+    precedence:14,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_star",label:"Bronze Star Device"},
+      {value:"silver_star",label:"Silver Star Device"}
+    ]
+  },
 
   /* === Professional Development / Senior Member PD & Specialty === */
-  { id:"gill_robb_wilson_ribbon", name:"Gill Robb Wilson Award Ribbon", img:"ribbons/gill_robb_wilson_ribbon.png", smOnly:true, precedence:15, devices:[{value:"",label:"None"},{value:"bronze_star",label:"Bronze Star Device"},{value:"silver_star",label:"Silver Star Device"},{value:"gold_star",label:"Gold Star Device"}] },
-  { id:"paul_e_garber_ribbon", name:"Paul E. Garber Award Ribbon", img:"ribbons/paul_e_garber_ribbon.png", smOnly:true, precedence:16, devices:[{value:"",label:"None"},{value:"bronze_star",label:"Bronze Star Device"},{value:"silver_star",label:"Silver Star Device"},{value:"gold_star",label:"Gold Star Device"}] },
-  { id:"grover_loening_aerospace_ribbon", name:"Grover Loening Aerospace Award Ribbon", img:"ribbons/grover_loening_aerospace_ribbon.png", smOnly:true, precedence:17, devices:[{value:"",label:"None"}] },
-  { id:"leadership_award_ribbon", name:"Leadership Award Ribbon", img:"ribbons/leadership_award_ribbon.png", smOnly:true, precedence:18, devices:[{value:"",label:"None"},{value:"bronze_star",label:"Bronze Star Device"},{value:"silver_star",label:"Silver Star Device"}] },
-  { id:"cap_membership_award_ribbon", name:"CAP Membership Award Ribbon", img:"ribbons/cap_membership_award_ribbon.png", smOnly:true, precedence:19, devices:[{value:"",label:"None"}] },
-  { id:"a_scott_crossfield_ribbon", name:"A. Scott Crossfield Award Ribbon", img:"ribbons/a_scott_crossfield_ribbon.png", smOnly:true, precedence:20, devices:[{value:"",label:"None"}] },
-  { id:"yeager_ribbon", name:"Brig Gen Charles E. Yeager Aerospace Education Achievement Ribbon", img:"ribbons/yeager_ribbon.png", smOnly:true, precedence:21, devices:[{value:"",label:"None"}] },
-  { id:"command_service_ribbon", name:"Command Service Ribbon", img:"ribbons/command_service_ribbon.png", smOnly:true, precedence:22, devices:[{value:"",label:"None"},{value:"bronze_star",label:"Bronze Star Device"},{value:"silver_star",label:"Silver Star Device"},{value:"gold_star",label:"Gold Star Device"}] },
-  { id:"cadet_orientation_pilot_ribbon", name:"Cadet Orientation Pilot Ribbon", img:"ribbons/cadet_orientation_pilot_ribbon.png", smOnly:true, precedence:23, devices:[{value:"",label:"None"},{value:"bronze_clasp",label:"Bronze Clasp"}] },
-  { id:"senior_recruiter_ribbon", name:"Senior Recruiter Ribbon", img:"ribbons/senior_recruiter_ribbon.png", smOnly:true, precedence:24, devices:[{value:"",label:"None"}] },
-  { id:"world_war_2_service_ribbon", name:"World War II Service Ribbon", img:"ribbons/world_war_2_service_ribbon.png", smOnly:true, precedence:25, devices:[{value:"",label:"None"}] },
+  {
+    id:"gill_robb_wilson_ribbon",
+    name:"Gill Robb Wilson Award Ribbon",
+    img:"ribbons/gill_robb_wilson_ribbon.png",
+    smOnly:true,
+    precedence:15,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_star",label:"Bronze Star Device"},
+      {value:"silver_star",label:"Silver Star Device"},
+      {value:"gold_star",label:"Gold Star Device"}
+    ]
+  },
+  {
+    id:"paul_e_garber_ribbon",
+    name:"Paul E. Garber Award Ribbon",
+    img:"ribbons/paul_e_garber_ribbon.png",
+    smOnly:true,
+    precedence:16,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_star",label:"Bronze Star Device"},
+      {value:"silver_star",label:"Silver Star Device"},
+      {value:"gold_star",label:"Gold Star Device"}
+    ]
+  },
+  {
+    id:"grover_loening_aerospace_ribbon",
+    name:"Grover Loening Aerospace Award Ribbon",
+    img:"ribbons/grover_loening_aerospace_ribbon.png",
+    smOnly:true,
+    precedence:17,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"leadership_award_ribbon",
+    name:"Leadership Award Ribbon",
+    img:"ribbons/leadership_award_ribbon.png",
+    smOnly:true,
+    precedence:18,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_star",label:"Bronze Star Device"},
+      {value:"silver_star",label:"Silver Star Device"}
+    ]
+  },
+  {
+    id:"cap_membership_award_ribbon",
+    name:"CAP Membership Award Ribbon",
+    img:"ribbons/cap_membership_award_ribbon.png",
+    smOnly:true,
+    precedence:19,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"a_scott_crossfield_ribbon",
+    name:"A. Scott Crossfield Award Ribbon",
+    img:"ribbons/a_scott_crossfield_ribbon.png",
+    smOnly:true,
+    precedence:20,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"yeager_ribbon",
+    name:"Brig Gen Charles E. Yeager Aerospace Education Achievement Ribbon",
+    img:"ribbons/yeager_ribbon.png",
+    smOnly:true,
+    precedence:21,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"command_service_ribbon",
+    name:"Command Service Ribbon",
+    img:"ribbons/command_service_ribbon.png",
+    smOnly:true,
+    precedence:22,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_star",label:"Bronze Star Device"},
+      {value:"silver_star",label:"Silver Star Device"},
+      {value:"gold_star",label:"Gold Star Device"}
+    ]
+  },
+  {
+    id:"cadet_orientation_pilot_ribbon",
+    name:"Cadet Orientation Pilot Ribbon",
+    img:"ribbons/cadet_orientation_pilot_ribbon.png",
+    smOnly:true,
+    precedence:23,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_clasp",label:"Bronze Clasp"}
+    ]
+  },
+  {
+    id:"senior_recruiter_ribbon",
+    name:"Senior Recruiter Ribbon",
+    img:"ribbons/senior_recruiter_ribbon.png",
+    smOnly:true,
+    precedence:24,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"world_war_2_service_ribbon",
+    name:"World War II Service Ribbon",
+    img:"ribbons/world_war_2_service_ribbon.png",
+    smOnly:true,
+    precedence:25,
+    devices:[{value:"",label:"None"}]
+  },
 
   /* === Operations / Mission / Emergency Services === */
-  { id:"homeland_security_ribbon", name:"Homeland Security Ribbon", img:"ribbons/homeland_security_ribbon.png", smOnly:false, precedence:26, devices:[{value:"",label:"None"},{value:"v_device",label:"\"V\" Device"},{value:"numeral",label:"Numeral Device"}] },
-  { id:"disaster_relief_ribbon", name:"Disaster Relief Ribbon", img:"ribbons/disaster_relief_ribbon.png", smOnly:false, precedence:27, devices:[{value:"",label:"None"},{value:"v_device",label:"\"V\" Device"}] },
-  { id:"air_search_and_rescue_ribbon", name:"Air Search and Rescue Ribbon", img:"ribbons/air_search_and_rescue_ribbon.png", smOnly:false, precedence:28, devices:[{value:"",label:"None"},{value:"bronze_clasp",label:"Bronze Clasp"},{value:"silver_clasp",label:"Silver Clasp"}] },
-  { id:"search_find_ribbon", name:"Find Ribbon", img:"ribbons/search_find_ribbon.png", smOnly:false, precedence:29, devices:[{value:"",label:"None"},{value:"bronze_clasp",label:"Bronze Clasp"}] },
-  { id:"cap_counterdrug_ribbon", name:"Counterdrug Ribbon", img:"ribbons/cap_counterdrug_ribbon.png", smOnly:false, precedence:30, devices:[{value:"",label:"None"},{value:"bronze_clasp",label:"Bronze Clasp"},{value:"silver_clasp",label:"Silver Clasp"}] },
-  { id:"community_service_ribbon", name:"Community Service Ribbon", img:"ribbons/community_service_ribbon.png", smOnly:false, precedence:31, devices:[{value:"",label:"None"},{value:"bronze_clasp",label:"Bronze Clasp"},{value:"silver_clasp",label:"Silver Clasp"}] },
-  { id:"iace_ribbon", name:"International Air Cadet Exchange Ribbon", img:"ribbons/iace_ribbon.png", smOnly:false, precedence:32, devices:[{value:"",label:"None"}] },
+  {
+    id:"homeland_security_ribbon",
+    name:"Homeland Security Ribbon",
+    img:"ribbons/homeland_security_ribbon.png",
+    smOnly:false,
+    precedence:26,
+    devices:[
+      {value:"",label:"None"},
+      {value:"v_device",label:"\"V\" Device"},
+      {value:"numeral",label:"Numeral Device"}
+    ]
+  },
+  {
+    id:"disaster_relief_ribbon",
+    name:"Disaster Relief Ribbon",
+    img:"ribbons/disaster_relief_ribbon.png",
+    smOnly:false,
+    precedence:27,
+    devices:[
+      {value:"",label:"None"},
+      {value:"v_device",label:"\"V\" Device"}
+    ]
+  },
+  {
+    id:"air_search_and_rescue_ribbon",
+    name:"Air Search and Rescue Ribbon",
+    img:"ribbons/air_search_and_rescue_ribbon.png",
+    smOnly:false,
+    precedence:28,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_clasp",label:"Bronze Clasp"},
+      {value:"silver_clasp",label:"Silver Clasp"}
+    ]
+  },
+  {
+    id:"search_find_ribbon",
+    name:"Find Ribbon",
+    img:"ribbons/search_find_ribbon.png",
+    smOnly:false,
+    precedence:29,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_clasp",label:"Bronze Clasp"}
+    ]
+  },
+  {
+    id:"cap_counterdrug_ribbon",
+    name:"Counterdrug Ribbon",
+    img:"ribbons/cap_counterdrug_ribbon.png",
+    smOnly:false,
+    precedence:30,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_clasp",label:"Bronze Clasp"},
+      {value:"silver_clasp",label:"Silver Clasp"}
+    ]
+  },
+  {
+    id:"community_service_ribbon",
+    name:"Community Service Ribbon",
+    img:"ribbons/community_service_ribbon.png",
+    smOnly:false,
+    precedence:31,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_clasp",label:"Bronze Clasp"},
+      {value:"silver_clasp",label:"Silver Clasp"}
+    ]
+  },
+  {
+    id:"iace_ribbon",
+    name:"International Air Cadet Exchange Ribbon",
+    img:"ribbons/iace_ribbon.png",
+    smOnly:false,
+    precedence:32,
+    devices:[{value:"",label:"None"}]
+  },
 
   /* === Cadet Milestone Awards === */
-  { id:"spaatz_award", name:"General Carl A. Spaatz Award Ribbon", img:"ribbons/spaatz_award.png", smOnly:false, precedence:33, devices:[{value:"",label:"None"}] },
-  { id:"eaker_award", name:"Ira C. Eaker Award Ribbon", img:"ribbons/eaker_award.png", smOnly:false, precedence:34, devices:[{value:"",label:"None"}] },
-  { id:"earhart_award", name:"Amelia Earhart Award Ribbon", img:"ribbons/earhart_award.png", smOnly:false, precedence:35, devices:[{value:"",label:"None"}] },
-  { id:"mitchell_award", name:"General Billy Mitchell Award Ribbon", img:"ribbons/mitchell_award.png", smOnly:false, precedence:36, devices:[{value:"",label:"None"}] },
-  { id:"wright_brothers_award", name:"Wright Brothers Achievement Ribbon", img:"ribbons/wright_brothers_award.png", smOnly:false, precedence:37, devices:[{value:"",label:"None"}] },
+  {
+    id:"spaatz_award",
+    name:"General Carl A. Spaatz Award Ribbon",
+    img:"ribbons/spaatz_award.png",
+    smOnly:false,
+    precedence:33,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"eaker_award",
+    name:"Ira C. Eaker Award Ribbon",
+    img:"ribbons/eaker_award.png",
+    smOnly:false,
+    precedence:34,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"earhart_award",
+    name:"Amelia Earhart Award Ribbon",
+    img:"ribbons/earhart_award.png",
+    smOnly:false,
+    precedence:35,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"mitchell_award",
+    name:"General Billy Mitchell Award Ribbon",
+    img:"ribbons/mitchell_award.png",
+    smOnly:false,
+    precedence:36,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"wright_brothers_award",
+    name:"Wright Brothers Achievement Ribbon",
+    img:"ribbons/wright_brothers_award.png",
+    smOnly:false,
+    precedence:37,
+    devices:[{value:"",label:"None"}]
+  },
 
   /* === Cadet Phase / Achievement Ribbons === */
-  { id:"armstrong_achievement", name:"Armstrong Achievement Ribbon", img:"ribbons/armstrong_achievement.png", smOnly:false, precedence:38, devices:[{value:"",label:"None"}] },
-  { id:"goddard_achievement", name:"Goddard Achievement Ribbon", img:"ribbons/goddard_achievement.png", smOnly:false, precedence:39, devices:[{value:"",label:"None"}] },
-  { id:"doolittle_achievement", name:"Doolittle Achievement Ribbon", img:"ribbons/doolittle_achievement.png", smOnly:false, precedence:40, devices:[{value:"",label:"None"}] },
-  { id:"lindbergh_achievement", name:"Lindbergh Achievement Ribbon", img:"ribbons/lindbergh_achievement.png", smOnly:false, precedence:41, devices:[{value:"",label:"None"}] },
-  { id:"rickenbacker_achievement", name:"Rickenbacker Achievement Ribbon", img:"ribbons/rickenbacker_achievement.png", smOnly:false, precedence:42, devices:[{value:"",label:"None"}] },
-  { id:"mary_feik_achievement", name:"Mary Feik Achievement Ribbon", img:"ribbons/mary_feik_achievement.png", smOnly:false, precedence:43, devices:[{value:"",label:"None"}] },
-  { id:"hap_arnold_achievement", name:"Hap Arnold Achievement Ribbon", img:"ribbons/hap_arnold_achievement.png", smOnly:false, precedence:44, devices:[{value:"",label:"None"}] },
-  { id:"curry_achievement", name:"Curry Achievement Ribbon", img:"ribbons/curry_achievement.png", smOnly:false, precedence:45, devices:[{value:"",label:"None"}] },
+  {
+    id:"armstrong_achievement",
+    name:"Armstrong Achievement Ribbon",
+    img:"ribbons/armstrong_achievement.png",
+    smOnly:false,
+    precedence:38,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"goddard_achievement",
+    name:"Goddard Achievement Ribbon",
+    img:"ribbons/goddard_achievement.png",
+    smOnly:false,
+    precedence:39,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"doolittle_achievement",
+    name:"Doolittle Achievement Ribbon",
+    img:"ribbons/doolittle_achievement.png",
+    smOnly:false,
+    precedence:40,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"lindbergh_achievement",
+    name:"Lindbergh Achievement Ribbon",
+    img:"ribbons/lindbergh_achievement.png",
+    smOnly:false,
+    precedence:41,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"rickenbacker_achievement",
+    name:"Rickenbacker Achievement Ribbon",
+    img:"ribbons/rickenbacker_achievement.png",
+    smOnly:false,
+    precedence:42,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"mary_feik_achievement",
+    name:"Mary Feik Achievement Ribbon",
+    img:"ribbons/mary_feik_achievement.png",
+    smOnly:false,
+    precedence:43,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"hap_arnold_achievement",
+    name:"Hap Arnold Achievement Ribbon",
+    img:"ribbons/hap_arnold_achievement.png",
+    smOnly:false,
+    precedence:44,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"curry_achievement",
+    name:"Curry Achievement Ribbon",
+    img:"ribbons/curry_achievement.png",
+    smOnly:false,
+    precedence:45,
+    devices:[{value:"",label:"None"}]
+  },
 
   /* === Cadet / Participation / Activities / External Awards === */
-  { id:"encampment_ribbon", name:"Encampment Ribbon", img:"ribbons/encampment_ribbon.png", smOnly:false, precedence:46, devices:[{value:"",label:"None"},{value:"bronze_clasp",label:"Bronze Clasp"},{value:"silver_clasp",label:"Silver Clasp"}] },
-  { id:"cadet_special_activity_ribbon", name:"Cadet Special Activity Ribbon", img:"ribbons/cadet_special_activity_ribbon.png", smOnly:false, precedence:47, devices:[{value:"",label:"None"},{value:"bronze_clasp",label:"Bronze Clasp"},{value:"silver_clasp",label:"Silver Clasp"}] },
-  { id:"cadet_advisory_council_ribbon", name:"Cadet Advisory Council Ribbon", img:"ribbons/cadet_advisory_council_ribbon.png", smOnly:false, precedence:48, devices:[{value:"",label:"None"},{value:"bronze_star",label:"Bronze Star Device"},{value:"silver_star",label:"Silver Star Device"}] },
-  { id:"cadet_recruiter_ribbon", name:"Cadet Recruiter Ribbon", img:"ribbons/cadet_recruiter_ribbon.png", smOnly:false, precedence:49, devices:[{value:"",label:"None"}] },
-  { id:"national_cadet_competition_ribbon", name:"National Cadet Competition Ribbon", img:"ribbons/national_cadet_competition_ribbon.png", smOnly:false, precedence:50, devices:[{value:"",label:"None"},{value:"bronze_star",label:"Bronze Star Device"},{value:"silver_star",label:"Silver Star Device"}] },
-  { id:"national_color_guard_competition_ribbon", name:"National Color Guard Competition Ribbon", img:"ribbons/national_color_guard_competition_ribbon.png", smOnly:false, precedence:51, devices:[{value:"",label:"None"},{value:"bronze_star",label:"Bronze Star Device"}] },
-  { id:"afa_award", name:"Air Force Association Award", img:"ribbons/afa_award.png", smOnly:false, precedence:52, devices:[{value:"",label:"None"}] },
-  { id:"afsa_award", name:"Air Force Sergeants Association Award", img:"ribbons/afsa_award.png", smOnly:false, precedence:53, devices:[{value:"",label:"None"}] },
-  { id:"vfw_officer_award", name:"VFW Cadet Officer Award", img:"ribbons/vfw_officer_award.png", smOnly:false, precedence:54, devices:[{value:"",label:"None"}] },
-  { id:"vfw_nco_award", name:"VFW Cadet NCO Award", img:"ribbons/vfw_nco_award.png", smOnly:false, precedence:55, devices:[{value:"",label:"None"}] }
+  {
+    id:"encampment_ribbon",
+    name:"Encampment Ribbon",
+    img:"ribbons/encampment_ribbon.png",
+    smOnly:false,
+    precedence:46,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_clasp",label:"Bronze Clasp"},
+      {value:"silver_clasp",label:"Silver Clasp"}
+    ]
+  },
+  {
+    id:"cadet_special_activity_ribbon",
+    name:"Cadet Special Activity Ribbon",
+    img:"ribbons/cadet_special_activity_ribbon.png",
+    smOnly:false,
+    precedence:47,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_clasp",label:"Bronze Clasp"},
+      {value:"silver_clasp",label:"Silver Clasp"}
+    ]
+  },
+  {
+    id:"cadet_advisory_council_ribbon",
+    name:"Cadet Advisory Council Ribbon",
+    img:"ribbons/cadet_advisory_council_ribbon.png",
+    smOnly:false,
+    precedence:48,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_star",label:"Bronze Star Device"},
+      {value:"silver_star",label:"Silver Star Device"}
+    ]
+  },
+  {
+    id:"cadet_recruiter_ribbon",
+    name:"Cadet Recruiter Ribbon",
+    img:"ribbons/cadet_recruiter_ribbon.png",
+    smOnly:false,
+    precedence:49,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"national_cadet_competition_ribbon",
+    name:"National Cadet Competition Ribbon",
+    img:"ribbons/national_cadet_competition_ribbon.png",
+    smOnly:false,
+    precedence:50,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_star",label:"Bronze Star Device"},
+      {value:"silver_star",label:"Silver Star Device"}
+    ]
+  },
+  {
+    id:"national_color_guard_competition_ribbon",
+    name:"National Color Guard Competition Ribbon",
+    img:"ribbons/national_color_guard_competition_ribbon.png",
+    smOnly:false,
+    precedence:51,
+    devices:[
+      {value:"",label:"None"},
+      {value:"bronze_star",label:"Bronze Star Device"}
+    ]
+  },
+  {
+    id:"afa_award",
+    name:"Air Force Association Award",
+    img:"ribbons/afa_award.png",
+    smOnly:false,
+    precedence:52,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"afsa_award",
+    name:"Air Force Sergeants Association Award",
+    img:"ribbons/afsa_award.png",
+    smOnly:false,
+    precedence:53,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"vfw_officer_award",
+    name:"VFW Cadet Officer Award",
+    img:"ribbons/vfw_officer_award.png",
+    smOnly:false,
+    precedence:54,
+    devices:[{value:"",label:"None"}]
+  },
+  {
+    id:"vfw_nco_award",
+    name:"VFW Cadet NCO Award",
+    img:"ribbons/vfw_nco_award.png",
+    smOnly:false,
+    precedence:55,
+    devices:[{value:"",label:"None"}]
+  }
 ];
 
 /*
@@ -627,9 +1086,9 @@ preloadWithResolver('devices', deviceList, id => deviceMeta[id].src);
 /* ===========================
    SIDEBAR TOGGLE
    =========================== */
-layoutShell.classList.add('sidebar-open'); // default
+layoutShell?.classList.add('sidebar-open'); // default
 
-hamburgerBtn.addEventListener('click', ()=>{
+hamburgerBtn?.addEventListener('click', ()=>{
   if(layoutShell.classList.contains('sidebar-open')){
     layoutShell.classList.remove('sidebar-open');
     layoutShell.classList.add('sidebar-collapsed');
@@ -643,6 +1102,7 @@ hamburgerBtn.addEventListener('click', ()=>{
    PANEL RESIZER DRAG LOGIC
    =========================== */
 (function initPanelResizer(){
+  if(!panelResizer) return;
   let isDragging = false;
   let startX = 0;
   let startWidth = 0;
@@ -917,7 +1377,7 @@ function renderRack(){
   const baseCfg = UNIFORMS[State.uniform];
   const uniformPrefersMini   = baseCfg.mini;
   const uniformAllowsRibbons = baseCfg.ribbons;
-  const autoMini   = by('autoMini').checked;
+  const autoMini   = by('autoMini')?.checked;
   const manualMini = State.forceMini;
   const useMini = (uniformPrefersMini && autoMini) || manualMini;
 
@@ -1722,7 +2182,7 @@ function buildRibbonGrid(){
 
     deviceField.appendChild(dLabel);
     deviceField.appendChild(dSel);
-    body.appendChild(deviceField);
+    body.append.appendChild?.(deviceField) || body.appendChild(deviceField);
 
     card.appendChild(header);
     card.appendChild(body);
@@ -1747,6 +2207,8 @@ function initCalibratorUI(){
   const readX        = by('readX');
   const readY        = by('readY');
   const readSize     = by('readSize');
+
+  if(!tab || !panel) return;
 
   rackXRange.value  = rackBaseX;
   rackXNumber.value = rackBaseX;
@@ -1799,7 +2261,7 @@ function initCalibratorUI(){
 /* ===========================
    EVENT WIRING
    =========================== */
-memberSelect.addEventListener('change', ()=>{
+memberSelect?.addEventListener('change', ()=>{
   State.member = memberSelect.value;
 
   // if cadet picks a SM-only uniform, bounce to first allowed
@@ -1830,12 +2292,12 @@ memberSelect.addEventListener('change', ()=>{
   refreshUI();
 });
 
-jacketSelect.addEventListener('change', ()=>{
+jacketSelect?.addEventListener('change', ()=>{
   State.gender=jacketSelect.value;
   fullRender();
 });
 
-uniformListEl.addEventListener('click', e=>{
+uniformListEl?.addEventListener('click', e=>{
   const btn=e.target.closest('.uniformOption');
   if(!btn) return;
   if(btn.classList.contains('locked')) return;
@@ -1846,23 +2308,23 @@ uniformListEl.addEventListener('click', e=>{
   refreshUI();
 });
 
-by('applyJacket').addEventListener('click', ()=>{
+by('applyJacket')?.addEventListener('click', ()=>{
   State.assetBase=(assetBaseInput.value||'images').trim()||'images';
   applyJacket();
 });
-assetBaseInput.addEventListener('change', ()=>{
+assetBaseInput?.addEventListener('change', ()=>{
   State.assetBase=(assetBaseInput.value||'images').trim()||'images';
   fullRender();
 });
 
-by('clearRibbons').addEventListener('click', ()=>{
+by('clearRibbons')?.addEventListener('click', ()=>{
   State.ribbons=[];
   buildRibbonGrid();
   renderRack();
   renderAllBadges();
 });
 
-by('toggleMini').addEventListener('change', e=>{
+by('toggleMini')?.addEventListener('change', e=>{
   State.forceMini = e.target.checked;
   renderRack();
   renderAllBadges();
@@ -1914,8 +2376,11 @@ by('addNameplate')?.addEventListener('click', ()=>{
 });
 
 by('downloadImage')?.addEventListener('click', ()=>{
-  // html2canvas expected to be included from index.html
-  window.html2canvas(uniformCanvas,{scale:3,backgroundColor:'#ffffff'}).then(c=>{
+  if(typeof html2canvas!=='function'){
+    alert('html2canvas not loaded.');
+    return;
+  }
+  html2canvas(uniformCanvas,{scale:3,backgroundColor:'#ffffff'}).then(c=>{
     const a=document.createElement('a');
     a.download=`CAP_Uniform_${Date.now()}.png`;
     a.href=c.toDataURL();
@@ -1926,7 +2391,7 @@ by('downloadImage')?.addEventListener('click', ()=>{
 const toggleRibbonDragBtn = by('toggleRibbonDrag');
 const logRibbonCoordsBtn  = by('logRibbonCoords');
 
-toggleRibbonDragBtn.addEventListener('click', ()=>{
+toggleRibbonDragBtn?.addEventListener('click', ()=>{
   State.ribbonDragMode = !State.ribbonDragMode;
   if(State.ribbonDragMode){
     toggleRibbonDragBtn.textContent = 'Disable Drag Mode';
@@ -1939,7 +2404,7 @@ toggleRibbonDragBtn.addEventListener('click', ()=>{
   }
 });
 
-logRibbonCoordsBtn.addEventListener('click', ()=>{
+logRibbonCoordsBtn?.addEventListener('click', ()=>{
   const data=[];
   uniformCanvas.querySelectorAll('.ribbonTile').forEach(tile=>{
     data.push({
@@ -1958,11 +2423,13 @@ logRibbonCoordsBtn.addEventListener('click', ()=>{
    BOOTSTRAP
    =========================== */
 (function init(){
-  // Build selects depend on DOM; called earlier already, but safe.
+  // if you mounted this JS on a minimal index for split build,
+  // guard against missing DOM to avoid errors:
+  if(!uniformCanvas) return;
+
   refreshUI();
   fullRender();
   initCalibratorUI();
   rebuildCalibrationUI();
   exportCalibrationJSON();
 })();
-
