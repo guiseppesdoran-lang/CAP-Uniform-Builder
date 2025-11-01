@@ -30,7 +30,7 @@ body{
 }
 .appTitle{margin-left:12px;font-size:18px;letter-spacing:.5px}
 .iconBtn{background:none;border:none;color:#fff;font-size:22px;cursor:pointer}
-.primary{background:var(--accent)}
+.primary{background:var(--accent);border:none;border-radius:6px;padding:6px 10px;color:#fff}
 
 /* Layout */
 #layoutShell{
@@ -51,7 +51,7 @@ body{
   border-bottom:1px solid var(--line);padding-bottom:4px;
 }
 .row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.row select,.row input,.row button{flex:1;padding:4px 6px;font-size:13px}
+.row select,.row input,.row button{flex:1;padding:6px 8px;font-size:13px}
 button{
   background:var(--brand);color:#fff;border:none;border-radius:4px;
   padding:6px 10px;cursor:pointer;transition:background .2s;
@@ -62,32 +62,13 @@ button:hover{background:var(--accent)}
 .resizer{background:var(--line);cursor:col-resize;width:6px;min-width:6px;transition:background .2s}
 .resizer:hover{background:var(--accent)}
 
-/* Main */
+/* Main canvas */
 .main{background:var(--panel);display:flex;align-items:center;justify-content:center;position:relative}
-.canvasShell{position:relative;display:inline-block;overflow:hidden}
-#jacketBase{max-width:100%;height:auto;display:block}
+.canvasShell{position:relative;display:inline-block;overflow:hidden;width:700px;height:900px} /* fallback size */
+#uniformCanvas{position:relative;width:700px;height:900px} /* sized precisely after jacket loads */
 #overlayLayer{position:absolute;top:0;left:0;pointer-events:none}
 #epauletContainer{position:absolute;top:0;left:0;pointer-events:none}
 #assetPreload{display:none}
-
-/* Calibrator */
-.calibratorTab{
-  position:fixed;left:0;top:50%;transform:translateY(-50%);
-  background:var(--brand);color:#fff;padding:8px;border-radius:0 6px 6px 0;
-  cursor:pointer;z-index:9;user-select:none
-}
-.calibratorPanel{
-  position:fixed;top:0;left:-260px;width:260px;height:100%;
-  background:var(--panel);border-right:1px solid var(--line);
-  box-shadow:4px 0 8px rgba(0,0,0,.1);
-  padding:16px;overflow-y:auto;transition:left .3s ease;z-index:8;
-}
-html.cal-open .calibratorPanel{left:0}
-.calibratorPanel h2{color:var(--brand);font-size:16px;margin-bottom:10px}
-.calRow{display:flex;align-items:center;gap:6px;margin-bottom:10px}
-.calRow label{flex:0 0 60px;font-size:13px;color:var(--muted)}
-.calRow input[type="range"]{flex:1}
-.calVal{font-size:13px;color:var(--muted);width:40px;text-align:right}
 
 /* Tooltip */
 .tooltip{
@@ -110,28 +91,47 @@ html.cal-open .calibratorPanel{left:0}
   .main{padding-top:50px}
 }
 
-/* --- Render layer safety (ensures overlays are visible and on top) --- */
-#canvasShell {
-  position: relative;
-  display: inline-block;
+/* ===== Ribbons Selector (preview + grid) ===== */
+#ribbonPreview {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  margin-bottom: 12px;
 }
-#jacketBase {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  z-index: 1;
-  position: relative;
+.rackRow {
+  display: grid;
+  grid-template-columns: repeat(3, 23px);
+  gap: 0; /* ribbons butt together vertically & horizontally */
+  margin: 0;
+  line-height: 0;
 }
-#overlayLayer,
-#epauletContainer {
-  position: absolute;
-  top: 0; left: 0;
-  pointer-events: none;
-  z-index: 2; /* above jacket */
-  opacity: 1; /* ensure visible */
-  display: block;
+.rackRow.center-1 { grid-template-columns: 23px; justify-content: center; }
+.rackRow.center-2 { grid-template-columns: repeat(2, 23px); justify-content: center; }
+
+#ribbonGridControls {
+  display: flex; align-items: center; gap: 8px; margin: 10px 0 8px;
 }
-#uniformCanvas {
-  position: relative;
-  display: inline-block;
+#ribbonGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
+.ribCard {
+  display: grid;
+  grid-template-columns: 23px 1fr auto;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "img name chk"
+    "img meta chk";
+  gap: 6px 8px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+.ribImg  { grid-area: img; width: 23px; height: 7.2px; image-rendering: crisp-edges; }
+.ribName { grid-area: name; font-size: 13px; font-weight: 600; }
+.ribMeta { grid-area: meta; font-size: 11px; color: var(--muted); }
+.ribChk  { grid-area: chk; }
