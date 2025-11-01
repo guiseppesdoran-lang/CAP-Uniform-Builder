@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- CAP Uniform Builder — Main HTML (with compatibility bridge) -->
+  <!-- CAP Uniform Builder — Main HTML (single-source-of-truth render) -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#002855" />
@@ -47,10 +47,10 @@
   <!-- Optional worker -->
   <script src="js/worker.render.js" defer></script>
 
-  <!-- Compatibility bridge (NEW) -->
+  <!-- Compatibility bridge (adopts, doesn’t duplicate) -->
   <script src="js/compat.shim.js" defer></script>
 
-  <!-- App bootstrap -->
+  <!-- App bootstrap (last) -->
   <script src="js/app.js" defer></script>
 </head>
 <body>
@@ -71,9 +71,8 @@
 
   <!-- Layout -->
   <div id="layoutShell" class="layoutShell">
-    <!-- Controls panel (ID must be 'controls') -->
+    <!-- Controls panel -->
     <aside id="controls" class="sidebar" role="complementary" aria-label="Controls panel">
-      <!-- Profile -->
       <section class="panelSection">
         <h2 class="panelTitle">Profile</h2>
         <div class="row">
@@ -90,7 +89,6 @@
         </div>
       </section>
 
-      <!-- Jacket -->
       <section class="panelSection">
         <h2 class="panelTitle">Jacket</h2>
         <div class="row">
@@ -103,7 +101,6 @@
         </div>
       </section>
 
-      <!-- Ribbons -->
       <section class="panelSection">
         <h2 class="panelTitle">Ribbons</h2>
         <div class="row">
@@ -116,7 +113,6 @@
         <div id="ribbonPicker" class="pickerList" aria-live="polite"></div>
       </section>
 
-      <!-- Devices -->
       <section class="panelSection">
         <h2 class="panelTitle">Devices</h2>
         <div class="row">
@@ -126,7 +122,6 @@
         </div>
       </section>
 
-      <!-- Badges -->
       <section class="panelSection">
         <h2 class="panelTitle">Badges</h2>
         <div class="row">
@@ -139,7 +134,6 @@
         </div>
       </section>
 
-      <!-- Patches -->
       <section class="panelSection">
         <h2 class="panelTitle">Patches</h2>
         <div class="row">
@@ -152,7 +146,6 @@
         </div>
       </section>
 
-      <!-- Rank -->
       <section class="panelSection">
         <h2 class="panelTitle">Rank</h2>
         <div class="row">
@@ -164,7 +157,6 @@
         </div>
       </section>
 
-      <!-- Nameplate -->
       <section class="panelSection">
         <h2 class="panelTitle">Nameplate</h2>
         <div class="row">
@@ -173,26 +165,20 @@
         </div>
       </section>
 
-      <!-- Uniform list (used by app.js) -->
       <section class="panelSection">
         <h2 class="panelTitle">Uniforms</h2>
         <div id="uniformList"></div>
       </section>
     </aside>
 
-    <!-- Resizer -->
     <div id="panelResizer" class="resizer" role="separator" aria-orientation="vertical" aria-label="Resize panel"></div>
 
-    <!-- Main render area -->
+    <!-- Main render area. IMPORTANT: we DO NOT hardcode an <img> here.
+         Your app OR the compat shim will ensure exactly one base image exists. -->
     <main id="main" class="main" role="main">
       <div id="panelShell" style="min-height:calc(100vh - 50px);">
-        <!-- Wrapper that supports BOTH APIs (app.js + renderer/devtools) -->
         <div id="uniformCanvas" class="canvasShell">
-          <div id="canvasShell" class="canvasShell" style="position:relative;">
-            <img id="jacketBase" alt="Uniform jacket base" />
-            <div id="epauletContainer" class="epauletContainer" aria-hidden="true"></div>
-            <div id="overlayLayer" class="overlayLayer"></div>
-          </div>
+          <!-- single root for renderer; compat shim will ensure #canvasShell exists inside -->
         </div>
 
         <!-- Hidden asset preloader -->
@@ -201,15 +187,12 @@
     </main>
   </div>
 
-  <!-- Tooltip -->
   <div id="tooltip" class="tooltip" role="tooltip" aria-hidden="true"></div>
 
-  <!-- Footer -->
   <footer class="appFooter" role="contentinfo">
     <small>© <span id="year"></span> C/Capt. Guiseppe Doran — CAP Uniform Builder</small>
   </footer>
 
-  <!-- Small bootstraps -->
   <script>
     (function(){ var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear(); })();
     (function(){
