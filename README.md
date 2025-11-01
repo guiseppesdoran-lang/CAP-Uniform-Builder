@@ -4,7 +4,7 @@
 
 ---
 
-## 🧭 Overview  
+## Overview  
 The **CAP Class A Uniform Builder** is a web-based visualization tool that lets Civil Air Patrol members design and preview accurate digital renderings of their **Service Dress (Class A)** uniforms.  
 
 It follows **CAPR 39-1** guidance on the wear and arrangement of ribbons, badges, insignia, and devices — allowing members to assemble fully compliant digital uniform mockups that can be downloaded as images for reference or recordkeeping.  
