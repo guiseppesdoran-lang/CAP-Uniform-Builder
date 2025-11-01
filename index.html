@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- CAP Uniform Builder — Main HTML -->
+  <!-- CAP Uniform Builder — Main HTML (with compatibility bridge) -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#002855" />
@@ -11,12 +11,9 @@
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- sr-only utility -->
+  <!-- Accessibility helper -->
   <style>
-    .sr-only{
-      position:absolute!important;width:1px;height:1px;margin:-1px;border:0;padding:0;
-      clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap
-    }
+    .sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;border:0;padding:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap}
   </style>
 
   <!-- Lib -->
@@ -47,8 +44,11 @@
   <script src="js/devtools.js" defer></script>
   <script src="js/devtools.ui.js" defer></script>
 
-  <!-- Optional worker (present in repo) -->
+  <!-- Optional worker -->
   <script src="js/worker.render.js" defer></script>
+
+  <!-- Compatibility bridge (NEW) -->
+  <script src="js/compat.shim.js" defer></script>
 
   <!-- App bootstrap -->
   <script src="js/app.js" defer></script>
@@ -180,13 +180,13 @@
       </section>
     </aside>
 
-    <!-- Resizer (ID must be 'panelResizer') -->
+    <!-- Resizer -->
     <div id="panelResizer" class="resizer" role="separator" aria-orientation="vertical" aria-label="Resize panel"></div>
 
     <!-- Main render area -->
     <main id="main" class="main" role="main">
       <div id="panelShell" style="min-height:calc(100vh - 50px);">
-        <!-- Wrapper that supports BOTH APIs (app.js + devtools/renderer) -->
+        <!-- Wrapper that supports BOTH APIs (app.js + renderer/devtools) -->
         <div id="uniformCanvas" class="canvasShell">
           <div id="canvasShell" class="canvasShell" style="position:relative;">
             <img id="jacketBase" alt="Uniform jacket base" />
@@ -195,13 +195,13 @@
           </div>
         </div>
 
-        <!-- Hidden asset preloader (ID must be 'assets') -->
+        <!-- Hidden asset preloader -->
         <div id="assets" class="assetPreload" aria-hidden="true" style="display:none"></div>
       </div>
     </main>
   </div>
 
-  <!-- Tooltip (ID must be 'tooltip') -->
+  <!-- Tooltip -->
   <div id="tooltip" class="tooltip" role="tooltip" aria-hidden="true"></div>
 
   <!-- Footer -->
@@ -209,141 +209,15 @@
     <small>© <span id="year"></span> C/Capt. Guiseppe Doran — CAP Uniform Builder</small>
   </footer>
 
-  <!-- Bootstraps -->
+  <!-- Small bootstraps -->
   <script>
-    // Footer year
     (function(){ var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear(); })();
-
-    // Sidebar hamburger
     (function(){
       const btn=document.getElementById('hamburgerBtn');
       const shell=document.getElementById('layoutShell');
-      if(!btn||!shell) return;
-      btn.addEventListener('click',()=> shell.classList.toggle('sidebar-collapsed'));
+      if(!btn||!shell) return; btn.addEventListener('click',()=> shell.classList.toggle('sidebar-collapsed'));
     })();
-
-    // Default type="button" safety
-    (function(){
-      document.querySelectorAll('button:not([type])').forEach(b=> b.setAttribute('type','button'));
-    })();
-  </script>
-
-  <!-- Self-healing boot: ensures containers, sizes layers, loads base, triggers hooks -->
-  <script>
-  (function(){
-    const log = (...a)=>console.log('[BOOT]', ...a);
-    const warn = (...a)=>console.warn('[BOOT]', ...a);
-    const fail = (...a)=>console.error('[BOOT]', ...a);
-
-    // Containers/IDs
-    const uniformCanvas = document.getElementById('uniformCanvas') || (function(){
-      const m = document.getElementById('main') || document.body;
-      const d = document.createElement('div');
-      d.id = 'uniformCanvas';
-      d.className = 'canvasShell';
-      m.appendChild(d);
-      warn('Created missing #uniformCanvas');
-      return d;
-    })();
-
-    let canvasShell = document.getElementById('canvasShell');
-    if (!canvasShell) {
-      canvasShell = document.createElement('div');
-      canvasShell.id = 'canvasShell';
-      canvasShell.className = 'canvasShell';
-      uniformCanvas.appendChild(canvasShell);
-      warn('Created missing #canvasShell');
-    }
-
-    let jacketBase = document.getElementById('jacketBase');
-    if (!jacketBase) {
-      jacketBase = document.createElement('img');
-      jacketBase.id = 'jacketBase';
-      jacketBase.alt = 'Uniform jacket base';
-      canvasShell.appendChild(jacketBase);
-      warn('Created missing #jacketBase');
-    }
-
-    let epauletContainer = document.getElementById('epauletContainer');
-    if (!epauletContainer) {
-      epauletContainer = document.createElement('div');
-      epauletContainer.id = 'epauletContainer';
-      canvasShell.appendChild(epauletContainer);
-      warn('Created missing #epauletContainer');
-    }
-
-    let overlayLayer = document.getElementById('overlayLayer');
-    if (!overlayLayer) {
-      overlayLayer = document.createElement('div');
-      overlayLayer.id = 'overlayLayer';
-      canvasShell.appendChild(overlayLayer);
-      warn('Created missing #overlayLayer');
-    }
-
-    // Asset base + default jacket
-    const assetBaseInput = document.getElementById('assetBase');
-    const ASSET_BASE = (assetBaseInput && assetBaseInput.value) || 'images';
-    const basePath = (p)=> `${ASSET_BASE.replace(/\/+$/,'')}/${p.replace(/^\/+/, '')}`;
-
-    const defaultJacket = 'base/jacket_male.png';
-    const testSrc = basePath(defaultJacket);
-
-    if (!jacketBase.getAttribute('src')) {
-      jacketBase.src = testSrc;
-      log('Setting jacket src →', testSrc);
-    } else {
-      log('Using existing jacket src →', jacketBase.src);
-    }
-
-    function syncLayerSizes(){
-      const rect = jacketBase.getBoundingClientRect();
-      const w = Math.round(rect.width);
-      const h = Math.round(rect.height);
-      if (!w || !h) { requestAnimationFrame(syncLayerSizes); return; }
-      overlayLayer.style.width = w + 'px';
-      overlayLayer.style.height = h + 'px';
-      epauletContainer.style.width = w + 'px';
-      epauletContainer.style.height = h + 'px';
-      canvasShell.style.width = w + 'px';
-      canvasShell.style.height = h + 'px';
-      log('Layer sizes synced to jacket:', w + '×' + h);
-    }
-
-    jacketBase.addEventListener('load', syncLayerSizes);
-    jacketBase.addEventListener('error', function(){
-      fail('Failed to load base image →', jacketBase.src);
-      fail('Check file exists and path/casing matches exactly.');
-    });
-
-    // Required side containers
-    const controls = document.getElementById('controls');
-    if (!controls) warn('Missing #controls sidebar (UI will be limited)');
-    const assets = document.getElementById('assets') || (function(){
-      const d = document.createElement('div'); d.id = 'assets'; d.style.display='none'; document.body.appendChild(d);
-      warn('Created missing #assets (preload container)');
-      return d;
-    })();
-    const tooltip = document.getElementById('tooltip') || (function(){
-      const d = document.createElement('div'); d.id = 'tooltip'; d.className='tooltip'; d.setAttribute('aria-hidden','true'); document.body.appendChild(d);
-      warn('Created missing #tooltip');
-      return d;
-    })();
-
-    // Try app hooks if present
-    try {
-      if (window.App && typeof window.App.init === 'function') { window.App.init(); log('App.init() called'); }
-      if (typeof window.initApp === 'function') { window.initApp(); log('initApp() called'); }
-      if (typeof window.boot === 'function') { window.boot(); log('boot() called'); }
-      if (typeof window.fullRender === 'function') { window.fullRender(); log('fullRender() called'); }
-      if (typeof window.applyJacket === 'function') { window.applyJacket(); log('applyJacket() called'); }
-    } catch (e) {
-      fail('Error during app boot hook:', e);
-    }
-
-    // Visibility safety
-    overlayLayer.style.opacity = '1';
-    epauletContainer.style.opacity = '1';
-  })();
+    (function(){ document.querySelectorAll('button:not([type])').forEach(b=> b.setAttribute('type','button')); })();
   </script>
 </body>
 </html>
