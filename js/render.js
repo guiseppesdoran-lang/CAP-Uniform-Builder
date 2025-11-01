@@ -1,5 +1,6 @@
 // js/render.js
 // Centralized, modular rendering for the CAP Uniform Builder preview.
+// Exports makeRenderer(options).
 
 export function makeRenderer({
   canvasEl,
@@ -21,36 +22,26 @@ export function makeRenderer({
   // -------------------------
   const RIBBON_WIDTH = 23;
   const RIBBON_HEIGHT = 7.2;
-  const BOTTOM_ROW_Y = 206; // anchor for bottom ribbon row (tweak to your art)
-  const RACK_CENTER_X = 293.5; // horizontal center (tweak to your art)
+  const BOTTOM_ROW_Y = 206; // anchor for bottom ribbon row
+  const RACK_CENTER_X = 293.5;
 
-  // Fallback rack base (is made calibratable via ensureRackCalibrationElement)
   let rackBaseX = 259;
   let rackBaseY = 206;
-
-  // ✨ Sync the external positioning engine (if present) to our exact dimensions
-  if (window.UniformLayout) {
-    UniformLayout.RIB.W = RIBBON_WIDTH;
-    UniformLayout.RIB.H = RIBBON_HEIGHT;
-    UniformLayout.RIB.GAP_X = 0;
-    UniformLayout.RIB.GAP_Y = 0;
-    UniformLayout.RACK.CENTER_X = RACK_CENTER_X;
-    UniformLayout.RACK.BOTTOM_Y = BOTTOM_ROW_Y;
-    // Optional rule after 9 ribbons:
-    // UniformLayout.RACK.OFFSET_AFTER_9 = true;
-  } else {
-    console.warn("[UniformLayout] not loaded before render.js — using fallback guards");
-  }
 
   const $$ = (sel) => canvasEl.querySelector(sel);
   const $$$ = (sel) => Array.from(canvasEl.querySelectorAll(sel));
 
   const ribbonsById = {};
-  ribbonsMeta.forEach((r) => (ribbonsById[r.id] = r));
+  (ribbonsMeta || []).forEach((r) => (ribbonsById[r.id] = r));
 
-  function ASSET(state, p) {
-    const base = (state.assetBase || "images").replace(/\/$/, "");
-    return `${base}/${p}`;
+  function SRC(state, p) {
+    const s = AssetPath.url(state, p);
+    return s;
+  }
+  function setSrc(img, state, p) {
+    const s = SRC(state, p);
+    img.src = s;
+    img.setAttribute("data-original-src", s);
   }
 
   function clearLayers(className) {
@@ -58,10 +49,8 @@ export function makeRenderer({
     $$$(`${sel}`).forEach((n) => n.remove());
   }
 
-  // Default ON unless explicitly false
   function isUniformRibbonsAllowed(state) {
-    const v = uniforms[state.uniform]?.ribbons;
-    return v === undefined ? true : !!v;
+    return uniforms[state.uniform]?.ribbons === true;
   }
   function uniformPrefersMini(state) {
     return uniforms[state.uniform]?.mini === true;
@@ -73,13 +62,11 @@ export function makeRenderer({
   function applyJacket(state) {
     clearLayers("jacket");
     const base = uniforms[state.uniform]?.[state.gender];
-    if (!base) {
-      console.warn("[applyJacket] No base image for", { uniform: state.uniform, gender: state.gender, config: uniforms[state.uniform] });
-      return;
-    }
+    if (!base) return;
     const img = new Image();
     img.className = "layer jacket";
-    img.src = ASSET(state, base);
+    img.id = "jacketBaseImage";
+    setSrc(img, state, base);
     Object.assign(img.style, {
       position: "absolute",
       top: "0px",
@@ -91,7 +78,6 @@ export function makeRenderer({
     img.dataset.tooltipTitle = state.uniform.replace(/_/g, " ").toUpperCase();
     img.dataset.tooltipReg = "Base uniform image";
     img.dataset.tooltipWhy = "Selected uniform template for preview / alignment.";
-    img.id = "jacketBaseImage";
     canvasEl.appendChild(img);
   }
 
@@ -142,7 +128,7 @@ export function makeRenderer({
       const im = new Image();
       im.className = "layer ribbonDevice";
       im.dataset.parentRid = rid;
-      im.src = ASSET(state, d.src.replace(/^images\//, ""));
+      setSrc(im, state, d.src);
       im.alt = d.label || d.id;
       Object.assign(im.style, {
         position: "absolute",
@@ -192,8 +178,8 @@ export function makeRenderer({
     const allowRibbons = isUniformRibbonsAllowed(state);
     const prefersMini = uniformPrefersMini(state);
     const manualMini = !!state.forceMini;
-    // Mess/semi-formal: always mini; manual override wins
-    const useMini = manualMini || prefersMini;
+    const autoMini = prefersMini; // "auto" means on mess/semi-formal we swap
+    const useMini = (autoMini && allowRibbons === false) || manualMini || (prefersMini && allowRibbons === false);
 
     const ordered = sortRibbonsByPrecedence(state);
     if (!ordered.length) {
@@ -203,47 +189,58 @@ export function makeRenderer({
 
     // === RIBBONS MODE ===
     if (!useMini && allowRibbons) {
-      // 1) Highest → lowest precedence
-      const items = ordered.map(r => ({ id: r.id }));
+      // Build rows: bottom row is lowest precedence, 3 per row
+      const lowestFirst = [...ordered].reverse();
+      const rowsBottomFirst = [];
+      for (let i = 0; i < lowestFirst.length; i += 3) {
+        rowsBottomFirst.push(lowestFirst.slice(i, i + 3));
+      }
+      const rowsTopFirst = [...rowsBottomFirst].reverse();
+      const totalRows = rowsTopFirst.length;
 
-      // 2) Compute precise geometry using the positioning engine (fallback safe)
-      const positions = (window.UniformLayout && typeof UniformLayout.layoutRibbonRack === 'function')
-        ? UniformLayout.layoutRibbonRack(items)
-        : null;
-
-      if (!positions) {
-        ensureRackCalibrationElement();
-        return;
+      function rowLeftPositions(count, itemW) {
+        const totalWidth = count * itemW;
+        const rowLeftBase = RACK_CENTER_X - totalWidth / 2;
+        const arr = [];
+        for (let i = 0; i < count; i++) arr.push(rowLeftBase + i * itemW);
+        return arr;
       }
 
-      // 3) Paint ribbons at returned coordinates
-      positions.forEach((p) => {
-        const meta = ribbonsById[p.id];
-        if (!meta) { console.warn("[renderRack] ribbon id not in ribbonsMeta:", p.id); return; }
+      rowsTopFirst.forEach((row, topIndex) => {
+        const indexFromBottom = totalRows - 1 - topIndex;
+        const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * RIBBON_HEIGHT;
 
-        const tile = new Image();
-        tile.className = "layer ribbonTile";
-        tile.src = ASSET(state, meta.img.replace(/^images\//, ""));
-        Object.assign(tile.style, {
-          position: "absolute",
-          display: "block",
-          left: `${p.x}px`,
-          top: `${p.y}px`,
-          width: `${p.w}px`,
-          height: `${p.h}px`,
+        // Reverse so highest precedence in the row is leftmost
+        const rowSortedForDisplay = [...row].reverse();
+        const leftPositions = rowLeftPositions(rowSortedForDisplay.length, RIBBON_WIDTH);
+
+        rowSortedForDisplay.forEach((rObj, i) => {
+          const meta = ribbonsById[rObj.id];
+          if (!meta) return;
+
+          const tile = new Image();
+          tile.className = "layer ribbonTile";
+          setSrc(tile, state, meta.img);
+          const leftPx = leftPositions[i];
+          const topPx = rowTopPx;
+          Object.assign(tile.style, {
+            position: "absolute",
+            display: "block",
+            left: `${leftPx}px`,
+            top: `${topPx}px`,
+            width: `${RIBBON_WIDTH}px`,
+            height: `${RIBBON_HEIGHT}px`,
+          });
+          tile.dataset.rid = rObj.id;
+          tile.dataset.tooltipTitle = (meta.name || rObj.id).toUpperCase();
+          tile.dataset.tooltipReg = "CAPR 39-3 precedence applies";
+          tile.dataset.tooltipWhy = "Highest awards sit top row, leftward.";
+          canvasEl.appendChild(tile);
+
+          // Devices
+          drawDevicesOnRibbon(state, rObj.id, leftPx, topPx, RIBBON_WIDTH, RIBBON_HEIGHT);
         });
-        tile.dataset.rid = p.id;
-        tile.dataset.tooltipTitle = (meta.name || p.id).toUpperCase();
-        tile.dataset.tooltipReg = "CAPR 39-3 precedence applies";
-        tile.dataset.tooltipWhy = "Highest awards sit top row, leftward.";
-        canvasEl.appendChild(tile);
-
-        // Devices on this ribbon
-        drawDevicesOnRibbon(state, p.id, p.x, p.y, p.w, p.h);
       });
-
-      // 4) Save layout for badge anchoring
-      state._lastRibbonLayout = positions;
 
       ensureRackCalibrationElement();
       return;
@@ -291,8 +288,8 @@ export function makeRenderer({
 
       rowSortedForDisplay.forEach((entry, i) => {
         const mimg = new Image();
-        let relPath = entry.path.replace(/^images\//, "");
-        mimg.src = ASSET(state, relPath);
+        const p = entry.path;
+        setSrc(mimg, state, p);
         mimg.className = "layer ribbonMini";
         Object.assign(mimg.style, {
           position: "absolute",
@@ -332,25 +329,15 @@ export function makeRenderer({
 
     const baseRibbonY = getTopRibbonY();
 
-    // --- Over-the-rack badges (use real ribbon anchor if available) ---
     if (overRibbonSlots.has(slot)) {
       const stackIdx = badgeSlots.OVERSTACK.length;
       const spacing = 5;
-
-      let anchor = null;
-      if (window.UniformLayout && Array.isArray(state._lastRibbonLayout)) {
-        anchor = UniformLayout.getOverRackBadgeAnchor(state._lastRibbonLayout); // { x, y } (y = 25px above)
-      }
-
-      const centerX = anchor ? anchor.x : RACK_CENTER_X;
-      const topEdge = anchor ? (anchor.y - size.height) : (baseRibbonY - 25 - size.height);
-
-      const topY  = Math.round(topEdge - stackIdx * (size.height + spacing));
-      const leftX = Math.round(centerX - size.width / 2);
+      const bottomEdgeY = baseRibbonY - 25 - stackIdx * (size.height + spacing);
+      const topY = bottomEdgeY - size.height;
+      const leftX = RACK_CENTER_X - size.width / 2;
 
       const el = new Image();
-      // If your badges live elsewhere, adjust this path:
-      el.src = ASSET(state, `badges/${id}.png`);
+      setSrc(el, state, `badges/${id}.png`);
       el.className = "layer badge";
       Object.assign(el.style, {
         position: "absolute",
@@ -362,7 +349,7 @@ export function makeRenderer({
       });
       el.dataset.tooltipTitle = id.replace(/_/g, " ").toUpperCase();
       el.dataset.tooltipReg = "Over-rack qualification badge";
-      el.dataset.tooltipWhy = "Centered above top ribbon row.";
+      el.dataset.tooltipWhy = "Centered 25px above top ribbon row.";
       const elId = `badge-${slot}-${stackIdx}`;
       el.id = elId;
       canvasEl.appendChild(el);
@@ -372,10 +359,8 @@ export function makeRenderer({
       return;
     }
 
-    // --- Other badge slots (original logic retained) ---
     if (!badgeSlots[slot]) badgeSlots[slot] = [];
 
-    // Map default pocket/nameplate-relative coords from rack origin
     const spacing = 5;
     const xMap = {
       ON: rackBaseX - 105,
@@ -407,7 +392,7 @@ export function makeRenderer({
     }
 
     const el = new Image();
-    el.src = ASSET(state, `badges/${id}.png`);
+    setSrc(el, state, `badges/${id}.png`);
     el.className = "layer badge";
     Object.assign(el.style, {
       position: "absolute",
@@ -432,8 +417,7 @@ export function makeRenderer({
   function renderAllBadges(state) {
     $$$(".layer.badge").forEach((n) => n.remove());
     resetBadgeSlots();
-    // default ON unless explicitly false
-    if (uiAuthz[state.uniform] && uiAuthz[state.uniform].showBadges === false) return;
+    if (!uiAuthz[state.uniform]?.showBadges) return;
 
     const maxTotal = 5;
     const applied = [];
@@ -480,8 +464,7 @@ export function makeRenderer({
 
   function renderPatches(state) {
     $$$(".layer.patch").forEach((n) => n.remove());
-    // default ON unless explicitly false
-    if (uiAuthz[state.uniform] && uiAuthz[state.uniform].showPatches === false) return;
+    if (!uiAuthz[state.uniform]?.showPatches) return;
 
     planPatches(state, state.patches || []);
 
@@ -500,7 +483,7 @@ export function makeRenderer({
         if (!meta) return;
 
         const el = new Image();
-        el.src = ASSET(state, meta.img.replace(/^images\//, ""));
+        setSrc(el, state, meta.img);
         el.className = "layer patch";
         Object.assign(el.style, {
           position: "absolute",
@@ -534,7 +517,7 @@ export function makeRenderer({
 
     const isOfficer = OFFICER_RANKS.has(rankId);
     if (isOfficer) {
-      const boardSrc = ASSET(state, "ranks/C/shoulder_board.png");
+      const boardSrc = "ranks/C/shoulder_board.png";
       const boardCfg = { width: 50, height: 100 };
       const insigniaCfg = { width: 32, height: 32 };
       const placements = [
@@ -544,7 +527,7 @@ export function makeRenderer({
 
       placements.forEach(({ left, top, rot, side }) => {
         const board = new Image();
-        board.src = boardSrc;
+        setSrc(board, state, boardSrc);
         board.className = "layer rank";
         Object.assign(board.style, {
           position: "absolute",
@@ -565,7 +548,7 @@ export function makeRenderer({
         registerCalibratable?.(boardId, `Shoulder Board ${side}`, left, top, rot);
 
         const ins = new Image();
-        ins.src = ASSET(state, `ranks/${rankId}.png`);
+        setSrc(ins, state, `ranks/${rankId}.png`);
         ins.className = "layer rank";
         Object.assign(ins.style, {
           position: "absolute",
@@ -592,7 +575,7 @@ export function makeRenderer({
     const size = { w: 60, h: 60 };
     const pos = { left: 420, top: 200 };
     const icon = new Image();
-    icon.src = ASSET(state, `ranks/${rankId}.png`);
+    setSrc(icon, state, `ranks/${rankId}.png`);
     icon.className = "layer rank";
     Object.assign(icon.style, {
       position: "absolute",
@@ -618,7 +601,7 @@ export function makeRenderer({
     const npLeft = rackBaseX - 120;
 
     const el = new Image();
-    el.src = ASSET(state, "nameplate/nameplate.png");
+    setSrc(el, state, "nameplate/nameplate.png");
     el.className = "layer nameplate";
     Object.assign(el.style, {
       position: "absolute",
@@ -646,7 +629,6 @@ export function makeRenderer({
     if (fromField === undefined || toField === undefined) return;
 
     if (!fromField && toField) {
-      // Swap badges/ribbons -> patches
       Object.entries(alternates.badgeToPatch || {}).forEach(([badge, patch]) => {
         if (state.badges?.includes(badge) && !state.patches?.includes(patch)) {
           state.patches.push(patch);
@@ -658,7 +640,6 @@ export function makeRenderer({
         }
       });
     } else if (fromField && !toField) {
-      // Swap patches -> badges/ribbons
       Object.entries(alternates.patchToBadge || {}).forEach(([patch, badge]) => {
         if (state.patches?.includes(patch) && badge && !state.badges?.includes(badge)) {
           state.badges.push(badge);
@@ -679,35 +660,15 @@ export function makeRenderer({
   // -------------------------
   // Uniform auth changes & full render pipeline
   // -------------------------
-  function renderUniformUIAvailability(_state, _prevUniform) {
-    // Hook placeholder (canvas only in this module)
-  }
+  function renderUniformUIAvailability(_state, _prevUniform) {}
 
   function fullRender(state, prevUniform) {
-    // Normalize possible UI keys (optional; keep if your UI uses these names)
-    const UNIFORM_ALIASES = {
-      class_b:"blues_b", class_a:"blues_a",
-      mess:"mess_dress", messdress:"mess_dress",
-      flightsuit:"flight_suit", ocp:"corporate_field",
-      abu:"abu", polo:"polo"
-    };
-    state.uniform = UNIFORM_ALIASES[state.uniform] || state.uniform;
-
-    console.log("[fullRender] start", {
-      uniform: state.uniform, gender: state.gender, member: state.member,
-      ribbonsCount: state.ribbons?.length || 0,
-      badgesCount: state.badges?.length || 0,
-      patchesCount: state.patches?.length || 0,
-      assetBase: state.assetBase
-    });
-
     applyJacket(state);
     renderUniformUIAvailability(state, prevUniform);
     renderPatches(state);
     renderRack(state);
     renderAllBadges(state);
     renderRank(state, state.rank);
-    // Nameplate remains callable on demand
   }
 
   // -------------------------
