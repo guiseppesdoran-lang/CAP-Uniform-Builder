@@ -1,56 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- =========================================================
+       CAP Uniform Builder — Main HTML
+       Author: C/Capt. Guiseppe Doran
+       ========================================================= -->
   <meta charset="utf-8" />
-  <title>CAP Class A Uniform Builder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Styles -->
-  <link rel="stylesheet" href="css/styles.css" />
+  <meta name="theme-color" content="#002855" />
+  <link rel="icon" href="images/favicon.png" />
+  <title>CAP Class A Uniform Builder</title>
+
+  <!-- Primary stylesheet (✅ corrected filename: css/style.css) -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Simple accessibility utility -->
   <style>
-    /* minimal safety styles in case styles.css is empty */
-    :root{--brand:#002855;--muted:#6b7280;}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
-    #layoutShell{display:grid;grid-template-columns:320px 1fr;min-height:100vh;}
-    #layoutShell.sidebar-collapsed{grid-template-columns:64px 1fr;}
-    header.appHeader{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid #e5e7eb;background:#fff;position:sticky;top:0;z-index:5}
-    #hamburgerBtn{border:0;background:#eef2f7;border-radius:8px;padding:8px;cursor:pointer}
-    #controls{padding:14px;overflow:auto}
-    .panelBlock{border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin:10px 0;background:#fff}
-    .panelTitle{font-weight:700;margin-bottom:8px;color:#0f172a}
-    #panelResizer{width:6px;cursor:col-resize;background:#f3f4f6}
-    #panelShell{display:grid;grid-template-columns: 1fr 6px 1fr;min-height:calc(100vh - 50px);}
-    .canvasWrap{position:relative;display:flex;align-items:center;justify-content:center;background:#f8fafc}
-    #uniformCanvas{position:relative;width:700px;height:900px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden}
-    .layer{position:absolute;pointer-events:none}
-    .drag-mode-on .ribbonTile{outline:1px dashed #93c5fd}
-    .ribbonCard{border:1px solid #e5e7eb;border-radius:10px;padding:10px;margin:6px 0;background:#fafafa}
-    .ribbonCard.hidden{display:none}
-    .ribbonHeader{display:flex;align-items:center;gap:12px}
-    .ribbonLeft{display:flex;align-items:center;gap:10px}
-    .ribbonCheck input{width:16px;height:16px}
-    .ribbonImg{width:60px;height:20px;background-size:cover;background-position:center;border-radius:4px;border:1px solid #e5e7eb}
-    .deviceField{display:flex;align-items:center;gap:8px;margin-top:8px}
-    .ghost{opacity:.6}
-    #tooltip{position:fixed;display:none;background:#111827;color:#fff;padding:8px 10px;border-radius:8px;font-size:12px;max-width:260px;z-index:50}
-    /* Calibrator */
-    #calibratorTab{position:fixed;right:8px;top:50%;transform:translateY(-50%);background:#fff;border:1px solid #e5e7eb;border-right:0;border-radius:8px 0 0 8px;padding:8px 10px;cursor:pointer;z-index:8}
-    #calibratorPanel{position:fixed;right:0;top:0;bottom:0;width:320px;background:#ffffff;border-left:1px solid #e5e7eb;display:none;z-index:9;overflow:auto}
-    .calHeader{display:flex;justify-content:space-between;font-weight:600}
-    .calGroup{border:1px solid #e5e7eb;border-radius:10px;padding:10px;margin:10px}
-    .calRow{display:grid;grid-template-columns:36px 1fr 62px;gap:8px;align-items:center;margin-top:8px}
-    .calVal{font-variant-numeric:tabular-nums;color:var(--muted)}
-    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
-    .toolbar button{border:1px solid #e5e7eb;background:#fff;border-radius:8px;padding:8px 10px;cursor:pointer}
-    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    footer{padding:14px;color:#475569}
+    .sr-only{
+      position:absolute!important;
+      width:1px;height:1px;margin:-1px;border:0;padding:0;
+      clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap
+    }
   </style>
 
-  <!-- html2canvas (required for downloads) -->
+  <!-- Libs -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 
-  <!-- Your app modules (if you’re using split files, include them here in order)
-       If you only use js/app.js, you can omit these lines. Shown for completeness. -->
-  <!--
+  <!-- App modules (keep this order) -->
   <script src="js/util.js" defer></script>
   <script src="js/state.js" defer></script>
   <script src="js/uniforms.js" defer></script>
@@ -64,197 +40,213 @@
   <script src="js/calibration.js" defer></script>
   <script src="js/layout.js" defer></script>
   <script src="js/render.js" defer></script>
-  -->
 
-  <!-- ✅ Devtools (password protected; must be BEFORE app.js so it can patch globals) -->
+  <!-- Dev tools -->
   <script src="js/devtools.js" defer></script>
+  <script src="js/devtools.ui.js" defer></script>
 
-  <!-- App JS (bootstrap or your bundled script) -->
+  <!-- Main bootstrap -->
   <script src="js/app.js" defer></script>
 </head>
+
 <body>
-<div id="layoutShell" class="sidebar-open">
-  <!-- SIDEBAR / CONTROLS -->
-  <aside id="controls">
-    <header class="appHeader">
-      <button id="hamburgerBtn" aria-label="Toggle sidebar">☰</button>
-      <div>
-        <div style="font-weight:800">CAP Uniform Builder</div>
-        <div style="font-size:12px;color:var(--muted)">© <span id="sidebarYear"></span></div>
-      </div>
-    </header>
-
-    <!-- Member & Jacket -->
-    <div class="panelBlock">
-      <div class="panelTitle">Member & Jacket</div>
-      <div class="row">
-        <label>Member Type</label>
-        <select id="memberSelect">
-          <option value="cadet" selected>Cadet</option>
-          <option value="senior">Senior Member</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>Jacket</label>
-        <select id="jacketSelect">
-          <option value="male" selected>Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>Asset Base</label>
-        <input id="assetBase" type="text" value="images" style="flex:1" />
-        <button id="applyJacket">Apply</button>
-      </div>
+  <noscript>
+    <div style="padding:12px;background:#fff0f0;border:1px solid #fca5a5;margin:12px;border-radius:8px">
+      This app requires JavaScript to render the uniform builder. Please enable JavaScript and reload.
     </div>
+  </noscript>
 
-    <!-- Uniform List -->
-    <div class="panelBlock">
-      <div class="panelTitle">Uniforms</div>
-      <div id="uniformList" class="row" style="flex-wrap:wrap">
-        <!-- Each button needs .uniformOption and data-uniform-id + data-allowed-for -->
-        <button class="uniformOption" data-uniform-id="blues_a" data-allowed-for="cadet,senior">Blues A</button>
-        <button class="uniformOption" data-uniform-id="blues_b" data-allowed-for="cadet,senior">Blues B</button>
-        <button class="uniformOption" data-uniform-id="aviator" data-allowed-for="cadet,senior">Aviator</button>
-        <button class="uniformOption" data-uniform-id="aviator_blazer" data-allowed-for="senior">Aviator + Blazer</button>
-        <button class="uniformOption" data-uniform-id="corporate_field" data-allowed-for="senior">Corporate Field</button>
-        <button class="uniformOption" data-uniform-id="abu" data-allowed-for="cadet,senior">ABU</button>
-        <button class="uniformOption" data-uniform-id="flight_suit" data-allowed-for="cadet,senior">Flight Suit</button>
-        <button class="uniformOption" data-uniform-id="semi_formal" data-allowed-for="cadet,senior">Semi-formal</button>
-        <button class="uniformOption" data-uniform-id="mess_dress" data-allowed-for="cadet,senior">Mess Dress</button>
-        <button class="uniformOption" data-uniform-id="polo" data-allowed-for="cadet,senior">Polo</button>
-      </div>
+  <!-- =========================
+       Header
+       ========================= -->
+  <header class="appHeader" role="banner">
+    <button id="hamburgerBtn" class="iconBtn" aria-label="Toggle sidebar" type="button">☰</button>
+    <h1 class="appTitle">CAP Class A Uniform Builder</h1>
+    <div class="headerActions">
+      <button id="downloadImage" class="primary" type="button">Download Preview</button>
     </div>
+  </header>
 
-    <!-- Ribbons -->
-    <div class="panelBlock">
-      <div class="panelTitle">Ribbons</div>
-      <div class="toolbar">
-        <button id="clearRibbons">Clear Ribbons</button>
-        <label style="display:inline-flex;align-items:center;gap:6px">
-          <input id="toggleMini" type="checkbox" /> Force Mini Medals
-        </label>
-        <label style="display:inline-flex;align-items:center;gap:6px">
-          <input id="autoMini" type="checkbox" checked /> Auto Mini on Mess/Semi
-        </label>
-        <button id="toggleRibbonDrag" class="ghost">Enable Drag Mode</button>
-        <button id="logRibbonCoords">Log Ribbon Coords</button>
+  <!-- =========================
+       Layout: sidebar | resizer | main
+       ========================= -->
+  <div id="layoutShell" class="layoutShell">
+    <aside id="sidebar" class="sidebar" role="complementary" aria-label="Controls panel">
+      <!-- Jacket -->
+      <section class="panelSection">
+        <h2 class="panelTitle">Jacket</h2>
+        <div class="row">
+          <select id="jacketSelect" aria-label="Select jacket">
+            <option value="male">Male Jacket</option>
+            <option value="female">Female Jacket</option>
+          </select>
+          <button id="applyJacket" type="button">Apply</button>
+        </div>
+      </section>
+
+      <!-- Ribbons -->
+      <section class="panelSection">
+        <h2 class="panelTitle">Ribbons</h2>
+        <div class="row">
+          <button id="toggleRibbonDrag" type="button">Drag Mode</button>
+          <button id="clearRibbons" type="button">Clear</button>
+        </div>
+        <div class="row">
+          <button id="logRibbonCoords" type="button">Log Coords</button>
+        </div>
+        <div id="ribbonPicker" class="pickerList" aria-live="polite">
+          <!-- Populated by ribbons.ui.js -->
+        </div>
+      </section>
+
+      <!-- Devices -->
+      <section class="panelSection">
+        <h2 class="panelTitle">Devices</h2>
+        <div class="row">
+          <button id="deviceApplyModeBtn" type="button">Apply Mode</button>
+          <button id="deviceRemoveModeBtn" type="button">Remove Mode</button>
+          <button id="deviceClearSelectionBtn" type="button">Clear</button>
+        </div>
+      </section>
+
+      <!-- Badges -->
+      <section class="panelSection">
+        <h2 class="panelTitle">Badges</h2>
+        <div class="row">
+          <select id="badgeSelect" aria-label="Select badge"></select>
+        </div>
+        <div class="row">
+          <button id="addBadge" type="button">Add Badge</button>
+          <button id="removeBadge" type="button">Remove Badge</button>
+        </div>
+      </section>
+
+      <!-- Patches -->
+      <section class="panelSection">
+        <h2 class="panelTitle">Patches</h2>
+        <div class="row">
+          <select id="patchSelect" aria-label="Select patch"></select>
+        </div>
+        <div class="row">
+          <button id="addPatch" type="button">Add Patch</button>
+          <button id="removePatch" type="button">Remove Patch</button>
+        </div>
+      </section>
+
+      <!-- Rank -->
+      <section class="panelSection">
+        <h2 class="panelTitle">Rank</h2>
+        <div class="row">
+          <select id="rankSelect" aria-label="Select rank"></select>
+        </div>
+        <div class="row">
+          <button id="addRank" type="button">Apply Rank</button>
+        </div>
+      </section>
+
+      <!-- Nameplate (if used) -->
+      <section class="panelSection">
+        <h2 class="panelTitle">Nameplate</h2>
+        <div class="row">
+          <input id="nameplateInput" type="text" placeholder="LAST NAME" aria-label="Nameplate text" />
+          <button id="addNameplate" type="button">Apply</button>
+        </div>
+      </section>
+    </aside>
+
+    <div id="resizer" class="resizer" role="separator" aria-orientation="vertical" aria-label="Resize panel"></div>
+
+    <main id="main" class="main" role="main">
+      <div id="panelShell" style="min-height:calc(100vh - 50px);">
+        <div id="canvasShell" class="canvasShell">
+          <img id="jacketBase" alt="Uniform jacket base" />
+          <div id="epauletContainer" class="epauletContainer" aria-hidden="true"></div>
+          <div id="overlayLayer" class="overlayLayer"></div>
+        </div>
+        <div id="assetPreload" class="assetPreload" aria-hidden="true"></div>
       </div>
-      <div id="ribbonGrid"></div>
+    </main>
+  </div>
+
+  <!-- Calibrator -->
+  <div id="calibratorTab" class="calibratorTab" aria-controls="calibratorPanel" aria-expanded="false" role="button" tabindex="0">
+    <span id="calibratorArrow" aria-hidden="true">›</span>
+    <span class="sr-only">Toggle calibration panel</span>
+  </div>
+
+  <aside id="calibratorPanel" class="calibratorPanel" aria-hidden="true">
+    <h2>Calibration</h2>
+    <div class="calRow">
+      <label for="rackXRange">X (range)</label>
+      <input id="rackXRange" type="range" min="-200" max="600" step="1" />
+      <div class="calVal" id="readX">0</div>
     </div>
-
-    <!-- Devices Multi-Apply -->
-    <div class="panelBlock">
-      <div class="panelTitle">Devices — Multi Apply</div>
-      <div id="devicePicker"></div>
-      <div class="toolbar" style="margin-top:8px">
-        <button id="deviceApplyModeBtn" class="ghost">Enable Apply Mode</button>
-        <button id="deviceRemoveModeBtn" class="ghost">Enable Remove Mode</button>
-        <button id="deviceClearSelectionBtn">Clear Selection</button>
-      </div>
+    <div class="calRow">
+      <label for="rackXNumber">X (px)</label>
+      <input id="rackXNumber" type="number" inputmode="numeric" />
+      <div class="calVal">px</div>
     </div>
-
-    <!-- Badges -->
-    <div class="panelBlock">
-      <div class="panelTitle">Badges</div>
-      <div class="row">
-        <select id="badgeSelect" style="flex:1"></select>
-        <button id="addBadge">Add</button>
-      </div>
-      <div class="row">
-        <select id="removeBadgeSelect" style="flex:1"></select>
-        <button id="removeBadge">Remove</button>
-      </div>
+    <div class="calRow">
+      <label for="rackYRange">Y (range)</label>
+      <input id="rackYRange" type="range" min="-200" max="600" step="1" />
+      <div class="calVal" id="readY">0</div>
     </div>
-
-    <!-- Patches (hidden on non-field uniforms) -->
-    <div id="groupPatches" class="panelBlock">
-      <div class="panelTitle">Patches</div>
-      <div class="row">
-        <select id="patchSelect" style="flex:1"></select>
-        <button id="addPatch">Add</button>
-      </div>
-      <div class="row">
-        <select id="removePatchSelect" style="flex:1"></select>
-        <button id="removePatch">Remove</button>
-      </div>
+    <div class="calRow">
+      <label for="rackYNumber">Y (px)</label>
+      <input id="rackYNumber" type="number" inputmode="numeric" />
+      <div class="calVal">px</div>
     </div>
-
-    <!-- Rank & Nameplate -->
-    <div class="panelBlock">
-      <div class="panelTitle">Rank & Nameplate</div>
-      <div class="row">
-        <select id="rankSelect" style="flex:1"></select>
-        <button id="addRank">Set Rank</button>
-      </div>
-      <div class="row">
-        <button id="addNameplate">Add Nameplate</button>
-        <button id="downloadImage">Download Image</button>
-      </div>
+    <div class="calRow">
+      <button id="toggleMini" type="button">Toggle Mini Medals</button>
+      <button id="autoMini" type="button">Auto-Layout</button>
     </div>
-
-    <footer>Built for CAP Uniform accuracy • <span id="footerYear"></span></footer>
   </aside>
 
-  <!-- RESIZER -->
-  <div id="panelResizer" title="Drag to resize"></div>
+  <!-- Tooltip -->
+  <div id="tooltip" class="tooltip" role="tooltip" aria-hidden="true"></div>
 
-  <!-- PREVIEW / CANVAS -->
-  <main id="panelShell">
-    <div class="canvasWrap">
-      <div id="uniformCanvas">
-        <!-- layers render here -->
-      </div>
-    </div>
-    <div id="assets" style="display:none"></div>
-  </main>
-</div>
+  <!-- Footer -->
+  <footer class="appFooter" role="contentinfo">
+    <small>© <span id="year"></span> C/Capt. Guiseppe Doran — CAP Uniform Builder</small>
+  </footer>
 
-<!-- Tooltip -->
-<div id="tooltip" role="tooltip"></div>
+  <!-- Small inline bootstraps -->
+  <script>
+    // Footer year
+    (function(){ var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); })();
 
-<!-- Calibrator Drawer -->
-<div id="calibratorTab" aria-controls="calibratorPanel"><span id="calibratorArrow">›</span></div>
-<aside id="calibratorPanel">
-  <header style="position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb;padding:10px 12px;font-weight:800">
-    Calibration & Anchors
-  </header>
-  <section style="padding:10px 12px">
-    <div class="panelBlock">
-      <div class="panelTitle">Ribbon Rack Origin</div>
-      <div class="calRow">
-        <label for="rackXRange">X</label>
-        <input id="rackXRange" type="range" min="-50" max="450" step="1" />
-        <div class="calVal" id="readX">0</div>
-      </div>
-      <div class="calRow">
-        <label for="rackXNumber">X</label>
-        <input id="rackXNumber" type="number" />
-        <div class="calVal">px</div>
-      </div>
-      <div class="calRow">
-        <label for="rackYRange">Y</label>
-        <input id="rackYRange" type="range" min="0" max="600" step="1" />
-        <div class="calVal" id="readY">0</div>
-      </div>
-      <div class="calRow">
-        <label for="rackYNumber">Y</label>
-        <input id="rackYNumber" type="number" />
-        <div class="calVal">px</div>
-      </div>
-      <div style="margin-top:8px;color:var(--muted)">Ribbon size: <span id="readSize">23×7.2</span></div>
-    </div>
+    // Calibrator toggle
+    (function(){
+      const tab = document.getElementById('calibratorTab');
+      const panel = document.getElementById('calibratorPanel');
+      if(!tab || !panel) return;
+      function toggle(){ const ex = tab.getAttribute('aria-expanded') === 'true';
+        tab.setAttribute('aria-expanded', String(!ex));
+        panel.setAttribute('aria-hidden', String(ex));
+        document.documentElement.classList.toggle('cal-open', !ex);
+      }
+      tab.addEventListener('click', toggle);
+      tab.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }});
+    })();
 
-    <div class="panelBlock">
-      <div class="panelTitle">Elements</div>
-      <div id="calibrationControls"></div>
-    </div>
+    // Sidebar toggle
+    (function(){
+      const btn = document.getElementById('hamburgerBtn');
+      const shell = document.getElementById('layoutShell');
+      if (!btn || !shell) return;
+      btn.addEventListener('click', ()=> shell.classList.toggle('sidebar-collapsed'));
+    })();
 
-    <div class="panelBlock">
-      <div class="panelTitle">Export JSON</div>
-      <textarea id="calibrationExport" rows="10" style="width:100%;font-family:ui-monospace, SFMono-Regular, Menlo, monospace"></textarea>
-    </div>
-  </section>
-</aside>
+    // Safety: default type="button" for any button missing it
+    (function(){
+      document.querySelectorAll('button:not([type])').forEach(b=> b.setAttribute('type','button'));
+    })();
+
+    // Safety: ensure panelShell not forced into grid cols elsewhere
+    (function(){
+      const el = document.getElementById('panelShell');
+      if (el) { el.style.display = 'block'; el.style.gridTemplateColumns = ''; }
+    })();
+  </script>
 </body>
 </html>
