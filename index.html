@@ -1,260 +1,237 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>CAP Class A Uniform Builder</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Styles -->
-  <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    /* minimal safety styles in case styles.css is empty */
-    :root{--brand:#002855;--muted:#6b7280;}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
-    #layoutShell{display:grid;grid-template-columns:320px 1fr;min-height:100vh;}
-    #layoutShell.sidebar-collapsed{grid-template-columns:64px 1fr;}
-    header.appHeader{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid #e5e7eb;background:#fff;position:sticky;top:0;z-index:5}
-    #hamburgerBtn{border:0;background:#eef2f7;border-radius:8px;padding:8px;cursor:pointer}
-    #controls{padding:14px;overflow:auto}
-    .panelBlock{border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin:10px 0;background:#fff}
-    .panelTitle{font-weight:700;margin-bottom:8px;color:#0f172a}
-    #panelResizer{width:6px;cursor:col-resize;background:#f3f4f6}
-    #panelShell{display:grid;grid-template-columns: 1fr 6px 1fr;min-height:calc(100vh - 50px);}
-    .canvasWrap{position:relative;display:flex;align-items:center;justify-content:center;background:#f8fafc}
-    #uniformCanvas{position:relative;width:700px;height:900px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden}
-    .layer{position:absolute;pointer-events:none}
-    .drag-mode-on .ribbonTile{outline:1px dashed #93c5fd}
-    .ribbonCard{border:1px solid #e5e7eb;border-radius:10px;padding:10px;margin:6px 0;background:#fafafa}
-    .ribbonCard.hidden{display:none}
-    .ribbonHeader{display:flex;align-items:center;gap:12px}
-    .ribbonLeft{display:flex;align-items:center;gap:10px}
-    .ribbonCheck input{width:16px;height:16px}
-    .ribbonImg{width:60px;height:20px;background-size:cover;background-position:center;border-radius:4px;border:1px solid #e5e7eb}
-    .deviceField{display:flex;align-items:center;gap:8px;margin-top:8px}
-    .ghost{opacity:.6}
-    #tooltip{position:fixed;display:none;background:#111827;color:#fff;padding:8px 10px;border-radius:8px;font-size:12px;max-width:260px;z-index:50}
-    /* Calibrator */
-    #calibratorTab{position:fixed;right:8px;top:50%;transform:translateY(-50%);background:#fff;border:1px solid #e5e7eb;border-right:0;border-radius:8px 0 0 8px;padding:8px 10px;cursor:pointer;z-index:8}
-    #calibratorPanel{position:fixed;right:0;top:0;bottom:0;width:320px;background:#ffffff;border-left:1px solid #e5e7eb;display:none;z-index:9;overflow:auto}
-    .calHeader{display:flex;justify-content:space-between;font-weight:600}
-    .calGroup{border:1px solid #e5e7eb;border-radius:10px;padding:10px;margin:10px}
-    .calRow{display:grid;grid-template-columns:36px 1fr 62px;gap:8px;align-items:center;margin-top:8px}
-    .calVal{font-variant-numeric:tabular-nums;color:var(--muted)}
-    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
-    .toolbar button{border:1px solid #e5e7eb;background:#fff;border-radius:8px;padding:8px 10px;cursor:pointer}
-    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    footer{padding:14px;color:#475569}
-  </style>
+/* =========================================================================
+   CAP Uniform Builder — DevTools UI (Hardened)
+   Toggle panel: Alt + D
+   Toggle grid:  Alt + G
+   ========================================================================= */
+(function () {
+  const NS = 'CAPDevTools';
+  if (window[NS]) return;
+  window[NS] = {};
 
-  <!-- html2canvas (required for downloads) -->
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
+  const copyText = async (text) => { try { await navigator.clipboard.writeText(text); return true; } catch { return false; } };
 
-  <!-- Your app modules (if you’re using split files, include them here in order)
-       If you only use js/app.js, you can omit these lines. Shown for completeness. -->
-  <!--
-  <script src="js/util.js" defer></script>
-  <script src="js/state.js" defer></script>
-  <script src="js/uniforms.js" defer></script>
-  <script src="js/ribbons.data.js" defer></script>
-  <script src="js/badges.data.js" defer></script>
-  <script src="js/patches.data.js" defer></script>
-  <script src="js/ribbons.ui.js" defer></script>
-  <script src="js/badges.ui.js" defer></script>
-  <script src="js/patches.ui.js" defer></script>
-  <script src="js/rank.ui.js" defer></script>
-  <script src="js/calibration.js" defer></script>
-  <script src="js/layout.js" defer></script>
-  <script src="js/render.js" defer></script>
-  -->
+  const roots = { jacketBase: null, canvasShell: null, overlayLayer: null, epauletContainer: null, panelShell: null };
+  function refreshRoots() {
+    roots.jacketBase = $('#jacketBase');
+    roots.canvasShell = $('#canvasShell');
+    roots.overlayLayer = $('#overlayLayer');
+    roots.epauletContainer = $('#epauletContainer');
+    roots.panelShell = $('#panelShell');
+  }
 
-  <!-- ✅ Devtools (password protected; must be BEFORE app.js so it can patch globals) -->
-  <script src="js/devtools.js" defer></script>
+  // Panel
+  function createPanel() {
+    const panel = document.createElement('div');
+    panel.id = 'capDevPanel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-label', 'Dev Tools');
+    panel.style.cssText = 'position:fixed; right:16px; bottom:16px; width:320px; max-height:70vh;background:#0b1220; color:#e6edf6; border:1px solid #2a3550; border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.35); z-index:9999; display:none; overflow:hidden;font:13px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;';
+    panel.innerHTML = `
+      <div id="capDevHeader" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#0e1a35;border-bottom:1px solid #223055;cursor:move;">
+        <strong style="font-size:12px;letter-spacing:.3px">CAP DevTools</strong>
+        <span id="capDevDragHint" style="margin-left:auto;opacity:.7">drag</span>
+        <button id="capDevClose" title="Close" aria-label="Close" style="background:#1a2446;border:1px solid #2e3d6c;color:#e6edf6;padding:2px 8px;border-radius:6px;cursor:pointer">✕</button>
+      </div>
+      <div style="padding:8px 10px;display:grid;gap:8px;grid-auto-rows:min-content">
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button data-act="toggle-grid" class="capDevBtn">Grid (Alt+G)</button>
+          <button data-act="toggle-outlines" class="capDevBtn">Highlight Overlays</button>
+          <button data-act="log-rack" class="capDevBtn">Log Rack Coords</button>
+        </div>
+        <fieldset style="border:1px solid #2a3550;border-radius:8px;padding:8px">
+          <legend style="padding:0 6px;opacity:.9">Quick Dumps</legend>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button data-act="dump-overlays" class="capDevBtn">Dump Overlays JSON</button>
+            <button data-act="dump-ribbons" class="capDevBtn">Dump Ribbons JSON</button>
+            <button data-act="dump-badges" class="capDevBtn">Dump Badges JSON</button>
+          </div>
+        </fieldset>
+        <fieldset style="border:1px solid #2a3550;border-radius:8px;padding:8px">
+          <legend style="padding:0 6px;opacity:.9">Mouse / Canvas</legend>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">
+            <div><div style="opacity:.7;font-size:12px">Mouse (page)</div><div id="capDevMousePage">—</div></div>
+            <div><div style="opacity:.7;font-size:12px">Mouse (canvas)</div><div id="capDevMouseCanvas">—</div></div>
+          </div>
+        </fieldset>
+        <details><summary style="cursor:pointer">Overlay Nodes</summary><div id="capDevOverlayList" style="margin-top:6px;max-height:180px;overflow:auto;border:1px solid #2a3550;border-radius:6px;padding:6px"></div></details>
+      </div>
+      <style>
+        .capDevBtn{ background:#1a2446;border:1px solid #2e3d6c;color:#e6edf6;padding:6px 10px;border-radius:8px;cursor:pointer }
+        .capDevBtn:hover{ background:#253162 }
+        .capDevOutline{ outline:2px dashed #00d8ff99; outline-offset:-2px !important; }
+        #capDevGridCanvas{ position:absolute; inset:0; pointer-events:none; opacity:.5 }
+      </style>`;
+    document.body.appendChild(panel);
 
-  <!-- App JS (bootstrap or your bundled script) -->
-  <script src="js/app.js" defer></script>
-</head>
-<body>
-<div id="layoutShell" class="sidebar-open">
-  <!-- SIDEBAR / CONTROLS -->
-  <aside id="controls">
-    <header class="appHeader">
-      <button id="hamburgerBtn" aria-label="Toggle sidebar">☰</button>
-      <div>
-        <div style="font-weight:800">CAP Uniform Builder</div>
-        <div style="font-size:12px;color:var(--muted)">© <span id="sidebarYear"></span></div>
-      </div>
-    </header>
+    // draggable
+    const header = panel.querySelector('#capDevHeader');
+    let sx=0, sy=0, ox=0, oy=0, dragging=false;
+    header.addEventListener('mousedown', (e)=>{
+      dragging=true; sx=e.clientX; sy=e.clientY;
+      const rect=panel.getBoundingClientRect(); ox=rect.left; oy=rect.top;
+      const mm=(ev)=>{ if(!dragging) return; panel.style.left=Math.max(8, ox+(ev.clientX-sx))+'px'; panel.style.top=Math.max(8, oy+(ev.clientY-sy))+'px'; panel.style.right='auto'; panel.style.bottom='auto'; };
+      const mu=()=>{ dragging=false; document.removeEventListener('mousemove',mm); document.removeEventListener('mouseup',mu); };
+      document.addEventListener('mousemove',mm); document.addEventListener('mouseup',mu);
+    });
+    panel.querySelector('#capDevClose').addEventListener('click', ()=>togglePanel(false));
+    panel.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-act]'); if(!btn) return;
+      (actions[btn.getAttribute('data-act')]||(()=>{}))();
+    });
+    return panel;
+  }
 
-    <!-- Member & Jacket -->
-    <div class="panelBlock">
-      <div class="panelTitle">Member & Jacket</div>
-      <div class="row">
-        <label>Member Type</label>
-        <select id="memberSelect">
-          <option value="cadet" selected>Cadet</option>
-          <option value="senior">Senior Member</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>Jacket</label>
-        <select id="jacketSelect">
-          <option value="male" selected>Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>Asset Base</label>
-        <input id="assetBase" type="text" value="images" style="flex:1" />
-        <button id="applyJacket">Apply</button>
-      </div>
-    </div>
+  // Grid
+  let gridEnabled=false, gridCanvas=null;
+  function drawGrid() {
+    refreshRoots();
+    if (!roots.canvasShell) return;
+    const rect = roots.canvasShell.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return; // nothing to draw yet
 
-    <!-- Uniform List -->
-    <div class="panelBlock">
-      <div class="panelTitle">Uniforms</div>
-      <div id="uniformList" class="row" style="flex-wrap:wrap">
-        <!-- Each button needs .uniformOption and data-uniform-id + data-allowed-for -->
-        <button class="uniformOption" data-uniform-id="blues_a" data-allowed-for="cadet,senior">Blues A</button>
-        <button class="uniformOption" data-uniform-id="blues_b" data-allowed-for="cadet,senior">Blues B</button>
-        <button class="uniformOption" data-uniform-id="aviator" data-allowed-for="cadet,senior">Aviator</button>
-        <button class="uniformOption" data-uniform-id="aviator_blazer" data-allowed-for="senior">Aviator + Blazer</button>
-        <button class="uniformOption" data-uniform-id="corporate_field" data-allowed-for="senior">Corporate Field</button>
-        <button class="uniformOption" data-uniform-id="abu" data-allowed-for="cadet,senior">ABU</button>
-        <button class="uniformOption" data-uniform-id="flight_suit" data-allowed-for="cadet,senior">Flight Suit</button>
-        <button class="uniformOption" data-uniform-id="semi_formal" data-allowed-for="cadet,senior">Semi-formal</button>
-        <button class="uniformOption" data-uniform-id="mess_dress" data-allowed-for="cadet,senior">Mess Dress</button>
-        <button class="uniformOption" data-uniform-id="polo" data-allowed-for="cadet,senior">Polo</button>
-      </div>
-    </div>
+    if (!gridCanvas) {
+      gridCanvas = document.createElement('canvas');
+      gridCanvas.id = 'capDevGridCanvas';
+      roots.canvasShell.appendChild(gridCanvas);
+    }
+    gridCanvas.width = Math.max(2, Math.floor(rect.width));
+    gridCanvas.height = Math.max(2, Math.floor(rect.height));
+    const ctx = gridCanvas.getContext('2d');
+    ctx.clearRect(0,0,gridCanvas.width,gridCanvas.height);
+    const minor=10, major=50;
 
-    <!-- Ribbons -->
-    <div class="panelBlock">
-      <div class="panelTitle">Ribbons</div>
-      <div class="toolbar">
-        <button id="clearRibbons">Clear Ribbons</button>
-        <label style="display:inline-flex;align-items:center;gap:6px">
-          <input id="toggleMini" type="checkbox" /> Force Mini Medals
-        </label>
-        <label style="display:inline-flex;align-items:center;gap:6px">
-          <input id="autoMini" type="checkbox" checked /> Auto Mini on Mess/Semi
-        </label>
-        <button id="toggleRibbonDrag" class="ghost">Enable Drag Mode</button>
-        <button id="logRibbonCoords">Log Ribbon Coords</button>
-      </div>
-      <div id="ribbonGrid"></div>
-    </div>
+    for (let x=0; x<=gridCanvas.width; x+=minor) {
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,gridCanvas.height);
+      ctx.strokeStyle = (x%major===0)?'#00d8ff66':'#00d8ff22'; ctx.lineWidth = (x%major===0)?1:0.5; ctx.stroke();
+    }
+    for (let y=0; y<=gridCanvas.height; y+=minor) {
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(gridCanvas.width,y);
+      ctx.strokeStyle = (y%major===0)?'#00d8ff66':'#00d8ff22'; ctx.lineWidth = (y%major===0)?1:0.5; ctx.stroke();
+    }
 
-    <!-- Devices Multi-Apply -->
-    <div class="panelBlock">
-      <div class="panelTitle">Devices — Multi Apply</div>
-      <div id="devicePicker"></div>
-      <div class="toolbar" style="margin-top:8px">
-        <button id="deviceApplyModeBtn" class="ghost">Enable Apply Mode</button>
-        <button id="deviceRemoveModeBtn" class="ghost">Enable Remove Mode</button>
-        <button id="deviceClearSelectionBtn">Clear Selection</button>
-      </div>
-    </div>
+    // jacket bounds box, if we can compute
+    if (roots.jacketBase) {
+      const r = roots.jacketBase.getBoundingClientRect();
+      const shell = roots.canvasShell.getBoundingClientRect();
+      const bx = r.left - shell.left;
+      const by = r.top - shell.top;
+      ctx.strokeStyle = '#22ff8866'; ctx.lineWidth = 2; ctx.strokeRect(bx, by, r.width, r.height);
+    }
+  }
+  function toggleGrid(force) {
+    gridEnabled = typeof force === 'boolean' ? force : !gridEnabled;
+    if (!roots.canvasShell) refreshRoots();
+    if (!roots.canvasShell) return;
+    if (gridEnabled) {
+      drawGrid();
+      window.addEventListener('resize', drawGrid);
+      if (roots.jacketBase) roots.jacketBase.addEventListener('load', drawGrid, { once:true });
+    } else {
+      if (gridCanvas?.parentNode) gridCanvas.parentNode.removeChild(gridCanvas);
+      gridCanvas = null;
+      window.removeEventListener('resize', drawGrid);
+    }
+  }
 
-    <!-- Badges -->
-    <div class="panelBlock">
-      <div class="panelTitle">Badges</div>
-      <div class="row">
-        <select id="badgeSelect" style="flex:1"></select>
-        <button id="addBadge">Add</button>
-      </div>
-      <div class="row">
-        <select id="removeBadgeSelect" style="flex:1"></select>
-        <button id="removeBadge">Remove</button>
-      </div>
-    </div>
+  // Outlines
+  let outlinesEnabled=false;
+  function toggleOutlines(force){
+    outlinesEnabled = typeof force === 'boolean' ? force : !outlinesEnabled;
+    const targets = [];
+    if (roots.overlayLayer) targets.push(...roots.overlayLayer.children);
+    if (roots.epauletContainer) targets.push(...roots.epauletContainer.children);
+    targets.forEach(n => outlinesEnabled ? n.classList.add('capDevOutline') : n.classList.remove('capDevOutline'));
+  }
 
-    <!-- Patches (hidden on non-field uniforms) -->
-    <div id="groupPatches" class="panelBlock">
-      <div class="panelTitle">Patches</div>
-      <div class="row">
-        <select id="patchSelect" style="flex:1"></select>
-        <button id="addPatch">Add</button>
-      </div>
-      <div class="row">
-        <select id="removePatchSelect" style="flex:1"></select>
-        <button id="removePatch">Remove</button>
-      </div>
-    </div>
+  // Dumps
+  function shellRect(){ refreshRoots(); return roots.canvasShell?.getBoundingClientRect() || null; }
+  function snapshotSelector(sel){
+    const hostRect = shellRect();
+    const list = $$(sel).map(el=>{
+      const r = el.getBoundingClientRect();
+      const x = hostRect ? Math.round(r.left - hostRect.left) : Math.round(r.left);
+      const y = hostRect ? Math.round(r.top  - hostRect.top ) : Math.round(r.top );
+      return { id: el.id||null, dataset: { ...el.dataset }, x, y, w:Math.round(r.width), h:Math.round(r.height), src: el.getAttribute('src')||null };
+    });
+    return list;
+  }
+  async function dumpOverlays(){ const json = JSON.stringify(snapshotSelector('#overlayLayer > *, #epauletContainer > *'), null, 2); console.log('[DevTools] Overlays:', json); (await copyText(json)) && toast('Overlays JSON copied'); }
+  async function dumpRibbons (){
+    const byState = window.AppState?.ribbons || window.RIBBONS || null;
+    const data = byState ? byState : snapshotSelector('#overlayLayer img[data-type="ribbon"], #overlayLayer .ribbon');
+    const json = JSON.stringify(data, null, 2); console.log('[DevTools] Ribbons:', json); (await copyText(json)) && toast('Ribbons JSON copied');
+  }
+  async function dumpBadges (){
+    const byState = window.AppState?.badges || window.BADGES || null;
+    const data = byState ? byState : snapshotSelector('#overlayLayer img[data-type="badge"], #overlayLayer .badge, #overlayLayer [data-badge]');
+    const json = JSON.stringify(data, null, 2); console.log('[DevTools] Badges:', json); (await copyText(json)) && toast('Badges JSON copied');
+  }
+  function logRackCoords(){
+    const data = snapshotSelector('#overlayLayer img[data-type="ribbon"], #overlayLayer .ribbon');
+    console.table(data); toast(`Logged ${data.length} ribbons`);
+  }
 
-    <!-- Rank & Nameplate -->
-    <div class="panelBlock">
-      <div class="panelTitle">Rank & Nameplate</div>
-      <div class="row">
-        <select id="rankSelect" style="flex:1"></select>
-        <button id="addRank">Set Rank</button>
-      </div>
-      <div class="row">
-        <button id="addNameplate">Add Nameplate</button>
-        <button id="downloadImage">Download Image</button>
-      </div>
-    </div>
+  function renderOverlayList(){
+    const host = document.getElementById('capDevOverlayList'); if(!host) return;
+    const list = snapshotSelector('#overlayLayer > *, #epauletContainer > *');
+    host.innerHTML = list.length ? list.map((n,i)=> `<div style="display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed #2a3550;padding:4px 0"><span style="opacity:.85">${n.id||n.dataset?.type||('#'+i)}</span><code style="opacity:.8">${n.x},${n.y} · ${n.w}×${n.h}</code></div>`).join('') : '<em style="opacity:.7">No overlay nodes found.</em>';
+  }
 
-    <footer>Built for CAP Uniform accuracy • <span id="footerYear"></span></footer>
-  </aside>
+  // mouse coords HUD
+  function attachMouseTracking(){
+    const mPage = document.getElementById('capDevMousePage');
+    const mCanvas = document.getElementById('capDevMouseCanvas');
+    if (!mPage || !mCanvas) return;
+    document.addEventListener('mousemove', (e)=>{
+      const rect = shellRect();
+      const cx = rect ? Math.round(e.clientX - rect.left) : 0;
+      const cy = rect ? Math.round(e.clientY - rect.top)  : 0;
+      mPage.textContent   = `${e.pageX}, ${e.pageY}`;
+      mCanvas.textContent = `${cx}, ${cy}`;
+    });
+  }
 
-  <!-- RESIZER -->
-  <div id="panelResizer" title="Drag to resize"></div>
+  // tiny toast
+  let toastTimer=null;
+  function toast(msg){
+    let t = document.getElementById('capDevToast');
+    if(!t){ t = document.createElement('div'); t.id='capDevToast'; t.style.cssText='position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:#0b1220; color:#e6edf6; border:1px solid #2a3550; padding:8px 12px; border-radius:8px; z-index:10000; opacity:0; transition:opacity .15s;'; document.body.appendChild(t); }
+    t.textContent = msg; t.style.opacity='1'; clearTimeout(toastTimer); toastTimer=setTimeout(()=> t.style.opacity='0', 1400);
+  }
 
-  <!-- PREVIEW / CANVAS -->
-  <main id="panelShell">
-    <div class="canvasWrap">
-      <div id="uniformCanvas">
-        <!-- layers render here -->
-      </div>
-    </div>
-    <div id="assets" style="display:none"></div>
-  </main>
-</div>
+  const actions = {
+    'toggle-grid': () => { toggleGrid(); toast(`Grid: ${gridEnabled?'ON':'OFF'}`); },
+    'toggle-outlines': () => { toggleOutlines(); toast(`Highlight: ${outlinesEnabled?'ON':'OFF'}`); },
+    'log-rack': logRackCoords,
+    'dump-overlays': dumpOverlays,
+    'dump-ribbons': dumpRibbons,
+    'dump-badges': dumpBadges
+  };
 
-<!-- Tooltip -->
-<div id="tooltip" role="tooltip"></div>
+  let panel;
+  function togglePanel(force){
+    if (!panel) panel = createPanel();
+    const show = typeof force==='boolean' ? force : (panel.style.display === 'none' || panel.style.display === '');
+    panel.style.display = show ? 'block' : 'none';
+    if (show) { refreshRoots(); renderOverlayList(); attachMouseTracking(); if (roots.jacketBase) on(roots.jacketBase,'load', ()=>{ if (gridEnabled) drawGrid(); }, { once:true }); }
+  }
 
-<!-- Calibrator Drawer -->
-<div id="calibratorTab" aria-controls="calibratorPanel"><span id="calibratorArrow">›</span></div>
-<aside id="calibratorPanel">
-  <header style="position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb;padding:10px 12px;font-weight:800">
-    Calibration & Anchors
-  </header>
-  <section style="padding:10px 12px">
-    <div class="panelBlock">
-      <div class="panelTitle">Ribbon Rack Origin</div>
-      <div class="calRow">
-        <label for="rackXRange">X</label>
-        <input id="rackXRange" type="range" min="-50" max="450" step="1" />
-        <div class="calVal" id="readX">0</div>
-      </div>
-      <div class="calRow">
-        <label for="rackXNumber">X</label>
-        <input id="rackXNumber" type="number" />
-        <div class="calVal">px</div>
-      </div>
-      <div class="calRow">
-        <label for="rackYRange">Y</label>
-        <input id="rackYRange" type="range" min="0" max="600" step="1" />
-        <div class="calVal" id="readY">0</div>
-      </div>
-      <div class="calRow">
-        <label for="rackYNumber">Y</label>
-        <input id="rackYNumber" type="number" />
-        <div class="calVal">px</div>
-      </div>
-      <div style="margin-top:8px;color:var(--muted)">Ribbon size: <span id="readSize">23×7.2</span></div>
-    </div>
+  const mo = new MutationObserver(()=>{ if(panel && panel.style.display!=='none'){ renderOverlayList(); if (gridEnabled) drawGrid(); } });
+  function watch(){ refreshRoots(); if (roots.overlayLayer) mo.observe(roots.overlayLayer, { childList:true, subtree:true, attributes:true }); if (roots.epauletContainer) mo.observe(roots.epauletContainer, { childList:true, subtree:true, attributes:true }); }
 
-    <div class="panelBlock">
-      <div class="panelTitle">Elements</div>
-      <div id="calibrationControls"></div>
-    </div>
+  function onKey(e){
+    if (e.altKey && (e.key==='d'||e.key==='D')) { e.preventDefault(); togglePanel(); }
+    if (e.altKey && (e.key==='g'||e.key==='G')) { e.preventDefault(); actions['toggle-grid'](); }
+  }
 
-    <div class="panelBlock">
-      <div class="panelTitle">Export JSON</div>
-      <textarea id="calibrationExport" rows="10" style="width:100%;font-family:ui-monospace, SFMono-Regular, Menlo, monospace"></textarea>
-    </div>
-  </section>
-</aside>
-</body>
-</html>
+  // Boot AFTER full load so sizes/DOM exist even if app.js builds late
+  function bootWhenReady(){
+    refreshRoots(); watch(); document.addEventListener('keydown', onKey);
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') togglePanel(true);
+    console.info('[CAP DevTools] Ready. Alt+D to toggle panel, Alt+G for grid.');
+  }
+  window.addEventListener('load', bootWhenReady);
+})();
