@@ -77,6 +77,18 @@ export function makeRenderer({
   let rackBaseX = 259;
   let rackBaseY = 206;
 
+  // ✨ Sync the external positioning engine (if present) to our exact dimensions
+  if (window.UniformLayout) {
+    UniformLayout.RIB.W = RIBBON_WIDTH;
+    UniformLayout.RIB.H = RIBBON_HEIGHT;
+    UniformLayout.RIB.GAP_X = 0;
+    UniformLayout.RIB.GAP_Y = 0;
+    UniformLayout.RACK.CENTER_X = RACK_CENTER_X;
+    UniformLayout.RACK.BOTTOM_Y = BOTTOM_ROW_Y;
+    // Optional rule after 9 ribbons:
+    // UniformLayout.RACK.OFFSET_AFTER_9 = true;
+  }
+
   const $$ = (sel) => canvasEl.querySelector(sel);
   const $$$ = (sel) => Array.from(canvasEl.querySelectorAll(sel));
 
@@ -233,60 +245,48 @@ export function makeRenderer({
 
     // === RIBBONS MODE ===
     if (!useMini && allowRibbons) {
-      // Build rows: bottom row is lowest precedence, 3 per row
-      const lowestFirst = [...ordered].reverse();
-      const rowsBottomFirst = [];
-      for (let i = 0; i < lowestFirst.length; i += 3) {
-        rowsBottomFirst.push(lowestFirst.slice(i, i + 3));
-      }
-      const rowsTopFirst = [...rowsBottomFirst].reverse();
-      const totalRows = rowsTopFirst.length;
+      // 1) Highest → lowest precedence
+      const items = ordered.map(r => ({ id: r.id }));
 
-      // helper to horizontally center a row of N ribbons
-      function rowLeftPositions(count, itemW) {
-        const totalWidth = count * itemW;
-        const rowLeftBase = RACK_CENTER_X - totalWidth / 2;
-        const arr = [];
-        for (let i = 0; i < count; i++) arr.push(rowLeftBase + i * itemW);
-        return arr;
+      // 2) Compute precise geometry using the positioning engine (fallback safe)
+      const positions = (window.UniformLayout && typeof UniformLayout.layoutRibbonRack === 'function')
+        ? UniformLayout.layoutRibbonRack(items)
+        : null;
+
+      if (!positions) {
+        // If engine missing, at least keep calibration point visible
+        ensureRackCalibrationElement();
+        return;
       }
 
-      rowsTopFirst.forEach((row, topIndex) => {
-        const indexFromBottom = totalRows - 1 - topIndex;
-        // vertical stacking w/ no extra Y spacing beyond ribbon height
-        const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * RIBBON_HEIGHT;
+      // 3) Paint ribbons at returned coordinates
+      positions.forEach((p) => {
+        const meta = ribbonsById[p.id];
+        if (!meta) return;
 
-        // Reverse so highest precedence in the row is leftmost
-        const rowSortedForDisplay = [...row].reverse();
-        const leftPositions = rowLeftPositions(rowSortedForDisplay.length, RIBBON_WIDTH);
-
-        rowSortedForDisplay.forEach((rObj, i) => {
-          const meta = ribbonsById[rObj.id];
-          if (!meta) return;
-
-          const tile = new Image();
-          tile.className = "layer ribbonTile";
-          tile.src = ASSET(state, meta.img.replace(/^images\//, ""));
-          const leftPx = leftPositions[i];
-          const topPx = rowTopPx;
-          Object.assign(tile.style, {
-            position: "absolute",
-            display: "block",
-            left: `${leftPx}px`,
-            top: `${topPx}px`,
-            width: `${RIBBON_WIDTH}px`,
-            height: `${RIBBON_HEIGHT}px`,
-          });
-          tile.dataset.rid = rObj.id;
-          tile.dataset.tooltipTitle = (meta.name || rObj.id).toUpperCase();
-          tile.dataset.tooltipReg = "CAPR 39-3 precedence applies";
-          tile.dataset.tooltipWhy = "Highest awards sit top row, leftward.";
-          canvasEl.appendChild(tile);
-
-          // Devices
-          drawDevicesOnRibbon(state, rObj.id, leftPx, topPx, RIBBON_WIDTH, RIBBON_HEIGHT);
+        const tile = new Image();
+        tile.className = "layer ribbonTile";
+        tile.src = ASSET(state, meta.img.replace(/^images\//, ""));
+        Object.assign(tile.style, {
+          position: "absolute",
+          display: "block",
+          left: `${p.x}px`,
+          top: `${p.y}px`,
+          width: `${p.w}px`,
+          height: `${p.h}px`,
         });
+        tile.dataset.rid = p.id;
+        tile.dataset.tooltipTitle = (meta.name || p.id).toUpperCase();
+        tile.dataset.tooltipReg = "CAPR 39-3 precedence applies";
+        tile.dataset.tooltipWhy = "Highest awards sit top row, leftward.";
+        canvasEl.appendChild(tile);
+
+        // Devices on this ribbon
+        drawDevicesOnRibbon(state, p.id, p.x, p.y, p.w, p.h);
       });
+
+      // 4) Save layout for badge anchoring
+      state._lastRibbonLayout = positions;
 
       ensureRackCalibrationElement();
       return;
@@ -375,13 +375,21 @@ export function makeRenderer({
 
     const baseRibbonY = getTopRibbonY();
 
+    // --- Over-the-rack badges (use real ribbon anchor if available) ---
     if (overRibbonSlots.has(slot)) {
       const stackIdx = badgeSlots.OVERSTACK.length;
       const spacing = 5;
-      // Centered 25px above top ribbon row, stack upwards
-      const bottomEdgeY = baseRibbonY - 25 - stackIdx * (size.height + spacing);
-      const topY = bottomEdgeY - size.height;
-      const leftX = RACK_CENTER_X - size.width / 2;
+
+      let anchor = null;
+      if (window.UniformLayout && Array.isArray(state._lastRibbonLayout)) {
+        anchor = UniformLayout.getOverRackBadgeAnchor(state._lastRibbonLayout); // { x, y } (y = 25px above)
+      }
+
+      const centerX = anchor ? anchor.x : RACK_CENTER_X;
+      const topEdge = anchor ? (anchor.y - size.height) : (baseRibbonY - 25 - size.height);
+
+      const topY  = Math.round(topEdge - stackIdx * (size.height + spacing));
+      const leftX = Math.round(centerX - size.width / 2);
 
       const el = new Image();
       el.src = ASSET(state, `badges/${id}.png`);
@@ -396,7 +404,7 @@ export function makeRenderer({
       });
       el.dataset.tooltipTitle = id.replace(/_/g, " ").toUpperCase();
       el.dataset.tooltipReg = "Over-rack qualification badge";
-      el.dataset.tooltipWhy = "Centered 25px above top ribbon row.";
+      el.dataset.tooltipWhy = "Centered above top ribbon row.";
       const elId = `badge-${slot}-${stackIdx}`;
       el.id = elId;
       canvasEl.appendChild(el);
@@ -406,6 +414,7 @@ export function makeRenderer({
       return;
     }
 
+    // --- Other badge slots (original logic retained) ---
     if (!badgeSlots[slot]) badgeSlots[slot] = [];
 
     // Map default pocket/nameplate-relative coords from rack origin
@@ -754,4 +763,3 @@ export function makeRenderer({
     applyAlternates,
   };
 }
-
