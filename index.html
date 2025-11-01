@@ -23,9 +23,11 @@
   <script src="js/badges.data.js" defer></script>
   <script src="js/patches.data.js" defer></script>
 
+  <!-- Positioning engine (MUST load before any renderer that uses it) -->
+  <script src="js/ribbons.layout.js" defer></script>
+
   <!-- UI modules -->
   <script src="js/ribbons.ui.js" defer></script>
-  <script src="js/ribbons.layout.js" defer></script>
   <script src="js/badges.ui.js" defer></script>
   <script src="js/patches.ui.js" defer></script>
   <script src="js/rank.ui.js" defer></script>
@@ -35,18 +37,9 @@
   <script src="js/layout.js" defer></script>
   <script src="js/render.js" defer></script>
 
-  <!-- Dev tools (original, if you have them) -->
+  <!-- Dev tools (optional: include only if present) -->
   <script src="js/devtools.js" defer></script>
   <script src="js/devtools.ui.js" defer></script>
-
-  <!-- Optional worker -->
-  <script src="js/worker.render.js" defer></script>
-
-  <!-- NEW: Asset Loader UI (folder upload) -->
-  <script src="js/assets.ui.js" defer></script>
-
-  <!-- NEW: Compatibility + Dev Menu shim -->
-  <script src="js/compat.shim.js" defer></script>
 
   <!-- App bootstrap (last) -->
   <script src="js/app.js" defer></script>
@@ -152,18 +145,6 @@
         <h2 class="panelTitle">Uniforms</h2>
         <div id="uniformList"></div>
       </section>
-
-      <!-- NEW: Assets folder loader -->
-      <section class="panelSection">
-        <h2 class="panelTitle">Assets</h2>
-        <div class="row">
-          <input id="assetsFolderInput" type="file" webkitdirectory multiple />
-        </div>
-        <div class="row">
-          <button id="showAssetsReport" type="button">Assets Report</button>
-          <button id="renderAllGallery" type="button">Render Gallery</button>
-        </div>
-      </section>
     </aside>
 
     <div id="panelResizer" class="resizer" role="separator" aria-orientation="vertical"></div>
@@ -171,7 +152,8 @@
     <main id="main" class="main">
       <div id="panelShell" style="min-height:calc(100vh - 50px);">
         <div id="uniformCanvas" class="canvasShell"></div>
-        <div id="assets" class="assetPreload" aria-hidden="true" style="display:none"></div>
+        <!-- Preloader holder (id + class so either CSS style works) -->
+        <div id="assetPreload" class="assetPreload" aria-hidden="true" style="display:none"></div>
       </div>
     </main>
   </div>
@@ -182,14 +164,33 @@
     <small>© <span id="year"></span> C/Capt. Guiseppe Doran — CAP Uniform Builder</small>
   </footer>
 
+  <!-- SAFE BOOT: call your existing renderers in a safe order and show first blocking error -->
   <script>
-    (function(){ var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear(); })();
     (function(){
-      const btn=document.getElementById('hamburgerBtn');
-      const shell=document.getElementById('layoutShell');
-      if(!btn||!shell) return; btn.addEventListener('click',()=> shell.classList.toggle('sidebar-collapsed'));
+      var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const call = fn => { try { if (typeof window[fn]==='function') window[fn](); } catch(e){ console.error(fn+' error:', e); } };
+
+        // Jacket first (if you have this function)
+        if (typeof window.applyJacket === 'function') {
+          try { applyJacket(); } catch(e){ console.error('applyJacket error:', e); }
+        }
+
+        // Your normal passes (only runs if functions exist)
+        ['renderRibbons','renderBadges','renderRank','renderNameplate','renderPatches','fullRender'].forEach(call);
+
+        // Surface first blocking error ASAP
+        window.onerror = (msg, src, line, col, err) => {
+          console.error('[Fatal]', msg, src, line+':'+col, err);
+        };
+
+        // Sidebar toggle
+        const btn=document.getElementById('hamburgerBtn');
+        const shell=document.getElementById('layoutShell');
+        if(btn&&shell) btn.addEventListener('click',()=> shell.classList.toggle('sidebar-collapsed'));
+      });
     })();
-    (function(){ document.querySelectorAll('button:not([type])').forEach(b=> b.setAttribute('type','button')); })();
   </script>
 </body>
 </html>
