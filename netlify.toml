@@ -1,1 +1,70 @@
+# ===========================================
+# CAP Uniform Builder — Netlify Configuration
+# Author: C/Capt. Guiseppe Doran
+# ===========================================
+
+[build]
+  # Root directory of your static site
+  publish = "."
+  # No build command needed; it's a static HTML+JS project
+  command = ""
+
+# ===========================================
+# Redirects & SPA Fallback
+# Ensures index.html is served for all routes
+# ===========================================
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ===========================================
+# Headers
+# Adds caching and security headers
+# ===========================================
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# ===========================================
+# Contexts
+# Defines environment behavior for different stages
+# ===========================================
+
+# Production deploys (from main branch)
+[context.production]
+  command = ""
+  publish = "."
+
+# Deploy previews (from PRs)
+[context.deploy-preview]
+  command = ""
+  publish = "."
+
+# Branch deploys (feature/test branches)
+[context.branch-deploy]
+  command = ""
+  publish = "."
+
+# ===========================================
+# Asset Optimization (Optional)
+# ===========================================
+[build.processing]
+  skip_processing = false
+
+  [build.processing.css]
+    bundle = true
+    minify = true
+
+  [build.processing.js]
+    bundle = true
+    minify = true
+
+  [build.processing.images]
+    compress = true
 
