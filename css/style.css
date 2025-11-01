@@ -1,6 +1,5 @@
 /* =========================================================
    CAP Uniform Builder — Master Stylesheet
-   Author: C/Capt. Guiseppe Doran
    ========================================================= */
 
 /* Theme */
@@ -109,4 +108,30 @@ html.cal-open .calibratorPanel{left:0}
   #layoutShell.sidebar-collapsed .sidebar{left:0}
   .resizer{display:none}
   .main{padding-top:50px}
+}
+
+/* --- Render layer safety (ensures overlays are visible and on top) --- */
+#canvasShell {
+  position: relative;
+  display: inline-block;
+}
+#jacketBase {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  z-index: 1;
+  position: relative;
+}
+#overlayLayer,
+#epauletContainer {
+  position: absolute;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 2; /* above jacket */
+  opacity: 1; /* ensure visible */
+  display: block;
+}
+#uniformCanvas {
+  position: relative;
+  display: inline-block;
 }
