@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- CAP Uniform Builder — Main HTML (single-source-of-truth render) -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#002855" />
@@ -10,11 +9,6 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
-
-  <!-- Accessibility helper -->
-  <style>
-    .sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;border:0;padding:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap}
-  </style>
 
   <!-- Lib -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
@@ -40,28 +34,24 @@
   <script src="js/layout.js" defer></script>
   <script src="js/render.js" defer></script>
 
-  <!-- Dev tools -->
+  <!-- Dev tools (original, if you have them) -->
   <script src="js/devtools.js" defer></script>
   <script src="js/devtools.ui.js" defer></script>
 
   <!-- Optional worker -->
   <script src="js/worker.render.js" defer></script>
 
-  <!-- Compatibility bridge (adopts, doesn’t duplicate) -->
+  <!-- NEW: Asset Loader UI (folder upload) -->
+  <script src="js/assets.ui.js" defer></script>
+
+  <!-- NEW: Compatibility + Dev Menu shim -->
   <script src="js/compat.shim.js" defer></script>
 
   <!-- App bootstrap (last) -->
   <script src="js/app.js" defer></script>
 </head>
 <body>
-  <noscript>
-    <div style="padding:12px;background:#fff0f0;border:1px solid #fca5a5;margin:12px;border-radius:8px">
-      This app requires JavaScript to render the uniform builder. Please enable JavaScript and reload.
-    </div>
-  </noscript>
-
-  <!-- Header -->
-  <header class="appHeader" role="banner">
+  <header class="appHeader">
     <button id="hamburgerBtn" class="iconBtn" aria-label="Toggle sidebar" type="button">☰</button>
     <h1 class="appTitle">CAP Class A Uniform Builder</h1>
     <div class="headerActions">
@@ -69,14 +59,11 @@
     </div>
   </header>
 
-  <!-- Layout -->
   <div id="layoutShell" class="layoutShell">
-    <!-- Controls panel -->
-    <aside id="controls" class="sidebar" role="complementary" aria-label="Controls panel">
+    <aside id="controls" class="sidebar" aria-label="Controls panel">
       <section class="panelSection">
         <h2 class="panelTitle">Profile</h2>
         <div class="row">
-          <label class="sr-only" for="memberSelect">Member type</label>
           <select id="memberSelect" aria-label="Member type">
             <option value="cadet">Cadet</option>
             <option value="senior">Senior</option>
@@ -84,7 +71,6 @@
           </select>
         </div>
         <div class="row">
-          <label class="sr-only" for="assetBase">Asset base</label>
           <input id="assetBase" type="text" value="images" aria-label="Asset base folder" />
         </div>
       </section>
@@ -92,7 +78,6 @@
       <section class="panelSection">
         <h2 class="panelTitle">Jacket</h2>
         <div class="row">
-          <label class="sr-only" for="jacketSelect">Jacket</label>
           <select id="jacketSelect" aria-label="Select jacket">
             <option value="male">Male Jacket</option>
             <option value="female">Female Jacket</option>
@@ -125,7 +110,6 @@
       <section class="panelSection">
         <h2 class="panelTitle">Badges</h2>
         <div class="row">
-          <label class="sr-only" for="badgeSelect">Badge</label>
           <select id="badgeSelect" aria-label="Select badge"></select>
         </div>
         <div class="row">
@@ -137,7 +121,6 @@
       <section class="panelSection">
         <h2 class="panelTitle">Patches</h2>
         <div class="row">
-          <label class="sr-only" for="patchSelect">Patch</label>
           <select id="patchSelect" aria-label="Select patch"></select>
         </div>
         <div class="row">
@@ -149,7 +132,6 @@
       <section class="panelSection">
         <h2 class="panelTitle">Rank</h2>
         <div class="row">
-          <label class="sr-only" for="rankSelect">Rank</label>
           <select id="rankSelect" aria-label="Select rank"></select>
         </div>
         <div class="row">
@@ -169,27 +151,33 @@
         <h2 class="panelTitle">Uniforms</h2>
         <div id="uniformList"></div>
       </section>
+
+      <!-- NEW: Assets folder loader -->
+      <section class="panelSection">
+        <h2 class="panelTitle">Assets</h2>
+        <div class="row">
+          <input id="assetsFolderInput" type="file" webkitdirectory multiple />
+        </div>
+        <div class="row">
+          <button id="showAssetsReport" type="button">Assets Report</button>
+          <button id="renderAllGallery" type="button">Render Gallery</button>
+        </div>
+      </section>
     </aside>
 
-    <div id="panelResizer" class="resizer" role="separator" aria-orientation="vertical" aria-label="Resize panel"></div>
+    <div id="panelResizer" class="resizer" role="separator" aria-orientation="vertical"></div>
 
-    <!-- Main render area. IMPORTANT: we DO NOT hardcode an <img> here.
-         Your app OR the compat shim will ensure exactly one base image exists. -->
-    <main id="main" class="main" role="main">
+    <main id="main" class="main">
       <div id="panelShell" style="min-height:calc(100vh - 50px);">
-        <div id="uniformCanvas" class="canvasShell">
-          <!-- single root for renderer; compat shim will ensure #canvasShell exists inside -->
-        </div>
-
-        <!-- Hidden asset preloader -->
+        <div id="uniformCanvas" class="canvasShell"></div>
         <div id="assets" class="assetPreload" aria-hidden="true" style="display:none"></div>
       </div>
     </main>
   </div>
 
-  <div id="tooltip" class="tooltip" role="tooltip" aria-hidden="true"></div>
+  <div id="tooltip" class="tooltip" aria-hidden="true"></div>
 
-  <footer class="appFooter" role="contentinfo">
+  <footer class="appFooter">
     <small>© <span id="year"></span> C/Capt. Guiseppe Doran — CAP Uniform Builder</small>
   </footer>
 
