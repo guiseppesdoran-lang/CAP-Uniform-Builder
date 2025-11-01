@@ -10,20 +10,20 @@
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Lib -->
+  <!-- Library -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 
-  <!-- Core utilities -->
+  <!-- Core -->
   <script src="js/util.js" defer></script>
   <script src="js/state.js" defer></script>
   <script src="js/uniforms.js" defer></script>
 
-  <!-- Data modules -->
+  <!-- Data -->
   <script src="js/ribbons.data.js" defer></script>
   <script src="js/badges.data.js" defer></script>
   <script src="js/patches.data.js" defer></script>
 
-  <!-- Positioning engine (MUST load before any renderer that uses it) -->
+  <!-- Positioning engine MUST load before renderer -->
   <script src="js/ribbons.layout.js" defer></script>
 
   <!-- UI modules -->
@@ -37,7 +37,7 @@
   <script src="js/layout.js" defer></script>
   <script src="js/render.js" defer></script>
 
-  <!-- Dev tools (optional: include only if present) -->
+  <!-- Dev tools (include only if present) -->
   <script src="js/devtools.js" defer></script>
   <script src="js/devtools.ui.js" defer></script>
 
@@ -152,7 +152,7 @@
     <main id="main" class="main">
       <div id="panelShell" style="min-height:calc(100vh - 50px);">
         <div id="uniformCanvas" class="canvasShell"></div>
-        <!-- Preloader holder (id + class so either CSS style works) -->
+        <!-- Preloader holder (both id and class for safety) -->
         <div id="assetPreload" class="assetPreload" aria-hidden="true" style="display:none"></div>
       </div>
     </main>
@@ -164,31 +164,14 @@
     <small>© <span id="year"></span> C/Capt. Guiseppe Doran — CAP Uniform Builder</small>
   </footer>
 
-  <!-- SAFE BOOT: call your existing renderers in a safe order and show first blocking error -->
+  <!-- Safe boot: call your existing renderers -->
   <script>
     (function(){
       var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
-
       window.addEventListener('DOMContentLoaded', () => {
         const call = fn => { try { if (typeof window[fn]==='function') window[fn](); } catch(e){ console.error(fn+' error:', e); } };
-
-        // Jacket first (if you have this function)
-        if (typeof window.applyJacket === 'function') {
-          try { applyJacket(); } catch(e){ console.error('applyJacket error:', e); }
-        }
-
-        // Your normal passes (only runs if functions exist)
+        if (typeof window.applyJacket === 'function') { try { applyJacket(window.state || {}); } catch(e){ console.error('applyJacket error:', e); } }
         ['renderRibbons','renderBadges','renderRank','renderNameplate','renderPatches','fullRender'].forEach(call);
-
-        // Surface first blocking error ASAP
-        window.onerror = (msg, src, line, col, err) => {
-          console.error('[Fatal]', msg, src, line+':'+col, err);
-        };
-
-        // Sidebar toggle
-        const btn=document.getElementById('hamburgerBtn');
-        const shell=document.getElementById('layoutShell');
-        if(btn&&shell) btn.addEventListener('click',()=> shell.classList.toggle('sidebar-collapsed'));
       });
     })();
   </script>
