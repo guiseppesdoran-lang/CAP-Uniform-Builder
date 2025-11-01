@@ -3,283 +3,110 @@
    Author: C/Capt. Guiseppe Doran
    ========================================================= */
 
-/* ---------- Theme Variables ---------- */
-:root {
-  --brand: #002855;
-  --accent: #0062ff;
-  --bg: #eef1f5;
-  --ink: #0d1b2a;
-  --muted: #6b7280;
-  --panel: #ffffff;
-  --line: #cfd6df;
+/* Theme */
+:root{
+  --brand:#002855;
+  --accent:#0062ff;
+  --bg:#eef1f5;
+  --ink:#0d1b2a;
+  --muted:#6b7280;
+  --panel:#ffffff;
+  --line:#cfd6df;
 }
 
-/* ---------- Global Resets ---------- */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* Reset */
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
 }
 
-body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
-  background: var(--bg);
-  color: var(--ink);
-  min-height: 100vh;
+/* Header */
+.appHeader{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-bottom:1px solid var(--line);
+  background:var(--brand);color:#fff;position:relative;z-index:5;
+}
+.appTitle{margin-left:12px;font-size:18px;letter-spacing:.5px}
+.iconBtn{background:none;border:none;color:#fff;font-size:22px;cursor:pointer}
+.primary{background:var(--accent)}
+
+/* Layout */
+#layoutShell{
+  display:grid;grid-template-columns:320px 6px 1fr;
+  min-height:calc(100vh - 50px);
+  transition:grid-template-columns .3s ease;
+}
+#layoutShell.sidebar-collapsed{grid-template-columns:64px 6px 1fr}
+
+/* Sidebar */
+.sidebar{
+  background:var(--panel);border-right:1px solid var(--line);
+  padding:12px;overflow-y:auto;
+}
+.panelSection{margin-bottom:16px}
+.panelTitle{
+  font-size:15px;color:var(--brand);margin-bottom:8px;
+  border-bottom:1px solid var(--line);padding-bottom:4px;
+}
+.row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.row select,.row input,.row button{flex:1;padding:4px 6px;font-size:13px}
+button{
+  background:var(--brand);color:#fff;border:none;border-radius:4px;
+  padding:6px 10px;cursor:pointer;transition:background .2s;
+}
+button:hover{background:var(--accent)}
+
+/* Resizer */
+.resizer{background:var(--line);cursor:col-resize;width:6px;min-width:6px;transition:background .2s}
+.resizer:hover{background:var(--accent)}
+
+/* Main */
+.main{background:var(--panel);display:flex;align-items:center;justify-content:center;position:relative}
+.canvasShell{position:relative;display:inline-block;overflow:hidden}
+#jacketBase{max-width:100%;height:auto;display:block}
+#overlayLayer{position:absolute;top:0;left:0;pointer-events:none}
+#epauletContainer{position:absolute;top:0;left:0;pointer-events:none}
+#assetPreload{display:none}
+
+/* Calibrator */
+.calibratorTab{
+  position:fixed;left:0;top:50%;transform:translateY(-50%);
+  background:var(--brand);color:#fff;padding:8px;border-radius:0 6px 6px 0;
+  cursor:pointer;z-index:9;user-select:none
+}
+.calibratorPanel{
+  position:fixed;top:0;left:-260px;width:260px;height:100%;
+  background:var(--panel);border-right:1px solid var(--line);
+  box-shadow:4px 0 8px rgba(0,0,0,.1);
+  padding:16px;overflow-y:auto;transition:left .3s ease;z-index:8;
+}
+html.cal-open .calibratorPanel{left:0}
+.calibratorPanel h2{color:var(--brand);font-size:16px;margin-bottom:10px}
+.calRow{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.calRow label{flex:0 0 60px;font-size:13px;color:var(--muted)}
+.calRow input[type="range"]{flex:1}
+.calVal{font-size:13px;color:var(--muted);width:40px;text-align:right}
+
+/* Tooltip */
+.tooltip{
+  position:fixed;background:#000;color:#fff;font-size:12px;
+  padding:6px 8px;border-radius:4px;pointer-events:none;opacity:0;
+  transition:opacity .1s ease;z-index:50
 }
 
-/* ---------- Header ---------- */
-.appHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--line);
-  background: var(--brand);
-  color: #fff;
-  position: relative;
-  z-index: 5;
-}
+/* Footer */
+.appFooter{text-align:center;font-size:12px;color:var(--muted);padding:10px 0;border-top:1px solid var(--line);background:var(--panel)}
 
-.appHeader .appTitle {
-  margin-left: 12px;
-  font-size: 18px;
-  letter-spacing: 0.5px;
-}
-
-.iconBtn {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-/* ---------- Layout Shell ---------- */
-#layoutShell {
-  display: grid;
-  grid-template-columns: 320px 6px 1fr;
-  min-height: calc(100vh - 50px);
-  transition: grid-template-columns 0.3s ease;
-}
-
-#layoutShell.sidebar-collapsed {
-  grid-template-columns: 64px 6px 1fr;
-}
-
-/* ---------- Sidebar ---------- */
-.sidebar {
-  background: var(--panel);
-  border-right: 1px solid var(--line);
-  padding: 12px;
-  overflow-y: auto;
-}
-
-.panelSection {
-  margin-bottom: 16px;
-}
-
-.panelSection h2 {
-  font-size: 15px;
-  color: var(--brand);
-  margin-bottom: 8px;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 4px;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 6px;
-}
-
-.row select,
-.row input,
-.row button {
-  flex: 1;
-  padding: 4px 6px;
-  font-size: 13px;
-}
-
-button {
-  background: var(--brand);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 10px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-button:hover {
-  background: var(--accent);
-}
-
-.primary {
-  background: var(--accent);
-}
-
-/* ---------- Resizer ---------- */
-.resizer {
-  background: var(--line);
-  cursor: col-resize;
-  width: 6px;
-  min-width: 6px;
-  transition: background 0.2s;
-}
-
-.resizer:hover {
-  background: var(--accent);
-}
-
-/* ---------- Main Area ---------- */
-.main {
-  background: var(--panel);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.canvasShell {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-}
-
-#jacketBase {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-#overlayLayer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-}
-
-#epauletContainer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-}
-
-#assetPreload {
-  display: none;
-}
-
-/* ---------- Calibrator ---------- */
-.calibratorTab {
-  position: fixed;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--brand);
-  color: #fff;
-  padding: 8px;
-  border-radius: 0 6px 6px 0;
-  cursor: pointer;
-  z-index: 9;
-  user-select: none;
-}
-
-.calibratorPanel {
-  position: fixed;
-  top: 0;
-  left: -260px;
-  width: 260px;
-  height: 100%;
-  background: var(--panel);
-  border-right: 1px solid var(--line);
-  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-  overflow-y: auto;
-  transition: left 0.3s ease;
-  z-index: 8;
-}
-
-html.cal-open .calibratorPanel {
-  left: 0;
-}
-
-.calibratorPanel h2 {
-  color: var(--brand);
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.calRow {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-
-.calRow label {
-  flex: 0 0 60px;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.calRow input[type="range"] {
-  flex: 1;
-}
-
-.calVal {
-  font-size: 13px;
-  color: var(--muted);
-  width: 40px;
-  text-align: right;
-}
-
-/* ---------- Tooltip ---------- */
-.tooltip {
-  position: fixed;
-  background: #000;
-  color: #fff;
-  font-size: 12px;
-  padding: 6px 8px;
-  border-radius: 4px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.1s ease;
-  z-index: 50;
-}
-
-/* ---------- Footer ---------- */
-.appFooter {
-  text-align: center;
-  font-size: 12px;
-  color: var(--muted);
-  padding: 10px 0;
-  border-top: 1px solid var(--line);
-  background: var(--panel);
-}
-
-/* ---------- Responsive ---------- */
-@media (max-width: 768px) {
-  #layoutShell {
-    grid-template-columns: 1fr;
+/* Responsive */
+@media (max-width:768px){
+  #layoutShell{grid-template-columns:1fr}
+  .sidebar{
+    position:fixed;left:-320px;top:0;height:100%;z-index:10;transition:left .3s ease
   }
-  .sidebar {
-    position: fixed;
-    left: -320px;
-    top: 0;
-    height: 100%;
-    z-index: 10;
-    transition: left 0.3s ease;
-  }
-  #layoutShell.sidebar-collapsed .sidebar {
-    left: 0;
-  }
-  .resizer {
-    display: none;
-  }
-  .main {
-    padding-top: 50px;
-  }
+  #layoutShell.sidebar-collapsed .sidebar{left:0}
+  .resizer{display:none}
+  .main{padding-top:50px}
 }
