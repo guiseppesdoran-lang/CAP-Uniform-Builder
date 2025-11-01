@@ -10,24 +10,25 @@
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Library -->
+  <!-- Lib -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 
-  <!-- Core -->
+  <!-- Path resolver MUST load before anything that creates <img> -->
+  <script src="js/asset-paths.js" defer></script>
+
+  <!-- Core utilities & data (your existing modules) -->
   <script src="js/util.js" defer></script>
   <script src="js/state.js" defer></script>
   <script src="js/uniforms.js" defer></script>
 
-  <!-- Data -->
+  <!-- Data modules -->
   <script src="js/ribbons.data.js" defer></script>
   <script src="js/badges.data.js" defer></script>
   <script src="js/patches.data.js" defer></script>
 
-  <!-- Positioning engine MUST load before renderer -->
-  <script src="js/ribbons.layout.js" defer></script>
-
   <!-- UI modules -->
   <script src="js/ribbons.ui.js" defer></script>
+  <script src="js/ribbons.layout.js" defer></script>
   <script src="js/badges.ui.js" defer></script>
   <script src="js/patches.ui.js" defer></script>
   <script src="js/rank.ui.js" defer></script>
@@ -35,14 +36,46 @@
   <!-- Engine / layout -->
   <script src="js/calibration.js" defer></script>
   <script src="js/layout.js" defer></script>
+
+  <!-- UPDATED renderer that uses AssetPath.url everywhere -->
   <script src="js/render.js" defer></script>
 
-  <!-- Dev tools (include only if present) -->
+  <!-- Dev tools -->
   <script src="js/devtools.js" defer></script>
   <script src="js/devtools.ui.js" defer></script>
 
+  <!-- Optional worker -->
+  <script src="js/worker.render.js" defer></script>
+
+  <!-- Assets helper UI (optional) -->
+  <script src="js/assets.ui.js" defer></script>
+
+  <!-- Compatibility shim (optional) -->
+  <script src="js/compat.shim.js" defer></script>
+
   <!-- App bootstrap (last) -->
   <script src="js/app.js" defer></script>
+
+  <!-- Tiny hook to sync the asset base with the resolver at runtime -->
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initial set from any global 'state' or input field if you use one
+      try {
+        if (window.state && state.assetBase) {
+          AssetPath.setBase(state.assetBase);
+        }
+      } catch(e) {}
+
+      // If your UI has an input with id="assetBase", keep resolver in sync
+      const baseInput = document.getElementById('assetBase');
+      if (baseInput) {
+        AssetPath.setBase(baseInput.value || 'images');
+        baseInput.addEventListener('input', (e) => {
+          AssetPath.setBase(e.target.value || 'images');
+        });
+      }
+    });
+  </script>
 </head>
 <body>
   <header class="appHeader">
@@ -134,16 +167,19 @@
       </section>
 
       <section class="panelSection">
-        <h2 class="panelTitle">Nameplate</h2>
-        <div class="row">
-          <input id="nameplateInput" type="text" placeholder="LAST NAME" aria-label="Nameplate text" />
-          <button id="addNameplate" type="button">Apply</button>
-        </div>
+        <h2 class="panelTitle">Uniforms</h2>
+        <div id="uniformList"></div>
       </section>
 
       <section class="panelSection">
-        <h2 class="panelTitle">Uniforms</h2>
-        <div id="uniformList"></div>
+        <h2 class="panelTitle">Assets</h2>
+        <div class="row">
+          <input id="assetsFolderInput" type="file" webkitdirectory multiple />
+        </div>
+        <div class="row">
+          <button id="showAssetsReport" type="button">Assets Report</button>
+          <button id="renderAllGallery" type="button">Render Gallery</button>
+        </div>
       </section>
     </aside>
 
@@ -152,8 +188,7 @@
     <main id="main" class="main">
       <div id="panelShell" style="min-height:calc(100vh - 50px);">
         <div id="uniformCanvas" class="canvasShell"></div>
-        <!-- Preloader holder (both id and class for safety) -->
-        <div id="assetPreload" class="assetPreload" aria-hidden="true" style="display:none"></div>
+        <div id="assets" class="assetPreload" aria-hidden="true" style="display:none"></div>
       </div>
     </main>
   </div>
@@ -164,16 +199,14 @@
     <small>© <span id="year"></span> C/Capt. Guiseppe Doran — CAP Uniform Builder</small>
   </footer>
 
-  <!-- Safe boot: call your existing renderers -->
   <script>
+    (function(){ var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear(); })();
     (function(){
-      var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
-      window.addEventListener('DOMContentLoaded', () => {
-        const call = fn => { try { if (typeof window[fn]==='function') window[fn](); } catch(e){ console.error(fn+' error:', e); } };
-        if (typeof window.applyJacket === 'function') { try { applyJacket(window.state || {}); } catch(e){ console.error('applyJacket error:', e); } }
-        ['renderRibbons','renderBadges','renderRank','renderNameplate','renderPatches','fullRender'].forEach(call);
-      });
+      const btn=document.getElementById('hamburgerBtn');
+      const shell=document.getElementById('layoutShell');
+      if(!btn||!shell) return; btn.addEventListener('click',()=> shell.classList.toggle('sidebar-collapsed'));
     })();
+    (function(){ document.querySelectorAll('button:not([type])').forEach(b=> b.setAttribute('type','button')); })();
   </script>
 </body>
 </html>
