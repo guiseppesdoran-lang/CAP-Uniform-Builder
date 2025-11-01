@@ -1,54 +1,5 @@
 // js/render.js
 // Centralized, modular rendering for the CAP Uniform Builder preview.
-//
-// Export:
-//   makeRenderer(options) -> renderer object with methods:
-//     - fullRender(state, prevUniform?)
-//     - applyJacket(state)
-//     - renderRack(state)
-//     - renderAllBadges(state)
-//     - renderPatches(state)
-//     - renderRank(state.rank)
-//     - renderNameplate(state)
-//     - getTopRibbonY()
-//     - ensureRackCalibrationElement()
-//     - clearLayers(className?)
-//   The renderer keeps no hidden state: you pass `state` each call.
-//
-// Expected `state` shape (minimal):
-//   {
-//     member: 'cadet' | 'senior' | 'senior_nco',
-//     gender: 'male' | 'female',
-//     uniform: <key in uniforms>,
-//     assetBase: 'images',
-//     ribbons: [{ id, devices: { [deviceId]: qty } }],
-//     badges: [badgeId, ...],
-//     patches: [patchId, ...],
-//     rank: 'C/AB' | 'C/Amn' | ...
-//     forceMini: boolean
-//   }
-//
-// Options:
-//   canvasEl               : HTMLElement container for layers (absolute positioning inside).
-//   uniforms               : map of uniformId -> { male, female, ribbons:boolean, mini:boolean }
-//   uiAuthz                : UI auth flags per uniformId (showRibbons/showBadges/showPatches)
-//   ribbonsMeta            : Array<{ id, name, img, smOnly?, precedence:number, devices?:... }>
-//   miniMedalMap           : { [ribbonId]: "images/medals/..." }
-//   deviceMeta             : { [deviceId]: {label, src, w, h, weight} }
-//   patchMeta              : { [patchId]: { slotHint, w, h, img } }
-//   badgeLocations         : { [badgeId]: "OLP"|"OLPU"|"OLPA"|"ORP"|"UN"|"ON"|"LP"|"LRP" }
-//   customBadgeSizes       : { [badgeId]: { width, height } }
-//   allowedCadetBadgesSet  : Set<string> (badges that cadets may wear)
-//   isFieldUniform         : (uniformId) => boolean
-//   alternates             : {
-//       badgeToPatch: { [badgeId]: patchId },
-//       patchToBadge: { [patchId]: badgeId },
-//       ribbonToPatch:{ [ribbonId]: patchId },
-//       patchToRibbon:{ [patchId]: ribbonId }
-//   }
-//   registerCalibratable   : (elementId, displayName, x, y, rotation) => void
-//
-//   NOTE: Asset resolution uses ASSET(path) = `${state.assetBase}/${path}`
 
 export function makeRenderer({
   canvasEl,
@@ -70,8 +21,8 @@ export function makeRenderer({
   // -------------------------
   const RIBBON_WIDTH = 23;
   const RIBBON_HEIGHT = 7.2;
-  const BOTTOM_ROW_Y = 206; // anchor for bottom ribbon row
-  const RACK_CENTER_X = 293.5;
+  const BOTTOM_ROW_Y = 206; // anchor for bottom ribbon row (tweak to your art)
+  const RACK_CENTER_X = 293.5; // horizontal center (tweak to your art)
 
   // Fallback rack base (is made calibratable via ensureRackCalibrationElement)
   let rackBaseX = 259;
@@ -87,6 +38,8 @@ export function makeRenderer({
     UniformLayout.RACK.BOTTOM_Y = BOTTOM_ROW_Y;
     // Optional rule after 9 ribbons:
     // UniformLayout.RACK.OFFSET_AFTER_9 = true;
+  } else {
+    console.warn("[UniformLayout] not loaded before render.js — using fallback guards");
   }
 
   const $$ = (sel) => canvasEl.querySelector(sel);
@@ -105,8 +58,10 @@ export function makeRenderer({
     $$$(`${sel}`).forEach((n) => n.remove());
   }
 
+  // Default ON unless explicitly false
   function isUniformRibbonsAllowed(state) {
-    return uniforms[state.uniform]?.ribbons === true;
+    const v = uniforms[state.uniform]?.ribbons;
+    return v === undefined ? true : !!v;
   }
   function uniformPrefersMini(state) {
     return uniforms[state.uniform]?.mini === true;
@@ -118,7 +73,10 @@ export function makeRenderer({
   function applyJacket(state) {
     clearLayers("jacket");
     const base = uniforms[state.uniform]?.[state.gender];
-    if (!base) return;
+    if (!base) {
+      console.warn("[applyJacket] No base image for", { uniform: state.uniform, gender: state.gender, config: uniforms[state.uniform] });
+      return;
+    }
     const img = new Image();
     img.className = "layer jacket";
     img.src = ASSET(state, base);
@@ -234,8 +192,8 @@ export function makeRenderer({
     const allowRibbons = isUniformRibbonsAllowed(state);
     const prefersMini = uniformPrefersMini(state);
     const manualMini = !!state.forceMini;
-    const autoMini = prefersMini; // "auto" means on mess/semi-formal we swap
-    const useMini = (autoMini && allowRibbons === false) || manualMini || (prefersMini && allowRibbons === false);
+    // Mess/semi-formal: always mini; manual override wins
+    const useMini = manualMini || prefersMini;
 
     const ordered = sortRibbonsByPrecedence(state);
     if (!ordered.length) {
@@ -254,7 +212,6 @@ export function makeRenderer({
         : null;
 
       if (!positions) {
-        // If engine missing, at least keep calibration point visible
         ensureRackCalibrationElement();
         return;
       }
@@ -262,7 +219,7 @@ export function makeRenderer({
       // 3) Paint ribbons at returned coordinates
       positions.forEach((p) => {
         const meta = ribbonsById[p.id];
-        if (!meta) return;
+        if (!meta) { console.warn("[renderRack] ribbon id not in ribbonsMeta:", p.id); return; }
 
         const tile = new Image();
         tile.className = "layer ribbonTile";
@@ -392,6 +349,7 @@ export function makeRenderer({
       const leftX = Math.round(centerX - size.width / 2);
 
       const el = new Image();
+      // If your badges live elsewhere, adjust this path:
       el.src = ASSET(state, `badges/${id}.png`);
       el.className = "layer badge";
       Object.assign(el.style, {
@@ -474,7 +432,8 @@ export function makeRenderer({
   function renderAllBadges(state) {
     $$$(".layer.badge").forEach((n) => n.remove());
     resetBadgeSlots();
-    if (!uiAuthz[state.uniform]?.showBadges) return;
+    // default ON unless explicitly false
+    if (uiAuthz[state.uniform] && uiAuthz[state.uniform].showBadges === false) return;
 
     const maxTotal = 5;
     const applied = [];
@@ -521,7 +480,8 @@ export function makeRenderer({
 
   function renderPatches(state) {
     $$$(".layer.patch").forEach((n) => n.remove());
-    if (!uiAuthz[state.uniform]?.showPatches) return;
+    // default ON unless explicitly false
+    if (uiAuthz[state.uniform] && uiAuthz[state.uniform].showPatches === false) return;
 
     planPatches(state, state.patches || []);
 
@@ -720,38 +680,50 @@ export function makeRenderer({
   // Uniform auth changes & full render pipeline
   // -------------------------
   function renderUniformUIAvailability(_state, _prevUniform) {
-    // No DOM side-panels here; this module renders only the canvas.
-    // Keep hook placeholder for future cross-module UI sync if needed.
+    // Hook placeholder (canvas only in this module)
   }
 
   function fullRender(state, prevUniform) {
+    // Normalize possible UI keys (optional; keep if your UI uses these names)
+    const UNIFORM_ALIASES = {
+      class_b:"blues_b", class_a:"blues_a",
+      mess:"mess_dress", messdress:"mess_dress",
+      flightsuit:"flight_suit", ocp:"corporate_field",
+      abu:"abu", polo:"polo"
+    };
+    state.uniform = UNIFORM_ALIASES[state.uniform] || state.uniform;
+
+    console.log("[fullRender] start", {
+      uniform: state.uniform, gender: state.gender, member: state.member,
+      ribbonsCount: state.ribbons?.length || 0,
+      badgesCount: state.badges?.length || 0,
+      patchesCount: state.patches?.length || 0,
+      assetBase: state.assetBase
+    });
+
     applyJacket(state);
     renderUniformUIAvailability(state, prevUniform);
     renderPatches(state);
     renderRack(state);
     renderAllBadges(state);
     renderRank(state, state.rank);
-    // Nameplate is user-triggered outside (but safe to keep callable)
+    // Nameplate remains callable on demand
   }
 
   // -------------------------
   // Public surface
   // -------------------------
   return {
-    // pipeline
     fullRender,
-    // elemental
     applyJacket,
     renderRack,
     renderAllBadges,
     renderPatches,
     renderRank: (state) => renderRank(state, state.rank),
     renderNameplate,
-    // utilities
     getTopRibbonY,
     ensureRackCalibrationElement,
     clearLayers,
-    // allow external calibration X/Y updates to sync anchor quickly
     setRackBase(x, y) {
       rackBaseX = Number.isFinite(x) ? x : rackBaseX;
       rackBaseY = Number.isFinite(y) ? y : rackBaseY;
