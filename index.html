@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- =========================================================
-       CAP Uniform Builder — Main HTML
-       Author: C/Capt. Guiseppe Doran
-       Fixed: JS order, missing files, stylesheet path
-       ========================================================= -->
+  <!-- CAP Uniform Builder — HTML shell -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#002855" />
@@ -15,12 +11,11 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Accessibility utility -->
+  <!-- sr-only utility -->
   <style>
-    .sr-only {
-      position:absolute!important;
-      width:1px;height:1px;margin:-1px;border:0;padding:0;
-      clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;
+    .sr-only{
+      position:absolute!important;width:1px;height:1px;margin:-1px;border:0;padding:0;
+      clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap
     }
   </style>
 
@@ -43,7 +38,7 @@
   <script src="js/patches.ui.js" defer></script>
   <script src="js/rank.ui.js" defer></script>
 
-  <!-- Core engine -->
+  <!-- Engine / layout -->
   <script src="js/calibration.js" defer></script>
   <script src="js/layout.js" defer></script>
   <script src="js/render.js" defer></script>
@@ -55,10 +50,9 @@
   <!-- Optional worker -->
   <script src="js/worker.render.js" defer></script>
 
-  <!-- Main app -->
+  <!-- App bootstrap -->
   <script src="js/app.js" defer></script>
 </head>
-
 <body>
   <noscript>
     <div style="padding:12px;background:#fff0f0;border:1px solid #fca5a5;margin:12px;border-radius:8px">
@@ -77,11 +71,30 @@
 
   <!-- Layout -->
   <div id="layoutShell" class="layoutShell">
-    <aside id="sidebar" class="sidebar" role="complementary" aria-label="Controls panel">
+    <!-- Controls panel (ID must be 'controls') -->
+    <aside id="controls" class="sidebar" role="complementary" aria-label="Controls panel">
+      <!-- Member + Asset base -->
+      <section class="panelSection">
+        <h2 class="panelTitle">Profile</h2>
+        <div class="row">
+          <label class="sr-only" for="memberSelect">Member type</label>
+          <select id="memberSelect" aria-label="Member type">
+            <option value="cadet">Cadet</option>
+            <option value="senior">Senior</option>
+            <option value="senior_nco">Senior NCO</option>
+          </select>
+        </div>
+        <div class="row">
+          <label class="sr-only" for="assetBase">Asset base</label>
+          <input id="assetBase" type="text" value="images" aria-label="Asset base folder" />
+        </div>
+      </section>
+
       <!-- Jacket -->
       <section class="panelSection">
         <h2 class="panelTitle">Jacket</h2>
         <div class="row">
+          <label class="sr-only" for="jacketSelect">Jacket</label>
           <select id="jacketSelect" aria-label="Select jacket">
             <option value="male">Male Jacket</option>
             <option value="female">Female Jacket</option>
@@ -117,6 +130,7 @@
       <section class="panelSection">
         <h2 class="panelTitle">Badges</h2>
         <div class="row">
+          <label class="sr-only" for="badgeSelect">Badge</label>
           <select id="badgeSelect" aria-label="Select badge"></select>
         </div>
         <div class="row">
@@ -129,6 +143,7 @@
       <section class="panelSection">
         <h2 class="panelTitle">Patches</h2>
         <div class="row">
+          <label class="sr-only" for="patchSelect">Patch</label>
           <select id="patchSelect" aria-label="Select patch"></select>
         </div>
         <div class="row">
@@ -141,6 +156,7 @@
       <section class="panelSection">
         <h2 class="panelTitle">Rank</h2>
         <div class="row">
+          <label class="sr-only" for="rankSelect">Rank</label>
           <select id="rankSelect" aria-label="Select rank"></select>
         </div>
         <div class="row">
@@ -156,57 +172,30 @@
           <button id="addNameplate" type="button">Apply</button>
         </div>
       </section>
+
+      <!-- Uniform quick list (if used by app.js) -->
+      <section class="panelSection">
+        <h2 class="panelTitle">Uniforms</h2>
+        <div id="uniformList"></div>
+      </section>
     </aside>
 
-    <div id="resizer" class="resizer" role="separator" aria-orientation="vertical" aria-label="Resize panel"></div>
+    <!-- Resizer (ID must be 'panelResizer') -->
+    <div id="panelResizer" class="resizer" role="separator" aria-orientation="vertical" aria-label="Resize panel"></div>
 
+    <!-- Main canvas area -->
     <main id="main" class="main" role="main">
       <div id="panelShell" style="min-height:calc(100vh - 50px);">
-        <div id="canvasShell" class="canvasShell">
-          <img id="jacketBase" alt="Uniform jacket base" />
-          <div id="epauletContainer" class="epauletContainer" aria-hidden="true"></div>
-          <div id="overlayLayer" class="overlayLayer"></div>
-        </div>
-        <div id="assetPreload" class="assetPreload" aria-hidden="true"></div>
+        <!-- Render target (ID must be 'uniformCanvas') -->
+        <div id="uniformCanvas" class="canvasShell"></div>
+
+        <!-- Hidden asset preloader (ID must be 'assets') -->
+        <div id="assets" class="assetPreload" aria-hidden="true" style="display:none"></div>
       </div>
     </main>
   </div>
 
-  <!-- Calibrator -->
-  <div id="calibratorTab" class="calibratorTab" aria-controls="calibratorPanel" aria-expanded="false" role="button" tabindex="0">
-    <span id="calibratorArrow" aria-hidden="true">›</span>
-    <span class="sr-only">Toggle calibration panel</span>
-  </div>
-
-  <aside id="calibratorPanel" class="calibratorPanel" aria-hidden="true">
-    <h2>Calibration</h2>
-    <div class="calRow">
-      <label for="rackXRange">X (range)</label>
-      <input id="rackXRange" type="range" min="-200" max="600" step="1" />
-      <div class="calVal" id="readX">0</div>
-    </div>
-    <div class="calRow">
-      <label for="rackXNumber">X (px)</label>
-      <input id="rackXNumber" type="number" inputmode="numeric" />
-      <div class="calVal">px</div>
-    </div>
-    <div class="calRow">
-      <label for="rackYRange">Y (range)</label>
-      <input id="rackYRange" type="range" min="-200" max="600" step="1" />
-      <div class="calVal" id="readY">0</div>
-    </div>
-    <div class="calRow">
-      <label for="rackYNumber">Y (px)</label>
-      <input id="rackYNumber" type="number" inputmode="numeric" />
-      <div class="calVal">px</div>
-    </div>
-    <div class="calRow">
-      <button id="toggleMini" type="button">Toggle Mini Medals</button>
-      <button id="autoMini" type="button">Auto-Layout</button>
-    </div>
-  </aside>
-
-  <!-- Tooltip -->
+  <!-- Tooltip (ID must be 'tooltip') -->
   <div id="tooltip" class="tooltip" role="tooltip" aria-hidden="true"></div>
 
   <!-- Footer -->
@@ -214,29 +203,22 @@
     <small>© <span id="year"></span> C/Capt. Guiseppe Doran — CAP Uniform Builder</small>
   </footer>
 
-  <!-- Bootstraps -->
+  <!-- Tiny bootstraps -->
   <script>
-    (function(){
-      var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
-    })();
-    (function(){
-      const tab=document.getElementById('calibratorTab');
-      const panel=document.getElementById('calibratorPanel');
-      if(!tab||!panel) return;
-      function toggle(){const ex=tab.getAttribute('aria-expanded')==='true';
-        tab.setAttribute('aria-expanded',String(!ex));
-        panel.setAttribute('aria-hidden',String(ex));
-        document.documentElement.classList.toggle('cal-open',!ex);}
-      tab.addEventListener('click',toggle);
-      tab.addEventListener('keydown',e=>{
-        if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}
-      });
-    })();
+    // Footer year
+    (function(){ var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear(); })();
+
+    // Sidebar hamburger
     (function(){
       const btn=document.getElementById('hamburgerBtn');
       const shell=document.getElementById('layoutShell');
       if(!btn||!shell) return;
-      btn.addEventListener('click',()=>shell.classList.toggle('sidebar-collapsed'));
+      btn.addEventListener('click',()=> shell.classList.toggle('sidebar-collapsed'));
+    })();
+
+    // Ensure any <button> with no type won’t submit forms
+    (function(){
+      document.querySelectorAll('button:not([type])').forEach(b=> b.setAttribute('type','button'));
     })();
   </script>
 </body>
