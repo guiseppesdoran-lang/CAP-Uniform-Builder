@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- CAP Uniform Builder — HTML shell -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#002855" />
   <link rel="icon" href="images/favicon.png" />
   <title>CAP Class A Uniform Builder</title>
 
-  <!-- Stylesheet -->
+  <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- sr-only utility -->
   <style>
     .sr-only{
       position:absolute!important;width:1px;height:1px;margin:-1px;border:0;padding:0;
@@ -47,7 +45,7 @@
   <script src="js/devtools.js" defer></script>
   <script src="js/devtools.ui.js" defer></script>
 
-  <!-- Optional worker -->
+  <!-- Optional worker (present in your repo) -->
   <script src="js/worker.render.js" defer></script>
 
   <!-- App bootstrap -->
@@ -173,7 +171,7 @@
         </div>
       </section>
 
-      <!-- Uniform quick list (if used by app.js) -->
+      <!-- Uniform list (used by app.js) -->
       <section class="panelSection">
         <h2 class="panelTitle">Uniforms</h2>
         <div id="uniformList"></div>
@@ -183,11 +181,18 @@
     <!-- Resizer (ID must be 'panelResizer') -->
     <div id="panelResizer" class="resizer" role="separator" aria-orientation="vertical" aria-label="Resize panel"></div>
 
-    <!-- Main canvas area -->
+    <!-- Main render area -->
     <main id="main" class="main" role="main">
       <div id="panelShell" style="min-height:calc(100vh - 50px);">
-        <!-- Render target (ID must be 'uniformCanvas') -->
-        <div id="uniformCanvas" class="canvasShell"></div>
+        <!-- This wrapper keeps compatibility with BOTH app.js and renderer/devtools -->
+        <div id="uniformCanvas" class="canvasShell">
+          <!-- Elements required by renderer/devtools -->
+          <div id="canvasShell" class="canvasShell" style="position:relative;">
+            <img id="jacketBase" alt="Uniform jacket base" />
+            <div id="epauletContainer" class="epauletContainer" aria-hidden="true"></div>
+            <div id="overlayLayer" class="overlayLayer"></div>
+          </div>
+        </div>
 
         <!-- Hidden asset preloader (ID must be 'assets') -->
         <div id="assets" class="assetPreload" aria-hidden="true" style="display:none"></div>
@@ -203,7 +208,6 @@
     <small>© <span id="year"></span> C/Capt. Guiseppe Doran — CAP Uniform Builder</small>
   </footer>
 
-  <!-- Tiny bootstraps -->
   <script>
     // Footer year
     (function(){ var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear(); })();
@@ -216,7 +220,7 @@
       btn.addEventListener('click',()=> shell.classList.toggle('sidebar-collapsed'));
     })();
 
-    // Ensure any <button> with no type won’t submit forms
+    // Default type="button" safety
     (function(){
       document.querySelectorAll('button:not([type])').forEach(b=> b.setAttribute('type','button'));
     })();
