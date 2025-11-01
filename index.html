@@ -5,30 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#002855" />
   <link rel="icon" href="images/favicon.png" />
-  <title>CAP Class A Uniform Builder</title>
+  <title>CAP Uniform Builder</title>
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Lib -->
+  <!-- Library -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 
-  <!-- Path resolver MUST load before anything that creates <img> -->
+  <!-- Path resolver FIRST so all <img> use the same logic -->
   <script src="js/asset-paths.js" defer></script>
 
-  <!-- Core utilities & data (your existing modules) -->
+  <!-- Core + data (use your existing files) -->
   <script src="js/util.js" defer></script>
   <script src="js/state.js" defer></script>
   <script src="js/uniforms.js" defer></script>
 
-  <!-- Data modules -->
+  <!-- DATA: must expose window.ribbonsMeta, etc. -->
   <script src="js/ribbons.data.js" defer></script>
   <script src="js/badges.data.js" defer></script>
   <script src="js/patches.data.js" defer></script>
 
-  <!-- UI modules -->
-  <script src="js/ribbons.ui.js" defer></script>
-  <script src="js/ribbons.layout.js" defer></script>
+  <!-- UI (your existing modules) -->
   <script src="js/badges.ui.js" defer></script>
   <script src="js/patches.ui.js" defer></script>
   <script src="js/rank.ui.js" defer></script>
@@ -37,41 +35,92 @@
   <script src="js/calibration.js" defer></script>
   <script src="js/layout.js" defer></script>
 
-  <!-- UPDATED renderer that uses AssetPath.url everywhere -->
+  <!-- UPDATED renderer (uses AssetPath.url everywhere) -->
   <script src="js/render.js" defer></script>
 
-  <!-- Dev tools -->
+  <!-- NEW: Ribbons selector (preview + grid) -->
+  <script src="js/ribbons.selector.js" defer></script>
+
+  <!-- Dev tools (your originals) -->
   <script src="js/devtools.js" defer></script>
   <script src="js/devtools.ui.js" defer></script>
 
-  <!-- Optional worker -->
+  <!-- Optional worker / assets UI / shim -->
   <script src="js/worker.render.js" defer></script>
-
-  <!-- Assets helper UI (optional) -->
   <script src="js/assets.ui.js" defer></script>
-
-  <!-- Compatibility shim (optional) -->
   <script src="js/compat.shim.js" defer></script>
 
-  <!-- App bootstrap (last) -->
-  <script src="js/app.js" defer></script>
-
-  <!-- Tiny hook to sync the asset base with the resolver at runtime -->
+  <!-- App bootstrap (wire renderer to canvas & call fullRender) -->
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
-      // Initial set from any global 'state' or input field if you use one
-      try {
-        if (window.state && state.assetBase) {
-          AssetPath.setBase(state.assetBase);
-        }
-      } catch(e) {}
+      // Ensure a state object exists
+      window.state = window.state || {
+        member: 'cadet',
+        gender: 'male',
+        uniform: 'blues_a',
+        assetBase: 'images',
+        ribbons: [],  // [{id, devices:{}}]
+        badges: [],
+        patches: [],
+        rank: ''
+      };
+      AssetPath.setBase(state.assetBase);
 
-      // If your UI has an input with id="assetBase", keep resolver in sync
+      // Canvas mount
+      const canvas = document.getElementById('uniformCanvas');
+      // Build renderer once the module is loaded
+      if (window.makeRenderer) {
+        window.globalRenderer = makeRenderer({
+          canvasEl: canvas,
+          uniforms: window.uniforms || {},
+          uiAuthz: window.uiAuthz || {},
+          ribbonsMeta: window.ribbonsMeta || [],
+          miniMedalMap: window.miniMedalMap || {},
+          deviceMeta: window.deviceMeta || {},
+          patchMeta: window.patchMeta || {},
+          badgeLocations: window.badgeLocations || {},
+          customBadgeSizes: window.customBadgeSizes || {},
+          allowedCadetBadgesSet: window.allowedCadetBadgesSet || new Set(),
+          isFieldUniform: (u) => (window.uniforms && window.uniforms[u] ? !!window.uniforms[u].isField : false),
+          alternates: window.alternates || {},
+          registerCalibratable: (id, label) => { /* no-op hook */ }
+        });
+        // Initial render
+        window.globalRenderer.fullRender(window.state);
+      }
+
+      // Sidebar hamburger
+      const btn=document.getElementById('hamburgerBtn');
+      const shell=document.getElementById('layoutShell');
+      if (btn && shell) btn.addEventListener('click',()=> shell.classList.toggle('sidebar-collapsed'));
+
+      // Update base folder live
       const baseInput = document.getElementById('assetBase');
       if (baseInput) {
-        AssetPath.setBase(baseInput.value || 'images');
-        baseInput.addEventListener('input', (e) => {
-          AssetPath.setBase(e.target.value || 'images');
+        baseInput.addEventListener('input',(e)=>{
+          state.assetBase = e.target.value || 'images';
+          AssetPath.setBase(state.assetBase);
+          window.globalRenderer && window.globalRenderer.fullRender(state);
+        });
+      }
+
+      // Member dropdown -> update eligibility & re-render
+      const memberSelect = document.getElementById('memberSelect');
+      if (memberSelect) {
+        memberSelect.addEventListener('change', () => {
+          state.member = memberSelect.value;
+          window.dispatchEvent(new Event('member-changed'));
+          window.globalRenderer && window.globalRenderer.fullRender(state);
+        });
+      }
+
+      // Jacket apply
+      const jacketSelect = document.getElementById('jacketSelect');
+      const jacketBtn = document.getElementById('applyJacket');
+      if (jacketBtn && jacketSelect) {
+        jacketBtn.addEventListener('click', () => {
+          state.gender = jacketSelect.value === 'female' ? 'female' : 'male';
+          window.globalRenderer && window.globalRenderer.fullRender(state);
         });
       }
     });
@@ -80,7 +129,7 @@
 <body>
   <header class="appHeader">
     <button id="hamburgerBtn" class="iconBtn" aria-label="Toggle sidebar" type="button">☰</button>
-    <h1 class="appTitle">CAP Class A Uniform Builder</h1>
+    <h1 class="appTitle">CAP Uniform Builder</h1>
     <div class="headerActions">
       <button id="downloadImage" class="primary" type="button">Download Preview</button>
     </div>
@@ -113,74 +162,25 @@
         </div>
       </section>
 
-      <section class="panelSection">
+      <!-- NEW: RIBBONS SELECTOR (preview + 3-across grid with checkboxes) -->
+      <section class="panelSection" id="ribbonsSelectorSection">
         <h2 class="panelTitle">Ribbons</h2>
-        <div class="row">
-          <button id="toggleRibbonDrag" type="button">Drag Mode</button>
-          <button id="clearRibbons" type="button">Clear</button>
+
+        <!-- Live rack preview -->
+        <div id="ribbonPreview" aria-live="polite"></div>
+
+        <!-- Controls -->
+        <div id="ribbonGridControls">
+          <label><input type="checkbox" id="rbEligibleOnly" /> Eligible only</label>
+          <button id="rbSelectAll" type="button">Select All (visible)</button>
+          <button id="rbClearAll" type="button">Clear All</button>
         </div>
-        <div class="row">
-          <button id="logRibbonCoords" type="button">Log Coords</button>
-        </div>
-        <div id="ribbonPicker" class="pickerList" aria-live="polite"></div>
+
+        <!-- Grid of all ribbons, 3 across -->
+        <div id="ribbonGrid"></div>
       </section>
 
-      <section class="panelSection">
-        <h2 class="panelTitle">Devices</h2>
-        <div class="row">
-          <button id="deviceApplyModeBtn" type="button">Apply Mode</button>
-          <button id="deviceRemoveModeBtn" type="button">Remove Mode</button>
-          <button id="deviceClearSelectionBtn" type="button">Clear</button>
-        </div>
-      </section>
-
-      <section class="panelSection">
-        <h2 class="panelTitle">Badges</h2>
-        <div class="row">
-          <select id="badgeSelect" aria-label="Select badge"></select>
-        </div>
-        <div class="row">
-          <button id="addBadge" type="button">Add Badge</button>
-          <button id="removeBadge" type="button">Remove Badge</button>
-        </div>
-      </section>
-
-      <section class="panelSection">
-        <h2 class="panelTitle">Patches</h2>
-        <div class="row">
-          <select id="patchSelect" aria-label="Select patch"></select>
-        </div>
-        <div class="row">
-          <button id="addPatch" type="button">Add Patch</button>
-          <button id="removePatch" type="button">Remove Patch</button>
-        </div>
-      </section>
-
-      <section class="panelSection">
-        <h2 class="panelTitle">Rank</h2>
-        <div class="row">
-          <select id="rankSelect" aria-label="Select rank"></select>
-        </div>
-        <div class="row">
-          <button id="addRank" type="button">Apply Rank</button>
-        </div>
-      </section>
-
-      <section class="panelSection">
-        <h2 class="panelTitle">Uniforms</h2>
-        <div id="uniformList"></div>
-      </section>
-
-      <section class="panelSection">
-        <h2 class="panelTitle">Assets</h2>
-        <div class="row">
-          <input id="assetsFolderInput" type="file" webkitdirectory multiple />
-        </div>
-        <div class="row">
-          <button id="showAssetsReport" type="button">Assets Report</button>
-          <button id="renderAllGallery" type="button">Render Gallery</button>
-        </div>
-      </section>
+      <!-- Your other panels can remain here (devices, badges, patches, rank, etc.) -->
     </aside>
 
     <div id="panelResizer" class="resizer" role="separator" aria-orientation="vertical"></div>
@@ -201,12 +201,6 @@
 
   <script>
     (function(){ var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear(); })();
-    (function(){
-      const btn=document.getElementById('hamburgerBtn');
-      const shell=document.getElementById('layoutShell');
-      if(!btn||!shell) return; btn.addEventListener('click',()=> shell.classList.toggle('sidebar-collapsed'));
-    })();
-    (function(){ document.querySelectorAll('button:not([type])').forEach(b=> b.setAttribute('type','button')); })();
   </script>
 </body>
 </html>
