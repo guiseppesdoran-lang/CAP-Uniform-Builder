@@ -2,7 +2,7 @@
 // Centralized, modular rendering for the CAP Uniform Builder preview.
 // Exports makeRenderer(options).
 
-export function makeRenderer({
+window function makeRenderer({
   canvasEl,
   uniforms,
   uiAuthz,
