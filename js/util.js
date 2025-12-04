@@ -8,7 +8,7 @@
 /**
  * Preload a single image, returning a Promise that resolves when ready.
  */
-export function preloadImage(src) {
+function preloadImage(src) {
   return new Promise((resolve, reject) => {
     if (!src) return resolve(null);
     const img = new Image();
@@ -23,7 +23,7 @@ export function preloadImage(src) {
  * @param {string[]} urls
  * @returns {Promise<Map<string, HTMLImageElement>>}
  */
-export async function preloadImages(urls) {
+async function preloadImages(urls) {
   const map = new Map();
   const tasks = urls.map(async (url) => {
     try {
@@ -249,10 +249,19 @@ export function createEmitter() {
  * Debug logger that can be toggled globally.
  */
 let debugEnabled = false;
-export function setDebug(on) {
+function setDebug(on) {
   debugEnabled = !!on;
 }
-export function log(...args) {
+function log(...args) {
   if (debugEnabled) console.log("[UB]", ...args);
 }
 
+// Expose helpers globally for non-module scripts
+window.preloadImage = preloadImage;
+window.preloadImages = preloadImages;
+window.setDebug = setDebug;
+window.log = log;
+
+// If you have other helpers you want globally, add them too, e.g.:
+// window.clamp = clamp;
+// window.chunkArray = chunkArray;
