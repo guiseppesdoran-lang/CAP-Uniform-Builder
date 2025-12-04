@@ -3,7 +3,7 @@
 // Each entry defines an id, display name, precedence, and image.
 // Precedence ordering is critical for rack building (lower number = higher precedence).
 
-export const RIBBONS = [
+const RIBBONS = [
   { id: "gen_carl_spaatz_award", name: "Gen. Carl A. Spaatz Award", precedence: 1, img: "ribbons/gen_carl_spaatz_award.png" },
   { id: "gen_ira_eaker_award", name: "Gen. Ira C. Eaker Award", precedence: 2, img: "ribbons/gen_ira_eaker_award.png" },
   { id: "ameilia_earhart_award", name: "Amelia Earhart Award", precedence: 3, img: "ribbons/amelia_earhart_award.png" },
@@ -41,7 +41,7 @@ export const RIBBONS = [
  * Map of known devices (stars, clasps, numerals, etc.)
  * used to augment ribbons visually.
  */
-export const DEVICE_LIST = [
+const DEVICE_LIST = [
   "bronze_star",
   "silver_star",
   "bronze_clasp",
@@ -52,7 +52,7 @@ export const DEVICE_LIST = [
   "v_device",
 ];
 
-export const DEVICE_META = {
+const DEVICE_META = {
   bronze_star: { img: "devices/bronze_star.png", type: "star" },
   silver_star: { img: "devices/silver_star.png", type: "star" },
   bronze_clasp: { img: "devices/bronze_clasp.png", type: "clasp" },
@@ -66,25 +66,33 @@ export const DEVICE_META = {
 /**
  * Helper: sort ribbons by precedence ascending (1 = highest)
  */
-export function sortRibbonsByPrecedence(ribbons) {
+function sortRibbonsByPrecedence(ribbons) {
   return ribbons.sort((a, b) => a.precedence - b.precedence);
 }
 
 /**
  * Helper: get a ribbon by ID safely
  */
-export function getRibbonById(id) {
+function getRibbonById(id) {
   return RIBBONS.find((r) => r.id === id) || null;
 }
 
 /**
  * Helper: resolve full image path given a ribbon id and asset base
  */
-export function resolveRibbonImg(id, assetBase = "images") {
+function resolveRibbonImg(id, assetBase = "images") {
   const ribbon = getRibbonById(id);
   if (!ribbon) return null;
   const base = assetBase.replace(/\/$/, "");
   const rel = ribbon.img.replace(/^images\//, "");
   return `${base}/${rel}`;
 }
+
+// Expose ribbon and device metadata for the non-module UI/renderer
+window.ribbonsMeta = RIBBONS;
+window.deviceMeta = DEVICE_META;
+
+// Stub mini-medal map for now if it isn't defined elsewhere
+window.miniMedalMap = window.miniMedalMap || {};
+
 
