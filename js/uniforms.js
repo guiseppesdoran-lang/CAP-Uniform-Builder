@@ -12,7 +12,7 @@
  *     mini:    boolean   -> if uniform uses miniature medals by default
  *   }
  */
-export const UNIFORMS = {
+const UNIFORMS = {
   blues_a: {
     male: "base/jacket_male.png",
     female: "base/jacket_female.png",
@@ -75,11 +75,14 @@ export const UNIFORMS = {
   },
 };
 
+// Expose uniforms for non-module scripts
+window.uniforms = UNIFORMS;
+
 /**
  * UI_AUTHZ controls which side-panels are shown for each uniform.
  * It is UI-only; renderers should still check the presence of data.
  */
-export const UI_AUTHZ = {
+const UI_AUTHZ = {
   blues_a: { showRibbons: true, showBadges: true, showPatches: false },
   blues_b: { showRibbons: true, showBadges: true, showPatches: false },
   aviator: { showRibbons: true, showBadges: true, showPatches: false },
@@ -95,35 +98,71 @@ export const UI_AUTHZ = {
 /**
  * Some uniforms are "field" and trigger badge/patch/ribbon alternates.
  */
-export function isFieldUniform(uniformId) {
-  return uniformId === "abu" || uniformId === "flight_suit" || uniformId === "corporate_field";
+function isFieldUniform(uniformId) {
+  return (
+    uniformId === "abu" ||
+    uniformId === "flight_suit" ||
+    uniformId === "corporate_field"
+  );
 }
 
 /**
  * Capabilities for patch slots by uniform (used by patches planner).
  * slots: L_SHOULDER, R_SHOULDER, CHEST_LEFT, CHEST_RIGHT
  */
-export function getPatchCaps(uniformId) {
+function getPatchCaps(uniformId) {
   const caps = {
     blues_a: { L_SHOULDER: 1, R_SHOULDER: 1, CHEST_LEFT: 1, CHEST_RIGHT: 1 },
     blues_b: { L_SHOULDER: 1, R_SHOULDER: 1, CHEST_LEFT: 1, CHEST_RIGHT: 1 },
     aviator: { L_SHOULDER: 1, R_SHOULDER: 1, CHEST_LEFT: 1, CHEST_RIGHT: 1 },
-    aviator_blazer: { L_SHOULDER: 1, R_SHOULDER: 1, CHEST_LEFT: 0, CHEST_RIGHT: 0 },
-    corporate_field: { L_SHOULDER: 2, R_SHOULDER: 2, CHEST_LEFT: 1, CHEST_RIGHT: 1 },
+    aviator_blazer: {
+      L_SHOULDER: 1,
+      R_SHOULDER: 1,
+      CHEST_LEFT: 0,
+      CHEST_RIGHT: 0,
+    },
+    corporate_field: {
+      L_SHOULDER: 2,
+      R_SHOULDER: 2,
+      CHEST_LEFT: 1,
+      CHEST_RIGHT: 1,
+    },
     abu: { L_SHOULDER: 2, R_SHOULDER: 2, CHEST_LEFT: 1, CHEST_RIGHT: 1 },
-    flight_suit: { L_SHOULDER: 2, R_SHOULDER: 2, CHEST_LEFT: 2, CHEST_RIGHT: 2 },
-    semi_formal: { L_SHOULDER: 0, R_SHOULDER: 0, CHEST_LEFT: 0, CHEST_RIGHT: 0 },
-    mess_dress: { L_SHOULDER: 0, R_SHOULDER: 0, CHEST_LEFT: 0, CHEST_RIGHT: 0 },
+    flight_suit: {
+      L_SHOULDER: 2,
+      R_SHOULDER: 2,
+      CHEST_LEFT: 2,
+      CHEST_RIGHT: 2,
+    },
+    semi_formal: {
+      L_SHOULDER: 0,
+      R_SHOULDER: 0,
+      CHEST_LEFT: 0,
+      CHEST_RIGHT: 0,
+    },
+    mess_dress: {
+      L_SHOULDER: 0,
+      R_SHOULDER: 0,
+      CHEST_LEFT: 0,
+      CHEST_RIGHT: 0,
+    },
     polo: { L_SHOULDER: 0, R_SHOULDER: 0, CHEST_LEFT: 0, CHEST_RIGHT: 0 },
   };
-  return caps[uniformId] || { L_SHOULDER: 1, R_SHOULDER: 1, CHEST_LEFT: 1, CHEST_RIGHT: 1 };
+  return (
+    caps[uniformId] || {
+      L_SHOULDER: 1,
+      R_SHOULDER: 1,
+      CHEST_LEFT: 1,
+      CHEST_RIGHT: 1,
+    }
+  );
 }
 
 /**
  * Alternate translations between badges/patches/ribbons when moving between
  * field ↔ non-field uniforms. Consumers can implement the switch policy.
  */
-export const ALTERNATES = {
+const ALTERNATES = {
   badgeToPatch: { communications_technician_badge: "communications_patch" },
   patchToBadge: { communications_patch: "communications_technician_badge" },
   ribbonToPatch: { cadet_orientation_pilot_ribbon: "orientation_pilot_patch" },
@@ -135,7 +174,7 @@ export const ALTERNATES = {
  * This mirrors the data used to render "locked" buttons in the UI.
  * @param {"cadet"|"senior"|"senior_nco"} memberType
  */
-export function isUniformAllowedFor(uniformId, memberType) {
+function isUniformAllowedFor(uniformId, memberType) {
   const allowed = {
     blues_a: ["cadet", "senior", "senior_nco"],
     blues_b: ["cadet", "senior", "senior_nco"],
@@ -157,7 +196,7 @@ export function isUniformAllowedFor(uniformId, memberType) {
  * Find the first allowed uniform id for a member type, given a preferred order.
  * Useful when switching member types (e.g., senior -> cadet) forces a fallback.
  */
-export function findFirstAllowedUniform(memberType, preferredOrder = null) {
+function findFirstAllowedUniform(memberType, preferredOrder = null) {
   const order =
     preferredOrder ||
     [
@@ -181,9 +220,14 @@ export function findFirstAllowedUniform(memberType, preferredOrder = null) {
 /**
  * Quick feature helper, merges UNIFORMS + UI_AUTHZ flags into one object.
  */
-export function getUniformFeatures(uniformId) {
+function getUniformFeatures(uniformId) {
   const u = UNIFORMS[uniformId] || {};
-  const ui = UI_AUTHZ[uniformId] || { showRibbons: true, showBadges: true, showPatches: true };
+  const ui =
+    UI_AUTHZ[uniformId] || {
+      showRibbons: true,
+      showBadges: true,
+      showPatches: true,
+    };
   return {
     id: uniformId,
     male: u.male || "",
@@ -194,3 +238,11 @@ export function getUniformFeatures(uniformId) {
   };
 }
 
+// Expose selected helpers / config to window if needed elsewhere
+window.uiAuthz = UI_AUTHZ;
+window.alternates = ALTERNATES;
+window.isFieldUniform = isFieldUniform;
+window.getPatchCaps = getPatchCaps;
+window.isUniformAllowedFor = isUniformAllowedFor;
+window.findFirstAllowedUniform = findFirstAllowedUniform;
+window.getUniformFeatures = getUniformFeatures;
