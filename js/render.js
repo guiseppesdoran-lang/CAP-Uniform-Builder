@@ -1,8 +1,8 @@
 // js/render.js
 // Centralized, modular rendering for the CAP Uniform Builder preview.
-// Exports makeRenderer(options).
+// Exposes window.makeRenderer(options) in non-module environments.
 
-window function makeRenderer({
+window.makeRenderer = function makeRenderer({
   canvasEl,
   uniforms,
   uiAuthz,
@@ -695,4 +695,4 @@ window function makeRenderer({
     },
     applyAlternates,
   };
-}
+};
