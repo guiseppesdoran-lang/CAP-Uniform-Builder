@@ -419,6 +419,11 @@
     margin:0;
   }
 
+  /* === NEW: hide galleries in LEFT SIDEBAR; only show in modal === */
+  #controls .galleryGrid{
+    display:none !important;
+  }
+
   #calibratorWrapper {
     position:fixed;
     top:80px;
@@ -778,19 +783,20 @@
         <div class="hintText">Change this if your image folder path changes.</div>
       </section>
 
-      <!-- RIBBONS: GALLERY -->
+      <!-- RIBBONS: PICKER BUTTON (NO SIDEBAR THUMBS) -->
       <section id="groupRibbons" class="panelBlock">
         <label class="fieldLabel">Ribbons / Mini Medals</label>
 
         <div class="hintText">
-          Check ribbons to add them. Device counts exceeding the per-ribbon maximum will automatically create additional ribbons.
+          Use “Choose Ribbons…” to pick ribbons and set devices in the popup.
         </div>
 
         <div class="row two" style="margin-top:6px">
           <div class="col"><button id="clearRibbons" class="ghost" type="button">Clear Ribbons</button></div>
-          <div class="col"><button id="expandRibbons" class="ghost" type="button">Expand (Popup)</button></div>
+          <div class="col"><button id="expandRibbons" type="button">Choose Ribbons…</button></div>
         </div>
 
+        <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="ribbonGallery" class="galleryGrid"></div>
 
         <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
@@ -823,19 +829,20 @@
         </div>
       </section>
 
-      <!-- BADGES: GALLERY -->
+      <!-- BADGES: PICKER BUTTON (NO SIDEBAR THUMBS) -->
       <section class="panelBlock">
         <label class="fieldLabel">Badges</label>
 
         <div class="hintText">
-          Check badges to add them. Cadet membership filters out non-authorized badges. Exclusive conflicts auto-remove.
+          Use “Choose Badges…” to pick badges in the popup (grouped by category).
         </div>
 
         <div class="row two" style="margin-top:6px">
           <div class="col"><button id="clearBadges" class="ghost" type="button">Clear Badges</button></div>
-          <div class="col"><button id="expandBadges" class="ghost" type="button">Expand (Popup)</button></div>
+          <div class="col"><button id="expandBadges" type="button">Choose Badges…</button></div>
         </div>
 
+        <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="badgeGallery" class="galleryGrid"></div>
 
         <div class="hintText">
@@ -843,19 +850,20 @@
         </div>
       </section>
 
-      <!-- PATCHES: GALLERY -->
+      <!-- PATCHES: PICKER BUTTON (NO SIDEBAR THUMBS) -->
       <section id="groupPatches" class="panelBlock">
         <label class="fieldLabel">Patches</label>
 
         <div class="hintText">
-          Check patches to add them. Field uniforms render patches instead of ribbons/badges where applicable.
+          Use “Choose Patches…” to pick patches in the popup.
         </div>
 
         <div class="row two" style="margin-top:6px">
           <div class="col"><button id="clearPatches" class="ghost" type="button">Clear Patches</button></div>
-          <div class="col"><button id="expandPatches" class="ghost" type="button">Expand (Popup)</button></div>
+          <div class="col"><button id="expandPatches" type="button">Choose Patches…</button></div>
         </div>
 
+        <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="patchGallery" class="galleryGrid"></div>
       </section>
 
@@ -1091,13 +1099,20 @@ const SENIOR_NCO_BASE = {
 /* ===========================
    RIBBONS / DEVICES / MINI MEDALS
    =========================== */
+
+/*
+  FIXES APPLIED:
+  - Removed "cap_steven_foster_leadership_ribbon" (made-up per your note)
+  - Removed duplicate orientation pilot ribbon by keeping ONLY "orientation_pilot_ribbon"
+    (If your real file is the other id, swap accordingly.)
+*/
 const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
 
   'cap_gill_robb_wilson_ribbon',
   'cap_paul_e_garber_ribbon',
   'cap_grover_loening_aerospace_ribbon',
-  'cap_steven_foster_leadership_ribbon','cap_leadership_ribbon',
+  'cap_leadership_ribbon',
   'cap_membership_ribbon',
   'cap_command_service_ribbon',
   'cap_counterdrug_ribbon',
@@ -1105,7 +1120,6 @@ const ribbonList = [
   'cap_senior_recruiter_ribbon',
   'cap_bridgadier_general_charles_yaeger_ribbon',
   'cap_a_scott_crossfield_ribbon',
-  'cap_cadet_orientation_pilot_ribbon',
 
   'spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement',
 
@@ -1113,6 +1127,16 @@ const ribbonList = [
 ];
 
 const precedence = id => ribbonList.indexOf(id);
+
+/* Senior member: show only cadet milestone ribbons; and enforce only ONE milestone can be selected */
+const CADET_ACHIEVEMENT_RIBBONS = new Set([
+  'curry_achievement','hap_arnold_achievement','mary_feik_achievement','wright_brothers_award',
+  'rickenbacker_achievement','lindbergh_achievement','doolittle_achievement','goddard_achievement',
+  'armstrong_achievement','mitchell_award','earhart_award','eaker_award','spaatz_award'
+]);
+const CADET_MILESTONES = new Set([
+  'wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award'
+]);
 
 const deviceList = [
   '1_Bronze_Star_Device',
@@ -1149,7 +1173,6 @@ Object.assign(miniMedalImages, {
   'cap_senior_recruiter_ribbon':    'medals/recruiting.png',
   'cap_bridgadier_general_charles_yaeger_ribbon':'medals/charles_yaeger.png',
   'cap_a_scott_crossfield_ribbon':  'medals/a_scott_crossfield.png',
-  'cap_cadet_orientation_pilot_ribbon':'medals/orientation_pilot.png',
   'crisis_ribbon':                  'medals/crisis.png',
   'red_service_ribbon':             'medals/red_service.png',
   'search_find_ribbon':             'medals/find.png',
@@ -1231,6 +1254,32 @@ const customBadgeSizes = {
   'nra_marksman_badge':{width:40,height:60},'nurse_officer':{width:60,height:60},'observer_badge':{width:60,height:25},
   'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25}
 };
+
+/* NEW: badge grouping for modal */
+const BADGE_CATEGORIES = [
+  { key:'Aviation', ids:[
+    'CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA',
+    'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
+    'observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
+    'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B',
+    'solo_badge','pre_solo_badge'
+  ]},
+  { key:'Emergency Services / Ground', ids:[
+    'emergency_services_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'
+  ]},
+  { key:'Medical / EMS', ids:[
+    'emt_basic_badge','emt_intermediate','emt_paramedic','medical_officer','nurse_officer'
+  ]},
+  { key:'Comms / IT / Cyber / STEM', ids:[
+    'communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges'
+  ]},
+  { key:'Chaplain / Legal / Admin', ids:[
+    'christian_chaplin','jewish_chaplin','muslim_chaplin','buddist_chaplin','legal_officer','historian_technicianIbadge'
+  ]},
+  { key:'Other', ids:[
+    'model_rocketry_badge','nra_marksman_badge'
+  ]}
+];
 
 const patchList = [
   'us_flag_patch','command_patch','wing_patch','unit_patch','aerospace_education_patch','communications_patch','orientation_pilot_patch'
@@ -1400,11 +1449,13 @@ membershipTypeEl.addEventListener('change', ()=>{
   // filter badges if cadet
   if(State.membership==='cadet'){
     State.badges = State.badges.filter(isCadetAuthorized);
-    // also clear any checked state on unauthorized badges
     Object.keys(State.badgeSelections).forEach(id=>{
       if(!isCadetAuthorized(id)) State.badgeSelections[id].checked=false;
     });
   }
+
+  // NEW: rebuild ribbon gallery whenever membership changes (for senior milestone filtering)
+  buildRibbonGallery();
 
   if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)){
     const fallback=findFirstAllowedUniform(State.membership) || 'blues_a';
@@ -1505,7 +1556,6 @@ function getBaseCandidates(){
   const def = UNIFORMS[u]?.[g];
   if(def) list.push(def);
 
-  // De-dupe
   return [...new Set(list)];
 }
 
@@ -1977,10 +2027,19 @@ function buildRibbonGallery(){
   normalizeRibbonSelections();
   wrap.innerHTML = '';
 
-  const showCount = State.ribbonGalleryExpanded ? ribbonList.length : Math.min(12, ribbonList.length);
+  // NEW: Senior filters out non-milestone cadet achievements
+  let eligible = [...ribbonList];
+  if(State.membership === 'senior'){
+    eligible = eligible.filter(id=>{
+      if(CADET_ACHIEVEMENT_RIBBONS.has(id)) return CADET_MILESTONES.has(id);
+      return true;
+    });
+  }
+
+  const showCount = State.ribbonGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
 
   for(let idx=0; idx<showCount; idx++){
-    const id = ribbonList[idx];
+    const id = eligible[idx];
     const sel = State.ribbonSelections[id];
 
     const tile = document.createElement('div');
@@ -2011,6 +2070,16 @@ function buildRibbonGallery(){
 
     chk.onchange = ()=>{
       sel.checked = chk.checked;
+
+      // NEW: Senior -> only ONE milestone ribbon can be selected at a time
+      if(State.membership === 'senior' && CADET_MILESTONES.has(id) && sel.checked){
+        for(const otherId of Object.keys(State.ribbonSelections)){
+          if(otherId !== id && CADET_MILESTONES.has(otherId)){
+            State.ribbonSelections[otherId].checked = false;
+          }
+        }
+      }
+
       rebuildRibbonsFromGallery();
     };
 
@@ -2019,6 +2088,16 @@ function buildRibbonGallery(){
       sel.devices['1_Bronze_Star_Device'] = Math.max(0, parseInt(bronze.value||"0",10)||0);
       sel.checked = true;
       chk.checked = true;
+
+      // NEW: Senior -> only ONE milestone ribbon can be selected at a time
+      if(State.membership === 'senior' && CADET_MILESTONES.has(id)){
+        for(const otherId of Object.keys(State.ribbonSelections)){
+          if(otherId !== id && CADET_MILESTONES.has(otherId)){
+            State.ribbonSelections[otherId].checked = false;
+          }
+        }
+      }
+
       rebuildRibbonsFromGallery();
     }
     silver.oninput = bumpOnNumber;
@@ -2038,7 +2117,6 @@ function normalizeBadgeSelections(){
     if(!State.badgeSelections[id]){
       State.badgeSelections[id] = { checked:false };
     }
-    // auto-uncheck if cadet unauthorized
     if(State.membership==='cadet' && !isCadetAuthorized(id)){
       State.badgeSelections[id].checked=false;
     }
@@ -2050,7 +2128,6 @@ function enforceExclusive(newId){
     if(pair.includes(newId)){
       pair.forEach(conf=>{
         if(conf!==newId){
-          // remove from State.badges and uncheck selection
           State.badges = State.badges.filter(b=>b!==conf);
           if(State.badgeSelections[conf]) State.badgeSelections[conf].checked=false;
         }
@@ -2081,7 +2158,6 @@ function buildBadgeGallery(){
   normalizeBadgeSelections();
   wrap.innerHTML = '';
 
-  // filter badge list shown by membership
   const eligible = (State.membership==='cadet')
     ? badgeList.filter(isCadetAuthorized)
     : [...badgeList];
@@ -2382,7 +2458,6 @@ function renderRank(id){
   [...uniformCanvas.querySelectorAll('.layer.rank')].forEach(n=>n.remove());
   if(!id) return;
 
-  // For Senior NCO base jacket, rank is in the base; don't draw.
   if(State.membership==='senior' && SENIOR_NCO_RANKS.has(id)){
     return;
   }
@@ -2429,7 +2504,6 @@ function renderRank(id){
     return;
   }
 
-  // enlisted/cadet ranks overlay on jacket (placeholder position)
   const size={w:60,h:60};
   const pos ={left:420,top:200};
   const icon=insigniaEl.cloneNode();
@@ -2490,17 +2564,14 @@ function applyAlternates(fromU,toU){
       }
     });
 
-    // field: remove badges/ribbons visually
     State.badges = [];
     State.ribbons = [];
 
-    // keep selection state consistent
     Object.keys(State.badgeSelections).forEach(k=>State.badgeSelections[k].checked=false);
     Object.keys(State.ribbonSelections).forEach(k=>State.ribbonSelections[k].checked=false);
 
     rebuildPatchesFromGallery();
   } else if(fromField && !toField){
-    // converting back: optional conversions
     Object.entries(ALTERNATES.patchToBadge).forEach(([patch,badge])=>{
       if(State.patches.includes(patch) && badge){
         State.badgeSelections[badge] = {checked:true};
@@ -2753,7 +2824,6 @@ const modalRestore = by('galleryModalRestoreBtn');
 let modalLast = null;
 
 function openGalleryModal(kind){
-  // kind: 'ribbons' | 'badges' | 'patches'
   modalHost.innerHTML = '';
 
   const host = document.createElement('div');
@@ -2786,14 +2856,15 @@ function openGalleryModal(kind){
       grid.innerHTML = sidebar ? sidebar.innerHTML : '';
       wireModalInteractions('ribbons');
     }
+
+    // NEW: badges are grouped, so we do NOT copy sidebar HTML
     if(kind==='badges'){
       State.badgeGalleryExpanded = true;
-      buildBadgeGallery();
       modalTitle.textContent = "Badges";
-      const sidebar = by('badgeGallery');
-      grid.innerHTML = sidebar ? sidebar.innerHTML : '';
-      wireModalInteractions('badges');
+      buildGroupedBadgeModal(grid);
+      return;
     }
+
     if(kind==='patches'){
       State.patchGalleryExpanded = true;
       buildPatchGallery();
@@ -2804,10 +2875,73 @@ function openGalleryModal(kind){
     }
   }
 
+  function buildGroupedBadgeModal(rootGrid){
+    rootGrid.innerHTML = '';
+
+    normalizeBadgeSelections();
+
+    const eligibleSet = new Set(
+      (State.membership==='cadet') ? badgeList.filter(isCadetAuthorized) : badgeList
+    );
+
+    BADGE_CATEGORIES.forEach(cat=>{
+      const ids = cat.ids.filter(id => eligibleSet.has(id));
+      if(!ids.length) return;
+
+      const h = document.createElement('div');
+      h.style.cssText = "margin:10px 0 6px;font-weight:800;color:var(--ink);font-size:13px;";
+      h.textContent = cat.key;
+
+      const subGrid = document.createElement('div');
+      subGrid.className = 'galleryGrid';
+
+      ids.forEach(id=>{
+        const sel = State.badgeSelections[id] || {checked:false};
+        const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+
+        const tile = document.createElement('div');
+        tile.className = 'galleryTile';
+        tile.innerHTML = `
+          <img src="${ASSET(`badges/${id}.png`)}" alt="${title}">
+          <div style="flex:1;min-width:0;">
+            <div class="title">${title}</div>
+            <div class="sub">(${id})</div>
+            <div class="miniRow">
+              <label><input type="checkbox" class="bdChk"> Add</label>
+            </div>
+            <div class="sub">Slot: <b>${badgeLocations[id] || 'UN'}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
+          </div>
+        `;
+
+        const chk = tile.querySelector('.bdChk');
+        chk.checked = !!sel.checked;
+        chk.onchange = ()=>{
+          sel.checked = chk.checked;
+          State.badgeSelections[id] = sel;
+          rebuildBadgesFromGallery();
+        };
+
+        subGrid.appendChild(tile);
+      });
+
+      modalHost.appendChild(h);
+      modalHost.appendChild(subGrid);
+    });
+  }
+
   function wireModalInteractions(k){
     if(k==='ribbons'){
-      const showCount = State.ribbonGalleryExpanded ? ribbonList.length : Math.min(12, ribbonList.length);
-      const ids = ribbonList.slice(0, showCount);
+      // compute eligible list (same as sidebar)
+      let eligible = [...ribbonList];
+      if(State.membership === 'senior'){
+        eligible = eligible.filter(id=>{
+          if(CADET_ACHIEVEMENT_RIBBONS.has(id)) return CADET_MILESTONES.has(id);
+          return true;
+        });
+      }
+
+      const showCount = State.ribbonGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
+      const ids = eligible.slice(0, showCount);
 
       const tiles = [...grid.querySelectorAll('.galleryTile')];
       tiles.forEach((tile, i) => {
@@ -2821,42 +2955,40 @@ function openGalleryModal(kind){
 
         if(chk){
           chk.checked = !!sel.checked;
-          chk.onchange = () => { sel.checked = chk.checked; rebuildRibbonsFromGallery(); syncFromSidebar(); };
+          chk.onchange = () => {
+            sel.checked = chk.checked;
+
+            if(State.membership === 'senior' && CADET_MILESTONES.has(id) && sel.checked){
+              for(const otherId of Object.keys(State.ribbonSelections)){
+                if(otherId !== id && CADET_MILESTONES.has(otherId)){
+                  State.ribbonSelections[otherId].checked = false;
+                }
+              }
+            }
+
+            rebuildRibbonsFromGallery();
+            syncFromSidebar();
+          };
         }
         function bump(){
           sel.devices['1_Silver_Star_Device'] = Math.max(0, parseInt(silver?.value||"0",10)||0);
           sel.devices['1_Bronze_Star_Device'] = Math.max(0, parseInt(bronze?.value||"0",10)||0);
           sel.checked = true;
           if(chk) chk.checked = true;
+
+          if(State.membership === 'senior' && CADET_MILESTONES.has(id)){
+            for(const otherId of Object.keys(State.ribbonSelections)){
+              if(otherId !== id && CADET_MILESTONES.has(otherId)){
+                State.ribbonSelections[otherId].checked = false;
+              }
+            }
+          }
+
           rebuildRibbonsFromGallery();
           syncFromSidebar();
         }
         if(silver) silver.oninput = bump;
         if(bronze) bronze.oninput = bump;
-      });
-    }
-
-    if(k==='badges'){
-      const eligible = (State.membership==='cadet') ? badgeList.filter(isCadetAuthorized) : [...badgeList];
-      const showCount = State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
-      const ids = eligible.slice(0, showCount);
-
-      const tiles = [...grid.querySelectorAll('.galleryTile')];
-      tiles.forEach((tile, i) => {
-        const id = ids[i];
-        if(!id) return;
-        const sel = State.badgeSelections[id] || {checked:false};
-
-        const chk = tile.querySelector('.bdChk');
-        if(chk){
-          chk.checked = !!sel.checked;
-          chk.onchange = () => {
-            sel.checked = chk.checked;
-            State.badgeSelections[id] = sel;
-            rebuildBadgesFromGallery();
-            syncFromSidebar();
-          };
-        }
       });
     }
 
@@ -2907,7 +3039,7 @@ function closeGalleryModal(){
   modalOverlay.classList.remove('open');
   modalOverlay.setAttribute('aria-hidden','true');
   document.body.style.overflow = '';
-  // Rebuild normal sidebar (usually collapsed view)
+
   buildRibbonGallery();
   buildBadgeGallery();
   buildPatchGallery();
@@ -2947,7 +3079,7 @@ modalRestore.addEventListener('click', ()=>{
   modalMaxBtn.classList.remove('hidden');
 });
 
-/* IMPORTANT: Expand buttons open the popup */
+/* IMPORTANT: Picker buttons open the popup */
 by('expandRibbons').addEventListener('click', ()=> openGalleryModal('ribbons'));
 by('expandBadges').addEventListener('click',  ()=> openGalleryModal('badges'));
 by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
@@ -2961,7 +3093,6 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
   updateSetupGates();
   refreshUI();
 
-  // Build galleries once (even before membership set)
   buildRibbonGallery();
   buildBadgeGallery();
   buildPatchGallery();
