@@ -542,6 +542,89 @@
       flex:1;
     }
   }
+
+  /* ===========================
+     MODAL (POPUP GALLERY)
+     =========================== */
+  .modalOverlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:20000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+  }
+  .modalOverlay.open{ display:flex; }
+
+  .modal{
+    width:min(1100px, 96vw);
+    height:min(720px, 86vh);
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:0 40px 90px rgb(0 0 0 / .45);
+    overflow:hidden;
+    resize:both; /* resizable by user */
+    position:relative;
+  }
+
+  .modalHeader{
+    background:var(--brand);
+    color:#fff;
+    padding:10px 12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .modalHeader .title{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.2px;
+    margin:0;
+  }
+  .modalHeader .actions{
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .modalHeader .actions button{
+    width:auto;
+    padding:6px 10px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.35);
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    cursor:pointer;
+  }
+
+  .modalBody{
+    height:calc(100% - 44px);
+    overflow:auto;
+    padding:12px;
+  }
+
+  .modal .galleryGrid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  @media (max-width:900px){
+    .modal .galleryGrid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  }
+  @media (max-width:560px){
+    .modal .galleryGrid{ grid-template-columns:repeat(1,minmax(0,1fr)); }
+  }
+
+  .modal::after{
+    content:"↘";
+    position:absolute;
+    right:10px;
+    bottom:6px;
+    font-size:14px;
+    color:rgba(0,0,0,.35);
+    pointer-events:none;
+  }
 </style>
 </head>
 <body>
@@ -662,7 +745,6 @@
             <div class="uDesc smallText">Legacy camo / tapes</div>
           </button>
 
-          <!-- ADDED -->
           <button class="uniformOption" data-uniform-id="ocp" data-allowed-for="cadet,senior">
             <div class="uName">OCP</div>
             <div class="uDesc smallText">Operational Camouflage Pattern</div>
@@ -706,7 +788,7 @@
 
         <div class="row two" style="margin-top:6px">
           <div class="col"><button id="clearRibbons" class="ghost" type="button">Clear Ribbons</button></div>
-          <div class="col"><button id="expandRibbons" class="ghost" type="button">Expand / Collapse</button></div>
+          <div class="col"><button id="expandRibbons" class="ghost" type="button">Expand (Popup)</button></div>
         </div>
 
         <div id="ribbonGallery" class="galleryGrid"></div>
@@ -751,7 +833,7 @@
 
         <div class="row two" style="margin-top:6px">
           <div class="col"><button id="clearBadges" class="ghost" type="button">Clear Badges</button></div>
-          <div class="col"><button id="expandBadges" class="ghost" type="button">Expand / Collapse</button></div>
+          <div class="col"><button id="expandBadges" class="ghost" type="button">Expand (Popup)</button></div>
         </div>
 
         <div id="badgeGallery" class="galleryGrid"></div>
@@ -771,7 +853,7 @@
 
         <div class="row two" style="margin-top:6px">
           <div class="col"><button id="clearPatches" class="ghost" type="button">Clear Patches</button></div>
-          <div class="col"><button id="expandPatches" class="ghost" type="button">Expand / Collapse</button></div>
+          <div class="col"><button id="expandPatches" class="ghost" type="button">Expand (Popup)</button></div>
         </div>
 
         <div id="patchGallery" class="galleryGrid"></div>
@@ -819,6 +901,25 @@
 <footer id="pageFooter">
   © <span id="footerYear"></span> Civil Air Patrol Uniform Builder – Developed by C/Capt. Guiseppe Doran
 </footer>
+
+<!-- ===========================
+     GALLERY MODAL
+     =========================== -->
+<div id="galleryModalOverlay" class="modalOverlay" aria-hidden="true">
+  <div id="galleryModal" class="modal" role="dialog" aria-modal="true" aria-label="Gallery Popup">
+    <div class="modalHeader">
+      <div class="title" id="galleryModalTitle">Gallery</div>
+      <div class="actions">
+        <button id="galleryModalMaxBtn" type="button" title="Maximize">Max</button>
+        <button id="galleryModalRestoreBtn" type="button" title="Restore" class="hidden">Restore</button>
+        <button id="galleryModalCloseBtn" type="button" title="Close">Close</button>
+      </div>
+    </div>
+    <div class="modalBody">
+      <div id="galleryModalHost"></div>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ===========================
@@ -2503,10 +2604,6 @@ by('clearRibbons').addEventListener('click', ()=>{
   renderRack();
   renderAllBadges();
 });
-by('expandRibbons').addEventListener('click', ()=>{
-  State.ribbonGalleryExpanded = !State.ribbonGalleryExpanded;
-  buildRibbonGallery();
-});
 
 /* Badge gallery buttons */
 by('clearBadges').addEventListener('click', ()=>{
@@ -2515,10 +2612,6 @@ by('clearBadges').addEventListener('click', ()=>{
   buildBadgeGallery();
   renderAllBadges();
 });
-by('expandBadges').addEventListener('click', ()=>{
-  State.badgeGalleryExpanded = !State.badgeGalleryExpanded;
-  buildBadgeGallery();
-});
 
 /* Patch gallery buttons */
 by('clearPatches').addEventListener('click', ()=>{
@@ -2526,10 +2619,6 @@ by('clearPatches').addEventListener('click', ()=>{
   State.patchSelections={};
   buildPatchGallery();
   renderPatches();
-});
-by('expandPatches').addEventListener('click', ()=>{
-  State.patchGalleryExpanded = !State.patchGalleryExpanded;
-  buildPatchGallery();
 });
 
 by('addRank').addEventListener('click', ()=>{
@@ -2647,6 +2736,221 @@ function initCalibratorUI(){
     applyAndRerender();
   });
 }
+
+/* ===========================
+   MODAL GALLERY (Ribbons/Badges/Patches)
+   - Expand buttons open popup
+   - Popup is resizable + Max/Restore
+   =========================== */
+const modalOverlay = by('galleryModalOverlay');
+const modalEl      = by('galleryModal');
+const modalTitle   = by('galleryModalTitle');
+const modalHost    = by('galleryModalHost');
+const modalClose   = by('galleryModalCloseBtn');
+const modalMaxBtn  = by('galleryModalMaxBtn');
+const modalRestore = by('galleryModalRestoreBtn');
+
+let modalLast = null;
+
+function openGalleryModal(kind){
+  // kind: 'ribbons' | 'badges' | 'patches'
+  modalHost.innerHTML = '';
+
+  const host = document.createElement('div');
+
+  const header = document.createElement('div');
+  header.style.cssText = "display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px;";
+  header.innerHTML = `
+    <div style="font-size:12px;color:var(--muted);line-height:1.3;">
+      Tip: Drag the bottom-right corner to resize this window.
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button id="modalShowLess" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show Less</button>
+      <button id="modalShowAll" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show All</button>
+    </div>
+  `;
+  host.appendChild(header);
+
+  const grid = document.createElement('div');
+  grid.className = 'galleryGrid';
+  host.appendChild(grid);
+
+  modalHost.appendChild(host);
+
+  function syncFromSidebar(){
+    if(kind==='ribbons'){
+      State.ribbonGalleryExpanded = true;
+      buildRibbonGallery();
+      modalTitle.textContent = "Ribbons / Mini Medals";
+      const sidebar = by('ribbonGallery');
+      grid.innerHTML = sidebar ? sidebar.innerHTML : '';
+      wireModalInteractions('ribbons');
+    }
+    if(kind==='badges'){
+      State.badgeGalleryExpanded = true;
+      buildBadgeGallery();
+      modalTitle.textContent = "Badges";
+      const sidebar = by('badgeGallery');
+      grid.innerHTML = sidebar ? sidebar.innerHTML : '';
+      wireModalInteractions('badges');
+    }
+    if(kind==='patches'){
+      State.patchGalleryExpanded = true;
+      buildPatchGallery();
+      modalTitle.textContent = "Patches";
+      const sidebar = by('patchGallery');
+      grid.innerHTML = sidebar ? sidebar.innerHTML : '';
+      wireModalInteractions('patches');
+    }
+  }
+
+  function wireModalInteractions(k){
+    if(k==='ribbons'){
+      const showCount = State.ribbonGalleryExpanded ? ribbonList.length : Math.min(12, ribbonList.length);
+      const ids = ribbonList.slice(0, showCount);
+
+      const tiles = [...grid.querySelectorAll('.galleryTile')];
+      tiles.forEach((tile, i) => {
+        const id = ids[i];
+        if(!id) return;
+        const sel = State.ribbonSelections[id];
+
+        const chk = tile.querySelector('.rbChk');
+        const silver = tile.querySelector('.rbSilver');
+        const bronze = tile.querySelector('.rbBronze');
+
+        if(chk){
+          chk.checked = !!sel.checked;
+          chk.onchange = () => { sel.checked = chk.checked; rebuildRibbonsFromGallery(); syncFromSidebar(); };
+        }
+        function bump(){
+          sel.devices['1_Silver_Star_Device'] = Math.max(0, parseInt(silver?.value||"0",10)||0);
+          sel.devices['1_Bronze_Star_Device'] = Math.max(0, parseInt(bronze?.value||"0",10)||0);
+          sel.checked = true;
+          if(chk) chk.checked = true;
+          rebuildRibbonsFromGallery();
+          syncFromSidebar();
+        }
+        if(silver) silver.oninput = bump;
+        if(bronze) bronze.oninput = bump;
+      });
+    }
+
+    if(k==='badges'){
+      const eligible = (State.membership==='cadet') ? badgeList.filter(isCadetAuthorized) : [...badgeList];
+      const showCount = State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
+      const ids = eligible.slice(0, showCount);
+
+      const tiles = [...grid.querySelectorAll('.galleryTile')];
+      tiles.forEach((tile, i) => {
+        const id = ids[i];
+        if(!id) return;
+        const sel = State.badgeSelections[id] || {checked:false};
+
+        const chk = tile.querySelector('.bdChk');
+        if(chk){
+          chk.checked = !!sel.checked;
+          chk.onchange = () => {
+            sel.checked = chk.checked;
+            State.badgeSelections[id] = sel;
+            rebuildBadgesFromGallery();
+            syncFromSidebar();
+          };
+        }
+      });
+    }
+
+    if(k==='patches'){
+      const showCount = State.patchGalleryExpanded ? patchList.length : Math.min(10, patchList.length);
+      const ids = patchList.slice(0, showCount);
+
+      const tiles = [...grid.querySelectorAll('.galleryTile')];
+      tiles.forEach((tile, i) => {
+        const id = ids[i];
+        if(!id) return;
+        const sel = State.patchSelections[id] || {checked:false};
+
+        const chk = tile.querySelector('.ptChk');
+        if(chk){
+          chk.checked = !!sel.checked;
+          chk.onchange = () => {
+            sel.checked = chk.checked;
+            rebuildPatchesFromGallery();
+            syncFromSidebar();
+          };
+        }
+      });
+    }
+  }
+
+  host.querySelector('#modalShowLess').onclick = ()=>{
+    if(kind==='ribbons'){ State.ribbonGalleryExpanded=false; buildRibbonGallery(); }
+    if(kind==='badges'){ State.badgeGalleryExpanded=false; buildBadgeGallery(); }
+    if(kind==='patches'){ State.patchGalleryExpanded=false; buildPatchGallery(); }
+    syncFromSidebar();
+  };
+  host.querySelector('#modalShowAll').onclick = ()=>{
+    if(kind==='ribbons'){ State.ribbonGalleryExpanded=true; buildRibbonGallery(); }
+    if(kind==='badges'){ State.badgeGalleryExpanded=true; buildBadgeGallery(); }
+    if(kind==='patches'){ State.patchGalleryExpanded=true; buildPatchGallery(); }
+    syncFromSidebar();
+  };
+
+  syncFromSidebar();
+
+  modalOverlay.classList.add('open');
+  modalOverlay.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGalleryModal(){
+  modalOverlay.classList.remove('open');
+  modalOverlay.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+  // Rebuild normal sidebar (usually collapsed view)
+  buildRibbonGallery();
+  buildBadgeGallery();
+  buildPatchGallery();
+}
+
+modalClose.addEventListener('click', closeGalleryModal);
+modalOverlay.addEventListener('click', (e)=>{
+  if(e.target === modalOverlay) closeGalleryModal();
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape' && modalOverlay.classList.contains('open')) closeGalleryModal();
+});
+
+modalMaxBtn.addEventListener('click', ()=>{
+  modalLast = {
+    w: modalEl.style.width,
+    h: modalEl.style.height,
+    resize: modalEl.style.resize
+  };
+  modalEl.style.width = '96vw';
+  modalEl.style.height = '90vh';
+  modalEl.style.resize = 'none';
+  modalMaxBtn.classList.add('hidden');
+  modalRestore.classList.remove('hidden');
+});
+modalRestore.addEventListener('click', ()=>{
+  if(modalLast){
+    modalEl.style.width = modalLast.w || '';
+    modalEl.style.height = modalLast.h || '';
+    modalEl.style.resize = modalLast.resize || 'both';
+  }else{
+    modalEl.style.width = '';
+    modalEl.style.height = '';
+    modalEl.style.resize = 'both';
+  }
+  modalRestore.classList.add('hidden');
+  modalMaxBtn.classList.remove('hidden');
+});
+
+/* IMPORTANT: Expand buttons open the popup */
+by('expandRibbons').addEventListener('click', ()=> openGalleryModal('ribbons'));
+by('expandBadges').addEventListener('click',  ()=> openGalleryModal('badges'));
+by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
 
 /* ===========================
    BOOTSTRAP
