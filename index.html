@@ -875,23 +875,24 @@ const UI_AUTHZ = {
 };
 
 /* ===========================
-   SENIOR MEMBER NCO BASE IMAGES
+   SENIOR MEMBER NCO BASE IMAGES (UPDATED)
    =========================== */
 const SENIOR_NCO_BASE = {
   blues_a: {
+    // You provided one set of jacket files (not gender-split), so use same for both.
     male: {
-      "SSgt": "base/sm_nco/blues_a_ssgt_male.png",
-      "TSgt": "base/sm_nco/blues_a_tsgt_male.png",
-      "MSgt": "base/sm_nco/blues_a_msgt_male.png",
-      "SMSgt":"base/sm_nco/blues_a_smsgt_male.png",
-      "CMSgt":"base/sm_nco/blues_a_cmsgt_male.png"
+      "SSgt": "base/CAP_SM_SSgt_Class_A_Jacket.png",
+      "TSgt": "base/CAP_SM_TSgt_Class_A_Jacket.png",
+      "MSgt": "base/CAP_SM_MSgt_Class_A_Jacket.png",
+      "SMSgt":"base/CAP_SM_SMSgt_Class_A_Jacket.png",
+      "CMSgt":"base/CAP_SM_CMSgt_Class_A_Jacket.png"
     },
     female: {
-      "SSgt": "base/sm_nco/blues_a_ssgt_female.png",
-      "TSgt": "base/sm_nco/blues_a_tsgt_female.png",
-      "MSgt": "base/sm_nco/blues_a_msgt_female.png",
-      "SMSgt":"base/sm_nco/blues_a_smsgt_female.png",
-      "CMSgt":"base/sm_nco/blues_a_cmsgt_female.png"
+      "SSgt": "base/CAP_SM_SSgt_Class_A_Jacket.png",
+      "TSgt": "base/CAP_SM_TSgt_Class_A_Jacket.png",
+      "MSgt": "base/CAP_SM_MSgt_Class_A_Jacket.png",
+      "SMSgt":"base/CAP_SM_SMSgt_Class_A_Jacket.png",
+      "CMSgt":"base/CAP_SM_CMSgt_Class_A_Jacket.png"
     }
   }
 };
@@ -995,7 +996,7 @@ const badgeList = [
 ];
 
 const allowedCadetBadges = new Set([
-  'solo_badge','pre_solo_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge','emt_basic_badge','emt_intermediate','emt_paramedic','aerospace','model_rocketry_badge','communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges','cadetadvisory','cd','nra_marksman_badge','AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C','observer_badge','emergency_services_badge','historian_technicianIbadge'
+  'solo_badge','pre_solo_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge','emt_basic_badge','emt_intermediate','emt_paramedic','aerospace','model_rocketry_badge','communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges','cadetadvisory','cd','nra_marksman_badge','AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','SeniorSeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C','observer_badge','emergency_services_badge','historian_technicianIbadge'
 ]);
 
 const exclusiveBadges = [
@@ -1896,7 +1897,6 @@ function renderPatches(){
 
   planPatches(State.patches);
 
-  // Responsive coords tuned for 450x600, but computed from actual canvas size:
   const box = uniformCanvas.getBoundingClientRect();
   const W = box.width || 450;
   const H = box.height || 600;
@@ -2075,7 +2075,6 @@ function fullRender(prevUniform){
   clearLayers();
   applyJacket();
 
-  // If we have no jacket candidates, we’re not ready (membership/gender/uniform not set)
   if(!getBaseCandidates().length) return;
 
   updateAvailabilityUI(prevUniform);
