@@ -27,7 +27,7 @@
   header{
     background:var(--brand);
     color:#fff;
-    padding:14px 16px 14px 48px; /* leave space for hamburger in top-left */
+    padding:14px 16px 14px 48px;
     text-align:center;
     position:relative;
   }
@@ -37,7 +37,6 @@
     letter-spacing:.3px
   }
 
-  /* HAMBURGER MENU BUTTON */
   .hamburgerBtn{
     position:fixed;
     left:12px;
@@ -64,17 +63,15 @@
     border-radius:1px;
   }
 
-  /* MAIN LAYOUT SHELL */
   #layoutShell {
     display:flex;
-    height:calc(100vh - 58px); /* minus header height */
+    height:calc(100vh - 58px);
     position:relative;
     background:var(--bg);
     color:var(--ink);
     overflow:hidden;
   }
 
-  /* Sidebar / Controls panel */
   #controls {
     width:340px;
     max-width:340px;
@@ -114,7 +111,7 @@
   .controlsScrollArea{
     flex:1;
     overflow-y:auto;
-    padding:12px 14px 48px; /* leave room above footer bar */
+    padding:12px 14px 48px;
   }
 
   .panelBlock {
@@ -168,7 +165,6 @@
   .hidden{display:none !important}
   .disabledBlock{opacity:.55; pointer-events:none; filter:grayscale(.25);}
 
-  /* uniform selector buttons */
   .uniformList{
     display:flex;
     flex-direction:column;
@@ -205,7 +201,6 @@
     line-height:1.3;
   }
 
-  /* locked (not authorized for this member type) */
   .uniformOption.locked{
     cursor:not-allowed;
     opacity:.45;
@@ -242,7 +237,6 @@
     z-index:9999;
   }
 
-  /* Advanced device tool box */
   #deviceTool{
     margin-top:10px;
     border:1px solid var(--line);
@@ -257,7 +251,6 @@
     font-size:12px;
   }
 
-  /* PREVIEW WRAPPER */
   #previewWrapper{
     flex:1;
     position:relative;
@@ -270,7 +263,6 @@
     background:var(--bg);
   }
 
-  /* Preview canvas box */
   #previewArea{
     position:relative;
     background:var(--panel);
@@ -292,7 +284,6 @@
     image-rendering:auto;
   }
 
-  /* Drag calibration visuals */
   .drag-mode-on .ribbonTile{
     outline:1px dashed rgba(0,40,85,.6);
     cursor:move;
@@ -309,7 +300,6 @@
     min-width:140px;
   }
 
-  /* TOOLTIP BUBBLE */
   .tooltipBubble{
     position:fixed;
     z-index:9999;
@@ -338,7 +328,6 @@
     font-size:11px;
   }
 
-  /* COLLAPSED SIDEBAR STATE */
   #layoutShell.sidebar-open #controls{
     width:340px;
     max-width:340px;
@@ -356,21 +345,6 @@
     overflow:hidden;
   }
 
-  /* GUIDE DOT (debug aid) */
-  .guideDot{
-    position:absolute;
-    background:rgba(0,40,85,.15);
-    border:1px solid rgba(0,40,85,.4);
-    color:var(--ink);
-    font-size:10px;
-    line-height:1.2;
-    padding:2px 4px;
-    border-radius:4px;
-    pointer-events:none;
-    white-space:nowrap;
-  }
-
-  /* COPYRIGHT FOOTER */
   #pageFooter{
     text-align:center;
     font-size:11px;
@@ -385,7 +359,6 @@
     z-index:5;
   }
 
-  /* CALIBRATOR WRAPPER */
   #calibratorWrapper {
     position:fixed;
     top:80px;
@@ -478,7 +451,6 @@
     padding:0;
   }
 
-  /* MOBILE */
   @media (max-width:768px){
     #layoutShell{
       flex-direction:column;
@@ -518,12 +490,10 @@
   <h1>CAP Uniform Builder</h1>
 </header>
 
-<!-- HAMBURGER MENU BUTTON -->
 <button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu">
   <span></span><span></span><span></span>
 </button>
 
-<!-- Ribbon Rack Calibrator UI -->
 <div id="calibratorWrapper">
   <div id="calibratorTab">
     <span>RACK</span>
@@ -535,13 +505,13 @@
 
     <div class="calib-row">
       <label for="rackXRange">X Offset (left px)</label>
-      <input type="range" id="rackXRange" min="150" max="400" step="1">
+      <input type="range" id="rackXRange" min="0" max="450" step="1">
       <input type="number" id="rackXNumber" class="numField">
     </div>
 
     <div class="calib-row">
       <label for="rackYRange">Y Offset (top px)</label>
-      <input type="range" id="rackYRange" min="150" max="320" step="1">
+      <input type="range" id="rackYRange" min="0" max="600" step="1">
       <input type="number" id="rackYNumber" class="numField">
     </div>
 
@@ -553,10 +523,8 @@
   </div>
 </div>
 
-<!-- MAIN APP LAYOUT -->
 <main id="layoutShell" class="sidebar-open">
 
-  <!-- SIDEBAR -->
   <aside id="controls">
     <div class="controlsHeader">
       <h2 class="controlsTitle">Uniform Builder Controls</h2>
@@ -564,7 +532,6 @@
 
     <div class="controlsScrollArea">
 
-      <!-- NEW: SETUP FLOW (Membership -> Rank -> Uniform -> Gender) -->
       <section class="panelBlock">
         <label class="fieldLabel">Membership Type</label>
         <select id="membershipType">
@@ -578,10 +545,9 @@
         <select id="rankSetupSelect" disabled>
           <option value="">Select Rank</option>
         </select>
-        <div class="hintText">For Senior Member NCO (SSgt–CMSgt), your NCO base images will be used as the jacket template.</div>
+        <div class="hintText">For Senior Member NCO (SSgt–CMSgt), your NCO base images will be used as the jacket template (if present).</div>
       </section>
 
-      <!-- GENDER -->
       <section id="genderBlock" class="panelBlock disabledBlock">
         <label class="fieldLabel">Gender / Cut</label>
         <select id="jacketSelect">
@@ -592,88 +558,64 @@
         <div class="hintText">This swaps which base jacket image we render.</div>
       </section>
 
-      <!-- UNIFORM SELECTOR -->
       <section id="uniformBlock" class="panelBlock disabledBlock">
         <label class="fieldLabel">Uniform</label>
         <div id="uniformList" class="uniformList">
 
-          <button class="uniformOption"
-                  data-uniform-id="blues_a"
-                  data-allowed-for="cadet,senior">
+          <button class="uniformOption" data-uniform-id="blues_a" data-allowed-for="cadet,senior">
             <div class="uName">Blues: Class A</div>
             <div class="uDesc smallText">Service coat, ribbons</div>
           </button>
 
-          <button class="uniformOption"
-                  data-uniform-id="blues_b"
-                  data-allowed-for="cadet,senior">
+          <button class="uniformOption" data-uniform-id="blues_b" data-allowed-for="cadet,senior">
             <div class="uName">Blues: Class B</div>
             <div class="uDesc smallText">Shirt, ribbons</div>
           </button>
 
-          <button class="uniformOption"
-                  data-uniform-id="mess_dress"
-                  data-allowed-for="senior">
+          <button class="uniformOption" data-uniform-id="mess_dress" data-allowed-for="senior">
             <div class="uName">Mess Dress</div>
             <div class="uDesc smallText">Mini medals / formal</div>
           </button>
 
-          <button class="uniformOption"
-                  data-uniform-id="semi_formal"
-                  data-allowed-for="senior">
+          <button class="uniformOption" data-uniform-id="semi_formal" data-allowed-for="senior">
             <div class="uName">Semi-formal</div>
             <div class="uDesc smallText">Mini medals</div>
           </button>
 
-          <button class="uniformOption"
-                  data-uniform-id="aviator"
-                  data-allowed-for="senior">
+          <button class="uniformOption" data-uniform-id="aviator" data-allowed-for="senior">
             <div class="uName">Aviator Shirt</div>
             <div class="uDesc smallText">Corporate white shirt</div>
           </button>
 
-          <button class="uniformOption"
-                  data-uniform-id="aviator_blazer"
-                  data-allowed-for="senior">
+          <button class="uniformOption" data-uniform-id="aviator_blazer" data-allowed-for="senior">
             <div class="uName">Aviator + Blazer</div>
             <div class="uDesc smallText">Corporate coat style</div>
           </button>
 
-          <button class="uniformOption"
-                  data-uniform-id="corporate_field"
-                  data-allowed-for="senior">
+          <button class="uniformOption" data-uniform-id="corporate_field" data-allowed-for="senior">
             <div class="uName">Corporate Field Uniform</div>
             <div class="uDesc smallText">Field / utility variant</div>
           </button>
 
-          <button class="uniformOption"
-                  data-uniform-id="abu"
-                  data-allowed-for="cadet,senior">
+          <button class="uniformOption" data-uniform-id="abu" data-allowed-for="cadet,senior">
             <div class="uName">ABU</div>
             <div class="uDesc smallText">Legacy camo / tapes</div>
           </button>
 
-          <button class="uniformOption"
-                  data-uniform-id="flight_suit"
-                  data-allowed-for="cadet,senior">
+          <button class="uniformOption" data-uniform-id="flight_suit" data-allowed-for="cadet,senior">
             <div class="uName">Flight Suit</div>
             <div class="uDesc smallText">Flight / utility</div>
           </button>
 
-          <button class="uniformOption"
-                  data-uniform-id="polo"
-                  data-allowed-for="senior">
+          <button class="uniformOption" data-uniform-id="polo" data-allowed-for="senior">
             <div class="uName">Polo</div>
             <div class="uDesc smallText">Corporate polo / gray slacks</div>
           </button>
         </div>
 
-        <div class="hintText">
-          Grayed-out uniforms are not authorized for the selected membership type.
-        </div>
+        <div class="hintText">Grayed-out uniforms are not authorized for the selected membership type.</div>
       </section>
 
-      <!-- ASSET BASE -->
       <section class="panelBlock">
         <div class="row two">
           <div class="col">
@@ -688,7 +630,6 @@
         <div class="hintText">Change this if your image folder path changes.</div>
       </section>
 
-      <!-- RIBBONS / DEVICES / MINI MEDALS -->
       <section id="groupRibbons" class="panelBlock">
         <label class="fieldLabel">Ribbons / Mini Medals</label>
         <div class="row two">
@@ -733,7 +674,6 @@
         </div>
       </section>
 
-      <!-- BADGES -->
       <section class="panelBlock">
         <label class="fieldLabel">Badges</label>
         <div class="row two">
@@ -747,7 +687,6 @@
         <div class="hintText">Placement follows CAPR 39-1 rules. Some badges are cadet-only / senior-only.</div>
       </section>
 
-      <!-- PATCHES -->
       <section id="groupPatches" class="panelBlock">
         <label class="fieldLabel">Patches</label>
         <div class="row two">
@@ -761,7 +700,6 @@
         <div class="hintText">Field uniforms swap certain badges/ribbons into patch/tape equivalents automatically.</div>
       </section>
 
-      <!-- RANK / NAME / DOWNLOAD -->
       <section class="panelBlock">
         <label class="fieldLabel">Rank Insignia & Output</label>
         <div class="row two">
@@ -775,7 +713,6 @@
         <div class="hintText">Download will export a high-res PNG of the uniform preview.</div>
       </section>
 
-      <!-- COPYRIGHT -->
       <section class="panelBlock" style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3;">
         <div id="sidebarCopyrightLine">
           © <span id="sidebarYear"></span> Civil Air Patrol Uniform Builder<br/>
@@ -785,7 +722,6 @@
     </div>
   </aside>
 
-  <!-- PREVIEW AREA -->
   <section id="previewWrapper">
     <div id="previewArea">
       <div id="uniformCanvas"></div>
@@ -797,15 +733,12 @@
     </div>
   </section>
 
-  <!-- GLOBAL HOVER TOOLTIP -->
   <div id="tooltip" class="tooltipBubble" style="display:none;"></div>
 
 </main>
 
-<!-- Hidden assets root -->
 <div class="layer" id="assets" style="display:none"></div>
 
-<!-- COPYRIGHT FOOTER -->
 <footer id="pageFooter">
   © <span id="footerYear"></span> Civil Air Patrol Uniform Builder – Developed by C/Capt. Guiseppe Doran
 </footer>
@@ -815,14 +748,14 @@
    GLOBAL STATE
    =========================== */
 const State = {
-  membership:'',           // 'senior' | 'cadet'
-  gender:'',               // 'male' | 'female'
+  membership:'',
+  gender:'',
   uniform:'blues_a',
   assetBase:'images',
-  ribbons:[],              // [{id, devices:{ devId:qty }}]
+  ribbons:[],
   badges:[],
   patches:[],
-  rank:null,               // selected rank string (senior or cadet)
+  rank:null,
   deviceApplyMode:false,
   deviceRemoveMode:false,
   selectedDevices:{},
@@ -844,23 +777,27 @@ const RANKS = {
 
 const SENIOR_NCO_RANKS = new Set(["SSgt","TSgt","MSgt","SMSgt","CMSgt"]);
 const OFFICER_RANKS = new Set([
-  // senior officers
   "2d Lt","1st Lt","Capt","Maj","Lt Col","Col","Brig Gen","Maj Gen",
-  // cadet officers
   "C/2d Lt","C/1st Lt","C/Capt","C/Maj","C/Lt Col","C/Col"
 ]);
 
 /* ===========================
    CALIBRATION CONSTANTS
    =========================== */
-let rackBaseX = 259;
-let rackBaseY = 206;
+let rackBaseX = 259; // LEFT EDGE of a 3-wide rack
+let rackBaseY = 206; // TOP of bottom row
 
 const RIBBON_WIDTH  = 23;
 const RIBBON_HEIGHT = 7.2;
 const RIBBON_GAP_X  = 0;
 const RIBBON_GAP_Y  = 2;
 
+function rackSpanW(){
+  return (RIBBON_WIDTH*3) + (RIBBON_GAP_X*2);
+}
+function rackCenterX(){
+  return rackBaseX + rackSpanW()/2;
+}
 function getRackOrigin(){
   return { x:rackBaseX, y:rackBaseY };
 }
@@ -938,15 +875,9 @@ const UI_AUTHZ = {
 };
 
 /* ===========================
-   NEW: SENIOR MEMBER NCO BASE IMAGES
+   SENIOR MEMBER NCO BASE IMAGES
    =========================== */
-/*
-  Update these paths to match YOUR actual filenames.
-  These are RELATIVE to your asset base (images/).
-  If a path is missing, it will fall back to the normal base uniform.
-*/
 const SENIOR_NCO_BASE = {
-  // Example: SM NCO Blues Class A base coats
   blues_a: {
     male: {
       "SSgt": "base/sm_nco/blues_a_ssgt_male.png",
@@ -963,7 +894,6 @@ const SENIOR_NCO_BASE = {
       "CMSgt":"base/sm_nco/blues_a_cmsgt_female.png"
     }
   }
-  // If you later make NCO base images for other uniforms, add them here.
 };
 
 /* ===========================
@@ -1001,8 +931,7 @@ const deviceMeta = {
   '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 }
 };
 
-const miniMedalImages = { /* unchanged (omitted here for brevity) */ };
-/* ---- keep your existing miniMedalImages object exactly as you had it ---- */
+const miniMedalImages = {};
 Object.assign(miniMedalImages, {
   'exceptional_service_award':      'images/medals/exceptional_service.png',
   'meritorious_service_award':      'images/medals/meritorious_service.png',
@@ -1060,8 +989,7 @@ Object.assign(miniMedalImages, {
 /* ===========================
    BADGES / PATCHES
    =========================== */
-/* ---- keep your existing badgeList/badge logic/patch logic exactly as you had it ---- */
-const badgeList = [ /* unchanged */ 
+const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
   'buddist_chaplin','christian_chaplin','communications_technician_badge','cyber_badges','emergency_services_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges'
 ];
@@ -1076,7 +1004,7 @@ const exclusiveBadges = [
   ['emt_paramedic','master_ground_team_badge']
 ];
 
-const badgeLocations = { /* unchanged */ 
+const badgeLocations = {
   'AirCrew1_DB3F0FCC3650F':'OLP','BalloonPilot1_442D89C94185B':'OLP','CAPMasterPilot1_621A0E2ED15DA':'OLP','CAPPilot1_FA9D33EA587D8':'OLP','CAPSeniorPilot1_D9725AE959752':'OLP','GliderPilot1_7BFB287379918':'OLP','MasterAirCrew1_72AC4CAE7A310':'OLP',
   'SeniorAirCrew1_B289BAE6E515C':'OLP','pre_solo_badge':'OLP','solo_badge':'OLP',
   'cyber_badges':'LP','stem_badges':'LP','communications_technician_badge':'LP','information_technology_technician_badge':'LP','MasterObserver1_1B88D5071FD5C':'LP','SeniorObserver1_0E35802A29801':'LP','observer_badge':'LP','historian_technicianIbadge':'LP','model_rocketry_badge':'LP',
@@ -1085,7 +1013,7 @@ const badgeLocations = { /* unchanged */
   'buddist_chaplin':'ORP','christian_chaplin':'ORP','jewish_chaplin':'ORP','legal_officer':'ORP','medical_officer':'ORP','nurse_officer':'ORP','muslim_chaplin':'ORP'
 };
 
-const customBadgeSizes = { /* unchanged */ 
+const customBadgeSizes = {
   'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
   'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:60,height:60},
   'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:60,height:60},'emt_basic_badge':{width:60,height:60},
@@ -1118,9 +1046,6 @@ const ALTERNATES = {
   patchToRibbon:{ 'orientation_pilot_patch':'orientation_pilot_ribbon' }
 };
 
-/* ===========================
-   RANK LIST FOR THE "Set Rank" TOOL
-   =========================== */
 const rankListAll = [...RANKS.senior, ...RANKS.cadet];
 
 /* ===========================
@@ -1202,7 +1127,7 @@ Object.entries(PATCH_META).forEach(([id,m])=>{
 /* ===========================
    SIDEBAR TOGGLE (HAMBURGER)
    =========================== */
-layoutShell.classList.add('sidebar-open'); // default state
+layoutShell.classList.add('sidebar-open');
 hamburgerBtn.addEventListener('click', ()=>{
   if(layoutShell.classList.contains('sidebar-open')){
     layoutShell.classList.remove('sidebar-open');
@@ -1246,29 +1171,24 @@ document.addEventListener('mouseout', e => {
 });
 
 /* ===========================
-   NEW: SETUP FLOW WIRING
+   SETUP FLOW
    =========================== */
 function updateSetupGates(){
-  // Gate: gender + uniform locked until membership+rank selected
   const readyMembership = !!State.membership;
   const readyRank       = !!State.rank;
   const readyGender     = !!State.gender;
 
-  // Enable rank select only after membership chosen
   rankSetupSelect.disabled = !readyMembership;
 
-  // enable uniform/gender blocks after membership+rank
   const enableUniformGender = readyMembership && readyRank;
   uniformBlock.classList.toggle('disabledBlock', !enableUniformGender);
   genderBlock.classList.toggle('disabledBlock', !enableUniformGender);
 
-  // once all 4 chosen, render base
   if(readyMembership && readyRank && readyGender && State.uniform){
     fullRender();
     refreshUI();
   }
 }
-
 function populateRankSetup(){
   rankSetupSelect.innerHTML = `<option value="">Select Rank</option>`;
   if(!State.membership) return;
@@ -1284,20 +1204,16 @@ membershipTypeEl.addEventListener('change', ()=>{
   State.membership = membershipTypeEl.value || '';
   State.rank = null;
 
-  // reset gender until chosen again
   State.gender = '';
   jacketSelect.value = '';
 
-  // reset rank select
   populateRankSetup();
   rankSetupSelect.value = '';
 
-  // if cadet membership, enforce cadet badge filtering
   if(State.membership==='cadet'){
     State.badges = State.badges.filter(isCadetAuthorized);
   }
 
-  // ensure current uniform is allowed
   if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)){
     const fallback=findFirstAllowedUniform(State.membership) || 'blues_a';
     State.uniform=fallback;
@@ -1307,16 +1223,12 @@ membershipTypeEl.addEventListener('change', ()=>{
   applyMemberTypeToUniformOptions();
   highlightActiveUniformButton();
 
-  // clear preview until fully selected
   fullRender();
 });
 
 rankSetupSelect.addEventListener('change', ()=>{
   State.rank = rankSetupSelect.value || null;
-
-  // keep "Set Rank" dropdown synced
   by('rankSelect').value = State.rank || '';
-
   updateSetupGates();
   fullRender();
 });
@@ -1357,8 +1269,7 @@ function applyMemberTypeToUniformOptions(){
       opt.removeAttribute('data-locked-reason');
     }else{
       opt.classList.add('locked');
-      let warnText='This Uniform Is Not Authorized For This Membership Type';
-      opt.setAttribute('data-locked-reason', warnText);
+      opt.setAttribute('data-locked-reason', 'This Uniform Is Not Authorized For This Membership Type');
     }
   });
 }
@@ -1378,56 +1289,87 @@ function highlightActiveUniformButton(){
 }
 
 /* ===========================
-   JACKET BASE RENDER (UPDATED)
+   JACKET BASE RENDER (FIXED)
    =========================== */
 function clearLayers(cls){
   const sel = cls?`.layer.${cls}`:'.layer';
   uniformCanvas.querySelectorAll(sel).forEach(n=>n.remove());
 }
 
-function resolveBaseUniformPath(){
-  // must have uniform+gender
+function getBaseCandidates(){
   const u = State.uniform;
   const g = State.gender;
+  const list = [];
+  if(!u || !g) return list;
 
-  if(!u || !g) return null;
-
-  // Senior Member NCO: use special base images when available
+  // NCO special (try first)
   if(State.membership==='senior' && State.rank && SENIOR_NCO_RANKS.has(State.rank)){
-    const map = SENIOR_NCO_BASE[u]?.[g]?.[State.rank];
-    if(map) return map;
+    const ncoPath = SENIOR_NCO_BASE[u]?.[g]?.[State.rank];
+    if(ncoPath) list.push(ncoPath);
   }
 
-  // Default base uniform
-  const base = UNIFORMS[u]?.[g];
-  return base || null;
+  // Default base
+  const def = UNIFORMS[u]?.[g];
+  if(def) list.push(def);
+
+  // De-dupe (just in case)
+  return [...new Set(list)];
 }
 
 function applyJacket(){
   clearLayers('jacket');
 
-  const basePath = resolveBaseUniformPath();
-  if(!basePath){
-    // no base selected yet, keep canvas empty
-    return;
+  const candidates = getBaseCandidates();
+  if(!candidates.length) return;
+
+  function showJacketError(text){
+    const msg = document.createElement('div');
+    msg.className = 'layer jacket';
+    msg.style.left = '12px';
+    msg.style.top = '12px';
+    msg.style.padding = '10px 12px';
+    msg.style.borderRadius = '10px';
+    msg.style.background = 'rgba(220, 38, 38, .10)';
+    msg.style.border = '1px solid rgba(220, 38, 38, .35)';
+    msg.style.color = '#991b1b';
+    msg.style.fontSize = '12px';
+    msg.style.maxWidth = '420px';
+    msg.textContent = text;
+    uniformCanvas.appendChild(msg);
   }
 
-  const img=document.createElement('img');
-  img.className='layer jacket';
-  img.src=ASSET(basePath);
-  img.style.top='0px';
-  img.style.left='0px';
-  img.style.width='100%';
-  img.style.height='100%';
-  img.style.display='block';
+  let idx = 0;
 
-  img.dataset.tooltipTitle = (State.uniform||'').replace(/_/g,' ').toUpperCase();
-  img.dataset.tooltipReg   = "Base uniform image";
-  img.dataset.tooltipWhy   = (State.membership==='senior' && SENIOR_NCO_RANKS.has(State.rank||'')) ?
-    `Senior Member NCO base coat (${State.rank})` :
-    "Selected uniform template for preview / alignment.";
+  function tryNext(){
+    if(idx >= candidates.length){
+      showJacketError(`Jacket image failed to load. Verify filenames in "${State.assetBase}/base/". Check browser console for 404s.`);
+      return;
+    }
 
-  uniformCanvas.appendChild(img);
+    const path = candidates[idx++];
+    const img=document.createElement('img');
+    img.className='layer jacket';
+    img.src=ASSET(path);
+    img.style.top='0px';
+    img.style.left='0px';
+    img.style.width='100%';
+    img.style.height='100%';
+    img.style.display='block';
+
+    img.dataset.tooltipTitle = (State.uniform||'').replace(/_/g,' ').toUpperCase();
+    img.dataset.tooltipReg   = "Base uniform image";
+    img.dataset.tooltipWhy   = `Loaded: ${path}`;
+
+    img.onerror = () => {
+      console.warn('[JACKET LOAD FAIL]', img.src);
+      img.remove();
+      tryNext();
+    };
+
+    uniformCanvas.appendChild(img);
+  }
+
+  tryNext();
 }
 
 /* ===========================
@@ -1438,9 +1380,7 @@ function sortRibbons(arr){
 }
 function getTopRibbonY(){
   const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini')];
-  if(!layers.length) {
-    return rackBaseY + 150;
-  }
+  if(!layers.length) return rackBaseY;
   return Math.min(...layers.map(l=>parseFloat(l.style.top)||0));
 }
 function ensureRibbonObj(id){
@@ -1553,8 +1493,9 @@ document.addEventListener('mousemove', e => {
   let newLeft = e.clientX - dragOffsetX;
   let newTop  = e.clientY - dragOffsetY;
 
-  const maxX = 450 - (parseFloat(currentDrag.style.width)  || RIBBON_WIDTH);
-  const maxY = 600 - (parseFloat(currentDrag.style.height) || RIBBON_HEIGHT);
+  const box = uniformCanvas.getBoundingClientRect();
+  const maxX = box.width  - (parseFloat(currentDrag.style.width)  || RIBBON_WIDTH);
+  const maxY = box.height - (parseFloat(currentDrag.style.height) || RIBBON_HEIGHT);
   if(newLeft < 0) newLeft = 0;
   if(newTop  < 0) newTop  = 0;
   if(newLeft > maxX) newLeft = maxX;
@@ -1572,7 +1513,6 @@ document.addEventListener('mouseup', () => {
   }
 });
 
-/* renderRack (unchanged from your version) */
 function renderRack(){
   [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
 
@@ -1588,8 +1528,8 @@ function renderRack(){
   const items = sortRibbons(State.ribbons);
   if(!items.length) return;
 
-  const BOTTOM_ROW_Y   = 206;
-  const RACK_CENTER_X  = 293.5;
+  const BOTTOM_ROW_Y   = rackBaseY;
+  const RACK_CENTER_X  = rackCenterX();
 
   function getRowLeftPositions(count){
     const totalWidth = count * RIBBON_WIDTH + (count-1)*RIBBON_GAP_X;
@@ -1612,7 +1552,7 @@ function renderRack(){
 
     rowsTopFirst.forEach((row,topIndex)=>{
       const indexFromBottom = (totalRows - 1 - topIndex);
-      const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * RIBBON_HEIGHT;
+      const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * (RIBBON_HEIGHT + RIBBON_GAP_Y);
 
       const rowSortedForDisplay = [...row].reverse();
       const leftPositions = getRowLeftPositions(rowSortedForDisplay.length);
@@ -1725,7 +1665,7 @@ function renderRack(){
 }
 
 /* ===========================
-   DEVICE TOOL UI (unchanged)
+   DEVICE TOOL UI
    =========================== */
 function buildDevicePicker(){
   const wrap=by('devicePicker');
@@ -1766,6 +1706,7 @@ function wireDeviceUI(){
     applyBtn.textContent = State.deviceApplyMode ? 'Apply Mode: ON' : 'Enable Apply Mode';
     applyBtn.classList.toggle('ghost', !State.deviceApplyMode);
     removeBtn.classList.add('ghost');
+    removeBtn.textContent='Enable Remove Mode';
   });
 
   removeBtn.addEventListener('click', ()=>{
@@ -1791,7 +1732,7 @@ function wireDeviceUI(){
 }
 
 /* ===========================
-   BADGES (unchanged except membership check)
+   BADGES
    =========================== */
 const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[] };
 function resetBadgeSlots(){ Object.keys(badgeSlots).forEach(k=>badgeSlots[k]=[]); }
@@ -1825,7 +1766,6 @@ function renderAllBadges(){
   }
 }
 
-/* ---- your existing placeBadgeByCategory stays the same ---- */
 function placeBadgeByCategory(id){
   const img=by(`badges-${id}`);
   if(!img) return;
@@ -1838,7 +1778,7 @@ function placeBadgeByCategory(id){
   const spacing = 5;
 
   const baseRibbonY = getTopRibbonY();
-  const RACK_CENTER_X = 293.5;
+  const RACK_CENTER_X = rackCenterX();
 
   const overRibbonSlots = new Set(['OLP','OLPU','OLPA','ORP']);
 
@@ -1882,8 +1822,8 @@ function placeBadgeByCategory(id){
   const xMap={
     ON:  rackBaseX - 105,
     UN:  rackBaseX - 105,
-    LRP: rackBaseX + (RIBBON_WIDTH*3) + 60,
-    LP:  rackBaseX + (RIBBON_WIDTH*3) + 80
+    LRP: rackBaseX + rackSpanW() + 60,
+    LP:  rackBaseX + rackSpanW() + 80
   };
 
   let y = yMap[slot] !== undefined ? yMap[slot] : (baseRibbonY+180);
@@ -1920,7 +1860,7 @@ function placeBadgeByCategory(id){
 }
 
 /* ===========================
-   PATCHES (unchanged)
+   PATCHES (FIXED COORDS)
    =========================== */
 const patchSlots = { L_SHOULDER:[], R_SHOULDER:[], CHEST_LEFT:[], CHEST_RIGHT:[] };
 function resetPatchSlots(){ Object.keys(patchSlots).forEach(k=>patchSlots[k]=[]); }
@@ -1956,11 +1896,16 @@ function renderPatches(){
 
   planPatches(State.patches);
 
+  // Responsive coords tuned for 450x600, but computed from actual canvas size:
+  const box = uniformCanvas.getBoundingClientRect();
+  const W = box.width || 450;
+  const H = box.height || 600;
+
   const coords={
-    L_SHOULDER:{x:95,y:250,dy:80},
-    R_SHOULDER:{x:505,y:250,dy:80},
-    CHEST_LEFT:{x:260,y:420,dy:70},
-    CHEST_RIGHT:{x:580,y:420,dy:70}
+    L_SHOULDER:{x:W*0.27,y:H*0.35,dy:80},
+    R_SHOULDER:{x:W*0.73,y:H*0.35,dy:80},
+    CHEST_LEFT:{x:W*0.40,y:H*0.60,dy:70},
+    CHEST_RIGHT:{x:W*0.60,y:H*0.60,dy:70}
   };
 
   for(const slot of Object.keys(patchSlots)){
@@ -1982,7 +1927,7 @@ function renderPatches(){
 
       el.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
       el.dataset.tooltipReg   = "Field/utility patch placement";
-      el.dataset.tooltipWhy   = "Displayed on sleeve/chest per OCP/ABU/corporate field rules.";
+      el.dataset.tooltipWhy   = "Displayed on sleeve/chest per field uniform rules.";
 
       uniformCanvas.appendChild(el);
       y+=dy;
@@ -1991,13 +1936,12 @@ function renderPatches(){
 }
 
 /* ===========================
-   RANK / NAMEPLATE (UPDATED)
+   RANK / NAMEPLATE
    =========================== */
 function renderRank(id){
   [...uniformCanvas.querySelectorAll('.layer.rank')].forEach(n=>n.remove());
   if(!id) return;
 
-  // Senior NCO: base coat already has the chevrons baked in -> don't overlay rank here
   if(State.membership==='senior' && SENIOR_NCO_RANKS.has(id)){
     return;
   }
@@ -2026,6 +1970,7 @@ function renderRank(id){
       board.style.height=`${boardCfg.height}px`;
       board.style.transform=`rotate(${rot}deg)`;
       board.style.transformOrigin='center center';
+      board.onerror=()=>{ board.remove(); };
       uniformCanvas.appendChild(board);
 
       const ins=insigniaEl.cloneNode();
@@ -2037,6 +1982,7 @@ function renderRank(id){
       ins.style.height=`${insigniaCfg.height}px`;
       ins.style.transform=`rotate(${rot}deg)`;
       ins.style.transformOrigin='center center';
+      ins.onerror=()=>{ ins.remove(); };
       uniformCanvas.appendChild(ins);
     });
     return;
@@ -2051,6 +1997,7 @@ function renderRank(id){
   icon.style.top  =`${pos.top}px`;
   icon.style.width =`${size.w}px`;
   icon.style.height=`${size.h}px`;
+  icon.onerror=()=>{ icon.remove(); };
   uniformCanvas.appendChild(icon);
 }
 
@@ -2068,11 +2015,12 @@ function renderNameplate(){
   el.style.left = npLeft+'px';
   el.style.width='100px';
   el.style.height='20px';
+  el.onerror=()=>{ el.remove(); };
   uniformCanvas.appendChild(el);
 }
 
 /* ===========================
-   AVAILABILITY / ALTERNATES (UPDATED membership check)
+   AVAILABILITY / ALTERNATES
    =========================== */
 function updateAvailabilityUI(prevUniform){
   const auth = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
@@ -2124,9 +2072,11 @@ function applyAlternates(fromU,toU){
    RENDER PIPELINE
    =========================== */
 function fullRender(prevUniform){
-  clearLayers(); // wipe all layers if you want setup gating to show empty
+  clearLayers();
   applyJacket();
-  if(!resolveBaseUniformPath()) return; // don't render items until base exists
+
+  // If we have no jacket candidates, we’re not ready (membership/gender/uniform not set)
+  if(!getBaseCandidates().length) return;
 
   updateAvailabilityUI(prevUniform);
   renderPatches();
@@ -2136,7 +2086,6 @@ function fullRender(prevUniform){
 }
 
 function refreshUI(){
-  // keep setup selectors aligned
   membershipTypeEl.value = State.membership || '';
   rankSetupSelect.value = State.rank || '';
   jacketSelect.value = State.gender || '';
@@ -2147,7 +2096,6 @@ function refreshUI(){
   highlightActiveUniformButton();
   applyMemberTypeToUniformOptions();
 
-  // keep legacy rank dropdown synced
   if(State.rank) by('rankSelect').value = State.rank;
 }
 
@@ -2168,13 +2116,12 @@ uniformListEl.addEventListener('click', e=>{
 });
 
 /* ===========================
-   EVENT WIRING (REST OF YOUR ORIGINAL)
+   EVENT WIRING
    =========================== */
 by('applyJacket').addEventListener('click', ()=>{
   State.assetBase=(assetBaseInput.value||'images').trim()||'images';
   fullRender();
 });
-
 assetBaseInput.addEventListener('change', ()=>{
   State.assetBase=(assetBaseInput.value||'images').trim()||'images';
   fullRender();
@@ -2240,7 +2187,6 @@ by('removePatch').addEventListener('click', ()=>{
 });
 
 by('addRank').addEventListener('click', ()=>{
-  // allow manual override, but keep setup synced
   State.rank=by('rankSelect').value || null;
   rankSetupSelect.value = State.rank || '';
   renderRank(State.rank);
@@ -2291,7 +2237,7 @@ logRibbonCoordsBtn.addEventListener('click', ()=>{
 });
 
 /* ===========================
-   CALIBRATOR PANEL WIRING (unchanged)
+   CALIBRATOR PANEL
    =========================== */
 function initCalibratorUI(){
   const tab          = by('calibratorTab');
@@ -2360,7 +2306,6 @@ function initCalibratorUI(){
    BOOTSTRAP
    =========================== */
 (function init(){
-  // start with gated UI
   applyMemberTypeToUniformOptions();
   populateRankSetup();
   updateSetupGates();
