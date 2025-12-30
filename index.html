@@ -1101,10 +1101,9 @@ const SENIOR_NCO_BASE = {
    =========================== */
 
 /*
-  FIXES APPLIED:
-  - Removed "cap_steven_foster_leadership_ribbon" (made-up per your note)
-  - Removed duplicate orientation pilot ribbon by keeping ONLY "orientation_pilot_ribbon"
-    (If your real file is the other id, swap accordingly.)
+  FIX APPLIED (per your correct file path):
+  - Replaced "orientation_pilot_ribbon" with "cap_cadet_orientation_pilot_ribbon"
+    so it loads: images/ribbons/cap_cadet_orientation_pilot_ribbon.png
 */
 const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
@@ -1123,7 +1122,7 @@ const ribbonList = [
 
   'spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement',
 
-  'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon','orientation_pilot_ribbon'
+  'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon','cap_cadet_orientation_pilot_ribbon'
 ];
 
 const precedence = id => ribbonList.indexOf(id);
@@ -1200,7 +1199,7 @@ Object.assign(miniMedalImages, {
   'cadet_special_activity_ribbon':          'medals/aerospace_award.png',
   'encampment_ribbon':                      'medals/encampment.png',
   'cadet_recruiter_ribbon':                 'medals/recruiting.png',
-  'orientation_pilot_ribbon':               'medals/aerospace_award.png',
+  'cap_cadet_orientation_pilot_ribbon':     'medals/aerospace_award.png',
   'afa_award':                              'medals/aerospace_award.png',
   'afsa_award':                             'medals/paul_e_garber.png',
   'vfw_officer_award':                      'medals/wartime_service.png',
@@ -1298,8 +1297,8 @@ const PATCH_META = {
 const ALTERNATES = {
   badgeToPatch: { 'communications_technician_badge':'communications_patch' },
   patchToBadge: { 'communications_patch':'communications_technician_badge' },
-  ribbonToPatch:{ 'orientation_pilot_ribbon':'orientation_pilot_patch' },
-  patchToRibbon:{ 'orientation_pilot_patch':'orientation_pilot_ribbon' }
+  ribbonToPatch:{ 'cap_cadet_orientation_pilot_ribbon':'orientation_pilot_patch' },
+  patchToRibbon:{ 'orientation_pilot_patch':'cap_cadet_orientation_pilot_ribbon' }
 };
 
 const rankListAll = [...RANKS.senior, ...RANKS.cadet];
