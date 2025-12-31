@@ -424,6 +424,9 @@
     display:none !important;
   }
 
+  /* ===========================
+     UNIVERSAL CALIBRATOR PANEL
+     =========================== */
   #calibratorWrapper {
     position:fixed;
     top:80px;
@@ -461,7 +464,7 @@
     border-left:none;
     border-top-right-radius:8px;
     border-bottom-right-radius:8px;
-    min-width:180px;
+    min-width:220px;
     padding:12px;
     box-shadow:2px 2px 10px rgb(0 0 0 / .25);
     display:none;
@@ -491,7 +494,7 @@
     width:100%;
   }
   .calib-row .numField {
-    width:48px;
+    width:60px;
     font-size:12px;
     padding:2px 4px;
     border:1px solid var(--line);
@@ -505,15 +508,36 @@
     line-height:1.4;
     background:#f6f8fa;
     border:1px solid var(--line);
-    border-radius:4px;
-    padding:6px;
-    white-space:nowrap;
+    border-radius:8px;
+    padding:8px;
+    white-space:normal;
   }
   #calibReadout code {
     font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
     font-size:11px;
     background:none;
     padding:0;
+  }
+  #calibratorPanel .btnRow{
+    display:flex; gap:8px; margin-top:8px;
+  }
+  #calibratorPanel .btnRow button{
+    width:auto; flex:1;
+  }
+  #calibKeyPill{
+    display:inline-block;
+    font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+    font-size:11px;
+    background:#f1f5f9;
+    border:1px solid var(--line);
+    padding:3px 6px;
+    border-radius:8px;
+    color:var(--ink);
+  }
+  .calib-selectable{ cursor:crosshair; }
+  .calib-selected{
+    outline:2px solid rgba(0,40,85,.95) !important;
+    box-shadow:0 0 0 3px rgba(0,40,85,.18) !important;
   }
 
   @media (max-width:768px){
@@ -642,31 +666,71 @@
   <span></span><span></span><span></span>
 </button>
 
+<!-- UNIVERSAL CALIBRATOR -->
 <div id="calibratorWrapper">
   <div id="calibratorTab">
-    <span>RACK</span>
+    <span>CAL</span>
     <span class="arrow" id="calibratorArrow">›</span>
   </div>
 
   <div id="calibratorPanel">
-    <h3>Ribbon Rack Cal</h3>
+    <h3>Calibrator</h3>
 
-    <div class="calib-row">
-      <label for="rackXRange">X Offset (left px)</label>
-      <input type="range" id="rackXRange" min="0" max="450" step="1">
-      <input type="number" id="rackXNumber" class="numField">
+    <div style="font-size:11px;color:var(--muted);line-height:1.35;margin-bottom:8px;">
+      Turn on Calibrate Mode, then click any item on the uniform to edit its exact position/size.
     </div>
 
     <div class="calib-row">
-      <label for="rackYRange">Y Offset (top px)</label>
-      <input type="range" id="rackYRange" min="0" max="600" step="1">
-      <input type="number" id="rackYNumber" class="numField">
+      <label>Mode</label>
+      <div class="row" style="gap:8px;">
+        <button id="calibToggleMode" type="button" class="ghost" style="width:100%;">Calibrate Mode: OFF</button>
+      </div>
     </div>
 
-    <div id="calibReadout">
-      <div>Base X: <code id="readX"></code> px</div>
-      <div>Base Y: <code id="readY"></code> px</div>
-      <div>Ribbon W×H: <code id="readSize"></code> px</div>
+    <div class="calib-row">
+      <label>Selected Key</label>
+      <div id="calibKeyPill">none</div>
+    </div>
+
+    <div class="calib-row">
+      <label for="calX">X (left px)</label>
+      <input type="range" id="calX" min="-200" max="900" step="1">
+      <input type="number" id="calXn" class="numField">
+    </div>
+
+    <div class="calib-row">
+      <label for="calY">Y (top px)</label>
+      <input type="range" id="calY" min="-200" max="1100" step="1">
+      <input type="number" id="calYn" class="numField">
+    </div>
+
+    <div class="calib-row">
+      <label for="calW">W (px)</label>
+      <input type="range" id="calW" min="1" max="800" step="1">
+      <input type="number" id="calWn" class="numField">
+    </div>
+
+    <div class="calib-row">
+      <label for="calH">H (px)</label>
+      <input type="range" id="calH" min="1" max="800" step="1">
+      <input type="number" id="calHn" class="numField">
+    </div>
+
+    <div class="calib-row">
+      <label for="calR">Rotation (deg)</label>
+      <input type="range" id="calR" min="-180" max="180" step="1">
+      <input type="number" id="calRn" class="numField">
+    </div>
+
+    <div class="btnRow">
+      <button id="calibReset" class="ghost" type="button">Reset Selected</button>
+      <button id="calibCopy" type="button">Copy JSON</button>
+    </div>
+
+    <div id="calibReadout" style="margin-top:10px;">
+      <div><b>Tip:</b> Arrow keys nudge (Shift = 10px).</div>
+      <div style="margin-top:6px;">JSON:</div>
+      <code id="calibJson" style="display:block;white-space:pre-wrap;"></code>
     </div>
   </div>
 </div>
@@ -958,7 +1022,14 @@ const State = {
   badgeGalleryExpanded:false,
 
   patchSelections:{},
-  patchGalleryExpanded:false
+  patchGalleryExpanded:false,
+
+  // UNIVERSAL calibration (per-layer key)
+  calib:{
+    enabled:false,
+    selectedKey:null,
+    map:{} // key -> {x,y,w,h,r}
+  }
 };
 
 let currentDrag = null;
@@ -980,7 +1051,7 @@ const OFFICER_RANKS = new Set([
 ]);
 
 /* ===========================
-   CALIBRATION CONSTANTS
+   BASE PLACEMENT CONSTANTS
    =========================== */
 let rackBaseX = 259; // LEFT EDGE of a 3-wide rack
 let rackBaseY = 206; // TOP of bottom row
@@ -998,6 +1069,80 @@ function rackCenterX(){
 }
 function getRackOrigin(){
   return { x:rackBaseX, y:rackBaseY };
+}
+
+/* ===========================
+   UNIVERSAL CALIBRATION SYSTEM
+   =========================== */
+function calibKeyFor(el){
+  return el?.dataset?.calibKey || null;
+}
+function getCalib(key){
+  if(!key) return null;
+  return State.calib.map[key] || null;
+}
+function setCalib(key, patch){
+  if(!key) return;
+  const cur = State.calib.map[key] || {};
+  State.calib.map[key] = { ...cur, ...patch };
+}
+function clearCalib(key){
+  if(!key) return;
+  delete State.calib.map[key];
+}
+function applyCalibToElement(el, key, base){
+  const over = getCalib(key);
+  const v = { ...base, ...(over||{}) };
+
+  if(v.x !== undefined) el.style.left = `${v.x}px`;
+  if(v.y !== undefined) el.style.top  = `${v.y}px`;
+  if(v.w !== undefined) el.style.width  = `${v.w}px`;
+  if(v.h !== undefined) el.style.height = `${v.h}px`;
+
+  const rot = (v.r !== undefined) ? v.r : 0;
+  el.style.transform = `rotate(${rot}deg)`;
+  el.style.transformOrigin = 'center center';
+
+  return v;
+}
+function buildCalibJson(key){
+  const v = getCalib(key) || {};
+  return JSON.stringify({ key, ...v }, null, 2);
+}
+function refreshCalibratorReadout(){
+  const key = State.calib.selectedKey;
+  const outJson = by('calibJson');
+  if(!outJson) return;
+  if(!key){ outJson.textContent=''; return; }
+  outJson.textContent = buildCalibJson(key);
+}
+function nudgeSelected(dx,dy){
+  const key = State.calib.selectedKey;
+  if(!key) return;
+
+  const xn = by('calXn');
+  const yn = by('calYn');
+  const xr = by('calX');
+  const yr = by('calY');
+
+  const x = parseInt(xn?.value||"0",10);
+  const y = parseInt(yn?.value||"0",10);
+  const nx = x + dx;
+  const ny = y + dy;
+
+  if(xn) xn.value = nx;
+  if(yn) yn.value = ny;
+  if(xr) xr.value = nx;
+  if(yr) yr.value = ny;
+
+  setCalib(key, { x:nx, y:ny });
+
+  const el = uniformCanvas.querySelector(`.layer[data-calib-key="${CSS.escape(key)}"]`);
+  if(el){
+    el.style.left = nx+'px';
+    el.style.top  = ny+'px';
+  }
+  refreshCalibratorReadout();
 }
 
 /* ===========================
@@ -1099,12 +1244,6 @@ const SENIOR_NCO_BASE = {
 /* ===========================
    RIBBONS / DEVICES / MINI MEDALS
    =========================== */
-
-/*
-  FIX APPLIED (per your correct file path):
-  - Replaced "orientation_pilot_ribbon" with "cap_cadet_orientation_pilot_ribbon"
-    so it loads: images/ribbons/cap_cadet_orientation_pilot_ribbon.png
-*/
 const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
 
@@ -1453,7 +1592,7 @@ membershipTypeEl.addEventListener('change', ()=>{
     });
   }
 
-  // NEW: rebuild ribbon gallery whenever membership changes (for senior milestone filtering)
+  // rebuild ribbon gallery whenever membership changes
   buildRibbonGallery();
 
   if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)){
@@ -1598,6 +1737,12 @@ function applyJacket(){
     img.style.height='100%';
     img.style.display='block';
 
+    img.dataset.calibKey = 'jacket';
+    // base for jacket: fill canvas; allow manual overrides if desired
+    applyCalibToElement(img, img.dataset.calibKey, { x:0, y:0, w:450, h:600, r:0 });
+    img.style.width = img.style.width || '100%';
+    img.style.height = img.style.height || '100%';
+
     img.dataset.tooltipTitle = (State.uniform||'').replace(/_/g,' ').toUpperCase();
     img.dataset.tooltipReg   = "Base uniform image";
     img.dataset.tooltipWhy   = `Loaded: ${path}`;
@@ -1653,17 +1798,17 @@ function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   let x=Math.round(leftPx+(w-totalW)/2);
   const y=Math.round(topPx+(h-10)/2)-1;
 
-  flat.forEach(d=>{
+  flat.forEach((d,i)=>{
     const im=document.createElement('img');
     im.className='layer ribbonDevice';
     im.dataset.parentRid = rid;
+    im.dataset.calibKey = `device:${rid}:${d.id}:${i}`;
     im.src=ASSET(d.src);
     im.alt=d.label||d.id;
     im.style.display='block';
-    im.style.left=`${x}px`;
-    im.style.top =`${y}px`;
-    im.style.width =`${d.w}px`;
-    im.style.height=`${d.h}px`;
+
+    applyCalibToElement(im, im.dataset.calibKey, { x, y, w:d.w, h:d.h, r:0 });
+
     im.onerror=()=>{ im.remove(); };
     im.dataset.tooltipTitle = d.label||d.id;
     im.dataset.tooltipReg   = "Device on ribbon";
@@ -1706,6 +1851,9 @@ function initRibbonDragHandlers(tileEl){
 function syncDevicesToRibbon(ribbonTileEl){
   const rid = ribbonTileEl.dataset.rid;
   if(!rid) return;
+
+  // do nothing if user calibrated devices independently
+  // (devices have their own calib keys; we keep the old behavior for non-calibrated devices)
   const baseLeft = parseFloat(ribbonTileEl.style.left) || 0;
   const baseTop  = parseFloat(ribbonTileEl.style.top)  || 0;
   const w = parseFloat(ribbonTileEl.style.width)  || RIBBON_WIDTH;
@@ -1731,8 +1879,14 @@ function syncDevicesToRibbon(ribbonTileEl){
   devEls.forEach((el,idx)=>{
     const dv=flat[idx];
     if(!dv) return;
-    el.style.left = x+'px';
-    el.style.top  = y+'px';
+
+    // only auto-move if NO explicit calib override exists
+    const key = el.dataset.calibKey;
+    const hasOverride = !!getCalib(key);
+    if(!hasOverride){
+      el.style.left = x+'px';
+      el.style.top  = y+'px';
+    }
     x+=dv.w+gap;
   });
 }
@@ -1817,12 +1971,11 @@ function renderRack(){
         const leftPx = leftPositions[i];
         const topPx  = rowTopPx;
 
-        tile.style.left   = `${leftPx}px`;
-        tile.style.top    = `${topPx}px`;
-        tile.style.width  = `${RIBBON_WIDTH}px`;
-        tile.style.height = `${RIBBON_HEIGHT}px`;
-
         tile.dataset.rid=rid;
+        tile.dataset.calibKey = `ribbon:${rid}`;
+
+        applyCalibToElement(tile, tile.dataset.calibKey, { x:leftPx, y:topPx, w:RIBBON_WIDTH, h:RIBBON_HEIGHT, r:0 });
+
         tile.style.pointerEvents='auto';
         tile.onclick=()=>onRibbonTileClick(rid);
 
@@ -1833,6 +1986,7 @@ function renderRack(){
         initRibbonDragHandlers(tile);
         uniformCanvas.appendChild(tile);
 
+        // devices use base left/top positions (pre-calibration) as reference; user can calibrate each device instance
         drawDevicesOnRibbon(rid,leftPx,topPx,RIBBON_WIDTH,RIBBON_HEIGHT);
       });
     });
@@ -1892,10 +2046,8 @@ function renderRack(){
       const leftPx=leftPositions[i];
       const topPx =rowTopPx;
 
-      mimg.style.left   = `${leftPx}px`;
-      mimg.style.top    = `${topPx}px`;
-      mimg.style.width  = `${MINI_W}px`;
-      mimg.style.height = `${MINI_H}px`;
+      mimg.dataset.calibKey = `mini:${entry.id}`;
+      applyCalibToElement(mimg, mimg.dataset.calibKey, { x:leftPx, y:topPx, w:MINI_W, h:MINI_H, r:0 });
 
       mimg.onerror=()=>{};
 
@@ -2026,7 +2178,7 @@ function buildRibbonGallery(){
   normalizeRibbonSelections();
   wrap.innerHTML = '';
 
-  // NEW: Senior filters out non-milestone cadet achievements
+  // Senior filters out non-milestone cadet achievements
   let eligible = [...ribbonList];
   if(State.membership === 'senior'){
     eligible = eligible.filter(id=>{
@@ -2070,7 +2222,7 @@ function buildRibbonGallery(){
     chk.onchange = ()=>{
       sel.checked = chk.checked;
 
-      // NEW: Senior -> only ONE milestone ribbon can be selected at a time
+      // Senior -> only ONE milestone ribbon can be selected at a time
       if(State.membership === 'senior' && CADET_MILESTONES.has(id) && sel.checked){
         for(const otherId of Object.keys(State.ribbonSelections)){
           if(otherId !== id && CADET_MILESTONES.has(otherId)){
@@ -2088,7 +2240,7 @@ function buildRibbonGallery(){
       sel.checked = true;
       chk.checked = true;
 
-      // NEW: Senior -> only ONE milestone ribbon can be selected at a time
+      // Senior -> only ONE milestone ribbon can be selected at a time
       if(State.membership === 'senior' && CADET_MILESTONES.has(id)){
         for(const otherId of Object.keys(State.ribbonSelections)){
           if(otherId !== id && CADET_MILESTONES.has(otherId)){
@@ -2307,10 +2459,9 @@ function placeBadgeByCategory(id){
     const clone = img.cloneNode();
     clone.className='layer badge';
     clone.style.display='block';
-    clone.style.top  = `${topY}px`;
-    clone.style.left = `${leftX}px`;
-    clone.style.width = `${size.width}px`;
-    clone.style.height= `${size.height}px`;
+
+    clone.dataset.calibKey = `badge:${id}`;
+    applyCalibToElement(clone, clone.dataset.calibKey, { x:leftX, y:topY, w:size.width, h:size.height, r:0 });
 
     clone.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
     clone.dataset.tooltipReg   = "Over-rack qualification badge";
@@ -2360,17 +2511,15 @@ function placeBadgeByCategory(id){
   const clone=img.cloneNode();
   clone.className='layer badge';
   clone.style.display='block';
-  clone.style.top  = `${y}px`;
-  clone.style.left = `${x}px`;
-  clone.style.width = `${size.width}px`;
-  clone.style.height= `${size.height}px`;
+
+  clone.dataset.calibKey = `badge:${id}`;
+  applyCalibToElement(clone, clone.dataset.calibKey, { x, y, w:size.width, h:size.height, r:0 });
 
   clone.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
   clone.dataset.tooltipReg   = "CAPR 39-1 badge placement";
   clone.dataset.tooltipWhy   = "Auto-placed relative to pockets / nameplate.";
 
   uniformCanvas.appendChild(clone);
-
   badgeSlots[slot].push(id);
 }
 
@@ -2434,10 +2583,13 @@ function renderPatches(){
 
       el.className='layer patch';
       el.style.display='block';
-      el.style.left =`${x - meta.w/2}px`;
-      el.style.top  =`${y - meta.h/2}px`;
-      el.style.width =`${meta.w}px`;
-      el.style.height=`${meta.h}px`;
+
+      const baseX = (x - meta.w/2);
+      const baseY = (y - meta.h/2);
+
+      el.dataset.calibKey = `patch:${id}`;
+      applyCalibToElement(el, el.dataset.calibKey, { x:baseX, y:baseY, w:meta.w, h:meta.h, r:0 });
+
       el.onerror=()=>{};
 
       el.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
@@ -2471,33 +2623,32 @@ function renderRank(id){
     const boardCfg={width:50,height:100};
     const insigniaCfg={width:32,height:32};
     const placements=[
-      {left:350,top:160,rot:90},
-      {left:100,top:160,rot:-90}
+      {left:350,top:160,rot:90, side:'R'},
+      {left:100,top:160,rot:-90, side:'L'}
     ];
-    placements.forEach(({left,top,rot})=>{
+    placements.forEach(({left,top,rot,side})=>{
       const board=document.createElement('img');
       board.src=boardSrc;
       board.className='layer rank';
       board.style.display='block';
-      board.style.left =`${left}px`;
-      board.style.top  =`${top}px`;
-      board.style.width =`${boardCfg.width}px`;
-      board.style.height=`${boardCfg.height}px`;
-      board.style.transform=`rotate(${rot}deg)`;
-      board.style.transformOrigin='center center';
       board.onerror=()=>{ board.remove(); };
+
+      board.dataset.calibKey = `rankboard:${id}:${side}`;
+      applyCalibToElement(board, board.dataset.calibKey, { x:left, y:top, w:boardCfg.width, h:boardCfg.height, r:rot });
+
       uniformCanvas.appendChild(board);
 
       const ins=insigniaEl.cloneNode();
       ins.className='layer rank';
       ins.style.display='block';
-      ins.style.left =`${left + (boardCfg.width/2 - insigniaCfg.width/2)}px`;
-      ins.style.top  =`${top  + (boardCfg.height/2 - insigniaCfg.height/2)}px`;
-      ins.style.width =`${insigniaCfg.width}px`;
-      ins.style.height=`${insigniaCfg.height}px`;
-      ins.style.transform=`rotate(${rot}deg)`;
-      ins.style.transformOrigin='center center';
       ins.onerror=()=>{ ins.remove(); };
+
+      const ix = left + (boardCfg.width/2 - insigniaCfg.width/2);
+      const iy = top  + (boardCfg.height/2 - insigniaCfg.height/2);
+
+      ins.dataset.calibKey = `rank:${id}:${side}`;
+      applyCalibToElement(ins, ins.dataset.calibKey, { x:ix, y:iy, w:insigniaCfg.width, h:insigniaCfg.height, r:rot });
+
       uniformCanvas.appendChild(ins);
     });
     return;
@@ -2508,11 +2659,11 @@ function renderRank(id){
   const icon=insigniaEl.cloneNode();
   icon.className='layer rank';
   icon.style.display='block';
-  icon.style.left =`${pos.left}px`;
-  icon.style.top  =`${pos.top}px`;
-  icon.style.width =`${size.w}px`;
-  icon.style.height=`${size.h}px`;
   icon.onerror=()=>{ icon.remove(); };
+
+  icon.dataset.calibKey = `rank:${id}`;
+  applyCalibToElement(icon, icon.dataset.calibKey, { x:pos.left, y:pos.top, w:size.w, h:size.h, r:0 });
+
   uniformCanvas.appendChild(icon);
 }
 
@@ -2526,11 +2677,11 @@ function renderNameplate(){
   el.src=ASSET('nameplate/nameplate.png');
   el.className='layer nameplate';
   el.style.display='block';
-  el.style.top  = npTop+'px';
-  el.style.left = npLeft+'px';
-  el.style.width='100px';
-  el.style.height='20px';
   el.onerror=()=>{ el.remove(); };
+
+  el.dataset.calibKey = 'nameplate';
+  applyCalibToElement(el, el.dataset.calibKey, { x:npLeft, y:npTop, w:100, h:20, r:0 });
+
   uniformCanvas.appendChild(el);
 }
 
@@ -2742,68 +2893,168 @@ logRibbonCoordsBtn.addEventListener('click', ()=>{
 });
 
 /* ===========================
-   CALIBRATOR PANEL
+   UNIVERSAL CALIBRATOR UI
    =========================== */
 function initCalibratorUI(){
-  const tab          = by('calibratorTab');
-  const arrow        = by('calibratorArrow');
-  const panel        = by('calibratorPanel');
+  const tab   = by('calibratorTab');
+  const arrow = by('calibratorArrow');
+  const panel = by('calibratorPanel');
 
-  const rackXRange   = by('rackXRange');
-  const rackXNumber  = by('rackXNumber');
-  const rackYRange   = by('rackYRange');
-  const rackYNumber  = by('rackYNumber');
+  const btnMode = by('calibToggleMode');
+  const pillKey = by('calibKeyPill');
 
-  const readX        = by('readX');
-  const readY        = by('readY');
-  const readSize     = by('readSize');
+  const calX  = by('calX'),  calXn = by('calXn');
+  const calY  = by('calY'),  calYn = by('calYn');
+  const calW  = by('calW'),  calWn = by('calWn');
+  const calH  = by('calH'),  calHn = by('calHn');
+  const calR  = by('calR'),  calRn = by('calRn');
 
-  rackXRange.value  = rackBaseX;
-  rackXNumber.value = rackBaseX;
-  rackYRange.value  = rackBaseY;
-  rackYNumber.value = rackBaseY;
-  readX.textContent = rackBaseX;
-  readY.textContent = rackBaseY;
-  readSize.textContent = RIBBON_WIDTH + "×" + RIBBON_HEIGHT;
+  const btnReset = by('calibReset');
+  const btnCopy  = by('calibCopy');
 
   let open=false;
-  function togglePanel(){
+  tab.addEventListener('click', ()=>{
     open=!open;
     panel.style.display=open?'block':'none';
     arrow.textContent=open?'‹':'›';
+  });
+
+  function setSelected(key){
+    // clear old selection outline
+    uniformCanvas.querySelectorAll('.calib-selected').forEach(n=>n.classList.remove('calib-selected'));
+
+    State.calib.selectedKey = key;
+    pillKey.textContent = key || 'none';
+
+    if(!key){
+      refreshCalibratorReadout();
+      return;
+    }
+
+    const el = uniformCanvas.querySelector(`.layer[data-calib-key="${CSS.escape(key)}"]`);
+    if(!el){
+      refreshCalibratorReadout();
+      return;
+    }
+    el.classList.add('calib-selected');
+
+    const st = window.getComputedStyle(el);
+    const x = Math.round(parseFloat(st.left)||0);
+    const y = Math.round(parseFloat(st.top)||0);
+    const w = Math.round(parseFloat(st.width)||0);
+    const h = Math.round(parseFloat(st.height)||0);
+
+    const o = getCalib(key) || {};
+    const r = (o.r !== undefined) ? o.r : 0;
+
+    calX.value=x; calXn.value=x;
+    calY.value=y; calYn.value=y;
+    calW.value=w; calWn.value=w;
+    calH.value=h; calHn.value=h;
+    calR.value=r; calRn.value=r;
+
+    refreshCalibratorReadout();
   }
-  tab.addEventListener('click', togglePanel);
 
-  function applyAndRerender(){
-    readX.textContent=rackBaseX;
-    readY.textContent=rackBaseY;
+  function applyFromControls(){
+    const key = State.calib.selectedKey;
+    if(!key) return;
 
-    renderRack();
-    renderAllBadges();
-    renderNameplate();
-    renderRank(State.rank);
+    const x = parseInt(calXn.value||"0",10);
+    const y = parseInt(calYn.value||"0",10);
+    const w = Math.max(1, parseInt(calWn.value||"1",10));
+    const h = Math.max(1, parseInt(calHn.value||"1",10));
+    const r = parseInt(calRn.value||"0",10);
+
+    setCalib(key, { x,y,w,h,r });
+
+    const el = uniformCanvas.querySelector(`.layer[data-calib-key="${CSS.escape(key)}"]`);
+    if(el){
+      el.style.left = x+'px';
+      el.style.top  = y+'px';
+      el.style.width  = w+'px';
+      el.style.height = h+'px';
+      el.style.transform = `rotate(${r}deg)`;
+      el.style.transformOrigin='center center';
+    }
+
+    refreshCalibratorReadout();
   }
 
-  rackXRange.addEventListener('input', e=>{
-    rackBaseX = parseInt(e.target.value,10);
-    rackXNumber.value = rackBaseX;
-    applyAndRerender();
-  });
-  rackXNumber.addEventListener('input', e=>{
-    rackBaseX = parseInt(e.target.value,10) || 0;
-    rackXRange.value = rackBaseX;
-    applyAndRerender();
+  function bindPair(rangeEl, numEl){
+    rangeEl.addEventListener('input', ()=>{ numEl.value = rangeEl.value; applyFromControls(); });
+    numEl.addEventListener('input', ()=>{ rangeEl.value = numEl.value; applyFromControls(); });
+  }
+  bindPair(calX, calXn);
+  bindPair(calY, calYn);
+  bindPair(calW, calWn);
+  bindPair(calH, calHn);
+  bindPair(calR, calRn);
+
+  btnMode.addEventListener('click', ()=>{
+    State.calib.enabled = !State.calib.enabled;
+    btnMode.textContent = State.calib.enabled ? 'Calibrate Mode: ON' : 'Calibrate Mode: OFF';
+    btnMode.classList.toggle('ghost', !State.calib.enabled);
+
+    if(State.calib.enabled){
+      uniformCanvas.classList.add('calib-selectable');
+    }else{
+      uniformCanvas.classList.remove('calib-selectable');
+      setSelected(null);
+    }
   });
 
-  rackYRange.addEventListener('input', e=>{
-    rackBaseY = parseInt(e.target.value,10);
-    rackYNumber.value = rackBaseY;
-    applyAndRerender();
+  uniformCanvas.addEventListener('click', (e)=>{
+    if(!State.calib.enabled) return;
+    const layer = e.target.closest('.layer');
+    if(!layer) return;
+    const key = calibKeyFor(layer);
+    if(!key) return;
+    setSelected(key);
+    e.preventDefault();
+    e.stopPropagation();
   });
-  rackYNumber.addEventListener('input', e=>{
-    rackBaseY = parseInt(e.target.value,10) || 0;
-    rackYRange.value = rackBaseY;
-    applyAndRerender();
+
+  document.addEventListener('keydown', (e)=>{
+    if(!State.calib.enabled) return;
+    if(!State.calib.selectedKey) return;
+
+    const step = e.shiftKey ? 10 : 1;
+    if(e.key==='ArrowLeft'){  nudgeSelected(-step,0); e.preventDefault(); }
+    if(e.key==='ArrowRight'){ nudgeSelected(step,0);  e.preventDefault(); }
+    if(e.key==='ArrowUp'){    nudgeSelected(0,-step); e.preventDefault(); }
+    if(e.key==='ArrowDown'){  nudgeSelected(0,step);  e.preventDefault(); }
+  });
+
+  btnReset.addEventListener('click', ()=>{
+    const key = State.calib.selectedKey;
+    if(!key) return;
+    clearCalib(key);
+
+    const keep = key;
+    fullRender();
+    setTimeout(()=> setSelected(keep), 0);
+  });
+
+  btnCopy.addEventListener('click', async ()=>{
+    const key = State.calib.selectedKey;
+    if(!key) return;
+    const txt = buildCalibJson(key);
+
+    try{
+      await navigator.clipboard.writeText(txt);
+      btnCopy.textContent = 'Copied!';
+      setTimeout(()=>btnCopy.textContent='Copy JSON', 700);
+    }catch{
+      const ta=document.createElement('textarea');
+      ta.value=txt;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      btnCopy.textContent = 'Copied!';
+      setTimeout(()=>btnCopy.textContent='Copy JSON', 700);
+    }
   });
 }
 
@@ -2856,7 +3107,6 @@ function openGalleryModal(kind){
       wireModalInteractions('ribbons');
     }
 
-    // NEW: badges are grouped, so we do NOT copy sidebar HTML
     if(kind==='badges'){
       State.badgeGalleryExpanded = true;
       modalTitle.textContent = "Badges";
@@ -2876,7 +3126,6 @@ function openGalleryModal(kind){
 
   function buildGroupedBadgeModal(rootGrid){
     rootGrid.innerHTML = '';
-
     normalizeBadgeSelections();
 
     const eligibleSet = new Set(
@@ -2930,7 +3179,6 @@ function openGalleryModal(kind){
 
   function wireModalInteractions(k){
     if(k==='ribbons'){
-      // compute eligible list (same as sidebar)
       let eligible = [...ribbonList];
       if(State.membership === 'senior'){
         eligible = eligible.filter(id=>{
@@ -3102,3 +3350,4 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
 </script>
 </body>
 </html>
+
