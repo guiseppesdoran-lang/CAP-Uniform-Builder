@@ -1242,6 +1242,27 @@ const SENIOR_NCO_BASE = {
 };
 
 /* ===========================
+   NEW: CADET OFFICER COMBINED MALE CLASS A (BASE+RANK+BOARDS)
+   =========================== */
+const CADET_OFFICER_COMBINED_CLASSA_MALE = {
+  "C/2d Lt":  "base/c_2d_lt_jacket_male.png",
+  "C/1st Lt": "base/c_1st_lt_jacket_male.png",
+  "C/Capt":   "base/c_capt_jacket_male.png",
+  "C/Maj":    "base/c_maj_jacket_male.png",
+  "C/Lt Col": "base/c_lt_col_jacket_male.png",
+  "C/Col":    "base/c_col_jacket_male.png"
+};
+function usingCombinedCadetOfficerJacket(){
+  return (
+    State.uniform === 'blues_a' &&
+    State.gender === 'male' &&
+    State.membership === 'cadet' &&
+    !!State.rank &&
+    !!CADET_OFFICER_COMBINED_CLASSA_MALE[State.rank]
+  );
+}
+
+/* ===========================
    RIBBONS / DEVICES / MINI MEDALS
    =========================== */
 const ribbonList = [
@@ -1684,13 +1705,19 @@ function getBaseCandidates(){
   const list = [];
   if(!u || !g) return list;
 
-  // NCO special (try first)
+  // 1) Cadet Officer (Male) Class A combined jacket (jacket+boards+rank baked in)
+  if(usingCombinedCadetOfficerJacket()){
+    list.push(CADET_OFFICER_COMBINED_CLASSA_MALE[State.rank]);
+    return [...new Set(list)];
+  }
+
+  // 2) NCO special (try first)
   if(State.membership==='senior' && State.rank && SENIOR_NCO_RANKS.has(State.rank)){
     const ncoPath = SENIOR_NCO_BASE[u]?.[g]?.[State.rank];
     if(ncoPath) list.push(ncoPath);
   }
 
-  // Default base
+  // 3) Default base
   const def = UNIFORMS[u]?.[g];
   if(def) list.push(def);
 
@@ -1738,7 +1765,6 @@ function applyJacket(){
     img.style.display='block';
 
     img.dataset.calibKey = 'jacket';
-    // base for jacket: fill canvas; allow manual overrides if desired
     applyCalibToElement(img, img.dataset.calibKey, { x:0, y:0, w:450, h:600, r:0 });
     img.style.width = img.style.width || '100%';
     img.style.height = img.style.height || '100%';
@@ -1852,8 +1878,6 @@ function syncDevicesToRibbon(ribbonTileEl){
   const rid = ribbonTileEl.dataset.rid;
   if(!rid) return;
 
-  // do nothing if user calibrated devices independently
-  // (devices have their own calib keys; we keep the old behavior for non-calibrated devices)
   const baseLeft = parseFloat(ribbonTileEl.style.left) || 0;
   const baseTop  = parseFloat(ribbonTileEl.style.top)  || 0;
   const w = parseFloat(ribbonTileEl.style.width)  || RIBBON_WIDTH;
@@ -1880,7 +1904,6 @@ function syncDevicesToRibbon(ribbonTileEl){
     const dv=flat[idx];
     if(!dv) return;
 
-    // only auto-move if NO explicit calib override exists
     const key = el.dataset.calibKey;
     const hasOverride = !!getCalib(key);
     if(!hasOverride){
@@ -1986,7 +2009,6 @@ function renderRack(){
         initRibbonDragHandlers(tile);
         uniformCanvas.appendChild(tile);
 
-        // devices use base left/top positions (pre-calibration) as reference; user can calibrate each device instance
         drawDevicesOnRibbon(rid,leftPx,topPx,RIBBON_WIDTH,RIBBON_HEIGHT);
       });
     });
@@ -2609,6 +2631,11 @@ function renderRank(id){
   [...uniformCanvas.querySelectorAll('.layer.rank')].forEach(n=>n.remove());
   if(!id) return;
 
+  // NEW: If using combined cadet-officer Class A male jacket, the rank is baked into the base image.
+  if(usingCombinedCadetOfficerJacket()){
+    return;
+  }
+
   if(State.membership==='senior' && SENIOR_NCO_RANKS.has(id)){
     return;
   }
@@ -2920,7 +2947,6 @@ function initCalibratorUI(){
   });
 
   function setSelected(key){
-    // clear old selection outline
     uniformCanvas.querySelectorAll('.calib-selected').forEach(n=>n.classList.remove('calib-selected'));
 
     State.calib.selectedKey = key;
@@ -3060,8 +3086,6 @@ function initCalibratorUI(){
 
 /* ===========================
    MODAL GALLERY (Ribbons/Badges/Patches)
-   - Expand buttons open popup
-   - Popup is resizable + Max/Restore
    =========================== */
 const modalOverlay = by('galleryModalOverlay');
 const modalEl      = by('galleryModal');
@@ -3131,6 +3155,10 @@ function openGalleryModal(kind){
     const eligibleSet = new Set(
       (State.membership==='cadet') ? badgeList.filter(isCadetAuthorized) : badgeList
     );
+
+    // Clear host and rebuild with headings + subgrids (nice grouping)
+    modalHost.innerHTML = '';
+    modalHost.appendChild(host);
 
     BADGE_CATEGORIES.forEach(cat=>{
       const ids = cat.ids.filter(id => eligibleSet.has(id));
@@ -3350,4 +3378,3 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
 </script>
 </body>
 </html>
-
