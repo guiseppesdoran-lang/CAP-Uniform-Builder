@@ -1008,7 +1008,6 @@ if (typeof CSS.escape !== "function") {
   };
 }
 
-  
 const State = {
   membership:'',
   gender:'',
@@ -1128,6 +1127,22 @@ function refreshCalibratorReadout(){
   if(!key){ outJson.textContent=''; return; }
   outJson.textContent = buildCalibJson(key);
 }
+
+/* ==========================================================
+   FIX: robust element lookup for calib keys with special chars
+   (prevents querySelector from failing on keys like "C/2d Lt")
+   ========================================================== */
+function findLayerByCalibKey(key){
+  if(!key) return null;
+  let el = null;
+  try{
+    el = uniformCanvas.querySelector(`.layer[data-calib-key="${CSS.escape(key)}"]`);
+  }catch(err){
+    el = [...uniformCanvas.querySelectorAll('.layer')].find(n => n.dataset.calibKey === key) || null;
+  }
+  return el;
+}
+
 function nudgeSelected(dx,dy){
   const key = State.calib.selectedKey;
   if(!key) return;
@@ -1149,7 +1164,7 @@ function nudgeSelected(dx,dy){
 
   setCalib(key, { x:nx, y:ny });
 
-  const el = uniformCanvas.querySelector(`.layer[data-calib-key="${CSS.escape(key)}"]`);
+  const el = findLayerByCalibKey(key);
   if(el){
     el.style.left = nx+'px';
     el.style.top  = ny+'px';
@@ -2969,7 +2984,7 @@ function initCalibratorUI(){
       return;
     }
 
-    const el = uniformCanvas.querySelector(`.layer[data-calib-key="${CSS.escape(key)}"]`);
+    const el = findLayerByCalibKey(key); /* FIX */
     if(!el){
       refreshCalibratorReadout();
       return;
@@ -3006,7 +3021,7 @@ function initCalibratorUI(){
 
     setCalib(key, { x,y,w,h,r });
 
-    const el = uniformCanvas.querySelector(`.layer[data-calib-key="${CSS.escape(key)}"]`);
+    const el = findLayerByCalibKey(key); /* FIX */
     if(el){
       el.style.left = x+'px';
       el.style.top  = y+'px';
