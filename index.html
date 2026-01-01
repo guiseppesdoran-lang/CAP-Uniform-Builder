@@ -997,6 +997,18 @@
 /* ===========================
    GLOBAL STATE
    =========================== */
+
+// --- CSS.escape polyfill (fixes selector issues with keys like "C/2d Lt") ---
+if (typeof CSS === "undefined") window.CSS = {};
+if (typeof CSS.escape !== "function") {
+  CSS.escape = function (value) {
+    return String(value).replace(/[^a-zA-Z0-9_\u00A0-\uFFFF-]/g, function (ch) {
+      return "\\" + ch;
+    });
+  };
+}
+
+  
 const State = {
   membership:'',
   gender:'',
