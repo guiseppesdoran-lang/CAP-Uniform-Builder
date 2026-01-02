@@ -2463,30 +2463,52 @@ function buildPatchGallery(){
 }
 
 /* ===========================
-   BADGES (RENDER)
+   BADGES (RENDER) — SLOT-ANCHORED
    =========================== */
-const badgeSlots = { OLPA:[], OLPU:[], OLP:[], ORP:[], ON:[], UN:[], LRP:[], LP:[], OVERSTACK:[] };
-function resetBadgeSlots(){ Object.keys(badgeSlots).forEach(k=>badgeSlots[k]=[]); }
+
+/*
+  Goal: Badges MUST render in their actual CAPR 39-1 “slots” (OLPA/OLPU/OLP/ORP/ON/UN/LP/LRP),
+  NOT as “centered above ribbons”. This removes the old OVERSTACK behavior that was incorrectly
+  treating OLP/OLPU/OLPA/ORP as over-rack.
+*/
+
+const badgeSlots = {
+  OLPA: [],  // Over Left Pocket, Above Aviation
+  OLPU: [],  // Over Left Pocket, Under Aviation
+  OLP:  [],  // Over Left Pocket (generic if used)
+  ORP:  [],  // Over Right Pocket
+  ON:   [],  // Over Nameplate
+  UN:   [],  // Under Nameplate
+  LRP:  [],  // Left/Right Pocket flap (marksmanship)
+  LP:   []   // Left pocket (Model Rocketry in your rules)
+};
+
+function resetBadgeSlots(){
+  Object.keys(badgeSlots).forEach(k => badgeSlots[k] = []);
+}
 
 function renderAllBadges(){
   [...uniformCanvas.querySelectorAll('.layer.badge')].forEach(n=>n.remove());
   resetBadgeSlots();
   if(!UI_AUTHZ[State.uniform]?.showBadges) return;
 
-  const maxTotal=5;
-  const applied=[];
+  const maxTotal = 5;
+
+  const applied = [];
   for(const id of State.badges){
-    if(State.membership==='cadet' && !isCadetAuthorized(id)){ continue; }
-    if(applied.length>=maxTotal) break;
-    placeBadgeByCategory(id);
+    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
+    if(applied.length >= maxTotal) break;
+
+    placeBadgeSlotAnchored(id);
     applied.push(id);
   }
 }
 
-function placeBadgeByCategory(id){
-  const img=by(`badges-${id}`);
+function placeBadgeSlotAnchored(id){
+  const img = by(`badges-${id}`);
   if(!img) return;
 
+  // Hard overrides you already enforce
   let slot = badgeLocations[id] || 'UN';
   if(id==='nra_marksman_badge') slot='LRP';
   if(id==='model_rocketry_badge') slot='LP';
@@ -2494,79 +2516,98 @@ function placeBadgeByCategory(id){
   const size = customBadgeSizes[id] || { width:60, height:25 };
   const spacing = 5;
 
+  // Anchor relative to ribbon rack and top ribbon Y
   const baseRibbonY = getTopRibbonY();
-  const RACK_CENTER_X = rackCenterX();
 
-  const overRibbonSlots = new Set(['OLP','OLPU','OLPA','ORP']);
-
-  if(overRibbonSlots.has(slot)){
-    const stackIdx = badgeSlots.OVERSTACK.length;
-    const bottomEdgeY = baseRibbonY - 25 - (stackIdx * (size.height + spacing));
-    const topY = bottomEdgeY - size.height;
-    const leftX = RACK_CENTER_X - (size.width / 2);
-
-    const clone = img.cloneNode();
-    clone.className='layer badge';
-    clone.style.display='block';
-
-    clone.dataset.calibKey = `badge:${id}`;
-    applyCalibToElement(clone, clone.dataset.calibKey, { x:leftX, y:topY, w:size.width, h:size.height, r:0 });
-
-    clone.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
-    clone.dataset.tooltipReg   = "Over-rack qualification badge";
-    clone.dataset.tooltipWhy   = "Centered above ribbon rack per spec.";
-
-    uniformCanvas.appendChild(clone);
-    badgeSlots.OVERSTACK.push(id);
-    return;
-  }
-
-  const single = new Set(['LRP','LP']);
-  if(single.has(slot) && badgeSlots[slot] && badgeSlots[slot].length>=1){
-    return;
-  }
-
-  if(!badgeSlots[slot]) badgeSlots[slot] = [];
-
-  const yMap={
+  // Your existing mapping style uses rackBaseX + rackSpanW() for right-pocket items
+  // and rackBaseX - 105 for nameplate-area items.
+  const yMap = {
+    // nameplate-area
     ON:  baseRibbonY + 140,
     UN:  baseRibbonY + 180,
+
+    // pocket / flap
     LRP: baseRibbonY + 199,
     LP:  baseRibbonY + 244
   };
-  const xMap={
+
+  const xMap = {
+    // nameplate-area (left chest)
     ON:  rackBaseX - 105,
     UN:  rackBaseX - 105,
+
+    // right side / pocket / flap anchors
     LRP: rackBaseX + rackSpanW() + 60,
     LP:  rackBaseX + rackSpanW() + 80
   };
 
-  let y = yMap[slot] !== undefined ? yMap[slot] : (baseRibbonY+180);
-  let x = xMap[slot] !== undefined ? xMap[slot] : (rackBaseX-105);
+  // IMPORTANT: OLP/OLPU/OLPA/ORP are SLOT positions and should NOT be treated as “over-rack centered”
+  // If you want these anchored above left/right pockets, we keep them slot-based with sensible anchors:
+  // - OLP/OLPU/OLPA: left side (same general region as nameplate area but typically centered over left pocket)
+  // - ORP: right pocket area
+  //
+  // These anchors are conservative defaults; you can fine-tune via calibrator per badge.
+  if(slot === 'OLP' || slot === 'OLPU' || slot === 'OLPA'){
+    // center over ribbon rack (left-pocket region) by default; adjust with calibrator as needed
+    // If you want a more “left pocket” feel, shift a little left from rack center.
+    const leftPocketAnchorX = rackCenterX() - 40; // tweakable baseline
+    xMap[slot] = leftPocketAnchorX - (size.width/2);
 
-  if(slot==='ON'||slot==='UN'){
+    // stack above the top ribbon row (higher slot = higher on chest)
+    // OLPU sits lower than OLPA
+    const baseAboveRack = baseRibbonY - 25; // baseline above top ribbon row
+    const slotOffset = (slot === 'OLPA') ? (size.height + spacing) : 0; // OLPA above OLPU
+    yMap[slot] = (baseAboveRack - slotOffset - size.height);
+  }
+
+  if(slot === 'ORP'){
+    // right-pocket anchor: roughly to the right of ribbon rack baseline
+    const rightPocketAnchorX = rackBaseX + rackSpanW() + 55; // tweakable baseline
+    xMap[slot] = rightPocketAnchorX - (size.width/2);
+
+    // keep ORP in “above rack / right pocket region”
+    const baseAboveRack = baseRibbonY - 25;
+    yMap[slot] = (baseAboveRack - size.height);
+  }
+
+  // Final base X/Y (with fallback)
+  let x = (xMap[slot] !== undefined) ? xMap[slot] : (rackBaseX - 105);
+  let y = (yMap[slot] !== undefined) ? yMap[slot] : (baseRibbonY + 180);
+
+  // Stacking rules: ON and UN can stack vertically; also allow OLP/OLPU/OLPA/ORP to stack if multiple land there
+  if(!badgeSlots[slot]) badgeSlots[slot] = [];
+
+  const canStack = new Set(['ON','UN','OLP','OLPU','OLPA','ORP']);
+  if(canStack.has(slot)){
     const stackIdx = badgeSlots[slot].length;
     for(let i=0;i<stackIdx;i++){
-      const prev=badgeSlots[slot][i];
-      const ps=customBadgeSizes[prev]||{height:25};
-      y+=ps.height+spacing;
+      const prev = badgeSlots[slot][i];
+      const ps = customBadgeSizes[prev] || { height:25 };
+      y += (ps.height + spacing);
     }
   }
 
-  if(id==='model_rocketry_badge' && State.badges.includes('nra_marksman_badge')){
-    y+=50;
+  // Single-only slots: LRP and LP (your current rules)
+  const singleOnly = new Set(['LRP','LP']);
+  if(singleOnly.has(slot) && badgeSlots[slot].length >= 1){
+    return;
   }
 
-  const clone=img.cloneNode();
-  clone.className='layer badge';
-  clone.style.display='block';
+  // Your special collision offset
+  if(id==='model_rocketry_badge' && State.badges.includes('nra_marksman_badge')){
+    y += 50;
+  }
+
+  const clone = img.cloneNode();
+  clone.className = 'layer badge';
+  clone.style.display = 'block';
 
   clone.dataset.calibKey = `badge:${id}`;
   applyCalibToElement(clone, clone.dataset.calibKey, { x, y, w:size.width, h:size.height, r:0 });
 
   clone.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
   clone.dataset.tooltipReg   = "CAPR 39-1 badge placement";
-  clone.dataset.tooltipWhy   = "Auto-placed relative to pockets / nameplate.";
+  clone.dataset.tooltipWhy   = `Auto-placed in slot ${slot}.`;
 
   uniformCanvas.appendChild(clone);
   badgeSlots[slot].push(id);
