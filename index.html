@@ -2568,67 +2568,38 @@ function placeBadgeSlotAnchored(id){
   clone.style.display = 'block';
   clone.onerror = ()=>{ clone.remove(); };
 
-   // ===== SLOT ANCHORS (TOP-LEFT BASED) =====
-  // Calibrator JSON uses top-left coords → code must match
-
-  // Top of highest ribbon row
-  const topRibbonY = getTopRibbonY();
-
-  // OLPU: badge bottom is 25px above top ribbon row
-  const OLPU_TOP = Math.round(topRibbonY - 25 - bh);
-
-  // OLPA: same X, 25px vertical gap ABOVE OLPU
-  const OLPA_TOP = Math.round(OLPU_TOP - 25 - bh);
-
-  // Your calibrated left-pocket X value
-  const LEFT_X = 280;
-
-    // ===== SLOT ANCHORS (TOP-LEFT BASED, calibrated) =====
-
-  // Top of highest ribbon row
-  const topRibbonY_live = getTopRibbonY();
-
-  // If no ribbons exist, use calibrated reference:
-  // From your OLPU sample: 170 + 20 + 25 = 215
-  const ribbonsRendered =
-    uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini').length > 0;
-
-  const topRibbonY = ribbonsRendered ? topRibbonY_live : 215;
-
-  // Calibrated TOP-LEFT anchors
-  const OLP_X  = 264;
-  const OLP_Y  = 140;
-
-  const OLPU_X = 282;
-
-  // OLPU: badge bottom 25px above top ribbon row
-  const OLPU_TOP = Math.round(topRibbonY - 25 - bh);
-
-  // OLPA: same X, 25px GAP above OLPU
-  const OLPA_TOP = Math.round(OLPU_TOP - 25 - bh);
-
+  // slot coordinates (tune with calibrator)
   const slotAnchor = {
-    // Left pocket aviation stack
-    OLP:  { x: OLP_X,  y: OLP_Y,   dy: 32 },
-    OLPU: { x: OLPU_X, y: OLPU_TOP,dy: 32 },
-    OLPA: { x: OLPU_X, y: OLPA_TOP,dy: 32 },
+    // Over left pocket area (stack vertically)
+    OLPA: { x: W*0.33, y: H*0.34, dx: 0,  dy: 32 }, // Above aviation
+    OLP:  { x: W*0.33, y: H*0.38, dx: 0,  dy: 32 }, // Aviation line
+    OLPU: { x: W*0.33, y: H*0.42, dx: 0,  dy: 32 }, // Under aviation
 
-    // Other slots (top-left based from percent centers)
-    ORP:  { x: Math.round(W*0.67 - bw/2), y: Math.round(H*0.38 - bh/2), dy: 32 },
-    ON:   { x: Math.round(W*0.67 - bw/2), y: Math.round(H*0.30 - bh/2), dy: 32 },
-    UN:   { x: Math.round(W*0.67 - bw/2), y: Math.round(H*0.34 - bh/2), dy: 32 },
-    LP:   { x: Math.round(W*0.33 - bw/2), y: Math.round(H*0.52 - bh/2), dy: 32 },
-    LRP:  { x: Math.round(W*0.33 - bw/2), y: Math.round(H*0.58 - bh/2), dy: 32 }
+    // Over right pocket
+    ORP:  { x: W*0.67, y: H*0.38, dx: 0,  dy: 32 },
+
+    // Over/Under nameplate (stack vertically)
+    ON:   { x: W*0.67, y: H*0.30, dx: 0,  dy: 32 },
+    UN:   { x: W*0.67, y: H*0.34, dx: 0,  dy: 32 },
+
+    // Left pocket (Model Rocketry — treat as single item)
+    LP:   { x: W*0.33, y: H*0.52, dx: 0,  dy: 32 },
+
+    // Pocket flap (Marksmanship — treat as single item)
+    LRP:  { x: W*0.33, y: H*0.58, dx: 0,  dy: 32 }
   };
 
   const a = slotAnchor[slot] || slotAnchor.UN;
 
+  // Stack index within that slot (so multiple badges in same slot don’t overlap)
   const idx = badgeSlots[slot].length;
 
-  // FINAL TOP-LEFT PLACEMENT
-  const baseX = Math.round(a.x);
-  const baseY = Math.round(a.y + (a.dy || 0) * idx);
+  // Convert anchor-center to top-left
+  const baseX = Math.round(a.x - bw/2 + (a.dx||0));
+  const baseY = Math.round(a.y - bh/2 + (a.dy||0) * idx);
 
+  // Calibrator key includes slot so you can have per-slot tuning
+  clone.dataset.calibKey = `badge:${id}:${slot}:${idx}`;
 
   // Tooltip
   clone.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
