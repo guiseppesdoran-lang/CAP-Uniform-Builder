@@ -2583,32 +2583,49 @@ function placeBadgeSlotAnchored(id){
   // Your calibrated left-pocket X value
   const LEFT_X = 280;
 
+    // ===== SLOT ANCHORS (TOP-LEFT BASED, calibrated) =====
+
+  // Top of highest ribbon row
+  const topRibbonY_live = getTopRibbonY();
+
+  // If no ribbons exist, use calibrated reference:
+  // From your OLPU sample: 170 + 20 + 25 = 215
+  const ribbonsRendered =
+    uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini').length > 0;
+
+  const topRibbonY = ribbonsRendered ? topRibbonY_live : 215;
+
+  // Calibrated TOP-LEFT anchors
+  const OLP_X  = 264;
+  const OLP_Y  = 140;
+
+  const OLPU_X = 282;
+
+  // OLPU: badge bottom 25px above top ribbon row
+  const OLPU_TOP = Math.round(topRibbonY - 25 - bh);
+
+  // OLPA: same X, 25px GAP above OLPU
+  const OLPA_TOP = Math.round(OLPU_TOP - 25 - bh);
+
   const slotAnchor = {
-    // Over Left Pocket (CAPR stack)
-    OLPU: { x: LEFT_X, y: OLPU_TOP, dy: 32 },
-    OLPA: { x: LEFT_X, y: OLPA_TOP, dy: 32 },
+    // Left pocket aviation stack
+    OLP:  { x: OLP_X,  y: OLP_Y,   dy: 32 },
+    OLPU: { x: OLPU_X, y: OLPU_TOP,dy: 32 },
+    OLPA: { x: OLPU_X, y: OLPA_TOP,dy: 32 },
 
-    // Optional middle line if ever used
-    OLP:  { x: LEFT_X, y: OLPU_TOP + bh + 25, dy: 32 },
-
-    // Over Right Pocket
+    // Other slots (top-left based from percent centers)
     ORP:  { x: Math.round(W*0.67 - bw/2), y: Math.round(H*0.38 - bh/2), dy: 32 },
-
-    // Nameplate zones
     ON:   { x: Math.round(W*0.67 - bw/2), y: Math.round(H*0.30 - bh/2), dy: 32 },
     UN:   { x: Math.round(W*0.67 - bw/2), y: Math.round(H*0.34 - bh/2), dy: 32 },
-
-    // Pocket-specific badges
     LP:   { x: Math.round(W*0.33 - bw/2), y: Math.round(H*0.52 - bh/2), dy: 32 },
     LRP:  { x: Math.round(W*0.33 - bw/2), y: Math.round(H*0.58 - bh/2), dy: 32 }
   };
 
   const a = slotAnchor[slot] || slotAnchor.UN;
 
-  // Stack index within that slot
   const idx = badgeSlots[slot].length;
 
-  // TOP-LEFT placement (no center math anymore)
+  // FINAL TOP-LEFT PLACEMENT
   const baseX = Math.round(a.x);
   const baseY = Math.round(a.y + (a.dy || 0) * idx);
 
