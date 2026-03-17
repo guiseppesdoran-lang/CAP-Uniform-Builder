@@ -932,13 +932,9 @@
       </section>
 
       <section class="panelBlock">
-        <label class="fieldLabel">Rank Insignia & Output</label>
-        <div class="row two">
-          <div class="col"><select id="rankSelect"></select></div>
-          <div class="col"><button id="addRank" type="button">Set Rank</button></div>
-        </div>
+        <label class="fieldLabel">Output</label>
         <div class="row two" style="margin-top:6px">
-          <div class="col"><button id="addNameplate" class="ghost" type="button">Add Nameplate</button></div>
+          <div class="col"></div>
           <div class="col"><button id="downloadImage" type="button">Download PNG</button></div>
         </div>
         <div class="hintText">Download will export a high-res PNG of the uniform preview.</div>
@@ -959,9 +955,7 @@
     </div>
 
     <div id="sideDisplay">
-      <div id="epauletContainer"></div>
-      <div id="coverContainer"></div>
-    </div>
+      </div>
   </section>
 
   <div id="tooltip" class="tooltipBubble" style="display:none;"></div>
@@ -1543,7 +1537,6 @@ function preloadWithResolver(prefix,list,resolver){
   });
 }
 
-optionize(by('rankSelect'), rankListAll, true);
 
 preloadSimple('ribbons', ribbonList, 'ribbons', '.png');
 preloadWithResolver('devices', deviceList, id => deviceMeta[id].src);
@@ -1672,7 +1665,6 @@ membershipTypeEl.addEventListener('change', ()=>{
 
 rankSetupSelect.addEventListener('change', ()=>{
   State.rank = rankSetupSelect.value || null;
-  by('rankSelect').value = State.rank || '';
   updateSetupGates();
   fullRender();
 });
@@ -2693,94 +2685,6 @@ function renderPatches(){
 }
 
 /* ===========================
-   RANK / NAMEPLATE
-   =========================== */
-function renderRank(id){
-  [...uniformCanvas.querySelectorAll('.layer.rank')].forEach(n=>n.remove());
-  if(!id) return;
-
-  // NEW: If using combined cadet-officer Class A male jacket, the rank is baked into the base image.
-  if(usingCombinedCadetOfficerJacket()){
-    return;
-  }
-
-  if(State.membership==='senior' && SENIOR_NCO_RANKS.has(id)){
-    return;
-  }
-
-  const insigniaEl = by('ranks-'+id);
-  if(!insigniaEl) return;
-
-  const isOfficer = OFFICER_RANKS.has(id);
-
-  if(isOfficer){
-    const boardSrc=ASSET('ranks/C/shoulder_board.png');
-    const boardCfg={width:50,height:100};
-    const insigniaCfg={width:32,height:32};
-    const placements=[
-      {left:350,top:160,rot:90, side:'R'},
-      {left:100,top:160,rot:-90, side:'L'}
-    ];
-    placements.forEach(({left,top,rot,side})=>{
-      const board=document.createElement('img');
-      board.src=boardSrc;
-      board.className='layer rank';
-      board.style.display='block';
-      board.onerror=()=>{ board.remove(); };
-
-      board.dataset.calibKey = `rankboard:${id}:${side}`;
-      applyCalibToElement(board, board.dataset.calibKey, { x:left, y:top, w:boardCfg.width, h:boardCfg.height, r:rot });
-
-      uniformCanvas.appendChild(board);
-
-      const ins=insigniaEl.cloneNode();
-      ins.className='layer rank';
-      ins.style.display='block';
-      ins.onerror=()=>{ ins.remove(); };
-
-      const ix = left + (boardCfg.width/2 - insigniaCfg.width/2);
-      const iy = top  + (boardCfg.height/2 - insigniaCfg.height/2);
-
-      ins.dataset.calibKey = `rank:${id}:${side}`;
-      applyCalibToElement(ins, ins.dataset.calibKey, { x:ix, y:iy, w:insigniaCfg.width, h:insigniaCfg.height, r:rot });
-
-      uniformCanvas.appendChild(ins);
-    });
-    return;
-  }
-
-  const size={w:60,h:60};
-  const pos ={left:420,top:200};
-  const icon=insigniaEl.cloneNode();
-  icon.className='layer rank';
-  icon.style.display='block';
-  icon.onerror=()=>{ icon.remove(); };
-
-  icon.dataset.calibKey = `rank:${id}`;
-  applyCalibToElement(icon, icon.dataset.calibKey, { x:pos.left, y:pos.top, w:size.w, h:size.h, r:0 });
-
-  uniformCanvas.appendChild(icon);
-}
-
-function renderNameplate(){
-  [...uniformCanvas.querySelectorAll('.layer.nameplate')].forEach(n=>n.remove());
-  const baseRibbonY=getTopRibbonY();
-  const npTop  = baseRibbonY + 150;
-  const npLeft = rackBaseX - 120;
-
-  const el=document.createElement('img');
-  el.src=ASSET('nameplate/nameplate.png');
-  el.className='layer nameplate';
-  el.style.display='block';
-  el.onerror=()=>{ el.remove(); };
-
-  el.dataset.calibKey = 'nameplate';
-  applyCalibToElement(el, el.dataset.calibKey, { x:npLeft, y:npTop, w:100, h:20, r:0 });
-
-  uniformCanvas.appendChild(el);
-}
-
-/* ===========================
    AVAILABILITY / ALTERNATES
    =========================== */
 function updateAvailabilityUI(prevUniform){
@@ -2854,7 +2758,6 @@ function fullRender(prevUniform){
   renderPatches();
   renderRack();
   renderAllBadges();
-  renderRank(State.rank);
 }
 
 function refreshUI(){
@@ -2866,7 +2769,6 @@ function refreshUI(){
   highlightActiveUniformButton();
   applyMemberTypeToUniformOptions();
 
-  if(State.rank) by('rankSelect').value = State.rank;
 }
 
 /* ===========================
@@ -2937,15 +2839,6 @@ by('clearPatches').addEventListener('click', ()=>{
   renderPatches();
 });
 
-by('addRank').addEventListener('click', ()=>{
-  State.rank=by('rankSelect').value || null;
-  rankSetupSelect.value = State.rank || '';
-  renderRank(State.rank);
-});
-
-by('addNameplate').addEventListener('click', ()=>{
-  renderNameplate();
-});
 
 by('downloadImage').addEventListener('click', ()=>{
   html2canvas(uniformCanvas,{scale:3,backgroundColor:'#ffffff'}).then(c=>{
