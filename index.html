@@ -2544,6 +2544,14 @@ function getTopRibbonRowCenterX() {
   return (rowLeft + rowRight) / 2;
 }
 
+function getTopRibbonRowY() {
+  const ribbonEls = [...uniformCanvas.querySelectorAll('.layer.ribbonTile')];
+  if (!ribbonEls.length) return null;
+
+  const minTop = Math.min(...ribbonEls.map(el => parseFloat(el.style.top) || 0));
+  return minTop;
+}
+  
   
 function placeBadgeSlotAnchored(id){
   const img = by(`badges-${id}`);
@@ -2579,7 +2587,9 @@ function placeBadgeSlotAnchored(id){
   
   const topRibbonCenterX = getTopRibbonRowCenterX();
   const leftPocketBadgeCenterX = topRibbonCenterX ?? 260;  
-  
+
+  const topRibbonY = getTopRibbonRowY();
+  const topBadgeY = topRibbonY !== null ? (topRibbonY - 25) : (H * 0.34);
 
   const sz = customBadgeSizes[id] || { width: 60, height: 25 };
   const bw = sz.width;
@@ -2593,9 +2603,9 @@ function placeBadgeSlotAnchored(id){
 
   // slot coordinates (tune with calibrator)
   const slotAnchor = {
-  OLPA: { x: leftPocketBadgeCenterX, y: H*0.34, dx: 0, dy: 32 },
-  OLP:  { x: leftPocketBadgeCenterX, y: H*0.38, dx: 0, dy: 32 },
-  OLPU: { x: leftPocketBadgeCenterX, y: H*0.42, dx: 0, dy: 32 },
+  OLPA: { x: leftPocketBadgeCenterX, y: topBadgeY, dx: 0, dy: 32 },
+  OLP:  { x: leftPocketBadgeCenterX, y: topBadgeY, dx: 0, dy: 32 },
+  OLPU: { x: leftPocketBadgeCenterX, y: topBadgeY, dx: 0, dy: 32 },
 
   ORP:  { x: W*0.67, y: H*0.38, dx: 0, dy: 32 },
   ON:   { x: W*0.67, y: H*0.30, dx: 0, dy: 32 },
