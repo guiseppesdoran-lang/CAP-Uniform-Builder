@@ -27,7 +27,7 @@
   header{
     background:var(--brand);
     color:#fff;
-    padding:14px 16px 14px 48px; /* leave space for hamburger in top-left */
+    padding:14px 16px 14px 48px;
     text-align:center;
     position:relative;
   }
@@ -359,7 +359,6 @@
     z-index:5;
   }
 
-  /* Gallery UI (Ribbons/Badges/Patches) */
   .galleryGrid{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -419,14 +418,10 @@
     margin:0;
   }
 
-  /* === NEW: hide galleries in LEFT SIDEBAR; only show in modal === */
   #controls .galleryGrid{
     display:none !important;
   }
 
-  /* ===========================
-     UNIVERSAL CALIBRATOR PANEL
-     =========================== */
   #calibratorWrapper {
     position:fixed;
     top:80px;
@@ -572,9 +567,6 @@
     }
   }
 
-  /* ===========================
-     MODAL (POPUP GALLERY)
-     =========================== */
   .modalOverlay{
     position:fixed;
     inset:0;
@@ -595,7 +587,7 @@
     border-radius:14px;
     box-shadow:0 40px 90px rgb(0 0 0 / .45);
     overflow:hidden;
-    resize:both; /* resizable by user */
+    resize:both;
     position:relative;
   }
 
@@ -666,7 +658,6 @@
   <span></span><span></span><span></span>
 </button>
 
-<!-- UNIVERSAL CALIBRATOR -->
 <div id="calibratorWrapper">
   <div id="calibratorTab">
     <span>CAL</span>
@@ -847,7 +838,6 @@
         <div class="hintText">Change this if your image folder path changes.</div>
       </section>
 
-      <!-- RIBBONS: PICKER BUTTON (NO SIDEBAR THUMBS) -->
       <section id="groupRibbons" class="panelBlock">
         <label class="fieldLabel">Ribbons / Mini Medals</label>
 
@@ -860,7 +850,6 @@
           <div class="col"><button id="expandRibbons" type="button">Choose Ribbons…</button></div>
         </div>
 
-        <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="ribbonGallery" class="galleryGrid"></div>
 
         <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
@@ -893,7 +882,6 @@
         </div>
       </section>
 
-      <!-- BADGES: PICKER BUTTON (NO SIDEBAR THUMBS) -->
       <section class="panelBlock">
         <label class="fieldLabel">Badges</label>
 
@@ -906,7 +894,6 @@
           <div class="col"><button id="expandBadges" type="button">Choose Badges…</button></div>
         </div>
 
-        <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="badgeGallery" class="galleryGrid"></div>
 
         <div class="hintText">
@@ -914,7 +901,6 @@
         </div>
       </section>
 
-      <!-- PATCHES: PICKER BUTTON (NO SIDEBAR THUMBS) -->
       <section id="groupPatches" class="panelBlock">
         <label class="fieldLabel">Patches</label>
 
@@ -927,7 +913,6 @@
           <div class="col"><button id="expandPatches" type="button">Choose Patches…</button></div>
         </div>
 
-        <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="patchGallery" class="galleryGrid"></div>
       </section>
 
@@ -974,9 +959,6 @@
   © <span id="footerYear"></span> Civil Air Patrol Uniform Builder – Developed by C/Maj. Guiseppe Doran
 </footer>
 
-<!-- ===========================
-     GALLERY MODAL
-     =========================== -->
 <div id="galleryModalOverlay" class="modalOverlay" aria-hidden="true">
   <div id="galleryModal" class="modal" role="dialog" aria-modal="true" aria-label="Gallery Popup">
     <div class="modalHeader">
@@ -994,11 +976,6 @@
 </div>
 
 <script>
-/* ===========================
-   GLOBAL STATE
-   =========================== */
-
-// --- CSS.escape polyfill (fixes selector issues with keys like "C/2d Lt") ---
 if (typeof CSS === "undefined") window.CSS = {};
 if (typeof CSS.escape !== "function") {
   CSS.escape = function (value) {
@@ -1014,9 +991,9 @@ const State = {
   uniform:'blues_a',
   assetBase:'images',
 
-  ribbons:[], // array of {id, devices:{}}
-  badges:[],  // array of badge ids
-  patches:[], // array of patch ids
+  ribbons:[],
+  badges:[],
+  patches:[],
 
   rank:null,
 
@@ -1035,11 +1012,10 @@ const State = {
   patchSelections:{},
   patchGalleryExpanded:false,
 
-  // UNIVERSAL calibration (per-layer key)
   calib:{
     enabled:false,
     selectedKey:null,
-    map:{} // key -> {x,y,w,h,r}
+    map:{}
   }
 };
 
@@ -1047,9 +1023,6 @@ let currentDrag = null;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
 
-/* ===========================
-   MEMBERSHIP/RANK DATA
-   =========================== */
 const RANKS = {
   senior: ["SSgt","TSgt","MSgt","SMSgt","CMSgt","2d Lt","1st Lt","Capt","Maj","Lt Col","Col","Brig Gen","Maj Gen"],
   cadet: ["C/AB","C/Amn","C/A1C","C/SrA","C/SSgt","C/TSgt","C/MSgt","C/SMSgt","C/CMSgt","C/2d Lt","C/1st Lt","C/Capt","C/Maj","C/Lt Col","C/Col"]
@@ -1061,11 +1034,8 @@ const OFFICER_RANKS = new Set([
   "C/2d Lt","C/1st Lt","C/Capt","C/Maj","C/Lt Col","C/Col"
 ]);
 
-/* ===========================
-   BASE PLACEMENT CONSTANTS
-   =========================== */
-let rackBaseX = 259; // LEFT EDGE of a 3-wide rack
-let rackBaseY = 206; // TOP of bottom row
+let rackBaseX = 259;
+let rackBaseY = 206;
 
 const RIBBON_WIDTH  = 23;
 const RIBBON_HEIGHT = 7.2;
@@ -1082,9 +1052,6 @@ function getRackOrigin(){
   return { x:rackBaseX, y:rackBaseY };
 }
 
-/* ===========================
-   UNIVERSAL CALIBRATION SYSTEM
-   =========================== */
 function calibKeyFor(el){
   return el?.dataset?.calibKey || null;
 }
@@ -1128,10 +1095,6 @@ function refreshCalibratorReadout(){
   outJson.textContent = buildCalibJson(key);
 }
 
-/* ==========================================================
-   FIX: robust element lookup for calib keys with special chars
-   (prevents querySelector from failing on keys like "C/2d Lt")
-   ========================================================== */
 function findLayerByCalibKey(key){
   if(!key) return null;
   let el = null;
@@ -1172,9 +1135,6 @@ function nudgeSelected(dx,dy){
   refreshCalibratorReadout();
 }
 
-/* ===========================
-   DOM SHORTCUTS
-   =========================== */
 const $ = s => document.querySelector(s);
 const by = id => document.getElementById(id);
 
@@ -1192,9 +1152,6 @@ const assetBaseInput   = by('assetBase');
 const genderBlock      = by('genderBlock');
 const uniformBlock     = by('uniformBlock');
 
-/* ===========================
-   YEAR AUTOFILL
-   =========================== */
 (function setYears(){
   const y = new Date().getFullYear();
   const sidebarYear = by('sidebarYear');
@@ -1203,33 +1160,27 @@ const uniformBlock     = by('uniformBlock');
   if(footerYear)  footerYear.textContent  = y;
 })();
 
-/* ===========================
-   ASSET PATH HELPER
-   =========================== */
 function ASSET(p){
   const b=(State.assetBase||'images').replace(/\/$/,'');
   return `${b}/${p}`;
 }
 
-/* ===========================
-   UNIFORM DEFINITIONS
-   =========================== */
 function isFieldUniform(u){
   return u==='abu' || u==='ocp' || u==='flight_suit' || u==='corporate_field';
 }
 
 const UNIFORMS = {
-  blues_a:{male:'base/jacket_male.png',         female:'base/jacket_female.png',         ribbons:true,  mini:false},
-  blues_b:{male:'base/blues_class_b_male.png',  female:'base/blues_class_b_female.png',  ribbons:true,  mini:false},
-  mess_dress:{male:'base/mess_dress_male.png',  female:'base/mess_dress_female.png',     ribbons:false, mini:true},
-  semi_formal:{male:'base/semi_male.png',       female:'base/semi_female.png',           ribbons:false, mini:true},
-  aviator:{male:'base/aviator_shirt_male.png',  female:'base/aviator_shirt_female.png',  ribbons:true,  mini:false},
-  aviator_blazer:{male:'base/aviator_blazer_male.png',female:'base/aviator_blazer_female.png', ribbons:true,mini:false},
-  corporate_field:{male:'base/corporate_field_male.png',female:'base/corporate_field_female.png', ribbons:true, mini:false},
-  abu:{male:'base/ABU_male.png',                female:'base/ABU_female.png',            ribbons:false, mini:false},
-  ocp:{male:'base/OCP_male.png',                female:'base/OCP_female.png',            ribbons:false, mini:false},
-  flight_suit:{male:'base/flight_suit_male.png',female:'base/flight_suit_female.png',    ribbons:false, mini:false},
-  polo:{male:'base/polo_male.png',              female:'base/polo_female.png',           ribbons:false, mini:false}
+  blues_a:{male:'base/jacket male.png',                female:'base/Jacket formale.png',           ribbons:true,  mini:false},
+  blues_b:{male:'base/bitues_class_b_male.png',        female:'base/blues class b female.png',     ribbons:true,  mini:false},
+  mess_dress:{male:'base/mess dress male.png',         female:'base/mess dress female.png',        ribbons:false, mini:true},
+  semi_formal:{male:'base/mess dress male.png',        female:'base/mess dress female.png',        ribbons:false, mini:true},
+  aviator:{male:'base/aviator shirt malle.png',        female:'base/aviator shirt female.png',     ribbons:true,  mini:false},
+  aviator_blazer:{male:'base/aviator shirt malle.png', female:'base/aviator shirt female.png',     ribbons:true,  mini:false},
+  corporate_field:{male:'base/aviator shirt malle.png',female:'base/aviator shirt female.png',     ribbons:true,  mini:false},
+  abu:{male:'base/ABU male.png',                       female:'base/ABU female.png',                ribbons:false, mini:false},
+  ocp:{male:'base/OCP Blouse.png',                     female:'base/OCP Blouse.png',                ribbons:false, mini:false},
+  flight_suit:{male:'base/aviator shirt malle.png',    female:'base/aviator shirt female.png',     ribbons:false, mini:false},
+  polo:{male:'base/aviator shirt malle.png',           female:'base/aviator shirt female.png',     ribbons:false, mini:false}
 };
 
 const UI_AUTHZ = {
@@ -1246,38 +1197,32 @@ const UI_AUTHZ = {
   polo:{ showRibbons:false, showBadges:false, showPatches:false }
 };
 
-/* ===========================
-   SENIOR MEMBER NCO BASE IMAGES
-   =========================== */
 const SENIOR_NCO_BASE = {
   blues_a: {
     male: {
-      "SSgt": "base/CAP_SM_SSgt_Class_A_Jacket.png",
-      "TSgt": "base/CAP_SM_TSgt_Class_A_Jacket.png",
-      "MSgt": "base/CAP_SM_MSgt_Class_A_Jacket.png",
-      "SMSgt":"base/CAP_SM_SMSgt_Class_A_Jacket.png",
-      "CMSgt":"base/CAP_SM_CMSgt_Class_A_Jacket.png"
+      "SSgt": "base/CAP SM SSgt Class A Jacket.png",
+      "TSgt": "base/CAP SM TSgt Class A jacket.png",
+      "MSgt": "base/CAP SM MSgt Class A jacket.png",
+      "SMSgt":"base/CAP SM5M5gt Class A Jacket.png",
+      "CMSgt":"base/CAP SM CMSgt Class A Jacket.png"
     },
     female: {
-      "SSgt": "base/CAP_SM_SSgt_Class_A_Jacket.png",
-      "TSgt": "base/CAP_SM_TSgt_Class_A_Jacket.png",
-      "MSgt": "base/CAP_SM_MSgt_Class_A_Jacket.png",
-      "SMSgt":"base/CAP_SM_SMSgt_Class_A_Jacket.png",
-      "CMSgt":"base/CAP_SM_CMSgt_Class_A_Jacket.png"
+      "SSgt": "base/CAP SM SSgt Class A Jacket.png",
+      "TSgt": "base/CAP SM TSgt Class A jacket.png",
+      "MSgt": "base/CAP SM MSgt Class A jacket.png",
+      "SMSgt":"base/CAP SM5M5gt Class A Jacket.png",
+      "CMSgt":"base/CAP SM CMSgt Class A Jacket.png"
     }
   }
 };
 
-/* ===========================
-   NEW: CADET OFFICER COMBINED MALE CLASS A (BASE+RANK+BOARDS)
-   =========================== */
 const CADET_OFFICER_COMBINED_CLASSA_MALE = {
-  "C/2d Lt":  "base/c_2d_lt_jacket_male.png",
-  "C/1st Lt": "base/c_1st_lt_jacket_male.png",
-  "C/Capt":   "base/c_capt_jacket_male.png",
-  "C/Maj":    "base/c_maj_jacket_male.png",
-  "C/Lt Col": "base/c_lt_col_jacket_male.png",
-  "C/Col":    "base/c_col_jacket_male.png"
+  "C/2d Lt":  "base/2dJt jacket male.png",
+  "C/1st Lt": "base/1st jacket male.png",
+  "C/Capt":   "base/capt jacket male.png",
+  "C/Maj":    "base/cmaj jardiet male.png",
+  "C/Lt Col": "base/col jacket mala.png",
+  "C/Col":    "base/col jacket male.png"
 };
 function usingCombinedCadetOfficerJacket(){
   return (
@@ -1289,12 +1234,8 @@ function usingCombinedCadetOfficerJacket(){
   );
 }
 
-/* ===========================
-   RIBBONS / DEVICES / MINI MEDALS
-   =========================== */
 const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
-
   'cap_gill_robb_wilson_ribbon',
   'cap_paul_e_garber_ribbon',
   'cap_grover_loening_aerospace_ribbon',
@@ -1306,15 +1247,12 @@ const ribbonList = [
   'cap_senior_recruiter_ribbon',
   'cap_bridgadier_general_charles_yaeger_ribbon',
   'cap_a_scott_crossfield_ribbon',
-
   'spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement',
-
   'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon','cap_cadet_orientation_pilot_ribbon'
 ];
 
 const precedence = id => ribbonList.indexOf(id);
 
-/* Senior member: show only cadet milestone ribbons; and enforce only ONE milestone can be selected */
 const CADET_ACHIEVEMENT_RIBBONS = new Set([
   'curry_achievement','hap_arnold_achievement','mary_feik_achievement','wright_brothers_award',
   'rickenbacker_achievement','lindbergh_achievement','doolittle_achievement','goddard_achievement',
@@ -1333,7 +1271,6 @@ const deviceMeta = {
   '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 }
 };
 
-// device cap per ribbon (overflow creates additional ribbon instances)
 const RIBBON_DEVICE_CAP = {
   '1_Silver_Star_Device': 4,
   '1_Bronze_Star_Device': 4
@@ -1393,9 +1330,6 @@ Object.assign(miniMedalImages, {
   'vfw_nco_award':                          'medals/wartime_service.png'
 });
 
-/* ===========================
-   BADGES / PATCHES
-   =========================== */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
   'buddist_chaplin','christian_chaplin','communications_technician_badge','cyber_badges','emergency_services_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges'
@@ -1423,8 +1357,6 @@ const exclusiveBadges = [
 const badgeLocations = {
   'AirCrew1_DB3F0FCC3650F':'OLP','BalloonPilot1_442D89C94185B':'OLP','CAPMasterPilot1_621A0E2ED15DA':'OLP','CAPPilot1_FA9D33EA587D8':'OLP','CAPSeniorPilot1_D9725AE959752':'OLP','GliderPilot1_7BFB287379918':'OLP','MasterAirCrew1_72AC4CAE7A310':'OLP',
   'SeniorAirCrew1_B289BAE6E515C':'OLP','pre_solo_badge':'OLP','solo_badge':'OLP',
-
-  // UPDATED per your sheet
   'communications_technician_badge':'LP,UN',
   'information_technology_technician_badge':'LP,UN',
   'MasterObserver1_1B88D5071FD5C':'OLP',
@@ -1432,8 +1364,6 @@ const badgeLocations = {
   'observer_badge':'OLP',
   'historian_technicianIbadge':'LP,UN',
   'emergency_services_badge':'LP,UN',
-
-  // unchanged
   'cyber_badges':'LP','stem_badges':'LP',
   'model_rocketry_badge':'LP',
   'nra_marksman_badge':'LRP',
@@ -1441,7 +1371,6 @@ const badgeLocations = {
   'emt_basic_badge':'OLPU','emt_intermediate':'OLPU','emt_paramedic':'OLPU',
   'buddist_chaplin':'ORP','christian_chaplin':'ORP','jewish_chaplin':'ORP','legal_officer':'ORP','medical_officer':'ORP','nurse_officer':'ORP','muslim_chaplin':'ORP'
 };
-
 
 const customBadgeSizes = {
   'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
@@ -1455,7 +1384,6 @@ const customBadgeSizes = {
   'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25}
 };
 
-/* NEW: badge grouping for modal */
 const BADGE_CATEGORIES = [
   { key:'Aviation', ids:[
     'CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA',
@@ -1504,9 +1432,6 @@ const ALTERNATES = {
 
 const rankListAll = [...RANKS.senior, ...RANKS.cadet];
 
-/* ===========================
-   POPULATE SELECTS & PRELOAD
-   =========================== */
 function optionize(sel,list, pretty=false){
   sel.innerHTML='';
   list.forEach(v=>{
@@ -1560,9 +1485,6 @@ Object.entries(PATCH_META).forEach(([id,m])=>{
   assetsContainer.appendChild(img);
 });
 
-/* ===========================
-   SIDEBAR TOGGLE (HAMBURGER)
-   =========================== */
 layoutShell.classList.add('sidebar-open');
 hamburgerBtn.addEventListener('click', ()=>{
   if(layoutShell.classList.contains('sidebar-open')){
@@ -1574,9 +1496,6 @@ hamburgerBtn.addEventListener('click', ()=>{
   }
 });
 
-/* ===========================
-   TOOLTIP HOVER
-   =========================== */
 const tooltipEl = by('tooltip');
 document.addEventListener('mouseover', e => {
   const t=e.target;
@@ -1606,9 +1525,6 @@ document.addEventListener('mouseout', e => {
   }
 });
 
-/* ===========================
-   SETUP FLOW
-   =========================== */
 function updateSetupGates(){
   const readyMembership = !!State.membership;
   const readyRank       = !!State.rank;
@@ -1646,7 +1562,6 @@ membershipTypeEl.addEventListener('change', ()=>{
   populateRankSetup();
   rankSetupSelect.value = '';
 
-  // filter badges if cadet
   if(State.membership==='cadet'){
     State.badges = State.badges.filter(isCadetAuthorized);
     Object.keys(State.badgeSelections).forEach(id=>{
@@ -1654,7 +1569,6 @@ membershipTypeEl.addEventListener('change', ()=>{
     });
   }
 
-  // rebuild ribbon gallery whenever membership changes
   buildRibbonGallery();
 
   if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)){
@@ -1683,9 +1597,6 @@ jacketSelect.addEventListener('change', ()=>{
   fullRender();
 });
 
-/* ===========================
-   MEMBER TYPE / UNIFORM AUTHZ
-   =========================== */
 function isUniformAllowedFor(uniformId, membership){
   const btn = uniformListEl.querySelector(`.uniformOption[data-uniform-id="${uniformId}"]`);
   if(!btn) return false;
@@ -1732,9 +1643,6 @@ function highlightActiveUniformButton(){
   });
 }
 
-/* ===========================
-   JACKET BASE RENDER (ROBUST)
-   =========================== */
 function clearLayers(cls){
   const sel = cls?`.layer.${cls}`:'.layer';
   uniformCanvas.querySelectorAll(sel).forEach(n=>n.remove());
@@ -1746,19 +1654,16 @@ function getBaseCandidates(){
   const list = [];
   if(!u || !g) return list;
 
-  // 1) Cadet Officer (Male) Class A combined jacket (jacket+boards+rank baked in)
   if(usingCombinedCadetOfficerJacket()){
     list.push(CADET_OFFICER_COMBINED_CLASSA_MALE[State.rank]);
     return [...new Set(list)];
   }
 
-  // 2) NCO special (try first)
   if(State.membership==='senior' && State.rank && SENIOR_NCO_RANKS.has(State.rank)){
     const ncoPath = SENIOR_NCO_BASE[u]?.[g]?.[State.rank];
     if(ncoPath) list.push(ncoPath);
   }
 
-  // 3) Default base
   const def = UNIFORMS[u]?.[g];
   if(def) list.push(def);
 
@@ -1826,9 +1731,6 @@ function applyJacket(){
   tryNext();
 }
 
-/* ===========================
-   RIBBON / MEDAL RENDER LOGIC
-   =========================== */
 function sortRibbons(arr){
   return [...arr].sort((a,b)=>precedence(a.id)-precedence(b.id));
 }
@@ -2057,7 +1959,6 @@ function renderRack(){
     return;
   }
 
-  // MINI MEDALS
   const MINI_W = 20;
   const MINI_H = 28;
   const MEDAL_PER_ROW = 5;
@@ -2123,9 +2024,6 @@ function renderRack(){
   });
 }
 
-/* ===========================
-   DEVICE TOOL UI
-   =========================== */
 function buildDevicePicker(){
   const wrap=by('devicePicker');
   wrap.innerHTML='';
@@ -2190,9 +2088,6 @@ function wireDeviceUI(){
   });
 }
 
-/* ===========================
-   RIBBONS: GALLERY LOGIC
-   =========================== */
 function normalizeRibbonSelections(){
   ribbonList.forEach(id=>{
     if(!State.ribbonSelections[id]){
@@ -2211,7 +2106,6 @@ function rebuildRibbonsFromGallery(){
     const sel = State.ribbonSelections[id];
     if(!sel || !sel.checked) continue;
 
-    // compute stacks needed due to caps
     let stacks = 1;
     for(const [dev,count] of Object.entries(sel.devices||{})){
       const cap = RIBBON_DEVICE_CAP[dev] || 0;
@@ -2241,7 +2135,6 @@ function buildRibbonGallery(){
   normalizeRibbonSelections();
   wrap.innerHTML = '';
 
-  // Senior filters out non-milestone cadet achievements
   let eligible = [...ribbonList];
   if(State.membership === 'senior'){
     eligible = eligible.filter(id=>{
@@ -2285,7 +2178,6 @@ function buildRibbonGallery(){
     chk.onchange = ()=>{
       sel.checked = chk.checked;
 
-      // Senior -> only ONE milestone ribbon can be selected at a time
       if(State.membership === 'senior' && CADET_MILESTONES.has(id) && sel.checked){
         for(const otherId of Object.keys(State.ribbonSelections)){
           if(otherId !== id && CADET_MILESTONES.has(otherId)){
@@ -2303,7 +2195,6 @@ function buildRibbonGallery(){
       sel.checked = true;
       chk.checked = true;
 
-      // Senior -> only ONE milestone ribbon can be selected at a time
       if(State.membership === 'senior' && CADET_MILESTONES.has(id)){
         for(const otherId of Object.keys(State.ribbonSelections)){
           if(otherId !== id && CADET_MILESTONES.has(otherId)){
@@ -2321,9 +2212,6 @@ function buildRibbonGallery(){
   }
 }
 
-/* ===========================
-   BADGES: GALLERY LOGIC
-   =========================== */
 function isCadetAuthorized(id){ return allowedCadetBadges.has(id); }
 
 function normalizeBadgeSelections(){
@@ -2411,9 +2299,6 @@ function buildBadgeGallery(){
   }
 }
 
-/* ===========================
-   PATCHES: GALLERY LOGIC
-   =========================== */
 function normalizePatchSelections(){
   patchList.forEach(id=>{
     if(!State.patchSelections[id]){
@@ -2476,25 +2361,15 @@ function buildPatchGallery(){
   }
 }
 
-/* ===========================
-   BADGES (RENDER) — SLOT-ANCHORED
-   =========================== */
-
-/*
-  Goal: Badges MUST render in their actual CAPR 39-1 “slots” (OLPA/OLPU/OLP/ORP/ON/UN/LP/LRP),
-  NOT as “centered above ribbons”. This removes the old OVERSTACK behavior that was incorrectly
-  treating OLP/OLPU/OLPA/ORP as over-rack.
-*/
-
 const badgeSlots = {
-  OLPA: [],  // Over Left Pocket, Above Aviation
-  OLPU: [],  // Over Left Pocket, Under Aviation
-  OLP:  [],  // Over Left Pocket (generic if used)
-  ORP:  [],  // Over Right Pocket
-  ON:   [],  // Over Nameplate
-  UN:   [],  // Under Nameplate
-  LRP:  [],  // Left/Right Pocket flap (marksmanship)
-  LP:   []   // Left pocket (Model Rocketry in your rules)
+  OLPA: [],
+  OLPU: [],
+  OLP:  [],
+  ORP:  [],
+  ON:   [],
+  UN:   [],
+  LRP:  [],
+  LP:   []
 };
 
 function resetBadgeSlots(){
@@ -2530,30 +2405,26 @@ function placeBadgeSlotAnchored(id){
   const img = by(`badges-${id}`);
   if(!img) return;
 
-  // Hard overrides you already enforce
   let slotSpec = badgeLocations[id] || 'UN';
   if(id==='nra_marksman_badge') slotSpec='LRP';
   if(id==='model_rocketry_badge') slotSpec='LP';
 
   const prefs = parseSlotPrefs(slotSpec);
 
-  // Decide which slot we’ll actually use
   const singleOnly = new Set(['LRP','LP']);
   let slot = null;
 
   for(const candidate of prefs){
     if(!badgeSlots[candidate]) badgeSlots[candidate] = [];
 
-    // block single-only if already occupied
     if(singleOnly.has(candidate) && badgeSlots[candidate].length >= 1) continue;
 
     slot = candidate;
     break;
   }
 
-  if(!slot) return; // nowhere legal to place it
+  if(!slot) return;
 
-      // Compute a base anchor for each slot (percent-based so it scales with preview size)
   const box = uniformCanvas.getBoundingClientRect();
   const W = box.width  || 450;
   const H = box.height || 600;
@@ -2562,46 +2433,29 @@ function placeBadgeSlotAnchored(id){
   const bw = sz.width;
   const bh = sz.height;
 
-  // Helper: create element clone
   const clone = img.cloneNode();
   clone.className = 'layer badge';
   clone.style.display = 'block';
   clone.onerror = ()=>{ clone.remove(); };
 
-  // slot coordinates (tune with calibrator)
   const slotAnchor = {
-    // Over left pocket area (stack vertically)
-    OLPA: { x: W*0.33, y: H*0.34, dx: 0,  dy: 32 }, // Above aviation
-    OLP:  { x: W*0.33, y: H*0.38, dx: 0,  dy: 32 }, // Aviation line
-    OLPU: { x: W*0.33, y: H*0.42, dx: 0,  dy: 32 }, // Under aviation
-
-    // Over right pocket
+    OLPA: { x: W*0.33, y: H*0.34, dx: 0,  dy: 32 },
+    OLP:  { x: W*0.33, y: H*0.38, dx: 0,  dy: 32 },
+    OLPU: { x: W*0.33, y: H*0.42, dx: 0,  dy: 32 },
     ORP:  { x: W*0.67, y: H*0.38, dx: 0,  dy: 32 },
-
-    // Over/Under nameplate (stack vertically)
     ON:   { x: W*0.67, y: H*0.30, dx: 0,  dy: 32 },
     UN:   { x: W*0.67, y: H*0.34, dx: 0,  dy: 32 },
-
-    // Left pocket (Model Rocketry — treat as single item)
     LP:   { x: W*0.33, y: H*0.52, dx: 0,  dy: 32 },
-
-    // Pocket flap (Marksmanship — treat as single item)
     LRP:  { x: W*0.33, y: H*0.58, dx: 0,  dy: 32 }
   };
 
   const a = slotAnchor[slot] || slotAnchor.UN;
-
-  // Stack index within that slot (so multiple badges in same slot don’t overlap)
   const idx = badgeSlots[slot].length;
 
-  // Convert anchor-center to top-left
   const baseX = Math.round(a.x - bw/2 + (a.dx||0));
   const baseY = Math.round(a.y - bh/2 + (a.dy||0) * idx);
 
-  // Calibrator key includes slot so you can have per-slot tuning
   clone.dataset.calibKey = `badge:${id}:${slot}:${idx}`;
-
-  // Tooltip
   clone.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
   clone.dataset.tooltipReg   = `Badge slot: ${slot}`;
   clone.dataset.tooltipWhy   = `Rendered in CAPR slot ${slot}.`;
@@ -2610,12 +2464,8 @@ function placeBadgeSlotAnchored(id){
 
   uniformCanvas.appendChild(clone);
   badgeSlots[slot].push(id);
-}  // ✅ END placeBadgeSlotAnchored
+}
 
-
-/* ===========================
-   PATCHES (RENDER)
-   =========================== */
 const patchSlots = { L_SHOULDER:[], R_SHOULDER:[], CHEST_LEFT:[], CHEST_RIGHT:[] };
 function resetPatchSlots(){ Object.keys(patchSlots).forEach(k=>patchSlots[k]=[]); }
 
@@ -2692,14 +2542,10 @@ function renderPatches(){
   }
 }
 
-/* ===========================
-   RANK / NAMEPLATE
-   =========================== */
 function renderRank(id){
   [...uniformCanvas.querySelectorAll('.layer.rank')].forEach(n=>n.remove());
   if(!id) return;
 
-  // NEW: If using combined cadet-officer Class A male jacket, the rank is baked into the base image.
   if(usingCombinedCadetOfficerJacket()){
     return;
   }
@@ -2780,9 +2626,6 @@ function renderNameplate(){
   uniformCanvas.appendChild(el);
 }
 
-/* ===========================
-   AVAILABILITY / ALTERNATES
-   =========================== */
 function updateAvailabilityUI(prevUniform){
   const auth = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
   by('groupRibbons').classList.toggle('hidden', !auth.showRibbons && !UNIFORMS[State.uniform].mini);
@@ -2841,9 +2684,6 @@ function applyAlternates(fromU,toU){
   }
 }
 
-/* ===========================
-   RENDER PIPELINE
-   =========================== */
 function fullRender(prevUniform){
   clearLayers();
   applyJacket();
@@ -2869,9 +2709,6 @@ function refreshUI(){
   if(State.rank) by('rankSelect').value = State.rank;
 }
 
-/* ===========================
-   UNIFORM BUTTON CLICK
-   =========================== */
 uniformListEl.addEventListener('click', e=>{
   const btn=e.target.closest('.uniformOption');
   if(!btn) return;
@@ -2885,9 +2722,6 @@ uniformListEl.addEventListener('click', e=>{
   refreshUI();
 });
 
-/* ===========================
-   EVENT WIRING
-   =========================== */
 by('applyJacket').addEventListener('click', ()=>{
   State.assetBase=(assetBaseInput.value||'images').trim()||'images';
   fullRender();
@@ -2912,7 +2746,6 @@ by('toggleMini').addEventListener('change', e=>{
 buildDevicePicker();
 wireDeviceUI();
 
-/* Ribbon gallery buttons */
 by('clearRibbons').addEventListener('click', ()=>{
   State.ribbons=[];
   State.ribbonSelections={};
@@ -2921,7 +2754,6 @@ by('clearRibbons').addEventListener('click', ()=>{
   renderAllBadges();
 });
 
-/* Badge gallery buttons */
 by('clearBadges').addEventListener('click', ()=>{
   State.badges=[];
   State.badgeSelections={};
@@ -2929,7 +2761,6 @@ by('clearBadges').addEventListener('click', ()=>{
   renderAllBadges();
 });
 
-/* Patch gallery buttons */
 by('clearPatches').addEventListener('click', ()=>{
   State.patches=[];
   State.patchSelections={};
@@ -2987,9 +2818,6 @@ logRibbonCoordsBtn.addEventListener('click', ()=>{
   alert('Ribbon coordinates logged to console.');
 });
 
-/* ===========================
-   UNIVERSAL CALIBRATOR UI
-   =========================== */
 function initCalibratorUI(){
   const tab   = by('calibratorTab');
   const arrow = by('calibratorArrow');
@@ -3025,7 +2853,7 @@ function initCalibratorUI(){
       return;
     }
 
-    const el = findLayerByCalibKey(key); /* FIX */
+    const el = findLayerByCalibKey(key);
     if(!el){
       refreshCalibratorReadout();
       return;
@@ -3062,7 +2890,7 @@ function initCalibratorUI(){
 
     setCalib(key, { x,y,w,h,r });
 
-    const el = findLayerByCalibKey(key); /* FIX */
+    const el = findLayerByCalibKey(key);
     if(el){
       el.style.left = x+'px';
       el.style.top  = y+'px';
@@ -3152,9 +2980,6 @@ function initCalibratorUI(){
   });
 }
 
-/* ===========================
-   MODAL GALLERY (Ribbons/Badges/Patches)
-   =========================== */
 const modalOverlay = by('galleryModalOverlay');
 const modalEl      = by('galleryModal');
 const modalTitle   = by('galleryModalTitle');
@@ -3224,7 +3049,6 @@ function openGalleryModal(kind){
       (State.membership==='cadet') ? badgeList.filter(isCadetAuthorized) : badgeList
     );
 
-    // Clear host and rebuild with headings + subgrids (nice grouping)
     modalHost.innerHTML = '';
     modalHost.appendChild(host);
 
@@ -3422,14 +3246,10 @@ modalRestore.addEventListener('click', ()=>{
   modalMaxBtn.classList.remove('hidden');
 });
 
-/* IMPORTANT: Picker buttons open the popup */
 by('expandRibbons').addEventListener('click', ()=> openGalleryModal('ribbons'));
 by('expandBadges').addEventListener('click',  ()=> openGalleryModal('badges'));
 by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
 
-/* ===========================
-   BOOTSTRAP
-   =========================== */
 (function init(){
   applyMemberTypeToUniformOptions();
   populateRankSetup();
