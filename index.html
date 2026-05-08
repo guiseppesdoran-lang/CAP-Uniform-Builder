@@ -1616,6 +1616,13 @@ const CADET_OFFICER_COMBINED_CLASSA_MALE = {
   "C/Lt Col": "base/c_lt_col_jacket_male.png",
   "C/Col":    "base/c_col_jacket_male.png"
 };
+
+// Senior Member officer combined male Class A base images.
+// These are full base images with the officer grade already built into the jacket/epaulets.
+const SENIOR_OFFICER_COMBINED_CLASSA_MALE = {
+  "Maj": "base/CAP_Maj.png"
+};
+
 function usingCombinedCadetOfficerJacket(){
   return (
     State.uniform === 'blues_a' &&
@@ -1623,6 +1630,16 @@ function usingCombinedCadetOfficerJacket(){
     State.membership === 'cadet' &&
     !!State.rank &&
     !!CADET_OFFICER_COMBINED_CLASSA_MALE[State.rank]
+  );
+}
+
+function usingCombinedSeniorOfficerJacket(){
+  return (
+    State.uniform === 'blues_a' &&
+    State.gender === 'male' &&
+    State.membership === 'senior' &&
+    !!State.rank &&
+    !!SENIOR_OFFICER_COMBINED_CLASSA_MALE[State.rank]
   );
 }
 
@@ -2089,6 +2106,12 @@ function getBaseCandidates(){
   // 1) Cadet Officer (Male) Class A combined jacket (jacket+boards+rank baked in)
   if(usingCombinedCadetOfficerJacket()){
     list.push(CADET_OFFICER_COMBINED_CLASSA_MALE[State.rank]);
+    return [...new Set(list)];
+  }
+
+  // 1b) Senior Member Officer (Male) Class A combined jacket (jacket+epaulet rank baked in)
+  if(usingCombinedSeniorOfficerJacket()){
+    list.push(SENIOR_OFFICER_COMBINED_CLASSA_MALE[State.rank]);
     return [...new Set(list)];
   }
 
@@ -4013,8 +4036,8 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
   function renderRankOverlay(){
     [...uniformCanvas.querySelectorAll('.layer.rankOverlay,.layer.rankFallback')].forEach(n=>n.remove());
     if(!State.rank) return;
-    // Combined cadet officer male class-A jackets already include shoulder boards/rank.
-    if(usingCombinedCadetOfficerJacket()) return;
+    // Combined class-A base images already include shoulder boards/rank.
+    if(usingCombinedCadetOfficerJacket() || usingCombinedSeniorOfficerJacket()) return;
     const p = rankPlacement();
     const key = `rank:${State.uniform}:${State.rank}`;
     const candidates = rankAssetCandidates(State.rank);
