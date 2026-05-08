@@ -960,19 +960,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <div class="hintText">Grayed-out uniforms are not authorized for the selected membership type.</div>
       </section>
 
-      <section class="panelBlock">
-        <div class="row two">
-          <div class="col">
-            <label class="fieldLabel">Asset Base Path</label>
-            <input id="assetBase" value="images" placeholder="images"/>
-          </div>
-          <div class="col">
-            <label class="fieldLabel">&nbsp;</label>
-            <button id="applyJacket" class="ghost">Apply Jacket</button>
-          </div>
-        </div>
-        <div class="hintText">Change this if your image folder path changes.</div>
-      </section>
+      <!-- Asset base path control removed from the general UI. The builder now uses the default images folder internally. -->
 
       <!-- RIBBONS: PICKER BUTTON (NO SIDEBAR THUMBS) -->
       <section id="groupRibbons" class="panelBlock">
@@ -1740,7 +1728,7 @@ const uniformListEl    = by('uniformList');
 const membershipTypeEl = by('membershipType');
 const rankSetupSelect  = by('rankSetupSelect');
 const jacketSelect     = by('jacketSelect');
-const assetBaseInput   = by('assetBase');
+const assetBaseInput   = by('assetBase'); // removed from general UI; may be null
 
 const genderBlock      = by('genderBlock');
 const uniformBlock     = by('uniformBlock');
@@ -3565,7 +3553,7 @@ function refreshUI(){
   membershipTypeEl.value = State.membership || '';
   rankSetupSelect.value = State.rank || '';
   jacketSelect.value = State.gender || '';
-  assetBaseInput.value=State.assetBase;
+  if(assetBaseInput) assetBaseInput.value=State.assetBase;
 
   highlightActiveUniformButton();
   applyMemberTypeToUniformOptions();
@@ -3591,20 +3579,25 @@ uniformListEl.addEventListener('click', e=>{
 /* ===========================
    EVENT WIRING
    =========================== */
-by('applyJacket').addEventListener('click', ()=>{
-  State.assetBase=(assetBaseInput.value||'images').trim()||'images';
-  fullRender();
-  buildRibbonGallery();
-  buildBadgeGallery();
-  buildPatchGallery();
-});
-assetBaseInput.addEventListener('change', ()=>{
-  State.assetBase=(assetBaseInput.value||'images').trim()||'images';
-  fullRender();
-  buildRibbonGallery();
-  buildBadgeGallery();
-  buildPatchGallery();
-});
+const applyJacketBtn = by('applyJacket');
+if(applyJacketBtn){
+  applyJacketBtn.addEventListener('click', ()=>{
+    State.assetBase=(assetBaseInput?.value||'images').trim()||'images';
+    fullRender();
+    buildRibbonGallery();
+    buildBadgeGallery();
+    buildPatchGallery();
+  });
+}
+if(assetBaseInput){
+  assetBaseInput.addEventListener('change', ()=>{
+    State.assetBase=(assetBaseInput.value||'images').trim()||'images';
+    fullRender();
+    buildRibbonGallery();
+    buildBadgeGallery();
+    buildPatchGallery();
+  });
+}
 
 by('toggleMini').addEventListener('change', e=>{
   State.forceMini = e.target.checked;
@@ -4398,37 +4391,10 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
   }
 
   function renderRankOverlay(){
+    // Separate rank overlays have been retired.
+    // All supported base uniform images are now expected to include the rank already built in.
     [...uniformCanvas.querySelectorAll('.layer.rankOverlay,.layer.rankFallback')].forEach(n=>n.remove());
-    if(!State.rank) return;
-    // Combined base images already include shoulder boards/rank.
-    if(usingCombinedCadetOfficerJacket() || usingCombinedSeniorOfficerJacket() || usingCombinedSeniorOfficerClassBJacket()) return;
-    const p = rankPlacement();
-    const key = `rank:${State.uniform}:${State.rank}`;
-    const candidates = rankAssetCandidates(State.rank);
-    const el = new Image();
-    el.className = 'layer rankOverlay';
-    el.dataset.calibKey = key;
-    el.dataset.tooltipTitle = `Rank: ${State.rank}`;
-    el.dataset.tooltipReg = 'Uses rank image when available; otherwise generated text fallback is shown.';
-    el.dataset.tooltipWhy = 'Recommended rank asset naming: images/ranks/'+safeRankFile(State.rank)+'.png';
-    let i = 0;
-    el.onload = ()=>{ applyCalibToElement(el,key,{x:p.x,y:p.y,w:p.w,h:p.h,r:0}); uniformCanvas.appendChild(el); };
-    el.onerror = ()=>{
-      i++;
-      if(i < candidates.length){ el.src = ASSET(candidates[i]); return; }
-      if(State.text?.show !== false){
-        const fb = document.createElement('div');
-        fb.className = 'layer rankFallback';
-        fb.textContent = State.rank.replace('C/','C/\n');
-        fb.dataset.calibKey = key+':fallback';
-        fb.dataset.tooltipTitle = `Missing rank image: ${State.rank}`;
-        fb.dataset.tooltipReg = 'Generated fallback. Add a transparent PNG rank asset for final output.';
-        fb.dataset.tooltipWhy = 'Suggested path: images/ranks/'+safeRankFile(State.rank)+'.png';
-        applyCalibToElement(fb,fb.dataset.calibKey,{x:p.x,y:p.y,w:p.w,h:p.h,r:0});
-        uniformCanvas.appendChild(fb);
-      }
-    };
-    el.src = ASSET(candidates[0]);
+    return;
   }
 
   function validateBuild(){
