@@ -1314,7 +1314,10 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
     'badge:information_technology_technician_badge:UN:0': { x:138, y:256, w:25, h:25, r:0 },
     'badge:historian_technicianIbadge:UN:0': { x:138, y:256, w:25, h:25, r:0 },
     'badge:cadet_programs_badge:UN:0': { x:125, y:258, w:45, h:45, r:0 },
-    'badge:observer_badge:OLP:0': { x:263, y:114, w:60, h:17, r:0 }
+    // Aviation/aircrew badges use the high aviation zone so they do not initially overlap
+    // rectangular occupational/specialty badges such as Incident Commander.
+    'badge:observer_badge:OLP:0': { x:263, y:114, w:60, h:17, r:0 },
+    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:114, w:60, h:17, r:0 }
   },
 
   // Men's Class B Blues calibration supplied by user.
@@ -1412,8 +1415,10 @@ function buildDerivedBadgeCalib(key, base){
 
   let refKey = null;
   if(AIRCREW_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLP'){
-    // Observer/aircrew/aviation badges inherit the calibrated aviation badge zone.
-    refKey = `badge:AirCrew1_DB3F0FCC3650F:OLP:${parsed.idx}`;
+    // Observer/aircrew/aviation badges inherit the calibrated high aviation zone.
+    // Prefer Observer when present because it was calibrated to clear specialty/occupational badges.
+    refKey = `badge:observer_badge:OLP:${parsed.idx}`;
+    if(!defaults[refKey]) refKey = `badge:AirCrew1_DB3F0FCC3650F:OLP:${parsed.idx}`;
   }else if(GROUND_EMT_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLPU'){
     refKey = `badge:master_ground_team_badge:OLPU:${parsed.idx}`;
   }else if(ES_POCKET_BADGE_IDS.has(parsed.id) && parsed.slot === 'LP'){
@@ -1845,6 +1850,22 @@ const CADET_OFFICER_COMBINED_CLASSA_MALE = {
 const SENIOR_OFFICER_COMBINED_CLASSA_MALE = {
   "Maj": "base/CAP_Maj.png"
 };
+
+// Senior Member officer combined male Class B base images.
+// These are full base images with officer grade already built into the shirt.
+const SENIOR_OFFICER_COMBINED_CLASSB_MALE = {
+  "Maj": "base/maj_blues_class_b_male.png"
+};
+
+function usingCombinedSeniorOfficerClassBJacket(){
+  return (
+    State.uniform === 'blues_b' &&
+    State.gender === 'male' &&
+    State.membership === 'senior' &&
+    !!State.rank &&
+    !!SENIOR_OFFICER_COMBINED_CLASSB_MALE[State.rank]
+  );
+}
 
 function usingCombinedCadetOfficerJacket(){
   return (
@@ -2363,6 +2384,12 @@ function getBaseCandidates(){
   // 1b) Senior Member Officer (Male) Class A combined jacket (jacket+epaulet rank baked in)
   if(usingCombinedSeniorOfficerJacket()){
     list.push(SENIOR_OFFICER_COMBINED_CLASSA_MALE[State.rank]);
+    return [...new Set(list)];
+  }
+
+  // 1c) Senior Member Officer (Male) Class B combined shirt (rank baked in)
+  if(usingCombinedSeniorOfficerClassBJacket()){
+    list.push(SENIOR_OFFICER_COMBINED_CLASSB_MALE[State.rank]);
     return [...new Set(list)];
   }
 
@@ -3241,7 +3268,10 @@ function isLoneAviationOccupationalBadge(id){
 
 const OVER_RIBBON_REFERENCE_TOP_BY_UNIFORM = {
   blues_b: 189,
-  blues_a: 191
+  // Latest senior male Class A export uses a 7-row rack with the highest row at y=164.
+  // This prevents aviation badges from initially jumping down into the same vertical band
+  // as specialty/occupational badges.
+  blues_a: 164
 };
 
 function getReferenceCalibForKey(uniformId, key){
@@ -3255,6 +3285,10 @@ function getOverRibbonReferenceKey(slot, idx=0, opts={}){
     return `badge:master_ground_team_badge:OLPU:${idx}`;
   }
   if(slot === 'OLP' || slot === 'OLPA'){
+    const uniformId = getCurrentCalibUniform();
+    const defaults = DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {};
+    const observerKey = `badge:observer_badge:OLP:${idx}`;
+    if(defaults[observerKey] || getReferenceCalibForKey(uniformId, observerKey)) return observerKey;
     return `badge:AirCrew1_DB3F0FCC3650F:OLP:${idx}`;
   }
   if(slot === 'OLPU'){
@@ -4366,8 +4400,8 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
   function renderRankOverlay(){
     [...uniformCanvas.querySelectorAll('.layer.rankOverlay,.layer.rankFallback')].forEach(n=>n.remove());
     if(!State.rank) return;
-    // Combined class-A base images already include shoulder boards/rank.
-    if(usingCombinedCadetOfficerJacket() || usingCombinedSeniorOfficerJacket()) return;
+    // Combined base images already include shoulder boards/rank.
+    if(usingCombinedCadetOfficerJacket() || usingCombinedSeniorOfficerJacket() || usingCombinedSeniorOfficerClassBJacket()) return;
     const p = rankPlacement();
     const key = `rank:${State.uniform}:${State.rank}`;
     const candidates = rankAssetCandidates(State.rank);
