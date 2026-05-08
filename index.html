@@ -570,6 +570,9 @@
     outline:2px solid rgba(0,40,85,.95) !important;
     box-shadow:0 0 0 3px rgba(0,40,85,.18) !important;
   }
+  .calib-selectable .layer:hover{
+    outline:2px dashed rgba(0,40,85,.45);
+  }
 
   @media (max-width:768px){
     #layoutShell{
@@ -796,7 +799,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
     <h3>Calibrator</h3>
 
     <div style="font-size:11px;color:var(--muted);line-height:1.35;margin-bottom:8px;">
-      Turn on Calibrate Mode, then click any item on the uniform to edit its exact position/size.
+      Turn on Calibrate Mode, then click an item to edit it. Ctrl/Shift-click adds or removes multiple selected assets so you can move or resize them together.
     </div>
 
     <div class="calib-row">
@@ -807,7 +810,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
     </div>
 
     <div class="calib-row">
-      <label>Selected Key</label>
+      <label>Selected Asset(s)</label>
       <div id="calibKeyPill">none</div>
     </div>
 
@@ -852,7 +855,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
     </div>
 
     <div id="calibReadout" style="margin-top:10px;">
-      <div><b>Tip:</b> Arrow keys nudge (Shift = 10px).</div>
+      <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow keys nudge all selected assets (Shift = 10px).</div>
       <div style="margin-top:6px;">JSON:</div>
       <code id="calibJson" style="display:block;white-space:pre-wrap;"></code>
     </div>
@@ -1199,6 +1202,7 @@ const State = {
     enabled:false,
     adminUnlocked:false,
     selectedKey:null,
+    selectedKeys:[], // multi-select layer keys for admin calibration
     map:{}, // legacy/global fallback: key -> {x,y,w,h,r}
     byUniform:{} // uniformId -> { layerKey -> {x,y,w,h,r} }
   }
@@ -1314,16 +1318,30 @@ function applyCalibToElement(el, key, base){
 
   return v;
 }
+function getSelectedCalibKeys(){
+  const keys = Array.isArray(State.calib.selectedKeys) ? State.calib.selectedKeys.filter(Boolean) : [];
+  if(keys.length) return [...new Set(keys)];
+  return State.calib.selectedKey ? [State.calib.selectedKey] : [];
+}
 function buildCalibJson(key){
   const v = getCalib(key) || {};
   return JSON.stringify({ uniform: getCurrentCalibUniform(), key, ...v }, null, 2);
 }
+function buildSelectedCalibJson(){
+  const keys = getSelectedCalibKeys();
+  const payload = {
+    uniform: getCurrentCalibUniform(),
+    selectedCount: keys.length,
+    assets: keys.map(key => ({ key, ...(getCalib(key) || {}) }))
+  };
+  return JSON.stringify(payload, null, 2);
+}
 function refreshCalibratorReadout(){
-  const key = State.calib.selectedKey;
   const outJson = by('calibJson');
   if(!outJson) return;
-  if(!key){ outJson.textContent=''; return; }
-  outJson.textContent = buildCalibJson(key);
+  const keys = getSelectedCalibKeys();
+  if(!keys.length){ outJson.textContent=''; return; }
+  outJson.textContent = keys.length === 1 ? buildCalibJson(keys[0]) : buildSelectedCalibJson();
 }
 
 /* ==========================================================
@@ -1342,30 +1360,34 @@ function findLayerByCalibKey(key){
 }
 
 function nudgeSelected(dx,dy){
-  const key = State.calib.selectedKey;
-  if(!key) return;
+  const keys = getSelectedCalibKeys();
+  if(!keys.length) return;
 
-  const xn = by('calXn');
-  const yn = by('calYn');
-  const xr = by('calX');
-  const yr = by('calY');
+  keys.forEach(key => {
+    const el = findLayerByCalibKey(key);
+    const st = el ? window.getComputedStyle(el) : null;
+    const cur = getCalib(key) || {};
+    const x = (cur.x !== undefined) ? parseInt(cur.x,10) : Math.round(parseFloat(st?.left)||0);
+    const y = (cur.y !== undefined) ? parseInt(cur.y,10) : Math.round(parseFloat(st?.top)||0);
+    const nx = x + dx;
+    const ny = y + dy;
+    setCalib(key, { x:nx, y:ny });
+    if(el){
+      el.style.left = nx+'px';
+      el.style.top  = ny+'px';
+    }
+  });
 
-  const x = parseInt(xn?.value||"0",10);
-  const y = parseInt(yn?.value||"0",10);
-  const nx = x + dx;
-  const ny = y + dy;
-
-  if(xn) xn.value = nx;
-  if(yn) yn.value = ny;
-  if(xr) xr.value = nx;
-  if(yr) yr.value = ny;
-
-  setCalib(key, { x:nx, y:ny });
-
-  const el = findLayerByCalibKey(key);
-  if(el){
-    el.style.left = nx+'px';
-    el.style.top  = ny+'px';
+  const primary = keys[0];
+  const pEl = findLayerByCalibKey(primary);
+  if(pEl){
+    const st = window.getComputedStyle(pEl);
+    const x = Math.round(parseFloat(st.left)||0);
+    const y = Math.round(parseFloat(st.top)||0);
+    const xr = by('calX'), xn = by('calXn');
+    const yr = by('calY'), yn = by('calYn');
+    if(xr) xr.value = x; if(xn) xn.value = x;
+    if(yr) yr.value = y; if(yn) yn.value = y;
   }
   refreshCalibratorReadout();
 }
@@ -3157,23 +3179,38 @@ function initCalibratorUI(){
     arrow.textContent=open?'‹':'›';
   });
 
-  function setSelected(key){
+  function updateSelectedVisuals(){
     uniformCanvas.querySelectorAll('.calib-selected').forEach(n=>n.classList.remove('calib-selected'));
+    getSelectedCalibKeys().forEach(key=>{
+      const el = findLayerByCalibKey(key);
+      if(el) el.classList.add('calib-selected');
+    });
+  }
 
-    State.calib.selectedKey = key;
-    pillKey.textContent = key || 'none';
+  function updateSelectionPill(){
+    const keys = getSelectedCalibKeys();
+    if(!keys.length){
+      pillKey.textContent = 'none';
+    }else if(keys.length === 1){
+      pillKey.textContent = keys[0];
+    }else{
+      pillKey.textContent = `${keys.length} assets selected`;
+      pillKey.title = keys.join('\n');
+    }
+  }
 
+  function loadControlsFromPrimary(){
+    const key = getSelectedCalibKeys()[0];
     if(!key){
       refreshCalibratorReadout();
       return;
     }
 
-    const el = findLayerByCalibKey(key); /* FIX */
+    const el = findLayerByCalibKey(key);
     if(!el){
       refreshCalibratorReadout();
       return;
     }
-    el.classList.add('calib-selected');
 
     const st = window.getComputedStyle(el);
     const x = Math.round(parseFloat(st.left)||0);
@@ -3193,27 +3230,92 @@ function initCalibratorUI(){
     refreshCalibratorReadout();
   }
 
-  function applyFromControls(){
-    const key = State.calib.selectedKey;
-    if(!key) return;
+  function setSelected(key, additive=false){
+    if(!State.calib.selectedKeys) State.calib.selectedKeys = [];
 
-    const x = parseInt(calXn.value||"0",10);
-    const y = parseInt(calYn.value||"0",10);
-    const w = Math.max(1, parseInt(calWn.value||"1",10));
-    const h = Math.max(1, parseInt(calHn.value||"1",10));
-    const r = parseInt(calRn.value||"0",10);
-
-    setCalib(key, { x,y,w,h,r });
-
-    const el = findLayerByCalibKey(key); /* FIX */
-    if(el){
-      el.style.left = x+'px';
-      el.style.top  = y+'px';
-      el.style.width  = w+'px';
-      el.style.height = h+'px';
-      el.style.transform = `rotate(${r}deg)`;
-      el.style.transformOrigin='center center';
+    if(!key){
+      State.calib.selectedKeys = [];
+      State.calib.selectedKey = null;
+      updateSelectedVisuals();
+      updateSelectionPill();
+      refreshCalibratorReadout();
+      return;
     }
+
+    if(additive){
+      const exists = State.calib.selectedKeys.includes(key);
+      State.calib.selectedKeys = exists
+        ? State.calib.selectedKeys.filter(k=>k!==key)
+        : [...State.calib.selectedKeys, key];
+    }else{
+      State.calib.selectedKeys = [key];
+    }
+
+    State.calib.selectedKey = State.calib.selectedKeys[0] || null;
+    updateSelectedVisuals();
+    updateSelectionPill();
+    loadControlsFromPrimary();
+  }
+
+  function applyFromControls(){
+    const keys = getSelectedCalibKeys();
+    if(!keys.length) return;
+
+    const primary = keys[0];
+    const primaryEl = findLayerByCalibKey(primary);
+    const pst = primaryEl ? window.getComputedStyle(primaryEl) : null;
+    const oldPrimary = {
+      x: Math.round(parseFloat(pst?.left)||0),
+      y: Math.round(parseFloat(pst?.top)||0),
+      w: Math.round(parseFloat(pst?.width)||1),
+      h: Math.round(parseFloat(pst?.height)||1),
+      r: (getCalib(primary)?.r !== undefined) ? parseInt(getCalib(primary).r,10) : 0
+    };
+
+    const newPrimary = {
+      x: parseInt(calXn.value||"0",10),
+      y: parseInt(calYn.value||"0",10),
+      w: Math.max(1, parseInt(calWn.value||"1",10)),
+      h: Math.max(1, parseInt(calHn.value||"1",10)),
+      r: parseInt(calRn.value||"0",10)
+    };
+
+    const dx = newPrimary.x - oldPrimary.x;
+    const dy = newPrimary.y - oldPrimary.y;
+    const sx = oldPrimary.w ? newPrimary.w / oldPrimary.w : 1;
+    const sy = oldPrimary.h ? newPrimary.h / oldPrimary.h : 1;
+    const dr = newPrimary.r - oldPrimary.r;
+
+    keys.forEach((key, index) => {
+      const el = findLayerByCalibKey(key);
+      const st = el ? window.getComputedStyle(el) : null;
+      const cur = getCalib(key) || {};
+      const current = {
+        x: (cur.x !== undefined) ? parseInt(cur.x,10) : Math.round(parseFloat(st?.left)||0),
+        y: (cur.y !== undefined) ? parseInt(cur.y,10) : Math.round(parseFloat(st?.top)||0),
+        w: (cur.w !== undefined) ? parseInt(cur.w,10) : Math.round(parseFloat(st?.width)||1),
+        h: (cur.h !== undefined) ? parseInt(cur.h,10) : Math.round(parseFloat(st?.height)||1),
+        r: (cur.r !== undefined) ? parseInt(cur.r,10) : 0
+      };
+
+      const next = index === 0 ? newPrimary : {
+        x: current.x + dx,
+        y: current.y + dy,
+        w: Math.max(1, Math.round(current.w * sx)),
+        h: Math.max(1, Math.round(current.h * sy)),
+        r: current.r + dr
+      };
+
+      setCalib(key, next);
+      if(el){
+        el.style.left = next.x+'px';
+        el.style.top  = next.y+'px';
+        el.style.width  = next.w+'px';
+        el.style.height = next.h+'px';
+        el.style.transform = `rotate(${next.r}deg)`;
+        el.style.transformOrigin='center center';
+      }
+    });
 
     refreshCalibratorReadout();
   }
@@ -3248,7 +3350,7 @@ function initCalibratorUI(){
     if(!layer) return;
     const key = calibKeyFor(layer);
     if(!key) return;
-    setSelected(key);
+    setSelected(key, e.ctrlKey || e.metaKey || e.shiftKey);
     e.preventDefault();
     e.stopPropagation();
   });
@@ -3265,20 +3367,26 @@ function initCalibratorUI(){
   });
 
   btnReset.addEventListener('click', ()=>{
-    const key = State.calib.selectedKey;
-    if(!key) return;
-    clearCalib(key);
+    const keys = getSelectedCalibKeys();
+    if(!keys.length) return;
+    keys.forEach(clearCalib);
 
-    const keep = key;
+    const keep = [...keys];
     fullRender();
-    setTimeout(()=> setSelected(keep), 0);
+    setTimeout(()=> {
+      State.calib.selectedKeys = keep;
+      State.calib.selectedKey = keep[0] || null;
+      updateSelectedVisuals();
+      updateSelectionPill();
+      loadControlsFromPrimary();
+    }, 0);
   });
 
   btnCopy.addEventListener('click', async ()=>{
     if(!requireAdminUnlock()) return;
-    const key = State.calib.selectedKey;
-    if(!key) return;
-    const txt = buildCalibJson(key);
+    const keys = getSelectedCalibKeys();
+    if(!keys.length) return;
+    const txt = keys.length === 1 ? buildCalibJson(keys[0]) : buildSelectedCalibJson();
 
     try{
       await navigator.clipboard.writeText(txt);
@@ -3653,7 +3761,9 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
     State.patchSelections = p.patchSelections || {};
     State.forceMini = !!p.forceMini;
     State.text = p.text || State.text || {lastName:'',capTape:'CIVIL AIR PATROL',show:true};
-    State.calib = p.calib || State.calib || {enabled:false, selectedKey:null, map:{}};
+    State.calib = p.calib || State.calib || {enabled:false, selectedKey:null, selectedKeys:[], map:{}, byUniform:{}};
+    if(!Array.isArray(State.calib.selectedKeys)) State.calib.selectedKeys = State.calib.selectedKey ? [State.calib.selectedKey] : [];
+    if(!State.calib.byUniform) State.calib.byUniform = {};
 
     populateRankSetup();
     refreshUI();
