@@ -414,6 +414,37 @@
     border-radius:8px;
     font-size:12px;
   }
+  .miniMedalPreview{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:7px 0 3px;
+    padding:6px 8px;
+    border:1px dashed var(--line);
+    border-radius:10px;
+    background:#f8fafc;
+    width:max-content;
+    max-width:100%;
+  }
+  .miniMedalPreview span{
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .miniMedalPreview img{
+    width:26px;
+    max-height:40px;
+    height:auto;
+    border-radius:4px;
+    background:#fff;
+  }
+  .miniMedalPreview.missing{
+    color:var(--muted);
+    opacity:.7;
+  }
   .galleryTile input[type="checkbox"]{
     width:auto;
     margin:0;
@@ -812,7 +843,12 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 
     <div class="btnRow">
       <button id="calibReset" class="ghost" type="button">Reset Selected</button>
-      <button id="calibCopy" type="button">Copy JSON</button>
+      <button id="calibCopy" type="button">Copy Selected</button>
+    </div>
+
+    <div class="btnRow">
+      <button id="calibSaveUniform" class="ghost" type="button">Save Uniform Coords</button>
+      <button id="calibExportAll" type="button">Export All Coords</button>
     </div>
 
     <div id="calibReadout" style="margin-top:10px;">
@@ -1161,8 +1197,10 @@ const State = {
   // UNIVERSAL calibration (per-layer key)
   calib:{
     enabled:false,
+    adminUnlocked:false,
     selectedKey:null,
-    map:{} // key -> {x,y,w,h,r}
+    map:{}, // legacy/global fallback: key -> {x,y,w,h,r}
+    byUniform:{} // uniformId -> { layerKey -> {x,y,w,h,r} }
   }
 };
 
@@ -1211,18 +1249,55 @@ function getRackOrigin(){
 function calibKeyFor(el){
   return el?.dataset?.calibKey || null;
 }
+function getCurrentCalibUniform(){
+  return State.uniform || 'global';
+}
+function getCalibBucket(uniformId=getCurrentCalibUniform()){
+  if(!State.calib.byUniform) State.calib.byUniform = {};
+  if(!State.calib.byUniform[uniformId]) State.calib.byUniform[uniformId] = {};
+  return State.calib.byUniform[uniformId];
+}
 function getCalib(key){
   if(!key) return null;
-  return State.calib.map[key] || null;
+  const bucket = getCalibBucket();
+  return bucket[key] || State.calib.map[key] || null;
 }
 function setCalib(key, patch){
   if(!key) return;
-  const cur = State.calib.map[key] || {};
-  State.calib.map[key] = { ...cur, ...patch };
+  const bucket = getCalibBucket();
+  const cur = bucket[key] || State.calib.map[key] || {};
+  bucket[key] = { ...cur, ...patch };
 }
 function clearCalib(key){
   if(!key) return;
+  const bucket = getCalibBucket();
+  delete bucket[key];
   delete State.calib.map[key];
+}
+function getAllCalibrationExport(){
+  return {
+    app: 'CAP Uniform Builder',
+    type: 'uniform-coordinate-calibration',
+    exportedAt: new Date().toISOString(),
+    activeUniform: State.uniform || null,
+    coordinatesByUniform: State.calib.byUniform || {},
+    legacyCoordinates: State.calib.map || {}
+  };
+}
+function saveCalibrationToBrowser(){
+  localStorage.setItem('capub_admin_calibration_by_uniform', JSON.stringify(getAllCalibrationExport()));
+}
+function downloadCalibrationJson(){
+  const payload = JSON.stringify(getAllCalibrationExport(), null, 2);
+  const blob = new Blob([payload], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `CAPUB_coordinates_${Date.now()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
 function applyCalibToElement(el, key, base){
   const over = getCalib(key);
@@ -1241,7 +1316,7 @@ function applyCalibToElement(el, key, base){
 }
 function buildCalibJson(key){
   const v = getCalib(key) || {};
-  return JSON.stringify({ key, ...v }, null, 2);
+  return JSON.stringify({ uniform: getCurrentCalibUniform(), key, ...v }, null, 2);
 }
 function refreshCalibratorReadout(){
   const key = State.calib.selectedKey;
@@ -1759,22 +1834,27 @@ function populateRankSetup(){
 }
 
 membershipTypeEl.addEventListener('change', ()=>{
+  const previousRank = State.rank;
+  const previousGender = State.gender;
   State.membership = membershipTypeEl.value || '';
-  State.rank = null;
-
-  State.gender = '';
-  jacketSelect.value = '';
 
   populateRankSetup();
-  rankSetupSelect.value = '';
 
-  // filter badges if cadet
-  if(State.membership==='cadet'){
-    State.badges = State.badges.filter(isCadetAuthorized);
-    Object.keys(State.badgeSelections).forEach(id=>{
-      if(!isCadetAuthorized(id)) State.badgeSelections[id].checked=false;
-    });
+  // Preserve selections and only clear rank if the new membership type does not offer that rank.
+  if(previousRank && RANKS[State.membership]?.includes(previousRank)){
+    State.rank = previousRank;
+    rankSetupSelect.value = previousRank;
+  }else{
+    State.rank = null;
+    rankSetupSelect.value = '';
   }
+
+  // Preserve gender/cut while switching member type.
+  State.gender = previousGender || jacketSelect.value || '';
+  jacketSelect.value = State.gender;
+
+  // Do NOT clear ribbons, mini-medals, badges, patches, or device selections here.
+  // The validation panel will warn about items that are not authorized for the active profile.
 
   // rebuild ribbon gallery whenever membership changes
   buildRibbonGallery();
@@ -2381,11 +2461,17 @@ function buildRibbonGallery(){
     tile.className = 'galleryTile';
 
     const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    const miniPath = miniMedalImages[id];
+    const miniPreview = miniPath
+      ? `<div class="miniMedalPreview"><span>Mini medal</span><img src="${ASSET(miniPath)}" alt="${title} mini medal"></div>`
+      : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
+
     tile.innerHTML = `
       <img src="${ASSET(`ribbons/${id}.png`)}" alt="${title}">
       <div style="flex:1;min-width:0;">
         <div class="title">${title}</div>
         <div class="sub">(${id})</div>
+        ${miniPreview}
         <div class="miniRow">
           <label><input type="checkbox" class="rbChk"> Add</label>
         </div>
@@ -2452,9 +2538,7 @@ function normalizeBadgeSelections(){
     if(!State.badgeSelections[id]){
       State.badgeSelections[id] = { checked:false };
     }
-    if(State.membership==='cadet' && !isCadetAuthorized(id)){
-      State.badgeSelections[id].checked=false;
-    }
+    // Preserve selections when membership changes. Unauthorized items are hidden or warned, not deleted.
   });
 }
 
@@ -2863,24 +2947,22 @@ function applyAlternates(fromU,toU){
   const fromField=isFieldUniform(fromU);
   const toField  =isFieldUniform(toU);
 
+  // Preserve the user's selected ribbons, mini-medals, badges, patches, and devices when changing uniforms.
+  // When moving between service/dress uniforms and field uniforms, this only suggests corresponding
+  // alternates by adding them; it never deletes the original selections.
   if(!fromField && toField){
     Object.entries(ALTERNATES.badgeToPatch).forEach(([badge,patch])=>{
       if(State.badges.includes(badge)){
         State.patchSelections[patch] = {checked:true};
+        if(!State.patches.includes(patch)) State.patches.push(patch);
       }
     });
     Object.entries(ALTERNATES.ribbonToPatch).forEach(([ribbon,patch])=>{
       if(State.ribbons.find(r=>r.id===ribbon)){
         State.patchSelections[patch] = {checked:true};
+        if(!State.patches.includes(patch)) State.patches.push(patch);
       }
     });
-
-    State.badges = [];
-    State.ribbons = [];
-
-    Object.keys(State.badgeSelections).forEach(k=>State.badgeSelections[k].checked=false);
-    Object.keys(State.ribbonSelections).forEach(k=>State.ribbonSelections[k].checked=false);
-
     rebuildPatchesFromGallery();
   } else if(fromField && !toField){
     Object.entries(ALTERNATES.patchToBadge).forEach(([patch,badge])=>{
@@ -2897,13 +2979,6 @@ function applyAlternates(fromU,toU){
 
     rebuildBadgesFromGallery();
     rebuildRibbonsFromGallery();
-  }
-
-  if(State.membership==='cadet'){
-    State.badges = State.badges.filter(isCadetAuthorized);
-    Object.keys(State.badgeSelections).forEach(id=>{
-      if(!isCadetAuthorized(id)) State.badgeSelections[id].checked=false;
-    });
   }
 }
 
@@ -3061,9 +3136,22 @@ function initCalibratorUI(){
 
   const btnReset = by('calibReset');
   const btnCopy  = by('calibCopy');
+  const btnSaveUniform = by('calibSaveUniform');
+  const btnExportAll = by('calibExportAll');
 
   let open=false;
+  function requireAdminUnlock(){
+    if(State.calib.adminUnlocked) return true;
+    const entered = prompt('Admin calibrate menu password:');
+    if(entered === '658773'){
+      State.calib.adminUnlocked = true;
+      return true;
+    }
+    if(entered !== null) alert('Incorrect admin password.');
+    return false;
+  }
   tab.addEventListener('click', ()=>{
+    if(!requireAdminUnlock()) return;
     open=!open;
     panel.style.display=open?'block':'none';
     arrow.textContent=open?'‹':'›';
@@ -3141,6 +3229,7 @@ function initCalibratorUI(){
   bindPair(calR, calRn);
 
   btnMode.addEventListener('click', ()=>{
+    if(!requireAdminUnlock()) return;
     State.calib.enabled = !State.calib.enabled;
     btnMode.textContent = State.calib.enabled ? 'Calibrate Mode: ON' : 'Calibrate Mode: OFF';
     btnMode.classList.toggle('ghost', !State.calib.enabled);
@@ -3186,6 +3275,7 @@ function initCalibratorUI(){
   });
 
   btnCopy.addEventListener('click', async ()=>{
+    if(!requireAdminUnlock()) return;
     const key = State.calib.selectedKey;
     if(!key) return;
     const txt = buildCalibJson(key);
@@ -3193,7 +3283,7 @@ function initCalibratorUI(){
     try{
       await navigator.clipboard.writeText(txt);
       btnCopy.textContent = 'Copied!';
-      setTimeout(()=>btnCopy.textContent='Copy JSON', 700);
+      setTimeout(()=>btnCopy.textContent='Copy Selected', 700);
     }catch{
       const ta=document.createElement('textarea');
       ta.value=txt;
@@ -3202,9 +3292,27 @@ function initCalibratorUI(){
       document.execCommand('copy');
       ta.remove();
       btnCopy.textContent = 'Copied!';
-      setTimeout(()=>btnCopy.textContent='Copy JSON', 700);
+      setTimeout(()=>btnCopy.textContent='Copy Selected', 700);
     }
   });
+
+  if(btnSaveUniform){
+    btnSaveUniform.addEventListener('click', ()=>{
+      if(!requireAdminUnlock()) return;
+      saveCalibrationToBrowser();
+      btnSaveUniform.textContent = 'Saved!';
+      setTimeout(()=>btnSaveUniform.textContent='Save Uniform Coords', 900);
+      alert(`Coordinates saved in this browser for ${State.uniform || 'the current uniform'}.`);
+    });
+  }
+
+  if(btnExportAll){
+    btnExportAll.addEventListener('click', ()=>{
+      if(!requireAdminUnlock()) return;
+      saveCalibrationToBrowser();
+      downloadCalibrationJson();
+    });
+  }
 }
 
 /* ===========================
@@ -3917,6 +4025,15 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
    BOOTSTRAP
    =========================== */
 (function init(){
+  try{
+    const savedCal = localStorage.getItem('capub_admin_calibration_by_uniform');
+    if(savedCal){
+      const parsed = JSON.parse(savedCal);
+      if(parsed.coordinatesByUniform) State.calib.byUniform = parsed.coordinatesByUniform;
+      if(parsed.legacyCoordinates) State.calib.map = parsed.legacyCoordinates;
+    }
+  }catch(err){ console.warn('Could not load saved calibration coordinates', err); }
+
   applyMemberTypeToUniformOptions();
   populateRankSetup();
   updateSetupGates();
