@@ -1237,14 +1237,36 @@ const RIBBON_HEIGHT = 7.2;
 const RIBBON_GAP_X  = 0;
 const RIBBON_GAP_Y  = 0;
 
+/*
+  Per-uniform ribbon rack geometry.
+  The blues_b values below come from the May 2026 men's Class B calibration export:
+  x = 263/292/321, y rows = 182/189/196, ribbon size = 29 x 7.
+  Any ribbon set now uses this calibrated rack geometry, not only the sample ribbons in the export.
+*/
+const RIBBON_LAYOUT_BY_UNIFORM = {
+  blues_b: { baseX: 263, bottomY: 196, w: 29, h: 7, gapX: 0, gapY: 0 }
+};
+function getRibbonLayout(uniformId = State.uniform){
+  const override = RIBBON_LAYOUT_BY_UNIFORM[uniformId] || {};
+  const w = override.w ?? RIBBON_WIDTH;
+  const h = override.h ?? RIBBON_HEIGHT;
+  const gapX = override.gapX ?? RIBBON_GAP_X;
+  const gapY = override.gapY ?? RIBBON_GAP_Y;
+  const baseX = override.baseX ?? rackBaseX;
+  const bottomY = override.bottomY ?? rackBaseY;
+  return { baseX, bottomY, w, h, gapX, gapY, centerX: baseX + ((w*3)+(gapX*2))/2 };
+}
+
 function rackSpanW(){
-  return (RIBBON_WIDTH*3) + (RIBBON_GAP_X*2);
+  const m = getRibbonLayout();
+  return (m.w*3) + (m.gapX*2);
 }
 function rackCenterX(){
-  return rackBaseX + rackSpanW()/2;
+  return getRibbonLayout().centerX;
 }
 function getRackOrigin(){
-  return { x:rackBaseX, y:rackBaseY };
+  const m = getRibbonLayout();
+  return { x:m.baseX, y:m.bottomY };
 }
 
 /* ===========================
@@ -1260,6 +1282,82 @@ function getCalibBucket(uniformId=getCurrentCalibUniform()){
   if(!State.calib.byUniform) State.calib.byUniform = {};
   if(!State.calib.byUniform[uniformId]) State.calib.byUniform[uniformId] = {};
   return State.calib.byUniform[uniformId];
+}
+
+const DEFAULT_CALIBRATION_BY_UNIFORM = {
+  // Men's Class A Blues calibration supplied by user.
+  blues_a: {
+    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:270, y:137, w:48, h:14, r:0 },
+    'badge:master_ground_team_badge:OLPU:0': { x:281, y:161, w:25, h:20, r:0 }
+  },
+
+  // Men's Class B Blues calibration supplied by user.
+  blues_b: {
+    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:282, y:129, w:48, h:14, r:0 },
+    'badge:master_ground_team_badge:OLPU:0': { x:294, y:152, r:0 }
+  }
+};
+
+const AIRCREW_BADGE_IDS = new Set([
+  'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
+  'CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA',
+  'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B',
+  'observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
+  'solo_badge','pre_solo_badge'
+]);
+const GROUND_EMT_BADGE_IDS = new Set([
+  'ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
+  'emt_basic_badge','emt_intermediate','emt_paramedic'
+]);
+
+function mergeCalibDefaults(){
+  if(!State.calib.byUniform) State.calib.byUniform = {};
+  for(const [uniformId, bucket] of Object.entries(DEFAULT_CALIBRATION_BY_UNIFORM)){
+    if(!State.calib.byUniform[uniformId]) State.calib.byUniform[uniformId] = {};
+    for(const [key, value] of Object.entries(bucket)){
+      if(!State.calib.byUniform[uniformId][key]){
+        State.calib.byUniform[uniformId][key] = { ...value };
+      }
+    }
+  }
+}
+
+function parseBadgeCalibKey(key){
+  const m = String(key||'').match(/^badge:([^:]+):([^:]+):(\d+)$/);
+  if(!m) return null;
+  return { id:m[1], slot:m[2], idx:parseInt(m[3],10) || 0 };
+}
+
+function buildDerivedBadgeCalib(key, base){
+  const parsed = parseBadgeCalibKey(key);
+  if(!parsed) return null;
+  const uniformId = getCurrentCalibUniform();
+  const defaults = DEFAULT_CALIBRATION_BY_UNIFORM[uniformId];
+  if(!defaults) return null;
+
+  let refKey = null;
+  if(AIRCREW_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLP'){
+    refKey = `badge:AirCrew1_DB3F0FCC3650F:OLP:${parsed.idx}`;
+  }else if(GROUND_EMT_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLPU'){
+    refKey = `badge:master_ground_team_badge:OLPU:${parsed.idx}`;
+  }
+  if(!refKey || !defaults[refKey]) return null;
+
+  const ref = defaults[refKey];
+  const patch = { ...ref };
+
+  // Ground team and EMT badges can have different natural sizes. Use the reference CENTER
+  // while preserving the current badge's own width/height unless the actual item was edited directly.
+  if(GROUND_EMT_BADGE_IDS.has(parsed.id) && base && base.w && base.h){
+    const refW = ref.w ?? base.w;
+    const refH = ref.h ?? base.h;
+    patch.x = Math.round(ref.x + refW/2 - base.w/2);
+    patch.y = Math.round(ref.y + refH/2 - base.h/2);
+    delete patch.w;
+    delete patch.h;
+  }
+
+  return patch;
 }
 function getCalib(key){
   if(!key) return null;
@@ -1304,7 +1402,7 @@ function downloadCalibrationJson(){
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
 function applyCalibToElement(el, key, base){
-  const over = getCalib(key);
+  const over = getCalib(key) || buildDerivedBadgeCalib(key, base);
   const v = { ...base, ...(over||{}) };
 
   if(v.x !== undefined) el.style.left = `${v.x}px`;
@@ -2217,15 +2315,20 @@ function renderRack(){
   const items = sortRibbons(State.ribbons);
   if(!items.length) return;
 
-  const BOTTOM_ROW_Y   = rackBaseY;
-  const RACK_CENTER_X  = rackCenterX();
+  const rackLayout = getRibbonLayout();
+  const BOTTOM_ROW_Y   = rackLayout.bottomY;
+  const RACK_CENTER_X  = rackLayout.centerX;
+  const RW = rackLayout.w;
+  const RH = rackLayout.h;
+  const RGX = rackLayout.gapX;
+  const RGY = rackLayout.gapY;
 
   function getRowLeftPositions(count){
-    const totalWidth = count * RIBBON_WIDTH + (count-1)*RIBBON_GAP_X;
+    const totalWidth = count * RW + (count-1)*RGX;
     const rowLeftBase = RACK_CENTER_X - totalWidth/2;
     const arr=[];
     for(let i=0;i<count;i++){
-      arr.push(rowLeftBase + i*(RIBBON_WIDTH+RIBBON_GAP_X));
+      arr.push(rowLeftBase + i*(RW+RGX));
     }
     return arr;
   }
@@ -2241,7 +2344,7 @@ function renderRack(){
 
     rowsTopFirst.forEach((row,topIndex)=>{
       const indexFromBottom = (totalRows - 1 - topIndex);
-      const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * (RIBBON_HEIGHT + RIBBON_GAP_Y);
+      const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * (RH + RGY);
 
       const rowSortedForDisplay = [...row].reverse();
       const leftPositions = getRowLeftPositions(rowSortedForDisplay.length);
@@ -2261,7 +2364,7 @@ function renderRack(){
         tile.dataset.rid=rid;
         tile.dataset.calibKey = `ribbon:${rid}`;
 
-        applyCalibToElement(tile, tile.dataset.calibKey, { x:leftPx, y:topPx, w:RIBBON_WIDTH, h:RIBBON_HEIGHT, r:0 });
+        applyCalibToElement(tile, tile.dataset.calibKey, { x:leftPx, y:topPx, w:RW, h:RH, r:0 });
 
         tile.style.pointerEvents='auto';
         tile.onclick=()=>onRibbonTileClick(rid);
@@ -2273,7 +2376,7 @@ function renderRack(){
         initRibbonDragHandlers(tile);
         uniformCanvas.appendChild(tile);
 
-        drawDevicesOnRibbon(rid,leftPx,topPx,RIBBON_WIDTH,RIBBON_HEIGHT);
+        drawDevicesOnRibbon(rid,leftPx,topPx,RW,RH);
       });
     });
 
@@ -4143,6 +4246,8 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
       if(parsed.legacyCoordinates) State.calib.map = parsed.legacyCoordinates;
     }
   }catch(err){ console.warn('Could not load saved calibration coordinates', err); }
+
+  mergeCalibDefaults();
 
   applyMemberTypeToUniformOptions();
   populateRankSetup();
