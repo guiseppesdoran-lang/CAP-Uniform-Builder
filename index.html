@@ -1197,6 +1197,10 @@ const State = {
   patchSelections:{},
   patchGalleryExpanded:false,
 
+  commandInsignia:{
+    graduatedCommander:false
+  },
+
   // UNIVERSAL calibration (per-layer key)
   calib:{
     enabled:false,
@@ -1244,6 +1248,8 @@ const RIBBON_GAP_Y  = 0;
   Any ribbon set now uses this calibrated rack geometry, not only the sample ribbons in the export.
 */
 const RIBBON_LAYOUT_BY_UNIFORM = {
+  // Men's Class A senior-member calibration: x columns 259/282/305 and top/bottom rows from the latest export.
+  blues_a: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 },
   blues_b: { baseX: 263, bottomY: 196, w: 29, h: 7, gapX: 0, gapY: 0 }
 };
 function getRibbonLayout(uniformId = State.uniform){
@@ -1292,7 +1298,16 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
     // Senior officer male Class A pocket badge-zone calibration supplied by user.
     // These are zone references, not just one-off badge positions.
     'badge:emergency_services_badge:LP:0': { x:280, y:248, w:30, h:30, r:0 },
-    'badge:communications_technician_badge:UN:0': { x:138, y:256, w:25, h:25, r:0 }
+    'badge:communications_technician_badge:UN:0': { x:138, y:256, w:25, h:25, r:0 },
+
+    // Latest senior-member male Class A scaling/positioning calibration.
+    'badge:basic_incident_commander_badge:UN:0': { x:288, y:126, r:0 },
+    'badge:basic_incident_commander_badge:UN:1': { x:276, y:135, w:35, h:20, r:0 },
+    'badge:volunteer_university_instructor_badge:UN:0': { x:125, y:258, w:45, h:45, r:0 },
+    'badge:volunteer_university_instructor_badge:UN:1': { x:125, y:248, w:40, h:40, r:0 },
+    'badge:squadron_commander_badge:ON:0': { x:140, y:229, w:15, h:15, r:0 },
+    'badge:master_emergency_services_badge:LP:0': { x:280, y:261, w:35, h:35, r:0 },
+    'badge:observer_badge:OLP:0': { x:263, y:118, w:60, h:17, r:0 }
   },
 
   // Men's Class B Blues calibration supplied by user.
@@ -2837,18 +2852,33 @@ function buildBadgeGallery(){
         <div class="miniRow">
           <label><input type="checkbox" class="bdChk"> Add</label>
         </div>
+        ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
         <div class="sub">Slot: <b>${badgeLocations[id] || 'UN'}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
       </div>
     `;
 
     const chk = tile.querySelector('.bdChk');
+    const gradChk = tile.querySelector('.cmdGradChk');
     chk.checked = !!sel.checked;
+    if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
 
     chk.onchange = ()=>{
       sel.checked = chk.checked;
       State.badgeSelections[id] = sel;
       rebuildBadgesFromGallery();
     };
+    if(gradChk){
+      gradChk.onchange = ()=>{
+        if(!State.commandInsignia) State.commandInsignia = {};
+        State.commandInsignia.graduatedCommander = gradChk.checked;
+        if(gradChk.checked){
+          sel.checked = true;
+          chk.checked = true;
+          State.badgeSelections[id] = sel;
+        }
+        rebuildBadgesFromGallery();
+      };
+    }
 
     wrap.appendChild(tile);
   }
@@ -3146,9 +3176,13 @@ function placeBadgeSlotAnchored(id){
   clone.dataset.calibKey = `badge:${id}:${slot}:${idx}`;
 
   // Tooltip
-  clone.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
+  clone.dataset.tooltipTitle = (id==='squadron_commander_badge' && State.commandInsignia?.graduatedCommander)
+    ? 'GRADUATED COMMANDER INSIGNIA'
+    : id.replace(/_/g,' ').toUpperCase();
   clone.dataset.tooltipReg   = `Badge slot: ${slot}`;
-  clone.dataset.tooltipWhy   = `Rendered in CAPR slot ${slot}.`;
+  clone.dataset.tooltipWhy   = (id==='squadron_commander_badge')
+    ? (State.commandInsignia?.graduatedCommander ? 'Rendered as graduated commander command insignia. This does not count against the normal four-badge limit.' : 'Rendered as active command insignia. This does not count against the normal four-badge limit.')
+    : `Rendered in CAPR slot ${slot}.`;
 
   applyCalibToElement(clone, clone.dataset.calibKey, { x: baseX, y: baseY, w: bw, h: bh, r: 0 });
 
@@ -3818,17 +3852,32 @@ function openGalleryModal(kind){
             <div class="miniRow">
               <label><input type="checkbox" class="bdChk"> Add</label>
             </div>
+            ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
             <div class="sub">Slot: <b>${badgeLocations[id] || 'UN'}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
           </div>
         `;
 
         const chk = tile.querySelector('.bdChk');
+        const gradChk = tile.querySelector('.cmdGradChk');
         chk.checked = !!sel.checked;
+        if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
         chk.onchange = ()=>{
           sel.checked = chk.checked;
           State.badgeSelections[id] = sel;
           rebuildBadgesFromGallery();
         };
+        if(gradChk){
+          gradChk.onchange = ()=>{
+            if(!State.commandInsignia) State.commandInsignia = {};
+            State.commandInsignia.graduatedCommander = gradChk.checked;
+            if(gradChk.checked){
+              sel.checked = true;
+              chk.checked = true;
+              State.badgeSelections[id] = sel;
+            }
+            rebuildBadgesFromGallery();
+          };
+        }
 
         subGrid.appendChild(tile);
       });
@@ -4036,6 +4085,7 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
       patchSelections: State.patchSelections,
       forceMini: State.forceMini,
       text: State.text,
+      commandInsignia: State.commandInsignia,
       calib: State.calib
     };
   }
@@ -4055,6 +4105,7 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
     State.patchSelections = p.patchSelections || {};
     State.forceMini = !!p.forceMini;
     State.text = p.text || State.text || {lastName:'',capTape:'CIVIL AIR PATROL',show:true};
+    State.commandInsignia = p.commandInsignia || State.commandInsignia || {graduatedCommander:false};
     State.calib = p.calib || State.calib || {enabled:false, selectedKey:null, selectedKeys:[], map:{}, byUniform:{}};
     if(!Array.isArray(State.calib.selectedKeys)) State.calib.selectedKeys = State.calib.selectedKey ? [State.calib.selectedKey] : [];
     if(!State.calib.byUniform) State.calib.byUniform = {};
@@ -4185,6 +4236,7 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
     }
     if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
       if(countBadgesForLimit() > 4) addNotice('err','Service/aviator uniform badge count exceeds four counted badges. Command insignia does not count against this limit.');
+      if(State.badges.includes('squadron_commander_badge') && State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Graduated Commander and is treated as command insignia outside the normal four-badge count.');
       const aviation = State.badges.filter(id => ['OLP','OLPA','OLPU'].some(s => String(badgeLocations[id]||'').includes(s)));
       if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.');
     }
