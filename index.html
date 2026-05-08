@@ -1898,7 +1898,26 @@ const ribbonList = [
   'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon','cap_cadet_orientation_pilot_ribbon'
 ];
 
-const precedence = id => ribbonList.indexOf(id);
+// Robust ribbon precedence lookup. Unknown/renamed asset IDs are pushed to the end
+// instead of sorting as -1 and jumping ahead of the Silver Medal of Valor.
+const RIBBON_ID_ALIASES = {
+  cap_achievement_award: 'cap_achievment_award',
+  commanders_commendation_award: 'commander_commendation_award',
+  commander_commedation_award: 'commander_commendation_award',
+  brigadier_general_charles_yeager_ribbon: 'cap_bridgadier_general_charles_yaeger_ribbon',
+  charles_yeager_ribbon: 'cap_bridgadier_general_charles_yaeger_ribbon',
+  yeager_award: 'cap_bridgadier_general_charles_yaeger_ribbon'
+};
+const RIBBON_PRECEDENCE_INDEX = new Map(ribbonList.map((id, idx) => [id, idx]));
+function normalizeRibbonId(id){
+  return RIBBON_ID_ALIASES[id] || id;
+}
+function precedence(id){
+  const normalized = normalizeRibbonId(id);
+  return RIBBON_PRECEDENCE_INDEX.has(normalized)
+    ? RIBBON_PRECEDENCE_INDEX.get(normalized)
+    : Number.MAX_SAFE_INTEGER;
+}
 
 /* Senior member: show only cadet milestone ribbons; and enforce only ONE milestone can be selected */
 const CADET_ACHIEVEMENT_RIBBONS = new Set([
@@ -2459,7 +2478,35 @@ function applyJacket(){
    RIBBON / MEDAL RENDER LOGIC
    =========================== */
 function sortRibbons(arr){
-  return [...arr].sort((a,b)=>precedence(a.id)-precedence(b.id));
+  return [...arr].sort((a,b)=>{
+    const ap = precedence(a.id);
+    const bp = precedence(b.id);
+    if(ap !== bp) return ap - bp;
+    // Stable fallback for duplicate / unknown ribbons.
+    return String(a.id).localeCompare(String(b.id));
+  });
+}
+
+// Build CAP ribbon rows from highest precedence to lowest precedence.
+// Display order is top-left -> bottom-right. Any partial row belongs on the TOP
+// and stays centered; all lower rows remain 3-wide.
+function buildRibbonRowsHighToLow(items, perRow=3){
+  const sorted = sortRibbons(items);
+  const remainder = sorted.length % perRow;
+  const rows = [];
+  let cursor = 0;
+
+  if(remainder > 0){
+    rows.push(sorted.slice(0, remainder));
+    cursor = remainder;
+  }
+
+  while(cursor < sorted.length){
+    rows.push(sorted.slice(cursor, cursor + perRow));
+    cursor += perRow;
+  }
+
+  return rows;
 }
 function getTopRibbonY(){
   const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini')];
@@ -2631,35 +2678,26 @@ function renderRack(){
   const RGX = rackLayout.gapX;
   const RGY = rackLayout.gapY;
 
-  function getRowLeftPositions(count){
-    const totalWidth = count * RW + (count-1)*RGX;
+  function getCenteredRowLeftPositions(count, itemW, gapX){
+    const totalWidth = count * itemW + (count-1)*gapX;
     const rowLeftBase = RACK_CENTER_X - totalWidth/2;
     const arr=[];
-    for(let i=0;i<count;i++){
-      arr.push(rowLeftBase + i*(RW+RGX));
-    }
+    for(let i=0;i<count;i++) arr.push(rowLeftBase + i*(itemW+gapX));
     return arr;
   }
 
   if(!useMini && uniformAllowsRibbons){
-    const lowestFirst = [...items].reverse();
-    const rowsBottomFirst = [];
-    for(let i=0;i<lowestFirst.length;i+=3){
-      rowsBottomFirst.push(lowestFirst.slice(i,i+3));
-    }
-    const rowsTopFirst = [...rowsBottomFirst].reverse();
+    const rowsTopFirst = buildRibbonRowsHighToLow(items, 3);
     const totalRows = rowsTopFirst.length;
 
-    rowsTopFirst.forEach((row,topIndex)=>{
+    rowsTopFirst.forEach((row, topIndex)=>{
       const indexFromBottom = (totalRows - 1 - topIndex);
       const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * (RH + RGY);
+      const leftPositions = getCenteredRowLeftPositions(row.length, RW, RGX);
 
-      const rowSortedForDisplay = [...row].reverse();
-      const leftPositions = getRowLeftPositions(rowSortedForDisplay.length);
-
-      rowSortedForDisplay.forEach((ribbonObj,i)=>{
-        const rid = ribbonObj.id;
-        const orig=by(`ribbons-${rid}`);
+      row.forEach((ribbonObj,i)=>{
+        const rid = normalizeRibbonId(ribbonObj.id);
+        const orig=by(`ribbons-${rid}`) || by(`ribbons-${ribbonObj.id}`);
         if(!orig) return;
 
         const tile=orig.cloneNode();
@@ -2669,17 +2707,17 @@ function renderRack(){
         const leftPx = leftPositions[i];
         const topPx  = rowTopPx;
 
-        tile.dataset.rid=rid;
-        tile.dataset.calibKey = `ribbon:${rid}`;
+        tile.dataset.rid=ribbonObj.id;
+        tile.dataset.calibKey = `ribbon:${ribbonObj.id}`;
 
         applyCalibToElement(tile, tile.dataset.calibKey, { x:leftPx, y:topPx, w:RW, h:RH, r:0 });
 
         tile.style.pointerEvents='auto';
-        tile.onclick=()=>onRibbonTileClick(rid);
+        tile.onclick=()=>onRibbonTileClick(ribbonObj.id);
 
-        tile.dataset.tooltipTitle = rid.replace(/_/g,' ').toUpperCase();
+        tile.dataset.tooltipTitle = ribbonObj.id.replace(/_/g,' ').toUpperCase();
         tile.dataset.tooltipReg   = "CAPR 39-3 precedence applies";
-        tile.dataset.tooltipWhy   = "Highest awards sit top row, leftward.";
+        tile.dataset.tooltipWhy   = "Highest awards render top-left; partial rows stay centered on top.";
 
         initRibbonDragHandlers(tile);
         uniformCanvas.appendChild(tile);
@@ -2688,14 +2726,14 @@ function renderRack(){
         const renderedTop  = parseFloat(tile.style.top) || topPx;
         const renderedW    = parseFloat(tile.style.width) || RW;
         const renderedH    = parseFloat(tile.style.height) || RH;
-        drawDevicesOnRibbon(rid, renderedLeft, renderedTop, renderedW, renderedH);
+        drawDevicesOnRibbon(ribbonObj.id, renderedLeft, renderedTop, renderedW, renderedH);
       });
     });
 
     return;
   }
 
-  // MINI MEDALS
+  // MINI MEDALS use the same precedence engine as ribbons.
   const MINI_W = 20;
   const MINI_H = 28;
   const MEDAL_PER_ROW = 5;
@@ -2703,44 +2741,26 @@ function renderRack(){
 
   const medalItems = [];
   for(const r of items){
-    const medalPath = miniMedalImages[r.id];
+    const normalized = normalizeRibbonId(r.id);
+    const medalPath = miniMedalImages[normalized] || miniMedalImages[r.id];
     if(medalPath){
       medalItems.push({ id:r.id, path:medalPath });
     }
   }
   if(!medalItems.length) return;
 
-  const lowestFirstMedals = [...medalItems].reverse();
-  const medalRowsBottomFirst = [];
-  for(let i=0;i<lowestFirstMedals.length;i+=MEDAL_PER_ROW){
-    medalRowsBottomFirst.push(lowestFirstMedals.slice(i,i+MEDAL_PER_ROW));
-  }
-  const medalRowsTopFirst = [...medalRowsBottomFirst].reverse();
+  const medalRowsTopFirst = buildRibbonRowsHighToLow(medalItems, MEDAL_PER_ROW);
   const totalMedalRows = medalRowsTopFirst.length;
-
   const BOTTOM_ROW_Y_MEDALS = BOTTOM_ROW_Y + 20;
-
-  function getMedalRowLeftPositions(count){
-    const totalWidth = count * MINI_W + (count-1)*PAD;
-    const rowLeftBase = RACK_CENTER_X - totalWidth/2;
-    const arr=[];
-    for(let i=0;i<count;i++){
-      arr.push(rowLeftBase + i*(MINI_W+PAD));
-    }
-    return arr;
-  }
 
   medalRowsTopFirst.forEach((row,topIndex)=>{
     const indexFromBottom = (totalMedalRows - 1 - topIndex);
     const rowTopPx = BOTTOM_ROW_Y_MEDALS - indexFromBottom * (MINI_H + PAD);
+    const leftPositions = getCenteredRowLeftPositions(row.length, MINI_W, PAD);
 
-    const rowSortedForDisplay = [...row].reverse();
-    const leftPositions = getMedalRowLeftPositions(rowSortedForDisplay.length);
-
-    rowSortedForDisplay.forEach((entry,i)=>{
+    row.forEach((entry,i)=>{
       const mimg=document.createElement('img');
       mimg.src=ASSET(entry.path);
-
       mimg.className='layer ribbonMini';
       mimg.style.display='block';
 
@@ -2751,10 +2771,9 @@ function renderRack(){
       applyCalibToElement(mimg, mimg.dataset.calibKey, { x:leftPx, y:topPx, w:MINI_W, h:MINI_H, r:0 });
 
       mimg.onerror=()=>{};
-
       mimg.dataset.tooltipTitle = entry.id.replace(/_/g,' ').toUpperCase();
       mimg.dataset.tooltipReg   = "Miniature medal arrangement";
-      mimg.dataset.tooltipWhy   = "Highest awards sit top row, centered.";
+      mimg.dataset.tooltipWhy   = "Mini medals follow the same precedence order as ribbons.";
 
       uniformCanvas.appendChild(mimg);
     });
@@ -3304,80 +3323,91 @@ function getDynamicOverRibbonBadgeTop(slot, idx=0, opts={}){
 }
   
   
+function getPreferredBadgeSlotForRendering(id, prefs){
+  // Some badge definitions list multiple legal locations. Pick the location that
+  // matches the calibrated visual family so exported coordinates carry across to
+  // similar badges.
+  if(isCommandInsigniaBadge(id)) return getCommandInsigniaSlot();
+  if(id === 'nra_marksman_badge') return 'LRP';
+  if(id === 'model_rocketry_badge') return 'LP';
+  if(AIRCREW_BADGE_IDS.has(id)) return 'OLP';
+  if(GROUND_EMT_BADGE_IDS.has(id)) return 'OLPU';
+  if(ES_POCKET_BADGE_IDS.has(id)) return 'LP';
+  if(SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(id)) return 'UN';
+  if(LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(id)) return 'UN';
+  if(INCIDENT_COMMAND_SPECIALTY_BADGE_IDS.has(id)) return 'UN';
+  return prefs?.[0] || 'UN';
+}
+
+function slotHasRoom(slot){
+  if(!badgeSlots[slot]) badgeSlots[slot] = [];
+  if(slot === 'LRP' || slot === 'LP') return badgeSlots[slot].length < 1;
+  if(['OLPA','OLPU','OLP'].includes(slot)) return badgeSlots[slot].length < 2;
+  return badgeSlots[slot].length < 2;
+}
+
+function chooseBadgeSlot(id, prefs){
+  const preferred = getPreferredBadgeSlotForRendering(id, prefs);
+  const ordered = [preferred, ...prefs.filter(p => p !== preferred)];
+  for(const candidate of ordered){
+    if(slotHasRoom(candidate)) return candidate;
+  }
+  return null;
+}
+
+function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
+  const topRibbonCenterX = getTopRibbonRowCenterX();
+  const rackX = topRibbonCenterX ?? rackCenterX();
+  const topRibbonY = getTopRibbonRowY();
+
+  const base = {
+    OLPA: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 84 : H * 0.20, dy: 32 },
+    OLP:  { x: rackX,  y: topRibbonY !== null ? topRibbonY - 50 : H * 0.22, dy: 32 },
+    OLPU: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 3  : H * 0.27, dy: 32 },
+    ORP:  { x: W*0.32, y: H*0.43, dy: 34 },
+    ON:   { x: W*0.32, y: H*0.30, dy: 26 },
+    UN:   { x: W*0.32, y: H*0.43, dy: 34 },
+    LP:   { x: W*0.64, y: H*0.46, dy: 34 },
+    LRP:  { x: W*0.64, y: H*0.55, dy: 34 }
+  };
+
+  const a = base[slot] || base.UN;
+  return {
+    x: Math.round(a.x - bw/2),
+    y: Math.round(a.y - bh/2 + (a.dy || 0) * idx)
+  };
+}
+
 function placeBadgeSlotAnchored(id){
   const img = by(`badges-${id}`);
   if(!img) return;
 
-  // Hard overrides you already enforce
   let slotSpec = getBadgeSlotSpec(id);
   if(id==='nra_marksman_badge') slotSpec='LRP';
   if(id==='model_rocketry_badge') slotSpec='LP';
 
   const prefs = parseSlotPrefs(slotSpec);
+  const slot = chooseBadgeSlot(id, prefs);
+  if(!slot) return;
 
-  // Decide which slot we’ll actually use
-  const singleOnly = new Set(['LRP','LP']);
-  let slot = null;
-
-  for(const candidate of prefs){
-    if(!badgeSlots[candidate]) badgeSlots[candidate] = [];
-
-    // block single-only if already occupied
-    if(singleOnly.has(candidate) && badgeSlots[candidate].length >= 1) continue;
-
-    slot = candidate;
-    break;
-  }
-
-  if(!slot) return; // nowhere legal to place it
-
-      // Compute a base anchor for each slot (percent-based so it scales with preview size)
   const box = uniformCanvas.getBoundingClientRect();
   const W = box.width  || 450;
   const H = box.height || 600;
-  
-  const topRibbonCenterX = getTopRibbonRowCenterX();
-  const leftPocketBadgeCenterX = topRibbonCenterX ?? 260;  
-
-  const topRibbonY = getTopRibbonRowY();
-  const topBadgeY = topRibbonY !== null ? (topRibbonY - 25) : (H * 0.34);
 
   const sz = customBadgeSizes[id] || { width: 60, height: 25 };
   const bw = sz.width;
   const bh = sz.height;
 
-  // Helper: create element clone
+  const idx = badgeSlots[slot].length;
+  const base = getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh);
+
   const clone = img.cloneNode();
   clone.className = 'layer badge';
   clone.style.display = 'block';
   clone.onerror = ()=>{ clone.remove(); };
 
-  // slot coordinates (tune with calibrator)
-  const slotAnchor = {
-  OLPA: { x: leftPocketBadgeCenterX, y: topBadgeY, dx: 0, dy: 32 },
-  OLP:  { x: leftPocketBadgeCenterX, y: topBadgeY, dx: 0, dy: 32 },
-  OLPU: { x: leftPocketBadgeCenterX, y: topBadgeY, dx: 0, dy: 32 },
-
-  ORP:  { x: W*0.67, y: H*0.38, dx: 0, dy: 32 },
-  ON:   { x: W*0.67, y: H*0.30, dx: 0, dy: 32 },
-  UN:   { x: W*0.67, y: H*0.34, dx: 0, dy: 32 },
-  LP:   { x: W*0.33, y: H*0.52, dx: 0, dy: 32 },
-  LRP:  { x: W*0.33, y: H*0.58, dx: 0, dy: 32 }
-};
-
-  const a = slotAnchor[slot] || slotAnchor.UN;
-
-  // Stack index within that slot (so multiple badges in same slot don’t overlap)
-  const idx = badgeSlots[slot].length;
-
-  // Convert anchor-center to top-left
-  const baseX = Math.round(a.x - bw/2 + (a.dx||0));
-  const baseY = Math.round(a.y - bh/2 + (a.dy||0) * idx);
-
-  // Calibrator key includes slot so you can have per-slot tuning
   clone.dataset.calibKey = `badge:${id}:${slot}:${idx}`;
 
-  // Tooltip
   clone.dataset.tooltipTitle = (id==='squadron_commander_badge' && State.commandInsignia?.graduatedCommander)
     ? 'GRADUATED COMMANDER INSIGNIA'
     : id.replace(/_/g,' ').toUpperCase();
@@ -3386,16 +3416,14 @@ function placeBadgeSlotAnchored(id){
     ? (State.commandInsignia?.graduatedCommander ? 'Rendered as graduated commander command insignia. This does not count against the normal four-badge limit.' : 'Rendered as active command insignia. This does not count against the normal four-badge limit.')
     : `Rendered in CAPR slot ${slot}.`;
 
-  applyCalibToElement(clone, clone.dataset.calibKey, { x: baseX, y: baseY, w: bw, h: bh, r: 0 });
+  applyCalibToElement(clone, clone.dataset.calibKey, { x: base.x, y: base.y, w: bw, h: bh, r: 0 });
 
-  // Over-ribbon occupational / aviation / ground-team style badges should follow the
-  // current highest ribbon row, preserving the calibrated vertical offset from that row.
+  // Over-left-pocket badges track the current top ribbon row. The class-specific
+  // calibration establishes the exact offset; the live ribbon rack supplies the
+  // current top row so badge spacing remains correct as ribbon count changes.
   if(['OLP','OLPA','OLPU'].includes(slot)){
-    const loneOccupational = (slot === 'OLP' || slot === 'OLPA') && isLoneAviationOccupationalBadge(id);
-    const dynamicTop = getDynamicOverRibbonBadgeTop(slot, idx, { loneOccupational });
-    if(dynamicTop !== null){
-      clone.style.top = `${dynamicTop}px`;
-    }
+    const dynamicTop = getDynamicOverRibbonBadgeTop(slot, idx, { loneOccupational:false });
+    if(dynamicTop !== null) clone.style.top = `${dynamicTop}px`;
   }
 
   uniformCanvas.appendChild(clone);
