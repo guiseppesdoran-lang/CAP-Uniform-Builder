@@ -1787,6 +1787,21 @@ const badgeList = [
   'buddist_chaplin','christian_chaplin','communications_technician_badge','cyber_badges','emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge','volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge','squadron_commander_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges'
 ];
 
+
+// Robust badge asset resolver. This lets the program render badges even when the
+// physical image files use human-friendly names instead of the internal badge ID.
+const BADGE_IMAGE_OVERRIDES = {
+  'master_emergency_services_badge': 'badges/Master_ES_Badge.png',
+  'senior_emergency_services_badge': 'badges/Senior_ES_Badge.png',
+  'volunteer_university_instructor_badge': 'badges/Vol_U_Badge.png',
+  'basic_incident_commander_badge': 'badges/Basic_Incident_Commander_Badge.png',
+  'cadet_programs_badge': 'badges/cadet programs badge.png',
+  'squadron_commander_badge': 'badges/Squadron Commander badge.png'
+};
+function getBadgeAssetPath(id){
+  return BADGE_IMAGE_OVERRIDES[id] || `badges/${id}.png`;
+}
+
 const allowedCadetBadges = new Set([
   'solo_badge','pre_solo_badge',
   'ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
@@ -1946,7 +1961,7 @@ function preloadWithResolver(prefix,list,resolver){
 preloadSimple('ribbons', ribbonList, 'ribbons', '.png');
 preloadWithResolver('devices', deviceList, id => deviceMeta[id].src);
 preloadSimple('ranks', rankListAll, 'ranks', '.png');
-preloadSimple('badges', badgeList, 'badges', '.png');
+preloadWithResolver('badges', badgeList, id => getBadgeAssetPath(id));
 Object.entries(PATCH_META).forEach(([id,m])=>{
   const img=document.createElement('img');
   img.id=`patch-${id}`;
@@ -2815,7 +2830,7 @@ function buildBadgeGallery(){
 
     const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
     tile.innerHTML = `
-      <img src="${ASSET(`badges/${id}.png`)}" alt="${title}">
+      <img src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
       <div style="flex:1;min-width:0;">
         <div class="title">${title}</div>
         <div class="sub">(${id})</div>
@@ -3796,7 +3811,7 @@ function openGalleryModal(kind){
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
-          <img src="${ASSET(`badges/${id}.png`)}" alt="${title}">
+          <img src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
           <div style="flex:1;min-width:0;">
             <div class="title">${title}</div>
             <div class="sub">(${id})</div>
@@ -4195,7 +4210,7 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
   function buildExpectedAssetList(){
     const expected = [];
     ribbonList.forEach(id=>expected.push({category:'Ribbon', item:pretty(id), id, path:`images/ribbons/${id}.png`, status:'required'}));
-    badgeList.forEach(id=>expected.push({category:'Badge', item:pretty(id), id, path:`images/badges/${id}.png`, status:'required'}));
+    badgeList.forEach(id=>expected.push({category:'Badge', item:pretty(id), id, path:`images/${getBadgeAssetPath(id)}`, status:'required'}));
     Object.entries(PATCH_META).forEach(([id,m])=>expected.push({category:'Patch', item:pretty(id), id, path:`images/${m.img}`, status:'required'}));
     Object.entries(deviceMeta).forEach(([id,m])=>expected.push({category:'Ribbon device', item:m.label||pretty(id), id, path:`images/${m.src}`, status:'required'}));
     Object.entries(miniMedalImages).forEach(([id,p])=>expected.push({category:'Mini medal', item:pretty(id), id, path:`images/${p}`, status:'required when mini-medals used'}));
