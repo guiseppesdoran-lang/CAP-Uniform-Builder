@@ -654,6 +654,26 @@
     color:rgba(0,0,0,.35);
     pointer-events:none;
   }
+
+
+/* ===========================
+   CAPUB V2 QUALITY-OF-LIFE PATCH
+   =========================== */
+.statusGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.statusCard{border:1px solid var(--line);border-radius:10px;background:#f8fafc;padding:8px;font-size:12px}
+.statusCard strong{display:block;font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.statusCard span{font-size:18px;font-weight:800;color:var(--ink)}
+.noticeList{margin:8px 0 0 0;padding-left:18px;font-size:12px;line-height:1.35;color:var(--muted)}
+.noticeList li.warn{color:#92400e}.noticeList li.err{color:#991b1b}.noticeList li.ok{color:#166534}
+.capubV2ChipBar{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.capubV2Chip{border:1px solid var(--line);background:#f8fafc;border-radius:999px;padding:4px 8px;font-size:11px;color:var(--ink)}
+.capubV2Search{position:sticky;top:0;background:var(--panel);z-index:5;border:1px solid var(--line);border-radius:12px;padding:8px;margin-bottom:10px;box-shadow:0 6px 16px rgb(0 0 0 / .08)}
+.capubV2Search input{margin:0}.capubV2Search .sub{font-size:11px;color:var(--muted);margin-top:6px}.textTape{position:absolute;background:#152b4d;color:#e5e7eb;border:1px solid rgba(255,255,255,.35);font-weight:700;letter-spacing:.08em;text-align:center;font-family:Arial,Helvetica,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgb(0 0 0 / .35)}
+.rankFallback{position:absolute;background:#152b4d;color:#e5e7eb;border:1px solid rgba(255,255,255,.4);border-radius:4px;font-size:9px;font-weight:800;text-align:center;display:flex;align-items:center;justify-content:center;line-height:1.05;padding:2px;box-shadow:0 1px 3px rgb(0 0 0 / .4)}
+.validationBadge{display:inline-block;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:700;background:#eef2ff;color:#1e3a8a;margin-left:6px}
+.galleryTile.isFilteredOut{display:none !important}
+@media (max-width:768px){.statusGrid{grid-template-columns:1fr}.modal{height:90vh}.capubV2Search{top:0}}
+
 </style>
 </head>
 <body>
@@ -929,6 +949,47 @@
 
         <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="patchGallery" class="galleryGrid"></div>
+      </section>
+
+      <section id="capubV2QuickPanel" class="panelBlock">
+        <label class="fieldLabel">Quick Builder Tools <span class="validationBadge">V2</span></label>
+        <div class="row two" style="margin-top:6px">
+          <div class="col"><button id="capubV2SaveLocal" class="ghost" type="button">Save to Browser</button></div>
+          <div class="col"><button id="capubV2LoadLocal" class="ghost" type="button">Load Saved</button></div>
+        </div>
+        <div class="row two" style="margin-top:6px">
+          <div class="col"><button id="capubV2ExportJson" class="ghost" type="button">Export Setup JSON</button></div>
+          <div class="col"><button id="capubV2ImportBtn" class="ghost" type="button">Import Setup JSON</button></div>
+        </div>
+        <input id="capubV2ImportFile" type="file" accept="application/json,.json" style="display:none"/>
+        <div class="row two" style="margin-top:6px">
+          <div class="col"><button id="capubV2MissingBtn" class="ghost" type="button">Download Missing Asset List</button></div>
+          <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset Builder</button></div>
+        </div>
+        <div class="hintText">Saves selected uniform, rank, ribbons, badges, patches, devices, text labels, and calibration.</div>
+      </section>
+
+      <section id="capubV2TextPanel" class="panelBlock">
+        <label class="fieldLabel">Text Labels / Field Uniform Tapes</label>
+        <label class="fieldLabel" style="margin-top:8px;">Last Name / Name Tape</label>
+        <input id="capubV2LastName" maxlength="18" placeholder="YOUR NAME"/>
+        <label class="fieldLabel" style="margin-top:8px;">CAP Tape Text</label>
+        <input id="capubV2CapTape" maxlength="20" value="CIVIL AIR PATROL"/>
+        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+          <input type="checkbox" id="capubV2ShowText" checked> Show generated text tapes / placeholders when image assets are missing
+        </label>
+        <div class="hintText">This makes OCP/ABU previews useful even before every tape, rank, and patch image is available.</div>
+      </section>
+
+      <section id="capubV2StatusPanel" class="panelBlock">
+        <label class="fieldLabel">Validation / Build Status</label>
+        <div class="statusGrid">
+          <div class="statusCard"><strong>Ribbons</strong><span id="capubV2RibbonCount">0</span></div>
+          <div class="statusCard"><strong>Badges</strong><span id="capubV2BadgeCount">0</span></div>
+          <div class="statusCard"><strong>Patches</strong><span id="capubV2PatchCount">0</span></div>
+          <div class="statusCard"><strong>Warnings</strong><span id="capubV2WarningCount">0</span></div>
+        </div>
+        <ul id="capubV2Notices" class="noticeList"></ul>
       </section>
 
       <section class="panelBlock">
@@ -3352,6 +3413,336 @@ modalRestore.addEventListener('click', ()=>{
 by('expandRibbons').addEventListener('click', ()=> openGalleryModal('ribbons'));
 by('expandBadges').addEventListener('click',  ()=> openGalleryModal('badges'));
 by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
+
+
+/* ===========================
+   CAPUB V2 FUNCTIONALITY PATCH
+   - Adds validation, status, search, save/load, generated text tapes,
+     rank fallback rendering, and missing-asset reporting.
+   =========================== */
+(function capubV2Patch(){
+  const V2_VERSION = '2026-05-08-v2';
+  State.text = State.text || { lastName:'', capTape:'CIVIL AIR PATROL', show:true };
+
+  const CAPUB_V2 = window.CAPUB_V2 = {
+    version: V2_VERSION,
+    storageKey: 'cap_uniform_builder_profile_v2',
+    missingAssetBaseline: [],
+    notices: []
+  };
+
+  function pretty(id){ return String(id||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); }
+  function safeRankFile(rank){ return String(rank||'').replace(/\//g,'_').replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_\-]/g,''); }
+  function addNotice(type,msg){ CAPUB_V2.notices.push({type,msg}); }
+  function downloadText(filename,text){
+    const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+  }
+
+  function collectProfile(){
+    return {
+      version: V2_VERSION,
+      membership: State.membership,
+      gender: State.gender,
+      uniform: State.uniform,
+      rank: State.rank,
+      assetBase: State.assetBase,
+      ribbons: State.ribbons,
+      badges: State.badges,
+      patches: State.patches,
+      ribbonSelections: State.ribbonSelections,
+      badgeSelections: State.badgeSelections,
+      patchSelections: State.patchSelections,
+      forceMini: State.forceMini,
+      text: State.text,
+      calib: State.calib
+    };
+  }
+
+  function applyProfile(p){
+    if(!p || typeof p !== 'object') return;
+    State.membership = p.membership || '';
+    State.gender = p.gender || '';
+    State.uniform = p.uniform || 'blues_a';
+    State.rank = p.rank || null;
+    State.assetBase = p.assetBase || 'images';
+    State.ribbons = Array.isArray(p.ribbons) ? p.ribbons : [];
+    State.badges = Array.isArray(p.badges) ? p.badges : [];
+    State.patches = Array.isArray(p.patches) ? p.patches : [];
+    State.ribbonSelections = p.ribbonSelections || {};
+    State.badgeSelections = p.badgeSelections || {};
+    State.patchSelections = p.patchSelections || {};
+    State.forceMini = !!p.forceMini;
+    State.text = p.text || State.text || {lastName:'',capTape:'CIVIL AIR PATROL',show:true};
+    State.calib = p.calib || State.calib || {enabled:false, selectedKey:null, map:{}};
+
+    populateRankSetup();
+    refreshUI();
+    syncTextControls();
+    buildRibbonGallery(); buildBadgeGallery(); buildPatchGallery();
+    fullRender();
+  }
+
+  function syncTextControls(){
+    const ln = by('capubV2LastName');
+    const ct = by('capubV2CapTape');
+    const sh = by('capubV2ShowText');
+    if(ln) ln.value = State.text?.lastName || '';
+    if(ct) ct.value = State.text?.capTape || 'CIVIL AIR PATROL';
+    if(sh) sh.checked = State.text?.show !== false;
+  }
+
+  function textLayer(key, label, x, y, w, h, cls='textTape', fontSize=8){
+    if(State.text?.show === false) return null;
+    const el = document.createElement('div');
+    el.className = 'layer '+cls;
+    el.textContent = label || '';
+    el.style.fontSize = fontSize+'px';
+    el.dataset.calibKey = key;
+    el.dataset.tooltipTitle = 'Generated text placeholder';
+    el.dataset.tooltipReg = 'Rendered as text because a final image/embroidered asset may not be present.';
+    el.dataset.tooltipWhy = 'Use the calibrator to tune placement. Replace with transparent PNG assets later if desired.';
+    applyCalibToElement(el,key,{x,y,w,h,r:0});
+    uniformCanvas.appendChild(el);
+    return el;
+  }
+
+  function renderGeneratedTextAccoutrements(){
+    [...uniformCanvas.querySelectorAll('.layer.capub-v2-text')].forEach(n=>n.remove());
+    if(State.text?.show === false) return;
+    const W = uniformCanvas.getBoundingClientRect().width || 450;
+    const H = uniformCanvas.getBoundingClientRect().height || 600;
+    const last = (State.text?.lastName || 'YOUR NAME').toUpperCase();
+    const cap  = (State.text?.capTape || 'CIVIL AIR PATROL').toUpperCase();
+
+    if(State.uniform === 'ocp'){
+      textLayer('text:ocp:lastName', last, W*.23, H*.27, 90, 16, 'textTape capub-v2-text', 8);
+      textLayer('text:ocp:capTape', cap,  W*.53, H*.27, 115, 16, 'textTape capub-v2-text', 8);
+      textLayer('text:ocp:aux', 'AUX', W*.74, H*.31, 36, 28, 'textTape capub-v2-text', 10);
+    } else if(State.uniform === 'abu'){
+      textLayer('text:abu:lastName', last, W*.20, H*.30, 95, 16, 'textTape capub-v2-text', 8);
+      textLayer('text:abu:capTape', cap,  W*.53, H*.30, 115, 16, 'textTape capub-v2-text', 8);
+    } else if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
+      if(last && last !== 'YOUR NAME'){
+        textLayer(`text:${State.uniform}:nameplate`, last, W*.62, H*.39, 72, 14, 'textTape capub-v2-text', 7);
+      }
+    }
+  }
+
+  function rankAssetCandidates(rank){
+    const f = safeRankFile(rank);
+    return [
+      `ranks/${f}.png`,
+      `ranks/${f}.webp`,
+      `ranks/${rank}.png`,
+      `ranks/${rank}.webp`
+    ];
+  }
+
+  function rankPlacement(){
+    const W = uniformCanvas.getBoundingClientRect().width || 450;
+    const H = uniformCanvas.getBoundingClientRect().height || 600;
+    if(State.uniform === 'ocp') return {x:W*.465,y:H*.245,w:34,h:34, shape:'square'};
+    if(State.uniform === 'abu') return {x:W*.485,y:H*.295,w:32,h:32, shape:'square'};
+    if(State.uniform === 'blues_b' || State.uniform === 'aviator') return {x:W*.49,y:H*.18,w:38,h:20, shape:'epaulet'};
+    if(State.uniform === 'blues_a') return {x:W*.47,y:H*.165,w:42,h:22, shape:'epaulet'};
+    return {x:W*.48,y:H*.24,w:34,h:26, shape:'square'};
+  }
+
+  function renderRankOverlay(){
+    [...uniformCanvas.querySelectorAll('.layer.rankOverlay,.layer.rankFallback')].forEach(n=>n.remove());
+    if(!State.rank) return;
+    // Combined cadet officer male class-A jackets already include shoulder boards/rank.
+    if(usingCombinedCadetOfficerJacket()) return;
+    const p = rankPlacement();
+    const key = `rank:${State.uniform}:${State.rank}`;
+    const candidates = rankAssetCandidates(State.rank);
+    const el = new Image();
+    el.className = 'layer rankOverlay';
+    el.dataset.calibKey = key;
+    el.dataset.tooltipTitle = `Rank: ${State.rank}`;
+    el.dataset.tooltipReg = 'Uses rank image when available; otherwise generated text fallback is shown.';
+    el.dataset.tooltipWhy = 'Recommended rank asset naming: images/ranks/'+safeRankFile(State.rank)+'.png';
+    let i = 0;
+    el.onload = ()=>{ applyCalibToElement(el,key,{x:p.x,y:p.y,w:p.w,h:p.h,r:0}); uniformCanvas.appendChild(el); };
+    el.onerror = ()=>{
+      i++;
+      if(i < candidates.length){ el.src = ASSET(candidates[i]); return; }
+      if(State.text?.show !== false){
+        const fb = document.createElement('div');
+        fb.className = 'layer rankFallback';
+        fb.textContent = State.rank.replace('C/','C/\n');
+        fb.dataset.calibKey = key+':fallback';
+        fb.dataset.tooltipTitle = `Missing rank image: ${State.rank}`;
+        fb.dataset.tooltipReg = 'Generated fallback. Add a transparent PNG rank asset for final output.';
+        fb.dataset.tooltipWhy = 'Suggested path: images/ranks/'+safeRankFile(State.rank)+'.png';
+        applyCalibToElement(fb,fb.dataset.calibKey,{x:p.x,y:p.y,w:p.w,h:p.h,r:0});
+        uniformCanvas.appendChild(fb);
+      }
+    };
+    el.src = ASSET(candidates[0]);
+  }
+
+  function validateBuild(){
+    CAPUB_V2.notices = [];
+    if(!State.membership) addNotice('warn','Select membership type first.');
+    if(!State.rank) addNotice('warn','Select rank before building the uniform.');
+    if(!State.gender) addNotice('warn','Select male/female cut before final placement tuning.');
+    if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)) addNotice('err','Selected uniform is not authorized for the selected membership type.');
+    if(State.membership === 'cadet'){
+      const bad = State.badges.filter(id=>!isCadetAuthorized(id));
+      if(bad.length) addNotice('err','Cadet profile includes non-cadet badge(s): '+bad.map(pretty).join(', '));
+    }
+    if(State.uniform === 'ocp'){
+      const rs = State.patches.filter(id => PATCH_META[id]?.slotHint === 'R_SHOULDER').length;
+      const ls = State.patches.filter(id => PATCH_META[id]?.slotHint === 'L_SHOULDER').length;
+      if(rs < 1) addNotice('warn','OCP right sleeve should include the mandatory full-color reversed U.S. flag patch and, when applicable, the unit patch.');
+      if(ls < 1) addNotice('warn','OCP left sleeve should include AUX duty identifier and HHQ/wing/region/CAP command patch configuration.');
+      if(State.badges.length > 4) addNotice('err','OCP chest badges exceed the maximum of four.');
+    }
+    if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
+      if(State.badges.length > 4) addNotice('err','Service/aviator uniform badge count exceeds four.');
+      const aviation = State.badges.filter(id => ['OLP','OLPA','OLPU'].some(s => String(badgeLocations[id]||'').includes(s)));
+      if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.');
+    }
+    if(State.uniform === 'mess_dress' && State.membership === 'cadet') addNotice('err','Mess Dress is not available to cadets in this builder.');
+    if(!CAPUB_V2.notices.length) addNotice('ok','No automatic validation issues found. Final approval still requires CAPR 39-1 review and any applicable supplement.');
+    return CAPUB_V2.notices;
+  }
+
+  function updateStatusPanel(){
+    const notices = validateBuild();
+    const rc = by('capubV2RibbonCount'), bc = by('capubV2BadgeCount'), pc = by('capubV2PatchCount'), wc = by('capubV2WarningCount');
+    if(rc) rc.textContent = State.ribbons.length;
+    if(bc) bc.textContent = State.badges.length;
+    if(pc) pc.textContent = State.patches.length;
+    if(wc) wc.textContent = notices.filter(n=>n.type !== 'ok').length;
+    const ul = by('capubV2Notices');
+    if(ul){
+      ul.innerHTML = '';
+      notices.forEach(n=>{ const li=document.createElement('li'); li.className=n.type; li.textContent=n.msg; ul.appendChild(li); });
+    }
+  }
+
+  function buildExpectedAssetList(){
+    const expected = [];
+    ribbonList.forEach(id=>expected.push({category:'Ribbon', item:pretty(id), id, path:`images/ribbons/${id}.png`, status:'required'}));
+    badgeList.forEach(id=>expected.push({category:'Badge', item:pretty(id), id, path:`images/badges/${id}.png`, status:'required'}));
+    Object.entries(PATCH_META).forEach(([id,m])=>expected.push({category:'Patch', item:pretty(id), id, path:`images/${m.img}`, status:'required'}));
+    Object.entries(deviceMeta).forEach(([id,m])=>expected.push({category:'Ribbon device', item:m.label||pretty(id), id, path:`images/${m.src}`, status:'required'}));
+    Object.entries(miniMedalImages).forEach(([id,p])=>expected.push({category:'Mini medal', item:pretty(id), id, path:`images/${p}`, status:'required when mini-medals used'}));
+    Object.keys(UNIFORMS).forEach(u=>['male','female'].forEach(g=>{ const p=UNIFORMS[u]?.[g]; if(p) expected.push({category:'Base uniform', item:`${u} ${g}`, id:`${u}_${g}`, path:`images/${p}`, status:'required'}); }));
+    [...rankListAll].forEach(r=>expected.push({category:'Rank', item:r, id:safeRankFile(r), path:`images/ranks/${safeRankFile(r)}.png`, status:'recommended'}));
+    // CAPR 39-1 / ICL additions the current asset set should eventually support.
+    [
+      ['OCP tape','AUX duty identifier','aux_duty_identifier','images/patches/aux_duty_identifier.png'],
+      ['OCP tape','Name tape','name_tape_blue','images/patches/name_tape_blue.png'],
+      ['OCP tape','Civil Air Patrol tape','civil_air_patrol_tape_blue','images/patches/civil_air_patrol_tape_blue.png'],
+      ['sUAS badge','CAP sUAS Pilot','cap_suas_pilot_badge','images/badges/cap_suas_pilot_badge.png'],
+      ['sUAS badge','CAP Senior sUAS Pilot','cap_senior_suas_pilot_badge','images/badges/cap_senior_suas_pilot_badge.png'],
+      ['sUAS badge','CAP Command sUAS Pilot','cap_command_suas_pilot_badge','images/badges/cap_command_suas_pilot_badge.png'],
+      ['sUAS badge','CAP sUAS Technician','cap_suas_technician_badge','images/badges/cap_suas_technician_badge.png'],
+      ['sUAS badge','CAP Senior sUAS Technician','cap_senior_suas_technician_badge','images/badges/cap_senior_suas_technician_badge.png'],
+      ['sUAS badge','CAP Master sUAS Technician','cap_master_suas_technician_badge','images/badges/cap_master_suas_technician_badge.png'],
+      ['sUAS badge','Cadet sUAS Badge','cadet_suas_badge','images/badges/cadet_suas_badge.png']
+    ].forEach(([category,item,id,path])=>expected.push({category,item,id,path,status:'not yet in current catalog'}));
+    return expected;
+  }
+
+  function downloadMissingAssetList(){
+    const expected = buildExpectedAssetList();
+    const lines = [];
+    lines.push('CAP Uniform Builder — Missing/Needed Image Asset List');
+    lines.push('Generated: '+new Date().toLocaleString());
+    lines.push('');
+    lines.push('Recommended rank filename rule: replace / with _, spaces with _, e.g., C/2d Lt -> images/ranks/C_2d_Lt.png');
+    lines.push('');
+    lines.push('CSV-style list:');
+    lines.push('Category,Item,ID,Expected Path,Status');
+    expected.forEach(e=>{
+      lines.push([e.category,e.item,e.id,e.path,e.status].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','));
+    });
+    downloadText('CAP_Uniform_Builder_missing_assets_needed.txt', lines.join('\n'));
+  }
+
+  function injectModalSearch(kind){
+    const body = modalHost;
+    if(!body || body.querySelector('.capubV2Search')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'capubV2Search';
+    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name, id, slot, or category..."/><div class="sub"><span id="capubV2ModalCount"></span> visible. Tip: use this popup for fast selection; selected items stay checked.</div>`;
+    body.insertBefore(wrap, body.firstChild);
+    const input = wrap.querySelector('input');
+    const count = wrap.querySelector('#capubV2ModalCount');
+    function filter(){
+      const q = input.value.trim().toLowerCase();
+      let visible = 0;
+      body.querySelectorAll('.galleryTile').forEach(tile=>{
+        const show = !q || tile.textContent.toLowerCase().includes(q);
+        tile.classList.toggle('isFilteredOut', !show);
+        if(show) visible++;
+      });
+      if(count) count.textContent = visible;
+    }
+    input.addEventListener('input', filter);
+    filter();
+    setTimeout(()=>input.focus(),50);
+  }
+
+  // Override render pipeline to include V2 layers and live validation after original rendering.
+  const originalFullRender = fullRender;
+  fullRender = function capubV2FullRender(prevUniform){
+    originalFullRender(prevUniform);
+    renderGeneratedTextAccoutrements();
+    renderRankOverlay();
+    updateStatusPanel();
+  };
+
+  const originalOpenGalleryModal = openGalleryModal;
+  openGalleryModal = function capubV2OpenGallery(kind){
+    if(kind === 'ribbons') State.ribbonGalleryExpanded = true;
+    if(kind === 'badges') State.badgeGalleryExpanded = true;
+    if(kind === 'patches') State.patchGalleryExpanded = true;
+    originalOpenGalleryModal(kind);
+    injectModalSearch(kind);
+  };
+
+  // Safer clear actions: keep UI selections in sync.
+  const clearRibbonsBtn = by('clearRibbons');
+  if(clearRibbonsBtn) clearRibbonsBtn.addEventListener('click', ()=>setTimeout(updateStatusPanel,0));
+  const clearBadgesBtn = by('clearBadges');
+  if(clearBadgesBtn) clearBadgesBtn.addEventListener('click', ()=>setTimeout(updateStatusPanel,0));
+  const clearPatchesBtn = by('clearPatches');
+  if(clearPatchesBtn) clearPatchesBtn.addEventListener('click', ()=>setTimeout(updateStatusPanel,0));
+
+  function wireV2Controls(){
+    syncTextControls();
+    const save = by('capubV2SaveLocal'), load = by('capubV2LoadLocal'), exp = by('capubV2ExportJson'), impBtn = by('capubV2ImportBtn'), impFile = by('capubV2ImportFile');
+    const missing = by('capubV2MissingBtn'), reset = by('capubV2Reset');
+    const ln = by('capubV2LastName'), ct = by('capubV2CapTape'), sh = by('capubV2ShowText');
+    if(save) save.onclick = ()=>{ localStorage.setItem(CAPUB_V2.storageKey, JSON.stringify(collectProfile())); updateStatusPanel(); alert('Uniform setup saved in this browser.'); };
+    if(load) load.onclick = ()=>{ const raw = localStorage.getItem(CAPUB_V2.storageKey); if(!raw){ alert('No saved setup found in this browser.'); return; } applyProfile(JSON.parse(raw)); };
+    if(exp) exp.onclick = ()=>downloadText('cap_uniform_builder_setup.json', JSON.stringify(collectProfile(), null, 2));
+    if(impBtn && impFile) impBtn.onclick = ()=>impFile.click();
+    if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; };
+    if(missing) missing.onclick = downloadMissingAssetList;
+    if(reset) reset.onclick = ()=>{ if(!confirm('Reset the entire builder setup?')) return; localStorage.removeItem(CAPUB_V2.storageKey); location.reload(); };
+    [ln,ct,sh].forEach(el=>{ if(!el) return; el.addEventListener('input', ()=>{ State.text.lastName = ln?.value || ''; State.text.capTape = ct?.value || 'CIVIL AIR PATROL'; State.text.show = sh?.checked !== false; fullRender(); }); el.addEventListener('change', ()=>{ State.text.lastName = ln?.value || ''; State.text.capTape = ct?.value || 'CIVIL AIR PATROL'; State.text.show = sh?.checked !== false; fullRender(); }); });
+  }
+
+  // Make functions available for console debugging.
+  CAPUB_V2.collectProfile = collectProfile;
+  CAPUB_V2.applyProfile = applyProfile;
+  CAPUB_V2.buildExpectedAssetList = buildExpectedAssetList;
+  CAPUB_V2.downloadMissingAssetList = downloadMissingAssetList;
+
+  // Wire once after this script block has loaded.
+  setTimeout(()=>{ wireV2Controls(); updateStatusPanel(); },0);
+})();
+
 
 /* ===========================
    BOOTSTRAP
