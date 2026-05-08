@@ -3296,32 +3296,42 @@ function parseSlotPrefs(slotSpec){
     .filter(Boolean);
 }
 
+function getRenderableCountedBadgeIds(){
+  const out = [];
+  for(const id of State.badges){
+    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
+    if(isCommandInsigniaBadge(id)) continue;
+    if(out.length >= 4) break;
+    out.push(id);
+  }
+  return out;
+}
+
+function getRenderableCommandBadgeIds(){
+  const out = [];
+  for(const id of State.badges){
+    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
+    if(isCommandInsigniaBadge(id)) out.push(id);
+  }
+  return out;
+}
+
+function getRenderableBadgeIds(){
+  return [...getRenderableCountedBadgeIds(), ...getRenderableCommandBadgeIds()];
+}
+
 function renderAllBadges(){
   [...uniformCanvas.querySelectorAll('.layer.badge')].forEach(n=>n.remove());
   resetBadgeSlots();
   if(!UI_AUTHZ[State.uniform]?.showBadges) return;
 
-  const maxCountedBadges = 4;
-  let countedApplied = 0;
-
-  const countedBadges = [];
-  const commandBadges = [];
-
-  for(const id of State.badges){
-    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
-    if(isCommandInsigniaBadge(id)) commandBadges.push(id);
-    else countedBadges.push(id);
-  }
-
-  for(const id of countedBadges){
-    if(countedApplied >= maxCountedBadges) break;
-    const placed = placeBadgeSlotAnchored(id);
-    if(placed) countedApplied++;
+  for(const id of getRenderableCountedBadgeIds()){
+    placeBadgeSlotAnchored(id);
   }
 
   // Command insignia never counts against the four-badge limit and should render last
   // so it stays visible even when other badges are already present.
-  for(const id of commandBadges){
+  for(const id of getRenderableCommandBadgeIds()){
     placeBadgeSlotAnchored(id);
   }
 }
@@ -3460,13 +3470,42 @@ function getDynamicOverRibbonBadgeTop(slot, idx=0){
   return Math.round(Number(liveTopRibbonY) + verticalOffset);
 }
 
+function getBadgeHeightForLayout(id){
+  return customBadgeSizes[id]?.height || 25;
+}
+
+function getPlannedBadgeIdForSlot(slotName){
+  return getRenderableBadgeIds().find(id => selectedBadgeWouldRenderInSlot(id, slotName)) || null;
+}
+
+function getAboveRibbonStackTops(){
+  const liveTopRibbonY = getTopRibbonRowY();
+  if(liveTopRibbonY === null) return null;
+
+  const gap = 50;
+  const orderBottomToTop = ['OLPU','OLP','OLPA'];
+  const tops = {};
+  let referenceTop = liveTopRibbonY;
+
+  for(const slotName of orderBottomToTop){
+    const badgeId = getPlannedBadgeIdForSlot(slotName);
+    if(!badgeId) continue;
+    const h = getBadgeHeightForLayout(badgeId);
+    const top = Math.round(referenceTop - gap - h);
+    tops[slotName] = top;
+    referenceTop = top;
+  }
+
+  return tops;
+}
+
 function getDynamicBadgeTopFromAppliedPosition(el, id=null, slot=null){
   const liveTopRibbonY = getTopRibbonRowY();
   if(liveTopRibbonY === null) return null;
 
-  if(slot === 'OLP' && AIRCREW_BADGE_IDS.has(id) && shouldUseLowerAviationPosition()){
-    const actualHeight = parseFloat(el?.style?.height) || customBadgeSizes[id]?.height || 17;
-    return getLowerAviationTop(actualHeight);
+  if(['OLPU','OLP','OLPA'].includes(slot)){
+    const stackTops = getAboveRibbonStackTops();
+    if(stackTops && Number.isFinite(stackTops[slot])) return stackTops[slot];
   }
 
   const uniformId = getCurrentCalibUniform();
@@ -3516,9 +3555,9 @@ function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
   // These are fallback anchors only. Exact calibrated family positions are applied
   // by applyCalibToElement/buildDerivedBadgeCalib when calibration exists.
   const base = {
-    OLPA: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 84 : H * 0.18, dy: 0 },
-    OLP:  { x: rackX,  y: topRibbonY !== null ? (shouldUseLowerAviationPosition() ? topRibbonY - (bh + 5) : topRibbonY - 84) : H * 0.22, dy: 0 },
-    OLPU: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 3  : H * 0.27, dy: 0 },
+    OLPA: { x: rackX,  y: topRibbonY !== null ? topRibbonY - (bh + 150) : H * 0.18, dy: 0 },
+    OLP:  { x: rackX,  y: topRibbonY !== null ? topRibbonY - (bh + 100) : H * 0.22, dy: 0 },
+    OLPU: { x: rackX,  y: topRibbonY !== null ? topRibbonY - (bh + 50)  : H * 0.27, dy: 0 },
     OLPF: { x: W*0.64, y: H*0.50, dy: 0 },
 
     ORP:  { x: W*0.32, y: H*0.30, dy: 0 },
