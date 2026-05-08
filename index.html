@@ -2889,6 +2889,36 @@ function getTopRibbonRowY() {
   const minTop = Math.min(...ribbonEls.map(el => parseFloat(el.style.top) || 0));
   return minTop;
 }
+
+function getSelectedOverLeftPocketBadges(){
+  const out = [];
+  for(const id of State.badges){
+    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
+
+    let slotSpec = badgeLocations[id] || 'UN';
+    if(id==='nra_marksman_badge') slotSpec='LRP';
+    if(id==='model_rocketry_badge') slotSpec='LP';
+
+    const prefs = parseSlotPrefs(slotSpec);
+    if(prefs.some(slot => ['OLP','OLPU','OLPA'].includes(slot))){
+      out.push(id);
+    }
+  }
+  return out;
+}
+
+function isLoneAviationOccupationalBadge(id){
+  const overLeft = getSelectedOverLeftPocketBadges();
+  return AIRCREW_BADGE_IDS.has(id) && overLeft.length === 1 && overLeft[0] === id;
+}
+
+function getGroundReferenceTopY(idx=0){
+  const uniformId = getCurrentCalibUniform();
+  const bucket = getCalibBucket(uniformId);
+  const key = `badge:master_ground_team_badge:OLPU:${idx}`;
+  const val = bucket[key] || ((DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {})[key]) || null;
+  return (val && Number.isFinite(Number(val.y))) ? Number(val.y) : null;
+}
   
   
 function placeBadgeSlotAnchored(id){
@@ -2970,6 +3000,15 @@ function placeBadgeSlotAnchored(id){
   clone.dataset.tooltipWhy   = `Rendered in CAPR slot ${slot}.`;
 
   applyCalibToElement(clone, clone.dataset.calibKey, { x: baseX, y: baseY, w: bw, h: bh, r: 0 });
+
+  // If the wearer only has a single aviation/occupational badge above the ribbons,
+  // render it at the same vertical height that the ground-team / EMT badge family uses.
+  if(slot === 'OLP' && isLoneAviationOccupationalBadge(id)){
+    const alignedTopY = getGroundReferenceTopY(idx);
+    if(alignedTopY !== null){
+      clone.style.top = `${alignedTopY}px`;
+    }
+  }
 
   uniformCanvas.appendChild(clone);
   badgeSlots[slot].push(id);
