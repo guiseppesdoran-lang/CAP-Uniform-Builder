@@ -1288,14 +1288,19 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
   // Men's Class A Blues calibration supplied by user.
   blues_a: {
     'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:270, y:137, w:48, h:14, r:0 },
-    'badge:master_ground_team_badge:OLPU:0': { x:281, y:161, w:25, h:20, r:0 }
+    'badge:master_ground_team_badge:OLPU:0': { x:281, y:161, w:25, h:20, r:0 },
+    // Senior officer male Class A pocket badge-zone calibration supplied by user.
+    // These are zone references, not just one-off badge positions.
+    'badge:emergency_services_badge:LP:0': { x:280, y:248, w:30, h:30, r:0 },
+    'badge:communications_technician_badge:UN:0': { x:138, y:256, w:25, h:25, r:0 }
   },
 
   // Men's Class B Blues calibration supplied by user.
   blues_b: {
     'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:282, y:136, w:48, h:14, r:0 },
     'badge:master_ground_team_badge:OLPU:0': { x:294, y:159, r:0 },
-    'badge:emergency_services_badge:LP:0': { x:127, y:273, w:35, h:35, r:0 }
+    'badge:emergency_services_badge:LP:0': { x:127, y:273, w:35, h:35, r:0 },
+    'badge:communications_technician_badge:UN:0': { x:293, y:279, w:28, h:28, r:0 }
   }
 };
 
@@ -1347,6 +1352,8 @@ function buildDerivedBadgeCalib(key, base){
     refKey = `badge:master_ground_team_badge:OLPU:${parsed.idx}`;
   }else if(POCKET_SERVICE_BADGE_IDS.has(parsed.id) && parsed.slot === 'LP'){
     refKey = `badge:emergency_services_badge:LP:${parsed.idx}`;
+  }else if(POCKET_SERVICE_BADGE_IDS.has(parsed.id) && parsed.slot === 'UN'){
+    refKey = `badge:communications_technician_badge:UN:${parsed.idx}`;
   }
   if(!refKey || !defaults[refKey]) return null;
 
@@ -1362,6 +1369,17 @@ function buildDerivedBadgeCalib(key, base){
     patch.y = Math.round(ref.y + refH/2 - base.h/2);
     delete patch.w;
     delete patch.h;
+  }
+
+  // Pocket-zone badges use calibrated left/right pocket zones. The reference badge establishes
+  // the zone center and the corrected visual size for that pocket location.
+  if(POCKET_SERVICE_BADGE_IDS.has(parsed.id) && ['LP','UN'].includes(parsed.slot) && base){
+    const refW = ref.w ?? base.w;
+    const refH = ref.h ?? base.h;
+    patch.x = Math.round(ref.x + refW/2 - refW/2);
+    patch.y = Math.round(ref.y + refH/2 - refH/2);
+    patch.w = refW;
+    patch.h = refH;
   }
 
   return patch;
