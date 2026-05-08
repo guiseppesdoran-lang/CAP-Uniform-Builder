@@ -1316,9 +1316,23 @@ const GROUND_EMT_BADGE_IDS = new Set([
   'emt_basic_badge','emt_intermediate','emt_paramedic'
 ]);
 const POCKET_SERVICE_BADGE_IDS = new Set([
-  'emergency_services_badge','communications_technician_badge','information_technology_technician_badge',
-  'historian_technicianIbadge','cyber_badges','stem_badges'
+  'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
+  'communications_technician_badge','information_technology_technician_badge',
+  'historian_technicianIbadge','cyber_badges','stem_badges',
+  'volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge'
 ]);
+
+// CAP command insignia is handled as its own exception category and does not count
+// against the normal four-badge limit.
+const COMMAND_INSIGNIA_BADGE_IDS = new Set([
+  'squadron_commander_badge'
+]);
+function isCommandInsigniaBadge(id){
+  return COMMAND_INSIGNIA_BADGE_IDS.has(id);
+}
+function countBadgesForLimit(ids = State.badges){
+  return ids.filter(id => !isCommandInsigniaBadge(id)).length;
+}
 
 function mergeCalibDefaults(){
   if(!State.calib.byUniform) State.calib.byUniform = {};
@@ -1770,7 +1784,7 @@ Object.assign(miniMedalImages, {
    =========================== */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
-  'buddist_chaplin','christian_chaplin','communications_technician_badge','cyber_badges','emergency_services_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges'
+  'buddist_chaplin','christian_chaplin','communications_technician_badge','cyber_badges','emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge','volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge','squadron_commander_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges'
 ];
 
 const allowedCadetBadges = new Set([
@@ -1804,6 +1818,12 @@ const badgeLocations = {
   'observer_badge':'OLP',
   'historian_technicianIbadge':'LP,UN',
   'emergency_services_badge':'LP,UN',
+  'senior_emergency_services_badge':'LP,UN',
+  'master_emergency_services_badge':'LP,UN',
+  'volunteer_university_instructor_badge':'LP,UN',
+  'basic_incident_commander_badge':'LP,UN',
+  'cadet_programs_badge':'LP,UN',
+  'squadron_commander_badge':'ON',
 
   // unchanged
   'cyber_badges':'LP','stem_badges':'LP',
@@ -1818,7 +1838,7 @@ const badgeLocations = {
 const customBadgeSizes = {
   'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
   'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:60,height:60},
-  'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:60,height:60},'emt_basic_badge':{width:60,height:60},
+  'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:60,height:60},'senior_emergency_services_badge':{width:60,height:60},'master_emergency_services_badge':{width:60,height:60},'volunteer_university_instructor_badge':{width:60,height:60},'basic_incident_commander_badge':{width:60,height:25},'cadet_programs_badge':{width:60,height:60},'squadron_commander_badge':{width:60,height:60},'emt_basic_badge':{width:60,height:60},
   'emt_intermediate':{width:60,height:60},'emt_paramedic':{width:60,height:60},'ground_team_basic_badge':{width:25,height:20},
   'historian_technicianIbadge':{width:60,height:60},'information_technology_technician_badge':{width:60,height:60},
   'jewish_chaplin':{width:60,height:60},'legal_officer':{width:60,height:25},'master_ground_team_badge':{width:25,height:20},
@@ -1837,13 +1857,20 @@ const BADGE_CATEGORIES = [
     'solo_badge','pre_solo_badge'
   ]},
   { key:'Emergency Services / Ground', ids:[
-    'emergency_services_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'
+    'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
+    'basic_incident_commander_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'
   ]},
   { key:'Medical / EMS', ids:[
     'emt_basic_badge','emt_intermediate','emt_paramedic','medical_officer','nurse_officer'
   ]},
   { key:'Comms / IT / Cyber / STEM', ids:[
     'communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges'
+  ]},
+  { key:'Professional Development / Cadet Programs', ids:[
+    'volunteer_university_instructor_badge','cadet_programs_badge'
+  ]},
+  { key:'Command Insignia', ids:[
+    'squadron_commander_badge'
   ]},
   { key:'Chaplain / Legal / Admin', ids:[
     'christian_chaplin','jewish_chaplin','muslim_chaplin','buddist_chaplin','legal_officer','historian_technicianIbadge'
@@ -2915,15 +2942,19 @@ function renderAllBadges(){
   resetBadgeSlots();
   if(!UI_AUTHZ[State.uniform]?.showBadges) return;
 
-  const maxTotal = 5;
+  const maxCountedBadges = 4;
+  let countedApplied = 0;
 
   const applied = [];
   for(const id of State.badges){
     if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
-    if(applied.length >= maxTotal) break;
+
+    const isCommand = isCommandInsigniaBadge(id);
+    if(!isCommand && countedApplied >= maxCountedBadges) continue;
 
     placeBadgeSlotAnchored(id);
     applied.push(id);
+    if(!isCommand) countedApplied++;
   }
 }
 
@@ -4135,10 +4166,10 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
       const ls = State.patches.filter(id => PATCH_META[id]?.slotHint === 'L_SHOULDER').length;
       if(rs < 1) addNotice('warn','OCP right sleeve should include the mandatory full-color reversed U.S. flag patch and, when applicable, the unit patch.');
       if(ls < 1) addNotice('warn','OCP left sleeve should include AUX duty identifier and HHQ/wing/region/CAP command patch configuration.');
-      if(State.badges.length > 4) addNotice('err','OCP chest badges exceed the maximum of four.');
+      if(countBadgesForLimit() > 4) addNotice('err','OCP chest badges exceed the maximum of four counted badges. Command insignia does not count against this limit.');
     }
     if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
-      if(State.badges.length > 4) addNotice('err','Service/aviator uniform badge count exceeds four.');
+      if(countBadgesForLimit() > 4) addNotice('err','Service/aviator uniform badge count exceeds four counted badges. Command insignia does not count against this limit.');
       const aviation = State.badges.filter(id => ['OLP','OLPA','OLPU'].some(s => String(badgeLocations[id]||'').includes(s)));
       if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.');
     }
