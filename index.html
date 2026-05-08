@@ -1305,7 +1305,10 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
     'badge:basic_incident_commander_badge:UN:1': { x:276, y:135, w:35, h:20, r:0 },
     'badge:volunteer_university_instructor_badge:UN:0': { x:125, y:258, w:45, h:45, r:0 },
     'badge:volunteer_university_instructor_badge:UN:1': { x:125, y:248, w:40, h:40, r:0 },
-    'badge:squadron_commander_badge:ON:0': { x:140, y:229, w:15, h:15, r:0 },
+    // Squadron Commander / Command Insignia placement for male senior Class A:
+    // Current commanders wear it over the nameplate (ON); graduated commanders wear it under the nameplate (UN).
+    'badge:squadron_commander_badge:ON:0': { x:140, y:172, w:15, h:15, r:0 },
+    'badge:squadron_commander_badge:UN:0': { x:140, y:229, w:15, h:15, r:0 },
     'badge:master_emergency_services_badge:LP:0': { x:280, y:261, w:35, h:35, r:0 },
     'badge:observer_badge:OLP:0': { x:263, y:118, w:60, h:17, r:0 }
   },
@@ -1344,6 +1347,20 @@ const COMMAND_INSIGNIA_BADGE_IDS = new Set([
 ]);
 function isCommandInsigniaBadge(id){
   return COMMAND_INSIGNIA_BADGE_IDS.has(id);
+}
+function getCommandInsigniaSlot(){
+  // Current commanders: ON (over nameplate). Graduated commanders: UN (under nameplate).
+  return State.commandInsignia?.graduatedCommander ? 'UN' : 'ON';
+}
+function getBadgeSlotSpec(id){
+  if(id === 'squadron_commander_badge') return getCommandInsigniaSlot();
+  return badgeLocations[id] || 'UN';
+}
+function getBadgeSlotLabel(id){
+  if(id === 'squadron_commander_badge'){
+    return State.commandInsignia?.graduatedCommander ? 'UN — graduated commander' : 'ON — current commander';
+  }
+  return badgeLocations[id] || 'UN';
 }
 function countBadgesForLimit(ids = State.badges){
   return ids.filter(id => !isCommandInsigniaBadge(id)).length;
@@ -2853,7 +2870,7 @@ function buildBadgeGallery(){
           <label><input type="checkbox" class="bdChk"> Add</label>
         </div>
         ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-        <div class="sub">Slot: <b>${badgeLocations[id] || 'UN'}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
+        <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
       </div>
     `;
 
@@ -3042,7 +3059,7 @@ function getSelectedOverLeftPocketBadges(){
   for(const id of State.badges){
     if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
 
-    let slotSpec = badgeLocations[id] || 'UN';
+    let slotSpec = getBadgeSlotSpec(id);
     if(id==='nra_marksman_badge') slotSpec='LRP';
     if(id==='model_rocketry_badge') slotSpec='LP';
 
@@ -3107,7 +3124,7 @@ function placeBadgeSlotAnchored(id){
   if(!img) return;
 
   // Hard overrides you already enforce
-  let slotSpec = badgeLocations[id] || 'UN';
+  let slotSpec = getBadgeSlotSpec(id);
   if(id==='nra_marksman_badge') slotSpec='LRP';
   if(id==='model_rocketry_badge') slotSpec='LP';
 
@@ -3853,7 +3870,7 @@ function openGalleryModal(kind){
               <label><input type="checkbox" class="bdChk"> Add</label>
             </div>
             ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            <div class="sub">Slot: <b>${badgeLocations[id] || 'UN'}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
+            <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
           </div>
         `;
 
@@ -4236,7 +4253,8 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
     }
     if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
       if(countBadgesForLimit() > 4) addNotice('err','Service/aviator uniform badge count exceeds four counted badges. Command insignia does not count against this limit.');
-      if(State.badges.includes('squadron_commander_badge') && State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Graduated Commander and is treated as command insignia outside the normal four-badge count.');
+      if(State.badges.includes('squadron_commander_badge') && State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Graduated Commander and will render under the nameplate (UN); command insignia remains outside the normal four-badge count.');
+      if(State.badges.includes('squadron_commander_badge') && !State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Current Commander and will render over the nameplate (ON); command insignia remains outside the normal four-badge count.');
       const aviation = State.badges.filter(id => ['OLP','OLPA','OLPU'].some(s => String(badgeLocations[id]||'').includes(s)));
       if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.');
     }
