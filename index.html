@@ -1293,8 +1293,9 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
 
   // Men's Class B Blues calibration supplied by user.
   blues_b: {
-    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:282, y:129, w:48, h:14, r:0 },
-    'badge:master_ground_team_badge:OLPU:0': { x:294, y:152, r:0 }
+    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:282, y:136, w:48, h:14, r:0 },
+    'badge:master_ground_team_badge:OLPU:0': { x:294, y:159, r:0 },
+    'badge:emergency_services_badge:LP:0': { x:127, y:273, w:35, h:35, r:0 }
   }
 };
 
@@ -1308,6 +1309,10 @@ const AIRCREW_BADGE_IDS = new Set([
 const GROUND_EMT_BADGE_IDS = new Set([
   'ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
   'emt_basic_badge','emt_intermediate','emt_paramedic'
+]);
+const POCKET_SERVICE_BADGE_IDS = new Set([
+  'emergency_services_badge','communications_technician_badge','information_technology_technician_badge',
+  'historian_technicianIbadge','cyber_badges','stem_badges'
 ]);
 
 function mergeCalibDefaults(){
@@ -1340,6 +1345,8 @@ function buildDerivedBadgeCalib(key, base){
     refKey = `badge:AirCrew1_DB3F0FCC3650F:OLP:${parsed.idx}`;
   }else if(GROUND_EMT_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLPU'){
     refKey = `badge:master_ground_team_badge:OLPU:${parsed.idx}`;
+  }else if(POCKET_SERVICE_BADGE_IDS.has(parsed.id) && parsed.slot === 'LP'){
+    refKey = `badge:emergency_services_badge:LP:${parsed.idx}`;
   }
   if(!refKey || !defaults[refKey]) return null;
 
@@ -2693,15 +2700,26 @@ function enforceExclusive(newId){
 }
 
 function rebuildBadgesFromGallery(){
-  State.badges = [];
   normalizeBadgeSelections();
 
+  // Keep the user's selection order instead of rebuilding in badgeList order.
+  // This prevents a newly added badge with the same preferred slot from stealing
+  // the pocket/location of a badge that was already selected.
+  const eligible = id => !(State.membership==='cadet' && !isCadetAuthorized(id));
+  const current = Array.isArray(State.badges) ? State.badges.filter(id => eligible(id) && State.badgeSelections[id]?.checked) : [];
+
   for(const id of badgeList){
-    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
-    if(State.badgeSelections[id]?.checked){
-      enforceExclusive(id);
-      if(!State.badges.includes(id)) State.badges.push(id);
+    if(!eligible(id)) continue;
+    if(State.badgeSelections[id]?.checked && !current.includes(id)){
+      current.push(id);
     }
+  }
+
+  State.badges = current;
+
+  // Apply true exclusivity rules after order is preserved.
+  for(const id of [...State.badges]){
+    enforceExclusive(id);
   }
 
   renderAllBadges();
