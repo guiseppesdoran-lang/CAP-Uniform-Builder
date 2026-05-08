@@ -776,6 +776,31 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 @media (max-width:980px){.statusGrid{grid-template-columns:repeat(2,minmax(0,1fr));}.previewTools{position:fixed;right:12px;top:84px}.previewToolCard{width:144px}.capubCommandBar{max-width:calc(100vw - 24px);overflow:auto}.capubProgress{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:768px){header h1::after{display:block;margin-left:0;margin-top:4px}.controlsHeader .controlsTitle::after{display:none}#controls,#layoutShell.sidebar-open #controls{width:min(92vw,380px);max-width:min(92vw,380px)}#previewWrapper{padding:16px 12px 96px}.previewTools{right:10px;top:auto;bottom:82px}.previewToolCard{width:132px}.capubCommandBar{left:12px;right:12px;transform:none;justify-content:flex-start}.capubCommandBar button{white-space:nowrap}.capubTopBar{left:12px;right:12px;top:12px;justify-content:center}.capubPill{font-size:10.5px;padding:5px 8px}}
 
+
+/* Badge image fallback used when an individual transparent PNG cannot be found. */
+.badgeFallback{
+  position:absolute;
+  border:1px solid rgba(15,23,42,.45);
+  background:rgba(255,255,255,.88);
+  color:#0f172a;
+  font-size:7px;
+  font-weight:800;
+  line-height:1;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:3px;
+  box-shadow:0 1px 3px rgba(0,0,0,.28);
+}
+.commandInsigniaFallback{
+  border-radius:50%;
+  background:radial-gradient(circle,#facc15 0%,#b45309 58%,#7c2d12 100%);
+  border:1px solid rgba(92,40,0,.9);
+  color:#172554;
+  font-size:0;
+}
+
 </style>
 </head>
 <body>
@@ -1430,7 +1455,7 @@ function buildDerivedBadgeCalib(key, base){
   let yAdjust = 0;
 
   if(AIRCREW_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLP'){
-    // Aviation badges: OLP, over the left pocket / over ribbons.
+    // Aviation badges: OLP. Use the high position only when an OLPU badge is also present.
     refKey = `badge:observer_badge:OLP:${parsed.idx}`;
     if(!defaults[refKey]) refKey = `badge:AirCrew1_DB3F0FCC3650F:OLP:${parsed.idx}`;
   }else if(CHAPLAIN_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLPA'){
@@ -1477,6 +1502,12 @@ function buildDerivedBadgeCalib(key, base){
   const ref = defaults[refKey];
   const patch = { ...ref };
   if(Number.isFinite(Number(patch.y))) patch.y = Math.round(Number(patch.y) + yAdjust);
+
+  // If an aviation/aeronautical badge is worn by itself, use the lower over-ribbon
+  // OLP position instead of the high position that leaves room for an OLPU badge.
+  if(AIRCREW_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLP' && shouldUseLowerAviationPosition()){
+    patch.y = 169;
+  }
 
   // Over-left-pocket badges inherit the reference center but keep each badge family's
   // own dimensions, unless the reference was calibrated for the exact family.
@@ -2062,6 +2093,21 @@ const BADGE_IMAGE_OVERRIDES = {
 };
 function getBadgeAssetPath(id){
   return BADGE_IMAGE_OVERRIDES[id] || `badges/${id}.png`;
+}
+function getBadgeAssetCandidates(id){
+  const candidates = [];
+  const primary = getBadgeAssetPath(id);
+  if(primary) candidates.push(primary);
+  candidates.push(`badges/${id}.png`);
+  candidates.push(`badges/${id}.webp`);
+  if(id === 'squadron_commander_badge'){
+    // Support the most common file-name variants used in the image folders.
+    candidates.push('badges/Squadron Commander badge.png');
+    candidates.push('badges/Squadron_Commander_badge.png');
+    candidates.push('badges/squadron_commander_badge.png');
+    candidates.push('badges/squadron commander badge.png');
+  }
+  return [...new Set(candidates.filter(Boolean))];
 }
 
 const allowedCadetBadges = new Set([
@@ -3317,6 +3363,70 @@ function getOverRibbonReferenceKey(slot, idx=0){
   return null;
 }
 
+function selectedBadgeWouldRenderInSlot(id, slotName){
+  if(!id) return false;
+  if(id === 'nra_marksman_badge') return slotName === 'OLPF';
+  if(id === 'model_rocketry_badge') return getGenderedPocketSlotForBadge(id) === slotName;
+  if(isCommandInsigniaBadge(id)) return getCommandInsigniaSlot() === slotName;
+  if(CHAPLAIN_BADGE_IDS.has(id)) return slotName === 'OLPA';
+  if(AIRCREW_BADGE_IDS.has(id)) return slotName === 'OLP';
+  if(OLPU_OCCUPATIONAL_BADGE_IDS.has(id)) return slotName === 'OLPU';
+  if(UNDER_NAMEPLATE_SPECIALTY_BADGE_IDS.has(id)) return slotName === 'UN';
+  if(ES_POCKET_BADGE_IDS.has(id)) return slotName === 'LP';
+  if(SPECIALTY_TRACK_BADGE_IDS.has(id)) return getGenderedPocketSlotForBadge(id) === slotName;
+  return parseSlotPrefs(getBadgeSlotSpec(id)).includes(slotName);
+}
+function hasSelectedUnderAviationBadge(){
+  return State.badges.some(id => id && selectedBadgeWouldRenderInSlot(id, 'OLPU'));
+}
+function hasSelectedAboveAviationBadge(){
+  return State.badges.some(id => id && selectedBadgeWouldRenderInSlot(id, 'OLPA'));
+}
+function shouldUseLowerAviationPosition(){
+  // If there is no OLPU badge selected, the aviation/aeronautical badge should sit
+  // in the lower OLP position directly over the highest ribbon row instead of the
+  // high position reserved for a two-badge aviation/occupational stack.
+  return !hasSelectedUnderAviationBadge();
+}
+function getLowerAviationTop(){
+  const liveTopRibbonY = getTopRibbonRowY();
+  if(liveTopRibbonY === null) return null;
+  // From the senior male Class A calibration, the lower over-ribbon position is
+  // 30px above the highest ribbon row (e.g., ribbon top 199 -> badge top 169).
+  return Math.round(liveTopRibbonY - 30);
+}
+function applyBadgeAssetWithFallback(el, id){
+  const candidates = getBadgeAssetCandidates(id).map(ASSET);
+  let idx = 0;
+  function tryNext(){
+    if(idx >= candidates.length){
+      if(id === 'squadron_commander_badge'){
+        el.replaceWith(createBadgeFallbackElement(id, el));
+      }else{
+        el.dataset.missing = 'true';
+      }
+      return;
+    }
+    el.src = candidates[idx++];
+  }
+  el.onerror = tryNext;
+  tryNext();
+}
+function createBadgeFallbackElement(id, sourceEl){
+  const div = document.createElement('div');
+  div.className = 'layer badge badgeFallback' + (id === 'squadron_commander_badge' ? ' commandInsigniaFallback' : '');
+  div.textContent = id === 'squadron_commander_badge' ? '' : 'BADGE';
+  div.dataset.calibKey = sourceEl.dataset.calibKey;
+  div.dataset.tooltipTitle = sourceEl.dataset.tooltipTitle || id.replace(/_/g,' ').toUpperCase();
+  div.dataset.tooltipReg = sourceEl.dataset.tooltipReg || '';
+  div.dataset.tooltipWhy = (sourceEl.dataset.tooltipWhy || '') + ' Image fallback shown because the badge PNG did not load.';
+  ['left','top','width','height','transform','transformOrigin','display'].forEach(prop => {
+    if(sourceEl.style[prop]) div.style[prop] = sourceEl.style[prop];
+  });
+  div.style.display = 'flex';
+  return div;
+}
+
 function getDynamicOverRibbonBadgeTop(slot, idx=0){
   const liveTopRibbonY = getTopRibbonRowY();
   if(liveTopRibbonY === null) return null;
@@ -3336,9 +3446,14 @@ function getDynamicOverRibbonBadgeTop(slot, idx=0){
   return Math.round(Number(liveTopRibbonY) + verticalOffset);
 }
 
-function getDynamicBadgeTopFromAppliedPosition(el){
+function getDynamicBadgeTopFromAppliedPosition(el, id=null, slot=null){
   const liveTopRibbonY = getTopRibbonRowY();
   if(liveTopRibbonY === null) return null;
+
+  if(slot === 'OLP' && AIRCREW_BADGE_IDS.has(id) && shouldUseLowerAviationPosition()){
+    return getLowerAviationTop();
+  }
+
   const uniformId = getCurrentCalibUniform();
   const refRibbonTop = OVER_RIBBON_REFERENCE_TOP_BY_UNIFORM[uniformId];
   if(refRibbonTop === undefined || refRibbonTop === null) return null;
@@ -3371,6 +3486,7 @@ function slotHasRoom(slot){
 
 function chooseBadgeSlot(id, prefs){
   const preferred = getPreferredBadgeSlotForRendering(id, prefs);
+  if(isCommandInsigniaBadge(id)) return preferred;
   const ordered = [preferred, ...prefs.filter(p => p !== preferred)];
   for(const candidate of ordered){
     if(slotHasRoom(candidate)) return candidate;
@@ -3386,7 +3502,7 @@ function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
   // by applyCalibToElement/buildDerivedBadgeCalib when calibration exists.
   const base = {
     OLPA: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 84 : H * 0.18, dy: 0 },
-    OLP:  { x: rackX,  y: topRibbonY !== null ? topRibbonY - 50 : H * 0.22, dy: 0 },
+    OLP:  { x: rackX,  y: topRibbonY !== null ? (shouldUseLowerAviationPosition() ? topRibbonY - 30 : topRibbonY - 50) : H * 0.22, dy: 0 },
     OLPU: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 3  : H * 0.27, dy: 0 },
     OLPF: { x: W*0.64, y: H*0.50, dy: 0 },
 
@@ -3429,10 +3545,9 @@ function placeBadgeSlotAnchored(id){
   const idx = badgeSlots[slot].length;
   const base = getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh);
 
-  const clone = img.cloneNode();
+  const clone = new Image();
   clone.className = 'layer badge';
   clone.style.display = 'block';
-  clone.onerror = ()=>{ clone.remove(); };
   clone.dataset.calibKey = `badge:${id}:${slot}:${idx}`;
 
   clone.dataset.tooltipTitle = (id==='squadron_commander_badge' && State.commandInsignia?.graduatedCommander)
@@ -3445,9 +3560,10 @@ function placeBadgeSlotAnchored(id){
 
   applyCalibToElement(clone, clone.dataset.calibKey, { x: base.x, y: base.y, w: bw, h: bh, r: 0 });
 
-  const dynamicTop = getDynamicBadgeTopFromAppliedPosition(clone);
+  const dynamicTop = getDynamicBadgeTopFromAppliedPosition(clone, id, slot);
   if(dynamicTop !== null) clone.style.top = `${dynamicTop}px`;
 
+  applyBadgeAssetWithFallback(clone, id);
   uniformCanvas.appendChild(clone);
   badgeSlots[slot].push(id);
   return true;
