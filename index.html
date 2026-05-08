@@ -3517,7 +3517,7 @@ function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
   // by applyCalibToElement/buildDerivedBadgeCalib when calibration exists.
   const base = {
     OLPA: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 84 : H * 0.18, dy: 0 },
-    OLP:  { x: rackX,  y: topRibbonY !== null ? (shouldUseLowerAviationPosition() ? topRibbonY - (bh + 5) : topRibbonY - 50) : H * 0.22, dy: 0 },
+    OLP:  { x: rackX,  y: topRibbonY !== null ? (shouldUseLowerAviationPosition() ? topRibbonY - (bh + 5) : topRibbonY - 84) : H * 0.22, dy: 0 },
     OLPU: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 3  : H * 0.27, dy: 0 },
     OLPF: { x: W*0.64, y: H*0.50, dy: 0 },
 
