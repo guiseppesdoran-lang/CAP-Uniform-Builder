@@ -2965,12 +2965,46 @@ function isLoneAviationOccupationalBadge(id){
   return AIRCREW_BADGE_IDS.has(id) && overLeft.length === 1 && overLeft[0] === id;
 }
 
-function getGroundReferenceTopY(idx=0){
-  const uniformId = getCurrentCalibUniform();
+const OVER_RIBBON_REFERENCE_TOP_BY_UNIFORM = {
+  blues_b: 189,
+  blues_a: 191
+};
+
+function getReferenceCalibForKey(uniformId, key){
   const bucket = getCalibBucket(uniformId);
-  const key = `badge:master_ground_team_badge:OLPU:${idx}`;
-  const val = bucket[key] || ((DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {})[key]) || null;
-  return (val && Number.isFinite(Number(val.y))) ? Number(val.y) : null;
+  return bucket[key] || ((DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {})[key]) || null;
+}
+
+function getOverRibbonReferenceKey(slot, idx=0, opts={}){
+  const loneOccupational = !!opts.loneOccupational;
+  if((slot === 'OLP' || slot === 'OLPA') && loneOccupational){
+    return `badge:master_ground_team_badge:OLPU:${idx}`;
+  }
+  if(slot === 'OLP' || slot === 'OLPA'){
+    return `badge:AirCrew1_DB3F0FCC3650F:OLP:${idx}`;
+  }
+  if(slot === 'OLPU'){
+    return `badge:master_ground_team_badge:OLPU:${idx}`;
+  }
+  return null;
+}
+
+function getDynamicOverRibbonBadgeTop(slot, idx=0, opts={}){
+  const liveTopRibbonY = getTopRibbonRowY();
+  if(liveTopRibbonY === null) return null;
+
+  const uniformId = getCurrentCalibUniform();
+  const refRibbonTop = OVER_RIBBON_REFERENCE_TOP_BY_UNIFORM[uniformId];
+  if(refRibbonTop === undefined || refRibbonTop === null) return null;
+
+  const refKey = getOverRibbonReferenceKey(slot, idx, opts);
+  if(!refKey) return null;
+
+  const refCalib = getReferenceCalibForKey(uniformId, refKey);
+  if(!refCalib || !Number.isFinite(Number(refCalib.y))) return null;
+
+  const verticalOffset = Number(refCalib.y) - Number(refRibbonTop);
+  return Math.round(Number(liveTopRibbonY) + verticalOffset);
 }
   
   
@@ -3054,12 +3088,13 @@ function placeBadgeSlotAnchored(id){
 
   applyCalibToElement(clone, clone.dataset.calibKey, { x: baseX, y: baseY, w: bw, h: bh, r: 0 });
 
-  // If the wearer only has a single aviation/occupational badge above the ribbons,
-  // render it at the same vertical height that the ground-team / EMT badge family uses.
-  if(slot === 'OLP' && isLoneAviationOccupationalBadge(id)){
-    const alignedTopY = getGroundReferenceTopY(idx);
-    if(alignedTopY !== null){
-      clone.style.top = `${alignedTopY}px`;
+  // Over-ribbon occupational / aviation / ground-team style badges should follow the
+  // current highest ribbon row, preserving the calibrated vertical offset from that row.
+  if(['OLP','OLPA','OLPU'].includes(slot)){
+    const loneOccupational = (slot === 'OLP' || slot === 'OLPA') && isLoneAviationOccupationalBadge(id);
+    const dynamicTop = getDynamicOverRibbonBadgeTop(slot, idx, { loneOccupational });
+    if(dynamicTop !== null){
+      clone.style.top = `${dynamicTop}px`;
     }
   }
 
