@@ -1482,50 +1482,93 @@ function clearCalib(key){
   delete bucket[key];
   delete State.calib.map[key];
 }
-function collectRenderedLayerSnapshot(){
-  const snapshot = [];
-  const layers = [...uniformCanvas.querySelectorAll('.layer')];
+function getLayerTypeFromKey(key, className=''){
+  const k = String(key || '');
+  if(k.startsWith('ribbon:')) return 'ribbon';
+  if(k.startsWith('mini:')) return 'mini-medal';
+  if(k.startsWith('badge:')) return 'badge';
+  if(k.startsWith('patch:')) return 'patch';
+  if(k.startsWith('device:')) return 'ribbon-device';
+  if(k.startsWith('rank:')) return 'rank';
+  if(k.startsWith('text:')) return 'text';
+  if(k === 'jacket') return 'base-uniform';
+  if(String(className).includes('jacket')) return 'base-uniform';
+  return 'layer';
+}
 
-  layers.forEach((el, index) => {
-    const st = window.getComputedStyle(el);
-    const left = Math.round(parseFloat(st.left) || 0);
-    const top = Math.round(parseFloat(st.top) || 0);
-    const width = Math.round(parseFloat(st.width) || 0);
-    const height = Math.round(parseFloat(st.height) || 0);
-    const transform = st.transform || '';
-    let rotation = 0;
+function parseItemIdFromKey(key){
+  const parts = String(key || '').split(':');
+  if(parts.length >= 2) return parts[1];
+  return String(key || '');
+}
 
-    const calibKey = el.dataset?.calibKey || `layer:${index}`;
-    const calib = getCalib(calibKey) || {};
-    if(calib.r !== undefined){
-      rotation = Number(calib.r) || 0;
-    }else if(transform && transform !== 'none'){
-      const m = transform.match(/matrix\(([^)]+)\)/);
-      if(m){
-        const parts = m[1].split(',').map(v => parseFloat(v.trim()));
-        if(parts.length >= 2){
-          rotation = Math.round(Math.atan2(parts[1], parts[0]) * (180 / Math.PI));
-        }
+function readRenderedLayerRecord(el, index=0){
+  if(!el) return null;
+  const st = window.getComputedStyle(el);
+  const left = Math.round(parseFloat(st.left) || 0);
+  const top = Math.round(parseFloat(st.top) || 0);
+  const width = Math.round(parseFloat(st.width) || 0);
+  const height = Math.round(parseFloat(st.height) || 0);
+  const transform = st.transform || '';
+  const calibKey = el.dataset?.calibKey || `layer:${index}`;
+  const calib = getCalib(calibKey) || {};
+  let rotation = 0;
+
+  if(calib.r !== undefined){
+    rotation = Number(calib.r) || 0;
+  }else if(transform && transform !== 'none'){
+    const m = transform.match(/matrix\(([^)]+)\)/);
+    if(m){
+      const parts = m[1].split(',').map(v => parseFloat(v.trim()));
+      if(parts.length >= 2){
+        rotation = Math.round(Math.atan2(parts[1], parts[0]) * (180 / Math.PI));
       }
     }
+  }
 
-    snapshot.push({
-      key: calibKey,
-      className: el.className || '',
-      src: ('src' in el && el.src) ? el.getAttribute('src') || '' : '',
-      text: el.tagName === 'DIV' ? (el.textContent || '') : '',
-      x: left,
-      y: top,
-      w: width,
-      h: height,
-      r: rotation
-    });
+  const className = el.className || '';
+  return {
+    key: calibKey,
+    type: getLayerTypeFromKey(calibKey, className),
+    id: parseItemIdFromKey(calibKey),
+    className,
+    src: ('src' in el && el.src) ? el.getAttribute('src') || '' : '',
+    text: el.tagName === 'DIV' ? (el.textContent || '') : '',
+    x: left,
+    y: top,
+    w: width,
+    h: height,
+    r: rotation,
+    naturalW: ('naturalWidth' in el) ? (el.naturalWidth || null) : null,
+    naturalH: ('naturalHeight' in el) ? (el.naturalHeight || null) : null
+  };
+}
+
+function collectRenderedLayerSnapshot(){
+  return [...uniformCanvas.querySelectorAll('.layer')]
+    .map((el, index) => readRenderedLayerRecord(el, index))
+    .filter(Boolean);
+}
+
+function collectRenderedLayerMap(){
+  const map = {};
+  collectRenderedLayerSnapshot().forEach((item, index) => {
+    const key = item.key || `layer:${index}`;
+    // If duplicate keys exist, preserve each layer instead of overwriting silently.
+    if(map[key]){
+      let i = 2;
+      while(map[`${key}#${i}`]) i++;
+      map[`${key}#${i}`] = item;
+    }else{
+      map[key] = item;
+    }
   });
-
-  return snapshot;
+  return map;
 }
 
 function getAllCalibrationExport(){
+  const renderedItems = collectRenderedLayerSnapshot();
+  const renderedMap = collectRenderedLayerMap();
   return {
     app: 'CAP Uniform Builder',
     type: 'uniform-coordinate-calibration',
@@ -1536,7 +1579,16 @@ function getAllCalibrationExport(){
     activeGender: State.gender || null,
     coordinatesByUniform: State.calib.byUniform || {},
     legacyCoordinates: State.calib.map || {},
-    renderedItems: collectRenderedLayerSnapshot()
+
+    // This is the section to send back for placement help. It includes EVERY visible/rendered layer.
+    // It does not drive placement on reload, so it will not break dynamic ribbon ordering.
+    renderedItems,
+    renderedItemsByUniform: {
+      [State.uniform || 'global']: renderedItems
+    },
+    renderedCoordinatesByUniform: {
+      [State.uniform || 'global']: renderedMap
+    }
   };
 }
 function saveCalibrationToBrowser(){
@@ -1555,7 +1607,17 @@ function downloadCalibrationJson(){
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
 function applyCalibToElement(el, key, base){
-  const over = getCalib(key) || buildDerivedBadgeCalib(key, base);
+  let over = getCalib(key) || buildDerivedBadgeCalib(key, base);
+
+  // IMPORTANT: Ribbon x/y must remain dynamic so precedence ordering and centered partial
+  // top rows do not get broken by old per-ribbon exports. We still allow calibrated ribbon
+  // dimensions/rotation to apply, but the current row/column algorithm owns ribbon x/y.
+  if(String(key || '').startsWith('ribbon:') && over){
+    over = { ...over };
+    delete over.x;
+    delete over.y;
+  }
+
   const v = { ...base, ...(over||{}) };
 
   if(v.x !== undefined) el.style.left = `${v.x}px`;
@@ -1574,16 +1636,31 @@ function getSelectedCalibKeys(){
   if(keys.length) return [...new Set(keys)];
   return State.calib.selectedKey ? [State.calib.selectedKey] : [];
 }
+function getRenderedRecordForKey(key){
+  const el = findLayerByCalibKey(key);
+  if(!el) return null;
+  return readRenderedLayerRecord(el, 0);
+}
 function buildCalibJson(key){
-  const v = getCalib(key) || {};
-  return JSON.stringify({ uniform: getCurrentCalibUniform(), key, ...v }, null, 2);
+  const saved = getCalib(key) || {};
+  const rendered = getRenderedRecordForKey(key);
+  return JSON.stringify({
+    uniform: getCurrentCalibUniform(),
+    key,
+    savedCalibration: saved,
+    rendered: rendered || { key, ...saved }
+  }, null, 2);
 }
 function buildSelectedCalibJson(){
   const keys = getSelectedCalibKeys();
   const payload = {
     uniform: getCurrentCalibUniform(),
     selectedCount: keys.length,
-    assets: keys.map(key => ({ key, ...(getCalib(key) || {}) }))
+    assets: keys.map(key => ({
+      key,
+      savedCalibration: getCalib(key) || {},
+      rendered: getRenderedRecordForKey(key) || null
+    }))
   };
   return JSON.stringify(payload, null, 2);
 }
@@ -2592,7 +2669,11 @@ function renderRack(){
         initRibbonDragHandlers(tile);
         uniformCanvas.appendChild(tile);
 
-        drawDevicesOnRibbon(rid,leftPx,topPx,RW,RH);
+        const renderedLeft = parseFloat(tile.style.left) || leftPx;
+        const renderedTop  = parseFloat(tile.style.top) || topPx;
+        const renderedW    = parseFloat(tile.style.width) || RW;
+        const renderedH    = parseFloat(tile.style.height) || RH;
+        drawDevicesOnRibbon(rid, renderedLeft, renderedTop, renderedW, renderedH);
       });
     });
 
