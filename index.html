@@ -3304,14 +3304,25 @@ function renderAllBadges(){
   const maxCountedBadges = 4;
   let countedApplied = 0;
 
+  const countedBadges = [];
+  const commandBadges = [];
+
   for(const id of State.badges){
     if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
+    if(isCommandInsigniaBadge(id)) commandBadges.push(id);
+    else countedBadges.push(id);
+  }
 
-    const isCommand = isCommandInsigniaBadge(id);
-    if(!isCommand && countedApplied >= maxCountedBadges) continue;
-
+  for(const id of countedBadges){
+    if(countedApplied >= maxCountedBadges) break;
     const placed = placeBadgeSlotAnchored(id);
-    if(placed && !isCommand) countedApplied++;
+    if(placed) countedApplied++;
+  }
+
+  // Command insignia never counts against the four-badge limit and should render last
+  // so it stays visible even when other badges are already present.
+  for(const id of commandBadges){
+    placeBadgeSlotAnchored(id);
   }
 }
 
@@ -3388,12 +3399,15 @@ function shouldUseLowerAviationPosition(){
   // high position reserved for a two-badge aviation/occupational stack.
   return !hasSelectedUnderAviationBadge();
 }
-function getLowerAviationTop(){
+function getLowerAviationTop(badgeHeight=null){
   const liveTopRibbonY = getTopRibbonRowY();
   if(liveTopRibbonY === null) return null;
-  // From the senior male Class A calibration, the lower over-ribbon position is
-  // 30px above the highest ribbon row (e.g., ribbon top 199 -> badge top 169).
-  return Math.round(liveTopRibbonY - 30);
+  // When no badge is worn in the OLPU position, the aviation badge should drop to the
+  // lower single-badge position directly over the highest ribbon row. Keep a small,
+  // consistent gap between the bottom of the badge and the top of the ribbons.
+  const resolvedHeight = Number.isFinite(Number(badgeHeight)) ? Number(badgeHeight) : 17;
+  const bottomGap = 5;
+  return Math.round(liveTopRibbonY - resolvedHeight - bottomGap);
 }
 function applyBadgeAssetWithFallback(el, id){
   const candidates = getBadgeAssetCandidates(id).map(ASSET);
@@ -3451,7 +3465,8 @@ function getDynamicBadgeTopFromAppliedPosition(el, id=null, slot=null){
   if(liveTopRibbonY === null) return null;
 
   if(slot === 'OLP' && AIRCREW_BADGE_IDS.has(id) && shouldUseLowerAviationPosition()){
-    return getLowerAviationTop();
+    const actualHeight = parseFloat(el?.style?.height) || customBadgeSizes[id]?.height || 17;
+    return getLowerAviationTop(actualHeight);
   }
 
   const uniformId = getCurrentCalibUniform();
@@ -3502,7 +3517,7 @@ function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
   // by applyCalibToElement/buildDerivedBadgeCalib when calibration exists.
   const base = {
     OLPA: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 84 : H * 0.18, dy: 0 },
-    OLP:  { x: rackX,  y: topRibbonY !== null ? (shouldUseLowerAviationPosition() ? topRibbonY - 30 : topRibbonY - 50) : H * 0.22, dy: 0 },
+    OLP:  { x: rackX,  y: topRibbonY !== null ? (shouldUseLowerAviationPosition() ? topRibbonY - (bh + 5) : topRibbonY - 50) : H * 0.22, dy: 0 },
     OLPU: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 3  : H * 0.27, dy: 0 },
     OLPF: { x: W*0.64, y: H*0.50, dy: 0 },
 
@@ -3557,6 +3572,8 @@ function placeBadgeSlotAnchored(id){
   clone.dataset.tooltipWhy = (id==='squadron_commander_badge')
     ? (State.commandInsignia?.graduatedCommander ? 'Past/graduated command insignia renders under the name tag (UN).' : 'Current command insignia renders over the name tag (ON).')
     : `Rendered in the CAPR 39-1 category ${slot}.`;
+
+  if(isCommandInsigniaBadge(id)) clone.style.zIndex = '30';
 
   applyCalibToElement(clone, clone.dataset.calibKey, { x: base.x, y: base.y, w: bw, h: bh, r: 0 });
 
