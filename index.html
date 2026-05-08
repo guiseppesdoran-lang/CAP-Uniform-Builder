@@ -1482,14 +1482,61 @@ function clearCalib(key){
   delete bucket[key];
   delete State.calib.map[key];
 }
+function collectRenderedLayerSnapshot(){
+  const snapshot = [];
+  const layers = [...uniformCanvas.querySelectorAll('.layer')];
+
+  layers.forEach((el, index) => {
+    const st = window.getComputedStyle(el);
+    const left = Math.round(parseFloat(st.left) || 0);
+    const top = Math.round(parseFloat(st.top) || 0);
+    const width = Math.round(parseFloat(st.width) || 0);
+    const height = Math.round(parseFloat(st.height) || 0);
+    const transform = st.transform || '';
+    let rotation = 0;
+
+    const calibKey = el.dataset?.calibKey || `layer:${index}`;
+    const calib = getCalib(calibKey) || {};
+    if(calib.r !== undefined){
+      rotation = Number(calib.r) || 0;
+    }else if(transform && transform !== 'none'){
+      const m = transform.match(/matrix\(([^)]+)\)/);
+      if(m){
+        const parts = m[1].split(',').map(v => parseFloat(v.trim()));
+        if(parts.length >= 2){
+          rotation = Math.round(Math.atan2(parts[1], parts[0]) * (180 / Math.PI));
+        }
+      }
+    }
+
+    snapshot.push({
+      key: calibKey,
+      className: el.className || '',
+      src: ('src' in el && el.src) ? el.getAttribute('src') || '' : '',
+      text: el.tagName === 'DIV' ? (el.textContent || '') : '',
+      x: left,
+      y: top,
+      w: width,
+      h: height,
+      r: rotation
+    });
+  });
+
+  return snapshot;
+}
+
 function getAllCalibrationExport(){
   return {
     app: 'CAP Uniform Builder',
     type: 'uniform-coordinate-calibration',
     exportedAt: new Date().toISOString(),
     activeUniform: State.uniform || null,
+    activeMembership: State.membership || null,
+    activeRank: State.rank || null,
+    activeGender: State.gender || null,
     coordinatesByUniform: State.calib.byUniform || {},
-    legacyCoordinates: State.calib.map || {}
+    legacyCoordinates: State.calib.map || {},
+    renderedItems: collectRenderedLayerSnapshot()
   };
 }
 function saveCalibrationToBrowser(){
