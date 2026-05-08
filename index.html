@@ -1025,7 +1025,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <div id="badgeGallery" class="galleryGrid"></div>
 
         <div class="hintText">
-          Placement follows your CAPR 39-1 slot rules (OLP/OLPU/OLPA/ORP/ON/UN/LP/LRP).
+          Placement follows your CAPR 39-1 slot rules (ORP/OLP/UN/ON/URBP/OLPA/OLPU/LP/RP/OLPF).
         </div>
       </section>
 
@@ -1324,15 +1324,29 @@ const AIRCREW_BADGE_IDS = new Set([
   'observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
   'solo_badge','pre_solo_badge'
 ]);
+
+// CAPR 39-1 Attachment 4 badge-position categories.
+// OLP = over left pocket, OLPA = over left pocket above aviation,
+// OLPU = over left pocket under aviation, ON/UN = over/under name tag,
+// LP/RP = on pocket, ORP = over right pocket, OLPF = on left pocket flap.
+const CHAPLAIN_BADGE_IDS = new Set([
+  'buddist_chaplin','christian_chaplin','jewish_chaplin','muslim_chaplin'
+]);
 const GROUND_EMT_BADGE_IDS = new Set([
   'ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
   'emt_basic_badge','emt_intermediate','emt_paramedic'
 ]);
-const POCKET_SERVICE_BADGE_IDS = new Set([
+const OLPU_OCCUPATIONAL_BADGE_IDS = new Set([
+  ...GROUND_EMT_BADGE_IDS,
+  'medical_officer','nurse_officer','legal_officer','basic_incident_commander_badge'
+]);
+const SPECIALTY_TRACK_BADGE_IDS = new Set([
   'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
-  'communications_technician_badge','information_technology_technician_badge',
-  'historian_technicianIbadge','cyber_badges','stem_badges',
-  'volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge'
+  'communications_technician_badge','information_technology_technician_badge','historian_technicianIbadge',
+  'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge'
+]);
+const POCKET_SERVICE_BADGE_IDS = new Set([
+  ...SPECIALTY_TRACK_BADGE_IDS
 ]);
 
 // Specialty/occupational badge visual families. These let one calibrated badge zone
@@ -1349,6 +1363,12 @@ const LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS = new Set([
 const INCIDENT_COMMAND_SPECIALTY_BADGE_IDS = new Set([
   'basic_incident_commander_badge'
 ]);
+
+function getGenderedPocketSlotForBadge(id){
+  if(id === 'model_rocketry_badge') return State.gender === 'female' ? 'ON' : 'LP';
+  if(SPECIALTY_TRACK_BADGE_IDS.has(id)) return State.gender === 'female' ? 'ON' : 'LP';
+  return 'LP';
+}
 
 // CAP command insignia is handled as its own exception category and does not count
 // against the normal four-badge limit.
@@ -1398,60 +1418,70 @@ function buildDerivedBadgeCalib(key, base){
   const parsed = parseBadgeCalibKey(key);
   if(!parsed) return null;
   const uniformId = getCurrentCalibUniform();
-  const defaults = DEFAULT_CALIBRATION_BY_UNIFORM[uniformId];
-  if(!defaults) return null;
+  const defaults = DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {};
 
   let refKey = null;
+  let yAdjust = 0;
+
   if(AIRCREW_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLP'){
-    // Observer/aircrew/aviation badges inherit the calibrated high aviation zone.
-    // Prefer Observer when present because it was calibrated to clear specialty/occupational badges.
+    // Aviation badges: OLP, over the left pocket / over ribbons.
     refKey = `badge:observer_badge:OLP:${parsed.idx}`;
     if(!defaults[refKey]) refKey = `badge:AirCrew1_DB3F0FCC3650F:OLP:${parsed.idx}`;
-  }else if(GROUND_EMT_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLPU'){
+  }else if(CHAPLAIN_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLPA'){
+    // Chaplain badges: OLPA, above aviation badges.
+    refKey = `badge:observer_badge:OLP:0`;
+    if(!defaults[refKey]) refKey = `badge:AirCrew1_DB3F0FCC3650F:OLP:0`;
+    yAdjust = -34;
+  }else if(OLPU_OCCUPATIONAL_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLPU'){
+    // Ground team, EMT, medical, legal, and incident commander badges: OLPU.
     refKey = `badge:master_ground_team_badge:OLPU:${parsed.idx}`;
-  }else if(ES_POCKET_BADGE_IDS.has(parsed.id) && parsed.slot === 'LP'){
-    // ES family badges share the calibrated Class A left-pocket ES zone/scale.
-    refKey = `badge:master_emergency_services_badge:LP:${parsed.idx}`;
-    if(!defaults[refKey]) refKey = `badge:emergency_services_badge:LP:${parsed.idx}`;
-  }else if(SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id) && parsed.slot === 'UN'){
-    // Small specialty track/occupational badges use the calibrated right-pocket/under-nameplate zone.
+    if(!defaults[refKey]) refKey = `badge:master_ground_team_badge:OLPU:0`;
+  }else if(SPECIALTY_TRACK_BADGE_IDS.has(parsed.id) && parsed.slot === 'LP'){
+    // Specialty-track style badges: male service dress/class B = LP.
+    if(ES_POCKET_BADGE_IDS.has(parsed.id)){
+      refKey = `badge:master_emergency_services_badge:LP:${parsed.idx}`;
+      if(!defaults[refKey]) refKey = `badge:emergency_services_badge:LP:${parsed.idx}`;
+    }else{
+      refKey = `badge:emergency_services_badge:LP:${parsed.idx}`;
+    }
+  }else if(SPECIALTY_TRACK_BADGE_IDS.has(parsed.id) && parsed.slot === 'ON'){
+    // Female specialty-track style badges use the name-tag side.
+    refKey = `badge:squadron_commander_badge:ON:${parsed.idx}`;
+    if(!defaults[refKey]) refKey = `badge:communications_technician_badge:UN:${parsed.idx}`;
+  }else if(SPECIALTY_TRACK_BADGE_IDS.has(parsed.id) && parsed.slot === 'UN'){
+    // Fallback / older saved slot for these badges. Kept only to avoid breaking old files.
     refKey = `badge:communications_technician_badge:UN:${parsed.idx}`;
-  }else if(LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id) && parsed.slot === 'UN'){
-    // Larger specialty/cadet-program style badges use the Volunteer University scale/zone.
-    refKey = `badge:volunteer_university_instructor_badge:UN:${parsed.idx}`;
-    if(!defaults[refKey]) refKey = `badge:volunteer_university_instructor_badge:UN:0`;
-  }else if(INCIDENT_COMMAND_SPECIALTY_BADGE_IDS.has(parsed.id) && parsed.slot === 'UN'){
-    // Incident Commander badge has its own rectangular visual scale.
-    refKey = `badge:basic_incident_commander_badge:UN:${parsed.idx}`;
-    if(!defaults[refKey]) refKey = `badge:basic_incident_commander_badge:UN:1`;
-  }else if(POCKET_SERVICE_BADGE_IDS.has(parsed.id) && parsed.slot === 'LP'){
-    refKey = `badge:emergency_services_badge:LP:${parsed.idx}`;
-  }else if(POCKET_SERVICE_BADGE_IDS.has(parsed.id) && parsed.slot === 'UN'){
-    refKey = `badge:communications_technician_badge:UN:${parsed.idx}`;
+  }else if(parsed.id === 'model_rocketry_badge' && parsed.slot === 'LP'){
+    refKey = `badge:emergency_services_badge:LP:0`;
+  }else if(parsed.id === 'model_rocketry_badge' && parsed.slot === 'ON'){
+    refKey = `badge:squadron_commander_badge:ON:0`;
+  }else if(parsed.id === 'nra_marksman_badge' && parsed.slot === 'OLPF'){
+    refKey = `badge:emergency_services_badge:LP:0`;
   }
+
   if(!refKey || !defaults[refKey]) return null;
 
   const ref = defaults[refKey];
   const patch = { ...ref };
+  if(Number.isFinite(Number(patch.y))) patch.y = Math.round(Number(patch.y) + yAdjust);
 
-  // Ground team and EMT badges can have different natural sizes. Use the reference CENTER
-  // while preserving the current badge's own width/height unless the actual item was edited directly.
-  if(GROUND_EMT_BADGE_IDS.has(parsed.id) && base && base.w && base.h){
+  // Over-left-pocket badges inherit the reference center but keep each badge family's
+  // own dimensions, unless the reference was calibrated for the exact family.
+  if(['OLP','OLPA','OLPU','OLPF'].includes(parsed.slot) && base && base.w && base.h){
     const refW = ref.w ?? base.w;
     const refH = ref.h ?? base.h;
     patch.x = Math.round(ref.x + refW/2 - base.w/2);
-    patch.y = Math.round(ref.y + refH/2 - base.h/2);
+    patch.y = Math.round((ref.y + yAdjust) + refH/2 - base.h/2);
     delete patch.w;
     delete patch.h;
   }
 
-  // Pocket-zone badges use calibrated family zones. The reference badge establishes
-  // the corrected top-left placement and visual size for that badge family.
-  if(POCKET_SERVICE_BADGE_IDS.has(parsed.id) && ['LP','UN'].includes(parsed.slot) && base){
+  // Pocket/name-tag zone badges use calibrated family zones and sizes.
+  if(SPECIALTY_TRACK_BADGE_IDS.has(parsed.id) && ['LP','ON','UN'].includes(parsed.slot) && base){
     const refW = ref.w ?? base.w;
     const refH = ref.h ?? base.h;
     patch.x = Math.round(ref.x);
-    patch.y = Math.round(ref.y);
+    patch.y = Math.round(ref.y + yAdjust);
     patch.w = refW;
     patch.h = refH;
   }
@@ -2041,33 +2071,33 @@ const exclusiveBadges = [
 ];
 
 const badgeLocations = {
+  // Aviation badges
   'AirCrew1_DB3F0FCC3650F':'OLP','BalloonPilot1_442D89C94185B':'OLP','CAPMasterPilot1_621A0E2ED15DA':'OLP','CAPPilot1_FA9D33EA587D8':'OLP','CAPSeniorPilot1_D9725AE959752':'OLP','GliderPilot1_7BFB287379918':'OLP','MasterAirCrew1_72AC4CAE7A310':'OLP',
-  'SeniorAirCrew1_B289BAE6E515C':'OLP','pre_solo_badge':'OLP','solo_badge':'OLP',
+  'SeniorAirCrew1_B289BAE6E515C':'OLP','pre_solo_badge':'OLP','solo_badge':'OLP','MasterObserver1_1B88D5071FD5C':'OLP','SeniorObserver1_0E35802A29801':'OLP','observer_badge':'OLP',
 
-  // UPDATED per your sheet
-  'communications_technician_badge':'LP,UN',
-  'information_technology_technician_badge':'LP,UN',
-  'MasterObserver1_1B88D5071FD5C':'OLP',
-  'SeniorObserver1_0E35802A29801':'OLP',
-  'observer_badge':'OLP',
-  'historian_technicianIbadge':'LP,UN',
-  'emergency_services_badge':'LP,UN',
-  'senior_emergency_services_badge':'LP,UN',
-  'master_emergency_services_badge':'LP,UN',
-  'volunteer_university_instructor_badge':'LP,UN',
-  'basic_incident_commander_badge':'LP,UN',
-  'cadet_programs_badge':'LP,UN',
+  // Occupational badges per CAPR 39-1 Attachment 4
+  'buddist_chaplin':'OLPA','christian_chaplin':'OLPA','jewish_chaplin':'OLPA','muslim_chaplin':'OLPA',
+  'medical_officer':'OLPU','nurse_officer':'OLPU','emt_basic_badge':'OLPU','emt_intermediate':'OLPU','emt_paramedic':'OLPU','legal_officer':'OLPU',
+  'ground_team_basic_badge':'OLPU','senior_ground_team_badge':'OLPU','master_ground_team_badge':'OLPU','basic_incident_commander_badge':'OLPU',
+
+  // Specialty-track style badges: male service dress/class B = LP; female = ON.
+  'communications_technician_badge':'LP,ON',
+  'information_technology_technician_badge':'LP,ON',
+  'historian_technicianIbadge':'LP,ON',
+  'emergency_services_badge':'LP,ON',
+  'senior_emergency_services_badge':'LP,ON',
+  'master_emergency_services_badge':'LP,ON',
+  'volunteer_university_instructor_badge':'LP,ON',
+  'cadet_programs_badge':'LP,ON',
+  'cyber_badges':'LP,ON','stem_badges':'LP,ON',
+
+  // Command insignia is chosen dynamically: current = ON, past/graduated = UN.
   'squadron_commander_badge':'ON',
 
-  // unchanged
-  'cyber_badges':'LP','stem_badges':'LP',
-  'model_rocketry_badge':'LP',
-  'nra_marksman_badge':'LRP',
-  'ground_team_basic_badge':'OLPU','senior_ground_team_badge':'OLPU','master_ground_team_badge':'OLPU',
-  'emt_basic_badge':'OLPU','emt_intermediate':'OLPU','emt_paramedic':'OLPU',
-  'buddist_chaplin':'ORP','christian_chaplin':'ORP','jewish_chaplin':'ORP','legal_officer':'ORP','medical_officer':'ORP','nurse_officer':'ORP','muslim_chaplin':'ORP'
+  // Special cases
+  'model_rocketry_badge':'LP,ON',
+  'nra_marksman_badge':'OLPF'
 };
-
 
 const customBadgeSizes = {
   'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
@@ -3164,24 +3194,34 @@ function buildPatchGallery(){
 }
 
 /* ===========================
-   BADGES (RENDER) — SLOT-ANCHORED
+   BADGES (RENDER) — CAPR 39-1 SLOT CATEGORIES
    =========================== */
 
 /*
-  Goal: Badges MUST render in their actual CAPR 39-1 “slots” (OLPA/OLPU/OLP/ORP/ON/UN/LP/LRP),
-  NOT as “centered above ribbons”. This removes the old OVERSTACK behavior that was incorrectly
-  treating OLP/OLPU/OLPA/ORP as over-rack.
+  Slot names intentionally match CAPR 39-1 Attachment 4:
+  ORP  = Over right pocket
+  OLP  = Over left pocket / aviation badge position
+  UN   = Under name tag
+  ON   = Over name tag
+  URBP = Under right breast pocket
+  OLPA = Over left pocket, above aviation badges
+  OLPU = Over left pocket, under aviation badges
+  LP/RP = On left/right pocket
+  OLPF = On left pocket flap (NRA badge)
 */
 
 const badgeSlots = {
-  OLPA: [],  // Over Left Pocket, Above Aviation
-  OLPU: [],  // Over Left Pocket, Under Aviation
-  OLP:  [],  // Over Left Pocket (generic if used)
-  ORP:  [],  // Over Right Pocket
-  ON:   [],  // Over Nameplate
-  UN:   [],  // Under Nameplate
-  LRP:  [],  // Left/Right Pocket flap (marksmanship)
-  LP:   []   // Left pocket (Model Rocketry in your rules)
+  ORP:  [],
+  OLP:  [],
+  UN:   [],
+  ON:   [],
+  URBP: [],
+  OLPA: [],
+  OLPU: [],
+  LP:   [],
+  RP:   [],
+  LRP:  [],
+  OLPF: []
 };
 
 function resetBadgeSlots(){
@@ -3195,7 +3235,7 @@ function parseSlotPrefs(slotSpec){
     .map(s => s.trim())
     .filter(Boolean);
 }
-  
+
 function renderAllBadges(){
   [...uniformCanvas.querySelectorAll('.layer.badge')].forEach(n=>n.remove());
   resetBadgeSlots();
@@ -3204,16 +3244,14 @@ function renderAllBadges(){
   const maxCountedBadges = 4;
   let countedApplied = 0;
 
-  const applied = [];
   for(const id of State.badges){
     if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
 
     const isCommand = isCommandInsigniaBadge(id);
     if(!isCommand && countedApplied >= maxCountedBadges) continue;
 
-    placeBadgeSlotAnchored(id);
-    applied.push(id);
-    if(!isCommand) countedApplied++;
+    const placed = placeBadgeSlotAnchored(id);
+    if(placed && !isCommand) countedApplied++;
   }
 }
 
@@ -3222,63 +3260,23 @@ function getTopRibbonRowCenterX() {
   if (!ribbonEls.length) return null;
 
   const minTop = Math.min(...ribbonEls.map(el => parseFloat(el.style.top) || 0));
-
-  const topRow = ribbonEls.filter(el => {
-    const t = parseFloat(el.style.top) || 0;
-    return Math.abs(t - minTop) < 0.5;
-  });
-
+  const topRow = ribbonEls.filter(el => Math.abs((parseFloat(el.style.top) || 0) - minTop) < 0.5);
   if (!topRow.length) return null;
 
   const lefts = topRow.map(el => parseFloat(el.style.left) || 0);
-  const rights = topRow.map(el => {
-    const left = parseFloat(el.style.left) || 0;
-    const width = parseFloat(el.style.width) || RIBBON_WIDTH;
-    return left + width;
-  });
-
-  const rowLeft = Math.min(...lefts);
-  const rowRight = Math.max(...rights);
-
-  return (rowLeft + rowRight) / 2;
+  const rights = topRow.map(el => (parseFloat(el.style.left) || 0) + (parseFloat(el.style.width) || RIBBON_WIDTH));
+  return (Math.min(...lefts) + Math.max(...rights)) / 2;
 }
 
 function getTopRibbonRowY() {
   const ribbonEls = [...uniformCanvas.querySelectorAll('.layer.ribbonTile')];
   if (!ribbonEls.length) return null;
-
-  const minTop = Math.min(...ribbonEls.map(el => parseFloat(el.style.top) || 0));
-  return minTop;
-}
-
-function getSelectedOverLeftPocketBadges(){
-  const out = [];
-  for(const id of State.badges){
-    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
-
-    let slotSpec = getBadgeSlotSpec(id);
-    if(id==='nra_marksman_badge') slotSpec='LRP';
-    if(id==='model_rocketry_badge') slotSpec='LP';
-
-    const prefs = parseSlotPrefs(slotSpec);
-    if(prefs.some(slot => ['OLP','OLPU','OLPA'].includes(slot))){
-      out.push(id);
-    }
-  }
-  return out;
-}
-
-function isLoneAviationOccupationalBadge(id){
-  const overLeft = getSelectedOverLeftPocketBadges();
-  return AIRCREW_BADGE_IDS.has(id) && overLeft.length === 1 && overLeft[0] === id;
+  return Math.min(...ribbonEls.map(el => parseFloat(el.style.top) || 0));
 }
 
 const OVER_RIBBON_REFERENCE_TOP_BY_UNIFORM = {
-  blues_b: 189,
-  // Latest senior male Class A export uses a 7-row rack with the highest row at y=164.
-  // This prevents aviation badges from initially jumping down into the same vertical band
-  // as specialty/occupational badges.
-  blues_a: 164
+  blues_a: 164,
+  blues_b: 189
 };
 
 function getReferenceCalibForKey(uniformId, key){
@@ -3286,25 +3284,24 @@ function getReferenceCalibForKey(uniformId, key){
   return bucket[key] || ((DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {})[key]) || null;
 }
 
-function getOverRibbonReferenceKey(slot, idx=0, opts={}){
-  const loneOccupational = !!opts.loneOccupational;
-  if((slot === 'OLP' || slot === 'OLPA') && loneOccupational){
-    return `badge:master_ground_team_badge:OLPU:${idx}`;
-  }
-  if(slot === 'OLP' || slot === 'OLPA'){
+function getOverRibbonReferenceKey(slot, idx=0){
+  if(slot === 'OLP'){
     const uniformId = getCurrentCalibUniform();
-    const defaults = DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {};
     const observerKey = `badge:observer_badge:OLP:${idx}`;
-    if(defaults[observerKey] || getReferenceCalibForKey(uniformId, observerKey)) return observerKey;
+    if(getReferenceCalibForKey(uniformId, observerKey)) return observerKey;
     return `badge:AirCrew1_DB3F0FCC3650F:OLP:${idx}`;
   }
-  if(slot === 'OLPU'){
-    return `badge:master_ground_team_badge:OLPU:${idx}`;
+  if(slot === 'OLPU') return `badge:master_ground_team_badge:OLPU:${idx}`;
+  if(slot === 'OLPA'){
+    const uniformId = getCurrentCalibUniform();
+    const observerKey = `badge:observer_badge:OLP:0`;
+    if(getReferenceCalibForKey(uniformId, observerKey)) return observerKey;
+    return `badge:AirCrew1_DB3F0FCC3650F:OLP:0`;
   }
   return null;
 }
 
-function getDynamicOverRibbonBadgeTop(slot, idx=0, opts={}){
+function getDynamicOverRibbonBadgeTop(slot, idx=0){
   const liveTopRibbonY = getTopRibbonRowY();
   if(liveTopRibbonY === null) return null;
 
@@ -3312,38 +3309,35 @@ function getDynamicOverRibbonBadgeTop(slot, idx=0, opts={}){
   const refRibbonTop = OVER_RIBBON_REFERENCE_TOP_BY_UNIFORM[uniformId];
   if(refRibbonTop === undefined || refRibbonTop === null) return null;
 
-  const refKey = getOverRibbonReferenceKey(slot, idx, opts);
+  const refKey = getOverRibbonReferenceKey(slot, idx);
   if(!refKey) return null;
 
   const refCalib = getReferenceCalibForKey(uniformId, refKey);
   if(!refCalib || !Number.isFinite(Number(refCalib.y))) return null;
 
-  const verticalOffset = Number(refCalib.y) - Number(refRibbonTop);
+  let verticalOffset = Number(refCalib.y) - Number(refRibbonTop);
+  if(slot === 'OLPA') verticalOffset -= 34;
   return Math.round(Number(liveTopRibbonY) + verticalOffset);
 }
-  
-  
+
 function getPreferredBadgeSlotForRendering(id, prefs){
-  // Some badge definitions list multiple legal locations. Pick the location that
-  // matches the calibrated visual family so exported coordinates carry across to
-  // similar badges.
   if(isCommandInsigniaBadge(id)) return getCommandInsigniaSlot();
-  if(id === 'nra_marksman_badge') return 'LRP';
-  if(id === 'model_rocketry_badge') return 'LP';
+  if(id === 'nra_marksman_badge') return 'OLPF';
+  if(id === 'model_rocketry_badge') return getGenderedPocketSlotForBadge(id);
+  if(CHAPLAIN_BADGE_IDS.has(id)) return 'OLPA';
   if(AIRCREW_BADGE_IDS.has(id)) return 'OLP';
-  if(GROUND_EMT_BADGE_IDS.has(id)) return 'OLPU';
-  if(ES_POCKET_BADGE_IDS.has(id)) return 'LP';
-  if(SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(id)) return 'UN';
-  if(LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(id)) return 'UN';
-  if(INCIDENT_COMMAND_SPECIALTY_BADGE_IDS.has(id)) return 'UN';
+  if(OLPU_OCCUPATIONAL_BADGE_IDS.has(id)) return 'OLPU';
+  if(SPECIALTY_TRACK_BADGE_IDS.has(id)) return getGenderedPocketSlotForBadge(id);
   return prefs?.[0] || 'UN';
 }
 
 function slotHasRoom(slot){
   if(!badgeSlots[slot]) badgeSlots[slot] = [];
-  if(slot === 'LRP' || slot === 'LP') return badgeSlots[slot].length < 1;
-  if(['OLPA','OLPU','OLP'].includes(slot)) return badgeSlots[slot].length < 2;
-  return badgeSlots[slot].length < 2;
+  // Treat the named categories as physical locations. Most should only hold one item;
+  // this prevents the program from stacking unrelated badges in the wrong category.
+  const single = new Set(['ORP','OLP','UN','ON','URBP','OLPA','OLPU','LP','RP','LRP','OLPF']);
+  if(single.has(slot)) return badgeSlots[slot].length < 1;
+  return badgeSlots[slot].length < 1;
 }
 
 function chooseBadgeSlot(id, prefs){
@@ -3356,19 +3350,24 @@ function chooseBadgeSlot(id, prefs){
 }
 
 function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
-  const topRibbonCenterX = getTopRibbonRowCenterX();
-  const rackX = topRibbonCenterX ?? rackCenterX();
+  const rackX = getTopRibbonRowCenterX() ?? rackCenterX();
   const topRibbonY = getTopRibbonRowY();
 
+  // These are fallback anchors only. Exact calibrated family positions are applied
+  // by applyCalibToElement/buildDerivedBadgeCalib when calibration exists.
   const base = {
-    OLPA: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 84 : H * 0.20, dy: 32 },
-    OLP:  { x: rackX,  y: topRibbonY !== null ? topRibbonY - 50 : H * 0.22, dy: 32 },
-    OLPU: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 3  : H * 0.27, dy: 32 },
-    ORP:  { x: W*0.32, y: H*0.43, dy: 34 },
-    ON:   { x: W*0.32, y: H*0.30, dy: 26 },
-    UN:   { x: W*0.32, y: H*0.43, dy: 34 },
-    LP:   { x: W*0.64, y: H*0.46, dy: 34 },
-    LRP:  { x: W*0.64, y: H*0.55, dy: 34 }
+    OLPA: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 84 : H * 0.18, dy: 0 },
+    OLP:  { x: rackX,  y: topRibbonY !== null ? topRibbonY - 50 : H * 0.22, dy: 0 },
+    OLPU: { x: rackX,  y: topRibbonY !== null ? topRibbonY - 3  : H * 0.27, dy: 0 },
+    OLPF: { x: W*0.64, y: H*0.50, dy: 0 },
+
+    ORP:  { x: W*0.32, y: H*0.30, dy: 0 },
+    ON:   { x: W*0.32, y: H*0.30, dy: 0 },
+    UN:   { x: W*0.32, y: H*0.39, dy: 0 },
+    URBP: { x: W*0.32, y: H*0.48, dy: 0 },
+    LP:   { x: W*0.64, y: H*0.46, dy: 0 },
+    RP:   { x: W*0.32, y: H*0.46, dy: 0 },
+    LRP:  { x: W*0.64, y: H*0.46, dy: 0 }
   };
 
   const a = base[slot] || base.UN;
@@ -3380,15 +3379,15 @@ function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
 
 function placeBadgeSlotAnchored(id){
   const img = by(`badges-${id}`);
-  if(!img) return;
+  if(!img) return false;
 
   let slotSpec = getBadgeSlotSpec(id);
-  if(id==='nra_marksman_badge') slotSpec='LRP';
-  if(id==='model_rocketry_badge') slotSpec='LP';
+  if(id === 'nra_marksman_badge') slotSpec = 'OLPF';
+  if(id === 'model_rocketry_badge') slotSpec = 'LP,ON';
 
   const prefs = parseSlotPrefs(slotSpec);
   const slot = chooseBadgeSlot(id, prefs);
-  if(!slot) return;
+  if(!slot) return false;
 
   const box = uniformCanvas.getBoundingClientRect();
   const W = box.width  || 450;
@@ -3405,31 +3404,27 @@ function placeBadgeSlotAnchored(id){
   clone.className = 'layer badge';
   clone.style.display = 'block';
   clone.onerror = ()=>{ clone.remove(); };
-
   clone.dataset.calibKey = `badge:${id}:${slot}:${idx}`;
 
   clone.dataset.tooltipTitle = (id==='squadron_commander_badge' && State.commandInsignia?.graduatedCommander)
     ? 'GRADUATED COMMANDER INSIGNIA'
     : id.replace(/_/g,' ').toUpperCase();
-  clone.dataset.tooltipReg   = `Badge slot: ${slot}`;
-  clone.dataset.tooltipWhy   = (id==='squadron_commander_badge')
-    ? (State.commandInsignia?.graduatedCommander ? 'Rendered as graduated commander command insignia. This does not count against the normal four-badge limit.' : 'Rendered as active command insignia. This does not count against the normal four-badge limit.')
-    : `Rendered in CAPR slot ${slot}.`;
+  clone.dataset.tooltipReg = `Badge slot: ${slot}`;
+  clone.dataset.tooltipWhy = (id==='squadron_commander_badge')
+    ? (State.commandInsignia?.graduatedCommander ? 'Past/graduated command insignia renders under the name tag (UN).' : 'Current command insignia renders over the name tag (ON).')
+    : `Rendered in the CAPR 39-1 category ${slot}.`;
 
   applyCalibToElement(clone, clone.dataset.calibKey, { x: base.x, y: base.y, w: bw, h: bh, r: 0 });
 
-  // Over-left-pocket badges track the current top ribbon row. The class-specific
-  // calibration establishes the exact offset; the live ribbon rack supplies the
-  // current top row so badge spacing remains correct as ribbon count changes.
   if(['OLP','OLPA','OLPU'].includes(slot)){
-    const dynamicTop = getDynamicOverRibbonBadgeTop(slot, idx, { loneOccupational:false });
+    const dynamicTop = getDynamicOverRibbonBadgeTop(slot, idx);
     if(dynamicTop !== null) clone.style.top = `${dynamicTop}px`;
   }
 
   uniformCanvas.appendChild(clone);
   badgeSlots[slot].push(id);
-}  // ✅ END placeBadgeSlotAnchored
-
+  return true;
+}
 
 /* ===========================
    PATCHES (RENDER)
