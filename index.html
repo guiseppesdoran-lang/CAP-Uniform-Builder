@@ -3404,9 +3404,7 @@ function hasSelectedAboveAviationBadge(){
   return State.badges.some(id => id && selectedBadgeWouldRenderInSlot(id, 'OLPA'));
 }
 function shouldUseLowerAviationPosition(){
-  // If there is no OLPU badge selected, the aviation/aeronautical badge should sit
-  // in the lower OLP position directly over the highest ribbon row instead of the
-  // high position reserved for a two-badge aviation/occupational stack.
+  // Lower aviation positioning is now handled by the shared above-ribbon stack gap.
   return !hasSelectedUnderAviationBadge();
 }
 function getLowerAviationTop(badgeHeight=null){
@@ -3482,7 +3480,7 @@ function getAboveRibbonStackTops(){
   const liveTopRibbonY = getTopRibbonRowY();
   if(liveTopRibbonY === null) return null;
 
-  const gap = 50;
+  const gap = 10;
   const orderBottomToTop = ['OLPU','OLP','OLPA'];
   const tops = {};
   let referenceTop = liveTopRibbonY;
