@@ -4155,8 +4155,14 @@ function slotHasRoom(slot){
 
 function chooseBadgeSlot(id, prefs){
   const preferred = getPreferredBadgeSlotForRendering(id, prefs);
+
+  // Some rules are physical-position rules, not preference lists.
+  // If the rule says there is no valid slot, do not fall back into another location.
+  if(!preferred) return null;
+
   if(isCommandInsigniaBadge(id)) return preferred;
-  const ordered = [preferred, ...prefs.filter(p => p !== preferred)];
+
+  const ordered = [preferred, ...prefs.filter(p => p && p !== preferred)];
   for(const candidate of ordered){
     if(slotHasRoom(candidate)) return candidate;
   }
@@ -4189,6 +4195,41 @@ function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
     x: Math.round(a.x - bw/2),
     y: Math.round(a.y - bh/2 + (a.dy || 0) * idx)
   };
+}
+
+function getLayerRectFromStyles(el){
+  const x = parseFloat(el.style.left);
+  const y = parseFloat(el.style.top);
+  const w = parseFloat(el.style.width);
+  const h = parseFloat(el.style.height);
+  if(!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(w) || !Number.isFinite(h)) return null;
+  return { x, y, w, h, right:x+w, bottom:y+h };
+}
+
+function rectOverlapArea(a, b){
+  const xOverlap = Math.max(0, Math.min(a.right, b.right) - Math.max(a.x, b.x));
+  const yOverlap = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.y, b.y));
+  return xOverlap * yOverlap;
+}
+
+function badgeWouldPhysicallyOverlap(el){
+  const rect = getLayerRectFromStyles(el);
+  if(!rect) return null;
+
+  const existing = [...uniformCanvas.querySelectorAll('.layer.badge')];
+  for(const other of existing){
+    const otherRect = getLayerRectFromStyles(other);
+    if(!otherRect) continue;
+
+    const overlap = rectOverlapArea(rect, otherRect);
+    const smaller = Math.min(rect.w * rect.h, otherRect.w * otherRect.h);
+
+    // Ignore tiny 1-2px edge/canvas rounding contact, but block any real overlap.
+    if(overlap > 2 && overlap / Math.max(1, smaller) > 0.03){
+      return other;
+    }
+  }
+  return null;
 }
 
 function placeBadgeSlotAnchored(id){
@@ -4233,6 +4274,13 @@ function placeBadgeSlotAnchored(id){
 
   const dynamicTop = getDynamicBadgeTopFromAppliedPosition(clone, id, slot);
   if(dynamicTop !== null) clone.style.top = `${dynamicTop}px`;
+
+  const conflict = badgeWouldPhysicallyOverlap(clone);
+  if(conflict){
+    const blockedBy = conflict.dataset?.tooltipTitle || conflict.dataset?.calibKey || 'another badge';
+    console.warn(`Badge ${id} was not rendered in ${slot} because it would overlap ${blockedBy}.`);
+    return false;
+  }
 
   applyBadgeAssetWithFallback(clone, id);
   uniformCanvas.appendChild(clone);
