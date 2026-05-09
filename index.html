@@ -2110,6 +2110,157 @@ const RIBBON_DEVICE_CAP = {
   '1_Bronze_Star_Device': 4
 };
 
+
+/* ===========================
+   USER-SUPPLIED RIBBON IMAGE VARIANTS
+   ===========================
+   These files are expected in images/ribbons/. They are pre-rendered ribbon
+   images that already include the device/level named in the dropdown, so the
+   program does not overlay a separate device on top of them.
+*/
+const RIBBON_SPECIAL_IMAGE_OPTIONS = {
+  'bronze_medal_of_valor': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'bronze02.png', devices:{} }
+  ],
+  'distinguished_service_award': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'distin02.png', devices:{} }
+  ],
+  'exceptional_service_award': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'except02.png', devices:{} }
+  ],
+  'meritorious_service_award': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'meriti02.png', devices:{} }
+  ],
+  'commander_commendation_award': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Star', value:'bronze_star', image:'cmdrco01R.png', devices:{} }
+  ],
+  'cap_achievment_award': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'AA02.png', devices:{} }
+  ],
+  'lifesaving_award': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Silver Star', value:'silver_star', image:'lifesa-star01.png', devices:{} }
+  ],
+  'national_commander_unit_citation_award': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'unitci-nat02.png', devices:{} }
+  ],
+  'unit_citation_award': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'unitci02.png', devices:{} }
+  ],
+  'cap_gill_robb_wilson_ribbon': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Bronze Star', value:'bronze_star', image:'wilson-b.png', devices:{} }
+  ],
+  'cap_paul_e_garber_ribbon': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Bronze Star', value:'bronze_star', image:'garber-star.png', devices:{} }
+  ],
+  'cap_leadership_ribbon': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Bronze Star', value:'bronze_star', image:'leader-b.png', devices:{} }
+  ],
+  'cap_command_service_ribbon': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Star', value:'bronze_star', image:'cmdser-bronze.png', devices:{} }
+  ],
+  'red_service_ribbon': [
+    { label:'2 Years', value:'years_2', image:null, devices:{} },
+    { label:'5 Years / Bronze Clasp', value:'years_5', image:'redser-05yr.png', devices:{} }
+  ],
+  'search_find_ribbon': [
+    { label:'Basic Find', value:'find_1', image:null, devices:{} },
+    { label:'Bronze Propeller', value:'bronze_propeller', image:'find-prop01.png', devices:{} }
+  ],
+  'air_search_and_rescue_ribbon': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'sar02.png', devices:{} }
+  ],
+  'cap_counterdrug_ribbon': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'coudru02.png', devices:{} }
+  ],
+  'disaster_relief_ribbon': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Silver V', value:'silver_v', image:'disast-V01.png', devices:{} }
+  ],
+  'homeland_security_ribbon': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'homeland02.png', devices:{} }
+  ],
+  'cap_cadet_orientation_pilot_ribbon': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'cadpil02.png', devices:{} }
+  ],
+  'community_service_ribbon': [
+    { label:'60 Hours', value:'hours_60', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'commun02.png', devices:{} }
+  ],
+  'national_cadet_competition_ribbon': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Bronze Star', value:'bronze_star', image:'ncc-b.png', devices:{} }
+  ],
+  'national_color_guard_competition_ribbon': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Bronze Star', value:'bronze_star', image:'ncgc-b.png', devices:{} }
+  ],
+  'cadet_advisory_council_ribbon': [
+    { label:'Group CAC', value:'group', image:null, devices:{} },
+    { label:'Bronze Star', value:'bronze_star', image:'cac-b.png', devices:{} }
+  ],
+  'cadet_special_activity_ribbon': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Bronze Star', value:'bronze_star', image:'ncsa02.png', devices:{} }
+  ],
+  'encampment_ribbon': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'encamp02.png', devices:{} }
+  ],
+  'cap_senior_recruiter_ribbon': [
+    { label:'Basic Award', value:'earned', image:null, devices:{} },
+    { label:'Bronze Clasp', value:'bronze_clasp', image:'senrec02.png', devices:{} }
+  ]
+};
+
+const SILVER_MEDAL_OF_VALOR_MAX_RIBBONS = 3;
+
+function ribbonImageOptionList(id){
+  const special = RIBBON_SPECIAL_IMAGE_OPTIONS[id] || null;
+  if(!special) return null;
+  return [
+    { label:'- Select -', value:'', image:null, devices:{} },
+    ...special
+  ];
+}
+
+function getRibbonImageOverride(id, awardValue){
+  const options = RIBBON_SPECIAL_IMAGE_OPTIONS[id] || [];
+  const match = options.find(opt => opt.value === awardValue);
+  return match?.image || null;
+}
+
+function getRibbonImagePath(ribbonOrId){
+  const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
+  const awardValue = typeof ribbonOrId === 'string' ? (State.ribbonSelections?.[id]?.awardValue || '') : (ribbonOrId?.awardValue || '');
+  const override = getRibbonImageOverride(id, awardValue);
+  return override ? `ribbons/${override}` : `ribbons/${normalizeRibbonId(id)}.png`;
+}
+
+function getRibbonDuplicateCountForSelection(id, awardValue){
+  if(id === 'silver_medal_of_valor'){
+    if(awardValue === 'silver_valor_2') return 2;
+    if(awardValue === 'silver_valor_3') return 3;
+  }
+  return 1;
+}
+
 const miniMedalImages = {};
 Object.assign(miniMedalImages, {
   'exceptional_service_award':      'medals/exceptional_service.png',
@@ -2880,12 +3031,16 @@ function renderRack(){
 
       row.forEach((ribbonObj,i)=>{
         const rid = normalizeRibbonId(ribbonObj.id);
-        const orig=by(`ribbons-${rid}`) || by(`ribbons-${ribbonObj.id}`);
-        if(!orig) return;
 
-        const tile=orig.cloneNode();
+        const tile=document.createElement('img');
+        tile.src=ASSET(getRibbonImagePath(ribbonObj));
         tile.className='layer ribbonTile';
         tile.style.display='block';
+        tile.onerror=()=>{
+          // Fallback to the base ribbon image if a special device image is not present yet.
+          const fallback=ASSET(`ribbons/${rid}.png`);
+          if(tile.src !== fallback) tile.src=fallback;
+        };
 
         const leftPx = leftPositions[i];
         const topPx  = rowTopPx;
@@ -3125,8 +3280,20 @@ function ordinalLabel(n){
 }
 
 function getRibbonAwardOptions(id){
+  const specialImageOptions = ribbonImageOptionList(id);
+  if(specialImageOptions) return specialImageOptions;
+
   if(id === 'Air_Force_Organizational_Excellence_Award'){
     return ribbonAwardCountOptions(10);
+  }
+
+  if(id === 'silver_medal_of_valor'){
+    return [
+      { label:'- Select -', value:'', devices:{} },
+      { label:'1 Silver Medal of Valor', value:'silver_valor_1', devices:{} },
+      { label:'2 Silver Medals of Valor', value:'silver_valor_2', devices:{} },
+      { label:'3 Silver Medals of Valor', value:'silver_valor_3', devices:{} }
+    ];
   }
 
   if(CADET_ACHIEVEMENT_RIBBONS.has(id)){
@@ -3204,6 +3371,7 @@ function setRibbonSelectionFromDropdown(id, value){
   sel.awardLabel = option.label || '';
   sel.checked = !!value;
   sel.devices = value ? { ...(option.devices || {}) } : {};
+  sel.imageOverride = value ? (option.image || getRibbonImageOverride(id, value)) : null;
 
   State.ribbonSelections[id] = sel;
 
@@ -3215,6 +3383,7 @@ function setRibbonSelectionFromDropdown(id, value){
         State.ribbonSelections[otherId].awardValue = '';
         State.ribbonSelections[otherId].awardLabel = '';
         State.ribbonSelections[otherId].devices = {};
+        State.ribbonSelections[otherId].imageOverride = null;
       }
     }
   }
@@ -3236,6 +3405,9 @@ function normalizeRibbonSelections(){
         const opt = getRibbonSelectionOption(id, State.ribbonSelections[id].awardValue);
         State.ribbonSelections[id].awardLabel = opt?.label || '';
       }
+      if(State.ribbonSelections[id].imageOverride === undefined){
+        State.ribbonSelections[id].imageOverride = getRibbonImageOverride(id, State.ribbonSelections[id].awardValue || '');
+      }
     }
   });
 }
@@ -3248,8 +3420,10 @@ function rebuildRibbonsFromGallery(){
     const sel = State.ribbonSelections[id];
     if(!sel || !sel.checked) continue;
 
-    // compute stacks needed due to caps
-    let stacks = 1;
+    // compute stacks needed due to caps or special rules.
+    // Silver Medal of Valor has no device for multiple awards in this builder;
+    // it renders as multiple separate ribbons, capped at three.
+    let stacks = getRibbonDuplicateCountForSelection(id, sel.awardValue || '');
     for(const [dev,count] of Object.entries(sel.devices||{})){
       const cap = RIBBON_DEVICE_CAP[dev] || 0;
       if(cap > 0) stacks = Math.max(stacks, Math.ceil((count||0)/cap));
@@ -3260,7 +3434,8 @@ function rebuildRibbonsFromGallery(){
         id,
         devices:{},
         awardValue: sel.awardValue || '',
-        awardLabel: sel.awardLabel || ''
+        awardLabel: sel.awardLabel || '',
+        imageOverride: getRibbonImageOverride(id, sel.awardValue || '')
       };
 
       for(const [dev,count] of Object.entries(sel.devices||{})){
@@ -3312,7 +3487,7 @@ function buildRibbonGallery(){
       .join(' • ');
 
     tile.innerHTML = `
-      <img src="${ASSET(`ribbons/${id}.png`)}" alt="${title}">
+      <img src="${ASSET(getRibbonImagePath({id, awardValue: sel.awardValue || ''}))}" alt="${title}" onerror="this.src='${ASSET(`ribbons/${normalizeRibbonId(id)}.png`)}'">
       <div style="flex:1;min-width:0;">
         <div class="title">${title}</div>
         <div class="sub">(${id})</div>
@@ -4896,6 +5071,11 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
   function buildExpectedAssetList(){
     const expected = [];
     ribbonList.forEach(id=>expected.push({category:'Ribbon', item:pretty(id), id, path:`images/ribbons/${id}.png`, status:'required'}));
+    Object.entries(RIBBON_SPECIAL_IMAGE_OPTIONS || {}).forEach(([id,opts])=>{
+      opts.forEach(opt=>{
+        if(opt.image) expected.push({category:'Ribbon Variant', item:`${pretty(id)} - ${opt.label}`, id, path:`images/ribbons/${opt.image}`, status:'required'});
+      });
+    });
     badgeList.forEach(id=>expected.push({category:'Badge', item:pretty(id), id, path:`images/${getBadgeAssetPath(id)}`, status:'required'}));
     Object.entries(PATCH_META).forEach(([id,m])=>expected.push({category:'Patch', item:pretty(id), id, path:`images/${m.img}`, status:'required'}));
     Object.entries(deviceMeta).forEach(([id,m])=>expected.push({category:'Ribbon device', item:m.label||pretty(id), id, path:`images/${m.src}`, status:'required'}));
