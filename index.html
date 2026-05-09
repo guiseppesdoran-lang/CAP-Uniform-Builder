@@ -3984,21 +3984,36 @@ function getDynamicOverRibbonBadgeTop(slot, idx=0){
 }
 
 function getBadgeHeightForLayout(id, slotName=null){
-  const explicitHeight = Number(customBadgeSizes[id]?.height);
-  if(Number.isFinite(explicitHeight) && explicitHeight > 0) return explicitHeight;
-
+  /*
+    Above-ribbon stacking must use the same rendered/calibrated height that the
+    badge will actually receive. This keeps the visible bottom gap consistent
+    for aviation and occupational badges instead of reserving a larger default
+    height and making the badge look too far above the ribbons.
+  */
   const uniformId = getCurrentCalibUniform();
-  const directKey = slotName ? `badge:${id}:${slotName}:0` : null;
-  const directCalib = directKey ? getReferenceCalibForKey(uniformId, directKey) : null;
-  const directHeight = Number(directCalib?.h);
-  if(Number.isFinite(directHeight) && directHeight > 0) return directHeight;
+  const baseSize = customBadgeSizes[id] || { width:60, height:25 };
 
   if(slotName){
+    const directKey = `badge:${id}:${slotName}:0`;
+    const directCalib = getReferenceCalibForKey(uniformId, directKey) || getCalib(directKey);
+    const directHeight = Number(directCalib?.h);
+    if(Number.isFinite(directHeight) && directHeight > 0) return directHeight;
+
+    const derivedCalib = buildDerivedBadgeCalib(directKey, {
+      w: Number(baseSize.width) || 60,
+      h: Number(baseSize.height) || 25
+    });
+    const derivedHeight = Number(derivedCalib?.h);
+    if(Number.isFinite(derivedHeight) && derivedHeight > 0) return derivedHeight;
+
     const familyKey = getOverRibbonReferenceKey(slotName, 0);
     const familyCalib = familyKey ? getReferenceCalibForKey(uniformId, familyKey) : null;
     const familyHeight = Number(familyCalib?.h);
     if(Number.isFinite(familyHeight) && familyHeight > 0) return familyHeight;
   }
+
+  const explicitHeight = Number(baseSize.height);
+  if(Number.isFinite(explicitHeight) && explicitHeight > 0) return explicitHeight;
 
   return 25;
 }
@@ -4011,6 +4026,8 @@ function getAboveRibbonStackTops(){
   const liveTopRibbonY = getTopRibbonRowY();
   if(liveTopRibbonY === null) return null;
 
+  // Physical gap between stacked above-ribbon badges and the item directly below.
+  // Height is now resolved through getBadgeHeightForLayout() using calibrated/rendered values.
   const gap = 10;
   const orderBottomToTop = ['OLPU','OLP','OLPA'];
   const tops = {};
