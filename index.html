@@ -801,6 +801,40 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
   font-size:0;
 }
 
+
+/* ===========================
+   RIBBON DROPDOWN SELECTOR PATCH
+   =========================== */
+.ribbonSelectorTile{
+  align-items:center;
+}
+.ribbonAwardLabel{
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.035em;
+  margin-top:8px;
+}
+.ribbonAwardLabel select.rbAwardSelect{
+  width:100%;
+  margin-top:4px;
+  padding:8px 9px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-size:12px;
+  color:var(--ink);
+}
+.ribbonDeviceSummary{
+  margin-top:6px;
+}
+.ribbonSelectorTile:has(.rbAwardSelect option:checked:not([value=""])){
+  border-color:#8bb8e5;
+  background:#f0f7ff;
+}
+
 </style>
 </head>
 <body>
@@ -992,7 +1026,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <label class="fieldLabel">Ribbons / Mini Medals</label>
 
         <div class="hintText">
-          Use “Choose Ribbons…” to pick ribbons and set devices in the popup.
+          Use “Choose Ribbons…” to pick ribbons and set award count or earned level in the popup.
         </div>
 
         <div class="row two" style="margin-top:6px">
@@ -1974,6 +2008,10 @@ function usingCombinedSeniorOfficerJacket(){
    RIBBONS / DEVICES / MINI MEDALS
    =========================== */
 const ribbonList = [
+  // Highest-precedence ribbon added by user.
+  // Asset path resolves to: images/ribbons/Air_Force_Organizational_Excellence_Award.png
+  'Air_Force_Organizational_Excellence_Award',
+
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
 
   // Senior-member professional development / AE ribbons
@@ -1999,6 +2037,8 @@ const ribbonList = [
 // Robust ribbon precedence lookup. Unknown/renamed asset IDs are pushed to the end
 // instead of sorting as -1 and jumping ahead of the Silver Medal of Valor.
 const RIBBON_ID_ALIASES = {
+  air_force_organizational_excellence_award: 'Air_Force_Organizational_Excellence_Award',
+  Air_Force_Organizational_Excellence_Award: 'Air_Force_Organizational_Excellence_Award',
   cap_achievement_award: 'cap_achievment_award',
   commanders_commendation_award: 'commander_commendation_award',
   commander_commedation_award: 'commander_commendation_award',
@@ -2028,6 +2068,7 @@ const CADET_MILESTONES = new Set([
   'wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award'
 ]);
 const COMMON_ELIGIBLE_RIBBONS = new Set([
+  'Air_Force_Organizational_Excellence_Award',
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
   'crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon'
 ]);
@@ -2992,12 +3033,209 @@ function wireDeviceUI(){
 /* ===========================
    RIBBONS: GALLERY LOGIC
    =========================== */
+function ribbonSelectOnlyOptions(){
+  return [
+    { label:'- Select -', value:'', devices:{} },
+    { label:'Earned', value:'earned', devices:{} }
+  ];
+}
+
+function ribbonAwardCountOptions(maxAwards=21){
+  const options = [{ label:'- Select -', value:'', devices:{} }];
+
+  for(let award=1; award<=maxAwards; award++){
+    const additional = Math.max(0, award-1);
+    const silver = Math.floor(additional / 5);
+    const bronze = additional % 5;
+    const devices = {};
+    if(silver) devices['1_Silver_Star_Device'] = silver;
+    if(bronze) devices['1_Bronze_Star_Device'] = bronze;
+
+    options.push({
+      label: award === 1 ? 'Basic Award' : `${ordinalLabel(award)} Award`,
+      value: `award_${award}`,
+      devices
+    });
+  }
+
+  return options;
+}
+
+function ribbonHourOptions(maxHours=1260, increment=60){
+  const options = [{ label:'- Select -', value:'', devices:{} }];
+  for(let hours=increment; hours<=maxHours; hours+=increment){
+    options.push({
+      label:`${hours} Hours`,
+      value:`hours_${hours}`,
+      devices: ribbonDevicesFromAdditionalAwards(Math.floor(hours / increment) - 1)
+    });
+  }
+  return options;
+}
+
+function ribbonSortieOptions(maxSorties=320, increment=10){
+  const options = [{ label:'- Select -', value:'', devices:{} }];
+  for(let sorties=increment; sorties<=maxSorties; sorties+=increment){
+    options.push({
+      label:`${sorties} Sorties`,
+      value:`sorties_${sorties}`,
+      devices: ribbonDevicesFromAdditionalAwards(Math.floor(sorties / increment) - 1)
+    });
+  }
+  return options;
+}
+
+function ribbonFindOptions(maxFinds=32){
+  const options = [{ label:'- Select -', value:'', devices:{} }];
+  for(let finds=1; finds<=maxFinds; finds++){
+    options.push({
+      label: finds === 1 ? 'Basic Find' : `${ordinalLabel(finds)} Find`,
+      value:`find_${finds}`,
+      devices: ribbonDevicesFromAdditionalAwards(finds - 1)
+    });
+  }
+  return options;
+}
+
+function ribbonYearOptions(years){
+  return [
+    { label:'- Select -', value:'', devices:{} },
+    ...years.map(year => ({
+      label:`${year} Years`,
+      value:`years_${year}`,
+      devices:{}
+    }))
+  ];
+}
+
+function ribbonDevicesFromAdditionalAwards(additional){
+  const safe = Math.max(0, parseInt(additional || 0, 10));
+  const devices = {};
+  const silver = Math.floor(safe / 5);
+  const bronze = safe % 5;
+  if(silver) devices['1_Silver_Star_Device'] = silver;
+  if(bronze) devices['1_Bronze_Star_Device'] = bronze;
+  return devices;
+}
+
+function ordinalLabel(n){
+  const s = ['th','st','nd','rd'];
+  const v = n % 100;
+  return `${n}${s[(v-20)%10] || s[v] || s[0]}`;
+}
+
+function getRibbonAwardOptions(id){
+  if(id === 'Air_Force_Organizational_Excellence_Award'){
+    return ribbonAwardCountOptions(10);
+  }
+
+  if(CADET_ACHIEVEMENT_RIBBONS.has(id)){
+    if(id === 'mitchell_award'){
+      return [
+        { label:'- Select -', value:'', devices:{} },
+        { label:'Earned', value:'earned', devices:{} },
+        { label:'Earned + COS Star', value:'earned_cos_star', devices:{'1_Bronze_Star_Device':1} }
+      ];
+    }
+
+    if(id === 'goddard_achievement'){
+      return [
+        { label:'- Select -', value:'', devices:{} },
+        { label:'Earned', value:'earned', devices:{} },
+        { label:'Earned + Rocketry/Honor Device', value:'earned_device', devices:{'1_Bronze_Star_Device':1} },
+        { label:'Earned + Both Devices', value:'earned_both_devices', devices:{'1_Bronze_Star_Device':2} }
+      ];
+    }
+
+    return ribbonSelectOnlyOptions();
+  }
+
+  if(id === 'red_service_ribbon'){
+    return ribbonYearOptions([2,5,10,15,20,25,30,35,40,45,50,55,60,65]);
+  }
+
+  if(id === 'search_find_ribbon') return ribbonFindOptions(32);
+  if(id === 'air_search_and_rescue_ribbon') return ribbonSortieOptions(320,10);
+  if(id === 'community_service_ribbon') return ribbonHourOptions(1260,60);
+
+  if(id === 'cadet_advisory_council_ribbon'){
+    return [
+      { label:'- Select -', value:'', devices:{} },
+      { label:'Group CAC', value:'group', devices:{} },
+      { label:'Wing CAC / Bronze Star', value:'wing_bronze', devices:{'1_Bronze_Star_Device':1} },
+      { label:'Region CAC / Silver Star', value:'region_silver', devices:{'1_Silver_Star_Device':1} },
+      { label:'National CAC / Gold-Level Placeholder', value:'national_gold', devices:{'1_Silver_Star_Device':1,'1_Bronze_Star_Device':1} }
+    ];
+  }
+
+  if(id === 'disaster_relief_ribbon'){
+    return [
+      ...ribbonAwardCountOptions(10),
+      { label:'Basic Award + V Device Placeholder', value:'basic_v', devices:{'1_Bronze_Star_Device':1} }
+    ];
+  }
+
+  if([
+    'cap_gill_robb_wilson_ribbon',
+    'cap_paul_e_garber_ribbon',
+    'cap_grover_loening_aerospace_ribbon',
+    'cap_leadership_ribbon',
+    'cap_membership_ribbon',
+    'cap_a_scott_crossfield_ribbon',
+    'cap_bridgadier_general_charles_yaeger_ribbon'
+  ].includes(id)){
+    return ribbonSelectOnlyOptions();
+  }
+
+  return ribbonAwardCountOptions(21);
+}
+
+function getRibbonSelectionOption(id, value){
+  const options = getRibbonAwardOptions(id);
+  return options.find(opt => opt.value === value) || options[0] || {label:'- Select -', value:'', devices:{}};
+}
+
+function setRibbonSelectionFromDropdown(id, value){
+  normalizeRibbonSelections();
+  const sel = State.ribbonSelections[id] || { checked:false, devices:{} };
+  const option = getRibbonSelectionOption(id, value);
+
+  sel.awardValue = value || '';
+  sel.awardLabel = option.label || '';
+  sel.checked = !!value;
+  sel.devices = value ? { ...(option.devices || {}) } : {};
+
+  State.ribbonSelections[id] = sel;
+
+  // Senior members may wear only one cadet milestone ribbon in this builder.
+  if(State.membership === 'senior' && CADET_MILESTONES.has(id) && sel.checked){
+    for(const otherId of Object.keys(State.ribbonSelections)){
+      if(otherId !== id && CADET_MILESTONES.has(otherId)){
+        State.ribbonSelections[otherId].checked = false;
+        State.ribbonSelections[otherId].awardValue = '';
+        State.ribbonSelections[otherId].awardLabel = '';
+        State.ribbonSelections[otherId].devices = {};
+      }
+    }
+  }
+
+  rebuildRibbonsFromGallery();
+}
+
 function normalizeRibbonSelections(){
   ribbonList.forEach(id=>{
     if(!State.ribbonSelections[id]){
-      State.ribbonSelections[id] = { checked:false, devices:{} };
+      State.ribbonSelections[id] = { checked:false, devices:{}, awardValue:'', awardLabel:'' };
     }else{
       if(!State.ribbonSelections[id].devices) State.ribbonSelections[id].devices={};
+      if(State.ribbonSelections[id].awardValue === undefined){
+        const hasDevices = Object.values(State.ribbonSelections[id].devices || {}).some(v => Number(v) > 0);
+        State.ribbonSelections[id].awardValue = State.ribbonSelections[id].checked ? (hasDevices ? 'custom_devices' : 'earned') : '';
+      }
+      if(State.ribbonSelections[id].awardLabel === undefined){
+        const opt = getRibbonSelectionOption(id, State.ribbonSelections[id].awardValue);
+        State.ribbonSelections[id].awardLabel = opt?.label || '';
+      }
     }
   });
 }
@@ -3018,7 +3256,13 @@ function rebuildRibbonsFromGallery(){
     }
 
     for(let i=0;i<stacks;i++){
-      const inst = { id, devices:{} };
+      const inst = {
+        id,
+        devices:{},
+        awardValue: sel.awardValue || '',
+        awardLabel: sel.awardLabel || ''
+      };
+
       for(const [dev,count] of Object.entries(sel.devices||{})){
         const cap = RIBBON_DEVICE_CAP[dev] || 0;
         if(cap<=0) continue;
@@ -3041,7 +3285,6 @@ function buildRibbonGallery(){
   wrap.innerHTML = '';
 
   const eligible = getEligibleRibbonIds();
-
   const showCount = State.ribbonGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
 
   for(let idx=0; idx<showCount; idx++){
@@ -3049,7 +3292,8 @@ function buildRibbonGallery(){
     const sel = State.ribbonSelections[id];
 
     const tile = document.createElement('div');
-    tile.className = 'galleryTile';
+    tile.className = 'galleryTile ribbonSelectorTile';
+    tile.dataset.ribbonId = id;
 
     const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
     const miniPath = miniMedalImages[id];
@@ -3057,67 +3301,43 @@ function buildRibbonGallery(){
       ? `<div class="miniMedalPreview"><span>Mini medal</span><img src="${ASSET(miniPath)}" alt="${title} mini medal"></div>`
       : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
 
+    const options = getRibbonAwardOptions(id).map(opt => {
+      const selected = (sel.awardValue || '') === opt.value ? 'selected' : '';
+      return `<option value="${opt.value}" ${selected}>${opt.label}</option>`;
+    }).join('');
+
+    const deviceSummary = Object.entries(sel.devices || {})
+      .filter(([,qty]) => Number(qty) > 0)
+      .map(([devId,qty]) => `${deviceMeta[devId]?.label || devId}: ${qty}`)
+      .join(' • ');
+
     tile.innerHTML = `
       <img src="${ASSET(`ribbons/${id}.png`)}" alt="${title}">
       <div style="flex:1;min-width:0;">
         <div class="title">${title}</div>
         <div class="sub">(${id})</div>
         ${miniPreview}
-        <div class="miniRow">
-          <label><input type="checkbox" class="rbChk"> Add</label>
+        <label class="ribbonAwardLabel">
+          Award count / earned level
+          <select class="rbAwardSelect" data-ribbon-id="${id}">
+            ${options}
+          </select>
+        </label>
+        <div class="sub ribbonDeviceSummary">
+          ${sel.checked ? `Selected: <b>${sel.awardLabel || 'Earned'}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}` : 'Not selected'}
         </div>
-        <div class="miniRow">
-          <label>Silver <input type="number" class="rbSilver" min="0" value="${sel.devices['1_Silver_Star_Device']||0}"></label>
-          <label>Bronze <input type="number" class="rbBronze" min="0" value="${sel.devices['1_Bronze_Star_Device']||0}"></label>
-        </div>
-        <div class="sub">Device cap: 4 per ribbon (extra copies auto-created)</div>
       </div>
     `;
 
-    const chk = tile.querySelector('.rbChk');
-    const silver = tile.querySelector('.rbSilver');
-    const bronze = tile.querySelector('.rbBronze');
-
-    chk.checked = !!sel.checked;
-
-    chk.onchange = ()=>{
-      sel.checked = chk.checked;
-
-      // Senior -> only ONE milestone ribbon can be selected at a time
-      if(State.membership === 'senior' && CADET_MILESTONES.has(id) && sel.checked){
-        for(const otherId of Object.keys(State.ribbonSelections)){
-          if(otherId !== id && CADET_MILESTONES.has(otherId)){
-            State.ribbonSelections[otherId].checked = false;
-          }
-        }
-      }
-
-      rebuildRibbonsFromGallery();
-    };
-
-    function bumpOnNumber(){
-      sel.devices['1_Silver_Star_Device'] = Math.max(0, parseInt(silver.value||"0",10)||0);
-      sel.devices['1_Bronze_Star_Device'] = Math.max(0, parseInt(bronze.value||"0",10)||0);
-      sel.checked = true;
-      chk.checked = true;
-
-      // Senior -> only ONE milestone ribbon can be selected at a time
-      if(State.membership === 'senior' && CADET_MILESTONES.has(id)){
-        for(const otherId of Object.keys(State.ribbonSelections)){
-          if(otherId !== id && CADET_MILESTONES.has(otherId)){
-            State.ribbonSelections[otherId].checked = false;
-          }
-        }
-      }
-
-      rebuildRibbonsFromGallery();
+    const awardSelect = tile.querySelector('.rbAwardSelect');
+    if(awardSelect){
+      awardSelect.onchange = () => setRibbonSelectionFromDropdown(id, awardSelect.value);
     }
-    silver.oninput = bumpOnNumber;
-    bronze.oninput = bumpOnNumber;
 
     wrap.appendChild(tile);
   }
 }
+
 
 /* ===========================
    BADGES: GALLERY LOGIC
@@ -4378,57 +4598,14 @@ function openGalleryModal(kind){
 
   function wireModalInteractions(k){
     if(k==='ribbons'){
-      const eligible = getEligibleRibbonIds();
-
-      const showCount = State.ribbonGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
-      const ids = eligible.slice(0, showCount);
-
-      const tiles = [...grid.querySelectorAll('.galleryTile')];
-      tiles.forEach((tile, i) => {
-        const id = ids[i];
+      const selects = [...grid.querySelectorAll('.rbAwardSelect')];
+      selects.forEach(select => {
+        const id = select.dataset.ribbonId;
         if(!id) return;
-        const sel = State.ribbonSelections[id];
-
-        const chk = tile.querySelector('.rbChk');
-        const silver = tile.querySelector('.rbSilver');
-        const bronze = tile.querySelector('.rbBronze');
-
-        if(chk){
-          chk.checked = !!sel.checked;
-          chk.onchange = () => {
-            sel.checked = chk.checked;
-
-            if(State.membership === 'senior' && CADET_MILESTONES.has(id) && sel.checked){
-              for(const otherId of Object.keys(State.ribbonSelections)){
-                if(otherId !== id && CADET_MILESTONES.has(otherId)){
-                  State.ribbonSelections[otherId].checked = false;
-                }
-              }
-            }
-
-            rebuildRibbonsFromGallery();
-            syncFromSidebar();
-          };
-        }
-        function bump(){
-          sel.devices['1_Silver_Star_Device'] = Math.max(0, parseInt(silver?.value||"0",10)||0);
-          sel.devices['1_Bronze_Star_Device'] = Math.max(0, parseInt(bronze?.value||"0",10)||0);
-          sel.checked = true;
-          if(chk) chk.checked = true;
-
-          if(State.membership === 'senior' && CADET_MILESTONES.has(id)){
-            for(const otherId of Object.keys(State.ribbonSelections)){
-              if(otherId !== id && CADET_MILESTONES.has(otherId)){
-                State.ribbonSelections[otherId].checked = false;
-              }
-            }
-          }
-
-          rebuildRibbonsFromGallery();
+        select.onchange = () => {
+          setRibbonSelectionFromDropdown(id, select.value);
           syncFromSidebar();
-        }
-        if(silver) silver.oninput = bump;
-        if(bronze) bronze.oninput = bump;
+        };
       });
     }
 
