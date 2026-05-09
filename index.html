@@ -4047,20 +4047,20 @@ function getAboveRibbonStackTops(){
 }
 
 function getDynamicBadgeTopFromAppliedPosition(el, id=null, slot=null){
+  /*
+    Only badges physically stacked above the ribbon rack should move when the
+    ribbon rack grows upward. Pocket/name-tag/command badges already have their
+    own calibrated coordinates and must not be shifted by ribbon top Y.
+  */
+  if(!['OLPU','OLP','OLPA'].includes(slot)) return null;
+
   const liveTopRibbonY = getTopRibbonRowY();
   if(liveTopRibbonY === null) return null;
 
-  if(['OLPU','OLP','OLPA'].includes(slot)){
-    const stackTops = getAboveRibbonStackTops();
-    if(stackTops && Number.isFinite(stackTops[slot])) return stackTops[slot];
-  }
+  const stackTops = getAboveRibbonStackTops();
+  if(stackTops && Number.isFinite(stackTops[slot])) return stackTops[slot];
 
-  const uniformId = getCurrentCalibUniform();
-  const refRibbonTop = OVER_RIBBON_REFERENCE_TOP_BY_UNIFORM[uniformId];
-  if(refRibbonTop === undefined || refRibbonTop === null) return null;
-  const currentTop = parseFloat(el.style.top);
-  if(!Number.isFinite(currentTop)) return null;
-  return Math.round(Number(liveTopRibbonY) + (currentTop - Number(refRibbonTop)));
+  return null;
 }
 
 function getPreferredBadgeSlotForRendering(id, prefs){
