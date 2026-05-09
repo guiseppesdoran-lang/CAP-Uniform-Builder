@@ -1340,7 +1340,7 @@ function getCalibBucket(uniformId=getCurrentCalibUniform()){
 const DEFAULT_CALIBRATION_BY_UNIFORM = {
   // Men's Class A Blues calibration supplied by user.
   blues_a: {
-    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:151, w:60, h:17, r:0 },
+    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:114, w:60, h:17, r:0 },
     'badge:master_ground_team_badge:OLPU:0': { x:281, y:161, w:25, h:20, r:0 },
     // Senior officer male Class A pocket badge-zone calibration supplied by user.
     // These are zone references, not just one-off badge positions.
@@ -1350,29 +1350,30 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
     // Latest senior-member male Class A scaling/positioning calibration.
     'badge:basic_incident_commander_badge:UN:0': { x:288, y:126, r:0 },
     'badge:basic_incident_commander_badge:UN:1': { x:276, y:133, w:35, h:25, r:0 },
-    'badge:volunteer_university_instructor_badge:UN:0': { x:125, y:258, w:45, h:45, r:0 },
-    'badge:volunteer_university_instructor_badge:UN:1': { x:125, y:248, w:40, h:40, r:0 },
+    'badge:volunteer_university_instructor_badge:UN:0': { x:125, y:268, w:45, h:45, r:0 },
+    'badge:volunteer_university_instructor_badge:UN:1': { x:128, y:264, w:40, h:40, r:0 },
     // Squadron Commander / Command Insignia placement for male senior Class A:
     // Current commanders wear it over the nameplate (ON); graduated commanders wear it under the nameplate (UN).
-    'badge:squadron_commander_badge:ON:0': { x:140, y:172, w:15, h:15, r:0 },
+    'badge:squadron_commander_badge:ON:0': { x:142, y:174, w:15, h:15, r:0 },
     'badge:squadron_commander_badge:UN:0': { x:142, y:229, w:15, h:15, r:0 },
-    'badge:master_emergency_services_badge:LP:0': { x:280, y:259, w:28, h:28, r:0 },
+    'badge:master_emergency_services_badge:LP:0': { x:280, y:269, w:28, h:28, r:0 },
     'badge:senior_emergency_services_badge:LP:0': { x:280, y:265, w:28, h:28, r:0 },
     'badge:information_technology_technician_badge:UN:0': { x:138, y:256, w:25, h:25, r:0 },
     'badge:historian_technicianIbadge:UN:0': { x:138, y:256, w:25, h:25, r:0 },
     'badge:cadet_programs_badge:UN:0': { x:125, y:258, w:45, h:45, r:0 },
     // Aviation/aircrew badges use the high aviation zone so they do not initially overlap
     // rectangular occupational/specialty badges such as Incident Commander.
-    'badge:observer_badge:OLP:0': { x:263, y:151, w:60, h:17, r:0 },
-    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:151, w:60, h:17, r:0 },
+    'badge:observer_badge:OLP:0': { x:264, y:151, w:60, h:17, r:0 },
+    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:114, w:60, h:17, r:0 },
     'badge:basic_incident_commander_badge:OLPU:0': { x:281, y:177, w:25, h:12, r:0 },
     'badge:volunteer_university_instructor_badge:ON:0': { x:124, y:254, w:50, h:50, r:0 }
+    'badge:squadron_commander_badge:UN:1': { x:140, y:241, w:15, h:15, r:0 },
   },
 
   // Men's Class B Blues calibration supplied by user.
   blues_b: {
-    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:282, y:136, w:48, h:14, r:0 },
-    'badge:master_ground_team_badge:OLPU:0': { x:294, y:159, r:0 },
+    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:114, w:60, h:17, r:0 },
+    'badge:master_ground_team_badge:OLPU:0': { x:281, y:161, w:25, h:20, r:0 },
     'badge:emergency_services_badge:LP:0': { x:127, y:273, w:35, h:35, r:0 },
     'badge:communications_technician_badge:UN:0': { x:293, y:279, w:28, h:28, r:0 }
   }
@@ -1429,10 +1430,33 @@ const INCIDENT_COMMAND_SPECIALTY_BADGE_IDS = new Set([
   'basic_incident_commander_badge'
 ]);
 
+// Specialty-track/service badges, other than command insignia, are pocket badges.
+// They are assigned by selection order: first specialty badge goes on the wearer's
+// left pocket below the ribbons (LP); second goes on the wearer's right pocket (RP).
+function isSelectableSpecialtyPocketBadge(id){
+  return SPECIALTY_TRACK_BADGE_IDS.has(id) && !isCommandInsigniaBadge(id);
+}
+
 function getGenderedPocketSlotForBadge(id){
   if(id === 'model_rocketry_badge') return State.gender === 'female' ? 'ON' : 'LP';
-  if(SPECIALTY_TRACK_BADGE_IDS.has(id)) return State.gender === 'female' ? 'ON' : 'LP';
   return 'LP';
+}
+
+function getSpecialtyPocketSlotBySelectionOrder(id){
+  if(!isSelectableSpecialtyPocketBadge(id)) return null;
+
+  const specialtyOrder = (State.badges || [])
+    .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
+    .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
+
+  const index = specialtyOrder.indexOf(id);
+
+  // First specialty badge: wearer's left pocket, below the ribbons.
+  // Second specialty badge: wearer's right pocket.
+  // If more are selected, they are handled by the normal slot-cap validation and will not render.
+  if(index === 0) return 'LP';
+  if(index === 1) return 'RP';
+  return null;
 }
 
 // CAP command insignia is handled as its own exception category and does not count
@@ -1508,19 +1532,45 @@ function buildDerivedBadgeCalib(key, base){
       refKey = `badge:master_ground_team_badge:OLPU:${parsed.idx}`;
       if(!defaults[refKey]) refKey = `badge:master_ground_team_badge:OLPU:0`;
     }
-  }else if(SPECIALTY_TRACK_BADGE_IDS.has(parsed.id) && parsed.slot === 'LP'){
-    // ES-style pocket badges use the calibrated left-pocket badge zone.
+  }else if(isCommandInsigniaBadge(parsed.id)){
+    // Command insignia/non-occupational badges use their own calibrated positions.
+    refKey = `badge:${parsed.id}:${parsed.slot}:${parsed.idx}`;
+    if(!defaults[refKey] && parsed.slot === 'UN') refKey = `badge:squadron_commander_badge:UN:${parsed.idx}`;
+    if(!defaults[refKey] && parsed.slot === 'ON') refKey = `badge:squadron_commander_badge:ON:${parsed.idx}`;
+  }else if(parsed.id === 'basic_incident_commander_badge' && ['UN','ON'].includes(parsed.slot)){
+    // Incident Commander right-side versions use their own calibrated family, not an occupational pocket reference.
+    refKey = `badge:basic_incident_commander_badge:${parsed.slot}:${parsed.idx}`;
+    if(!defaults[refKey] && parsed.slot === 'UN') refKey = `badge:basic_incident_commander_badge:UN:0`;
+  }else if(isSelectableSpecialtyPocketBadge(parsed.id) && parsed.slot === 'LP'){
+    // First specialty-track/service badge: wearer's left pocket, below ribbons.
     if(ES_POCKET_BADGE_IDS.has(parsed.id)){
       refKey = `badge:master_emergency_services_badge:LP:${parsed.idx}`;
       if(!defaults[refKey]) refKey = `badge:emergency_services_badge:LP:${parsed.idx}`;
+      if(!defaults[refKey]) refKey = `badge:emergency_services_badge:LP:0`;
+    }else if(LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id)){
+      refKey = `badge:volunteer_university_instructor_badge:ON:0`;
+      if(!defaults[refKey]) refKey = `badge:volunteer_university_instructor_badge:UN:0`;
+    }else if(SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id)){
+      refKey = `badge:emergency_services_badge:LP:0`;
     }else{
-      refKey = `badge:emergency_services_badge:LP:${parsed.idx}`;
+      refKey = `badge:emergency_services_badge:LP:0`;
+    }
+  }else if(isSelectableSpecialtyPocketBadge(parsed.id) && parsed.slot === 'RP'){
+    // Second specialty-track/service badge: wearer's right pocket.
+    if(LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id)){
+      refKey = `badge:volunteer_university_instructor_badge:UN:0`;
+    }else if(SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id)){
+      refKey = `badge:communications_technician_badge:UN:0`;
+    }else if(ES_POCKET_BADGE_IDS.has(parsed.id)){
+      refKey = `badge:communications_technician_badge:UN:0`;
+    }else{
+      refKey = `badge:communications_technician_badge:UN:0`;
     }
   }else if(SPECIALTY_TRACK_BADGE_IDS.has(parsed.id) && parsed.slot === 'ON'){
     refKey = `badge:squadron_commander_badge:ON:${parsed.idx}`;
     if(!defaults[refKey]) refKey = `badge:communications_technician_badge:UN:${parsed.idx}`;
   }else if(SPECIALTY_TRACK_BADGE_IDS.has(parsed.id) && parsed.slot === 'UN'){
-    // Under-nameplate badges are split into visual families so size and coordinates carry over correctly.
+    // Retained only for older saved calibrations. New specialty-track badges use LP/RP by selection order.
     if(LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id)){
       refKey = `badge:volunteer_university_instructor_badge:UN:${parsed.idx}`;
       if(!defaults[refKey]) refKey = `badge:volunteer_university_instructor_badge:UN:0`;
@@ -1576,7 +1626,7 @@ function buildDerivedBadgeCalib(key, base){
   }
 
   // Pocket/name-tag zone badges use calibrated family zones and sizes.
-  if(SPECIALTY_TRACK_BADGE_IDS.has(parsed.id) && ['LP','ON','UN'].includes(parsed.slot) && base){
+  if(SPECIALTY_TRACK_BADGE_IDS.has(parsed.id) && ['LP','RP','ON','UN'].includes(parsed.slot) && base){
     const refW = ref.w ?? base.w;
     const refH = ref.h ?? base.h;
     patch.x = Math.round(ref.x);
@@ -2457,17 +2507,17 @@ const badgeLocations = {
   'medical_officer':'OLPU','nurse_officer':'OLPU','emt_basic_badge':'OLPU','emt_intermediate':'OLPU','emt_paramedic':'OLPU','legal_officer':'OLPU',
   'ground_team_basic_badge':'OLPU','senior_ground_team_badge':'OLPU','master_ground_team_badge':'OLPU','basic_incident_commander_badge':'OLPU',
 
-  // Specialty-track/service badge placement using the senior male Class A calibration export.
-  // Volunteer University and similar large/small specialty badges are under the name tag (UN).
-  'communications_technician_badge':'UN',
-  'information_technology_technician_badge':'UN',
-  'historian_technicianIbadge':'UN',
-  'emergency_services_badge':'LP',
-  'senior_emergency_services_badge':'LP',
-  'master_emergency_services_badge':'LP',
-  'volunteer_university_instructor_badge':'UN',
-  'cadet_programs_badge':'UN',
-  'cyber_badges':'LP,ON','stem_badges':'LP,ON',
+  // Specialty-track/service badge placement is dynamic by selection order:
+  // first selected specialty badge = LP; second selected specialty badge = RP.
+  'communications_technician_badge':'LP,RP',
+  'information_technology_technician_badge':'LP,RP',
+  'historian_technicianIbadge':'LP,RP',
+  'emergency_services_badge':'LP,RP',
+  'senior_emergency_services_badge':'LP,RP',
+  'master_emergency_services_badge':'LP,RP',
+  'volunteer_university_instructor_badge':'LP,RP',
+  'cadet_programs_badge':'LP,RP',
+  'cyber_badges':'LP,RP','stem_badges':'LP,RP',
 
   // Command insignia is chosen dynamically: current = ON, past/graduated = UN.
   'squadron_commander_badge':'ON',
@@ -3907,9 +3957,7 @@ function selectedBadgeWouldRenderInSlot(id, slotName){
   if(CHAPLAIN_BADGE_IDS.has(id)) return slotName === 'OLPA';
   if(AIRCREW_BADGE_IDS.has(id)) return slotName === 'OLP';
   if(OLPU_OCCUPATIONAL_BADGE_IDS.has(id)) return slotName === 'OLPU';
-  if(UNDER_NAMEPLATE_SPECIALTY_BADGE_IDS.has(id)) return slotName === 'UN';
-  if(ES_POCKET_BADGE_IDS.has(id)) return slotName === 'LP';
-  if(SPECIALTY_TRACK_BADGE_IDS.has(id)) return getGenderedPocketSlotForBadge(id) === slotName;
+  if(isSelectableSpecialtyPocketBadge(id)) return getSpecialtyPocketSlotBySelectionOrder(id) === slotName;
   return parseSlotPrefs(getBadgeSlotSpec(id)).includes(slotName);
 }
 function hasSelectedUnderAviationBadge(){
@@ -4070,9 +4118,7 @@ function getPreferredBadgeSlotForRendering(id, prefs){
   if(CHAPLAIN_BADGE_IDS.has(id)) return 'OLPA';
   if(AIRCREW_BADGE_IDS.has(id)) return 'OLP';
   if(OLPU_OCCUPATIONAL_BADGE_IDS.has(id)) return 'OLPU';
-  if(UNDER_NAMEPLATE_SPECIALTY_BADGE_IDS.has(id)) return 'UN';
-  if(ES_POCKET_BADGE_IDS.has(id)) return 'LP';
-  if(SPECIALTY_TRACK_BADGE_IDS.has(id)) return getGenderedPocketSlotForBadge(id);
+  if(isSelectableSpecialtyPocketBadge(id)) return getSpecialtyPocketSlotBySelectionOrder(id);
   return prefs?.[0] || 'UN';
 }
 
