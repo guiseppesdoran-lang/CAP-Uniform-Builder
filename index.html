@@ -1306,7 +1306,7 @@ function getCalibBucket(uniformId=getCurrentCalibUniform()){
 const DEFAULT_CALIBRATION_BY_UNIFORM = {
   // Men's Class A Blues calibration supplied by user.
   blues_a: {
-    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:149, w:60, h:17, r:0 },
+    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:151, w:60, h:17, r:0 },
     'badge:master_ground_team_badge:OLPU:0': { x:281, y:161, w:25, h:20, r:0 },
     // Senior officer male Class A pocket badge-zone calibration supplied by user.
     // These are zone references, not just one-off badge positions.
@@ -1329,9 +1329,9 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
     'badge:cadet_programs_badge:UN:0': { x:125, y:258, w:45, h:45, r:0 },
     // Aviation/aircrew badges use the high aviation zone so they do not initially overlap
     // rectangular occupational/specialty badges such as Incident Commander.
-    'badge:observer_badge:OLP:0': { x:264, y:149, w:60, h:17, r:0 },
-    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:149, w:60, h:17, r:0 },
-    'badge:basic_incident_commander_badge:OLPU:0': { x:276, y:169, w:35, h:25, r:0 },
+    'badge:observer_badge:OLP:0': { x:263, y:151, w:60, h:17, r:0 },
+    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:151, w:60, h:17, r:0 },
+    'badge:basic_incident_commander_badge:OLPU:0': { x:281, y:177, w:25, h:12, r:0 },
     'badge:volunteer_university_instructor_badge:ON:0': { x:124, y:254, w:50, h:50, r:0 }
   },
 
@@ -1465,8 +1465,15 @@ function buildDerivedBadgeCalib(key, base){
     yAdjust = -34;
   }else if(OLPU_OCCUPATIONAL_BADGE_IDS.has(parsed.id) && parsed.slot === 'OLPU'){
     // Ground team, EMT, medical, legal, and incident commander badges: OLPU.
-    refKey = `badge:master_ground_team_badge:OLPU:${parsed.idx}`;
-    if(!defaults[refKey]) refKey = `badge:master_ground_team_badge:OLPU:0`;
+    // Use the calibrated visual family where available so rectangular IC badges
+    // do not inherit ground-team badge dimensions.
+    if(INCIDENT_COMMAND_SPECIALTY_BADGE_IDS.has(parsed.id)){
+      refKey = `badge:basic_incident_commander_badge:OLPU:${parsed.idx}`;
+      if(!defaults[refKey]) refKey = `badge:basic_incident_commander_badge:OLPU:0`;
+    }else{
+      refKey = `badge:master_ground_team_badge:OLPU:${parsed.idx}`;
+      if(!defaults[refKey]) refKey = `badge:master_ground_team_badge:OLPU:0`;
+    }
   }else if(SPECIALTY_TRACK_BADGE_IDS.has(parsed.id) && parsed.slot === 'LP'){
     // ES-style pocket badges use the calibrated left-pocket badge zone.
     if(ES_POCKET_BADGE_IDS.has(parsed.id)){
@@ -1514,10 +1521,24 @@ function buildDerivedBadgeCalib(key, base){
   if(['OLP','OLPA','OLPU','OLPF'].includes(parsed.slot) && base && base.w && base.h){
     const refW = ref.w ?? base.w;
     const refH = ref.h ?? base.h;
-    patch.x = Math.round(ref.x + refW/2 - base.w/2);
-    patch.y = Math.round((ref.y + yAdjust) + refH/2 - base.h/2);
-    delete patch.w;
-    delete patch.h;
+
+    // Exact-family calibrations carry both position and rendered size.
+    // Similar badges inherit the reference center but keep their own size.
+    const exactFamily =
+      (INCIDENT_COMMAND_SPECIALTY_BADGE_IDS.has(parsed.id) && refKey?.includes('basic_incident_commander_badge')) ||
+      (AIRCREW_BADGE_IDS.has(parsed.id) && refKey?.includes(parsed.id));
+
+    if(exactFamily){
+      patch.x = Math.round(ref.x);
+      patch.y = Math.round(ref.y + yAdjust);
+      patch.w = refW;
+      patch.h = refH;
+    }else{
+      patch.x = Math.round(ref.x + refW/2 - base.w/2);
+      patch.y = Math.round((ref.y + yAdjust) + refH/2 - base.h/2);
+      delete patch.w;
+      delete patch.h;
+    }
   }
 
   // Pocket/name-tag zone badges use calibrated family zones and sizes.
@@ -1955,21 +1976,24 @@ function usingCombinedSeniorOfficerJacket(){
 const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
 
+  // Senior-member professional development / AE ribbons
   'cap_gill_robb_wilson_ribbon',
   'cap_paul_e_garber_ribbon',
   'cap_grover_loening_aerospace_ribbon',
   'cap_leadership_ribbon',
   'cap_membership_ribbon',
-  'cap_command_service_ribbon',
-  'cap_counterdrug_ribbon',
-  'cap_world_war_2_service_ribbon',
-  'cap_senior_recruiter_ribbon',
-  'cap_bridgadier_general_charles_yaeger_ribbon',
   'cap_a_scott_crossfield_ribbon',
+  'cap_bridgadier_general_charles_yaeger_ribbon',
 
+  // Cadet program awards / achievements
   'spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement',
 
-  'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon','cap_cadet_orientation_pilot_ribbon'
+  // Service ribbons / awards
+  'afa_award','afsa_award','vfw_officer_award','vfw_nco_award',
+  'cap_command_service_ribbon','crisis_ribbon','red_service_ribbon','cap_world_war_2_service_ribbon',
+
+  // Activity ribbons
+  'search_find_ribbon','air_search_and_rescue_ribbon','cap_counterdrug_ribbon','disaster_relief_ribbon','homeland_security_ribbon','cap_cadet_orientation_pilot_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cap_senior_recruiter_ribbon','cadet_recruiter_ribbon'
 ];
 
 // Robust ribbon precedence lookup. Unknown/renamed asset IDs are pushed to the end
@@ -1993,7 +2017,8 @@ function precedence(id){
     : Number.MAX_SAFE_INTEGER;
 }
 
-/* Senior member: show only cadet milestone ribbons; and enforce only ONE milestone can be selected */
+/* Ribbon eligibility by membership type. Seniors see only ribbons they are eligible to wear,
+   including only the highest cadet milestone-type ribbon represented in this builder. */
 const CADET_ACHIEVEMENT_RIBBONS = new Set([
   'curry_achievement','hap_arnold_achievement','mary_feik_achievement','wright_brothers_award',
   'rickenbacker_achievement','lindbergh_achievement','doolittle_achievement','goddard_achievement',
@@ -2002,6 +2027,32 @@ const CADET_ACHIEVEMENT_RIBBONS = new Set([
 const CADET_MILESTONES = new Set([
   'wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award'
 ]);
+const COMMON_ELIGIBLE_RIBBONS = new Set([
+  'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
+  'crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon'
+]);
+const CADET_ONLY_RIBBONS = new Set([
+  'spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement',
+  'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','cadet_recruiter_ribbon'
+]);
+const SENIOR_ONLY_RIBBONS = new Set([
+  'cap_gill_robb_wilson_ribbon','cap_paul_e_garber_ribbon','cap_grover_loening_aerospace_ribbon','cap_leadership_ribbon','cap_membership_ribbon','cap_a_scott_crossfield_ribbon','cap_bridgadier_general_charles_yaeger_ribbon',
+  'cap_command_service_ribbon','cap_world_war_2_service_ribbon','cap_counterdrug_ribbon','cap_cadet_orientation_pilot_ribbon','cap_senior_recruiter_ribbon'
+]);
+const CADET_ELIGIBLE_RIBBONS = new Set([...COMMON_ELIGIBLE_RIBBONS, ...CADET_ONLY_RIBBONS]);
+const SENIOR_ELIGIBLE_RIBBONS = new Set([...COMMON_ELIGIBLE_RIBBONS, ...SENIOR_ONLY_RIBBONS, ...CADET_MILESTONES]);
+function getEligibleRibbonIds(membership = State.membership){
+  if(membership === 'cadet'){
+    return ribbonList.filter(id => CADET_ELIGIBLE_RIBBONS.has(id));
+  }
+  if(membership === 'senior'){
+    return ribbonList.filter(id => SENIOR_ELIGIBLE_RIBBONS.has(id));
+  }
+  return [...ribbonList];
+}
+function isRibbonEligibleForMembership(id, membership = State.membership){
+  return getEligibleRibbonIds(membership).includes(id);
+}
 
 const deviceList = [
   '1_Bronze_Star_Device',
@@ -2162,7 +2213,7 @@ const badgeLocations = {
 const customBadgeSizes = {
   'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
   'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:25,height:25},
-  'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:28,height:28},'senior_emergency_services_badge':{width:28,height:28},'master_emergency_services_badge':{width:28,height:28},'volunteer_university_instructor_badge':{width:45,height:45},'basic_incident_commander_badge':{width:35,height:25},'cadet_programs_badge':{width:45,height:45},'squadron_commander_badge':{width:15,height:15},'emt_basic_badge':{width:60,height:60},
+  'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:28,height:28},'senior_emergency_services_badge':{width:28,height:28},'master_emergency_services_badge':{width:28,height:28},'volunteer_university_instructor_badge':{width:45,height:45},'basic_incident_commander_badge':{width:25,height:12},'cadet_programs_badge':{width:45,height:45},'squadron_commander_badge':{width:15,height:15},'emt_basic_badge':{width:60,height:60},
   'emt_intermediate':{width:60,height:60},'emt_paramedic':{width:60,height:60},'ground_team_basic_badge':{width:25,height:20},
   'historian_technicianIbadge':{width:25,height:25},'information_technology_technician_badge':{width:25,height:25},
   'jewish_chaplin':{width:60,height:60},'legal_officer':{width:60,height:25},'master_ground_team_badge':{width:25,height:20},
@@ -2381,8 +2432,9 @@ membershipTypeEl.addEventListener('change', ()=>{
   // Do NOT clear ribbons, mini-medals, badges, patches, or device selections here.
   // The validation panel will warn about items that are not authorized for the active profile.
 
-  // rebuild ribbon gallery whenever membership changes
+  // Rebuild the ribbon list and current rendered rack whenever membership changes.
   buildRibbonGallery();
+  rebuildRibbonsFromGallery();
 
   if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)){
     const fallback=findFirstAllowedUniform(State.membership) || 'blues_a';
@@ -2954,7 +3006,7 @@ function rebuildRibbonsFromGallery(){
   State.ribbons = [];
   normalizeRibbonSelections();
 
-  for(const id of ribbonList){
+  for(const id of getEligibleRibbonIds()){
     const sel = State.ribbonSelections[id];
     if(!sel || !sel.checked) continue;
 
@@ -2988,14 +3040,7 @@ function buildRibbonGallery(){
   normalizeRibbonSelections();
   wrap.innerHTML = '';
 
-  // Senior filters out non-milestone cadet achievements
-  let eligible = [...ribbonList];
-  if(State.membership === 'senior'){
-    eligible = eligible.filter(id=>{
-      if(CADET_ACHIEVEMENT_RIBBONS.has(id)) return CADET_MILESTONES.has(id);
-      return true;
-    });
-  }
+  const eligible = getEligibleRibbonIds();
 
   const showCount = State.ribbonGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
 
@@ -4316,13 +4361,7 @@ function openGalleryModal(kind){
 
   function wireModalInteractions(k){
     if(k==='ribbons'){
-      let eligible = [...ribbonList];
-      if(State.membership === 'senior'){
-        eligible = eligible.filter(id=>{
-          if(CADET_ACHIEVEMENT_RIBBONS.has(id)) return CADET_MILESTONES.has(id);
-          return true;
-        });
-      }
+      const eligible = getEligibleRibbonIds();
 
       const showCount = State.ribbonGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
       const ids = eligible.slice(0, showCount);
