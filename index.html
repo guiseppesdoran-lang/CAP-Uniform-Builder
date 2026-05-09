@@ -1990,10 +1990,10 @@ const ribbonList = [
 
   // Service ribbons / awards
   'afa_award','afsa_award','vfw_officer_award','vfw_nco_award',
-  'cap_command_service_ribbon','crisis_ribbon','red_service_ribbon','cap_world_war_2_service_ribbon',
+  'cap_command_service_ribbon','crisis_ribbon','red_service_ribbon',
 
   // Activity ribbons
-  'search_find_ribbon','air_search_and_rescue_ribbon','cap_counterdrug_ribbon','disaster_relief_ribbon','homeland_security_ribbon','cap_cadet_orientation_pilot_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cap_senior_recruiter_ribbon','cadet_recruiter_ribbon'
+  'search_find_ribbon','air_search_and_rescue_ribbon','cap_counterdrug_ribbon','disaster_relief_ribbon','homeland_security_ribbon','cap_cadet_orientation_pilot_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cap_senior_recruiter_ribbon','cadet_recruiter_ribbon','cap_world_war_2_service_ribbon'
 ];
 
 // Robust ribbon precedence lookup. Unknown/renamed asset IDs are pushed to the end
@@ -3513,8 +3513,24 @@ function getDynamicOverRibbonBadgeTop(slot, idx=0){
   return Math.round(Number(liveTopRibbonY) + verticalOffset);
 }
 
-function getBadgeHeightForLayout(id){
-  return customBadgeSizes[id]?.height || 25;
+function getBadgeHeightForLayout(id, slotName=null){
+  const explicitHeight = Number(customBadgeSizes[id]?.height);
+  if(Number.isFinite(explicitHeight) && explicitHeight > 0) return explicitHeight;
+
+  const uniformId = getCurrentCalibUniform();
+  const directKey = slotName ? `badge:${id}:${slotName}:0` : null;
+  const directCalib = directKey ? getReferenceCalibForKey(uniformId, directKey) : null;
+  const directHeight = Number(directCalib?.h);
+  if(Number.isFinite(directHeight) && directHeight > 0) return directHeight;
+
+  if(slotName){
+    const familyKey = getOverRibbonReferenceKey(slotName, 0);
+    const familyCalib = familyKey ? getReferenceCalibForKey(uniformId, familyKey) : null;
+    const familyHeight = Number(familyCalib?.h);
+    if(Number.isFinite(familyHeight) && familyHeight > 0) return familyHeight;
+  }
+
+  return 25;
 }
 
 function getPlannedBadgeIdForSlot(slotName){
@@ -3528,15 +3544,16 @@ function getAboveRibbonStackTops(){
   const gap = 10;
   const orderBottomToTop = ['OLPU','OLP','OLPA'];
   const tops = {};
-  let referenceTop = liveTopRibbonY;
+  let anchorTop = liveTopRibbonY;
 
   for(const slotName of orderBottomToTop){
     const badgeId = getPlannedBadgeIdForSlot(slotName);
     if(!badgeId) continue;
-    const h = getBadgeHeightForLayout(badgeId);
-    const top = Math.round(referenceTop - gap - h);
+    const h = getBadgeHeightForLayout(badgeId, slotName);
+    const top = Math.round(anchorTop - gap - h);
     tops[slotName] = top;
-    referenceTop = top;
+    // Next badge above should sit 10px above the current badge.
+    anchorTop = top;
   }
 
   return tops;
