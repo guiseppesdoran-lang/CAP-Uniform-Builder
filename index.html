@@ -1466,11 +1466,18 @@ function getSpecialtyPocketSlotBySelectionOrder(id){
     .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
     .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
 
+  const hasVolunteerUniversity = specialtyOrder.includes('volunteer_university_instructor_badge');
+
+  // Exception: Volunteer University always renders on the wearer's right pocket.
+  // When Volunteer University is selected, every other flexible specialty badge
+  // is forced to the wearer's left pocket instead of being placed by order.
+  if(id === 'volunteer_university_instructor_badge') return 'RP';
+  if(hasVolunteerUniversity) return 'LP';
+
   const index = specialtyOrder.indexOf(id);
 
-  // First specialty badge: wearer's left pocket, below the ribbons.
-  // Second specialty badge: wearer's right pocket.
-  // If more are selected, they are handled by the normal slot-cap validation and will not render.
+  // Default flexible specialty behavior when Volunteer University is not selected:
+  // first specialty badge on LP, second on RP.
   if(index === 0) return 'LP';
   if(index === 1) return 'RP';
   return null;
@@ -1502,7 +1509,7 @@ function getBadgeSlotLabel(id){
       : 'ON — female blues placement';
   }
   if(id === 'volunteer_university_instructor_badge'){
-    return 'Flexible specialty badge — 1st selected: LP; 2nd selected: RP';
+    return 'RP — Volunteer University exception';
   }
   return badgeLocations[id] || 'UN';
 }
@@ -4214,9 +4221,17 @@ function chooseBadgeSlot(id, prefs){
 
   let ordered = [preferred, ...prefs.filter(p => p && p !== preferred)];
 
-  // Flexible specialty badges may use either pocket, but never the same physical pocket.
+  // Flexible specialty badges use custom physical-slot logic.
   if(isSelectableSpecialtyPocketBadge(id)){
-    ordered = preferred === 'LP' ? ['LP','RP'] : ['RP','LP'];
+    const hasVolunteerUniversity = (State.badges || []).includes('volunteer_university_instructor_badge');
+
+    if(id === 'volunteer_university_instructor_badge'){
+      ordered = ['RP'];
+    }else if(hasVolunteerUniversity){
+      ordered = ['LP'];
+    }else{
+      ordered = preferred === 'LP' ? ['LP','RP'] : ['RP','LP'];
+    }
   }
 
   for(const candidate of ordered){
