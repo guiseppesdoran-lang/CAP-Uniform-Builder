@@ -1352,6 +1352,10 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
     'badge:basic_incident_commander_badge:UN:1': { x:276, y:133, w:35, h:25, r:0 },
     'badge:volunteer_university_instructor_badge:UN:0': { x:125, y:268, w:45, h:45, r:0 },
     'badge:volunteer_university_instructor_badge:UN:1': { x:128, y:264, w:40, h:40, r:0 },
+    // Volunteer University flexible exception: first selected goes to LP, second to RP.
+    // LP is centered on the wearer's left pocket badge zone; RP uses the right-side pocket zone.
+    'badge:volunteer_university_instructor_badge:LP:0': { x:272, y:261, w:45, h:45, r:0 },
+    'badge:volunteer_university_instructor_badge:RP:0': { x:125, y:268, w:45, h:45, r:0 },
     // Squadron Commander / Command Insignia placement for male senior Class A:
     // Current commanders wear it over the nameplate (ON); graduated commanders wear it under the nameplate (UN).
     'badge:squadron_commander_badge:ON:0': { x:142, y:174, w:15, h:15, r:0 },
@@ -1375,7 +1379,9 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
     'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:114, w:60, h:17, r:0 },
     'badge:master_ground_team_badge:OLPU:0': { x:281, y:161, w:25, h:20, r:0 },
     'badge:emergency_services_badge:LP:0': { x:127, y:273, w:35, h:35, r:0 },
-    'badge:communications_technician_badge:UN:0': { x:293, y:279, w:28, h:28, r:0 }
+    'badge:communications_technician_badge:UN:0': { x:293, y:279, w:28, h:28, r:0 },
+    'badge:volunteer_university_instructor_badge:LP:0': { x:122, y:268, w:45, h:45, r:0 },
+    'badge:volunteer_university_instructor_badge:RP:0': { x:285, y:271, w:45, h:45, r:0 }
   }
 };
 
@@ -1433,12 +1439,23 @@ const INCIDENT_COMMAND_SPECIALTY_BADGE_IDS = new Set([
 // Specialty-track/service badges, other than command insignia, are pocket badges.
 // They are assigned by selection order: first specialty badge goes on the wearer's
 // left pocket below the ribbons (LP); second goes on the wearer's right pocket (RP).
+//
+// Exception note: Volunteer University badge has no specific Class A fixed-position
+// rule in CAPR 39-1 for this builder, so it intentionally stays in this flexible
+// specialty placement group instead of being forced into a named occupational slot.
 function isSelectableSpecialtyPocketBadge(id){
   return SPECIALTY_TRACK_BADGE_IDS.has(id) && !isCommandInsigniaBadge(id);
 }
 
 function getGenderedPocketSlotForBadge(id){
-  if(id === 'model_rocketry_badge') return State.gender === 'female' ? 'ON' : 'LP';
+  if(id === 'model_rocketry_badge'){
+    // Male cadet Class A/B blues: Model Rocketry always wears on the wearer's left pocket,
+    // under the ribbons, regardless of cadet rank.
+    if(State.membership === 'cadet' && State.gender === 'male' && ['blues_a','blues_b'].includes(State.uniform)){
+      return 'LP';
+    }
+    return State.gender === 'female' ? 'ON' : 'LP';
+  }
   return 'LP';
 }
 
@@ -1478,6 +1495,14 @@ function getBadgeSlotSpec(id){
 function getBadgeSlotLabel(id){
   if(id === 'squadron_commander_badge'){
     return State.commandInsignia?.graduatedCommander ? 'UN — graduated commander' : 'ON — current commander';
+  }
+  if(id === 'model_rocketry_badge'){
+    return getGenderedPocketSlotForBadge(id) === 'LP'
+      ? 'LP — wearer\'s left pocket, under ribbons'
+      : 'ON — female blues placement';
+  }
+  if(id === 'volunteer_university_instructor_badge'){
+    return 'Flexible specialty badge — 1st selected: LP; 2nd selected: RP';
   }
   return badgeLocations[id] || 'UN';
 }
@@ -1548,8 +1573,9 @@ function buildDerivedBadgeCalib(key, base){
       if(!defaults[refKey]) refKey = `badge:emergency_services_badge:LP:${parsed.idx}`;
       if(!defaults[refKey]) refKey = `badge:emergency_services_badge:LP:0`;
     }else if(LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id)){
-      refKey = `badge:volunteer_university_instructor_badge:ON:0`;
-      if(!defaults[refKey]) refKey = `badge:volunteer_university_instructor_badge:UN:0`;
+      refKey = `badge:${parsed.id}:LP:${parsed.idx}`;
+      if(!defaults[refKey]) refKey = `badge:volunteer_university_instructor_badge:LP:0`;
+      if(!defaults[refKey]) refKey = `badge:emergency_services_badge:LP:0`;
     }else if(SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id)){
       refKey = `badge:emergency_services_badge:LP:0`;
     }else{
@@ -1558,7 +1584,9 @@ function buildDerivedBadgeCalib(key, base){
   }else if(isSelectableSpecialtyPocketBadge(parsed.id) && parsed.slot === 'RP'){
     // Second specialty-track/service badge: wearer's right pocket.
     if(LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id)){
-      refKey = `badge:volunteer_university_instructor_badge:UN:0`;
+      refKey = `badge:${parsed.id}:RP:${parsed.idx}`;
+      if(!defaults[refKey]) refKey = `badge:volunteer_university_instructor_badge:RP:0`;
+      if(!defaults[refKey]) refKey = `badge:volunteer_university_instructor_badge:UN:0`;
     }else if(SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id)){
       refKey = `badge:communications_technician_badge:UN:0`;
     }else if(ES_POCKET_BADGE_IDS.has(parsed.id)){
@@ -4184,7 +4212,13 @@ function chooseBadgeSlot(id, prefs){
 
   if(isCommandInsigniaBadge(id)) return preferred;
 
-  const ordered = [preferred, ...prefs.filter(p => p && p !== preferred)];
+  let ordered = [preferred, ...prefs.filter(p => p && p !== preferred)];
+
+  // Flexible specialty badges may use either pocket, but never the same physical pocket.
+  if(isSelectableSpecialtyPocketBadge(id)){
+    ordered = preferred === 'LP' ? ['LP','RP'] : ['RP','LP'];
+  }
+
   for(const candidate of ordered){
     if(slotHasRoom(candidate)) return candidate;
   }
@@ -4260,7 +4294,11 @@ function placeBadgeSlotAnchored(id){
 
   let slotSpec = getBadgeSlotSpec(id);
   if(id === 'nra_marksman_badge') slotSpec = 'OLPF';
-  if(id === 'model_rocketry_badge') slotSpec = 'LP,ON';
+  if(id === 'model_rocketry_badge'){
+    slotSpec = (State.membership === 'cadet' && State.gender === 'male' && ['blues_a','blues_b'].includes(State.uniform))
+      ? 'LP'
+      : 'LP,ON';
+  }
 
   const prefs = parseSlotPrefs(slotSpec);
   const slot = chooseBadgeSlot(id, prefs);
