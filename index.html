@@ -284,6 +284,24 @@
     position:absolute;
     image-rendering:auto;
   }
+  .measurementOverlay{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:9998;
+    overflow:visible;
+  }
+  .measurementOverlay text{
+    fill:#c1121f;
+    font-size:12px;
+    font-weight:700;
+    paint-order:stroke;
+    stroke:#fff;
+    stroke-width:3px;
+    stroke-linejoin:round;
+  }
 
   .drag-mode-on .ribbonTile{
     outline:1px dashed rgba(0,40,85,.6);
@@ -3291,6 +3309,7 @@ document.addEventListener('mouseup', () => {
 });
 
 function renderRack(){
+  clearMeasurementOverlay();
   [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
 
   const baseCfg = UNIFORMS[State.uniform];
@@ -4075,9 +4094,13 @@ function getRenderableBadgeIds(){
 }
 
 function renderAllBadges(){
+  clearMeasurementOverlay();
   [...uniformCanvas.querySelectorAll('.layer.badge')].forEach(n=>n.remove());
   resetBadgeSlots();
-  if(!UI_AUTHZ[State.uniform]?.showBadges) return;
+  if(!UI_AUTHZ[State.uniform]?.showBadges){
+    renderMeasurementOverlay();
+    return;
+  }
 
   for(const id of getRenderableCountedBadgeIds()){
     placeBadgeSlotAnchored(id);
@@ -4088,6 +4111,8 @@ function renderAllBadges(){
   for(const id of getRenderableCommandBadgeIds()){
     placeBadgeSlotAnchored(id);
   }
+
+  renderMeasurementOverlay();
 }
 
 function getTopRibbonRowCenterX() {
@@ -4616,8 +4641,177 @@ function applyAlternates(fromU,toU){
 /* ===========================
    RENDER PIPELINE
    =========================== */
+
+function clearMeasurementOverlay(){
+  uniformCanvas.querySelectorAll('.measurementOverlay').forEach(n=>n.remove());
+}
+
+function getMeasurementRibbonRackBox(){
+  const ribbonEls = [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini')];
+  if(!ribbonEls.length) return null;
+
+  const left = Math.min(...ribbonEls.map(el => parseFloat(el.style.left) || 0));
+  const top = Math.min(...ribbonEls.map(el => parseFloat(el.style.top) || 0));
+  const right = Math.max(...ribbonEls.map(el => (parseFloat(el.style.left) || 0) + (parseFloat(el.style.width) || 0)));
+  const bottom = Math.max(...ribbonEls.map(el => (parseFloat(el.style.top) || 0) + (parseFloat(el.style.height) || 0)));
+
+  return {
+    kind:'ribbonRack',
+    slot:'RIBBONS',
+    label:'Ribbon Rack',
+    left, top, right, bottom,
+    centerX:(left + right) / 2,
+    centerY:(top + bottom) / 2
+  };
+}
+
+function parseRenderedBadgeMeta(el){
+  const key = el.dataset?.calibKey || '';
+  const m = key.match(/^badge:(.*?):([A-Z]+):(\d+)$/);
+  const left = parseFloat(el.style.left) || 0;
+  const top = parseFloat(el.style.top) || 0;
+  const width = parseFloat(el.style.width) || el.naturalWidth || 0;
+  const height = parseFloat(el.style.height) || el.naturalHeight || 0;
+  return {
+    kind:'badge',
+    id: m?.[1] || '',
+    slot: m?.[2] || '',
+    idx: Number(m?.[3] || 0),
+    label: el.dataset?.tooltipTitle || m?.[1] || 'Badge',
+    left,
+    top,
+    right:left + width,
+    bottom:top + height,
+    centerX:left + width/2,
+    centerY:top + height/2,
+    width,
+    height
+  };
+}
+
+function rangesOverlap(a1, a2, b1, b2){
+  return Math.min(a2, b2) - Math.max(a1, b1);
+}
+
+function getMeasurementRenderableItems(){
+  const items = [];
+  const ribbonBox = getMeasurementRibbonRackBox();
+  if(ribbonBox) items.push(ribbonBox);
+
+  const badgeEls = [...uniformCanvas.querySelectorAll('.layer.badge')];
+  badgeEls.forEach(el => items.push(parseRenderedBadgeMeta(el)));
+
+  return items;
+}
+
+function getCaprReferenceGapLabel(upper, lower){
+  const aboveRibbonSlots = new Set(['OLPU','OLP','OLPA']);
+  const belowRibbonSlots = new Set(['LP','RP','ON','UN','ORP','URBP','OLPF','LRP']);
+
+  if(!upper || !lower) return '';
+
+  if(upper.kind === 'ribbonRack' && belowRibbonSlots.has(lower.slot)) return 'CAPR ref: 1.50"';
+  if(lower.kind === 'ribbonRack' && aboveRibbonSlots.has(upper.slot)) return 'CAPR ref: 0.50"';
+  if(aboveRibbonSlots.has(upper.slot) && aboveRibbonSlots.has(lower.slot)) return 'CAPR ref: 0.50"';
+  if((upper.kind === 'ribbonRack' && lower.kind === 'badge') || (lower.kind === 'ribbonRack' && upper.kind === 'badge')) return 'CAPR ref';
+  return '';
+}
+
+function makeMeasurementArrow(svg, x, y1, y2, label){
+  if(!Number.isFinite(x) || !Number.isFinite(y1) || !Number.isFinite(y2)) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  const group = document.createElementNS(NS, 'g');
+
+  const line = document.createElementNS(NS, 'line');
+  line.setAttribute('x1', x);
+  line.setAttribute('x2', x);
+  line.setAttribute('y1', y1);
+  line.setAttribute('y2', y2);
+  line.setAttribute('stroke', '#c1121f');
+  line.setAttribute('stroke-width', '2');
+  line.setAttribute('marker-start', 'url(#capubArrowHead)');
+  line.setAttribute('marker-end', 'url(#capubArrowHead)');
+  group.appendChild(line);
+
+  const textY = (y1 + y2) / 2 - 6;
+  const text = document.createElementNS(NS, 'text');
+  text.setAttribute('x', x + 8);
+  text.setAttribute('y', textY);
+  text.textContent = label;
+  group.appendChild(text);
+
+  svg.appendChild(group);
+}
+
+function renderMeasurementOverlay(){
+  clearMeasurementOverlay();
+
+  const items = getMeasurementRenderableItems();
+  if(items.length < 2) return;
+
+  const box = uniformCanvas.getBoundingClientRect();
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.classList.add('measurementOverlay');
+  svg.setAttribute('viewBox', `0 0 ${box.width || 450} ${box.height || 600}`);
+  svg.setAttribute('preserveAspectRatio', 'none');
+
+  const defs = document.createElementNS(svgNS, 'defs');
+  const marker = document.createElementNS(svgNS, 'marker');
+  marker.setAttribute('id', 'capubArrowHead');
+  marker.setAttribute('markerWidth', '8');
+  marker.setAttribute('markerHeight', '8');
+  marker.setAttribute('refX', '4');
+  marker.setAttribute('refY', '4');
+  marker.setAttribute('orient', 'auto-start-reverse');
+
+  const arrowPath = document.createElementNS(svgNS, 'path');
+  arrowPath.setAttribute('d', 'M 0 0 L 8 4 L 0 8 z');
+  arrowPath.setAttribute('fill', '#c1121f');
+  marker.appendChild(arrowPath);
+  defs.appendChild(marker);
+  svg.appendChild(defs);
+
+  for(const lower of items){
+    const candidates = items
+      .filter(upper => upper !== lower)
+      .filter(upper => upper.bottom <= lower.top)
+      .map(upper => ({ upper, gap: lower.top - upper.bottom }))
+      .filter(entry => entry.gap > 0);
+
+    if(!candidates.length) continue;
+
+    // Prefer visually related items: same-side overlap first, then nearest vertical item.
+    candidates.sort((a, b) => {
+      const overlapA = rangesOverlap(a.upper.left, a.upper.right, lower.left, lower.right);
+      const overlapB = rangesOverlap(b.upper.left, b.upper.right, lower.left, lower.right);
+      const scoreA = overlapA > 0 ? 0 : 1;
+      const scoreB = overlapB > 0 ? 0 : 1;
+      if(scoreA !== scoreB) return scoreA - scoreB;
+      return a.gap - b.gap;
+    });
+
+    const { upper, gap } = candidates[0];
+    const overlap = rangesOverlap(upper.left, upper.right, lower.left, lower.right);
+    let x = lower.centerX;
+    if(overlap > 0){
+      x = Math.max(upper.left, lower.left) + overlap / 2;
+    }else{
+      x = (upper.centerX + lower.centerX) / 2;
+    }
+
+    const ref = getCaprReferenceGapLabel(upper, lower);
+    const label = ref ? `${Math.round(gap)} px • ${ref}` : `${Math.round(gap)} px`;
+
+    makeMeasurementArrow(svg, x, upper.bottom, lower.top, label);
+  }
+
+  uniformCanvas.appendChild(svg);
+}
+
 function fullRender(prevUniform){
   clearLayers();
+  clearMeasurementOverlay();
   applyJacket();
 
   if(!getBaseCandidates().length) return;
@@ -4626,6 +4820,7 @@ function fullRender(prevUniform){
   renderPatches();
   renderRack();
   renderAllBadges();
+  renderMeasurementOverlay();
 }
 
 function refreshUI(){
