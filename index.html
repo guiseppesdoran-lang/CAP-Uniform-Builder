@@ -303,6 +303,32 @@
     stroke-linejoin:round;
   }
 
+  .measurementArrowLayer{
+    position:absolute;
+    overflow:visible;
+    pointer-events:none;
+    z-index:9998;
+  }
+  .calib-selectable .measurementArrowLayer{
+    pointer-events:auto;
+    cursor:crosshair;
+  }
+  .measurementArrowLayer svg{
+    overflow:visible;
+    display:block;
+    width:100%;
+    height:100%;
+  }
+  .measurementArrowLayer text{
+    fill:#c1121f;
+    font-size:10px;
+    font-weight:700;
+    paint-order:stroke;
+    stroke:#fff;
+    stroke-width:2px;
+    stroke-linejoin:round;
+  }
+
   .drag-mode-on .ribbonTile{
     outline:1px dashed rgba(0,40,85,.6);
     cursor:move;
@@ -1440,7 +1466,8 @@ const AIRCREW_BADGE_IDS = new Set([
   'CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA',
   'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B',
   'observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
-  'solo_badge','pre_solo_badge'
+  'solo_badge','pre_solo_badge',
+  'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
 ]);
 
 // CAPR 39-1 Attachment 4 badge-position categories.
@@ -1460,7 +1487,8 @@ const OLPU_OCCUPATIONAL_BADGE_IDS = new Set([
 ]);
 const SPECIALTY_TRACK_BADGE_IDS = new Set([
   'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
-  'communications_technician_badge','information_technology_technician_badge','historian_technicianIbadge',
+  'communications_technician_badge','communications_senior_badge','communications_master_badge',
+  'information_technology_technician_badge','historian_technicianIbadge',
   'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge'
 ]);
 const POCKET_SERVICE_BADGE_IDS = new Set([
@@ -1473,7 +1501,8 @@ const ES_POCKET_BADGE_IDS = new Set([
   'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge'
 ]);
 const SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS = new Set([
-  'communications_technician_badge','information_technology_technician_badge','historian_technicianIbadge'
+  'communications_technician_badge','communications_senior_badge','communications_master_badge',
+  'information_technology_technician_badge','historian_technicianIbadge'
 ]);
 const LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS = new Set([
   'volunteer_university_instructor_badge','cadet_programs_badge'
@@ -1801,6 +1830,7 @@ function getLayerTypeFromKey(key, className=''){
   if(k.startsWith('device:')) return 'ribbon-device';
   if(k.startsWith('rank:')) return 'rank';
   if(k.startsWith('text:')) return 'text';
+  if(k.startsWith('arrow:')) return 'measurement-arrow';
   if(k === 'jacket') return 'base-uniform';
   if(String(className).includes('jacket')) return 'base-uniform';
   return 'layer';
@@ -2652,7 +2682,7 @@ Object.assign(miniMedalImages, {
    =========================== */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
-  'buddist_chaplin','christian_chaplin','communications_technician_badge','cyber_badges','emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge','volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge','squadron_commander_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges'
+  'buddist_chaplin','christian_chaplin','communications_technician_badge','communications_senior_badge','communications_master_badge','cyber_badges','emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge','volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge','squadron_commander_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges','uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
 ];
 
 
@@ -2664,7 +2694,12 @@ const BADGE_IMAGE_OVERRIDES = {
   'volunteer_university_instructor_badge': 'badges/Vol_U_Badge.png',
   'basic_incident_commander_badge': 'badges/Basic_Incident_Commander_Badge.png',
   'cadet_programs_badge': 'badges/cadet programs badge.png',
-  'squadron_commander_badge': 'badges/Squadron Commander badge.png'
+  'squadron_commander_badge': 'badges/Squadron Commander badge.png',
+  'communications_senior_badge': 'badges/communications_senior_badge.png',
+  'communications_master_badge': 'badges/communications_master_badge.png',
+  'uas_pilot_basic_badge': 'badges/uas_pilot_basic_badge.png',
+  'uas_pilot_senior_badge': 'badges/uas_pilot_senior_badge.png',
+  'uas_pilot_master_badge': 'badges/uas_pilot_master_badge.png'
 };
 function getBadgeAssetPath(id){
   return BADGE_IMAGE_OVERRIDES[id] || `badges/${id}.png`;
@@ -2686,17 +2721,35 @@ function getBadgeAssetCandidates(id){
 }
 
 const allowedCadetBadges = new Set([
-  'solo_badge','pre_solo_badge',
+  // Cadet-only badges
+  'model_rocketry_badge','cyber_badges','stem_badges','nra_marksman_badge',
+
+  // Aviation / aircrew / observer badges cadets may earn in normal or rare circumstances
+  'pre_solo_badge','solo_badge','CAPPilot1_FA9D33EA587D8',
+  'observer_badge','SeniorObserver1_0E35802A29801',
+  'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
+
+  // UAS pilot badge levels cadets can technically earn in specific circumstances
+  'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge',
+
+  // Emergency services / ground / EMS
   'ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
   'emt_basic_badge','emt_intermediate','emt_paramedic',
-  'model_rocketry_badge',
-  'communications_technician_badge','information_technology_technician_badge',
-  'cyber_badges','stem_badges',
-  'nra_marksman_badge',
-  'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310',
-  'SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
-  'observer_badge','emergency_services_badge','historian_technicianIbadge'
+  'emergency_services_badge',
+
+  // Cadet-authorized specialty-track badge exceptions
+  'information_technology_technician_badge','historian_technicianIbadge',
+  'communications_technician_badge','communications_senior_badge','communications_master_badge'
 ]);
+
+const rareCadetBadges = new Set([
+  'CAPPilot1_FA9D33EA587D8',
+  'SeniorObserver1_0E35802A29801',
+  'MasterAirCrew1_72AC4CAE7A310',
+  'uas_pilot_senior_badge',
+  'uas_pilot_master_badge'
+]);
+
 
 const exclusiveBadges = [
   ['emt_basic_badge','ground_team_basic_badge'],
@@ -2708,6 +2761,7 @@ const badgeLocations = {
   // Aviation badges
   'AirCrew1_DB3F0FCC3650F':'OLP','BalloonPilot1_442D89C94185B':'OLP','CAPMasterPilot1_621A0E2ED15DA':'OLP','CAPPilot1_FA9D33EA587D8':'OLP','CAPSeniorPilot1_D9725AE959752':'OLP','GliderPilot1_7BFB287379918':'OLP','MasterAirCrew1_72AC4CAE7A310':'OLP',
   'SeniorAirCrew1_B289BAE6E515C':'OLP','pre_solo_badge':'OLP','solo_badge':'OLP','MasterObserver1_1B88D5071FD5C':'OLP','SeniorObserver1_0E35802A29801':'OLP','observer_badge':'OLP',
+  'uas_pilot_basic_badge':'OLP','uas_pilot_senior_badge':'OLP','uas_pilot_master_badge':'OLP',
 
   // Occupational badges per CAPR 39-1 Attachment 4
   'buddist_chaplin':'OLPA','christian_chaplin':'OLPA','jewish_chaplin':'OLPA','muslim_chaplin':'OLPA',
@@ -2717,6 +2771,8 @@ const badgeLocations = {
   // Specialty-track/service badge placement is dynamic by selection order:
   // first selected specialty badge = LP; second selected specialty badge = RP.
   'communications_technician_badge':'LP,RP',
+  'communications_senior_badge':'LP,RP',
+  'communications_master_badge':'LP,RP',
   'information_technology_technician_badge':'LP,RP',
   'historian_technicianIbadge':'LP,RP',
   'emergency_services_badge':'LP,RP',
@@ -2736,14 +2792,14 @@ const badgeLocations = {
 
 const customBadgeSizes = {
   'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
-  'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:25,height:25},
+  'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:25,height:25},'communications_senior_badge':{width:25,height:25},'communications_master_badge':{width:25,height:25},
   'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:28,height:28},'senior_emergency_services_badge':{width:28,height:28},'master_emergency_services_badge':{width:28,height:28},'volunteer_university_instructor_badge':{width:45,height:45},'basic_incident_commander_badge':{width:25,height:12},'cadet_programs_badge':{width:45,height:45},'squadron_commander_badge':{width:15,height:15},'emt_basic_badge':{width:60,height:60},
   'emt_intermediate':{width:60,height:60},'emt_paramedic':{width:60,height:60},'ground_team_basic_badge':{width:25,height:20},
   'historian_technicianIbadge':{width:25,height:25},'information_technology_technician_badge':{width:25,height:25},
   'jewish_chaplin':{width:60,height:60},'legal_officer':{width:60,height:25},'master_ground_team_badge':{width:25,height:20},
   'medical_officer':{width:60,height:60},'model_rocketry_badge':{width:7,height:28.125},'muslim_chaplin':{width:60,height:60},
   'nra_marksman_badge':{width:40,height:60},'nurse_officer':{width:60,height:60},'observer_badge':{width:60,height:25},
-  'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25}
+  'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25},'uas_pilot_basic_badge':{width:60,height:25},'uas_pilot_senior_badge':{width:60,height:25},'uas_pilot_master_badge':{width:60,height:25}
 };
 
 /* NEW: badge grouping for modal */
@@ -2753,6 +2809,7 @@ const BADGE_CATEGORIES = [
     'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
     'observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
     'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B',
+    'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge',
     'solo_badge','pre_solo_badge'
   ]},
   { key:'Emergency Services / Ground', ids:[
@@ -2763,7 +2820,8 @@ const BADGE_CATEGORIES = [
     'emt_basic_badge','emt_intermediate','emt_paramedic','medical_officer','nurse_officer'
   ]},
   { key:'Comms / IT / Cyber / STEM', ids:[
-    'communications_technician_badge','information_technology_technician_badge','cyber_badges','stem_badges'
+    'communications_technician_badge','communications_senior_badge','communications_master_badge',
+    'information_technology_technician_badge','cyber_badges','stem_badges'
   ]},
   { key:'Professional Development / Cadet Programs', ids:[
     'volunteer_university_instructor_badge','cadet_programs_badge'
@@ -3934,10 +3992,11 @@ function buildBadgeGallery(){
     tile.className = 'galleryTile';
 
     const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    const rareCadetTag = (State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
     tile.innerHTML = `
       <img src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
       <div style="flex:1;min-width:0;">
-        <div class="title">${title}</div>
+        <div class="title">${title}${rareCadetTag}</div>
         <div class="sub">(${id})</div>
         <div class="miniRow">
           <label><input type="checkbox" class="bdChk"> Add</label>
@@ -4656,7 +4715,7 @@ function applyAlternates(fromU,toU){
    =========================== */
 
 function clearMeasurementOverlay(){
-  uniformCanvas.querySelectorAll('.measurementOverlay').forEach(n=>n.remove());
+  uniformCanvas.querySelectorAll('.measurementOverlay,.measurementArrowLayer').forEach(n=>n.remove());
 }
 
 function getMeasurementRibbonRackBox(){
@@ -4732,33 +4791,80 @@ function getCaprReferenceGapLabel(upper, lower){
   return '';
 }
 
-function makeMeasurementArrow(svg, x, y1, y2, label, placeLeft=false){
-  if(!Number.isFinite(x) || !Number.isFinite(y1) || !Number.isFinite(y2)) return;
-  const NS = 'http://www.w3.org/2000/svg';
-  const group = document.createElementNS(NS, 'g');
+function buildMeasurementArrowKey(upper, lower){
+  const upperToken = upper?.slot || upper?.kind || 'item';
+  const lowerToken = lower?.slot || lower?.kind || 'item';
+  const lowerId = lower?.id || lower?.slot || lower?.kind || 'item';
+  const lowerIdx = Number.isFinite(Number(lower?.idx)) ? Number(lower.idx) : 0;
+  return `arrow:${upperToken}:to:${lowerToken}:${lowerId}:${lowerIdx}`;
+}
 
+function makeMeasurementArrow(svgUnused, arrowKey, x, y1, y2, label, placeLeft=false){
+  if(!Number.isFinite(x) || !Number.isFinite(y1) || !Number.isFinite(y2)) return;
+
+  const top = Math.min(y1, y2);
+  const height = Math.max(1, Math.abs(y2 - y1));
+  const width = 92;
+  const lineLocalX = placeLeft ? 74 : 14;
+  const left = x - lineLocalX;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'layer measurementArrowLayer';
+  wrap.dataset.calibKey = arrowKey;
+  wrap.dataset.tooltipTitle = 'Measurement Arrow';
+  wrap.dataset.tooltipReg = 'Calibration item';
+  wrap.dataset.tooltipWhy = 'Use the calibrator to move, resize, or rotate this red distance arrow.';
+
+  applyCalibToElement(wrap, arrowKey, { x:left, y:top, w:width, h:height, r:0 });
+
+  const actualW = parseFloat(wrap.style.width) || width;
+  const actualH = parseFloat(wrap.style.height) || height;
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${actualW} ${actualH}`);
+  svg.setAttribute('preserveAspectRatio', 'none');
+
+  const markerId = `capubArrowHead_${arrowKey.replace(/[^a-zA-Z0-9_-]/g,'_')}`;
+  const defs = document.createElementNS(NS, 'defs');
+  const marker = document.createElementNS(NS, 'marker');
+  marker.setAttribute('id', markerId);
+  marker.setAttribute('markerWidth', '6');
+  marker.setAttribute('markerHeight', '6');
+  marker.setAttribute('refX', '3');
+  marker.setAttribute('refY', '3');
+  marker.setAttribute('orient', 'auto-start-reverse');
+
+  const arrowPath = document.createElementNS(NS, 'path');
+  arrowPath.setAttribute('d', 'M 0 0 L 6 3 L 0 6 z');
+  arrowPath.setAttribute('fill', '#c1121f');
+  marker.appendChild(arrowPath);
+  defs.appendChild(marker);
+  svg.appendChild(defs);
+
+  const localLineX = Math.max(6, Math.min(actualW - 6, lineLocalX));
   const line = document.createElementNS(NS, 'line');
-  line.setAttribute('x1', x);
-  line.setAttribute('x2', x);
-  line.setAttribute('y1', y1);
-  line.setAttribute('y2', y2);
+  line.setAttribute('x1', localLineX);
+  line.setAttribute('x2', localLineX);
+  line.setAttribute('y1', 0);
+  line.setAttribute('y2', actualH);
   line.setAttribute('stroke', '#c1121f');
   line.setAttribute('stroke-width', '1.5');
-  line.setAttribute('marker-start', 'url(#capubArrowHead)');
-  line.setAttribute('marker-end', 'url(#capubArrowHead)');
-  group.appendChild(line);
+  line.setAttribute('marker-start', `url(#${markerId})`);
+  line.setAttribute('marker-end', `url(#${markerId})`);
+  svg.appendChild(line);
 
   if(label){
-    const textY = (y1 + y2) / 2 - 4;
     const text = document.createElementNS(NS, 'text');
-    text.setAttribute('x', placeLeft ? x - 6 : x + 6);
-    text.setAttribute('y', textY);
+    text.setAttribute('x', placeLeft ? localLineX - 6 : localLineX + 6);
+    text.setAttribute('y', (actualH / 2) - 4);
     text.setAttribute('text-anchor', placeLeft ? 'end' : 'start');
     text.textContent = label;
-    group.appendChild(text);
+    svg.appendChild(text);
   }
 
-  svg.appendChild(group);
+  wrap.appendChild(svg);
+  uniformCanvas.appendChild(wrap);
 }
 
 function renderMeasurementOverlay(){
@@ -4770,29 +4876,6 @@ function renderMeasurementOverlay(){
 
   const box = uniformCanvas.getBoundingClientRect();
   const canvasWidth = box.width || 450;
-  const canvasHeight = box.height || 600;
-
-  const svgNS = 'http://www.w3.org/2000/svg';
-  const svg = document.createElementNS(svgNS, 'svg');
-  svg.classList.add('measurementOverlay');
-  svg.setAttribute('viewBox', `0 0 ${canvasWidth} ${canvasHeight}`);
-  svg.setAttribute('preserveAspectRatio', 'none');
-
-  const defs = document.createElementNS(svgNS, 'defs');
-  const marker = document.createElementNS(svgNS, 'marker');
-  marker.setAttribute('id', 'capubArrowHead');
-  marker.setAttribute('markerWidth', '6');
-  marker.setAttribute('markerHeight', '6');
-  marker.setAttribute('refX', '3');
-  marker.setAttribute('refY', '3');
-  marker.setAttribute('orient', 'auto-start-reverse');
-
-  const arrowPath = document.createElementNS(svgNS, 'path');
-  arrowPath.setAttribute('d', 'M 0 0 L 6 3 L 0 6 z');
-  arrowPath.setAttribute('fill', '#c1121f');
-  marker.appendChild(arrowPath);
-  defs.appendChild(marker);
-  svg.appendChild(defs);
 
   for(const lower of items){
     const candidates = items
@@ -4826,11 +4909,10 @@ function renderMeasurementOverlay(){
 
     // Keep the label outside the arrow path when possible.
     const placeLeft = x > (canvasWidth * 0.7);
+    const arrowKey = buildMeasurementArrowKey(upper, lower);
 
-    makeMeasurementArrow(svg, x, upper.bottom, lower.top, label, placeLeft);
+    makeMeasurementArrow(null, arrowKey, x, upper.bottom, lower.top, label, placeLeft);
   }
-
-  uniformCanvas.appendChild(svg);
 }
 
 function fullRender(prevUniform){
@@ -5360,13 +5442,14 @@ function openGalleryModal(kind){
       ids.forEach(id=>{
         const sel = State.badgeSelections[id] || {checked:false};
         const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+        const rareCadetTag = (State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
 
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
           <img src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
           <div style="flex:1;min-width:0;">
-            <div class="title">${title}</div>
+            <div class="title">${title}${rareCadetTag || ''}</div>
             <div class="sub">(${id})</div>
             <div class="miniRow">
               <label><input type="checkbox" class="bdChk"> Add</label>
