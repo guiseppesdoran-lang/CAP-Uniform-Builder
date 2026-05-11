@@ -5893,6 +5893,60 @@ function selectHighestWearableImportedBadges(ids){
   return counted;
 }
 
+
+function parseCapReportDate(dateText){
+  const m = String(dateText || '').match(/(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})/);
+  if(!m) return null;
+  const months = {
+    jan:0, january:0, feb:1, february:1, mar:2, march:2, apr:3, april:3,
+    may:4, jun:5, june:5, jul:6, july:6, aug:7, august:7, sep:8, sept:8, september:8,
+    oct:9, october:9, nov:10, november:10, dec:11, december:11
+  };
+  const monthKey = m[2].toLowerCase();
+  if(!(monthKey in months)) return null;
+  const d = new Date(Number(m[3]), months[monthKey], Number(m[1]));
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function extractJoinDateFromMemberReport(text){
+  const t = normalizeMemberReportText(text);
+
+  // Normal report header shape:
+  // Gender Type Rank Date of Rank Joined Expires ...
+  // MALE CADET C/Maj 18 Dec 2025 24 Sep 2020 30 Sep 2026 ...
+  const headerMatch = t.match(/\b(?:MALE|FEMALE)\s+(?:CADET|SENIOR(?:\s+MEMBER)?)\s+[A-Z]\/?[A-Za-z0-9]*(?:\s+[A-Za-z]+)?\s+\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})\s+\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/i);
+  if(headerMatch) return parseCapReportDate(headerMatch[1]);
+
+  // Fallbacks for copied or alternate report text.
+  const explicitMatch = t.match(/\b(?:Joined|Join Date|Date Joined)\s*:?\s*(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})\b/i);
+  if(explicitMatch) return parseCapReportDate(explicitMatch[1]);
+
+  return null;
+}
+
+function getFullYearsBetween(startDate, endDate = new Date()){
+  if(!(startDate instanceof Date) || Number.isNaN(startDate.getTime())) return 0;
+  let years = endDate.getFullYear() - startDate.getFullYear();
+  const beforeAnniversary =
+    endDate.getMonth() < startDate.getMonth() ||
+    (endDate.getMonth() === startDate.getMonth() && endDate.getDate() < startDate.getDate());
+  if(beforeAnniversary) years--;
+  return Math.max(0, years);
+}
+
+function chooseRedServiceValueFromYears(years){
+  if(years >= 35) return 'years_35';
+  if(years >= 30) return 'years_30';
+  if(years >= 25) return 'years_25';
+  if(years >= 20) return 'years_20';
+  if(years >= 15) return 'years_15';
+  if(years >= 10) return 'years_10';
+  if(years >= 5) return 'years_5';
+  if(years >= 2) return 'years_2';
+  return null;
+}
+
+
 function parseCapMemberReport(textRaw){
   const text = normalizeMemberReportText(textRaw);
   const result = {
@@ -5945,8 +5999,23 @@ function parseCapMemberReport(textRaw){
     });
   }
 
+  // In the CAP Member Search Report this appears as "Crisis Service Award";
+  // in the builder it maps to the crisis_ribbon asset/id.
   if(/Crisis Service Award/i.test(text) || /\bCrisis Ribbon\b/i.test(text)){
     result.ribbons.push({ id:'crisis_ribbon', value:'earned', reason:'Crisis Service Award' });
+  }
+
+  const joinDate = extractJoinDateFromMemberReport(text);
+  if(joinDate){
+    const serviceYears = getFullYearsBetween(joinDate, new Date());
+    const redServiceValue = chooseRedServiceValueFromYears(serviceYears);
+    if(redServiceValue){
+      result.ribbons.push({
+        id:'red_service_ribbon',
+        value:redServiceValue,
+        reason:`${serviceYears} full years since join date`
+      });
+    }
   }
 
   const communityServiceCount = Math.max(1, countOccurrences(text, /Community Service Ribbon/gi));
@@ -6099,6 +6168,8 @@ function wireMemberReportImporter(){
         `Imported ${file.name}.`,
         `Profile: ${parsed.membership || 'unknown'} • ${parsed.gender || 'unknown'} • ${parsed.rank || 'rank not found'}`,
         `Ribbons selected: ${parsed.ribbons.length}`,
+        parsed.ribbons.some(r => r.id === 'red_service_ribbon') ? `Red Service: ${parsed.ribbons.find(r => r.id === 'red_service_ribbon').reason}` : '',
+        parsed.ribbons.some(r => r.id === 'crisis_ribbon') ? 'Crisis Service Award: selected' : '',
         `Badges selected: ${parsed.badges.length}${parsed.badges.length >= 4 ? ' (highest four wearable badges kept)' : ''}`,
         parsed.notes?.length ? `Notes: ${parsed.notes.join('; ')}` : ''
       ].filter(Boolean);
