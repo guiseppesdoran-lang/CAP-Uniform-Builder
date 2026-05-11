@@ -4794,9 +4794,6 @@ function renderMeasurementOverlay(){
   defs.appendChild(marker);
   svg.appendChild(defs);
 
-  let rightLane = 0;
-  let leftLane = 0;
-
   for(const lower of items){
     const candidates = items
       .filter(upper => upper !== lower)
@@ -4821,20 +4818,14 @@ function renderMeasurementOverlay(){
     // Only draw the overlay when a CAPR reference distance applies.
     if(!label) continue;
 
-    const footprintLeft = Math.min(upper.left, lower.left);
-    const footprintRight = Math.max(upper.right, lower.right);
+    // Always center the arrow on the item being measured.
+    // For badges, this means the arrow is horizontally centered on that badge.
+    // For the ribbon rack, use the rack center.
+    let x = lower.centerX;
+    x = Math.max(18, Math.min(canvasWidth - 18, x));
 
-    let x = footprintRight + 10 + (rightLane * 12);
-    let placeLeft = false;
-
-    // If there is not enough room on the right, place the arrow to the left.
-    if(x > canvasWidth - 56){
-      x = footprintLeft - 10 - (leftLane * 12);
-      placeLeft = true;
-      leftLane = (leftLane + 1) % 3;
-    }else{
-      rightLane = (rightLane + 1) % 3;
-    }
+    // Keep the label outside the arrow path when possible.
+    const placeLeft = x > (canvasWidth * 0.7);
 
     makeMeasurementArrow(svg, x, upper.bottom, lower.top, label, placeLeft);
   }
