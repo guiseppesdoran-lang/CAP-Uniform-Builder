@@ -949,7 +949,25 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 
     <div class="controlsScrollArea">
 
-      <section class="panelBlock">
+      
+
+      <section id="memberReportImportPanel" class="panelBlock">
+        <label class="fieldLabel">Import CAP Member Report</label>
+        <div class="hintText">
+          Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
+          The builder will read rank, gender, ribbons, achievements, qualifications, and badges it can match.
+        </div>
+        <div class="row two" style="margin-top:6px">
+          <div class="col"><button id="importMemberReportBtn" type="button">Import Member Report</button></div>
+          <div class="col"><button id="clearImportedReportBtn" class="ghost" type="button">Clear Import Notes</button></div>
+        </div>
+        <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" style="display:none"/>
+        <div id="memberReportImportStatus" class="hintText" style="margin-top:8px;">
+          No report imported yet.
+        </div>
+      </section>
+
+<section class="panelBlock">
         <label class="fieldLabel">Membership Type</label>
         <select id="membershipType">
           <option value="">Select Membership</option>
@@ -1142,19 +1160,13 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <div class="hintText">Saves selected uniform, rank, ribbons, badges, patches, devices, text labels, and calibration.</div>
       </section>
 
-      <section id="memberReportImportPanel" class="panelBlock">
-        <label class="fieldLabel">Import CAP Member Report</label>
+      <section id="measurementOverlayPanel" class="panelBlock">
+        <label class="fieldLabel">Measurement Overlay</label>
+        <label style="font-size:12px;color:var(--muted);display:block;margin-top:4px;">
+          <input type="checkbox" id="toggleMeasurementOverlay" checked> Show red distance arrows and labels
+        </label>
         <div class="hintText">
-          Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
-          The builder will read rank, gender, ribbons, achievements, qualifications, and badges it can match.
-        </div>
-        <div class="row two" style="margin-top:6px">
-          <div class="col"><button id="importMemberReportBtn" type="button">Import Member Report</button></div>
-          <div class="col"><button id="clearImportedReportBtn" class="ghost" type="button">Clear Import Notes</button></div>
-        </div>
-        <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" style="display:none"/>
-        <div id="memberReportImportStatus" class="hintText" style="margin-top:8px;">
-          No report imported yet.
+          Displays red double-ended arrows and labels between the rendered ribbon rack and badges, excluding individual ribbons.
         </div>
       </section>
 
@@ -1269,8 +1281,9 @@ const State = {
   selectedDevices:{},
   ribbonDragMode:false,
   forceMini:false,
+  showMeasurementOverlay:true,
 
-  ribbonSelections:{},
+  ribbonSelections:{}, 
   ribbonGalleryExpanded:false,
 
   badgeSelections:{},
@@ -4745,6 +4758,7 @@ function makeMeasurementArrow(svg, x, y1, y2, label){
 
 function renderMeasurementOverlay(){
   clearMeasurementOverlay();
+  if(!State.showMeasurementOverlay) return;
 
   const items = getMeasurementRenderableItems();
   if(items.length < 2) return;
@@ -4828,6 +4842,8 @@ function refreshUI(){
   rankSetupSelect.value = State.rank || '';
   jacketSelect.value = State.gender || '';
   if(assetBaseInput) assetBaseInput.value=State.assetBase;
+  const overlayToggle = by('toggleMeasurementOverlay');
+  if(overlayToggle) overlayToggle.checked = !!State.showMeasurementOverlay;
 
   highlightActiveUniformButton();
   applyMemberTypeToUniformOptions();
@@ -4878,6 +4894,18 @@ by('toggleMini').addEventListener('change', e=>{
   renderRack();
   renderAllBadges();
 });
+
+const measurementOverlayToggle = by('toggleMeasurementOverlay');
+if(measurementOverlayToggle){
+  measurementOverlayToggle.addEventListener('change', e=>{
+    State.showMeasurementOverlay = !!e.target.checked;
+    if(State.showMeasurementOverlay){
+      renderMeasurementOverlay();
+    }else{
+      clearMeasurementOverlay();
+    }
+  });
+}
 
 buildDevicePicker();
 wireDeviceUI();
@@ -6249,7 +6277,11 @@ function parseCapMemberReport(textRaw){
 
   // Badge / qualification mapping.
   if(/CAP Aircrew Rating/i.test(text)) result.badges.push('AirCrew1_DB3F0FCC3650F');
-  if(/Mission Observer|MO - Mission Observer/i.test(text)) result.badges.push('observer_badge');
+  // Do not use MO/Mission Observer training qualification as badge authorization.
+  // Only import Observer when the report explicitly shows an observer rating/badge.
+  if(/CAP\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Observer\s+Badge/i.test(text)){
+    result.badges.push('observer_badge');
+  }
   if(/CAP Master Ground Team Badge|GTL|GTM1/i.test(text)) result.badges.push('master_ground_team_badge');
   else if(/CAP Senior Ground Team Badge|GTM2/i.test(text)) result.badges.push('senior_ground_team_badge');
   else if(/CAP Basic Ground Team Badge|GTM3/i.test(text)) result.badges.push('ground_team_basic_badge');
