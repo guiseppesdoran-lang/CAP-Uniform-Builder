@@ -295,11 +295,11 @@
   }
   .measurementOverlay text{
     fill:#c1121f;
-    font-size:10px;
-    font-weight:700;
+    font-size:9px;
+    font-weight:600;
     paint-order:stroke;
     stroke:#fff;
-    stroke-width:2px;
+    stroke-width:1px;
     stroke-linejoin:round;
   }
 
@@ -321,11 +321,11 @@
   }
   .measurementArrowLayer text{
     fill:#c1121f;
-    font-size:10px;
-    font-weight:700;
+    font-size:9px;
+    font-weight:600;
     paint-order:stroke;
     stroke:#fff;
-    stroke-width:2px;
+    stroke-width:1px;
     stroke-linejoin:round;
   }
 
@@ -5220,26 +5220,53 @@ function buildMeasurementArrowKey(upper, lower){
   return `arrow:${upperToken}:to:${lowerToken}:${lowerId}:${lowerIdx}`;
 }
 
+function getDynamicArrowCalibration(arrowKey, base){
+  // Measurement arrows must remain tied to the currently rendered badges/ribbons.
+  // Saved calibration values are therefore interpreted as offsets from the
+  // current dynamic arrow box, not as fixed absolute coordinates.
+  const saved = getCalib(arrowKey) || {};
+  const numberOrZero = v => Number.isFinite(Number(v)) ? Number(v) : 0;
+
+  return {
+    x: base.x + (saved.dx ?? (saved.x !== undefined ? numberOrZero(saved.x) - base.x : 0)),
+    y: base.y + (saved.dy ?? (saved.y !== undefined ? numberOrZero(saved.y) - base.y : 0)),
+    w: Math.max(18, base.w + (saved.dw ?? (saved.w !== undefined ? numberOrZero(saved.w) - base.w : 0))),
+    // Keep the vertical length dynamic so the arrow follows whatever badges/ribbons
+    // are currently rendered. Height calibration is treated as an optional offset only.
+    h: Math.max(1, base.h + (saved.dh ?? 0)),
+    r: numberOrZero(saved.r)
+  };
+}
+
 function makeMeasurementArrow(svgUnused, arrowKey, x, y1, y2, label, placeLeft=false){
   if(!Number.isFinite(x) || !Number.isFinite(y1) || !Number.isFinite(y2)) return;
 
   const top = Math.min(y1, y2);
   const height = Math.max(1, Math.abs(y2 - y1));
-  const width = 92;
-  const lineLocalX = placeLeft ? 74 : 14;
+  const width = 74;
+  const lineLocalX = placeLeft ? 58 : 12;
   const left = x - lineLocalX;
+
+  const baseBox = { x:left, y:top, w:width, h:height, r:0 };
+  const adjusted = getDynamicArrowCalibration(arrowKey, baseBox);
 
   const wrap = document.createElement('div');
   wrap.className = 'layer measurementArrowLayer';
   wrap.dataset.calibKey = arrowKey;
+  wrap.dataset.dynamicArrowBase = JSON.stringify(baseBox);
   wrap.dataset.tooltipTitle = 'Measurement Arrow';
-  wrap.dataset.tooltipReg = 'Calibration item';
-  wrap.dataset.tooltipWhy = 'Use the calibrator to move, resize, or rotate this red distance arrow.';
+  wrap.dataset.tooltipReg = 'Dynamic calibration item';
+  wrap.dataset.tooltipWhy = 'This arrow recalculates from the current badges/ribbons, then applies your calibration offset.';
 
-  applyCalibToElement(wrap, arrowKey, { x:left, y:top, w:width, h:height, r:0 });
+  wrap.style.left = `${adjusted.x}px`;
+  wrap.style.top = `${adjusted.y}px`;
+  wrap.style.width = `${adjusted.w}px`;
+  wrap.style.height = `${adjusted.h}px`;
+  wrap.style.transform = `rotate(${adjusted.r}deg)`;
+  wrap.style.transformOrigin = 'center center';
 
-  const actualW = parseFloat(wrap.style.width) || width;
-  const actualH = parseFloat(wrap.style.height) || height;
+  const actualW = adjusted.w;
+  const actualH = adjusted.h;
 
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg');
@@ -5250,35 +5277,35 @@ function makeMeasurementArrow(svgUnused, arrowKey, x, y1, y2, label, placeLeft=f
   const defs = document.createElementNS(NS, 'defs');
   const marker = document.createElementNS(NS, 'marker');
   marker.setAttribute('id', markerId);
-  marker.setAttribute('markerWidth', '6');
-  marker.setAttribute('markerHeight', '6');
-  marker.setAttribute('refX', '3');
-  marker.setAttribute('refY', '3');
+  marker.setAttribute('markerWidth', '4');
+  marker.setAttribute('markerHeight', '4');
+  marker.setAttribute('refX', '2');
+  marker.setAttribute('refY', '2');
   marker.setAttribute('orient', 'auto-start-reverse');
 
   const arrowPath = document.createElementNS(NS, 'path');
-  arrowPath.setAttribute('d', 'M 0 0 L 6 3 L 0 6 z');
+  arrowPath.setAttribute('d', 'M 0 0 L 4 2 L 0 4 z');
   arrowPath.setAttribute('fill', '#c1121f');
   marker.appendChild(arrowPath);
   defs.appendChild(marker);
   svg.appendChild(defs);
 
-  const localLineX = Math.max(6, Math.min(actualW - 6, lineLocalX));
+  const localLineX = Math.max(5, Math.min(actualW - 5, lineLocalX));
   const line = document.createElementNS(NS, 'line');
   line.setAttribute('x1', localLineX);
   line.setAttribute('x2', localLineX);
   line.setAttribute('y1', 0);
   line.setAttribute('y2', actualH);
   line.setAttribute('stroke', '#c1121f');
-  line.setAttribute('stroke-width', '1.5');
+  line.setAttribute('stroke-width', '0.9');
   line.setAttribute('marker-start', `url(#${markerId})`);
   line.setAttribute('marker-end', `url(#${markerId})`);
   svg.appendChild(line);
 
   if(label){
     const text = document.createElementNS(NS, 'text');
-    text.setAttribute('x', placeLeft ? localLineX - 6 : localLineX + 6);
-    text.setAttribute('y', (actualH / 2) - 4);
+    text.setAttribute('x', placeLeft ? localLineX - 5 : localLineX + 5);
+    text.setAttribute('y', Math.max(8, (actualH / 2) - 3));
     text.setAttribute('text-anchor', placeLeft ? 'end' : 'start');
     text.textContent = label;
     svg.appendChild(text);
