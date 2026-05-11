@@ -1345,6 +1345,7 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
     // Senior officer male Class A pocket badge-zone calibration supplied by user.
     // These are zone references, not just one-off badge positions.
     'badge:emergency_services_badge:LP:0': { x:280, y:248, w:30, h:30, r:0 },
+    'badge:communications_technician_badge:LP:0': { x:283, y:251, w:25, h:25, r:0 },
     'badge:communications_technician_badge:UN:0': { x:138, y:256, w:25, h:25, r:0 },
 
     // Latest senior-member male Class A scaling/positioning calibration.
@@ -1379,6 +1380,7 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
     'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:114, w:60, h:17, r:0 },
     'badge:master_ground_team_badge:OLPU:0': { x:281, y:161, w:25, h:20, r:0 },
     'badge:emergency_services_badge:LP:0': { x:127, y:273, w:35, h:35, r:0 },
+    'badge:communications_technician_badge:LP:0': { x:130, y:276, w:28, h:28, r:0 },
     'badge:communications_technician_badge:UN:0': { x:293, y:279, w:28, h:28, r:0 },
     'badge:volunteer_university_instructor_badge:LP:0': { x:122, y:268, w:45, h:45, r:0 },
     'badge:volunteer_university_instructor_badge:RP:0': { x:285, y:271, w:45, h:45, r:0 }
@@ -1584,7 +1586,9 @@ function buildDerivedBadgeCalib(key, base){
       if(!defaults[refKey]) refKey = `badge:volunteer_university_instructor_badge:LP:0`;
       if(!defaults[refKey]) refKey = `badge:emergency_services_badge:LP:0`;
     }else if(SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.has(parsed.id)){
-      refKey = `badge:emergency_services_badge:LP:0`;
+      refKey = `badge:${parsed.id}:LP:${parsed.idx}`;
+      if(!defaults[refKey]) refKey = `badge:communications_technician_badge:LP:0`;
+      if(!defaults[refKey]) refKey = `badge:emergency_services_badge:LP:0`;
     }else{
       refKey = `badge:emergency_services_badge:LP:0`;
     }
@@ -2216,7 +2220,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'distin04.png', devices:{} },
     { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'distin05.png', devices:{} },
     { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'distin06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'distin07.png', devices:{} }
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'distin07.png', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'distin08.png', devices:{} }
   ],
   'exceptional_service_award': [
     { label:'Basic Award', value:'earned', image:null, devices:{} },
@@ -2225,7 +2230,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'except04.png', devices:{} },
     { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'except05.png', devices:{} },
     { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'except06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'except07.png', devices:{} }
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'except07.png', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'except08.png', devices:{} }
   ],
   'meritorious_service_award': [
     { label:'Basic Award', value:'earned', image:null, devices:{} },
@@ -2234,11 +2240,13 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'meriti04.png', devices:{} },
     { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'meriti05.png', devices:{} },
     { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'meriti06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'meriti07.png', devices:{} }
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'meriti07.png', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'meriti08.png', devices:{} }
   ],
   'commander_commendation_award': [
     { label:'Wing Commander / Basic Ribbon', value:'earned', image:null, devices:{} },
     { label:'Wing Level Multiple Award / 1 Bronze Clasp', value:'wing_bronze_clasp_1', image:'cmdrco02.png', devices:{} },
+    { label:'Wing Level Multiple Award / 2 Bronze Clasps', value:'wing_bronze_clasp_2', image:'cmdrco03.png', devices:{} },
     { label:'Region Commander / Bronze Star', value:'region_bronze_star', image:'cmdrco01R.png', devices:{} },
     { label:'National Commander / Silver Star', value:'national_silver_star', image:'cmdrco01N.png', devices:{} },
     { label:'National Commander / Silver Star + 1 Bronze Clasp', value:'national_silver_star_bronze_clasp_1', image:'cmdrco02N.png', devices:{} },
@@ -2252,7 +2260,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'AA04.png', devices:{} },
     { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'AA05.png', devices:{} },
     { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'AA06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'AA07.png', devices:{} }
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'AA07.png', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'AA08.png', devices:{} }
   ],
   'lifesaving_award': [
     { label:'Basic Award', value:'earned', image:null, devices:{} },
@@ -2261,6 +2270,7 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'Silver Star + 1 Bronze Clasp', value:'silver_star_bronze_clasp_1', image:'lifesa-star02.png', devices:{} },
     { label:'2 Bronze Clasps', value:'bronze_clasp_2', image:'lifesa03.png', devices:{} },
     { label:'Silver Star + 2 Bronze Clasps', value:'silver_star_bronze_clasp_2', image:'lifesa-star03.png', devices:{} },
+    { label:'Silver Star + 2 Bronze Clasps, plus additional Lifesaving ribbon', value:'silver_star_bronze_clasp_2_plus_base', image:'lifesa-star03.png', devices:{}, duplicates:[{ image:'lifesa01.png', awardLabel:'Additional Lifesaving Award' }] },
     { label:'3 Bronze Clasps', value:'bronze_clasp_3', image:'lifesa04.png', devices:{} }
   ],
   'national_commander_unit_citation_award': [
@@ -2270,7 +2280,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'unitci-nat04.png', devices:{} },
     { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'unitci-nat05.png', devices:{} },
     { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'unitci-nat06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'unitci-nat07.png', devices:{} }
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'unitci-nat07.png', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'unitci-nat08.png', devices:{} }
   ],
   'unit_citation_award': [
     { label:'Basic Award', value:'earned', image:null, devices:{} },
@@ -2279,7 +2290,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'unitci04.png', devices:{} },
     { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'unitci05.png', devices:{} },
     { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'unitci06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'unitci07.png', devices:{} }
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'unitci07.png', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'unitci08.png', devices:{} }
   ],
   'cap_gill_robb_wilson_ribbon': [
     { label:'Level V / No PME Star', value:'earned', image:null, devices:{} },
@@ -2299,6 +2311,7 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'Master Rating / Silver Star', value:'master_silver_star', image:'leader-s.png', devices:{} },
     { label:'2 Bronze Stars', value:'two_bronze_stars', image:'leader-bb.png', devices:{} },
     { label:'Silver Star + Bronze Star', value:'silver_star_bronze_star', image:'leader-sb.png', devices:{} },
+    { label:'Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', image:'leader-sbb.png', devices:{} },
     { label:'2 Silver Stars', value:'two_silver_stars', image:'leader-ss.png', devices:{} },
     { label:'3 Bronze Stars', value:'three_bronze_stars', image:'leader-bbb.png', devices:{} }
   ],
@@ -2315,7 +2328,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'15 Years / 3 Bronze Clasps', value:'years_15', image:'redser-15yr.png', devices:{} },
     { label:'20 Years / Longevity Device', value:'years_20', image:'redser-20yr.png', devices:{} },
     { label:'25 Years / Silver Clasp', value:'years_25', image:'redser-25yr.png', devices:{} },
-    { label:'30 Years / Silver Clasp + Bronze Clasp', value:'years_30', image:'redser-30yr.png', devices:{} }
+    { label:'30 Years / Silver Clasp + Bronze Clasp', value:'years_30', image:'redser-30yr.png', devices:{} },
+    { label:'35 Years / Silver Clasp + 2 Bronze Clasps', value:'years_35', image:'redser-35yr.png', devices:{} }
   ],
   'search_find_ribbon': [
     { label:'Basic Find', value:'find_1', image:null, devices:{} },
@@ -2324,6 +2338,7 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'Bronze Propeller + 1 Bronze Clasp', value:'bronze_propeller_bronze_clasp_1', image:'find-prop02.png', devices:{} },
     { label:'3rd Distress Find / 2 Bronze Clasps', value:'bronze_clasp_2', image:'find03.png', devices:{} },
     { label:'Bronze Propeller + 2 Bronze Clasps', value:'bronze_propeller_bronze_clasp_2', image:'find-prop03.png', devices:{} },
+    { label:'Bronze Propeller + 2 Bronze Clasps, plus additional Find ribbon', value:'bronze_propeller_bronze_clasp_2_plus_base', image:'find-prop03.png', devices:{}, duplicates:[{ image:'find01.png', awardLabel:'Additional Find Ribbon' }] },
     { label:'4th Distress Find / 3 Bronze Clasps', value:'bronze_clasp_3', image:'find04.png', devices:{} }
   ],
   'air_search_and_rescue_ribbon': [
@@ -2333,6 +2348,7 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'Bronze Propeller + 1 Bronze Clasp', value:'bronze_propeller_bronze_clasp_1', image:'sar-prop02.png', devices:{} },
     { label:'30 Sorties / 2 Bronze Clasps', value:'bronze_clasp_2', image:'sar03.png', devices:{} },
     { label:'Bronze Propeller + 2 Bronze Clasps', value:'bronze_propeller_bronze_clasp_2', image:'sar-prop03.png', devices:{} },
+    { label:'Bronze Propeller + 2 Bronze Clasps, plus additional Air SAR ribbon', value:'bronze_propeller_bronze_clasp_2_plus_base', image:'sar-prop03.png', devices:{}, duplicates:[{ image:'sar01.png', awardLabel:'Additional Air Search and Rescue Ribbon' }] },
     { label:'40 Sorties / 3 Bronze Clasps', value:'bronze_clasp_3', image:'sar04.png', devices:{} }
   ],
   'cap_counterdrug_ribbon': [
@@ -2342,7 +2358,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'40 Sorties / 3 Bronze Clasps', value:'bronze_clasp_3', image:'coudru04.png', devices:{} },
     { label:'50 Sorties / 4 Bronze Clasps', value:'bronze_clasp_4', image:'coudru05.png', devices:{} },
     { label:'60 Sorties / 1 Silver Clasp', value:'silver_clasp_1', image:'coudru06.png', devices:{} },
-    { label:'70 Sorties / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'coudru07.png', devices:{} }
+    { label:'70 Sorties / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'coudru07.png', devices:{} },
+    { label:'80 Sorties / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'coudru08.png', devices:{} }
   ],
   'disaster_relief_ribbon': [
     { label:'Basic Award', value:'earned', image:null, devices:{} },
@@ -2351,6 +2368,7 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'Silver V + 1 Bronze Clasp', value:'silver_v_bronze_clasp_1', image:'disast-V02.png', devices:{} },
     { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', image:'disast03.png', devices:{} },
     { label:'Silver V + 2 Bronze Clasps', value:'silver_v_bronze_clasp_2', image:'disast-V03.png', devices:{} },
+    { label:'Silver V + 3 Bronze Clasps', value:'silver_v_bronze_clasp_3', image:'disast-V04.png', devices:{} },
     { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'disast04.png', devices:{} }
   ],
   'homeland_security_ribbon': [
@@ -2360,7 +2378,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'40 Sorties / 3 Bronze Clasps', value:'bronze_clasp_3', image:'homeland04.png', devices:{} },
     { label:'50 Sorties / 4 Bronze Clasps', value:'bronze_clasp_4', image:'homeland05.png', devices:{} },
     { label:'60 Sorties / 1 Silver Clasp', value:'silver_clasp_1', image:'homeland06.png', devices:{} },
-    { label:'70 Sorties / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'homeland07.png', devices:{} }
+    { label:'70 Sorties / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'homeland07.png', devices:{} },
+    { label:'80 Sorties / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'homeland08.png', devices:{} }
   ],
   'cap_cadet_orientation_pilot_ribbon': [
     { label:'50 Orientation Flights / Basic Ribbon', value:'earned', image:null, devices:{} },
@@ -2369,7 +2388,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'200 Orientation Flights / 3 Bronze Clasps', value:'bronze_clasp_3', image:'cadpil04.png', devices:{} },
     { label:'250 Orientation Flights / 4 Bronze Clasps', value:'bronze_clasp_4', image:'cadpil05.png', devices:{} },
     { label:'300 Orientation Flights / 1 Silver Clasp', value:'silver_clasp_1', image:'cadpil06.png', devices:{} },
-    { label:'350 Orientation Flights / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'cadpil07.png', devices:{} }
+    { label:'350 Orientation Flights / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'cadpil07.png', devices:{} },
+    { label:'400 Orientation Flights / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'cadpil08.png', devices:{} }
   ],
   'community_service_ribbon': [
     { label:'60 Hours / Basic Ribbon', value:'hours_60', image:null, devices:{} },
@@ -2378,7 +2398,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'240 Hours / 3 Bronze Clasps', value:'bronze_clasp_3', image:'commun04.png', devices:{} },
     { label:'300 Hours / 4 Bronze Clasps', value:'bronze_clasp_4', image:'commun05.png', devices:{} },
     { label:'360 Hours / 1 Silver Clasp', value:'silver_clasp_1', image:'commun06.png', devices:{} },
-    { label:'420 Hours / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'commun07.png', devices:{} }
+    { label:'420 Hours / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'commun07.png', devices:{} },
+    { label:'480 Hours / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'commun08.png', devices:{} }
   ],
   'national_cadet_competition_ribbon': [
     { label:'Wing/Region Representative / Basic Ribbon', value:'earned', image:null, devices:{} },
@@ -2386,6 +2407,7 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'National Sweepstakes / Silver Star', value:'national_silver_star', image:'ncc-s.png', devices:{} },
     { label:'2 Bronze Stars', value:'two_bronze_stars', image:'ncc-bb.png', devices:{} },
     { label:'Silver Star + Bronze Star', value:'silver_star_bronze_star', image:'ncc-sb.png', devices:{} },
+    { label:'Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', image:'ncc-sbb.png', devices:{} },
     { label:'2 Silver Stars', value:'two_silver_stars', image:'ncc-ss.png', devices:{} },
     { label:'3 Bronze Stars', value:'three_bronze_stars', image:'ncc-bbb.png', devices:{} }
   ],
@@ -2395,6 +2417,7 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'National Sweepstakes / Silver Star', value:'national_silver_star', image:'ncgc-s.png', devices:{} },
     { label:'2 Bronze Stars', value:'two_bronze_stars', image:'ncgc-bb.png', devices:{} },
     { label:'Silver Star + Bronze Star', value:'silver_star_bronze_star', image:'ncgc-sb.png', devices:{} },
+    { label:'Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', image:'ncgc-sbb.png', devices:{} },
     { label:'2 Silver Stars', value:'two_silver_stars', image:'ncgc-ss.png', devices:{} },
     { label:'3 Bronze Stars', value:'three_bronze_stars', image:'ncgc-bbb.png', devices:{} }
   ],
@@ -2411,7 +2434,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'4 Activities / 3 Bronze Stars', value:'bronze_star_3', image:'ncsa04.png', devices:{} },
     { label:'5 Activities / 4 Bronze Stars', value:'bronze_star_4', image:'ncsa05.png', devices:{} },
     { label:'6 Activities / 1 Silver Star', value:'silver_star_1', image:'ncsa06.png', devices:{} },
-    { label:'7 Activities / Silver Star + Bronze Star', value:'silver_star_bronze_star', image:'ncsa07.png', devices:{} }
+    { label:'7 Activities / Silver Star + Bronze Star', value:'silver_star_bronze_star', image:'ncsa07.png', devices:{} },
+    { label:'8 Activities / Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', image:'ncsa08.png', devices:{} }
   ],
   'encampment_ribbon': [
     { label:'1 Encampment / Basic Ribbon', value:'earned', image:null, devices:{} },
@@ -2420,7 +2444,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'4 Encampments / 3 Bronze Clasps', value:'bronze_clasp_3', image:'encamp04.png', devices:{} },
     { label:'5 Encampments / 4 Bronze Clasps', value:'bronze_clasp_4', image:'encamp05.png', devices:{} },
     { label:'6 Encampments / 1 Silver Clasp', value:'silver_clasp_1', image:'encamp06.png', devices:{} },
-    { label:'7 Encampments / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'encamp07.png', devices:{} }
+    { label:'7 Encampments / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'encamp07.png', devices:{} },
+    { label:'8 Encampments / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'encamp08.png', devices:{} }
   ],
   'cap_senior_recruiter_ribbon': [
     { label:'7 Recruits / Basic Ribbon', value:'earned', image:null, devices:{} },
@@ -2429,7 +2454,8 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
     { label:'37 Recruits / 3 Bronze Clasps', value:'bronze_clasp_3', image:'senrec04.png', devices:{} },
     { label:'47 Recruits / 4 Bronze Clasps', value:'bronze_clasp_4', image:'senrec05.png', devices:{} },
     { label:'57 Recruits / 1 Silver Clasp', value:'silver_clasp_1', image:'senrec06.png', devices:{} },
-    { label:'67 Recruits / 2 Silver Clasps', value:'silver_clasp_2', image:'senrec11.png', devices:{} }
+    { label:'67 Recruits / 2 Silver Clasps', value:'silver_clasp_2', image:'senrec11.png', devices:{} },
+    { label:'77 Recruits / 3 Silver Clasps', value:'silver_clasp_3', image:'senrec16.png', devices:{} }
   ]
 };
 
@@ -2452,6 +2478,9 @@ function getRibbonImageOverride(id, awardValue){
 
 function getRibbonImagePath(ribbonOrId){
   const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
+  if(typeof ribbonOrId !== 'string' && ribbonOrId?.imageOverride){
+    return `ribbons/${ribbonOrId.imageOverride}`;
+  }
   const awardValue = typeof ribbonOrId === 'string' ? (State.ribbonSelections?.[id]?.awardValue || '') : (ribbonOrId?.awardValue || '');
   const override = getRibbonImageOverride(id, awardValue);
   return override ? `ribbons/${override}` : `ribbons/${normalizeRibbonId(id)}.png`;
@@ -3649,6 +3678,19 @@ function rebuildRibbonsFromGallery(){
         if(remain>0) inst.devices[dev] = Math.min(cap, remain);
       }
       State.ribbons.push(inst);
+
+      const option = getRibbonSelectionOption(id, sel.awardValue || '');
+      if(i === 0 && Array.isArray(option.duplicates)){
+        option.duplicates.forEach((dup, dupIndex) => {
+          State.ribbons.push({
+            id,
+            devices:{},
+            awardValue: `${sel.awardValue || 'earned'}_duplicate_${dupIndex+1}`,
+            awardLabel: dup.awardLabel || 'Additional Ribbon',
+            imageOverride: dup.image || null
+          });
+        });
+      }
     }
   }
 
