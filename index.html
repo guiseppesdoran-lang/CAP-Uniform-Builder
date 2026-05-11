@@ -2728,7 +2728,7 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
   // User asset expected at images/ribbons/eaker-star.png.
   'eaker_award': [
     { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned + COS Star', value:'earned_cos_star', image:'eaker-star.png', devices:{} }
+    { label:'Earned + COS Star', value:'earned_cos_star', image:'eaker-star', devices:{} }
   ],
   'bronze_medal_of_valor': [
     { label:'Basic Award', value:'earned', image:null, devices:{} },
@@ -6870,15 +6870,37 @@ function getReportSection(text, startLabel, endLabel){
   return end >= 0 ? rest.slice(0, end) : rest;
 }
 
+function getReportSectionUntilAny(text, startLabel, endLabels=[]){
+  const source = String(text || '');
+  const start = source.search(new RegExp(startLabel, 'i'));
+  if(start < 0) return '';
+  const rest = source.slice(start);
+  let bestEnd = -1;
+  for(const label of endLabels){
+    const idx = rest.search(new RegExp(label, 'i'));
+    if(idx > 0 && (bestEnd < 0 || idx < bestEnd)) bestEnd = idx;
+  }
+  return bestEnd >= 0 ? rest.slice(0, bestEnd) : rest;
+}
+
 function countDatedRowsInSection(section){
   const matches = String(section || '').match(/\b\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/g);
   return matches ? matches.length : 0;
 }
 
 function extractEncampmentCountFromReport(text){
-  const encampments = getReportSection(text, 'Encampments', 'Awards');
+  // Stop at the next table after Encampments. The older version stopped at "Awards",
+  // which accidentally swallowed Orientation Flights/Cadet Achievements and capped
+  // the ribbon at the 8-encampment option for some cadet-history reports.
+  const encampments = getReportSectionUntilAny(text, 'Encampments', [
+    'Orientation\\s+Flights',
+    'Cadet\\s+Achievements',
+    'Awards',
+    'Promotions',
+    'Decorations',
+    'Local\\s+Activities'
+  ]);
   if(!encampments) return 0;
-  // Count completed dates in the Encampments table, excluding the header.
   return countDatedRowsInSection(encampments);
 }
 
@@ -6925,7 +6947,7 @@ function keepOnlyHighestCadetMilestoneForSenior(ribbons, membership){
 function hasCosGraduateCreditFromReport(text){
   const cadetTraining = getReportSection(text, 'Cadet Training', 'Encampments');
   const activityLines = cadetTraining || String(text || '');
-  return /COS|Cadet\s+Officers\s+School/i.test(activityLines);
+  return /\bCOS\b|Cadet\s+Officers?\s+School/i.test(activityLines);
 }
 
 function applyCosStarToHighestCadetMilestone(ribbons, text){
@@ -6938,7 +6960,7 @@ function applyCosStarToHighestCadetMilestone(ribbons, text){
   }
   if(!highest) return ribbons;
 
-  // Current asset supplied by the user is eaker-star.png, so Eaker receives a
+  // Current asset supplied by the user is images/ribbons/eaker-star, so Eaker receives a
   // pre-rendered ribbon image instead of a generic overlay device.
   const cosValueByMilestone = {
     mitchell_award: 'earned_cos_star',
