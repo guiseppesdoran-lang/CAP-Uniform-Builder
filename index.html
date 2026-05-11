@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CAP Uniform Builder — Full Program Calibrated</title>
+<title>CAP Uniform Builder — Full Program Calibrated v2</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 
@@ -908,7 +908,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <body>
 
 <header>
-  <h1>CAP Uniform Builder — Calibrated Badges</h1>
+  <h1>CAP Uniform Builder — Calibrated Badges & Measurement Lines</h1>
 </header>
 
 <button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu">
@@ -5162,10 +5162,75 @@ function rangesOverlap(a1, a2, b1, b2){
   return Math.min(a2, b2) - Math.max(a1, b1);
 }
 
+function getMeasurementNameplateBox(){
+  const nameplateEl = [...uniformCanvas.querySelectorAll('.layer')]
+    .find(el => {
+      const key = String(el.dataset?.calibKey || '').toLowerCase();
+      return key.includes(':nameplate') || el.classList.contains('nameplate');
+    });
+
+  if(nameplateEl){
+    const left = parseFloat(nameplateEl.style.left) || 0;
+    const top = parseFloat(nameplateEl.style.top) || 0;
+    const width = parseFloat(nameplateEl.style.width) || nameplateEl.offsetWidth || 72;
+    const height = parseFloat(nameplateEl.style.height) || nameplateEl.offsetHeight || 14;
+    return {
+      kind:'nameplate',
+      slot:'NAMEPLATE',
+      id:'nameplate',
+      idx:0,
+      label:'Nameplate',
+      left,
+      top,
+      right:left + width,
+      bottom:top + height,
+      centerX:left + width/2,
+      centerY:top + height/2,
+      width,
+      height
+    };
+  }
+
+  // Fallback reference point for blues uniforms when the placeholder nameplate text
+  // is not currently rendered. This keeps the requested measurement lines available
+  // for calibration and follows the same default geometry used by the generated
+  // nameplate text layer.
+  if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
+    const W = uniformCanvas.getBoundingClientRect().width || 450;
+    const H = uniformCanvas.getBoundingClientRect().height || 600;
+    const key = `text:${State.uniform}:nameplate`;
+    const fallback = { x:W*.62, y:H*.39, w:72, h:14, r:0, ...(getCalib(key) || {}) };
+    const left = Number(fallback.x) || 0;
+    const top = Number(fallback.y) || 0;
+    const width = Number(fallback.w) || 72;
+    const height = Number(fallback.h) || 14;
+    return {
+      kind:'nameplate',
+      slot:'NAMEPLATE',
+      id:'nameplate',
+      idx:0,
+      label:'Nameplate',
+      left,
+      top,
+      right:left + width,
+      bottom:top + height,
+      centerX:left + width/2,
+      centerY:top + height/2,
+      width,
+      height
+    };
+  }
+
+  return null;
+}
+
 function getMeasurementRenderableItems(){
   const items = [];
   const ribbonBox = getMeasurementRibbonRackBox();
   if(ribbonBox) items.push(ribbonBox);
+
+  const nameplateBox = getMeasurementNameplateBox();
+  if(nameplateBox) items.push(nameplateBox);
 
   const badgeEls = [...uniformCanvas.querySelectorAll('.layer.badge')];
   badgeEls.forEach(el => items.push(parseRenderedBadgeMeta(el)));
@@ -5301,9 +5366,16 @@ function renderMeasurementOverlay(){
   const box = uniformCanvas.getBoundingClientRect();
   const canvasWidth = box.width || 450;
 
+  const clampArrowX = x => Math.max(18, Math.min(canvasWidth - 18, x));
+
   for(const lower of items){
+    // Nameplate-specific measurements are drawn explicitly below because they
+    // measure from the TOP of the nameplate to the TOP of the badge.
+    if(lower.kind === 'nameplate') continue;
+
     const candidates = items
       .filter(upper => upper !== lower)
+      .filter(upper => upper.kind !== 'nameplate')
       .filter(upper => upper.bottom <= lower.top)
       .map(upper => ({ upper, gap: lower.top - upper.bottom }))
       .filter(entry => entry.gap > 0);
@@ -5328,14 +5400,47 @@ function renderMeasurementOverlay(){
     // Always center the arrow on the item being measured.
     // For badges, this means the arrow is horizontally centered on that badge.
     // For the ribbon rack, use the rack center.
-    let x = lower.centerX;
-    x = Math.max(18, Math.min(canvasWidth - 18, x));
+    const x = clampArrowX(lower.centerX);
 
     // Keep the label outside the arrow path when possible.
     const placeLeft = x > (canvasWidth * 0.7);
     const arrowKey = buildMeasurementArrowKey(upper, lower);
 
     makeMeasurementArrow(null, arrowKey, x, upper.bottom, lower.top, label, placeLeft);
+  }
+
+  // Requested right-side/nameplate measurements:
+  // 1. Nameplate top to top of current commander badge = 0.50"
+  // 2. Nameplate top to top of RP badge = 0.50"
+  const nameplate = items.find(item => item.kind === 'nameplate');
+  if(nameplate){
+    const commanderBadge = items.find(item => item.kind === 'badge' && item.id === 'squadron_commander_badge');
+    if(commanderBadge){
+      const x = clampArrowX(commanderBadge.centerX);
+      makeMeasurementArrow(
+        null,
+        'arrow:NAMEPLATE:to:COMMANDER:squadron_commander_badge:0',
+        x,
+        nameplate.top,
+        commanderBadge.top,
+        '0.50"',
+        true
+      );
+    }
+
+    const rpBadge = items.find(item => item.kind === 'badge' && item.slot === 'RP');
+    if(rpBadge){
+      const x = clampArrowX(rpBadge.centerX);
+      makeMeasurementArrow(
+        null,
+        `arrow:NAMEPLATE:to:RP:${rpBadge.id || 'badge'}:${rpBadge.idx || 0}`,
+        x,
+        nameplate.top,
+        rpBadge.top,
+        '0.50"',
+        false
+      );
+    }
   }
 }
 
@@ -6286,6 +6391,10 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
     originalFullRender(prevUniform);
     renderGeneratedTextAccoutrements();
     renderRankOverlay();
+    // The base renderer draws badge/ribbon arrows before V2 generated text layers.
+    // Redraw measurement lines here so the nameplate-to-commander and
+    // nameplate-to-RP arrows can use the actual rendered nameplate position.
+    renderMeasurementOverlay();
     updateStatusPanel();
   };
 
