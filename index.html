@@ -880,6 +880,29 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
   background:#f0f7ff;
 }
 
+
+/* ===========================
+   BUTTON/ARROW CLICK FIX PATCH
+   =========================== */
+.measurementArrowLayer{
+  pointer-events:none;
+  z-index:9997;
+  overflow:visible;
+}
+.measurementArrowLayer svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+  pointer-events:none;
+}
+.calib-selectable .measurementArrowLayer{
+  pointer-events:auto;
+  cursor:crosshair;
+}
+.calib-selectable .measurementArrowLayer svg{
+  pointer-events:none;
+}
+
 </style>
 </head>
 <body>
@@ -6951,6 +6974,122 @@ function wireMemberReportImporter(){
     }
   });
 }
+
+
+/* ===========================
+   FAIL-SAFE BUTTON REPAIR / ARROW CLICK PATCH
+   =========================== */
+function capubSafeWire(id, eventName, handler){
+  const el = by(id);
+  if(!el) return;
+  const flag = `capubSafeWire_${eventName}`;
+  if(el.dataset && el.dataset[flag] === '1') return;
+  if(el.dataset) el.dataset[flag] = '1';
+  el.addEventListener(eventName, function(evt){
+    try{ handler.call(this, evt); }
+    catch(err){ console.error(`[CAPUB button error] ${id}`, err); }
+  });
+}
+
+function capubRepairCriticalButtons(){
+  capubSafeWire('hamburgerBtn','click', () => {
+    if(layoutShell.classList.contains('sidebar-open')){
+      layoutShell.classList.remove('sidebar-open');
+      layoutShell.classList.add('sidebar-collapsed');
+    }else{
+      layoutShell.classList.remove('sidebar-collapsed');
+      layoutShell.classList.add('sidebar-open');
+    }
+  });
+
+  capubSafeWire('expandRibbons','click', () => {
+    if(typeof openGalleryModal === 'function') openGalleryModal('ribbons');
+  });
+  capubSafeWire('expandBadges','click', () => {
+    if(typeof openGalleryModal === 'function') openGalleryModal('badges');
+  });
+  capubSafeWire('expandPatches','click', () => {
+    if(typeof openGalleryModal === 'function') openGalleryModal('patches');
+  });
+
+  capubSafeWire('clearRibbons','click', () => {
+    State.ribbons = [];
+    State.ribbonSelections = {};
+    if(typeof buildRibbonGallery === 'function') buildRibbonGallery();
+    if(typeof renderRack === 'function') renderRack();
+    if(typeof renderAllBadges === 'function') renderAllBadges();
+    if(typeof updateStatusPanel === 'function') updateStatusPanel();
+  });
+  capubSafeWire('clearBadges','click', () => {
+    State.badges = [];
+    State.badgeSelections = {};
+    if(typeof buildBadgeGallery === 'function') buildBadgeGallery();
+    if(typeof renderAllBadges === 'function') renderAllBadges();
+    if(typeof updateStatusPanel === 'function') updateStatusPanel();
+  });
+  capubSafeWire('clearPatches','click', () => {
+    State.patches = [];
+    State.patchSelections = {};
+    if(typeof buildPatchGallery === 'function') buildPatchGallery();
+    if(typeof renderPatches === 'function') renderPatches();
+    if(typeof updateStatusPanel === 'function') updateStatusPanel();
+  });
+
+  capubSafeWire('downloadImage','click', async () => {
+    if(typeof html2canvas === 'undefined'){
+      alert('Download failed: html2canvas did not load. Check internet access or the CDN script.');
+      return;
+    }
+    const target = by('previewArea');
+    if(!target) return;
+    const canvas = await html2canvas(target, { backgroundColor:null, scale:3, useCORS:true, allowTaint:true });
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = `CAP_Uniform_${State.uniform || 'preview'}_${Date.now()}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+
+  capubSafeWire('toggleMeasurementOverlay','change', evt => {
+    State.showMeasurementOverlay = !!evt.target.checked;
+    if(State.showMeasurementOverlay){
+      if(typeof renderMeasurementOverlay === 'function') renderMeasurementOverlay();
+    }else if(typeof clearMeasurementOverlay === 'function'){
+      clearMeasurementOverlay();
+    }
+  });
+
+  capubSafeWire('toggleMini','change', evt => {
+    State.forceMini = !!evt.target.checked;
+    if(typeof renderRack === 'function') renderRack();
+    if(typeof renderAllBadges === 'function') renderAllBadges();
+  });
+
+  capubSafeWire('calibratorTab','click', () => {
+    const panel = by('calibratorPanel');
+    const arrow = by('calibratorArrow');
+    if(!panel) return;
+    const isOpen = panel.style.display === 'block';
+    panel.style.display = isOpen ? 'none' : 'block';
+    if(arrow) arrow.textContent = isOpen ? '›' : '‹';
+  });
+
+  // Make sure arrows never block normal UI/preview interaction unless calibrate mode is on.
+  const styleId = 'capubDynamicArrowPointerMode';
+  if(!by(styleId)){
+    const st = document.createElement('style');
+    st.id = styleId;
+    st.textContent = `.measurementArrowLayer{pointer-events:none!important}.calib-selectable .measurementArrowLayer{pointer-events:auto!important}`;
+    document.head.appendChild(st);
+  }
+}
+
+// Run once immediately and again after bootstrap/dynamic UI creation.
+try{ capubRepairCriticalButtons(); }catch(err){ console.error('CAPUB button repair failed', err); }
+window.addEventListener('DOMContentLoaded', () => { try{ capubRepairCriticalButtons(); }catch(err){ console.error(err); } });
+window.addEventListener('load', () => { try{ capubRepairCriticalButtons(); }catch(err){ console.error(err); } });
+
 
 /* ===========================
    BOOTSTRAP
