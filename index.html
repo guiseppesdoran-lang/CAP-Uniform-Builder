@@ -295,11 +295,11 @@
   }
   .measurementOverlay text{
     fill:#c1121f;
-    font-size:12px;
+    font-size:10px;
     font-weight:700;
     paint-order:stroke;
     stroke:#fff;
-    stroke-width:3px;
+    stroke-width:2px;
     stroke-linejoin:round;
   }
 
@@ -4723,14 +4723,16 @@ function getCaprReferenceGapLabel(upper, lower){
 
   if(!upper || !lower) return '';
 
-  if(upper.kind === 'ribbonRack' && belowRibbonSlots.has(lower.slot)) return 'CAPR ref: 1.50"';
-  if(lower.kind === 'ribbonRack' && aboveRibbonSlots.has(upper.slot)) return 'CAPR ref: 0.50"';
-  if(aboveRibbonSlots.has(upper.slot) && aboveRibbonSlots.has(lower.slot)) return 'CAPR ref: 0.50"';
-  if((upper.kind === 'ribbonRack' && lower.kind === 'badge') || (lower.kind === 'ribbonRack' && upper.kind === 'badge')) return 'CAPR ref';
+  // CAPR 39-1 references used by this overlay:
+  // - 0.50" from the highest ribbon to the first occupational/above-ribbon badge
+  // - 1.50" from the bottom of the ribbon rack to the next below-ribbon badge
+  if(lower.kind === 'ribbonRack' && aboveRibbonSlots.has(upper.slot)) return '0.50"';
+  if(upper.kind === 'ribbonRack' && belowRibbonSlots.has(lower.slot)) return '1.50"';
+  if(aboveRibbonSlots.has(upper.slot) && aboveRibbonSlots.has(lower.slot)) return '0.50"';
   return '';
 }
 
-function makeMeasurementArrow(svg, x, y1, y2, label){
+function makeMeasurementArrow(svg, x, y1, y2, label, placeLeft=false){
   if(!Number.isFinite(x) || !Number.isFinite(y1) || !Number.isFinite(y2)) return;
   const NS = 'http://www.w3.org/2000/svg';
   const group = document.createElementNS(NS, 'g');
@@ -4741,17 +4743,20 @@ function makeMeasurementArrow(svg, x, y1, y2, label){
   line.setAttribute('y1', y1);
   line.setAttribute('y2', y2);
   line.setAttribute('stroke', '#c1121f');
-  line.setAttribute('stroke-width', '2');
+  line.setAttribute('stroke-width', '1.5');
   line.setAttribute('marker-start', 'url(#capubArrowHead)');
   line.setAttribute('marker-end', 'url(#capubArrowHead)');
   group.appendChild(line);
 
-  const textY = (y1 + y2) / 2 - 6;
-  const text = document.createElementNS(NS, 'text');
-  text.setAttribute('x', x + 8);
-  text.setAttribute('y', textY);
-  text.textContent = label;
-  group.appendChild(text);
+  if(label){
+    const textY = (y1 + y2) / 2 - 4;
+    const text = document.createElementNS(NS, 'text');
+    text.setAttribute('x', placeLeft ? x - 6 : x + 6);
+    text.setAttribute('y', textY);
+    text.setAttribute('text-anchor', placeLeft ? 'end' : 'start');
+    text.textContent = label;
+    group.appendChild(text);
+  }
 
   svg.appendChild(group);
 }
@@ -4764,27 +4769,33 @@ function renderMeasurementOverlay(){
   if(items.length < 2) return;
 
   const box = uniformCanvas.getBoundingClientRect();
+  const canvasWidth = box.width || 450;
+  const canvasHeight = box.height || 600;
+
   const svgNS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(svgNS, 'svg');
   svg.classList.add('measurementOverlay');
-  svg.setAttribute('viewBox', `0 0 ${box.width || 450} ${box.height || 600}`);
+  svg.setAttribute('viewBox', `0 0 ${canvasWidth} ${canvasHeight}`);
   svg.setAttribute('preserveAspectRatio', 'none');
 
   const defs = document.createElementNS(svgNS, 'defs');
   const marker = document.createElementNS(svgNS, 'marker');
   marker.setAttribute('id', 'capubArrowHead');
-  marker.setAttribute('markerWidth', '8');
-  marker.setAttribute('markerHeight', '8');
-  marker.setAttribute('refX', '4');
-  marker.setAttribute('refY', '4');
+  marker.setAttribute('markerWidth', '6');
+  marker.setAttribute('markerHeight', '6');
+  marker.setAttribute('refX', '3');
+  marker.setAttribute('refY', '3');
   marker.setAttribute('orient', 'auto-start-reverse');
 
   const arrowPath = document.createElementNS(svgNS, 'path');
-  arrowPath.setAttribute('d', 'M 0 0 L 8 4 L 0 8 z');
+  arrowPath.setAttribute('d', 'M 0 0 L 6 3 L 0 6 z');
   arrowPath.setAttribute('fill', '#c1121f');
   marker.appendChild(arrowPath);
   defs.appendChild(marker);
   svg.appendChild(defs);
+
+  let rightLane = 0;
+  let leftLane = 0;
 
   for(const lower of items){
     const candidates = items
@@ -4795,7 +4806,6 @@ function renderMeasurementOverlay(){
 
     if(!candidates.length) continue;
 
-    // Prefer visually related items: same-side overlap first, then nearest vertical item.
     candidates.sort((a, b) => {
       const overlapA = rangesOverlap(a.upper.left, a.upper.right, lower.left, lower.right);
       const overlapB = rangesOverlap(b.upper.left, b.upper.right, lower.left, lower.right);
@@ -4805,19 +4815,28 @@ function renderMeasurementOverlay(){
       return a.gap - b.gap;
     });
 
-    const { upper, gap } = candidates[0];
-    const overlap = rangesOverlap(upper.left, upper.right, lower.left, lower.right);
-    let x = lower.centerX;
-    if(overlap > 0){
-      x = Math.max(upper.left, lower.left) + overlap / 2;
+    const { upper } = candidates[0];
+    const label = getCaprReferenceGapLabel(upper, lower);
+
+    // Only draw the overlay when a CAPR reference distance applies.
+    if(!label) continue;
+
+    const footprintLeft = Math.min(upper.left, lower.left);
+    const footprintRight = Math.max(upper.right, lower.right);
+
+    let x = footprintRight + 10 + (rightLane * 12);
+    let placeLeft = false;
+
+    // If there is not enough room on the right, place the arrow to the left.
+    if(x > canvasWidth - 56){
+      x = footprintLeft - 10 - (leftLane * 12);
+      placeLeft = true;
+      leftLane = (leftLane + 1) % 3;
     }else{
-      x = (upper.centerX + lower.centerX) / 2;
+      rightLane = (rightLane + 1) % 3;
     }
 
-    const ref = getCaprReferenceGapLabel(upper, lower);
-    const label = ref ? `${Math.round(gap)} px • ${ref}` : `${Math.round(gap)} px`;
-
-    makeMeasurementArrow(svg, x, upper.bottom, lower.top, label);
+    makeMeasurementArrow(svg, x, upper.bottom, lower.top, label, placeLeft);
   }
 
   uniformCanvas.appendChild(svg);
