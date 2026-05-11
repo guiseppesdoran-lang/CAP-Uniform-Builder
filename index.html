@@ -4,7 +4,427 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CAP Uniform Builder — Full Program</title>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
+/* ===========================
+   CAP MEMBER SEARCH REPORT IMPORTER
+   =========================== */
+const MEMBER_REPORT_IMPORT_BADGE_PRIORITY = [
+  // Aviation / aeronautical
+  'CAPMasterPilot1_621A0E2ED15DA','CAPSeniorPilot1_D9725AE959752','CAPPilot1_FA9D33EA587D8',
+  'MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F',
+  'MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge',
+  'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B','solo_badge','pre_solo_badge',
+
+  // Occupational / over-ribbon
+  'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge',
+  'emt_paramedic','emt_intermediate','emt_basic_badge','basic_incident_commander_badge',
+
+  // Pocket/flexible specialty
+  'model_rocketry_badge',
+  'master_emergency_services_badge','senior_emergency_services_badge','emergency_services_badge',
+  'communications_technician_badge','information_technology_technician_badge','historian_technicianIbadge',
+  'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge',
+  'nra_marksman_badge'
+];
+
+function setMemberReportImportStatus(lines, type='info'){
+  const el = by('memberReportImportStatus');
+  if(!el) return;
+  const arr = Array.isArray(lines) ? lines : [lines];
+  const color = type === 'error' ? '#991b1b' : type === 'ok' ? '#166534' : 'var(--muted)';
+  el.style.color = color;
+  el.innerHTML = arr.map(line => `<div>${String(line).replace(/[<>&]/g, ch => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]))}</div>`).join('');
+}
+
+async function extractMemberReportText(file){
+  const name = (file?.name || '').toLowerCase();
+
+  if(name.endsWith('.txt') || file.type === 'text/plain'){
+    return await file.text();
+  }
+
+  if(!window.pdfjsLib){
+    throw new Error('PDF.js did not load. Check your internet connection or upload a .txt export instead.');
+  }
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    pdfjsLib.GlobalWorkerOptions.workerSrc ||
+    'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+
+  const data = new Uint8Array(await file.arrayBuffer());
+  const pdf = await pdfjsLib.getDocument({ data }).promise;
+  const pages = [];
+
+  for(let p=1; p<=pdf.numPages; p++){
+    const page = await pdf.getPage(p);
+    const content = await page.getTextContent();
+    const strings = content.items.map(item => item.str || '').filter(Boolean);
+    pages.push(strings.join(' '));
+  }
+
+  return pages.join('\n');
+}
+
+function normalizeMemberReportText(text){
+  return String(text || '')
+    .replace(/\uFFFE|\uFFFD|\uF0BE/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function normalizeImportedRank(raw){
+  const r = String(raw || '').trim();
+  const fixes = {
+    'C/1stLt':'C/1st Lt',
+    'C/2dLt':'C/2d Lt',
+    'C/LtCol':'C/Lt Col',
+    'C/Maj':'C/Maj',
+    'C/Capt':'C/Capt',
+    'C/Col':'C/Col',
+    'C/CMSgt':'C/CMSgt',
+    'C/SMSgt':'C/SMSgt',
+    'C/MSgt':'C/MSgt',
+    'C/TSgt':'C/TSgt',
+    'C/SSgt':'C/SSgt',
+    'C/SrA':'C/SrA',
+    'C/A1C':'C/A1C',
+    'C/Amn':'C/Amn',
+    'C/AB':'C/AB'
+  };
+  return fixes[r] || r.replace('1stLt','1st Lt').replace('2dLt','2d Lt').replace('LtCol','Lt Col');
+}
+
+function getHighestImportedRank(text){
+  const ranks = [...RANKS.cadet, ...RANKS.senior];
+  const rankHits = [];
+  for(const rank of ranks){
+    const escaped = rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace('\\ ', '\\s*');
+    const re = new RegExp(`\\b${escaped}\\b`, 'i');
+    if(re.test(text)) rankHits.push(rank);
+  }
+
+  // Prefer explicit general information line first.
+  const gen = text.match(/\b(MALE|FEMALE)\s+(CADET|SENIOR(?:\s+MEMBER)?)\s+([A-Z]\/[A-Za-z0-9]+|C\/1st\s*Lt|C\/2d\s*Lt|C\/Lt\s*Col|SSgt|TSgt|MSgt|SMSgt|CMSgt|2d\s*Lt|1st\s*Lt|Capt|Maj|Lt\s*Col|Col|Brig\s*Gen|Maj\s*Gen)\b/i);
+  if(gen) return normalizeImportedRank(gen[3]);
+
+  if(rankHits.includes('C/Maj')) return 'C/Maj';
+  return rankHits[0] || null;
+}
+
+function countOccurrences(text, pattern){
+  const m = text.match(pattern);
+  return m ? m.length : 0;
+}
+
+function selectImportedRibbon(id, value='earned'){
+  if(!id) return;
+  if(!State.ribbonSelections[id]) State.ribbonSelections[id] = { checked:false, devices:{}, awardValue:'', awardLabel:'' };
+  const option = getRibbonSelectionOption(id, value);
+  State.ribbonSelections[id].checked = true;
+  State.ribbonSelections[id].awardValue = option?.value || value || 'earned';
+  State.ribbonSelections[id].awardLabel = option?.label || 'Earned';
+  State.ribbonSelections[id].devices = { ...(option?.devices || {}) };
+  State.ribbonSelections[id].imageOverride = option?.image || getRibbonImageOverride(id, option?.value || value || 'earned');
+}
+
+function chooseSpecialRibbonValueByAwardCount(id, count){
+  const options = (RIBBON_SPECIAL_IMAGE_OPTIONS[id] || []).filter(o => o.value && o.value !== 'earned');
+  if(count <= 1) return 'earned';
+
+  // Most special arrays are ordered by additional award count after the base option.
+  const idx = Math.max(0, count - 2);
+  return options[idx]?.value || options[options.length - 1]?.value || 'earned';
+}
+
+function chooseCommunityServiceValue(count){
+  if(count <= 1) return 'hours_60';
+  if(count === 2) return 'bronze_clasp_1';
+  if(count === 3) return 'bronze_clasp_2';
+  if(count === 4) return 'bronze_clasp_3';
+  if(count === 5) return 'bronze_clasp_4';
+  if(count === 6) return 'silver_clasp_1';
+  if(count === 7) return 'silver_clasp_1_bronze_clasp_1';
+  return 'silver_clasp_1_bronze_clasp_2';
+}
+
+function chooseCadetSpecialActivityValue(count){
+  if(count <= 1) return 'earned';
+  if(count === 2) return 'bronze_star_1';
+  if(count === 3) return 'bronze_star_2';
+  if(count === 4) return 'bronze_star_3';
+  if(count === 5) return 'bronze_star_4';
+  if(count === 6) return 'silver_star_1';
+  if(count === 7) return 'silver_star_bronze_star';
+  return 'silver_star_two_bronze_stars';
+}
+
+function chooseEncampmentValue(count){
+  if(count <= 1) return 'earned';
+  if(count === 2) return 'bronze_clasp_1';
+  if(count === 3) return 'bronze_clasp_2';
+  if(count === 4) return 'bronze_clasp_3';
+  if(count === 5) return 'bronze_clasp_4';
+  if(count === 6) return 'silver_clasp_1';
+  if(count === 7) return 'silver_clasp_1_bronze_clasp_1';
+  return 'silver_clasp_1_bronze_clasp_2';
+}
+
+function importedBadgePriority(id){
+  const i = MEMBER_REPORT_IMPORT_BADGE_PRIORITY.indexOf(id);
+  return i === -1 ? 9999 : i;
+}
+
+function selectHighestWearableImportedBadges(ids){
+  const unique = [...new Set(ids.filter(Boolean))];
+  const eligible = unique.filter(id => !(State.membership === 'cadet' && !isCadetAuthorized(id)));
+
+  // Keep best level in badge families.
+  const suppress = new Set();
+  if(eligible.includes('master_ground_team_badge')){
+    suppress.add('senior_ground_team_badge'); suppress.add('ground_team_basic_badge');
+  }else if(eligible.includes('senior_ground_team_badge')){
+    suppress.add('ground_team_basic_badge');
+  }
+  if(eligible.includes('master_emergency_services_badge')){
+    suppress.add('senior_emergency_services_badge'); suppress.add('emergency_services_badge');
+  }else if(eligible.includes('senior_emergency_services_badge')){
+    suppress.add('emergency_services_badge');
+  }
+
+  let out = eligible.filter(id => !suppress.has(id));
+  out.sort((a,b) => importedBadgePriority(a) - importedBadgePriority(b));
+
+  // Model Rocketry is an LP override; keep it if detected, and still cap normal badges at four.
+  const counted = [];
+  for(const id of out){
+    if(isCommandInsigniaBadge(id)) continue;
+    if(counted.length >= 4) break;
+    counted.push(id);
+  }
+
+  return counted;
+}
+
+function parseCapMemberReport(textRaw){
+  const text = normalizeMemberReportText(textRaw);
+  const result = {
+    membership:null,
+    gender:null,
+    rank:null,
+    ribbons:[],
+    badges:[],
+    notes:[]
+  };
+
+  if(/\bCADET\b/i.test(text)) result.membership = 'cadet';
+  if(/\bSENIOR(?:\s+MEMBER)?\b/i.test(text) && !result.membership) result.membership = 'senior';
+  if(/\bMALE\b/i.test(text)) result.gender = 'male';
+  if(/\bFEMALE\b/i.test(text)) result.gender = 'female';
+
+  result.rank = getHighestImportedRank(text);
+
+  // Cadet achievement ribbons from the cadet achievements section.
+  const achievementNumMatches = [...text.matchAll(/Achievement\s+(\d+)/gi)].map(m => parseInt(m[1],10)).filter(Number.isFinite);
+  const maxAchievement = achievementNumMatches.length ? Math.max(...achievementNumMatches) : 0;
+  const achievementMap = [
+    null,
+    'curry_achievement',
+    'hap_arnold_achievement',
+    'mary_feik_achievement',
+    'rickenbacker_achievement',
+    'lindbergh_achievement',
+    'doolittle_achievement',
+    'goddard_achievement',
+    'armstrong_achievement'
+  ];
+  for(let i=1; i<=Math.min(maxAchievement, 8); i++){
+    if(achievementMap[i]) result.ribbons.push({ id:achievementMap[i], value:'earned', reason:`Achievement ${i}` });
+  }
+  if(/Wright\s+Brothers/i.test(text)) result.ribbons.push({ id:'wright_brothers_award', value:'earned', reason:'Wright Brothers' });
+  if(/Billy\s+Mitchell/i.test(text)) result.ribbons.push({ id:'mitchell_award', value:'earned', reason:'Billy Mitchell' });
+  if(/Amelia\s+Earhart/i.test(text)) result.ribbons.push({ id:'earhart_award', value:'earned', reason:'Amelia Earhart' });
+  if(/\bEaker\b/i.test(text)) result.ribbons.push({ id:'eaker_award', value:'earned', reason:'Eaker' });
+  if(/\bSpaatz\b/i.test(text)) result.ribbons.push({ id:'spaatz_award', value:'earned', reason:'Spaatz' });
+
+  // Decorations / service ribbons.
+  const achievementAwardCount = countOccurrences(text, /Achievement Award\s+\d{1,2}\s+[A-Z][a-z]{2}\s+\d{4}/gi) ||
+                                countOccurrences(text, /Achievement Award/gi);
+  if(achievementAwardCount > 0){
+    result.ribbons.push({
+      id:'cap_achievment_award',
+      value:chooseSpecialRibbonValueByAwardCount('cap_achievment_award', achievementAwardCount),
+      reason:`${achievementAwardCount} Achievement Award record(s)`
+    });
+  }
+
+  if(/Crisis Service Award/i.test(text) || /\bCrisis Ribbon\b/i.test(text)){
+    result.ribbons.push({ id:'crisis_ribbon', value:'earned', reason:'Crisis Service Award' });
+  }
+
+  const communityServiceCount = Math.max(1, countOccurrences(text, /Community Service Ribbon/gi));
+  if(/Community Service Ribbon/i.test(text)){
+    result.ribbons.push({
+      id:'community_service_ribbon',
+      value:chooseCommunityServiceValue(communityServiceCount),
+      reason:`${communityServiceCount} Community Service Ribbon record(s)`
+    });
+  }
+
+  if(/Cadet Advisory Council Ribbon/i.test(text) || /Cadet WCAC|CAC Representative|CAC Vice Chair/i.test(text)){
+    const cacValue = /Cadet WCAC|WING/i.test(text) ? 'wing_bronze_star' : 'group';
+    result.ribbons.push({ id:'cadet_advisory_council_ribbon', value:cacValue, reason:'Cadet Advisory Council' });
+  }
+
+  const encampmentCount = Math.max(0, countOccurrences(text, /Encampments?\s+Location|Piney Creek Camp|Encampment Ribbon/gi));
+  if(/Encampments|Encampment Ribbon|Piney Creek Camp/i.test(text)){
+    result.ribbons.push({ id:'encampment_ribbon', value:chooseEncampmentValue(Math.max(1, encampmentCount)), reason:'Encampment' });
+  }
+
+  const ncsaActivityHits = [
+    /HMRS/i.test(text),
+    /Hawk Mountain/i.test(text),
+    /\bRCLS\b/i.test(text),
+    /\bCLA\b|Civic Leadership Academy/i.test(text),
+    /\bNCSA\b|\bCSA\b|\bNFA\b/i.test(text)
+  ].filter(Boolean).length;
+  if(ncsaActivityHits > 0){
+    result.ribbons.push({
+      id:'cadet_special_activity_ribbon',
+      value:chooseCadetSpecialActivityValue(ncsaActivityHits),
+      reason:`${ncsaActivityHits} cadet special activity indicator(s)`
+    });
+  }
+
+  // Badge / qualification mapping.
+  if(/CAP Aircrew Rating/i.test(text)) result.badges.push('AirCrew1_DB3F0FCC3650F');
+  if(/Mission Observer|MO - Mission Observer/i.test(text)) result.badges.push('observer_badge');
+  if(/CAP Master Ground Team Badge|GTL|GTM1/i.test(text)) result.badges.push('master_ground_team_badge');
+  else if(/CAP Senior Ground Team Badge|GTM2/i.test(text)) result.badges.push('senior_ground_team_badge');
+  else if(/CAP Basic Ground Team Badge|GTM3/i.test(text)) result.badges.push('ground_team_basic_badge');
+
+  if(/CAP Master Emergency Services Qualification Badge/i.test(text)) result.badges.push('master_emergency_services_badge');
+  else if(/CAP Senior Emergency Services Qualification Badge/i.test(text)) result.badges.push('senior_emergency_services_badge');
+  else if(/CAP Basic Emergency Services Qualification Badge|Technician Rating Exam:\s*Emergency Services/i.test(text)) result.badges.push('emergency_services_badge');
+
+  if(/Technician Rating Exam:\s*Communications|Communications Technician/i.test(text)) result.badges.push('communications_technician_badge');
+  if(/Technician Rating Exam:\s*IT|Information Technology Technician/i.test(text)) result.badges.push('information_technology_technician_badge');
+  if(/Technician Rating Exam:\s*Historian|Historian Technician/i.test(text)) result.badges.push('historian_technicianIbadge');
+  if(/Model Rocketry/i.test(text)) result.badges.push('model_rocketry_badge');
+
+  result.badges = selectHighestWearableImportedBadges(result.badges);
+  result.ribbons = dedupeImportedRibbons(result.ribbons);
+
+  return result;
+}
+
+function dedupeImportedRibbons(ribbons){
+  const map = new Map();
+  for(const r of ribbons){
+    if(!r?.id) continue;
+    // Later/high-level detections replace earlier basic detections for the same ribbon.
+    map.set(r.id, r);
+  }
+  return [...map.values()];
+}
+
+function applyCapMemberReportImport(parsed){
+  if(parsed.membership){
+    State.membership = parsed.membership;
+    if(membershipTypeEl) membershipTypeEl.value = parsed.membership;
+    populateRankSetup();
+  }
+
+  if(parsed.rank && RANKS[State.membership || 'cadet']?.includes(parsed.rank)){
+    State.rank = parsed.rank;
+    if(rankSetupSelect) rankSetupSelect.value = parsed.rank;
+  }
+
+  if(parsed.gender){
+    State.gender = parsed.gender;
+    if(jacketSelect) jacketSelect.value = parsed.gender;
+  }
+
+  normalizeRibbonSelections();
+  normalizeBadgeSelections();
+
+  // Clear current imported-selectable items so the report can populate a clean rack.
+  for(const id of Object.keys(State.ribbonSelections)){
+    State.ribbonSelections[id].checked = false;
+    State.ribbonSelections[id].awardValue = '';
+    State.ribbonSelections[id].awardLabel = '';
+    State.ribbonSelections[id].devices = {};
+    State.ribbonSelections[id].imageOverride = null;
+  }
+  for(const id of Object.keys(State.badgeSelections)){
+    State.badgeSelections[id].checked = false;
+  }
+
+  for(const r of parsed.ribbons || []){
+    if(isRibbonEligibleForMembership(r.id, State.membership)){
+      selectImportedRibbon(r.id, r.value || 'earned');
+    }
+  }
+
+  State.badges = [];
+  for(const id of parsed.badges || []){
+    if(State.membership === 'cadet' && !isCadetAuthorized(id)) continue;
+    if(!State.badges.includes(id)) State.badges.push(id);
+    if(State.badgeSelections[id]) State.badgeSelections[id].checked = true;
+  }
+
+  applyMemberTypeToUniformOptions();
+  highlightActiveUniformButton();
+  buildRibbonGallery();
+  rebuildRibbonsFromGallery();
+  buildBadgeGallery();
+  rebuildBadgesFromGallery();
+  updateSetupGates();
+  refreshUI();
+  fullRender();
+}
+
+function wireMemberReportImporter(){
+  const btn = by('importMemberReportBtn');
+  const input = by('memberReportUpload');
+  const clearBtn = by('clearImportedReportBtn');
+  if(!btn || !input) return;
+
+  btn.addEventListener('click', () => input.click());
+
+  clearBtn?.addEventListener('click', () => {
+    setMemberReportImportStatus('No report imported yet.');
+  });
+
+  input.addEventListener('change', async () => {
+    const file = input.files?.[0];
+    if(!file) return;
+
+    try{
+      setMemberReportImportStatus(`Reading ${file.name}...`);
+      const text = await extractMemberReportText(file);
+      const parsed = parseCapMemberReport(text);
+      applyCapMemberReportImport(parsed);
+
+      const lines = [
+        `Imported ${file.name}.`,
+        `Profile: ${parsed.membership || 'unknown'} • ${parsed.gender || 'unknown'} • ${parsed.rank || 'rank not found'}`,
+        `Ribbons selected: ${parsed.ribbons.length}`,
+        `Badges selected: ${parsed.badges.length}${parsed.badges.length >= 4 ? ' (highest four wearable badges kept)' : ''}`,
+        parsed.notes?.length ? `Notes: ${parsed.notes.join('; ')}` : ''
+      ].filter(Boolean);
+
+      setMemberReportImportStatus(lines, 'ok');
+    }catch(err){
+      console.error(err);
+      setMemberReportImportStatus(`Import failed: ${err.message || err}`, 'error');
+    }finally{
+      input.value = '';
+    }
+  });
+}
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 
 <style>
   :root{
@@ -1123,6 +1543,22 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <div class="hintText">Saves selected uniform, rank, ribbons, badges, patches, devices, text labels, and calibration.</div>
       </section>
 
+      <section id="memberReportImportPanel" class="panelBlock">
+        <label class="fieldLabel">Import CAP Member Report</label>
+        <div class="hintText">
+          Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
+          The builder will read rank, gender, ribbons, achievements, qualifications, and badges it can match.
+        </div>
+        <div class="row two" style="margin-top:6px">
+          <div class="col"><button id="importMemberReportBtn" type="button">Import Member Report</button></div>
+          <div class="col"><button id="clearImportedReportBtn" class="ghost" type="button">Clear Import Notes</button></div>
+        </div>
+        <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" style="display:none"/>
+        <div id="memberReportImportStatus" class="hintText" style="margin-top:8px;">
+          No report imported yet.
+        </div>
+      </section>
+
       <section id="capubV2TextPanel" class="panelBlock">
         <label class="fieldLabel">Text Labels / Field Uniform Tapes</label>
         <label class="fieldLabel" style="margin-top:8px;">Last Name / Name Tape</label>
@@ -1461,6 +1897,11 @@ function getGenderedPocketSlotForBadge(id){
   return 'LP';
 }
 
+function hasModelRocketrySelected(){
+  return (State.badges || []).includes('model_rocketry_badge') &&
+    !(State.membership === 'cadet' && !isCadetAuthorized('model_rocketry_badge'));
+}
+
 function getSpecialtyPocketSlotBySelectionOrder(id){
   if(!isSelectableSpecialtyPocketBadge(id)) return null;
 
@@ -1469,16 +1910,23 @@ function getSpecialtyPocketSlotBySelectionOrder(id){
     .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
 
   const hasVolunteerUniversity = specialtyOrder.includes('volunteer_university_instructor_badge');
+  const hasModelRocketry = hasModelRocketrySelected();
 
   // Exception: Volunteer University always renders on the wearer's right pocket.
-  // When Volunteer University is selected, every other flexible specialty badge
-  // is forced to the wearer's left pocket instead of being placed by order.
   if(id === 'volunteer_university_instructor_badge') return 'RP';
+
+  // Model Rocketry owns the wearer's left pocket when selected. If another flexible
+  // specialty badge would have gone to LP, it is bumped to the next eligible pocket (RP)
+  // as long as that physical slot is available.
+  if(hasModelRocketry) return hasVolunteerUniversity ? null : 'RP';
+
+  // When Volunteer University is selected without Model Rocketry, every other flexible
+  // specialty badge goes to the wearer's left pocket.
   if(hasVolunteerUniversity) return 'LP';
 
   const index = specialtyOrder.indexOf(id);
 
-  // Default flexible specialty behavior when Volunteer University is not selected:
+  // Default flexible specialty behavior when no exceptions are selected:
   // first specialty badge on LP, second on RP.
   if(index === 0) return 'LP';
   if(index === 1) return 'RP';
@@ -4266,9 +4714,14 @@ function chooseBadgeSlot(id, prefs){
   // Flexible specialty badges use custom physical-slot logic.
   if(isSelectableSpecialtyPocketBadge(id)){
     const hasVolunteerUniversity = (State.badges || []).includes('volunteer_university_instructor_badge');
+    const hasModelRocketry = hasModelRocketrySelected();
 
     if(id === 'volunteer_university_instructor_badge'){
       ordered = ['RP'];
+    }else if(hasModelRocketry){
+      // Model Rocketry occupies LP; bump the flexible specialty badge to RP.
+      // If Volunteer University is already in RP, there is no remaining eligible pocket.
+      ordered = hasVolunteerUniversity ? [] : ['RP'];
     }else if(hasVolunteerUniversity){
       ordered = ['LP'];
     }else{
@@ -4609,6 +5062,7 @@ by('toggleMini').addEventListener('change', e=>{
 
 buildDevicePicker();
 wireDeviceUI();
+wireMemberReportImporter();
 
 /* Ribbon gallery buttons */
 by('clearRibbons').addEventListener('click', ()=>{
