@@ -1364,14 +1364,13 @@ const RIBBON_GAP_Y  = 0;
 
 /*
   Per-uniform ribbon rack geometry.
-  The blues_b values below come from the May 2026 men's Class B calibration export:
-  x = 263/292/321, y rows = 182/189/196, ribbon size = 29 x 7.
-  Any ribbon set now uses this calibrated rack geometry, not only the sample ribbons in the export.
+  Male Class B intentionally reuses the male Class A rack geometry for both cadet and senior modes.
+  This keeps all rendered image asset sizes and locations consistent between male Class A and male Class B.
 */
 const RIBBON_LAYOUT_BY_UNIFORM = {
   // Men's Class A senior-member calibration: x columns 259/282/305 and top/bottom rows from the latest export.
   blues_a: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 },
-  blues_b: { baseX: 263, bottomY: 196, w: 29, h: 7, gapX: 0, gapY: 0 }
+  blues_b: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 }
 };
 function getRibbonLayout(uniformId = State.uniform){
   const override = RIBBON_LAYOUT_BY_UNIFORM[uniformId] || {};
@@ -1802,6 +1801,11 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
     }
   }
 };
+
+// Per user calibration preference: male Class B should use the exact same
+// badge, ribbon, UAS/aircrew, specialty badge, and measurement-arrow default
+// coordinates/sizes as male Class A for both senior and cadet member modes.
+DEFAULT_CALIBRATION_BY_UNIFORM.blues_b = JSON.parse(JSON.stringify(DEFAULT_CALIBRATION_BY_UNIFORM.blues_a));
 
 const AIRCREW_BADGE_IDS = new Set([
   'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
@@ -4602,7 +4606,7 @@ const OVER_RIBBON_REFERENCE_TOP_BY_UNIFORM = {
   // Latest senior male Class A calibration export used a highest ribbon row at y=199.
   // Every calibrated badge keeps its own vertical offset from that highest ribbon row.
   blues_a: 199,
-  blues_b: 189
+  blues_b: 199
 };
 
 function getReferenceCalibForKey(uniformId, key){
