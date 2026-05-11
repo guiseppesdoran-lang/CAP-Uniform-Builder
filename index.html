@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CAP Uniform Builder — Full Program</title>
+<title>CAP Uniform Builder — Full Program Calibrated</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 
@@ -885,7 +885,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <body>
 
 <header>
-  <h1>CAP Uniform Builder</h1>
+  <h1>CAP Uniform Builder — Calibrated Badges</h1>
 </header>
 
 <button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu">
@@ -1412,52 +1412,394 @@ function getCalibBucket(uniformId=getCurrentCalibUniform()){
 }
 
 const DEFAULT_CALIBRATION_BY_UNIFORM = {
-  // Men's Class A Blues calibration supplied by user.
-  blues_a: {
-    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:114, w:60, h:17, r:0 },
-    'badge:master_ground_team_badge:OLPU:0': { x:281, y:161, w:25, h:20, r:0 },
-    // Senior officer male Class A pocket badge-zone calibration supplied by user.
-    // These are zone references, not just one-off badge positions.
-    'badge:emergency_services_badge:LP:0': { x:280, y:248, w:30, h:30, r:0 },
-    'badge:communications_technician_badge:LP:0': { x:283, y:251, w:25, h:25, r:0 },
-    'badge:communications_technician_badge:UN:0': { x:138, y:256, w:25, h:25, r:0 },
-
-    // Latest senior-member male Class A scaling/positioning calibration.
-    'badge:basic_incident_commander_badge:UN:0': { x:288, y:126, r:0 },
-    'badge:basic_incident_commander_badge:UN:1': { x:276, y:133, w:35, h:25, r:0 },
-    'badge:volunteer_university_instructor_badge:UN:0': { x:125, y:268, w:45, h:45, r:0 },
-    'badge:volunteer_university_instructor_badge:UN:1': { x:128, y:264, w:40, h:40, r:0 },
-    // Volunteer University flexible exception: first selected goes to LP, second to RP.
-    // LP is centered on the wearer's left pocket badge zone; RP uses the right-side pocket zone.
-    'badge:volunteer_university_instructor_badge:LP:0': { x:272, y:261, w:45, h:45, r:0 },
-    'badge:volunteer_university_instructor_badge:RP:0': { x:125, y:268, w:45, h:45, r:0 },
-    // Squadron Commander / Command Insignia placement for male senior Class A:
-    // Current commanders wear it over the nameplate (ON); graduated commanders wear it under the nameplate (UN).
-    'badge:squadron_commander_badge:ON:0': { x:142, y:174, w:15, h:15, r:0 },
-    'badge:squadron_commander_badge:UN:0': { x:142, y:229, w:15, h:15, r:0 },
-    'badge:master_emergency_services_badge:LP:0': { x:280, y:269, w:28, h:28, r:0 },
-    'badge:senior_emergency_services_badge:LP:0': { x:280, y:265, w:28, h:28, r:0 },
-    'badge:information_technology_technician_badge:UN:0': { x:138, y:256, w:25, h:25, r:0 },
-    'badge:historian_technicianIbadge:UN:0': { x:138, y:256, w:25, h:25, r:0 },
-    'badge:cadet_programs_badge:UN:0': { x:125, y:258, w:45, h:45, r:0 },
-    // Aviation/aircrew badges use the high aviation zone so they do not initially overlap
-    // rectangular occupational/specialty badges such as Incident Commander.
-    'badge:observer_badge:OLP:0': { x:264, y:151, w:60, h:17, r:0 },
-    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:114, w:60, h:17, r:0 },
-    'badge:basic_incident_commander_badge:OLPU:0': { x:281, y:177, w:25, h:12, r:0 },
-    'badge:volunteer_university_instructor_badge:ON:0': { x:124, y:254, w:50, h:50, r:0 },
-    'badge:squadron_commander_badge:UN:1': { x:140, y:241, w:15, h:15, r:0 },
+  "blues_a": {
+    "badge:AirCrew1_DB3F0FCC3650F:OLP:0": {
+      "x": 264,
+      "y": 114,
+      "w": 60,
+      "h": 17,
+      "r": 0
+    },
+    "badge:master_ground_team_badge:OLPU:0": {
+      "x": 281,
+      "y": 140,
+      "w": 25,
+      "h": 20,
+      "r": 0
+    },
+    "badge:emergency_services_badge:LP:0": {
+      "x": 280,
+      "y": 248,
+      "w": 30,
+      "h": 30,
+      "r": 0
+    },
+    "badge:communications_technician_badge:UN:0": {
+      "x": 138,
+      "y": 256,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:basic_incident_commander_badge:UN:0": {
+      "x": 288,
+      "y": 126,
+      "r": 0
+    },
+    "badge:basic_incident_commander_badge:UN:1": {
+      "x": 276,
+      "y": 133,
+      "w": 35,
+      "h": 25,
+      "r": 0
+    },
+    "badge:volunteer_university_instructor_badge:UN:0": {
+      "x": 125,
+      "y": 268,
+      "w": 45,
+      "h": 45,
+      "r": 0
+    },
+    "badge:volunteer_university_instructor_badge:UN:1": {
+      "x": 128,
+      "y": 264,
+      "w": 40,
+      "h": 40,
+      "r": 0
+    },
+    "badge:squadron_commander_badge:ON:0": {
+      "x": 142,
+      "y": 174,
+      "w": 15,
+      "h": 15,
+      "r": 0
+    },
+    "badge:squadron_commander_badge:UN:0": {
+      "x": 142,
+      "y": 229,
+      "w": 15,
+      "h": 15,
+      "r": 0
+    },
+    "badge:master_emergency_services_badge:LP:0": {
+      "x": 280,
+      "y": 269,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:senior_emergency_services_badge:LP:0": {
+      "x": 280,
+      "y": 265,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:information_technology_technician_badge:UN:0": {
+      "x": 138,
+      "y": 256,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:historian_technicianIbadge:UN:0": {
+      "x": 138,
+      "y": 256,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:cadet_programs_badge:UN:0": {
+      "x": 125,
+      "y": 258,
+      "w": 45,
+      "h": 45,
+      "r": 0
+    },
+    "badge:observer_badge:OLP:0": {
+      "x": 264,
+      "y": 151,
+      "w": 60,
+      "h": 17,
+      "r": 0
+    },
+    "badge:volunteer_university_instructor_badge:ON:0": {
+      "x": 124,
+      "y": 254,
+      "w": 50,
+      "h": 50,
+      "r": 0
+    },
+    "badge:basic_incident_commander_badge:OLPU:0": {
+      "x": 281,
+      "y": 177,
+      "w": 25,
+      "h": 12,
+      "r": 0
+    },
+    "badge:squadron_commander_badge:UN:1": {
+      "x": 140,
+      "y": 241
+    },
+    "badge:model_rocketry_badge:LP:0": {
+      "x": 287,
+      "y": 259,
+      "w": 11,
+      "h": 33,
+      "r": 0
+    },
+    "badge:communications_technician_badge:LP:0": {
+      "x": 283,
+      "y": 251,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:volunteer_university_instructor_badge:LP:0": {
+      "x": 272,
+      "y": 261,
+      "w": 45,
+      "h": 45,
+      "r": 0
+    },
+    "badge:volunteer_university_instructor_badge:RP:0": {
+      "x": 125,
+      "y": 268,
+      "w": 45,
+      "h": 45,
+      "r": 0
+    },
+    "arrow:RIBBONS:to:RP:communications_technician_badge:0": {
+      "x": 137,
+      "y": 223,
+      "w": 81,
+      "h": 30,
+      "r": 0
+    },
+    "arrow:RIBBONS:to:LP:emergency_services_badge:0": {
+      "x": 281,
+      "y": 219,
+      "w": 92,
+      "h": 32,
+      "r": 0
+    },
+    "arrow:OLPU:to:RIBBONS:RIBBONS:0": {
+      "x": 286,
+      "y": 161,
+      "w": 50,
+      "h": 6,
+      "r": 0
+    },
+    "arrow:OLP:to:OLPU:master_ground_team_badge:0": {
+      "x": 286,
+      "y": 133,
+      "w": 50,
+      "h": 5,
+      "r": 0
+    },
+    "badge:communications_technician_badge:RP:0": {
+      "x": 138,
+      "y": 256,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:communications_senior_badge:LP:0": {
+      "x": 283,
+      "y": 251,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:communications_senior_badge:RP:0": {
+      "x": 138,
+      "y": 256,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:communications_master_badge:LP:0": {
+      "x": 283,
+      "y": 251,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:communications_master_badge:RP:0": {
+      "x": 138,
+      "y": 256,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:information_technology_technician_badge:RP:0": {
+      "x": 138,
+      "y": 256,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:historian_technicianIbadge:RP:0": {
+      "x": 138,
+      "y": 256,
+      "w": 25,
+      "h": 25,
+      "r": 0
+    },
+    "badge:uas_pilot_basic_badge:OLP:0": {
+      "x": 264,
+      "y": 114,
+      "w": 60,
+      "h": 17,
+      "r": 0
+    },
+    "badge:uas_pilot_senior_badge:OLP:0": {
+      "x": 264,
+      "y": 114,
+      "w": 60,
+      "h": 17,
+      "r": 0
+    },
+    "badge:uas_pilot_master_badge:OLP:0": {
+      "x": 264,
+      "y": 114,
+      "w": 60,
+      "h": 17,
+      "r": 0
+    }
   },
-
-  // Men's Class B Blues calibration supplied by user.
-  blues_b: {
-    'badge:AirCrew1_DB3F0FCC3650F:OLP:0': { x:263, y:114, w:60, h:17, r:0 },
-    'badge:master_ground_team_badge:OLPU:0': { x:281, y:161, w:25, h:20, r:0 },
-    'badge:emergency_services_badge:LP:0': { x:127, y:273, w:35, h:35, r:0 },
-    'badge:communications_technician_badge:LP:0': { x:130, y:276, w:28, h:28, r:0 },
-    'badge:communications_technician_badge:UN:0': { x:293, y:279, w:28, h:28, r:0 },
-    'badge:volunteer_university_instructor_badge:LP:0': { x:122, y:268, w:45, h:45, r:0 },
-    'badge:volunteer_university_instructor_badge:RP:0': { x:285, y:271, w:45, h:45, r:0 }
+  "blues_b": {
+    "badge:AirCrew1_DB3F0FCC3650F:OLP:0": {
+      "x": 282,
+      "y": 136,
+      "w": 48,
+      "h": 14,
+      "r": 0
+    },
+    "badge:master_ground_team_badge:OLPU:0": {
+      "x": 294,
+      "y": 159,
+      "r": 0
+    },
+    "badge:emergency_services_badge:LP:0": {
+      "x": 127,
+      "y": 273,
+      "w": 35,
+      "h": 35,
+      "r": 0
+    },
+    "badge:communications_technician_badge:UN:0": {
+      "x": 293,
+      "y": 279,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:communications_technician_badge:LP:0": {
+      "x": 130,
+      "y": 276,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:volunteer_university_instructor_badge:LP:0": {
+      "x": 122,
+      "y": 268,
+      "w": 45,
+      "h": 45,
+      "r": 0
+    },
+    "badge:volunteer_university_instructor_badge:RP:0": {
+      "x": 285,
+      "y": 271,
+      "w": 45,
+      "h": 45,
+      "r": 0
+    },
+    "badge:communications_technician_badge:RP:0": {
+      "x": 293,
+      "y": 279,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:communications_senior_badge:LP:0": {
+      "x": 130,
+      "y": 276,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:communications_senior_badge:RP:0": {
+      "x": 293,
+      "y": 279,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:communications_master_badge:LP:0": {
+      "x": 130,
+      "y": 276,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:communications_master_badge:RP:0": {
+      "x": 293,
+      "y": 279,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:information_technology_technician_badge:LP:0": {
+      "x": 130,
+      "y": 276,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:information_technology_technician_badge:RP:0": {
+      "x": 293,
+      "y": 279,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:historian_technicianIbadge:LP:0": {
+      "x": 130,
+      "y": 276,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:historian_technicianIbadge:RP:0": {
+      "x": 293,
+      "y": 279,
+      "w": 28,
+      "h": 28,
+      "r": 0
+    },
+    "badge:uas_pilot_basic_badge:OLP:0": {
+      "x": 282,
+      "y": 136,
+      "w": 48,
+      "h": 14,
+      "r": 0
+    },
+    "badge:uas_pilot_senior_badge:OLP:0": {
+      "x": 282,
+      "y": 136,
+      "w": 48,
+      "h": 14,
+      "r": 0
+    },
+    "badge:uas_pilot_master_badge:OLP:0": {
+      "x": 282,
+      "y": 136,
+      "w": 48,
+      "h": 14,
+      "r": 0
+    }
   }
 };
 
@@ -1622,6 +1964,31 @@ function getBadgeSlotSpec(id){
   return badgeLocations[id] || 'UN';
 }
 function getBadgeSlotLabel(id){
+  if(id === 'communications_senior_badge'){
+    candidates.push('badges/communications_senior.png');
+    candidates.push('badges/communications_senior_badge.png');
+    candidates.push('badges/communications senior badge.png');
+  }
+  if(id === 'communications_master_badge'){
+    candidates.push('badges/communications_master.png');
+    candidates.push('badges/communications_master_badge.png');
+    candidates.push('badges/communications master badge.png');
+  }
+  if(id === 'uas_pilot_basic_badge'){
+    candidates.push('badges/uas_pilot_basic.png');
+    candidates.push('badges/uas_pilot_basic_badge.png');
+    candidates.push('badges/UAS Pilot Basic Badge.png');
+  }
+  if(id === 'uas_pilot_senior_badge'){
+    candidates.push('badges/uas_pilot_senior.png');
+    candidates.push('badges/uas_pilot_senior_badge.png');
+    candidates.push('badges/UAS Pilot Senior Badge.png');
+  }
+  if(id === 'uas_pilot_master_badge'){
+    candidates.push('badges/uas_pilot_master.png');
+    candidates.push('badges/uas_pilot_master_badge.png');
+    candidates.push('badges/UAS Pilot Master Badge.png');
+  }
   if(id === 'squadron_commander_badge'){
     return State.commandInsignia?.graduatedCommander ? 'UN — graduated commander' : 'ON — current commander';
   }
@@ -2710,6 +3077,31 @@ function getBadgeAssetCandidates(id){
   if(primary) candidates.push(primary);
   candidates.push(`badges/${id}.png`);
   candidates.push(`badges/${id}.webp`);
+  if(id === 'communications_senior_badge'){
+    candidates.push('badges/communications_senior.png');
+    candidates.push('badges/communications_senior_badge.png');
+    candidates.push('badges/communications senior badge.png');
+  }
+  if(id === 'communications_master_badge'){
+    candidates.push('badges/communications_master.png');
+    candidates.push('badges/communications_master_badge.png');
+    candidates.push('badges/communications master badge.png');
+  }
+  if(id === 'uas_pilot_basic_badge'){
+    candidates.push('badges/uas_pilot_basic.png');
+    candidates.push('badges/uas_pilot_basic_badge.png');
+    candidates.push('badges/UAS Pilot Basic Badge.png');
+  }
+  if(id === 'uas_pilot_senior_badge'){
+    candidates.push('badges/uas_pilot_senior.png');
+    candidates.push('badges/uas_pilot_senior_badge.png');
+    candidates.push('badges/UAS Pilot Senior Badge.png');
+  }
+  if(id === 'uas_pilot_master_badge'){
+    candidates.push('badges/uas_pilot_master.png');
+    candidates.push('badges/uas_pilot_master_badge.png');
+    candidates.push('badges/UAS Pilot Master Badge.png');
+  }
   if(id === 'squadron_commander_badge'){
     // Support the most common file-name variants used in the image folders.
     candidates.push('badges/Squadron Commander badge.png');
@@ -4271,7 +4663,32 @@ function applyBadgeAssetWithFallback(el, id){
   let idx = 0;
   function tryNext(){
     if(idx >= candidates.length){
-      if(id === 'squadron_commander_badge'){
+      if(id === 'communications_senior_badge'){
+    candidates.push('badges/communications_senior.png');
+    candidates.push('badges/communications_senior_badge.png');
+    candidates.push('badges/communications senior badge.png');
+  }
+  if(id === 'communications_master_badge'){
+    candidates.push('badges/communications_master.png');
+    candidates.push('badges/communications_master_badge.png');
+    candidates.push('badges/communications master badge.png');
+  }
+  if(id === 'uas_pilot_basic_badge'){
+    candidates.push('badges/uas_pilot_basic.png');
+    candidates.push('badges/uas_pilot_basic_badge.png');
+    candidates.push('badges/UAS Pilot Basic Badge.png');
+  }
+  if(id === 'uas_pilot_senior_badge'){
+    candidates.push('badges/uas_pilot_senior.png');
+    candidates.push('badges/uas_pilot_senior_badge.png');
+    candidates.push('badges/UAS Pilot Senior Badge.png');
+  }
+  if(id === 'uas_pilot_master_badge'){
+    candidates.push('badges/uas_pilot_master.png');
+    candidates.push('badges/uas_pilot_master_badge.png');
+    candidates.push('badges/UAS Pilot Master Badge.png');
+  }
+  if(id === 'squadron_commander_badge'){
         el.replaceWith(createBadgeFallbackElement(id, el));
       }else{
         el.dataset.missing = 'true';
