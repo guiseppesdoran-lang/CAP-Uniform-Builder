@@ -1364,7 +1364,7 @@ let dragOffsetY = 0;
    MEMBERSHIP/RANK DATA
    =========================== */
 const RANKS = {
-  senior: ["SSgt","TSgt","MSgt","SMSgt","CMSgt","2d Lt","1st Lt","Capt","Maj","Lt Col","Col","Brig Gen","Maj Gen"],
+  senior: ["SM","SSgt","TSgt","MSgt","SMSgt","CMSgt","2d Lt","1st Lt","Capt","Maj","Lt Col","Col","Brig Gen","Maj Gen"],
   cadet: ["C/AB","C/Amn","C/A1C","C/SrA","C/SSgt","C/TSgt","C/MSgt","C/SMSgt","C/CMSgt","C/2d Lt","C/1st Lt","C/Capt","C/Maj","C/Lt Col","C/Col"]
 };
 
@@ -2724,6 +2724,12 @@ const RIBBON_DEVICE_CAP = {
    program does not overlay a separate device on top of them.
 */
 const RIBBON_SPECIAL_IMAGE_OPTIONS = {
+  // COS graduate star on the highest cadet milestone ribbon.
+  // User asset expected at images/ribbons/eaker-star.png.
+  'eaker_award': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Earned + COS Star', value:'earned_cos_star', image:'eaker-star.png', devices:{} }
+  ],
   'bronze_medal_of_valor': [
     { label:'Basic Award', value:'earned', image:null, devices:{} },
     { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', image:'bronze02.png', devices:{} },
@@ -6698,7 +6704,7 @@ function getHighestImportedRank(text){
   }
 
   // Prefer explicit general information line first.
-  const gen = text.match(/\b(MALE|FEMALE)\s+(CADET|SENIOR(?:\s+MEMBER)?)\s+([A-Z]\/[A-Za-z0-9]+|C\/1st\s*Lt|C\/2d\s*Lt|C\/Lt\s*Col|SSgt|TSgt|MSgt|SMSgt|CMSgt|2d\s*Lt|1st\s*Lt|Capt|Maj|Lt\s*Col|Col|Brig\s*Gen|Maj\s*Gen)\b/i);
+  const gen = text.match(/\b(MALE|FEMALE)\s+(CADET|SENIOR(?:\s+MEMBER)?)\s+(SM|[A-Z]\/[A-Za-z0-9]+|C\/1st\s*Lt|C\/2d\s*Lt|C\/Lt\s*Col|SSgt|TSgt|MSgt|SMSgt|CMSgt|2d\s*Lt|1st\s*Lt|Capt|Maj|Lt\s*Col|Col|Brig\s*Gen|Maj\s*Gen)\b/i);
   if(gen) return normalizeImportedRank(gen[3]);
 
   if(rankHits.includes('C/Maj')) return 'C/Maj';
@@ -6876,6 +6882,86 @@ function extractEncampmentCountFromReport(text){
   return countDatedRowsInSection(encampments);
 }
 
+function getCurrentProfileFromMemberReport(text){
+  const t = normalizeMemberReportText(text);
+  const m = t.match(/\b(MALE|FEMALE)\s+(CADET|SENIOR(?:\s+MEMBER)?)\s+(SM|[A-Z]\/[A-Za-z0-9]+|C\/1st\s*Lt|C\/2d\s*Lt|C\/Lt\s*Col|SSgt|TSgt|MSgt|SMSgt|CMSgt|2d\s*Lt|1st\s*Lt|Capt|Maj|Lt\s*Col|Col|Brig\s*Gen|Maj\s*Gen)\b/i);
+  if(!m) return null;
+  return {
+    gender: m[1].toLowerCase() === 'female' ? 'female' : 'male',
+    membership: /^senior/i.test(m[2]) ? 'senior' : 'cadet',
+    rank: normalizeImportedRank(m[3])
+  };
+}
+
+function extractCadetSpecialActivityCountFromReport(text){
+  const cadetTraining = getReportSection(text, 'Cadet Training', 'Encampments');
+  if(!cadetTraining) return 0;
+  const knownActivityRows = [
+    /\bMOTS\b/i,
+    /\bCOS\b|Cadet Officers School/i,
+    /\bCLA\b|Civic Leadership Academy/i,
+    /\bNCSA\b|\bCSA\b|\bNFA\b/i,
+    /Hawk Mountain|\bHMRS\b/i,
+    /\bRCLS\b/i
+  ];
+  let count = 0;
+  for(const re of knownActivityRows){
+    if(re.test(cadetTraining)) count++;
+  }
+  return count;
+}
+
+function keepOnlyHighestCadetMilestoneForSenior(ribbons, membership){
+  if(membership !== 'senior') return ribbons;
+  const milestoneOrder = ['wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award'];
+  let highest = null;
+  for(const id of milestoneOrder){
+    if(ribbons.some(r => r?.id === id)) highest = id;
+  }
+  if(!highest) return ribbons;
+  return ribbons.filter(r => !milestoneOrder.includes(r?.id) || r.id === highest);
+}
+
+function hasCosGraduateCreditFromReport(text){
+  const cadetTraining = getReportSection(text, 'Cadet Training', 'Encampments');
+  const activityLines = cadetTraining || String(text || '');
+  return /COS|Cadet\s+Officers\s+School/i.test(activityLines);
+}
+
+function applyCosStarToHighestCadetMilestone(ribbons, text){
+  if(!hasCosGraduateCreditFromReport(text)) return ribbons;
+
+  const milestoneOrder = ['wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award'];
+  let highest = null;
+  for(const id of milestoneOrder){
+    if(ribbons.some(r => r?.id === id)) highest = id;
+  }
+  if(!highest) return ribbons;
+
+  // Current asset supplied by the user is eaker-star.png, so Eaker receives a
+  // pre-rendered ribbon image instead of a generic overlay device.
+  const cosValueByMilestone = {
+    mitchell_award: 'earned_cos_star',
+    eaker_award: 'earned_cos_star'
+  };
+  const cosValue = cosValueByMilestone[highest];
+  if(!cosValue) return ribbons;
+
+  return ribbons.map(r => r?.id === highest
+    ? { ...r, value:cosValue, reason:`${r.reason || highest} + COS graduate star` }
+    : r
+  );
+}
+
+function hasNonTrainingQualification(text, labelPattern){
+  const source = String(text || '');
+  const re = new RegExp(labelPattern, 'i');
+  const m = re.exec(source);
+  if(!m) return false;
+  const windowText = source.slice(Math.max(0, m.index - 80), Math.min(source.length, m.index + 220));
+  return !/\(\s*TRAINING\s*\)|\bTRAINING\b/i.test(windowText);
+}
+
 function extractAwardCountFromAwardsTable(text, awardPattern){
   const awards = getReportSection(text, 'Awards', 'Promotions');
   const decs = getReportSection(text, 'Decorations', 'Local Activities');
@@ -6914,12 +7000,18 @@ function parseCapMemberReport(textRaw){
     notes:[]
   };
 
-  if(/\bCADET\b/i.test(text)) result.membership = 'cadet';
-  if(/\bSENIOR(?:\s+MEMBER)?\b/i.test(text) && !result.membership) result.membership = 'senior';
-  if(/\bMALE\b/i.test(text)) result.gender = 'male';
-  if(/\bFEMALE\b/i.test(text)) result.gender = 'female';
-
-  result.rank = getHighestImportedRank(text);
+  const currentProfile = getCurrentProfileFromMemberReport(text);
+  if(currentProfile){
+    result.membership = currentProfile.membership;
+    result.gender = currentProfile.gender;
+    result.rank = currentProfile.rank;
+  }else{
+    if(/\bSENIOR(?:\s+MEMBER)?\b/i.test(text)) result.membership = 'senior';
+    else if(/\bCADET\b/i.test(text)) result.membership = 'cadet';
+    if(/\bFEMALE\b/i.test(text)) result.gender = 'female';
+    else if(/\bMALE\b/i.test(text)) result.gender = 'male';
+    result.rank = getHighestImportedRank(text);
+  }
 
   // Cadet achievement ribbons from the cadet achievements section.
   const achievementNumMatches = [...text.matchAll(/Achievement\s+(\d+)/gi)].map(m => parseInt(m[1],10)).filter(Number.isFinite);
@@ -7016,18 +7108,18 @@ function parseCapMemberReport(textRaw){
     });
   }
 
-  const ncsaActivityHits = [
+  const cadetSpecialActivityCount = extractCadetSpecialActivityCountFromReport(text) || [
     /HMRS/i.test(text),
     /Hawk Mountain/i.test(text),
     /\bRCLS\b/i.test(text),
     /\bCLA\b|Civic Leadership Academy/i.test(text),
     /\bNCSA\b|\bCSA\b|\bNFA\b/i.test(text)
   ].filter(Boolean).length;
-  if(ncsaActivityHits > 0){
+  if(cadetSpecialActivityCount > 0){
     result.ribbons.push({
       id:'cadet_special_activity_ribbon',
-      value:chooseCadetSpecialActivityValue(ncsaActivityHits),
-      reason:`${ncsaActivityHits} cadet special activity indicator(s)`
+      value:chooseCadetSpecialActivityValue(cadetSpecialActivityCount),
+      reason:`${cadetSpecialActivityCount} cadet special activity record(s)`
     });
   }
 
@@ -7060,9 +7152,10 @@ function parseCapMemberReport(textRaw){
   if(/CAP\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Observer\s+Badge/i.test(text)){
     result.badges.push('observer_badge');
   }
-  if(/CAP Master Ground Team Badge|GTL|GTM1/i.test(text)) result.badges.push('master_ground_team_badge');
-  else if(/CAP Senior Ground Team Badge|GTM2/i.test(text)) result.badges.push('senior_ground_team_badge');
-  else if(/CAP Basic Ground Team Badge|GTM3/i.test(text)) result.badges.push('ground_team_basic_badge');
+  if(/CAP Master Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\b(?:GTL|GTM1)\b')) result.badges.push('master_ground_team_badge');
+  else if(/CAP Senior Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\bGTM2\b')) result.badges.push('senior_ground_team_badge');
+  else if(/CAP Basic Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\bGTM3\b')) result.badges.push('ground_team_basic_badge');
+  else if(/\bGTM3\b|Ground Team Member Level 3/i.test(text)) result.notes.push('GTM3 found, but it appears to be training status or not an awarded badge; no Ground Team badge imported.');
 
   if(/CAP Master Emergency Services Qualification Badge/i.test(text)) result.badges.push('master_emergency_services_badge');
   else if(/CAP Senior Emergency Services Qualification Badge/i.test(text)) result.badges.push('senior_emergency_services_badge');
@@ -7074,6 +7167,8 @@ function parseCapMemberReport(textRaw){
   if(/Model Rocketry/i.test(text)) result.badges.push('model_rocketry_badge');
 
   result.badges = selectHighestWearableImportedBadges(result.badges);
+  result.ribbons = applyCosStarToHighestCadetMilestone(result.ribbons, text);
+  result.ribbons = keepOnlyHighestCadetMilestoneForSenior(result.ribbons, result.membership);
   result.ribbons = dedupeImportedRibbons(result.ribbons);
 
   return result;
