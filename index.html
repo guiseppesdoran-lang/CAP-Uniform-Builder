@@ -1885,13 +1885,38 @@ function isSelectableSpecialtyPocketBadge(id){
   return SPECIALTY_TRACK_BADGE_IDS.has(id) && !isCommandInsigniaBadge(id);
 }
 
+const MALE_CADET_LEFT_POCKET_EXCLUSIVE_BADGE_IDS = new Set([
+  'model_rocketry_badge',
+  'cyber_badges',
+  'stem_badges'
+]);
+
+function isMaleCadetBlueUniform(){
+  return State.membership === 'cadet' && State.gender === 'male' && ['blues_a','blues_b'].includes(State.uniform);
+}
+
+function isMaleCadetLeftPocketExclusiveBadge(id){
+  return MALE_CADET_LEFT_POCKET_EXCLUSIVE_BADGE_IDS.has(id) && isMaleCadetBlueUniform();
+}
+
+function getSelectedMaleCadetLeftPocketExclusiveBadges(){
+  return (State.badges || [])
+    .filter(badgeId => MALE_CADET_LEFT_POCKET_EXCLUSIVE_BADGE_IDS.has(badgeId))
+    .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
+}
+
+function getActiveMaleCadetLeftPocketExclusiveBadge(){
+  if(!isMaleCadetBlueUniform()) return null;
+  return getSelectedMaleCadetLeftPocketExclusiveBadges()[0] || null;
+}
+
 function getGenderedPocketSlotForBadge(id){
+  if(isMaleCadetLeftPocketExclusiveBadge(id)){
+    // Model Rocketry, Cadet Cyber, and Cadet STEM are all left-pocket-only for male cadet blues.
+    // If multiple are selected, only the first selected one may own LP.
+    return getActiveMaleCadetLeftPocketExclusiveBadge() === id ? 'LP' : null;
+  }
   if(id === 'model_rocketry_badge'){
-    // Male cadet Class A/B blues: Model Rocketry always wears on the wearer's left pocket,
-    // under the ribbons, regardless of cadet rank.
-    if(State.membership === 'cadet' && State.gender === 'male' && ['blues_a','blues_b'].includes(State.uniform)){
-      return 'LP';
-    }
     return State.gender === 'female' ? 'ON' : 'LP';
   }
   return 'LP';
@@ -1910,17 +1935,23 @@ function getSpecialtyPocketSlotBySelectionOrder(id){
     .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
 
   const hasVolunteerUniversity = specialtyOrder.includes('volunteer_university_instructor_badge');
-  const hasModelRocketry = hasModelRocketrySelected();
+  const activeLpExclusive = getActiveMaleCadetLeftPocketExclusiveBadge();
+
+  // Male cadet blues exception group: Model Rocketry, Cadet Cyber, and Cadet STEM are all
+  // authorized only on the wearer's left pocket. If more than one of these is selected,
+  // only the first selected one renders there.
+  if(id === 'cyber_badges' || id === 'stem_badges'){
+    return activeLpExclusive === id ? 'LP' : null;
+  }
 
   // Exception: Volunteer University always renders on the wearer's right pocket.
   if(id === 'volunteer_university_instructor_badge') return 'RP';
 
-  // Model Rocketry owns the wearer's left pocket when selected. If another flexible
-  // specialty badge would have gone to LP, it is bumped to the next eligible pocket (RP)
-  // as long as that physical slot is available.
-  if(hasModelRocketry) return hasVolunteerUniversity ? null : 'RP';
+  // If LP is owned by Model Rocketry/Cyber/STEM, flexible specialty badges that would have
+  // used LP are bumped to RP. If Volunteer University already uses RP, there is no eligible slot.
+  if(activeLpExclusive) return hasVolunteerUniversity ? null : 'RP';
 
-  // When Volunteer University is selected without Model Rocketry, every other flexible
+  // When Volunteer University is selected without an LP-exclusive badge, every other flexible
   // specialty badge goes to the wearer's left pocket.
   if(hasVolunteerUniversity) return 'LP';
 
@@ -1953,10 +1984,18 @@ function getBadgeSlotLabel(id){
   if(id === 'squadron_commander_badge'){
     return State.commandInsignia?.graduatedCommander ? 'UN — graduated commander' : 'ON — current commander';
   }
-  if(id === 'model_rocketry_badge'){
-    return getGenderedPocketSlotForBadge(id) === 'LP'
-      ? 'LP — wearer\'s left pocket, under ribbons'
-      : 'ON — female blues placement';
+  if(id === 'model_rocketry_badge' || id === 'cyber_badges' || id === 'stem_badges'){
+    if(isMaleCadetLeftPocketExclusiveBadge(id)){
+      const owner = getActiveMaleCadetLeftPocketExclusiveBadge();
+      return owner === id
+        ? 'LP — male cadet left-pocket-only exception'
+        : 'LP only — not rendered unless selected first';
+    }
+    if(id === 'model_rocketry_badge'){
+      return getGenderedPocketSlotForBadge(id) === 'LP'
+        ? 'LP — wearer\'s left pocket, under ribbons'
+        : 'ON — female blues placement';
+    }
   }
   if(id === 'volunteer_university_instructor_badge'){
     return 'RP — Volunteer University exception';
@@ -4521,7 +4560,7 @@ function getOverRibbonReferenceKey(slot, idx=0){
 function selectedBadgeWouldRenderInSlot(id, slotName){
   if(!id) return false;
   if(id === 'nra_marksman_badge') return slotName === 'OLPF';
-  if(id === 'model_rocketry_badge') return getGenderedPocketSlotForBadge(id) === slotName;
+  if(id === 'model_rocketry_badge' || id === 'cyber_badges' || id === 'stem_badges') return getGenderedPocketSlotForBadge(id) === slotName;
   if(isCommandInsigniaBadge(id)) return getCommandInsigniaSlot() === slotName;
   if(CHAPLAIN_BADGE_IDS.has(id)) return slotName === 'OLPA';
   if(AIRCREW_BADGE_IDS.has(id)) return slotName === 'OLP';
@@ -4683,7 +4722,7 @@ function getDynamicBadgeTopFromAppliedPosition(el, id=null, slot=null){
 function getPreferredBadgeSlotForRendering(id, prefs){
   if(isCommandInsigniaBadge(id)) return getCommandInsigniaSlot();
   if(id === 'nra_marksman_badge') return 'OLPF';
-  if(id === 'model_rocketry_badge') return getGenderedPocketSlotForBadge(id);
+  if(id === 'model_rocketry_badge' || id === 'cyber_badges' || id === 'stem_badges') return getGenderedPocketSlotForBadge(id);
   if(CHAPLAIN_BADGE_IDS.has(id)) return 'OLPA';
   if(AIRCREW_BADGE_IDS.has(id)) return 'OLP';
   if(OLPU_OCCUPATIONAL_BADGE_IDS.has(id)) return 'OLPU';
@@ -4714,12 +4753,14 @@ function chooseBadgeSlot(id, prefs){
   // Flexible specialty badges use custom physical-slot logic.
   if(isSelectableSpecialtyPocketBadge(id)){
     const hasVolunteerUniversity = (State.badges || []).includes('volunteer_university_instructor_badge');
-    const hasModelRocketry = hasModelRocketrySelected();
+    const activeLpExclusive = getActiveMaleCadetLeftPocketExclusiveBadge();
 
     if(id === 'volunteer_university_instructor_badge'){
       ordered = ['RP'];
-    }else if(hasModelRocketry){
-      // Model Rocketry occupies LP; bump the flexible specialty badge to RP.
+    }else if(id === 'cyber_badges' || id === 'stem_badges'){
+      ordered = preferred ? [preferred] : [];
+    }else if(activeLpExclusive){
+      // Model Rocketry/Cyber/STEM occupies LP; bump the flexible specialty badge to RP.
       // If Volunteer University is already in RP, there is no remaining eligible pocket.
       ordered = hasVolunteerUniversity ? [] : ['RP'];
     }else if(hasVolunteerUniversity){
@@ -4804,10 +4845,12 @@ function placeBadgeSlotAnchored(id){
 
   let slotSpec = getBadgeSlotSpec(id);
   if(id === 'nra_marksman_badge') slotSpec = 'OLPF';
-  if(id === 'model_rocketry_badge'){
-    slotSpec = (State.membership === 'cadet' && State.gender === 'male' && ['blues_a','blues_b'].includes(State.uniform))
-      ? 'LP'
-      : 'LP,ON';
+  if(id === 'model_rocketry_badge' || id === 'cyber_badges' || id === 'stem_badges'){
+    if(isMaleCadetLeftPocketExclusiveBadge(id)){
+      slotSpec = 'LP';
+    }else if(id === 'model_rocketry_badge'){
+      slotSpec = 'LP,ON';
+    }
   }
 
   const prefs = parseSlotPrefs(slotSpec);
