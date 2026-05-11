@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CAP Uniform Builder — Full Program Calibrated v2</title>
+<title>CAP Uniform Builder — Full Program Calibrated v3.1</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 
@@ -908,7 +908,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <body>
 
 <header>
-  <h1>CAP Uniform Builder — Calibrated Badges & Measurement Lines</h1>
+  <h1>CAP Uniform Builder — Calibrated Badges & Measurement Lines v3.1</h1>
 </header>
 
 <button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu">
@@ -1858,7 +1858,9 @@ const SPECIALTY_TRACK_BADGE_IDS = new Set([
   'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
   'communications_technician_badge','communications_senior_badge','communications_master_badge',
   'information_technology_technician_badge','historian_technicianIbadge',
-  'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge'
+  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
+  'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge','administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
+  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge'
 ]);
 const POCKET_SERVICE_BADGE_IDS = new Set([
   ...SPECIALTY_TRACK_BADGE_IDS
@@ -1871,7 +1873,8 @@ const ES_POCKET_BADGE_IDS = new Set([
 ]);
 const SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS = new Set([
   'communications_technician_badge','communications_senior_badge','communications_master_badge',
-  'information_technology_technician_badge','historian_technicianIbadge'
+  'information_technology_technician_badge','historian_technicianIbadge',
+  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge'
 ]);
 const LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS = new Set([
   'volunteer_university_instructor_badge','cadet_programs_badge'
@@ -1991,6 +1994,21 @@ function getBadgeSlotSpec(id){
   return badgeLocations[id] || 'UN';
 }
 function getBadgeSlotLabel(id){
+  if(id === 'administration_technician_badge'){
+    candidates.push('badges/administration_technician.png');
+    candidates.push('badges/administration_technician_badge.png');
+    candidates.push('badges/Administration Technician Badge.png');
+  }
+  if(id === 'aerospace_education_technician_badge'){
+    candidates.push('badges/aerospace_education_technician.png');
+    candidates.push('badges/aerospace_education_technician_badge.png');
+    candidates.push('badges/Aerospace Education Technician Badge.png');
+  }
+  if(id === 'finance_technician_badge'){
+    candidates.push('badges/finance_technician.png');
+    candidates.push('badges/finance_technician_badge.png');
+    candidates.push('badges/Finance Technician Badge.png');
+  }
   if(id === 'squadron_commander_badge'){
     return State.commandInsignia?.graduatedCommander ? 'UN — graduated commander' : 'ON — current commander';
   }
@@ -3051,7 +3069,7 @@ Object.assign(miniMedalImages, {
    =========================== */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
-  'buddist_chaplin','christian_chaplin','communications_technician_badge','communications_senior_badge','communications_master_badge','cyber_badges','emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge','volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge','squadron_commander_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges','uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
+  'buddist_chaplin','christian_chaplin','communications_technician_badge','communications_senior_badge','communications_master_badge','cyber_badges','emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge','volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge','administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge','squadron_commander_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges','uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
 ];
 
 
@@ -3063,6 +3081,9 @@ const BADGE_IMAGE_OVERRIDES = {
   'volunteer_university_instructor_badge': 'badges/Vol_U_Badge.png',
   'basic_incident_commander_badge': 'badges/Basic_Incident_Commander_Badge.png',
   'cadet_programs_badge': 'badges/cadet programs badge.png',
+  'administration_technician_badge': 'badges/administration_technician_badge.png',
+  'aerospace_education_technician_badge': 'badges/aerospace_education_technician_badge.png',
+  'finance_technician_badge': 'badges/finance_technician_badge.png',
   'squadron_commander_badge': 'badges/Squadron Commander badge.png',
   'communications_senior_badge': 'badges/communications_senior_badge.png',
   'communications_master_badge': 'badges/communications_master_badge.png',
@@ -3103,6 +3124,21 @@ function getBadgeAssetCandidates(id){
     candidates.push('badges/uas_pilot_master.png');
     candidates.push('badges/uas_pilot_master_badge.png');
     candidates.push('badges/UAS Pilot Master Badge.png');
+  }
+  if(id === 'administration_technician_badge'){
+    candidates.push('badges/administration_technician.png');
+    candidates.push('badges/administration_technician_badge.png');
+    candidates.push('badges/Administration Technician Badge.png');
+  }
+  if(id === 'aerospace_education_technician_badge'){
+    candidates.push('badges/aerospace_education_technician.png');
+    candidates.push('badges/aerospace_education_technician_badge.png');
+    candidates.push('badges/Aerospace Education Technician Badge.png');
+  }
+  if(id === 'finance_technician_badge'){
+    candidates.push('badges/finance_technician.png');
+    candidates.push('badges/finance_technician_badge.png');
+    candidates.push('badges/Finance Technician Badge.png');
   }
   if(id === 'squadron_commander_badge'){
     // Support the most common file-name variants used in the image folders.
@@ -3174,6 +3210,9 @@ const badgeLocations = {
   'master_emergency_services_badge':'LP,RP',
   'volunteer_university_instructor_badge':'LP,RP',
   'cadet_programs_badge':'LP,RP',
+  'administration_technician_badge':'LP,RP',
+  'aerospace_education_technician_badge':'LP,RP',
+  'finance_technician_badge':'LP,RP',
   'cyber_badges':'LP,RP','stem_badges':'LP,RP',
 
   // Command insignia is chosen dynamically: current = ON, past/graduated = UN.
@@ -3187,7 +3226,7 @@ const badgeLocations = {
 const customBadgeSizes = {
   'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
   'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:25,height:25},'communications_senior_badge':{width:25,height:25},'communications_master_badge':{width:25,height:25},
-  'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:28,height:28},'senior_emergency_services_badge':{width:28,height:28},'master_emergency_services_badge':{width:28,height:28},'volunteer_university_instructor_badge':{width:45,height:45},'basic_incident_commander_badge':{width:25,height:12},'cadet_programs_badge':{width:45,height:45},'squadron_commander_badge':{width:15,height:15},'emt_basic_badge':{width:60,height:60},
+  'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:28,height:28},'senior_emergency_services_badge':{width:28,height:28},'master_emergency_services_badge':{width:28,height:28},'volunteer_university_instructor_badge':{width:45,height:45},'basic_incident_commander_badge':{width:25,height:12},'cadet_programs_badge':{width:45,height:45},'administration_technician_badge':{width:25,height:25},'aerospace_education_technician_badge':{width:25,height:25},'finance_technician_badge':{width:25,height:25},'squadron_commander_badge':{width:15,height:15},'emt_basic_badge':{width:60,height:60},
   'emt_intermediate':{width:60,height:60},'emt_paramedic':{width:60,height:60},'ground_team_basic_badge':{width:25,height:20},
   'historian_technicianIbadge':{width:25,height:25},'information_technology_technician_badge':{width:25,height:25},
   'jewish_chaplin':{width:60,height:60},'legal_officer':{width:60,height:25},'master_ground_team_badge':{width:25,height:20},
@@ -3218,7 +3257,8 @@ const BADGE_CATEGORIES = [
     'information_technology_technician_badge','cyber_badges','stem_badges'
   ]},
   { key:'Professional Development / Cadet Programs', ids:[
-    'volunteer_university_instructor_badge','cadet_programs_badge'
+    'volunteer_university_instructor_badge','cadet_programs_badge',
+    'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge'
   ]},
   { key:'Command Insignia', ids:[
     'squadron_commander_badge'
@@ -4666,7 +4706,22 @@ function applyBadgeAssetWithFallback(el, id){
 
   function tryNext(){
     if(idx >= assetCandidates.length){
-      if(id === 'squadron_commander_badge'){
+      if(id === 'administration_technician_badge'){
+    candidates.push('badges/administration_technician.png');
+    candidates.push('badges/administration_technician_badge.png');
+    candidates.push('badges/Administration Technician Badge.png');
+  }
+  if(id === 'aerospace_education_technician_badge'){
+    candidates.push('badges/aerospace_education_technician.png');
+    candidates.push('badges/aerospace_education_technician_badge.png');
+    candidates.push('badges/Aerospace Education Technician Badge.png');
+  }
+  if(id === 'finance_technician_badge'){
+    candidates.push('badges/finance_technician.png');
+    candidates.push('badges/finance_technician_badge.png');
+    candidates.push('badges/Finance Technician Badge.png');
+  }
+  if(id === 'squadron_commander_badge'){
         el.replaceWith(createBadgeFallbackElement(id, el));
       }else{
         el.dataset.missing = 'true';
@@ -6561,6 +6616,8 @@ const MEMBER_REPORT_IMPORT_BADGE_PRIORITY = [
   'master_emergency_services_badge','senior_emergency_services_badge','emergency_services_badge',
   'communications_technician_badge','information_technology_technician_badge','historian_technicianIbadge',
   'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge',
+  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
+  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
   'nra_marksman_badge'
 ];
 
@@ -6712,7 +6769,8 @@ function importedBadgePriority(id){
 }
 
 function selectHighestWearableImportedBadges(ids){
-  const unique = [...new Set(ids.filter(Boolean))];
+  const forbiddenImportBadges = new Set(['cdi_badge','character_development_instructor_badge','mro_badge','msa_badge','mission_radio_operator_badge','mission_staff_assistant_badge']);
+  const unique = [...new Set(ids.filter(Boolean))].filter(id => !forbiddenImportBadges.has(id));
   const eligible = unique.filter(id => !(State.membership === 'cadet' && !isCadetAuthorized(id)));
 
   // Keep best level in badge families.
@@ -6732,6 +6790,7 @@ function selectHighestWearableImportedBadges(ids){
   out.sort((a,b) => importedBadgePriority(a) - importedBadgePriority(b));
 
   // Model Rocketry is an LP override; keep it if detected, and still cap normal badges at four.
+  const command = out.filter(id => isCommandInsigniaBadge(id));
   const counted = [];
   for(const id of out){
     if(isCommandInsigniaBadge(id)) continue;
@@ -6739,7 +6798,7 @@ function selectHighestWearableImportedBadges(ids){
     counted.push(id);
   }
 
-  return counted;
+  return [...command, ...counted];
 }
 
 
@@ -6796,6 +6855,54 @@ function chooseRedServiceValueFromYears(years){
 }
 
 
+function getReportSection(text, startLabel, endLabel){
+  const source = String(text || '');
+  const start = source.search(new RegExp(startLabel, 'i'));
+  if(start < 0) return '';
+  const rest = source.slice(start);
+  const end = rest.search(new RegExp(endLabel, 'i'));
+  return end >= 0 ? rest.slice(0, end) : rest;
+}
+
+function countDatedRowsInSection(section){
+  const matches = String(section || '').match(/\b\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/g);
+  return matches ? matches.length : 0;
+}
+
+function extractEncampmentCountFromReport(text){
+  const encampments = getReportSection(text, 'Encampments', 'Awards');
+  if(!encampments) return 0;
+  // Count completed dates in the Encampments table, excluding the header.
+  return countDatedRowsInSection(encampments);
+}
+
+function extractAwardCountFromAwardsTable(text, awardPattern){
+  const awards = getReportSection(text, 'Awards', 'Promotions');
+  const decs = getReportSection(text, 'Decorations', 'Local Activities');
+  const scope = `${awards} ${decs}`;
+  const re = new RegExp(awardPattern, 'gi');
+  const m = scope.match(re);
+  return m ? m.length : 0;
+}
+
+function hasCurrentDutyPosition(text, positionPattern){
+  const current = getReportSection(text, 'Current Duty Positions', 'Past Duty Positions');
+  if(!current) return false;
+  return new RegExp(`\\b${positionPattern}\\b`, 'i').test(current);
+}
+
+function hasSpecialtyTrackLevel(text, trackPattern, levelPattern){
+  const tracks = getReportSection(text, 'Specialty Tracks', 'Encampments');
+  if(!tracks) return false;
+  return new RegExp(`${trackPattern}\\s+${levelPattern}\\s+\\d{1,2}\\s+[A-Za-z]{3,9}\\s+\\d{4}`, 'i').test(tracks);
+}
+
+function addImportedBadge(result, id, reason){
+  if(!id || !result || !Array.isArray(result.badges)) return;
+  result.badges.push(id);
+  if(reason && Array.isArray(result.notes)) result.notes.push(reason);
+}
+
 function parseCapMemberReport(textRaw){
   const text = normalizeMemberReportText(textRaw);
   const result = {
@@ -6848,6 +6955,25 @@ function parseCapMemberReport(textRaw){
     });
   }
 
+  const commandersCommendationCount = extractAwardCountFromAwardsTable(text, "Commander's\\s+Commendation Award");
+  if(commandersCommendationCount > 0){
+    result.ribbons.push({
+      id:'commander_commendation_award',
+      value:chooseSpecialRibbonValueByAwardCount('commander_commendation_award', commandersCommendationCount),
+      reason:`${commandersCommendationCount} Commander's Commendation Award record(s)`
+    });
+  }
+
+  if(/\bMBRRBN\b|Membership Ribbon/i.test(text)){
+    result.ribbons.push({ id:'cap_membership_ribbon', value:'earned', reason:'Membership Ribbon / MBRRBN' });
+  }
+  if(/\bYEAGER\b|Yeager/i.test(text)){
+    result.ribbons.push({ id:'cap_bridgadier_general_charles_yaeger_ribbon', value:'earned', reason:'Yeager Award' });
+  }
+  if(/\bDAVIS\b|Level\s*2|LV2/i.test(text)){
+    result.ribbons.push({ id:'cap_leadership_ribbon', value:'earned', reason:'Davis Award / Level II' });
+  }
+
   // In the CAP Member Search Report this appears as "Crisis Service Award";
   // in the builder it maps to the crisis_ribbon asset/id.
   if(/Crisis Service Award/i.test(text) || /\bCrisis Ribbon\b/i.test(text)){
@@ -6881,9 +7007,13 @@ function parseCapMemberReport(textRaw){
     result.ribbons.push({ id:'cadet_advisory_council_ribbon', value:cacValue, reason:'Cadet Advisory Council' });
   }
 
-  const encampmentCount = Math.max(0, countOccurrences(text, /Encampments?\s+Location|Piney Creek Camp|Encampment Ribbon/gi));
-  if(/Encampments|Encampment Ribbon|Piney Creek Camp/i.test(text)){
-    result.ribbons.push({ id:'encampment_ribbon', value:chooseEncampmentValue(Math.max(1, encampmentCount)), reason:'Encampment' });
+  const encampmentCount = extractEncampmentCountFromReport(text) || countOccurrences(text, /Encampment Ribbon/gi);
+  if(encampmentCount > 0 || /Encampment Ribbon|Piney Creek Camp/i.test(text)){
+    result.ribbons.push({
+      id:'encampment_ribbon',
+      value:chooseEncampmentValue(Math.max(1, encampmentCount)),
+      reason:`${Math.max(1, encampmentCount)} encampment record(s)`
+    });
   }
 
   const ncsaActivityHits = [
@@ -6899,6 +7029,28 @@ function parseCapMemberReport(textRaw){
       value:chooseCadetSpecialActivityValue(ncsaActivityHits),
       reason:`${ncsaActivityHits} cadet special activity indicator(s)`
     });
+  }
+
+  // Duty-position and specialty-track badge mapping.
+  if(hasCurrentDutyPosition(text, 'Commander')){
+    result.badges.push('squadron_commander_badge');
+    if(State?.commandInsignia) State.commandInsignia.graduatedCommander = false;
+  }
+
+  if(hasSpecialtyTrackLevel(text, 'CADET\\s+PROGRAMS|Cadet Programs', 'SENIOR|MASTER|TECHNICIAN')) result.badges.push('cadet_programs_badge');
+  if(hasSpecialtyTrackLevel(text, 'ADMINISTRATION|Administration', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('administration_technician_badge');
+  if(hasSpecialtyTrackLevel(text, 'AEROSPACE|Aerospace', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('aerospace_education_technician_badge');
+  if(hasSpecialtyTrackLevel(text, 'FINANCE|Finance', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('finance_technician_badge');
+
+  // New rule: CDI status/duty/training alone does not authorize the CDI badge.
+  // Only import a CDI badge if a future report explicitly lists a CDI badge/award item.
+  if(/\bCDI\b|Character Development Instructor|Character Development Facilitator/i.test(text)){
+    result.notes.push('CDI duty/status/training found; CDI badge not imported because the badge itself is not awarded in this report.');
+  }
+
+  // New rule: MRO and MSA are qualifications/roles; no MRO/MSA badge exists.
+  if(/Mission Radio Operator|\bMRO\b|Mission Staff Assistant|\bMSA\b/i.test(text)){
+    result.notes.push('MRO/MSA qualification or training found; no MRO/MSA badge exists, so no badge was imported.');
   }
 
   // Badge / qualification mapping.
