@@ -1991,31 +1991,6 @@ function getBadgeSlotSpec(id){
   return badgeLocations[id] || 'UN';
 }
 function getBadgeSlotLabel(id){
-  if(id === 'communications_senior_badge'){
-    candidates.push('badges/communications_senior.png');
-    candidates.push('badges/communications_senior_badge.png');
-    candidates.push('badges/communications senior badge.png');
-  }
-  if(id === 'communications_master_badge'){
-    candidates.push('badges/communications_master.png');
-    candidates.push('badges/communications_master_badge.png');
-    candidates.push('badges/communications master badge.png');
-  }
-  if(id === 'uas_pilot_basic_badge'){
-    candidates.push('badges/uas_pilot_basic.png');
-    candidates.push('badges/uas_pilot_basic_badge.png');
-    candidates.push('badges/UAS Pilot Basic Badge.png');
-  }
-  if(id === 'uas_pilot_senior_badge'){
-    candidates.push('badges/uas_pilot_senior.png');
-    candidates.push('badges/uas_pilot_senior_badge.png');
-    candidates.push('badges/UAS Pilot Senior Badge.png');
-  }
-  if(id === 'uas_pilot_master_badge'){
-    candidates.push('badges/uas_pilot_master.png');
-    candidates.push('badges/uas_pilot_master_badge.png');
-    candidates.push('badges/UAS Pilot Master Badge.png');
-  }
   if(id === 'squadron_commander_badge'){
     return State.commandInsignia?.graduatedCommander ? 'UN — graduated commander' : 'ON — current commander';
   }
@@ -4686,47 +4661,25 @@ function getLowerAviationTop(badgeHeight=null){
   return Math.round(liveTopRibbonY - resolvedHeight - bottomGap);
 }
 function applyBadgeAssetWithFallback(el, id){
-  const candidates = getBadgeAssetCandidates(id).map(ASSET);
+  const assetCandidates = getBadgeAssetCandidates(id).map(ASSET);
   let idx = 0;
+
   function tryNext(){
-    if(idx >= candidates.length){
-      if(id === 'communications_senior_badge'){
-    candidates.push('badges/communications_senior.png');
-    candidates.push('badges/communications_senior_badge.png');
-    candidates.push('badges/communications senior badge.png');
-  }
-  if(id === 'communications_master_badge'){
-    candidates.push('badges/communications_master.png');
-    candidates.push('badges/communications_master_badge.png');
-    candidates.push('badges/communications master badge.png');
-  }
-  if(id === 'uas_pilot_basic_badge'){
-    candidates.push('badges/uas_pilot_basic.png');
-    candidates.push('badges/uas_pilot_basic_badge.png');
-    candidates.push('badges/UAS Pilot Basic Badge.png');
-  }
-  if(id === 'uas_pilot_senior_badge'){
-    candidates.push('badges/uas_pilot_senior.png');
-    candidates.push('badges/uas_pilot_senior_badge.png');
-    candidates.push('badges/UAS Pilot Senior Badge.png');
-  }
-  if(id === 'uas_pilot_master_badge'){
-    candidates.push('badges/uas_pilot_master.png');
-    candidates.push('badges/uas_pilot_master_badge.png');
-    candidates.push('badges/UAS Pilot Master Badge.png');
-  }
-  if(id === 'squadron_commander_badge'){
+    if(idx >= assetCandidates.length){
+      if(id === 'squadron_commander_badge'){
         el.replaceWith(createBadgeFallbackElement(id, el));
       }else{
         el.dataset.missing = 'true';
       }
       return;
     }
-    el.src = candidates[idx++];
+    el.src = assetCandidates[idx++];
   }
+
   el.onerror = tryNext;
   tryNext();
 }
+
 function createBadgeFallbackElement(id, sourceEl){
   const div = document.createElement('div');
   div.className = 'layer badge badgeFallback' + (id === 'squadron_commander_badge' ? ' commandInsigniaFallback' : '');
