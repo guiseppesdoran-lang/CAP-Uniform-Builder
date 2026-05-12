@@ -7216,10 +7216,11 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
    =========================== */
 const MEMBER_REPORT_IMPORT_BADGE_PRIORITY = [
   // Aviation / aeronautical
+  // Highest-value aviation family order: Pilot > Observer > Aircrew.
   'CAPMasterPilot1_621A0E2ED15DA','CAPSeniorPilot1_D9725AE959752','CAPPilot1_FA9D33EA587D8',
-  'MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F',
-  'MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge',
   'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B','solo_badge','pre_solo_badge',
+  'MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge',
+  'MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F',
 
   // Occupational / over-ribbon
   // Incident Commander is intentionally higher value than Ground Team because
@@ -7408,6 +7409,20 @@ function selectHighestWearableImportedBadges(ids){
   }else if(eligible.includes('senior_emergency_services_badge')){
     suppress.add('emergency_services_badge');
   }
+
+  // Keep only the highest-value aviation badge family when multiple aviation
+  // ratings appear in the report. User rule: Pilot > Observer > Aircrew.
+  const pilotBadges = ['CAPMasterPilot1_621A0E2ED15DA','CAPSeniorPilot1_D9725AE959752','CAPPilot1_FA9D33EA587D8','GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B','solo_badge','pre_solo_badge'];
+  const observerBadges = ['MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge'];
+  const aircrewBadges = ['MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F'];
+  const keepBestFromFamily = (family) => family.filter(id => eligible.includes(id)).sort((a,b)=>importedBadgePriority(a)-importedBadgePriority(b))[0] || null;
+  const bestPilot = keepBestFromFamily(pilotBadges);
+  const bestObserver = keepBestFromFamily(observerBadges);
+  const bestAircrew = keepBestFromFamily(aircrewBadges);
+  const aviationToKeep = bestPilot || bestObserver || bestAircrew;
+  [...pilotBadges, ...observerBadges, ...aircrewBadges].forEach(id => {
+    if(id !== aviationToKeep) suppress.add(id);
+  });
 
   let out = eligible.filter(id => !suppress.has(id));
   out.sort((a,b) => importedBadgePriority(a) - importedBadgePriority(b));
@@ -7623,6 +7638,32 @@ function hasCurrentDutyPosition(text, positionPattern){
   return new RegExp(`\\b${positionPattern}\\b`, 'i').test(current);
 }
 
+function hasCurrentCommanderDutyPosition(text){
+  return hasCurrentDutyPosition(text, 'Commander');
+}
+
+function hasGraduatedCommanderDutyPosition(text){
+  const past = getReportSectionUntilAny(text, 'Past Duty Positions', [
+    'Current Committees', 'Transfer History', 'Level', 'Professional Development',
+    'Specialty Tracks', 'Cadet Training', 'Encampments', 'Awards', 'Promotions'
+  ]);
+  if(!past || !/\bCommander\b/i.test(past)) return false;
+
+  // Match rows like: Commander TN-330 UNIT No 23 Jan 2024 30 Nov 2025
+  const rowRe = /\bCommander\s+[A-Z0-9-]+\s+(?:UNIT|GROUP|WING|REGION|NATIONAL)\s+(?:Yes|No)\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/gi;
+  let m;
+  while((m = rowRe.exec(past))){
+    const start = parseCapReportDate(m[1]);
+    const end = parseCapReportDate(m[2]);
+    if(start && end){
+      const days = (end - start) / (1000 * 60 * 60 * 24);
+      if(days >= 365) return true;
+    }
+  }
+
+  return false;
+}
+
 function hasSpecialtyTrackLevel(text, trackPattern, levelPattern){
   const tracks = getReportSection(text, 'Specialty Tracks', 'Encampments');
   if(!tracks) return false;
@@ -7642,13 +7683,26 @@ function isCommandInsigniaGradeEligible(rank){
   return !['COL','BRIG GEN','BRIGADIER GENERAL','MAJ GEN','MAJOR GENERAL'].includes(r);
 }
 
-function shouldImportCommandInsigniaForMember(text, result){
-  if(!hasCurrentDutyPosition(text, 'Commander')) return false;
-  if(isCommandInsigniaGradeEligible(result?.rank)) return true;
-  if(Array.isArray(result?.notes)){
-    result.notes.push('Current Commander duty found, but Command Insignia Pin was not imported because member is Colonel or above.');
+function getCommandInsigniaStatusForMember(text, result){
+  const currentCommander = hasCurrentCommanderDutyPosition(text);
+  const graduatedCommander = hasGraduatedCommanderDutyPosition(text);
+
+  if(!currentCommander && !graduatedCommander) return null;
+
+  if(!isCommandInsigniaGradeEligible(result?.rank)){
+    if(Array.isArray(result?.notes)){
+      const status = currentCommander ? 'Current Commander duty' : 'Past Commander duty';
+      result.notes.push(`${status} found, but Command Insignia Pin was not imported because member is Colonel or above.`);
+    }
+    return null;
   }
-  return false;
+
+  // Current command takes precedence over graduated/past command for pin placement.
+  return currentCommander ? 'current' : 'graduated';
+}
+
+function shouldImportCommandInsigniaForMember(text, result){
+  return !!getCommandInsigniaStatusForMember(text, result);
 }
 
 function parseCapMemberReport(textRaw){
@@ -7806,10 +7860,16 @@ function parseCapMemberReport(textRaw){
     });
   }
 
-  // Duty-position and specialty-track badge mapping.
-  if(shouldImportCommandInsigniaForMember(text, result)){
+  // Duty-position badge mapping. Look at both current and past duty positions.
+  // Current commanders wear the current command pin. Past commanders only import as
+  // graduated commanders if they served at least one year, and only Lt Col and below.
+  const commandStatus = getCommandInsigniaStatusForMember(text, result);
+  if(commandStatus){
     result.badges.push('squadron_commander_badge');
-    if(State?.commandInsignia) State.commandInsignia.graduatedCommander = false;
+    if(State?.commandInsignia) State.commandInsignia.graduatedCommander = (commandStatus === 'graduated');
+    result.notes.push(commandStatus === 'current'
+      ? 'Current commander duty found; Command Insignia Pin imported as current commander.'
+      : 'Past commander duty of at least one year found; Command Insignia Pin imported as graduated commander.');
   }
 
   if(hasSpecialtyTrackLevel(text, 'CADET\\s+PROGRAMS|Cadet Programs', 'SENIOR|MASTER|TECHNICIAN')) result.badges.push('cadet_programs_badge');
@@ -7834,10 +7894,21 @@ function parseCapMemberReport(textRaw){
   }
 
   // Badge / qualification mapping.
-  if(/CAP Aircrew Rating/i.test(text)) result.badges.push('AirCrew1_DB3F0FCC3650F');
+  // Aviation family priority is resolved later as: Pilot > Observer > Aircrew.
+  if(/CAP\s+Master\s+Pilot\s+Rating|Master\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPMasterPilot1_621A0E2ED15DA');
+  else if(/CAP\s+Senior\s+Pilot\s+Rating|Senior\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPSeniorPilot1_D9725AE959752');
+  else if(/CAP\s+Pilot\s+Rating|Basic\s+Pilot\s+Badge|Pilot\s+Badge/i.test(text)) result.badges.push('CAPPilot1_FA9D33EA587D8');
+
+  if(/CAP\s+Master\s+Aircrew\s+Rating|Master\s+Aircrew\s+Badge/i.test(text)) result.badges.push('MasterAirCrew1_72AC4CAE7A310');
+  else if(/CAP\s+Senior\s+Aircrew\s+Rating|Senior\s+Aircrew\s+Badge/i.test(text)) result.badges.push('SeniorAirCrew1_B289BAE6E515C');
+  else if(/CAP Aircrew Rating|Aircrew Badge/i.test(text)) result.badges.push('AirCrew1_DB3F0FCC3650F');
   // Do not use MO/Mission Observer training qualification as badge authorization.
   // Only import Observer when the report explicitly shows an observer rating/badge.
-  if(/CAP\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Observer\s+Badge/i.test(text)){
+  if(/CAP\s+Master\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Master\s+Observer\s+Badge/i.test(text)){
+    result.badges.push('MasterObserver1_1B88D5071FD5C');
+  }else if(/CAP\s+Senior\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Senior\s+Observer\s+Badge/i.test(text)){
+    result.badges.push('SeniorObserver1_0E35802A29801');
+  }else if(/CAP\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Observer\s+Badge/i.test(text)){
     result.badges.push('observer_badge');
   }
   if(/Basic Incident Commander Badge|CAP Basic Incident Commander Badge/i.test(text)){
