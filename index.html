@@ -1421,7 +1421,7 @@ function getRackOrigin(){
 /* ===========================
    UNIVERSAL CALIBRATION SYSTEM
    =========================== */
-const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260512_female_a_shift_down26_left6';
+const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260512_female_a_shift_down26_left6_rightbadges_left15';
 const CAPUB_LEGACY_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform';
 function genderBucketFor(uniform, gender){
   const u = uniform || 'global';
@@ -2906,8 +2906,18 @@ function getFemaleClassAItemOffset(key){
   // uniform item down 26px and left 6px total. The base jacket image itself is not
   // shifted. This applies to ribbons, mini medals, badges, rank, text/tapes,
   // devices, patches, and measurement arrows.
+  // Additional female Class A patch: right-side badges move 15px farther left.
+  // This includes ON/UN/RP badge slots, including the commander badge.
   if(State.uniform === 'blues_a' && State.gender === 'female' && String(key || '') !== 'jacket'){
-    return { x:-6, y:26 };
+    let xOffset = -6;
+    const badgeMatch = String(key || '').match(/^badge:([^:]+):([^:]+):(\d+)$/);
+    if(badgeMatch){
+      const slot = badgeMatch[2];
+      if(['ON','UN','RP'].includes(slot)){
+        xOffset -= 15;
+      }
+    }
+    return { x:xOffset, y:26 };
   }
   return { x:0, y:0 };
 }
