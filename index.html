@@ -3104,9 +3104,17 @@ const uniformBlock     = by('uniformBlock');
 /* ===========================
    ASSET PATH HELPER
    =========================== */
+function normalizeAssetSubpath(p){
+  return String(p || '')
+    .replace(/\\/g, '/')
+    .replace(/^\.\//, '')
+    .replace(/^\//, '')
+    .replace(/^images\//i, '');
+}
 function ASSET(p){
   const b=(State.assetBase||'images').replace(/\/$/,'');
-  return `${b}/${p}`;
+  const sub = normalizeAssetSubpath(p);
+  return `${b}/${sub}`;
 }
 
 /* ===========================
@@ -3723,6 +3731,11 @@ const BADGE_IMAGE_OVERRIDES = {
   'aerospace_education_technician_badge': 'badges/aerospace_education_technician_badge.png',
   'aerospace_education_senior_badge': 'badges/aerospace_senior_badge.png',
   'finance_technician_badge': 'badges/finance_technician_badge.png',
+  'administration_senior_badge': 'badges/administration_senior_badge.png',
+  'administration_master_badge': 'badges/administration_master_badge.png',
+  'aerospace_education_master_badge': 'badges/aerospace_education_master_badge.png',
+  'finance_senior_badge': 'badges/finance_senior_badge.png',
+  'finance_master_badge': 'badges/finance_master_badge.png',
   'squadron_commander_badge': 'badges/Squadron Commander badge.png',
   'communications_senior_badge': 'badges/communications_senior_badge.png',
   'communications_master_badge': 'badges/communications_master_badge.png',
@@ -3733,66 +3746,91 @@ const BADGE_IMAGE_OVERRIDES = {
 function getBadgeAssetPath(id){
   return BADGE_IMAGE_OVERRIDES[id] || `badges/${id}.png`;
 }
+function titleCaseWords(str){
+  return String(str || '')
+    .split(/[_\s-]+/)
+    .filter(Boolean)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(' ');
+}
+function addAssetCandidate(list, path){
+  const clean = normalizeAssetSubpath(path);
+  if(clean && !list.includes(clean)) list.push(clean);
+}
+function addAssetCandidateWithExtensions(list, basePath){
+  const clean = normalizeAssetSubpath(basePath).replace(/\.(png|jpg|jpeg|webp|svg)$/i, '');
+  ['png','webp','jpg','jpeg','svg'].forEach(ext => addAssetCandidate(list, `${clean}.${ext}`));
+}
 function getBadgeAssetCandidates(id){
   const candidates = [];
   const primary = getBadgeAssetPath(id);
-  if(primary) candidates.push(primary);
-  candidates.push(`badges/${id}.png`);
-  candidates.push(`badges/${id}.webp`);
-  if(id === 'communications_senior_badge'){
-    candidates.push('badges/communications_senior.png');
-    candidates.push('badges/communications_senior_badge.png');
-    candidates.push('badges/communications senior badge.png');
-  }
-  if(id === 'communications_master_badge'){
-    candidates.push('badges/communications_master.png');
-    candidates.push('badges/communications_master_badge.png');
-    candidates.push('badges/communications master badge.png');
-  }
-  if(id === 'uas_pilot_basic_badge'){
-    candidates.push('badges/uas_pilot_basic.png');
-    candidates.push('badges/uas_pilot_basic_badge.png');
-    candidates.push('badges/UAS Pilot Basic Badge.png');
-  }
-  if(id === 'uas_pilot_senior_badge'){
-    candidates.push('badges/uas_pilot_senior.png');
-    candidates.push('badges/uas_pilot_senior_badge.png');
-    candidates.push('badges/UAS Pilot Senior Badge.png');
-  }
-  if(id === 'uas_pilot_master_badge'){
-    candidates.push('badges/uas_pilot_master.png');
-    candidates.push('badges/uas_pilot_master_badge.png');
-    candidates.push('badges/UAS Pilot Master Badge.png');
-  }
-  if(id === 'administration_technician_badge'){
-    candidates.push('badges/administration_technician.png');
-    candidates.push('badges/administration_technician_badge.png');
-    candidates.push('badges/Administration Technician Badge.png');
-  }
-  if(id === 'aerospace_education_technician_badge'){
-    candidates.push('badges/aerospace_education_technician.png');
-    candidates.push('badges/aerospace_education_technician_badge.png');
-    candidates.push('badges/Aerospace Education Technician Badge.png');
-  }
-  if(id === 'aerospace_education_senior_badge'){
-    candidates.push('badges/aerospace_senior_badge.png');
-    candidates.push('badges/aerospace_education_senior_badge.png');
-    candidates.push('badges/aerospace_education_senior.png');
-    candidates.push('badges/Aerospace Education Senior Badge.png');
-  }
-  if(id === 'finance_technician_badge'){
-    candidates.push('badges/finance_technician.png');
-    candidates.push('badges/finance_technician_badge.png');
-    candidates.push('badges/Finance Technician Badge.png');
-  }
-  if(id === 'squadron_commander_badge'){
-    // Support the most common file-name variants used in the image folders.
-    candidates.push('badges/Squadron Commander badge.png');
-    candidates.push('badges/Squadron_Commander_badge.png');
-    candidates.push('badges/squadron_commander_badge.png');
-    candidates.push('badges/squadron commander badge.png');
-  }
-  return [...new Set(candidates.filter(Boolean))];
+  addAssetCandidate(candidates, primary);
+  addAssetCandidateWithExtensions(candidates, `badges/${id}`);
+
+  // Generic fallback variants for asset folders that use readable filenames
+  // instead of the internal JS badge ID. These do not change the primary path;
+  // they only prevent a blank render when the primary PNG is absent.
+  const noBadge = String(id).replace(/_badge$/,'');
+  const spaced = String(id).replace(/_/g,' ');
+  const spacedNoBadge = noBadge.replace(/_/g,' ');
+  const title = titleCaseWords(id);
+  const titleNoBadge = titleCaseWords(noBadge);
+  [
+    noBadge,
+    spaced,
+    spacedNoBadge,
+    title,
+    titleNoBadge,
+    `${titleNoBadge} Badge`,
+    `${spacedNoBadge} badge`
+  ].forEach(name => addAssetCandidateWithExtensions(candidates, `badges/${name}`));
+
+  const extra = {
+    communications_senior_badge: [
+      'badges/communications_senior.png','badges/communications_senior_badge.png','badges/communications senior badge.png'
+    ],
+    communications_master_badge: [
+      'badges/communications_master.png','badges/communications_master_badge.png','badges/communications master badge.png'
+    ],
+    uas_pilot_basic_badge: [
+      'badges/uas_pilot_basic.png','badges/uas_pilot_basic_badge.png','badges/UAS Pilot Basic Badge.png'
+    ],
+    uas_pilot_senior_badge: [
+      'badges/uas_pilot_senior.png','badges/uas_pilot_senior_badge.png','badges/UAS Pilot Senior Badge.png'
+    ],
+    uas_pilot_master_badge: [
+      'badges/uas_pilot_master.png','badges/uas_pilot_master_badge.png','badges/UAS Pilot Master Badge.png'
+    ],
+    administration_technician_badge: [
+      'badges/administration_technician.png','badges/administration_technician_badge.png','badges/Administration Technician Badge.png'
+    ],
+    aerospace_education_technician_badge: [
+      'badges/aerospace_education_technician.png','badges/aerospace_education_technician_badge.png','badges/Aerospace Education Technician Badge.png'
+    ],
+    aerospace_education_senior_badge: [
+      'badges/aerospace_senior_badge.png','badges/aerospace_education_senior_badge.png','badges/aerospace_education_senior.png','badges/Aerospace Education Senior Badge.png'
+    ],
+    finance_technician_badge: [
+      'badges/finance_technician.png','badges/finance_technician_badge.png','badges/Finance Technician Badge.png'
+    ],
+    squadron_commander_badge: [
+      'badges/Squadron Commander badge.png','badges/Squadron_Commander_badge.png','badges/squadron_commander_badge.png','badges/squadron commander badge.png'
+    ],
+    volunteer_university_instructor_badge: [
+      'badges/Vol_U_Badge.png','badges/volunteer_university_instructor_badge.png','badges/volunteer_university_badge.png'
+    ],
+    basic_incident_commander_badge: [
+      'badges/Basic_Incident_Commander_Badge.png','badges/basic_incident_commander_badge.png'
+    ],
+    master_emergency_services_badge: [
+      'badges/Master_ES_Badge.png','badges/master_emergency_services_badge.png'
+    ],
+    senior_emergency_services_badge: [
+      'badges/Senior_ES_Badge.png','badges/senior_emergency_services_badge.png'
+    ]
+  };
+  (extra[id] || []).forEach(path => addAssetCandidate(candidates, path));
+  return candidates;
 }
 
 const allowedCadetBadges = new Set([
@@ -7200,17 +7238,17 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
     [...rankListAll].forEach(r=>expected.push({category:'Rank', item:r, id:safeRankFile(r), path:`images/ranks/${safeRankFile(r)}.png`, status:'recommended'}));
     // CAPR 39-1 / ICL additions the current asset set should eventually support.
     [
-      ['OCP tape','AUX duty identifier','aux_duty_identifier','images/patches/aux_duty_identifier.png'],
-      ['OCP tape','Name tape','name_tape_blue','images/patches/name_tape_blue.png'],
-      ['OCP tape','Civil Air Patrol tape','civil_air_patrol_tape_blue','images/patches/civil_air_patrol_tape_blue.png'],
-      ['sUAS badge','CAP sUAS Pilot','cap_suas_pilot_badge','images/badges/cap_suas_pilot_badge.png'],
-      ['sUAS badge','CAP Senior sUAS Pilot','cap_senior_suas_pilot_badge','images/badges/cap_senior_suas_pilot_badge.png'],
-      ['sUAS badge','CAP Command sUAS Pilot','cap_command_suas_pilot_badge','images/badges/cap_command_suas_pilot_badge.png'],
-      ['sUAS badge','CAP sUAS Technician','cap_suas_technician_badge','images/badges/cap_suas_technician_badge.png'],
-      ['sUAS badge','CAP Senior sUAS Technician','cap_senior_suas_technician_badge','images/badges/cap_senior_suas_technician_badge.png'],
-      ['sUAS badge','CAP Master sUAS Technician','cap_master_suas_technician_badge','images/badges/cap_master_suas_technician_badge.png'],
-      ['sUAS badge','Cadet sUAS Badge','cadet_suas_badge','images/badges/cadet_suas_badge.png']
-    ].forEach(([category,item,id,path])=>expected.push({category,item,id,path,status:'not yet in current catalog'}));
+      ['OCP tape','AUX duty identifier','aux_duty_identifier','patches/aux_duty_identifier.png'],
+      ['OCP tape','Name tape','name_tape_blue','patches/name_tape_blue.png'],
+      ['OCP tape','Civil Air Patrol tape','civil_air_patrol_tape_blue','patches/civil_air_patrol_tape_blue.png'],
+      ['sUAS badge','CAP sUAS Pilot','cap_suas_pilot_badge','badges/cap_suas_pilot_badge.png'],
+      ['sUAS badge','CAP Senior sUAS Pilot','cap_senior_suas_pilot_badge','badges/cap_senior_suas_pilot_badge.png'],
+      ['sUAS badge','CAP Command sUAS Pilot','cap_command_suas_pilot_badge','badges/cap_command_suas_pilot_badge.png'],
+      ['sUAS badge','CAP sUAS Technician','cap_suas_technician_badge','badges/cap_suas_technician_badge.png'],
+      ['sUAS badge','CAP Senior sUAS Technician','cap_senior_suas_technician_badge','badges/cap_senior_suas_technician_badge.png'],
+      ['sUAS badge','CAP Master sUAS Technician','cap_master_suas_technician_badge','badges/cap_master_suas_technician_badge.png'],
+      ['sUAS badge','Cadet sUAS Badge','cadet_suas_badge','badges/cadet_suas_badge.png']
+    ].forEach(([category,item,id,path])=>expected.push({category,item,id,path:`images/${normalizeAssetSubpath(path)}`,status:'not yet in current catalog'}));
     return expected;
   }
 
