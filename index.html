@@ -3216,7 +3216,7 @@ const SENIOR_OFFICER_CLASSA_RANK_FILE_TOKENS = {
     "1st_Lt","1stLt","1st_lt","1stlt",
     "First_Lt","FirstLt","first_lt","firstlt"
   ],
-  "Capt": ["Capt","capt","Captain","captain"],
+  "Capt": ["capt","Capt","Captain","captain"],
   "Maj": ["Maj","maj","Major","major"],
   "Lt Col": [
     "Lt_Col","LtCol","lt_col","ltcol",
@@ -3255,15 +3255,30 @@ function getSeniorOfficerCombinedClassAPaths(rank, gender){
 
   genderTokens.forEach(g => {
     tokens.forEach(token => {
+      // Exact style requested by the asset set, including lowercase cap_ prefix.
+      // The first lowercase-token candidate fixes files such as:
+      //   images/base/cap_female_capt.png
+      add(`base/cap_${g}_${String(token).toLowerCase()}.png`);
+      add(`base/CAP_${g}_${String(token).toLowerCase()}.png`);
+      add(`base/cap_${g}_${token}.png`);
       add(`base/CAP_${g}_${token}.png`);
+
+      add(`base/cap_${g}_${String(token).toLowerCase()}_class_a.png`);
+      add(`base/CAP_${g}_${String(token).toLowerCase()}_Class_A.png`);
+      add(`base/cap_${g}_${token}_class_a.png`);
       add(`base/CAP_${g}_${token}_Class_A.png`);
+
+      add(`base/cap_${g}_${String(token).toLowerCase()}_class_a_jacket.png`);
+      add(`base/CAP_${g}_${String(token).toLowerCase()}_Class_A_Jacket.png`);
+      add(`base/cap_${g}_${token}_class_a_jacket.png`);
       add(`base/CAP_${g}_${token}_Class_A_Jacket.png`);
-      add(`base/CAP_${g}_${token}_class_a.png`);
-      add(`base/CAP_${g}_${token}_class_a_jacket.png`);
+
       add(`base/CAP_SM_${g}_${token}.png`);
       add(`base/CAP_SM_${g}_${token}_Class_A.png`);
       add(`base/CAP_SM_${g}_${token}_Class_A_Jacket.png`);
+      add(`base/${g}_${String(token).toLowerCase()}_class_a.png`);
       add(`base/${g}_${token}_class_a.png`);
+      add(`base/${g}_${String(token).toLowerCase()}_class_a_jacket.png`);
       add(`base/${g}_${token}_class_a_jacket.png`);
     });
   });
