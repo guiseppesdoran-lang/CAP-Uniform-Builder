@@ -1421,7 +1421,7 @@ function getRackOrigin(){
 /* ===========================
    UNIVERSAL CALIBRATION SYSTEM
    =========================== */
-const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260512_female_fix2';
+const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260512_class_a_revert1';
 const CAPUB_LEGACY_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform';
 function genderBucketFor(uniform, gender){
   const u = uniform || 'global';
@@ -8086,8 +8086,10 @@ window.addEventListener('load', () => { try{ capubRepairCriticalButtons(); }catc
       State.calib.byUniform = normalizeCalibrationBucketsFromPayload(parsed);
       if(parsed.legacyCoordinates) State.calib.map = parsed.legacyCoordinates;
     }
-    // Clear stale legacy calibration from previous generated files.
+    // Clear stale calibration from previous generated files that changed Class A placement.
     try{ localStorage.removeItem(CAPUB_LEGACY_CALIBRATION_STORAGE_KEY); }catch(err){}
+    try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_fix2'); }catch(err){}
+    try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_fix1'); }catch(err){}
   }catch(err){ console.warn('Could not load saved calibration coordinates', err); }
 
   
@@ -8110,3 +8112,10 @@ mergeCalibDefaults();
 </script>
 </body>
 </html>
+
+// Revert Class A female/default placement back to the original Class A bucket.
+// This removes the previously imported female-specific Class A override while
+// preserving the centered, larger PNG export background change.
+DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_female = JSON.parse(JSON.stringify(DEFAULT_CALIBRATION_BY_UNIFORM.blues_a));
+DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_male = JSON.parse(JSON.stringify(DEFAULT_CALIBRATION_BY_UNIFORM.blues_a));
+
