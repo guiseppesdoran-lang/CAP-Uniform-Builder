@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CAP Uniform Builder — Full Program Calibrated v3.1</title>
+<title>CAP Uniform Builder — Full Program Calibrated v3.2</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 
@@ -908,7 +908,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <body>
 
 <header>
-  <h1>CAP Uniform Builder — Calibrated Badges & Measurement Lines v3.1</h1>
+  <h1>CAP Uniform Builder — Calibrated Badges & Measurement Lines v3.2</h1>
 </header>
 
 <button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu">
@@ -1421,7 +1421,7 @@ function getRackOrigin(){
 /* ===========================
    UNIVERSAL CALIBRATION SYSTEM
    =========================== */
-const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260512_female_a_shift_down26_left6_rightbadges_left15';
+const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260512_female_a_cmd_left5_senior_ae';
 const CAPUB_LEGACY_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform';
 function genderBucketFor(uniform, gender){
   const u = uniform || 'global';
@@ -1941,14 +1941,14 @@ DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_female = {
     "r": 0
   },
   "badge:squadron_commander_badge:ON:0": {
-    "x": 142,
+    "x": 137,
     "y": 174,
     "w": 15,
     "h": 15,
     "r": 0
   },
   "badge:squadron_commander_badge:UN:0": {
-    "x": 142,
+    "x": 137,
     "y": 229,
     "w": 15,
     "h": 15,
@@ -2011,7 +2011,7 @@ DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_female = {
     "r": 0
   },
   "badge:squadron_commander_badge:UN:1": {
-    "x": 140,
+    "x": 135,
     "y": 241
   },
   "badge:model_rocketry_badge:LP:0": {
@@ -2431,9 +2431,9 @@ const SPECIALTY_TRACK_BADGE_IDS = new Set([
   'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
   'communications_technician_badge','communications_senior_badge','communications_master_badge',
   'information_technology_technician_badge','historian_technicianIbadge',
-  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
-  'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge','administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
-  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge'
+  'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
+  'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge','administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
+  'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge'
 ]);
 const POCKET_SERVICE_BADGE_IDS = new Set([
   ...SPECIALTY_TRACK_BADGE_IDS
@@ -2447,7 +2447,7 @@ const ES_POCKET_BADGE_IDS = new Set([
 const SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS = new Set([
   'communications_technician_badge','communications_senior_badge','communications_master_badge',
   'information_technology_technician_badge','historian_technicianIbadge',
-  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge'
+  'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge'
 ]);
 const LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS = new Set([
   'volunteer_university_instructor_badge','cadet_programs_badge'
@@ -2460,7 +2460,7 @@ const FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS = new Set([
   'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
   'communications_technician_badge','communications_senior_badge','communications_master_badge',
   'information_technology_technician_badge','historian_technicianIbadge',
-  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
+  'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
   'cadet_programs_badge'
 ]);
 const INCIDENT_COMMAND_SPECIALTY_BADGE_IDS = new Set([
@@ -3706,7 +3706,7 @@ Object.assign(miniMedalImages, {
    =========================== */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
-  'buddist_chaplin','christian_chaplin','communications_technician_badge','communications_senior_badge','communications_master_badge','cyber_badges','emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge','volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge','administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge','squadron_commander_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges','uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
+  'buddist_chaplin','christian_chaplin','communications_technician_badge','communications_senior_badge','communications_master_badge','cyber_badges','emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge','volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge','administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge','squadron_commander_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges','uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
 ];
 
 
@@ -3720,6 +3720,7 @@ const BADGE_IMAGE_OVERRIDES = {
   'cadet_programs_badge': 'badges/cadet programs badge.png',
   'administration_technician_badge': 'badges/administration_technician_badge.png',
   'aerospace_education_technician_badge': 'badges/aerospace_education_technician_badge.png',
+  'aerospace_education_senior_badge': 'badges/aerospace_senior_badge.png',
   'finance_technician_badge': 'badges/finance_technician_badge.png',
   'squadron_commander_badge': 'badges/Squadron Commander badge.png',
   'communications_senior_badge': 'badges/communications_senior_badge.png',
@@ -3771,6 +3772,12 @@ function getBadgeAssetCandidates(id){
     candidates.push('badges/aerospace_education_technician.png');
     candidates.push('badges/aerospace_education_technician_badge.png');
     candidates.push('badges/Aerospace Education Technician Badge.png');
+  }
+  if(id === 'aerospace_education_senior_badge'){
+    candidates.push('badges/aerospace_senior_badge.png');
+    candidates.push('badges/aerospace_education_senior_badge.png');
+    candidates.push('badges/aerospace_education_senior.png');
+    candidates.push('badges/Aerospace Education Senior Badge.png');
   }
   if(id === 'finance_technician_badge'){
     candidates.push('badges/finance_technician.png');
@@ -3924,7 +3931,7 @@ const BADGE_CATEGORIES = [
   ]},
   { key:'Professional Development / Cadet Programs', ids:[
     'volunteer_university_instructor_badge','cadet_programs_badge',
-    'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge'
+    'administration_technician_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge'
   ]},
   { key:'Command Insignia', ids:[
     'squadron_commander_badge'
@@ -7397,8 +7404,8 @@ const MEMBER_REPORT_IMPORT_BADGE_PRIORITY = [
   'master_emergency_services_badge','senior_emergency_services_badge','emergency_services_badge',
   'communications_master_badge','communications_senior_badge','communications_technician_badge','information_technology_technician_badge','historian_technicianIbadge',
   'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge',
-  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
-  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
+  'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
+  'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
   'nra_marksman_badge'
 ];
 
@@ -8845,6 +8852,13 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
 
 
 /* ===========================
+   V3.2 USER PATCHES
+   - Female Class A current/graduated commander pin default moved 5px left.
+   - Senior Aerospace Education badge asset mapped to images/badges/aerospace_senior_badge.png.
+   - Specialty-track import continues to use only the Specialty Tracks table.
+   =========================== */
+
+/* ===========================
    BOOTSTRAP
    =========================== */
 (function init(){
@@ -8861,6 +8875,7 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
     try{ localStorage.removeItem(CAPUB_LEGACY_CALIBRATION_STORAGE_KEY); }catch(err){}
     try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_fix2'); }catch(err){}
     try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_fix1'); }catch(err){}
+    try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_a_shift_down26_left6_rightbadges_left15'); }catch(err){}
   }catch(err){ console.warn('Could not load saved calibration coordinates', err); }
 
   
