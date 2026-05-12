@@ -2567,21 +2567,6 @@ function getBadgeSlotSpec(id){
   return badgeLocations[id] || 'UN';
 }
 function getBadgeSlotLabel(id){
-  if(id === 'administration_technician_badge'){
-    candidates.push('badges/administration_technician.png');
-    candidates.push('badges/administration_technician_badge.png');
-    candidates.push('badges/Administration Technician Badge.png');
-  }
-  if(id === 'aerospace_education_technician_badge'){
-    candidates.push('badges/aerospace_education_technician.png');
-    candidates.push('badges/aerospace_education_technician_badge.png');
-    candidates.push('badges/Aerospace Education Technician Badge.png');
-  }
-  if(id === 'finance_technician_badge'){
-    candidates.push('badges/finance_technician.png');
-    candidates.push('badges/finance_technician_badge.png');
-    candidates.push('badges/Finance Technician Badge.png');
-  }
   if(id === 'squadron_commander_badge'){
     return State.commandInsignia?.graduatedCommander ? 'UN — graduated commander' : 'ON — current commander';
   }
@@ -5308,26 +5293,10 @@ function applyBadgeAssetWithFallback(el, id){
 
   function tryNext(){
     if(idx >= assetCandidates.length){
-      if(id === 'administration_technician_badge'){
-    candidates.push('badges/administration_technician.png');
-    candidates.push('badges/administration_technician_badge.png');
-    candidates.push('badges/Administration Technician Badge.png');
-  }
-  if(id === 'aerospace_education_technician_badge'){
-    candidates.push('badges/aerospace_education_technician.png');
-    candidates.push('badges/aerospace_education_technician_badge.png');
-    candidates.push('badges/Aerospace Education Technician Badge.png');
-  }
-  if(id === 'finance_technician_badge'){
-    candidates.push('badges/finance_technician.png');
-    candidates.push('badges/finance_technician_badge.png');
-    candidates.push('badges/Finance Technician Badge.png');
-  }
-  if(id === 'squadron_commander_badge'){
-        el.replaceWith(createBadgeFallbackElement(id, el));
-      }else{
-        el.dataset.missing = 'true';
-      }
+      // If the individual transparent PNG cannot be found, show a small visual
+      // fallback instead of throwing an error. This also prevents the old
+      // "candidates is not defined" failure path.
+      el.replaceWith(createBadgeFallbackElement(id, el));
       return;
     }
     el.src = assetCandidates[idx++];
@@ -7253,8 +7222,11 @@ const MEMBER_REPORT_IMPORT_BADGE_PRIORITY = [
   'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B','solo_badge','pre_solo_badge',
 
   // Occupational / over-ribbon
+  // Incident Commander is intentionally higher value than Ground Team because
+  // Master Ground Team is required for the Basic Incident Commander Badge.
+  'basic_incident_commander_badge',
   'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge',
-  'emt_paramedic','emt_intermediate','emt_basic_badge','basic_incident_commander_badge',
+  'emt_paramedic','emt_intermediate','emt_basic_badge',
 
   // Pocket/flexible specialty
   'model_rocketry_badge',
@@ -7414,7 +7386,13 @@ function importedBadgePriority(id){
 }
 
 function selectHighestWearableImportedBadges(ids){
-  const forbiddenImportBadges = new Set(['cdi_badge','character_development_instructor_badge','mro_badge','msa_badge','mission_radio_operator_badge','mission_staff_assistant_badge']);
+  const forbiddenImportBadges = new Set([
+    'cdi_badge','character_development_instructor_badge',
+    'mro_badge','msa_badge','mission_radio_operator_badge','mission_staff_assistant_badge',
+    'udf_badge','urban_direction_finding_badge',
+    'mission_safety_officer_badge','planning_section_chief_badge','operations_section_chief_badge',
+    'logistics_section_chief_badge','communications_unit_leader_badge','public_information_officer_badge'
+  ]);
   const unique = [...new Set(ids.filter(Boolean))].filter(id => !forbiddenImportBadges.has(id));
   const eligible = unique.filter(id => !(State.membership === 'cadet' && !isCadetAuthorized(id)));
 
@@ -7657,6 +7635,22 @@ function addImportedBadge(result, id, reason){
   if(reason && Array.isArray(result.notes)) result.notes.push(reason);
 }
 
+function isCommandInsigniaGradeEligible(rank){
+  const r = String(rank || '').replace(/\s+/g, ' ').trim().toUpperCase();
+  // CAPR 39-1 10.2.5: current/graduated commanders wear the Command Insignia Pin
+  // only in the grade of lieutenant colonel and below. Colonels and above do not wear it.
+  return !['COL','BRIG GEN','BRIGADIER GENERAL','MAJ GEN','MAJOR GENERAL'].includes(r);
+}
+
+function shouldImportCommandInsigniaForMember(text, result){
+  if(!hasCurrentDutyPosition(text, 'Commander')) return false;
+  if(isCommandInsigniaGradeEligible(result?.rank)) return true;
+  if(Array.isArray(result?.notes)){
+    result.notes.push('Current Commander duty found, but Command Insignia Pin was not imported because member is Colonel or above.');
+  }
+  return false;
+}
+
 function parseCapMemberReport(textRaw){
   const text = normalizeMemberReportText(textRaw);
   const result = {
@@ -7724,6 +7718,18 @@ function parseCapMemberReport(textRaw){
     });
   }
 
+  if(/Air Force Organizational Excellence Award/i.test(text)){
+    result.ribbons.push({ id:'Air_Force_Organizational_Excellence_Award', value:'earned', reason:'Air Force Organizational Excellence Award' });
+  }
+  const exceptionalServiceCount = extractAwardCountFromAwardsTable(text, 'Exceptional\\s+Service\\s+Award') || countOccurrences(text, /Exceptional Service Award/gi);
+  if(exceptionalServiceCount > 0){
+    result.ribbons.push({ id:'exceptional_service_award', value:chooseSpecialRibbonValueByAwardCount('exceptional_service_award', exceptionalServiceCount), reason:`${exceptionalServiceCount} Exceptional Service Award record(s)` });
+  }
+  const meritoriousServiceCount = extractAwardCountFromAwardsTable(text, 'Meritorious\\s+Service\\s+(?:Award|Medal)') || countOccurrences(text, /Meritorious Service (?:Award|Medal)/gi);
+  if(meritoriousServiceCount > 0){
+    result.ribbons.push({ id:'meritorious_service_award', value:chooseSpecialRibbonValueByAwardCount('meritorious_service_award', meritoriousServiceCount), reason:`${meritoriousServiceCount} Meritorious Service Award record(s)` });
+  }
+
   if(/\bMBRRBN\b|Membership Ribbon/i.test(text)){
     result.ribbons.push({ id:'cap_membership_ribbon', value:'earned', reason:'Membership Ribbon / MBRRBN' });
   }
@@ -7732,6 +7738,15 @@ function parseCapMemberReport(textRaw){
   }
   if(/\bDAVIS\b|Level\s*2|LV2/i.test(text)){
     result.ribbons.push({ id:'cap_leadership_ribbon', value:'earned', reason:'Davis Award / Level II' });
+  }
+  if(/\bLOENING\b|Grover\s+Loening/i.test(text)){
+    result.ribbons.push({ id:'cap_grover_loening_aerospace_ribbon', value:'earned', reason:'Loening Award / Level III' });
+  }
+  if(/\bGARBER\b|Paul\s+E\.?\s+Garber/i.test(text)){
+    result.ribbons.push({ id:'cap_paul_e_garber_ribbon', value:'earned', reason:'Garber Award / Level IV' });
+  }
+  if(/\bWILSON\b|Gill\s+Robb\s+Wilson/i.test(text)){
+    result.ribbons.push({ id:'cap_gill_robb_wilson_ribbon', value:'earned', reason:'Gill Robb Wilson Award / Level V' });
   }
 
   // In the CAP Member Search Report this appears as "Crisis Service Award";
@@ -7792,7 +7807,7 @@ function parseCapMemberReport(textRaw){
   }
 
   // Duty-position and specialty-track badge mapping.
-  if(hasCurrentDutyPosition(text, 'Commander')){
+  if(shouldImportCommandInsigniaForMember(text, result)){
     result.badges.push('squadron_commander_badge');
     if(State?.commandInsignia) State.commandInsignia.graduatedCommander = false;
   }
@@ -7813,6 +7828,11 @@ function parseCapMemberReport(textRaw){
     result.notes.push('MRO/MSA qualification or training found; no MRO/MSA badge exists, so no badge was imported.');
   }
 
+  // UDF is a qualification only. There is no UDF badge to render.
+  if(/Urban Direction Finding Team|\bUDF\b/i.test(text)){
+    result.notes.push('UDF qualification or training found; no UDF badge exists, so no badge was imported.');
+  }
+
   // Badge / qualification mapping.
   if(/CAP Aircrew Rating/i.test(text)) result.badges.push('AirCrew1_DB3F0FCC3650F');
   // Do not use MO/Mission Observer training qualification as badge authorization.
@@ -7820,9 +7840,12 @@ function parseCapMemberReport(textRaw){
   if(/CAP\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Observer\s+Badge/i.test(text)){
     result.badges.push('observer_badge');
   }
-  if(/CAP Master Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\b(?:GTL|GTM1)\b')) result.badges.push('master_ground_team_badge');
-  else if(/CAP Senior Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\bGTM2\b')) result.badges.push('senior_ground_team_badge');
-  else if(/CAP Basic Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\bGTM3\b')) result.badges.push('ground_team_basic_badge');
+  if(/Basic Incident Commander Badge|CAP Basic Incident Commander Badge/i.test(text)){
+    result.badges.push('basic_incident_commander_badge');
+  }
+  if(/CAP Master Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTL|GTM1)\\b')) result.badges.push('master_ground_team_badge');
+  else if(/CAP Senior Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\bGTM2\\b')) result.badges.push('senior_ground_team_badge');
+  else if(/CAP Basic Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\bGTM3\\b')) result.badges.push('ground_team_basic_badge');
   else if(/\bGTM3\b|Ground Team Member Level 3/i.test(text)) result.notes.push('GTM3 found, but it appears to be training status or not an awarded badge; no Ground Team badge imported.');
 
   if(/CAP Master Emergency Services Qualification Badge/i.test(text)) result.badges.push('master_emergency_services_badge');
@@ -7908,6 +7931,16 @@ function applyCapMemberReportImport(parsed){
   fullRender();
 }
 
+function confirmBeforeMemberReportUpload(){
+  return window.confirm(
+    'This uniform builder may make mistakes when importing a membership report.\n\n' +
+    'Results can be affected by record inconsistencies, missing award entries, duplicate entries, old legacy records, or items that do not appear clearly in the report.\n\n' +
+    'Some ribbons, badges, devices, or other items may not import correctly or may not appear at all, including items such as Unit Citation ribbons.\n\n' +
+    'Please double-check the generated uniform against the member\'s official records and CAPR 39-1 before relying on the result.\n\n' +
+    'Do you want to continue?'
+  );
+}
+
 function wireMemberReportImporter(){
   const btn = by('importMemberReportBtn');
   const input = by('memberReportUpload');
@@ -7916,7 +7949,9 @@ function wireMemberReportImporter(){
 
   if(btn.dataset.memberImportWired === '1') return;
   btn.dataset.memberImportWired = '1';
-  btn.addEventListener('click', () => input.click());
+  btn.addEventListener('click', () => {
+    if(confirmBeforeMemberReportUpload()) input.click();
+  });
 
   clearBtn?.addEventListener('click', () => {
     setMemberReportImportStatus('No report imported yet.');
@@ -7939,6 +7974,7 @@ function wireMemberReportImporter(){
         parsed.ribbons.some(r => r.id === 'red_service_ribbon') ? `Red Service: ${parsed.ribbons.find(r => r.id === 'red_service_ribbon').reason}` : '',
         parsed.ribbons.some(r => r.id === 'crisis_ribbon') ? 'Crisis Service Award: selected' : '',
         `Badges selected: ${parsed.badges.length}${parsed.badges.length >= 4 ? ' (highest four wearable badges kept)' : ''}`,
+        'Reminder: double-check imported results; Unit Citation ribbons and other record-dependent items may not appear correctly.',
         parsed.notes?.length ? `Notes: ${parsed.notes.join('; ')}` : ''
       ].filter(Boolean);
 
@@ -8118,4 +8154,3 @@ mergeCalibDefaults();
 // preserving the centered, larger PNG export background change.
 DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_female = JSON.parse(JSON.stringify(DEFAULT_CALIBRATION_BY_UNIFORM.blues_a));
 DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_male = JSON.parse(JSON.stringify(DEFAULT_CALIBRATION_BY_UNIFORM.blues_a));
-
