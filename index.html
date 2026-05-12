@@ -1941,14 +1941,14 @@ DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_female = {
     "r": 0
   },
   "badge:squadron_commander_badge:ON:0": {
-    "x": 150,
+    "x": 151,
     "y": 174,
     "w": 15,
     "h": 15,
     "r": 0
   },
   "badge:squadron_commander_badge:UN:0": {
-    "x": 150,
+    "x": 151,
     "y": 229,
     "w": 15,
     "h": 15,
@@ -3198,11 +3198,28 @@ const CADET_OFFICER_COMBINED_CLASSA_MALE = {
   "C/Col":    "base/c_col_jacket_male.png"
 };
 
-// Senior Member officer combined male Class A base images.
+// Senior Member officer combined Class A base images.
 // These are full base images with the officer grade already built into the jacket/epaulets.
-const SENIOR_OFFICER_COMBINED_CLASSA_MALE = {
-  "Maj": "base/CAP_male_Maj.png"
+// Primary expected naming style:
+//   images/base/CAP_male_Maj.png
+//   images/base/CAP_female_Maj.png
+// and the same pattern for the other officer grades below.
+const SENIOR_OFFICER_CLASSA_RANK_FILE_TOKENS = {
+  "2d Lt": ["2d_Lt","2dLt","2d_lt","2dlt"],
+  "1st Lt": ["1st_Lt","1stLt","1st_lt","1stlt"],
+  "Capt": ["Capt","capt"],
+  "Maj": ["Maj","maj"],
+  "Lt Col": ["Lt_Col","LtCol","lt_col","ltcol"],
+  "Col": ["Col","col"],
+  "Brig Gen": ["Brig_Gen","BrigGen","brig_gen","briggen"],
+  "Maj Gen": ["Maj_Gen","MajGen","maj_gen","majgen"]
 };
+
+function getSeniorOfficerCombinedClassAPaths(rank, gender){
+  const tokens = SENIOR_OFFICER_CLASSA_RANK_FILE_TOKENS[rank] || [];
+  if(!tokens.length || !gender) return [];
+  return tokens.map(token => `base/CAP_${gender}_${token}.png`);
+}
 
 // Senior Member officer combined male Class B base images.
 // These are full base images with officer grade already built into the shirt.
@@ -3233,10 +3250,10 @@ function usingCombinedCadetOfficerJacket(){
 function usingCombinedSeniorOfficerJacket(){
   return (
     State.uniform === 'blues_a' &&
-    State.gender === 'male' &&
+    (State.gender === 'male' || State.gender === 'female') &&
     State.membership === 'senior' &&
     !!State.rank &&
-    !!SENIOR_OFFICER_COMBINED_CLASSA_MALE[State.rank]
+    getSeniorOfficerCombinedClassAPaths(State.rank, State.gender).length > 0
   );
 }
 
@@ -4258,9 +4275,9 @@ function getBaseCandidates(){
     return [...new Set(list)];
   }
 
-  // 1b) Senior Member Officer (Male) Class A combined jacket (jacket+epaulet rank baked in)
+  // 1b) Senior Member Officer Class A combined jacket (jacket+epaulet rank baked in)
   if(usingCombinedSeniorOfficerJacket()){
-    list.push(SENIOR_OFFICER_COMBINED_CLASSA_MALE[State.rank]);
+    list.push(...getSeniorOfficerCombinedClassAPaths(State.rank, State.gender));
     return [...new Set(list)];
   }
 
