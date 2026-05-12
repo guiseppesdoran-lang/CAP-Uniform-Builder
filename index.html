@@ -1421,7 +1421,7 @@ function getRackOrigin(){
 /* ===========================
    UNIVERSAL CALIBRATION SYSTEM
    =========================== */
-const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260512_class_a_revert1';
+const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260512_female_a_shift_down26_left4';
 const CAPUB_LEGACY_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform';
 function genderBucketFor(uniform, gender){
   const u = uniform || 'global';
@@ -2901,6 +2901,26 @@ function downloadCalibrationJson(){
   a.remove();
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
+function getFemaleClassAItemOffset(key){
+  // User calibration patch: on the female Class A jacket, move every rendered
+  // uniform item down 26px and left 4px. The base jacket image itself is not
+  // shifted. This applies to ribbons, mini medals, badges, rank, text/tapes,
+  // devices, patches, and measurement arrows.
+  if(State.uniform === 'blues_a' && State.gender === 'female' && String(key || '') !== 'jacket'){
+    return { x:-4, y:26 };
+  }
+  return { x:0, y:0 };
+}
+
+function applyFemaleClassAItemOffset(v, key){
+  const offset = getFemaleClassAItemOffset(key);
+  if(offset.x || offset.y){
+    if(v.x !== undefined && Number.isFinite(Number(v.x))) v.x = Number(v.x) + offset.x;
+    if(v.y !== undefined && Number.isFinite(Number(v.y))) v.y = Number(v.y) + offset.y;
+  }
+  return v;
+}
+
 function applyCalibToElement(el, key, base){
   let over = getCalib(key) || buildDerivedBadgeCalib(key, base);
 
@@ -2913,7 +2933,7 @@ function applyCalibToElement(el, key, base){
     delete over.y;
   }
 
-  const v = { ...base, ...(over||{}) };
+  const v = applyFemaleClassAItemOffset({ ...base, ...(over||{}) }, key);
 
   if(v.x !== undefined) el.style.left = `${v.x}px`;
   if(v.y !== undefined) el.style.top  = `${v.y}px`;
