@@ -3199,91 +3199,52 @@ const CADET_OFFICER_COMBINED_CLASSA_MALE = {
 };
 
 // Senior Member officer combined Class A base images.
-// These are full base images with the officer grade already built into the jacket/epaulets.
-// Primary expected naming style:
-//   images/base/CAP_male_Maj.png
-//   images/base/CAP_female_Maj.png
-// and the same pattern for the other officer grades below.
-const SENIOR_OFFICER_CLASSA_RANK_FILE_TOKENS = {
-  // Expanded token sets so all senior-member officer ranks can resolve even if
-  // the underlying base images were named with slightly different conventions.
-  "2d Lt": [
-    "2d_Lt","2dLt","2d_lt","2dlt",
-    "2nd_Lt","2ndLt","2nd_lt","2ndlt",
-    "Second_Lt","SecondLt","second_lt","secondlt"
-  ],
-  "1st Lt": [
-    "1st_Lt","1stLt","1st_lt","1stlt",
-    "First_Lt","FirstLt","first_lt","firstlt"
-  ],
-  "Capt": ["capt","Capt","Captain","captain"],
-  "Maj": ["Maj","maj","Major","major"],
-  "Lt Col": [
-    "Lt_Col","LtCol","lt_col","ltcol",
-    "Lt_Colonel","LtColonel","lt_colonel","ltcolonel",
-    "Lieutenant_Colonel","LieutenantColonel","lieutenant_colonel","lieutenantcolonel"
-  ],
-  "Col": ["Col","col","Colonel","colonel"],
-  "Brig Gen": [
-    "Brig_Gen","BrigGen","brig_gen","briggen",
-    "Brigadier_Gen","BrigadierGen","brigadier_gen","brigadiergen",
-    "Brigadier_General","BrigadierGeneral","brigadier_general","brigadiergeneral"
-  ],
-  "Maj Gen": [
-    "Maj_Gen","MajGen","maj_gen","majgen",
-    "Major_Gen","MajorGen","major_gen","majorgen",
-    "Major_General","MajorGeneral","major_general","majorgeneral"
-  ]
+// This now operates the same way as the cadet combined-base uniform selections:
+// a direct rank-to-file map is used instead of a broad candidate generator.
+//
+// Expected exact file paths:
+//   images/base/cap_male_2d_lt.png
+//   images/base/cap_male_1st_lt.png
+//   images/base/cap_male_capt.png
+//   images/base/cap_male_maj.png
+//   images/base/cap_male_lt_col.png
+//   images/base/cap_male_col.png
+//   images/base/cap_male_brig_gen.png
+//   images/base/cap_male_maj_gen.png
+//
+//   images/base/cap_female_2d_lt.png
+//   images/base/cap_female_1st_lt.png
+//   images/base/cap_female_capt.png
+//   images/base/cap_female_maj.png
+//   images/base/cap_female_lt_col.png
+//   images/base/cap_female_col.png
+//   images/base/cap_female_brig_gen.png
+//   images/base/cap_female_maj_gen.png
+const SENIOR_OFFICER_COMBINED_CLASSA = {
+  male: {
+    "2d Lt":   "base/cap_male_2d_lt.png",
+    "1st Lt":  "base/cap_male_1st_lt.png",
+    "Capt":    "base/cap_male_capt.png",
+    "Maj":     "base/cap_male_maj.png",
+    "Lt Col":  "base/cap_male_lt_col.png",
+    "Col":     "base/cap_male_col.png",
+    "Brig Gen":"base/cap_male_brig_gen.png",
+    "Maj Gen": "base/cap_male_maj_gen.png"
+  },
+  female: {
+    "2d Lt":   "base/cap_female_2d_lt.png",
+    "1st Lt":  "base/cap_female_1st_lt.png",
+    "Capt":    "base/cap_female_capt.png",
+    "Maj":     "base/cap_female_maj.png",
+    "Lt Col":  "base/cap_female_lt_col.png",
+    "Col":     "base/cap_female_col.png",
+    "Brig Gen":"base/cap_female_brig_gen.png",
+    "Maj Gen": "base/cap_female_maj_gen.png"
+  }
 };
 
-function getSeniorOfficerCombinedClassAPaths(rank, gender){
-  const tokens = SENIOR_OFFICER_CLASSA_RANK_FILE_TOKENS[rank] || [];
-  if(!tokens.length || !gender) return [];
-
-  // Try the primary file style first, then several safe fallback styles.
-  // This covers all senior-member officer ranks and fixes cases where a Class A
-  // combined jacket asset is named slightly differently from the first expected path.
-  // Primary expected examples:
-  //   images/base/CAP_male_Capt.png
-  //   images/base/CAP_female_Capt.png
-  const genderTokens = gender === 'female'
-    ? ['female','Female','femal','Femal']
-    : ['male','Male'];
-
-  const candidates = [];
-  const add = path => { if(path && !candidates.includes(path)) candidates.push(path); };
-
-  genderTokens.forEach(g => {
-    tokens.forEach(token => {
-      // Exact style requested by the asset set, including lowercase cap_ prefix.
-      // The first lowercase-token candidate fixes files such as:
-      //   images/base/cap_female_capt.png
-      add(`base/cap_${g}_${String(token).toLowerCase()}.png`);
-      add(`base/CAP_${g}_${String(token).toLowerCase()}.png`);
-      add(`base/cap_${g}_${token}.png`);
-      add(`base/CAP_${g}_${token}.png`);
-
-      add(`base/cap_${g}_${String(token).toLowerCase()}_class_a.png`);
-      add(`base/CAP_${g}_${String(token).toLowerCase()}_Class_A.png`);
-      add(`base/cap_${g}_${token}_class_a.png`);
-      add(`base/CAP_${g}_${token}_Class_A.png`);
-
-      add(`base/cap_${g}_${String(token).toLowerCase()}_class_a_jacket.png`);
-      add(`base/CAP_${g}_${String(token).toLowerCase()}_Class_A_Jacket.png`);
-      add(`base/cap_${g}_${token}_class_a_jacket.png`);
-      add(`base/CAP_${g}_${token}_Class_A_Jacket.png`);
-
-      add(`base/CAP_SM_${g}_${token}.png`);
-      add(`base/CAP_SM_${g}_${token}_Class_A.png`);
-      add(`base/CAP_SM_${g}_${token}_Class_A_Jacket.png`);
-      add(`base/${g}_${String(token).toLowerCase()}_class_a.png`);
-      add(`base/${g}_${token}_class_a.png`);
-      add(`base/${g}_${String(token).toLowerCase()}_class_a_jacket.png`);
-      add(`base/${g}_${token}_class_a_jacket.png`);
-    });
-  });
-
-  return candidates;
+function getSeniorOfficerCombinedClassAPath(rank, gender){
+  return SENIOR_OFFICER_COMBINED_CLASSA?.[gender]?.[rank] || null;
 }
 
 // Senior Member officer combined male Class B base images.
@@ -3315,10 +3276,10 @@ function usingCombinedCadetOfficerJacket(){
 function usingCombinedSeniorOfficerJacket(){
   return (
     State.uniform === 'blues_a' &&
-    (State.gender === 'male' || State.gender === 'female') &&
     State.membership === 'senior' &&
+    !!State.gender &&
     !!State.rank &&
-    getSeniorOfficerCombinedClassAPaths(State.rank, State.gender).length > 0
+    !!getSeniorOfficerCombinedClassAPath(State.rank, State.gender)
   );
 }
 
@@ -4341,10 +4302,11 @@ function getBaseCandidates(){
   }
 
   // 1b) Senior Member Officer Class A combined jacket (jacket+epaulet rank baked in)
+  // Same pattern as the cadet officer combined-base selection: use the direct
+  // rank/gender base image and return it as the jacket candidate.
   if(usingCombinedSeniorOfficerJacket()){
-    list.push(...getSeniorOfficerCombinedClassAPaths(State.rank, State.gender));
-    // Do not return here. If none of the combined rank-specific assets exist,
-    // fall through to the normal jacket image so Class A still renders.
+    list.push(getSeniorOfficerCombinedClassAPath(State.rank, State.gender));
+    return [...new Set(list)];
   }
 
   // 1c) Senior Member Officer (Male) Class B combined shirt (rank baked in)
