@@ -1421,13 +1421,45 @@ function getRackOrigin(){
 /* ===========================
    UNIVERSAL CALIBRATION SYSTEM
    =========================== */
+const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260512_female_fix2';
+const CAPUB_LEGACY_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform';
+function genderBucketFor(uniform, gender){
+  const u = uniform || 'global';
+  const g = gender || '';
+  return g ? `${u}_${g}` : u;
+}
+function normalizeCalibrationBucketsFromPayload(parsed){
+  const byUniform = JSON.parse(JSON.stringify(parsed?.coordinatesByUniform || parsed?.calib?.byUniform || {}));
+  const gender = parsed?.activeGender || parsed?.gender || '';
+  const activeUniform = parsed?.activeUniform || parsed?.uniform || '';
+
+  // Older exports stored female/male coordinates under the base uniform name.
+  // Move those into the gender-specific bucket so female Class A no longer
+  // overwrites or mixes with male/default blues_a coordinates.
+  if(gender && activeUniform && byUniform[activeUniform]){
+    const target = genderBucketFor(activeUniform, gender);
+    if(target !== activeUniform){
+      byUniform[target] = { ...(byUniform[target] || {}), ...byUniform[activeUniform] };
+      delete byUniform[activeUniform];
+    }
+  }
+
+  // Defensive migration for the specific uploaded female calibration format.
+  // If jacket_female was captured under blues_a/blues_b, treat it as female.
+  for(const base of ['blues_a','blues_b']){
+    const b = byUniform[base];
+    if(b?.jacket && parsed?.renderedItems?.some?.(it => String(it.src||'').includes('jacket_female'))){
+      byUniform[`${base}_female`] = { ...(byUniform[`${base}_female`] || {}), ...b };
+      delete byUniform[base];
+    }
+  }
+  return byUniform;
+}
 function calibKeyFor(el){
   return el?.dataset?.calibKey || null;
 }
 function getCurrentCalibUniform(){
-  const uniform = State.uniform || 'global';
-  const gender = State.gender || '';
-  return gender ? `${uniform}_${gender}` : uniform;
+  return genderBucketFor(State.uniform || 'global', State.gender || '');
 }
 function getBaseUniformFromCalibId(uniformId){
   return String(uniformId || '').replace(/_(male|female)$/,'');
@@ -2596,8 +2628,8 @@ function parseBadgeCalibKey(key){
 function buildDerivedBadgeCalib(key, base){
   const parsed = parseBadgeCalibKey(key);
   if(!parsed) return null;
-  const uniformId = getCurrentCalibUniform();
-  const defaults = DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {};
+  const defaultBuckets = getCalibFallbackUniforms().map(id => DEFAULT_CALIBRATION_BY_UNIFORM[id] || {});
+  const defaults = Object.assign({}, ...defaultBuckets.reverse());
 
   let refKey = null;
   let yAdjust = 0;
@@ -2858,15 +2890,19 @@ function getAllCalibrationExport(){
     // It does not drive placement on reload, so it will not break dynamic ribbon ordering.
     renderedItems,
     renderedItemsByUniform: {
-      [State.uniform || 'global']: renderedItems
+      [getCurrentCalibUniform() || State.uniform || 'global']: renderedItems
     },
     renderedCoordinatesByUniform: {
-      [State.uniform || 'global']: renderedMap
+      [getCurrentCalibUniform() || State.uniform || 'global']: renderedMap
     }
   };
 }
 function saveCalibrationToBrowser(){
-  localStorage.setItem('capub_admin_calibration_by_uniform', JSON.stringify(getAllCalibrationExport()));
+  const payload = getAllCalibrationExport();
+  payload.storageVersion = CAPUB_CALIBRATION_STORAGE_KEY;
+  localStorage.setItem(CAPUB_CALIBRATION_STORAGE_KEY, JSON.stringify(payload));
+  // Remove the old shared key so stale bad calibrations from earlier builds cannot keep shifting placement.
+  try{ localStorage.removeItem(CAPUB_LEGACY_CALIBRATION_STORAGE_KEY); }catch(err){}
 }
 function downloadCalibrationJson(){
   const payload = JSON.stringify(getAllCalibrationExport(), null, 2);
@@ -8042,12 +8078,16 @@ window.addEventListener('load', () => { try{ capubRepairCriticalButtons(); }catc
    =========================== */
 (function init(){
   try{
-    const savedCal = localStorage.getItem('capub_admin_calibration_by_uniform');
+    // Use a versioned storage key. Older builds used a shared key that may contain
+    // female coordinates in the base blues_a bucket, which causes placement drift.
+    const savedCal = localStorage.getItem(CAPUB_CALIBRATION_STORAGE_KEY);
     if(savedCal){
       const parsed = JSON.parse(savedCal);
-      if(parsed.coordinatesByUniform) State.calib.byUniform = parsed.coordinatesByUniform;
+      State.calib.byUniform = normalizeCalibrationBucketsFromPayload(parsed);
       if(parsed.legacyCoordinates) State.calib.map = parsed.legacyCoordinates;
     }
+    // Clear stale legacy calibration from previous generated files.
+    try{ localStorage.removeItem(CAPUB_LEGACY_CALIBRATION_STORAGE_KEY); }catch(err){}
   }catch(err){ console.warn('Could not load saved calibration coordinates', err); }
 
   
