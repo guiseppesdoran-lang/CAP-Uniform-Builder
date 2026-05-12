@@ -7232,7 +7232,7 @@ const MEMBER_REPORT_IMPORT_BADGE_PRIORITY = [
   // Pocket/flexible specialty
   'model_rocketry_badge',
   'master_emergency_services_badge','senior_emergency_services_badge','emergency_services_badge',
-  'communications_technician_badge','information_technology_technician_badge','historian_technicianIbadge',
+  'communications_master_badge','communications_senior_badge','communications_technician_badge','information_technology_technician_badge','historian_technicianIbadge',
   'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge',
   'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
   'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
@@ -7408,6 +7408,11 @@ function selectHighestWearableImportedBadges(ids){
     suppress.add('senior_emergency_services_badge'); suppress.add('emergency_services_badge');
   }else if(eligible.includes('senior_emergency_services_badge')){
     suppress.add('emergency_services_badge');
+  }
+  if(eligible.includes('communications_master_badge')){
+    suppress.add('communications_senior_badge'); suppress.add('communications_technician_badge');
+  }else if(eligible.includes('communications_senior_badge')){
+    suppress.add('communications_technician_badge');
   }
 
   // Keep only the highest-value aviation badge family when multiple aviation
@@ -7670,6 +7675,75 @@ function hasSpecialtyTrackLevel(text, trackPattern, levelPattern){
   return new RegExp(`${trackPattern}\\s+${levelPattern}\\s+\\d{1,2}\\s+[A-Za-z]{3,9}\\s+\\d{4}`, 'i').test(tracks);
 }
 
+
+function getMemberReportSpecialtyTracksSection(text){
+  return getReportSectionUntilAny(text, 'Specialty Tracks', [
+    'Encampments', 'Awards', 'Promotions', 'Decorations', 'Current Duty Positions',
+    'Past Duty Positions', 'Professional Development', 'Local Activities', 'Transfer History'
+  ]);
+}
+
+function parseMemberReportSpecialtyTracks(text){
+  const tracksSection = getMemberReportSpecialtyTracksSection(text);
+  if(!tracksSection) return [];
+
+  const rows = [];
+  const rowRe = /([A-Z][A-Z\s\/,&-]{2,80}?)\s+(TECHNICIAN|SENIOR|MASTER|NONE)\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/gi;
+  let m;
+  while((m = rowRe.exec(tracksSection))){
+    const name = String(m[1] || '')
+      .replace(/\bSpecialty\s+Track\b|\bLevel\b|\bCompleted\b/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toUpperCase();
+    const level = String(m[2] || '').toUpperCase();
+    if(!name || level === 'NONE') continue;
+    rows.push({ name, level, completed:m[3] });
+  }
+  return rows;
+}
+
+function highestSpecialtyTrackLevelFromReport(text, trackNames){
+  const section = getMemberReportSpecialtyTracksSection(text);
+  if(!section) return null;
+
+  const wanted = (Array.isArray(trackNames) ? trackNames : [trackNames])
+    .map(name => String(name || '').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  if(!wanted.length) return null;
+
+  const weight = { TECHNICIAN:1, SENIOR:2, MASTER:3 };
+  let best = null;
+  const datePattern = '\\d{1,2}\\s+[A-Za-z]{3,9}\\s+\\d{4}';
+
+  for(const trackName of wanted){
+    const escapedName = trackName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\\\s\+/g, '\\s+').replace(/\s+/g, '\\s+');
+    const re = new RegExp(`\\b${escapedName}\\b(?:\\s+OFFICER)?\\s+(TECHNICIAN|SENIOR|MASTER)\\s+(${datePattern})`, 'gi');
+    let m;
+    while((m = re.exec(section))){
+      const row = { name:trackName.toUpperCase(), level:String(m[1]).toUpperCase(), completed:m[2] };
+      if(!best || weight[row.level] > weight[best.level]) best = row;
+    }
+  }
+  return best;
+}
+
+function badgeIdForSpecialtyTrack(row, family){
+  if(!row) return null;
+  const level = String(row.level || '').toUpperCase();
+  if(family === 'communications'){
+    if(level === 'MASTER') return 'communications_master_badge';
+    if(level === 'SENIOR') return 'communications_senior_badge';
+    if(level === 'TECHNICIAN') return 'communications_technician_badge';
+  }
+  if(family === 'emergencyServices'){
+    if(level === 'MASTER') return 'master_emergency_services_badge';
+    if(level === 'SENIOR') return 'senior_emergency_services_badge';
+    if(level === 'TECHNICIAN') return 'emergency_services_badge';
+  }
+  return null;
+}
+
 function addImportedBadge(result, id, reason){
   if(!id || !result || !Array.isArray(result.badges)) return;
   result.badges.push(id);
@@ -7872,10 +7946,28 @@ function parseCapMemberReport(textRaw){
       : 'Past commander duty of at least one year found; Command Insignia Pin imported as graduated commander.');
   }
 
+  const commTrack = highestSpecialtyTrackLevelFromReport(text, 'COMMUNICATIONS');
+  const commBadge = badgeIdForSpecialtyTrack(commTrack, 'communications');
+  if(commBadge){
+    result.badges.push(commBadge);
+    result.notes.push(`Communications ${commTrack.level} badge imported from Specialty Tracks only.`);
+  }else if(/ICUT|Introductory Communications User Training|Rating Exam:\s*Communications|Mission Radio Operator|\bMRO\b/i.test(text)){
+    result.notes.push('Communications-related training/exam/ICUT/MRO found, but Communications badge was not imported because no COMMUNICATIONS row appears in Specialty Tracks.');
+  }
+
+  const esTrack = highestSpecialtyTrackLevelFromReport(text, 'EMERGENCY SERVICES');
+  const esTrackBadge = badgeIdForSpecialtyTrack(esTrack, 'emergencyServices');
+  if(esTrackBadge){
+    result.badges.push(esTrackBadge);
+    result.notes.push(`Emergency Services ${esTrack.level} badge imported from Specialty Tracks.`);
+  }
+
   if(hasSpecialtyTrackLevel(text, 'CADET\\s+PROGRAMS|Cadet Programs', 'SENIOR|MASTER|TECHNICIAN')) result.badges.push('cadet_programs_badge');
   if(hasSpecialtyTrackLevel(text, 'ADMINISTRATION|Administration', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('administration_technician_badge');
   if(hasSpecialtyTrackLevel(text, 'AEROSPACE|Aerospace', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('aerospace_education_technician_badge');
   if(hasSpecialtyTrackLevel(text, 'FINANCE|Finance', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('finance_technician_badge');
+  if(hasSpecialtyTrackLevel(text, 'INFORMATION\\s+TECHNOLOGY|Information Technology|IT', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('information_technology_technician_badge');
+  if(hasSpecialtyTrackLevel(text, 'HISTORIAN|Historian', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('historian_technicianIbadge');
 
   // New rule: CDI status/duty/training alone does not authorize the CDI badge.
   // Only import a CDI badge if a future report explicitly lists a CDI badge/award item.
@@ -7921,11 +8013,22 @@ function parseCapMemberReport(textRaw){
 
   if(/CAP Master Emergency Services Qualification Badge/i.test(text)) result.badges.push('master_emergency_services_badge');
   else if(/CAP Senior Emergency Services Qualification Badge/i.test(text)) result.badges.push('senior_emergency_services_badge');
-  else if(/CAP Basic Emergency Services Qualification Badge|Technician Rating Exam:\s*Emergency Services/i.test(text)) result.badges.push('emergency_services_badge');
+  else if(/CAP Basic Emergency Services Qualification Badge/i.test(text)) result.badges.push('emergency_services_badge');
+  else if(/Technician Rating Exam:\s*Emergency Services/i.test(text) && !esTrackBadge){
+    result.notes.push('Emergency Services rating exam found, but ES specialty badge import now prefers an awarded badge or Emergency Services row in Specialty Tracks.');
+  }
 
-  if(/Technician Rating Exam:\s*Communications|Communications Technician/i.test(text)) result.badges.push('communications_technician_badge');
-  if(/Technician Rating Exam:\s*IT|Information Technology Technician/i.test(text)) result.badges.push('information_technology_technician_badge');
-  if(/Technician Rating Exam:\s*Historian|Historian Technician/i.test(text)) result.badges.push('historian_technicianIbadge');
+  // Communications/IT/Historian specialty badges must come from Specialty Tracks only.
+  // Do not import Communications from ICUT, MRO, communications training, or Professional Development rating exams.
+  if(/Technician Rating Exam:\s*Communications|Communications Technician/i.test(text) && !commBadge){
+    result.notes.push('Communications rating exam/training found outside Specialty Tracks; Communications badge not imported.');
+  }
+  if(/Technician Rating Exam:\s*IT|Information Technology Technician/i.test(text) && !hasSpecialtyTrackLevel(text, 'INFORMATION\s+TECHNOLOGY|Information Technology|IT', 'TECHNICIAN|SENIOR|MASTER')){
+    result.notes.push('IT rating exam/training found outside Specialty Tracks; IT badge not imported.');
+  }
+  if(/Technician Rating Exam:\s*Historian|Historian Technician/i.test(text) && !hasSpecialtyTrackLevel(text, 'HISTORIAN|Historian', 'TECHNICIAN|SENIOR|MASTER')){
+    result.notes.push('Historian rating exam/training found outside Specialty Tracks; Historian badge not imported.');
+  }
   if(/Model Rocketry/i.test(text)) result.badges.push('model_rocketry_badge');
 
   result.badges = selectHighestWearableImportedBadges(result.badges, result.membership);
