@@ -1941,14 +1941,14 @@ DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_female = {
     "r": 0
   },
   "badge:squadron_commander_badge:ON:0": {
-    "x": 151,
+    "x": 149,
     "y": 174,
     "w": 15,
     "h": 15,
     "r": 0
   },
   "badge:squadron_commander_badge:UN:0": {
-    "x": 151,
+    "x": 149,
     "y": 229,
     "w": 15,
     "h": 15,
@@ -3205,20 +3205,70 @@ const CADET_OFFICER_COMBINED_CLASSA_MALE = {
 //   images/base/CAP_female_Maj.png
 // and the same pattern for the other officer grades below.
 const SENIOR_OFFICER_CLASSA_RANK_FILE_TOKENS = {
-  "2d Lt": ["2d_Lt","2dLt","2d_lt","2dlt"],
-  "1st Lt": ["1st_Lt","1stLt","1st_lt","1stlt"],
-  "Capt": ["Capt","capt"],
-  "Maj": ["Maj","maj"],
-  "Lt Col": ["Lt_Col","LtCol","lt_col","ltcol"],
-  "Col": ["Col","col"],
-  "Brig Gen": ["Brig_Gen","BrigGen","brig_gen","briggen"],
-  "Maj Gen": ["Maj_Gen","MajGen","maj_gen","majgen"]
+  // Expanded token sets so all senior-member officer ranks can resolve even if
+  // the underlying base images were named with slightly different conventions.
+  "2d Lt": [
+    "2d_Lt","2dLt","2d_lt","2dlt",
+    "2nd_Lt","2ndLt","2nd_lt","2ndlt",
+    "Second_Lt","SecondLt","second_lt","secondlt"
+  ],
+  "1st Lt": [
+    "1st_Lt","1stLt","1st_lt","1stlt",
+    "First_Lt","FirstLt","first_lt","firstlt"
+  ],
+  "Capt": ["Capt","capt","Captain","captain"],
+  "Maj": ["Maj","maj","Major","major"],
+  "Lt Col": [
+    "Lt_Col","LtCol","lt_col","ltcol",
+    "Lt_Colonel","LtColonel","lt_colonel","ltcolonel",
+    "Lieutenant_Colonel","LieutenantColonel","lieutenant_colonel","lieutenantcolonel"
+  ],
+  "Col": ["Col","col","Colonel","colonel"],
+  "Brig Gen": [
+    "Brig_Gen","BrigGen","brig_gen","briggen",
+    "Brigadier_Gen","BrigadierGen","brigadier_gen","brigadiergen",
+    "Brigadier_General","BrigadierGeneral","brigadier_general","brigadiergeneral"
+  ],
+  "Maj Gen": [
+    "Maj_Gen","MajGen","maj_gen","majgen",
+    "Major_Gen","MajorGen","major_gen","majorgen",
+    "Major_General","MajorGeneral","major_general","majorgeneral"
+  ]
 };
 
 function getSeniorOfficerCombinedClassAPaths(rank, gender){
   const tokens = SENIOR_OFFICER_CLASSA_RANK_FILE_TOKENS[rank] || [];
   if(!tokens.length || !gender) return [];
-  return tokens.map(token => `base/CAP_${gender}_${token}.png`);
+
+  // Try the primary file style first, then several safe fallback styles.
+  // This covers all senior-member officer ranks and fixes cases where a Class A
+  // combined jacket asset is named slightly differently from the first expected path.
+  // Primary expected examples:
+  //   images/base/CAP_male_Capt.png
+  //   images/base/CAP_female_Capt.png
+  const genderTokens = gender === 'female'
+    ? ['female','Female','femal','Femal']
+    : ['male','Male'];
+
+  const candidates = [];
+  const add = path => { if(path && !candidates.includes(path)) candidates.push(path); };
+
+  genderTokens.forEach(g => {
+    tokens.forEach(token => {
+      add(`base/CAP_${g}_${token}.png`);
+      add(`base/CAP_${g}_${token}_Class_A.png`);
+      add(`base/CAP_${g}_${token}_Class_A_Jacket.png`);
+      add(`base/CAP_${g}_${token}_class_a.png`);
+      add(`base/CAP_${g}_${token}_class_a_jacket.png`);
+      add(`base/CAP_SM_${g}_${token}.png`);
+      add(`base/CAP_SM_${g}_${token}_Class_A.png`);
+      add(`base/CAP_SM_${g}_${token}_Class_A_Jacket.png`);
+      add(`base/${g}_${token}_class_a.png`);
+      add(`base/${g}_${token}_class_a_jacket.png`);
+    });
+  });
+
+  return candidates;
 }
 
 // Senior Member officer combined male Class B base images.
@@ -4278,7 +4328,8 @@ function getBaseCandidates(){
   // 1b) Senior Member Officer Class A combined jacket (jacket+epaulet rank baked in)
   if(usingCombinedSeniorOfficerJacket()){
     list.push(...getSeniorOfficerCombinedClassAPaths(State.rank, State.gender));
-    return [...new Set(list)];
+    // Do not return here. If none of the combined rank-specific assets exist,
+    // fall through to the normal jacket image so Class A still renders.
   }
 
   // 1c) Senior Member Officer (Male) Class B combined shirt (rank baked in)
