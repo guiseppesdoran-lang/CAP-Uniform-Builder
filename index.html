@@ -3199,45 +3199,32 @@ const CADET_OFFICER_COMBINED_CLASSA_MALE = {
 };
 
 // Senior Member officer combined Class A base images.
-// This now operates the same way as the cadet combined-base uniform selections:
-// a direct rank-to-file map is used instead of a broad candidate generator.
+// This intentionally operates the SAME WAY as the cadet officer jacket selection:
+// one direct rank-to-file map is used as the base jacket image. No separate
+// officer-rank overlay is rendered for these Class A senior officer selections.
 //
-// Expected exact file paths:
-//   images/base/CAP_male_2d_lt.png
-//   images/base/CAP_male_1st_lt.png
-//   images/base/CAP_male_capt.png
-//   images/base/CAP_male_maj.png
-//   images/base/CAP_male_lt_col.png
-//   images/base/CAP_male_col.png
-//   images/base/CAP_male_brig_gen.png
-//   images/base/CAP_male_maj_gen.png
-//
-//   images/base/CAP_female_2d_lt.png
-//   images/base/CAP_female_1st_lt.png
-//   images/base/CAP_female_capt.png
-//   images/base/CAP_female_maj.png
-//   images/base/CAP_female_lt_col.png
-//   images/base/CAP_female_col.png
-//   images/base/CAP_female_brig_gen.png
-//   images/base/CAP_female_maj_gen.png
+// IMPORTANT: These paths must match the filenames in images/base EXACTLY,
+// including capitalization. The uploaded ZIP currently includes:
+//   images/base/CAP_female_Capt.png
+//   images/base/CAP_male_Maj.png
+// Add the remaining senior officer jacket images using the filenames below
+// or update only this map if your actual filenames differ.
 const SENIOR_OFFICER_COMBINED_CLASSA = {
   male: {
     "2d Lt":   "base/CAP_male_2d_lt.png",
     "1st Lt":  "base/CAP_male_1st_lt.png",
-    "Capt":    "base/CAP_male_capt.png",
-    "Maj":     "base/CAP_male_maj.png",
+    "Capt":    "base/CAP_male_Capt.png",
+    "Maj":     "base/CAP_male_Maj.png",
     "Lt Col":  "base/CAP_male_lt_col.png",
     "Col":     "base/CAP_male_col.png",
     "Brig Gen":"base/CAP_male_brig_gen.png",
     "Maj Gen": "base/CAP_male_maj_gen.png"
   },
   female: {
-    // Primary path matches the actual file in the uploaded ZIP.
-    // The candidate resolver below also tries lowercase and other safe variants.
     "2d Lt":   "base/CAP_female_2d_lt.png",
     "1st Lt":  "base/CAP_female_1st_lt.png",
     "Capt":    "base/CAP_female_Capt.png",
-    "Maj":     "base/CAP_female_maj.png",
+    "Maj":     "base/CAP_female_Maj.png",
     "Lt Col":  "base/CAP_female_lt_col.png",
     "Col":     "base/CAP_female_col.png",
     "Brig Gen":"base/CAP_female_brig_gen.png",
@@ -3245,48 +3232,8 @@ const SENIOR_OFFICER_COMBINED_CLASSA = {
   }
 };
 
-const SENIOR_OFFICER_CLASSA_RANK_FILE_TOKENS = {
-  "2d Lt": "2d_lt",
-  "1st Lt": "1st_lt",
-  "Capt": "capt",
-  "Maj": "maj",
-  "Lt Col": "lt_col",
-  "Col": "col",
-  "Brig Gen": "brig_gen",
-  "Maj Gen": "maj_gen"
-};
-
-function addUniqueCandidate(list, path){
-  if(path && !list.includes(path)) list.push(path);
-}
-
-function titleCaseRankToken(token){
-  return String(token || '').split('_').map(part => part ? part.charAt(0).toUpperCase() + part.slice(1) : part).join('_');
-}
-
 function getSeniorOfficerCombinedClassAPath(rank, gender){
   return SENIOR_OFFICER_COMBINED_CLASSA?.[gender]?.[rank] || null;
-}
-
-function getSeniorOfficerCombinedClassAPathCandidates(rank, gender){
-  const list = [];
-  const mapped = getSeniorOfficerCombinedClassAPath(rank, gender);
-  addUniqueCandidate(list, mapped);
-
-  const token = SENIOR_OFFICER_CLASSA_RANK_FILE_TOKENS[rank];
-  if(gender && token){
-    // Try every likely case variant. This fixes files such as:
-    //   CAP_female_Capt.png  (actual file in the uploaded ZIP)
-    // while still supporting the intended style:
-    //   CAP_female_capt.png
-    addUniqueCandidate(list, `base/CAP_${gender}_${token}.png`);
-    addUniqueCandidate(list, `base/CAP_${gender}_${titleCaseRankToken(token)}.png`);
-    addUniqueCandidate(list, `base/CAP_${gender}_${token.toUpperCase()}.png`);
-    addUniqueCandidate(list, `base/cap_${gender}_${token}.png`);
-    addUniqueCandidate(list, `base/cap_${gender}_${titleCaseRankToken(token)}.png`);
-  }
-
-  return list;
 }
 
 // Senior Member officer combined male Class B base images.
@@ -4344,11 +4291,11 @@ function getBaseCandidates(){
   }
 
   // 1b) Senior Member Officer Class A combined jacket (jacket+epaulet rank baked in)
-  // Try multiple filename case variants, because Windows may hide case problems
-  // but GitHub Pages / most web hosts are case-sensitive. If none load, fall
-  // through to the generic Class A jacket instead of leaving the preview blank.
+  // Same pattern as the cadet officer combined-base selection: use the direct
+  // rank/gender base image and return it as the jacket candidate.
   if(usingCombinedSeniorOfficerJacket()){
-    getSeniorOfficerCombinedClassAPathCandidates(State.rank, State.gender).forEach(path => list.push(path));
+    list.push(getSeniorOfficerCombinedClassAPath(State.rank, State.gender));
+    return [...new Set(list)];
   }
 
   // 1c) Senior Member Officer (Male) Class B combined shirt (rank baked in)
