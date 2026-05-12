@@ -3817,6 +3817,34 @@ const customBadgeSizes = {
   'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25},'uas_pilot_basic_badge':{width:60,height:25},'uas_pilot_senior_badge':{width:60,height:25},'uas_pilot_master_badge':{width:60,height:25}
 };
 
+const CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS = [
+  'administration_senior_badge','administration_master_badge',
+  'aerospace_education_senior_badge','aerospace_education_master_badge',
+  'finance_senior_badge','finance_master_badge',
+  'cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge',
+  'command_technician_badge','command_senior_badge','command_master_badge',
+  'health_services_technician_badge','health_services_senior_badge','health_services_master_badge',
+  'historian_senior_badge','historian_master_badge',
+  'information_technology_senior_badge','information_technology_master_badge',
+  'logistics_technician_badge','logistics_senior_badge','logistics_master_badge',
+  'operations_technician_badge','operations_senior_badge','operations_master_badge',
+  'personnel_technician_badge','personnel_senior_badge','personnel_master_badge',
+  'professional_development_technician_badge','professional_development_senior_badge','professional_development_master_badge',
+  'public_affairs_technician_badge','public_affairs_senior_badge','public_affairs_master_badge',
+  'recruiting_retention_technician_badge','recruiting_retention_senior_badge','recruiting_retention_master_badge',
+  'safety_technician_badge','safety_senior_badge','safety_master_badge',
+  'inspector_general_technician_badge','inspector_general_senior_badge','inspector_general_master_badge',
+  'drug_demand_reduction_technician_badge','drug_demand_reduction_senior_badge','drug_demand_reduction_master_badge'
+];
+CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS.forEach(id => {
+  if(!badgeList.includes(id)) badgeList.push(id);
+  SPECIALTY_TRACK_BADGE_IDS.add(id);
+  POCKET_SERVICE_BADGE_IDS.add(id);
+  SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.add(id);
+  if(!customBadgeSizes[id]) customBadgeSizes[id] = { width:25, height:25 };
+  if(!badgeLocations[id]) badgeLocations[id] = 'LP,RP';
+});
+
 /* NEW: badge grouping for modal */
 const BADGE_CATEGORIES = [
   { key:'Aviation', ids:[
@@ -7669,17 +7697,138 @@ function hasGraduatedCommanderDutyPosition(text){
   return false;
 }
 
-function hasSpecialtyTrackLevel(text, trackPattern, levelPattern){
-  const tracks = getReportSection(text, 'Specialty Tracks', 'Encampments');
-  if(!tracks) return false;
-  return new RegExp(`${trackPattern}\\s+${levelPattern}\\s+\\d{1,2}\\s+[A-Za-z]{3,9}\\s+\\d{4}`, 'i').test(tracks);
+const CAPUB_SPECIALTY_TRACK_TO_BADGE = {
+  "ADMINISTRATION": {
+    TECHNICIAN: "administration_technician_badge",
+    SENIOR: "administration_senior_badge",
+    MASTER: "administration_master_badge"
+  },
+  "AEROSPACE": {
+    TECHNICIAN: "aerospace_education_technician_badge",
+    SENIOR: "aerospace_education_senior_badge",
+    MASTER: "aerospace_education_master_badge"
+  },
+  "AEROSPACE EDUCATION": {
+    TECHNICIAN: "aerospace_education_technician_badge",
+    SENIOR: "aerospace_education_senior_badge",
+    MASTER: "aerospace_education_master_badge"
+  },
+  "CADET PROGRAMS": {
+    TECHNICIAN: "cadet_programs_badge",
+    SENIOR: "cadet_programs_badge",
+    MASTER: "cadet_programs_badge"
+  },
+  "COMMAND": {
+    TECHNICIAN: "command_technician_badge",
+    SENIOR: "command_senior_badge",
+    MASTER: "command_master_badge"
+  },
+  "COMMUNICATIONS": {
+    TECHNICIAN: "communications_technician_badge",
+    SENIOR: "communications_senior_badge",
+    MASTER: "communications_master_badge"
+  },
+  "EMERGENCY SERVICES": {
+    TECHNICIAN: "emergency_services_badge",
+    SENIOR: "senior_emergency_services_badge",
+    MASTER: "master_emergency_services_badge"
+  },
+  "FINANCE": {
+    TECHNICIAN: "finance_technician_badge",
+    SENIOR: "finance_senior_badge",
+    MASTER: "finance_master_badge"
+  },
+  "HEALTH SERVICES": {
+    TECHNICIAN: "health_services_technician_badge",
+    SENIOR: "health_services_senior_badge",
+    MASTER: "health_services_master_badge"
+  },
+  "HISTORIAN": {
+    TECHNICIAN: "historian_technicianIbadge",
+    SENIOR: "historian_senior_badge",
+    MASTER: "historian_master_badge"
+  },
+  "INFORMATION TECHNOLOGY": {
+    TECHNICIAN: "information_technology_technician_badge",
+    SENIOR: "information_technology_senior_badge",
+    MASTER: "information_technology_master_badge"
+  },
+  "IT": {
+    TECHNICIAN: "information_technology_technician_badge",
+    SENIOR: "information_technology_senior_badge",
+    MASTER: "information_technology_master_badge"
+  },
+  "LOGISTICS": {
+    TECHNICIAN: "logistics_technician_badge",
+    SENIOR: "logistics_senior_badge",
+    MASTER: "logistics_master_badge"
+  },
+  "OPERATIONS": {
+    TECHNICIAN: "operations_technician_badge",
+    SENIOR: "operations_senior_badge",
+    MASTER: "operations_master_badge"
+  },
+  "PERSONNEL": {
+    TECHNICIAN: "personnel_technician_badge",
+    SENIOR: "personnel_senior_badge",
+    MASTER: "personnel_master_badge"
+  },
+  "PROFESSIONAL DEVELOPMENT": {
+    TECHNICIAN: "professional_development_technician_badge",
+    SENIOR: "professional_development_senior_badge",
+    MASTER: "professional_development_master_badge"
+  },
+  "PUBLIC AFFAIRS": {
+    TECHNICIAN: "public_affairs_technician_badge",
+    SENIOR: "public_affairs_senior_badge",
+    MASTER: "public_affairs_master_badge"
+  },
+  "RECRUITING AND RETENTION OFFICER": {
+    TECHNICIAN: "recruiting_retention_technician_badge",
+    SENIOR: "recruiting_retention_senior_badge",
+    MASTER: "recruiting_retention_master_badge"
+  },
+  "RECRUITING AND RETENTION": {
+    TECHNICIAN: "recruiting_retention_technician_badge",
+    SENIOR: "recruiting_retention_senior_badge",
+    MASTER: "recruiting_retention_master_badge"
+  },
+  "SAFETY": {
+    TECHNICIAN: "safety_technician_badge",
+    SENIOR: "safety_senior_badge",
+    MASTER: "safety_master_badge"
+  },
+  "INSPECTOR GENERAL": {
+    TECHNICIAN: "inspector_general_technician_badge",
+    SENIOR: "inspector_general_senior_badge",
+    MASTER: "inspector_general_master_badge"
+  },
+  "DRUG DEMAND REDUCTION": {
+    TECHNICIAN: "drug_demand_reduction_technician_badge",
+    SENIOR: "drug_demand_reduction_senior_badge",
+    MASTER: "drug_demand_reduction_master_badge"
+  }
+};
+
+function normalizeSpecialtyTrackName(name){
+  return String(name || '')
+    .toUpperCase()
+    .replace(/&/g, ' AND ')
+    .replace(/\bR\s*&\s*R\b/g, 'RECRUITING AND RETENTION')
+    .replace(/RECRUITING\s+&\s+RETENTION/g, 'RECRUITING AND RETENTION')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
+function normalizeSpecialtyTrackLevel(level){
+  return String(level || '').toUpperCase().replace(/\s+/g, ' ').trim();
+}
 
 function getMemberReportSpecialtyTracksSection(text){
   return getReportSectionUntilAny(text, 'Specialty Tracks', [
-    'Encampments', 'Awards', 'Promotions', 'Decorations', 'Current Duty Positions',
-    'Past Duty Positions', 'Professional Development', 'Local Activities', 'Transfer History'
+    'Encampments', 'Cadet Training', 'Awards', 'Promotions', 'Decorations',
+    'Current Duty Positions', 'Past Duty Positions', 'Professional Development',
+    'Local Activities', 'Transfer History', 'Cadet Achievements'
   ]);
 }
 
@@ -7688,60 +7837,87 @@ function parseMemberReportSpecialtyTracks(text){
   if(!tracksSection) return [];
 
   const rows = [];
-  const rowRe = /([A-Z][A-Z\s\/,&-]{2,80}?)\s+(TECHNICIAN|SENIOR|MASTER|NONE)\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/gi;
+  const rowRe = /([A-Z][A-Z\s\/,\.\-&]{1,90}?)\s+(TECHNICIAN|SENIOR|MASTER|NONE)\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/gi;
   let m;
   while((m = rowRe.exec(tracksSection))){
-    const name = String(m[1] || '')
-      .replace(/\bSpecialty\s+Track\b|\bLevel\b|\bCompleted\b/gi, ' ')
+    let name = normalizeSpecialtyTrackName(m[1])
+      .replace(/\bSPECIALTY TRACK\b|\bLEVEL\b|\bCOMPLETED\b/gi, ' ')
       .replace(/\s+/g, ' ')
-      .trim()
-      .toUpperCase();
-    const level = String(m[2] || '').toUpperCase();
-    if(!name || level === 'NONE') continue;
-    rows.push({ name, level, completed:m[3] });
+      .trim();
+    const level = normalizeSpecialtyTrackLevel(m[2]);
+    const completed = m[3];
+    if(!name) continue;
+
+    // This is the authoritative row, including explicit NONE values.
+    rows.push({ name, level, completed, eligible: level !== 'NONE' });
   }
   return rows;
 }
 
-function highestSpecialtyTrackLevelFromReport(text, trackNames){
-  const section = getMemberReportSpecialtyTracksSection(text);
-  if(!section) return null;
+function hasSpecialtyTrackLevel(text, trackPattern, levelPattern){
+  const rows = parseMemberReportSpecialtyTracks(text);
+  const trackRe = new RegExp(trackPattern, 'i');
+  const levelRe = new RegExp(levelPattern, 'i');
+  return rows.some(row => row.eligible && trackRe.test(row.name) && levelRe.test(row.level));
+}
 
+function highestSpecialtyTrackLevelFromReport(text, trackNames){
   const wanted = (Array.isArray(trackNames) ? trackNames : [trackNames])
-    .map(name => String(name || '').replace(/\s+/g, ' ').trim())
+    .map(normalizeSpecialtyTrackName)
     .filter(Boolean);
   if(!wanted.length) return null;
 
+  const rows = parseMemberReportSpecialtyTracks(text);
   const weight = { TECHNICIAN:1, SENIOR:2, MASTER:3 };
   let best = null;
-  const datePattern = '\\d{1,2}\\s+[A-Za-z]{3,9}\\s+\\d{4}';
 
-  for(const trackName of wanted){
-    const escapedName = trackName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\\\s\+/g, '\\s+').replace(/\s+/g, '\\s+');
-    const re = new RegExp(`\\b${escapedName}\\b(?:\\s+OFFICER)?\\s+(TECHNICIAN|SENIOR|MASTER)\\s+(${datePattern})`, 'gi');
-    let m;
-    while((m = re.exec(section))){
-      const row = { name:trackName.toUpperCase(), level:String(m[1]).toUpperCase(), completed:m[2] };
-      if(!best || weight[row.level] > weight[best.level]) best = row;
-    }
+  for(const row of rows){
+    if(!row.eligible) continue;
+    const rowName = normalizeSpecialtyTrackName(row.name);
+    const matches = wanted.some(name => rowName === name || rowName.replace(/\s+OFFICER$/, '') === name);
+    if(!matches) continue;
+    if(!best || weight[row.level] > weight[best.level]) best = row;
   }
   return best;
 }
 
 function badgeIdForSpecialtyTrack(row, family){
-  if(!row) return null;
-  const level = String(row.level || '').toUpperCase();
-  if(family === 'communications'){
-    if(level === 'MASTER') return 'communications_master_badge';
-    if(level === 'SENIOR') return 'communications_senior_badge';
-    if(level === 'TECHNICIAN') return 'communications_technician_badge';
+  if(!row || !row.eligible) return null;
+  const level = normalizeSpecialtyTrackLevel(row.level);
+  if(family === 'communications') return CAPUB_SPECIALTY_TRACK_TO_BADGE.COMMUNICATIONS?.[level] || null;
+  if(family === 'emergencyServices') return CAPUB_SPECIALTY_TRACK_TO_BADGE['EMERGENCY SERVICES']?.[level] || null;
+
+  const key = normalizeSpecialtyTrackName(row.name);
+  return CAPUB_SPECIALTY_TRACK_TO_BADGE[key]?.[level] || null;
+}
+
+function getSpecialtyBadgesFromTracks(text){
+  const rows = parseMemberReportSpecialtyTracks(text);
+  const out = [];
+  const notes = [];
+
+  for(const row of rows){
+    const key = normalizeSpecialtyTrackName(row.name);
+    if(row.level === 'NONE'){
+      notes.push(`${key} Specialty Track is NONE; no specialty badge imported.`);
+      continue;
+    }
+
+    const badgeId = badgeIdForSpecialtyTrack(row);
+    if(!badgeId){
+      notes.push(`${key} ${row.level} appears in Specialty Tracks, but no badge mapping/image ID is configured for that specialty.`);
+      continue;
+    }
+
+    out.push({
+      id: badgeId,
+      specialty: key,
+      level: row.level,
+      completed: row.completed
+    });
   }
-  if(family === 'emergencyServices'){
-    if(level === 'MASTER') return 'master_emergency_services_badge';
-    if(level === 'SENIOR') return 'senior_emergency_services_badge';
-    if(level === 'TECHNICIAN') return 'emergency_services_badge';
-  }
-  return null;
+
+  return { badges: out, notes };
 }
 
 function addImportedBadge(result, id, reason){
@@ -7946,28 +8122,28 @@ function parseCapMemberReport(textRaw){
       : 'Past commander duty of at least one year found; Command Insignia Pin imported as graduated commander.');
   }
 
-  const commTrack = highestSpecialtyTrackLevelFromReport(text, 'COMMUNICATIONS');
-  const commBadge = badgeIdForSpecialtyTrack(commTrack, 'communications');
-  if(commBadge){
-    result.badges.push(commBadge);
-    result.notes.push(`Communications ${commTrack.level} badge imported from Specialty Tracks only.`);
-  }else if(/ICUT|Introductory Communications User Training|Rating Exam:\s*Communications|Mission Radio Operator|\bMRO\b/i.test(text)){
-    result.notes.push('Communications-related training/exam/ICUT/MRO found, but Communications badge was not imported because no COMMUNICATIONS row appears in Specialty Tracks.');
+  // Specialty-track badges: the Specialty Tracks table is the ONLY authority.
+  // Left column = specialty area, middle column = level, right column = completion date.
+  // Level NONE = ineligible, even if the member holds a duty position or completed a rating exam.
+  const importedSpecialtyTracks = getSpecialtyBadgesFromTracks(text);
+  for(const item of importedSpecialtyTracks.badges){
+    result.badges.push(item.id);
+    result.notes.push(`${item.specialty} ${item.level} specialty badge imported from Specialty Tracks table only.`);
   }
+  result.notes.push(...importedSpecialtyTracks.notes);
 
-  const esTrack = highestSpecialtyTrackLevelFromReport(text, 'EMERGENCY SERVICES');
-  const esTrackBadge = badgeIdForSpecialtyTrack(esTrack, 'emergencyServices');
-  if(esTrackBadge){
-    result.badges.push(esTrackBadge);
-    result.notes.push(`Emergency Services ${esTrack.level} badge imported from Specialty Tracks.`);
+  if(/ICUT|Introductory Communications User Training|Rating Exam:\s*Communications|Mission Radio Operator|\bMRO\b/i.test(text) &&
+     !importedSpecialtyTracks.badges.some(item => /^communications_/.test(item.id))){
+    result.notes.push('Communications-related duty/training/exam found outside Specialty Tracks; Communications badge not imported unless the Specialty Tracks table shows TECHNICIAN, SENIOR, or MASTER.');
   }
-
-  if(hasSpecialtyTrackLevel(text, 'CADET\\s+PROGRAMS|Cadet Programs', 'SENIOR|MASTER|TECHNICIAN')) result.badges.push('cadet_programs_badge');
-  if(hasSpecialtyTrackLevel(text, 'ADMINISTRATION|Administration', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('administration_technician_badge');
-  if(hasSpecialtyTrackLevel(text, 'AEROSPACE|Aerospace', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('aerospace_education_technician_badge');
-  if(hasSpecialtyTrackLevel(text, 'FINANCE|Finance', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('finance_technician_badge');
-  if(hasSpecialtyTrackLevel(text, 'INFORMATION\\s+TECHNOLOGY|Information Technology|IT', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('information_technology_technician_badge');
-  if(hasSpecialtyTrackLevel(text, 'HISTORIAN|Historian', 'TECHNICIAN|SENIOR|MASTER')) result.badges.push('historian_technicianIbadge');
+  if(/Technician Rating Exam:\s*IT|Information Technology Technician/i.test(text) &&
+     !importedSpecialtyTracks.badges.some(item => /^information_technology_/.test(item.id))){
+    result.notes.push('IT-related training/exam found outside Specialty Tracks; IT badge not imported unless the Specialty Tracks table shows TECHNICIAN, SENIOR, or MASTER.');
+  }
+  if(/Technician Rating Exam:\s*Historian|Historian Technician/i.test(text) &&
+     !importedSpecialtyTracks.badges.some(item => /^historian_/.test(item.id))){
+    result.notes.push('Historian-related training/exam found outside Specialty Tracks; Historian badge not imported unless the Specialty Tracks table shows TECHNICIAN, SENIOR, or MASTER.');
+  }
 
   // New rule: CDI status/duty/training alone does not authorize the CDI badge.
   // Only import a CDI badge if a future report explicitly lists a CDI badge/award item.
@@ -8014,21 +8190,10 @@ function parseCapMemberReport(textRaw){
   if(/CAP Master Emergency Services Qualification Badge/i.test(text)) result.badges.push('master_emergency_services_badge');
   else if(/CAP Senior Emergency Services Qualification Badge/i.test(text)) result.badges.push('senior_emergency_services_badge');
   else if(/CAP Basic Emergency Services Qualification Badge/i.test(text)) result.badges.push('emergency_services_badge');
-  else if(/Technician Rating Exam:\s*Emergency Services/i.test(text) && !esTrackBadge){
-    result.notes.push('Emergency Services rating exam found, but ES specialty badge import now prefers an awarded badge or Emergency Services row in Specialty Tracks.');
+  else if(/Technician Rating Exam:\s*Emergency Services/i.test(text)) {
+    result.notes.push('Emergency Services rating exam found outside Specialty Tracks; ES specialty badge not imported from the exam alone.');
   }
 
-  // Communications/IT/Historian specialty badges must come from Specialty Tracks only.
-  // Do not import Communications from ICUT, MRO, communications training, or Professional Development rating exams.
-  if(/Technician Rating Exam:\s*Communications|Communications Technician/i.test(text) && !commBadge){
-    result.notes.push('Communications rating exam/training found outside Specialty Tracks; Communications badge not imported.');
-  }
-  if(/Technician Rating Exam:\s*IT|Information Technology Technician/i.test(text) && !hasSpecialtyTrackLevel(text, 'INFORMATION\s+TECHNOLOGY|Information Technology|IT', 'TECHNICIAN|SENIOR|MASTER')){
-    result.notes.push('IT rating exam/training found outside Specialty Tracks; IT badge not imported.');
-  }
-  if(/Technician Rating Exam:\s*Historian|Historian Technician/i.test(text) && !hasSpecialtyTrackLevel(text, 'HISTORIAN|Historian', 'TECHNICIAN|SENIOR|MASTER')){
-    result.notes.push('Historian rating exam/training found outside Specialty Tracks; Historian badge not imported.');
-  }
   if(/Model Rocketry/i.test(text)) result.badges.push('model_rocketry_badge');
 
   result.badges = selectHighestWearableImportedBadges(result.badges, result.membership);
@@ -8509,9 +8674,3 @@ mergeCalibDefaults();
 </script>
 </body>
 </html>
-
-// Revert Class A female/default placement back to the original Class A bucket.
-// This removes the previously imported female-specific Class A override while
-// preserving the centered, larger PNG export background change.
-DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_female = JSON.parse(JSON.stringify(DEFAULT_CALIBRATION_BY_UNIFORM.blues_a));
-DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_male = JSON.parse(JSON.stringify(DEFAULT_CALIBRATION_BY_UNIFORM.blues_a));
