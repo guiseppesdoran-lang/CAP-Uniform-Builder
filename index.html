@@ -5753,9 +5753,33 @@ function getFemaleSpecialtyBadgeRowIds(){
 }
 
 function getFemaleSpecialtyBadgeAnchor(id, bw, bh, W, H){
-  const gap = 8;
   const ids = getFemaleSpecialtyBadgeRowIds();
   const index = Math.max(0, ids.indexOf(id));
+
+  // Female Class A patch:
+  // Specialty-track badges above the nameplate should be centered on the
+  // command badge's centerline whether or not the command badge is selected.
+  // A single specialty badge or a two-badge row sits 10px above where the
+  // current commander badge would render, and two badges keep 10px between them.
+  if(State.gender === 'female' && State.uniform === 'blues_a'){
+    const gap = 10;
+    const widths = ids.map(badgeId => Number(customBadgeSizes[badgeId]?.width) || bw || 25);
+    const totalWidth = widths.reduce((sum, width) => sum + width, 0) + Math.max(0, ids.length - 1) * gap;
+    const prevWidth = widths.slice(0, index).reduce((sum, width) => sum + width, 0) + (gap * index);
+
+    const cmdKey = 'badge:squadron_commander_badge:ON:0';
+    const cmdRef = getCalib(cmdKey) || { x: W * 0.32 - 7.5, y: H * 0.30 - 7.5, w: 15, h: 15 };
+    const cmdCenterX = Number(cmdRef.x || 0) + (Number(cmdRef.w) || 15) / 2;
+    const cmdTop = Number.isFinite(Number(cmdRef.y)) ? Number(cmdRef.y) : (H * 0.30 - 7.5);
+
+    return {
+      x: Math.round((cmdCenterX - totalWidth / 2) + prevWidth),
+      y: Math.round(cmdTop - 10 - bh)
+    };
+  }
+
+  // Non-Class-A female fallback behavior.
+  const gap = 8;
   const widths = ids.map(badgeId => Number(customBadgeSizes[badgeId]?.width) || bw || 25);
   const totalWidth = widths.reduce((sum, width) => sum + width, 0) + Math.max(0, ids.length - 1) * gap;
 
