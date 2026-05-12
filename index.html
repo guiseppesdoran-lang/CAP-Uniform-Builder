@@ -3463,6 +3463,7 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
   'cap_command_service_ribbon': [
     { label:'Squadron Commander / Basic Ribbon', value:'earned', image:null, devices:{} },
     { label:'Group Commander / Bronze Star', value:'group_bronze_star', image:'cmdser-bronze.png', devices:{} },
+    { label:'Wing Commander / Silver Star', value:'wing_silver_star', image:'cmdser-silver.png', devices:{} },
     { label:'Region Commander / Gold Star', value:'region_gold_star', image:'cmdser-gold.png', devices:{} },
     { label:'National Commander / 2 Gold Stars', value:'national_two_gold_stars', image:'cmdser-gold2.png', devices:{} }
   ],
@@ -4861,7 +4862,7 @@ function getRibbonSelectionOption(id, value){
 }
 
 const COMMAND_SERVICE_RIBBON_ID = 'cap_command_service_ribbon';
-const COMMAND_SERVICE_RIBBON_VALUES = new Set(['earned','group_bronze_star','region_gold_star','national_two_gold_stars']);
+const COMMAND_SERVICE_RIBBON_VALUES = new Set(['earned','group_bronze_star','wing_silver_star','region_gold_star','national_two_gold_stars']);
 
 function applyRibbonSelectionValue(id, value){
   const option = getRibbonSelectionOption(id, value || 'earned');
@@ -4879,7 +4880,18 @@ function syncCommandBadgeAndRibbonSelections(){
 
   State.badgeSelections['squadron_commander_badge'] = State.badgeSelections['squadron_commander_badge'] || { checked:false };
   const badgeSel = State.badgeSelections['squadron_commander_badge'];
-  const hasBadge = !!badgeSel.checked || (State.badges || []).includes('squadron_commander_badge');
+  const commanderRankEligible = isCommandInsigniaGradeEligible(State.rank);
+
+  // Never allow the commander pin to render for Col and above.
+  // The Command Service Ribbon is handled separately and may still be awarded
+  // after one year of qualifying command service at the proper echelon.
+  if(!commanderRankEligible){
+    badgeSel.checked = false;
+    State.badges = (State.badges || []).filter(id => id !== 'squadron_commander_badge');
+    State.badgeSelections['squadron_commander_badge'] = badgeSel;
+  }
+
+  const hasBadge = commanderRankEligible && (!!badgeSel.checked || (State.badges || []).includes('squadron_commander_badge'));
 
   const ribbonSel = State.ribbonSelections[COMMAND_SERVICE_RIBBON_ID] || { checked:false, devices:{}, awardValue:'', awardLabel:'' };
   const ribbonValue = ribbonSel.awardValue || '';
@@ -4889,7 +4901,10 @@ function syncCommandBadgeAndRibbonSelections(){
     applyRibbonSelectionValue(COMMAND_SERVICE_RIBBON_ID, 'earned');
   }
 
-  if(ribbonImpliesCommand){
+  // Reverse-sync the ribbon to the badge only when the selected grade is allowed
+  // to wear command insignia. This prevents Cols from receiving a rendered badge
+  // simply because the Command Service Ribbon imported or was manually selected.
+  if(ribbonImpliesCommand && commanderRankEligible){
     badgeSel.checked = true;
     State.badgeSelections['squadron_commander_badge'] = badgeSel;
   }
@@ -5097,7 +5112,7 @@ function rebuildBadgesFromGallery(){
   // Keep the user's selection order instead of rebuilding in badgeList order.
   // This prevents a newly added badge with the same preferred slot from stealing
   // the pocket/location of a badge that was already selected.
-  const eligible = id => !(State.membership==='cadet' && !isCadetAuthorized(id));
+  const eligible = id => !(State.membership==='cadet' && !isCadetAuthorized(id)) && !(isCommandInsigniaBadge(id) && !isCommandInsigniaGradeEligible(State.rank));
   const current = Array.isArray(State.badges) ? State.badges.filter(id => eligible(id) && State.badgeSelections[id]?.checked) : [];
 
   for(const id of badgeList){
@@ -5160,12 +5175,27 @@ function buildBadgeGallery(){
     if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
 
     chk.onchange = ()=>{
+      if(id === 'squadron_commander_badge' && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
+        chk.checked = false;
+        sel.checked = false;
+        State.badgeSelections[id] = sel;
+        rebuildBadgesFromGallery();
+        return;
+      }
       sel.checked = chk.checked;
       State.badgeSelections[id] = sel;
       rebuildBadgesFromGallery();
     };
     if(gradChk){
       gradChk.onchange = ()=>{
+        if(gradChk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
+          gradChk.checked = false;
+          sel.checked = false;
+          chk.checked = false;
+          State.badgeSelections[id] = sel;
+          rebuildBadgesFromGallery();
+          return;
+        }
         if(!State.commandInsignia) State.commandInsignia = {};
         State.commandInsignia.graduatedCommander = gradChk.checked;
         if(gradChk.checked){
@@ -8079,11 +8109,25 @@ function getCommandServiceRibbonValueForCommanderEchelon(echelon){
   switch(String(echelon || '').toUpperCase()){
     case 'NATIONAL': return 'national_two_gold_stars';
     case 'REGION': return 'region_gold_star';
+    case 'WING': return 'wing_silver_star';
     case 'GROUP': return 'group_bronze_star';
-    case 'WING': return 'earned';
     case 'UNIT':
     default: return 'earned';
   }
+}
+
+function showCommandInsigniaRankWarning(){
+  alert(
+    'Commander pin blocked for this rank.\n\n' +
+    'CAPR 39-1 limits the Command Insignia Pin to current and graduated commanders in the grade of Lieutenant Colonel and below.\n\n' +
+    'Only colonels who are specifically authorized under the current command-insignia rules and who have not served, and are not currently serving, on Command Council may be eligible. This builder will not render the commander pin for Col and above.'
+  );
+}
+
+function canSelectCommandInsigniaForCurrentRank(showWarning=false){
+  const ok = isCommandInsigniaGradeEligible(State.rank);
+  if(!ok && showWarning) showCommandInsigniaRankWarning();
+  return ok;
 }
 
 function getCommandServiceRibbonLabelForValue(value){
@@ -8131,7 +8175,7 @@ function getCommandServiceRibbonFromDutyAssignments(text){
     .filter(row => row.days >= 365);
   if(!rows.length) return null;
 
-  const priority = { UNIT:1, WING:1, GROUP:2, REGION:3, NATIONAL:4 };
+  const priority = { UNIT:1, GROUP:2, WING:3, REGION:4, NATIONAL:5 };
   rows.sort((a,b) => (priority[b.echelon] || 0) - (priority[a.echelon] || 0));
   const best = rows[0];
   const value = getCommandServiceRibbonValueForCommanderEchelon(best.echelon);
@@ -8855,6 +8899,7 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
    V3.2 USER PATCHES
    - Female Class A current/graduated commander pin default moved 5px left.
    - Senior Aerospace Education badge asset mapped to images/badges/aerospace_senior_badge.png.
+   - v3.3: Command Service Ribbon now requires 365 days at the command level and maps Wing command to silver star; commander pin is blocked for Col and above with manual-selection warning.
    - Specialty-track import continues to use only the Specialty Tracks table.
    =========================== */
 
