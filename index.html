@@ -2728,7 +2728,7 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
   // User asset expected at images/ribbons/eaker-star.png.
   'eaker_award': [
     { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned + COS Star', value:'earned_cos_star', image:'eaker-star', devices:{} }
+    { label:'Earned + COS Star', value:'earned_cos_star', image:'eaker-star.png', devices:{} }
   ],
   'bronze_medal_of_valor': [
     { label:'Basic Award', value:'earned', image:null, devices:{} },
@@ -2998,14 +2998,22 @@ function getRibbonImageOverride(id, awardValue){
   return match?.image || null;
 }
 
+function normalizeRibbonImageFileName(name){
+  if(!name) return null;
+  const n = String(name).trim();
+  // User-supplied overrides may be written as either "eaker-star" or "eaker-star.png".
+  // Browser image paths still need the real extension when the file is stored as a PNG.
+  return /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(n) ? n : `${n}.png`;
+}
+
 function getRibbonImagePath(ribbonOrId){
   const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
   if(typeof ribbonOrId !== 'string' && ribbonOrId?.imageOverride){
-    return `ribbons/${ribbonOrId.imageOverride}`;
+    return `ribbons/${normalizeRibbonImageFileName(ribbonOrId.imageOverride)}`;
   }
   const awardValue = typeof ribbonOrId === 'string' ? (State.ribbonSelections?.[id]?.awardValue || '') : (ribbonOrId?.awardValue || '');
   const override = getRibbonImageOverride(id, awardValue);
-  return override ? `ribbons/${override}` : `ribbons/${normalizeRibbonId(id)}.png`;
+  return override ? `ribbons/${normalizeRibbonImageFileName(override)}` : `ribbons/${normalizeRibbonId(id)}.png`;
 }
 
 function getRibbonDuplicateCountForSelection(id, awardValue){
@@ -6889,19 +6897,26 @@ function countDatedRowsInSection(section){
 }
 
 function extractEncampmentCountFromReport(text){
-  // Stop at the next table after Encampments. The older version stopped at "Awards",
-  // which accidentally swallowed Orientation Flights/Cadet Achievements and capped
-  // the ribbon at the 8-encampment option for some cadet-history reports.
-  const encampments = getReportSectionUntilAny(text, 'Encampments', [
-    'Orientation\\s+Flights',
-    'Cadet\\s+Achievements',
-    'Awards',
-    'Promotions',
-    'Decorations',
-    'Local\\s+Activities'
-  ]);
-  if(!encampments) return 0;
-  return countDatedRowsInSection(encampments);
+  const source = String(text || '');
+
+  // Prefer the actual Encampments table only. PDF text extraction can split headings
+  // across lines/pages, so the end-marker regex intentionally allows a small amount
+  // of any text between words like "Orientation" and "Flights".
+  const startMatch = /\bEncampments\b/i.exec(source);
+  if(!startMatch) return 0;
+
+  const rest = source.slice(startMatch.index);
+  const endRe = /\b(?:Orientation[\s\S]{0,30}Flights|Cadet[\s\S]{0,30}Achievements|Awards|Promotions|Decorations|Ribbons|Local[\s\S]{0,30}Activities|Professional[\s\S]{0,30}Development|Specialty[\s\S]{0,30}Tracks)\b/i;
+  const afterHeading = rest.slice('Encampments'.length);
+  const endMatch = endRe.exec(afterHeading);
+  const section = endMatch
+    ? rest.slice(0, 'Encampments'.length + endMatch.index)
+    : rest;
+
+  // Count only CAP-style dates in that section. Cap the result at 8 because the
+  // current dropdown only has images/options through encamp08.png.
+  const dates = section.match(/\b\d{1,2}\s+(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\s+\d{4}\b/gi) || [];
+  return Math.min(dates.length, 8);
 }
 
 function getCurrentProfileFromMemberReport(text){
