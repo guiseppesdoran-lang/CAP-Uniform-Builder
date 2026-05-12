@@ -1425,7 +1425,19 @@ function calibKeyFor(el){
   return el?.dataset?.calibKey || null;
 }
 function getCurrentCalibUniform(){
-  return State.uniform || 'global';
+  const uniform = State.uniform || 'global';
+  const gender = State.gender || '';
+  return gender ? `${uniform}_${gender}` : uniform;
+}
+function getBaseUniformFromCalibId(uniformId){
+  return String(uniformId || '').replace(/_(male|female)$/,'');
+}
+function getCalibFallbackUniforms(uniformId=getCurrentCalibUniform()){
+  const base = getBaseUniformFromCalibId(uniformId);
+  const list = [uniformId];
+  if(base && base !== uniformId) list.push(base);
+  list.push('global');
+  return [...new Set(list.filter(Boolean))];
 }
 function getCalibBucket(uniformId=getCurrentCalibUniform()){
   if(!State.calib.byUniform) State.calib.byUniform = {};
@@ -1830,6 +1842,535 @@ const DEFAULT_CALIBRATION_BY_UNIFORM = {
 // coordinates/sizes as male Class A for both senior and cadet member modes.
 DEFAULT_CALIBRATION_BY_UNIFORM.blues_b = JSON.parse(JSON.stringify(DEFAULT_CALIBRATION_BY_UNIFORM.blues_a));
 
+// Gender-specific calibration buckets. These let female Class A coordinates/sizes
+// be adjusted independently without overwriting the male Class A calibration.
+// If a gender-specific value is missing, getCalib() falls back to the base
+// uniform bucket, so existing male/Class B behavior remains intact.
+DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_male = JSON.parse(JSON.stringify(DEFAULT_CALIBRATION_BY_UNIFORM.blues_a));
+DEFAULT_CALIBRATION_BY_UNIFORM.blues_b_male = JSON.parse(JSON.stringify(DEFAULT_CALIBRATION_BY_UNIFORM.blues_b));
+
+// Updated female calibrations imported from CAPUB_coordinates_1778547498261.json.
+// IMPORTANT: the uploaded file exported these under blues_a/blues_b while
+// activeGender was female, so they are intentionally mapped into the
+// gender-specific buckets instead of replacing the base male/default buckets.
+DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_female = {
+  "badge:AirCrew1_DB3F0FCC3650F:OLP:0": {
+    "x": 264,
+    "y": 108,
+    "w": 60,
+    "h": 17,
+    "r": 0
+  },
+  "badge:master_ground_team_badge:OLPU:0": {
+    "x": 281,
+    "y": 138,
+    "w": 25,
+    "h": 20,
+    "r": 0
+  },
+  "badge:emergency_services_badge:LP:0": {
+    "x": 280,
+    "y": 248,
+    "w": 30,
+    "h": 30,
+    "r": 0
+  },
+  "badge:communications_technician_badge:UN:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:basic_incident_commander_badge:UN:0": {
+    "x": 288,
+    "y": 126,
+    "r": 0
+  },
+  "badge:basic_incident_commander_badge:UN:1": {
+    "x": 276,
+    "y": 133,
+    "w": 35,
+    "h": 25,
+    "r": 0
+  },
+  "badge:volunteer_university_instructor_badge:UN:0": {
+    "x": 125,
+    "y": 268,
+    "w": 45,
+    "h": 45,
+    "r": 0
+  },
+  "badge:volunteer_university_instructor_badge:UN:1": {
+    "x": 128,
+    "y": 264,
+    "w": 40,
+    "h": 40,
+    "r": 0
+  },
+  "badge:squadron_commander_badge:ON:0": {
+    "x": 142,
+    "y": 174,
+    "w": 15,
+    "h": 15,
+    "r": 0
+  },
+  "badge:squadron_commander_badge:UN:0": {
+    "x": 142,
+    "y": 229,
+    "w": 15,
+    "h": 15,
+    "r": 0
+  },
+  "badge:master_emergency_services_badge:LP:0": {
+    "x": 280,
+    "y": 269,
+    "w": 28,
+    "h": 28,
+    "r": 0
+  },
+  "badge:senior_emergency_services_badge:LP:0": {
+    "x": 280,
+    "y": 265,
+    "w": 28,
+    "h": 28,
+    "r": 0
+  },
+  "badge:information_technology_technician_badge:UN:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:historian_technicianIbadge:UN:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:cadet_programs_badge:UN:0": {
+    "x": 125,
+    "y": 258,
+    "w": 45,
+    "h": 45,
+    "r": 0
+  },
+  "badge:observer_badge:OLP:0": {
+    "x": 264,
+    "y": 151,
+    "w": 60,
+    "h": 17,
+    "r": 0
+  },
+  "badge:volunteer_university_instructor_badge:ON:0": {
+    "x": 124,
+    "y": 254,
+    "w": 50,
+    "h": 50,
+    "r": 0
+  },
+  "badge:basic_incident_commander_badge:OLPU:0": {
+    "x": 281,
+    "y": 177,
+    "w": 25,
+    "h": 12,
+    "r": 0
+  },
+  "badge:squadron_commander_badge:UN:1": {
+    "x": 140,
+    "y": 241
+  },
+  "badge:model_rocketry_badge:LP:0": {
+    "x": 287,
+    "y": 259,
+    "w": 11,
+    "h": 33,
+    "r": 0
+  },
+  "badge:communications_technician_badge:LP:0": {
+    "x": 283,
+    "y": 251,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:volunteer_university_instructor_badge:LP:0": {
+    "x": 272,
+    "y": 261,
+    "w": 45,
+    "h": 45,
+    "r": 0
+  },
+  "badge:volunteer_university_instructor_badge:RP:0": {
+    "x": 125,
+    "y": 268,
+    "w": 45,
+    "h": 45,
+    "r": 0
+  },
+  "arrow:RIBBONS:to:RP:communications_technician_badge:0": {
+    "x": 138,
+    "y": 220,
+    "w": 81,
+    "h": 35,
+    "r": 0
+  },
+  "arrow:RIBBONS:to:LP:emergency_services_badge:0": {
+    "x": 283,
+    "y": 218,
+    "w": 92,
+    "h": 32,
+    "r": 0
+  },
+  "arrow:OLPU:to:RIBBONS:RIBBONS:0": {
+    "x": 282,
+    "y": 159,
+    "w": 50,
+    "h": 6,
+    "r": 0
+  },
+  "arrow:OLP:to:OLPU:master_ground_team_badge:0": {
+    "x": 282,
+    "y": 127,
+    "w": 50,
+    "h": 5,
+    "r": 0
+  },
+  "badge:communications_technician_badge:RP:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:communications_senior_badge:LP:0": {
+    "x": 283,
+    "y": 251,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:communications_senior_badge:RP:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:communications_master_badge:LP:0": {
+    "x": 283,
+    "y": 251,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:communications_master_badge:RP:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:information_technology_technician_badge:RP:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:historian_technicianIbadge:RP:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:uas_pilot_basic_badge:OLP:0": {
+    "x": 264,
+    "y": 114,
+    "w": 60,
+    "h": 17,
+    "r": 0
+  },
+  "badge:uas_pilot_senior_badge:OLP:0": {
+    "x": 264,
+    "y": 114,
+    "w": 60,
+    "h": 17,
+    "r": 0
+  },
+  "badge:uas_pilot_master_badge:OLP:0": {
+    "x": 264,
+    "y": 114,
+    "w": 60,
+    "h": 17,
+    "r": 0
+  },
+  "jacket": {
+    "x": -15,
+    "y": 6,
+    "w": 460,
+    "h": 610,
+    "r": 0
+  }
+};
+DEFAULT_CALIBRATION_BY_UNIFORM.blues_b_female = {
+  "badge:AirCrew1_DB3F0FCC3650F:OLP:0": {
+    "x": 282,
+    "y": 136,
+    "w": 48,
+    "h": 14,
+    "r": 0
+  },
+  "badge:master_ground_team_badge:OLPU:0": {
+    "x": 294,
+    "y": 159,
+    "r": 0
+  },
+  "badge:emergency_services_badge:LP:0": {
+    "x": 127,
+    "y": 273,
+    "w": 35,
+    "h": 35,
+    "r": 0
+  },
+  "badge:communications_technician_badge:UN:0": {
+    "x": 293,
+    "y": 279,
+    "w": 28,
+    "h": 28,
+    "r": 0
+  },
+  "badge:communications_technician_badge:LP:0": {
+    "x": 130,
+    "y": 276,
+    "w": 28,
+    "h": 28,
+    "r": 0
+  },
+  "badge:volunteer_university_instructor_badge:LP:0": {
+    "x": 122,
+    "y": 268,
+    "w": 45,
+    "h": 45,
+    "r": 0
+  },
+  "badge:volunteer_university_instructor_badge:RP:0": {
+    "x": 285,
+    "y": 271,
+    "w": 45,
+    "h": 45,
+    "r": 0
+  },
+  "badge:basic_incident_commander_badge:UN:0": {
+    "x": 288,
+    "y": 126,
+    "r": 0
+  },
+  "badge:basic_incident_commander_badge:UN:1": {
+    "x": 276,
+    "y": 133,
+    "w": 35,
+    "h": 25,
+    "r": 0
+  },
+  "badge:volunteer_university_instructor_badge:UN:0": {
+    "x": 125,
+    "y": 268,
+    "w": 45,
+    "h": 45,
+    "r": 0
+  },
+  "badge:volunteer_university_instructor_badge:UN:1": {
+    "x": 128,
+    "y": 264,
+    "w": 40,
+    "h": 40,
+    "r": 0
+  },
+  "badge:squadron_commander_badge:ON:0": {
+    "x": 142,
+    "y": 174,
+    "w": 15,
+    "h": 15,
+    "r": 0
+  },
+  "badge:squadron_commander_badge:UN:0": {
+    "x": 142,
+    "y": 229,
+    "w": 15,
+    "h": 15,
+    "r": 0
+  },
+  "badge:master_emergency_services_badge:LP:0": {
+    "x": 280,
+    "y": 269,
+    "w": 28,
+    "h": 28,
+    "r": 0
+  },
+  "badge:senior_emergency_services_badge:LP:0": {
+    "x": 280,
+    "y": 265,
+    "w": 28,
+    "h": 28,
+    "r": 0
+  },
+  "badge:information_technology_technician_badge:UN:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:historian_technicianIbadge:UN:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:cadet_programs_badge:UN:0": {
+    "x": 125,
+    "y": 258,
+    "w": 45,
+    "h": 45,
+    "r": 0
+  },
+  "badge:observer_badge:OLP:0": {
+    "x": 264,
+    "y": 151,
+    "w": 60,
+    "h": 17,
+    "r": 0
+  },
+  "badge:volunteer_university_instructor_badge:ON:0": {
+    "x": 124,
+    "y": 254,
+    "w": 50,
+    "h": 50,
+    "r": 0
+  },
+  "badge:basic_incident_commander_badge:OLPU:0": {
+    "x": 281,
+    "y": 177,
+    "w": 25,
+    "h": 12,
+    "r": 0
+  },
+  "badge:squadron_commander_badge:UN:1": {
+    "x": 140,
+    "y": 241
+  },
+  "badge:model_rocketry_badge:LP:0": {
+    "x": 287,
+    "y": 259,
+    "w": 11,
+    "h": 33,
+    "r": 0
+  },
+  "arrow:RIBBONS:to:RP:communications_technician_badge:0": {
+    "x": 137,
+    "y": 223,
+    "w": 81,
+    "h": 30,
+    "r": 0
+  },
+  "arrow:RIBBONS:to:LP:emergency_services_badge:0": {
+    "x": 281,
+    "y": 219,
+    "w": 92,
+    "h": 32,
+    "r": 0
+  },
+  "arrow:OLPU:to:RIBBONS:RIBBONS:0": {
+    "x": 286,
+    "y": 161,
+    "w": 50,
+    "h": 6,
+    "r": 0
+  },
+  "arrow:OLP:to:OLPU:master_ground_team_badge:0": {
+    "x": 286,
+    "y": 133,
+    "w": 50,
+    "h": 5,
+    "r": 0
+  },
+  "badge:communications_technician_badge:RP:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:communications_senior_badge:LP:0": {
+    "x": 283,
+    "y": 251,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:communications_senior_badge:RP:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:communications_master_badge:LP:0": {
+    "x": 283,
+    "y": 251,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:communications_master_badge:RP:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:information_technology_technician_badge:RP:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:historian_technicianIbadge:RP:0": {
+    "x": 138,
+    "y": 256,
+    "w": 25,
+    "h": 25,
+    "r": 0
+  },
+  "badge:uas_pilot_basic_badge:OLP:0": {
+    "x": 264,
+    "y": 114,
+    "w": 60,
+    "h": 17,
+    "r": 0
+  },
+  "badge:uas_pilot_senior_badge:OLP:0": {
+    "x": 264,
+    "y": 114,
+    "w": 60,
+    "h": 17,
+    "r": 0
+  },
+  "badge:uas_pilot_master_badge:OLP:0": {
+    "x": 264,
+    "y": 114,
+    "w": 60,
+    "h": 17,
+    "r": 0
+  }
+};
+
 const AIRCREW_BADGE_IDS = new Set([
   'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
   'CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA',
@@ -2193,8 +2734,13 @@ function buildDerivedBadgeCalib(key, base){
 }
 function getCalib(key){
   if(!key) return null;
-  const bucket = getCalibBucket();
-  return bucket[key] || State.calib.map[key] || null;
+  for(const uniformId of getCalibFallbackUniforms()){
+    const bucket = State.calib.byUniform?.[uniformId] || {};
+    if(bucket[key]) return bucket[key];
+    const defaults = DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {};
+    if(defaults[key]) return defaults[key];
+  }
+  return State.calib.map[key] || null;
 }
 function setCalib(key, patch){
   if(!key) return;
@@ -2301,6 +2847,7 @@ function getAllCalibrationExport(){
     type: 'uniform-coordinate-calibration',
     exportedAt: new Date().toISOString(),
     activeUniform: State.uniform || null,
+    activeCalibrationBucket: getCurrentCalibUniform(),
     activeMembership: State.membership || null,
     activeRank: State.rank || null,
     activeGender: State.gender || null,
@@ -4662,8 +5209,13 @@ const OVER_RIBBON_REFERENCE_TOP_BY_UNIFORM = {
 };
 
 function getReferenceCalibForKey(uniformId, key){
-  const bucket = getCalibBucket(uniformId);
-  return bucket[key] || ((DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {})[key]) || null;
+  for(const id of getCalibFallbackUniforms(uniformId)){
+    const bucket = State.calib.byUniform?.[id] || {};
+    if(bucket[key]) return bucket[key];
+    const defaults = DEFAULT_CALIBRATION_BY_UNIFORM[id] || {};
+    if(defaults[key]) return defaults[key];
+  }
+  return null;
 }
 
 function getOverRibbonReferenceKey(slot, idx=0){
@@ -5626,12 +6178,55 @@ by('clearPatches').addEventListener('click', ()=>{
 });
 
 
+const EXPORT_PADDING_X = 180;
+const EXPORT_PADDING_Y = 180;
+
+function buildCenteredExportStage(){
+  const rect = uniformCanvas.getBoundingClientRect();
+  const srcW = Math.round(rect.width || 450);
+  const srcH = Math.round(rect.height || 600);
+  const exportW = srcW + (EXPORT_PADDING_X * 2);
+  const exportH = srcH + (EXPORT_PADDING_Y * 2);
+
+  const stage = document.createElement('div');
+  stage.id = 'capubExportStage';
+  stage.style.position = 'fixed';
+  stage.style.left = '-10000px';
+  stage.style.top = '0';
+  stage.style.width = `${exportW}px`;
+  stage.style.height = `${exportH}px`;
+  stage.style.background = '#ffffff';
+  stage.style.overflow = 'hidden';
+  stage.style.pointerEvents = 'none';
+  stage.style.zIndex = '-1';
+
+  const clone = uniformCanvas.cloneNode(true);
+  clone.id = 'capubExportUniformCanvas';
+  clone.classList.remove('calib-selectable','drag-mode-on');
+  clone.style.position = 'absolute';
+  clone.style.left = `${Math.round((exportW - srcW) / 2)}px`;
+  clone.style.top = `${Math.round((exportH - srcH) / 2)}px`;
+  clone.style.width = `${srcW}px`;
+  clone.style.height = `${srcH}px`;
+  clone.style.background = 'transparent';
+  clone.style.borderRadius = '0';
+  clone.style.transform = 'none';
+  clone.querySelectorAll('.calib-selected').forEach(el => el.classList.remove('calib-selected'));
+
+  stage.appendChild(clone);
+  document.body.appendChild(stage);
+  return stage;
+}
+
 by('downloadImage').addEventListener('click', ()=>{
-  html2canvas(uniformCanvas,{scale:3,backgroundColor:'#ffffff'}).then(c=>{
+  const stage = buildCenteredExportStage();
+  html2canvas(stage,{scale:3,backgroundColor:'#ffffff',useCORS:true}).then(c=>{
     const a=document.createElement('a');
     a.download=`CAP_Uniform_${Date.now()}.png`;
     a.href=c.toDataURL();
     a.click();
+  }).finally(()=>{
+    stage.remove();
   });
 });
 
@@ -7386,15 +7981,20 @@ function capubRepairCriticalButtons(){
       alert('Download failed: html2canvas did not load. Check internet access or the CDN script.');
       return;
     }
-    const target = by('previewArea');
+    const stage = (typeof buildCenteredExportStage === 'function') ? buildCenteredExportStage() : null;
+    const target = stage || by('uniformCanvas') || by('previewArea');
     if(!target) return;
-    const canvas = await html2canvas(target, { backgroundColor:null, scale:3, useCORS:true, allowTaint:true });
-    const a = document.createElement('a');
-    a.href = canvas.toDataURL('image/png');
-    a.download = `CAP_Uniform_${State.uniform || 'preview'}_${Date.now()}.png`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    try{
+      const canvas = await html2canvas(target, { backgroundColor:'#ffffff', scale:3, useCORS:true, allowTaint:true });
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = `CAP_Uniform_${State.uniform || 'preview'}_${Date.now()}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }finally{
+      if(stage) stage.remove();
+    }
   });
 
   capubSafeWire('toggleMeasurementOverlay','change', evt => {
