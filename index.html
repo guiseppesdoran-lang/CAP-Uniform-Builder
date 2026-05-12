@@ -7928,7 +7928,7 @@ function parseCapMemberReport(textRaw){
   if(/Technician Rating Exam:\s*Historian|Historian Technician/i.test(text)) result.badges.push('historian_technicianIbadge');
   if(/Model Rocketry/i.test(text)) result.badges.push('model_rocketry_badge');
 
-  result.badges = selectHighestWearableImportedBadges(result.badges);
+  result.badges = selectHighestWearableImportedBadges(result.badges, result.membership);
   result.ribbons = applyCosStarToHighestCadetMilestone(result.ribbons, text);
   result.ribbons = keepOnlyHighestCadetMilestoneForSenior(result.ribbons, result.membership);
   result.ribbons = dedupeImportedRibbons(result.ribbons);
@@ -8178,6 +8178,193 @@ function capubRepairCriticalButtons(){
 try{ capubRepairCriticalButtons(); }catch(err){ console.error('CAPUB button repair failed', err); }
 window.addEventListener('DOMContentLoaded', () => { try{ capubRepairCriticalButtons(); }catch(err){ console.error(err); } });
 window.addEventListener('load', () => { try{ capubRepairCriticalButtons(); }catch(err){ console.error(err); } });
+
+
+/* ===========================
+   CAPUB PATCH — COMMAND DATES + ES/VU BADGE SLOT FIX
+   Added 2026-05-12
+   =========================== */
+const CAPUB_COUNTED_BADGE_LIMIT = 5;
+
+function capubIsCommanderDutyTitleSegment(segment){
+  const s = String(segment || '').replace(/\s+/g, ' ').trim();
+  if(!/\bCommander\b/i.test(s)) return false;
+  // Do not treat deputy/assistant/vice positions as command insignia authorization.
+  if(/\b(?:Deputy|Vice|Assistant|Asst\.?|Deputy\s+Commander)\s+Commander\b/i.test(s)) return false;
+  if(/\bCommander\s+for\b/i.test(s)) return false;
+  return true;
+}
+
+function capubExtractCommanderDutyWindows(section){
+  const source = String(section || '').replace(/\s+/g, ' ').trim();
+  const rows = [];
+  if(!source) return rows;
+
+  // CAP Member Search Report duty rows generally look like:
+  // Commander TN-330 UNIT No 23 Jan 2024 30 Nov 2025
+  // Current rows may have a start date and no end date.
+  const rowRe = /\b((?:Squadron\s+|Group\s+|Wing\s+|Region\s+|National\s+)?Commander)\s+([A-Z0-9-]+)?\s*(UNIT|GROUP|WING|REGION|NATIONAL)?\s*(?:Yes|No)?\s*(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})?\s*(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})?/gi;
+  let m;
+  while((m = rowRe.exec(source))){
+    const windowStart = Math.max(0, m.index - 25);
+    const leadIn = source.slice(windowStart, m.index + (m[1] || '').length + 1);
+    if(!capubIsCommanderDutyTitleSegment(leadIn)) continue;
+    rows.push({
+      title: m[1] || 'Commander',
+      unit: m[2] || '',
+      echelon: m[3] || '',
+      start: parseCapReportDate(m[4]),
+      end: parseCapReportDate(m[5]),
+      raw: m[0]
+    });
+  }
+
+  // Fallback for messy PDF extraction: scan each occurrence of Commander and pull the next two dates.
+  if(!rows.length){
+    const cmdRe = /\bCommander\b/gi;
+    while((m = cmdRe.exec(source))){
+      const ctxStart = Math.max(0, m.index - 30);
+      const ctxEnd = Math.min(source.length, m.index + 220);
+      const ctx = source.slice(ctxStart, ctxEnd);
+      if(!capubIsCommanderDutyTitleSegment(ctx.slice(0, 70))) continue;
+      const dates = ctx.match(/\b\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/g) || [];
+      rows.push({
+        title:'Commander',
+        unit:'',
+        echelon:'',
+        start: parseCapReportDate(dates[0]),
+        end: parseCapReportDate(dates[1]),
+        raw:ctx
+      });
+    }
+  }
+
+  return rows;
+}
+
+function hasCurrentCommanderDutyPosition(text){
+  const current = getReportSection(text, 'Current Duty Positions', 'Past Duty Positions');
+  if(!current) return false;
+  const rows = capubExtractCommanderDutyWindows(current);
+  return rows.some(row => capubIsCommanderDutyTitleSegment(row.raw || row.title));
+}
+
+function hasGraduatedCommanderDutyPosition(text){
+  const past = getReportSectionUntilAny(text, 'Past Duty Positions', [
+    'Current Committees', 'Transfer History', 'Level', 'Professional Development',
+    'Specialty Tracks', 'Cadet Training', 'Encampments', 'Awards', 'Promotions'
+  ]);
+  if(!past || !/\bCommander\b/i.test(past)) return false;
+
+  const rows = capubExtractCommanderDutyWindows(past);
+  for(const row of rows){
+    if(!capubIsCommanderDutyTitleSegment(row.raw || row.title)) continue;
+    if(row.start && row.end){
+      const days = (row.end - row.start) / (1000 * 60 * 60 * 24);
+      if(days >= 365) return true;
+    }
+  }
+  return false;
+}
+
+function getRenderableCountedBadgeIds(){
+  const out = [];
+  for(const id of State.badges){
+    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
+    if(isCommandInsigniaBadge(id)) continue;
+    if(out.length >= CAPUB_COUNTED_BADGE_LIMIT) break;
+    out.push(id);
+  }
+  return out;
+}
+
+function getSpecialtyPocketSlotBySelectionOrder(id){
+  if(!isSelectableSpecialtyPocketBadge(id)) return null;
+
+  const specialtyOrder = (State.badges || [])
+    .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
+    .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
+
+  const hasVolunteerUniversity = specialtyOrder.includes('volunteer_university_instructor_badge');
+  const activeLpExclusive = getActiveMaleCadetLeftPocketExclusiveBadge();
+
+  // Volunteer University is intentionally forced to the wearer's right pocket.
+  if(id === 'volunteer_university_instructor_badge') return 'RP';
+
+  // These male-cadet-only LP badges cannot be bumped into another slot.
+  if(id === 'cyber_badges' || id === 'stem_badges'){
+    return activeLpExclusive === id ? 'LP' : null;
+  }
+
+  // If Volunteer University is selected, ES and other specialty badges still get LP.
+  // This is the specific fix that allows ES Master + Volunteer University to render together.
+  if(hasVolunteerUniversity){
+    if(activeLpExclusive) return null;
+    return 'LP';
+  }
+
+  if(activeLpExclusive) return 'RP';
+
+  const index = specialtyOrder.indexOf(id);
+  if(index === 0) return 'LP';
+  if(index === 1) return 'RP';
+  return null;
+}
+
+function selectHighestWearableImportedBadges(ids, membershipHint){
+  const forbiddenImportBadges = new Set([
+    'cdi_badge','character_development_instructor_badge',
+    'mro_badge','msa_badge','mission_radio_operator_badge','mission_staff_assistant_badge',
+    'udf_badge','urban_direction_finding_badge',
+    'mission_safety_officer_badge','planning_section_chief_badge','operations_section_chief_badge',
+    'logistics_section_chief_badge','communications_unit_leader_badge','public_information_officer_badge'
+  ]);
+
+  const membership = membershipHint || State.membership || '';
+  const unique = [...new Set((ids || []).filter(Boolean))].filter(id => !forbiddenImportBadges.has(id));
+  const eligible = unique.filter(id => !(membership === 'cadet' && !isCadetAuthorized(id)));
+
+  const suppress = new Set();
+  if(eligible.includes('master_ground_team_badge')){
+    suppress.add('senior_ground_team_badge'); suppress.add('ground_team_basic_badge');
+  }else if(eligible.includes('senior_ground_team_badge')){
+    suppress.add('ground_team_basic_badge');
+  }
+  if(eligible.includes('master_emergency_services_badge')){
+    suppress.add('senior_emergency_services_badge'); suppress.add('emergency_services_badge');
+  }else if(eligible.includes('senior_emergency_services_badge')){
+    suppress.add('emergency_services_badge');
+  }
+
+  const pilotBadges = ['CAPMasterPilot1_621A0E2ED15DA','CAPSeniorPilot1_D9725AE959752','CAPPilot1_FA9D33EA587D8','GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B','solo_badge','pre_solo_badge'];
+  const observerBadges = ['MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge'];
+  const aircrewBadges = ['MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F'];
+  const keepBestFromFamily = family => family.filter(id => eligible.includes(id)).sort((a,b)=>importedBadgePriority(a)-importedBadgePriority(b))[0] || null;
+  const aviationToKeep = keepBestFromFamily(pilotBadges) || keepBestFromFamily(observerBadges) || keepBestFromFamily(aircrewBadges);
+  [...pilotBadges, ...observerBadges, ...aircrewBadges].forEach(id => { if(id !== aviationToKeep) suppress.add(id); });
+
+  let out = eligible.filter(id => !suppress.has(id));
+  out.sort((a,b) => importedBadgePriority(a) - importedBadgePriority(b));
+
+  const command = out.filter(id => isCommandInsigniaBadge(id));
+  const countedSource = out.filter(id => !isCommandInsigniaBadge(id));
+  const protectedIds = ['master_emergency_services_badge','volunteer_university_instructor_badge']
+    .filter(id => countedSource.includes(id));
+
+  const counted = [];
+  for(const id of protectedIds){
+    if(!counted.includes(id)) counted.push(id);
+  }
+  for(const id of countedSource){
+    if(counted.includes(id)) continue;
+    if(counted.length >= CAPUB_COUNTED_BADGE_LIMIT) break;
+    counted.push(id);
+  }
+
+  // Re-sort after protecting items so visual/import priority stays consistent.
+  counted.sort((a,b) => importedBadgePriority(a) - importedBadgePriority(b));
+  return [...command, ...counted];
+}
 
 
 /* ===========================
