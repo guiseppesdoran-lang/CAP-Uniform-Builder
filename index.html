@@ -2456,9 +2456,28 @@ const UNDER_NAMEPLATE_SPECIALTY_BADGE_IDS = new Set([
   ...SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS,
   ...LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS
 ]);
+const FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS = new Set([
+  'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
+  'communications_technician_badge','communications_senior_badge','communications_master_badge',
+  'information_technology_technician_badge','historian_technicianIbadge',
+  'administration_technician_badge','aerospace_education_technician_badge','finance_technician_badge',
+  'cadet_programs_badge'
+]);
 const INCIDENT_COMMAND_SPECIALTY_BADGE_IDS = new Set([
   'basic_incident_commander_badge'
 ]);
+
+function isFemaleBlueUniform(){
+  return State.gender === 'female' && ['blues_a','blues_b'].includes(State.uniform);
+}
+
+function useFemaleOverNameplateSpecialtyLayout(id){
+  return isFemaleBlueUniform() && FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS.has(id);
+}
+
+function hasCurrentCommanderBadgeSelected(){
+  return (State.badges || []).includes('squadron_commander_badge') && !State.commandInsignia?.graduatedCommander;
+}
 
 // Specialty-track/service badges, other than command insignia, are pocket badges.
 // They are assigned by selection order: first specialty badge goes on the wearer's
@@ -2515,6 +2534,7 @@ function hasModelRocketrySelected(){
 
 function getSpecialtyPocketSlotBySelectionOrder(id){
   if(!isSelectableSpecialtyPocketBadge(id)) return null;
+  if(useFemaleOverNameplateSpecialtyLayout(id)) return 'FON';
 
   const specialtyOrder = (State.badges || [])
     .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
@@ -2585,6 +2605,11 @@ function getBadgeSlotLabel(id){
   }
   if(id === 'volunteer_university_instructor_badge'){
     return 'RP — Volunteer University exception';
+  }
+  if(useFemaleOverNameplateSpecialtyLayout(id)){
+    return hasCurrentCommanderBadgeSelected()
+      ? 'FON — female specialty-track row above current commander badge'
+      : 'FON — female specialty-track row over the nameplate';
   }
   return badgeLocations[id] || 'UN';
 }
@@ -2913,7 +2938,7 @@ function getFemaleClassAItemOffset(key){
     const badgeMatch = String(key || '').match(/^badge:([^:]+):([^:]+):(\d+)$/);
     if(badgeMatch){
       const slot = badgeMatch[2];
-      if(['ON','UN','RP'].includes(slot)){
+      if(['ON','UN','RP','FON'].includes(slot)){
         xOffset -= 15;
       }
     }
@@ -3873,6 +3898,7 @@ CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS.forEach(id => {
   SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.add(id);
   if(!customBadgeSizes[id]) customBadgeSizes[id] = { width:25, height:25 };
   if(!badgeLocations[id]) badgeLocations[id] = 'LP,RP';
+  FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS.add(id);
 });
 
 /* NEW: badge grouping for modal */
@@ -4827,6 +4853,41 @@ function getRibbonSelectionOption(id, value){
   return options.find(opt => opt.value === value) || options[0] || {label:'- Select -', value:'', devices:{}};
 }
 
+const COMMAND_SERVICE_RIBBON_ID = 'cap_command_service_ribbon';
+const COMMAND_SERVICE_RIBBON_VALUES = new Set(['earned','group_bronze_star','region_gold_star','national_two_gold_stars']);
+
+function applyRibbonSelectionValue(id, value){
+  const option = getRibbonSelectionOption(id, value || 'earned');
+  State.ribbonSelections[id] = State.ribbonSelections[id] || { checked:false, devices:{}, awardValue:'', awardLabel:'' };
+  State.ribbonSelections[id].checked = !!(option?.value || value);
+  State.ribbonSelections[id].awardValue = option?.value || value || '';
+  State.ribbonSelections[id].awardLabel = option?.label || '';
+  State.ribbonSelections[id].devices = { ...(option?.devices || {}) };
+  State.ribbonSelections[id].imageOverride = option?.image || getRibbonImageOverride(id, option?.value || value || '');
+}
+
+function syncCommandBadgeAndRibbonSelections(){
+  normalizeRibbonSelections();
+  normalizeBadgeSelections();
+
+  State.badgeSelections['squadron_commander_badge'] = State.badgeSelections['squadron_commander_badge'] || { checked:false };
+  const badgeSel = State.badgeSelections['squadron_commander_badge'];
+  const hasBadge = !!badgeSel.checked || (State.badges || []).includes('squadron_commander_badge');
+
+  const ribbonSel = State.ribbonSelections[COMMAND_SERVICE_RIBBON_ID] || { checked:false, devices:{}, awardValue:'', awardLabel:'' };
+  const ribbonValue = ribbonSel.awardValue || '';
+  const ribbonImpliesCommand = !!ribbonSel.checked && COMMAND_SERVICE_RIBBON_VALUES.has(ribbonValue);
+
+  if(hasBadge && !ribbonImpliesCommand){
+    applyRibbonSelectionValue(COMMAND_SERVICE_RIBBON_ID, 'earned');
+  }
+
+  if(ribbonImpliesCommand){
+    badgeSel.checked = true;
+    State.badgeSelections['squadron_commander_badge'] = badgeSel;
+  }
+}
+
 function setRibbonSelectionFromDropdown(id, value){
   normalizeRibbonSelections();
   const sel = State.ribbonSelections[id] || { checked:false, devices:{} };
@@ -4880,6 +4941,8 @@ function normalizeRibbonSelections(){
 function rebuildRibbonsFromGallery(){
   State.ribbons = [];
   normalizeRibbonSelections();
+  normalizeBadgeSelections();
+  syncCommandBadgeAndRibbonSelections();
 
   for(const id of getEligibleRibbonIds()){
     const sel = State.ribbonSelections[id];
@@ -5021,6 +5084,8 @@ function enforceExclusive(newId){
 
 function rebuildBadgesFromGallery(){
   normalizeBadgeSelections();
+  normalizeRibbonSelections();
+  syncCommandBadgeAndRibbonSelections();
 
   // Keep the user's selection order instead of rebuilding in badgeList order.
   // This prevents a newly added badge with the same preferred slot from stealing
@@ -5042,7 +5107,9 @@ function rebuildBadgesFromGallery(){
     enforceExclusive(id);
   }
 
-  renderAllBadges();
+  // Badge changes can automatically add the Command Service Ribbon, so rebuild
+  // the ribbon state/rack too. That pass also re-renders badges afterward.
+  rebuildRibbonsFromGallery();
 }
 
 function buildBadgeGallery(){
@@ -5494,6 +5561,7 @@ function slotHasRoom(slot){
   // Treat the named categories as physical locations. Most should only hold one item;
   // this prevents the program from stacking unrelated badges in the wrong category.
   const single = new Set(['ORP','OLP','UN','ON','URBP','OLPA','OLPU','LP','RP','LRP','OLPF']);
+  if(slot === 'FON') return badgeSlots[slot].length < CAPUB_COUNTED_BADGE_LIMIT;
   if(single.has(slot)) return badgeSlots[slot].length < 1;
   return badgeSlots[slot].length < 1;
 }
@@ -5514,7 +5582,9 @@ function chooseBadgeSlot(id, prefs){
     const hasVolunteerUniversity = (State.badges || []).includes('volunteer_university_instructor_badge');
     const activeLpExclusive = getActiveMaleCadetLeftPocketExclusiveBadge();
 
-    if(id === 'volunteer_university_instructor_badge'){
+    if(useFemaleOverNameplateSpecialtyLayout(id)){
+      ordered = preferred ? [preferred] : [];
+    }else if(id === 'volunteer_university_instructor_badge'){
       ordered = ['RP'];
     }else if(id === 'cyber_badges' || id === 'stem_badges'){
       ordered = preferred ? [preferred] : [];
@@ -5533,6 +5603,39 @@ function chooseBadgeSlot(id, prefs){
     if(slotHasRoom(candidate)) return candidate;
   }
   return null;
+}
+
+function getFemaleSpecialtyBadgeRowIds(){
+  return getRenderableCountedBadgeIds().filter(id => isSelectableSpecialtyPocketBadge(id) && useFemaleOverNameplateSpecialtyLayout(id));
+}
+
+function getFemaleSpecialtyBadgeAnchor(id, bw, bh, W, H){
+  const gap = 8;
+  const ids = getFemaleSpecialtyBadgeRowIds();
+  const index = Math.max(0, ids.indexOf(id));
+  const widths = ids.map(badgeId => Number(customBadgeSizes[badgeId]?.width) || bw || 25);
+  const totalWidth = widths.reduce((sum, width) => sum + width, 0) + Math.max(0, ids.length - 1) * gap;
+
+  const nameplate = getMeasurementNameplateBox();
+  const centerX = nameplate ? nameplate.centerX : W * 0.32;
+  const startX = centerX - totalWidth / 2;
+  const prevWidth = widths.slice(0, index).reduce((sum, width) => sum + width, 0) + (gap * index);
+
+  let top = null;
+  if(hasCurrentCommanderBadgeSelected()){
+    const cmdH = Number(customBadgeSizes['squadron_commander_badge']?.height) || 15;
+    const baseTop = nameplate ? (nameplate.top - gap - cmdH) : (H * 0.30);
+    top = baseTop - gap - bh;
+  }else if(nameplate){
+    top = nameplate.top - gap - bh;
+  }else{
+    top = H * 0.30;
+  }
+
+  return {
+    x: Math.round(startX + prevWidth),
+    y: Math.round(top)
+  };
 }
 
 function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
@@ -5555,6 +5658,8 @@ function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
     RP:   { x: W*0.32, y: H*0.46, dy: 0 },
     LRP:  { x: W*0.64, y: H*0.46, dy: 0 }
   };
+
+  if(slot === 'FON') return getFemaleSpecialtyBadgeAnchor(id, bw, bh, W, H);
 
   const a = base[slot] || base.UN;
   return {
@@ -7963,6 +8068,73 @@ function isCommandInsigniaGradeEligible(rank){
   return !['COL','BRIG GEN','BRIGADIER GENERAL','MAJ GEN','MAJOR GENERAL'].includes(r);
 }
 
+function getCommandServiceRibbonValueForCommanderEchelon(echelon){
+  switch(String(echelon || '').toUpperCase()){
+    case 'NATIONAL': return 'national_two_gold_stars';
+    case 'REGION': return 'region_gold_star';
+    case 'GROUP': return 'group_bronze_star';
+    case 'WING': return 'earned';
+    case 'UNIT':
+    default: return 'earned';
+  }
+}
+
+function getCommandServiceRibbonLabelForValue(value){
+  const option = getRibbonSelectionOption(COMMAND_SERVICE_RIBBON_ID, value || 'earned');
+  return option?.label || 'Command Service Ribbon';
+}
+
+function extractCommandServiceCommanderAssignments(text){
+  const sections = [
+    {
+      current:true,
+      text:getReportSection(text, 'Current Duty Positions', 'Past Duty Positions')
+    },
+    {
+      current:false,
+      text:getReportSectionUntilAny(text, 'Past Duty Positions', [
+        'Current Committees', 'Transfer History', 'Level', 'Professional Development',
+        'Specialty Tracks', 'Cadet Training', 'Encampments', 'Awards', 'Promotions'
+      ])
+    }
+  ];
+
+  const rows = [];
+  const rowRe = /\bCommander\s+[A-Z0-9-]+\s+(UNIT|GROUP|WING|REGION|NATIONAL)\s+(?:Yes|No)\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})(?:\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}))?/gi;
+
+  for(const section of sections){
+    const source = String(section.text || '');
+    if(!source) continue;
+    let m;
+    while((m = rowRe.exec(source))){
+      const echelon = String(m[1] || '').toUpperCase();
+      const start = parseCapReportDate(m[2]);
+      const end = parseCapReportDate(m[3]) || (section.current ? new Date() : null);
+      if(!start || !end) continue;
+      const days = Math.floor((end - start) / (1000 * 60 * 60 * 24));
+      rows.push({ echelon, start, end, days, current:section.current });
+    }
+  }
+
+  return rows;
+}
+
+function getCommandServiceRibbonFromDutyAssignments(text){
+  const rows = extractCommandServiceCommanderAssignments(text)
+    .filter(row => row.days >= 365);
+  if(!rows.length) return null;
+
+  const priority = { UNIT:1, WING:1, GROUP:2, REGION:3, NATIONAL:4 };
+  rows.sort((a,b) => (priority[b.echelon] || 0) - (priority[a.echelon] || 0));
+  const best = rows[0];
+  const value = getCommandServiceRibbonValueForCommanderEchelon(best.echelon);
+  return {
+    id:COMMAND_SERVICE_RIBBON_ID,
+    value,
+    reason:`Commander duty of at least 365 days at the ${best.echelon.toLowerCase()} level`
+  };
+}
+
 function getCommandInsigniaStatusForMember(text, result){
   const currentCommander = hasCurrentCommanderDutyPosition(text);
   const graduatedCommander = hasGraduatedCommanderDutyPosition(text);
@@ -8150,6 +8322,12 @@ function parseCapMemberReport(textRaw){
     result.notes.push(commandStatus === 'current'
       ? 'Current commander duty found; Command Insignia Pin imported as current commander.'
       : 'Past commander duty of at least one year found; Command Insignia Pin imported as graduated commander.');
+  }
+
+  const commandServiceRibbon = getCommandServiceRibbonFromDutyAssignments(text);
+  if(commandServiceRibbon){
+    result.ribbons.push(commandServiceRibbon);
+    result.notes.push(`Command Service Ribbon imported as ${getCommandServiceRibbonLabelForValue(commandServiceRibbon.value)} based on commander duty assignments of at least 365 days.`);
   }
 
   // Specialty-track badges: the Specialty Tracks table is the ONLY authority.
@@ -8578,6 +8756,7 @@ function getRenderableCountedBadgeIds(){
 
 function getSpecialtyPocketSlotBySelectionOrder(id){
   if(!isSelectableSpecialtyPocketBadge(id)) return null;
+  if(useFemaleOverNameplateSpecialtyLayout(id)) return 'FON';
 
   const specialtyOrder = (State.badges || [])
     .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
