@@ -6027,6 +6027,9 @@ function getFemaleSpecialtyBadgeAnchor(id, bw, bh, W, H){
   // command badge's centerline whether or not the command badge is selected.
   // A single specialty badge or a two-badge row sits 10px above where the
   // current commander badge would render, and two badges keep 10px between them.
+  // Additional technicality: when no commander badge is worn, this over-nameplate
+  // specialty row sits .5" above the nameplate, which is approximated here by
+  // moving the prior over-nameplate Y anchor 22px lower.
   if(State.gender === 'female' && State.uniform === 'blues_a'){
     const gap = 10;
     const widths = ids.map(badgeId => Number(customBadgeSizes[badgeId]?.width) || bw || 25);
@@ -6037,10 +6040,12 @@ function getFemaleSpecialtyBadgeAnchor(id, bw, bh, W, H){
     const cmdRef = getCalib(cmdKey) || { x: W * 0.32 - 7.5, y: H * 0.30 - 7.5, w: 15, h: 15 };
     const cmdCenterX = Number(cmdRef.x || 0) + (Number(cmdRef.w) || 15) / 2;
     const cmdTop = Number.isFinite(Number(cmdRef.y)) ? Number(cmdRef.y) : (H * 0.30 - 7.5);
+    const commanderBadgeIsWorn = (State.badges || []).includes('squadron_commander_badge');
+    const baseTop = cmdTop - 10 - bh;
 
     return {
       x: Math.round((cmdCenterX - totalWidth / 2) + prevWidth),
-      y: Math.round(cmdTop - 10 - bh)
+      y: Math.round(baseTop + (commanderBadgeIsWorn ? 0 : 22))
     };
   }
 
