@@ -3214,15 +3214,24 @@ const SENIOR_NCO_BASE = {
     }
   },
 
-  // Senior Member NCO male Class B Blues base images.
+  // Senior Member NCO Class B Blues base images.
   // These are full base images with the NCO grade already built into the shirt.
+  // Naming convention:
+  //   images/base/{rank}_blues_class_b_{gender}.png
   blues_b: {
     male: {
-      "SSgt": "base/ssgt_blues_class_b_male.jpg",
-      "TSgt": "base/tsgt_blues_class_b_male.jpg",
-      "MSgt": "base/msgt_blues_class_b_male.jpg",
-      "SMSgt":"base/smsgt_blues_class_b_male.jpg",
-      "CMSgt":"base/cmsgt_blues_class_b_male.jpg"
+      "SSgt": "base/ssgt_blues_class_b_male.png",
+      "TSgt": "base/tsgt_blues_class_b_male.png",
+      "MSgt": "base/msgt_blues_class_b_male.png",
+      "SMSgt":"base/smsgt_blues_class_b_male.png",
+      "CMSgt":"base/cmsgt_blues_class_b_male.png"
+    },
+    female: {
+      "SSgt": "base/ssgt_blues_class_b_female.png",
+      "TSgt": "base/tsgt_blues_class_b_female.png",
+      "MSgt": "base/msgt_blues_class_b_female.png",
+      "SMSgt":"base/smsgt_blues_class_b_female.png",
+      "CMSgt":"base/cmsgt_blues_class_b_female.png"
     }
   }
 };
@@ -3277,19 +3286,44 @@ function getSeniorOfficerCombinedClassAPath(rank, gender){
   return SENIOR_OFFICER_COMBINED_CLASSA?.[gender]?.[rank] || null;
 }
 
-// Senior Member officer combined male Class B base images.
+// Senior Member officer combined Class B base images.
 // These are full base images with officer grade already built into the shirt.
-const SENIOR_OFFICER_COMBINED_CLASSB_MALE = {
-  "Maj": "base/maj_blues_class_b_male.png"
+// Naming convention:
+//   images/base/{rank}_blues_class_b_{gender}.png
+const SENIOR_OFFICER_COMBINED_CLASSB = {
+  male: {
+    "2d Lt":   "base/2d_lt_blues_class_b_male.png",
+    "1st Lt":  "base/1st_lt_blues_class_b_male.png",
+    "Capt":    "base/capt_blues_class_b_male.png",
+    "Maj":     "base/maj_blues_class_b_male.png",
+    "Lt Col":  "base/lt_col_blues_class_b_male.png",
+    "Col":     "base/col_blues_class_b_male.png",
+    "Brig Gen":"base/brig_gen_blues_class_b_male.png",
+    "Maj Gen": "base/maj_gen_blues_class_b_male.png"
+  },
+  female: {
+    "2d Lt":   "base/2d_lt_blues_class_b_female.png",
+    "1st Lt":  "base/1st_lt_blues_class_b_female.png",
+    "Capt":    "base/capt_blues_class_b_female.png",
+    "Maj":     "base/maj_blues_class_b_female.png",
+    "Lt Col":  "base/lt_col_blues_class_b_female.png",
+    "Col":     "base/col_blues_class_b_female.png",
+    "Brig Gen":"base/brig_gen_blues_class_b_female.png",
+    "Maj Gen": "base/maj_gen_blues_class_b_female.png"
+  }
 };
+
+function getSeniorOfficerCombinedClassBPath(rank, gender){
+  return SENIOR_OFFICER_COMBINED_CLASSB?.[gender]?.[rank] || null;
+}
 
 function usingCombinedSeniorOfficerClassBJacket(){
   return (
     State.uniform === 'blues_b' &&
-    State.gender === 'male' &&
     State.membership === 'senior' &&
+    !!State.gender &&
     !!State.rank &&
-    !!SENIOR_OFFICER_COMBINED_CLASSB_MALE[State.rank]
+    !!getSeniorOfficerCombinedClassBPath(State.rank, State.gender)
   );
 }
 
@@ -4597,9 +4631,9 @@ function getBaseCandidates(){
     return [...new Set(list)];
   }
 
-  // 1c) Senior Member Officer (Male) Class B combined shirt (rank baked in)
+  // 1c) Senior Member Officer Class B combined shirt (rank baked in)
   if(usingCombinedSeniorOfficerClassBJacket()){
-    list.push(SENIOR_OFFICER_COMBINED_CLASSB_MALE[State.rank]);
+    list.push(getSeniorOfficerCombinedClassBPath(State.rank, State.gender));
     return [...new Set(list)];
   }
 
