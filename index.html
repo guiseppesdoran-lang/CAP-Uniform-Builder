@@ -2461,7 +2461,10 @@ const FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS = new Set([
   'communications_technician_badge','communications_senior_badge','communications_master_badge',
   'information_technology_technician_badge','historian_technicianIbadge',
   'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
-  'cadet_programs_badge'
+  'cadet_programs_badge',
+  // Female cadet-specific specialty badges. These are limited to the two-badge
+  // specialty row above the nameplate on the female Class A uniform.
+  'cyber_badges','stem_badges'
 ]);
 const INCIDENT_COMMAND_SPECIALTY_BADGE_IDS = new Set([
   'basic_incident_commander_badge'
@@ -2471,8 +2474,34 @@ function isFemaleBlueUniform(){
   return State.gender === 'female' && ['blues_a','blues_b'].includes(State.uniform);
 }
 
+function isFemaleClassAUniform(){
+  return State.gender === 'female' && State.uniform === 'blues_a';
+}
+
+function isFemaleCadetClassAUniform(){
+  return isFemaleClassAUniform() && State.membership === 'cadet';
+}
+
 function useFemaleOverNameplateSpecialtyLayout(id){
-  return isFemaleBlueUniform() && FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS.has(id);
+  // Female Class A technicality: specialty-track badges use the nameplate/command
+  // badge anchor row, with a hard maximum of two badges in that row.
+  return isFemaleClassAUniform() && FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS.has(id);
+}
+
+function getFemaleClassASpecialtyBadgeIds(){
+  if(!isFemaleClassAUniform()) return [];
+  return (State.badges || [])
+    .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
+    .filter(badgeId => useFemaleOverNameplateSpecialtyLayout(badgeId))
+    .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
+}
+
+function getRenderableFemaleClassASpecialtyBadgeIds(){
+  return getFemaleClassASpecialtyBadgeIds().slice(0, 2);
+}
+
+function femaleClassASpecialtyRowIsFull(){
+  return getRenderableFemaleClassASpecialtyBadgeIds().length >= 2;
 }
 
 function hasCurrentCommanderBadgeSelected(){
@@ -2521,7 +2550,17 @@ function getGenderedPocketSlotForBadge(id){
     // If multiple are selected, only the first selected one may own LP.
     return getActiveMaleCadetLeftPocketExclusiveBadge() === id ? 'LP' : null;
   }
+
+  // Female Class A cadet technicality:
+  // Cyber and STEM are specialty badges and belong in the two-badge row above the nameplate.
+  if(isFemaleCadetClassAUniform() && (id === 'cyber_badges' || id === 'stem_badges')){
+    return getRenderableFemaleClassASpecialtyBadgeIds().includes(id) ? 'FON' : null;
+  }
+
   if(id === 'model_rocketry_badge'){
+    // On female cadet Class A, once the two specialty badge row above the nameplate
+    // is already full, Model Rocketry goes to the same zone as the male uniform.
+    if(isFemaleCadetClassAUniform() && femaleClassASpecialtyRowIsFull()) return 'LP';
     return State.gender === 'female' ? 'ON' : 'LP';
   }
   return 'LP';
@@ -2534,7 +2573,9 @@ function hasModelRocketrySelected(){
 
 function getSpecialtyPocketSlotBySelectionOrder(id){
   if(!isSelectableSpecialtyPocketBadge(id)) return null;
-  if(useFemaleOverNameplateSpecialtyLayout(id)) return 'FON';
+  if(useFemaleOverNameplateSpecialtyLayout(id)){
+    return getRenderableFemaleClassASpecialtyBadgeIds().includes(id) ? 'FON' : null;
+  }
 
   const specialtyOrder = (State.badges || [])
     .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
@@ -5644,6 +5685,7 @@ function getOverRibbonReferenceKey(slot, idx=0){
 function selectedBadgeWouldRenderInSlot(id, slotName){
   if(!id) return false;
   if(id === 'nra_marksman_badge') return slotName === 'OLPF';
+  if(isFemaleCadetClassAUniform() && (id === 'cyber_badges' || id === 'stem_badges')) return getGenderedPocketSlotForBadge(id) === slotName;
   if(id === 'model_rocketry_badge' || id === 'cyber_badges' || id === 'stem_badges') return getGenderedPocketSlotForBadge(id) === slotName;
   if(isCommandInsigniaBadge(id)) return getCommandInsigniaSlot() === slotName;
   if(CHAPLAIN_BADGE_IDS.has(id)) return slotName === 'OLPA';
@@ -5821,7 +5863,7 @@ function slotHasRoom(slot){
   // Treat the named categories as physical locations. Most should only hold one item;
   // this prevents the program from stacking unrelated badges in the wrong category.
   const single = new Set(['ORP','OLP','UN','ON','URBP','OLPA','OLPU','LP','RP','LRP','OLPF']);
-  if(slot === 'FON') return badgeSlots[slot].length < CAPUB_COUNTED_BADGE_LIMIT;
+  if(slot === 'FON') return badgeSlots[slot].length < 2;
   if(single.has(slot)) return badgeSlots[slot].length < 1;
   return badgeSlots[slot].length < 1;
 }
@@ -5847,6 +5889,8 @@ function chooseBadgeSlot(id, prefs){
     }else if(id === 'volunteer_university_instructor_badge'){
       ordered = ['RP'];
     }else if(id === 'cyber_badges' || id === 'stem_badges'){
+      // Female Class A: Cyber/STEM are specialty badges in the two-badge FON row.
+      // Male cadet blues: they remain left-pocket exclusive.
       ordered = preferred ? [preferred] : [];
     }else if(activeLpExclusive){
       // Model Rocketry/Cyber/STEM occupies LP; bump the flexible specialty badge to RP.
@@ -5866,7 +5910,7 @@ function chooseBadgeSlot(id, prefs){
 }
 
 function getFemaleSpecialtyBadgeRowIds(){
-  return getRenderableCountedBadgeIds().filter(id => isSelectableSpecialtyPocketBadge(id) && useFemaleOverNameplateSpecialtyLayout(id));
+  return getRenderableFemaleClassASpecialtyBadgeIds();
 }
 
 function getFemaleSpecialtyBadgeAnchor(id, bw, bh, W, H){
@@ -5995,6 +6039,10 @@ function placeBadgeSlotAnchored(id){
   if(id === 'nra_marksman_badge') slotSpec = 'OLPF';
   if(id === 'model_rocketry_badge' || id === 'cyber_badges' || id === 'stem_badges'){
     if(isMaleCadetLeftPocketExclusiveBadge(id)){
+      slotSpec = 'LP';
+    }else if(isFemaleCadetClassAUniform() && (id === 'cyber_badges' || id === 'stem_badges')){
+      slotSpec = 'FON';
+    }else if(isFemaleCadetClassAUniform() && id === 'model_rocketry_badge' && femaleClassASpecialtyRowIsFull()){
       slotSpec = 'LP';
     }else if(id === 'model_rocketry_badge'){
       slotSpec = 'LP,ON';
@@ -7407,6 +7455,13 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
     }
     if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
       if(countBadgesForLimit() > 4) addNotice('err','Service/aviator uniform badge count exceeds four counted badges. Command insignia does not count against this limit.');
+      if(State.gender === 'female' && State.uniform === 'blues_a'){
+        const femaleSpecialtyCount = getFemaleClassASpecialtyBadgeIds().length;
+        if(femaleSpecialtyCount > 2) addNotice('err','Female Class A specialty-track badges above the nameplate are limited to two. Additional specialty badges will not render in that row.');
+        if(State.membership === 'cadet' && femaleClassASpecialtyRowIsFull() && State.badges.includes('model_rocketry_badge')){
+          addNotice('ok','Female cadet Class A: with two specialty badges already above the nameplate, Model Rocketry renders in the same left-pocket zone used by the male uniform.');
+        }
+      }
       if(State.badges.includes('squadron_commander_badge') && State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Graduated Commander and will render under the nameplate (UN); command insignia remains outside the normal four-badge count.');
       if(State.badges.includes('squadron_commander_badge') && !State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Current Commander and will render over the nameplate (ON); command insignia remains outside the normal four-badge count.');
       const aviation = State.badges.filter(id => ['OLP','OLPA','OLPU'].some(s => String(badgeLocations[id]||'').includes(s)));
@@ -9084,7 +9139,9 @@ function getRenderableCountedBadgeIds(){
 
 function getSpecialtyPocketSlotBySelectionOrder(id){
   if(!isSelectableSpecialtyPocketBadge(id)) return null;
-  if(useFemaleOverNameplateSpecialtyLayout(id)) return 'FON';
+  if(useFemaleOverNameplateSpecialtyLayout(id)){
+    return getRenderableFemaleClassASpecialtyBadgeIds().includes(id) ? 'FON' : null;
+  }
 
   const specialtyOrder = (State.badges || [])
     .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
