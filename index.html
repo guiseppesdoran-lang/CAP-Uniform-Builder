@@ -3775,6 +3775,105 @@ const BADGE_IMAGE_OVERRIDES = {
   'uas_pilot_senior_badge': 'badges/uas_pilot_senior_badge.png',
   'uas_pilot_master_badge': 'badges/uas_pilot_master_badge.png'
 };
+
+
+// === CAPUB PATCH 2026-05-13: New badge image filenames in images/badges/ ===
+// These overrides preserve the existing internal badge IDs where possible, while
+// pointing them at the newly uploaded PNG filenames. New badges below are added
+// into the normal badge gallery and use the same LP/RP specialty-track placement
+// unless otherwise specified.
+Object.assign(BADGE_IMAGE_OVERRIDES, {
+  // Replacements for older/existing badge IDs
+  'communications_technician_badge': 'badges/Comms_tech.png',
+  'communications_senior_badge': 'badges/Comms_senior.png',
+  'communications_master_badge': 'badges/Comms_master.png',
+  'stem_badges': 'badges/STEM_basic_badge.png',
+  'cyber_badges': 'badges/Cyber_basic_badge.png',
+  'legal_officer': 'badges/Legal_officer.png',
+  'nurse_officer': 'badges/Nurse.png',
+  'medical_officer': 'badges/Medical_officer.png',
+  'squadron_commander_badge': 'badges/Squadron Commander badge.png',
+
+  // New command/governance badges
+  'group_commander_badge': 'badges/Group_commander_badge.png',
+  'senior_advisory_group_badge': 'badges/Senior_advisory_group_badge.png',
+  'national_executive_committee_badge': 'badges/National_Executive_Committee_Badge.png',
+  'command_council_badge': 'badges/Command_Council.png',
+  'cap_national_command_board_badge': 'badges/CAP_National_Command_Board.png',
+
+  // Standardization / Evaluation
+  'stan_eval_tech_badge': 'badges/Stan_eval_tech.png',
+  'stan_eval_senior_badge': 'badges/Stan_eval_senior.png',
+  'stan_eval_master_badge': 'badges/Stan_eval_master.png',
+
+  // Safety
+  'safety_technician_badge': 'badges/Safety_tech.png',
+  'safety_senior_badge': 'badges/Safety_senior.png',
+  'safety_master_badge': 'badges/Safety_master.png',
+
+  // Recruiting and Retention
+  'recruiting_retention_technician_badge': 'badges/Recruiter_tech.png',
+  'recruiting_retention_senior_badge': 'badges/Recruiter_senior.png',
+  'recruiting_retention_master_badge': 'badges/Recruiter_master.png',
+
+  // Public Affairs
+  'public_affairs_technician_badge': 'badges/Public_affairs_tech.png',
+  'public_affairs_senior_badge': 'badges/Public_affairs_senior.png',
+  'public_affairs_master_badge': 'badges/Public_affairs_master.png',
+
+  // Professional Development
+  'professional_development_technician_badge': 'badges/Professional_development_tech.png',
+  'professional_development_senior_badge': 'badges/Professional_development_senior.png',
+  'professional_development_master_badge': 'badges/Professional_development_master.png',
+
+  // Personnel
+  'personnel_technician_badge': 'badges/Personnel_tech.png',
+  'personnel_senior_badge': 'badges/Personnel_senior.png',
+  'personnel_master_badge': 'badges/Personnel_master.png',
+
+  // Operations
+  'operations_technician_badge': 'badges/Ops_tech.png',
+  'operations_senior_badge': 'badges/Ops_senior.png',
+  'operations_master_badge': 'badges/Ops_master.png',
+
+  // Logistics
+  'logistics_technician_badge': 'badges/Logistics_tech.png',
+  'logistics_senior_badge': 'badges/Logistics_senior.png',
+  'logistics_master_badge': 'badges/Logistics_master.png',
+
+  // Inspector General
+  'inspector_general_technician_badge': 'badges/IG_tech.png',
+  'inspector_general_senior_badge': 'badges/IG_senior.png',
+  'inspector_general_master_badge': 'badges/IG_master.png',
+
+  // Information Technology
+  'information_technology_technician_badge': 'badges/IT_tech.png',
+  'information_technology_senior_badge': 'badges/IT_senior.png',
+  'information_technology_master_badge': 'badges/IT_master.png',
+
+  // Historian
+  'historian_technicianIbadge': 'badges/Historian_tech.png',
+  'historian_senior_badge': 'badges/Historian_senior.png',
+  'historian_master_badge': 'badges/Historian_master.png',
+
+  // CDI
+  'cdi_technician_badge': 'badges/CDI_tech.png',
+  'cdi_senior_badge': 'badges/CDI_senior.png',
+  'cdi_master_badge': 'badges/CDI_master.png',
+
+  // Administration
+  'administration_technician_badge': 'badges/Admin_tech.png',
+  'administration_senior_badge': 'badges/Admin_senior.png',
+  'administration_master_badge': 'badges/Admin_master.png',
+
+  // Finance
+  'finance_senior_badge': 'badges/Finance_senior.png',
+  'finance_master_badge': 'badges/Finance_master.png',
+
+  // Drug Demand Reduction
+  'drug_demand_reduction_basic_badge': 'badges/Drug_Demand_Reduction_Basic_Badge.png'
+});
+
 function getBadgeAssetPath(id){
   return BADGE_IMAGE_OVERRIDES[id] || `badges/${id}.png`;
 }
@@ -3979,6 +4078,39 @@ CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS.forEach(id => {
   FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS.add(id);
 });
 
+
+// === CAPUB PATCH 2026-05-13: Register newly supplied badges ===
+const CAPUB_NEW_SPECIALTY_BADGE_IDS = [
+  'stan_eval_tech_badge','stan_eval_senior_badge','stan_eval_master_badge',
+  'cdi_technician_badge','cdi_senior_badge','cdi_master_badge',
+  'drug_demand_reduction_basic_badge'
+];
+
+CAPUB_NEW_SPECIALTY_BADGE_IDS.forEach(id => {
+  if(!badgeList.includes(id)) badgeList.push(id);
+  SPECIALTY_TRACK_BADGE_IDS.add(id);
+  POCKET_SERVICE_BADGE_IDS.add(id);
+  SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.add(id);
+  FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS.add(id);
+  if(!customBadgeSizes[id]) customBadgeSizes[id] = { width:25, height:25 };
+  if(!badgeLocations[id]) badgeLocations[id] = 'LP,RP';
+});
+
+const CAPUB_NEW_COMMAND_BADGE_IDS = [
+  'group_commander_badge',
+  'senior_advisory_group_badge',
+  'national_executive_committee_badge',
+  'command_council_badge',
+  'cap_national_command_board_badge'
+];
+
+CAPUB_NEW_COMMAND_BADGE_IDS.forEach(id => {
+  if(!badgeList.includes(id)) badgeList.push(id);
+  COMMAND_INSIGNIA_BADGE_IDS.add(id);
+  if(!customBadgeSizes[id]) customBadgeSizes[id] = { width:15, height:15 };
+  if(!badgeLocations[id]) badgeLocations[id] = 'ON';
+});
+
 /* NEW: badge grouping for modal */
 const BADGE_CATEGORIES = [
   { key:'Aviation', ids:[
@@ -4005,10 +4137,29 @@ const BADGE_CATEGORIES = [
     'administration_technician_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge'
   ]},
   { key:'Command Insignia', ids:[
-    'squadron_commander_badge'
+    'squadron_commander_badge','group_commander_badge'
+  ]},
+  { key:'Command Council / National Governance', ids:[
+    'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge'
   ]},
   { key:'Chaplain / Legal / Admin', ids:[
-    'christian_chaplin','jewish_chaplin','muslim_chaplin','buddist_chaplin','legal_officer','historian_technicianIbadge'
+    'christian_chaplin','jewish_chaplin','muslim_chaplin','buddist_chaplin','legal_officer','historian_technicianIbadge',
+    'administration_technician_badge','administration_senior_badge','administration_master_badge'
+  ]},
+  { key:'Specialty Tracks', ids:[
+    'stan_eval_tech_badge','stan_eval_senior_badge','stan_eval_master_badge',
+    'safety_technician_badge','safety_senior_badge','safety_master_badge',
+    'recruiting_retention_technician_badge','recruiting_retention_senior_badge','recruiting_retention_master_badge',
+    'public_affairs_technician_badge','public_affairs_senior_badge','public_affairs_master_badge',
+    'professional_development_technician_badge','professional_development_senior_badge','professional_development_master_badge',
+    'personnel_technician_badge','personnel_senior_badge','personnel_master_badge',
+    'operations_technician_badge','operations_senior_badge','operations_master_badge',
+    'logistics_technician_badge','logistics_senior_badge','logistics_master_badge',
+    'inspector_general_technician_badge','inspector_general_senior_badge','inspector_general_master_badge',
+    'information_technology_senior_badge','information_technology_master_badge',
+    'historian_senior_badge','historian_master_badge',
+    'cdi_technician_badge','cdi_senior_badge','cdi_master_badge',
+    'drug_demand_reduction_basic_badge'
   ]},
   { key:'Other', ids:[
     'model_rocketry_badge','nra_marksman_badge'
@@ -8072,9 +8223,39 @@ const CAPUB_SPECIALTY_TRACK_TO_BADGE = {
     MASTER: "inspector_general_master_badge"
   },
   "DRUG DEMAND REDUCTION": {
-    TECHNICIAN: "drug_demand_reduction_technician_badge",
-    SENIOR: "drug_demand_reduction_senior_badge",
-    MASTER: "drug_demand_reduction_master_badge"
+    TECHNICIAN: "drug_demand_reduction_basic_badge",
+    SENIOR: "drug_demand_reduction_basic_badge",
+    MASTER: "drug_demand_reduction_basic_badge"
+  },
+  "DDR": {
+    TECHNICIAN: "drug_demand_reduction_basic_badge",
+    SENIOR: "drug_demand_reduction_basic_badge",
+    MASTER: "drug_demand_reduction_basic_badge"
+  },
+  "STANDARDIZATION AND EVALUATION": {
+    TECHNICIAN: "stan_eval_tech_badge",
+    SENIOR: "stan_eval_senior_badge",
+    MASTER: "stan_eval_master_badge"
+  },
+  "STANDARDIZATION EVALUATION": {
+    TECHNICIAN: "stan_eval_tech_badge",
+    SENIOR: "stan_eval_senior_badge",
+    MASTER: "stan_eval_master_badge"
+  },
+  "STAN EVAL": {
+    TECHNICIAN: "stan_eval_tech_badge",
+    SENIOR: "stan_eval_senior_badge",
+    MASTER: "stan_eval_master_badge"
+  },
+  "CDI": {
+    TECHNICIAN: "cdi_technician_badge",
+    SENIOR: "cdi_senior_badge",
+    MASTER: "cdi_master_badge"
+  },
+  "CHARACTER DEVELOPMENT INSTRUCTOR": {
+    TECHNICIAN: "cdi_technician_badge",
+    SENIOR: "cdi_senior_badge",
+    MASTER: "cdi_master_badge"
   }
 };
 
