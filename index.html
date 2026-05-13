@@ -2493,7 +2493,7 @@ function getFemaleClassASpecialtyBadgeIds(){
   return (State.badges || [])
     .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
     .filter(badgeId => useFemaleOverNameplateSpecialtyLayout(badgeId))
-    .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
+    .filter(badgeId => isBadgeEligibleForMembership(badgeId, State.membership));
 }
 
 function getRenderableFemaleClassASpecialtyBadgeIds(){
@@ -2536,7 +2536,7 @@ function isMaleCadetLeftPocketExclusiveBadge(id){
 function getSelectedMaleCadetLeftPocketExclusiveBadges(){
   return (State.badges || [])
     .filter(badgeId => MALE_CADET_LEFT_POCKET_EXCLUSIVE_BADGE_IDS.has(badgeId))
-    .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
+    .filter(badgeId => isBadgeEligibleForMembership(badgeId, State.membership));
 }
 
 function getActiveMaleCadetLeftPocketExclusiveBadge(){
@@ -2579,7 +2579,7 @@ function getSpecialtyPocketSlotBySelectionOrder(id){
 
   const specialtyOrder = (State.badges || [])
     .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
-    .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
+    .filter(badgeId => isBadgeEligibleForMembership(badgeId, State.membership));
 
   const hasVolunteerUniversity = specialtyOrder.includes('volunteer_university_instructor_badge');
   const activeLpExclusive = getActiveMaleCadetLeftPocketExclusiveBadge();
@@ -4207,6 +4207,113 @@ const BADGE_CATEGORIES = [
   ]}
 ];
 
+
+// === CAPUB PATCH 2026-05-13: Badge picker grouping + member eligibility ===
+// Senior members are not eligible for cadet-only STEM, Cyber, Model Rocketry, or NRA badges.
+// Cadets only see their authorized badge set; cadet specialty badges are grouped together.
+const SENIOR_INELIGIBLE_BADGES = new Set([
+  'stem_badges','cyber_badges','model_rocketry_badge','nra_marksman_badge'
+]);
+
+function isSeniorAuthorized(id){
+  return !SENIOR_INELIGIBLE_BADGES.has(id);
+}
+
+function isBadgeEligibleForMembership(id, membership = State.membership){
+  if(membership === 'cadet') return isCadetAuthorized(id);
+  if(membership === 'senior') return isSeniorAuthorized(id);
+  return true;
+}
+
+function getEligibleBadgeIdsForMembership(membership = State.membership){
+  return badgeList.filter(id => isBadgeEligibleForMembership(id, membership));
+}
+
+const SENIOR_SPECIALTY_TRACK_GROUP_IDS = [
+  'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
+  'communications_technician_badge','communications_senior_badge','communications_master_badge',
+  'information_technology_technician_badge','information_technology_senior_badge','information_technology_master_badge',
+  'historian_technicianIbadge','historian_senior_badge','historian_master_badge',
+  'administration_technician_badge','administration_senior_badge','administration_master_badge',
+  'aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge',
+  'finance_technician_badge','finance_senior_badge','finance_master_badge',
+  'cadet_programs_badge','cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge',
+  'command_technician_badge','command_senior_badge','command_master_badge',
+  'health_services_technician_badge','health_services_senior_badge','health_services_master_badge',
+  'logistics_technician_badge','logistics_senior_badge','logistics_master_badge',
+  'operations_technician_badge','operations_senior_badge','operations_master_badge',
+  'personnel_technician_badge','personnel_senior_badge','personnel_master_badge',
+  'professional_development_technician_badge','professional_development_senior_badge','professional_development_master_badge',
+  'public_affairs_technician_badge','public_affairs_senior_badge','public_affairs_master_badge',
+  'recruiting_retention_technician_badge','recruiting_retention_senior_badge','recruiting_retention_master_badge',
+  'safety_technician_badge','safety_senior_badge','safety_master_badge',
+  'inspector_general_technician_badge','inspector_general_senior_badge','inspector_general_master_badge',
+  'stan_eval_tech_badge','stan_eval_senior_badge','stan_eval_master_badge',
+  'cdi_technician_badge','cdi_senior_badge','cdi_master_badge',
+  'drug_demand_reduction_basic_badge'
+];
+
+const CADET_SPECIALTY_TRACK_GROUP_IDS = [
+  // Cadet-specific specialty badges
+  'stem_badges','cyber_badges',
+  // Cadet-authorized specialty-track badges
+  'emergency_services_badge',
+  'information_technology_technician_badge',
+  'historian_technicianIbadge',
+  'communications_technician_badge','communications_senior_badge','communications_master_badge'
+];
+
+function getBadgeCategoriesForCurrentMembership(){
+  if(State.membership === 'cadet'){
+    return [
+      { key:'Aviation / Aircrew', ids:[
+        'pre_solo_badge','solo_badge','CAPPilot1_FA9D33EA587D8',
+        'observer_badge','SeniorObserver1_0E35802A29801',
+        'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
+        'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
+      ]},
+      { key:'Emergency Services / Ground / EMS', ids:[
+        'ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
+        'emt_basic_badge','emt_intermediate','emt_paramedic'
+      ]},
+      { key:'Cadet Specialty Track Badges', ids:CADET_SPECIALTY_TRACK_GROUP_IDS },
+      { key:'Cadet Activity / Marksmanship Badges', ids:[
+        'model_rocketry_badge','nra_marksman_badge'
+      ]}
+    ];
+  }
+
+  if(State.membership === 'senior'){
+    return [
+      { key:'Aviation / Aircrew', ids:[
+        'CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA',
+        'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
+        'observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
+        'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B',
+        'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
+      ]},
+      { key:'Emergency Services / Ground', ids:[
+        'basic_incident_commander_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'
+      ]},
+      { key:'Medical / EMS', ids:[
+        'emt_basic_badge','emt_intermediate','emt_paramedic','medical_officer','nurse_officer'
+      ]},
+      { key:'Chaplain / Legal', ids:[
+        'christian_chaplin','jewish_chaplin','muslim_chaplin','buddist_chaplin','legal_officer'
+      ]},
+      { key:'Senior Member Specialty Track Badges', ids:SENIOR_SPECIALTY_TRACK_GROUP_IDS },
+      { key:'Command Insignia', ids:[
+        'squadron_commander_badge','group_commander_badge'
+      ]},
+      { key:'Command Council / National Governance', ids:[
+        'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge'
+      ]}
+    ];
+  }
+
+  return BADGE_CATEGORIES;
+}
+
 const patchList = [
   'us_flag_patch','command_patch','wing_patch','unit_patch','aerospace_education_patch','communications_patch','orientation_pilot_patch'
 ];
@@ -5376,7 +5483,7 @@ function rebuildBadgesFromGallery(){
   // Keep the user's selection order instead of rebuilding in badgeList order.
   // This prevents a newly added badge with the same preferred slot from stealing
   // the pocket/location of a badge that was already selected.
-  const eligible = id => !(State.membership==='cadet' && !isCadetAuthorized(id)) && !(isCommandInsigniaBadge(id) && !isCommandInsigniaGradeEligible(State.rank));
+  const eligible = id => isBadgeEligibleForMembership(id, State.membership) && !(isCommandInsigniaBadge(id) && !isCommandInsigniaGradeEligible(State.rank));
   const current = Array.isArray(State.badges) ? State.badges.filter(id => eligible(id) && State.badgeSelections[id]?.checked) : [];
 
   for(const id of badgeList){
@@ -5405,9 +5512,7 @@ function buildBadgeGallery(){
   normalizeBadgeSelections();
   wrap.innerHTML = '';
 
-  const eligible = (State.membership==='cadet')
-    ? badgeList.filter(isCadetAuthorized)
-    : [...badgeList];
+  const eligible = getEligibleBadgeIdsForMembership(State.membership);
 
   const showCount = State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
 
@@ -5586,7 +5691,7 @@ function parseSlotPrefs(slotSpec){
 function getRenderableCountedBadgeIds(){
   const out = [];
   for(const id of State.badges){
-    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
+    if(!isBadgeEligibleForMembership(id, State.membership)) continue;
     if(isCommandInsigniaBadge(id)) continue;
     if(out.length >= 4) break;
     out.push(id);
@@ -5597,7 +5702,7 @@ function getRenderableCountedBadgeIds(){
 function getRenderableCommandBadgeIds(){
   const out = [];
   for(const id of State.badges){
-    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
+    if(!isBadgeEligibleForMembership(id, State.membership)) continue;
     if(isCommandInsigniaBadge(id)) out.push(id);
   }
   return out;
@@ -7114,14 +7219,14 @@ function openGalleryModal(kind){
     normalizeBadgeSelections();
 
     const eligibleSet = new Set(
-      (State.membership==='cadet') ? badgeList.filter(isCadetAuthorized) : badgeList
+      getEligibleBadgeIdsForMembership(State.membership)
     );
 
     // Clear host and rebuild with headings + subgrids (nice grouping)
     modalHost.innerHTML = '';
     modalHost.appendChild(host);
 
-    BADGE_CATEGORIES.forEach(cat=>{
+    getBadgeCategoriesForCurrentMembership().forEach(cat=>{
       const ids = cat.ids.filter(id => eligibleSet.has(id));
       if(!ids.length) return;
 
@@ -7445,6 +7550,10 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
     if(State.membership === 'cadet'){
       const bad = State.badges.filter(id=>!isCadetAuthorized(id));
       if(bad.length) addNotice('err','Cadet profile includes non-cadet badge(s): '+bad.map(pretty).join(', '));
+    }
+    if(State.membership === 'senior'){
+      const bad = State.badges.filter(id=>!isSeniorAuthorized(id));
+      if(bad.length) addNotice('err','Senior profile includes cadet-only badge(s): '+bad.map(pretty).join(', '));
     }
     if(State.uniform === 'ocp'){
       const rs = State.patches.filter(id => PATCH_META[id]?.slotHint === 'R_SHOULDER').length;
@@ -7897,7 +8006,7 @@ function selectHighestWearableImportedBadges(ids){
     'logistics_section_chief_badge','communications_unit_leader_badge','public_information_officer_badge'
   ]);
   const unique = [...new Set(ids.filter(Boolean))].filter(id => !forbiddenImportBadges.has(id));
-  const eligible = unique.filter(id => !(State.membership === 'cadet' && !isCadetAuthorized(id)));
+  const eligible = unique.filter(id => isBadgeEligibleForMembership(id, State.membership));
 
   // Keep best level in badge families.
   const suppress = new Set();
@@ -8845,7 +8954,7 @@ function applyCapMemberReportImport(parsed){
 
   State.badges = [];
   for(const id of parsed.badges || []){
-    if(State.membership === 'cadet' && !isCadetAuthorized(id)) continue;
+    if(!isBadgeEligibleForMembership(id, State.membership)) continue;
     if(!State.badges.includes(id)) State.badges.push(id);
     if(State.badgeSelections[id]) State.badgeSelections[id].checked = true;
   }
@@ -9129,7 +9238,7 @@ function hasGraduatedCommanderDutyPosition(text){
 function getRenderableCountedBadgeIds(){
   const out = [];
   for(const id of State.badges){
-    if(State.membership==='cadet' && !isCadetAuthorized(id)) continue;
+    if(!isBadgeEligibleForMembership(id, State.membership)) continue;
     if(isCommandInsigniaBadge(id)) continue;
     if(out.length >= CAPUB_COUNTED_BADGE_LIMIT) break;
     out.push(id);
@@ -9145,7 +9254,7 @@ function getSpecialtyPocketSlotBySelectionOrder(id){
 
   const specialtyOrder = (State.badges || [])
     .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
-    .filter(badgeId => !(State.membership === 'cadet' && !isCadetAuthorized(badgeId)));
+    .filter(badgeId => isBadgeEligibleForMembership(badgeId, State.membership));
 
   const hasVolunteerUniversity = specialtyOrder.includes('volunteer_university_instructor_badge');
   const activeLpExclusive = getActiveMaleCadetLeftPocketExclusiveBadge();
