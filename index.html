@@ -8834,6 +8834,28 @@ function shouldImportCommandInsigniaForMember(text, result){
   return !!getCommandInsigniaStatusForMember(text, result);
 }
 
+
+function hasCurrentFirstSergeantDutyPosition(text){
+  const sections = [
+    getReportSection(text, 'Cadet Duty Positions', 'Professional Development'),
+    getReportSection(text, 'Current Duty Positions', 'Past Duty Positions'),
+    getReportSection(text, 'Current Duty Positions', 'Professional Development')
+  ];
+
+  const current = sections
+    .filter(Boolean)
+    .join('\n')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if(!current) return false;
+
+  // Exact current-duty match only. This intentionally does NOT match
+  // "Cadet Flight Sergeant", "Safety NCO", or other cadet NCO duty titles.
+  const firstSergeantTitleRe = /\b(?:Cadet\s+)?(?:First|1st)\s+(?:Sergeant|Sgt)\b/i;
+  return firstSergeantTitleRe.test(current);
+}
+
 function parseCapMemberReport(textRaw){
   const text = normalizeMemberReportText(textRaw);
   const result = {
