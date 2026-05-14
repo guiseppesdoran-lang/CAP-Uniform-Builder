@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CAP Uniform Builder — Full Program Calibrated v3.2</title>
+<title>CAP Uniform Builder — Full Program Calibrated v3.3</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 
@@ -908,7 +908,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <body>
 
 <header>
-  <h1>CAP Uniform Builder — Calibrated Badges & Measurement Lines v3.2</h1>
+  <h1>CAP Uniform Builder — Calibrated Badges & Approval Logic v3.3</h1>
 </header>
 
 <button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu">
@@ -1352,6 +1352,13 @@ const State = {
 
   commandInsignia:{
     graduatedCommander:false
+  },
+
+  memberReportBadgeApproval:{
+    reportLoaded:false,
+    explicitApprovedBadges:new Set(),
+    supportedButNotExplicitBadges:new Set(),
+    warningShownFor:new Set()
   },
 
   // UNIVERSAL calibration (per-layer key)
@@ -5716,6 +5723,13 @@ function buildBadgeGallery(){
         rebuildBadgesFromGallery();
         return;
       }
+      if(chk.checked && !confirmManualBadgeApprovalSelection(id)){
+        chk.checked = false;
+        sel.checked = false;
+        State.badgeSelections[id] = sel;
+        rebuildBadgesFromGallery();
+        return;
+      }
       sel.checked = chk.checked;
       State.badgeSelections[id] = sel;
       rebuildBadgesFromGallery();
@@ -8835,6 +8849,7 @@ function shouldImportCommandInsigniaForMember(text, result){
 }
 
 function parseCapMemberReport(textRaw){
+  analyzeMemberReportForBadgeEligibility(textRaw);
   const text = normalizeMemberReportText(textRaw);
   const result = {
     membership:null,
@@ -9057,30 +9072,16 @@ function parseCapMemberReport(textRaw){
   }
 
   // Badge / qualification mapping.
-  // Aviation family priority is resolved later as: Pilot > Observer > Aircrew.
-  if(/CAP\s+Master\s+Pilot\s+Rating|Master\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPMasterPilot1_621A0E2ED15DA');
-  else if(/CAP\s+Senior\s+Pilot\s+Rating|Senior\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPSeniorPilot1_D9725AE959752');
-  else if(/CAP\s+Pilot\s+Rating|Basic\s+Pilot\s+Badge|Pilot\s+Badge/i.test(text)) result.badges.push('CAPPilot1_FA9D33EA587D8');
+  // Auto-import only explicit badge/rating approvals. Supporting qualifications
+  // are recorded by analyzeMemberReportForBadgeEligibility(), but do not auto-render.
+  for(const badgeId of getExplicitApprovedBadgeIdsFromImportedReport()){
+    result.badges.push(badgeId);
+  }
 
-  if(/CAP\s+Master\s+Aircrew\s+Rating|Master\s+Aircrew\s+Badge/i.test(text)) result.badges.push('MasterAirCrew1_72AC4CAE7A310');
-  else if(/CAP\s+Senior\s+Aircrew\s+Rating|Senior\s+Aircrew\s+Badge/i.test(text)) result.badges.push('SeniorAirCrew1_B289BAE6E515C');
-  else if(/CAP Aircrew Rating|Aircrew Badge/i.test(text)) result.badges.push('AirCrew1_DB3F0FCC3650F');
-  // Do not use MO/Mission Observer training qualification as badge authorization.
-  // Only import Observer when the report explicitly shows an observer rating/badge.
-  if(/CAP\s+Master\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Master\s+Observer\s+Badge/i.test(text)){
-    result.badges.push('MasterObserver1_1B88D5071FD5C');
-  }else if(/CAP\s+Senior\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Senior\s+Observer\s+Badge/i.test(text)){
-    result.badges.push('SeniorObserver1_0E35802A29801');
-  }else if(/CAP\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Observer\s+Badge/i.test(text)){
-    result.badges.push('observer_badge');
+  if(/\bGTM3\b|Ground Team Member Level 3|\bGTM2\b|Ground Team Member Level 2|\bGTM1\b|Ground Team Member Level 1|\bGTL\b|Ground Team Leader|\bGBD\b|Ground Branch Director/i.test(text) &&
+     !getExplicitApprovedBadgeIdsFromImportedReport().some(id => CAPUB_GROUND_TEAM_BADGES.includes(id))){
+    result.notes.push('Ground Team supporting qualification found, but no explicit Ground Team badge approval was found; no Ground Team badge was auto-imported. Manual badge selection will show an eServices approval warning.');
   }
-  if(/Basic Incident Commander Badge|CAP Basic Incident Commander Badge/i.test(text)){
-    result.badges.push('basic_incident_commander_badge');
-  }
-  if(/CAP Master Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTL|GTM1)\\b')) result.badges.push('master_ground_team_badge');
-  else if(/CAP Senior Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\bGTM2\\b')) result.badges.push('senior_ground_team_badge');
-  else if(/CAP Basic Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\bGTM3\\b')) result.badges.push('ground_team_basic_badge');
-  else if(/\bGTM3\b|Ground Team Member Level 3/i.test(text)) result.notes.push('GTM3 found, but it appears to be training status or not an awarded badge; no Ground Team badge imported.');
 
   if(/CAP Master Emergency Services Qualification Badge/i.test(text)) result.badges.push('master_emergency_services_badge');
   else if(/CAP Senior Emergency Services Qualification Badge/i.test(text)) result.badges.push('senior_emergency_services_badge');
@@ -9191,6 +9192,7 @@ function wireMemberReportImporter(){
   });
 
   clearBtn?.addEventListener('click', () => {
+    resetBadgeApprovalState();
     setMemberReportImportStatus('No report imported yet.');
   });
 
@@ -9211,6 +9213,7 @@ function wireMemberReportImporter(){
         parsed.ribbons.some(r => r.id === 'red_service_ribbon') ? `Red Service: ${parsed.ribbons.find(r => r.id === 'red_service_ribbon').reason}` : '',
         parsed.ribbons.some(r => r.id === 'crisis_ribbon') ? 'Crisis Service Award: selected' : '',
         `Badges selected: ${parsed.badges.length}${parsed.badges.length >= 4 ? ' (highest four wearable badges kept)' : ''}`,
+        ...getBadgeApprovalNoteLines(),
         'Reminder: double-check imported results; Unit Citation ribbons and other record-dependent items may not appear correctly.',
         parsed.notes?.length ? `Notes: ${parsed.notes.join('; ')}` : ''
       ].filter(Boolean);
@@ -9535,6 +9538,149 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
   return [...command, ...counted];
 }
 
+
+
+/* ===========================
+   BADGE APPROVAL VS SUPPORTING QUALIFICATION LOGIC
+   ===========================
+   - Explicit badge/rating approval found in the member report: auto-import allowed.
+   - Supporting qualification found without explicit approval: do NOT auto-import.
+   - Manual badge selection when only support is found: warn user to verify eServices approval.
+*/
+const CAPUB_BADGE_APPROVAL_WARNING_TEXT =
+  'This member report shows qualifications or training that may support this badge, but it does not show an explicit badge/rating approval for the badge itself.\n\n' +
+  'Check the member\'s eServices record to ensure the badge approval has been submitted and approved prior to wearing it.\n\n' +
+  'Do you still want to add this badge manually?';
+
+function ensureBadgeApprovalState(){
+  if(!State.memberReportBadgeApproval){
+    State.memberReportBadgeApproval = { reportLoaded:false, explicitApprovedBadges:new Set(), supportedButNotExplicitBadges:new Set(), warningShownFor:new Set() };
+  }
+  for(const key of ['explicitApprovedBadges','supportedButNotExplicitBadges','warningShownFor']){
+    if(!(State.memberReportBadgeApproval[key] instanceof Set)){
+      State.memberReportBadgeApproval[key] = new Set(State.memberReportBadgeApproval[key] || []);
+    }
+  }
+  return State.memberReportBadgeApproval;
+}
+
+function resetBadgeApprovalState(){
+  State.memberReportBadgeApproval = { reportLoaded:false, explicitApprovedBadges:new Set(), supportedButNotExplicitBadges:new Set(), warningShownFor:new Set() };
+  return State.memberReportBadgeApproval;
+}
+
+function normalizeBadgeApprovalText(text){
+  return String(text || '').replace(/\uFFFE|\uFFFD|\uF0BE/g, ' ').replace(/[“”]/g, '"').replace(/\s+/g, ' ').trim();
+}
+function badgeApprovalHasAny(text, patterns){
+  return patterns.some(pattern => pattern instanceof RegExp ? pattern.test(text) : text.toUpperCase().includes(String(pattern).toUpperCase()));
+}
+function addExplicitBadgeApproval(id){
+  if(!id) return;
+  const st = ensureBadgeApprovalState();
+  st.explicitApprovedBadges.add(id);
+  st.supportedButNotExplicitBadges.delete(id);
+}
+function addSupportedBadgeOnly(id){
+  if(!id) return;
+  const st = ensureBadgeApprovalState();
+  if(!st.explicitApprovedBadges.has(id)) st.supportedButNotExplicitBadges.add(id);
+}
+function addSupportedFamily(ids){ ids.forEach(addSupportedBadgeOnly); }
+
+const CAPUB_FIXED_WING_PILOT_BADGES = ['CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA'];
+const CAPUB_OBSERVER_BADGES = ['observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C'];
+const CAPUB_AIRCREW_BADGES = ['AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310'];
+const CAPUB_UAS_PILOT_BADGES = ['uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'];
+const CAPUB_GROUND_TEAM_BADGES = ['ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'];
+
+function analyzeMemberReportForBadgeEligibility(reportText){
+  const st = resetBadgeApprovalState();
+  const text = normalizeBadgeApprovalText(reportText);
+  st.reportLoaded = !!text;
+  if(!text) return st;
+
+  // Explicit fixed-wing pilot/rating approvals. eServices may list basic pilot as "CAP Aircrew Rating OPS-CAPPilot".
+  if(badgeApprovalHasAny(text, [/CAP\s+MASTER\s+PILOT\s+(?:RATING|BADGE)/i, /MASTER\s+PILOT\s+BADGE/i])) addExplicitBadgeApproval('CAPMasterPilot1_621A0E2ED15DA');
+  if(badgeApprovalHasAny(text, [/CAP\s+SENIOR\s+PILOT\s+(?:RATING|BADGE)/i, /SENIOR\s+PILOT\s+BADGE/i])) addExplicitBadgeApproval('CAPSeniorPilot1_D9725AE959752');
+  if(badgeApprovalHasAny(text, [/CAP\s+AIRCREW\s+RATING\s+OPS-CAPPILOT/i, /CAP\s+PILOT\s+(?:RATING|BADGE)/i, /BASIC\s+PILOT\s+BADGE/i])) addExplicitBadgeApproval('CAPPilot1_FA9D33EA587D8');
+
+  // Explicit Observer approvals.
+  if(badgeApprovalHasAny(text, [/CAP\s+MASTER\s+(?:MISSION\s+)?OBSERVER\s+(?:RATING|BADGE)/i, /MASTER\s+OBSERVER\s+BADGE/i])) addExplicitBadgeApproval('MasterObserver1_1B88D5071FD5C');
+  if(badgeApprovalHasAny(text, [/CAP\s+SENIOR\s+(?:MISSION\s+)?OBSERVER\s+(?:RATING|BADGE)/i, /SENIOR\s+OBSERVER\s+BADGE/i])) addExplicitBadgeApproval('SeniorObserver1_0E35802A29801');
+  if(badgeApprovalHasAny(text, [/CAP\s+AIRCREW\s+RATING\s+OPS-CAPOBSERVER/i, /CAP\s+(?:MISSION\s+)?OBSERVER\s+(?:RATING|BADGE)/i, /OBSERVER\s+BADGE/i])) addExplicitBadgeApproval('observer_badge');
+
+  // Explicit Aircrew approvals.
+  if(badgeApprovalHasAny(text, [/CAP\s+MASTER\s+AIRCREW\s+(?:RATING|BADGE)/i, /MASTER\s+AIRCREW\s+BADGE/i])) addExplicitBadgeApproval('MasterAirCrew1_72AC4CAE7A310');
+  if(badgeApprovalHasAny(text, [/CAP\s+SENIOR\s+AIRCREW\s+(?:RATING|BADGE)/i, /SENIOR\s+AIRCREW\s+BADGE/i])) addExplicitBadgeApproval('SeniorAirCrew1_B289BAE6E515C');
+  if(badgeApprovalHasAny(text, [/CAP\s+AIRCREW\s+RATING\s+OPS-CAPAIRCREW/i, /CAP\s+AIRCREW\s+(?:RATING|BADGE)/i, /AIRCREW\s+BADGE/i])) addExplicitBadgeApproval('AirCrew1_DB3F0FCC3650F');
+
+  // Explicit UAS pilot approvals.
+  if(badgeApprovalHasAny(text, [/CAP\s+MASTER\s+UAS\s+PILOT\s+(?:RATING|BADGE)/i, /MASTER\s+UAS\s+PILOT\s+BADGE/i])) addExplicitBadgeApproval('uas_pilot_master_badge');
+  if(badgeApprovalHasAny(text, [/CAP\s+SENIOR\s+UAS\s+PILOT\s+(?:RATING|BADGE)/i, /SENIOR\s+UAS\s+PILOT\s+BADGE/i])) addExplicitBadgeApproval('uas_pilot_senior_badge');
+  if(badgeApprovalHasAny(text, [/CAP\s+UAS\s+PILOT\s+(?:RATING|BADGE)/i, /BASIC\s+UAS\s+PILOT\s+BADGE/i, /UAS\s+PILOT\s+BADGE/i])) addExplicitBadgeApproval('uas_pilot_basic_badge');
+
+  // Explicit Ground Team badge approvals. Qualification records alone do not auto-award these badges.
+  if(badgeApprovalHasAny(text, [/CAP\s+MASTER\s+GROUND\s+TEAM\s+BADGE/i, /MASTER\s+GROUND\s+TEAM\s+BADGE/i])) addExplicitBadgeApproval('master_ground_team_badge');
+  if(badgeApprovalHasAny(text, [/CAP\s+SENIOR\s+GROUND\s+TEAM\s+BADGE/i, /SENIOR\s+GROUND\s+TEAM\s+BADGE/i])) addExplicitBadgeApproval('senior_ground_team_badge');
+  if(badgeApprovalHasAny(text, [/CAP\s+BASIC\s+GROUND\s+TEAM\s+BADGE/i, /BASIC\s+GROUND\s+TEAM\s+BADGE/i, /GROUND\s+TEAM\s+BADGE/i])) addExplicitBadgeApproval('ground_team_basic_badge');
+
+  // Explicit Incident Commander badge approval.
+  if(badgeApprovalHasAny(text, [/CAP\s+BASIC\s+INCIDENT\s+COMMANDER\s+BADGE/i, /BASIC\s+INCIDENT\s+COMMANDER\s+BADGE/i, /INCIDENT\s+COMMANDER\s+BADGE/i])) addExplicitBadgeApproval('basic_incident_commander_badge');
+
+  // Supporting qualifications only. These trigger manual-selection warnings, not auto-rendering.
+  if(badgeApprovalHasAny(text, [/\b(?:MP|TMP)\s+-\s+(?:MISSION|TRANSPORT)\s+PILOT\b/i, /MISSION\s+PILOT/i, /TRANSPORT\s+MISSION\s+PILOT/i, /ORIENTATION\s+PILOT/i, /CHECK\s+PILOT/i, /CAPF?\s*5/i, /FORM\s*5/i])) addSupportedFamily(CAPUB_FIXED_WING_PILOT_BADGES);
+  if(badgeApprovalHasAny(text, [/\bMO\s+-\s+MISSION\s+OBSERVER\b/i, /MISSION\s+OBSERVER/i])) addSupportedFamily(CAPUB_OBSERVER_BADGES);
+  if(badgeApprovalHasAny(text, [/\bMS\s+-\s+MISSION\s+SCANNER\b/i, /MISSION\s+SCANNER/i, /\bMRO\s+-\s+MISSION\s+RADIO\s+OPERATOR\b/i, /MISSION\s+RADIO\s+OPERATOR/i])) addSupportedFamily(CAPUB_AIRCREW_BADGES);
+  if(badgeApprovalHasAny(text, [/\bUAS\b/i, /\bSUAS\b/i, /REMOTE\s+PILOT/i, /FAA\s+PART\s*107/i, /PART\s*107/i, /UAS\s+MISSION\s+PILOT/i, /\bUASMP\b/i])) addSupportedFamily(CAPUB_UAS_PILOT_BADGES);
+
+  if(badgeApprovalHasAny(text, [/\bGTM3\b/i, /GROUND\s+TEAM\s+MEMBER\s+LEVEL\s+3/i])) addSupportedBadgeOnly('ground_team_basic_badge');
+  if(badgeApprovalHasAny(text, [/\bGTM2\b/i, /GROUND\s+TEAM\s+MEMBER\s+LEVEL\s+2/i])) addSupportedBadgeOnly('senior_ground_team_badge');
+  if(badgeApprovalHasAny(text, [/\bGTM1\b/i, /GROUND\s+TEAM\s+MEMBER\s+LEVEL\s+1/i, /\bGTL\b/i, /GROUND\s+TEAM\s+LEADER/i, /\bGBD\b/i, /GROUND\s+BRANCH\s+DIRECTOR/i])) addSupportedBadgeOnly('master_ground_team_badge');
+
+  st.explicitApprovedBadges.forEach(id => st.supportedButNotExplicitBadges.delete(id));
+  return st;
+}
+
+function getExplicitApprovedBadgeIdsFromImportedReport(){
+  const st = ensureBadgeApprovalState();
+  return [...st.explicitApprovedBadges];
+}
+
+function getBadgeApprovalDisplayName(id){
+  const names = {
+    CAPPilot1_FA9D33EA587D8:'Basic CAP Pilot Badge', CAPSeniorPilot1_D9725AE959752:'Senior CAP Pilot Badge', CAPMasterPilot1_621A0E2ED15DA:'Master CAP Pilot Badge',
+    observer_badge:'Basic Observer Badge', SeniorObserver1_0E35802A29801:'Senior Observer Badge', MasterObserver1_1B88D5071FD5C:'Master Observer Badge',
+    AirCrew1_DB3F0FCC3650F:'Basic Aircrew Badge', SeniorAirCrew1_B289BAE6E515C:'Senior Aircrew Badge', MasterAirCrew1_72AC4CAE7A310:'Master Aircrew Badge',
+    uas_pilot_basic_badge:'Basic UAS Pilot Badge', uas_pilot_senior_badge:'Senior UAS Pilot Badge', uas_pilot_master_badge:'Master UAS Pilot Badge',
+    ground_team_basic_badge:'Basic Ground Team Badge', senior_ground_team_badge:'Senior Ground Team Badge', master_ground_team_badge:'Master Ground Team Badge',
+    basic_incident_commander_badge:'Basic Incident Commander Badge'
+  };
+  return names[id] || (typeof pretty === 'function' ? pretty(id) : 'This badge');
+}
+
+function confirmManualBadgeApprovalSelection(id){
+  const st = ensureBadgeApprovalState();
+  if(!st.reportLoaded || !id) return true;
+  if(st.explicitApprovedBadges.has(id)) return true;
+  if(!st.supportedButNotExplicitBadges.has(id)) return true;
+
+  const name = getBadgeApprovalDisplayName(id);
+  const ok = window.confirm(`${name}:\n\n${CAPUB_BADGE_APPROVAL_WARNING_TEXT}`);
+  if(ok) st.warningShownFor.add(id);
+  return ok;
+}
+
+function getBadgeApprovalNoteLines(){
+  const st = ensureBadgeApprovalState();
+  if(!st.reportLoaded) return [];
+  const explicit = [...st.explicitApprovedBadges].map(getBadgeApprovalDisplayName);
+  const supported = [...st.supportedButNotExplicitBadges].map(getBadgeApprovalDisplayName);
+  const lines = [];
+  if(explicit.length) lines.push(`Explicit badge/rating approvals found: ${explicit.join(', ')}.`);
+  if(supported.length) lines.push(`Supporting qualifications found without explicit badge approval: ${supported.join(', ')}. These were not auto-imported; manual selection will warn the user.`);
+  return lines;
+}
 
 /* ===========================
    V3.2 USER PATCHES
