@@ -1036,7 +1036,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
             <input type="checkbox" id="cadetFirstSergeantCheckbox">
             Cadet First Sergeant diamond
           </label>
-          <div class="hintText">Available only for C/SSgt through C/CMSgt. Uses the rank-specific Class B base image ending in <code>_1st_sgt</code>.</div>
+          <div class="hintText">Available only for C/MSgt, C/SMSgt, and C/CMSgt. Uses the rank-specific Class B base image ending in <code>_1st_sgt</code>. If a member report shows a current First Sergeant duty assignment, this can auto-select when the cadet rank is eligible.</div>
         </div>
       </section>
 
@@ -3372,20 +3372,16 @@ const CADET_COMBINED_CLASSB = {
 };
 
 const CADET_FIRST_SERGEANT_CLASSB_RANKS = new Set([
-  "C/SSgt", "C/TSgt", "C/MSgt", "C/SMSgt", "C/CMSgt"
+  "C/MSgt", "C/SMSgt", "C/CMSgt"
 ]);
 
 const CADET_FIRST_SERGEANT_COMBINED_CLASSB = {
   male: {
-    "C/SSgt":  "base/blues_class_b_male_c_ssgt_1st_sgt.png",
-    "C/TSgt":  "base/blues_class_b_male_c_tsgt_1st_sgt.png",
     "C/MSgt":  "base/blues_class_b_male_c_msgt_1st_sgt.png",
     "C/SMSgt": "base/blues_class_b_male_c_smsgt_1st_sgt.png",
     "C/CMSgt": "base/blues_class_b_male_c_cmsgt_1st_sgt.png"
   },
   female: {
-    "C/SSgt":  "base/blues_class_b_female_c_ssgt_1st_sgt.png",
-    "C/TSgt":  "base/blues_class_b_female_c_tsgt_1st_sgt.png",
     "C/MSgt":  "base/blues_class_b_female_c_msgt_1st_sgt.png",
     "C/SMSgt": "base/blues_class_b_female_c_smsgt_1st_sgt.png",
     "C/CMSgt": "base/blues_class_b_female_c_cmsgt_1st_sgt.png"
@@ -8844,6 +8840,7 @@ function parseCapMemberReport(textRaw){
     membership:null,
     gender:null,
     rank:null,
+    cadetFirstSergeant:false,
     ribbons:[],
     badges:[],
     notes:[]
@@ -8860,6 +8857,15 @@ function parseCapMemberReport(textRaw){
     if(/\bFEMALE\b/i.test(text)) result.gender = 'female';
     else if(/\bMALE\b/i.test(text)) result.gender = 'male';
     result.rank = getHighestImportedRank(text);
+  }
+
+  if(result.membership === 'cadet' && hasCurrentFirstSergeantDutyPosition(text)){
+    result.cadetFirstSergeant = true;
+    if(CADET_FIRST_SERGEANT_CLASSB_RANKS.has(result.rank)){
+      result.notes.push('Current First Sergeant duty assignment found; Cadet First Sergeant diamond auto-selected for Class B.');
+    }else{
+      result.notes.push('Current First Sergeant duty assignment found, but Cadet First Sergeant diamond was not auto-selected because the imported cadet rank is not C/MSgt, C/SMSgt, or C/CMSgt.');
+    }
   }
 
   // Cadet achievement ribbons from the cadet achievements section.
@@ -9119,6 +9125,9 @@ function applyCapMemberReportImport(parsed){
     State.gender = parsed.gender;
     if(jacketSelect) jacketSelect.value = parsed.gender;
   }
+
+  State.cadetFirstSergeant = !!parsed.cadetFirstSergeant && isCadetFirstSergeantEligible(State.rank);
+  syncCadetFirstSergeantControl();
 
   normalizeRibbonSelections();
   normalizeBadgeSelections();
