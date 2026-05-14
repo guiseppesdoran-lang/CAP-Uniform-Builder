@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CAP Uniform Builder — Full Program Calibrated v3.2</title>
+<title>CAP Uniform Builder — Full Program Calibrated v3.3</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 
@@ -908,7 +908,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <body>
 
 <header>
-  <h1>CAP Uniform Builder — Calibrated Badges & Measurement Lines v3.2</h1>
+  <h1>CAP Uniform Builder — Calibrated Badges & Dynamic Measurement Lines v3.3</h1>
 </header>
 
 <button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu">
@@ -1220,10 +1220,10 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
       <section id="measurementOverlayPanel" class="panelBlock">
         <label class="fieldLabel">Measurement Overlay</label>
         <label style="font-size:12px;color:var(--muted);display:block;margin-top:4px;">
-          <input type="checkbox" id="toggleMeasurementOverlay" checked> Show red distance arrows and labels
+          <input type="checkbox" id="toggleMeasurementOverlay"> Show red distance arrows and labels
         </label>
         <div class="hintText">
-          Displays red double-ended arrows and labels between the rendered ribbon rack and badges, excluding individual ribbons.
+          Defaults off. When enabled, displays red double-ended arrows between adjacent rendered items. The ribbon rack is measured as one rack, not as individual ribbons.
         </div>
       </section>
 
@@ -1339,7 +1339,7 @@ const State = {
   selectedDevices:{},
   ribbonDragMode:false,
   forceMini:false,
-  showMeasurementOverlay:true,
+  showMeasurementOverlay:false,
 
   ribbonSelections:{}, 
   ribbonGalleryExpanded:false,
@@ -6756,87 +6756,103 @@ function renderMeasurementOverlay(){
   clearMeasurementOverlay();
   if(!State.showMeasurementOverlay) return;
 
-  const items = getMeasurementRenderableItems();
+  const items = getMeasurementRenderableItems()
+    .filter(Boolean)
+    .filter(item => item.kind !== 'ribbon')
+    .filter(item => Number.isFinite(item.top) && Number.isFinite(item.bottom) && Number.isFinite(item.centerX));
+
   if(items.length < 2) return;
 
   const box = uniformCanvas.getBoundingClientRect();
   const canvasWidth = box.width || 450;
-
   const clampArrowX = x => Math.max(18, Math.min(canvasWidth - 18, x));
 
-  for(const lower of items){
-    // Nameplate-specific measurements are drawn explicitly below because they
-    // measure from the TOP of the nameplate to the TOP of the badge.
-    if(lower.kind === 'nameplate') continue;
+  const verticalGap = (upper, lower) => lower.top - upper.bottom;
+  const horizontalOverlap = (a, b) => Math.max(0, rangesOverlap(a.left, a.right, b.left, b.right));
+  const centerDistance = (a, b) => Math.abs((a.centerX || 0) - (b.centerX || 0));
 
+  function isRibbonRackRelated(a, b){
+    return a?.kind === 'ribbonRack' || b?.kind === 'ribbonRack';
+  }
+
+  function measurementXForPair(upper, lower){
+    // User rule: ribbon rack is measured as one object. Lines to badges above
+    // and below the ribbon rack stay centered on the ribbon rack, not on an
+    // individual ribbon or on the badge edge.
+    if(upper.kind === 'ribbonRack') return clampArrowX(upper.centerX);
+    if(lower.kind === 'ribbonRack') return clampArrowX(lower.centerX);
+
+    // Otherwise center the arrow on the item being measured downward to.
+    // This keeps badge-to-badge/nameplate measurements visually tied to the
+    // lower item in the pair.
+    return clampArrowX(lower.centerX);
+  }
+
+  function shouldMeasurePair(upper, lower){
+    if(!upper || !lower || upper === lower) return false;
+    if(verticalGap(upper, lower) <= 0) return false;
+
+    // Always allow direct ribbon-rack adjacency, but only to badges/items in
+    // the same general column.
+    if(isRibbonRackRelated(upper, lower)){
+      return horizontalOverlap(upper, lower) > 0 || centerDistance(upper, lower) <= 85;
+    }
+
+    // For normal stacked items, prefer same-column items. This prevents lines
+    // randomly jumping across the jacket while still allowing slightly offset
+    // badges to be measured.
+    return horizontalOverlap(upper, lower) > 0 || centerDistance(upper, lower) <= 55;
+  }
+
+  function bestUpperFor(lower){
     const candidates = items
       .filter(upper => upper !== lower)
-      .filter(upper => upper.kind !== 'nameplate')
       .filter(upper => upper.bottom <= lower.top)
-      .map(upper => ({ upper, gap: lower.top - upper.bottom }))
+      .filter(upper => shouldMeasurePair(upper, lower))
+      .map(upper => ({
+        upper,
+        gap: verticalGap(upper, lower),
+        overlap: horizontalOverlap(upper, lower),
+        centerDelta: centerDistance(upper, lower)
+      }))
       .filter(entry => entry.gap > 0);
 
-    if(!candidates.length) continue;
+    if(!candidates.length) return null;
 
     candidates.sort((a, b) => {
-      const overlapA = rangesOverlap(a.upper.left, a.upper.right, lower.left, lower.right);
-      const overlapB = rangesOverlap(b.upper.left, b.upper.right, lower.left, lower.right);
-      const scoreA = overlapA > 0 ? 0 : 1;
-      const scoreB = overlapB > 0 ? 0 : 1;
-      if(scoreA !== scoreB) return scoreA - scoreB;
-      return a.gap - b.gap;
+      // The nearest item above is usually the correct measurement target.
+      if(a.gap !== b.gap) return a.gap - b.gap;
+
+      // If gaps tie, prefer the one that overlaps horizontally.
+      const aOverlapScore = a.overlap > 0 ? 0 : 1;
+      const bOverlapScore = b.overlap > 0 ? 0 : 1;
+      if(aOverlapScore !== bOverlapScore) return aOverlapScore - bOverlapScore;
+
+      return a.centerDelta - b.centerDelta;
     });
 
-    const { upper } = candidates[0];
-    const label = getCaprReferenceGapLabel(upper, lower);
+    return candidates[0].upper;
+  }
 
-    // Only draw the overlay when a CAPR reference distance applies.
-    if(!label) continue;
+  const drawn = new Set();
 
-    // Always center the arrow on the item being measured.
-    // For badges, this means the arrow is horizontally centered on that badge.
-    // For the ribbon rack, use the rack center.
-    const x = clampArrowX(lower.centerX);
+  for(const lower of items){
+    const upper = bestUpperFor(lower);
+    if(!upper) continue;
 
-    // Keep the label outside the arrow path when possible.
+    const gap = verticalGap(upper, lower);
+    if(gap < 3) continue;
+
+    const pairId = `${upper.kind}:${upper.slot}:${upper.id}:${upper.idx}->${lower.kind}:${lower.slot}:${lower.id}:${lower.idx}`;
+    if(drawn.has(pairId)) continue;
+    drawn.add(pairId);
+
+    const x = measurementXForPair(upper, lower);
+    const label = getCaprReferenceGapLabel(upper, lower); // label only when a known CAPR reference applies
     const placeLeft = x > (canvasWidth * 0.7);
     const arrowKey = buildMeasurementArrowKey(upper, lower);
 
     makeMeasurementArrow(null, arrowKey, x, upper.bottom, lower.top, label, placeLeft);
-  }
-
-  // Requested right-side/nameplate measurements:
-  // 1. Nameplate top to top of current commander badge = 0.50"
-  // 2. Nameplate top to top of RP badge = 0.50"
-  const nameplate = items.find(item => item.kind === 'nameplate');
-  if(nameplate){
-    const commanderBadge = items.find(item => item.kind === 'badge' && item.id === 'squadron_commander_badge');
-    if(commanderBadge){
-      const x = clampArrowX(commanderBadge.centerX);
-      makeMeasurementArrow(
-        null,
-        'arrow:NAMEPLATE:to:COMMANDER:squadron_commander_badge:0',
-        x,
-        nameplate.top,
-        commanderBadge.top,
-        '0.50"',
-        true
-      );
-    }
-
-    const rpBadge = items.find(item => item.kind === 'badge' && item.slot === 'RP');
-    if(rpBadge){
-      const x = clampArrowX(rpBadge.centerX);
-      makeMeasurementArrow(
-        null,
-        `arrow:NAMEPLATE:to:RP:${rpBadge.id || 'badge'}:${rpBadge.idx || 0}`,
-        x,
-        nameplate.top,
-        rpBadge.top,
-        '0.50"',
-        false
-      );
-    }
   }
 }
 
