@@ -3317,6 +3317,63 @@ function getSeniorOfficerCombinedClassBPath(rank, gender){
   return SENIOR_OFFICER_COMBINED_CLASSB?.[gender]?.[rank] || null;
 }
 
+// Cadet combined Class B base images.
+// These are full base images with cadet grade already built into the shirt.
+// Naming convention:
+//   images/base/blues_class_b_{gender}_{cadet_rank}.png
+// Senior member Class B pathing is intentionally unchanged and remains in
+// SENIOR_NCO_BASE.blues_b and SENIOR_OFFICER_COMBINED_CLASSB.
+const CADET_COMBINED_CLASSB = {
+  male: {
+    "C/AB":     "base/blues_class_b_male_c_ab.png",
+    "C/Amn":    "base/blues_class_b_male_c_amn.png",
+    "C/A1C":    "base/blues_class_b_male_c_a1c.png",
+    "C/SrA":    "base/blues_class_b_male_c_sra.png",
+    "C/SSgt":   "base/blues_class_b_male_c_ssgt.png",
+    "C/TSgt":   "base/blues_class_b_male_c_tsgt.png",
+    "C/MSgt":   "base/blues_class_b_male_c_msgt.png",
+    "C/SMSgt":  "base/blues_class_b_male_c_smsgt.png",
+    "C/CMSgt":  "base/blues_class_b_male_c_cmsgt.png",
+    "C/2d Lt":  "base/blues_class_b_male_c_2d_lt.png",
+    "C/1st Lt": "base/blues_class_b_male_c_1st_lt.png",
+    "C/Capt":   "base/blues_class_b_male_c_capt.png",
+    "C/Maj":    "base/blues_class_b_male_c_maj.png",
+    "C/Lt Col": "base/blues_class_b_male_c_lt_col.png",
+    "C/Col":    "base/blues_class_b_male_c_col.png"
+  },
+  female: {
+    "C/AB":     "base/blues_class_b_female_c_ab.png",
+    "C/Amn":    "base/blues_class_b_female_c_amn.png",
+    "C/A1C":    "base/blues_class_b_female_c_a1c.png",
+    "C/SrA":    "base/blues_class_b_female_c_sra.png",
+    "C/SSgt":   "base/blues_class_b_female_c_ssgt.png",
+    "C/TSgt":   "base/blues_class_b_female_c_tsgt.png",
+    "C/MSgt":   "base/blues_class_b_female_c_msgt.png",
+    "C/SMSgt":  "base/blues_class_b_female_c_smsgt.png",
+    "C/CMSgt":  "base/blues_class_b_female_c_cmsgt.png",
+    "C/2d Lt":  "base/blues_class_b_female_c_2d_lt.png",
+    "C/1st Lt": "base/blues_class_b_female_c_1st_lt.png",
+    "C/Capt":   "base/blues_class_b_female_c_capt.png",
+    "C/Maj":    "base/blues_class_b_female_c_maj.png",
+    "C/Lt Col": "base/blues_class_b_female_c_lt_col.png",
+    "C/Col":    "base/blues_class_b_female_c_col.png"
+  }
+};
+
+function getCadetCombinedClassBPath(rank, gender){
+  return CADET_COMBINED_CLASSB?.[gender]?.[rank] || null;
+}
+
+function usingCombinedCadetClassBJacket(){
+  return (
+    State.uniform === 'blues_b' &&
+    State.membership === 'cadet' &&
+    !!State.gender &&
+    !!State.rank &&
+    !!getCadetCombinedClassBPath(State.rank, State.gender)
+  );
+}
+
 function usingCombinedSeniorOfficerClassBJacket(){
   return (
     State.uniform === 'blues_b' &&
@@ -4631,7 +4688,14 @@ function getBaseCandidates(){
     return [...new Set(list)];
   }
 
-  // 1c) Senior Member Officer Class B combined shirt (rank baked in)
+  // 1c) Cadet Class B combined shirt (cadet grade baked in)
+  // This is cadet-only. Senior Member Class B pathing below remains unchanged.
+  if(usingCombinedCadetClassBJacket()){
+    list.push(getCadetCombinedClassBPath(State.rank, State.gender));
+    return [...new Set(list)];
+  }
+
+  // 1d) Senior Member Officer Class B combined shirt (rank baked in)
   if(usingCombinedSeniorOfficerClassBJacket()){
     list.push(getSeniorOfficerCombinedClassBPath(State.rank, State.gender));
     return [...new Set(list)];
@@ -7647,6 +7711,11 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
     Object.entries(deviceMeta).forEach(([id,m])=>expected.push({category:'Ribbon device', item:m.label||pretty(id), id, path:`images/${m.src}`, status:'required'}));
     Object.entries(miniMedalImages).forEach(([id,p])=>expected.push({category:'Mini medal', item:pretty(id), id, path:`images/${p}`, status:'required when mini-medals used'}));
     Object.keys(UNIFORMS).forEach(u=>['male','female'].forEach(g=>{ const p=UNIFORMS[u]?.[g]; if(p) expected.push({category:'Base uniform', item:`${u} ${g}`, id:`${u}_${g}`, path:`images/${p}`, status:'required'}); }));
+    Object.entries(CADET_COMBINED_CLASSB || {}).forEach(([gender,map])=>{
+      Object.entries(map).forEach(([rank,path])=>{
+        expected.push({category:'Cadet Class B base uniform', item:`${gender} ${rank}`, id:`cadet_class_b_${gender}_${safeRankFile(rank)}`, path:`images/${path}`, status:'required for cadet Class B rank-specific base'});
+      });
+    });
     [...rankListAll].forEach(r=>expected.push({category:'Rank', item:r, id:safeRankFile(r), path:`images/ranks/${safeRankFile(r)}.png`, status:'recommended'}));
     // CAPR 39-1 / ICL additions the current asset set should eventually support.
     [
