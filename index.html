@@ -9771,7 +9771,7 @@ function extractCommandServiceCommanderAssignments(text){
    User rule implemented:
    - CAC ribbon is earned from PAST duty assignments only, because the cadet
      must have served in the CAC position/term before wearing the ribbon.
-   - Current CAC duty assignments render the shoulder cord only.
+   - Current CAC duty assignments render the shoulder cord only when the member is the primary representative.
    - If a cadet has completed a lower-level CAC term and is currently serving
      at a higher level, the lower-level ribbon remains until the higher term
      appears in Past Duty Positions.
@@ -9781,6 +9781,7 @@ function extractCommandServiceCommanderAssignments(text){
        images/cords/region
        images/cords/national
      The renderer tries .png, .webp, .jpg, then the extensionless path.
+   - Assistant/alternate CAC reps, recorders, members, chairs, and vice chairs do not auto-render the cord.
    ========================================================== */
 State.shoulderCord = State.shoulderCord || null;
 
@@ -9808,6 +9809,25 @@ function capubLooksLikeCACDutySegment(segment){
   if(/Cadet\s+Advisory\s+Council/i.test(s)) return true;
   if(/\b[GNWR]CAC\b|\bNCAC\b/i.test(s)) return true;
   if(/\bCAC\b/i.test(s) && /\b(?:Representative|Rep|Primary|Assistant|Alternate|Chair|Vice\s+Chair|Recorder|Member)\b/i.test(s)) return true;
+  return false;
+}
+
+
+function capubIsPrimaryCACRepresentativeSegment(segment){
+  const s = capubNormalizeCACSource(segment);
+  if(!s) return false;
+
+  // User rule: the shoulder cord is for the current primary representative only.
+  // Assistant/alternate reps, recorders, general members, chairs, and vice chairs
+  // should not auto-render a cord from the member report.
+  if(/(?:Assistant|Alternate)\s+(?:Representative|Rep)/i.test(s)) return false;
+  if(/(?:Assistant|Alternate|Recorder|Member|Chair|Vice\s+Chair)/i.test(s)) return false;
+
+  // Treat an explicit Primary Rep title as eligible. Also treat a plain CAC
+  // Representative/Rep title as primary unless the row explicitly says assistant
+  // or alternate, because eServices duty titles often omit the word "Primary."
+  if(/Primary\s+(?:Representative|Rep)/i.test(s)) return true;
+  if(/(?:Representative|Rep)/i.test(s)) return true;
   return false;
 }
 
@@ -9853,6 +9873,7 @@ function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
     rows.push({
       level,
       current:isCurrent,
+      primaryRep: capubIsPrimaryCACRepresentativeSegment(raw),
       title,
       unit:m[2] || '',
       echelon:String(echelon || '').toUpperCase(),
@@ -9873,7 +9894,7 @@ function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
     if(!level) continue;
     const duplicate = rows.some(r => r.level === level && ctx.includes(r.title));
     if(!duplicate){
-      rows.push({ level, current:isCurrent, title:'CAC duty assignment', unit:'', echelon:echelonMatch ? echelonMatch[1].toUpperCase() : '', start:null, end:isCurrent ? new Date() : null, raw:ctx });
+      rows.push({ level, current:isCurrent, primaryRep: capubIsPrimaryCACRepresentativeSegment(ctx), title:'CAC duty assignment', unit:'', echelon:echelonMatch ? echelonMatch[1].toUpperCase() : '', start:null, end:isCurrent ? new Date() : null, raw:ctx });
     }
   }
 
@@ -9930,7 +9951,8 @@ function capubGetCACRibbonFromPastDutyAssignments(text){
 }
 
 function capubGetCACShoulderCordFromCurrentDutyAssignments(text){
-  const rows = capubGetCurrentCACDutyAssignments(text);
+  const rows = capubGetCurrentCACDutyAssignments(text)
+    .filter(row => row && row.primaryRep === true);
   const level = capubChooseHighestCACLevel(rows);
   return level || null;
 }
@@ -9978,7 +10000,7 @@ function renderCACShoulderCord(){
 
   img.dataset.tooltipTitle = CAC_CORD_LABEL_BY_LEVEL[level] || `${level.toUpperCase()} CAC shoulder cord`;
   img.dataset.tooltipReg = 'CAPR 60-1 CAC shoulder cord';
-  img.dataset.tooltipWhy = 'Rendered from a current CAC duty assignment. The CAC ribbon is imported only from past CAC duty assignments.';
+  img.dataset.tooltipWhy = 'Rendered only from a current CAC primary representative duty assignment. The CAC ribbon is imported only from past CAC duty assignments.';
 
   capubSetImageWithFallback(img, capubCACCordAssetCandidates(level));
   uniformCanvas.appendChild(img);
@@ -10001,12 +10023,12 @@ parseCapMemberReport = function capubParseCapMemberReportCACPatch(textRaw){
     result.ribbons.push(cacRibbon);
     result.notes.push(`CAC ribbon imported from Past Duty Positions as ${cacRibbon.value}.`);
   }else if(/Cadet\s+Advisory\s+Council|\bCAC\b|\b[GNWR]CAC\b|\bNCAC\b/i.test(normalized)){
-    result.notes.push('CAC text found, but CAC ribbon was not imported because no completed CAC term was found in Past Duty Positions. Current CAC duty only controls the shoulder cord.');
+    result.notes.push('CAC text found, but CAC ribbon was not imported because no completed CAC term was found in Past Duty Positions. Current CAC primary representative duty only controls the shoulder cord.');
   }
 
   result.shoulderCord = currentCord;
   if(currentCord){
-    result.notes.push(`${CAC_CORD_LABEL_BY_LEVEL[currentCord]} imported from Current Duty Positions.`);
+    result.notes.push(`${CAC_CORD_LABEL_BY_LEVEL[currentCord]} imported from Current Duty Positions as a current primary representative.`);
   }
 
   return result;
