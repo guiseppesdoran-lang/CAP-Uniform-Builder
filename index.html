@@ -9765,6 +9765,292 @@ function extractCommandServiceCommanderAssignments(text){
   }
   return rows;
 }
+
+/* ==========================================================
+   CAPUB PATCH 2026-05-15 — CAC RIBBON + CURRENT SHOULDER CORD LOGIC
+   User rule implemented:
+   - CAC ribbon is earned from PAST duty assignments only, because the cadet
+     must have served in the CAC position/term before wearing the ribbon.
+   - Current CAC duty assignments render the shoulder cord only.
+   - If a cadet has completed a lower-level CAC term and is currently serving
+     at a higher level, the lower-level ribbon remains until the higher term
+     appears in Past Duty Positions.
+   - Shoulder cord asset paths:
+       images/cords/group
+       images/cords/wing
+       images/cords/region
+       images/cords/national
+     The renderer tries .png, .webp, .jpg, then the extensionless path.
+   ========================================================== */
+State.shoulderCord = State.shoulderCord || null;
+
+const CAC_LEVEL_PRIORITY = { group:1, wing:2, region:3, national:4 };
+const CAC_RIBBON_VALUE_BY_LEVEL = {
+  group: 'group',
+  wing: 'wing_bronze_star',
+  region: 'region_silver_star',
+  national: 'national_gold_star'
+};
+const CAC_CORD_LABEL_BY_LEVEL = {
+  group: 'Group CAC shoulder cord — green',
+  wing: 'Wing CAC shoulder cord — red',
+  region: 'Region CAC shoulder cord — blue',
+  national: 'National CAC shoulder cord — gold'
+};
+
+function capubNormalizeCACSource(text){
+  return String(text || '').replace(/\s+/g, ' ').trim();
+}
+
+function capubLooksLikeCACDutySegment(segment){
+  const s = capubNormalizeCACSource(segment);
+  if(!s) return false;
+  if(/Cadet\s+Advisory\s+Council/i.test(s)) return true;
+  if(/\b[GNWR]CAC\b|\bNCAC\b/i.test(s)) return true;
+  if(/\bCAC\b/i.test(s) && /\b(?:Representative|Rep|Primary|Assistant|Alternate|Chair|Vice\s+Chair|Recorder|Member)\b/i.test(s)) return true;
+  return false;
+}
+
+function capubCACLevelFromText(segment, rowEchelon=''){
+  const s = capubNormalizeCACSource(segment);
+  const echelon = String(rowEchelon || '').toUpperCase();
+
+  if(/\bNCAC\b|National\s+Cadet\s+Advisory\s+Council|National\s+CAC/i.test(s) || echelon === 'NATIONAL') return 'national';
+  if(/\bRCAC\b|Region\s+Cadet\s+Advisory\s+Council|Region\s+CAC/i.test(s) || echelon === 'REGION') return 'region';
+  if(/\bWCAC\b|Wing\s+Cadet\s+Advisory\s+Council|Wing\s+CAC/i.test(s) || echelon === 'WING') return 'wing';
+  if(/\bGCAC\b|Group\s+Cadet\s+Advisory\s+Council|Group\s+CAC/i.test(s) || echelon === 'GROUP') return 'group';
+
+  // Squadron-level representatives normally serve on group CAC when a group CAC exists;
+  // without clearer text, treat generic past CAC duty as group/basic ribbon.
+  if(echelon === 'UNIT') return 'group';
+  return null;
+}
+
+function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
+  const source = capubNormalizeCACSource(section);
+  const rows = [];
+  if(!source) return rows;
+
+  // First pass: full duty-position rows, for reports that include title, unit, echelon, assistant flag, and dates.
+  const datePart = '(\\d{1,2}\\s+[A-Za-z]{3,9}\\s+\\d{4})';
+  const rowRe = new RegExp(
+    '((?:Cadet\\s+)?(?:National\\s+|Region\\s+|Wing\\s+|Group\\s+)?(?:Cadet\\s+Advisory\\s+Council|[GNWR]CAC|NCAC|CAC)(?:\\s+(?:Primary\\s+)?(?:Representative|Rep|Assistant|Alternate|Chair|Vice\\s+Chair|Recorder|Member))?|(?:Cadet\\s+)?(?:[GNWR]CAC|NCAC|CAC)\\s+(?:Representative|Rep|Assistant|Alternate|Chair|Vice\\s+Chair|Recorder|Member))\\s+' +
+    '([A-Z]{2,4}-[A-Z0-9-]+|[A-Z0-9-]+)?\\s*' +
+    '(UNIT|GROUP|WING|REGION|NATIONAL)?\\s*' +
+    '(?:Yes|No)?\\s*' + datePart +
+    '(?:\\s+' + datePart + ')?',
+    'gi'
+  );
+
+  let m;
+  while((m = rowRe.exec(source))){
+    const title = m[1] || '';
+    const echelon = m[3] || '';
+    const raw = m[0] || title;
+    if(!capubLooksLikeCACDutySegment(raw)) continue;
+    const level = capubCACLevelFromText(raw, echelon);
+    if(!level) continue;
+    rows.push({
+      level,
+      current:isCurrent,
+      title,
+      unit:m[2] || '',
+      echelon:String(echelon || '').toUpperCase(),
+      start: parseCapReportDate(m[4]),
+      end: parseCapReportDate(m[5]) || (isCurrent ? new Date() : null),
+      raw
+    });
+  }
+
+  // Second pass: tolerate simple/legacy duty lines that contain CAC text but do not match the full row regex.
+  // We search in small windows around each CAC token and infer level from the token/echelon words.
+  const tokenRe = /\b(?:NCAC|RCAC|WCAC|GCAC|CAC|Cadet\s+Advisory\s+Council)\b/gi;
+  while((m = tokenRe.exec(source))){
+    const ctx = source.slice(Math.max(0, m.index - 90), Math.min(source.length, m.index + 180));
+    if(!capubLooksLikeCACDutySegment(ctx)) continue;
+    const echelonMatch = ctx.match(/\b(UNIT|GROUP|WING|REGION|NATIONAL)\b/i);
+    const level = capubCACLevelFromText(ctx, echelonMatch ? echelonMatch[1] : '');
+    if(!level) continue;
+    const duplicate = rows.some(r => r.level === level && ctx.includes(r.title));
+    if(!duplicate){
+      rows.push({ level, current:isCurrent, title:'CAC duty assignment', unit:'', echelon:echelonMatch ? echelonMatch[1].toUpperCase() : '', start:null, end:isCurrent ? new Date() : null, raw:ctx });
+    }
+  }
+
+  return rows;
+}
+
+function capubGetCurrentCACDutyAssignments(text){
+  const sections = [
+    getReportSection(text, 'Cadet Duty Positions', 'Professional Development'),
+    getReportSection(text, 'Current Duty Positions', 'Past Duty Positions'),
+    getReportSection(text, 'Current Duty Positions', 'Professional Development')
+  ].filter(Boolean);
+
+  const rows = [];
+  for(const section of sections){
+    rows.push(...capubExtractCACDutyAssignmentsFromSection(section, true));
+  }
+
+  // Dedupe by level/raw so Cadet Duty Positions + Current Duty Positions do not double count.
+  const seen = new Set();
+  return rows.filter(row => {
+    const key = `${row.level}|${row.raw}`;
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function capubGetPastCACDutyAssignments(text){
+  const past = getReportSectionUntilAny(text, 'Past Duty Positions', [
+    'Current Committees', 'Transfer History', 'Level', 'Professional Development',
+    'Specialty Tracks', 'Cadet Training', 'Encampments', 'Awards', 'Promotions'
+  ]);
+  return capubExtractCACDutyAssignmentsFromSection(past, false);
+}
+
+function capubChooseHighestCACLevel(rows){
+  if(!Array.isArray(rows) || !rows.length) return null;
+  const valid = rows.filter(r => r && r.level && CAC_LEVEL_PRIORITY[r.level]);
+  if(!valid.length) return null;
+  valid.sort((a,b) => CAC_LEVEL_PRIORITY[b.level] - CAC_LEVEL_PRIORITY[a.level]);
+  return valid[0].level;
+}
+
+function capubGetCACRibbonFromPastDutyAssignments(text){
+  const rows = capubGetPastCACDutyAssignments(text);
+  const level = capubChooseHighestCACLevel(rows);
+  if(!level) return null;
+  return {
+    id:'cadet_advisory_council_ribbon',
+    value:CAC_RIBBON_VALUE_BY_LEVEL[level],
+    reason:`Completed past ${level.toUpperCase()} CAC duty assignment`
+  };
+}
+
+function capubGetCACShoulderCordFromCurrentDutyAssignments(text){
+  const rows = capubGetCurrentCACDutyAssignments(text);
+  const level = capubChooseHighestCACLevel(rows);
+  return level || null;
+}
+
+function capubCACCordAssetCandidates(level){
+  const base = `cords/${level}`;
+  return [`${base}.png`, `${base}.webp`, `${base}.jpg`, `${base}.jpeg`, base];
+}
+
+function capubSetImageWithFallback(img, candidates){
+  const list = (candidates || []).filter(Boolean);
+  let idx = 0;
+  function tryNext(){
+    if(idx >= list.length){ img.remove(); return; }
+    img.src = ASSET(list[idx++]);
+  }
+  img.onerror = tryNext;
+  tryNext();
+}
+
+function renderCACShoulderCord(){
+  [...uniformCanvas.querySelectorAll('.layer.cacShoulderCord')].forEach(n => n.remove());
+
+  const level = State.shoulderCord;
+  if(!level || !CAC_LEVEL_PRIORITY[level]) return;
+  if(!['blues_a','blues_b'].includes(State.uniform)) return;
+  if(State.membership !== 'cadet') return;
+
+  const img = document.createElement('img');
+  img.className = 'layer cacShoulderCord';
+  img.dataset.calibKey = `shoulderCord:cac:${level}`;
+  img.alt = CAC_CORD_LABEL_BY_LEVEL[level] || `${level} CAC shoulder cord`;
+  img.style.display = 'block';
+
+  // Default approximations. Calibrate each level with key shoulderCord:cac:<level>.
+  const baseByUniformGender = {
+    blues_a_male:   { x:96,  y:86,  w:52, h:160, r:0 },
+    blues_a_female: { x:102, y:100, w:48, h:150, r:0 },
+    blues_b_male:   { x:92,  y:76,  w:50, h:152, r:0 },
+    blues_b_female: { x:100, y:82,  w:46, h:145, r:0 }
+  };
+  const key = `${State.uniform}_${State.gender || 'male'}`;
+  const base = baseByUniformGender[key] || { x:96, y:86, w:52, h:160, r:0 };
+  applyCalibToElement(img, img.dataset.calibKey, base);
+
+  img.dataset.tooltipTitle = CAC_CORD_LABEL_BY_LEVEL[level] || `${level.toUpperCase()} CAC shoulder cord`;
+  img.dataset.tooltipReg = 'CAPR 60-1 CAC shoulder cord';
+  img.dataset.tooltipWhy = 'Rendered from a current CAC duty assignment. The CAC ribbon is imported only from past CAC duty assignments.';
+
+  capubSetImageWithFallback(img, capubCACCordAssetCandidates(level));
+  uniformCanvas.appendChild(img);
+}
+
+// Wrap member report parsing so old broad CAC text matching cannot auto-award the CAC ribbon.
+// It is replaced by a stricter Past Duty Positions based rule.
+const capubOriginalParseCapMemberReport_CACPatch = parseCapMemberReport;
+parseCapMemberReport = function capubParseCapMemberReportCACPatch(textRaw){
+  const normalized = normalizeMemberReportText(textRaw);
+  const result = capubOriginalParseCapMemberReport_CACPatch(textRaw);
+
+  // Remove earlier broad CAC ribbon detections, then re-add only if Past Duty Positions supports it.
+  result.ribbons = (result.ribbons || []).filter(r => r?.id !== 'cadet_advisory_council_ribbon');
+
+  const cacRibbon = capubGetCACRibbonFromPastDutyAssignments(normalized);
+  const currentCord = capubGetCACShoulderCordFromCurrentDutyAssignments(normalized);
+
+  if(cacRibbon){
+    result.ribbons.push(cacRibbon);
+    result.notes.push(`CAC ribbon imported from Past Duty Positions as ${cacRibbon.value}.`);
+  }else if(/Cadet\s+Advisory\s+Council|\bCAC\b|\b[GNWR]CAC\b|\bNCAC\b/i.test(normalized)){
+    result.notes.push('CAC text found, but CAC ribbon was not imported because no completed CAC term was found in Past Duty Positions. Current CAC duty only controls the shoulder cord.');
+  }
+
+  result.shoulderCord = currentCord;
+  if(currentCord){
+    result.notes.push(`${CAC_CORD_LABEL_BY_LEVEL[currentCord]} imported from Current Duty Positions.`);
+  }
+
+  return result;
+};
+
+// Wrap import application so parsed.current CAC duty renders the cord and stale cords clear on new imports.
+const capubOriginalApplyCapMemberReportImport_CACPatch = applyCapMemberReportImport;
+applyCapMemberReportImport = function capubApplyCapMemberReportImportCACPatch(parsed){
+  State.shoulderCord = parsed?.shoulderCord || null;
+  capubOriginalApplyCapMemberReportImport_CACPatch(parsed);
+  State.shoulderCord = parsed?.shoulderCord || null;
+  renderCACShoulderCord();
+};
+
+// Render shoulder cord after every full render. This is intentionally after badges/ribbons so the cord
+// can be calibrated and layered independently from the base jacket.
+const capubOriginalFullRender_CACPatch = fullRender;
+fullRender = function capubFullRenderCACPatch(){
+  const out = capubOriginalFullRender_CACPatch.apply(this, arguments);
+  renderCACShoulderCord();
+  return out;
+};
+
+// Add the CAC cord images to the downloadable asset-needed list when that helper is available.
+if(window.CAPUB_V2 && typeof window.CAPUB_V2.buildExpectedAssetList === 'function'){
+  const capubOriginalExpectedAssets_CACPatch = window.CAPUB_V2.buildExpectedAssetList;
+  window.CAPUB_V2.buildExpectedAssetList = function capubExpectedAssetsCACPatch(){
+    const expected = capubOriginalExpectedAssets_CACPatch();
+    ['group','wing','region','national'].forEach(level => {
+      expected.push({
+        category:'CAC shoulder cord',
+        item:CAC_CORD_LABEL_BY_LEVEL[level],
+        id:`cac_cord_${level}`,
+        path:`images/cords/${level}.png`,
+        status:'required when current CAC duty imports shoulder cord'
+      });
+    });
+    return expected;
+  };
+}
+
+// Refresh once after installing the patch so a saved/current state can show its cord.
+try{ fullRender(); }catch(err){ console.warn('CAC shoulder cord patch refresh failed', err); }
+
 </script>
 </body>
 </html>
