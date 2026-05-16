@@ -1114,17 +1114,19 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
       </section>
 
       <section id="shoulderCordPanel" class="panelBlock">
-        <label class="fieldLabel">CAC Shoulder Cord</label>
+        <label class="fieldLabel">Shoulder Cord</label>
         <select id="shoulderCordSelect">
           <option value="">No shoulder cord</option>
           <option value="group">Group CAC shoulder cord — green</option>
           <option value="wing">Wing CAC shoulder cord — red</option>
           <option value="region">Region CAC shoulder cord — blue</option>
           <option value="national">National CAC shoulder cord — gold</option>
+          <option value="color_guard">Color Guard shoulder cord</option>
+          <option value="honor_guard">Honor Guard shoulder cord</option>
         </select>
         <div class="hintText">
-          Imported from current CAC primary representative duty assignments only.
-          The CAC ribbon is imported only after a completed past CAC term.
+          CAC cords are imported from current CAC primary representative duty assignments only.
+          Color Guard and Honor Guard cords are manual selections. Each cord has its own saved coordinates for cadet Class A/Class B male and female uniforms.
         </div>
       </section>
 
@@ -2434,6 +2436,30 @@ DEFAULT_CALIBRATION_BY_UNIFORM.blues_b_female = {
   }
 };
 
+
+// Add independent shoulder-cord calibration defaults for every cadet blues bucket.
+// The calibrator stores these by uniform/gender bucket, so each cord can be tuned
+// separately for Class A male, Class A female, Class B male, and Class B female.
+function capubEnsureShoulderCordCalibrationDefaults(){
+  const buckets = {
+    blues_a_male:   { x:96,  y:86,  w:52,  h:160, r:0 },
+    blues_a_female: { x:271, y:32,  w:153, h:278, r:3 },
+    blues_b_male:   { x:92,  y:76,  w:50,  h:152, r:0 },
+    blues_b_female: { x:100, y:82,  w:46,  h:145, r:0 }
+  };
+  const ids = ['group','wing','region','national','color_guard','honor_guard'];
+  for(const [bucketId, base] of Object.entries(buckets)){
+    if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
+    for(const id of ids){
+      const key = `shoulderCord:${id}`;
+      if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key]){
+        DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = { ...base };
+      }
+    }
+  }
+}
+capubEnsureShoulderCordCalibrationDefaults();
+
 const AIRCREW_BADGE_IDS = new Set([
   'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
   'CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA',
@@ -2876,6 +2902,7 @@ function getLayerTypeFromKey(key, className=''){
   if(k.startsWith('patch:')) return 'patch';
   if(k.startsWith('device:')) return 'ribbon-device';
   if(k.startsWith('rank:')) return 'rank';
+  if(k.startsWith('shoulderCord:')) return 'shoulder-cord';
   if(k.startsWith('text:')) return 'text';
   if(k.startsWith('arrow:')) return 'measurement-arrow';
   if(k === 'jacket') return 'base-uniform';
@@ -9902,6 +9929,15 @@ const CAC_CORD_LABEL_BY_LEVEL = {
   region: 'Region CAC shoulder cord — blue',
   national: 'National CAC shoulder cord — gold'
 };
+const SHOULDER_CORD_META = {
+  group:       { label:'Group CAC shoulder cord — green',    srcBase:'cords/group',       imported:true  },
+  wing:        { label:'Wing CAC shoulder cord — red',       srcBase:'cords/wing',        imported:true  },
+  region:      { label:'Region CAC shoulder cord — blue',    srcBase:'cords/region',      imported:true  },
+  national:    { label:'National CAC shoulder cord — gold',  srcBase:'cords/national',    imported:true  },
+  color_guard: { label:'Color Guard shoulder cord',          srcBase:'cords/color_guard', imported:false },
+  honor_guard: { label:'Honor Guard shoulder cord',          srcBase:'cords/honor_guard', imported:false }
+};
+const SHOULDER_CORD_IDS = Object.keys(SHOULDER_CORD_META);
 
 function capubNormalizeCACSource(text){
   return String(text || '').replace(/\s+/g, ' ').trim();
@@ -10082,9 +10118,15 @@ function capubGetCACShoulderCordFromCurrentDutyAssignments(text){
   return level || null;
 }
 
-function capubCACCordAssetCandidates(level){
-  const base = `cords/${level}`;
+function capubShoulderCordAssetCandidates(cordId){
+  const meta = SHOULDER_CORD_META[cordId] || null;
+  const base = meta?.srcBase || `cords/${cordId}`;
   return [`${base}.png`, `${base}.webp`, `${base}.jpg`, `${base}.jpeg`, base];
+}
+
+// Backward-compatible helper name used by older CAC-specific code.
+function capubCACCordAssetCandidates(level){
+  return capubShoulderCordAssetCandidates(level);
 }
 
 function capubSetImageWithFallback(img, candidates){
@@ -10098,39 +10140,55 @@ function capubSetImageWithFallback(img, candidates){
   tryNext();
 }
 
+function getShoulderCordCalibrationKey(cordId){
+  return `shoulderCord:${cordId}`;
+}
+
+function getShoulderCordDefaultPlacement(uniform = State.uniform, gender = State.gender){
+  const key = `${uniform}_${gender || 'male'}`;
+  const baseByUniformGender = {
+    blues_a_male:   { x:96,  y:86,  w:52,  h:160, r:0 },
+    // Calibrated from CAPUB_coordinates_1778912266873.json for cadet female Class A Group CAC cord.
+    blues_a_female: { x:271, y:32,  w:153, h:278, r:3 },
+    blues_b_male:   { x:92,  y:76,  w:50,  h:152, r:0 },
+    blues_b_female: { x:100, y:82,  w:46,  h:145, r:0 }
+  };
+  return { ...(baseByUniformGender[key] || { x:96, y:86, w:52, h:160, r:0 }) };
+}
+
 function renderCACShoulderCord(){
   wireShoulderCordControl();
   syncShoulderCordControl();
-  [...uniformCanvas.querySelectorAll('.layer.cacShoulderCord')].forEach(n => n.remove());
+  [...uniformCanvas.querySelectorAll('.layer.cacShoulderCord,.layer.shoulderCord')].forEach(n => n.remove());
 
-  const level = State.shoulderCord;
-  if(!level || !CAC_LEVEL_PRIORITY[level]) return;
+  const cordId = State.shoulderCord;
+  const cordMeta = SHOULDER_CORD_META[cordId] || null;
+  if(!cordId || !cordMeta) return;
   if(!['blues_a','blues_b'].includes(State.uniform)) return;
   if(State.membership !== 'cadet') return;
 
   const img = document.createElement('img');
-  img.className = 'layer cacShoulderCord';
-  img.dataset.calibKey = `shoulderCord:cac:${level}`;
-  img.alt = CAC_CORD_LABEL_BY_LEVEL[level] || `${level} CAC shoulder cord`;
+  img.className = 'layer shoulderCord cacShoulderCord';
+  img.dataset.calibKey = getShoulderCordCalibrationKey(cordId);
+  img.alt = cordMeta.label || `${cordId} shoulder cord`;
   img.style.display = 'block';
 
-  // Default approximations. Calibrate each level with key shoulderCord:cac:<level>.
-  const baseByUniformGender = {
-    blues_a_male:   { x:96,  y:86,  w:52, h:160, r:0 },
-    // Calibrated from CAPUB_coordinates_1778912266873.json for cadet female Class A Group CAC cord.
-    blues_a_female: { x:271, y:32, w:153, h:278, r:3 },
-    blues_b_male:   { x:92,  y:76,  w:50, h:152, r:0 },
-    blues_b_female: { x:100, y:82,  w:46, h:145, r:0 }
-  };
-  const key = `${State.uniform}_${State.gender || 'male'}`;
-  const base = baseByUniformGender[key] || { x:96, y:86, w:52, h:160, r:0 };
+  // Each cord ID has its own key inside each uniform/gender calibration bucket:
+  //   blues_a_male.shoulderCord:group
+  //   blues_a_female.shoulderCord:color_guard
+  //   blues_b_male.shoulderCord:honor_guard
+  //   blues_b_female.shoulderCord:wing
+  // Use the calibrator to fine tune each one independently.
+  const base = getShoulderCordDefaultPlacement(State.uniform, State.gender);
   applyCalibToElement(img, img.dataset.calibKey, base);
 
-  img.dataset.tooltipTitle = CAC_CORD_LABEL_BY_LEVEL[level] || `${level.toUpperCase()} CAC shoulder cord`;
-  img.dataset.tooltipReg = 'CAPR 60-1 CAC shoulder cord';
-  img.dataset.tooltipWhy = 'Rendered only from a current CAC primary representative duty assignment. The CAC ribbon is imported only from past CAC duty assignments.';
+  img.dataset.tooltipTitle = cordMeta.label || `${cordId.toUpperCase()} shoulder cord`;
+  img.dataset.tooltipReg = cordMeta.imported ? 'CAPR 60-1 CAC shoulder cord' : 'Manual shoulder cord selection';
+  img.dataset.tooltipWhy = cordMeta.imported
+    ? 'Rendered only from a current CAC primary representative duty assignment. The CAC ribbon is imported only from past CAC duty assignments.'
+    : 'Manual cord selection. Coordinates are stored separately for each cadet Class A/Class B male/female uniform bucket.';
 
-  capubSetImageWithFallback(img, capubCACCordAssetCandidates(level));
+  capubSetImageWithFallback(img, capubShoulderCordAssetCandidates(cordId));
   uniformCanvas.appendChild(img);
 }
 
