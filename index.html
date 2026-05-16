@@ -4,324 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CAP Uniform Builder — Full Program Calibrated v3.3</title>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
-
-/* ==========================================================
-   CAPUB PATCH 2026-05-16 — UAS PILOT + CAC TERM/CORD IMPORT FIX
-   Changes made from member-report testing:
-   - Explicit "sUAS Pilot Rating" / "sUAS Basic Pilot Badge" imports the UAS Pilot Badge.
-   - UASMP / sUAS Mission Pilot (TRAINING) and UAST (TRAINING) still do not import a badge.
-   - CAC ribbon level is determined from the duty TITLE first (GCAC/WCAC/RCAC/NCAC), not the Scope column.
-     Example: "Cadet WCAC Representative ... UNIT ..." imports as Wing CAC.
-   - Completed CAC terms now accept a substantially completed term of 180+ days with an end date.
-     This catches partial-cycle service such as Feb 2 through Sep 30 while still ignoring very short placeholders.
-   - Current CAC Representative, Chair, or Vice Chair duties import the appropriate current shoulder cord.
-     Assistant/Alternate/Recorder/Member duties do not auto-render a cord.
-   ========================================================== */
-(function capubPatch20260516_UAS_CAC(){
-  function capubPatchNormalizeText(text){
-    return (typeof normalizeMemberReportText === 'function')
-      ? normalizeMemberReportText(text)
-      : String(text || '').replace(/\s+/g, ' ').trim();
-  }
-
-  function capubPatchAddUnique(list, id){
-    if(!Array.isArray(list) || !id) return;
-    if(!list.includes(id)) list.push(id);
-  }
-
-  // Make sure imported UAS badge can survive priority/cap ordering.
-  try{
-    if(Array.isArray(MEMBER_REPORT_IMPORT_BADGE_PRIORITY)){
-      ['uas_pilot_master_badge','uas_pilot_senior_badge','uas_pilot_basic_badge'].reverse().forEach(id => {
-        const existing = MEMBER_REPORT_IMPORT_BADGE_PRIORITY.indexOf(id);
-        if(existing >= 0) MEMBER_REPORT_IMPORT_BADGE_PRIORITY.splice(existing, 1);
-        const aircrewIdx = MEMBER_REPORT_IMPORT_BADGE_PRIORITY.indexOf('MasterAirCrew1_72AC4CAE7A310');
-        MEMBER_REPORT_IMPORT_BADGE_PRIORITY.splice(aircrewIdx >= 0 ? aircrewIdx : 0, 0, id);
-      });
-    }
-  }catch(err){ console.warn('Could not patch UAS badge priority', err); }
-
-  function capubDetectUASPilotBadgeFromReport(text){
-    const t = capubPatchNormalizeText(text);
-
-    // Explicit awarded/approved UAS pilot badge/rating. This is the basic UAS pilot badge in this builder.
-    if(/\b(?:CAP\s+)?(?:sUAS|UAS)\s+(?:Basic\s+)?Pilot\s+Badge\b/i.test(t)) return 'uas_pilot_basic_badge';
-    if(/\bsUAS\s+Pilot\s+Rating\b/i.test(t)) return 'uas_pilot_basic_badge';
-
-    // Future-proof if member reports start listing higher UAS badge names directly.
-    if(/\b(?:CAP\s+)?(?:Senior\s+)?(?:sUAS|UAS)\s+Senior\s+Pilot\s+Badge\b|\bSenior\s+(?:sUAS|UAS)\s+Pilot\s+Badge\b/i.test(t)) return 'uas_pilot_senior_badge';
-    if(/\b(?:CAP\s+)?(?:Master|Command)\s+(?:sUAS|UAS)\s+Pilot\s+Badge\b|\b(?:sUAS|UAS)\s+(?:Master|Command)\s+Pilot\s+Badge\b/i.test(t)) return 'uas_pilot_master_badge';
-
-    return null;
-  }
-
-  // Override current CAC cord eligibility: Representative/Chair/Vice Chair count; assistant/alternate/recorder/member do not.
-  if(typeof capubIsPrimaryCACRepresentativeSegment === 'function'){
-    capubIsPrimaryCACRepresentativeSegment = function capubIsCurrentCACCordEligibleSegment20260516(segment){
-      const s = (typeof capubNormalizeCACSource === 'function') ? capubNormalizeCACSource(segment) : capubPatchNormalizeText(segment);
-      if(!s) return false;
-      if(/\b(?:Assistant|Alternate)\s+(?:Representative|Rep)\b/i.test(s)) return false;
-      if(/\b(?:Assistant|Alternate|Recorder|Member)\b/i.test(s)) return false;
-      if(/\bPrimary\s+(?:Representative|Rep)\b/i.test(s)) return true;
-      if(/\b(?:Representative|Rep|Chair|Vice\s+Chair)\b/i.test(s)) return true;
-      return false;
-    };
-  }
-
-  // Override completed CAC ribbon term threshold. Duty title controls the level; dates prove completed service.
-  const CAPUB_CAC_MIN_COMPLETED_TERM_DAYS_20260516 = 180;
-  if(typeof capubIsCompletedCACRibbonTerm === 'function'){
-    capubIsCompletedCACRibbonTerm = function capubIsCompletedCACRibbonTerm20260516(row){
-      if(!row || row.current) return false;
-      if(!row.level) return false;
-      if(!row.start || !row.end) return false;
-      const days = (typeof capubDaysBetweenDates === 'function') ? capubDaysBetweenDates(row.start, row.end) : 0;
-      if(days < CAPUB_CAC_MIN_COMPLETED_TERM_DAYS_20260516) return false;
-      // Count CAC offices that represent actual CAC service. Do not count generic/non-service noise.
-      return /\b(?:NCAC|RCAC|WCAC|GCAC|CAC|Cadet\s+Advisory\s+Council)\b/i.test(row.raw || row.title || '');
-    };
-  }
-
-  if(typeof capubGetCACRibbonFromPastDutyAssignments === 'function'){
-    capubGetCACRibbonFromPastDutyAssignments = function capubGetCACRibbonFromPastDutyAssignments20260516(text){
-      const rows = (typeof capubGetPastCACDutyAssignments === 'function') ? capubGetPastCACDutyAssignments(text) : [];
-      const completedRows = rows.filter(capubIsCompletedCACRibbonTerm);
-      const level = (typeof capubChooseHighestCACLevel === 'function') ? capubChooseHighestCACLevel(completedRows) : null;
-      if(!level) return null;
-      const chosen = completedRows.find(r => r.level === level);
-      const days = chosen ? capubDaysBetweenDates(chosen.start, chosen.end) : 0;
-      return {
-        id:'cadet_advisory_council_ribbon',
-        value:CAC_RIBBON_VALUE_BY_LEVEL[level],
-        reason:`Completed past ${level.toUpperCase()} CAC service (${days} days; title-based level)`
-      };
-    };
-  }
-
-  if(typeof capubGetCACShoulderCordFromCurrentDutyAssignments === 'function'){
-    capubGetCACShoulderCordFromCurrentDutyAssignments = function capubGetCACShoulderCordFromCurrentDutyAssignments20260516(text){
-      const rows = (typeof capubGetCurrentCACDutyAssignments === 'function') ? capubGetCurrentCACDutyAssignments(text) : [];
-      const eligibleRows = rows.filter(row => row && capubIsPrimaryCACRepresentativeSegment(row.raw || row.title || ''));
-      return (typeof capubChooseHighestCACLevel === 'function') ? (capubChooseHighestCACLevel(eligibleRows) || null) : null;
-    };
-  }
-
-  // Wrap final parser after all earlier patches so UAS and corrected CAC are applied last.
-  if(typeof parseCapMemberReport === 'function' && !parseCapMemberReport.__capubPatch20260516UASCAC){
-    const previousParser = parseCapMemberReport;
-    const wrapped = function capubParseCapMemberReport_UAS_CAC_20260516(textRaw){
-      const t = capubPatchNormalizeText(textRaw);
-      const result = previousParser(textRaw);
-
-      // Replace any earlier CAC import with corrected title-based completed-term logic.
-      result.ribbons = (result.ribbons || []).filter(r => r?.id !== 'cadet_advisory_council_ribbon');
-      const cacRibbon = (typeof capubGetCACRibbonFromPastDutyAssignments === 'function') ? capubGetCACRibbonFromPastDutyAssignments(t) : null;
-      if(cacRibbon){
-        result.ribbons.push(cacRibbon);
-        result.notes = result.notes || [];
-        result.notes.push(`CAC ribbon corrected: ${cacRibbon.reason}; imported as ${cacRibbon.value}.`);
-      }
-
-      // Recompute current CAC shoulder cord with Chair/Vice Chair/Representative eligibility.
-      result.shoulderCord = (typeof capubGetCACShoulderCordFromCurrentDutyAssignments === 'function')
-        ? capubGetCACShoulderCordFromCurrentDutyAssignments(t)
-        : (result.shoulderCord || null);
-      if(result.shoulderCord){
-        result.notes = result.notes || [];
-        result.notes.push(`${CAC_CORD_LABEL_BY_LEVEL[result.shoulderCord]} imported from current CAC representative/chair/vice-chair duty.`);
-      }
-
-      // UAS Pilot Badge import. Do NOT import UASMP/UAST training records by themselves.
-      const uasBadge = capubDetectUASPilotBadgeFromReport(t);
-      if(uasBadge){
-        result.badges = result.badges || [];
-        capubPatchAddUnique(result.badges, uasBadge);
-        result.notes = result.notes || [];
-        result.notes.push('UAS Pilot Badge imported from explicit sUAS Pilot Rating / UAS Pilot Badge approval in the report.');
-      }else if(/\b(?:UASMP|sUAS\s+Mission\s+Pilot|UAST|sUAS\s+Technician)\b/i.test(t)){
-        result.notes = result.notes || [];
-        result.notes.push('sUAS mission pilot/technician training found, but no UAS badge imported from training status alone.');
-      }
-
-      // Dedupe while preserving added UAS and corrected CAC.
-      if(typeof dedupeImportedRibbons === 'function') result.ribbons = dedupeImportedRibbons(result.ribbons || []);
-      result.badges = [...new Set(result.badges || [])];
-      return result;
-    };
-    wrapped.__capubPatch20260516UASCAC = true;
-    parseCapMemberReport = wrapped;
-  }
-
-  // Update user-facing helper text to match the new importer behavior.
-  try{
-    const panel = document.querySelector('#shoulderCordPanel .hintText');
-    if(panel){
-      panel.innerHTML = 'CAC cords are imported from current CAC Representative, Chair, or Vice Chair duty assignments. Color Guard and Honor Guard cords are manual selections. Each cord has its own saved coordinates for cadet Class A/Class B male and female uniforms.';
-    }
-  }catch(err){}
-})();
-
-</script>
-<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js">
-
-/* ==========================================================
-   CAPUB PATCH 2026-05-16 — UAS PILOT + CAC TERM/CORD IMPORT FIX
-   Changes made from member-report testing:
-   - Explicit "sUAS Pilot Rating" / "sUAS Basic Pilot Badge" imports the UAS Pilot Badge.
-   - UASMP / sUAS Mission Pilot (TRAINING) and UAST (TRAINING) still do not import a badge.
-   - CAC ribbon level is determined from the duty TITLE first (GCAC/WCAC/RCAC/NCAC), not the Scope column.
-     Example: "Cadet WCAC Representative ... UNIT ..." imports as Wing CAC.
-   - Completed CAC terms now accept a substantially completed term of 180+ days with an end date.
-     This catches partial-cycle service such as Feb 2 through Sep 30 while still ignoring very short placeholders.
-   - Current CAC Representative, Chair, or Vice Chair duties import the appropriate current shoulder cord.
-     Assistant/Alternate/Recorder/Member duties do not auto-render a cord.
-   ========================================================== */
-(function capubPatch20260516_UAS_CAC(){
-  function capubPatchNormalizeText(text){
-    return (typeof normalizeMemberReportText === 'function')
-      ? normalizeMemberReportText(text)
-      : String(text || '').replace(/\s+/g, ' ').trim();
-  }
-
-  function capubPatchAddUnique(list, id){
-    if(!Array.isArray(list) || !id) return;
-    if(!list.includes(id)) list.push(id);
-  }
-
-  // Make sure imported UAS badge can survive priority/cap ordering.
-  try{
-    if(Array.isArray(MEMBER_REPORT_IMPORT_BADGE_PRIORITY)){
-      ['uas_pilot_master_badge','uas_pilot_senior_badge','uas_pilot_basic_badge'].reverse().forEach(id => {
-        const existing = MEMBER_REPORT_IMPORT_BADGE_PRIORITY.indexOf(id);
-        if(existing >= 0) MEMBER_REPORT_IMPORT_BADGE_PRIORITY.splice(existing, 1);
-        const aircrewIdx = MEMBER_REPORT_IMPORT_BADGE_PRIORITY.indexOf('MasterAirCrew1_72AC4CAE7A310');
-        MEMBER_REPORT_IMPORT_BADGE_PRIORITY.splice(aircrewIdx >= 0 ? aircrewIdx : 0, 0, id);
-      });
-    }
-  }catch(err){ console.warn('Could not patch UAS badge priority', err); }
-
-  function capubDetectUASPilotBadgeFromReport(text){
-    const t = capubPatchNormalizeText(text);
-
-    // Explicit awarded/approved UAS pilot badge/rating. This is the basic UAS pilot badge in this builder.
-    if(/\b(?:CAP\s+)?(?:sUAS|UAS)\s+(?:Basic\s+)?Pilot\s+Badge\b/i.test(t)) return 'uas_pilot_basic_badge';
-    if(/\bsUAS\s+Pilot\s+Rating\b/i.test(t)) return 'uas_pilot_basic_badge';
-
-    // Future-proof if member reports start listing higher UAS badge names directly.
-    if(/\b(?:CAP\s+)?(?:Senior\s+)?(?:sUAS|UAS)\s+Senior\s+Pilot\s+Badge\b|\bSenior\s+(?:sUAS|UAS)\s+Pilot\s+Badge\b/i.test(t)) return 'uas_pilot_senior_badge';
-    if(/\b(?:CAP\s+)?(?:Master|Command)\s+(?:sUAS|UAS)\s+Pilot\s+Badge\b|\b(?:sUAS|UAS)\s+(?:Master|Command)\s+Pilot\s+Badge\b/i.test(t)) return 'uas_pilot_master_badge';
-
-    return null;
-  }
-
-  // Override current CAC cord eligibility: Representative/Chair/Vice Chair count; assistant/alternate/recorder/member do not.
-  if(typeof capubIsPrimaryCACRepresentativeSegment === 'function'){
-    capubIsPrimaryCACRepresentativeSegment = function capubIsCurrentCACCordEligibleSegment20260516(segment){
-      const s = (typeof capubNormalizeCACSource === 'function') ? capubNormalizeCACSource(segment) : capubPatchNormalizeText(segment);
-      if(!s) return false;
-      if(/\b(?:Assistant|Alternate)\s+(?:Representative|Rep)\b/i.test(s)) return false;
-      if(/\b(?:Assistant|Alternate|Recorder|Member)\b/i.test(s)) return false;
-      if(/\bPrimary\s+(?:Representative|Rep)\b/i.test(s)) return true;
-      if(/\b(?:Representative|Rep|Chair|Vice\s+Chair)\b/i.test(s)) return true;
-      return false;
-    };
-  }
-
-  // Override completed CAC ribbon term threshold. Duty title controls the level; dates prove completed service.
-  const CAPUB_CAC_MIN_COMPLETED_TERM_DAYS_20260516 = 180;
-  if(typeof capubIsCompletedCACRibbonTerm === 'function'){
-    capubIsCompletedCACRibbonTerm = function capubIsCompletedCACRibbonTerm20260516(row){
-      if(!row || row.current) return false;
-      if(!row.level) return false;
-      if(!row.start || !row.end) return false;
-      const days = (typeof capubDaysBetweenDates === 'function') ? capubDaysBetweenDates(row.start, row.end) : 0;
-      if(days < CAPUB_CAC_MIN_COMPLETED_TERM_DAYS_20260516) return false;
-      // Count CAC offices that represent actual CAC service. Do not count generic/non-service noise.
-      return /\b(?:NCAC|RCAC|WCAC|GCAC|CAC|Cadet\s+Advisory\s+Council)\b/i.test(row.raw || row.title || '');
-    };
-  }
-
-  if(typeof capubGetCACRibbonFromPastDutyAssignments === 'function'){
-    capubGetCACRibbonFromPastDutyAssignments = function capubGetCACRibbonFromPastDutyAssignments20260516(text){
-      const rows = (typeof capubGetPastCACDutyAssignments === 'function') ? capubGetPastCACDutyAssignments(text) : [];
-      const completedRows = rows.filter(capubIsCompletedCACRibbonTerm);
-      const level = (typeof capubChooseHighestCACLevel === 'function') ? capubChooseHighestCACLevel(completedRows) : null;
-      if(!level) return null;
-      const chosen = completedRows.find(r => r.level === level);
-      const days = chosen ? capubDaysBetweenDates(chosen.start, chosen.end) : 0;
-      return {
-        id:'cadet_advisory_council_ribbon',
-        value:CAC_RIBBON_VALUE_BY_LEVEL[level],
-        reason:`Completed past ${level.toUpperCase()} CAC service (${days} days; title-based level)`
-      };
-    };
-  }
-
-  if(typeof capubGetCACShoulderCordFromCurrentDutyAssignments === 'function'){
-    capubGetCACShoulderCordFromCurrentDutyAssignments = function capubGetCACShoulderCordFromCurrentDutyAssignments20260516(text){
-      const rows = (typeof capubGetCurrentCACDutyAssignments === 'function') ? capubGetCurrentCACDutyAssignments(text) : [];
-      const eligibleRows = rows.filter(row => row && capubIsPrimaryCACRepresentativeSegment(row.raw || row.title || ''));
-      return (typeof capubChooseHighestCACLevel === 'function') ? (capubChooseHighestCACLevel(eligibleRows) || null) : null;
-    };
-  }
-
-  // Wrap final parser after all earlier patches so UAS and corrected CAC are applied last.
-  if(typeof parseCapMemberReport === 'function' && !parseCapMemberReport.__capubPatch20260516UASCAC){
-    const previousParser = parseCapMemberReport;
-    const wrapped = function capubParseCapMemberReport_UAS_CAC_20260516(textRaw){
-      const t = capubPatchNormalizeText(textRaw);
-      const result = previousParser(textRaw);
-
-      // Replace any earlier CAC import with corrected title-based completed-term logic.
-      result.ribbons = (result.ribbons || []).filter(r => r?.id !== 'cadet_advisory_council_ribbon');
-      const cacRibbon = (typeof capubGetCACRibbonFromPastDutyAssignments === 'function') ? capubGetCACRibbonFromPastDutyAssignments(t) : null;
-      if(cacRibbon){
-        result.ribbons.push(cacRibbon);
-        result.notes = result.notes || [];
-        result.notes.push(`CAC ribbon corrected: ${cacRibbon.reason}; imported as ${cacRibbon.value}.`);
-      }
-
-      // Recompute current CAC shoulder cord with Chair/Vice Chair/Representative eligibility.
-      result.shoulderCord = (typeof capubGetCACShoulderCordFromCurrentDutyAssignments === 'function')
-        ? capubGetCACShoulderCordFromCurrentDutyAssignments(t)
-        : (result.shoulderCord || null);
-      if(result.shoulderCord){
-        result.notes = result.notes || [];
-        result.notes.push(`${CAC_CORD_LABEL_BY_LEVEL[result.shoulderCord]} imported from current CAC representative/chair/vice-chair duty.`);
-      }
-
-      // UAS Pilot Badge import. Do NOT import UASMP/UAST training records by themselves.
-      const uasBadge = capubDetectUASPilotBadgeFromReport(t);
-      if(uasBadge){
-        result.badges = result.badges || [];
-        capubPatchAddUnique(result.badges, uasBadge);
-        result.notes = result.notes || [];
-        result.notes.push('UAS Pilot Badge imported from explicit sUAS Pilot Rating / UAS Pilot Badge approval in the report.');
-      }else if(/\b(?:UASMP|sUAS\s+Mission\s+Pilot|UAST|sUAS\s+Technician)\b/i.test(t)){
-        result.notes = result.notes || [];
-        result.notes.push('sUAS mission pilot/technician training found, but no UAS badge imported from training status alone.');
-      }
-
-      // Dedupe while preserving added UAS and corrected CAC.
-      if(typeof dedupeImportedRibbons === 'function') result.ribbons = dedupeImportedRibbons(result.ribbons || []);
-      result.badges = [...new Set(result.badges || [])];
-      return result;
-    };
-    wrapped.__capubPatch20260516UASCAC = true;
-    parseCapMemberReport = wrapped;
-  }
-
-  // Update user-facing helper text to match the new importer behavior.
-  try{
-    const panel = document.querySelector('#shoulderCordPanel .hintText');
-    if(panel){
-      panel.innerHTML = 'CAC cords are imported from current CAC Representative, Chair, or Vice Chair duty assignments. Color Guard and Honor Guard cords are manual selections. Each cord has its own saved coordinates for cadet Class A/Class B male and female uniforms.';
-    }
-  }catch(err){}
-})();
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 
 <style>
   :root{
@@ -10305,17 +9989,13 @@ function capubIsPrimaryCACRepresentativeSegment(segment){
   const s = capubNormalizeCACSource(segment);
   if(!s) return false;
 
-  // User rule: the shoulder cord is for the current primary representative only.
-  // Assistant/alternate reps, recorders, general members, chairs, and vice chairs
-  // should not auto-render a cord from the member report.
+  // Current CAC shoulder cord: current Representative/Chair/Vice Chair count.
+  // Assistant, alternate, recorder, and general member entries do not auto-render a cord.
   if(/\b(?:Assistant|Alternate)\s+(?:Representative|Rep)\b/i.test(s)) return false;
-  if(/\b(?:Assistant|Alternate|Recorder|Member|Chair|Vice\s+Chair)\b/i.test(s)) return false;
+  if(/\b(?:Assistant|Alternate|Recorder|Member)\b/i.test(s)) return false;
 
-  // Treat an explicit Primary Rep title as eligible. Also treat a plain CAC
-  // Representative/Rep title as primary unless the row explicitly says assistant
-  // or alternate, because eServices duty titles often omit the word "Primary."
   if(/\bPrimary\s+(?:Representative|Rep)\b/i.test(s)) return true;
-  if(/\b(?:Representative|Rep)\b/i.test(s)) return true;
+  if(/\b(?:Representative|Rep|Chair|Vice\s+Chair)\b/i.test(s)) return true;
   return false;
 }
 
@@ -10431,7 +10111,7 @@ function capubChooseHighestCACLevel(rows){
 // This prevents short/partial past-duty entries, such as a May-to-September partial
 // WCAC assignment, from importing the CAC ribbon. Adjust here if your wing defines
 // CAC terms differently.
-const CAC_MIN_COMPLETED_TERM_DAYS = 300;
+const CAC_MIN_COMPLETED_TERM_DAYS = 180;
 
 function capubDaysBetweenDates(start, end){
   if(!(start instanceof Date) || isNaN(start)) return 0;
@@ -10620,154 +10300,190 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
 
 
+
 /* ==========================================================
-   CAPUB PATCH 2026-05-16 — UAS PILOT + CAC TERM/CORD IMPORT FIX
-   Changes made from member-report testing:
-   - Explicit "sUAS Pilot Rating" / "sUAS Basic Pilot Badge" imports the UAS Pilot Badge.
-   - UASMP / sUAS Mission Pilot (TRAINING) and UAST (TRAINING) still do not import a badge.
-   - CAC ribbon level is determined from the duty TITLE first (GCAC/WCAC/RCAC/NCAC), not the Scope column.
-     Example: "Cadet WCAC Representative ... UNIT ..." imports as Wing CAC.
-   - Completed CAC terms now accept a substantially completed term of 180+ days with an end date.
-     This catches partial-cycle service such as Feb 2 through Sep 30 while still ignoring very short placeholders.
-   - Current CAC Representative, Chair, or Vice Chair duties import the appropriate current shoulder cord.
-     Assistant/Alternate/Recorder/Member duties do not auto-render a cord.
+   CAPUB PATCH 2026-05-16B — DEFINITIVE CAC RIBBON/CORD IMPORT FIX
+   Why this exists:
+   - The earlier patch was accidentally placed inside external <script src="..."> tags,
+     so browsers ignored those copies.
+   - This copy is in the main program script after all parser functions are defined.
+   - It uses a self-contained CAC detector so duty titles like
+     "Cadet WCAC Representative ... UNIT ..." are still interpreted as Wing CAC,
+     and "Cadet RCAC Chair ... REGION ..." imports the Region CAC cord.
    ========================================================== */
-(function capubPatch20260516_UAS_CAC(){
-  function capubPatchNormalizeText(text){
-    return (typeof normalizeMemberReportText === 'function')
-      ? normalizeMemberReportText(text)
-      : String(text || '').replace(/\s+/g, ' ').trim();
+(function capubPatch20260516B_DefinitiveCAC(){
+  if(window.__capubPatch20260516B_DefinitiveCAC) return;
+  window.__capubPatch20260516B_DefinitiveCAC = true;
+
+  const LEVEL_PRIORITY_20260516B = { group:1, wing:2, region:3, national:4 };
+  const CAC_VALUE_20260516B = {
+    group:'group',
+    wing:'wing_bronze_star',
+    region:'region_silver_star',
+    national:'national_gold_star'
+  };
+  const CAC_LABEL_20260516B = {
+    group:'Group CAC shoulder cord — green',
+    wing:'Wing CAC shoulder cord — red',
+    region:'Region CAC shoulder cord — blue',
+    national:'National CAC shoulder cord — gold'
+  };
+
+  function norm20260516B(text){
+    return String(text || '').replace(/\uFFFE/g, '-').replace(/\s+/g, ' ').trim();
   }
 
-  function capubPatchAddUnique(list, id){
-    if(!Array.isArray(list) || !id) return;
-    if(!list.includes(id)) list.push(id);
+  function date20260516B(text){
+    const m = String(text || '').match(/(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})/);
+    if(!m) return null;
+    const months = {jan:0,january:0,feb:1,february:1,mar:2,march:2,apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,aug:7,august:7,sep:8,sept:8,september:8,oct:9,october:9,nov:10,november:10,dec:11,december:11};
+    const mo = months[m[2].toLowerCase()];
+    if(mo === undefined) return null;
+    const d = new Date(Number(m[3]), mo, Number(m[1]));
+    return Number.isNaN(d.getTime()) ? null : d;
   }
 
-  // Make sure imported UAS badge can survive priority/cap ordering.
-  try{
-    if(Array.isArray(MEMBER_REPORT_IMPORT_BADGE_PRIORITY)){
-      ['uas_pilot_master_badge','uas_pilot_senior_badge','uas_pilot_basic_badge'].reverse().forEach(id => {
-        const existing = MEMBER_REPORT_IMPORT_BADGE_PRIORITY.indexOf(id);
-        if(existing >= 0) MEMBER_REPORT_IMPORT_BADGE_PRIORITY.splice(existing, 1);
-        const aircrewIdx = MEMBER_REPORT_IMPORT_BADGE_PRIORITY.indexOf('MasterAirCrew1_72AC4CAE7A310');
-        MEMBER_REPORT_IMPORT_BADGE_PRIORITY.splice(aircrewIdx >= 0 ? aircrewIdx : 0, 0, id);
-      });
-    }
-  }catch(err){ console.warn('Could not patch UAS badge priority', err); }
+  function days20260516B(a,b){
+    if(!(a instanceof Date) || Number.isNaN(a.getTime())) return 0;
+    if(!(b instanceof Date) || Number.isNaN(b.getTime())) return 0;
+    return Math.floor((b.getTime() - a.getTime()) / 86400000) + 1;
+  }
 
-  function capubDetectUASPilotBadgeFromReport(text){
-    const t = capubPatchNormalizeText(text);
-
-    // Explicit awarded/approved UAS pilot badge/rating. This is the basic UAS pilot badge in this builder.
-    if(/\b(?:CAP\s+)?(?:sUAS|UAS)\s+(?:Basic\s+)?Pilot\s+Badge\b/i.test(t)) return 'uas_pilot_basic_badge';
-    if(/\bsUAS\s+Pilot\s+Rating\b/i.test(t)) return 'uas_pilot_basic_badge';
-
-    // Future-proof if member reports start listing higher UAS badge names directly.
-    if(/\b(?:CAP\s+)?(?:Senior\s+)?(?:sUAS|UAS)\s+Senior\s+Pilot\s+Badge\b|\bSenior\s+(?:sUAS|UAS)\s+Pilot\s+Badge\b/i.test(t)) return 'uas_pilot_senior_badge';
-    if(/\b(?:CAP\s+)?(?:Master|Command)\s+(?:sUAS|UAS)\s+Pilot\s+Badge\b|\b(?:sUAS|UAS)\s+(?:Master|Command)\s+Pilot\s+Badge\b/i.test(t)) return 'uas_pilot_master_badge';
-
+  function level20260516B(segment, echelon=''){
+    const s = norm20260516B(segment);
+    const e = String(echelon || '').toUpperCase();
+    if(/\bNCAC\b|National\s+CAC|National\s+Cadet\s+Advisory\s+Council/i.test(s) || e === 'NATIONAL') return 'national';
+    if(/\bRCAC\b|Region\s+CAC|Region\s+Cadet\s+Advisory\s+Council/i.test(s) || e === 'REGION') return 'region';
+    if(/\bWCAC\b|Wing\s+CAC|Wing\s+Cadet\s+Advisory\s+Council/i.test(s) || e === 'WING') return 'wing';
+    if(/\bGCAC\b|Group\s+CAC|Group\s+Cadet\s+Advisory\s+Council/i.test(s) || e === 'GROUP') return 'group';
+    if(e === 'UNIT') return 'group';
     return null;
   }
 
-  // Override current CAC cord eligibility: Representative/Chair/Vice Chair count; assistant/alternate/recorder/member do not.
-  if(typeof capubIsPrimaryCACRepresentativeSegment === 'function'){
-    capubIsPrimaryCACRepresentativeSegment = function capubIsCurrentCACCordEligibleSegment20260516(segment){
-      const s = (typeof capubNormalizeCACSource === 'function') ? capubNormalizeCACSource(segment) : capubPatchNormalizeText(segment);
-      if(!s) return false;
-      if(/\b(?:Assistant|Alternate)\s+(?:Representative|Rep)\b/i.test(s)) return false;
-      if(/\b(?:Assistant|Alternate|Recorder|Member)\b/i.test(s)) return false;
-      if(/\bPrimary\s+(?:Representative|Rep)\b/i.test(s)) return true;
-      if(/\b(?:Representative|Rep|Chair|Vice\s+Chair)\b/i.test(s)) return true;
-      return false;
+  function bestLevel20260516B(rows){
+    return (rows || [])
+      .filter(Boolean)
+      .sort((a,b) => (LEVEL_PRIORITY_20260516B[b.level] || 0) - (LEVEL_PRIORITY_20260516B[a.level] || 0))[0]?.level || null;
+  }
+
+  function section20260516B(text, startLabels, endLabels){
+    const t = norm20260516B(text);
+    let start = -1;
+    for(const label of startLabels){
+      const i = t.search(new RegExp(label, 'i'));
+      if(i >= 0 && (start < 0 || i < start)) start = i;
+    }
+    if(start < 0) return '';
+    let end = t.length;
+    const tail = t.slice(start + 1);
+    for(const label of endLabels){
+      const i = tail.search(new RegExp(label, 'i'));
+      if(i >= 0) end = Math.min(end, start + 1 + i);
+    }
+    return t.slice(start, end);
+  }
+
+  function cacRows20260516B(sectionText, current){
+    const s = norm20260516B(sectionText);
+    const rows = [];
+    const date = '(\\d{1,2}\\s+[A-Za-z]{3,9}\\s+\\d{4})';
+    const rowRe = new RegExp(
+      '((?:Cadet\\s+)?(?:NCAC|RCAC|WCAC|GCAC|CAC|National\\s+CAC|Region\\s+CAC|Wing\\s+CAC|Group\\s+CAC|Cadet\\s+Advisory\\s+Council)\\s+(?:Primary\\s+)?(?:Representative|Rep|Assistant|Alternate|Chair|Vice\\s+Chair|Recorder|Member))\\s+' +
+      '([A-Z]{2,4}-[A-Z0-9-]+|[A-Z0-9-]+)?\\s*' +
+      '(UNIT|GROUP|WING|REGION|NATIONAL)?\\s*' +
+      '(?:Yes|No)?\\s*' + date +
+      '(?:\\s+' + date + ')?',
+      'gi'
+    );
+    let m;
+    while((m = rowRe.exec(s))){
+      const raw = m[0];
+      const title = m[1] || '';
+      const echelon = m[3] || '';
+      const level = level20260516B(`${title} ${echelon} ${raw}`, echelon);
+      if(!level) continue;
+      rows.push({
+        raw, title, level,
+        current: !!current,
+        start: date20260516B(m[4]),
+        end: current ? new Date() : date20260516B(m[5]),
+        cordEligible: /\b(?:Representative|Rep|Chair|Vice\s+Chair)\b/i.test(title) && !/\b(?:Assistant|Alternate|Recorder|Member)\b/i.test(title)
+      });
+    }
+    return rows;
+  }
+
+  function currentCACLevel20260516B(text){
+    const currentSection = section20260516B(text,
+      ['Cadet\\s+Duty\\s+Positions', 'Current\\s+Duty\\s+Positions'],
+      ['Cadet\\s+Past\\s+Duty\\s+Positions', 'Past\\s+Duty\\s+Positions', 'Professional\\s+Development', 'Cadet\\s+Training']
+    );
+    const rows = cacRows20260516B(currentSection, true).filter(r => r.cordEligible);
+    return bestLevel20260516B(rows);
+  }
+
+  function pastCACRibbon20260516B(text){
+    const t = norm20260516B(text);
+    const pastSection = section20260516B(text,
+      ['Cadet\\s+Past\\s+Duty\\s+Positions', 'Past\\s+Duty\\s+Positions'],
+      ['Transfer\\s+History', 'Professional\\s+Development', 'Specialty\\s+Tracks', 'Cadet\\s+Training', 'Encampments', 'Promotions', 'Decorations', 'Ribbons']
+    );
+    const rows = cacRows20260516B(pastSection, false).filter(r => r.start && r.end && days20260516B(r.start, r.end) >= 180);
+    const level = bestLevel20260516B(rows);
+    const explicitRibbon = /Cadet\s+Advisory\s+Council\s+Ribbon/i.test(t);
+    if(!level && !explicitRibbon) return null;
+    const selectedLevel = level || 'group';
+    const chosen = rows.find(r => r.level === selectedLevel);
+    return {
+      id:'cadet_advisory_council_ribbon',
+      value:CAC_VALUE_20260516B[selectedLevel],
+      reason: chosen
+        ? `Completed past ${selectedLevel.toUpperCase()} CAC service (${days20260516B(chosen.start, chosen.end)} days; title-based level)`
+        : 'Explicit Cadet Advisory Council Ribbon listed in report'
     };
   }
 
-  // Override completed CAC ribbon term threshold. Duty title controls the level; dates prove completed service.
-  const CAPUB_CAC_MIN_COMPLETED_TERM_DAYS_20260516 = 180;
-  if(typeof capubIsCompletedCACRibbonTerm === 'function'){
-    capubIsCompletedCACRibbonTerm = function capubIsCompletedCACRibbonTerm20260516(row){
-      if(!row || row.current) return false;
-      if(!row.level) return false;
-      if(!row.start || !row.end) return false;
-      const days = (typeof capubDaysBetweenDates === 'function') ? capubDaysBetweenDates(row.start, row.end) : 0;
-      if(days < CAPUB_CAC_MIN_COMPLETED_TERM_DAYS_20260516) return false;
-      // Count CAC offices that represent actual CAC service. Do not count generic/non-service noise.
-      return /\b(?:NCAC|RCAC|WCAC|GCAC|CAC|Cadet\s+Advisory\s+Council)\b/i.test(row.raw || row.title || '');
-    };
-  }
-
-  if(typeof capubGetCACRibbonFromPastDutyAssignments === 'function'){
-    capubGetCACRibbonFromPastDutyAssignments = function capubGetCACRibbonFromPastDutyAssignments20260516(text){
-      const rows = (typeof capubGetPastCACDutyAssignments === 'function') ? capubGetPastCACDutyAssignments(text) : [];
-      const completedRows = rows.filter(capubIsCompletedCACRibbonTerm);
-      const level = (typeof capubChooseHighestCACLevel === 'function') ? capubChooseHighestCACLevel(completedRows) : null;
-      if(!level) return null;
-      const chosen = completedRows.find(r => r.level === level);
-      const days = chosen ? capubDaysBetweenDates(chosen.start, chosen.end) : 0;
-      return {
-        id:'cadet_advisory_council_ribbon',
-        value:CAC_RIBBON_VALUE_BY_LEVEL[level],
-        reason:`Completed past ${level.toUpperCase()} CAC service (${days} days; title-based level)`
-      };
-    };
-  }
-
-  if(typeof capubGetCACShoulderCordFromCurrentDutyAssignments === 'function'){
-    capubGetCACShoulderCordFromCurrentDutyAssignments = function capubGetCACShoulderCordFromCurrentDutyAssignments20260516(text){
-      const rows = (typeof capubGetCurrentCACDutyAssignments === 'function') ? capubGetCurrentCACDutyAssignments(text) : [];
-      const eligibleRows = rows.filter(row => row && capubIsPrimaryCACRepresentativeSegment(row.raw || row.title || ''));
-      return (typeof capubChooseHighestCACLevel === 'function') ? (capubChooseHighestCACLevel(eligibleRows) || null) : null;
-    };
-  }
-
-  // Wrap final parser after all earlier patches so UAS and corrected CAC are applied last.
-  if(typeof parseCapMemberReport === 'function' && !parseCapMemberReport.__capubPatch20260516UASCAC){
-    const previousParser = parseCapMemberReport;
-    const wrapped = function capubParseCapMemberReport_UAS_CAC_20260516(textRaw){
-      const t = capubPatchNormalizeText(textRaw);
-      const result = previousParser(textRaw);
-
-      // Replace any earlier CAC import with corrected title-based completed-term logic.
+  if(typeof parseCapMemberReport === 'function' && !parseCapMemberReport.__capubPatch20260516B){
+    const previous = parseCapMemberReport;
+    parseCapMemberReport = function capubParseCapMemberReport_20260516B(textRaw){
+      const result = previous(textRaw) || {};
+      const t = norm20260516B(textRaw);
       result.ribbons = (result.ribbons || []).filter(r => r?.id !== 'cadet_advisory_council_ribbon');
-      const cacRibbon = (typeof capubGetCACRibbonFromPastDutyAssignments === 'function') ? capubGetCACRibbonFromPastDutyAssignments(t) : null;
-      if(cacRibbon){
-        result.ribbons.push(cacRibbon);
-        result.notes = result.notes || [];
-        result.notes.push(`CAC ribbon corrected: ${cacRibbon.reason}; imported as ${cacRibbon.value}.`);
-      }
 
-      // Recompute current CAC shoulder cord with Chair/Vice Chair/Representative eligibility.
-      result.shoulderCord = (typeof capubGetCACShoulderCordFromCurrentDutyAssignments === 'function')
-        ? capubGetCACShoulderCordFromCurrentDutyAssignments(t)
-        : (result.shoulderCord || null);
-      if(result.shoulderCord){
-        result.notes = result.notes || [];
-        result.notes.push(`${CAC_CORD_LABEL_BY_LEVEL[result.shoulderCord]} imported from current CAC representative/chair/vice-chair duty.`);
-      }
+      const cacRibbon = pastCACRibbon20260516B(t);
+      if(cacRibbon) result.ribbons.push(cacRibbon);
 
-      // UAS Pilot Badge import. Do NOT import UASMP/UAST training records by themselves.
-      const uasBadge = capubDetectUASPilotBadgeFromReport(t);
-      if(uasBadge){
+      const currentCord = currentCACLevel20260516B(t);
+      result.shoulderCord = currentCord || null;
+
+      if(/\b(?:sUAS|UAS)\s+(?:Basic\s+)?Pilot\s+Badge\b|\bsUAS\s+Pilot\s+Rating\b/i.test(t)){
         result.badges = result.badges || [];
-        capubPatchAddUnique(result.badges, uasBadge);
-        result.notes = result.notes || [];
-        result.notes.push('UAS Pilot Badge imported from explicit sUAS Pilot Rating / UAS Pilot Badge approval in the report.');
-      }else if(/\b(?:UASMP|sUAS\s+Mission\s+Pilot|UAST|sUAS\s+Technician)\b/i.test(t)){
-        result.notes = result.notes || [];
-        result.notes.push('sUAS mission pilot/technician training found, but no UAS badge imported from training status alone.');
+        if(!result.badges.includes('uas_pilot_basic_badge')) result.badges.push('uas_pilot_basic_badge');
       }
 
-      // Dedupe while preserving added UAS and corrected CAC.
+      result.notes = result.notes || [];
+      if(cacRibbon) result.notes.push(`CAC ribbon imported as ${cacRibbon.value}: ${cacRibbon.reason}.`);
+      if(currentCord) result.notes.push(`${CAC_LABEL_20260516B[currentCord]} imported from current CAC Representative/Chair/Vice Chair duty.`);
       if(typeof dedupeImportedRibbons === 'function') result.ribbons = dedupeImportedRibbons(result.ribbons || []);
       result.badges = [...new Set(result.badges || [])];
       return result;
     };
-    wrapped.__capubPatch20260516UASCAC = true;
-    parseCapMemberReport = wrapped;
+    parseCapMemberReport.__capubPatch20260516B = true;
   }
 
-  // Update user-facing helper text to match the new importer behavior.
+  // Keep the dropdown and rendering synced after import, even if an older wrapper runs first.
+  if(typeof applyCapMemberReportImport === 'function' && !applyCapMemberReportImport.__capubPatch20260516B){
+    const previousApply = applyCapMemberReportImport;
+    applyCapMemberReportImport = function capubApplyCapMemberReportImport_20260516B(parsed){
+      const out = previousApply(parsed);
+      State.shoulderCord = parsed?.shoulderCord || null;
+      if(typeof syncShoulderCordControl === 'function') syncShoulderCordControl();
+      if(typeof renderCACShoulderCord === 'function') renderCACShoulderCord();
+      return out;
+    };
+    applyCapMemberReportImport.__capubPatch20260516B = true;
+  }
+
   try{
     const panel = document.querySelector('#shoulderCordPanel .hintText');
     if(panel){
