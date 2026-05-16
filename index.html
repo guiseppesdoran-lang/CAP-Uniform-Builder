@@ -2170,6 +2170,13 @@ DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_female = {
     "w": 460,
     "h": 610,
     "r": 0
+  },
+  "shoulderCord:cac:group": {
+    "x": 271,
+    "y": 32,
+    "w": 153,
+    "h": 278,
+    "r": 3
   }
 };
 DEFAULT_CALIBRATION_BY_UNIFORM.blues_b_female = {
@@ -10110,7 +10117,8 @@ function renderCACShoulderCord(){
   // Default approximations. Calibrate each level with key shoulderCord:cac:<level>.
   const baseByUniformGender = {
     blues_a_male:   { x:96,  y:86,  w:52, h:160, r:0 },
-    blues_a_female: { x:102, y:100, w:48, h:150, r:0 },
+    // Calibrated from CAPUB_coordinates_1778912266873.json for cadet female Class A Group CAC cord.
+    blues_a_female: { x:271, y:32, w:153, h:278, r:3 },
     blues_b_male:   { x:92,  y:76,  w:50, h:152, r:0 },
     blues_b_female: { x:100, y:82,  w:46, h:145, r:0 }
   };
