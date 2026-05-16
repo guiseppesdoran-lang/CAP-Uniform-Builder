@@ -10418,6 +10418,116 @@ parseCapMemberReport = function capubParseCapMemberReportCACLevelCorrection(text
 
 try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(err){ console.warn('CAC level correction refresh failed', err); }
 
+/* ==========================================================
+   CAPUB PATCH 2026-05-16B — CAC REGION OVERRIDE FINAL FIX
+   Problem fixed:
+   - Some PDF text extraction orders past WCAC rows close to the current RCAC row,
+     causing the importer to keep the Wing CAC cord/ribbon even when a current
+     Region CAC qualifying duty exists.
+   Fix:
+   - Scan the actual Current Duty Positions/Cadet Duty Positions section for
+     explicit eligible CAC role titles by level and choose the highest level.
+   - Current RCAC/Region CAC Chair, Vice Chair, Representative, or Primary Rep
+     overrides lower Wing/Group CAC findings for both the cord and the CAC ribbon.
+   ========================================================== */
+
+function capubCACWindowLooksEligibleFinal(windowText){
+  const s = capubNormalizeCACSource(windowText);
+  if(!s) return false;
+  if(/\b(?:Assistant|Alternate|Recorder|Member)\b/i.test(s)) return false;
+  return /\b(?:Primary\s+(?:Representative|Rep)|Representative|Rep|Chair|Vice\s+Chair)\b/i.test(s);
+}
+
+function capubFindExplicitEligibleCACLevelsInSectionFinal(section){
+  const s = capubNormalizeCACSource(section);
+  const found = [];
+  if(!s) return found;
+  const levelPatterns = [
+    { level:'national', re:/\b(?:NCAC|National\s+(?:Cadet\s+Advisory\s+Council|CAC))\b/ig },
+    { level:'region',   re:/\b(?:RCAC|Region\s+(?:Cadet\s+Advisory\s+Council|CAC))\b/ig },
+    { level:'wing',     re:/\b(?:WCAC|Wing\s+(?:Cadet\s+Advisory\s+Council|CAC))\b/ig },
+    { level:'group',    re:/\b(?:GCAC|Group\s+(?:Cadet\s+Advisory\s+Council|CAC))\b/ig }
+  ];
+  for(const spec of levelPatterns){
+    let m;
+    while((m = spec.re.exec(s))){
+      const ctx = s.slice(Math.max(0, m.index - 45), Math.min(s.length, m.index + 95));
+      if(capubCACWindowLooksEligibleFinal(ctx)) found.push({ level:spec.level, raw:ctx });
+    }
+  }
+  const genericRe = /\bCAC\b/ig;
+  let gm;
+  while((gm = genericRe.exec(s))){
+    const ctx = s.slice(Math.max(0, gm.index - 45), Math.min(s.length, gm.index + 130));
+    if(!capubCACWindowLooksEligibleFinal(ctx)) continue;
+    const level = capubCACLevelFromText(ctx, (ctx.match(/\b(NATIONAL|REGION|WING|GROUP|UNIT)\b/i)||[])[1] || '');
+    if(level) found.push({ level, raw:ctx });
+  }
+  return found;
+}
+
+function capubGetCurrentCACSectionFinal(text){
+  return [
+    getReportSection(text, 'Cadet Duty Positions', 'Cadet Past Duty Positions'),
+    getReportSection(text, 'Cadet Duty Positions', 'Professional Development'),
+    getReportSection(text, 'Current Duty Positions', 'Past Duty Positions'),
+    getReportSection(text, 'Current Duty Positions', 'Professional Development')
+  ].filter(Boolean).join(' ');
+}
+
+function capubGetBestExplicitCurrentCACLevelFinal(text){
+  const section = capubGetCurrentCACSectionFinal(text);
+  const levels = capubFindExplicitEligibleCACLevelsInSectionFinal(section);
+  return capubChooseHighestCACLevel(levels) || null;
+}
+
+function capubGetBestExplicitAnyCACLevelFinal(text){
+  const sections = [
+    capubGetCurrentCACSectionFinal(text),
+    getReportSectionUntilAny(text, 'Cadet Past Duty Positions', ['Transfer History','Professional Development','Specialty Tracks','Cadet Training','Encampments','Promotions','Decorations','Ribbons']),
+    getReportSectionUntilAny(text, 'Past Duty Positions', ['Transfer History','Professional Development','Specialty Tracks','Cadet Training','Encampments','Promotions','Decorations','Ribbons'])
+  ].filter(Boolean).join(' ');
+  const levels = capubFindExplicitEligibleCACLevelsInSectionFinal(sections);
+  return capubChooseHighestCACLevel(levels) || null;
+}
+
+const capubPreviousGetCACShoulderCordFromCurrentDutyAssignments_FinalFix = capubGetCACShoulderCordFromCurrentDutyAssignments;
+capubGetCACShoulderCordFromCurrentDutyAssignments = function capubGetCACShoulderCordFinalFixed(text){
+  const explicitCurrent = capubGetBestExplicitCurrentCACLevelFinal(text);
+  if(explicitCurrent) return explicitCurrent;
+  return capubPreviousGetCACShoulderCordFromCurrentDutyAssignments_FinalFix(text);
+};
+
+const capubPreviousGetCACRibbonFromDutyAssignments_FinalFix = capubGetCACRibbonFromDutyAssignments;
+capubGetCACRibbonFromDutyAssignments = function capubGetCACRibbonFinalFixed(text){
+  const explicitAny = capubGetBestExplicitAnyCACLevelFinal(text);
+  const old = capubPreviousGetCACRibbonFromDutyAssignments_FinalFix(text);
+  const oldLevel = old ? Object.entries(CAC_RIBBON_VALUE_BY_LEVEL).find(([,v]) => v === old.value)?.[0] : null;
+  const winningLevel = capubChooseHighestCACLevel([
+    explicitAny ? { level:explicitAny } : null,
+    oldLevel ? { level:oldLevel } : null
+  ].filter(Boolean));
+  if(!winningLevel) return old || null;
+  return { id:'cadet_advisory_council_ribbon', value:CAC_RIBBON_VALUE_BY_LEVEL[winningLevel], reason:`Highest qualifying CAC level found in duty assignments: ${winningLevel.toUpperCase()}` };
+};
+
+const capubPreviousParseCapMemberReport_CACFinalFix = parseCapMemberReport;
+parseCapMemberReport = function capubParseCapMemberReportCACFinalFix(textRaw){
+  const normalized = normalizeMemberReportText(textRaw);
+  const result = capubPreviousParseCapMemberReport_CACFinalFix(textRaw);
+  result.ribbons = (result.ribbons || []).filter(r => r?.id !== 'cadet_advisory_council_ribbon');
+  const finalCord = capubGetCACShoulderCordFromCurrentDutyAssignments(normalized);
+  const finalRibbon = capubGetCACRibbonFromDutyAssignments(normalized);
+  result.shoulderCord = finalCord || null;
+  if(finalRibbon) result.ribbons.push(finalRibbon);
+  if(finalCord) result.notes.push(`CAC final check: ${CAC_CORD_LABEL_BY_LEVEL[finalCord]} selected from current CAC duty.`);
+  if(finalRibbon) result.notes.push(`CAC final check: CAC ribbon set to ${finalRibbon.value}.`);
+  result.ribbons = dedupeImportedRibbons(result.ribbons);
+  return result;
+};
+
+try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(err){ console.warn('CAC final region override refresh failed', err); }
+
 </script>
 </body>
 </html>
