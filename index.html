@@ -10955,5 +10955,124 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
   }
 })();
 </script>
+
+
+<script>
+/* ==========================================================
+   CAPUB PATCH 2026-05-16F — CAC RIBBON DROPDOWN VALUE FIX
+   The loose CAC parser correctly found region/wing/national level, but it used
+   legacy dropdown values such as "region_silver". This build's CAC ribbon
+   dropdown is supplied by RIBBON_SPECIAL_IMAGE_OPTIONS and expects:
+     group, wing_bronze_star, region_silver_star, national_gold_star
+   If the old values are left in State.ribbonSelections, the rendered ribbon
+   falls back to the plain/basic CAC ribbon. This patch normalizes the CAC
+   awardValue after import and before every ribbon rebuild.
+   ========================================================== */
+(function capubPatch20260516F_CACRibbonDropdownValueFix(){
+  if(window.__capubPatch20260516F_CACRibbonDropdownValueFix) return;
+  window.__capubPatch20260516F_CACRibbonDropdownValueFix = true;
+
+  const CAC_ID = 'cadet_advisory_council_ribbon';
+  const CAC_VALUE_BY_LEVEL = {
+    group: 'group',
+    wing: 'wing_bronze_star',
+    region: 'region_silver_star',
+    national: 'national_gold_star'
+  };
+  const CAC_LEGACY_VALUE_MAP = {
+    wing_bronze: 'wing_bronze_star',
+    region_silver: 'region_silver_star',
+    national_gold: 'national_gold_star'
+  };
+  const CAC_DEVICE_FALLBACK = {
+    group: {},
+    wing: {'1_Bronze_Star_Device':1},
+    region: {'1_Silver_Star_Device':1},
+    national: {'1_Silver_Star_Device':1,'1_Bronze_Star_Device':1}
+  };
+  const CAC_IMAGE_FALLBACK = {
+    group: null,
+    wing: 'cac-b.png',
+    region: 'cac-s.png',
+    national: 'cac-g.png'
+  };
+
+  function levelFromValue(value){
+    const v = CAC_LEGACY_VALUE_MAP[value] || value;
+    if(v === 'national_gold_star') return 'national';
+    if(v === 'region_silver_star') return 'region';
+    if(v === 'wing_bronze_star') return 'wing';
+    if(v === 'group' || v === 'earned') return 'group';
+    return null;
+  }
+
+  function chooseValidCACValue(level){
+    const desired = CAC_VALUE_BY_LEVEL[level] || 'group';
+    try{
+      if(typeof getRibbonSelectionOption === 'function'){
+        const opt = getRibbonSelectionOption(CAC_ID, desired);
+        if(opt && opt.value === desired) return desired;
+      }
+    }catch(err){}
+    return desired;
+  }
+
+  function forceCACRibbonLevel(level){
+    if(!level || !window.State) return;
+    if(typeof normalizeRibbonSelections === 'function') normalizeRibbonSelections();
+
+    const value = chooseValidCACValue(level);
+    let opt = null;
+    try{ opt = (typeof getRibbonSelectionOption === 'function') ? getRibbonSelectionOption(CAC_ID, value) : null; }catch(err){}
+
+    State.ribbonSelections[CAC_ID] = State.ribbonSelections[CAC_ID] || { checked:false, devices:{}, awardValue:'', awardLabel:'' };
+    State.ribbonSelections[CAC_ID].checked = true;
+    State.ribbonSelections[CAC_ID].awardValue = value;
+    State.ribbonSelections[CAC_ID].awardLabel = (opt && opt.value === value) ? opt.label : `${level.toUpperCase()} CAC`;
+    State.ribbonSelections[CAC_ID].devices = (opt && opt.value === value) ? { ...(opt.devices || {}) } : { ...(CAC_DEVICE_FALLBACK[level] || {}) };
+    State.ribbonSelections[CAC_ID].imageOverride = (opt && opt.value === value)
+      ? (opt.image || null)
+      : (CAC_IMAGE_FALLBACK[level] || null);
+  }
+
+  function normalizeCurrentCACRibbonSelection(){
+    if(!window.State || !State.ribbonSelections) return;
+    const sel = State.ribbonSelections[CAC_ID];
+    if(!sel || !sel.checked) return;
+
+    const oldValue = sel.awardValue || '';
+    const mapped = CAC_LEGACY_VALUE_MAP[oldValue] || oldValue;
+    const level = levelFromValue(mapped);
+    if(level && (oldValue !== mapped || !sel.devices || !Object.keys(sel.devices).length || oldValue === 'earned')){
+      forceCACRibbonLevel(level);
+    }
+  }
+
+  if(typeof applyCapMemberReportImport === 'function' && !applyCapMemberReportImport.__capubPatch20260516F){
+    const previousApply = applyCapMemberReportImport;
+    applyCapMemberReportImport = function capubApplyCapMemberReportImport_20260516F(parsed){
+      const out = previousApply(parsed);
+      const explicitLevel = parsed?.__capubCACLevel || levelFromValue(parsed?.ribbons?.find?.(r => r?.id === CAC_ID)?.value || '');
+      if(explicitLevel) forceCACRibbonLevel(explicitLevel);
+      normalizeCurrentCACRibbonSelection();
+      if(typeof rebuildRibbonsFromGallery === 'function') rebuildRibbonsFromGallery();
+      if(typeof fullRender === 'function') fullRender();
+      if(typeof updateStatusPanel === 'function') updateStatusPanel();
+      return out;
+    };
+    applyCapMemberReportImport.__capubPatch20260516F = true;
+  }
+
+  if(typeof rebuildRibbonsFromGallery === 'function' && !rebuildRibbonsFromGallery.__capubPatch20260516F){
+    const previousRebuild = rebuildRibbonsFromGallery;
+    rebuildRibbonsFromGallery = function capubRebuildRibbonsFromGallery_20260516F(){
+      normalizeCurrentCACRibbonSelection();
+      return previousRebuild();
+    };
+    rebuildRibbonsFromGallery.__capubPatch20260516F = true;
+  }
+})();
+</script>
+
 </body>
 </html>
