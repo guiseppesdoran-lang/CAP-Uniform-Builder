@@ -2437,23 +2437,55 @@ DEFAULT_CALIBRATION_BY_UNIFORM.blues_b_female = {
 };
 
 
-// Add independent shoulder-cord calibration defaults for every cadet blues bucket.
-// The calibrator stores these by uniform/gender bucket, so each cord can be tuned
-// separately for Class A male, Class A female, Class B male, and Class B female.
+// Fully independent shoulder-cord calibration defaults.
+// Each cadet blues uniform bucket has six separate coordinate objects so every
+// cord can be zeroed in independently by uniform, gender/cut, size, and rotation.
+const SHOULDER_CORD_DEFAULTS = {
+  blues_a_male: {
+    group:       { x: 96,  y: 86,  w: 52,  h: 160, r: 0 },
+    wing:        { x: 96,  y: 86,  w: 52,  h: 160, r: 0 },
+    region:      { x: 96,  y: 86,  w: 52,  h: 160, r: 0 },
+    national:    { x: 96,  y: 86,  w: 52,  h: 160, r: 0 },
+    color_guard: { x: 96,  y: 86,  w: 52,  h: 160, r: 0 },
+    honor_guard: { x: 96,  y: 86,  w: 52,  h: 160, r: 0 }
+  },
+
+  blues_a_female: {
+    group:       { x: 271, y: 32,  w: 153, h: 278, r: 3 },
+    wing:        { x: 271, y: 32,  w: 153, h: 278, r: 3 },
+    region:      { x: 271, y: 32,  w: 153, h: 278, r: 3 },
+    national:    { x: 271, y: 32,  w: 153, h: 278, r: 3 },
+    color_guard: { x: 271, y: 32,  w: 153, h: 278, r: 3 },
+    honor_guard: { x: 271, y: 32,  w: 153, h: 278, r: 3 }
+  },
+
+  blues_b_male: {
+    group:       { x: 92,  y: 76,  w: 50,  h: 152, r: 0 },
+    wing:        { x: 92,  y: 76,  w: 50,  h: 152, r: 0 },
+    region:      { x: 92,  y: 76,  w: 50,  h: 152, r: 0 },
+    national:    { x: 92,  y: 76,  w: 50,  h: 152, r: 0 },
+    color_guard: { x: 92,  y: 76,  w: 50,  h: 152, r: 0 },
+    honor_guard: { x: 92,  y: 76,  w: 50,  h: 152, r: 0 }
+  },
+
+  blues_b_female: {
+    group:       { x: 100, y: 82,  w: 46,  h: 145, r: 0 },
+    wing:        { x: 100, y: 82,  w: 46,  h: 145, r: 0 },
+    region:      { x: 100, y: 82,  w: 46,  h: 145, r: 0 },
+    national:    { x: 100, y: 82,  w: 46,  h: 145, r: 0 },
+    color_guard: { x: 100, y: 82,  w: 46,  h: 145, r: 0 },
+    honor_guard: { x: 100, y: 82,  w: 46,  h: 145, r: 0 }
+  }
+};
+
 function capubEnsureShoulderCordCalibrationDefaults(){
-  const buckets = {
-    blues_a_male:   { x:96,  y:86,  w:52,  h:160, r:0 },
-    blues_a_female: { x:271, y:32,  w:153, h:278, r:3 },
-    blues_b_male:   { x:92,  y:76,  w:50,  h:152, r:0 },
-    blues_b_female: { x:100, y:82,  w:46,  h:145, r:0 }
-  };
-  const ids = ['group','wing','region','national','color_guard','honor_guard'];
-  for(const [bucketId, base] of Object.entries(buckets)){
+  for(const [bucketId, cords] of Object.entries(SHOULDER_CORD_DEFAULTS)){
     if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
-    for(const id of ids){
-      const key = `shoulderCord:${id}`;
+
+    for(const [cordId, coords] of Object.entries(cords)){
+      const key = `shoulderCord:${cordId}`;
       if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key]){
-        DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = { ...base };
+        DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = { ...coords };
       }
     }
   }
@@ -3032,7 +3064,7 @@ function getFemaleClassAItemOffset(key){
   // devices, patches, and measurement arrows.
   // Additional female Class A patch: right-side badges move 15px farther left.
   // This includes ON/UN/RP badge slots, including the commander badge.
-  if(State.uniform === 'blues_a' && State.gender === 'female' && String(key || '') !== 'jacket'){
+  if(State.uniform === 'blues_a' && State.gender === 'female' && String(key || '') !== 'jacket' && !String(key || '').startsWith('shoulderCord:')){
     let xOffset = -6;
     const badgeMatch = String(key || '').match(/^badge:([^:]+):([^:]+):(\d+)$/);
     if(badgeMatch){
@@ -10144,16 +10176,16 @@ function getShoulderCordCalibrationKey(cordId){
   return `shoulderCord:${cordId}`;
 }
 
-function getShoulderCordDefaultPlacement(uniform = State.uniform, gender = State.gender){
-  const key = `${uniform}_${gender || 'male'}`;
-  const baseByUniformGender = {
-    blues_a_male:   { x:96,  y:86,  w:52,  h:160, r:0 },
-    // Calibrated from CAPUB_coordinates_1778912266873.json for cadet female Class A Group CAC cord.
-    blues_a_female: { x:271, y:32,  w:153, h:278, r:3 },
-    blues_b_male:   { x:92,  y:76,  w:50,  h:152, r:0 },
-    blues_b_female: { x:100, y:82,  w:46,  h:145, r:0 }
+function getShoulderCordDefaultPlacement(
+  uniform = State.uniform,
+  gender = State.gender,
+  cordId = State.shoulderCord
+){
+  const bucket = `${uniform}_${gender || 'male'}`;
+  const cordDefaults = SHOULDER_CORD_DEFAULTS[bucket] || {};
+  return {
+    ...(cordDefaults[cordId] || { x:96, y:86, w:52, h:160, r:0 })
   };
-  return { ...(baseByUniformGender[key] || { x:96, y:86, w:52, h:160, r:0 }) };
 }
 
 function renderCACShoulderCord(){
@@ -10179,7 +10211,7 @@ function renderCACShoulderCord(){
   //   blues_b_male.shoulderCord:honor_guard
   //   blues_b_female.shoulderCord:wing
   // Use the calibrator to fine tune each one independently.
-  const base = getShoulderCordDefaultPlacement(State.uniform, State.gender);
+  const base = getShoulderCordDefaultPlacement(State.uniform, State.gender, cordId);
   applyCalibToElement(img, img.dataset.calibKey, base);
 
   img.dataset.tooltipTitle = cordMeta.label || `${cordId.toUpperCase()} shoulder cord`;
