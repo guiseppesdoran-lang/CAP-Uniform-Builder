@@ -10492,6 +10492,291 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
   }catch(err){}
 })();
 
+
+/* ==========================================================
+   CAPUB PATCH 2026-05-16C — CAC PDF.JS SPACING FINAL FIX
+   Fixes cases where PDF.js reads Wing-Unit as separate tokens such as
+   "NER 001" or "NY 251". The earlier regex expected "NER001" or
+   "NER-001", so it missed current RCAC Chair and past WCAC/RCAC rows.
+   This patch detects CAC title tokens first, then reads dates from the
+   nearby text window.
+   ========================================================== */
+(function capubPatch20260516C_CACPdfSpacingFinal(){
+  if(window.__capubPatch20260516C_CACPdfSpacingFinal) return;
+  window.__capubPatch20260516C_CACPdfSpacingFinal = true;
+
+  const PRI = { group:1, wing:2, region:3, national:4 };
+  const VALUE_PRIMARY = {
+    group:'group',
+    wing:'wing_bronze_star',
+    region:'region_silver_star',
+    national:'national_gold_star'
+  };
+  const VALUE_FALLBACK = {
+    group:'group',
+    wing:'wing_bronze',
+    region:'region_silver',
+    national:'national_gold'
+  };
+  const CAC_IMAGES = {
+    group:null,
+    wing:'cac-b.png',
+    region:'cac-s.png',
+    national:'cac-g.png'
+  };
+  const CAC_DEVICES = {
+    group:{},
+    wing:{'1_Bronze_Star_Device':1},
+    region:{'1_Silver_Star_Device':1},
+    national:{'1_Silver_Star_Device':1,'1_Bronze_Star_Device':1}
+  };
+  const CORD_LABEL = {
+    group:'Group CAC shoulder cord — green',
+    wing:'Wing CAC shoulder cord — red',
+    region:'Region CAC shoulder cord — blue',
+    national:'National CAC shoulder cord — gold'
+  };
+
+  function norm(text){
+    return String(text || '')
+      .replace(/[\uFFFE\uFFFD\uF0BE]/g, ' ')
+      .replace(/[\r\n\t]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function parseDate(s){
+    const m = String(s || '').match(/(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})/);
+    if(!m) return null;
+    const months = {jan:0,january:0,feb:1,february:1,mar:2,march:2,apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,aug:7,august:7,sep:8,sept:8,september:8,oct:9,october:9,nov:10,november:10,dec:11,december:11};
+    const mo = months[m[2].toLowerCase()];
+    if(mo === undefined) return null;
+    const d = new Date(Number(m[3]), mo, Number(m[1]));
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  function days(a,b){
+    if(!(a instanceof Date) || Number.isNaN(a.getTime())) return 0;
+    if(!(b instanceof Date) || Number.isNaN(b.getTime())) return 0;
+    return Math.floor((b.getTime() - a.getTime()) / 86400000) + 1;
+  }
+
+  function levelFromToken(token, context){
+    const s = `${token || ''} ${context || ''}`;
+    if(/\bNCAC\b|National\s+CAC|National\s+Cadet\s+Advisory\s+Council|\bNATIONAL\b/i.test(s)) return 'national';
+    if(/\bRCAC\b|Region\s+CAC|Region\s+Cadet\s+Advisory\s+Council|\bREGION\b/i.test(s)) return 'region';
+    if(/\bWCAC\b|Wing\s+CAC|Wing\s+Cadet\s+Advisory\s+Council|\bWING\b/i.test(s)) return 'wing';
+    if(/\bGCAC\b|Group\s+CAC|Group\s+Cadet\s+Advisory\s+Council|\bGROUP\b/i.test(s)) return 'group';
+    return null;
+  }
+
+  function section(text, startLabels, endLabels){
+    const t = norm(text);
+    let start = -1;
+    for(const label of startLabels){
+      const m = t.match(new RegExp(label, 'i'));
+      if(m){ const i = t.search(new RegExp(label, 'i')); if(i >= 0 && (start < 0 || i < start)) start = i; }
+    }
+    if(start < 0) return '';
+    const tail = t.slice(start + 1);
+    let end = t.length;
+    for(const label of endLabels){
+      const i = tail.search(new RegExp(label, 'i'));
+      if(i >= 0) end = Math.min(end, start + 1 + i);
+    }
+    return t.slice(start, end);
+  }
+
+  function titleRows(sectionText, current){
+    const s = norm(sectionText);
+    const rows = [];
+    const titleRe = /(?:Cadet\s+)?((?:NCAC|RCAC|WCAC|GCAC|CAC|National\s+CAC|Region\s+CAC|Wing\s+CAC|Group\s+CAC|Cadet\s+Advisory\s+Council))\s+(Primary\s+)?(Representative|Rep|Assistant|Alternate|Chair|Vice\s+Chair|Recorder|Member)\b/gi;
+    let m;
+    while((m = titleRe.exec(s))){
+      const token = m[1] || '';
+      const role = m[3] || '';
+      const rawWindow = s.slice(m.index, Math.min(s.length, m.index + 260));
+      const level = levelFromToken(token, rawWindow);
+      if(!level) continue;
+      const dateMatches = [...rawWindow.matchAll(/\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/g)].map(x => x[0]);
+      const start = parseDate(dateMatches[0]);
+      const end = current ? new Date() : parseDate(dateMatches[1]);
+      const cordEligible = /^(Representative|Rep|Chair|Vice\s+Chair)$/i.test(role) && !/Assistant|Alternate|Recorder|Member/i.test(role);
+      rows.push({ level, role, start, end, current:!!current, cordEligible, raw:rawWindow });
+    }
+    return rows;
+  }
+
+  function best(rows){
+    const sorted = (rows || []).filter(r => r && r.level).sort((a,b) => (PRI[b.level] || 0) - (PRI[a.level] || 0));
+    return sorted[0] || null;
+  }
+
+  function currentCordFromText(text){
+    const cur = section(text,
+      ['Cadet\\s+Duty\\s+Positions', 'Current\\s+Duty\\s+Positions'],
+      ['Cadet\\s+Past\\s+Duty\\s+Positions', 'Past\\s+Duty\\s+Positions', 'Professional\\s+Development', 'Cadet\\s+Training']
+    );
+    return best(titleRows(cur, true).filter(r => r.cordEligible))?.level || null;
+  }
+
+  function cacRibbonFromText(text){
+    const past = section(text,
+      ['Cadet\\s+Past\\s+Duty\\s+Positions', 'Past\\s+Duty\\s+Positions'],
+      ['Transfer\\s+History', 'Professional\\s+Development', 'Specialty\\s+Tracks', 'Cadet\\s+Training', 'Encampments', 'Promotions', 'Decorations', 'Ribbons']
+    );
+    const completed = titleRows(past, false).filter(r => r.start && r.end && days(r.start, r.end) >= 180);
+    const row = best(completed);
+    const explicit = /Cadet\s+Advisory\s+Council\s+Ribbon/i.test(norm(text));
+    if(!row && !explicit) return null;
+    const level = row?.level || 'group';
+    return {
+      id:'cadet_advisory_council_ribbon',
+      value:VALUE_PRIMARY[level],
+      __capubLevel:level,
+      reason:row ? `Completed past ${level.toUpperCase()} CAC service (${days(row.start,row.end)} days; title-based parser)` : 'Explicit Cadet Advisory Council Ribbon listed in report'
+    };
+  }
+
+  function chooseRibbonValue(level){
+    const id = 'cadet_advisory_council_ribbon';
+    const primary = VALUE_PRIMARY[level] || 'group';
+    try{
+      if(typeof getRibbonSelectionOption === 'function'){
+        const opt = getRibbonSelectionOption(id, primary);
+        if(opt && opt.value === primary) return primary;
+        const fallback = VALUE_FALLBACK[level] || primary;
+        const opt2 = getRibbonSelectionOption(id, fallback);
+        if(opt2 && opt2.value === fallback) return fallback;
+      }
+    }catch(err){}
+    return primary;
+  }
+
+  function forceCACRibbonSelection(level){
+    const id = 'cadet_advisory_council_ribbon';
+    if(!level) return;
+    if(typeof normalizeRibbonSelections === 'function') normalizeRibbonSelections();
+    const value = chooseRibbonValue(level);
+    let opt = null;
+    try{ opt = (typeof getRibbonSelectionOption === 'function') ? getRibbonSelectionOption(id, value) : null; }catch(err){}
+    State.ribbonSelections[id] = State.ribbonSelections[id] || {checked:false, devices:{}};
+    State.ribbonSelections[id].checked = true;
+    State.ribbonSelections[id].awardValue = value;
+    State.ribbonSelections[id].awardLabel = (opt && opt.value) ? opt.label : (level.toUpperCase() + ' CAC');
+    State.ribbonSelections[id].devices = (opt && opt.value) ? {...(opt.devices || {})} : {...(CAC_DEVICES[level] || {})};
+    State.ribbonSelections[id].imageOverride = (opt && opt.image) ? opt.image : (CAC_IMAGES[level] || null);
+  }
+
+  if(typeof parseCapMemberReport === 'function' && !parseCapMemberReport.__capubPatch20260516C){
+    const prevParse = parseCapMemberReport;
+    parseCapMemberReport = function capubParseCapMemberReport_20260516C(textRaw){
+      const result = prevParse(textRaw) || {};
+      const cacRibbon = cacRibbonFromText(textRaw);
+      result.ribbons = (result.ribbons || []).filter(r => r?.id !== 'cadet_advisory_council_ribbon');
+      if(cacRibbon) result.ribbons.push(cacRibbon);
+      result.shoulderCord = currentCordFromText(textRaw) || null;
+      result.__capubCACLevel = cacRibbon?.__capubLevel || null;
+      result.__capubCACCord = result.shoulderCord || null;
+      result.notes = result.notes || [];
+      if(cacRibbon) result.notes.push(`CAC final parser: ${cacRibbon.reason}; value ${cacRibbon.value}.`);
+      if(result.shoulderCord) result.notes.push(`CAC final parser: ${CORD_LABEL[result.shoulderCord]} from current CAC Chair/Representative/Vice Chair.`);
+      if(typeof dedupeImportedRibbons === 'function') result.ribbons = dedupeImportedRibbons(result.ribbons || []);
+      return result;
+    };
+    parseCapMemberReport.__capubPatch20260516C = true;
+  }
+
+  if(typeof applyCapMemberReportImport === 'function' && !applyCapMemberReportImport.__capubPatch20260516C){
+    const prevApply = applyCapMemberReportImport;
+    applyCapMemberReportImport = function capubApplyCapMemberReportImport_20260516C(parsed){
+      const out = prevApply(parsed);
+      if(parsed?.__capubCACLevel){
+        forceCACRibbonSelection(parsed.__capubCACLevel);
+      }
+      State.shoulderCord = parsed?.__capubCACCord || parsed?.shoulderCord || null;
+      if(typeof syncShoulderCordControl === 'function') syncShoulderCordControl();
+      if(typeof rebuildRibbonsFromGallery === 'function') rebuildRibbonsFromGallery();
+      if(typeof renderCACShoulderCord === 'function') renderCACShoulderCord();
+      if(typeof updateStatusPanel === 'function') updateStatusPanel();
+      return out;
+    };
+    applyCapMemberReportImport.__capubPatch20260516C = true;
+  }
+})();
+
+
+/* ==========================================================
+   CAPUB PATCH 2026-05-16D — PDF TEXT EXTRACTION ROW ORDER FIX
+   The member-report PDF is a table. The old extractor used PDF.js content
+   stream order, which can read columns before rows. That makes CAC rows look
+   like a block of titles followed by a block of dates, so the CAC parser cannot
+   reliably connect "Cadet RCAC Chair" to its scope/date. This replacement sorts
+   text by page Y-position then X-position and reconstructs readable rows.
+   ========================================================== */
+(function capubPatch20260516D_PdfRowTextExtraction(){
+  if(window.__capubPatch20260516D_PdfRowTextExtraction) return;
+  window.__capubPatch20260516D_PdfRowTextExtraction = true;
+
+  function capubTextItemX(item){ return Number(item?.transform?.[4] || 0); }
+  function capubTextItemY(item){ return Number(item?.transform?.[5] || 0); }
+
+  function capubRebuildPdfPageTextByRows(items){
+    const clean = (items || [])
+      .map(item => ({ str:String(item.str || '').trim(), x:capubTextItemX(item), y:capubTextItemY(item) }))
+      .filter(item => item.str);
+    clean.sort((a,b) => Math.abs(b.y - a.y) > 3 ? b.y - a.y : a.x - b.x);
+
+    const lines = [];
+    for(const item of clean){
+      let line = lines.find(l => Math.abs(l.y - item.y) <= 3);
+      if(!line){
+        line = { y:item.y, items:[] };
+        lines.push(line);
+      }
+      line.items.push(item);
+    }
+
+    lines.sort((a,b) => b.y - a.y);
+    return lines.map(line => {
+      line.items.sort((a,b) => a.x - b.x);
+      let out = '';
+      let lastRight = null;
+      for(const item of line.items){
+        if(!out){
+          out = item.str;
+        }else{
+          // Add extra spacing across table columns so regex can see boundaries.
+          const gap = lastRight == null ? 1 : Math.max(1, item.x - lastRight);
+          out += gap > 18 ? '   ' + item.str : ' ' + item.str;
+        }
+        lastRight = item.x + Math.max(8, item.str.length * 4.5);
+      }
+      return out.trim();
+    }).filter(Boolean).join('\n');
+  }
+
+  extractMemberReportText = async function capubExtractMemberReportTextRows20260516D(file){
+    const name = (file?.name || '').toLowerCase();
+    if(name.endsWith('.txt') || file.type === 'text/plain') return await file.text();
+    if(!window.pdfjsLib) throw new Error('PDF.js did not load. Check your internet connection or upload a .txt export instead.');
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      pdfjsLib.GlobalWorkerOptions.workerSrc ||
+      'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+
+    const data = new Uint8Array(await file.arrayBuffer());
+    const pdf = await pdfjsLib.getDocument({ data }).promise;
+    const pages = [];
+    for(let p=1; p<=pdf.numPages; p++){
+      const page = await pdf.getPage(p);
+      const content = await page.getTextContent();
+      pages.push(capubRebuildPdfPageTextByRows(content.items || []));
+    }
+    return pages.join('\n\n');
+  };
+})();
+
 </script>
 </body>
 </html>
