@@ -11074,5 +11074,238 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 })();
 </script>
 
+
+<script>
+/* ==========================================================
+   CAPUB PATCH 2026-05-16G — STRICT CAC RIBBON ELIGIBILITY FIX
+   Problem fixed:
+   The earlier loose fallback could render a basic CAC ribbon from generic CAC text
+   or an imported ribbon line even when no completed Past Duty Position supported
+   CAC ribbon eligibility. This patch makes the rule deterministic:
+
+   - CAC ribbon imports ONLY from completed Cadet Past Duty Positions.
+   - Current CAC duty controls ONLY the shoulder cord.
+   - Generic "CAC" text, local activity CAC meetings, and current CAC duty do NOT
+     create a CAC ribbon.
+   - Past Assistant/Alternate/Member rows do NOT create a CAC ribbon.
+   - Past Chair, Vice Chair, Representative/Rep, Primary Representative/Rep, and
+     Recorder rows may create a CAC ribbon when the row has start and end dates.
+   - Highest completed level wins by title token: NCAC > RCAC > WCAC > GCAC.
+   ========================================================== */
+(function capubPatch20260516G_StrictCACRibbonEligibility(){
+  if(window.__capubPatch20260516G_StrictCACRibbonEligibility) return;
+  window.__capubPatch20260516G_StrictCACRibbonEligibility = true;
+
+  const CAC_ID = 'cadet_advisory_council_ribbon';
+  const PRI = { group:1, wing:2, region:3, national:4 };
+  const VALUE = {
+    group:'group',
+    wing:'wing_bronze_star',
+    region:'region_silver_star',
+    national:'national_gold_star'
+  };
+  const IMAGE = { group:null, wing:'cac-b.png', region:'cac-s.png', national:'cac-g.png' };
+  const DEVICES = {
+    group:{},
+    wing:{'1_Bronze_Star_Device':1},
+    region:{'1_Silver_Star_Device':1},
+    national:{'1_Silver_Star_Device':1,'1_Bronze_Star_Device':1}
+  };
+  const MIN_DAYS = 180;
+
+  function clean(text){
+    return String(text || '')
+      .replace(/[\uFFFE\uFFFD\uF0BE]/g, ' ')
+      .replace(/[\r\n\t]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function parseDate(s){
+    const m = String(s || '').match(/(\d{1,2})\s+([A-Za-z]{3,9})\s+(20\d{2})/);
+    if(!m) return null;
+    const months = {jan:0,january:0,feb:1,february:1,mar:2,march:2,apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,aug:7,august:7,sep:8,sept:8,september:8,oct:9,october:9,nov:10,november:10,dec:11,december:11};
+    const mo = months[m[2].toLowerCase()];
+    if(mo === undefined) return null;
+    const d = new Date(Number(m[3]), mo, Number(m[1]));
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  function daysBetween(a,b){
+    if(!(a instanceof Date) || Number.isNaN(a.getTime())) return 0;
+    if(!(b instanceof Date) || Number.isNaN(b.getTime())) return 0;
+    return Math.floor((b.getTime() - a.getTime()) / 86400000) + 1;
+  }
+
+  function sectionBetween(text, startRegexes, endRegexes){
+    const t = clean(text);
+    let start = -1;
+    for(const re of startRegexes){
+      const m = re.exec(t);
+      if(m && (start < 0 || m.index < start)) start = m.index + m[0].length;
+    }
+    if(start < 0) return '';
+    let end = t.length;
+    const rest = t.slice(start);
+    for(const re of endRegexes){
+      const m = re.exec(rest);
+      if(m && m.index >= 0) end = Math.min(end, start + m.index);
+    }
+    return t.slice(start, end);
+  }
+
+  function levelFromTitle(title){
+    const s = clean(title);
+    if(/\bNCAC\b|National\s+CAC|National\s+Cadet\s+Advisory\s+Council/i.test(s)) return 'national';
+    if(/\bRCAC\b|Region\s+CAC|Region\s+Cadet\s+Advisory\s+Council/i.test(s)) return 'region';
+    if(/\bWCAC\b|Wing\s+CAC|Wing\s+Cadet\s+Advisory\s+Council/i.test(s)) return 'wing';
+    if(/\bGCAC\b|Group\s+CAC|Group\s+Cadet\s+Advisory\s+Council/i.test(s)) return 'group';
+    return null;
+  }
+
+  function roleEligibleForRibbon(title){
+    const s = clean(title);
+    if(/\b(?:Assistant|Alternate|Member)\b/i.test(s)) return false;
+    return /\b(?:Chair|Vice\s+Chair|Recorder|Primary\s+(?:Representative|Rep)|Representative|Rep)\b/i.test(s);
+  }
+
+  function roleEligibleForCord(title){
+    const s = clean(title);
+    if(/\b(?:Assistant|Alternate|Recorder|Member)\b/i.test(s)) return false;
+    return /\b(?:Chair|Vice\s+Chair|Primary\s+(?:Representative|Rep)|Representative|Rep)\b/i.test(s);
+  }
+
+  function findStrictPastCACRows(text){
+    const past = sectionBetween(text,
+      [/\bCadet\s+Past\s+Duty\s+Positions\b/i, /\bPast\s+Duty\s+Positions\b/i],
+      [/\bProfessional\s+Development\b/i, /\bSpecialty\s+Tracks\b/i, /\bCadet\s+Training\b/i, /\bEncampments\b/i, /\bOrientation\s+Flights\b/i, /\bPromotions\b/i, /\bDecorations\b/i, /\bRibbons\b/i, /\bLocal\s+Activities\b/i]
+    );
+    const rows = [];
+    if(!past) return rows;
+
+    const titleRe = /Cadet\s+(?:NCAC|RCAC|WCAC|GCAC|National\s+CAC|Region\s+CAC|Wing\s+CAC|Group\s+CAC)\s+(?:Primary\s+)?(?:Vice\s+Chair|Chair|Recorder|Representative|Rep|Assistant|Alternate|Member)\b/gi;
+    let m;
+    while((m = titleRe.exec(past))){
+      const title = clean(m[0]);
+      if(!roleEligibleForRibbon(title)) continue;
+      const level = levelFromTitle(title);
+      if(!level) continue;
+      const windowText = past.slice(m.index, Math.min(past.length, m.index + 260));
+      const dateMatches = [...windowText.matchAll(/\d{1,2}\s+[A-Za-z]{3,9}\s+20\d{2}/g)].map(x => x[0]);
+      if(dateMatches.length < 2) continue;
+      const start = parseDate(dateMatches[0]);
+      const end = parseDate(dateMatches[1]);
+      const termDays = daysBetween(start, end);
+      if(termDays < MIN_DAYS) continue;
+      rows.push({ title, level, start, end, days:termDays, raw:windowText });
+    }
+    return rows;
+  }
+
+  function findStrictCurrentCACCord(text){
+    const current = sectionBetween(text,
+      [/\bCadet\s+Duty\s+Positions\b/i, /\bCurrent\s+Duty\s+Positions\b/i],
+      [/\bCadet\s+Past\s+Duty\s+Positions\b/i, /\bPast\s+Duty\s+Positions\b/i, /\bProfessional\s+Development\b/i, /\bSpecialty\s+Tracks\b/i, /\bCadet\s+Training\b/i]
+    );
+    if(!current) return null;
+    const titleRe = /Cadet\s+(?:NCAC|RCAC|WCAC|GCAC|National\s+CAC|Region\s+CAC|Wing\s+CAC|Group\s+CAC)\s+(?:Primary\s+)?(?:Vice\s+Chair|Chair|Recorder|Representative|Rep|Assistant|Alternate|Member)\b/gi;
+    let best = null, m;
+    while((m = titleRe.exec(current))){
+      const title = clean(m[0]);
+      if(!roleEligibleForCord(title)) continue;
+      const level = levelFromTitle(title);
+      if(level && (!best || PRI[level] > PRI[best])) best = level;
+    }
+    return best;
+  }
+
+  function strictCACRibbonLevel(text){
+    const rows = findStrictPastCACRows(text);
+    let best = null;
+    for(const row of rows){
+      if(row.level && (!best || PRI[row.level] > PRI[best])) best = row.level;
+    }
+    return best;
+  }
+
+  function removeCACRibbonFromParsed(parsed){
+    parsed.ribbons = (parsed.ribbons || []).filter(r => r && r.id !== CAC_ID);
+    return parsed;
+  }
+
+  function clearCACRibbonState(){
+    if(!window.State) return;
+    if(State.ribbonSelections && State.ribbonSelections[CAC_ID]){
+      State.ribbonSelections[CAC_ID].checked = false;
+      State.ribbonSelections[CAC_ID].awardValue = '';
+      State.ribbonSelections[CAC_ID].awardLabel = '';
+      State.ribbonSelections[CAC_ID].devices = {};
+      State.ribbonSelections[CAC_ID].imageOverride = null;
+    }
+    if(Array.isArray(State.ribbons)) State.ribbons = State.ribbons.filter(r => (typeof r === 'string' ? r : r?.id) !== CAC_ID);
+  }
+
+  function setCACRibbonState(level){
+    if(!window.State || !level) return;
+    if(typeof normalizeRibbonSelections === 'function') normalizeRibbonSelections();
+    const value = VALUE[level] || 'group';
+    let opt = null;
+    try{ opt = (typeof getRibbonSelectionOption === 'function') ? getRibbonSelectionOption(CAC_ID, value) : null; }catch(err){}
+    State.ribbonSelections[CAC_ID] = State.ribbonSelections[CAC_ID] || { checked:false, devices:{} };
+    State.ribbonSelections[CAC_ID].checked = true;
+    State.ribbonSelections[CAC_ID].awardValue = value;
+    State.ribbonSelections[CAC_ID].awardLabel = (opt && opt.value === value) ? opt.label : `${level.toUpperCase()} CAC`;
+    State.ribbonSelections[CAC_ID].devices = (opt && opt.value === value) ? { ...(opt.devices || {}) } : { ...(DEVICES[level] || {}) };
+    State.ribbonSelections[CAC_ID].imageOverride = (opt && opt.value === value) ? (opt.image || IMAGE[level] || null) : (IMAGE[level] || null);
+  }
+
+  if(typeof parseCapMemberReport === 'function' && !parseCapMemberReport.__capubPatch20260516G){
+    const previousParse = parseCapMemberReport;
+    parseCapMemberReport = function capubParseCapMemberReport_20260516G(textRaw){
+      const parsed = previousParse(textRaw) || {};
+      const ribbonLevel = strictCACRibbonLevel(textRaw);
+      const cordLevel = findStrictCurrentCACCord(textRaw);
+
+      removeCACRibbonFromParsed(parsed);
+      if(ribbonLevel){
+        parsed.ribbons.push({
+          id:CAC_ID,
+          value:VALUE[ribbonLevel],
+          __capubStrictCACLevel:ribbonLevel,
+          reason:`Strict CAC parser detected completed past ${ribbonLevel.toUpperCase()} CAC service.`
+        });
+      }
+      parsed.__capubStrictCACLevel = ribbonLevel || null;
+      parsed.shoulderCord = cordLevel || null;
+      parsed.__capubStrictCACCord = cordLevel || null;
+      parsed.notes = parsed.notes || [];
+      if(ribbonLevel) parsed.notes.push(`Strict CAC ribbon import: ${ribbonLevel.toUpperCase()} based on completed Past Duty Positions only.`);
+      else parsed.notes.push('Strict CAC ribbon import: no completed eligible Past Duty Position found, so no CAC ribbon was imported.');
+      if(cordLevel) parsed.notes.push(`Strict CAC cord import: ${cordLevel.toUpperCase()} based on current CAC duty.`);
+      if(typeof dedupeImportedRibbons === 'function') parsed.ribbons = dedupeImportedRibbons(parsed.ribbons || []);
+      return parsed;
+    };
+    parseCapMemberReport.__capubPatch20260516G = true;
+  }
+
+  if(typeof applyCapMemberReportImport === 'function' && !applyCapMemberReportImport.__capubPatch20260516G){
+    const previousApply = applyCapMemberReportImport;
+    applyCapMemberReportImport = function capubApplyCapMemberReportImport_20260516G(parsed){
+      const out = previousApply(parsed);
+      if(parsed?.__capubStrictCACLevel) setCACRibbonState(parsed.__capubStrictCACLevel);
+      else clearCACRibbonState();
+      State.shoulderCord = parsed?.__capubStrictCACCord || parsed?.shoulderCord || null;
+      if(typeof syncShoulderCordControl === 'function') syncShoulderCordControl();
+      if(typeof rebuildRibbonsFromGallery === 'function') rebuildRibbonsFromGallery();
+      if(typeof renderCACShoulderCord === 'function') renderCACShoulderCord();
+      if(typeof fullRender === 'function') fullRender();
+      if(typeof updateStatusPanel === 'function') updateStatusPanel();
+      return out;
+    };
+    applyCapMemberReportImport.__capubPatch20260516G = true;
+  }
+})();
+</script>
+
 </body>
 </html>
