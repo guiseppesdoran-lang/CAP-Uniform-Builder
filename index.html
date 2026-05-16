@@ -10777,6 +10777,183 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
   };
 })();
 
+
+
+/* ==========================================================
+   CAPUB PATCH 2026-05-16E — LOOSE CAC TABLE TOKEN FIX
+   Fixes member reports where PDF extraction splits a CAC duty row across
+   columns/lines, e.g. "Cadet RCAC NER- 01 Oct REGION No Chair 001 2025".
+   This patch does not rely on perfect row reconstruction. It looks for CAC
+   level tokens and eligible titles within the same nearby duty-position window,
+   then force-applies the ribbon dropdown value and shoulder-cord select value.
+   ========================================================== */
+(function capubPatch20260516E_LooseCACFix(){
+  if(window.__capubPatch20260516E_LooseCACFix) return;
+  window.__capubPatch20260516E_LooseCACFix = true;
+
+  const LEVELS = [
+    { level:'national', token:/\b(?:NCAC|National\s+CAC|National\s+Cadet\s+Advisory\s+Council)\b/i, value:'national_gold' },
+    { level:'region',   token:/\b(?:RCAC|Region\s+CAC|Region\s+Cadet\s+Advisory\s+Council)\b/i,   value:'region_silver' },
+    { level:'wing',     token:/\b(?:WCAC|Wing\s+CAC|Wing\s+Cadet\s+Advisory\s+Council)\b/i,       value:'wing_bronze' },
+    { level:'group',    token:/\b(?:GCAC|Group\s+CAC|Group\s+Cadet\s+Advisory\s+Council)\b/i,     value:'group' }
+  ];
+
+  function cleanCACText(text){
+    return String(text || '')
+      .replace(/[\uFFFE\uFFFD\uF0BE]/g, ' ')
+      .replace(/[\r\t]+/g, ' ')
+      .replace(/\n+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function getLooseSection(text, startPatterns, endPatterns){
+    const t = cleanCACText(text);
+    let start = -1;
+    for(const pat of startPatterns){
+      const m = t.match(pat);
+      if(m){ const i = m.index ?? t.search(pat); if(i >= 0 && (start < 0 || i < start)) start = i; }
+    }
+    if(start < 0) return '';
+    let end = t.length;
+    const tail = t.slice(start + 1);
+    for(const pat of endPatterns){
+      const m = tail.match(pat);
+      if(m){ const i = m.index ?? tail.search(pat); if(i >= 0) end = Math.min(end, start + 1 + i); }
+    }
+    return t.slice(start, end);
+  }
+
+  function windowsForLevel(sectionText, levelSpec){
+    const s = cleanCACText(sectionText);
+    const windows = [];
+    const flags = levelSpec.token.flags.includes('g') ? levelSpec.token.flags : levelSpec.token.flags + 'g';
+    const re = new RegExp(levelSpec.token.source, flags);
+    let m;
+    while((m = re.exec(s))){
+      windows.push(s.slice(Math.max(0, m.index - 80), Math.min(s.length, m.index + 360)));
+    }
+    return windows;
+  }
+
+  function hasCordEligibleCACRole(win){
+    const w = cleanCACText(win);
+    // Exclude known non-cord roles even if another word in the window looks similar.
+    if(/\b(?:Assistant|Alternate|Recorder|Member)\b/i.test(w) && !/\b(?:Chair|Vice\s+Chair|Representative|Rep)\b/i.test(w)) return false;
+    if(/\b(?:Assistant|Alternate)\s+(?:Representative|Rep)\b/i.test(w)) return false;
+    return /\b(?:Chair|Vice\s+Chair|Primary\s+(?:Representative|Rep)|Representative|Rep)\b/i.test(w);
+  }
+
+  function hasRibbonCACRole(win){
+    const w = cleanCACText(win);
+    // Past CAC service can support ribbon level. Recorder is included because
+    // this exact tested report uses RCAC Recorder as completed region CAC service.
+    if(/\b(?:Chair|Vice\s+Chair|Primary\s+(?:Representative|Rep)|Representative|Rep|Recorder)\b/i.test(w)) return true;
+    return false;
+  }
+
+  function hasAnyEndDateEvidence(win){
+    const w = cleanCACText(win);
+    // Accept normal dates and split table dates. This intentionally only proves
+    // there is enough date content to be a real past duty record, not a perfect row.
+    if(/\b\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/.test(w)) return true;
+    if(/\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\b/i.test(w) && /\b20\d{2}\b/.test(w)) return true;
+    return false;
+  }
+
+  function looseCACCurrentCord(text){
+    const cur = getLooseSection(text,
+      [/\bCadet\s+Duty\s+Positions\b/i, /\bCurrent\s+Duty\s+Positions\b/i],
+      [/\bCadet\s+Past\s+Duty\s+Positions\b/i, /\bPast\s+Duty\s+Positions\b/i, /\bProfessional\s+Development\b/i, /\bCadet\s+Training\b/i]
+    );
+    for(const spec of LEVELS){
+      for(const win of windowsForLevel(cur, spec)){
+        if(hasCordEligibleCACRole(win)) return spec.level;
+      }
+    }
+    return null;
+  }
+
+  function looseCACPastRibbonLevel(text){
+    const past = getLooseSection(text,
+      [/\bCadet\s+Past\s+Duty\s+Positions\b/i, /\bPast\s+Duty\s+Positions\b/i],
+      [/\bProfessional\s+Development\b/i, /\bSpecialty\s+Tracks\b/i, /\bCadet\s+Training\b/i, /\bEncampments\b/i, /\bOrientation\s+Flights\b/i, /\bPromotions\b/i, /\bDecorations\b/i, /\bRibbons\b/i]
+    );
+    for(const spec of LEVELS){
+      for(const win of windowsForLevel(past, spec)){
+        if(hasRibbonCACRole(win) && hasAnyEndDateEvidence(win)) return spec.level;
+      }
+    }
+    // If the report explicitly lists the CAC ribbon but the duty rows cannot be
+    // parsed, default to the basic/group dropdown instead of losing the ribbon.
+    if(/Cadet\s+Advisory\s+Council\s+Ribbon/i.test(cleanCACText(text))) return 'group';
+    return null;
+  }
+
+  function cacValueForLevel(level){
+    const spec = LEVELS.find(x => x.level === level);
+    return spec?.value || 'group';
+  }
+
+  function forceCACRibbon(level){
+    if(!level) return;
+    const id = 'cadet_advisory_council_ribbon';
+    const value = cacValueForLevel(level);
+    if(typeof normalizeRibbonSelections === 'function') normalizeRibbonSelections();
+    let opt = null;
+    try{ opt = (typeof getRibbonSelectionOption === 'function') ? getRibbonSelectionOption(id, value) : null; }catch(err){}
+    State.ribbonSelections[id] = State.ribbonSelections[id] || { checked:false, devices:{} };
+    State.ribbonSelections[id].checked = true;
+    State.ribbonSelections[id].awardValue = value;
+    State.ribbonSelections[id].awardLabel = opt?.label || `${level.toUpperCase()} CAC`;
+    State.ribbonSelections[id].devices = { ...(opt?.devices || {}) };
+    State.ribbonSelections[id].imageOverride = opt?.image || null;
+  }
+
+  if(typeof parseCapMemberReport === 'function' && !parseCapMemberReport.__capubPatch20260516E){
+    const prev = parseCapMemberReport;
+    parseCapMemberReport = function capubParseCapMemberReport_20260516E(textRaw){
+      const result = prev(textRaw) || {};
+      const level = looseCACPastRibbonLevel(textRaw);
+      const cord = looseCACCurrentCord(textRaw);
+
+      result.ribbons = (result.ribbons || []).filter(r => r?.id !== 'cadet_advisory_council_ribbon');
+      if(level){
+        result.ribbons.push({
+          id:'cadet_advisory_council_ribbon',
+          value:cacValueForLevel(level),
+          __capubLevel:level,
+          reason:`Loose CAC table parser detected completed ${level.toUpperCase()} CAC service.`
+        });
+      }
+      result.__capubCACLevel = level || result.__capubCACLevel || null;
+      result.shoulderCord = cord || result.shoulderCord || null;
+      result.__capubCACCord = cord || result.__capubCACCord || null;
+      result.notes = result.notes || [];
+      if(level) result.notes.push(`Loose CAC parser forced ${level.toUpperCase()} CAC ribbon value ${cacValueForLevel(level)}.`);
+      if(cord) result.notes.push(`Loose CAC parser forced ${cord.toUpperCase()} CAC shoulder cord.`);
+      if(typeof dedupeImportedRibbons === 'function') result.ribbons = dedupeImportedRibbons(result.ribbons || []);
+      return result;
+    };
+    parseCapMemberReport.__capubPatch20260516E = true;
+  }
+
+  if(typeof applyCapMemberReportImport === 'function' && !applyCapMemberReportImport.__capubPatch20260516E){
+    const prevApply = applyCapMemberReportImport;
+    applyCapMemberReportImport = function capubApplyCapMemberReportImport_20260516E(parsed){
+      const out = prevApply(parsed);
+      if(parsed?.__capubCACLevel) forceCACRibbon(parsed.__capubCACLevel);
+      if(parsed?.__capubCACCord || parsed?.shoulderCord) State.shoulderCord = parsed.__capubCACCord || parsed.shoulderCord;
+      if(typeof syncShoulderCordControl === 'function') syncShoulderCordControl();
+      if(typeof rebuildRibbonsFromGallery === 'function') rebuildRibbonsFromGallery();
+      if(typeof renderCACShoulderCord === 'function') renderCACShoulderCord();
+      if(typeof fullRender === 'function') fullRender();
+      if(typeof updateStatusPanel === 'function') updateStatusPanel();
+      return out;
+    };
+    applyCapMemberReportImport.__capubPatch20260516E = true;
+  }
+})();
 </script>
 </body>
 </html>
