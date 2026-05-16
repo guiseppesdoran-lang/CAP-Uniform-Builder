@@ -10307,6 +10307,117 @@ if(window.CAPUB_V2 && typeof window.CAPUB_V2.buildExpectedAssetList === 'functio
 // Refresh once after installing the patch so a saved/current state can show its cord.
 try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(err){ console.warn('CAC shoulder cord patch refresh failed', err); }
 
+
+/* ==========================================================
+   CAPUB PATCH 2026-05-16 — CAC LEVEL IMPORT CORRECTION
+   Purpose:
+   - Current CAC Chair, Vice Chair, and Representative/Primary Rep duty
+     assignments now import the matching CAC shoulder cord.
+   - CAC ribbon level now imports from the highest qualifying CAC service found
+     in Current or Past Duty Positions, so current RCAC Chair imports Region
+     CAC ribbon/cord and current WCAC Vice Chair imports Wing CAC ribbon/cord.
+   - Assistant, Alternate, Recorder, and Member are still not treated as cord/ribbon
+     level-authorizing roles unless you manually select the item.
+   ========================================================== */
+
+function capubIsEligibleCACLevelDutySegment(segment){
+  const s = capubNormalizeCACSource(segment);
+  if(!s) return false;
+
+  // Explicitly excluded helper/non-voting or staff roles.
+  if(/\b(?:Assistant|Alternate)\s+(?:Representative|Rep)\b/i.test(s)) return false;
+  if(/\b(?:Assistant|Alternate|Recorder|Member)\b/i.test(s)) return false;
+
+  // Eligible CAC duty roles for auto-importing level items.
+  if(/\bPrimary\s+(?:Representative|Rep)\b/i.test(s)) return true;
+  if(/\b(?:Representative|Rep|Chair|Vice\s+Chair)\b/i.test(s)) return true;
+  return false;
+}
+
+// Preserve the old helper name used elsewhere, but update its meaning to include
+// current CAC Chair/Vice Chair as level-authorizing CAC leadership positions.
+function capubIsPrimaryCACRepresentativeSegment(segment){
+  return capubIsEligibleCACLevelDutySegment(segment);
+}
+
+function capubGetQualifyingCACRibbonRows(text){
+  const currentRows = capubGetCurrentCACDutyAssignments(text)
+    .filter(row => row && capubIsEligibleCACLevelDutySegment(row.raw || row.title || ''))
+    .map(row => ({ ...row, source:'current CAC duty' }));
+
+  const pastRows = capubGetPastCACDutyAssignments(text)
+    .filter(row => row && capubIsEligibleCACLevelDutySegment(row.raw || row.title || ''))
+    .filter(capubIsCompletedCACRibbonTerm)
+    .map(row => ({ ...row, source:'completed past CAC duty' }));
+
+  return [...currentRows, ...pastRows];
+}
+
+function capubGetCACRibbonFromDutyAssignments(text){
+  const rows = capubGetQualifyingCACRibbonRows(text);
+  const level = capubChooseHighestCACLevel(rows);
+  if(!level) return null;
+
+  const chosen = rows
+    .filter(r => r.level === level)
+    .sort((a,b) => {
+      // Prefer current duty when current and past are at the same level.
+      if(a.current !== b.current) return a.current ? -1 : 1;
+      return 0;
+    })[0];
+
+  const days = chosen && chosen.start && chosen.end ? capubDaysBetweenDates(chosen.start, chosen.end) : 0;
+  const reason = chosen?.current
+    ? `Current ${level.toUpperCase()} CAC qualifying duty: ${chosen.title || 'CAC duty assignment'}`
+    : `Completed past ${level.toUpperCase()} CAC term (${days} days)`;
+
+  return {
+    id:'cadet_advisory_council_ribbon',
+    value:CAC_RIBBON_VALUE_BY_LEVEL[level],
+    reason
+  };
+}
+
+// Keep the old function name because the installed parser wrapper calls it.
+function capubGetCACRibbonFromPastDutyAssignments(text){
+  return capubGetCACRibbonFromDutyAssignments(text);
+}
+
+function capubGetCACShoulderCordFromCurrentDutyAssignments(text){
+  const rows = capubGetCurrentCACDutyAssignments(text)
+    .filter(row => row && capubIsEligibleCACLevelDutySegment(row.raw || row.title || ''));
+  return capubChooseHighestCACLevel(rows) || null;
+}
+
+// Final parser wrapper so the import notes match the corrected logic instead of
+// the older “past duty only” wording.
+const capubOriginalParseCapMemberReport_CACLevelCorrection = parseCapMemberReport;
+parseCapMemberReport = function capubParseCapMemberReportCACLevelCorrection(textRaw){
+  const normalized = normalizeMemberReportText(textRaw);
+  const result = capubOriginalParseCapMemberReport_CACLevelCorrection(textRaw);
+
+  result.ribbons = (result.ribbons || []).filter(r => r?.id !== 'cadet_advisory_council_ribbon');
+
+  const cacRibbon = capubGetCACRibbonFromDutyAssignments(normalized);
+  const currentCord = capubGetCACShoulderCordFromCurrentDutyAssignments(normalized);
+
+  if(cacRibbon){
+    result.ribbons.push(cacRibbon);
+    result.notes.push(`CAC ribbon imported as ${cacRibbon.value}: ${cacRibbon.reason}.`);
+  }else if(/Cadet\s+Advisory\s+Council|\bCAC\b|\b[GNWR]CAC\b|\bNCAC\b/i.test(normalized)){
+    result.notes.push('CAC text found, but no qualifying CAC Chair, Vice Chair, Representative, or Primary Rep duty assignment was found for automatic CAC ribbon level import.');
+  }
+
+  result.shoulderCord = currentCord;
+  if(currentCord){
+    result.notes.push(`${CAC_CORD_LABEL_BY_LEVEL[currentCord]} imported from Current Duty Positions.`);
+  }
+
+  return result;
+};
+
+try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(err){ console.warn('CAC level correction refresh failed', err); }
+
 </script>
 </body>
 </html>
