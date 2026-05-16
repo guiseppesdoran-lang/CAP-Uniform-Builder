@@ -1113,6 +1113,21 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <div class="hintText">Grayed-out uniforms are not authorized for the selected membership type.</div>
       </section>
 
+      <section id="shoulderCordPanel" class="panelBlock">
+        <label class="fieldLabel">CAC Shoulder Cord</label>
+        <select id="shoulderCordSelect">
+          <option value="">No shoulder cord</option>
+          <option value="group">Group CAC shoulder cord — green</option>
+          <option value="wing">Wing CAC shoulder cord — red</option>
+          <option value="region">Region CAC shoulder cord — blue</option>
+          <option value="national">National CAC shoulder cord — gold</option>
+        </select>
+        <div class="hintText">
+          Imported from current CAC primary representative duty assignments only.
+          The CAC ribbon is imported only after a completed past CAC term.
+        </div>
+      </section>
+
       <!-- Asset base path control removed from the general UI. The builder now uses the default images folder internally. -->
 
       <!-- RIBBONS: PICKER BUTTON (NO SIDEBAR THUMBS) -->
@@ -7673,6 +7688,7 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
       uniform: State.uniform,
       rank: State.rank,
       cadetFirstSergeant: State.cadetFirstSergeant,
+      shoulderCord: State.shoulderCord || '',
       assetBase: State.assetBase,
       ribbons: State.ribbons,
       badges: State.badges,
@@ -7695,6 +7711,7 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
     State.rank = p.rank || null;
     State.cadetFirstSergeant = !!p.cadetFirstSergeant;
     if(!isCadetFirstSergeantEligible(State.rank)) State.cadetFirstSergeant = false;
+    State.shoulderCord = p.shoulderCord || null;
     State.assetBase = p.assetBase || 'images';
     State.ribbons = Array.isArray(p.ribbons) ? p.ribbons : [];
     State.badges = Array.isArray(p.badges) ? p.badges : [];
@@ -7711,6 +7728,7 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
 
     populateRankSetup();
     syncCadetFirstSergeantControl();
+    if(typeof syncShoulderCordControl === 'function') syncShoulderCordControl();
     refreshUI();
     syncTextControls();
     buildRibbonGallery(); buildBadgeGallery(); buildPatchGallery();
@@ -9843,6 +9861,27 @@ function extractCommandServiceCommanderAssignments(text){
    ========================================================== */
 State.shoulderCord = State.shoulderCord || null;
 
+function syncShoulderCordControl(){
+  const sel = by('shoulderCordSelect');
+  if(!sel) return;
+  sel.value = State.shoulderCord || '';
+  const usable = State.membership === 'cadet' && ['blues_a','blues_b'].includes(State.uniform);
+  sel.disabled = false;
+  const panel = by('shoulderCordPanel');
+  if(panel) panel.classList.toggle('disabledBlock', !usable);
+}
+
+function wireShoulderCordControl(){
+  const sel = by('shoulderCordSelect');
+  if(!sel || sel.dataset.wired === 'true') return;
+  sel.dataset.wired = 'true';
+  sel.addEventListener('change', () => {
+    State.shoulderCord = sel.value || null;
+    renderCACShoulderCord();
+    if(typeof updateStatusPanel === 'function') updateStatusPanel();
+  });
+}
+
 const CAC_LEVEL_PRIORITY = { group:1, wing:2, region:3, national:4 };
 const CAC_RIBBON_VALUE_BY_LEVEL = {
   group: 'group',
@@ -9878,14 +9917,14 @@ function capubIsPrimaryCACRepresentativeSegment(segment){
   // User rule: the shoulder cord is for the current primary representative only.
   // Assistant/alternate reps, recorders, general members, chairs, and vice chairs
   // should not auto-render a cord from the member report.
-  if(/(?:Assistant|Alternate)\s+(?:Representative|Rep)/i.test(s)) return false;
-  if(/(?:Assistant|Alternate|Recorder|Member|Chair|Vice\s+Chair)/i.test(s)) return false;
+  if(/\b(?:Assistant|Alternate)\s+(?:Representative|Rep)\b/i.test(s)) return false;
+  if(/\b(?:Assistant|Alternate|Recorder|Member|Chair|Vice\s+Chair)\b/i.test(s)) return false;
 
   // Treat an explicit Primary Rep title as eligible. Also treat a plain CAC
   // Representative/Rep title as primary unless the row explicitly says assistant
   // or alternate, because eServices duty titles often omit the word "Primary."
-  if(/Primary\s+(?:Representative|Rep)/i.test(s)) return true;
-  if(/(?:Representative|Rep)/i.test(s)) return true;
+  if(/\bPrimary\s+(?:Representative|Rep)\b/i.test(s)) return true;
+  if(/\b(?:Representative|Rep)\b/i.test(s)) return true;
   return false;
 }
 
@@ -9997,14 +10036,35 @@ function capubChooseHighestCACLevel(rows){
   return valid[0].level;
 }
 
+// Treat a completed CAC term as a substantially complete annual term.
+// This prevents short/partial past-duty entries, such as a May-to-September partial
+// WCAC assignment, from importing the CAC ribbon. Adjust here if your wing defines
+// CAC terms differently.
+const CAC_MIN_COMPLETED_TERM_DAYS = 300;
+
+function capubDaysBetweenDates(start, end){
+  if(!(start instanceof Date) || isNaN(start)) return 0;
+  if(!(end instanceof Date) || isNaN(end)) return 0;
+  return Math.floor((end.getTime() - start.getTime()) / 86400000) + 1;
+}
+
+function capubIsCompletedCACRibbonTerm(row){
+  if(!row || row.current) return false;
+  if(!row.start || !row.end) return false;
+  return capubDaysBetweenDates(row.start, row.end) >= CAC_MIN_COMPLETED_TERM_DAYS;
+}
+
 function capubGetCACRibbonFromPastDutyAssignments(text){
   const rows = capubGetPastCACDutyAssignments(text);
-  const level = capubChooseHighestCACLevel(rows);
+  const completedRows = rows.filter(capubIsCompletedCACRibbonTerm);
+  const level = capubChooseHighestCACLevel(completedRows);
   if(!level) return null;
+  const chosen = completedRows.find(r => r.level === level);
+  const days = chosen ? capubDaysBetweenDates(chosen.start, chosen.end) : 0;
   return {
     id:'cadet_advisory_council_ribbon',
     value:CAC_RIBBON_VALUE_BY_LEVEL[level],
-    reason:`Completed past ${level.toUpperCase()} CAC duty assignment`
+    reason:`Completed past ${level.toUpperCase()} CAC term (${days} days)`
   };
 }
 
@@ -10032,6 +10092,8 @@ function capubSetImageWithFallback(img, candidates){
 }
 
 function renderCACShoulderCord(){
+  wireShoulderCordControl();
+  syncShoulderCordControl();
   [...uniformCanvas.querySelectorAll('.layer.cacShoulderCord')].forEach(n => n.remove());
 
   const level = State.shoulderCord;
@@ -10081,7 +10143,7 @@ parseCapMemberReport = function capubParseCapMemberReportCACPatch(textRaw){
     result.ribbons.push(cacRibbon);
     result.notes.push(`CAC ribbon imported from Past Duty Positions as ${cacRibbon.value}.`);
   }else if(/Cadet\s+Advisory\s+Council|\bCAC\b|\b[GNWR]CAC\b|\bNCAC\b/i.test(normalized)){
-    result.notes.push('CAC text found, but CAC ribbon was not imported because no completed CAC term was found in Past Duty Positions. Current CAC primary representative duty only controls the shoulder cord.');
+    result.notes.push(`CAC text found, but CAC ribbon was not imported because no completed CAC term of at least ${CAC_MIN_COMPLETED_TERM_DAYS} days was found in Past Duty Positions. Current CAC primary representative duty only controls the shoulder cord.`);
   }
 
   result.shoulderCord = currentCord;
@@ -10098,8 +10160,19 @@ applyCapMemberReportImport = function capubApplyCapMemberReportImportCACPatch(pa
   State.shoulderCord = parsed?.shoulderCord || null;
   capubOriginalApplyCapMemberReportImport_CACPatch(parsed);
   State.shoulderCord = parsed?.shoulderCord || null;
+  syncShoulderCordControl();
   renderCACShoulderCord();
 };
+
+// Keep the visible shoulder-cord selector synced when membership, rank, gender, or uniform changes.
+if(typeof refreshUI === 'function'){
+  const capubOriginalRefreshUI_CACPatch = refreshUI;
+  refreshUI = function capubRefreshUICACPatch(){
+    const out = capubOriginalRefreshUI_CACPatch.apply(this, arguments);
+    syncShoulderCordControl();
+    return out;
+  };
+}
 
 // Render shoulder cord after every full render. This is intentionally after badges/ribbons so the cord
 // can be calibrated and layered independently from the base jacket.
@@ -10129,7 +10202,7 @@ if(window.CAPUB_V2 && typeof window.CAPUB_V2.buildExpectedAssetList === 'functio
 }
 
 // Refresh once after installing the patch so a saved/current state can show its cord.
-try{ fullRender(); }catch(err){ console.warn('CAC shoulder cord patch refresh failed', err); }
+try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(err){ console.warn('CAC shoulder cord patch refresh failed', err); }
 
 </script>
 </body>
