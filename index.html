@@ -4602,25 +4602,99 @@ function getBadgeCategoriesForCurrentMembership(){
 }
 
 const patchList = [
-  'us_flag_patch','command_patch','wing_patch','unit_patch','aerospace_education_patch','communications_patch','orientation_pilot_patch'
+  'us_flag_patch','command_patch','wing_patch','unit_patch',
+  'ner_patch','nywg_patch','comms_patch','check_pilot_patch',
+  'aerospace_education_patch','communications_patch','orientation_pilot_patch'
 ];
 
 const PATCH_META = {
-  'us_flag_patch':{slotHint:'R_SHOULDER', w:60,h:40, img:'patches/us_flag_patch.png'},
-  'command_patch':{slotHint:'L_SHOULDER', w:70,h:70, img:'patches/command_patch.png'},
-  'wing_patch':{slotHint:'L_SHOULDER', w:60,h:60, img:'patches/wing_patch.png'},
-  'unit_patch':{slotHint:'R_SHOULDER', w:60,h:60, img:'patches/unit_patch.png'},
-  'aerospace_education_patch':{slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/aerospace_education_patch.png'},
-  'communications_patch':{slotHint:'CHEST_RIGHT', w:60,h:60, img:'patches/communications_patch.png'},
-  'orientation_pilot_patch':{slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/orientation_pilot_patch.png'}
+  'us_flag_patch':{slotHint:'R_SHOULDER', w:60,h:40, img:'patches/us_flag_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'command_patch':{slotHint:'L_SHOULDER', w:70,h:70, img:'patches/command_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'wing_patch':{slotHint:'L_SHOULDER', w:60,h:60, img:'patches/wing_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'unit_patch':{slotHint:'R_SHOULDER', w:60,h:60, img:'patches/unit_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+
+  // Newly added field-uniform patches.
+  // Files must be located under images/patches/(file name).
+  'ner_patch':{slotHint:'L_SHOULDER', w:70,h:70, img:'patches/ner_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'nywg_patch':{slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nywg_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'comms_patch':{slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/comms_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'},
+  'check_pilot_patch':{slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/check_pilot_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+
+  // Legacy patch IDs kept for backward compatibility with older saved setups.
+  'aerospace_education_patch':{slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/aerospace_education_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'communications_patch':{slotHint:'CHEST_RIGHT', w:60,h:60, img:'patches/communications_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'},
+  'orientation_pilot_patch':{slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/orientation_pilot_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']}
 };
 
 const ALTERNATES = {
-  badgeToPatch: { 'communications_technician_badge':'communications_patch' },
-  patchToBadge: { 'communications_patch':'communications_technician_badge' },
+  badgeToPatch: {
+    'communications_technician_badge':'comms_patch',
+    'communications_senior_badge':'comms_patch',
+    'communications_master_badge':'comms_patch'
+  },
+  patchToBadge: {
+    'comms_patch':'communications_technician_badge',
+    'communications_patch':'communications_technician_badge'
+  },
   ribbonToPatch:{ 'cap_cadet_orientation_pilot_ribbon':'orientation_pilot_patch' },
   patchToRibbon:{ 'orientation_pilot_patch':'cap_cadet_orientation_pilot_ribbon' }
 };
+
+function normalizeUniformKeyForPatches(uniformId = State.uniform){
+  const u = String(uniformId || '').toLowerCase();
+  if(u.includes('ocp')) return 'ocp';
+  if(u.includes('abu')) return 'abu';
+  if(u.includes('flight')) return 'flight_suit';
+  if(u.includes('corporate') || u.includes('field')) return 'corporate_field';
+  return u;
+}
+
+function isPatchAuthorizedForUniform(patchId, uniformId = State.uniform){
+  const meta = PATCH_META[patchId];
+  if(!meta) return false;
+  const allowed = meta.authorizedUniforms || ['abu','ocp','flight_suit','corporate_field'];
+  return allowed.includes(normalizeUniformKeyForPatches(uniformId));
+}
+
+function isCommsPatchId(patchId){
+  return patchId === 'comms_patch' || patchId === 'communications_patch';
+}
+
+function clearUnauthorizedPatchesForCurrentUniform(){
+  normalizePatchSelections();
+  let changed = false;
+
+  for(const id of Object.keys(State.patchSelections || {})){
+    if(State.patchSelections[id]?.checked && !isPatchAuthorizedForUniform(id)){
+      State.patchSelections[id].checked = false;
+      changed = true;
+    }
+  }
+
+  const before = State.patches.length;
+  State.patches = (State.patches || []).filter(id => isPatchAuthorizedForUniform(id));
+  if(before !== State.patches.length) changed = true;
+
+  return changed;
+}
+
+function memberReportHasCommunicationsTechnicianSpecialty(text){
+  const rows = (typeof parseMemberReportSpecialtyTracks === 'function')
+    ? parseMemberReportSpecialtyTracks(text)
+    : [];
+
+  if(rows.length){
+    return rows.some(row => {
+      const name = normalizeSpecialtyTrackName(row.name);
+      const level = normalizeSpecialtyTrackLevel(row.level);
+      return row.eligible && /COMMUNICATIONS?/.test(name) && /TECHNICIAN|SENIOR|MASTER/.test(level);
+    });
+  }
+
+  const t = String(text || '').replace(/\s+/g, ' ');
+  return /Specialty\s+Tracks[\s\S]{0,3000}Communications?[\s\S]{0,160}(Technician|Senior|Master)/i.test(t) ||
+         /Communications?[\s\S]{0,160}(Technician|Senior|Master)/i.test(t);
+}
 
 const rankListAll = [...RANKS.senior, ...RANKS.cadet];
 
@@ -5906,8 +5980,10 @@ function rebuildPatchesFromGallery(){
   normalizePatchSelections();
 
   for(const id of patchList){
-    if(State.patchSelections[id]?.checked){
+    if(State.patchSelections[id]?.checked && isPatchAuthorizedForUniform(id)){
       if(!State.patches.includes(id)) State.patches.push(id);
+    }else if(State.patchSelections[id]?.checked && !isPatchAuthorizedForUniform(id)){
+      State.patchSelections[id].checked = false;
     }
   }
   renderPatches();
@@ -5944,9 +6020,21 @@ function buildPatchGallery(){
     `;
 
     const chk = tile.querySelector('.ptChk');
-    chk.checked = !!sel.checked;
+    const authorized = isPatchAuthorizedForUniform(id);
+    chk.checked = !!sel.checked && authorized;
+    chk.disabled = !authorized;
+    if(!authorized){
+      tile.classList.add('disabledBlock');
+      const sub = tile.querySelector('.sub:last-child');
+      if(sub) sub.innerHTML += ' • <b>Not authorized on current uniform</b>';
+    }
 
     chk.onchange=()=>{
+      if(!authorized){
+        chk.checked = false;
+        sel.checked = false;
+        return;
+      }
       sel.checked = chk.checked;
       rebuildPatchesFromGallery();
     };
@@ -6541,6 +6629,7 @@ function planPatches(ids){
 
   for(const id of ids){
     const meta=PATCH_META[id]; if(!meta) continue;
+    if(!isPatchAuthorizedForUniform(id)) continue;
     const hint=meta.slotHint || 'L_SHOULDER';
     const cap=capsPerUniform[hint]??0;
     if(cap===0) continue;
@@ -6604,6 +6693,9 @@ function updateAvailabilityUI(prevUniform){
   by('groupRibbons').classList.toggle('hidden', !auth.showRibbons && !UNIFORMS[State.uniform].mini);
   by('groupPatches').classList.toggle('hidden', !auth.showPatches);
 
+  clearUnauthorizedPatchesForCurrentUniform();
+  buildPatchGallery();
+
   if(prevUniform && prevUniform!==State.uniform){
     applyAlternates(prevUniform, State.uniform);
   }
@@ -6618,13 +6710,13 @@ function applyAlternates(fromU,toU){
   // alternates by adding them; it never deletes the original selections.
   if(!fromField && toField){
     Object.entries(ALTERNATES.badgeToPatch).forEach(([badge,patch])=>{
-      if(State.badges.includes(badge)){
+      if(State.badges.includes(badge) && isPatchAuthorizedForUniform(patch)){
         State.patchSelections[patch] = {checked:true};
         if(!State.patches.includes(patch)) State.patches.push(patch);
       }
     });
     Object.entries(ALTERNATES.ribbonToPatch).forEach(([ribbon,patch])=>{
-      if(State.ribbons.find(r=>r.id===ribbon)){
+      if(State.ribbons.find(r=>r.id===ribbon) && isPatchAuthorizedForUniform(patch)){
         State.patchSelections[patch] = {checked:true};
         if(!State.patches.includes(patch)) State.patches.push(patch);
       }
@@ -9047,6 +9139,7 @@ function parseCapMemberReport(textRaw){
     cadetFirstSergeant:false,
     ribbons:[],
     badges:[],
+    patches:[],
     notes:[]
   };
 
@@ -9241,6 +9334,14 @@ function parseCapMemberReport(textRaw){
   }
   result.notes.push(...importedSpecialtyTracks.notes);
 
+  // Field-uniform patch auto-import:
+  // Communications patch renders from the Communications specialty rating only.
+  // It is intentionally not authorized on OCP and will be filtered by current uniform.
+  if(importedSpecialtyTracks.badges.some(item => /^communications_/.test(item.id)) || memberReportHasCommunicationsTechnicianSpecialty(text)){
+    result.patches.push('comms_patch');
+    result.notes.push('Communications specialty rating detected; Communications patch queued for ABU, flight suit, or corporate field uniform only.');
+  }
+
   if(/ICUT|Introductory Communications User Training|Rating Exam:\s*Communications|Mission Radio Operator|\bMRO\b/i.test(text) &&
      !importedSpecialtyTracks.badges.some(item => /^communications_/.test(item.id))){
     result.notes.push('Communications-related duty/training/exam found outside Specialty Tracks; Communications badge not imported unless the Specialty Tracks table shows TECHNICIAN, SENIOR, or MASTER.');
@@ -9358,6 +9459,12 @@ function applyCapMemberReportImport(parsed){
     State.badgeSelections[id].checked = false;
   }
 
+  normalizePatchSelections();
+  for(const id of Object.keys(State.patchSelections)){
+    State.patchSelections[id].checked = false;
+  }
+  State.patches = [];
+
   for(const r of parsed.ribbons || []){
     if(isRibbonEligibleForMembership(r.id, State.membership)){
       selectImportedRibbon(r.id, r.value || 'earned');
@@ -9374,6 +9481,22 @@ function applyCapMemberReportImport(parsed){
     if(!State.badges.includes(id)) State.badges.push(id);
     if(State.badgeSelections[id]) State.badgeSelections[id].checked = true;
   }
+
+  // Apply imported field-uniform patches. Unauthorized patches, especially
+  // the Communications patch on OCPs, are kept out of State.patches.
+  for(const id of parsed.patches || []){
+    if(!PATCH_META[id]) continue;
+    State.patchSelections[id] = State.patchSelections[id] || { checked:false };
+    if(isPatchAuthorizedForUniform(id)){
+      State.patchSelections[id].checked = true;
+      if(!State.patches.includes(id)) State.patches.push(id);
+    }else if(isCommsPatchId(id)){
+      State.patchSelections[id].checked = false;
+      parsed.notes = parsed.notes || [];
+      parsed.notes.push('Communications patch not rendered because it is not authorized on the selected OCP uniform.');
+    }
+  }
+  clearUnauthorizedPatchesForCurrentUniform();
 
   applyMemberTypeToUniformOptions();
   highlightActiveUniformButton();
