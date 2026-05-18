@@ -8319,6 +8319,24 @@ function chooseCommunityServiceValue(count){
   return 'silver_clasp_1_bronze_clasp_2';
 }
 
+
+function chooseDisasterReliefValue(count, text=''){
+  const hasSilverV =
+    /Disaster Relief Ribbon[\s\S]{0,160}(Silver\s+V|Presidential)/i.test(text) ||
+    /(Silver\s+V|Presidential)[\s\S]{0,160}Disaster Relief Ribbon/i.test(text) ||
+    /\bDRR\b[\s\S]{0,160}(Silver\s+V|Presidential)/i.test(text);
+
+  if(hasSilverV && count >= 4) return 'silver_v_bronze_clasp_3';
+  if(hasSilverV && count >= 3) return 'silver_v_bronze_clasp_2';
+  if(hasSilverV && count >= 2) return 'silver_v_bronze_clasp_1';
+  if(hasSilverV) return 'silver_v';
+
+  if(count >= 4) return 'bronze_clasp_3';
+  if(count >= 3) return 'bronze_clasp_2';
+  if(count >= 2) return 'bronze_clasp_1';
+  return 'earned';
+}
+
 function chooseCadetSpecialActivityValue(count){
   if(count <= 1) return 'earned';
   if(count === 2) return 'bronze_star_1';
@@ -9153,6 +9171,16 @@ function parseCapMemberReport(textRaw){
       id:'community_service_ribbon',
       value:chooseCommunityServiceValue(communityServiceCount),
       reason:`${communityServiceCount} Community Service Ribbon record(s)`
+    });
+  }
+
+
+  const disasterReliefCount = Math.max(1, countOccurrences(text, /Disaster Relief Ribbon/gi));
+  if(/Disaster Relief Ribbon/i.test(text)){
+    result.ribbons.push({
+      id:'disaster_relief_ribbon',
+      value:chooseDisasterReliefValue(disasterReliefCount, text),
+      reason:`${disasterReliefCount} Disaster Relief Ribbon record(s)`
     });
   }
 
