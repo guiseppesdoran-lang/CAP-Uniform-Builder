@@ -4604,26 +4604,51 @@ function getBadgeCategoriesForCurrentMembership(){
 const patchList = [
   'us_flag_patch','command_patch','wing_patch','unit_patch',
   'ner_patch','nywg_patch','comms_patch','check_pilot_patch',
-  'aerospace_education_patch','communications_patch','orientation_pilot_patch'
+  'pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch',
+  'honor_guard_patch','engineering_academy_patch','nfa_patch','cla_patch',
+  'proficient_pilot_patch','model_rocketry_patch','safety_patch','undergrad_pilot_training_patch',
+  'nbb_patch','honor_guard_academy_patch','af_space_command_patch','dog_patch',
+  'archer_patch','orientation_pilot_patch','cism_patch','plane_patch',
+  'aerospace_education_patch','communications_patch'
 ];
 
 const PATCH_META = {
-  'us_flag_patch':{slotHint:'R_SHOULDER', w:60,h:40, img:'patches/us_flag_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
-  'command_patch':{slotHint:'L_SHOULDER', w:70,h:70, img:'patches/command_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
-  'wing_patch':{slotHint:'L_SHOULDER', w:60,h:60, img:'patches/wing_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
-  'unit_patch':{slotHint:'R_SHOULDER', w:60,h:60, img:'patches/unit_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'us_flag_patch':{label:'U.S. Flag Patch', slotHint:'R_SHOULDER', w:60,h:40, img:'patches/us_flag_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'command_patch':{label:'Command Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/command_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'wing_patch':{label:'Wing Patch', slotHint:'L_SHOULDER', w:60,h:60, img:'patches/wing_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'unit_patch':{label:'Unit Patch', slotHint:'R_SHOULDER', w:60,h:60, img:'patches/unit_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
 
-  // Newly added field-uniform patches.
-  // Files must be located under images/patches/(file name).
-  'ner_patch':{slotHint:'L_SHOULDER', w:70,h:70, img:'patches/ner_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
-  'nywg_patch':{slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nywg_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
-  'comms_patch':{slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/comms_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'},
-  'check_pilot_patch':{slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/check_pilot_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  // Previously added field-uniform patches.
+  'ner_patch':{label:'Northeast Region Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/ner_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'nywg_patch':{label:'New York Wing Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nywg_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'comms_patch':{label:'Communications Patch', slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/comms_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'},
+  'check_pilot_patch':{label:'Check Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/check_pilot_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+
+  // New field-uniform patches added May 2026. Files are under images/patches/.
+  'pjoc_patch':{label:'PJOC Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/pjoc_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'nesa_patch':{label:'NESA Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nesa_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'civil_engineering_academy_patch':{label:'Civil Engineering Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/civil_engineering_academy_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'cos_patch':{label:'Cadet Officer School Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/cos_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'honor_guard_patch':{label:'Honor Guard Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/honor_guard_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field']},
+  'engineering_academy_patch':{label:'Engineering Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/engineering_academy_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'nfa_patch':{label:'National Flight Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nfa_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'cla_patch':{label:'Civic Leadership Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/cla_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'proficient_pilot_patch':{label:'Proficient Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/proficient_pilot_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'model_rocketry_patch':{label:'Model Rocketry Patch', slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/model_rocketry_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field'], allowedMemberships:['cadet']},
+  'safety_patch':{label:'Safety Patch', slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/safety_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field'], allowedMemberships:['senior']},
+  'undergrad_pilot_training_patch':{label:'Undergraduate Pilot Training Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/undergrad_pilot_training_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'nbb_patch':{label:'National Blue Beret Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nbb_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'honor_guard_academy_patch':{label:'Honor Guard Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/honor_guard_academy_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'af_space_command_patch':{label:'Air Force Space Command Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/af_space_command_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'dog_patch':{label:'DOG Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/dog_patch.png', authorizedUniforms:['ocp','flight_suit','corporate_field']},
+  'archer_patch':{label:'ARCHER Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/archer_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'orientation_pilot_patch':{label:'Orientation Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/orientation_pilot_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'cism_patch':{label:'CISM Patch', slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/cism_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'plane_patch':{label:'Plane Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/plane_patch.png', authorizedUniforms:['ocp','flight_suit','corporate_field']},
 
   // Legacy patch IDs kept for backward compatibility with older saved setups.
-  'aerospace_education_patch':{slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/aerospace_education_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
-  'communications_patch':{slotHint:'CHEST_RIGHT', w:60,h:60, img:'patches/communications_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'},
-  'orientation_pilot_patch':{slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/orientation_pilot_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']}
+  'aerospace_education_patch':{label:'Aerospace Education Patch', slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/aerospace_education_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+  'communications_patch':{label:'Legacy Communications Patch', slotHint:'CHEST_RIGHT', w:60,h:60, img:'patches/communications_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'}
 };
 
 const ALTERNATES = {
@@ -4649,11 +4674,43 @@ function normalizeUniformKeyForPatches(uniformId = State.uniform){
   return u;
 }
 
-function isPatchAuthorizedForUniform(patchId, uniformId = State.uniform){
+function isPatchAuthorizedForUniform(patchId, uniformId = State.uniform, membership = State.membership){
   const meta = PATCH_META[patchId];
   if(!meta) return false;
-  const allowed = meta.authorizedUniforms || ['abu','ocp','flight_suit','corporate_field'];
-  return allowed.includes(normalizeUniformKeyForPatches(uniformId));
+
+  const allowedUniforms = meta.authorizedUniforms || ['abu','ocp','flight_suit','corporate_field'];
+  const uniformOk = allowedUniforms.includes(normalizeUniformKeyForPatches(uniformId));
+  if(!uniformOk) return false;
+
+  const allowedMemberships = meta.allowedMemberships || null;
+  if(allowedMemberships && !allowedMemberships.includes(membership)) return false;
+
+  return true;
+}
+
+function getPatchAuthorizationReason(patchId, uniformId = State.uniform, membership = State.membership){
+  const meta = PATCH_META[patchId];
+  if(!meta) return 'Unknown patch.';
+
+  const uniformKey = normalizeUniformKeyForPatches(uniformId);
+  const allowedUniforms = meta.authorizedUniforms || ['abu','ocp','flight_suit','corporate_field'];
+  if(!allowedUniforms.includes(uniformKey)){
+    if(patchId === 'comms_patch' || patchId === 'communications_patch') return 'Communications patch is not authorized on OCP.';
+    if(patchId === 'model_rocketry_patch') return 'Model Rocketry patch is not authorized on OCP.';
+    if(patchId === 'safety_patch') return 'Safety patch is not authorized on OCP.';
+    if(patchId === 'honor_guard_patch') return 'Honor Guard patch is not authorized on OCP; Honor Guard Academy patch is authorized.';
+    if(patchId === 'dog_patch' || patchId === 'plane_patch') return 'This patch is not authorized on ABUs.';
+    return `Not authorized on ${String(uniformKey || 'this uniform').toUpperCase().replaceAll('_',' ')}.`;
+  }
+
+  const allowedMemberships = meta.allowedMemberships || null;
+  if(allowedMemberships && !allowedMemberships.includes(membership)){
+    if(patchId === 'model_rocketry_patch') return 'Model Rocketry patch is cadet-only.';
+    if(patchId === 'safety_patch') return 'Safety patch is senior-member-only.';
+    return `Authorized only for: ${allowedMemberships.join(', ')}.`;
+  }
+
+  return '';
 }
 
 function isCommsPatchId(patchId){
@@ -6006,7 +6063,7 @@ function buildPatchGallery(){
     const tile = document.createElement('div');
     tile.className='galleryTile';
 
-    const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    const title = meta.label || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
     tile.innerHTML=`
       <img src="${ASSET(meta.img)}" alt="${title}">
       <div style="flex:1;min-width:0;">
@@ -6026,7 +6083,8 @@ function buildPatchGallery(){
     if(!authorized){
       tile.classList.add('disabledBlock');
       const sub = tile.querySelector('.sub:last-child');
-      if(sub) sub.innerHTML += ' • <b>Not authorized on current uniform</b>';
+      const reason = getPatchAuthorizationReason(id);
+      if(sub) sub.innerHTML += ` • <b>${reason || 'Not authorized on current uniform'}</b>`;
     }
 
     chk.onchange=()=>{
@@ -6675,7 +6733,7 @@ function renderPatches(){
 
       el.onerror=()=>{};
 
-      el.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
+      el.dataset.tooltipTitle = (PATCH_META[id]?.label || id.replace(/_/g,' ')).toUpperCase();
       el.dataset.tooltipReg   = "Field/utility patch placement";
       el.dataset.tooltipWhy   = "Displayed on sleeve/chest per field uniform rules.";
 
