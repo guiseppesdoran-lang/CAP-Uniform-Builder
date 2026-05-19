@@ -2909,15 +2909,23 @@ function buildDerivedBadgeCalib(key, base){
 
   return patch;
 }
+function getLegacyPatchCalibKey(key){
+  const m = String(key || '').match(/^patch:([^:]+):/);
+  return m ? `patch:${m[1]}` : null;
+}
+
 function getCalib(key){
   if(!key) return null;
+  const legacyPatchKey = getLegacyPatchCalibKey(key);
   for(const uniformId of getCalibFallbackUniforms()){
     const bucket = State.calib.byUniform?.[uniformId] || {};
     if(bucket[key]) return bucket[key];
+    if(legacyPatchKey && bucket[legacyPatchKey]) return bucket[legacyPatchKey];
     const defaults = DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {};
     if(defaults[key]) return defaults[key];
+    if(legacyPatchKey && defaults[legacyPatchKey]) return defaults[legacyPatchKey];
   }
-  return State.calib.map[key] || null;
+  return State.calib.map[key] || (legacyPatchKey ? State.calib.map[legacyPatchKey] : null);
 }
 function setCalib(key, patch){
   if(!key) return;
@@ -3442,6 +3450,32 @@ const SENIOR_OFFICER_COMBINED_CLASSB = {
 
 function getSeniorOfficerCombinedClassBPath(rank, gender){
   return SENIOR_OFFICER_COMBINED_CLASSB?.[gender]?.[rank] || null;
+}
+
+// Senior Member officer OCP blouse base images.
+// Male and female senior officer OCP variants use the same rank-specific image.
+// File convention:
+//   images/base/{rank}_OCP_Blouse.png
+const SENIOR_OFFICER_OCP_BASES = {
+  "2d Lt":  "base/2d_lt_OCP_Blouse.png",
+  "1st Lt": "base/1st_lt_OCP_Blouse.png",
+  "Capt":   "base/capt_OCP_Blouse.png",
+  "Maj":    "base/maj_OCP_Blouse.png",
+  "Lt Col": "base/lt_col_OCP_Blouse.png",
+  "Col":    "base/col_OCP_Blouse.png"
+};
+
+function getSeniorOfficerOcpBasePath(rank){
+  return SENIOR_OFFICER_OCP_BASES?.[rank] || null;
+}
+
+function usingSeniorOfficerOcpBase(){
+  return (
+    State.uniform === 'ocp' &&
+    State.membership === 'senior' &&
+    !!State.rank &&
+    !!getSeniorOfficerOcpBasePath(State.rank)
+  );
 }
 
 function getCadetFirstSergeantCombinedClassAPath(rank, gender){
@@ -4604,6 +4638,7 @@ function getBadgeCategoriesForCurrentMembership(){
 const patchList = [
   'us_flag_patch','command_patch','wing_patch','unit_patch',
   'ner_patch','nywg_patch','comms_patch','check_pilot_patch',
+  'pjoc_ocp_patch','tn185_ocp_patch',
   'pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch',
   'honor_guard_patch','engineering_academy_patch','nfa_patch','cla_patch',
   'proficient_pilot_patch','model_rocketry_patch','safety_patch','undergrad_pilot_training_patch',
@@ -4623,6 +4658,10 @@ const PATCH_META = {
   'nywg_patch':{label:'New York Wing Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nywg_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
   'comms_patch':{label:'Communications Patch', slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/comms_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'},
   'check_pilot_patch':{label:'Check Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/check_pilot_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
+
+  // OCP-specific patch assets added May 2026. Files are under images/patches/ocp/.
+  'pjoc_ocp_patch':{label:'PJOC OCP Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/ocp/pjoc_ocp_patch.png', authorizedUniforms:['ocp']},
+  'tn185_ocp_patch':{label:'TN-185 OCP Patch', slotHint:'R_SHOULDER', w:70,h:70, img:'patches/ocp/TN-185_ocp_patch.png', authorizedUniforms:['ocp']},
 
   // New field-uniform patches added May 2026. Files are under images/patches/.
   'pjoc_patch':{label:'PJOC Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/pjoc_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field']},
@@ -5041,6 +5080,13 @@ function getBaseCandidates(){
   // 1d) Senior Member Officer Class B combined shirt (rank baked in)
   if(usingCombinedSeniorOfficerClassBJacket()){
     list.push(getSeniorOfficerCombinedClassBPath(State.rank, State.gender));
+    return [...new Set(list)];
+  }
+
+  // 1e) Senior Member Officer OCP blouse (rank baked into the base image)
+  // Male and female variants intentionally use the same rank-specific OCP file.
+  if(usingSeniorOfficerOcpBase()){
+    list.push(getSeniorOfficerOcpBasePath(State.rank));
     return [...new Set(list)];
   }
 
@@ -6555,6 +6601,12 @@ function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
 
   if(slot === 'FON') return getFemaleSpecialtyBadgeAnchor(id, bw, bh, W, H);
 
+  // Field-uniform badges/qualification patch-style items use their own anchors
+  // so OCP, ABU, CFU, and flight suit coordinates can be calibrated separately.
+  if(isFieldUniform(State.uniform)){
+    return getFieldBadgeAnchor(slot, id, idx, W, H, bw, bh);
+  }
+
   const a = base[slot] || base.UN;
   return {
     x: Math.round(a.x - bw/2),
@@ -6664,6 +6716,91 @@ function placeBadgeSlotAnchored(id){
 }
 
 /* ===========================
+   FIELD UNIFORM POSITIONING
+   =========================== */
+const FIELD_UNIFORM_PATCH_LAYOUTS = {
+  // Each field uniform has its own independent starting coordinates.
+  // These are base defaults only; the calibrator still saves exact final
+  // coordinates in separate buckets such as ocp_male, abu_male, and
+  // corporate_field_male/female so OCP adjustments do not move ABU or CFU.
+  ocp: {
+    L_SHOULDER:{x:126,y:206,dy:76},
+    R_SHOULDER:{x:324,y:206,dy:76},
+    CHEST_LEFT:{x:182,y:328,dy:68},
+    CHEST_RIGHT:{x:268,y:328,dy:68}
+  },
+  abu: {
+    L_SHOULDER:{x:122,y:216,dy:76},
+    R_SHOULDER:{x:328,y:216,dy:76},
+    CHEST_LEFT:{x:178,y:336,dy:68},
+    CHEST_RIGHT:{x:272,y:336,dy:68}
+  },
+  corporate_field: {
+    L_SHOULDER:{x:118,y:210,dy:76},
+    R_SHOULDER:{x:332,y:210,dy:76},
+    CHEST_LEFT:{x:176,y:326,dy:68},
+    CHEST_RIGHT:{x:274,y:326,dy:68}
+  },
+  flight_suit: {
+    L_SHOULDER:{x:118,y:205,dy:76},
+    R_SHOULDER:{x:332,y:205,dy:76},
+    CHEST_LEFT:{x:176,y:320,dy:68},
+    CHEST_RIGHT:{x:274,y:320,dy:68}
+  }
+};
+
+const FIELD_UNIFORM_BADGE_LAYOUTS = {
+  // Future-proof field badge/qualification patch anchors. These are separate
+  // from blues badge anchors and separate by uniform, matching the patch system.
+  ocp: {
+    ORP:{x:268,y:328}, ON:{x:268,y:328}, UN:{x:268,y:376}, URBP:{x:268,y:424},
+    OLP:{x:182,y:328}, OLPU:{x:182,y:376}, OLPA:{x:182,y:280}, LP:{x:182,y:396}, RP:{x:268,y:396}, OLPF:{x:182,y:430}
+  },
+  abu: {
+    ORP:{x:272,y:336}, ON:{x:272,y:336}, UN:{x:272,y:384}, URBP:{x:272,y:432},
+    OLP:{x:178,y:336}, OLPU:{x:178,y:384}, OLPA:{x:178,y:288}, LP:{x:178,y:404}, RP:{x:272,y:404}, OLPF:{x:178,y:438}
+  },
+  corporate_field: {
+    ORP:{x:274,y:326}, ON:{x:274,y:326}, UN:{x:274,y:374}, URBP:{x:274,y:422},
+    OLP:{x:176,y:326}, OLPU:{x:176,y:374}, OLPA:{x:176,y:278}, LP:{x:176,y:394}, RP:{x:274,y:394}, OLPF:{x:176,y:428}
+  },
+  flight_suit: {
+    ORP:{x:274,y:320}, ON:{x:274,y:320}, UN:{x:274,y:368}, URBP:{x:274,y:416},
+    OLP:{x:176,y:320}, OLPU:{x:176,y:368}, OLPA:{x:176,y:272}, LP:{x:176,y:388}, RP:{x:274,y:388}, OLPF:{x:176,y:422}
+  }
+};
+
+function getFieldUniformLayoutKey(uniformId = State.uniform){
+  return normalizeUniformKeyForPatches(uniformId);
+}
+
+function getFieldPatchAnchor(slot, idx, meta, W, H){
+  const uniformKey = getFieldUniformLayoutKey();
+  const uniformLayout = FIELD_UNIFORM_PATCH_LAYOUTS[uniformKey] || FIELD_UNIFORM_PATCH_LAYOUTS.ocp;
+  const anchor = uniformLayout?.[slot] || FIELD_UNIFORM_PATCH_LAYOUTS.ocp.L_SHOULDER;
+  const w = Number(meta?.w) || 70;
+  const h = Number(meta?.h) || 70;
+  return {
+    x: Math.round(Number(anchor.x) - w / 2),
+    y: Math.round(Number(anchor.y) - h / 2 + (Number(anchor.dy) || 0) * idx),
+    w,
+    h,
+    r: Number(anchor.r) || 0
+  };
+}
+
+function getFieldBadgeAnchor(slot, id, idx, W, H, bw, bh){
+  const uniformKey = getFieldUniformLayoutKey();
+  const uniformLayout = FIELD_UNIFORM_BADGE_LAYOUTS[uniformKey] || FIELD_UNIFORM_BADGE_LAYOUTS.ocp;
+  const anchor = uniformLayout?.[slot] || uniformLayout?.UN || FIELD_UNIFORM_BADGE_LAYOUTS.ocp.UN;
+  return {
+    x: Math.round(Number(anchor.x) - bw / 2),
+    y: Math.round(Number(anchor.y) - bh / 2 + (Number(anchor.dy) || 0) * idx),
+    r: Number(anchor.r) || 0
+  };
+}
+
+/* ===========================
    PATCHES (RENDER)
    =========================== */
 const patchSlots = { L_SHOULDER:[], R_SHOULDER:[], CHEST_LEFT:[], CHEST_RIGHT:[] };
@@ -6706,17 +6843,10 @@ function renderPatches(){
   const W = box.width || 450;
   const H = box.height || 600;
 
-  const coords={
-    L_SHOULDER:{x:W*0.27,y:H*0.35,dy:80},
-    R_SHOULDER:{x:W*0.73,y:H*0.35,dy:80},
-    CHEST_LEFT:{x:W*0.40,y:H*0.60,dy:70},
-    CHEST_RIGHT:{x:W*0.60,y:H*0.60,dy:70}
-  };
-
   for(const slot of Object.keys(patchSlots)){
     const ids=patchSlots[slot];
-    let {x,y,dy}=coords[slot]||{x:0,y:0,dy:70};
-    for(const id of ids){
+    for(let idx=0; idx<ids.length; idx++){
+      const id = ids[idx];
       const meta=PATCH_META[id];
       const src = by('patch-'+id);
       const el  = (src?src.cloneNode():new Image());
@@ -6725,11 +6855,12 @@ function renderPatches(){
       el.className='layer patch';
       el.style.display='block';
 
-      const baseX = (x - meta.w/2);
-      const baseY = (y - meta.h/2);
+      const base = getFieldPatchAnchor(slot, idx, meta, W, H);
 
-      el.dataset.calibKey = `patch:${id}`;
-      applyCalibToElement(el, el.dataset.calibKey, { x:baseX, y:baseY, w:meta.w, h:meta.h, r:0 });
+      // Keep each field uniform independent. A patch calibrated on OCP will save
+      // under ocp_male/ocp_female and will not reuse ABU or CFU coordinates.
+      el.dataset.calibKey = `patch:${id}:${slot}:${idx}`;
+      applyCalibToElement(el, el.dataset.calibKey, base);
 
       el.onerror=()=>{};
 
@@ -6738,7 +6869,6 @@ function renderPatches(){
       el.dataset.tooltipWhy   = "Displayed on sleeve/chest per field uniform rules.";
 
       uniformCanvas.appendChild(el);
-      y+=dy;
     }
   }
 }
