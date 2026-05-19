@@ -11127,6 +11127,473 @@ parseCapMemberReport = function capubParseCapMemberReportCACFinalFix(textRaw){
 
 try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(err){ console.warn('CAC final region override refresh failed', err); }
 
+
+/* ==========================================================
+   CAPUB PATCH 2026-05-19 — UTILITY BADGES, OCP PATCH FILTER,
+   UNIT PATCH IMPORT, NCSA PATCH IMPORT, FIELD CALIBRATION
+   ========================================================== */
+(function capubUtilityFieldUniformPatch(){
+  try{
+    const FIELD_BADGE_UNIFORMS = new Set(['ocp','abu','corporate_field','cfu','cfdu','flight_suit','fdu']);
+    const FIELD_CALIBRATION_BUCKETS = ['ocp','abu','corporate_field','cfdu','flight_suit'];
+    const FIELD_BADGE_SLOTS = ['OLP','OLPA','OLPU','ON','UN','ORP','URBP','LP','RP','OLPF','FON'];
+
+    function capubFieldUniformKey(uniformId = State.uniform){
+      if(typeof normalizeFieldUniformRenderKey === 'function') return normalizeFieldUniformRenderKey(uniformId);
+      const u = String(uniformId || '').toLowerCase();
+      if(u === 'cfu') return 'corporate_field';
+      if(u === 'fdu') return 'flight_suit';
+      return u;
+    }
+
+    function capubIsUtilityUniform(uniformId = State.uniform){
+      return FIELD_BADGE_UNIFORMS.has(capubFieldUniformKey(uniformId));
+    }
+
+    function capubPatchIsUnitPatchId(patchId){
+      const id = String(patchId || '');
+      if(id === 'unit_patch' || id === 'wing_patch' || id === 'command_patch') return true;
+      if(id === 'tn185_ocp_patch') return true;
+      if(typeof UNIT_PATCH_IMAGE_BY_CHARTER === 'object'){
+        return Object.values(UNIT_PATCH_IMAGE_BY_CHARTER || {}).includes(id);
+      }
+      return /^unitPatch:/i.test(id);
+    }
+
+    function capubPatchHasOcpAsset(patchId){
+      const id = String(patchId || '').toLowerCase();
+      const meta = PATCH_META?.[patchId] || {};
+      const img = String(meta.img || '').toLowerCase();
+      return id.includes('ocp') || img.includes('/ocp/') || img.includes('ocp');
+    }
+
+    function capubGeneralPatchVisibleForCurrentUniform(patchId, uniformId = State.uniform){
+      const key = capubFieldUniformKey(uniformId);
+      if(key === 'ocp'){
+        // User rule: on OCP, only general patches with OCP in the name/path are shown.
+        // Unit patches remain handled by the separate Unit Patch dropdown.
+        return capubPatchHasOcpAsset(patchId);
+      }
+      return true;
+    }
+
+    // Field/utility uniforms should use the same badge picker, but its content becomes
+    // utility-badge oriented and renders from images/badges/[badge_id].png first.
+    ['ocp','abu','corporate_field','flight_suit'].forEach(id => {
+      if(UI_AUTHZ[id]) UI_AUTHZ[id].showBadges = true;
+    });
+
+    // Treat these two OCP patch assets as calibrated tall sleeve patches until final
+    // natural dimensions are supplied. Each rendered layer remains editable in CAL.
+    if(PATCH_META?.pjoc_ocp_patch){
+      PATCH_META.pjoc_ocp_patch.img = 'patches/ocp/pjoc_ocp_patch.png';
+      PATCH_META.pjoc_ocp_patch.w = Number(PATCH_META.pjoc_ocp_patch.w) || 100;
+      PATCH_META.pjoc_ocp_patch.h = Number(PATCH_META.pjoc_ocp_patch.h) || 200;
+      PATCH_META.pjoc_ocp_patch.authorizedUniforms = ['ocp'];
+    }
+    if(PATCH_META?.tn185_ocp_patch){
+      PATCH_META.tn185_ocp_patch.img = 'patches/ocp/TN-185_ocp_patch.png';
+      PATCH_META.tn185_ocp_patch.w = Number(PATCH_META.tn185_ocp_patch.w) || 100;
+      PATCH_META.tn185_ocp_patch.h = Number(PATCH_META.tn185_ocp_patch.h) || 200;
+      PATCH_META.tn185_ocp_patch.authorizedUniforms = ['abu','ocp','corporate_field','cfdu','flight_suit'];
+      PATCH_META.tn185_ocp_patch.slotHint = PATCH_META.tn185_ocp_patch.slotHint || 'R_SHOULDER';
+    }
+
+    // Keep SER-TN-185 as the logical unit identity and let the renderer resolve the file.
+    if(typeof UNIT_PATCH_IMAGE_BY_CHARTER === 'object'){
+      UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185'] = 'tn185_ocp_patch';
+      UNIT_PATCH_IMAGE_BY_CHARTER['TN-185'] = 'tn185_ocp_patch';
+    }
+
+    const capubPreviousGetBadgeAssetPath = getBadgeAssetPath;
+    getBadgeAssetPath = function capubGetBadgeAssetPathUtilityAware(id){
+      if(capubIsUtilityUniform()) return `badges/${id}.png`;
+      return capubPreviousGetBadgeAssetPath(id);
+    };
+
+    const capubPreviousGetBadgeAssetCandidates = getBadgeAssetCandidates;
+    getBadgeAssetCandidates = function capubGetBadgeAssetCandidatesUtilityAware(id){
+      const current = [];
+      if(capubIsUtilityUniform()){
+        addAssetCandidate(current, `badges/${id}.png`);
+        addAssetCandidateWithExtensions(current, `badges/${id}`);
+      }
+      (capubPreviousGetBadgeAssetCandidates(id) || []).forEach(path => addAssetCandidate(current, path));
+      return current;
+    };
+
+    const capubPreviousIsPatchAuthorizedForUniform = isPatchAuthorizedForUniform;
+    isPatchAuthorizedForUniform = function capubIsPatchAuthorizedForUniformOcpFiltered(patchId, uniformId = State.uniform, membership = State.membership){
+      if(!capubPreviousIsPatchAuthorizedForUniform(patchId, uniformId, membership)) return false;
+      const uniformKey = capubFieldUniformKey(uniformId);
+      if(uniformKey === 'ocp' && !capubPatchIsUnitPatchId(patchId)){
+        return capubPatchHasOcpAsset(patchId);
+      }
+      return true;
+    };
+
+    const capubPreviousGetPatchAuthorizationReason = getPatchAuthorizationReason;
+    getPatchAuthorizationReason = function capubGetPatchAuthorizationReasonOcpFiltered(patchId, uniformId = State.uniform, membership = State.membership){
+      const uniformKey = capubFieldUniformKey(uniformId);
+      if(uniformKey === 'ocp' && !capubPatchIsUnitPatchId(patchId) && !capubPatchHasOcpAsset(patchId)){
+        return 'OCP patch picker only displays/renders general patches with OCP in the file name/path. Unit patches use the separate Unit Patch selector.';
+      }
+      return capubPreviousGetPatchAuthorizationReason(patchId, uniformId, membership);
+    };
+
+    function capubVisiblePatchIdsForGallery(){
+      return (patchList || []).filter(id => {
+        if(!PATCH_META[id]) return false;
+        if(FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) return false;
+        if(capubPatchIsUnitPatchId(id)) return false; // unit patches stay in the Unit Patch dropdown
+        if(!capubGeneralPatchVisibleForCurrentUniform(id)) return false;
+        return true;
+      });
+    }
+
+    buildPatchGallery = function capubBuildPatchGalleryOcpAware(){
+      const wrap = by('patchGallery');
+      if(!wrap) return;
+
+      normalizePatchSelections();
+      wrap.innerHTML = '';
+
+      const visibleIds = capubVisiblePatchIdsForGallery();
+      const showCount = State.patchGalleryExpanded ? visibleIds.length : Math.min(10, visibleIds.length);
+
+      if(!visibleIds.length){
+        const tile = document.createElement('div');
+        tile.className = 'galleryTile';
+        tile.innerHTML = `<div style="flex:1;min-width:0;"><div class="title">No general patches available</div><div class="sub">For OCP, only general patch files with OCP in the name/path are shown. Unit patches are selected below in the Unit Patch dropdown.</div></div>`;
+        wrap.appendChild(tile);
+        return;
+      }
+
+      for(let idx=0; idx<showCount; idx++){
+        const id = visibleIds[idx];
+        const meta = PATCH_META[id];
+        const sel = State.patchSelections[id] || (State.patchSelections[id] = { checked:false });
+        const authorized = isPatchAuthorizedForUniform(id);
+        const title = meta.label || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+
+        const tile = document.createElement('div');
+        tile.className = 'galleryTile';
+        tile.innerHTML = `
+          <img src="${ASSET(meta.img)}" alt="${title}">
+          <div style="flex:1;min-width:0;">
+            <div class="title">${title}</div>
+            <div class="sub">(${id})</div>
+            <div class="miniRow"><label><input type="checkbox" class="ptChk"> Add</label></div>
+            <div class="sub">Slot hint: <b>${meta.slotHint}</b> • Size: ${meta.w}×${meta.h} px • Path: images/${meta.img}</div>
+          </div>`;
+
+        const chk = tile.querySelector('.ptChk');
+        chk.checked = !!sel.checked && authorized;
+        chk.disabled = !authorized;
+        if(!authorized){
+          tile.classList.add('disabledBlock');
+          const sub = tile.querySelector('.sub:last-child');
+          const reason = getPatchAuthorizationReason(id);
+          if(sub) sub.innerHTML += ` • <b>${reason || 'Not authorized on current uniform'}</b>`;
+        }
+        chk.onchange = () => {
+          if(!authorized){ chk.checked = false; sel.checked = false; return; }
+          sel.checked = chk.checked;
+          State.patchSelections[id] = sel;
+          rebuildPatchesFromGallery();
+        };
+        wrap.appendChild(tile);
+      }
+    };
+
+    const capubPreviousClearUnauthorizedPatchesForCurrentUniform = clearUnauthorizedPatchesForCurrentUniform;
+    clearUnauthorizedPatchesForCurrentUniform = function capubClearUnauthorizedPatchesUtilityAware(){
+      const changed = capubPreviousClearUnauthorizedPatchesForCurrentUniform();
+      // Hide/de-select general non-OCP patches when OCP is selected, but do not touch unit patch selector.
+      if(capubFieldUniformKey() === 'ocp'){
+        let localChanged = false;
+        for(const id of Object.keys(State.patchSelections || {})){
+          if(State.patchSelections[id]?.checked && !capubPatchIsUnitPatchId(id) && !capubPatchHasOcpAsset(id)){
+            State.patchSelections[id].checked = false;
+            localChanged = true;
+          }
+        }
+        const before = (State.patches || []).length;
+        State.patches = (State.patches || []).filter(id => capubPatchIsUnitPatchId(id) || capubPatchHasOcpAsset(id));
+        return changed || localChanged || before !== State.patches.length;
+      }
+      return changed;
+    };
+
+    function capubGetUtilityBadgeIds(){
+      const ids = (typeof getEligibleBadgeIdsForMembership === 'function')
+        ? getEligibleBadgeIdsForMembership(State.membership)
+        : [...badgeList];
+      // Keep selections available across uniforms; actual identity is the same.
+      return ids.filter(id => isBadgeEligibleForMembership(id, State.membership));
+    }
+
+    buildBadgeGallery = function capubBuildBadgeGalleryUtilityAware(){
+      const wrap = by('badgeGallery');
+      if(!wrap) return;
+
+      normalizeBadgeSelections();
+      wrap.innerHTML = '';
+
+      const utilityMode = capubIsUtilityUniform();
+      const eligible = utilityMode ? capubGetUtilityBadgeIds() : getEligibleBadgeIdsForMembership(State.membership);
+      const showCount = State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
+
+      for(let idx=0; idx<showCount; idx++){
+        const id = eligible[idx];
+        const sel = State.badgeSelections[id] || (State.badgeSelections[id] = { checked:false });
+        const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+        const rareCadetTag = (!utilityMode && State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
+        const previewPath = utilityMode ? `badges/${id}.png` : getBadgeAssetPath(id);
+        const fallbackPath = utilityMode ? capubPreviousGetBadgeAssetPath(id) : `badges/${id}.png`;
+
+        const tile = document.createElement('div');
+        tile.className = 'galleryTile';
+        tile.innerHTML = `
+          <img src="${ASSET(previewPath)}" alt="${title}" onerror="this.onerror=null;this.src='${ASSET(fallbackPath)}';">
+          <div style="flex:1;min-width:0;">
+            <div class="title">${title}${rareCadetTag}</div>
+            <div class="sub">(${id})${utilityMode ? ' • Utility badge preview: images/badges/[badge_id].png' : ''}</div>
+            <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
+            ${id==='squadron_commander_badge' && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
+            <div class="sub">Slot: <b>${utilityMode ? 'Utility uniform calibrated field slot' : getBadgeSlotLabel(id)}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
+          </div>`;
+
+        const chk = tile.querySelector('.bdChk');
+        const gradChk = tile.querySelector('.cmdGradChk');
+        chk.checked = !!sel.checked;
+        if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
+
+        chk.onchange = () => {
+          if(!utilityMode && id === 'squadron_commander_badge' && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
+            chk.checked = false;
+            sel.checked = false;
+            State.badgeSelections[id] = sel;
+            rebuildBadgesFromGallery();
+            return;
+          }
+          sel.checked = chk.checked;
+          State.badgeSelections[id] = sel;
+          rebuildBadgesFromGallery();
+        };
+        if(gradChk){
+          gradChk.onchange = () => {
+            if(gradChk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
+              gradChk.checked = false;
+              sel.checked = false;
+              chk.checked = false;
+              State.badgeSelections[id] = sel;
+              rebuildBadgesFromGallery();
+              return;
+            }
+            if(!State.commandInsignia) State.commandInsignia = {};
+            State.commandInsignia.graduatedCommander = gradChk.checked;
+            if(gradChk.checked){ sel.checked = true; chk.checked = true; State.badgeSelections[id] = sel; }
+            rebuildBadgesFromGallery();
+          };
+        }
+        wrap.appendChild(tile);
+      }
+    };
+
+    const capubPreviousGetRenderableCountedBadgeIds = getRenderableCountedBadgeIds;
+    getRenderableCountedBadgeIds = function capubGetRenderableCountedBadgeIdsUtilityAware(){
+      if(!capubIsUtilityUniform()) return capubPreviousGetRenderableCountedBadgeIds();
+      // Field uniforms use utility badge rendering and keep the same selected badge identities.
+      // Do not enforce the blues four-badge display cap here because OCP/ABU/CFU coordinates
+      // will be calibrated independently by item and slot.
+      return (State.badges || [])
+        .filter(id => isBadgeEligibleForMembership(id, State.membership))
+        .filter(id => !isCommandInsigniaBadge(id));
+    };
+
+    const capubPreviousGetRenderableCommandBadgeIds = getRenderableCommandBadgeIds;
+    getRenderableCommandBadgeIds = function capubGetRenderableCommandBadgeIdsUtilityAware(){
+      if(!capubIsUtilityUniform()) return capubPreviousGetRenderableCommandBadgeIds();
+      return (State.badges || [])
+        .filter(id => isBadgeEligibleForMembership(id, State.membership))
+        .filter(id => isCommandInsigniaBadge(id));
+    };
+
+    const capubPreviousGetBadgeSlotSpec = getBadgeSlotSpec;
+    getBadgeSlotSpec = function capubGetBadgeSlotSpecUtilityAware(id){
+      if(capubIsUtilityUniform()){
+        if(AIRCREW_BADGE_IDS?.has?.(id)) return 'OLP';
+        if(OLPU_OCCUPATIONAL_BADGE_IDS?.has?.(id)) return 'OLPU';
+        if(isCommandInsigniaBadge(id)) return 'ON';
+        if(isSelectableSpecialtyPocketBadge(id)) return 'RP';
+        return 'UN';
+      }
+      return capubPreviousGetBadgeSlotSpec(id);
+    };
+
+    function capubEnsureFieldCalibrationDefaults(){
+      if(!State.calib.byUniform) State.calib.byUniform = {};
+      const patchIds = Object.keys(PATCH_META || {}).filter(id => !FIELD_BASE_BUILT_IN_PATCH_IDS.has(id));
+      const allBadgeIds = [...new Set([...(badgeList || [])])];
+
+      FIELD_CALIBRATION_BUCKETS.forEach(bucketId => {
+        if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
+        if(!State.calib.byUniform[bucketId]) State.calib.byUniform[bucketId] = {};
+
+        const patchLayout = FIELD_UNIFORM_PATCH_LAYOUTS?.[bucketId] || FIELD_UNIFORM_PATCH_LAYOUTS?.ocp || {};
+        patchIds.forEach(patchId => {
+          const meta = PATCH_META[patchId];
+          const slot = meta?.slotHint || 'L_SHOULDER';
+          const anchor = patchLayout[slot] || patchLayout.L_SHOULDER || {x:120,y:210,dy:76};
+          const w = Number(meta?.w) || 70;
+          const h = Number(meta?.h) || 70;
+          const key = `patch:${patchId}:${slot}:0`;
+          if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key]){
+            DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = {
+              x: Math.round(Number(anchor.x || 0) - w/2),
+              y: Math.round(Number(anchor.y || 0) - h/2),
+              w, h,
+              r: Number(anchor.r) || 0
+            };
+          }
+        });
+
+        const badgeLayout = FIELD_UNIFORM_BADGE_LAYOUTS?.[bucketId] || FIELD_UNIFORM_BADGE_LAYOUTS?.ocp || {};
+        allBadgeIds.forEach(badgeId => {
+          const sz = customBadgeSizes?.[badgeId] || { width:60, height:25 };
+          const bw = Number(sz.width) || 60;
+          const bh = Number(sz.height) || 25;
+          FIELD_BADGE_SLOTS.forEach(slot => {
+            const anchor = badgeLayout[slot] || badgeLayout.UN || {x:250,y:360,dy:45};
+            const key = `badge:${badgeId}:${slot}:0`;
+            if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key]){
+              DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = {
+                x: Math.round(Number(anchor.x || 0) - bw/2),
+                y: Math.round(Number(anchor.y || 0) - bh/2),
+                w: bw,
+                h: bh,
+                r: Number(anchor.r) || 0
+              };
+            }
+          });
+        });
+      });
+      if(typeof mergeCalibDefaults === 'function') mergeCalibDefaults();
+    }
+
+    const NCSA_PATCH_MATCHERS = [
+      { id:'pjoc_ocp_patch', fallbackId:'pjoc_patch', terms:[/\bPJOC\b/i,/Pararescue\s+Orientation\s+Course/i] },
+      { id:'nesa_patch', terms:[/\bNESA\b/i,/National\s+Emergency\s+Services\s+Academy/i] },
+      { id:'civil_engineering_academy_patch', terms:[/Civil\s+Engineering\s+Academy/i,/Air\s+Force\s+Civil\s+Engineering\s+Academy/i] },
+      { id:'cos_patch', terms:[/\bCOS\b/i,/Cadet\s+Officer\s+School/i] },
+      { id:'honor_guard_academy_patch', terms:[/Honor\s+Guard\s+Academy/i] },
+      { id:'nfa_patch', terms:[/\bNFA\b/i,/National\s+Flight\s+Academy/i] },
+      { id:'cla_patch', terms:[/\bCLA\b/i,/Civic\s+Leadership\s+Academy/i] },
+      { id:'nbb_patch', terms:[/\bNBB\b/i,/National\s+Blue\s+Beret/i] },
+      { id:'undergrad_pilot_training_patch', terms:[/Undergraduate\s+Pilot\s+Training/i] },
+      { id:'model_rocketry_patch', terms:[/Model\s+Rocketry/i] },
+      { id:'orientation_pilot_patch', terms:[/Orientation\s+Pilot/i,/Cadet\s+Orientation\s+Pilot/i] }
+    ];
+
+    function capubPatchIdForUniform(matcher, uniformId = State.uniform){
+      const key = capubFieldUniformKey(uniformId);
+      if(key === 'ocp') return matcher.id;
+      return matcher.fallbackId || matcher.id;
+    }
+
+    function capubDetectNCSAPatchesFromReport(text){
+      const found = [];
+      const t = String(text || '');
+      NCSA_PATCH_MATCHERS.forEach(matcher => {
+        if(matcher.terms.some(re => re.test(t))){
+          const id = capubPatchIdForUniform(matcher);
+          if(PATCH_META[id] && !found.includes(id)) found.push(id);
+        }
+      });
+      return found;
+    }
+
+    function capubDetectUnitCharterFromReport(text){
+      const t = String(text || '').replace(/\s+/g, ' ');
+      const explicit = t.match(/\b([A-Z]{2,3}-[A-Z]{2}-\d{3})\b/);
+      if(explicit && CAP_UNIT_OPTIONS?.some?.(u => u.code === explicit[1])) return explicit[1];
+
+      const short = t.match(/\b([A-Z]{2}-\d{3})\b/);
+      if(short){
+        const hit = CAP_UNIT_OPTIONS?.find?.(u => String(u.code || '').endsWith(`-${short[1]}`));
+        if(hit) return hit.code;
+        if(short[1] === 'TN-185') return 'SER-TN-185';
+      }
+
+      // Slower but very reliable fallback: scan known charters that appear in the report.
+      const hit = CAP_UNIT_OPTIONS?.find?.(u => new RegExp(`\\b${String(u.code).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\b`).test(t));
+      return hit?.code || null;
+    }
+
+    const capubPreviousParseCapMemberReport = parseCapMemberReport;
+    parseCapMemberReport = function capubParseCapMemberReportUtilityPatchAware(textRaw){
+      const normalized = normalizeMemberReportText(textRaw);
+      const result = capubPreviousParseCapMemberReport(textRaw);
+      result.notes = result.notes || [];
+
+      const charter = capubDetectUnitCharterFromReport(normalized);
+      if(charter){
+        result.unitPatchCharter = charter;
+        const unitPatchId = getUnitPatchIdForCharter(charter);
+        if(unitPatchId){
+          result.notes.push(`Unit patch auto-selected from member report charter ${charter}.`);
+        }else{
+          result.notes.push(`Member report charter ${charter} found, but no unit patch image is mapped yet.`);
+        }
+      }
+
+      const ncsaPatches = capubDetectNCSAPatchesFromReport(normalized);
+      if(ncsaPatches.length){
+        result.patches = [...new Set([...(result.patches || []), ...ncsaPatches])];
+        result.notes.push(`NCSA/activity patch match(es): ${ncsaPatches.join(', ')}.`);
+      }
+      return result;
+    };
+
+    const capubPreviousApplyCapMemberReportImport = applyCapMemberReportImport;
+    applyCapMemberReportImport = function capubApplyCapMemberReportImportUtilityPatchAware(parsed){
+      const charter = parsed?.unitPatchCharter || '';
+      const result = capubPreviousApplyCapMemberReportImport(parsed);
+
+      State.unitPatchCharter = charter;
+      const unitSearch = by('unitPatchSearch');
+      if(unitSearch && charter) unitSearch.value = charter;
+      if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(unitSearch?.value || '');
+      if(typeof renderUnitPatchStatus === 'function') renderUnitPatchStatus();
+
+      // Reapply imported NCSA patches after the selected uniform and unit patch are known.
+      normalizePatchSelections();
+      for(const id of parsed?.patches || []){
+        if(!PATCH_META[id]) continue;
+        State.patchSelections[id] = State.patchSelections[id] || { checked:false };
+        if(isPatchAuthorizedForUniform(id)){
+          State.patchSelections[id].checked = true;
+          if(!State.patches.includes(id)) State.patches.push(id);
+        }
+      }
+      clearUnauthorizedPatchesForCurrentUniform();
+      if(typeof buildPatchGallery === 'function') buildPatchGallery();
+      if(typeof rebuildPatchesFromGallery === 'function') rebuildPatchesFromGallery();
+      if(typeof fullRender === 'function') fullRender();
+      return result;
+    };
+
+    capubEnsureFieldCalibrationDefaults();
+    if(typeof buildBadgeGallery === 'function') buildBadgeGallery();
+    if(typeof buildPatchGallery === 'function') buildPatchGallery();
+    if(typeof fullRender === 'function') fullRender();
+    console.info('CAPUB 2026-05-19 utility field-uniform patch loaded.');
+  }catch(err){
+    console.error('CAPUB 2026-05-19 utility field-uniform patch failed to load', err);
+  }
+})();
+
 </script>
 </body>
 </html>
