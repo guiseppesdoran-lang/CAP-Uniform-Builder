@@ -272,13 +272,15 @@
     width:450px;
     height:600px;
     box-shadow:0 30px 60px rgb(0 0 0 / .12);
-    overflow:hidden;
+    overflow:visible;
+    flex:0 0 auto;
   }
 
   #uniformCanvas{
     position:relative;
     width:100%;
     height:100%;
+    overflow:visible;
   }
   .layer{
     position:absolute;
@@ -886,6 +888,35 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 #previewArea, #uniformCanvas{
   transition: width .18s ease, height .18s ease, transform .18s ease, box-shadow .18s ease;
 }
+
+/* Field uniform clipping fix: OCP/ABU/CFU/FDU use a 969.6 x 707.52 stage.
+   Keep the preview scrollable instead of cropping the larger base image. */
+#previewWrapper{
+  overflow:auto !important;
+  justify-content:flex-start;
+}
+#previewArea[data-field-uniform="true"]{
+  width:969.6px;
+  height:707.52px;
+  min-width:969.6px;
+  min-height:707.52px;
+  max-width:none;
+  max-height:none;
+  overflow:visible !important;
+}
+#previewArea[data-field-uniform="true"] #uniformCanvas{
+  width:969.6px;
+  height:707.52px;
+  min-width:969.6px;
+  min-height:707.52px;
+  overflow:visible !important;
+}
+#previewArea[data-field-uniform="true"] img.layer.jacket{
+  object-fit:contain;
+  max-width:none;
+  max-height:none;
+}
+
 
 /* ===========================
    BUTTON/ARROW CLICK FIX PATCH
@@ -2517,6 +2548,20 @@ function capubEnsureShoulderCordCalibrationDefaults(){
 }
 capubEnsureShoulderCordCalibrationDefaults();
 
+// Field uniform render-stage defaults. These stop legacy Class A/Class B jacket
+// calibrations from shrinking or shifting OCP/ABU/CFU/FDU base images. The field
+// stage is intentionally 969.6 x 707.52 px per the current builder requirement.
+function capubEnsureFieldUniformCalibrationDefaults(){
+  const fieldJacket = { x:0, y:0, w:FIELD_RENDER_AREA.w, h:FIELD_RENDER_AREA.h, r:0 };
+  ['ocp','abu','corporate_field','cfu','cfdu','fdu','flight_suit'].forEach(bucketId => {
+    if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
+    if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId].jacket){
+      DEFAULT_CALIBRATION_BY_UNIFORM[bucketId].jacket = { ...fieldJacket };
+    }
+  });
+}
+capubEnsureFieldUniformCalibrationDefaults();
+
 const AIRCREW_BADGE_IDS = new Set([
   'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
   'CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA',
@@ -3312,17 +3357,30 @@ function applyPreviewRenderArea(){
   const area = getActiveRenderArea();
   const preview = by('previewArea');
   const canvas = by('uniformCanvas');
+  const field = isFieldUniform(State.uniform);
+
   if(preview){
     preview.style.width = `${area.w}px`;
     preview.style.height = `${area.h}px`;
+    preview.style.minWidth = `${area.w}px`;
+    preview.style.minHeight = `${area.h}px`;
+    preview.style.maxWidth = 'none';
+    preview.style.maxHeight = 'none';
+    preview.style.overflow = 'visible';
     preview.dataset.renderWidth = String(area.w);
     preview.dataset.renderHeight = String(area.h);
+    preview.dataset.fieldUniform = field ? 'true' : 'false';
+    preview.classList.toggle('fieldUniformPreview', field);
   }
   if(canvas){
     canvas.style.width = `${area.w}px`;
     canvas.style.height = `${area.h}px`;
+    canvas.style.minWidth = `${area.w}px`;
+    canvas.style.minHeight = `${area.h}px`;
+    canvas.style.overflow = 'visible';
     canvas.dataset.renderWidth = String(area.w);
     canvas.dataset.renderHeight = String(area.h);
+    canvas.dataset.fieldUniform = field ? 'true' : 'false';
   }
 }
 
@@ -5290,12 +5348,21 @@ function applyJacket(){
     img.style.width='100%';
     img.style.height='100%';
     img.style.display='block';
+    img.style.objectFit='contain';
+    img.style.maxWidth='none';
+    img.style.maxHeight='none';
 
     img.dataset.calibKey = 'jacket';
     const renderSize = getCanvasRenderSize();
     applyCalibToElement(img, img.dataset.calibKey, { x:0, y:0, w:renderSize.w, h:renderSize.h, r:0 });
     img.style.width = img.style.width || `${renderSize.w}px`;
     img.style.height = img.style.height || `${renderSize.h}px`;
+
+    // Field uniforms must remain inside the larger field workspace; old non-field
+    // jacket calibration is ignored by the field-specific defaults above.
+    if(isFieldUniform(State.uniform)){
+      img.style.objectFit = 'contain';
+    }
 
     img.dataset.tooltipTitle = (State.uniform||'').replace(/_/g,' ').toUpperCase();
     img.dataset.tooltipReg   = "Base uniform image";
