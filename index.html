@@ -940,6 +940,10 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
   pointer-events:none;
 }
 
+
+/* CAPUB PATCH: field-uniform name/CAP tapes, AUX identifier, and flag are now baked into the base images. */
+#capubV2TextPanel{display:none !important;}
+
 </style>
 </head>
 <body>
@@ -2552,7 +2556,7 @@ capubEnsureShoulderCordCalibrationDefaults();
 // calibrations from shrinking or shifting OCP/ABU/CFU/FDU base images. The field
 // stage is intentionally 969.6 x 707.52 px per the current builder requirement.
 function capubEnsureFieldUniformCalibrationDefaults(){
-  const fieldJacket = { x:0, y:0, w:FIELD_RENDER_AREA.w, h:FIELD_RENDER_AREA.h, r:0 };
+  const fieldJacket = { x:0, y:0, w:969.6, h:707.52, r:0 };
   ['ocp','abu','corporate_field','cfu','cfdu','fdu','flight_suit'].forEach(bucketId => {
     if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
     if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId].jacket){
@@ -4759,7 +4763,7 @@ function getBadgeCategoriesForCurrentMembership(){
 }
 
 const patchList = [
-  'us_flag_patch','command_patch','wing_patch','unit_patch',
+  'command_patch','wing_patch','unit_patch',
   'ner_patch','nywg_patch','comms_patch','check_pilot_patch',
   'pjoc_ocp_patch',
   'pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch',
@@ -4769,6 +4773,8 @@ const patchList = [
   'archer_patch','orientation_pilot_patch','cism_patch','plane_patch',
   'aerospace_education_patch','communications_patch'
 ];
+
+const FIELD_BASE_BUILT_IN_PATCH_IDS = new Set(['us_flag_patch','aux_duty_identifier']);
 
 const PATCH_META = {
   'us_flag_patch':{label:'U.S. Flag Patch', slotHint:'R_SHOULDER', w:60,h:40, img:'patches/us_flag_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
@@ -5570,9 +5576,14 @@ function renderRack(){
 
   const uniformPrefersMini   = baseCfg.mini;
   const uniformAllowsRibbons = baseCfg.ribbons;
-  const autoMini   = by('autoMini').checked;
-  const manualMini = State.forceMini;
-  const useMini = (uniformPrefersMini && autoMini) || manualMini;
+
+  // Field uniforms (ABU, OCP, CFU/CDFU, and flight suit) never wear ribbons or mini medals.
+  // This also blocks stale saved profiles where the manual mini-medal override was left on.
+  if(isFieldUniform(State.uniform)) return;
+
+  const autoMini   = by('autoMini')?.checked !== false;
+  const manualMini = !!State.forceMini;
+  const useMini = !isFieldUniform(State.uniform) && ((uniformPrefersMini && autoMini) || manualMini);
 
   const items = sortRibbons(State.ribbons);
   if(!items.length) return;
@@ -7060,6 +7071,7 @@ function planPatches(ids){
   });
 
   for(const id of plannedIds){
+    if(FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) continue;
     const meta=PATCH_META[id]; if(!meta) continue;
     if(!isPatchAuthorizedForUniform(id)) continue;
     const hint=meta.slotHint || 'L_SHOULDER';
@@ -7084,6 +7096,7 @@ function renderPatches(){
     const ids=patchSlots[slot];
     for(let idx=0; idx<ids.length; idx++){
       const id = ids[idx];
+      if(FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) continue;
       const meta=PATCH_META[id];
       const src = by('patch-'+id);
       const el  = (src?src.cloneNode():new Image());
@@ -8376,25 +8389,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   }
 
   function renderGeneratedTextAccoutrements(){
+    // Name tapes, CAP tapes, AUX identifier, and U.S. flag are now part of the base field-uniform images.
+    // Do not generate custom text overlays or placeholders.
     [...uniformCanvas.querySelectorAll('.layer.capub-v2-text')].forEach(n=>n.remove());
-    if(State.text?.show === false) return;
-    const W = uniformCanvas.getBoundingClientRect().width || 450;
-    const H = uniformCanvas.getBoundingClientRect().height || 600;
-    const last = (State.text?.lastName || 'YOUR NAME').toUpperCase();
-    const cap  = (State.text?.capTape || 'CIVIL AIR PATROL').toUpperCase();
-
-    if(State.uniform === 'ocp'){
-      textLayer('text:ocp:lastName', last, W*.23, H*.27, 90, 16, 'textTape capub-v2-text', 8);
-      textLayer('text:ocp:capTape', cap,  W*.53, H*.27, 115, 16, 'textTape capub-v2-text', 8);
-      textLayer('text:ocp:aux', 'AUX', W*.74, H*.31, 36, 28, 'textTape capub-v2-text', 10);
-    } else if(State.uniform === 'abu'){
-      textLayer('text:abu:lastName', last, W*.20, H*.30, 95, 16, 'textTape capub-v2-text', 8);
-      textLayer('text:abu:capTape', cap,  W*.53, H*.30, 115, 16, 'textTape capub-v2-text', 8);
-    } else if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
-      if(last && last !== 'YOUR NAME'){
-        textLayer(`text:${State.uniform}:nameplate`, last, W*.62, H*.39, 72, 14, 'textTape capub-v2-text', 7);
-      }
-    }
+    return;
   }
 
   function rankAssetCandidates(rank){
@@ -8441,10 +8439,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       if(bad.length) addNotice('err','Senior profile includes cadet-only badge(s): '+bad.map(pretty).join(', '));
     }
     if(State.uniform === 'ocp'){
-      const rs = State.patches.filter(id => PATCH_META[id]?.slotHint === 'R_SHOULDER').length;
-      const ls = State.patches.filter(id => PATCH_META[id]?.slotHint === 'L_SHOULDER').length;
-      if(rs < 1) addNotice('warn','OCP right sleeve should include the mandatory full-color reversed U.S. flag patch and, when applicable, the unit patch.');
-      if(ls < 1) addNotice('warn','OCP left sleeve should include AUX duty identifier and HHQ/wing/region/CAP command patch configuration.');
+      // U.S. flag and AUX duty identifier are mandatory but are now baked into the OCP base image.
+      // They are not selectable render layers and should not create validation warnings.
       if(countBadgesForLimit() > 4) addNotice('err','OCP chest badges exceed the maximum of four counted badges. Command insignia does not count against this limit.');
     }
     if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
@@ -8489,7 +8485,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       });
     });
     badgeList.forEach(id=>expected.push({category:'Badge', item:pretty(id), id, path:`images/${getBadgeAssetPath(id)}`, status:'required'}));
-    Object.entries(PATCH_META).forEach(([id,m])=>expected.push({category:'Patch', item:pretty(id), id, path:`images/${m.img}`, status:'required'}));
+    Object.entries(PATCH_META).filter(([id])=>!FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)).forEach(([id,m])=>expected.push({category:'Patch', item:pretty(id), id, path:`images/${m.img}`, status:'required'}));
     Object.entries(deviceMeta).forEach(([id,m])=>expected.push({category:'Ribbon device', item:m.label||pretty(id), id, path:`images/${m.src}`, status:'required'}));
     Object.entries(miniMedalImages).forEach(([id,p])=>expected.push({category:'Mini medal', item:pretty(id), id, path:`images/${p}`, status:'required when mini-medals used'}));
     Object.keys(UNIFORMS).forEach(u=>['male','female'].forEach(g=>{ const p=UNIFORMS[u]?.[g]; if(p) expected.push({category:'Base uniform', item:`${u} ${g}`, id:`${u}_${g}`, path:`images/${p}`, status:'required'}); }));
@@ -8506,9 +8502,6 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     [...rankListAll].forEach(r=>expected.push({category:'Rank', item:r, id:safeRankFile(r), path:`images/ranks/${safeRankFile(r)}.png`, status:'recommended'}));
     // CAPR 39-1 / ICL additions the current asset set should eventually support.
     [
-      ['OCP tape','AUX duty identifier','aux_duty_identifier','patches/aux_duty_identifier.png'],
-      ['OCP tape','Name tape','name_tape_blue','patches/name_tape_blue.png'],
-      ['OCP tape','Civil Air Patrol tape','civil_air_patrol_tape_blue','patches/civil_air_patrol_tape_blue.png'],
       ['sUAS badge','CAP sUAS Pilot','cap_suas_pilot_badge','badges/cap_suas_pilot_badge.png'],
       ['sUAS badge','CAP Senior sUAS Pilot','cap_senior_suas_pilot_badge','badges/cap_senior_suas_pilot_badge.png'],
       ['sUAS badge','CAP Command sUAS Pilot','cap_command_suas_pilot_badge','badges/cap_command_suas_pilot_badge.png'],
