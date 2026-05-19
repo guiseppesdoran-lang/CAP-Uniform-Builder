@@ -4789,8 +4789,8 @@ const PATCH_META = {
   'check_pilot_patch':{label:'Check Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/check_pilot_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
 
   // OCP-specific patch assets added May 2026. Files are under images/patches/ocp/.
-  'pjoc_ocp_patch':{label:'PJOC OCP Patch', slotHint:'L_SHOULDER', w:100,h:200, img:'patches/ocp/pjoc_ocp_patch.png', authorizedUniforms:['ocp']},
-  'tn185_ocp_patch':{label:'SER-TN-185 Music City Composite Squadron Unit Patch', slotHint:'R_SHOULDER', w:100,h:200, img:'patches/ocp/TN-185_ocp_patch.png', authorizedUniforms:['abu','ocp','corporate_field']},
+  'pjoc_ocp_patch':{label:'PJOC OCP Patch', slotHint:'L_SHOULDER', w:200,h:100, img:'patches/ocp/pjoc_ocp_patch.png', authorizedUniforms:['ocp']},
+  'tn185_ocp_patch':{label:'SER-TN-185 Music City Composite Squadron Unit Patch', slotHint:'R_SHOULDER', w:200,h:100, img:'patches/ocp/TN-185_ocp_patch.png', authorizedUniforms:['abu','ocp','corporate_field']},
 
   // New field-uniform patches added May 2026. Files are under images/patches/.
   'pjoc_patch':{label:'PJOC Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/pjoc_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
@@ -11591,6 +11591,209 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     console.info('CAPUB 2026-05-19 utility field-uniform patch loaded.');
   }catch(err){
     console.error('CAPUB 2026-05-19 utility field-uniform patch failed to load', err);
+  }
+})();
+
+
+/* ==========================================================
+   CAPUB HOTFIX 2026-05-19 — PJOC OCP/ABU variant handling,
+   TN-330 unit patch path, and comms auto-alternate cleanup
+   ========================================================== */
+(function capubPatchVariantAndUnitHotfix(){
+  try{
+    function capubHotfixUniformKey(uniformId = State.uniform){
+      if(typeof normalizeFieldUniformRenderKey === 'function') return normalizeFieldUniformRenderKey(uniformId);
+      const u = String(uniformId || '').toLowerCase();
+      if(u === 'cfu') return 'corporate_field';
+      if(u === 'fdu') return 'flight_suit';
+      if(u.includes('ocp')) return 'ocp';
+      if(u.includes('abu')) return 'abu';
+      if(u.includes('flight')) return 'flight_suit';
+      if(u.includes('corporate') || u.includes('field')) return 'corporate_field';
+      return u;
+    }
+
+    function capubHotfixAddPatchListId(id){
+      if(Array.isArray(patchList) && !patchList.includes(id)) patchList.push(id);
+    }
+
+    // Unit patch asset for Sequoyah Cadet Squadron.
+    // File convention matches TN-185:
+    //   images/patches/ocp/TN-330_ocp_patch.png
+    PATCH_META.tn330_ocp_patch = {
+      label:'SER-TN-330 Sequoyah Cadet Squadron Unit Patch',
+      slotHint:'R_SHOULDER',
+      w:100,
+      h:200,
+      img:'patches/ocp/TN-330_ocp_patch.png',
+      authorizedUniforms:['abu','ocp','corporate_field','cfdu','flight_suit']
+    };
+
+    // Keep the TN-185 metadata normalized and available for the same resolver.
+    if(PATCH_META.tn185_ocp_patch){
+      PATCH_META.tn185_ocp_patch.img = 'patches/ocp/TN-185_ocp_patch.png';
+      PATCH_META.tn185_ocp_patch.slotHint = 'R_SHOULDER';
+      PATCH_META.tn185_ocp_patch.authorizedUniforms = ['abu','ocp','corporate_field','cfdu','flight_suit'];
+      PATCH_META.tn185_ocp_patch.w = Number(PATCH_META.tn185_ocp_patch.w) || 100;
+      PATCH_META.tn185_ocp_patch.h = Number(PATCH_META.tn185_ocp_patch.h) || 200;
+    }
+
+    // Keep OCP PJOC normalized.
+    if(PATCH_META.pjoc_ocp_patch){
+      PATCH_META.pjoc_ocp_patch.img = 'patches/ocp/pjoc_ocp_patch.png';
+      PATCH_META.pjoc_ocp_patch.slotHint = 'L_SHOULDER';
+      PATCH_META.pjoc_ocp_patch.authorizedUniforms = ['ocp'];
+      PATCH_META.pjoc_ocp_patch.w = Number(PATCH_META.pjoc_ocp_patch.w) || 100;
+      PATCH_META.pjoc_ocp_patch.h = Number(PATCH_META.pjoc_ocp_patch.h) || 200;
+    }
+
+    // Make the new unit patch known to the unit-patch dropdown while keeping
+    // generic unit patches out of the general patch picker.
+    if(typeof UNIT_PATCH_IMAGE_BY_CHARTER === 'object'){
+      UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185'] = 'tn185_ocp_patch';
+      UNIT_PATCH_IMAGE_BY_CHARTER['TN-185'] = 'tn185_ocp_patch';
+      UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-330'] = 'tn330_ocp_patch';
+      UNIT_PATCH_IMAGE_BY_CHARTER['TN-330'] = 'tn330_ocp_patch';
+    }
+
+    // Add the ID only so saved/imported setups can resolve it. The unit-patch
+    // selector remains the preferred UI path for TN-330.
+    capubHotfixAddPatchListId('tn330_ocp_patch');
+
+    const CAPUB_PATCH_VARIANTS = {
+      ocp: {
+        pjoc_patch:'pjoc_ocp_patch'
+      },
+      abu: {
+        pjoc_ocp_patch:'pjoc_patch'
+      },
+      corporate_field: {
+        pjoc_ocp_patch:'pjoc_patch'
+      },
+      flight_suit: {
+        pjoc_ocp_patch:'pjoc_patch'
+      },
+      cfdu: {
+        pjoc_ocp_patch:'pjoc_patch'
+      }
+    };
+
+    window.capubResolvePatchIdForUniform = function capubResolvePatchIdForUniform(patchId, uniformId = State.uniform){
+      const key = capubHotfixUniformKey(uniformId);
+      return CAPUB_PATCH_VARIANTS[key]?.[patchId] || patchId;
+    };
+
+    function capubSyncPatchVariantSelectionsForUniform(){
+      if(!State.patchSelections) State.patchSelections = {};
+      if(!Array.isArray(State.patches)) State.patches = [];
+
+      const nextIds = [];
+      for(const originalId of State.patches){
+        const resolvedId = window.capubResolvePatchIdForUniform(originalId);
+        if(resolvedId && !nextIds.includes(resolvedId)) nextIds.push(resolvedId);
+
+        if(resolvedId !== originalId){
+          const originalSel = State.patchSelections[originalId] || {};
+          State.patchSelections[resolvedId] = { ...originalSel, checked:true };
+          if(State.patchSelections[originalId]) State.patchSelections[originalId].checked = false;
+        }
+      }
+      State.patches = nextIds;
+    }
+
+    // Stop the builder from adding the comms patch merely because a comms badge
+    // was selected on blues. Report import can still queue comms_patch when the
+    // Communications specialty rating is actually present, and the user can still
+    // manually select it for ABU/CFU/flight suit.
+    if(typeof ALTERNATES === 'object' && ALTERNATES.badgeToPatch){
+      delete ALTERNATES.badgeToPatch.communications_technician_badge;
+      delete ALTERNATES.badgeToPatch.communications_senior_badge;
+      delete ALTERNATES.badgeToPatch.communications_master_badge;
+    }
+
+    const capubPrevClearUnauthorizedPatches = clearUnauthorizedPatchesForCurrentUniform;
+    clearUnauthorizedPatchesForCurrentUniform = function capubClearUnauthorizedPatchesVariantAware(){
+      capubSyncPatchVariantSelectionsForUniform();
+      normalizePatchSelections();
+
+      let changed = false;
+
+      for(const id of Object.keys(State.patchSelections || {})){
+        const resolvedId = window.capubResolvePatchIdForUniform(id);
+        if(resolvedId !== id && State.patchSelections[id]?.checked){
+          State.patchSelections[id].checked = false;
+          State.patchSelections[resolvedId] = { ...(State.patchSelections[resolvedId] || {}), checked:true };
+          changed = true;
+        }
+        if(State.patchSelections[resolvedId]?.checked && !isPatchAuthorizedForUniform(resolvedId)){
+          State.patchSelections[resolvedId].checked = false;
+          changed = true;
+        }
+      }
+
+      const before = State.patches.length;
+      State.patches = (State.patches || [])
+        .map(id => window.capubResolvePatchIdForUniform(id))
+        .filter((id, idx, arr) => id && arr.indexOf(id) === idx)
+        .filter(id => isPatchAuthorizedForUniform(id));
+      if(before !== State.patches.length) changed = true;
+
+      return changed;
+    };
+
+    // Variant-aware render planning. This is the piece that prevents a selected
+    // generic PJOC patch from being dropped on OCP; it resolves to pjoc_ocp_patch
+    // before authorization/filtering.
+    planPatches = function capubPlanPatchesVariantAware(ids){
+      resetPatchSlots();
+      const capsPerUniform = {
+        blues_a:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1},
+        blues_b:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1},
+        aviator:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1},
+        aviator_blazer:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:0,CHEST_RIGHT:0},
+        corporate_field:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:1,CHEST_RIGHT:1},
+        abu:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:1,CHEST_RIGHT:1},
+        ocp:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:1,CHEST_RIGHT:1},
+        flight_suit:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:2,CHEST_RIGHT:2},
+        semi_formal:{L_SHOULDER:0,R_SHOULDER:0,CHEST_LEFT:0,CHEST_RIGHT:0},
+        mess_dress:{L_SHOULDER:0,R_SHOULDER:0,CHEST_LEFT:0,CHEST_RIGHT:0},
+        polo:{L_SHOULDER:0,R_SHOULDER:0,CHEST_LEFT:0,CHEST_RIGHT:0}
+      }[State.uniform] || {L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1};
+
+      const plannedIds = [];
+      const selectedUnitPatchId = (typeof getSelectedUnitPatchId === 'function') ? getSelectedUnitPatchId() : null;
+      if(selectedUnitPatchId && isPatchAuthorizedForUniform(selectedUnitPatchId)){
+        plannedIds.push(selectedUnitPatchId);
+      }
+
+      (ids || []).forEach(rawId => {
+        const id = window.capubResolvePatchIdForUniform(rawId);
+        if(id && id !== selectedUnitPatchId && !plannedIds.includes(id)) plannedIds.push(id);
+      });
+
+      for(const id of plannedIds){
+        if(FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) continue;
+        const meta = PATCH_META[id];
+        if(!meta) continue;
+        if(!isPatchAuthorizedForUniform(id)) continue;
+
+        const hint = meta.slotHint || 'L_SHOULDER';
+        const cap = capsPerUniform[hint] ?? 0;
+        if(cap === 0) continue;
+        if(patchSlots[hint].length >= cap) continue;
+        patchSlots[hint].push(id);
+      }
+    };
+
+    // Rebuild UI/render once the hotfix is loaded.
+    capubSyncPatchVariantSelectionsForUniform();
+    if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(by('unitPatchSearch')?.value || '');
+    if(typeof buildPatchGallery === 'function') buildPatchGallery();
+    if(typeof fullRender === 'function') fullRender();
+
+    console.info('CAPUB hotfix loaded: PJOC variant resolver, TN-330 unit patch, comms alternate cleanup.');
+  }catch(err){
+    console.error('CAPUB hotfix failed', err);
   }
 })();
 
