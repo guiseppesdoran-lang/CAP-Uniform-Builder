@@ -4763,7 +4763,6 @@ function getBadgeCategoriesForCurrentMembership(){
 }
 
 const patchList = [
-  'command_patch','wing_patch','unit_patch',
   'ner_patch','nywg_patch','comms_patch','check_pilot_patch',
   'pjoc_ocp_patch',
   'pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch',
@@ -6326,6 +6325,12 @@ function buildPatchGallery(){
   for(let idx=0; idx<showCount; idx++){
     const id = patchList[idx];
     const meta = PATCH_META[id];
+
+    // Safety guard: patchList may contain legacy/menu placeholder IDs
+    // that do not have a PATCH_META entry yet. Without this, the builder
+    // crashes at meta.label before later hotfixes can replace the gallery.
+    if(!meta) continue;
+
     const sel = State.patchSelections[id];
 
     const tile = document.createElement('div');
