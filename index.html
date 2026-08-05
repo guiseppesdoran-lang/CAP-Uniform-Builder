@@ -11936,6 +11936,123 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         .filter(id => isCommandInsigniaBadge(id));
     };
 
+    /*
+      CAPR 39-1, OCP occupational/qualification badge layout.
+
+      The utility-uniform artwork is rendered at roughly 44 px per inch (the
+      five-inch CAP tape is about 220 px wide), so six pixels represents the
+      required 1/8-inch exposed dark-blue fabric margin.  Badge artwork keeps
+      its natural aspect ratio; only its longest dimension is normalized.
+    */
+    const CAPUB_UTILITY_PX_PER_INCH = 44;
+    const CAPUB_UTILITY_BLUE_MARGIN = Math.round(CAPUB_UTILITY_PX_PER_INCH / 8);
+    const CAPUB_UTILITY_CAP_TAPE = {
+      ocp: { centerX:708, topY:180 },
+      abu: { centerX:708, topY:180 },
+      corporate_field: { centerX:708, topY:180 },
+      cfdu: { centerX:708, topY:180 },
+      flight_suit: { centerX:708, topY:180 }
+    };
+
+    function capubUtilityBadgeIds(){
+      return (State.badges || [])
+        .filter(id => isBadgeEligibleForMembership(id, State.membership))
+        .filter(id => !isCommandInsigniaBadge(id))
+        .slice(0, 4);
+    }
+
+    function capubUtilityBadgeSize(img){
+      const naturalW = Number(img.naturalWidth) || 1;
+      const naturalH = Number(img.naturalHeight) || 1;
+      const maxW = 86;
+      const maxH = 42;
+      const scale = Math.min(maxW / naturalW, maxH / naturalH);
+      return {
+        w: Math.max(18, Math.round(naturalW * scale)),
+        h: Math.max(12, Math.round(naturalH * scale))
+      };
+    }
+
+    function capubLayoutUtilityBadges(){
+      const badges = [...uniformCanvas.querySelectorAll('.capubUtilityBadge')];
+      if(!badges.length) return;
+
+      const fieldKey = capubFieldUniformKey();
+      const tape = CAPUB_UTILITY_CAP_TAPE[fieldKey] || CAPUB_UTILITY_CAP_TAPE.ocp;
+      const halfInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 2);
+      const quarterInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 4);
+      const eighthInch = CAPUB_UTILITY_BLUE_MARGIN;
+      const sizes = badges.map(img => capubUtilityBadgeSize(img));
+
+      // One/two badges use the 1/2-inch tape clearance. Three/four use 1/8 inch.
+      const lowerBottom = tape.topY - (badges.length <= 2 ? halfInch : eighthInch);
+      const positions = [];
+
+      if(badges.length <= 3){
+        let bottom = lowerBottom;
+        for(let i=0; i<badges.length; i++){
+          const size = sizes[i];
+          positions.push({ x:tape.centerX - size.w/2, y:bottom - size.h });
+          bottom -= size.h + (badges.length === 2 ? halfInch : quarterInch);
+        }
+      }else{
+        // Four-badge approved option: two side-by-side vertical stacks of two.
+        const horizontalGap = halfInch;
+        const leftColumnW = Math.max(sizes[0].w, sizes[2].w);
+        const rightColumnW = Math.max(sizes[1].w, sizes[3].w);
+        const totalW = leftColumnW + horizontalGap + rightColumnW;
+        const leftCenter = tape.centerX - totalW/2 + leftColumnW/2;
+        const rightCenter = tape.centerX + totalW/2 - rightColumnW/2;
+        const centers = [leftCenter, rightCenter, leftCenter, rightCenter];
+        for(let i=0; i<4; i++){
+          const size = sizes[i];
+          const rowBottom = i < 2
+            ? lowerBottom
+            : lowerBottom - Math.max(sizes[0].h, sizes[1].h) - quarterInch;
+          positions.push({ x:centers[i] - size.w/2, y:rowBottom - size.h });
+        }
+      }
+
+      badges.forEach((img, i) => {
+        const size = sizes[i];
+        img.style.left = `${Math.round(positions[i].x)}px`;
+        img.style.top = `${Math.round(positions[i].y)}px`;
+        img.style.width = `${size.w}px`;
+        img.style.height = `${size.h}px`;
+      });
+    }
+
+    function capubRenderUtilityBadges(){
+      capubUtilityBadgeIds().forEach((id, index) => {
+        const img = new Image();
+        img.className = 'layer badge capubUtilityBadge';
+        img.dataset.calibKey = `utilityBadge:${id}:${index}`;
+        img.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
+        img.dataset.tooltipReg = 'CAPR 39-1, paragraph 7.1.1.3.1';
+        img.dataset.tooltipWhy = 'Utility occupational/qualification badge centered above the CAP tape with a 1/8-inch exposed dark-blue border.';
+        img.style.display = 'block';
+        img.style.objectFit = 'contain';
+        img.style.background = '#0b2d4f';
+        img.style.outline = `${CAPUB_UTILITY_BLUE_MARGIN}px solid #0b2d4f`;
+        img.style.outlineOffset = '0';
+        img.style.zIndex = '28';
+        img.onload = capubLayoutUtilityBadges;
+        applyBadgeAssetWithFallback(img, id);
+        uniformCanvas.appendChild(img);
+      });
+      capubLayoutUtilityBadges();
+    }
+
+    const capubPreviousRenderAllBadges = renderAllBadges;
+    renderAllBadges = function capubRenderAllBadgesUtilityAware(){
+      if(!capubIsUtilityUniform()) return capubPreviousRenderAllBadges();
+      clearMeasurementOverlay();
+      [...uniformCanvas.querySelectorAll('.layer.badge')].forEach(node => node.remove());
+      resetBadgeSlots();
+      if(UI_AUTHZ[State.uniform]?.showBadges) capubRenderUtilityBadges();
+      renderMeasurementOverlay();
+    };
+
     const capubPreviousGetBadgeSlotSpec = getBadgeSlotSpec;
     getBadgeSlotSpec = function capubGetBadgeSlotSpecUtilityAware(id){
       if(capubIsUtilityUniform()){
