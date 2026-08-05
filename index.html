@@ -10323,7 +10323,8 @@ function capubRepairCriticalButtons(){
     if(downloadButton?.dataset.exportBusy === '1') return;
     if(downloadButton) downloadButton.dataset.exportBusy = '1';
 
-    let stage = null;
+    const previewArea = by('previewArea');
+    const previousPreviewTransform = previewArea?.style.transform || '';
 
     try{
       const original = by('uniformCanvas');
@@ -10332,16 +10333,14 @@ function capubRepairCriticalButtons(){
         throw new Error('The PNG renderer did not load. Check the internet connection and reload the page.');
       }
 
-      // Clone through the existing export-stage helper. It removes only the
-      // preview's outer zoom while preserving each item's calibrated rotation
-      // and translation. Clearing every descendant transform here used to move
-      // badges, ribbons, patches, and other items vertically in the PNG.
-      stage = buildCenteredExportStage();
-      const clone = stage.querySelector('#capubExportUniformCanvas');
-      if(!clone) throw new Error('The export preview could not be prepared.');
+      // Capture the live canvas instead of rebuilding it in a detached export
+      // layout. The live element keeps every selector-dependent style and uses
+      // the exact coordinate system shown in the preview. Only the outer UI
+      // zoom is temporarily disabled; item transforms remain untouched.
+      if(previewArea) previewArea.style.transform = 'none';
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
-      // Give cloned images a chance to finish decoding before html2canvas reads them.
-      await Promise.all([...stage.querySelectorAll('img')].map(img => {
+      await Promise.all([...original.querySelectorAll('img')].map(img => {
         if(img.complete) return img.decode?.().catch(() => undefined);
         return new Promise(resolve => {
           img.addEventListener('load', resolve, { once:true });
@@ -10349,12 +10348,17 @@ function capubRepairCriticalButtons(){
         });
       }));
 
-      const canvas = await window.html2canvas(stage, {
+      const canvas = await window.html2canvas(original, {
         backgroundColor:'#ffffff',
         scale:2,
         useCORS:true,
         allowTaint:false,
-        logging:false
+        logging:false,
+        width:original.offsetWidth,
+        height:original.offsetHeight,
+        ignoreElements:element =>
+          element.classList?.contains('measurementOverlay') ||
+          element.classList?.contains('measurementArrowLayer')
       });
 
       const link = document.createElement('a');
@@ -10367,7 +10371,7 @@ function capubRepairCriticalButtons(){
       console.error('PNG EXPORT ERROR:', err);
       alert(`PNG export failed: ${err?.message || err}`);
     }finally{
-      stage?.remove();
+      if(previewArea) previewArea.style.transform = previousPreviewTransform;
       if(downloadButton) delete downloadButton.dataset.exportBusy;
     }
   });
