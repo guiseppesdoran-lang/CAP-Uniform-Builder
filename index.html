@@ -11675,6 +11675,11 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge'
     ];
     const CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET = new Set(CAPUB_DOCUMENT_UTILITY_BADGE_IDS);
+    const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'original-fabric-20260805';
+
+    function capubUtilityBadgePreviewUrl(id){
+      return `${ASSET(`badges/utility/${id}.png`)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`;
+    }
 
     function capubPatchIsUnitPatchId(patchId){
       const id = String(patchId || '');
@@ -11885,7 +11890,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
-          <img src="${ASSET(previewPath)}" alt="${title}">
+          <img src="${utilityMode ? capubUtilityBadgePreviewUrl(id) : ASSET(previewPath)}" alt="${title}"${utilityMode ? ' class="utilityBadgePreview"' : ''}>
           <div style="flex:1;min-width:0;">
             <div class="title">${title}${rareCadetTag}</div>
             <div class="sub">(${id})${utilityMode ? ' • Silver-on-blue utility badge' : ''}</div>
@@ -11899,7 +11904,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const previewImg = tile.querySelector('img');
         if(previewImg){
           const previewCandidates = utilityMode
-            ? utilityCandidates.slice(1)
+            ? utilityCandidates.slice(1).map(path => `${ASSET(path)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`)
             : [fallbackPath];
           let previewCandidateIndex = 0;
           previewImg.onerror = () => {
@@ -11907,7 +11912,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
               previewImg.onerror = null;
               return;
             }
-            previewImg.src = ASSET(previewCandidates[previewCandidateIndex++]);
+            previewImg.src = utilityMode
+              ? previewCandidates[previewCandidateIndex++]
+              : ASSET(previewCandidates[previewCandidateIndex++]);
           };
         }
         chk.checked = !!sel.checked;
@@ -11976,27 +11983,40 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     const CAPUB_UTILITY_PX_PER_INCH = 44;
     const CAPUB_UTILITY_BLUE_MARGIN = Math.round(CAPUB_UTILITY_PX_PER_INCH / 8);
     const CAPUB_UTILITY_CAP_TAPE = {
-      ocp: { centerX:708, topY:180 },
-      abu: { centerX:708, topY:180 },
-      corporate_field: { centerX:708, topY:180 },
-      cfdu: { centerX:708, topY:180 },
-      flight_suit: { centerX:708, topY:180 }
+      ocp: { centerX:580, topY:180 },
+      abu: { centerX:360, topY:180 },
+      corporate_field: { centerX:360, topY:180 },
+      cfdu: { centerX:360, topY:180 },
+      flight_suit: { centerX:360, topY:180 }
     };
-    // Imported from the user's OCP positioning example. Keys intentionally
-    // include selection order so this exact three-badge combination matches it.
+    // Imported from the user's OCP positioning example. Placement is keyed by
+    // badge identity, not click order, so precedence cannot move these badges.
     const CAPUB_UTILITY_POSITION_EXAMPLE = {
       ocp: {
-        'utilityBadge:master_ground_team_badge:0': { x:547, y:128, w:30, h:28, r:0 },
-        'utilityBadge:emt_basic_badge:1': { x:577, y:131, w:38, h:28, r:0 },
-        'utilityBadge:AirCrew1_DB3F0FCC3650F:2': { x:551, y:99, w:57, h:22, r:0 }
+        master_ground_team_badge: { x:547, y:128, w:30, h:28, r:0 },
+        emt_basic_badge: { x:577, y:131, w:38, h:28, r:0 },
+        AirCrew1_DB3F0FCC3650F: { x:551, y:99, w:57, h:22, r:0 }
       }
     };
+
+    const CAPUB_UTILITY_BADGE_PRECEDENCE = [
+      'MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F',
+      'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge',
+      'emt_paramedic','emt_intermediate','emt_basic_badge',
+      'incident_commander_1_badge','incident_commander_2_badge','basic_incident_commander_badge',
+      'medical_officer','nurse_officer','legal_officer',
+      'jewish_chaplin','christian_chaplin','buddist_chaplin','muslim_chaplin'
+    ];
+    const CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX = new Map(
+      CAPUB_UTILITY_BADGE_PRECEDENCE.map((id, index) => [id, index])
+    );
 
     function capubUtilityBadgeIds(){
       return (State.badges || [])
         .filter(id => isBadgeEligibleForMembership(id, State.membership))
         .filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id))
         .filter(id => !isCommandInsigniaBadge(id))
+        .sort((a, b) => (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(a) ?? 999) - (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(b) ?? 999))
         .slice(0, 4);
     }
 
@@ -12022,18 +12042,31 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       const quarterInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 4);
       const eighthInch = CAPUB_UTILITY_BLUE_MARGIN;
       const sizes = badges.map(img => capubUtilityBadgeSize(img));
+      const exampleLayout = CAPUB_UTILITY_POSITION_EXAMPLE[fieldKey];
+      const usePositionExample = badges.length === 3
+        && !!exampleLayout
+        && badges.every(img => !!exampleLayout[img.dataset.badgeId]);
 
       // One/two badges use the 1/2-inch tape clearance. Three/four use 1/8 inch.
       const lowerBottom = tape.topY - (badges.length <= 2 ? halfInch : eighthInch);
       const positions = [];
 
-      if(badges.length <= 3){
+      if(badges.length <= 2){
         let bottom = lowerBottom;
         for(let i=0; i<badges.length; i++){
           const size = sizes[i];
           positions.push({ x:tape.centerX - size.w/2, y:bottom - size.h });
           bottom -= size.h + (badges.length === 2 ? halfInch : quarterInch);
         }
+      }else if(badges.length === 3){
+        // Highest-precedence badge is centered on the upper row. The next two
+        // are placed left-to-right on the lower row, matching the supplied OCP example.
+        const lowerGap = Math.max(3, eighthInch / 2);
+        const lowerWidth = sizes[1].w + lowerGap + sizes[2].w;
+        const lowerLeft = tape.centerX - lowerWidth / 2;
+        positions.push({ x:tape.centerX - sizes[0].w/2, y:lowerBottom - Math.max(sizes[1].h, sizes[2].h) - quarterInch - sizes[0].h });
+        positions.push({ x:lowerLeft, y:lowerBottom - sizes[1].h });
+        positions.push({ x:lowerLeft + sizes[1].w + lowerGap, y:lowerBottom - sizes[2].h });
       }else{
         // Four-badge approved option: two side-by-side vertical stacks of two.
         const horizontalGap = halfInch;
@@ -12054,8 +12087,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
       badges.forEach((img, i) => {
         const size = sizes[i];
-        const example = badges.length === 3
-          ? CAPUB_UTILITY_POSITION_EXAMPLE[fieldKey]?.[img.dataset.calibKey]
+        const example = usePositionExample
+          ? exampleLayout[img.dataset.badgeId]
           : null;
         const saved = typeof getCalib === 'function' ? getCalib(img.dataset.calibKey) : null;
         const placement = saved || example;
@@ -12071,6 +12104,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       capubUtilityBadgeIds().forEach((id, index) => {
         const img = new Image();
         img.className = 'layer badge capubUtilityBadge';
+        img.dataset.badgeId = id;
         img.dataset.calibKey = `utilityBadge:${id}:${index}`;
         img.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
         img.dataset.tooltipReg = 'CAPR 39-1, paragraph 7.1.1.3.1';
