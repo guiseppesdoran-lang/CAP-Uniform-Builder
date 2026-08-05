@@ -12,6 +12,9 @@ OUTPUT_DIR = ROOT / "images" / "badges" / "utility"
 # Page indices and embedded-image names from Figure A7-3 (PDF pages 3-5).
 # These are the cloth versions, already presented on the correct blue backing.
 DOCUMENT_BADGES = {
+    "MasterAirCrew1_72AC4CAE7A310": (0, "Im7.png"),
+    "SeniorAirCrew1_B289BAE6E515C": (0, "Im9.jp2"),
+    "AirCrew1_DB3F0FCC3650F": (0, "Im23.png"),
     "jewish_chaplin": (2, "Im4.png"),
     "christian_chaplin": (2, "Im5.png"),
     "buddist_chaplin": (2, "Im6.png"),
