@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CAP Uniform Builder — Full Program Calibrated v3.3.1 Female Class A Update</title>
+<title>CAP Uniform Builder â€” Full Program Calibrated v3.3.1 Female Class A Update</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 
@@ -629,9 +629,9 @@
     }
 
     #controls{
-      position:absolute;
+      position:fixed;
       left:0;
-      top:0;
+      top:68px;
       bottom:0;
 
       width:80%;
@@ -641,16 +641,31 @@
       box-shadow:0 30px 60px rgb(0 0 0 / .4);
       border-right:1px solid var(--line);
       background:var(--panel);
-      transition:transform .2s ease;
+      height:auto;
+      z-index:9000;
+      transition:transform .2s ease, visibility .2s ease;
+      will-change:transform;
     }
 
-    #layoutShell.sidebar-open    #controls{ transform:translateX(0); }
-    #layoutShell.sidebar-collapsed #controls{ transform:translateX(-100%); }
+    #layoutShell.sidebar-open #controls{
+      transform:translate3d(0,0,0);
+      visibility:visible;
+      pointer-events:auto;
+    }
+    #layoutShell.sidebar-collapsed #controls{
+      transform:translate3d(-105%,0,0);
+      visibility:hidden;
+      pointer-events:none;
+    }
 
     #previewWrapper{
       order:2;
       flex:1;
+      width:100%;
+      min-width:0;
+      justify-content:flex-start;
     }
+    #previewArea{ transform-origin:top left; }
   }
 
   /* ===========================
@@ -727,7 +742,7 @@
   }
 
   .modal::after{
-    content:"↘";
+    content:"â†˜";
     position:absolute;
     right:10px;
     bottom:6px;
@@ -784,14 +799,14 @@ header{
   box-shadow:0 10px 28px rgba(2,24,55,.25);
 }
 header h1{font-size:20px;font-weight:800;letter-spacing:.2px;line-height:1.1;margin-top:2px;}
-header h1::after{content:"  ·  Regulation-aware preview workspace";font-size:12px;font-weight:500;opacity:.82;letter-spacing:0;display:inline-block;margin-left:6px;}
+header h1::after{content:"  Â·  Regulation-aware preview workspace";font-size:12px;font-weight:500;opacity:.82;letter-spacing:0;display:inline-block;margin-left:6px;}
 .hamburgerBtn{top:18px;left:18px;width:36px;height:36px;background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.38);box-shadow:0 12px 24px rgba(0,0,0,.22)}
 #layoutShell{height:calc(100vh - 68px);background:transparent;}
 #controls{width:380px;max-width:380px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-right:1px solid rgba(148,163,184,.35);box-shadow:18px 0 38px rgba(15,23,42,.09)}
 #layoutShell.sidebar-open #controls{width:380px;max-width:380px;}
 .controlsHeader{background:#fff;color:var(--ink);border-bottom:1px solid var(--line);padding:14px 16px 10px;}
 .controlsHeader .controlsTitle{font-size:15px;color:var(--ink);font-weight:800;}
-.controlsHeader .controlsTitle::after{content:"Choose profile → select uniform → add items → validate/export";display:block;margin-top:4px;font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0;}
+.controlsHeader .controlsTitle::after{content:"Choose profile â†’ select uniform â†’ add items â†’ validate/export";display:block;margin-top:4px;font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0;}
 .controlsScrollArea{padding:14px 16px 76px;}
 .panelBlock{border:1px solid rgba(148,163,184,.34);border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:var(--shadow2);background:linear-gradient(180deg,#fff 0%,#fbfdff 100%);}
 .fieldLabel{font-size:12px;text-transform:uppercase;letter-spacing:.045em;color:#24364f;font-weight:800;}
@@ -821,7 +836,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 .capubPill strong{color:#0f172a}.previewTools{position:sticky;top:14px;z-index:80;align-self:flex-start;display:flex;flex-direction:column;gap:8px}.previewToolCard{width:158px;background:rgba(255,255,255,.92);border:1px solid rgba(203,213,225,.85);border-radius:16px;padding:10px;box-shadow:var(--shadow2);backdrop-filter:blur(10px)}.previewToolCard .toolTitle{font-size:11px;font-weight:800;text-transform:uppercase;color:#64748b;letter-spacing:.06em;margin-bottom:8px}.previewToolCard .smallRow{display:flex;gap:6px}.previewToolCard button{padding:7px 8px;font-size:12px}.previewToolCard button.ghost{box-shadow:none}.previewToolCard .zoomReadout{display:block;text-align:center;margin-top:7px;font-size:12px;font-weight:800;color:#102a43}.capubCommandBar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:12000;display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.92);border:1px solid rgba(203,213,225,.9);box-shadow:0 20px 50px rgba(15,23,42,.22);border-radius:999px;padding:8px;backdrop-filter:blur(12px)}.capubCommandBar button{width:auto;margin:0;padding:8px 12px;font-size:12px;border-radius:999px}.capubCommandBar .ghost{background:#fff}.capubToast{position:fixed;right:20px;bottom:84px;z-index:25000;background:#102a43;color:#fff;border-radius:14px;padding:12px 14px;font-size:13px;box-shadow:0 18px 40px rgba(15,23,42,.35);opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .18s ease,transform .18s ease}.capubToast.show{opacity:1;transform:translateY(0)}
 .capubSectionHint{display:flex;align-items:flex-start;gap:8px;border:1px solid #dbeafe;background:#f0f7ff;border-radius:14px;padding:9px 10px;font-size:11.5px;color:#36506d;line-height:1.35;margin-bottom:10px}.capubSectionHint b{color:#0f3c73}.capubSectionHint span{font-size:16px;line-height:1}.layer[data-missing="true"]{outline:2px dashed rgba(217,119,6,.55)!important;outline-offset:2px;}
 @media (max-width:980px){.statusGrid{grid-template-columns:repeat(2,minmax(0,1fr));}.previewTools{position:fixed;right:12px;top:84px}.previewToolCard{width:144px}.capubCommandBar{max-width:calc(100vw - 24px);overflow:auto}.capubProgress{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:768px){header h1::after{display:block;margin-left:0;margin-top:4px}.controlsHeader .controlsTitle::after{display:none}#controls,#layoutShell.sidebar-open #controls{width:min(92vw,380px);max-width:min(92vw,380px)}#previewWrapper{padding:16px 12px 96px}.previewTools{right:10px;top:auto;bottom:82px}.previewToolCard{width:132px}.capubCommandBar{left:12px;right:12px;transform:none;justify-content:flex-start}.capubCommandBar button{white-space:nowrap}.capubTopBar{left:12px;right:12px;top:12px;justify-content:center}.capubPill{font-size:10.5px;padding:5px 8px}}
+@media (max-width:768px){header h1::after{display:block;margin-left:0;margin-top:4px}.controlsHeader .controlsTitle::after{display:none}#controls,#layoutShell.sidebar-open #controls,#layoutShell.sidebar-collapsed #controls{width:min(92vw,380px);min-width:min(92vw,380px);max-width:min(92vw,380px)}#layoutShell.sidebar-open #controls{transform:translate3d(0,0,0)!important;visibility:visible;pointer-events:auto}#layoutShell.sidebar-collapsed #controls{transform:translate3d(-105%,0,0)!important;visibility:hidden;pointer-events:none}#previewWrapper{padding:16px 12px 96px}#previewArea{transform-origin:top left}.previewTools{right:10px;top:auto;bottom:82px}.previewToolCard{width:132px}.capubCommandBar{left:12px;right:12px;transform:none;justify-content:flex-start}.capubCommandBar button{white-space:nowrap}.capubTopBar{left:12px;right:12px;top:12px;justify-content:center}.capubPill{font-size:10.5px;padding:5px 8px}}
 
 
 /* Badge image fallback used when an individual transparent PNG cannot be found. */
@@ -949,7 +964,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <body>
 
 <header>
-  <h1>CAP Uniform Builder — Calibrated Badges & Dynamic Measurement Lines v3.3</h1>
+  <h1>CAP Uniform Builder â€” Calibrated Badges & Dynamic Measurement Lines v3.3</h1>
 </header>
 
 <button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu">
@@ -960,7 +975,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <div id="calibratorWrapper">
   <div id="calibratorTab">
     <span>CAL</span>
-    <span class="arrow" id="calibratorArrow">›</span>
+    <span class="arrow" id="calibratorArrow">â€º</span>
   </div>
 
   <div id="calibratorPanel">
@@ -1044,7 +1059,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
       <section id="memberReportImportPanel" class="panelBlock">
         <label class="fieldLabel">Import CAP Member Report</label>
         <div class="hintText">
-          Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
+          Upload a CAP Member Search â€œPrinter Friendly View - Member Detailsâ€ PDF or copied text file.
           The builder will read rank, gender, ribbons, achievements, qualifications, and badges it can match.
         </div>
         <div class="row two" style="margin-top:6px">
@@ -1070,7 +1085,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <select id="rankSetupSelect" disabled>
           <option value="">Select Rank</option>
         </select>
-        <div class="hintText">For Senior Member NCO (SSgt–CMSgt), your NCO base images will be used as the jacket template (if present).</div>
+        <div class="hintText">For Senior Member NCO (SSgtâ€“CMSgt), your NCO base images will be used as the jacket template (if present).</div>
 
         <div id="cadetFirstSergeantBlock" class="hidden" style="margin-top:10px;">
           <label style="font-size:12px;color:var(--muted);display:block;">
@@ -1158,10 +1173,10 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <label class="fieldLabel">Shoulder Cord</label>
         <select id="shoulderCordSelect">
           <option value="">No shoulder cord</option>
-          <option value="group">Group CAC shoulder cord — green</option>
-          <option value="wing">Wing CAC shoulder cord — red</option>
-          <option value="region">Region CAC shoulder cord — blue</option>
-          <option value="national">National CAC shoulder cord — gold</option>
+          <option value="group">Group CAC shoulder cord â€” green</option>
+          <option value="wing">Wing CAC shoulder cord â€” red</option>
+          <option value="region">Region CAC shoulder cord â€” blue</option>
+          <option value="national">National CAC shoulder cord â€” gold</option>
           <option value="color_guard">Color Guard shoulder cord</option>
           <option value="honor_guard">Honor Guard shoulder cord</option>
         </select>
@@ -1178,12 +1193,12 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <label class="fieldLabel">Ribbons / Mini Medals</label>
 
         <div class="hintText">
-          Use “Choose Ribbons…” to pick ribbons and set award count or earned level in the popup.
+          Use â€œChoose Ribbonsâ€¦â€ to pick ribbons and set award count or earned level in the popup.
         </div>
 
         <div class="row two" style="margin-top:6px">
           <div class="col"><button id="clearRibbons" class="ghost" type="button">Clear Ribbons</button></div>
-          <div class="col"><button id="expandRibbons" type="button">Choose Ribbons…</button></div>
+          <div class="col"><button id="expandRibbons" type="button">Choose Ribbonsâ€¦</button></div>
         </div>
 
         <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
@@ -1196,11 +1211,11 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 
         <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
           <input type="checkbox" id="autoMini" checked>
-          Auto-convert ribbons → mini-medals on Mess/Semi-formal
+          Auto-convert ribbons â†’ mini-medals on Mess/Semi-formal
         </label>
 
         <div id="deviceTool">
-          <strong style="font-size:12px;">Ribbon Devices — Multi-Apply</strong>
+          <strong style="font-size:12px;">Ribbon Devices â€” Multi-Apply</strong>
           <div id="devicePicker"></div>
           <div class="row" style="margin-top:8px">
             <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
@@ -1208,7 +1223,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
             <button id="deviceClearSelectionBtn" type="button" class="ghost">Clear Selection</button>
           </div>
           <small style="color:#516079;display:block;margin-top:6px;font-size:11px;line-height:1.3;">
-            Choose devices + quantities → Enable Apply Mode → click a ribbon to add them.
+            Choose devices + quantities â†’ Enable Apply Mode â†’ click a ribbon to add them.
             Use Remove Mode to clear devices from a ribbon.
           </small>
         </div>
@@ -1224,12 +1239,12 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <label class="fieldLabel">Badges</label>
 
         <div class="hintText">
-          Use “Choose Badges…” to pick badges in the popup (grouped by category).
+          Use â€œChoose Badgesâ€¦â€ to pick badges in the popup (grouped by category).
         </div>
 
         <div class="row two" style="margin-top:6px">
           <div class="col"><button id="clearBadges" class="ghost" type="button">Clear Badges</button></div>
-          <div class="col"><button id="expandBadges" type="button">Choose Badges…</button></div>
+          <div class="col"><button id="expandBadges" type="button">Choose Badgesâ€¦</button></div>
         </div>
 
         <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
@@ -1245,12 +1260,12 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <label class="fieldLabel">Patches</label>
 
         <div class="hintText">
-          Use “Choose Patches…” to pick patches in the popup.
+          Use â€œChoose Patchesâ€¦â€ to pick patches in the popup.
         </div>
 
         <div class="row two" style="margin-top:6px">
           <div class="col"><button id="clearPatches" class="ghost" type="button">Clear Patches</button></div>
-          <div class="col"><button id="expandPatches" type="button">Choose Patches…</button></div>
+          <div class="col"><button id="expandPatches" type="button">Choose Patchesâ€¦</button></div>
         </div>
 
         <div style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px;">
@@ -1332,7 +1347,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 
       <section class="panelBlock" style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3;">
         <div id="sidebarCopyrightLine">
-          © <span id="sidebarYear"></span> Civil Air Patrol Uniform Builder<br/>
+          Â© <span id="sidebarYear"></span> Civil Air Patrol Uniform Builder<br/>
           Developed by C/Col. Guiseppe Doran
         </div>
       </section>
@@ -1355,7 +1370,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <div class="layer" id="assets" style="display:none"></div>
 
 <footer id="pageFooter">
-  © <span id="footerYear"></span> Civil Air Patrol Uniform Builder – Developed by C/Col. Guiseppe Doran
+  Â© <span id="footerYear"></span> Civil Air Patrol Uniform Builder â€“ Developed by C/Col. Guiseppe Doran
 </footer>
 
 <!-- ===========================
@@ -2569,7 +2584,7 @@ function capubEnsureFieldUniformCalibrationDefaults(){
 capubEnsureFieldUniformCalibrationDefaults();
 
 
-/* CAPUB PATCH 2026-06-05 — Compact calibration patch
+/* CAPUB PATCH 2026-06-05 â€” Compact calibration patch
    Removed the huge embedded exported coordinate object. Placement is preserved by:
    1) keeping hand-calibrated blues buckets already defined above,
    2) applying only the small uploaded deltas that differ from those defaults,
@@ -2900,28 +2915,28 @@ function getBadgeSlotSpec(id){
 }
 function getBadgeSlotLabel(id){
   if(id === 'squadron_commander_badge'){
-    return State.commandInsignia?.graduatedCommander ? 'UN — graduated commander' : 'ON — current commander';
+    return State.commandInsignia?.graduatedCommander ? 'UN â€” graduated commander' : 'ON â€” current commander';
   }
   if(id === 'model_rocketry_badge' || id === 'cyber_badges' || id === 'stem_badges'){
     if(isMaleCadetLeftPocketExclusiveBadge(id)){
       const owner = getActiveMaleCadetLeftPocketExclusiveBadge();
       return owner === id
-        ? 'LP — male cadet left-pocket-only exception'
-        : 'LP only — not rendered unless selected first';
+        ? 'LP â€” male cadet left-pocket-only exception'
+        : 'LP only â€” not rendered unless selected first';
     }
     if(id === 'model_rocketry_badge'){
       return getGenderedPocketSlotForBadge(id) === 'LP'
-        ? 'LP — wearer\'s left pocket, under ribbons'
-        : 'ON — female blues placement';
+        ? 'LP â€” wearer\'s left pocket, under ribbons'
+        : 'ON â€” female blues placement';
     }
   }
   if(id === 'volunteer_university_instructor_badge'){
-    return 'RP — Volunteer University exception';
+    return 'RP â€” Volunteer University exception';
   }
   if(useFemaleOverNameplateSpecialtyLayout(id)){
     return hasCurrentCommanderBadgeSelected()
-      ? 'FON — female specialty-track row above current commander badge'
-      : 'FON — female specialty-track row over the nameplate';
+      ? 'FON â€” female specialty-track row above current commander badge'
+      : 'FON â€” female specialty-track row over the nameplate';
   }
   return badgeLocations[id] || 'UN';
 }
@@ -5149,7 +5164,7 @@ function buildUnitPatchSelector(filterText=''){
     const opt = document.createElement('option');
     opt.value = unit.code;
     const hasPatch = !!UNIT_PATCH_IMAGE_BY_CHARTER[unit.code];
-    opt.textContent = `${unit.code} - ${unit.name}${hasPatch ? '  ✓ patch available' : ''}`;
+    opt.textContent = `${unit.code} - ${unit.name}${hasPatch ? '  âœ“ patch available' : ''}`;
     sel.appendChild(opt);
   });
 
@@ -5330,16 +5345,17 @@ Object.entries(PATCH_META).forEach(([id,m])=>{
 /* ===========================
    SIDEBAR TOGGLE (HAMBURGER)
    =========================== */
-layoutShell.classList.add('sidebar-open');
-hamburgerBtn.addEventListener('click', ()=>{
-  if(layoutShell.classList.contains('sidebar-open')){
-    layoutShell.classList.remove('sidebar-open');
-    layoutShell.classList.add('sidebar-collapsed');
-  }else{
-    layoutShell.classList.remove('sidebar-collapsed');
-    layoutShell.classList.add('sidebar-open');
-  }
-});
+function capubSetSidebarOpen(open){
+  layoutShell.classList.toggle('sidebar-open', open);
+  layoutShell.classList.toggle('sidebar-collapsed', !open);
+  hamburgerBtn.setAttribute('aria-expanded', String(open));
+}
+function capubToggleSidebar(){
+  capubSetSidebarOpen(!layoutShell.classList.contains('sidebar-open'));
+}
+capubSetSidebarOpen(!window.matchMedia('(max-width:768px)').matches);
+hamburgerBtn.dataset.sidebarToggleWired='1';
+hamburgerBtn.addEventListener('click', capubToggleSidebar);
 
 /* ===========================
    TOOLTIP HOVER
@@ -6461,7 +6477,7 @@ function buildRibbonGallery(){
     const deviceSummary = Object.entries(sel.devices || {})
       .filter(([,qty]) => Number(qty) > 0)
       .map(([devId,qty]) => `${deviceMeta[devId]?.label || devId}: ${qty}`)
-      .join(' • ');
+      .join(' â€¢ ');
 
     tile.innerHTML = `
       <img src="${ASSET(getRibbonImagePath({id, awardValue: sel.awardValue || ''}))}" alt="${title}" onerror="this.src='${ASSET(`ribbons/${normalizeRibbonId(id)}.png`)}'">
@@ -6476,7 +6492,7 @@ function buildRibbonGallery(){
           </select>
         </label>
         <div class="sub ribbonDeviceSummary">
-          ${sel.checked ? `Selected: <b>${sel.awardLabel || 'Earned'}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}` : 'Not selected'}
+          ${sel.checked ? `Selected: <b>${sel.awardLabel || 'Earned'}</b>${deviceSummary ? ` â€¢ ${deviceSummary}` : ''}` : 'Not selected'}
         </div>
       </div>
     `;
@@ -6579,7 +6595,7 @@ function buildBadgeGallery(){
           <label><input type="checkbox" class="bdChk"> Add</label>
         </div>
         ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-        <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
+        <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> â€¢ Size: ${(customBadgeSizes[id]?.width||60)}Ã—${(customBadgeSizes[id]?.height||25)} px</div>
       </div>
     `;
 
@@ -6682,7 +6698,7 @@ function buildPatchGallery(){
         <div class="miniRow">
           <label><input type="checkbox" class="ptChk"> Add</label>
         </div>
-        <div class="sub">Slot hint: <b>${meta.slotHint}</b> • Size: ${meta.w}×${meta.h} px</div>
+        <div class="sub">Slot hint: <b>${meta.slotHint}</b> â€¢ Size: ${meta.w}Ã—${meta.h} px</div>
       </div>
     `;
 
@@ -6694,7 +6710,7 @@ function buildPatchGallery(){
       tile.classList.add('disabledBlock');
       const sub = tile.querySelector('.sub:last-child');
       const reason = getPatchAuthorizationReason(id);
-      if(sub) sub.innerHTML += ` • <b>${reason || 'Not authorized on current uniform'}</b>`;
+      if(sub) sub.innerHTML += ` â€¢ <b>${reason || 'Not authorized on current uniform'}</b>`;
     }
 
     chk.onchange=()=>{
@@ -6712,7 +6728,7 @@ function buildPatchGallery(){
 }
 
 /* ===========================
-   BADGES (RENDER) — CAPR 39-1 SLOT CATEGORIES
+   BADGES (RENDER) â€” CAPR 39-1 SLOT CATEGORIES
    =========================== */
 
 /*
@@ -8196,7 +8212,7 @@ function initCalibratorUI(){
     if(!requireAdminUnlock()) return;
     open=!open;
     panel.style.display=open?'block':'none';
-    arrow.textContent=open?'‹':'›';
+    arrow.textContent=open?'â€¹':'â€º';
   });
 
   function updateSelectedVisuals(){
@@ -8546,7 +8562,7 @@ function openGalleryModal(kind){
               <label><input type="checkbox" class="bdChk"> Add</label>
             </div>
             ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
+            <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> â€¢ Size: ${(customBadgeSizes[id]?.width||60)}Ã—${(customBadgeSizes[id]?.height||25)} px</div>
           </div>
         `;
 
@@ -8880,7 +8896,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       if(State.badges.includes('squadron_commander_badge') && State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Graduated Commander and will render under the nameplate (UN); command insignia remains outside the normal four-badge count.');
       if(State.badges.includes('squadron_commander_badge') && !State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Current Commander and will render over the nameplate (ON); command insignia remains outside the normal four-badge count.');
       const aviation = State.badges.filter(id => ['OLP','OLPA','OLPU'].some(s => String(badgeLocations[id]||'').includes(s)));
-      if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.');
+      if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearerâ€™s left side.');
     }
     if(State.uniform === 'mess_dress' && State.membership === 'cadet') addNotice('err','Mess Dress is not available to cadets in this builder.');
     if(!CAPUB_V2.notices.length) addNotice('ok','No automatic validation issues found. Final approval still requires CAPR 39-1 review and any applicable supplement.');
@@ -8941,7 +8957,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   function downloadMissingAssetList(){
     const expected = buildExpectedAssetList();
     const lines = [];
-    lines.push('CAP Uniform Builder — Missing/Needed Image Asset List');
+    lines.push('CAP Uniform Builder â€” Missing/Needed Image Asset List');
     lines.push('Generated: '+new Date().toLocaleString());
     lines.push('');
     lines.push('Recommended rank filename rule: replace / with _, spaces with _, e.g., C/2d Lt -> images/ranks/C_2d_Lt.png');
@@ -9058,7 +9074,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       <div class="capubStep" data-step="export"><strong>4. Export</strong><span>Validate + PNG</span></div>`;
     scroll.prepend(box);
     const help=document.createElement('div'); help.className='capubSectionHint';
-    help.innerHTML='<span>★</span><div><b>Fast workflow:</b> start at the top, then use the floating buttons at the bottom for the item galleries and download.</div>';
+    help.innerHTML='<span>â˜…</span><div><b>Fast workflow:</b> start at the top, then use the floating buttons at the bottom for the item galleries and download.</div>';
     scroll.insertBefore(help, box.nextSibling);
   }
   function updateProgress(){
@@ -9074,7 +9090,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   function ensurePreviewTools(){
     const wrap=safeBy('previewWrapper'); if(!wrap || safeBy('previewTools')) return;
     const tools=document.createElement('div'); tools.id='previewTools'; tools.className='previewTools';
-    tools.innerHTML=`<div class="previewToolCard"><div class="toolTitle">Preview</div><div class="smallRow"><button type="button" class="ghost" id="zoomOutBtn">−</button><button type="button" class="ghost" id="zoomFitBtn">Fit</button><button type="button" class="ghost" id="zoomInBtn">+</button></div><span class="zoomReadout" id="zoomReadout">100%</span></div>`;
+    tools.innerHTML=`<div class="previewToolCard"><div class="toolTitle">Preview</div><div class="smallRow"><button type="button" class="ghost" id="zoomOutBtn">âˆ’</button><button type="button" class="ghost" id="zoomFitBtn">Fit</button><button type="button" class="ghost" id="zoomInBtn">+</button></div><span class="zoomReadout" id="zoomReadout">100%</span></div>`;
     wrap.appendChild(tools);
     safeBy('zoomOutBtn').onclick=()=>setZoom(Math.max(.55,V3.zoom-.1));
     safeBy('zoomInBtn').onclick=()=>setZoom(Math.min(1.65,V3.zoom+.1));
@@ -9088,8 +9104,11 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   function fitZoom(){
     const wrap=safeBy('previewWrapper'), area=safeBy('previewArea');
     if(!wrap || !area) return setZoom(1);
-    const available=Math.max(300,wrap.clientWidth-230);
-    const z=Math.min(1, Math.max(.55, available/480));
+    const mobile=window.matchMedia('(max-width:768px)').matches;
+    const reserve=mobile ? 24 : 230;
+    const available=Math.max(240,wrap.clientWidth-reserve);
+    const previewWidth=area.offsetWidth || 450;
+    const z=Math.min(1, Math.max(.5, available/previewWidth));
     setZoom(z);
   }
   function ensureTopBar(){
@@ -9513,7 +9532,7 @@ function extractEncampmentCountFromReport(text){
   if(!startMatch) return 0;
 
   const rest = source.slice(startMatch.index);
-  const endRe = /\b(?:Orientation[\s\S]{0,30}Flights|Cadet[\s\S]{0,30}Achievements|Awards|Promotions|Decorations|Ribbons|Local[\s\S]{0,30}Activities|Professional[\s\S]{0,30}Development|Specialty[\s\S]{0,30}Tracks)\b/i;
+  const endRe = /\b(?:In-Person[\s\S]{0,30}Required[\s\S]{0,30}Staff[\s\S]{0,30}Training|Required[\s\S]{0,30}Staff[\s\S]{0,30}Training|Orientation[\s\S]{0,30}Flights|Cadet[\s\S]{0,30}Achievements|Awards|Promotions|Decorations|Ribbons|Local[\s\S]{0,30}Activities|Professional[\s\S]{0,30}Development|Specialty[\s\S]{0,30}Tracks)\b/i;
   const afterHeading = rest.slice('Encampments'.length);
   const endMatch = endRe.exec(afterHeading);
   const section = endMatch
@@ -9547,7 +9566,7 @@ function extractCadetSpecialActivityCountFromReport(text){
     const title = String(match[1] || '').replace(/\s+/g, ' ').trim();
     const year = match[3];
     let parent = null;
-    if(/Hawk Mountain|\bHMRS\b/i.test(title)) parent = 'HMRS';
+    if(/Hawk Mountain|\bHMRS\b|\bHawk\s+Cadet\s+Cadre\b/i.test(title)) parent = 'HMRS';
     else if(/Civic Leadership Academy|\bCLA\b/i.test(title)) parent = 'CLA';
     else if(/Air Force Civil Engineering Academy|\bAFCEA\b/i.test(title)) parent = 'AFCEA';
     else if(/Cadet Officers School|\bCOS\b/i.test(title)) parent = 'COS';
@@ -10474,7 +10493,7 @@ function wireMemberReportImporter(){
 
       const lines = [
         `Imported ${file.name}.`,
-        `Profile: ${parsed.membership || 'unknown'} • ${parsed.gender || 'unknown'} • ${parsed.rank || 'rank not found'}`,
+        `Profile: ${parsed.membership || 'unknown'} â€¢ ${parsed.gender || 'unknown'} â€¢ ${parsed.rank || 'rank not found'}`,
         `Ribbons selected: ${parsed.ribbons.length}`,
         parsed.ribbons.some(r => r.id === 'red_service_ribbon') ? `Red Service: ${parsed.ribbons.find(r => r.id === 'red_service_ribbon').reason}` : '',
         parsed.ribbons.some(r => r.id === 'crisis_ribbon') ? 'Crisis Service Award: selected' : '',
@@ -10510,15 +10529,11 @@ function capubSafeWire(id, eventName, handler){
 }
 
 function capubRepairCriticalButtons(){
-  capubSafeWire('hamburgerBtn','click', () => {
-    if(layoutShell.classList.contains('sidebar-open')){
-      layoutShell.classList.remove('sidebar-open');
-      layoutShell.classList.add('sidebar-collapsed');
-    }else{
-      layoutShell.classList.remove('sidebar-collapsed');
-      layoutShell.classList.add('sidebar-open');
-    }
-  });
+  const menuButton=by('hamburgerBtn');
+  if(menuButton && menuButton.dataset.sidebarToggleWired !== '1'){
+    menuButton.dataset.sidebarToggleWired='1';
+    menuButton.addEventListener('click', capubToggleSidebar);
+  }
 
   capubSafeWire('expandRibbons','click', () => {
     if(typeof openGalleryModal === 'function') openGalleryModal('ribbons');
@@ -10598,7 +10613,7 @@ function capubRepairCriticalButtons(){
     if(!panel) return;
     const isOpen = panel.style.display === 'block';
     panel.style.display = isOpen ? 'none' : 'block';
-    if(arrow) arrow.textContent = isOpen ? '›' : '‹';
+    if(arrow) arrow.textContent = isOpen ? 'â€º' : 'â€¹';
   });
 
   // Make sure arrows never block normal UI/preview interaction unless calibrate mode is on.
@@ -10618,7 +10633,7 @@ window.addEventListener('load', () => { try{ capubRepairCriticalButtons(); }catc
 
 
 /* ===========================
-   CAPUB PATCH — COMMAND DATES + ES/VU BADGE SLOT FIX
+   CAPUB PATCH â€” COMMAND DATES + ES/VU BADGE SLOT FIX
    Added 2026-05-12
    =========================== */
 const CAPUB_COUNTED_BADGE_LIMIT = 5;
@@ -10855,7 +10870,7 @@ mergeCalibDefaults();
 
 
 /* ==========================================================
-   CAPUB PATCH 2026-05-14 — STRICT COMMANDER DUTY IMPORT
+   CAPUB PATCH 2026-05-14 â€” STRICT COMMANDER DUTY IMPORT
    Purpose:
    - Prevent "Deputy Commander" from importing as Command Insignia.
    - Prevent generic uses of Commander, such as Commander's Commendation,
@@ -10874,8 +10889,8 @@ const CAPUB_STRICT_COMMAND_DUTY_TITLES = new Set([
 
 function capubNormalizeDutyTitle(title){
   return String(title || '')
-    .replace(/[“”]/g, '"')
-    .replace(/[’']/g, '')
+    .replace(/[â€œâ€]/g, '"')
+    .replace(/[â€™']/g, '')
     .replace(/\s+/g, ' ')
     .trim()
     .toUpperCase();
@@ -10996,7 +11011,7 @@ function extractCommandServiceCommanderAssignments(text){
 }
 
 /* ==========================================================
-   CAPUB PATCH 2026-05-15 — CAC RIBBON + CURRENT SHOULDER CORD LOGIC
+   CAPUB PATCH 2026-05-15 â€” CAC RIBBON + CURRENT SHOULDER CORD LOGIC
    User rule implemented:
    - CAC ribbon is earned from PAST duty assignments only, because the cadet
      must have served in the CAC position/term before wearing the ribbon.
@@ -11043,16 +11058,16 @@ const CAC_RIBBON_VALUE_BY_LEVEL = {
   national: 'national_gold_star'
 };
 const CAC_CORD_LABEL_BY_LEVEL = {
-  group: 'Group CAC shoulder cord — green',
-  wing: 'Wing CAC shoulder cord — red',
-  region: 'Region CAC shoulder cord — blue',
-  national: 'National CAC shoulder cord — gold'
+  group: 'Group CAC shoulder cord â€” green',
+  wing: 'Wing CAC shoulder cord â€” red',
+  region: 'Region CAC shoulder cord â€” blue',
+  national: 'National CAC shoulder cord â€” gold'
 };
 const SHOULDER_CORD_META = {
-  group:       { label:'Group CAC shoulder cord — green',    srcBase:'cords/group',       imported:true  },
-  wing:        { label:'Wing CAC shoulder cord — red',       srcBase:'cords/wing',        imported:true  },
-  region:      { label:'Region CAC shoulder cord — blue',    srcBase:'cords/region',      imported:true  },
-  national:    { label:'National CAC shoulder cord — gold',  srcBase:'cords/national',    imported:true  },
+  group:       { label:'Group CAC shoulder cord â€” green',    srcBase:'cords/group',       imported:true  },
+  wing:        { label:'Wing CAC shoulder cord â€” red',       srcBase:'cords/wing',        imported:true  },
+  region:      { label:'Region CAC shoulder cord â€” blue',    srcBase:'cords/region',      imported:true  },
+  national:    { label:'National CAC shoulder cord â€” gold',  srcBase:'cords/national',    imported:true  },
   color_guard: { label:'Color Guard shoulder cord',          srcBase:'cords/color_guard', imported:false },
   honor_guard: { label:'Honor Guard shoulder cord',          srcBase:'cords/honor_guard', imported:false }
 };
@@ -11391,7 +11406,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
 
 /* ==========================================================
-   CAPUB PATCH 2026-05-16 — CAC LEVEL IMPORT CORRECTION
+   CAPUB PATCH 2026-05-16 â€” CAC LEVEL IMPORT CORRECTION
    Purpose:
    - Current CAC Chair, Vice Chair, and Representative/Primary Rep duty
      assignments now import the matching CAC shoulder cord.
@@ -11472,7 +11487,7 @@ function capubGetCACShoulderCordFromCurrentDutyAssignments(text){
 }
 
 // Final parser wrapper so the import notes match the corrected logic instead of
-// the older “past duty only” wording.
+// the older â€œpast duty onlyâ€ wording.
 const capubOriginalParseCapMemberReport_CACLevelCorrection = parseCapMemberReport;
 parseCapMemberReport = function capubParseCapMemberReportCACLevelCorrection(textRaw){
   const normalized = normalizeMemberReportText(textRaw);
@@ -11501,7 +11516,7 @@ parseCapMemberReport = function capubParseCapMemberReportCACLevelCorrection(text
 try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(err){ console.warn('CAC level correction refresh failed', err); }
 
 /* ==========================================================
-   CAPUB PATCH 2026-05-16B — CAC REGION OVERRIDE FINAL FIX
+   CAPUB PATCH 2026-05-16B â€” CAC REGION OVERRIDE FINAL FIX
    Problem fixed:
    - Some PDF text extraction orders past WCAC rows close to the current RCAC row,
      causing the importer to keep the Wing CAC cord/ribbon even when a current
@@ -11612,7 +11627,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
 
 /* ==========================================================
-   CAPUB PATCH 2026-05-19 — UTILITY BADGES, OCP PATCH FILTER,
+   CAPUB PATCH 2026-05-19 â€” UTILITY BADGES, OCP PATCH FILTER,
    UNIT PATCH IMPORT, NCSA PATCH IMPORT, FIELD CALIBRATION
    ========================================================== */
 (function capubUtilityFieldUniformPatch(){
@@ -11767,7 +11782,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
             <div class="title">${title}</div>
             <div class="sub">(${id})</div>
             <div class="miniRow"><label><input type="checkbox" class="ptChk"> Add</label></div>
-            <div class="sub">Slot hint: <b>${meta.slotHint}</b> • Size: ${meta.w}×${meta.h} px • Path: images/${meta.img}</div>
+            <div class="sub">Slot hint: <b>${meta.slotHint}</b> â€¢ Size: ${meta.w}Ã—${meta.h} px â€¢ Path: images/${meta.img}</div>
           </div>`;
 
         const chk = tile.querySelector('.ptChk');
@@ -11777,7 +11792,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
           tile.classList.add('disabledBlock');
           const sub = tile.querySelector('.sub:last-child');
           const reason = getPatchAuthorizationReason(id);
-          if(sub) sub.innerHTML += ` • <b>${reason || 'Not authorized on current uniform'}</b>`;
+          if(sub) sub.innerHTML += ` â€¢ <b>${reason || 'Not authorized on current uniform'}</b>`;
         }
         chk.onchange = () => {
           if(!authorized){ chk.checked = false; sel.checked = false; return; }
@@ -11841,10 +11856,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
           <img src="${ASSET(previewPath)}" alt="${title}" onerror="this.onerror=null;this.src='${ASSET(fallbackPath)}';">
           <div style="flex:1;min-width:0;">
             <div class="title">${title}${rareCadetTag}</div>
-            <div class="sub">(${id})${utilityMode ? ' • Utility badge preview: images/badges/[badge_id].png' : ''}</div>
+            <div class="sub">(${id})${utilityMode ? ' â€¢ Utility badge preview: images/badges/[badge_id].png' : ''}</div>
             <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
             ${id==='squadron_commander_badge' && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            <div class="sub">Slot: <b>${utilityMode ? 'Utility uniform calibrated field slot' : getBadgeSlotLabel(id)}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
+            <div class="sub">Slot: <b>${utilityMode ? 'Utility uniform calibrated field slot' : getBadgeSlotLabel(id)}</b> â€¢ Size: ${(customBadgeSizes[id]?.width||60)}Ã—${(customBadgeSizes[id]?.height||25)} px</div>
           </div>`;
 
         const chk = tile.querySelector('.bdChk');
@@ -12079,7 +12094,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
 
 /* ==========================================================
-   CAPUB HOTFIX 2026-05-19 — PJOC OCP/ABU variant handling,
+   CAPUB HOTFIX 2026-05-19 â€” PJOC OCP/ABU variant handling,
    TN-330 unit patch path, and comms auto-alternate cleanup
    ========================================================== */
 (function capubPatchVariantAndUnitHotfix(){
@@ -12283,7 +12298,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
 
 /* ==========================================================
-   CAPUB PATCH — Community Service Ribbon through 4,800 hours
+   CAPUB PATCH â€” Community Service Ribbon through 4,800 hours
    Requires these files in images/ribbons/:
    commun01.png, commun02.png, commun03.png, commun04.png,
    commun05.png, commun06.png, commun07.png, commun08.png,
@@ -12313,7 +12328,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       13: 'commun13.png', // 2 silver + 2 bronze
       16: 'commun16.png', // 3 silver
       17: 'commun17.png', // 3 silver + 1 bronze
-      21: 'commun21.png'  // 4 silver — full ribbon
+      21: 'commun21.png'  // 4 silver â€” full ribbon
     });
 
     // Highest-device ribbon first. A ribbon with fewer devices follows it at
@@ -12436,7 +12451,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       }
     };
 
-    console.info('CAPUB Community Service Ribbon patch loaded: 60–4,800 hours.');
+    console.info('CAPUB Community Service Ribbon patch loaded: 60â€“4,800 hours.');
   }catch(err){
     console.error('CAPUB Community Service Ribbon patch failed to load', err);
   }
