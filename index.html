@@ -11731,6 +11731,12 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     getBadgeAssetCandidates = function capubGetBadgeAssetCandidatesUtilityAware(id){
       const current = [];
       if(capubIsUtilityUniform()){
+        addAssetCandidate(current, `badges/utility/${id}.png`);
+        addAssetCandidateWithExtensions(current, `badges/utility/${id}`);
+        (capubPreviousGetBadgeAssetCandidates(id) || []).forEach(path => {
+          const utilityPath = String(path || '').replace(/^badges\//i, 'badges/utility/');
+          if(utilityPath !== path) addAssetCandidate(current, utilityPath);
+        });
         addAssetCandidate(current, `badges/${id}.png`);
         addAssetCandidateWithExtensions(current, `badges/${id}`);
       }
@@ -11865,16 +11871,17 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const sel = State.badgeSelections[id] || (State.badgeSelections[id] = { checked:false });
         const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
         const rareCadetTag = (!utilityMode && State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
-        const previewPath = utilityMode ? `badges/${id}.png` : getBadgeAssetPath(id);
+        const utilityCandidates = utilityMode ? getBadgeAssetCandidates(id) : [];
+        const previewPath = utilityMode ? (utilityCandidates[0] || `badges/utility/${id}.png`) : getBadgeAssetPath(id);
         const fallbackPath = utilityMode ? capubPreviousGetBadgeAssetPath(id) : `badges/${id}.png`;
 
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
-          <img src="${ASSET(previewPath)}" alt="${title}" onerror="this.onerror=null;this.src='${ASSET(fallbackPath)}';">
+          <img src="${ASSET(previewPath)}" alt="${title}">
           <div style="flex:1;min-width:0;">
             <div class="title">${title}${rareCadetTag}</div>
-            <div class="sub">(${id})${utilityMode ? ' • Utility badge preview: images/badges/[badge_id].png' : ''}</div>
+            <div class="sub">(${id})${utilityMode ? ' • Silver-on-blue utility badge' : ''}</div>
             <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
             ${id==='squadron_commander_badge' && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
             <div class="sub">Slot: <b>${utilityMode ? 'Utility uniform calibrated field slot' : getBadgeSlotLabel(id)}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
@@ -11882,6 +11889,20 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
         const chk = tile.querySelector('.bdChk');
         const gradChk = tile.querySelector('.cmdGradChk');
+        const previewImg = tile.querySelector('img');
+        if(previewImg){
+          const previewCandidates = utilityMode
+            ? [...utilityCandidates.slice(1), fallbackPath]
+            : [fallbackPath];
+          let previewCandidateIndex = 0;
+          previewImg.onerror = () => {
+            if(previewCandidateIndex >= previewCandidates.length){
+              previewImg.onerror = null;
+              return;
+            }
+            previewImg.src = ASSET(previewCandidates[previewCandidateIndex++]);
+          };
+        }
         chk.checked = !!sel.checked;
         if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
 
@@ -12032,9 +12053,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         img.dataset.tooltipWhy = 'Utility occupational/qualification badge centered above the CAP tape with a 1/8-inch exposed dark-blue border.';
         img.style.display = 'block';
         img.style.objectFit = 'contain';
-        img.style.background = '#0b2d4f';
-        img.style.outline = `${CAPUB_UTILITY_BLUE_MARGIN}px solid #0b2d4f`;
-        img.style.outlineOffset = '0';
         img.style.zIndex = '28';
         img.onload = capubLayoutUtilityBadges;
         applyBadgeAssetWithFallback(img, id);
