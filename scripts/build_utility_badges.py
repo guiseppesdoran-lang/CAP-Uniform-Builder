@@ -4,7 +4,6 @@ import argparse
 from pathlib import Path
 
 from pypdf import PdfReader
-from PIL import Image
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,32 +41,6 @@ def find_image(page, image_name: str):
     raise ValueError(f"Embedded image {image_name!r} was not found")
 
 
-def blue_and_silver_only(artwork: Image.Image) -> Image.Image:
-    """Remove paper-white/transparent pixels and restrict cloth art to blue/silver."""
-    source = artwork.convert("RGBA")
-    cleaned = Image.new("RGBA", source.size)
-    output = []
-    for red, green, blue, alpha in source.getdata():
-        if alpha < 24:
-            output.append((12, 31, 61, 255))
-            continue
-
-        # Blue-dominant and very dark pixels belong to the cloth backing/detail.
-        if blue > red * 1.08 or (red < 85 and green < 105 and blue < 145):
-            level = max(18, min(104, int((red + green + blue) / 3)))
-            output.append((max(7, level // 3), max(22, level // 2), level, 255))
-            continue
-
-        # All embroidery and anti-aliasing becomes silver; cap the highlight so
-        # no white pixels remain in either the canvas or picker preview.
-        luminance = int(0.299 * red + 0.587 * green + 0.114 * blue)
-        silver = max(118, min(205, luminance))
-        output.append((silver, min(205, silver + 3), min(205, silver + 6), 255))
-
-    cleaned.putdata(output)
-    return cleaned
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("pdf", type=Path, help="CAPR 39-1 PDF containing Attachment 7")
@@ -80,7 +53,7 @@ def main() -> None:
 
     reader = PdfReader(args.pdf)
     for badge_id, (page_index, image_name) in DOCUMENT_BADGES.items():
-        artwork = blue_and_silver_only(find_image(reader.pages[page_index], image_name))
+        artwork = find_image(reader.pages[page_index], image_name).convert("RGBA")
         artwork.save(OUTPUT_DIR / f"{badge_id}.png", optimize=True)
 
     print(f"Extracted {len(DOCUMENT_BADGES)} document-defined utility badges")
