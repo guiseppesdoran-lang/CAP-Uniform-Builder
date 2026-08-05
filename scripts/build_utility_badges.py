@@ -1,61 +1,59 @@
-"""Build OCP/utility badge artwork from the existing transparent badge PNGs."""
+"""Extract only the utility/cloth occupational badges shown in CAPR 39-1."""
 
+import argparse
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageFilter, ImageOps
+from pypdf import PdfReader
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_DIR = ROOT / "images" / "badges"
-OUTPUT_DIR = SOURCE_DIR / "utility"
+OUTPUT_DIR = ROOT / "images" / "badges" / "utility"
 
-BLUE = (11, 45, 79, 255)
-MAX_ART_WIDTH = 86
-MAX_ART_HEIGHT = 42
-BLUE_BORDER = 6
+# Page indices and embedded-image names from Figure A7-3 (PDF pages 3-5).
+# These are the cloth versions, already presented on the correct blue backing.
+DOCUMENT_BADGES = {
+    "jewish_chaplin": (2, "Im4.png"),
+    "christian_chaplin": (2, "Im5.png"),
+    "buddist_chaplin": (2, "Im6.png"),
+    "muslim_chaplin": (2, "Im7.png"),
+    "medical_officer": (2, "Im10.png"),
+    "nurse_officer": (2, "Im11.png"),
+    "legal_officer": (2, "Im13.jp2"),
+    "emt_paramedic": (3, "Im3.jp2"),
+    "emt_intermediate": (3, "Im4.png"),
+    "emt_basic_badge": (3, "Im11.jp2"),
+    "incident_commander_1_badge": (3, "Im8.png"),
+    "incident_commander_2_badge": (3, "Im9.png"),
+    "basic_incident_commander_badge": (3, "Im10.png"),
+    "master_ground_team_badge": (4, "Im3.png"),
+    "senior_ground_team_badge": (4, "Im4.png"),
+    "ground_team_basic_badge": (4, "Im5.png"),
+}
 
 
-def build_badge(source_path: Path, output_path: Path) -> None:
-    source = Image.open(source_path).convert("RGBA")
-    alpha = source.getchannel("A")
-    bbox = alpha.getbbox()
-    if not bbox:
-        return
-
-    source = source.crop(bbox)
-    alpha = source.getchannel("A")
-    scale = min(MAX_ART_WIDTH / source.width, MAX_ART_HEIGHT / source.height)
-    size = (
-        max(1, round(source.width * scale)),
-        max(1, round(source.height * scale)),
-    )
-    source = source.resize(size, Image.Resampling.LANCZOS)
-    alpha = source.getchannel("A")
-
-    # Preserve internal highlights and shadows while converting the artwork to
-    # the light-silver embroidery specified for utility-uniform badges.
-    gray = ImageOps.grayscale(source)
-    silver = gray.point(lambda value: 165 + round(value * 0.33))
-    embroidery = Image.merge("RGBA", (silver, silver, silver, alpha))
-
-    canvas = Image.new(
-        "RGBA",
-        (size[0] + BLUE_BORDER * 2, size[1] + BLUE_BORDER * 2),
-        BLUE,
-    )
-    canvas.alpha_composite(embroidery, (BLUE_BORDER, BLUE_BORDER))
-
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    canvas.save(output_path, optimize=True)
+def find_image(page, image_name: str):
+    for image in page.images:
+        if image.name == image_name:
+            return image.image
+    raise ValueError(f"Embedded image {image_name!r} was not found")
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("pdf", type=Path, help="CAPR 39-1 PDF containing Attachment 7")
+    args = parser.parse_args()
+
+    if OUTPUT_DIR.exists():
+        for old_badge in OUTPUT_DIR.glob("*.png"):
+            old_badge.unlink()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    count = 0
-    for source_path in sorted(SOURCE_DIR.glob("*.png")):
-        build_badge(source_path, OUTPUT_DIR / source_path.name)
-        count += 1
-    print(f"Built {count} utility badge images in {OUTPUT_DIR}")
+
+    reader = PdfReader(args.pdf)
+    for badge_id, (page_index, image_name) in DOCUMENT_BADGES.items():
+        artwork = find_image(reader.pages[page_index], image_name).convert("RGBA")
+        artwork.save(OUTPUT_DIR / f"{badge_id}.png", optimize=True)
+
+    print(f"Extracted {len(DOCUMENT_BADGES)} document-defined utility badges")
 
 
 if __name__ == "__main__":

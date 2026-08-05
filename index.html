@@ -11666,6 +11666,14 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return FIELD_BADGE_UNIFORMS.has(capubFieldUniformKey(uniformId));
     }
 
+    const CAPUB_DOCUMENT_UTILITY_BADGE_IDS = [
+      'jewish_chaplin','christian_chaplin','buddist_chaplin','muslim_chaplin',
+      'medical_officer','nurse_officer','legal_officer',
+      'emt_paramedic','emt_intermediate','emt_basic_badge',
+      'incident_commander_1_badge','incident_commander_2_badge','basic_incident_commander_badge',
+      'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge'
+    ];
+
     function capubPatchIsUnitPatchId(patchId){
       const id = String(patchId || '');
       if(id === 'unit_patch' || id === 'wing_patch' || id === 'command_patch') return true;
@@ -11848,11 +11856,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     };
 
     function capubGetUtilityBadgeIds(){
-      const ids = (typeof getEligibleBadgeIdsForMembership === 'function')
-        ? getEligibleBadgeIdsForMembership(State.membership)
-        : [...badgeList];
-      // Keep selections available across uniforms; actual identity is the same.
-      return ids.filter(id => isBadgeEligibleForMembership(id, State.membership));
+      // Utility uniforms show only the cloth occupational/qualification badges
+      // pictured in CAPR 39-1 Attachment 7, Figure A7-3.
+      return CAPUB_DOCUMENT_UTILITY_BADGE_IDS
+        .filter(id => isBadgeEligibleForMembership(id, State.membership));
     }
 
     buildBadgeGallery = function capubBuildBadgeGalleryUtilityAware(){
