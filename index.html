@@ -10319,34 +10319,55 @@ function capubRepairCriticalButtons(){
   });
 
   capubSafeWire('downloadImage','click', async function () {
-    const downloadButton = by('downloadImage');
-    if(downloadButton?.dataset.exportBusy === '1') return;
-    if(downloadButton) downloadButton.dataset.exportBusy = '1';
 
-    if(typeof html2canvas === 'undefined'){
-      if(downloadButton) delete downloadButton.dataset.exportBusy;
-      alert('Download failed: html2canvas did not load. Check internet access or the CDN script.');
+  const downloadButton = by('downloadImage');
+  if(downloadButton?.dataset.exportBusy === "1") return;
+  if(downloadButton) downloadButton.dataset.exportBusy = "1";
+
+  let clone = null;
+
+  try {
+    const original = by('uniformCanvas') || by('previewArea');
+    if(!original) {
+      console.error("No export target found");
       return;
     }
-    const stage = (typeof buildCenteredExportStage === 'function') ? buildCenteredExportStage() : null;
-const original = by('uniformCanvas') || by('previewArea');
-if(!original) return;
 
-const clone = original.cloneNode(true);
+    // 🔥 create safe clone
+    clone = original.cloneNode(true);
 
-clone.style.position = "fixed";
-clone.style.top = "0";
-clone.style.left = "-9999px";
+    clone.style.position = "fixed";
+    clone.style.top = "0";
+    clone.style.left = "-9999px";
+    clone.style.width = original.offsetWidth + "px";
+    clone.style.height = original.offsetHeight + "px";
 
-// lock size (CRITICAL)
-clone.style.width = original.offsetWidth + "px";
-clone.style.height = original.offsetHeight + "px";
+    // remove transforms (prevents shifting)
+    clone.querySelectorAll('*').forEach(el => {
+      el.style.transform = "none";
+    });
 
-// remove transform-based shifting
-clone.querySelectorAll('*').forEach(el => {
-  el.style.transform = "none";
+    document.body.appendChild(clone);
+
+    const canvas = await html2canvas(clone, {
+      backgroundColor: '#ffffff',
+      scale: 2, // keep this lower for stability
+      useCORS: true
+    });
+
+    const link = document.createElement('a');
+    link.download = 'CAP_Uniform.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+
+  } catch (err) {
+    console.error("EXPORT ERROR:", err);
+    alert("Export failed — check console (F12)");
+  } finally {
+    if(clone) clone.remove();
+    if(downloadButton) delete downloadButton.dataset.exportBusy;
+  }
 });
-
 document.body.appendChild(clone);    if(!target) return;
     try{
       const canvas = await html2canvas(clone, { backgroundColor:'#ffffff', scale:3, useCORS:true, allowTaint:true });
