@@ -11880,7 +11880,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const rareCadetTag = (!utilityMode && State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
         const utilityCandidates = utilityMode ? getBadgeAssetCandidates(id) : [];
         const previewPath = utilityMode ? (utilityCandidates[0] || `badges/utility/${id}.png`) : getBadgeAssetPath(id);
-        const fallbackPath = utilityMode ? capubPreviousGetBadgeAssetPath(id) : `badges/${id}.png`;
+        const fallbackPath = utilityMode ? '' : `badges/${id}.png`;
 
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
@@ -11899,7 +11899,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const previewImg = tile.querySelector('img');
         if(previewImg){
           const previewCandidates = utilityMode
-            ? [...utilityCandidates.slice(1), fallbackPath]
+            ? utilityCandidates.slice(1)
             : [fallbackPath];
           let previewCandidateIndex = 0;
           previewImg.onerror = () => {
@@ -11982,6 +11982,15 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       cfdu: { centerX:708, topY:180 },
       flight_suit: { centerX:708, topY:180 }
     };
+    // Imported from the user's OCP positioning example. Keys intentionally
+    // include selection order so this exact three-badge combination matches it.
+    const CAPUB_UTILITY_POSITION_EXAMPLE = {
+      ocp: {
+        'utilityBadge:master_ground_team_badge:0': { x:547, y:128, w:30, h:28, r:0 },
+        'utilityBadge:emt_basic_badge:1': { x:577, y:131, w:38, h:28, r:0 },
+        'utilityBadge:AirCrew1_DB3F0FCC3650F:2': { x:551, y:99, w:57, h:22, r:0 }
+      }
+    };
 
     function capubUtilityBadgeIds(){
       return (State.badges || [])
@@ -12045,10 +12054,16 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
       badges.forEach((img, i) => {
         const size = sizes[i];
-        img.style.left = `${Math.round(positions[i].x)}px`;
-        img.style.top = `${Math.round(positions[i].y)}px`;
-        img.style.width = `${size.w}px`;
-        img.style.height = `${size.h}px`;
+        const example = badges.length === 3
+          ? CAPUB_UTILITY_POSITION_EXAMPLE[fieldKey]?.[img.dataset.calibKey]
+          : null;
+        const saved = typeof getCalib === 'function' ? getCalib(img.dataset.calibKey) : null;
+        const placement = saved || example;
+        img.style.left = `${Math.round(placement?.x ?? positions[i].x)}px`;
+        img.style.top = `${Math.round(placement?.y ?? positions[i].y)}px`;
+        img.style.width = `${Math.round(placement?.w ?? size.w)}px`;
+        img.style.height = `${Math.round(placement?.h ?? size.h)}px`;
+        img.style.transform = `rotate(${Number(placement?.r || 0)}deg)`;
       });
     }
 
