@@ -295,13 +295,14 @@
     z-index:9998;
     overflow:visible;
   }
-  .measurementOverlay text{
+  .measurementOverlay text,
+  .measurementArrowLayer text{
     fill:#c1121f;
-    font-size:9px;
-    font-weight:600;
+    font-size:10px;
+    font-weight:800;
     paint-order:stroke;
     stroke:#fff;
-    stroke-width:1px;
+    stroke-width:2.5px;
     stroke-linejoin:round;
   }
 
@@ -7701,21 +7702,11 @@ function buildMeasurementArrowKey(upper, lower){
 }
 
 function getDynamicArrowCalibration(arrowKey, base){
-  // Measurement arrows must remain tied to the currently rendered badges/ribbons.
-  // Saved calibration values are therefore interpreted as offsets from the
-  // current dynamic arrow box, not as fixed absolute coordinates.
-  const saved = getCalib(arrowKey) || {};
-  const numberOrZero = v => Number.isFinite(Number(v)) ? Number(v) : 0;
-
-  return {
-    x: base.x + (saved.dx ?? (saved.x !== undefined ? numberOrZero(saved.x) - base.x : 0)),
-    y: base.y + (saved.dy ?? (saved.y !== undefined ? numberOrZero(saved.y) - base.y : 0)),
-    w: Math.max(18, base.w + (saved.dw ?? (saved.w !== undefined ? numberOrZero(saved.w) - base.w : 0))),
-    // Keep the vertical length dynamic so the arrow follows whatever badges/ribbons
-    // are currently rendered. Height calibration is treated as an optional offset only.
-    h: Math.max(1, base.h + (saved.dh ?? 0)),
-    r: numberOrZero(saved.r)
-  };
+  // Arrows are derived annotations, not uniform assets. Legacy calibration
+  // exports contain absolute arrow boxes which become stale whenever a badge,
+  // ribbon rack, gender, uniform, or preview size changes. Always use the live
+  // item edges so both arrowheads remain attached to what they measure.
+  return { ...base };
 }
 
 function makeMeasurementArrow(svgUnused, arrowKey, x, y1, y2, label, placeLeft=false){
@@ -7736,7 +7727,7 @@ function makeMeasurementArrow(svgUnused, arrowKey, x, y1, y2, label, placeLeft=f
   wrap.dataset.dynamicArrowBase = JSON.stringify(baseBox);
   wrap.dataset.tooltipTitle = 'Measurement Arrow';
   wrap.dataset.tooltipReg = 'Dynamic calibration item';
-  wrap.dataset.tooltipWhy = 'This arrow recalculates from the current badges/ribbons, then applies your calibration offset.';
+  wrap.dataset.tooltipWhy = 'This arrow recalculates from the current badge and ribbon edges.';
 
   wrap.style.left = `${adjusted.x}px`;
   wrap.style.top = `${adjusted.y}px`;
@@ -7777,7 +7768,8 @@ function makeMeasurementArrow(svgUnused, arrowKey, x, y1, y2, label, placeLeft=f
   line.setAttribute('y1', 0);
   line.setAttribute('y2', actualH);
   line.setAttribute('stroke', '#c1121f');
-  line.setAttribute('stroke-width', '0.9');
+  line.setAttribute('stroke-width', '1.35');
+  line.setAttribute('vector-effect', 'non-scaling-stroke');
   line.setAttribute('marker-start', `url(#${markerId})`);
   line.setAttribute('marker-end', `url(#${markerId})`);
   svg.appendChild(line);
@@ -7974,6 +7966,7 @@ by('toggleMini').addEventListener('change', e=>{
 
 const measurementOverlayToggle = by('toggleMeasurementOverlay');
 if(measurementOverlayToggle){
+  measurementOverlayToggle.dataset.measurementToggleWired = '1';
   measurementOverlayToggle.addEventListener('change', e=>{
     State.showMeasurementOverlay = !!e.target.checked;
     if(State.showMeasurementOverlay){
@@ -10606,14 +10599,18 @@ function capubRepairCriticalButtons(){
     }
   });
 
-  capubSafeWire('toggleMeasurementOverlay','change', evt => {
-    State.showMeasurementOverlay = !!evt.target.checked;
-    if(State.showMeasurementOverlay){
-      if(typeof renderMeasurementOverlay === 'function') renderMeasurementOverlay();
-    }else if(typeof clearMeasurementOverlay === 'function'){
-      clearMeasurementOverlay();
-    }
-  });
+  const measurementToggle=by('toggleMeasurementOverlay');
+  if(measurementToggle && measurementToggle.dataset.measurementToggleWired !== '1'){
+    measurementToggle.dataset.measurementToggleWired='1';
+    measurementToggle.addEventListener('change', evt => {
+      State.showMeasurementOverlay = !!evt.target.checked;
+      if(State.showMeasurementOverlay){
+        if(typeof renderMeasurementOverlay === 'function') renderMeasurementOverlay();
+      }else if(typeof clearMeasurementOverlay === 'function'){
+        clearMeasurementOverlay();
+      }
+    });
+  }
 
   capubSafeWire('toggleMini','change', evt => {
     State.forceMini = !!evt.target.checked;
