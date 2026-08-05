@@ -10329,10 +10329,27 @@ function capubRepairCriticalButtons(){
       return;
     }
     const stage = (typeof buildCenteredExportStage === 'function') ? buildCenteredExportStage() : null;
-    const target = stage || by('uniformCanvas') || by('previewArea');
-    if(!target) return;
+const original = by('uniformCanvas') || by('previewArea');
+if(!original) return;
+
+const clone = original.cloneNode(true);
+
+clone.style.position = "fixed";
+clone.style.top = "0";
+clone.style.left = "-9999px";
+
+// lock size (CRITICAL)
+clone.style.width = original.offsetWidth + "px";
+clone.style.height = original.offsetHeight + "px";
+
+// remove transform-based shifting
+clone.querySelectorAll('*').forEach(el => {
+  el.style.transform = "none";
+});
+
+document.body.appendChild(clone);    if(!target) return;
     try{
-      const canvas = await html2canvas(target, { backgroundColor:'#ffffff', scale:3, useCORS:true, allowTaint:true });
+      const canvas = await html2canvas(clone, { backgroundColor:'#ffffff', scale:3, useCORS:true, allowTaint:true });
       const a = document.createElement('a');
       a.href = canvas.toDataURL('image/png');
       a.download = `CAP_Uniform_${State.uniform || 'preview'}_${Date.now()}.png`;
@@ -10340,9 +10357,10 @@ function capubRepairCriticalButtons(){
       a.click();
       a.remove();
     }finally{
-      if(stage) stage.remove();
-      if(downloadButton) delete downloadButton.dataset.exportBusy;
-    }
+  if(stage) stage.remove();
+  if(clone) clone.remove();
+  if(downloadButton) delete downloadButton.dataset.exportBusy;
+}
   });
 
   capubSafeWire('toggleMeasurementOverlay','change', evt => {
