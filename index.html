@@ -4482,7 +4482,10 @@ function ribbonImageOptionList(id){
 }
 
 function getRibbonImageOverride(id, awardValue){
-  const options = RIBBON_SPECIAL_IMAGE_OPTIONS[id] || [];
+  const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
+  const options = Array.isArray(mcchordOptions) && mcchordOptions.length
+    ? mcchordOptions
+    : (RIBBON_SPECIAL_IMAGE_OPTIONS[id] || []);
   const match = options.find(opt => opt.value === awardValue);
   return match?.image || null;
 }
