@@ -6207,9 +6207,71 @@ function ordinalLabel(n){
   return `${n}${s[(v-20)%10] || s[v] || s[0]}`;
 }
 
+const MCCHORD_21_LEVEL_RIBBONS = {
+  distinguished_service_award:{ prefix:'distin', unit:'award', multiplier:1 },
+  exceptional_service_award:{ prefix:'except', unit:'award', multiplier:1 },
+  meritorious_service_award:{ prefix:'meriti', unit:'award', multiplier:1 },
+  cap_achievment_award:{ prefix:'AA', unit:'award', multiplier:1 },
+  national_commander_unit_citation_award:{ prefix:'unitci-nat', unit:'award', multiplier:1 },
+  unit_citation_award:{ prefix:'unitci', unit:'award', multiplier:1 },
+  cap_counterdrug_ribbon:{ prefix:'coudru', unit:'sorties', multiplier:10 },
+  disaster_relief_ribbon:{ prefix:'disast', unit:'award', multiplier:1 },
+  homeland_security_ribbon:{ prefix:'homeland', unit:'sorties', multiplier:10 },
+  cap_cadet_orientation_pilot_ribbon:{ prefix:'cadpil', unit:'flights', multiplier:50 },
+  community_service_ribbon:{ prefix:'commun', unit:'hours', multiplier:60 },
+  cadet_special_activity_ribbon:{ prefix:'ncsa', unit:'activities', multiplier:1 },
+  encampment_ribbon:{ prefix:'encamp', unit:'encampments', multiplier:1 }
+};
+
+function mcchordContinuationLabel(config, level){
+  if(config.unit === 'award') return `${ordinalLabel(level)} Award`;
+  const amount = level * config.multiplier;
+  return `${amount} ${config.unit.replace(/^./, c => c.toUpperCase())}`;
+}
+
+function mcchordContinuationOptions(id){
+  const config = MCCHORD_21_LEVEL_RIBBONS[id];
+  if(!config) return [];
+  const p = config.prefix;
+  const baseDuplicate = { image:null, awardLabel:'Additional Ribbon' };
+  const imageDuplicate = suffix => ({ image:`${p}${suffix}.png`, awardLabel:'Additional Ribbon' });
+  const layout = {
+    10:{ image:`${p}09.png`, duplicates:[baseDuplicate] },
+    11:{ image:`${p}11.png` },
+    12:{ image:`${p}12.png` },
+    13:{ image:`${p}13.png` },
+    14:{ image:`${p}13.png`, duplicates:[baseDuplicate] },
+    15:{ image:`${p}13.png`, duplicates:[imageDuplicate('02')] },
+    16:{ image:`${p}16.png` },
+    17:{ image:`${p}17.png` },
+    18:{ image:`${p}17.png`, duplicates:[baseDuplicate] },
+    19:{ image:`${p}17.png`, duplicates:[imageDuplicate('02')] },
+    20:{ image:`${p}17.png`, duplicates:[imageDuplicate('03')] },
+    21:{ image:`${p}21.png` }
+  };
+  if(id === 'disaster_relief_ribbon'){
+    Object.assign(layout, {
+      5:{ image:'disast05.png' },
+      6:{ image:'disast06.png' },
+      7:{ image:'disast07.png' },
+      8:{ image:'disast08.png' },
+      9:{ image:'disast09.png' }
+    });
+  }
+  return Object.entries(layout).map(([level, option]) => ({
+    label:mcchordContinuationLabel(config, Number(level)),
+    value:`mcchord_level_${level}`,
+    devices:{},
+    ...option
+  }));
+}
+
 function getRibbonAwardOptions(id){
   const specialImageOptions = ribbonImageOptionList(id);
-  if(specialImageOptions) return specialImageOptions;
+  if(specialImageOptions){
+    const continuation = mcchordContinuationOptions(id);
+    return continuation.length ? [...specialImageOptions, ...continuation] : specialImageOptions;
+  }
 
   if(id === 'Air_Force_Organizational_Excellence_Award'){
     return ribbonAwardCountOptions(10);
