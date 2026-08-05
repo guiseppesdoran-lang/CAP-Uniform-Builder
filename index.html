@@ -11673,6 +11673,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       'incident_commander_1_badge','incident_commander_2_badge','basic_incident_commander_badge',
       'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge'
     ];
+    const CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET = new Set(CAPUB_DOCUMENT_UTILITY_BADGE_IDS);
 
     function capubPatchIsUnitPatchId(patchId){
       const id = String(patchId || '');
@@ -11737,17 +11738,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
     const capubPreviousGetBadgeAssetCandidates = getBadgeAssetCandidates;
     getBadgeAssetCandidates = function capubGetBadgeAssetCandidatesUtilityAware(id){
-      const current = [];
       if(capubIsUtilityUniform()){
-        addAssetCandidate(current, `badges/utility/${id}.png`);
-        addAssetCandidateWithExtensions(current, `badges/utility/${id}`);
-        (capubPreviousGetBadgeAssetCandidates(id) || []).forEach(path => {
-          const utilityPath = String(path || '').replace(/^badges\//i, 'badges/utility/');
-          if(utilityPath !== path) addAssetCandidate(current, utilityPath);
-        });
-        addAssetCandidate(current, `badges/${id}.png`);
-        addAssetCandidateWithExtensions(current, `badges/${id}`);
+        // Never fall back to metal/non-fabric artwork on a utility uniform.
+        return CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id)
+          ? [`badges/utility/${id}.png`]
+          : [];
       }
+      const current = [];
       (capubPreviousGetBadgeAssetCandidates(id) || []).forEach(path => addAssetCandidate(current, path));
       return current;
     };
@@ -11871,7 +11868,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
       const utilityMode = capubIsUtilityUniform();
       const eligible = utilityMode ? capubGetUtilityBadgeIds() : getEligibleBadgeIdsForMembership(State.membership);
-      const showCount = State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
+      // The document-defined utility set is intentionally small; always show
+      // all 16 so none are hidden behind the gallery expansion control.
+      const showCount = utilityMode ? eligible.length : (State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length));
 
       for(let idx=0; idx<showCount; idx++){
         const id = eligible[idx];
@@ -11953,6 +11952,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       // will be calibrated independently by item and slot.
       return (State.badges || [])
         .filter(id => isBadgeEligibleForMembership(id, State.membership))
+        .filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id))
         .filter(id => !isCommandInsigniaBadge(id));
     };
 
@@ -11985,6 +11985,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     function capubUtilityBadgeIds(){
       return (State.badges || [])
         .filter(id => isBadgeEligibleForMembership(id, State.membership))
+        .filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id))
         .filter(id => !isCommandInsigniaBadge(id))
         .slice(0, 4);
     }
@@ -12241,6 +12242,17 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       if(typeof fullRender === 'function') fullRender();
       return result;
     };
+
+    // The base uniform click handler does not rebuild an already-opened badge
+    // gallery. Refresh it after every uniform switch so OCP/ABU/CFU never show
+    // the previously viewed blues/metal badge list on first open.
+    uniformListEl?.addEventListener('click', event => {
+      if(!event.target.closest('.uniformOption')) return;
+      queueMicrotask(() => {
+        if(typeof buildBadgeGallery === 'function') buildBadgeGallery();
+        if(typeof renderAllBadges === 'function') renderAllBadges();
+      });
+    });
 
     capubEnsureFieldCalibrationDefaults();
     if(typeof buildBadgeGallery === 'function') buildBadgeGallery();
