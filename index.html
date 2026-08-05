@@ -4484,7 +4484,7 @@ function ribbonImageOptionList(id){
 function getRibbonImageOverride(id, awardValue){
   const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
   const options = Array.isArray(mcchordOptions) && mcchordOptions.length
-    ? mcchordOptions
+    ? capubExtendMcchordOptionsTo84(id, mcchordOptions)
     : (RIBBON_SPECIAL_IMAGE_OPTIONS[id] || []);
   const match = options.find(opt => opt.value === awardValue);
   return match?.image || null;
@@ -6270,10 +6270,84 @@ function mcchordContinuationOptions(id){
   }));
 }
 
+const CAPUB_SINGLE_AWARD_RIBBON_IDS = new Set([
+  'Air_Force_Organizational_Excellence_Award',
+  'crisis_ribbon',
+  'iace_ribbon'
+]);
+
+const CAPUB_REPEATABLE_RIBBON_84_CONFIG = {
+  air_force_aerial_achievement_medal:{ unit:'award', multiplier:1 },
+  distinguished_service_award:{ unit:'award', multiplier:1 },
+  exceptional_service_award:{ unit:'award', multiplier:1 },
+  meritorious_service_award:{ unit:'award', multiplier:1 },
+  commander_commendation_award:{ unit:'award', multiplier:1, exclude:/\((?:National|Region)/i },
+  cap_achievment_award:{ unit:'award', multiplier:1 },
+  lifesaving_award:{ unit:'award', multiplier:1, exclude:/with Star/i },
+  national_commander_unit_citation_award:{ unit:'award', multiplier:1 },
+  unit_citation_award:{ unit:'award', multiplier:1 },
+  cap_counterdrug_ribbon:{ unit:'sorties', multiplier:10 },
+  disaster_relief_ribbon:{ unit:'award', multiplier:1, exclude:/V-Device/i },
+  homeland_security_ribbon:{ unit:'sorties', multiplier:10 },
+  cap_cadet_orientation_pilot_ribbon:{ unit:'flights', multiplier:50 },
+  community_service_ribbon:{ unit:'hours', multiplier:60 },
+  cadet_special_activity_ribbon:{ unit:'activities', multiplier:1 },
+  encampment_ribbon:{ unit:'encampments', multiplier:1 }
+};
+
+function capubExtendedRibbonLabel(config, count){
+  if(config.unit === 'award') return `${ordinalLabel(count)} Award`;
+  return `${(count * config.multiplier).toLocaleString()} ${config.unit.replace(/^./, c => c.toUpperCase())}`;
+}
+
+function capubFlattenRibbonChunks(chunks, label){
+  const first = chunks[0];
+  const duplicates = [];
+  chunks.forEach((chunk, chunkIndex) => {
+    if(chunkIndex > 0){
+      duplicates.push({ image:chunk.image || null, awardLabel:`${label} - ribbon ${chunkIndex + 1}` });
+    }
+    (chunk.duplicates || []).forEach(duplicate => duplicates.push({ ...duplicate }));
+  });
+  return { image:first.image || null, duplicates };
+}
+
+function capubExtendMcchordOptionsTo84(id, sourceOptions){
+  const config = CAPUB_REPEATABLE_RIBBON_84_CONFIG[id];
+  if(!config) return sourceOptions;
+  const levelOptions = sourceOptions.filter(option => !config.exclude?.test(option.label || ''));
+  if(levelOptions.length < 21) return sourceOptions;
+
+  const extended = [...sourceOptions];
+  for(let count=22; count<=84; count++){
+    const chunks = [];
+    let remaining = count;
+    while(remaining > 0){
+      const chunkCount = Math.min(21, remaining);
+      chunks.push(levelOptions[chunkCount - 1]);
+      remaining -= chunkCount;
+    }
+    const label = capubExtendedRibbonLabel(config, count);
+    const rendered = capubFlattenRibbonChunks(chunks, label);
+    extended.push({
+      label,
+      value:`capub_total_${count}`,
+      image:rendered.image,
+      devices:{},
+      duplicates:rendered.duplicates
+    });
+  }
+  return extended;
+}
+
 function getRibbonAwardOptions(id){
+  if(CAPUB_SINGLE_AWARD_RIBBON_IDS.has(id)) return ribbonSelectOnlyOptions();
   const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
   if(Array.isArray(mcchordOptions) && mcchordOptions.length){
-    return [{ label:'- Select -', value:'', image:null, devices:{} }, ...mcchordOptions];
+    return [
+      { label:'- Select -', value:'', image:null, devices:{} },
+      ...capubExtendMcchordOptionsTo84(id, mcchordOptions)
+    ];
   }
   const specialImageOptions = ribbonImageOptionList(id);
   if(specialImageOptions){
@@ -6505,6 +6579,12 @@ function normalizeRibbonSelections(){
       State.ribbonSelections[id] = { checked:false, devices:{}, awardValue:'', awardLabel:'' };
     }else{
       if(!State.ribbonSelections[id].devices) State.ribbonSelections[id].devices={};
+      if(CAPUB_SINGLE_AWARD_RIBBON_IDS.has(id) && State.ribbonSelections[id].checked){
+        State.ribbonSelections[id].awardValue = 'earned';
+        State.ribbonSelections[id].awardLabel = 'Earned';
+        State.ribbonSelections[id].devices = {};
+        State.ribbonSelections[id].imageOverride = null;
+      }
       if(State.ribbonSelections[id].awardValue === undefined){
         const hasDevices = Object.values(State.ribbonSelections[id].devices || {}).some(v => Number(v) > 0);
         State.ribbonSelections[id].awardValue = State.ribbonSelections[id].checked ? (hasDevices ? 'custom_devices' : 'earned') : '';
