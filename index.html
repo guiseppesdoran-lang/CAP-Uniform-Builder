@@ -3618,10 +3618,23 @@ function applyPreviewRenderArea(){
 
 function getCanvasRenderSize(){
   const area = getActiveRenderArea();
-  const rect = uniformCanvas?.getBoundingClientRect?.();
+  const computed = uniformCanvas ? getComputedStyle(uniformCanvas) : null;
+  // CSS preview zoom changes getBoundingClientRect(), but it must never change
+  // the coordinate system used to place uniform items. Always use the fixed,
+  // untransformed render dimensions here.
+  const width =
+    parseFloat(uniformCanvas?.dataset?.renderWidth) ||
+    parseFloat(computed?.width) ||
+    uniformCanvas?.offsetWidth ||
+    area.w;
+  const height =
+    parseFloat(uniformCanvas?.dataset?.renderHeight) ||
+    parseFloat(computed?.height) ||
+    uniformCanvas?.offsetHeight ||
+    area.h;
   return {
-    w: Math.round((rect?.width || area.w) * 100) / 100,
-    h: Math.round((rect?.height || area.h) * 100) / 100
+    w: Math.round(width * 100) / 100,
+    h: Math.round(height * 100) / 100
   };
 }
 
@@ -7251,9 +7264,9 @@ function placeBadgeSlotAnchored(id){
   const slot = chooseBadgeSlot(id, prefs);
   if(!slot) return false;
 
-  const box = uniformCanvas.getBoundingClientRect();
-  const W = box.width  || 450;
-  const H = box.height || 600;
+  const renderSize = getCanvasRenderSize();
+  const W = renderSize.w;
+  const H = renderSize.h;
 
   const sz = customBadgeSizes[id] || { width: 60, height: 25 };
   const bw = sz.width;
@@ -7441,9 +7454,9 @@ function renderPatches(){
 
   planPatches(State.patches);
 
-  const box = uniformCanvas.getBoundingClientRect();
-  const W = box.width || 450;
-  const H = box.height || 600;
+  const renderSize = getCanvasRenderSize();
+  const W = renderSize.w;
+  const H = renderSize.h;
 
   for(const slot of Object.keys(patchSlots)){
     const ids=patchSlots[slot];
@@ -7621,8 +7634,9 @@ function getMeasurementNameplateBox(){
   // for calibration and follows the same default geometry used by the generated
   // nameplate text layer.
   if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
-    const W = uniformCanvas.getBoundingClientRect().width || 450;
-    const H = uniformCanvas.getBoundingClientRect().height || 600;
+    const renderSize = getCanvasRenderSize();
+    const W = renderSize.w;
+    const H = renderSize.h;
     const key = `text:${State.uniform}:nameplate`;
     const fallback = { x:W*.62, y:H*.39, w:72, h:14, r:0, ...(getCalib(key) || {}) };
     const left = Number(fallback.x) || 0;
@@ -7792,8 +7806,7 @@ function renderMeasurementOverlay(){
 
   if(items.length < 2) return;
 
-  const box = uniformCanvas.getBoundingClientRect();
-  const canvasWidth = box.width || 450;
+  const canvasWidth = getCanvasRenderSize().w;
   const clampArrowX = x => Math.max(18, Math.min(canvasWidth - 18, x));
 
   const verticalGap = (upper, lower) => lower.top - upper.bottom;
@@ -8847,8 +8860,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   }
 
   function rankPlacement(){
-    const W = uniformCanvas.getBoundingClientRect().width || 450;
-    const H = uniformCanvas.getBoundingClientRect().height || 600;
+    const renderSize = getCanvasRenderSize();
+    const W = renderSize.w;
+    const H = renderSize.h;
     if(State.uniform === 'ocp') return {x:W*.465,y:H*.245,w:34,h:34, shape:'square'};
     if(State.uniform === 'abu') return {x:W*.485,y:H*.295,w:32,h:32, shape:'square'};
     if(State.uniform === 'blues_b' || State.uniform === 'aviator') return {x:W*.49,y:H*.18,w:38,h:20, shape:'epaulet'};
