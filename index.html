@@ -1393,6 +1393,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
   </div>
 </div>
 
+<script src="mcchord-ribbon-variants.js"></script>
 <script>
 /* ===========================
    GLOBAL STATE
@@ -6267,6 +6268,10 @@ function mcchordContinuationOptions(id){
 }
 
 function getRibbonAwardOptions(id){
+  const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
+  if(Array.isArray(mcchordOptions) && mcchordOptions.length){
+    return [{ label:'- Select -', value:'', image:null, devices:{} }, ...mcchordOptions];
+  }
   const specialImageOptions = ribbonImageOptionList(id);
   if(specialImageOptions){
     const continuation = mcchordContinuationOptions(id);
