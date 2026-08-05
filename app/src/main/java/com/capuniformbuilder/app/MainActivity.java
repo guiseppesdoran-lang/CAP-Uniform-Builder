@@ -23,7 +23,7 @@ import android.widget.Toast;
 import java.io.OutputStream;
 
 public class MainActivity extends Activity {
-    private static final String APP_URL = "https://guiseppesdoran-lang.github.io/CAP-Uniform-Builder/";
+    private static final String APP_URL = "https://guiseppesdoran-lang.github.io/CAP-Uniform-Builder/?app=android&v=2";
     private static final int FILE_CHOOSER_REQUEST = 4102;
 
     private WebView webView;
@@ -52,9 +52,11 @@ public class MainActivity extends Activity {
         settings.setMediaPlaybackRequiresUserGesture(true);
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setUseWideViewPort(false);
+        settings.setLoadWithOverviewMode(false);
+        settings.setTextZoom(100);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webView.clearCache(true);
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
