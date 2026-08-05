@@ -949,8 +949,8 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
   pointer-events:none;
 }
 .calib-selectable .measurementArrowLayer{
-  pointer-events:auto;
-  cursor:crosshair;
+  pointer-events:none;
+  cursor:default;
 }
 .calib-selectable .measurementArrowLayer svg{
   pointer-events:none;
@@ -7639,7 +7639,18 @@ function getMeasurementNameplateBox(){
     const W = renderSize.w;
     const H = renderSize.h;
     const key = `text:${State.uniform}:nameplate`;
-    const fallback = { x:W*.62, y:H*.39, w:72, h:14, r:0, ...(getCalib(key) || {}) };
+    const fallbackWidth = 72;
+    // The nameplate is on the wearer's right side, opposite the ribbon rack.
+    // Store x as the left edge so centerX lands on the same 32% centerline used
+    // by ON/UN/RP badge anchors.
+    const fallback = {
+      x:(W*.32) - (fallbackWidth/2),
+      y:H*.345,
+      w:fallbackWidth,
+      h:14,
+      r:0,
+      ...(getCalib(key) || {})
+    };
     const left = Number(fallback.x) || 0;
     const top = Number(fallback.y) || 0;
     const width = Number(fallback.w) || 72;
@@ -7680,7 +7691,8 @@ function getMeasurementRenderableItems(){
 
 function getCaprReferenceGapLabel(upper, lower){
   const aboveRibbonSlots = new Set(['OLPU','OLP','OLPA']);
-  const belowRibbonSlots = new Set(['LP','RP','ON','UN','ORP','URBP','OLPF','LRP']);
+  const leftPocketSlots = new Set(['LP','LRP','OLPF']);
+  const belowNameplateSlots = new Set(['RP','UN','URBP']);
 
   if(!upper || !lower) return '';
 
@@ -7688,7 +7700,8 @@ function getCaprReferenceGapLabel(upper, lower){
   // - 0.50" from the highest ribbon to the first occupational/above-ribbon badge
   // - 1.50" from the bottom of the ribbon rack to the next below-ribbon badge
   if(lower.kind === 'ribbonRack' && aboveRibbonSlots.has(upper.slot)) return '0.50"';
-  if(upper.kind === 'ribbonRack' && belowRibbonSlots.has(lower.slot)) return '1.50"';
+  if(State.uniform === 'blues_a' && upper.kind === 'ribbonRack' && leftPocketSlots.has(lower.slot)) return '1.50"';
+  if(State.uniform === 'blues_a' && upper.kind === 'nameplate' && belowNameplateSlots.has(lower.slot)) return '1.50"';
   if(aboveRibbonSlots.has(upper.slot) && aboveRibbonSlots.has(lower.slot)) return '0.50"';
   return '';
 }
@@ -7709,39 +7722,29 @@ function getDynamicArrowCalibration(arrowKey, base){
   return { ...base };
 }
 
-function makeMeasurementArrow(svgUnused, arrowKey, x, y1, y2, label, placeLeft=false){
-  if(!Number.isFinite(x) || !Number.isFinite(y1) || !Number.isFinite(y2)) return;
+function makeMeasurementArrow(svgUnused, arrowKey, x1, y1, x2, y2, label, placeLeft=false){
+  if(![x1,y1,x2,y2].every(Number.isFinite)) return;
 
-  const top = Math.min(y1, y2);
-  const height = Math.max(1, Math.abs(y2 - y1));
-  const width = 74;
-  const lineLocalX = placeLeft ? 58 : 12;
-  const left = x - lineLocalX;
-
-  const baseBox = { x:left, y:top, w:width, h:height, r:0 };
-  const adjusted = getDynamicArrowCalibration(arrowKey, baseBox);
+  const renderSize = getCanvasRenderSize();
+  const baseLine = { x1, y1, x2, y2 };
 
   const wrap = document.createElement('div');
   wrap.className = 'layer measurementArrowLayer';
   wrap.dataset.calibKey = arrowKey;
-  wrap.dataset.dynamicArrowBase = JSON.stringify(baseBox);
+  wrap.dataset.dynamicArrowBase = JSON.stringify(baseLine);
   wrap.dataset.tooltipTitle = 'Measurement Arrow';
   wrap.dataset.tooltipReg = 'Dynamic calibration item';
   wrap.dataset.tooltipWhy = 'This arrow recalculates from the current badge and ribbon edges.';
 
-  wrap.style.left = `${adjusted.x}px`;
-  wrap.style.top = `${adjusted.y}px`;
-  wrap.style.width = `${adjusted.w}px`;
-  wrap.style.height = `${adjusted.h}px`;
-  wrap.style.transform = `rotate(${adjusted.r}deg)`;
-  wrap.style.transformOrigin = 'center center';
-
-  const actualW = adjusted.w;
-  const actualH = adjusted.h;
+  wrap.style.left = '0px';
+  wrap.style.top = '0px';
+  wrap.style.width = `${renderSize.w}px`;
+  wrap.style.height = `${renderSize.h}px`;
+  wrap.style.transform = 'none';
 
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg');
-  svg.setAttribute('viewBox', `0 0 ${actualW} ${actualH}`);
+  svg.setAttribute('viewBox', `0 0 ${renderSize.w} ${renderSize.h}`);
   svg.setAttribute('preserveAspectRatio', 'none');
 
   const markerId = `capubArrowHead_${arrowKey.replace(/[^a-zA-Z0-9_-]/g,'_')}`;
@@ -7761,12 +7764,11 @@ function makeMeasurementArrow(svgUnused, arrowKey, x, y1, y2, label, placeLeft=f
   defs.appendChild(marker);
   svg.appendChild(defs);
 
-  const localLineX = Math.max(5, Math.min(actualW - 5, lineLocalX));
   const line = document.createElementNS(NS, 'line');
-  line.setAttribute('x1', localLineX);
-  line.setAttribute('x2', localLineX);
-  line.setAttribute('y1', 0);
-  line.setAttribute('y2', actualH);
+  line.setAttribute('x1', x1);
+  line.setAttribute('x2', x2);
+  line.setAttribute('y1', y1);
+  line.setAttribute('y2', y2);
   line.setAttribute('stroke', '#c1121f');
   line.setAttribute('stroke-width', '1.35');
   line.setAttribute('vector-effect', 'non-scaling-stroke');
@@ -7776,8 +7778,10 @@ function makeMeasurementArrow(svgUnused, arrowKey, x, y1, y2, label, placeLeft=f
 
   if(label){
     const text = document.createElementNS(NS, 'text');
-    text.setAttribute('x', placeLeft ? localLineX - 5 : localLineX + 5);
-    text.setAttribute('y', Math.max(8, (actualH / 2) - 3));
+    const middleX = (x1 + x2) / 2;
+    const middleY = (y1 + y2) / 2;
+    text.setAttribute('x', placeLeft ? middleX - 7 : middleX + 7);
+    text.setAttribute('y', Math.max(10, middleY - 3));
     text.setAttribute('text-anchor', placeLeft ? 'end' : 'start');
     text.textContent = label;
     svg.appendChild(text);
@@ -7800,6 +7804,10 @@ function renderMeasurementOverlay(){
 
   const canvasWidth = getCanvasRenderSize().w;
   const clampArrowX = x => Math.max(18, Math.min(canvasWidth - 18, x));
+  const ribbonRack = items.find(item => item.kind === 'ribbonRack') || null;
+  const nameplate = items.find(item => item.kind === 'nameplate') || null;
+  const classALeftPocketSlots = new Set(['LP','LRP','OLPF']);
+  const classABelowNameplateSlots = new Set(['RP','UN','URBP']);
 
   const verticalGap = (upper, lower) => lower.top - upper.bottom;
   const horizontalOverlap = (a, b) => Math.max(0, rangesOverlap(a.left, a.right, b.left, b.right));
@@ -7809,17 +7817,11 @@ function renderMeasurementOverlay(){
     return a?.kind === 'ribbonRack' || b?.kind === 'ribbonRack';
   }
 
-  function measurementXForPair(upper, lower){
-    // User rule: ribbon rack is measured as one object. Lines to badges above
-    // and below the ribbon rack stay centered on the ribbon rack, not on an
-    // individual ribbon or on the badge edge.
-    if(upper.kind === 'ribbonRack') return clampArrowX(upper.centerX);
-    if(lower.kind === 'ribbonRack') return clampArrowX(lower.centerX);
-
-    // Otherwise center the arrow on the item being measured downward to.
-    // This keeps badge-to-badge/nameplate measurements visually tied to the
-    // lower item in the pair.
-    return clampArrowX(lower.centerX);
+  function requiredClassAUpper(lower){
+    if(State.uniform !== 'blues_a' || lower?.kind !== 'badge') return null;
+    if(ribbonRack && classALeftPocketSlots.has(lower.slot)) return ribbonRack;
+    if(nameplate && classABelowNameplateSlots.has(lower.slot) && nameplate.bottom <= lower.top) return nameplate;
+    return null;
   }
 
   function shouldMeasurePair(upper, lower){
@@ -7871,7 +7873,9 @@ function renderMeasurementOverlay(){
   const drawn = new Set();
 
   for(const lower of items){
-    const upper = bestUpperFor(lower);
+    // Class A pocket measurements use their prescribed reference item even if
+    // another nearby badge would otherwise win the generic nearest-item rule.
+    const upper = requiredClassAUpper(lower) || bestUpperFor(lower);
     if(!upper) continue;
 
     const gap = verticalGap(upper, lower);
@@ -7881,12 +7885,15 @@ function renderMeasurementOverlay(){
     if(drawn.has(pairId)) continue;
     drawn.add(pairId);
 
-    const x = measurementXForPair(upper, lower);
     const label = getCaprReferenceGapLabel(upper, lower); // label only when a known CAPR reference applies
-    const placeLeft = x > (canvasWidth * 0.7);
+    // Edge-to-edge measurement: start at the absolute bottom-center of the
+    // ribbon rack/nameplate and finish at the badge's exact top-center.
+    const x1 = clampArrowX(upper.centerX);
+    const x2 = clampArrowX(lower.centerX);
+    const placeLeft = ((x1 + x2) / 2) > (canvasWidth * 0.7);
     const arrowKey = buildMeasurementArrowKey(upper, lower);
 
-    makeMeasurementArrow(null, arrowKey, x, upper.bottom, lower.top, label, placeLeft);
+    makeMeasurementArrow(null, arrowKey, x1, upper.bottom, x2, lower.top, label, placeLeft);
   }
 }
 
