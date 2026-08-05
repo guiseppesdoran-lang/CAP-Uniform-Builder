@@ -4006,6 +4006,7 @@ function usingCombinedSeniorOfficerJacket(){
    RIBBONS / DEVICES / MINI MEDALS
    =========================== */
 const ribbonList = [
+  'air_force_aerial_achievement_medal',
   // Highest-precedence ribbon added by user.
   // Asset path resolves to: images/ribbons/Air_Force_Organizational_Excellence_Award.png
   'Air_Force_Organizational_Excellence_Award',
@@ -4013,6 +4014,7 @@ const ribbonList = [
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
 
   // Senior-member professional development / AE ribbons
+  'national_commanders_citation',
   'cap_gill_robb_wilson_ribbon',
   'cap_paul_e_garber_ribbon',
   'cap_grover_loening_aerospace_ribbon',
@@ -4022,6 +4024,7 @@ const ribbonList = [
   'cap_bridgadier_general_charles_yaeger_ribbon',
 
   // Cadet program awards / achievements
+  'cadet_certificate_of_proficiency','historic_cadet_blue_achievement','historic_cadet_white_achievement','historic_cadet_red_achievement','frank_borman_falcon_award',
   'spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement',
 
   // Service ribbons / awards
@@ -4029,7 +4032,10 @@ const ribbonList = [
   'cap_command_service_ribbon','crisis_ribbon','red_service_ribbon',
 
   // Activity ribbons
-  'search_find_ribbon','air_search_and_rescue_ribbon','cap_counterdrug_ribbon','disaster_relief_ribbon','homeland_security_ribbon','cap_cadet_orientation_pilot_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cap_senior_recruiter_ribbon','cadet_recruiter_ribbon','cap_world_war_2_service_ribbon'
+  'search_find_ribbon','air_search_and_rescue_ribbon','cap_counterdrug_ribbon','disaster_relief_ribbon','homeland_security_ribbon','cap_cadet_orientation_pilot_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cap_senior_recruiter_ribbon','cadet_recruiter_ribbon',
+
+  // Wartime service awards (February 1942 through July 1945).
+  'air_medal','cap_world_war_2_service_ribbon','anti_submarine_coastal_patrol_ribbon','southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon','forest_patrol_ribbon','missing_aircraft_ribbon'
 ];
 
 // Robust ribbon precedence lookup. Unknown/renamed asset IDs are pushed to the end
@@ -4044,6 +4050,25 @@ const RIBBON_ID_ALIASES = {
   charles_yeager_ribbon: 'cap_bridgadier_general_charles_yaeger_ribbon',
   yeager_award: 'cap_bridgadier_general_charles_yaeger_ribbon'
 };
+const RIBBON_DISPLAY_NAMES = {
+  air_force_aerial_achievement_medal: 'Air Force Aerial Achievement Medal',
+  national_commanders_citation: "National Commander's Citation",
+  cadet_certificate_of_proficiency: 'Cadet Certificate of Proficiency',
+  historic_cadet_blue_achievement: 'Historic Cadet Blue Achievement',
+  historic_cadet_white_achievement: 'Historic Cadet White Achievement',
+  historic_cadet_red_achievement: 'Historic Cadet Red Achievement',
+  frank_borman_falcon_award: 'Frank Borman Falcon Award',
+  air_medal: 'Air Medal (US Army Air Forces)',
+  anti_submarine_coastal_patrol_ribbon: 'Anti-Submarine Coastal Patrol Ribbon',
+  southern_liaison_patrol_ribbon: 'Southern Liaison Patrol Ribbon',
+  tow_target_tracking_ribbon: 'Tow-Target & Tracking Ribbon',
+  courier_ribbon: 'Courier Ribbon',
+  forest_patrol_ribbon: 'Forest Patrol Ribbon',
+  missing_aircraft_ribbon: 'Missing Aircraft Ribbon'
+};
+function getRibbonDisplayName(id){
+  return RIBBON_DISPLAY_NAMES[id] || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+}
 const RIBBON_PRECEDENCE_INDEX = new Map(ribbonList.map((id, idx) => [id, idx]));
 function normalizeRibbonId(id){
   return RIBBON_ID_ALIASES[id] || id;
@@ -4065,6 +4090,12 @@ const CADET_ACHIEVEMENT_RIBBONS = new Set([
 const CADET_MILESTONES = new Set([
   'wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award'
 ]);
+const SENIOR_HIGHEST_CADET_AWARD_RIBBONS = new Set([
+  ...CADET_MILESTONES,
+  'cadet_certificate_of_proficiency','historic_cadet_blue_achievement',
+  'historic_cadet_white_achievement','historic_cadet_red_achievement',
+  'frank_borman_falcon_award'
+]);
 const COMMON_ELIGIBLE_RIBBONS = new Set([
   'Air_Force_Organizational_Excellence_Award',
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
@@ -4075,8 +4106,12 @@ const CADET_ONLY_RIBBONS = new Set([
   'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','cadet_recruiter_ribbon'
 ]);
 const SENIOR_ONLY_RIBBONS = new Set([
+  'air_force_aerial_achievement_medal',
+  'national_commanders_citation',
   'cap_gill_robb_wilson_ribbon','cap_paul_e_garber_ribbon','cap_grover_loening_aerospace_ribbon','cap_leadership_ribbon','cap_membership_ribbon','cap_a_scott_crossfield_ribbon','cap_bridgadier_general_charles_yaeger_ribbon',
-  'cap_command_service_ribbon','cap_world_war_2_service_ribbon','cap_counterdrug_ribbon','cap_cadet_orientation_pilot_ribbon','cap_senior_recruiter_ribbon'
+  'cadet_certificate_of_proficiency','historic_cadet_blue_achievement','historic_cadet_white_achievement','historic_cadet_red_achievement','frank_borman_falcon_award',
+  'cap_command_service_ribbon','cap_counterdrug_ribbon','cap_cadet_orientation_pilot_ribbon','cap_senior_recruiter_ribbon',
+  'air_medal','cap_world_war_2_service_ribbon','anti_submarine_coastal_patrol_ribbon','southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon','forest_patrol_ribbon','missing_aircraft_ribbon'
 ]);
 const CADET_ELIGIBLE_RIBBONS = new Set([...COMMON_ELIGIBLE_RIBBONS, ...CADET_ONLY_RIBBONS]);
 const SENIOR_ELIGIBLE_RIBBONS = new Set([...COMMON_ELIGIBLE_RIBBONS, ...SENIOR_ONLY_RIBBONS, ...CADET_MILESTONES]);
@@ -6180,6 +6215,17 @@ function getRibbonAwardOptions(id){
     return ribbonAwardCountOptions(10);
   }
 
+  if(id === 'air_medal') return ribbonAwardCountOptions(2);
+
+  if(new Set([
+    'national_commanders_citation','cadet_certificate_of_proficiency',
+    'historic_cadet_blue_achievement','historic_cadet_white_achievement',
+    'historic_cadet_red_achievement','frank_borman_falcon_award',
+    'cap_world_war_2_service_ribbon','anti_submarine_coastal_patrol_ribbon',
+    'southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon',
+    'forest_patrol_ribbon','missing_aircraft_ribbon'
+  ]).has(id)) return ribbonSelectOnlyOptions();
+
   if(id === 'silver_medal_of_valor'){
     return [
       { label:'- Select -', value:'', devices:{} },
@@ -6364,10 +6410,10 @@ function setRibbonSelectionFromDropdown(id, value){
 
   State.ribbonSelections[id] = sel;
 
-  // Senior members may wear only one cadet milestone ribbon in this builder.
-  if(State.membership === 'senior' && CADET_MILESTONES.has(id) && sel.checked){
+  // The senior ribbon source permits only the highest cadet-program award earned.
+  if(State.membership === 'senior' && SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(id) && sel.checked){
     for(const otherId of Object.keys(State.ribbonSelections)){
-      if(otherId !== id && CADET_MILESTONES.has(otherId)){
+      if(otherId !== id && SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(otherId)){
         State.ribbonSelections[otherId].checked = false;
         State.ribbonSelections[otherId].awardValue = '';
         State.ribbonSelections[otherId].awardLabel = '';
@@ -6477,7 +6523,7 @@ function buildRibbonGallery(){
     tile.className = 'galleryTile ribbonSelectorTile';
     tile.dataset.ribbonId = id;
 
-    const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    const title = getRibbonDisplayName(id);
     const miniPath = miniMedalImages[id];
     const miniPreview = miniPath
       ? `<div class="miniMedalPreview"><span>Mini medal</span><img src="${ASSET(miniPath)}" alt="${title} mini medal"></div>`
