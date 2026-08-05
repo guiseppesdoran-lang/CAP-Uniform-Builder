@@ -6286,9 +6286,20 @@ function syncGoddardRocketryStar(){
     (State.badges || []).includes('model_rocketry_badge');
   const mitchellEarned = !!State.ribbonSelections.mitchell_award?.checked ||
     (State.ribbons || []).some(r => r?.id === 'mitchell_award');
-  const rocketryCredit = rocketrySelected && mitchellEarned;
-  const honorCredit = ['honor_credit','honor_credit_and_rocketry','earned_both_devices'].includes(currentValue) ||
-    (currentValue === 'earned_device' && !rocketryCredit);
+
+  // Persist earned credit separately from current badge wear. Selecting the
+  // badge while Mitchell is earned records the rocketry credit; removing the
+  // badge later does not remove the Goddard star.
+  if(goddard.honorCredit === undefined){
+    goddard.honorCredit = ['honor_credit','honor_credit_and_rocketry','earned_both_devices'].includes(currentValue);
+  }
+  if(goddard.rocketryCredit === undefined){
+    goddard.rocketryCredit = ['rocketry_star','honor_credit_and_rocketry'].includes(currentValue);
+  }
+  if(rocketrySelected && mitchellEarned) goddard.rocketryCredit = true;
+
+  const honorCredit = !!goddard.honorCredit;
+  const rocketryCredit = !!goddard.rocketryCredit && mitchellEarned;
 
   let desiredValue = 'earned';
   if(honorCredit && rocketryCredit) desiredValue = 'honor_credit_and_rocketry';
@@ -6315,6 +6326,11 @@ function setRibbonSelectionFromDropdown(id, value){
   sel.checked = !!value;
   sel.devices = value ? { ...(option.devices || {}) } : {};
   sel.imageOverride = value ? (option.image || getRibbonImageOverride(id, value)) : null;
+
+  if(id === 'goddard_achievement'){
+    sel.honorCredit = ['honor_credit','honor_credit_and_rocketry'].includes(value);
+    sel.rocketryCredit = ['rocketry_star','honor_credit_and_rocketry'].includes(value);
+  }
 
   State.ribbonSelections[id] = sel;
 
@@ -8021,6 +8037,95 @@ function buildCenteredExportStage(){
   stage.appendChild(clone);
   document.body.appendChild(stage);
   return stage;
+}
+
+async function composeUniformPngCanvas(source, outputScale = 2){
+  const width = Math.round(source.offsetWidth || parseFloat(getComputedStyle(source).width) || 450);
+  const height = Math.round(source.offsetHeight || parseFloat(getComputedStyle(source).height) || 600);
+  const canvas = document.createElement('canvas');
+  canvas.width = width * outputScale;
+  canvas.height = height * outputScale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(outputScale, outputScale);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, width, height);
+
+  const layers = [...source.children]
+    .filter(el => el.classList?.contains('layer'))
+    .filter(el => !el.classList.contains('measurementOverlay') && !el.classList.contains('measurementArrowLayer'))
+    .map((el, order) => {
+      const style = getComputedStyle(el);
+      const z = Number.parseInt(style.zIndex, 10);
+      return { el, style, order, z:Number.isFinite(z) ? z : 0 };
+    })
+    .sort((a,b) => a.z - b.z || a.order - b.order);
+
+  await Promise.all(layers.map(({el}) => {
+    if(!(el instanceof HTMLImageElement)) return Promise.resolve();
+    if(el.complete) return el.decode?.().catch(() => undefined) || Promise.resolve();
+    return new Promise(resolve => {
+      el.addEventListener('load', resolve, {once:true});
+      el.addEventListener('error', resolve, {once:true});
+    });
+  }));
+
+  for(const {el,style} of layers){
+    if(style.display === 'none' || style.visibility === 'hidden') continue;
+    const x = parseFloat(el.style.left || style.left) || 0;
+    const y = parseFloat(el.style.top || style.top) || 0;
+    const w = parseFloat(el.style.width || style.width) || el.offsetWidth || 0;
+    const h = parseFloat(el.style.height || style.height) || el.offsetHeight || 0;
+    if(w <= 0 || h <= 0) continue;
+
+    let rotation = 0;
+    if(style.transform && style.transform !== 'none'){
+      try{
+        const matrix = new DOMMatrixReadOnly(style.transform);
+        rotation = Math.atan2(matrix.b, matrix.a);
+      }catch(err){
+        const match = /rotate\(([-\d.]+)deg\)/i.exec(el.style.transform || '');
+        if(match) rotation = Number(match[1]) * Math.PI / 180;
+      }
+    }
+
+    ctx.save();
+    ctx.globalAlpha = Number.parseFloat(style.opacity) || 1;
+    ctx.translate(x + w/2, y + h/2);
+    ctx.rotate(rotation);
+
+    if(el instanceof HTMLImageElement && el.naturalWidth && el.naturalHeight){
+      if(style.objectFit === 'contain'){
+        const ratio = Math.min(w / el.naturalWidth, h / el.naturalHeight);
+        const drawW = el.naturalWidth * ratio;
+        const drawH = el.naturalHeight * ratio;
+        ctx.drawImage(el, -drawW/2, -drawH/2, drawW, drawH);
+      }else{
+        ctx.drawImage(el, -w/2, -h/2, w, h);
+      }
+    }else{
+      if(style.backgroundColor && style.backgroundColor !== 'rgba(0, 0, 0, 0)'){
+        ctx.fillStyle = style.backgroundColor;
+        ctx.fillRect(-w/2, -h/2, w, h);
+      }
+      const borderWidth = parseFloat(style.borderTopWidth) || 0;
+      if(borderWidth && style.borderTopColor){
+        ctx.strokeStyle = style.borderTopColor;
+        ctx.lineWidth = borderWidth;
+        ctx.strokeRect(-w/2, -h/2, w, h);
+      }
+      const label = String(el.innerText || el.textContent || '').trim();
+      if(label){
+        ctx.fillStyle = style.color || '#000000';
+        ctx.font = `${style.fontWeight || '400'} ${style.fontSize || '12px'} ${style.fontFamily || 'Arial'}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, 0, 0, Math.max(1, w - 4));
+      }
+    }
+    ctx.restore();
+  }
+
+  return canvas;
 }
 
 const toggleRibbonDragBtn = by('toggleRibbonDrag');
@@ -10413,51 +10518,10 @@ function capubRepairCriticalButtons(){
     if(downloadButton?.dataset.exportBusy === '1') return;
     if(downloadButton) downloadButton.dataset.exportBusy = '1';
 
-    const previewArea = by('previewArea');
-    const previousPreviewTransform = previewArea?.style.transform || '';
-    const previousPreviewTransition = previewArea?.style.transition || '';
-
     try{
       const original = by('uniformCanvas');
       if(!original) throw new Error('No uniform preview was found.');
-      if(typeof window.html2canvas !== 'function'){
-        throw new Error('The PNG renderer did not load. Check the internet connection and reload the page.');
-      }
-
-      // Capture the live canvas instead of rebuilding it in a detached export
-      // layout. The live element keeps every selector-dependent style and uses
-      // the exact coordinate system shown in the preview. Only the outer UI
-      // zoom is temporarily disabled; item transforms remain untouched.
-      if(previewArea){
-        // The preview normally animates zoom changes for 0.18 seconds. Capturing
-        // during that transition makes html2canvas calculate a transient vertical
-        // origin. Disable the animation and force the unzoomed layout to settle.
-        previewArea.style.transition = 'none';
-        previewArea.style.transform = 'none';
-        void previewArea.offsetHeight;
-      }
-      await new Promise(resolve => requestAnimationFrame(resolve));
-
-      await Promise.all([...original.querySelectorAll('img')].map(img => {
-        if(img.complete) return img.decode?.().catch(() => undefined);
-        return new Promise(resolve => {
-          img.addEventListener('load', resolve, { once:true });
-          img.addEventListener('error', resolve, { once:true });
-        });
-      }));
-
-      const canvas = await window.html2canvas(original, {
-        backgroundColor:'#ffffff',
-        scale:2,
-        useCORS:true,
-        allowTaint:false,
-        logging:false,
-        width:original.offsetWidth,
-        height:original.offsetHeight,
-        ignoreElements:element =>
-          element.classList?.contains('measurementOverlay') ||
-          element.classList?.contains('measurementArrowLayer')
-      });
+      const canvas = await composeUniformPngCanvas(original, 2);
 
       const link = document.createElement('a');
       link.download = `CAP_Uniform_${State.uniform || 'preview'}_${Date.now()}.png`;
@@ -10469,11 +10533,6 @@ function capubRepairCriticalButtons(){
       console.error('PNG EXPORT ERROR:', err);
       alert(`PNG export failed: ${err?.message || err}`);
     }finally{
-      if(previewArea){
-        previewArea.style.transform = previousPreviewTransform;
-        void previewArea.offsetHeight;
-        previewArea.style.transition = previousPreviewTransition;
-      }
       if(downloadButton) delete downloadButton.dataset.exportBusy;
     }
   });
