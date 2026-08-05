@@ -4088,6 +4088,45 @@ const RIBBON_DEVICE_CAP = {
    program does not overlay a separate device on top of them.
 */
 const RIBBON_SPECIAL_IMAGE_OPTIONS = {
+  // Honor-credit variants for Cadet Achievements 1-8.
+  'curry_achievement': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', image:'curryH.png', devices:{} }
+  ],
+  'hap_arnold_achievement': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', image:'arnoldH.png', devices:{} }
+  ],
+  'mary_feik_achievement': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', image:'feikH.png', devices:{} }
+  ],
+  'rickenbacker_achievement': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', image:'rickenH.png', devices:{} }
+  ],
+  'lindbergh_achievement': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', image:'lindbeH.png', devices:{} }
+  ],
+  'doolittle_achievement': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', image:'doolitH.png', devices:{} }
+  ],
+  'goddard_achievement': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', image:'goddar-star.png', devices:{} },
+    { label:'Earned + Model Rocketry (Mitchell required)', value:'rocketry_star', image:'goddar-star.png', devices:{} },
+    { label:'Earned + Honor Credit and Model Rocketry', value:'honor_credit_and_rocketry', image:'goddarH.png', devices:{} }
+  ],
+  'armstrong_achievement': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', image:'armstrH.png', devices:{} }
+  ],
+  'mitchell_award': [
+    { label:'Earned', value:'earned', image:null, devices:{} },
+    { label:'Earned + COS Graduate Star', value:'earned_cos_star', image:'mitchel-star.png', devices:{} }
+  ],
   // COS graduate star on the highest cadet milestone ribbon.
   // User asset expected at images/ribbons/eaker-star.png.
   'eaker_award': [
@@ -6235,6 +6274,37 @@ function syncCommandBadgeAndRibbonSelections(){
   }
 }
 
+function syncGoddardRocketryStar(){
+  normalizeRibbonSelections();
+  normalizeBadgeSelections();
+
+  const goddard = State.ribbonSelections.goddard_achievement;
+  if(!goddard?.checked) return false;
+
+  const currentValue = goddard.awardValue || 'earned';
+  const rocketrySelected = !!State.badgeSelections.model_rocketry_badge?.checked ||
+    (State.badges || []).includes('model_rocketry_badge');
+  const mitchellEarned = !!State.ribbonSelections.mitchell_award?.checked ||
+    (State.ribbons || []).some(r => r?.id === 'mitchell_award');
+  const rocketryCredit = rocketrySelected && mitchellEarned;
+  const honorCredit = ['honor_credit','honor_credit_and_rocketry','earned_both_devices'].includes(currentValue) ||
+    (currentValue === 'earned_device' && !rocketryCredit);
+
+  let desiredValue = 'earned';
+  if(honorCredit && rocketryCredit) desiredValue = 'honor_credit_and_rocketry';
+  else if(honorCredit) desiredValue = 'honor_credit';
+  else if(rocketryCredit) desiredValue = 'rocketry_star';
+
+  if(currentValue === desiredValue) return false;
+  const option = getRibbonSelectionOption('goddard_achievement', desiredValue);
+  goddard.awardValue = desiredValue;
+  goddard.awardLabel = option.label || '';
+  goddard.devices = { ...(option.devices || {}) };
+  goddard.imageOverride = option.image || getRibbonImageOverride('goddard_achievement', desiredValue);
+  State.ribbonSelections.goddard_achievement = goddard;
+  return true;
+}
+
 function setRibbonSelectionFromDropdown(id, value){
   normalizeRibbonSelections();
   const sel = State.ribbonSelections[id] || { checked:false, devices:{} };
@@ -6261,6 +6331,9 @@ function setRibbonSelectionFromDropdown(id, value){
     }
   }
 
+  if(id === 'goddard_achievement' || id === 'mitchell_award'){
+    syncGoddardRocketryStar();
+  }
   rebuildRibbonsFromGallery();
 }
 
@@ -6453,6 +6526,8 @@ function rebuildBadgesFromGallery(){
   for(const id of [...State.badges]){
     enforceExclusive(id);
   }
+
+  syncGoddardRocketryStar();
 
   // Badge changes can automatically add the Command Service Ribbon, so rebuild
   // the ribbon state/rack too. That pass also re-renders badges afterward.
@@ -9359,26 +9434,22 @@ function hasCosGraduateCreditFromReport(text){
 function applyCosStarToHighestCadetMilestone(ribbons, text){
   if(!hasCosGraduateCreditFromReport(text)) return ribbons;
 
-  const milestoneOrder = ['wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award'];
-  let highest = null;
-  for(const id of milestoneOrder){
-    if(ribbons.some(r => r?.id === id)) highest = id;
-  }
-  if(!highest) return ribbons;
-
-  // Current asset supplied by the user is images/ribbons/eaker-star, so Eaker receives a
-  // pre-rendered ribbon image instead of a generic overlay device.
-  const cosValueByMilestone = {
-    mitchell_award: 'earned_cos_star',
-    eaker_award: 'earned_cos_star'
-  };
-  const cosValue = cosValueByMilestone[highest];
-  if(!cosValue) return ribbons;
-
-  return ribbons.map(r => r?.id === highest
-    ? { ...r, value:cosValue, reason:`${r.reason || highest} + COS graduate star` }
+  // COS credit belongs on the Mitchell ribbon itself, even when the cadet has
+  // subsequently earned a higher milestone award.
+  return ribbons.map(r => r?.id === 'mitchell_award'
+    ? { ...r, value:'earned_cos_star', reason:`${r.reason || 'Mitchell Award'} + COS graduate star` }
     : r
   );
+}
+
+function hasAchievementHonorCreditFromReport(text, achievementNumber){
+  const source = normalizeMemberReportText(text);
+  const rowRe = new RegExp(
+    `Achievement\\s+${achievementNumber}\\b([\\s\\S]{0,240}?)(?=Achievement\\s+\\d+\\b|$)`,
+    'i'
+  );
+  const row = rowRe.exec(source)?.[1] || '';
+  return /Honor\s+Credit|With\s+Honou?rs?|Honou?rs?\s+Credit/i.test(row);
 }
 
 function hasNonTrainingQualification(text, labelPattern){
@@ -9872,7 +9943,26 @@ function parseCapMemberReport(textRaw){
     'armstrong_achievement'
   ];
   for(let i=1; i<=Math.min(maxAchievement, 8); i++){
-    if(achievementMap[i]) result.ribbons.push({ id:achievementMap[i], value:'earned', reason:`Achievement ${i}` });
+    if(!achievementMap[i]) continue;
+    const honorCredit = hasAchievementHonorCreditFromReport(text, i);
+    let value = honorCredit ? 'honor_credit' : 'earned';
+
+    // Goddard uses the same one-star ribbon for either Honor Credit or Model
+    // Rocketry, and the supplied two-star ribbon when both were earned.
+    if(i === 7){
+      const modelRocketry = /Model\s+Rocketry/i.test(text);
+      const hasMitchell = /Billy\s+Mitchell|Mitchell\s+Award/i.test(text);
+      const rocketryCredit = modelRocketry && hasMitchell;
+      if(honorCredit && rocketryCredit) value = 'honor_credit_and_rocketry';
+      else if(honorCredit) value = 'honor_credit';
+      else if(rocketryCredit) value = 'rocketry_star';
+    }
+
+    result.ribbons.push({
+      id:achievementMap[i],
+      value,
+      reason:`Achievement ${i}${honorCredit ? ' with Honor Credit' : ''}`
+    });
   }
   if(/Wright\s+Brothers/i.test(text)) result.ribbons.push({ id:'wright_brothers_award', value:'earned', reason:'Wright Brothers' });
   if(/Billy\s+Mitchell/i.test(text)) result.ribbons.push({ id:'mitchell_award', value:'earned', reason:'Billy Mitchell' });
@@ -10325,6 +10415,7 @@ function capubRepairCriticalButtons(){
 
     const previewArea = by('previewArea');
     const previousPreviewTransform = previewArea?.style.transform || '';
+    const previousPreviewTransition = previewArea?.style.transition || '';
 
     try{
       const original = by('uniformCanvas');
@@ -10337,8 +10428,15 @@ function capubRepairCriticalButtons(){
       // layout. The live element keeps every selector-dependent style and uses
       // the exact coordinate system shown in the preview. Only the outer UI
       // zoom is temporarily disabled; item transforms remain untouched.
-      if(previewArea) previewArea.style.transform = 'none';
-      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      if(previewArea){
+        // The preview normally animates zoom changes for 0.18 seconds. Capturing
+        // during that transition makes html2canvas calculate a transient vertical
+        // origin. Disable the animation and force the unzoomed layout to settle.
+        previewArea.style.transition = 'none';
+        previewArea.style.transform = 'none';
+        void previewArea.offsetHeight;
+      }
+      await new Promise(resolve => requestAnimationFrame(resolve));
 
       await Promise.all([...original.querySelectorAll('img')].map(img => {
         if(img.complete) return img.decode?.().catch(() => undefined);
@@ -10371,7 +10469,11 @@ function capubRepairCriticalButtons(){
       console.error('PNG EXPORT ERROR:', err);
       alert(`PNG export failed: ${err?.message || err}`);
     }finally{
-      if(previewArea) previewArea.style.transform = previousPreviewTransform;
+      if(previewArea){
+        previewArea.style.transform = previousPreviewTransform;
+        void previewArea.offsetHeight;
+        previewArea.style.transition = previousPreviewTransition;
+      }
       if(downloadButton) delete downloadButton.dataset.exportBusy;
     }
   });
