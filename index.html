@@ -10319,69 +10319,63 @@ function capubRepairCriticalButtons(){
   });
 
   capubSafeWire('downloadImage','click', async function () {
+    const downloadButton = by('downloadImage');
+    if(downloadButton?.dataset.exportBusy === '1') return;
+    if(downloadButton) downloadButton.dataset.exportBusy = '1';
 
-  const downloadButton = by('downloadImage');
-  if(downloadButton?.dataset.exportBusy === "1") return;
-  if(downloadButton) downloadButton.dataset.exportBusy = "1";
+    let clone = null;
 
-  let clone = null;
-
-  try {
-    const original = by('uniformCanvas') || by('previewArea');
-    if(!original) {
-      console.error("No export target found");
-      return;
-    }
-
-    // 🔥 create safe clone
-    clone = original.cloneNode(true);
-
-    clone.style.position = "fixed";
-    clone.style.top = "0";
-    clone.style.left = "-9999px";
-    clone.style.width = original.offsetWidth + "px";
-    clone.style.height = original.offsetHeight + "px";
-
-    // remove transforms (prevents shifting)
-    clone.querySelectorAll('*').forEach(el => {
-      el.style.transform = "none";
-    });
-
-    document.body.appendChild(clone);
-
-    const canvas = await html2canvas(clone, {
-      backgroundColor: '#ffffff',
-      scale: 2, // keep this lower for stability
-      useCORS: true
-    });
-
-    const link = document.createElement('a');
-    link.download = 'CAP_Uniform.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-
-  } catch (err) {
-    console.error("EXPORT ERROR:", err);
-    alert("Export failed — check console (F12)");
-  } finally {
-    if(clone) clone.remove();
-    if(downloadButton) delete downloadButton.dataset.exportBusy;
-  }
-});
-document.body.appendChild(clone);    if(!target) return;
     try{
-      const canvas = await html2canvas(clone, { backgroundColor:'#ffffff', scale:3, useCORS:true, allowTaint:true });
-      const a = document.createElement('a');
-      a.href = canvas.toDataURL('image/png');
-      a.download = `CAP_Uniform_${State.uniform || 'preview'}_${Date.now()}.png`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+      const original = by('uniformCanvas') || by('previewArea');
+      if(!original) throw new Error('No uniform preview was found.');
+      if(typeof window.html2canvas !== 'function'){
+        throw new Error('The PNG renderer did not load. Check the internet connection and reload the page.');
+      }
+
+      clone = original.cloneNode(true);
+      Object.assign(clone.style, {
+        position:'fixed',
+        top:'0',
+        left:'-10000px',
+        width:`${original.offsetWidth}px`,
+        height:`${original.offsetHeight}px`,
+        transform:'none',
+        overflow:'visible',
+        background:'#ffffff'
+      });
+      clone.querySelectorAll('*').forEach(el => { el.style.transform = 'none'; });
+      document.body.appendChild(clone);
+
+      // Give cloned images a chance to finish decoding before html2canvas reads them.
+      await Promise.all([...clone.querySelectorAll('img')].map(img => {
+        if(img.complete) return img.decode?.().catch(() => undefined);
+        return new Promise(resolve => {
+          img.addEventListener('load', resolve, { once:true });
+          img.addEventListener('error', resolve, { once:true });
+        });
+      }));
+
+      const canvas = await window.html2canvas(clone, {
+        backgroundColor:'#ffffff',
+        scale:2,
+        useCORS:true,
+        allowTaint:false,
+        logging:false
+      });
+
+      const link = document.createElement('a');
+      link.download = `CAP_Uniform_${State.uniform || 'preview'}_${Date.now()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }catch(err){
+      console.error('PNG EXPORT ERROR:', err);
+      alert(`PNG export failed: ${err?.message || err}`);
     }finally{
-  if(stage) stage.remove();
-  if(clone) clone.remove();
-  if(downloadButton) delete downloadButton.dataset.exportBusy;
-}
+      clone?.remove();
+      if(downloadButton) delete downloadButton.dataset.exportBusy;
+    }
   });
 
   capubSafeWire('toggleMeasurementOverlay','change', evt => {
