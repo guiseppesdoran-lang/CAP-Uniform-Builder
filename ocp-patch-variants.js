@@ -41,6 +41,20 @@
     if(!patchList.includes(variantId)) patchList.push(variantId);
   }
 
+  // Imported from CAPUB_coordinates_1785957149681.json (2026-08-05).
+  // The uploaded PJOC calibration defines the OCP male left-sleeve location;
+  // apply that same higher-headquarters/activity-patch anchor to every OCP
+  // variant whose authorized slot is the left shoulder. Chest patches retain
+  // their existing, independently calibrated chest anchors.
+  const ocpMaleHigherHeadquartersLocation = {x:690, y:212, w:200, h:100, r:0};
+  DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male ||= {};
+  for(const variantId of variantIds){
+    if(PATCH_META[variantId]?.slotHint !== 'L_SHOULDER') continue;
+    DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male[`patch:${variantId}:L_SHOULDER:0`] = {
+      ...ocpMaleHigherHeadquartersLocation
+    };
+  }
+
   const previousResolver = window.capubResolvePatchIdForUniform;
   window.capubResolvePatchIdForUniform = function(patchId, uniformId = State.uniform){
     if(uniformKey(uniformId) === 'ocp') return variants[patchId] || patchId;
