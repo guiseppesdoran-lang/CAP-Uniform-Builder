@@ -1215,6 +1215,14 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
           Auto-convert ribbons → mini-medals on Mess/Semi-formal
         </label>
 
+        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+          Mini-medal mounting method
+          <select id="miniMountStyle" style="display:block;width:100%;margin-top:4px;">
+            <option value="mounting">Mounting bars — four per row (maximum 24)</option>
+            <option value="holding">Holding bars — custom overlap (maximum 28)</option>
+          </select>
+        </label>
+
         <div id="deviceTool">
           <strong style="font-size:12px;">Ribbon Devices — Multi-Apply</strong>
           <div id="devicePicker"></div>
@@ -1429,6 +1437,7 @@ const State = {
   selectedDevices:{},
   ribbonDragMode:false,
   forceMini:false,
+  miniMountStyle:'mounting',
   showMeasurementOverlay:false,
 
   ribbonSelections:{}, 
@@ -3286,7 +3295,7 @@ function applyCalibToElement(el, key, base){
   // IMPORTANT: Ribbon x/y must remain dynamic so precedence ordering and centered partial
   // top rows do not get broken by old per-ribbon exports. We still allow calibrated ribbon
   // dimensions/rotation to apply, but the current row/column algorithm owns ribbon x/y.
-  if(String(key || '').startsWith('ribbon:') && over){
+  if((String(key || '').startsWith('ribbon:') || String(key || '').startsWith('mini:')) && over){
     over = { ...over };
     delete over.x;
     delete over.y;
@@ -5803,6 +5812,30 @@ function buildRibbonRowsHighToLow(items, perRow=3){
 
   return rows;
 }
+function buildMiniMedalRowsHighToLow(items, style='mounting'){
+  const sorted = sortRibbons(items);
+  const maxMedals = style === 'holding' ? 28 : 24;
+  const limited = sorted.slice(0, maxMedals);
+
+  if(style !== 'holding') return buildRibbonRowsHighToLow(limited, 4);
+
+  // CAPR 39-1 Table 11-1 holding-bar rows balance medals from the bottom up:
+  // 1–7 use one row, 8–14 use two, 15–21 use three, and 22–28 use four.
+  const rowCount = Math.max(1, Math.ceil(limited.length / 7));
+  const baseCount = Math.floor(limited.length / rowCount);
+  const extra = limited.length % rowCount;
+  const countsBottomFirst = Array.from({length:rowCount}, (_,index) =>
+    baseCount + (index < extra ? 1 : 0)
+  );
+  const countsTopFirst = countsBottomFirst.reverse();
+  const rows = [];
+  let cursor = 0;
+  for(const count of countsTopFirst){
+    rows.push(limited.slice(cursor, cursor + count));
+    cursor += count;
+  }
+  return rows;
+}
 function getTopRibbonY(){
   const layers=[...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini')];
   if(!layers.length) return rackBaseY;
@@ -6040,14 +6073,13 @@ function renderRack(){
   }
 
   // MINI MEDALS use the same precedence engine as ribbons. McChord's source
-  // art is 50 x 176, so preserve that ratio. CAPR 39-1 Table 11-1 permits an
-  // optional mounting bar with no more than four medals per row. Rows are
-  // centered, and each upper row covers about half of the ribbon portion below.
+  // art is 50 x 176, so preserve that ratio. Mounting bars use four medals per
+  // row; holding bars use the balanced/overlapped rows in CAPR 39-1 Table 11-1.
   const MINI_H = 50;
   const MINI_W = MINI_H * (50 / 176);
-  const MEDAL_PER_ROW = 4;
   const MEDAL_RIBBON_PORTION = MINI_H * (116 / 176);
   const MEDAL_STEP_Y = MEDAL_RIBBON_PORTION * 0.5;
+  const miniMountStyle = State.miniMountStyle === 'holding' ? 'holding' : 'mounting';
 
   const medalItems = [];
   for(const r of items){
@@ -6058,16 +6090,21 @@ function renderRack(){
   }
   if(!medalItems.length) return;
 
-  const medalRowsTopFirst = buildRibbonRowsHighToLow(medalItems, MEDAL_PER_ROW);
+  const medalRowsTopFirst = buildMiniMedalRowsHighToLow(medalItems, miniMountStyle);
   const totalMedalRows = medalRowsTopFirst.length;
   const BOTTOM_ROW_Y_MEDALS = BOTTOM_ROW_Y + 20;
 
   medalRowsTopFirst.forEach((row,topIndex)=>{
     const indexFromBottom = (totalMedalRows - 1 - topIndex);
     const rowTopPx = BOTTOM_ROW_Y_MEDALS - indexFromBottom * MEDAL_STEP_Y;
-    const rowWidth = row.length * MINI_W;
+    // Holding bars keep a four-medal exposed span. Rows of five through seven
+    // overlap equally, never exceeding CAPR 39-1's 50-percent limit.
+    const horizontalStep = miniMountStyle === 'holding' && row.length > 4
+      ? Math.max(MINI_W * 0.5, ((MINI_W * 4) - MINI_W) / (row.length - 1))
+      : MINI_W;
+    const rowWidth = MINI_W + Math.max(0, row.length - 1) * horizontalStep;
     const rowLeft = RACK_CENTER_X - rowWidth / 2;
-    const leftPositions = row.map((_,i) => rowLeft + i * MINI_W);
+    const leftPositions = row.map((_,i) => rowLeft + i * horizontalStep);
 
     row.forEach((entry,i)=>{
       const mimg=document.createElement('img');
@@ -6096,7 +6133,9 @@ function renderRack(){
       };
       mimg.dataset.tooltipTitle = entry.id.replace(/_/g,' ').toUpperCase();
       mimg.dataset.tooltipReg   = "Miniature medal arrangement";
-      mimg.dataset.tooltipWhy   = "CAPR 39-1 Table 11-1: up to four per mounting-bar row; upper rows overlap about half of the ribbon portion below.";
+      mimg.dataset.tooltipWhy   = miniMountStyle === 'holding'
+        ? "CAPR 39-1 Table 11-1 holding bars: balanced rows, custom horizontal overlap, maximum 28 medals."
+        : "CAPR 39-1 Table 11-1 mounting bars: four per row, maximum 24 medals.";
 
       uniformCanvas.appendChild(mimg);
     });
@@ -8243,6 +8282,8 @@ function refreshUI(){
   if(assetBaseInput) assetBaseInput.value=State.assetBase;
   const overlayToggle = by('toggleMeasurementOverlay');
   if(overlayToggle) overlayToggle.checked = !!State.showMeasurementOverlay;
+  const miniStyleControl = by('miniMountStyle');
+  if(miniStyleControl) miniStyleControl.value = State.miniMountStyle === 'holding' ? 'holding' : 'mounting';
   syncCadetFirstSergeantControl();
 
   highlightActiveUniformButton();
@@ -8294,6 +8335,16 @@ by('toggleMini').addEventListener('change', e=>{
   renderRack();
   renderAllBadges();
 });
+
+const miniMountStyleSelect = by('miniMountStyle');
+if(miniMountStyleSelect){
+  miniMountStyleSelect.value = State.miniMountStyle;
+  miniMountStyleSelect.addEventListener('change', e=>{
+    State.miniMountStyle = e.target.value === 'holding' ? 'holding' : 'mounting';
+    renderRack();
+    renderMeasurementOverlay();
+  });
+}
 
 const measurementOverlayToggle = by('toggleMeasurementOverlay');
 if(measurementOverlayToggle){
@@ -9102,6 +9153,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       badgeSelections: State.badgeSelections,
       patchSelections: State.patchSelections,
       forceMini: State.forceMini,
+      miniMountStyle: State.miniMountStyle,
       text: State.text,
       commandInsignia: State.commandInsignia,
       calib: State.calib
@@ -9126,6 +9178,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.badgeSelections = p.badgeSelections || {};
     State.patchSelections = p.patchSelections || {};
     State.forceMini = !!p.forceMini;
+    State.miniMountStyle = p.miniMountStyle === 'holding' ? 'holding' : 'mounting';
     State.text = p.text || State.text || {lastName:'',capTape:'CIVIL AIR PATROL',show:true};
     State.commandInsignia = p.commandInsignia || State.commandInsignia || {graduatedCommander:false};
     State.calib = p.calib || State.calib || {enabled:false, selectedKey:null, selectedKeys:[], map:{}, byUniform:{}};
