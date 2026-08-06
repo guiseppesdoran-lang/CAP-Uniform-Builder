@@ -5,13 +5,15 @@ Asset base: https://mcchord.org/images/medals/
 Retrieved: 2026-08-06T03:30:56Z
 Discovered URLs: 434
 Downloaded PNGs: 432
-Failed URLs: 2
+Locally completed PNGs: 1
+Failed URLs: 1
 
-The McChord generator references these two files, but both return HTTP 404 and
-therefore could not be imported:
+The McChord generator references these files, but they return HTTP 404. The
+Meritorious Service Award 21st-award miniature was completed locally from the
+user-supplied `m_meriti18.png`, using the four-silver-clasp layout shown by the
+other McChord 21st-award miniatures. The remaining unavailable source file is:
 
 - https://mcchord.org/images/medals/m_cmdrco00s.png
-- https://mcchord.org/images/medals/m_meriti21.png
 
 ## URLs
 

@@ -483,9 +483,9 @@
     white-space:nowrap;
   }
   .miniMedalPreview img{
-    width:26px;
-    max-height:40px;
-    height:auto;
+    width:auto;
+    height:48px;
+    max-width:28px;
     border-radius:4px;
     background:#fff;
   }
@@ -4518,57 +4518,92 @@ function getRibbonDuplicateCountForSelection(id, awardValue){
 
 const miniMedalImages = {};
 Object.assign(miniMedalImages, {
-  'exceptional_service_award':      'medals/exceptional_service.png',
-  'meritorious_service_award':      'medals/meritorious_service.png',
-  'commander_commendation_award':   'medals/commanders_commendation.png',
-  'cap_achievment_award':           'medals/achievement.png',
-  'lifesaving_award':               'medals/crisis.png',
-  'national_commander_unit_citation_award': 'medals/commanders_citation.png',
-  'unit_citation_award':            'medals/unit_citation.png',
-  'cap_gill_robb_wilson_ribbon':    'medals/gill_robb_wilson.png',
-  'cap_paul_e_garber_ribbon':       'medals/paul_e_garber.png',
-  'cap_grover_loening_aerospace_ribbon':'medals/grover_loening.png',
-  'cap_leadership_ribbon':          'medals/leadership.png',
-  'cap_membership_ribbon':          'medals/membership.png',
-  'cap_command_service_ribbon':     'medals/command_service.png',
-  'cap_counterdrug_ribbon':         'medals/counterdrug.png',
-  'cap_world_war_2_service_ribbon': 'medals/world_war_2_service.png',
-  'cap_senior_recruiter_ribbon':    'medals/recruiting.png',
-  'cap_bridgadier_general_charles_yaeger_ribbon':'medals/charles_yaeger.png',
-  'cap_a_scott_crossfield_ribbon':  'medals/a_scott_crossfield.png',
-  'crisis_ribbon':                  'medals/crisis.png',
-  'red_service_ribbon':             'medals/red_service.png',
-  'search_find_ribbon':             'medals/find.png',
-  'air_search_and_rescue_ribbon':   'medals/search_and_rescue.png',
-  'disaster_relief_ribbon':         'medals/wartime_service.png',
-  'homeland_security_ribbon':       'medals/wartime_service.png',
-  'community_service_ribbon':       'medals/membership.png',
-  'iace_ribbon':                    'medals/iace.png',
-  'spaatz_award':                   'medals/carl_a_spaatz.png',
-  'eaker_award':                    'medals/ira_c_eaker.png',
-  'earhart_award':                  'medals/amelia_earhart.png',
-  'mitchell_award':                 'medals/billy_mitchell.png',
-  'armstrong_achievement':          'medals/aerospace_award.png',
-  'goddard_achievement':            'medals/a_scott_crossfield.png',
-  'doolittle_achievement':          'medals/aerospace_education.png',
-  'lindbergh_achievement':          'medals/leadership.png',
-  'rickenbacker_achievement':       'medals/proficency.png',
-  'wright_brothers_award':          'medals/leadership.png',
-  'mary_feik_achievement':          'medals/leadership.png',
-  'hap_arnold_achievement':         'medals/leadership.png',
-  'curry_achievement':              'medals/leadership.png',
-  'national_cadet_competition_ribbon':      'medals/cadet_compeition.png',
-  'national_color_guard_competition_ribbon':'medals/color_guard_competition.png',
-  'cadet_advisory_council_ribbon':          'medals/command_service.png',
-  'cadet_special_activity_ribbon':          'medals/aerospace_award.png',
-  'encampment_ribbon':                      'medals/encampment.png',
-  'cadet_recruiter_ribbon':                 'medals/recruiting.png',
-  'cap_cadet_orientation_pilot_ribbon':     'medals/aerospace_award.png',
-  'afa_award':                              'medals/aerospace_award.png',
-  'afsa_award':                             'medals/paul_e_garber.png',
-  'vfw_officer_award':                      'medals/wartime_service.png',
-  'vfw_nco_award':                          'medals/wartime_service.png'
+  'air_force_aerial_achievement_medal':'mini_medals/mcchord/m_usaf_aam01.png',
+  'silver_medal_of_valor':          'mini_medals/mcchord/m_silver.png',
+  'bronze_medal_of_valor':          'mini_medals/mcchord/m_bronze01.png',
+  'distinguished_service_award':    'mini_medals/mcchord/m_distin01.png',
+  'exceptional_service_award':      'mini_medals/mcchord/m_except01.png',
+  'meritorious_service_award':      'mini_medals/mcchord/m_meriti01.png',
+  'commander_commendation_award':   'mini_medals/mcchord/m_cmdrco01.png',
+  'cap_achievment_award':           'mini_medals/mcchord/m_AA01.png',
+  'lifesaving_award':               'mini_medals/mcchord/m_lifesa01.png',
+  'national_commander_unit_citation_award':'mini_medals/mcchord/m_unitci-nat01.png',
+  'unit_citation_award':            'mini_medals/mcchord/m_unitci01.png',
+  'national_commanders_citation':   'mini_medals/mcchord/m_natcmdrcom.png',
+  'cap_gill_robb_wilson_ribbon':    'mini_medals/mcchord/m_wilson.png',
+  'cap_paul_e_garber_ribbon':       'mini_medals/mcchord/m_garber.png',
+  'cap_grover_loening_aerospace_ribbon':'mini_medals/mcchord/m_loening.png',
+  'cap_leadership_ribbon':          'mini_medals/mcchord/m_leader.png',
+  'cap_membership_ribbon':          'mini_medals/mcchord/m_member.png',
+  'cap_command_service_ribbon':     'mini_medals/mcchord/m_cmdser.png',
+  'cap_world_war_2_service_ribbon': 'mini_medals/mcchord/m_wartime.png',
+  'cap_senior_recruiter_ribbon':    'mini_medals/mcchord/m_senrec01.png',
+  'cap_bridgadier_general_charles_yaeger_ribbon':'mini_medals/mcchord/m_yeager.png',
+  'cap_a_scott_crossfield_ribbon':  'mini_medals/mcchord/m_crossf.png',
+  'crisis_ribbon':                  'mini_medals/mcchord/m_crisis.png',
+  'red_service_ribbon':             'mini_medals/mcchord/m_redser-02yr.png',
+  'search_find_ribbon':             'mini_medals/mcchord/m_find01.png',
+  'air_search_and_rescue_ribbon':   'mini_medals/mcchord/m_sar01.png',
+  'disaster_relief_ribbon':         'mini_medals/mcchord/m_disast01.png',
+  'iace_ribbon':                    'mini_medals/mcchord/m_iace01.png',
+  'spaatz_award':                   'mini_medals/mcchord/m_spaatz.png',
+  'eaker_award':                    'mini_medals/mcchord/m_eaker.png',
+  'earhart_award':                  'mini_medals/mcchord/m_earhar.png',
+  'mitchell_award':                 'mini_medals/mcchord/m_mitchel.png',
+  'national_cadet_competition_ribbon':'mini_medals/mcchord/m_ncc.png',
+  'national_color_guard_competition_ribbon':'mini_medals/mcchord/m_ncgc.png',
+  'encampment_ribbon':              'mini_medals/mcchord/m_encamp01.png',
+  'air_medal':                      'mini_medals/mcchord/m_airmedal.png'
 });
+
+function getMiniMedalImagePath(ribbonOrId){
+  const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
+  const normalized = normalizeRibbonId(id);
+  const base = miniMedalImages[normalized] || miniMedalImages[id] || '';
+  if(!base) return '';
+
+  const awardValue = typeof ribbonOrId === 'string'
+    ? (State.ribbonSelections?.[id]?.awardValue || '')
+    : (ribbonOrId?.awardValue || State.ribbonSelections?.[id]?.awardValue || '');
+  const option = getRibbonSelectionOption(id, awardValue);
+  if(!option?.image) return base;
+
+  let medalFile = `m_${option.image}`;
+  if(id === 'commander_commendation_award'){
+    medalFile = medalFile
+      .replace(/NR(?=\.png$)/, 'sb')
+      .replace(/N(?=\.png$)/, 's')
+      .replace(/R(?=\.png$)/, 'b');
+  }else if(id === 'lifesaving_award'){
+    medalFile = medalFile.replace(/lifesa-star(\d+)\.png$/, 'lifesa$1s.png');
+  }else if(id === 'search_find_ribbon'){
+    medalFile = medalFile.replace(/find-prop(\d+)\.png$/, 'findP$1.png');
+  }else if(id === 'air_search_and_rescue_ribbon'){
+    medalFile = medalFile.replace(/sar-prop(\d+)\.png$/, 'sarP$1.png');
+  }else if(id === 'disaster_relief_ribbon'){
+    medalFile = medalFile.replace(/disast-V(\d+)\.png$/, 'disastV$1.png');
+  }
+
+  const variantAliases = {
+    'm_mitchel-star.png':'m_mitchel_s.png',
+    'm_eaker-star.png':'m_eaker_s.png',
+    'm_wilson-b.png':'m_wilson_b.png',
+    'm_wilson-s.png':'m_wilson_s.png',
+    'm_wilson-g.png':'m_wilson_g.png',
+    'm_garber-star.png':'m_garber_b.png',
+    'm_garber-sstar.png':'m_garber_s.png',
+    'm_garber-gstar.png':'m_garber_g.png',
+    'm_cmdser-bronze.png':'m_cmdser_b.png',
+    'm_cmdser-silver.png':'m_cmdser_s.png',
+    'm_cmdser-gold.png':'m_cmdser_g.png',
+    'm_cmdser-gold2.png':'m_cmdser_gg.png'
+  };
+  medalFile = variantAliases[medalFile] || medalFile;
+  if(['cap_leadership_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon'].includes(id)){
+    medalFile = medalFile.replace(/-([bs]+)\.png$/, '_$1.png');
+  }
+  return `mini_medals/mcchord/${medalFile}`;
+}
 
 /* ===========================
    BADGES / PATCHES
@@ -6003,18 +6038,19 @@ function renderRack(){
     return;
   }
 
-  // MINI MEDALS use the same precedence engine as ribbons.
-  const MINI_W = 20;
-  const MINI_H = 28;
+  // MINI MEDALS use the same precedence engine as ribbons. McChord's source
+  // art is 50 x 176, so preserve that ratio and overlap the mounted rows.
+  const MINI_H = 50;
+  const MINI_W = MINI_H * (50 / 176);
   const MEDAL_PER_ROW = 5;
-  const PAD = 6;
+  const MEDAL_STEP_X = MINI_W * 0.62;
+  const MEDAL_STEP_Y = MINI_H * 0.58;
 
   const medalItems = [];
   for(const r of items){
-    const normalized = normalizeRibbonId(r.id);
-    const medalPath = miniMedalImages[normalized] || miniMedalImages[r.id];
+    const medalPath = getMiniMedalImagePath(r);
     if(medalPath){
-      medalItems.push({ id:r.id, path:medalPath });
+      medalItems.push({ id:r.id, path:medalPath, awardValue:r.awardValue || '' });
     }
   }
   if(!medalItems.length) return;
@@ -6025,14 +6061,19 @@ function renderRack(){
 
   medalRowsTopFirst.forEach((row,topIndex)=>{
     const indexFromBottom = (totalMedalRows - 1 - topIndex);
-    const rowTopPx = BOTTOM_ROW_Y_MEDALS - indexFromBottom * (MINI_H + PAD);
-    const leftPositions = getCenteredRowLeftPositions(row.length, MINI_W, PAD);
+    const rowTopPx = BOTTOM_ROW_Y_MEDALS - indexFromBottom * MEDAL_STEP_Y;
+    const rowWidth = MINI_W + Math.max(0, row.length - 1) * MEDAL_STEP_X;
+    const stagger = indexFromBottom % 2 ? MEDAL_STEP_X / 2 : 0;
+    const rowLeft = RACK_CENTER_X - rowWidth / 2 + stagger;
+    const leftPositions = row.map((_,i) => rowLeft + i * MEDAL_STEP_X);
 
     row.forEach((entry,i)=>{
       const mimg=document.createElement('img');
       mimg.src=ASSET(entry.path);
       mimg.className='layer ribbonMini';
       mimg.style.display='block';
+      mimg.style.objectFit='contain';
+      mimg.style.zIndex=String(200 + topIndex * MEDAL_PER_ROW + i);
 
       const leftPx=leftPositions[i];
       const topPx =rowTopPx;
@@ -6040,7 +6081,15 @@ function renderRack(){
       mimg.dataset.calibKey = `mini:${entry.id}`;
       applyCalibToElement(mimg, mimg.dataset.calibKey, { x:leftPx, y:topPx, w:MINI_W, h:MINI_H, r:0 });
 
-      mimg.onerror=()=>{};
+      mimg.onerror=()=>{
+        const fallbackPath = miniMedalImages[normalizeRibbonId(entry.id)] || miniMedalImages[entry.id];
+        const fallbackSrc = fallbackPath ? ASSET(fallbackPath) : '';
+        if(fallbackSrc && mimg.src !== fallbackSrc){
+          mimg.src = fallbackSrc;
+        }else{
+          mimg.style.display='none';
+        }
+      };
       mimg.dataset.tooltipTitle = entry.id.replace(/_/g,' ').toUpperCase();
       mimg.dataset.tooltipReg   = "Miniature medal arrangement";
       mimg.dataset.tooltipWhy   = "Mini medals follow the same precedence order as ribbons.";
@@ -6678,9 +6727,10 @@ function buildRibbonGallery(){
     tile.dataset.ribbonId = id;
 
     const title = getRibbonDisplayName(id);
-    const miniPath = miniMedalImages[id];
+    const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
+    const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
     const miniPreview = miniPath
-      ? `<div class="miniMedalPreview"><span>Mini medal</span><img src="${ASSET(miniPath)}" alt="${title} mini medal"></div>`
+      ? `<div class="miniMedalPreview"><span>Mini medal</span><img src="${ASSET(miniPath)}" alt="${title} mini medal" onerror="this.onerror=null;${miniFallbackPath ? `this.src='${ASSET(miniFallbackPath)}'` : `this.style.display='none'`}"></div>`
       : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
 
     const options = getRibbonAwardOptions(id).map(opt => {
