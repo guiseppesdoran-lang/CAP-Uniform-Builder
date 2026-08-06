@@ -1507,6 +1507,11 @@ const RIBBON_LAYOUT_BY_UNIFORM = {
   blues_a: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 },
   blues_b: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 }
 };
+const MINI_MEDAL_LAYOUT_BY_UNIFORM = {
+  // Imported from CAPUB_coordinates_1786003225794.json. A single rack anchor
+  // keeps every medal row together while preserving Table 11-1 geometry.
+  mess_dress_female: { centerX:317, bottomY:196, rowStepY:21.5 }
+};
 function getRibbonLayout(uniformId = State.uniform){
   const baseUniformId = uniformId || State.uniform || '';
   const genderBucketId = State.gender ? `${baseUniformId}_${State.gender}` : baseUniformId;
@@ -2691,6 +2696,26 @@ const CAPUB_FEMALE_CLASS_A_CAPTAIN_COORDINATE_UPDATE = {"badge:AirCrew1_DB3F0FCC
     DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = {
       ...(DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] || {}),
       ...(coords || {})
+    };
+  }
+})();
+
+/* CAPUB COORDINATE UPDATE 2026-08-06
+   Female Senior Member Mess Dress badge positions imported from
+   CAPUB_coordinates_1786003225794.json. Mini medals use the rack-level layout
+   above; individual mini-medal x/y coordinates intentionally remain dynamic. */
+(function capubApplyFemaleMessDressCoordinateUpdate(){
+  const bucketId = 'mess_dress_female';
+  if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
+  const updates = {
+    'badge:squadron_commander_badge:ON:0': {x:133,y:152},
+    'badge:cadet_programs_badge:LP:0': {x:142,y:174},
+    'badge:aerospace_education_technician_badge:RP:0': {x:116,y:174}
+  };
+  for(const [key, coords] of Object.entries(updates)){
+    DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = {
+      ...(DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] || {}),
+      ...coords
     };
   }
 })();
@@ -6078,7 +6103,10 @@ function renderRack(){
   const MINI_H = 50;
   const MINI_W = MINI_H * (50 / 176);
   const MEDAL_RIBBON_PORTION = MINI_H * (116 / 176);
-  const MEDAL_STEP_Y = MEDAL_RIBBON_PORTION * 0.5;
+  const miniLayoutBucket = State.gender ? `${State.uniform}_${State.gender}` : State.uniform;
+  const miniLayout = MINI_MEDAL_LAYOUT_BY_UNIFORM[miniLayoutBucket] ||
+    MINI_MEDAL_LAYOUT_BY_UNIFORM[State.uniform] || {};
+  const MEDAL_STEP_Y = miniLayout.rowStepY ?? (MEDAL_RIBBON_PORTION * 0.5);
   const miniMountStyle = State.miniMountStyle === 'holding' ? 'holding' : 'mounting';
 
   const medalItems = [];
@@ -6092,7 +6120,8 @@ function renderRack(){
 
   const medalRowsTopFirst = buildMiniMedalRowsHighToLow(medalItems, miniMountStyle);
   const totalMedalRows = medalRowsTopFirst.length;
-  const BOTTOM_ROW_Y_MEDALS = BOTTOM_ROW_Y + 20;
+  const BOTTOM_ROW_Y_MEDALS = miniLayout.bottomY ?? (BOTTOM_ROW_Y + 20);
+  const MINI_RACK_CENTER_X = miniLayout.centerX ?? RACK_CENTER_X;
 
   medalRowsTopFirst.forEach((row,topIndex)=>{
     const indexFromBottom = (totalMedalRows - 1 - topIndex);
@@ -6103,7 +6132,7 @@ function renderRack(){
       ? Math.max(MINI_W * 0.5, ((MINI_W * 4) - MINI_W) / (row.length - 1))
       : MINI_W;
     const rowWidth = MINI_W + Math.max(0, row.length - 1) * horizontalStep;
-    const rowLeft = RACK_CENTER_X - rowWidth / 2;
+    const rowLeft = MINI_RACK_CENTER_X - rowWidth / 2;
     const leftPositions = row.map((_,i) => rowLeft + i * horizontalStep);
 
     row.forEach((entry,i)=>{
