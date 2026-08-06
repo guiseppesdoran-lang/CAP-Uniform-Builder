@@ -6499,7 +6499,66 @@ function getRibbonAwardOptions(id){
 
 function getRibbonSelectionOption(id, value){
   const options = getRibbonAwardOptions(id);
-  return options.find(opt => opt.value === value) || options[0] || {label:'- Select -', value:'', devices:{}};
+  const exact = options.find(opt => opt.value === value);
+  if(exact) return exact;
+
+  // Member-report imports use stable semantic values (for example
+  // bronze_clasp_3 or hours_120), while the McChord artwork catalog uses its
+  // own mcchord_* identifiers. Resolve the semantic value to the matching
+  // labeled artwork so imported ribbon devices are not silently discarded.
+  const usable = options.filter(opt => opt?.value);
+  const labelMatch = pattern => usable.find(opt => pattern.test(String(opt.label || '')));
+  const awardOption = count => count <= 1
+    ? labelMatch(/^Basic Award(?:\s|$)/i) || usable[0]
+    : labelMatch(new RegExp(`^${ordinalLabel(count)} Award(?:\\s|$)`, 'i'));
+
+  if(value === 'earned') return awardOption(1) || options[0] || {label:'- Select -', value:'', devices:{}};
+
+  const hours = String(value || '').match(/^hours_(\d+)$/i);
+  if(hours){
+    const found = labelMatch(new RegExp(`^${Number(hours[1]).toLocaleString()} Hours$`, 'i'));
+    if(found) return found;
+  }
+
+  const finds = String(value || '').match(/^find_(\d+)$/i);
+  if(finds){
+    const found = awardOption(Number(finds[1]));
+    if(found) return found;
+  }
+
+  const years = String(value || '').match(/^years_(\d+)$/i);
+  if(years){
+    const found = labelMatch(new RegExp(`^${Number(years[1])} Years$`, 'i'));
+    if(found) return found;
+  }
+
+  if(id === 'cadet_advisory_council_ribbon'){
+    if(value === 'group') return labelMatch(/^Basic Award$/i) || usable[0];
+    if(value === 'wing_bronze_star') return labelMatch(/^Bronze Star$/i) || usable[0];
+    if(value === 'region_silver_star') return labelMatch(/^Silver Star$/i) || usable[0];
+    if(value === 'national_gold_star') return labelMatch(/^Gold Star$/i) || usable[0];
+  }
+
+  if(id === 'commander_commendation_award'){
+    if(value === 'region_bronze_star') return labelMatch(/^Basic Award \(Region Cmdr\)$/i) || usable[0];
+    if(value === 'national_silver_star') return labelMatch(/^Basic Award \(National Cmdr\)$/i) || usable[0];
+    if(value === 'region_bronze_star_bronze_clasp_1') return labelMatch(/^2nd Award \(Region Cmdr\)$/i) || usable[0];
+    if(value === 'national_silver_star_bronze_clasp_1') return labelMatch(/^2nd Award \(National Cmdr\)$/i) || usable[0];
+    if(value === 'national_silver_star_bronze_clasp_2') return labelMatch(/^3rd Award \(National Cmdr\)$/i) || usable[0];
+  }
+
+  const semantic = String(value || '');
+  let additional = 0;
+  const silver = semantic.match(/silver_(?:clasp|star)_(\d+)/i);
+  const bronze = semantic.match(/bronze_(?:clasp|star)_(\d+)/i);
+  if(silver) additional += Number(silver[1]) * 5;
+  if(bronze) additional += Number(bronze[1]);
+  if(additional > 0){
+    const found = awardOption(additional + 1);
+    if(found) return found;
+  }
+
+  return options[0] || {label:'- Select -', value:'', devices:{}};
 }
 
 const COMMAND_SERVICE_RIBBON_ID = 'cap_command_service_ribbon';
