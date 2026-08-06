@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="110" viewBox="0 0 300 110">
+  <defs>
+    <filter id="cloth" color-interpolation-filters="sRGB">
+      <feColorMatrix values="0 0 0 0 0.94  0 0 0 0 0.96  0 0 0 0 1  -0.333 -0.333 -0.333 0 1"/>
+    </filter>
+  </defs>
+  <rect width="300" height="110" fill="#102344"/>
+  <image href="../SeniorObserver1_0E35802A29801.png" x="8" y="8" width="284" height="94" preserveAspectRatio="xMidYMid meet" filter="url(#cloth)"/>
+</svg>
