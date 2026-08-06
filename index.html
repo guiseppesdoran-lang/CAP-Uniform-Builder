@@ -11890,21 +11890,24 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       'group_commander_badge','squadron_commander_badge'
     ];
     const CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET = new Set(CAPUB_DOCUMENT_UTILITY_BADGE_IDS);
+    const CAPUB_UTILITY_ONLY_BADGE_IDS = new Set([
+      'incident_commander_1_badge','incident_commander_2_badge'
+    ]);
+    CAPUB_UTILITY_ONLY_BADGE_IDS.forEach(id => {
+      if(!badgeList.includes(id)) badgeList.push(id);
+    });
     const CAPUB_UTILITY_BADGE_LABELS = {
       basic_incident_commander_badge: 'Basic Incident Commander Badge',
-      incident_commander_1_badge: 'Senior Incident Commander Badge',
-      incident_commander_2_badge: 'Master Incident Commander Badge'
+      incident_commander_1_badge: 'Master Incident Commander Badge',
+      incident_commander_2_badge: 'Senior Incident Commander Badge'
     };
     const CAPUB_INCIDENT_COMMANDER_BADGE_IDS = new Set([
       'basic_incident_commander_badge','incident_commander_1_badge','incident_commander_2_badge'
     ]);
-    const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'original-fabric-20260805';
+    const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'capr-fabric-20260806';
 
     function capubUtilityBadgePreviewUrl(id){
-      const extension = ['MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge'].includes(id)
-        ? 'svg'
-        : 'png';
-      return `${ASSET(`badges/utility/${id}.${extension}`)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`;
+      return `${ASSET(`badges/utility/${id}.png`)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`;
     }
 
     function capubPatchIsUnitPatchId(patchId){
@@ -11973,9 +11976,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       if(capubIsUtilityUniform()){
         // Never fall back to metal/non-fabric artwork on a utility uniform.
         if(!CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id)) return [];
-        if(['MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge'].includes(id)){
-          return [`badges/utility/${id}.svg`];
-        }
         return [`badges/utility/${id}.png`];
       }
       const current = [];
@@ -12101,7 +12101,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       wrap.innerHTML = '';
 
       const utilityMode = capubIsUtilityUniform();
-      const eligible = utilityMode ? capubGetUtilityBadgeIds() : getEligibleBadgeIdsForMembership(State.membership);
+      const eligible = utilityMode
+        ? capubGetUtilityBadgeIds()
+        : getEligibleBadgeIdsForMembership(State.membership).filter(id => !CAPUB_UTILITY_ONLY_BADGE_IDS.has(id));
       // The document-defined utility set is intentionally small; always show
       // all 16 so none are hidden behind the gallery expansion control.
       const showCount = utilityMode ? eligible.length : (State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length));
@@ -12247,9 +12249,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     const CAPUB_UTILITY_BADGE_PRECEDENCE = [
       'MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge',
       'MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F',
+      'incident_commander_1_badge','incident_commander_2_badge','basic_incident_commander_badge',
       'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge',
       'emt_paramedic','emt_intermediate','emt_basic_badge',
-      'incident_commander_1_badge','incident_commander_2_badge','basic_incident_commander_badge',
       'medical_officer','nurse_officer','legal_officer',
       'jewish_chaplin','christian_chaplin','buddist_chaplin','muslim_chaplin',
       'group_commander_badge','squadron_commander_badge'
@@ -12268,7 +12270,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       // CIVIL AIR PATROL tape. A single cloth command insignia is a separate
       // item centered over the wearer's name tape and must not consume a slot
       // or participate in the qualification grid.
-      const qualifications = selected.filter(id => !isCommandInsigniaBadge(id)).slice(0, 4);
+      // CAPR 39-1 paragraph 5.1.2.3.6 permits a combined maximum of two
+      // embroidered aviation/occupational badges over the CAP tape.
+      const qualifications = selected.filter(id => !isCommandInsigniaBadge(id)).slice(0, 2);
       const command = selected.filter(id => isCommandInsigniaBadge(id)).slice(0, 1);
       return [...qualifications, ...command];
     }
@@ -12277,19 +12281,28 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       const naturalW = Number(img.naturalWidth) || 1;
       const naturalH = Number(img.naturalHeight) || 1;
       const id = img.dataset.badgeId;
-      // Figure A6-2: group command cloth insignia is 1 1/8 inches high;
-      // squadron command cloth insignia is 7/8 inch high. Qualification
-      // badges use a two-inch maximum dimension on this artwork scale.
-      const maxW = isCommandInsigniaBadge(id)
-        ? Math.round(CAPUB_UTILITY_PX_PER_INCH * 1.125)
-        : Math.round(CAPUB_UTILITY_PX_PER_INCH * 2);
-      const maxH = isCommandInsigniaBadge(id)
-        ? Math.round(CAPUB_UTILITY_PX_PER_INCH * (id === 'squadron_commander_badge' ? 0.875 : 1.125))
-        : Math.round(CAPUB_UTILITY_PX_PER_INCH * 2);
-      const scale = Math.min(maxW / naturalW, maxH / naturalH);
+      let targetW;
+      let targetH;
+      if(isCommandInsigniaBadge(id)){
+        targetH = CAPUB_UTILITY_PX_PER_INCH * (id === 'squadron_commander_badge' ? 0.875 : 1.125);
+      }else if(AIRCREW_BADGE_IDS?.has?.(id)){
+        // Figure A7-1: regular aviation insignia is three inches wide.
+        targetW = CAPUB_UTILITY_PX_PER_INCH * 3;
+      }else if(CAPUB_INCIDENT_COMMANDER_BADGE_IDS.has(id)){
+        // Figure A7-3: regular Incident Commander insignia is 1 5/8 inches wide.
+        targetW = CAPUB_UTILITY_PX_PER_INCH * 1.625;
+      }else if(GROUND_EMT_BADGE_IDS?.has?.(id)){
+        // Figures A7-3/A7-4: regular Ground Team and EMT insignia is 1 1/8 inches wide.
+        targetW = CAPUB_UTILITY_PX_PER_INCH * 1.125;
+      }else{
+        targetW = CAPUB_UTILITY_PX_PER_INCH * 1.125;
+      }
+      const scale = targetW
+        ? targetW / naturalW
+        : targetH / naturalH;
       return {
-        w: Math.max(18, Math.round(naturalW * scale)),
-        h: Math.max(12, Math.round(naturalH * scale))
+        w: Math.max(1, Math.round(naturalW * scale)),
+        h: Math.max(1, Math.round(naturalH * scale))
       };
     }
 
@@ -12386,10 +12399,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         img.dataset.badgeId = id;
         // New key prevents legacy 44-px/in and mixed command-grid coordinates
         // from overriding the regulation-based automatic layout.
-        img.dataset.calibKey = `utilityBadgeRegV2:${id}:${index}`;
+        img.dataset.calibKey = `utilityBadgeRegV3:${id}:${index}`;
         img.dataset.tooltipTitle = (CAPUB_UTILITY_BADGE_LABELS[id] || id.replace(/_/g,' ')).toUpperCase();
-        img.dataset.tooltipReg = 'CAPR 39-1, paragraph 7.1.1.3.1';
-        img.dataset.tooltipWhy = 'Utility occupational/qualification badge centered above the CAP tape with a 1/8-inch exposed dark-blue border.';
+        img.dataset.tooltipReg = 'CAPR 39-1, paragraph 5.1.2.3.6';
+        img.dataset.tooltipWhy = 'One of no more than two embroidered aviation/occupational badges centered above the CAP tape.';
         img.style.display = 'block';
         img.style.objectFit = 'contain';
         img.style.zIndex = '28';
