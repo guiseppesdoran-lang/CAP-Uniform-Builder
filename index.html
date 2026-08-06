@@ -11881,17 +11881,22 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
     const CAPUB_DOCUMENT_UTILITY_BADGE_IDS = [
       'MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F',
+      'MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge',
       'jewish_chaplin','christian_chaplin','buddist_chaplin','muslim_chaplin',
       'medical_officer','nurse_officer','legal_officer',
       'emt_paramedic','emt_intermediate','emt_basic_badge',
       'incident_commander_1_badge','incident_commander_2_badge','basic_incident_commander_badge',
-      'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge'
+      'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge',
+      'group_commander_badge','squadron_commander_badge'
     ];
     const CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET = new Set(CAPUB_DOCUMENT_UTILITY_BADGE_IDS);
     const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'original-fabric-20260805';
 
     function capubUtilityBadgePreviewUrl(id){
-      return `${ASSET(`badges/utility/${id}.png`)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`;
+      const extension = ['MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge'].includes(id)
+        ? 'svg'
+        : 'png';
+      return `${ASSET(`badges/utility/${id}.${extension}`)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`;
     }
 
     function capubPatchIsUnitPatchId(patchId){
@@ -11959,9 +11964,11 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     getBadgeAssetCandidates = function capubGetBadgeAssetCandidatesUtilityAware(id){
       if(capubIsUtilityUniform()){
         // Never fall back to metal/non-fabric artwork on a utility uniform.
-        return CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id)
-          ? [`badges/utility/${id}.png`]
-          : [];
+        if(!CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id)) return [];
+        if(['MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge'].includes(id)){
+          return [`badges/utility/${id}.svg`];
+        }
+        return [`badges/utility/${id}.png`];
       }
       const current = [];
       (capubPreviousGetBadgeAssetCandidates(id) || []).forEach(path => addAssetCandidate(current, path));
@@ -12134,7 +12141,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
 
         chk.onchange = () => {
-          if(!utilityMode && id === 'squadron_commander_badge' && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
+          if(isCommandInsigniaBadge(id) && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
             chk.checked = false;
             sel.checked = false;
             State.badgeSelections[id] = sel;
@@ -12193,7 +12200,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       required 1/8-inch exposed dark-blue fabric margin.  Badge artwork keeps
       its natural aspect ratio; only its longest dimension is normalized.
     */
-    const CAPUB_UTILITY_PX_PER_INCH = 44;
+    // The OCP artwork's five-inch CAP tape is about 110 canvas pixels wide.
+    // That makes the actual garment scale approximately 22 px/in, not 44.
+    const CAPUB_UTILITY_PX_PER_INCH = 22;
     const CAPUB_UTILITY_BLUE_MARGIN = Math.round(CAPUB_UTILITY_PX_PER_INCH / 8);
     const CAPUB_UTILITY_CAP_TAPE = {
       ocp: { centerX:580, topY:180 },
@@ -12213,12 +12222,14 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     };
 
     const CAPUB_UTILITY_BADGE_PRECEDENCE = [
+      'MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge',
       'MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F',
       'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge',
       'emt_paramedic','emt_intermediate','emt_basic_badge',
       'incident_commander_1_badge','incident_commander_2_badge','basic_incident_commander_badge',
       'medical_officer','nurse_officer','legal_officer',
-      'jewish_chaplin','christian_chaplin','buddist_chaplin','muslim_chaplin'
+      'jewish_chaplin','christian_chaplin','buddist_chaplin','muslim_chaplin',
+      'group_commander_badge','squadron_commander_badge'
     ];
     const CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX = new Map(
       CAPUB_UTILITY_BADGE_PRECEDENCE.map((id, index) => [id, index])
@@ -12228,7 +12239,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return (State.badges || [])
         .filter(id => isBadgeEligibleForMembership(id, State.membership))
         .filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id))
-        .filter(id => !isCommandInsigniaBadge(id))
+        .filter(id => !isCommandInsigniaBadge(id) || isCommandInsigniaGradeEligible(State.rank))
         .sort((a, b) => (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(a) ?? 999) - (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(b) ?? 999))
         .slice(0, 4);
     }
@@ -12236,8 +12247,16 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     function capubUtilityBadgeSize(img){
       const naturalW = Number(img.naturalWidth) || 1;
       const naturalH = Number(img.naturalHeight) || 1;
-      const maxW = 86;
-      const maxH = 42;
+      const id = img.dataset.badgeId;
+      // Figure A6-2: group command cloth insignia is 1 1/8 inches high;
+      // squadron command cloth insignia is 7/8 inch high. Qualification
+      // badges use a two-inch maximum dimension on this artwork scale.
+      const maxW = isCommandInsigniaBadge(id)
+        ? Math.round(CAPUB_UTILITY_PX_PER_INCH * 1.125)
+        : Math.round(CAPUB_UTILITY_PX_PER_INCH * 2);
+      const maxH = isCommandInsigniaBadge(id)
+        ? Math.round(CAPUB_UTILITY_PX_PER_INCH * (id === 'squadron_commander_badge' ? 0.875 : 1.125))
+        : Math.round(CAPUB_UTILITY_PX_PER_INCH * 2);
       const scale = Math.min(maxW / naturalW, maxH / naturalH);
       return {
         w: Math.max(18, Math.round(naturalW * scale)),
@@ -12307,8 +12326,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const placement = saved || example;
         img.style.left = `${Math.round(placement?.x ?? positions[i].x)}px`;
         img.style.top = `${Math.round(placement?.y ?? positions[i].y)}px`;
-        img.style.width = `${Math.round(placement?.w ?? size.w)}px`;
-        img.style.height = `${Math.round(placement?.h ?? size.h)}px`;
+        // Preserve calibrated position, but cap stale saved dimensions at the
+        // current regulation-scaled size so old 44-px/in data cannot double badges.
+        img.style.width = `${Math.round(Math.min(Number(placement?.w) || size.w, size.w))}px`;
+        img.style.height = `${Math.round(Math.min(Number(placement?.h) || size.h, size.h))}px`;
         img.style.transform = `rotate(${Number(placement?.r || 0)}deg)`;
       });
     }
