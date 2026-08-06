@@ -7493,6 +7493,17 @@ function placeBadgeSlotAnchored(id){
 
   applyCalibToElement(clone, clone.dataset.calibKey, { x: base.x, y: base.y, w: bw, h: bh, r: 0 });
 
+  // FON is a computed two-badge row on the female Class A coat. Historical
+  // per-badge calibration entries must not override its shared row geometry;
+  // doing so stacks the two specialty badges diagonally/vertically.
+  if(slot === 'FON'){
+    clone.style.left = `${base.x}px`;
+    clone.style.top = `${base.y}px`;
+    clone.style.width = `${bw}px`;
+    clone.style.height = `${bh}px`;
+    clone.style.transform = 'rotate(0deg)';
+  }
+
   const dynamicTop = getDynamicBadgeTopFromAppliedPosition(clone, id, slot);
   if(dynamicTop !== null) clone.style.top = `${dynamicTop}px`;
 
@@ -10149,7 +10160,9 @@ function isCommandInsigniaGradeEligible(rank){
   const r = String(rank || '').replace(/\s+/g, ' ').trim().toUpperCase();
   // CAPR 39-1 10.2.5: current/graduated commanders wear the Command Insignia Pin
   // only in the grade of lieutenant colonel and below. Colonels and above do not wear it.
-  return !['COL','BRIG GEN','BRIGADIER GENERAL','MAJ GEN','MAJOR GENERAL'].includes(r);
+  // Use an explicit allow-list so a missing, malformed, or not-yet-parsed rank
+  // can never cause the pin to render during a personnel-report import.
+  return ['2D LT','SECOND LIEUTENANT','1ST LT','FIRST LIEUTENANT','CAPT','CAPTAIN','MAJ','MAJOR','LT COL','LIEUTENANT COLONEL'].includes(r);
 }
 
 function getCommandServiceRibbonValueForCommanderEchelon(echelon){
