@@ -12211,6 +12211,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       cfdu: { centerX:360, topY:180 },
       flight_suit: { centerX:360, topY:180 }
     };
+    const CAPUB_UTILITY_NAME_TAPE = {
+      ocp: { centerX:380, topY:180 },
+      abu: { centerX:360, topY:180 },
+      corporate_field: { centerX:360, topY:180 },
+      cfdu: { centerX:360, topY:180 },
+      flight_suit: { centerX:360, topY:180 }
+    };
     // Imported from the user's OCP positioning example. Placement is keyed by
     // badge identity, not click order, so precedence cannot move these badges.
     const CAPUB_UTILITY_POSITION_EXAMPLE = {
@@ -12236,12 +12243,18 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     );
 
     function capubUtilityBadgeIds(){
-      return (State.badges || [])
+      const selected = (State.badges || [])
         .filter(id => isBadgeEligibleForMembership(id, State.membership))
         .filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id))
         .filter(id => !isCommandInsigniaBadge(id) || isCommandInsigniaGradeEligible(State.rank))
-        .sort((a, b) => (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(a) ?? 999) - (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(b) ?? 999))
-        .slice(0, 4);
+        .sort((a, b) => (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(a) ?? 999) - (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(b) ?? 999));
+      // Qualification badges form the one-to-four-badge arrangement over the
+      // CIVIL AIR PATROL tape. A single cloth command insignia is a separate
+      // item centered over the wearer's name tape and must not consume a slot
+      // or participate in the qualification grid.
+      const qualifications = selected.filter(id => !isCommandInsigniaBadge(id)).slice(0, 4);
+      const command = selected.filter(id => isCommandInsigniaBadge(id)).slice(0, 1);
+      return [...qualifications, ...command];
     }
 
     function capubUtilityBadgeSize(img){
@@ -12265,14 +12278,30 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     }
 
     function capubLayoutUtilityBadges(){
-      const badges = [...uniformCanvas.querySelectorAll('.capubUtilityBadge')];
-      if(!badges.length) return;
+      const allBadges = [...uniformCanvas.querySelectorAll('.capubUtilityBadge')];
+      if(!allBadges.length) return;
 
       const fieldKey = capubFieldUniformKey();
       const tape = CAPUB_UTILITY_CAP_TAPE[fieldKey] || CAPUB_UTILITY_CAP_TAPE.ocp;
+      const nameTape = CAPUB_UTILITY_NAME_TAPE[fieldKey] || CAPUB_UTILITY_NAME_TAPE.ocp;
       const halfInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 2);
       const quarterInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 4);
       const eighthInch = CAPUB_UTILITY_BLUE_MARGIN;
+      const commandBadges = allBadges.filter(img => isCommandInsigniaBadge(img.dataset.badgeId));
+      const badges = allBadges.filter(img => !isCommandInsigniaBadge(img.dataset.badgeId));
+
+      // Cloth command insignia is centered above the wearer's name tape. It is
+      // intentionally outside the occupational/qualification badge array.
+      commandBadges.forEach(img => {
+        const size = capubUtilityBadgeSize(img);
+        img.style.left = `${Math.round(nameTape.centerX - size.w / 2)}px`;
+        img.style.top = `${Math.round(nameTape.topY - halfInch - size.h)}px`;
+        img.style.width = `${size.w}px`;
+        img.style.height = `${size.h}px`;
+        img.style.transform = 'rotate(0deg)';
+      });
+
+      if(!badges.length) return;
       const sizes = badges.map(img => capubUtilityBadgeSize(img));
       const exampleLayout = CAPUB_UTILITY_POSITION_EXAMPLE[fieldKey];
       const usePositionExample = badges.length === 3
@@ -12339,7 +12368,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const img = new Image();
         img.className = 'layer badge capubUtilityBadge';
         img.dataset.badgeId = id;
-        img.dataset.calibKey = `utilityBadge:${id}:${index}`;
+        // New key prevents legacy 44-px/in and mixed command-grid coordinates
+        // from overriding the regulation-based automatic layout.
+        img.dataset.calibKey = `utilityBadgeRegV2:${id}:${index}`;
         img.dataset.tooltipTitle = id.replace(/_/g,' ').toUpperCase();
         img.dataset.tooltipReg = 'CAPR 39-1, paragraph 7.1.1.3.1';
         img.dataset.tooltipWhy = 'Utility occupational/qualification badge centered above the CAP tape with a 1/8-inch exposed dark-blue border.';
