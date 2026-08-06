@@ -5966,7 +5966,8 @@ function renderRack(){
 
   const autoMini   = by('autoMini')?.checked !== false;
   const manualMini = !!State.forceMini;
-  const useMini = !isFieldUniform(State.uniform) && ((uniformPrefersMini && autoMini) || manualMini);
+  const useMini = State.membership === 'senior' && !isFieldUniform(State.uniform) &&
+    ((uniformPrefersMini && autoMini) || (uniformPrefersMini && manualMini));
 
   const items = sortRibbons(State.ribbons);
   if(!items.length) return;
@@ -6039,12 +6040,14 @@ function renderRack(){
   }
 
   // MINI MEDALS use the same precedence engine as ribbons. McChord's source
-  // art is 50 x 176, so preserve that ratio and overlap the mounted rows.
+  // art is 50 x 176, so preserve that ratio. CAPR 39-1 Table 11-1 permits an
+  // optional mounting bar with no more than four medals per row. Rows are
+  // centered, and each upper row covers about half of the ribbon portion below.
   const MINI_H = 50;
   const MINI_W = MINI_H * (50 / 176);
-  const MEDAL_PER_ROW = 5;
-  const MEDAL_STEP_X = MINI_W * 0.62;
-  const MEDAL_STEP_Y = MINI_H * 0.58;
+  const MEDAL_PER_ROW = 4;
+  const MEDAL_RIBBON_PORTION = MINI_H * (116 / 176);
+  const MEDAL_STEP_Y = MEDAL_RIBBON_PORTION * 0.5;
 
   const medalItems = [];
   for(const r of items){
@@ -6062,10 +6065,9 @@ function renderRack(){
   medalRowsTopFirst.forEach((row,topIndex)=>{
     const indexFromBottom = (totalMedalRows - 1 - topIndex);
     const rowTopPx = BOTTOM_ROW_Y_MEDALS - indexFromBottom * MEDAL_STEP_Y;
-    const rowWidth = MINI_W + Math.max(0, row.length - 1) * MEDAL_STEP_X;
-    const stagger = indexFromBottom % 2 ? MEDAL_STEP_X / 2 : 0;
-    const rowLeft = RACK_CENTER_X - rowWidth / 2 + stagger;
-    const leftPositions = row.map((_,i) => rowLeft + i * MEDAL_STEP_X);
+    const rowWidth = row.length * MINI_W;
+    const rowLeft = RACK_CENTER_X - rowWidth / 2;
+    const leftPositions = row.map((_,i) => rowLeft + i * MINI_W);
 
     row.forEach((entry,i)=>{
       const mimg=document.createElement('img');
@@ -6073,7 +6075,9 @@ function renderRack(){
       mimg.className='layer ribbonMini';
       mimg.style.display='block';
       mimg.style.objectFit='contain';
-      mimg.style.zIndex=String(200 + topIndex * MEDAL_PER_ROW + i);
+      // Upper rows cover the ribbon portion of lower rows, so they render in
+      // front. Within a row, the higher-precedence (left) medal stays on top.
+      mimg.style.zIndex=String(300 + indexFromBottom * 20 + (row.length - i));
 
       const leftPx=leftPositions[i];
       const topPx =rowTopPx;
@@ -6092,7 +6096,7 @@ function renderRack(){
       };
       mimg.dataset.tooltipTitle = entry.id.replace(/_/g,' ').toUpperCase();
       mimg.dataset.tooltipReg   = "Miniature medal arrangement";
-      mimg.dataset.tooltipWhy   = "Mini medals follow the same precedence order as ribbons.";
+      mimg.dataset.tooltipWhy   = "CAPR 39-1 Table 11-1: up to four per mounting-bar row; upper rows overlap about half of the ribbon portion below.";
 
       uniformCanvas.appendChild(mimg);
     });
@@ -9439,6 +9443,7 @@ const MEMBER_REPORT_IMPORT_BADGE_PRIORITY = [
   'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B','solo_badge','pre_solo_badge',
   'MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge',
   'MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F',
+  'uas_pilot_master_badge','uas_pilot_senior_badge','uas_pilot_basic_badge',
 
   // Occupational / over-ribbon
   // Incident Commander is intentionally higher value than Ground Team because
@@ -10496,6 +10501,15 @@ function parseCapMemberReport(textRaw){
     });
   }
 
+  const searchFindCount = Math.max(1, countOccurrences(text, /Search\s*[\u201c\u201d\"']?Find[\u201c\u201d\"']?\s+Ribbon/gi));
+  if(/Search\s*[\u201c\u201d\"']?Find[\u201c\u201d\"']?\s+Ribbon/i.test(text)){
+    result.ribbons.push({
+      id:'search_find_ribbon',
+      value:`find_${searchFindCount}`,
+      reason:`${searchFindCount} Search Find Ribbon record(s)`
+    });
+  }
+
 
   const disasterReliefCount = Math.max(1, countOccurrences(text, /Disaster Relief Ribbon/gi));
   if(/Disaster Relief Ribbon/i.test(text)){
@@ -10603,6 +10617,10 @@ function parseCapMemberReport(textRaw){
   if(/CAP\s+Master\s+Aircrew\s+Rating|Master\s+Aircrew\s+Badge/i.test(text)) result.badges.push('MasterAirCrew1_72AC4CAE7A310');
   else if(/CAP\s+Senior\s+Aircrew\s+Rating|Senior\s+Aircrew\s+Badge/i.test(text)) result.badges.push('SeniorAirCrew1_B289BAE6E515C');
   else if(/CAP Aircrew Rating|Aircrew Badge/i.test(text)) result.badges.push('AirCrew1_DB3F0FCC3650F');
+
+  if(/CAP\s+(?:Command|Master)\s+sUAS\s+Pilot\s+(?:Rating|Badge)|(?:Command|Master)\s+sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_master_badge');
+  else if(/CAP\s+Senior\s+sUAS\s+Pilot\s+(?:Rating|Badge)|Senior\s+sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_senior_badge');
+  else if(/CAP\s+sUAS\s+Pilot\s+(?:Rating|Badge)|sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_basic_badge');
   // Do not use MO/Mission Observer training qualification as badge authorization.
   // Only import Observer when the report explicitly shows an observer rating/badge.
   if(/CAP\s+Master\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Master\s+Observer\s+Badge/i.test(text)){
