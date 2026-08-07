@@ -4526,6 +4526,14 @@ function ribbonImageOptionList(id){
 }
 
 function getRibbonImageOverride(id, awardValue){
+    // Force the basic National Color Guard Competition ribbon
+  // to use the McChord asset consistently.
+  if(
+    id === 'national_color_guard_competition_ribbon' &&
+    (!awardValue || awardValue === 'earned' || awardValue === 'mcchord_31200')
+  ){
+    return 'ncgc01.png';
+  }
   const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
   const options = Array.isArray(mcchordOptions) && mcchordOptions.length
     ? capubExtendMcchordOptionsTo84(id, mcchordOptions)
@@ -4613,6 +4621,20 @@ function getMiniMedalImagePath(ribbonOrId){
   if(!option?.image) return base;
 
   let medalFile = `m_${option.image}`;
+  // McChord basic National Competition mini-medal filenames do not use "01".
+if(
+  id === 'national_color_guard_competition_ribbon' &&
+  medalFile === 'm_ncgc01.png'
+){
+  medalFile = 'm_ncgc.png';
+}
+
+if(
+  id === 'national_cadet_competition_ribbon' &&
+  medalFile === 'm_ncc01.png'
+){
+  medalFile = 'm_ncc.png';
+}
   if(id === 'commander_commendation_award'){
     medalFile = medalFile
       .replace(/NR(?=\.png$)/, 'sb')
