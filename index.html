@@ -1508,9 +1508,19 @@ const RIBBON_LAYOUT_BY_UNIFORM = {
   blues_b: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 }
 };
 const MINI_MEDAL_LAYOUT_BY_UNIFORM = {
-  // Imported from CAPUB_coordinates_1786003225794.json. A single rack anchor
-  // keeps every medal row together while preserving Table 11-1 geometry.
-  mess_dress_female: { centerX:317, bottomY:196, rowStepY:21.5 }
+  // Male Mess Dress
+  mess_dress_male: {
+    centerX: 335,
+    bottomY: 184,
+    rowStepY: 16
+  },
+
+  // Female Mess Dress
+  mess_dress_female: {
+    centerX: 317,
+    bottomY: 196,
+    rowStepY: 21.5
+  }
 };
 function getRibbonLayout(uniformId = State.uniform){
   const baseUniformId = uniformId || State.uniform || '';
