@@ -12,13 +12,16 @@ const ALLOWED_MIME = new Set([
 ]);
 
 function doPost(e) {
+  let requestId = '';
   try {
-    const raw = e && e.postData && e.postData.contents ? e.postData.contents : '';
+    const rawForm = e && e.parameter && e.parameter.payload ? e.parameter.payload : '';
+    const rawBody = e && e.postData && e.postData.contents ? e.postData.contents : '';
+    const raw = rawForm || rawBody;
     const data = JSON.parse(raw || '{}');
+    requestId = sanitize_(data.requestId, 120);
 
-    // Honeypot: bots that fill this hidden field are silently ignored.
     if (String(data.honeypot || '').trim()) {
-      return json_({ ok: true });
+      return responsePage_({ ok: true, requestId: requestId, ignored: true });
     }
 
     const patchName = sanitize_(data.patchName, 120);
@@ -60,6 +63,7 @@ function doPost(e) {
       'Image file: ' + fileName
     ].join('\n');
 
+    const quotaBefore = MailApp.getRemainingDailyQuota();
     MailApp.sendEmail({
       to: PATCH_SUBMISSION_RECIPIENTS.join(','),
       subject: subjectParts.join(' — '),
@@ -67,26 +71,63 @@ function doPost(e) {
       attachments: [blob],
       name: 'CAP Uniform Builder Patch Submission'
     });
+    const quotaAfter = MailApp.getRemainingDailyQuota();
 
-    return json_({ ok: true });
+    console.log('Patch submission email sent', {
+      requestId: requestId,
+      patchName: patchName,
+      unitName: unitName,
+      recipients: PATCH_SUBMISSION_RECIPIENTS,
+      quotaBefore: quotaBefore,
+      quotaAfter: quotaAfter
+    });
+
+    return responsePage_({
+      ok: true,
+      requestId: requestId,
+      quotaRemaining: quotaAfter
+    });
   } catch (err) {
-    console.error(err);
-    return json_({ ok: false, error: String(err && err.message ? err.message : err) });
+    console.error('Patch submission error', err);
+    return responsePage_({
+      ok: false,
+      requestId: requestId,
+      error: String(err && err.message ? err.message : err)
+    });
   }
 }
 
 function doGet() {
-  return ContentService
-    .createTextOutput('CAP Uniform Builder patch submission endpoint is running.')
-    .setMimeType(ContentService.MimeType.TEXT);
+  return HtmlService
+    .createHtmlOutput('<!doctype html><html><body style="font-family:Arial,sans-serif;padding:20px">CAP Uniform Builder patch submission endpoint is running.</body></html>')
+    .setTitle('CAP Uniform Builder Patch Submission');
 }
 
 function sanitize_(value, maxLen) {
-  return String(value == null ? '' : value).replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, maxLen || 500);
+  return String(value == null ? '' : value)
+    .replace(/[\u0000-\u001F\u007F]/g, ' ')
+    .trim()
+    .slice(0, maxLen || 500);
 }
 
-function json_(obj) {
-  return ContentService
-    .createTextOutput(JSON.stringify(obj))
-    .setMimeType(ContentService.MimeType.JSON);
+function responsePage_(result) {
+  const json = JSON.stringify({
+    source: 'CAPUB_PATCH_SUBMISSION',
+    ok: !!result.ok,
+    requestId: String(result.requestId || ''),
+    error: result.error ? String(result.error) : '',
+    quotaRemaining: result.quotaRemaining == null ? null : Number(result.quotaRemaining)
+  }).replace(/</g, '\\u003c');
+
+  const html = '<!doctype html><html><body>' +
+    '<script>' +
+    'try{' +
+      'var data=' + json + ';' +
+      'if(window.parent){window.parent.postMessage(data,"*");}' +
+    '}catch(e){}' +
+    '<\/script>' +
+    '</body></html>';
+
+  return HtmlService.createHtmlOutput(html)
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
