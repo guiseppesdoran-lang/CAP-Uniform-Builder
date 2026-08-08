@@ -2,9 +2,8 @@
 (function(){
   'use strict';
 
-  // Paste the deployed Google Apps Script /exec URL here after completing
-  // PATCH_SUBMISSION_SETUP.md. Leave blank until the mail handler is deployed.
-  window.CAPUB_PATCH_SUBMISSION_ENDPOINT = window.CAPUB_PATCH_SUBMISSION_ENDPOINT || '';
+  // Deployed Google Apps Script web app used by the patch-submission form.
+  window.CAPUB_PATCH_SUBMISSION_ENDPOINT = window.CAPUB_PATCH_SUBMISSION_ENDPOINT || 'https://script.google.com/macros/s/AKfycbwH_AxRVmX58qRHPxauJsLfjfYNCYPbGO1AG6tBYPpl5_BmrKoW90hTj73lqmlmzZZJ6A/exec';
 
   function load(src,next){
     const existing=document.querySelector(`script[data-capub-loader="${src}"]`);
