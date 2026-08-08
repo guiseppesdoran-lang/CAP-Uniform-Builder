@@ -1401,6 +1401,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
   </div>
 </div>
 
+<script src="purchase-catalog.js"></script>
 <script src="mcchord-ribbon-variants.js"></script>
 <script>
 /* ===========================
@@ -1508,19 +1509,13 @@ const RIBBON_LAYOUT_BY_UNIFORM = {
   blues_b: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 }
 };
 const MINI_MEDAL_LAYOUT_BY_UNIFORM = {
-  // Male Mess Dress
-  mess_dress_male: {
-    centerX: 335,
-    bottomY: 200,
-    rowStepY: 16
-  },
+  // Male Mess Dress imported from CAPUB_coordinates_1786074847808.json.
+  // The rack is centered at x=335, its bottom row begins at y=184,
+  // and each upper row is raised by 16 pixels.
+  mess_dress_male: { centerX:335, bottomY:184, rowStepY:16 },
 
-  // Female Mess Dress
-  mess_dress_female: {
-    centerX: 317,
-    bottomY: 196,
-    rowStepY: 21.5
-  }
+  // Female Mess Dress imported from CAPUB_coordinates_1786003225794.json.
+  mess_dress_female: { centerX:317, bottomY:196, rowStepY:21.5 }
 };
 function getRibbonLayout(uniformId = State.uniform){
   const baseUniformId = uniformId || State.uniform || '';
@@ -4526,14 +4521,6 @@ function ribbonImageOptionList(id){
 }
 
 function getRibbonImageOverride(id, awardValue){
-    // Force the basic National Color Guard Competition ribbon
-  // to use the McChord asset consistently.
-  if(
-    id === 'national_color_guard_competition_ribbon' &&
-    (!awardValue || awardValue === 'earned' || awardValue === 'mcchord_31200')
-  ){
-    return 'ncgc01.png';
-  }
   const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
   const options = Array.isArray(mcchordOptions) && mcchordOptions.length
     ? capubExtendMcchordOptionsTo84(id, mcchordOptions)
@@ -4621,20 +4608,6 @@ function getMiniMedalImagePath(ribbonOrId){
   if(!option?.image) return base;
 
   let medalFile = `m_${option.image}`;
-  // McChord basic National Competition mini-medal filenames do not use "01".
-if(
-  id === 'national_color_guard_competition_ribbon' &&
-  medalFile === 'm_ncgc01.png'
-){
-  medalFile = 'm_ncgc.png';
-}
-
-if(
-  id === 'national_cadet_competition_ribbon' &&
-  medalFile === 'm_ncc01.png'
-){
-  medalFile = 'm_ncc.png';
-}
   if(id === 'commander_commendation_award'){
     medalFile = medalFile
       .replace(/NR(?=\.png$)/, 'sb')
@@ -13216,6 +13189,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
 
 </script>
+<script src="purchase-feature.js"></script>
 <script src="ocp-patch-variants.js"></script>
 </body>
 </html>
