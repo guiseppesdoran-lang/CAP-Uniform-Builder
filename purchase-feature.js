@@ -2,7 +2,6 @@
 (function(){
   'use strict';
 
-  // Deployed Google Apps Script web app used by the patch-submission form.
   window.CAPUB_PATCH_SUBMISSION_ENDPOINT = window.CAPUB_PATCH_SUBMISSION_ENDPOINT || 'https://script.google.com/macros/s/AKfycbwH_AxRVmX58qRHPxauJsLfjfYNCYPbGO1AG6tBYPpl5_BmrKoW90hTj73lqmlmzZZJ6A/exec';
 
   function load(src,next){
@@ -16,7 +15,7 @@
 
   load('purchase-feature-core.js',()=>{
     load('admin-history.js',()=>{
-      load('patch-submission.js');
+      load('patch-submission-v2.js');
     });
   });
 })();
