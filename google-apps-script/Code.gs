@@ -36,16 +36,17 @@ function doPost(e) {
 
     if (!patchName && !unitName) throw new Error('Patch name or unit/activity is required.');
     if (!fileData) throw new Error('Image data is required.');
-    if (!ALLOWED_MIME.has(mimeType)) throw new Error('Unsupported image type.');
+    if (!ALLOWED_MIME.has(mimeType)) throw new Error('Unsupported image type: ' + mimeType);
     if (declaredSize && declaredSize > MAX_FILE_BYTES) throw new Error('Image is too large.');
 
     const bytes = Utilities.base64Decode(fileData);
-    if (bytes.length > MAX_FILE_BYTES) throw new Error('Image is too large.');
+    if (bytes.length > MAX_FILE_BYTES) throw new Error('Image is too large after decoding.');
 
     const blob = Utilities.newBlob(bytes, mimeType, fileName);
     const subjectParts = ['CAP Uniform Builder Patch Submission'];
     if (patchName) subjectParts.push(patchName);
     else if (unitName) subjectParts.push(unitName);
+    const subject = subjectParts.join(' — ');
 
     const body = [
       'A patch image was submitted through the CAP Uniform Builder.',
@@ -60,35 +61,27 @@ function doPost(e) {
       'Notes:',
       notes || '(none)',
       '',
-      'Image file: ' + fileName
+      'Image file: ' + fileName,
+      'Request ID: ' + (requestId || '(none)')
     ].join('\n');
 
-    const quotaBefore = MailApp.getRemainingDailyQuota();
-    MailApp.sendEmail({
-      to: PATCH_SUBMISSION_RECIPIENTS.join(','),
-      subject: subjectParts.join(' — '),
-      body: body,
-      attachments: [blob],
-      name: 'CAP Uniform Builder Patch Submission'
-    });
-    const quotaAfter = MailApp.getRemainingDailyQuota();
+    const sendResults = sendPatchEmails_(subject, body, blob, submitterEmail);
 
-    console.log('Patch submission email sent', {
+    console.log(JSON.stringify({
+      event: 'patch_submission_sent',
       requestId: requestId,
       patchName: patchName,
       unitName: unitName,
-      recipients: PATCH_SUBMISSION_RECIPIENTS,
-      quotaBefore: quotaBefore,
-      quotaAfter: quotaAfter
-    });
+      results: sendResults
+    }));
 
     return responsePage_({
       ok: true,
       requestId: requestId,
-      quotaRemaining: quotaAfter
+      sendResults: sendResults
     });
   } catch (err) {
-    console.error('Patch submission error', err);
+    console.error('Patch submission error: ' + (err && err.stack ? err.stack : err));
     return responsePage_({
       ok: false,
       requestId: requestId,
@@ -97,10 +90,85 @@ function doPost(e) {
   }
 }
 
-function doGet() {
+function doGet(e) {
+  const mode = e && e.parameter ? String(e.parameter.mode || '') : '';
+  if (mode === 'status') {
+    let account = '';
+    try { account = Session.getEffectiveUser().getEmail(); } catch (_) {}
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        ok: true,
+        service: 'CAP Uniform Builder Patch Submission',
+        effectiveUser: account,
+        gmailAliases: safeAliases_()
+      }, null, 2))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
   return HtmlService
     .createHtmlOutput('<!doctype html><html><body style="font-family:Arial,sans-serif;padding:20px">CAP Uniform Builder patch submission endpoint is running.</body></html>')
     .setTitle('CAP Uniform Builder Patch Submission');
+}
+
+function sendPatchEmails_(subject, body, blob, replyTo) {
+  const results = [];
+  PATCH_SUBMISSION_RECIPIENTS.forEach(function(recipient) {
+    try {
+      const options = {
+        attachments: [blob.copyBlob()],
+        name: 'CAP Uniform Builder Patch Submission'
+      };
+      if (replyTo && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(replyTo)) {
+        options.replyTo = replyTo;
+      }
+
+      GmailApp.sendEmail(recipient, subject, body, options);
+      results.push({ recipient: recipient, ok: true });
+      console.log('Patch email sent to ' + recipient);
+    } catch (err) {
+      results.push({ recipient: recipient, ok: false, error: String(err && err.message ? err.message : err) });
+      console.error('Patch email failed for ' + recipient + ': ' + (err && err.stack ? err.stack : err));
+    }
+  });
+
+  const failed = results.filter(function(r) { return !r.ok; });
+  if (failed.length) {
+    throw new Error('Email failed for: ' + failed.map(function(r) {
+      return r.recipient + ' (' + r.error + ')';
+    }).join('; '));
+  }
+  return results;
+}
+
+/*
+  Run this ONCE manually from the Apps Script editor after pasting this version.
+  It forces Google to request the Gmail authorization scope and proves that the
+  script account itself can send mail before the web-app upload path is tested.
+*/
+function testPatchEmail() {
+  const subject = 'CAP Uniform Builder Patch Submission — Direct Test';
+  const body = [
+    'This is a direct Apps Script mail test.',
+    '',
+    'If you received this message, Gmail authorization and outbound mail are working.',
+    'Effective user: ' + Session.getEffectiveUser().getEmail(),
+    'Time: ' + new Date().toISOString()
+  ].join('\n');
+
+  const testBlob = Utilities.newBlob(
+    'CAP Uniform Builder patch submission test attachment',
+    'text/plain',
+    'capub_patch_test.txt'
+  );
+
+  const results = sendPatchEmails_(subject, body, testBlob, '');
+  console.log(JSON.stringify(results));
+  return results;
+}
+
+function safeAliases_() {
+  try { return GmailApp.getAliases(); }
+  catch (err) { return ['ERROR: ' + String(err && err.message ? err.message : err)]; }
 }
 
 function sanitize_(value, maxLen) {
@@ -116,7 +184,7 @@ function responsePage_(result) {
     ok: !!result.ok,
     requestId: String(result.requestId || ''),
     error: result.error ? String(result.error) : '',
-    quotaRemaining: result.quotaRemaining == null ? null : Number(result.quotaRemaining)
+    sendResults: result.sendResults || null
   }).replace(/</g, '\\u003c');
 
   const html = '<!doctype html><html><body>' +
