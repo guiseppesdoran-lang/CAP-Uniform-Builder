@@ -14,8 +14,6 @@
   }
 
   load('purchase-feature-core.js',()=>{
-    load('admin-history.js',()=>{
-      load('patch-submission.js?v=3');
-    });
+    load('admin-history.js');
   });
 })();
