@@ -13189,7 +13189,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
 
 </script>
-<script src="purchase-feature.js?v=3"></script>
+<script src="purchase-feature.js?v=4"></script>
+<!-- Loaded directly so patch submission cannot be blocked by stale chained feature loaders. -->
+<script src="patch-submission.js?v=4"></script>
 <script src="ocp-patch-variants.js"></script>
 </body>
 </html>

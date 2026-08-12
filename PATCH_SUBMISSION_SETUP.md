@@ -44,7 +44,7 @@ Open `purchase-feature.js` in the repository and add this line before the featur
 window.CAPUB_PATCH_SUBMISSION_ENDPOINT = 'PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE';
 ```
 
-The feature loader already includes `patch-submission.js`; no additional script tag is required. The version query in `index.html` and `purchase-feature.js` is intentional and ensures browsers receive the current submission implementation after an update.
+`index.html` loads `patch-submission.js` directly after the feature loader. Keep its version query current when the submission code changes; direct loading prevents a cached chained loader from silently restoring an older submission implementation.
 
 The repository version is designed so the endpoint is kept in one configuration line. The recipients remain controlled by the Apps Script rather than by values submitted from the browser.
 
