@@ -7,6 +7,7 @@
   const MAX_FILE_BYTES = 4 * 1024 * 1024;
   const LAST_SUBMIT_KEY = 'CAPUB_PATCH_SUBMIT_LAST_V3';
   const CONFIRMATION_TIMEOUT_MS = 60000;
+  const RESPONSE_MESSAGE_GRACE_MS = 1500;
   const ALLOWED_TYPES = new Set(['image/png','image/jpeg','image/webp','image/svg+xml']);
   const ALLOWED_EXTENSIONS = new Set(['png','jpg','jpeg','webp','svg']);
 
@@ -183,8 +184,11 @@
       transport.appendChild(input);
       let settled=false;
       let timer;
+      let responseTimer;
+      let frameLoads=0;
       const cleanup=()=>{
         clearTimeout(timer);
+        clearTimeout(responseTimer);
         window.removeEventListener('message',onMessage);
         setTimeout(()=>{ transport.remove(); frame.remove(); },100);
       };
@@ -201,8 +205,16 @@
         else finish(reject,new Error(data.error || 'The submission service rejected the patch.'));
       };
       window.addEventListener('message',onMessage);
-      document.body.append(frame,transport);
+      frame.addEventListener('load',()=>{
+        frameLoads+=1;
+        if(frameLoads<2 || settled) return;
+        // Apps Script wraps HtmlService output in its own cross-origin iframe.
+        // The wrapper loads after doPost completes but can block the nested
+        // response page's postMessage from reaching this page.
+        responseTimer=setTimeout(()=>finish(resolve,{ok:true,requestId,transportAcknowledged:true}),RESPONSE_MESSAGE_GRACE_MS);
+      });
       frame.addEventListener('error',()=>finish(reject,new Error('The submission service could not be reached.')),{once:true});
+      document.body.append(frame,transport);
       timer=setTimeout(()=>finish(reject,new Error('The submission service did not confirm delivery. Please wait before trying again so the patch is not sent twice.')),CONFIRMATION_TIMEOUT_MS);
       transport.submit();
     });
@@ -262,5 +274,5 @@
   function init(){ injectStyles(); ensureButton(); ensureModal(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
 
-  window.CAPUB_PATCH_SUBMISSION={open:openModal,endpointConfigured:!!endpoint(),version:3};
+  window.CAPUB_PATCH_SUBMISSION={open:openModal,endpointConfigured:!!endpoint(),version:5};
 })();
