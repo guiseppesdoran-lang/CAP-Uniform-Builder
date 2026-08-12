@@ -4,7 +4,8 @@ The public GitHub Pages site cannot send email attachments by itself. The includ
 
 ## What is already in the repository
 
-- `patch-submission.js` — the user-facing upload form.
+- `patch-submission.js` — the canonical user-facing upload form and confirmed transport.
+- `patch-submission-v2.js` — a compatibility loader for browsers that cached the previous feature loader. Do not add it directly to the page.
 - `google-apps-script/Code.gs` — the email handler.
 - The handler emails each valid submission to:
   - guiseppe.s.doran@gmail.com
@@ -33,6 +34,8 @@ At least the patch name or unit/activity is required. Accepted files: PNG, JPG/J
 9. Click **Deploy** and authorize the script to send email.
 10. Copy the deployed web-app URL. It will normally end in `/exec`.
 
+When updating an existing deployment, use **Deploy → Manage deployments → Edit**, choose **New version**, and deploy it. Saving `Code.gs` alone does not update the live `/exec` endpoint. Run `testPatchEmail()` once after replacing the backend code so Google requests the required Gmail permission before testing the public form.
+
 ## Connect the builder to the deployment
 
 Open `purchase-feature.js` in the repository and add this line before the feature scripts are loaded:
@@ -41,7 +44,7 @@ Open `purchase-feature.js` in the repository and add this line before the featur
 window.CAPUB_PATCH_SUBMISSION_ENDPOINT = 'PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE';
 ```
 
-Then make sure the loader includes `patch-submission.js`.
+The feature loader already includes `patch-submission.js`; no additional script tag is required. The version query in `index.html` and `purchase-feature.js` is intentional and ensures browsers receive the current submission implementation after an update.
 
 The repository version is designed so the endpoint is kept in one configuration line. The recipients remain controlled by the Apps Script rather than by values submitted from the browser.
 

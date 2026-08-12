@@ -15,7 +15,7 @@
 
   load('purchase-feature-core.js',()=>{
     load('admin-history.js',()=>{
-      load('patch-submission-v2.js');
+      load('patch-submission.js?v=3');
     });
   });
 })();

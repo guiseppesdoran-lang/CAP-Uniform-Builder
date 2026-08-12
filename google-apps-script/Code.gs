@@ -191,7 +191,11 @@ function responsePage_(result) {
     '<script>' +
     'try{' +
       'var data=' + json + ';' +
-      'if(window.parent){window.parent.postMessage(data,"*");}' +
+      'var notify=function(){' +
+        'try{if(window.parent){window.parent.postMessage(data,"*");}}catch(e){}' +
+        'try{if(window.top&&window.top!==window.parent){window.top.postMessage(data,"*");}}catch(e){}' +
+      '};' +
+      'notify();setTimeout(notify,250);setTimeout(notify,1000);' +
     '}catch(e){}' +
     '<\/script>' +
     '</body></html>';

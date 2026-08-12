@@ -4,10 +4,19 @@
 (function(){
   'use strict';
 
-  const ENDPOINT = String(window.CAPUB_PATCH_SUBMISSION_ENDPOINT || '').trim();
   const MAX_FILE_BYTES = 4 * 1024 * 1024;
-  const LAST_SUBMIT_KEY = 'CAPUB_PATCH_SUBMIT_LAST_V1';
+  const LAST_SUBMIT_KEY = 'CAPUB_PATCH_SUBMIT_LAST_V3';
+  const CONFIRMATION_TIMEOUT_MS = 60000;
   const ALLOWED_TYPES = new Set(['image/png','image/jpeg','image/webp','image/svg+xml']);
+  const ALLOWED_EXTENSIONS = new Set(['png','jpg','jpeg','webp','svg']);
+
+  function endpoint(){ return String(window.CAPUB_PATCH_SUBMISSION_ENDPOINT || '').trim(); }
+  function field(form,name){ return form.elements.namedItem(name); }
+  function isAllowedFile(file){
+    if(!file) return false;
+    const extension=String(file.name || '').split('.').pop().toLowerCase();
+    return ALLOWED_TYPES.has(file.type) || (!file.type && ALLOWED_EXTENSIONS.has(extension));
+  }
 
   function esc(v){
     return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -77,7 +86,7 @@
           <button type="button" class="capub-patch-close" id="capubPatchSubmitClose" aria-label="Close">×</button>
         </div>
         <div class="capub-patch-body">
-          <form id="capubPatchSubmitForm">
+          <form id="capubPatchSubmitForm" novalidate>
             <div class="capub-patch-grid">
               <div class="capub-patch-field"><label for="capubPatchName">Patch name</label><input id="capubPatchName" name="patchName" maxlength="120" placeholder="Example: Sequoyah Cadet Squadron Patch"><div class="capub-patch-help">Enter the patch name if known.</div></div>
               <div class="capub-patch-field"><label for="capubPatchUnit">Unit / activity</label><input id="capubPatchUnit" name="unitName" maxlength="120" placeholder="Example: TN-330 / Sequoyah Cadet Squadron"><div class="capub-patch-help">At least the patch name or unit/activity is required.</div></div>
@@ -87,7 +96,7 @@
               <div class="capub-patch-field full"><label for="capubPatchNotes">Notes <span style="font-weight:400">(optional)</span></label><textarea id="capubPatchNotes" name="notes" maxlength="1000" placeholder="Anything the administrators should know about the patch, authorization, current unit name, etc."></textarea></div>
             </div>
             <input class="capub-patch-honey" tabindex="-1" autocomplete="off" name="website" id="capubPatchWebsite">
-            <div id="capubPatchStatus" class="capub-patch-status"></div>
+            <div id="capubPatchStatus" class="capub-patch-status" role="status" aria-live="polite"></div>
             <div class="capub-patch-actions"><button class="ghost" type="button" id="capubPatchCancel">Cancel</button><button type="submit" id="capubPatchSend">Submit Patch</button></div>
           </form>
         </div>
@@ -131,7 +140,7 @@
       setStatus('That image is larger than 4 MB. Please upload a smaller file.','err');
       return;
     }
-    if(file.type && !ALLOWED_TYPES.has(file.type)){
+    if(!isAllowedFile(file)){
       e.target.value='';
       box.classList.remove('show');
       setStatus('Unsupported file type. Please use PNG, JPG/JPEG, WEBP, or SVG.','err');
@@ -153,22 +162,69 @@
     });
   }
 
+  function postConfirmed(payload){
+    return new Promise((resolve,reject)=>{
+      const requestId=globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      payload.requestId=requestId;
+      const frame=document.createElement('iframe');
+      const frameName=`capub_patch_${requestId.replace(/[^a-z0-9]/gi,'')}`;
+      frame.name=frameName;
+      frame.title='Patch submission response';
+      frame.hidden=true;
+      const transport=document.createElement('form');
+      transport.method='POST';
+      transport.action=endpoint();
+      transport.target=frameName;
+      transport.hidden=true;
+      const input=document.createElement('input');
+      input.type='hidden';
+      input.name='payload';
+      input.value=JSON.stringify(payload);
+      transport.appendChild(input);
+      let settled=false;
+      let timer;
+      const cleanup=()=>{
+        clearTimeout(timer);
+        window.removeEventListener('message',onMessage);
+        setTimeout(()=>{ transport.remove(); frame.remove(); },100);
+      };
+      const finish=(callback,value)=>{
+        if(settled) return;
+        settled=true;
+        cleanup();
+        callback(value);
+      };
+      const onMessage=e=>{
+        const data=e.data;
+        if(!data || data.source!=='CAPUB_PATCH_SUBMISSION' || data.requestId!==requestId) return;
+        if(data.ok) finish(resolve,data);
+        else finish(reject,new Error(data.error || 'The submission service rejected the patch.'));
+      };
+      window.addEventListener('message',onMessage);
+      document.body.append(frame,transport);
+      frame.addEventListener('error',()=>finish(reject,new Error('The submission service could not be reached.')),{once:true});
+      timer=setTimeout(()=>finish(reject,new Error('The submission service did not confirm delivery. Please wait before trying again so the patch is not sent twice.')),CONFIRMATION_TIMEOUT_MS);
+      transport.submit();
+    });
+  }
+
   async function submitPatch(e){
     e.preventDefault();
     const form=e.currentTarget;
-    const patchName=form.patchName.value.trim();
-    const unitName=form.unitName.value.trim();
-    const submitterName=form.submitterName.value.trim();
-    const submitterEmail=form.submitterEmail.value.trim();
-    const notes=form.notes.value.trim();
-    const honeypot=form.website.value.trim();
-    const file=form.patchFile.files?.[0];
+    const patchName=field(form,'patchName').value.trim();
+    const unitName=field(form,'unitName').value.trim();
+    const submitterName=field(form,'submitterName').value.trim();
+    const submitterEmail=field(form,'submitterEmail').value.trim();
+    const notes=field(form,'notes').value.trim();
+    const honeypot=field(form,'website').value.trim();
+    const file=field(form,'patchFile').files?.[0];
 
     if(!patchName && !unitName){ setStatus('Enter either the patch name or the unit/activity it belongs to.','err'); return; }
     if(!file){ setStatus('Select a patch image to upload.','err'); return; }
     if(file.size>MAX_FILE_BYTES){ setStatus('The selected image is larger than 4 MB.','err'); return; }
-    if(file.type && !ALLOWED_TYPES.has(file.type)){ setStatus('Unsupported image type. Use PNG, JPG/JPEG, WEBP, or SVG.','err'); return; }
-    if(!ENDPOINT || /PASTE_|YOUR_|EXAMPLE/i.test(ENDPOINT)){
+    if(!isAllowedFile(file)){ setStatus('Unsupported image type. Use PNG, JPG/JPEG, WEBP, or SVG.','err'); return; }
+    if(submitterEmail && !field(form,'submitterEmail').checkValidity()){ setStatus('Enter a valid email address or leave the email field blank.','err'); return; }
+    if(!endpoint() || /PASTE_|YOUR_|EXAMPLE/i.test(endpoint())){
       setStatus('Patch submission email service has not been activated yet. The administrator needs to finish the one-time mail-service setup.','err');
       return;
     }
@@ -189,12 +245,7 @@
         fileSize:file.size, submittedAt:new Date().toISOString(), pageUrl:location.href
       };
 
-      await fetch(ENDPOINT,{
-        method:'POST',
-        mode:'no-cors',
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body:JSON.stringify(payload)
-      });
+      await postConfirmed(payload);
 
       localStorage.setItem(LAST_SUBMIT_KEY,String(Date.now()));
       form.reset();
@@ -202,7 +253,7 @@
       setStatus('Patch submitted. The image and patch information were sent to the builder administrators for review.','ok');
     }catch(err){
       console.error('CAPUB patch submission failed:',err);
-      setStatus('The patch could not be submitted. Please try again later.','err');
+      setStatus(`Submission failed: ${err?.message || 'The patch could not be submitted. Please try again later.'}`,'err');
     }finally{
       if(button){ button.disabled=false; button.textContent='Submit Patch'; }
     }
@@ -211,5 +262,5 @@
   function init(){ injectStyles(); ensureButton(); ensureModal(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
 
-  window.CAPUB_PATCH_SUBMISSION={open:openModal,endpointConfigured:!!ENDPOINT};
+  window.CAPUB_PATCH_SUBMISSION={open:openModal,endpointConfigured:!!endpoint(),version:3};
 })();
