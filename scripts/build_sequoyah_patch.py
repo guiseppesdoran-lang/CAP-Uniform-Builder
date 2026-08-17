@@ -72,7 +72,7 @@ def main() -> None:
 
     sprite = Image.new("RGBA", (200, 100), (0, 0, 0, 0))
     sprite.alpha_composite(full_layer, (2, 2))
-    sprite.alpha_composite(adjusted, (92 + max(0, (96 - adjusted.width) // 2), max(0, (100 - adjusted.height) // 2)))
+    sprite.alpha_composite(adjusted, (116 + max(0, (96 - adjusted.width) // 2), max(0, (100 - adjusted.height) // 2)))
     OCP_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     sprite.save(OCP_OUTPUT, optimize=True)
 
