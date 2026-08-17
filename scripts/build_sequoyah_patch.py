@@ -68,7 +68,9 @@ def main() -> None:
     # The sleeve view removes the patch's left half, then rotates the remaining
     # right half to follow the OCP sleeve angle.
     right_half = full.crop((full.width // 2, 0, full.width, full.height))
-    adjusted = right_half.rotate(-30, resample=Image.Resampling.BICUBIC, expand=True)
+    # Incorporate the additional -16 degree sleeve refinement from the latest
+    # coordinate export into this half only; the complete patch stays upright.
+    adjusted = right_half.rotate(-46, resample=Image.Resampling.BICUBIC, expand=True)
 
     sprite = Image.new("RGBA", (200, 100), (0, 0, 0, 0))
     sprite.alpha_composite(full_layer, (2, 2))
