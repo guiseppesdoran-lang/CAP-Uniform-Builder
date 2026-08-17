@@ -66,7 +66,7 @@ def main() -> None:
     full_layer.alpha_composite(full, ((92 - full.width) // 2, (96 - full.height) // 2))
 
     left_half = full.crop((0, 0, (full.width + 1) // 2, full.height))
-    adjusted = left_half.rotate(30, resample=Image.Resampling.BICUBIC, expand=True)
+    adjusted = left_half.rotate(-30, resample=Image.Resampling.BICUBIC, expand=True)
 
     sprite = Image.new("RGBA", (200, 100), (0, 0, 0, 0))
     sprite.alpha_composite(full_layer, (2, 2))
