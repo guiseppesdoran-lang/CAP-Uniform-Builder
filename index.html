@@ -12857,6 +12857,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       authorizedUniforms:['abu','ocp','corporate_field','cfdu','flight_suit']
     };
 
+    // Imported from CAPUB_coordinates_1786941245605.json. This positions the
+    // complete/adjusted OCP sprite on the male right-sleeve reference view.
+    DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male ||= {};
+    DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male['patch:tn330_ocp_patch:R_SHOULDER:0'] = {
+      x:76, y:248, w:130, h:65, r:0
+    };
+
     // Keep the TN-185 metadata normalized and available for the same resolver.
     if(PATCH_META.tn185_ocp_patch){
       PATCH_META.tn185_ocp_patch.img = 'patches/ocp/TN-185_ocp_patch.png';
