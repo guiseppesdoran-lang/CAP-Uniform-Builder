@@ -1281,7 +1281,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
           <label class="fieldLabel">Unit Patch</label>
           <div class="hintText">
             Separate from the general patch picker. Scroll the charter dropdown or type in the search box to filter by charter number or unit name.
-            Only SER-TN-185 currently has an image asset in this program.
+            SER-TN-185 and SER-TN-330 currently have image assets in this program.
           </div>
           <input id="unitPatchSearch" type="search" placeholder="Search charter number or unit name..." autocomplete="off"/>
           <select id="unitPatchSelect">
@@ -12851,8 +12851,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     PATCH_META.tn330_ocp_patch = {
       label:'SER-TN-330 Sequoyah Cadet Squadron Unit Patch',
       slotHint:'R_SHOULDER',
-      w:100,
-      h:200,
+      w:200,
+      h:100,
       img:'patches/ocp/TN-330_ocp_patch.png',
       authorizedUniforms:['abu','ocp','corporate_field','cfdu','flight_suit']
     };
@@ -12882,6 +12882,12 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       UNIT_PATCH_IMAGE_BY_CHARTER['TN-185'] = 'tn185_ocp_patch';
       UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-330'] = 'tn330_ocp_patch';
       UNIT_PATCH_IMAGE_BY_CHARTER['TN-330'] = 'tn330_ocp_patch';
+    }
+
+    // Rebuild the selector because this mapping is installed after its initial
+    // page setup. Preserve any search text the user has already entered.
+    if(typeof buildUnitPatchSelector === 'function'){
+      buildUnitPatchSelector(by('unitPatchSearch')?.value || '');
     }
 
     // Add the ID only so saved/imported setups can resolve it. The unit-patch
