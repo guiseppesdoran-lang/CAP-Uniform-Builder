@@ -5895,9 +5895,9 @@ function applyJacket(){
       // stays directly beneath the fixed ribbon rack.
       ? { x:55.3, y:38.9, w:353.25, h:471 }
       : isAviatorArtwork && State.gender === 'female'
-        // The cleaned female artwork uses a 3:4 canvas. Its independent offset
-        // centers the right-side pocket under the same award-rack anchor.
-        ? { x:49.1, y:37.1, w:369, h:492 }
+        // Keep the cleaned female artwork proportional while independently
+        // centering its right-side pocket under the award-rack anchor.
+        ? { x:58, y:44.5, w:353.25, h:471 }
         : { x:0, y:0, w:renderSize.w, h:renderSize.h };
     img.style.left = `${aviatorArtworkLayout.x}px`;
     img.style.top = `${aviatorArtworkLayout.y}px`;
