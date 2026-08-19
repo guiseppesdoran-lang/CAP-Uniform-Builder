@@ -5891,8 +5891,8 @@ function applyJacket(){
     const renderSize = getCanvasRenderSize();
     const aviatorArtworkLayout = State.gender === 'male' && ['aviator','aviator_blazer'].includes(State.uniform)
       // Scale around the 450x600 canvas center, then raise the shirt so its
-      // left pocket remains 1/2 inch below the fixed ribbon rack.
-      ? { x:22.5, y:21, w:405, h:540 }
+      // left pocket sits directly beneath the fixed ribbon rack.
+      ? { x:21, y:18, w:405, h:540 }
       : { x:0, y:0, w:renderSize.w, h:renderSize.h };
     img.style.left = `${aviatorArtworkLayout.x}px`;
     img.style.top = `${aviatorArtworkLayout.y}px`;
