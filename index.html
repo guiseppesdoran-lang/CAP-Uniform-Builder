@@ -2792,6 +2792,20 @@ const SPECIALTY_TRACK_BADGE_IDS = new Set([
 const POCKET_SERVICE_BADGE_IDS = new Set([
   ...SPECIALTY_TRACK_BADGE_IDS
 ]);
+const CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS = new Set([
+  'senior_advisory_group_badge',
+  'command_council_badge',
+  'national_executive_committee_badge',
+  'cap_national_command_board_badge'
+]);
+
+function isBadgeAuthorizedOnCurrentDressUniform(id){
+  if(State.uniform !== 'semi_formal') return true;
+  // CAPR 39-1 4.2.1/4.2.2 carries forward Corporate Service Dress rules:
+  // the Chaplain insignia and the listed service-badge substitutes for the
+  // pocket CAP crest are the only selectable badges worn on this uniform.
+  return CHAPLAIN_BADGE_IDS.has(id) || CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS.has(id);
+}
 
 // Specialty/occupational badge visual families. These let one calibrated badge zone
 // carry over to similar badges without forcing every badge to use the same dimensions.
@@ -7293,6 +7307,7 @@ function getRenderableCommandBadgeIds(){
   const out = [];
   for(const id of State.badges){
     if(!isBadgeEligibleForMembership(id, State.membership)) continue;
+    if(!isBadgeAuthorizedOnCurrentDressUniform(id)) continue;
     if(isCommandInsigniaBadge(id)) out.push(id);
   }
   return out;
@@ -7514,9 +7529,9 @@ function getAboveRibbonStackTops(){
   const liveTopRibbonY = getTopRibbonRowY();
   if(liveTopRibbonY === null) return null;
 
-  // Physical gap between stacked above-ribbon badges and the item directly below.
-  // Height is now resolved through getBadgeHeightForLayout() using calibrated/rendered values.
-  const gap = 10;
+  // CAPR 39-1 specifies a 1/2-inch gap between the medal/ribbon rack and each
+  // successive badge. Convert that physical distance with the shared scale.
+  const gap = 0.5 * CAPUB_PIXELS_PER_INCH;
   const orderBottomToTop = ['OLPU','OLP','OLPA'];
   const tops = {};
   let anchorTop = liveTopRibbonY;
@@ -7527,7 +7542,7 @@ function getAboveRibbonStackTops(){
     const h = getBadgeHeightForLayout(badgeId, slotName);
     const top = Math.round(anchorTop - gap - h);
     tops[slotName] = top;
-    // Next badge above should sit 10px above the current badge.
+    // The next badge above uses the same regulation 1/2-inch separation.
     anchorTop = top;
   }
 
@@ -7552,6 +7567,7 @@ function getDynamicBadgeTopFromAppliedPosition(el, id=null, slot=null){
 }
 
 function getPreferredBadgeSlotForRendering(id, prefs){
+  if(State.uniform === 'semi_formal' && CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS.has(id)) return 'LP';
   if(isCommandInsigniaBadge(id)) return getCommandInsigniaSlot();
   if(id === 'nra_marksman_badge') return 'OLPF';
   if(id === 'model_rocketry_badge' || id === 'cyber_badges' || id === 'stem_badges') return getGenderedPocketSlotForBadge(id);
@@ -11300,6 +11316,7 @@ function getRenderableCountedBadgeIds(){
   const out = [];
   for(const id of State.badges){
     if(!isBadgeEligibleForMembership(id, State.membership)) continue;
+    if(!isBadgeAuthorizedOnCurrentDressUniform(id)) continue;
     if(isCommandInsigniaBadge(id)) continue;
     if(out.length >= CAPUB_COUNTED_BADGE_LIMIT) break;
     out.push(id);
