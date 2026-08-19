@@ -4990,6 +4990,50 @@ const customBadgeSizes = {
   'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25},'uas_pilot_basic_badge':{width:60,height:25},'uas_pilot_senior_badge':{width:60,height:25},'uas_pilot_master_badge':{width:60,height:25}
 };
 
+// CAPR 39-1 Attachment 7 dimensions, converted with the same scale as the
+// builder's 1 3/8-inch service ribbon (23 px). Width-only or height-only rules
+// retain each asset's existing aspect ratio. Mess Dress/Corporate Semi-Formal
+// use the listed miniature badge dimension when one is provided.
+const CAPUB_PIXELS_PER_INCH = RIBBON_WIDTH / 1.375;
+const CAPUB_BADGE_DIMENSIONS_INCHES = Object.freeze({
+  aviation: { axis:'width', regular:3, miniature:2 },
+  solo: { axis:'width', regular:2 },
+  modelRocketry: { axis:'height', regular:3 },
+  chaplain: { axis:'height', regular:1.125 },
+  health: { axis:'height', regular:1.125 },
+  legal: { axis:'width', regular:1.25 },
+  emt: { axis:'width', regular:1.125, miniature:0.875 },
+  incidentCommander: { axis:'width', regular:1.625, miniature:1.125 },
+  groundTeam: { axis:'width', regular:1.125, miniature:0.875 }
+});
+function getBadgeDimensionRule(id){
+  if(id === 'solo_badge' || id === 'pre_solo_badge') return CAPUB_BADGE_DIMENSIONS_INCHES.solo;
+  if(id === 'model_rocketry_badge') return CAPUB_BADGE_DIMENSIONS_INCHES.modelRocketry;
+  if(AIRCREW_BADGE_IDS.has(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.aviation;
+  if(CHAPLAIN_BADGE_IDS.has(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.chaplain;
+  if(id === 'medical_officer' || id === 'nurse_officer') return CAPUB_BADGE_DIMENSIONS_INCHES.health;
+  if(id === 'legal_officer') return CAPUB_BADGE_DIMENSIONS_INCHES.legal;
+  if(['emt_basic_badge','emt_intermediate','emt_paramedic'].includes(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.emt;
+  if(id === 'basic_incident_commander_badge') return CAPUB_BADGE_DIMENSIONS_INCHES.incidentCommander;
+  if(['ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'].includes(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.groundTeam;
+  return null;
+}
+function getBadgeRenderSize(id, uniformId=State.uniform){
+  const base = customBadgeSizes[id] || { width:60, height:25 };
+  const width = Number(base.width) || 60;
+  const height = Number(base.height) || 25;
+  const rule = getBadgeDimensionRule(id);
+  if(!rule) return { width, height };
+
+  const formal = uniformId === 'mess_dress' || uniformId === 'semi_formal';
+  const inches = formal && rule.miniature ? rule.miniature : rule.regular;
+  const target = inches * CAPUB_PIXELS_PER_INCH;
+  if(rule.axis === 'height'){
+    return { width:target * (width / height), height:target };
+  }
+  return { width:target, height:target * (height / width) };
+}
+
 const CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS = [
   'administration_senior_badge','administration_master_badge',
   'aerospace_education_senior_badge','aerospace_education_master_badge',
@@ -7051,7 +7095,7 @@ function buildBadgeGallery(){
           <label><input type="checkbox" class="bdChk"> Add</label>
         </div>
         ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-        <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
+        <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Regulation scale: ${Math.round(getBadgeRenderSize(id).width)}×${Math.round(getBadgeRenderSize(id).height)} px</div>
       </div>
     `;
 
@@ -7424,7 +7468,10 @@ function getBadgeHeightForLayout(id, slotName=null){
     height and making the badge look too far above the ribbons.
   */
   const uniformId = getCurrentCalibUniform();
-  const baseSize = customBadgeSizes[id] || { width:60, height:25 };
+  const baseSize = getBadgeRenderSize(id);
+  // Regulation-sized badges must not inherit obsolete heights from saved
+  // calibration records, or the stacking engine will reserve the old space.
+  if(getBadgeDimensionRule(id)) return baseSize.height;
 
   if(slotName){
     const directKey = `badge:${id}:${slotName}:0`;
@@ -7576,7 +7623,7 @@ function getFemaleSpecialtyBadgeAnchor(id, bw, bh, W, H){
   // moving the prior over-nameplate Y anchor 22px lower.
   if(State.gender === 'female' && State.uniform === 'blues_a'){
     const gap = 10;
-    const widths = ids.map(badgeId => Number(customBadgeSizes[badgeId]?.width) || bw || 25);
+    const widths = ids.map(badgeId => Number(getBadgeRenderSize(badgeId).width) || bw || 25);
     const totalWidth = widths.reduce((sum, width) => sum + width, 0) + Math.max(0, ids.length - 1) * gap;
     const prevWidth = widths.slice(0, index).reduce((sum, width) => sum + width, 0) + (gap * index);
 
@@ -7595,7 +7642,7 @@ function getFemaleSpecialtyBadgeAnchor(id, bw, bh, W, H){
 
   // Non-Class-A female fallback behavior.
   const gap = 8;
-  const widths = ids.map(badgeId => Number(customBadgeSizes[badgeId]?.width) || bw || 25);
+  const widths = ids.map(badgeId => Number(getBadgeRenderSize(badgeId).width) || bw || 25);
   const totalWidth = widths.reduce((sum, width) => sum + width, 0) + Math.max(0, ids.length - 1) * gap;
 
   const nameplate = getMeasurementNameplateBox();
@@ -7605,7 +7652,7 @@ function getFemaleSpecialtyBadgeAnchor(id, bw, bh, W, H){
 
   let top = null;
   if(hasCurrentCommanderBadgeSelected()){
-    const cmdH = Number(customBadgeSizes['squadron_commander_badge']?.height) || 15;
+    const cmdH = Number(getBadgeRenderSize('squadron_commander_badge').height) || 15;
     const baseTop = nameplate ? (nameplate.top - gap - cmdH) : (H * 0.30);
     top = baseTop - gap - bh;
   }else if(nameplate){
@@ -7717,7 +7764,7 @@ function placeBadgeSlotAnchored(id){
   const W = renderSize.w;
   const H = renderSize.h;
 
-  const sz = customBadgeSizes[id] || { width: 60, height: 25 };
+  const sz = getBadgeRenderSize(id);
   const bw = sz.width;
   const bh = sz.height;
 
@@ -7740,6 +7787,21 @@ function placeBadgeSlotAnchored(id){
   if(isCommandInsigniaBadge(id)) clone.style.zIndex = '30';
 
   applyCalibToElement(clone, clone.dataset.calibKey, { x: base.x, y: base.y, w: bw, h: bh, r: 0 });
+
+  // Old calibration exports may contain legacy 25/60 px badge dimensions.
+  // Keep their calibrated center point, but enforce CAPR 39-1 physical scale.
+  if(getBadgeDimensionRule(id)){
+    const appliedLeft = parseFloat(clone.style.left);
+    const appliedTop = parseFloat(clone.style.top);
+    const appliedWidth = parseFloat(clone.style.width);
+    const appliedHeight = parseFloat(clone.style.height);
+    if([appliedLeft,appliedTop,appliedWidth,appliedHeight].every(Number.isFinite)){
+      clone.style.left = `${appliedLeft + (appliedWidth - bw) / 2}px`;
+      clone.style.top = `${appliedTop + (appliedHeight - bh) / 2}px`;
+    }
+    clone.style.width = `${bw}px`;
+    clone.style.height = `${bh}px`;
+  }
 
   // FON is a computed two-badge row on the female Class A coat. Historical
   // per-badge calibration entries must not override its shared row geometry;
@@ -9046,7 +9108,7 @@ function openGalleryModal(kind){
               <label><input type="checkbox" class="bdChk"> Add</label>
             </div>
             ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
+            <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Regulation scale: ${Math.round(getBadgeRenderSize(id).width)}×${Math.round(getBadgeRenderSize(id).height)} px</div>
           </div>
         `;
 
@@ -12403,7 +12465,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
             <div class="sub">(${id})${utilityMode ? ' • Silver-on-blue utility badge' : ''}</div>
             <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
             ${id==='squadron_commander_badge' && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            <div class="sub">Slot: <b>${utilityMode ? 'Utility uniform calibrated field slot' : getBadgeSlotLabel(id)}</b> • Size: ${(customBadgeSizes[id]?.width||60)}×${(customBadgeSizes[id]?.height||25)} px</div>
+            <div class="sub">Slot: <b>${utilityMode ? 'Utility uniform calibrated field slot' : getBadgeSlotLabel(id)}</b> • Regulation scale: ${Math.round(getBadgeRenderSize(id).width)}×${Math.round(getBadgeRenderSize(id).height)} px</div>
           </div>`;
 
         const chk = tile.querySelector('.bdChk');
