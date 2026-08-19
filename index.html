@@ -1524,7 +1524,10 @@ const RIBBON_GAP_Y  = 0;
 const RIBBON_LAYOUT_BY_UNIFORM = {
   // Men's Class A senior-member calibration: x columns 259/282/305 and top/bottom rows from the latest export.
   blues_a: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 },
-  blues_b: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 }
+  blues_b: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 },
+  // The male Aviator shirt pocket center is 302px in the builder canvas.
+  aviator_male: { baseX:267.5, bottomY:206, w:23, h:7, gapX:0, gapY:0 },
+  aviator_blazer_male: { baseX:267.5, bottomY:206, w:23, h:7, gapX:0, gapY:0 }
 };
 const MINI_MEDAL_LAYOUT_BY_UNIFORM = {
   // Male Mess Dress imported from CAPUB_coordinates_1786074847808.json.
@@ -1535,10 +1538,10 @@ const MINI_MEDAL_LAYOUT_BY_UNIFORM = {
   // Female Mess Dress imported from CAPUB_coordinates_1786003225794.json.
   mess_dress_female: { centerX:317, bottomY:196, rowStepY:21.5 },
 
-  // Semi-Formal uses the same four-medal rack geometry. The female option
-  // shares the female Mess Dress base artwork; the male coat uses the same
-  // left-breast centerline as the male Mess Dress artwork.
-  semi_formal_male: { centerX:335, bottomY:184, rowStepY:16 },
+  // Corporate Semi-Formal has a lower, more inboard breast pocket than Mess
+  // Dress. Center the rack on that pocket and keep its lower edge 1/2 inch
+  // above the built-in CAP crest/service-badge position.
+  semi_formal_male: { centerX:318, bottomY:198, rowStepY:16 },
   semi_formal_female: { centerX:317, bottomY:196, rowStepY:21.5 }
 };
 function getRibbonLayout(uniformId = State.uniform){
@@ -7707,7 +7710,9 @@ function getBadgeBaseAnchor(slot, id, idx, W, H, bw, bh){
     ON:   { x: W*0.32, y: H*0.30, dy: 0 },
     UN:   { x: W*0.32, y: H*0.39, dy: 0 },
     URBP: { x: W*0.32, y: H*0.48, dy: 0 },
-    LP:   { x: W*0.64, y: H*0.46, dy: 0 },
+    // The left-pocket badge shares the award rack's pocket centerline on each
+    // uniform instead of using one canvas percentage for dissimilar artwork.
+    LP:   { x: rackX, y: H*0.46, dy: 0 },
     RP:   { x: W*0.32, y: H*0.46, dy: 0 },
     LRP:  { x: W*0.64, y: H*0.46, dy: 0 }
   };
