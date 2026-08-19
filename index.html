@@ -5892,13 +5892,14 @@ function applyJacket(){
     const aviatorArtworkLayout = State.gender === 'male' && ['aviator','aviator_blazer'].includes(State.uniform)
       // Scale around the 450x600 canvas center, then raise the shirt so its
       // left pocket sits directly beneath the fixed ribbon rack.
-      ? { x:21, y:13, w:405, h:540 }
+      ? { x:31.9, y:21, w:388.8, h:518.4 }
       : { x:0, y:0, w:renderSize.w, h:renderSize.h };
     img.style.left = `${aviatorArtworkLayout.x}px`;
     img.style.top = `${aviatorArtworkLayout.y}px`;
     img.style.width = `${aviatorArtworkLayout.w}px`;
     img.style.height = `${aviatorArtworkLayout.h}px`;
     img.style.transform = 'rotate(0deg)';
+    img.style.transformOrigin = 'center center';
     img.style.objectFit = 'contain';
 
     img.dataset.tooltipTitle = (State.uniform||'').replace(/_/g,' ').toUpperCase();
