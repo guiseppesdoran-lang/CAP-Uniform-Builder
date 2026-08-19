@@ -1533,7 +1533,13 @@ const MINI_MEDAL_LAYOUT_BY_UNIFORM = {
   mess_dress_male: { centerX:335, bottomY:184, rowStepY:16 },
 
   // Female Mess Dress imported from CAPUB_coordinates_1786003225794.json.
-  mess_dress_female: { centerX:317, bottomY:196, rowStepY:21.5 }
+  mess_dress_female: { centerX:317, bottomY:196, rowStepY:21.5 },
+
+  // Semi-Formal uses the same four-medal rack geometry. The female option
+  // shares the female Mess Dress base artwork; the male coat uses the same
+  // left-breast centerline as the male Mess Dress artwork.
+  semi_formal_male: { centerX:335, bottomY:184, rowStepY:16 },
+  semi_formal_female: { centerX:317, bottomY:196, rowStepY:21.5 }
 };
 function getRibbonLayout(uniformId = State.uniform){
   const baseUniformId = uniformId || State.uniform || '';
@@ -1609,6 +1615,9 @@ function getBaseUniformFromCalibId(uniformId){
 function getCalibFallbackUniforms(uniformId=getCurrentCalibUniform()){
   const base = getBaseUniformFromCalibId(uniformId);
   const list = [uniformId];
+  // Female Semi-Formal currently uses the exact female Mess Dress base image,
+  // so its verified formal-uniform badge coordinates are interchangeable.
+  if(uniformId === 'semi_formal_female') list.push('mess_dress_female');
   if(base && base !== uniformId) list.push(base);
   list.push('global');
   return [...new Set(list.filter(Boolean))];
@@ -7263,8 +7272,14 @@ function renderAllBadges(){
   renderMeasurementOverlay();
 }
 
+function getRenderedAwardRackElements() {
+  // Service uniforms use ribbonTile; Mess Dress and Semi-Formal use ribbonMini.
+  // Badge placement must follow whichever award rack is actually rendered.
+  return [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini')];
+}
+
 function getTopRibbonRowCenterX() {
-  const ribbonEls = [...uniformCanvas.querySelectorAll('.layer.ribbonTile')];
+  const ribbonEls = getRenderedAwardRackElements();
   if (!ribbonEls.length) return null;
 
   const minTop = Math.min(...ribbonEls.map(el => parseFloat(el.style.top) || 0));
@@ -7277,7 +7292,7 @@ function getTopRibbonRowCenterX() {
 }
 
 function getTopRibbonRowY() {
-  const ribbonEls = [...uniformCanvas.querySelectorAll('.layer.ribbonTile')];
+  const ribbonEls = getRenderedAwardRackElements();
   if (!ribbonEls.length) return null;
   return Math.min(...ribbonEls.map(el => parseFloat(el.style.top) || 0));
 }
