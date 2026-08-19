@@ -4995,6 +4995,13 @@ const customBadgeSizes = {
 // retain each asset's existing aspect ratio. Mess Dress/Corporate Semi-Formal
 // use the listed miniature badge dimension when one is provided.
 const CAPUB_PIXELS_PER_INCH = RIBBON_WIDTH / 1.375;
+// These Aircrew assets have different intrinsic silhouettes. Preserve each
+// image's true proportions instead of stretching it into the legacy 60x25 box.
+const CAPUB_BADGE_ASPECT_RATIOS = Object.freeze({
+  AirCrew1_DB3F0FCC3650F: 193 / 54,
+  SeniorAirCrew1_B289BAE6E515C: 190 / 71,
+  MasterAirCrew1_72AC4CAE7A310: 190 / 68
+});
 const CAPUB_BADGE_DIMENSIONS_INCHES = Object.freeze({
   aviation: { axis:'width', regular:3, miniature:2 },
   solo: { axis:'width', regular:2 },
@@ -5022,6 +5029,7 @@ function getBadgeRenderSize(id, uniformId=State.uniform){
   const base = customBadgeSizes[id] || { width:60, height:25 };
   const width = Number(base.width) || 60;
   const height = Number(base.height) || 25;
+  const aspectRatio = CAPUB_BADGE_ASPECT_RATIOS[id] || (width / height);
   const rule = getBadgeDimensionRule(id);
   if(!rule) return { width, height };
 
@@ -5029,9 +5037,9 @@ function getBadgeRenderSize(id, uniformId=State.uniform){
   const inches = formal && rule.miniature ? rule.miniature : rule.regular;
   const target = inches * CAPUB_PIXELS_PER_INCH;
   if(rule.axis === 'height'){
-    return { width:target * (width / height), height:target };
+    return { width:target * aspectRatio, height:target };
   }
-  return { width:target, height:target * (height / width) };
+  return { width:target, height:target / aspectRatio };
 }
 
 const CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS = [
