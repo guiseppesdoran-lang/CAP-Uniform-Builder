@@ -5898,7 +5898,11 @@ function applyJacket(){
     img.style.top = `${aviatorArtworkLayout.y}px`;
     img.style.width = `${aviatorArtworkLayout.w}px`;
     img.style.height = `${aviatorArtworkLayout.h}px`;
-    img.style.transform = 'rotate(0deg)';
+    const compressAviatorArtwork = State.gender === 'male' && ['aviator','aviator_blazer'].includes(State.uniform);
+    img.style.transform = compressAviatorArtwork ? 'scaleX(0.96)' : 'rotate(0deg)';
+    // Scale around the fixed rack/pocket centerline (293.5 canvas px) so the
+    // narrower artwork does not move the pocket away from the awards.
+    img.style.transformOrigin = compressAviatorArtwork ? '272.5px center' : 'center center';
     img.style.objectFit = 'contain';
 
     img.dataset.tooltipTitle = (State.uniform||'').replace(/_/g,' ').toUpperCase();
