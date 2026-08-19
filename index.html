@@ -3725,8 +3725,8 @@ const UNIFORMS = {
   blues_b:{male:'base/blues_class_b_male.png',         female:'base/blues_class_b_female.png',    ribbons:true,  mini:false},
   mess_dress:{male:'base/mess_dress_male.png',         female:'base/mess_dress_female.png',       ribbons:false, mini:true},
   semi_formal:{male:'base/male_semi_formal.png',        female:'base/mess_dress_female.png',       ribbons:false, mini:true},
-  aviator:{male:'base/aviator_shirt_male.png',         female:'base/aviator_shirt_female.png',    ribbons:true,  mini:false},
-  aviator_blazer:{male:'base/aviator_shirt_male.png',  female:'base/aviator_shirt_female.png',    ribbons:true,  mini:false},
+  aviator:{male:'base/aviator_shirt_male.png',         female:'base/aviator_shirt_female_clean.png', ribbons:true, mini:false},
+  aviator_blazer:{male:'base/aviator_shirt_male.png',  female:'base/aviator_shirt_female_clean.png', ribbons:true, mini:false},
   corporate_field:{male:'base/aviator_shirt_male.png', female:'base/aviator_shirt_female.png',    ribbons:true,  mini:false},
   abu:{male:'base/ABU_male.png',                       female:'base/ABU_female.png',               ribbons:false, mini:false},
   ocp:{male:'base/OCP_Blouse.png',                     female:'base/OCP_Blouse.png',               ribbons:false, mini:false},
@@ -5889,11 +5889,16 @@ function applyJacket(){
     // between uniforms.
     img.dataset.calibKey = 'base:jacket';
     const renderSize = getCanvasRenderSize();
-    const aviatorArtworkLayout = State.gender === 'male' && ['aviator','aviator_blazer'].includes(State.uniform)
+    const isAviatorArtwork = ['aviator','aviator_blazer'].includes(State.uniform);
+    const aviatorArtworkLayout = isAviatorArtwork && State.gender === 'male'
       // Scale proportionally around the left-pocket/rack anchor so the pocket
       // stays directly beneath the fixed ribbon rack.
       ? { x:55.3, y:38.9, w:353.25, h:471 }
-      : { x:0, y:0, w:renderSize.w, h:renderSize.h };
+      : isAviatorArtwork && State.gender === 'female'
+        // The cleaned female artwork uses a 3:4 canvas. Its independent offset
+        // centers the right-side pocket under the same award-rack anchor.
+        ? { x:59.5, y:44.5, w:353.25, h:471 }
+        : { x:0, y:0, w:renderSize.w, h:renderSize.h };
     img.style.left = `${aviatorArtworkLayout.x}px`;
     img.style.top = `${aviatorArtworkLayout.y}px`;
     img.style.width = `${aviatorArtworkLayout.w}px`;
