@@ -1524,10 +1524,7 @@ const RIBBON_GAP_Y  = 0;
 const RIBBON_LAYOUT_BY_UNIFORM = {
   // Men's Class A senior-member calibration: x columns 259/282/305 and top/bottom rows from the latest export.
   blues_a: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 },
-  blues_b: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 },
-  // The male Aviator shirt pocket center is 302px in the builder canvas.
-  aviator_male: { baseX:267.5, bottomY:206, w:23, h:7, gapX:0, gapY:0 },
-  aviator_blazer_male: { baseX:267.5, bottomY:206, w:23, h:7, gapX:0, gapY:0 }
+  blues_b: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 }
 };
 const MINI_MEDAL_LAYOUT_BY_UNIFORM = {
   // Male Mess Dress imported from CAPUB_coordinates_1786074847808.json.
@@ -5886,17 +5883,21 @@ function applyJacket(){
     img.style.maxHeight='none';
 
     // CAPUB FIX 2026-06-05:
-    // Do NOT apply calibrator coordinates to the base uniform image.
-    // The base jacket/blouse is the stage/background. Calibration should only
-    // move rendered items such as ribbons, badges, cords, patches, and arrows.
-    // This prevents senior member Class A base images from being rescaled by a
-    // shared or uploaded "jacket" calibration bucket.
+    // Do not apply user calibrator coordinates to the base uniform image.
+    // Base-artwork fitting is controlled below by explicit uniform-specific
+    // geometry, preventing unrelated saved "jacket" calibrations from leaking
+    // between uniforms.
     img.dataset.calibKey = 'base:jacket';
     const renderSize = getCanvasRenderSize();
-    img.style.left = '0px';
-    img.style.top = '0px';
-    img.style.width = `${renderSize.w}px`;
-    img.style.height = `${renderSize.h}px`;
+    const aviatorArtworkLayout = State.gender === 'male' && ['aviator','aviator_blazer'].includes(State.uniform)
+      // Scale around the 450x600 canvas center, then raise the shirt so its
+      // left pocket remains 1/2 inch below the fixed ribbon rack.
+      ? { x:22.5, y:21, w:405, h:540 }
+      : { x:0, y:0, w:renderSize.w, h:renderSize.h };
+    img.style.left = `${aviatorArtworkLayout.x}px`;
+    img.style.top = `${aviatorArtworkLayout.y}px`;
+    img.style.width = `${aviatorArtworkLayout.w}px`;
+    img.style.height = `${aviatorArtworkLayout.h}px`;
     img.style.transform = 'rotate(0deg)';
     img.style.objectFit = 'contain';
 
