@@ -893,6 +893,24 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 .ribbonDeviceSummary{
   margin-top:6px;
 }
+.ribbonGallerySectionTitle{
+  grid-column:1 / -1;
+  margin:12px 0 0;
+  padding:10px 2px 7px;
+  border-bottom:1px solid var(--line);
+  color:var(--ink);
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.025em;
+}
+.ribbonGallerySectionTitle:first-child{
+  margin-top:0;
+}
+.ribbonGallerySectionTitle .sub{
+  display:block;
+  margin-top:3px;
+  font-weight:500;
+}
 .ribbonSelectorTile:has(.rbAwardSelect option:checked:not([value=""])){
   border-color:#8bb8e5;
   background:#f0f7ff;
@@ -4136,6 +4154,14 @@ const SENIOR_HIGHEST_CADET_AWARD_RIBBONS = new Set([
   'historic_cadet_white_achievement','historic_cadet_red_achievement',
   'frank_borman_falcon_award'
 ]);
+const HISTORICAL_RIBBONS = new Set([
+  'national_commanders_citation','cadet_certificate_of_proficiency','historic_cadet_blue_achievement',
+  'historic_cadet_white_achievement','historic_cadet_red_achievement',
+  'frank_borman_falcon_award','air_medal','cap_world_war_2_service_ribbon',
+  'anti_submarine_coastal_patrol_ribbon','southern_liaison_patrol_ribbon',
+  'tow_target_tracking_ribbon','courier_ribbon','forest_patrol_ribbon',
+  'missing_aircraft_ribbon'
+]);
 const COMMON_ELIGIBLE_RIBBONS = new Set([
   'Air_Force_Organizational_Excellence_Award',
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
@@ -6852,10 +6878,26 @@ function buildRibbonGallery(){
   wrap.innerHTML = '';
 
   const eligible = getEligibleRibbonIds();
-  const showCount = State.ribbonGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
+  const visible = State.ribbonGalleryExpanded ? eligible : eligible.slice(0, 12);
+  const currentRibbons = visible.filter(id => !HISTORICAL_RIBBONS.has(id));
+  const historicalRibbons = visible.filter(id => HISTORICAL_RIBBONS.has(id));
+  const sections = State.ribbonGalleryExpanded
+    ? [
+        { title:'Current Ribbons', description:'Currently issued awards and achievements.', ids:currentRibbons },
+        { title:'Historical Ribbons', description:'Legacy cadet awards and wartime service ribbons.', ids:historicalRibbons }
+      ]
+    : [{ title:'', description:'', ids:visible }];
 
-  for(let idx=0; idx<showCount; idx++){
-    const id = eligible[idx];
+  for(const section of sections){
+    if(!section.ids.length) continue;
+    if(section.title){
+      const heading = document.createElement('div');
+      heading.className = 'ribbonGallerySectionTitle';
+      heading.innerHTML = `${section.title}<span class="sub">${section.description}</span>`;
+      wrap.appendChild(heading);
+    }
+
+    for(const id of section.ids){
     const sel = State.ribbonSelections[id];
 
     const tile = document.createElement('div');
@@ -6903,6 +6945,7 @@ function buildRibbonGallery(){
     }
 
     wrap.appendChild(tile);
+    }
   }
 }
 
