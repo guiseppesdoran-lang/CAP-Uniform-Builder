@@ -1193,6 +1193,17 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <div class="hintText">Grayed-out uniforms are not authorized for the selected membership type.</div>
       </section>
 
+      <section id="garmentOverlayPanel" class="panelBlock">
+        <label class="fieldLabel" for="garmentOverlaySelect">Collar / Lapel Overlay</label>
+        <select id="garmentOverlaySelect">
+          <option value="both">Both pieces</option>
+          <option value="left">Left piece only (preview left)</option>
+          <option value="right">Right piece only (preview right)</option>
+          <option value="off">Off</option>
+        </select>
+        <div class="hintText">Uses the collar or lapels from the exact active base image and places them above ribbons, medals, badges, and utility patches.</div>
+      </section>
+
       <section id="shoulderCordPanel" class="panelBlock">
         <label class="fieldLabel">Shoulder Cord</label>
         <select id="shoulderCordSelect">
@@ -1463,6 +1474,7 @@ const State = {
   forceMini:false,
   miniMountStyle:'mounting',
   showMeasurementOverlay:false,
+  garmentOverlayMode:'both',
 
   ribbonSelections:{}, 
   ribbonGalleryExpanded:false,
@@ -3497,6 +3509,7 @@ const rankSetupSelect  = by('rankSetupSelect');
 const cadetFirstSergeantBlock = by('cadetFirstSergeantBlock');
 const cadetFirstSergeantCheckbox = by('cadetFirstSergeantCheckbox');
 const jacketSelect     = by('jacketSelect');
+const garmentOverlaySelect = by('garmentOverlaySelect');
 const assetBaseInput   = by('assetBase'); // removed from general UI; may be null
 
 const genderBlock      = by('genderBlock');
@@ -3803,11 +3816,41 @@ function getGarmentForegroundClips(uniformId, loadedPath=''){
   }
 }
 
+function projectGarmentClipToRenderedImage(clipPath, baseImg){
+  const match = /^polygon\((.*)\)$/i.exec(String(clipPath || '').trim());
+  const naturalW = baseImg?.naturalWidth || 0;
+  const naturalH = baseImg?.naturalHeight || 0;
+  const elementW = parseFloat(baseImg?.style?.width) || baseImg?.offsetWidth || 0;
+  const elementH = parseFloat(baseImg?.style?.height) || baseImg?.offsetHeight || 0;
+  if(!match || !naturalW || !naturalH || !elementW || !elementH) return clipPath;
+
+  const ratio = Math.min(elementW / naturalW, elementH / naturalH);
+  const drawnW = naturalW * ratio;
+  const drawnH = naturalH * ratio;
+  const offsetX = (elementW - drawnW) / 2;
+  const offsetY = (elementH - drawnH) / 2;
+  const points = match[1].split(',').map(pair => {
+    const [xToken, yToken] = pair.trim().split(/\s+/);
+    if(!xToken?.endsWith('%') || !yToken?.endsWith('%')) return pair.trim();
+    const x = offsetX + (parseFloat(xToken) / 100) * drawnW;
+    const y = offsetY + (parseFloat(yToken) / 100) * drawnH;
+    return `${x.toFixed(2)}px ${y.toFixed(2)}px`;
+  });
+  return `polygon(${points.join(', ')})`;
+}
+
 function renderGarmentForegroundOverlays(baseImg, loadedPath){
   uniformCanvas.querySelectorAll('.layer.garmentForegroundOverlay').forEach(el => el.remove());
   if(!baseImg?.isConnected) return;
 
+  const mode = ['both','left','right','off'].includes(State.garmentOverlayMode)
+    ? State.garmentOverlayMode
+    : 'both';
+  if(mode === 'off') return;
+
   getGarmentForegroundClips(State.uniform, loadedPath).forEach((clipPath, index) => {
+    if(mode === 'left' && index !== 0) return;
+    if(mode === 'right' && index !== 1) return;
     const overlay = baseImg.cloneNode(false);
     overlay.className = 'layer jacket garmentForegroundOverlay';
     overlay.removeAttribute('id');
@@ -3817,8 +3860,9 @@ function renderGarmentForegroundOverlays(baseImg, loadedPath){
     overlay.removeAttribute('data-tooltip-title');
     overlay.removeAttribute('data-tooltip-reg');
     overlay.removeAttribute('data-tooltip-why');
-    overlay.style.clipPath = clipPath;
-    overlay.style.webkitClipPath = clipPath;
+    const projectedClipPath = projectGarmentClipToRenderedImage(clipPath, baseImg);
+    overlay.style.clipPath = projectedClipPath;
+    overlay.style.webkitClipPath = projectedClipPath;
     overlay.style.zIndex = '9000';
     overlay.style.pointerEvents = 'none';
     overlay.setAttribute('aria-hidden', 'true');
@@ -5806,6 +5850,13 @@ if(cadetFirstSergeantCheckbox){
 jacketSelect.addEventListener('change', ()=>{
   State.gender = jacketSelect.value || '';
   updateSetupGates();
+  fullRender();
+});
+
+garmentOverlaySelect?.addEventListener('change', ()=>{
+  State.garmentOverlayMode = ['both','left','right','off'].includes(garmentOverlaySelect.value)
+    ? garmentOverlaySelect.value
+    : 'both';
   fullRender();
 });
 
@@ -8567,6 +8618,9 @@ function refreshUI(){
   membershipTypeEl.value = State.membership || '';
   rankSetupSelect.value = State.rank || '';
   jacketSelect.value = State.gender || '';
+  if(garmentOverlaySelect) garmentOverlaySelect.value = ['both','left','right','off'].includes(State.garmentOverlayMode)
+    ? State.garmentOverlayMode
+    : 'both';
   if(assetBaseInput) assetBaseInput.value=State.assetBase;
   const overlayToggle = by('toggleMeasurementOverlay');
   if(overlayToggle) overlayToggle.checked = !!State.showMeasurementOverlay;
@@ -9466,6 +9520,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       patchSelections: State.patchSelections,
       forceMini: State.forceMini,
       miniMountStyle: State.miniMountStyle,
+      garmentOverlayMode: State.garmentOverlayMode,
       text: State.text,
       commandInsignia: State.commandInsignia,
       calib: State.calib
@@ -9491,6 +9546,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.patchSelections = p.patchSelections || {};
     State.forceMini = !!p.forceMini;
     State.miniMountStyle = p.miniMountStyle === 'holding' ? 'holding' : 'mounting';
+    State.garmentOverlayMode = ['both','left','right','off'].includes(p.garmentOverlayMode)
+      ? p.garmentOverlayMode
+      : 'both';
     State.text = p.text || State.text || {lastName:'',capTape:'CIVIL AIR PATROL',show:true};
     State.commandInsignia = p.commandInsignia || State.commandInsignia || {graduatedCommander:false};
     State.calib = p.calib || State.calib || {enabled:false, selectedKey:null, selectedKeys:[], map:{}, byUniform:{}};
