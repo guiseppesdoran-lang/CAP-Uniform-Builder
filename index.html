@@ -3768,7 +3768,10 @@ const UNIFORMS = {
 const GARMENT_FOREGROUND_CLIPS = {
   serviceCoat: [
     'polygon(35% 9%, 29% 20%, 48% 40%, 41% 9%)',
-    'polygon(59% 9%, 68% 20%, 50% 40%, 56% 9%)'
+    // Award-side lapel traced from the supplied red reference line. The two
+    // short turns reproduce the visible overlap through the aviation and
+    // occupational badge positions before the edge crosses the upper rack.
+    'polygon(60.2% 13.1%, 64.4% 20%, 60.7% 21.3%, 67.6% 22.5%, 57.4% 32.5%, 50% 40%, 56% 9%)'
   ],
   shirtCollar: [
     'polygon(38% 7%, 31% 26%, 48% 34%, 40% 8%)',
@@ -8013,12 +8016,6 @@ function placeBadgeSlotAnchored(id){
   if(['OLPA','OLP','OLPU'].includes(slot) && !isFieldUniform(State.uniform)){
     const liveRackCenterX = getTopRibbonRowCenterX() ?? rackCenterX();
     clone.style.left = `${liveRackCenterX - bw / 2}px`;
-
-    // CAPR 39-1 explicitly permits the service-coat lapel to cover ribbons;
-    // it does not authorize hiding correctly positioned above-ribbon badges.
-    // Keep those badges visible while the foreground lapel still masks any
-    // ribbon area that physically falls beneath it.
-    if(State.uniform === 'blues_a') clone.style.zIndex = '9010';
   }
 
   const dynamicTop = getDynamicBadgeTopFromAppliedPosition(clone, id, slot);
