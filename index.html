@@ -1529,7 +1529,9 @@ let rackBaseX = 259; // LEFT EDGE of a 3-wide rack
 let rackBaseY = 206; // TOP of bottom row
 
 const RIBBON_WIDTH  = 23;
-const RIBBON_HEIGHT = 7.2;
+// CAPR 39-1 gives the service ribbon as 1 3/8 by 3/8 inches. Keep that
+// physical 11:3 aspect ratio instead of stretching the artwork vertically.
+const RIBBON_HEIGHT = RIBBON_WIDTH * (0.375 / 1.375);
 const RIBBON_GAP_X  = 0;
 const RIBBON_GAP_Y  = 0;
 
@@ -1540,23 +1542,27 @@ const RIBBON_GAP_Y  = 0;
 */
 const RIBBON_LAYOUT_BY_UNIFORM = {
   // Men's Class A senior-member calibration: x columns 259/282/305 and top/bottom rows from the latest export.
-  blues_a: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 },
-  blues_b: { baseX: 259, bottomY: 206, w: 23, h: 7, gapX: 0, gapY: 0 }
+  // Class A alone permits rows of four. Keeping the calibrated pocket-left
+  // edge while adding the fourth column moves the rack center outboard and
+  // keeps properly positioned ribbons and badges clear of the lapel.
+  blues_a: { baseX: 259, bottomY: 206, columns: 4, w: RIBBON_WIDTH, h: RIBBON_HEIGHT, gapX: 0, gapY: 0 },
+  // Class B and aviator-shirt racks remain rows of three.
+  blues_b: { baseX: 259, bottomY: 206, columns: 3, w: RIBBON_WIDTH, h: RIBBON_HEIGHT, gapX: 0, gapY: 0 }
 };
 const MINI_MEDAL_LAYOUT_BY_UNIFORM = {
   // Male Mess Dress imported from CAPUB_coordinates_1786074847808.json.
-  // The rack is centered at x=335, its bottom row begins at y=184,
-  // and each upper row is raised by 16 pixels.
-  mess_dress_male: { centerX:335, bottomY:184, rowStepY:16 },
+  // The rack is centered at x=335 and its bottom row begins at y=184.
+  // Vertical overlap is computed from the regulated miniature-medal scale.
+  mess_dress_male: { centerX:335, bottomY:184 },
 
   // Female Mess Dress imported from CAPUB_coordinates_1786003225794.json.
-  mess_dress_female: { centerX:317, bottomY:196, rowStepY:21.5 },
+  mess_dress_female: { centerX:317, bottomY:196 },
 
   // Corporate Semi-Formal has a lower, more inboard breast pocket than Mess
   // Dress. Center the rack on that pocket and keep its lower edge 1/2 inch
   // above the built-in CAP crest/service-badge position.
-  semi_formal_male: { centerX:318, bottomY:198, rowStepY:16 },
-  semi_formal_female: { centerX:317, bottomY:196, rowStepY:21.5 }
+  semi_formal_male: { centerX:318, bottomY:198 },
+  semi_formal_female: { centerX:317, bottomY:196 }
 };
 function getRibbonLayout(uniformId = State.uniform){
   const baseUniformId = uniformId || State.uniform || '';
@@ -1566,14 +1572,15 @@ function getRibbonLayout(uniformId = State.uniform){
   const h = override.h ?? RIBBON_HEIGHT;
   const gapX = override.gapX ?? RIBBON_GAP_X;
   const gapY = override.gapY ?? RIBBON_GAP_Y;
+  const columns = override.columns ?? 3;
   const baseX = override.baseX ?? rackBaseX;
   const bottomY = override.bottomY ?? rackBaseY;
-  return { baseX, bottomY, w, h, gapX, gapY, centerX: baseX + ((w*3)+(gapX*2))/2 };
+  return { baseX, bottomY, columns, w, h, gapX, gapY, centerX: baseX + ((w*columns)+(gapX*(columns-1)))/2 };
 }
 
 function rackSpanW(){
   const m = getRibbonLayout();
-  return (m.w*3) + (m.gapX*2);
+  return (m.w*m.columns) + (m.gapX*(m.columns-1));
 }
 function rackCenterX(){
   return getRibbonLayout().centerX;
@@ -3381,13 +3388,15 @@ function applyFemaleClassAItemOffset(v, key){
 function applyCalibToElement(el, key, base){
   let over = getCalib(key) || buildDerivedBadgeCalib(key, base);
 
-  // IMPORTANT: Ribbon x/y must remain dynamic so precedence ordering and centered partial
-  // top rows do not get broken by old per-ribbon exports. We still allow calibrated ribbon
-  // dimensions/rotation to apply, but the current row/column algorithm owns ribbon x/y.
+  // IMPORTANT: Ribbon/medal geometry must remain dynamic so precedence ordering,
+  // regulated physical scale, and centered partial rows are not broken by old
+  // per-award exports. Calibration may still retain an intentional rotation.
   if((String(key || '').startsWith('ribbon:') || String(key || '').startsWith('mini:')) && over){
     over = { ...over };
     delete over.x;
     delete over.y;
+    delete over.w;
+    delete over.h;
   }
 
   const v = applyFemaleClassAItemOffset({ ...base, ...(over||{}) }, key);
@@ -6083,7 +6092,7 @@ function sortRibbons(arr){
 
 // Build CAP ribbon rows from highest precedence to lowest precedence.
 // Display order is top-left -> bottom-right. Any partial row belongs on the TOP
-// and stays centered; all lower rows remain 3-wide.
+// and stays centered; all lower rows use the uniform's authorized column count.
 function buildRibbonRowsHighToLow(items, perRow=3){
   const sorted = sortRibbons(items);
   const remainder = sorted.length % perRow;
@@ -6302,6 +6311,7 @@ function renderRack(){
   const RH = rackLayout.h;
   const RGX = rackLayout.gapX;
   const RGY = rackLayout.gapY;
+  const RACK_COLUMNS = rackLayout.columns;
 
   function getCenteredRowLeftPositions(count, itemW, gapX){
     const totalWidth = count * itemW + (count-1)*gapX;
@@ -6312,7 +6322,7 @@ function renderRack(){
   }
 
   if(!useMini && uniformAllowsRibbons){
-    const rowsTopFirst = buildRibbonRowsHighToLow(items, 3);
+    const rowsTopFirst = buildRibbonRowsHighToLow(items, RACK_COLUMNS);
     const totalRows = rowsTopFirst.length;
 
     rowsTopFirst.forEach((row, topIndex)=>{
@@ -6344,7 +6354,7 @@ function renderRack(){
 
         tile.dataset.tooltipTitle = ribbonObj.id.replace(/_/g,' ').toUpperCase();
         tile.dataset.tooltipReg   = "CAPR 39-3 precedence applies";
-        tile.dataset.tooltipWhy   = "Highest awards render top-left; partial rows stay centered on top.";
+        tile.dataset.tooltipWhy   = `Highest awards render top-left; ${RACK_COLUMNS}-wide rows and centered partial rows follow the selected uniform.`;
 
         initRibbonDragHandlers(tile);
         uniformCanvas.appendChild(tile);
@@ -6360,11 +6370,12 @@ function renderRack(){
     return;
   }
 
-  // MINI MEDALS use the same precedence engine as ribbons. McChord's source
-  // art is 50 x 176, so preserve that ratio. Mounting bars use four medals per
-  // row; holding bars use the balanced/overlapped rows in CAPR 39-1 Table 11-1.
-  const MINI_H = 50;
-  const MINI_W = MINI_H * (50 / 176);
+  // Miniature suspension ribbons are 11/16 inch wide. Scale the complete
+  // McChord 50x176 artwork from that regulated width and preserve its ratio.
+  // Mounting bars use four medals per row; holding bars use the balanced/
+  // overlapped rows in CAPR 39-1 Table 11-1.
+  const MINI_W = 0.6875 * CAPUB_PIXELS_PER_INCH;
+  const MINI_H = MINI_W * (176 / 50);
   const MEDAL_RIBBON_PORTION = MINI_H * (116 / 176);
   const miniLayoutBucket = State.gender ? `${State.uniform}_${State.gender}` : State.uniform;
   const miniLayout = MINI_MEDAL_LAYOUT_BY_UNIFORM[miniLayoutBucket] ||
@@ -7993,6 +8004,21 @@ function placeBadgeSlotAnchored(id){
     clone.style.width = `${bw}px`;
     clone.style.height = `${bh}px`;
     clone.style.transform = 'rotate(0deg)';
+  }
+
+  // Above-ribbon badges share the live rack centerline. This prevents stale
+  // three-column calibration x-values from putting otherwise correctly sized
+  // badges beneath the Class A lapel after the authorized four-column layout
+  // moves the rack outboard.
+  if(['OLPA','OLP','OLPU'].includes(slot) && !isFieldUniform(State.uniform)){
+    const liveRackCenterX = getTopRibbonRowCenterX() ?? rackCenterX();
+    clone.style.left = `${liveRackCenterX - bw / 2}px`;
+
+    // CAPR 39-1 explicitly permits the service-coat lapel to cover ribbons;
+    // it does not authorize hiding correctly positioned above-ribbon badges.
+    // Keep those badges visible while the foreground lapel still masks any
+    // ribbon area that physically falls beneath it.
+    if(State.uniform === 'blues_a') clone.style.zIndex = '9010';
   }
 
   const dynamicTop = getDynamicBadgeTopFromAppliedPosition(clone, id, slot);
