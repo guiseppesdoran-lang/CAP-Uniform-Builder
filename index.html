@@ -286,6 +286,11 @@
     position:absolute;
     image-rendering:auto;
   }
+  .garmentForegroundOverlay{
+    pointer-events:none;
+    user-select:none;
+    z-index:9000;
+  }
   .measurementOverlay{
     position:absolute;
     inset:0;
@@ -3279,6 +3284,7 @@ function readRenderedLayerRecord(el, index=0){
 
 function collectRenderedLayerSnapshot(){
   return [...uniformCanvas.querySelectorAll('.layer')]
+    .filter(el => el.dataset?.calibIgnore !== 'true')
     .map((el, index) => readRenderedLayerRecord(el, index))
     .filter(Boolean);
 }
@@ -3733,6 +3739,92 @@ const UNIFORMS = {
   flight_suit:{male:'base/aviator_shirt_male.png',     female:'base/aviator_shirt_female.png',    ribbons:false, mini:false},
   polo:{male:'base/aviator_shirt_male.png',            female:'base/aviator_shirt_female.png',    ribbons:false, mini:false}
 };
+
+/* Collar/lapel foreground masks. Each entry clips a duplicate of the active
+   base uniform image, so rank-specific and gender-specific artwork is reused
+   exactly. The duplicate renders above ribbons, badges, and patches. */
+const GARMENT_FOREGROUND_CLIPS = {
+  serviceCoat: [
+    'polygon(35% 9%, 29% 20%, 48% 40%, 41% 9%)',
+    'polygon(59% 9%, 68% 20%, 50% 40%, 56% 9%)'
+  ],
+  shirtCollar: [
+    'polygon(38% 7%, 31% 26%, 48% 34%, 40% 8%)',
+    'polygon(61% 7%, 69% 26%, 51% 34%, 60% 8%)'
+  ],
+  aviatorCollar: [
+    'polygon(38% 8%, 30% 25%, 48% 33%, 40% 9%)',
+    'polygon(61% 8%, 70% 25%, 51% 33%, 60% 9%)'
+  ],
+  messDressLapel: [
+    'polygon(37% 3%, 45% 7%, 49% 61%, 42% 52%, 35% 18%)',
+    'polygon(63% 3%, 55% 7%, 51% 61%, 58% 52%, 65% 18%)'
+  ],
+  semiFormalLapel: [
+    'polygon(37% 4%, 30% 20%, 49% 53%, 46% 47%, 36% 18%)',
+    'polygon(63% 4%, 70% 20%, 51% 53%, 54% 47%, 64% 18%)'
+  ],
+  utilityCollar: [
+    'polygon(42% 5%, 36% 14%, 50% 23%, 45% 8%)',
+    'polygon(58% 5%, 64% 14%, 50% 23%, 55% 8%)'
+  ],
+  seniorOfficerOcpCollar: [
+    'polygon(44% 3%, 43% 16%, 50% 19%, 47% 14%)',
+    'polygon(56% 3%, 58% 16%, 50% 19%, 54% 14%)'
+  ]
+};
+
+function getGarmentForegroundClips(uniformId, loadedPath=''){
+  const path = String(loadedPath || '').toLowerCase();
+  switch(uniformId){
+    case 'blues_a': return GARMENT_FOREGROUND_CLIPS.serviceCoat;
+    case 'blues_b': return GARMENT_FOREGROUND_CLIPS.shirtCollar;
+    case 'mess_dress': return GARMENT_FOREGROUND_CLIPS.messDressLapel;
+    case 'semi_formal':
+      return path.includes('mess_dress')
+        ? GARMENT_FOREGROUND_CLIPS.messDressLapel
+        : GARMENT_FOREGROUND_CLIPS.semiFormalLapel;
+    case 'aviator':
+    case 'aviator_blazer':
+    case 'corporate_field':
+    case 'flight_suit':
+    case 'polo':
+      return GARMENT_FOREGROUND_CLIPS.aviatorCollar;
+    case 'abu':
+      return GARMENT_FOREGROUND_CLIPS.utilityCollar;
+    case 'ocp':
+      // This clips the currently loaded utility base. For SM officers that is
+      // the selected rank-specific OCP blouse, never a separate generic image.
+      return usingSeniorOfficerOcpBase() && path !== 'base/ocp_blouse.png'
+        ? GARMENT_FOREGROUND_CLIPS.seniorOfficerOcpCollar
+        : GARMENT_FOREGROUND_CLIPS.utilityCollar;
+    default:
+      return [];
+  }
+}
+
+function renderGarmentForegroundOverlays(baseImg, loadedPath){
+  uniformCanvas.querySelectorAll('.layer.garmentForegroundOverlay').forEach(el => el.remove());
+  if(!baseImg?.isConnected) return;
+
+  getGarmentForegroundClips(State.uniform, loadedPath).forEach((clipPath, index) => {
+    const overlay = baseImg.cloneNode(false);
+    overlay.className = 'layer jacket garmentForegroundOverlay';
+    overlay.removeAttribute('id');
+    overlay.dataset.calibIgnore = 'true';
+    overlay.dataset.garmentPiece = String(index + 1);
+    overlay.removeAttribute('data-calib-key');
+    overlay.removeAttribute('data-tooltip-title');
+    overlay.removeAttribute('data-tooltip-reg');
+    overlay.removeAttribute('data-tooltip-why');
+    overlay.style.clipPath = clipPath;
+    overlay.style.webkitClipPath = clipPath;
+    overlay.style.zIndex = '9000';
+    overlay.style.pointerEvents = 'none';
+    overlay.setAttribute('aria-hidden', 'true');
+    uniformCanvas.appendChild(overlay);
+  });
+}
 
 const UI_AUTHZ = {
   blues_a:{ showRibbons:true, showBadges:true,  showPatches:false },
@@ -5916,8 +6008,10 @@ function applyJacket(){
       img.remove();
       tryNext();
     };
+    img.onload = () => renderGarmentForegroundOverlays(img, path);
 
     uniformCanvas.appendChild(img);
+    if(img.complete && img.naturalWidth) renderGarmentForegroundOverlays(img, path);
   }
 
   tryNext();
@@ -8637,6 +8731,29 @@ function buildCenteredExportStage(){
   return stage;
 }
 
+function applyCssPolygonClipToCanvas(ctx, clipPath, width, height){
+  const match = /^polygon\((.*)\)$/i.exec(String(clipPath || '').trim());
+  if(!match) return false;
+
+  const points = match[1].split(',').map(pair => {
+    const values = pair.trim().split(/\s+/);
+    if(values.length < 2) return null;
+    const resolve = (token, size) => token.endsWith('%')
+      ? (parseFloat(token) / 100) * size
+      : parseFloat(token);
+    const x = resolve(values[0], width);
+    const y = resolve(values[1], height);
+    return Number.isFinite(x) && Number.isFinite(y) ? [x - width/2, y - height/2] : null;
+  }).filter(Boolean);
+
+  if(points.length < 3) return false;
+  ctx.beginPath();
+  points.forEach(([x,y], index) => index ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
+  ctx.closePath();
+  ctx.clip();
+  return true;
+}
+
 async function composeUniformPngCanvas(source, outputScale = 2){
   const width = Math.round(source.offsetWidth || parseFloat(getComputedStyle(source).width) || 450);
   const height = Math.round(source.offsetHeight || parseFloat(getComputedStyle(source).height) || 600);
@@ -8690,6 +8807,7 @@ async function composeUniformPngCanvas(source, outputScale = 2){
     ctx.globalAlpha = Number.parseFloat(style.opacity) || 1;
     ctx.translate(x + w/2, y + h/2);
     ctx.rotate(rotation);
+    applyCssPolygonClipToCanvas(ctx, style.clipPath || style.webkitClipPath, w, h);
 
     if(el instanceof HTMLImageElement && el.naturalWidth && el.naturalHeight){
       if(style.objectFit === 'contain'){
