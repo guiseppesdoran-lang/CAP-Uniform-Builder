@@ -3768,10 +3768,10 @@ const UNIFORMS = {
 const GARMENT_FOREGROUND_CLIPS = {
   serviceCoat: [
     'polygon(35% 9%, 29% 20%, 48% 40%, 41% 9%)',
-    // Award-side lapel follows the supplied red reference as one continuous
-    // garment edge. Do not trace around individual awards: those reversals
-    // made the overlap jump too far right and cut each badge inconsistently.
-    'polygon(60.2% 13.1%, 59% 22.5%, 57.4% 32.5%, 50% 40%, 56% 9%)'
+    // Award-side lapel follows the supplied red reference as one continuous,
+    // gently curved garment edge. The moderate outward bow overlaps the left
+    // edge of the upper badges and rack without the old award-by-award jumps.
+    'polygon(60.2% 13.1%, 61.5% 17%, 62.8% 21%, 63.4% 23%, 63.8% 25%, 62.5% 27%, 61% 29%, 59% 32.5%, 50% 40%, 56% 9%)'
   ],
   shirtCollar: [
     'polygon(38% 7%, 31% 26%, 48% 34%, 40% 8%)',
