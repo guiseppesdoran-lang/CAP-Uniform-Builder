@@ -3768,10 +3768,10 @@ const UNIFORMS = {
 const GARMENT_FOREGROUND_CLIPS = {
   serviceCoat: [
     'polygon(35% 9%, 29% 20%, 48% 40%, 41% 9%)',
-    // Award-side lapel traced from the supplied red reference line. The two
-    // short turns reproduce the visible overlap through the aviation and
-    // occupational badge positions before the edge crosses the upper rack.
-    'polygon(60.2% 13.1%, 64.4% 20%, 60.7% 21.3%, 67.6% 22.5%, 57.4% 32.5%, 50% 40%, 56% 9%)'
+    // Award-side lapel follows the supplied red reference as one continuous
+    // garment edge. Do not trace around individual awards: those reversals
+    // made the overlap jump too far right and cut each badge inconsistently.
+    'polygon(60.2% 13.1%, 59% 22.5%, 57.4% 32.5%, 50% 40%, 56% 9%)'
   ],
   shirtCollar: [
     'polygon(38% 7%, 31% 26%, 48% 34%, 40% 8%)',
