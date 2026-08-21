@@ -1325,7 +1325,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
           Upper-row arrangement
           <select id="ribbonRackArrangement" style="display:block;width:100%;margin-top:4px;">
             <option value="standard">Standard — centered partial top row</option>
-            <option value="lapel">Automatic lapel clearance — partial rows edge-aligned</option>
+            <option value="lapel">Automatic lapel clearance — maximize ribbons per row</option>
           </select>
         </label>
         <div id="ribbonRackArrangementHint" class="hintText" style="margin-top:4px;">
@@ -6666,6 +6666,63 @@ function rectangleIntersectsPolygon(rect, polygon){
   return false;
 }
 
+const MAX_RIBBON_LAPEL_OVERLAP_RATIO = .51;
+
+function polygonArea(polygon){
+  if(!Array.isArray(polygon) || polygon.length<3) return 0;
+  let twiceArea=0;
+  for(let index=0; index<polygon.length; index++){
+    const point=polygon[index];
+    const next=polygon[(index+1)%polygon.length];
+    twiceArea += point.x*next.y-next.x*point.y;
+  }
+  return Math.abs(twiceArea)/2;
+}
+
+function clipPolygonToRibbonRect(polygon,rect){
+  if(!Array.isArray(polygon) || polygon.length<3) return [];
+  const boundaries=[
+    {inside:point=>point.x>=rect.left, intersect:(a,b)=>{
+      const t=(rect.left-a.x)/((b.x-a.x)||Number.EPSILON);
+      return {x:rect.left,y:a.y+t*(b.y-a.y)};
+    }},
+    {inside:point=>point.x<=rect.right, intersect:(a,b)=>{
+      const t=(rect.right-a.x)/((b.x-a.x)||Number.EPSILON);
+      return {x:rect.right,y:a.y+t*(b.y-a.y)};
+    }},
+    {inside:point=>point.y>=rect.top, intersect:(a,b)=>{
+      const t=(rect.top-a.y)/((b.y-a.y)||Number.EPSILON);
+      return {x:a.x+t*(b.x-a.x),y:rect.top};
+    }},
+    {inside:point=>point.y<=rect.bottom, intersect:(a,b)=>{
+      const t=(rect.bottom-a.y)/((b.y-a.y)||Number.EPSILON);
+      return {x:a.x+t*(b.x-a.x),y:rect.bottom};
+    }}
+  ];
+  let output=polygon.map(point=>({x:point.x,y:point.y}));
+  for(const boundary of boundaries){
+    const input=output;
+    output=[];
+    if(!input.length) break;
+    let previous=input[input.length-1];
+    let previousInside=boundary.inside(previous);
+    for(const current of input){
+      const currentInside=boundary.inside(current);
+      if(currentInside!==previousInside) output.push(boundary.intersect(previous,current));
+      if(currentInside) output.push(current);
+      previous=current;
+      previousInside=currentInside;
+    }
+  }
+  return output;
+}
+
+function getRibbonLapelOverlapRatio(rect,polygon){
+  const ribbonArea=Math.max(0,rect.right-rect.left)*Math.max(0,rect.bottom-rect.top);
+  if(!ribbonArea || !rectangleIntersectsPolygon(rect,polygon)) return 0;
+  return Math.min(1,polygonArea(clipPolygonToRibbonRect(polygon,rect))/ribbonArea);
+}
+
 function getActiveAwardSideLapelPolygon(){
   if(State.uniform!=='blues_a') return [];
   const baseImg=getGarmentEditorBaseImage();
@@ -6693,16 +6750,15 @@ function getLapelSafeRibbonCapacity(rowFromBottom, perRow, layout, polygon){
 }
 
 function isRibbonRowClear(count,rowTop,rowLeft,layout,polygon){
-  const clearance=.5;
   for(let column=0; column<count; column++){
     const left=rowLeft+column*(layout.w+layout.gapX);
     const rect={
-      left:left-clearance,
-      top:rowTop-clearance,
-      right:left+layout.w+clearance,
-      bottom:rowTop+layout.h+clearance
+      left,
+      top:rowTop,
+      right:left+layout.w,
+      bottom:rowTop+layout.h
     };
-    if(rectangleIntersectsPolygon(rect,polygon)) return false;
+    if(getRibbonLapelOverlapRatio(rect,polygon)>MAX_RIBBON_LAPEL_OVERLAP_RATIO+1e-9) return false;
   }
   return true;
 }
@@ -6719,7 +6775,8 @@ function rowsFromBottomCounts(sorted,countsBottomFirst){
 
 // Figure 11-1 permits upper Class A rows to contain fewer ribbons and align
 // with the wearer-left welt/pocket edge only when needed to avoid the lapel.
-// Use the active editable lapel polygon so no ribbon is hidden by the overlay.
+// Use the active editable lapel polygon and fill each row to the maximum
+// authorized width while no individual ribbon is more than 51% overlapped.
 function buildLapelAvoidanceRowsHighToLow(items, perRow=3, layout=null){
   const sorted = sortRibbons(items);
   if(!sorted.length) return [];
@@ -7109,7 +7166,7 @@ function renderRack(){
         tile.dataset.tooltipWhy   = customRows
           ? `This row follows the active custom Class A row-grid override; the final top row remains centered over the row below.`
           : useLapelAvoidance
-          ? `Highest awards render in the top row; incomplete upper rows step outboard to avoid the Class A lapel, with the final top row centered over the row below.`
+          ? `Highest awards render in the top row; automatic rows use the maximum ribbon count that keeps lapel coverage at or below 51% of every ribbon, with the final top row centered over the row below.`
           : `Highest awards render top-left; ${RACK_COLUMNS}-wide rows and a centered partial top row follow the selected uniform.`;
 
         initRibbonDragHandlers(tile);
@@ -9614,7 +9671,7 @@ function syncRibbonRackColumnsControl(){
   }
   if(arrangementHint){
     arrangementHint.textContent = classA
-      ? 'Use lapel avoidance only when the service-coat lapel would cover ribbons. Partial intermediate rows align with the left welt/pocket edge; the final top row stays centered over the row below.'
+      ? 'Automatic mode maximizes ribbons per row while limiting lapel coverage to 51% of each ribbon. Partial intermediate rows align with the left welt/pocket edge; the final top row stays centered over the row below.'
       : 'Lapel-avoidance ribbon arrangements apply only to the Class A service coat.';
   }
   syncRibbonRowOverrideControl();
