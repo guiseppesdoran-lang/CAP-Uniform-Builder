@@ -1078,32 +1078,32 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 
     <div class="calib-row">
       <label for="calX">X (left px)</label>
-      <input type="range" id="calX" min="-200" max="900" step="1">
-      <input type="number" id="calXn" class="numField">
+      <input type="range" id="calX" min="-200" max="900" step="0.1">
+      <input type="number" id="calXn" class="numField" step="0.01">
     </div>
 
     <div class="calib-row">
       <label for="calY">Y (top px)</label>
-      <input type="range" id="calY" min="-200" max="1100" step="1">
-      <input type="number" id="calYn" class="numField">
+      <input type="range" id="calY" min="-200" max="1100" step="0.1">
+      <input type="number" id="calYn" class="numField" step="0.01">
     </div>
 
     <div class="calib-row">
       <label for="calW">W (px)</label>
-      <input type="range" id="calW" min="1" max="800" step="1">
-      <input type="number" id="calWn" class="numField">
+      <input type="range" id="calW" min="0.1" max="800" step="0.1">
+      <input type="number" id="calWn" class="numField" min="0.01" step="0.01">
     </div>
 
     <div class="calib-row">
       <label for="calH">H (px)</label>
-      <input type="range" id="calH" min="1" max="800" step="1">
-      <input type="number" id="calHn" class="numField">
+      <input type="range" id="calH" min="0.1" max="800" step="0.1">
+      <input type="number" id="calHn" class="numField" min="0.01" step="0.01">
     </div>
 
     <div class="calib-row">
       <label for="calR">Rotation (deg)</label>
-      <input type="range" id="calR" min="-180" max="180" step="1">
-      <input type="number" id="calRn" class="numField">
+      <input type="range" id="calR" min="-180" max="180" step="0.1">
+      <input type="number" id="calRn" class="numField" step="0.01">
     </div>
 
     <div class="btnRow">
@@ -1117,7 +1117,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
     </div>
 
     <div id="calibReadout" style="margin-top:10px;">
-      <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow keys nudge all selected assets (Shift = 10px).</div>
+      <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow keys nudge 0.1px, Alt+Arrow nudges 0.01px, and Shift+Arrow nudges 10px.</div>
       <div style="margin-top:6px;">JSON:</div>
       <code id="calibJson" style="display:block;white-space:pre-wrap;"></code>
     </div>
@@ -3382,11 +3382,25 @@ function getCalib(key){
   }
   return State.calib.map[key] || (legacyPatchKey ? State.calib.map[legacyPatchKey] : null);
 }
+function normalizeCalibNumber(value,fallback=0){
+  const parsed=Number.parseFloat(value);
+  const safe=Number.isFinite(parsed) ? parsed : fallback;
+  return Math.round(safe*1000)/1000;
+}
+function formatCalibNumber(value,fallback=0){
+  return String(normalizeCalibNumber(value,fallback));
+}
 function setCalib(key, patch){
   if(!key) return;
   const bucket = getCalibBucket();
   const cur = bucket[key] || State.calib.map[key] || {};
-  bucket[key] = { ...cur, ...patch };
+  const precisePatch={...patch};
+  for(const prop of ['x','y','w','h','r']){
+    if(precisePatch[prop]!==undefined){
+      precisePatch[prop]=normalizeCalibNumber(precisePatch[prop],prop==='w'||prop==='h' ? 1 : 0);
+    }
+  }
+  bucket[key] = { ...cur, ...precisePatch };
 }
 function clearCalib(key){
   if(!key) return;
@@ -3419,10 +3433,10 @@ function parseItemIdFromKey(key){
 function readRenderedLayerRecord(el, index=0){
   if(!el) return null;
   const st = window.getComputedStyle(el);
-  const left = Math.round(parseFloat(st.left) || 0);
-  const top = Math.round(parseFloat(st.top) || 0);
-  const width = Math.round(parseFloat(st.width) || 0);
-  const height = Math.round(parseFloat(st.height) || 0);
+  const left = normalizeCalibNumber(st.left,0);
+  const top = normalizeCalibNumber(st.top,0);
+  const width = normalizeCalibNumber(st.width,0);
+  const height = normalizeCalibNumber(st.height,0);
   const transform = st.transform || '';
   const calibKey = el.dataset?.calibKey || `layer:${index}`;
   const calib = getCalib(calibKey) || {};
@@ -3435,7 +3449,7 @@ function readRenderedLayerRecord(el, index=0){
     if(m){
       const parts = m[1].split(',').map(v => parseFloat(v.trim()));
       if(parts.length >= 2){
-        rotation = Math.round(Math.atan2(parts[1], parts[0]) * (180 / Math.PI));
+        rotation = normalizeCalibNumber(Math.atan2(parts[1], parts[0]) * (180 / Math.PI),0);
       }
     }
   }
@@ -3633,10 +3647,10 @@ function nudgeSelected(dx,dy){
     const el = findLayerByCalibKey(key);
     const st = el ? window.getComputedStyle(el) : null;
     const cur = getCalib(key) || {};
-    const x = (cur.x !== undefined) ? parseInt(cur.x,10) : Math.round(parseFloat(st?.left)||0);
-    const y = (cur.y !== undefined) ? parseInt(cur.y,10) : Math.round(parseFloat(st?.top)||0);
-    const nx = x + dx;
-    const ny = y + dy;
+    const x = (cur.x !== undefined) ? normalizeCalibNumber(cur.x,0) : normalizeCalibNumber(st?.left,0);
+    const y = (cur.y !== undefined) ? normalizeCalibNumber(cur.y,0) : normalizeCalibNumber(st?.top,0);
+    const nx = normalizeCalibNumber(x + dx,0);
+    const ny = normalizeCalibNumber(y + dy,0);
     setCalib(key, { x:nx, y:ny });
     if(el){
       el.style.left = nx+'px';
@@ -3648,12 +3662,12 @@ function nudgeSelected(dx,dy){
   const pEl = findLayerByCalibKey(primary);
   if(pEl){
     const st = window.getComputedStyle(pEl);
-    const x = Math.round(parseFloat(st.left)||0);
-    const y = Math.round(parseFloat(st.top)||0);
+    const x = normalizeCalibNumber(st.left,0);
+    const y = normalizeCalibNumber(st.top,0);
     const xr = by('calX'), xn = by('calXn');
     const yr = by('calY'), yn = by('calYn');
-    if(xr) xr.value = x; if(xn) xn.value = x;
-    if(yr) yr.value = y; if(yn) yn.value = y;
+    if(xr) xr.value = formatCalibNumber(x); if(xn) xn.value = formatCalibNumber(x);
+    if(yr) yr.value = formatCalibNumber(y); if(yn) yn.value = formatCalibNumber(y);
   }
   refreshCalibratorReadout();
 }
@@ -9936,19 +9950,19 @@ function initCalibratorUI(){
     }
 
     const st = window.getComputedStyle(el);
-    const x = Math.round(parseFloat(st.left)||0);
-    const y = Math.round(parseFloat(st.top)||0);
-    const w = Math.round(parseFloat(st.width)||0);
-    const h = Math.round(parseFloat(st.height)||0);
+    const x = normalizeCalibNumber(st.left,0);
+    const y = normalizeCalibNumber(st.top,0);
+    const w = normalizeCalibNumber(st.width,0);
+    const h = normalizeCalibNumber(st.height,0);
 
     const o = getCalib(key) || {};
     const r = (o.r !== undefined) ? o.r : 0;
 
-    calX.value=x; calXn.value=x;
-    calY.value=y; calYn.value=y;
-    calW.value=w; calWn.value=w;
-    calH.value=h; calHn.value=h;
-    calR.value=r; calRn.value=r;
+    calX.value=formatCalibNumber(x); calXn.value=formatCalibNumber(x);
+    calY.value=formatCalibNumber(y); calYn.value=formatCalibNumber(y);
+    calW.value=formatCalibNumber(w); calWn.value=formatCalibNumber(w);
+    calH.value=formatCalibNumber(h); calHn.value=formatCalibNumber(h);
+    calR.value=formatCalibNumber(r); calRn.value=formatCalibNumber(r);
 
     refreshCalibratorReadout();
   }
@@ -9988,19 +10002,19 @@ function initCalibratorUI(){
     const primaryEl = findLayerByCalibKey(primary);
     const pst = primaryEl ? window.getComputedStyle(primaryEl) : null;
     const oldPrimary = {
-      x: Math.round(parseFloat(pst?.left)||0),
-      y: Math.round(parseFloat(pst?.top)||0),
-      w: Math.round(parseFloat(pst?.width)||1),
-      h: Math.round(parseFloat(pst?.height)||1),
-      r: (getCalib(primary)?.r !== undefined) ? parseInt(getCalib(primary).r,10) : 0
+      x: normalizeCalibNumber(pst?.left,0),
+      y: normalizeCalibNumber(pst?.top,0),
+      w: normalizeCalibNumber(pst?.width,1),
+      h: normalizeCalibNumber(pst?.height,1),
+      r: (getCalib(primary)?.r !== undefined) ? normalizeCalibNumber(getCalib(primary).r,0) : 0
     };
 
     const newPrimary = {
-      x: parseInt(calXn.value||"0",10),
-      y: parseInt(calYn.value||"0",10),
-      w: Math.max(1, parseInt(calWn.value||"1",10)),
-      h: Math.max(1, parseInt(calHn.value||"1",10)),
-      r: parseInt(calRn.value||"0",10)
+      x: normalizeCalibNumber(calXn.value,0),
+      y: normalizeCalibNumber(calYn.value,0),
+      w: Math.max(.01,normalizeCalibNumber(calWn.value,1)),
+      h: Math.max(.01,normalizeCalibNumber(calHn.value,1)),
+      r: normalizeCalibNumber(calRn.value,0)
     };
 
     const dx = newPrimary.x - oldPrimary.x;
@@ -10014,19 +10028,19 @@ function initCalibratorUI(){
       const st = el ? window.getComputedStyle(el) : null;
       const cur = getCalib(key) || {};
       const current = {
-        x: (cur.x !== undefined) ? parseInt(cur.x,10) : Math.round(parseFloat(st?.left)||0),
-        y: (cur.y !== undefined) ? parseInt(cur.y,10) : Math.round(parseFloat(st?.top)||0),
-        w: (cur.w !== undefined) ? parseInt(cur.w,10) : Math.round(parseFloat(st?.width)||1),
-        h: (cur.h !== undefined) ? parseInt(cur.h,10) : Math.round(parseFloat(st?.height)||1),
-        r: (cur.r !== undefined) ? parseInt(cur.r,10) : 0
+        x: (cur.x !== undefined) ? normalizeCalibNumber(cur.x,0) : normalizeCalibNumber(st?.left,0),
+        y: (cur.y !== undefined) ? normalizeCalibNumber(cur.y,0) : normalizeCalibNumber(st?.top,0),
+        w: (cur.w !== undefined) ? normalizeCalibNumber(cur.w,1) : normalizeCalibNumber(st?.width,1),
+        h: (cur.h !== undefined) ? normalizeCalibNumber(cur.h,1) : normalizeCalibNumber(st?.height,1),
+        r: (cur.r !== undefined) ? normalizeCalibNumber(cur.r,0) : 0
       };
 
       const next = index === 0 ? newPrimary : {
-        x: current.x + dx,
-        y: current.y + dy,
-        w: Math.max(1, Math.round(current.w * sx)),
-        h: Math.max(1, Math.round(current.h * sy)),
-        r: current.r + dr
+        x: normalizeCalibNumber(current.x + dx,0),
+        y: normalizeCalibNumber(current.y + dy,0),
+        w: Math.max(.01,normalizeCalibNumber(current.w * sx,1)),
+        h: Math.max(.01,normalizeCalibNumber(current.h * sy,1)),
+        r: normalizeCalibNumber(current.r + dr,0)
       };
 
       setCalib(key, next);
@@ -10082,7 +10096,7 @@ function initCalibratorUI(){
     if(!State.calib.enabled) return;
     if(!State.calib.selectedKey) return;
 
-    const step = e.shiftKey ? 10 : 1;
+    const step = e.shiftKey ? 10 : e.altKey ? .01 : .1;
     if(e.key==='ArrowLeft'){  nudgeSelected(-step,0); e.preventDefault(); }
     if(e.key==='ArrowRight'){ nudgeSelected(step,0);  e.preventDefault(); }
     if(e.key==='ArrowUp'){    nudgeSelected(0,-step); e.preventDefault(); }
