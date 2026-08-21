@@ -14,6 +14,6 @@
   }
 
   load('purchase-feature-core.js',()=>{
-    load('admin-history.js');
+    load('admin-history.js?v=2');
   });
 })();

@@ -11,6 +11,13 @@ const ALLOWED_MIME = new Set([
   'image/svg+xml'
 ]);
 
+const HISTORY_PASSWORD_HASH_PROPERTY = 'CAPUB_ADMIN_PASSWORD_SHA256';
+const HISTORY_SPREADSHEET_ID_PROPERTY = 'CAPUB_HISTORY_SPREADSHEET_ID';
+const HISTORY_SHEET_NAME = 'Uniform History';
+const HISTORY_RETENTION_MS = 24 * 60 * 60 * 1000;
+const HISTORY_MAX_RECORDS = 500;
+const HISTORY_MAX_PROFILE_CHARS = 45000;
+
 function doPost(e) {
   let requestId = '';
   try {
@@ -19,6 +26,10 @@ function doPost(e) {
     const raw = rawForm || rawBody;
     const data = JSON.parse(raw || '{}');
     requestId = sanitize_(data.requestId, 120);
+
+    if (/^history_/.test(String(data.action || ''))) {
+      return handleHistoryRequest_(data, requestId);
+    }
 
     if (String(data.honeypot || '').trim()) {
       return responsePage_({ ok: true, requestId: requestId, ignored: true });
@@ -92,6 +103,32 @@ function doPost(e) {
 
 function doGet(e) {
   const mode = e && e.parameter ? String(e.parameter.mode || '') : '';
+  if (mode === 'history_list') {
+    const requestId = sanitize_(e.parameter.requestId, 120);
+    const callback = String(e.parameter.callback || '');
+    try {
+      if (!/^[A-Za-z_$][A-Za-z0-9_$]{0,100}$/.test(callback)) throw new Error('Invalid history callback.');
+      verifyHistoryProof_(
+        mode,
+        requestId,
+        String(e.parameter.timestamp || ''),
+        sanitize_(e.parameter.nonce, 160),
+        String(e.parameter.signature || '')
+      );
+      const lock = LockService.getScriptLock();
+      lock.waitLock(10000);
+      let records;
+      try {
+        cleanupHistorySheet_();
+        records = readHistoryRecords_().slice(0, HISTORY_MAX_RECORDS);
+      } finally {
+        lock.releaseLock();
+      }
+      return historyJsonpResponse_(callback, { ok: true, requestId: requestId, data: { records: records } });
+    } catch (err) {
+      return historyJsonpResponse_(callback, { ok: false, requestId: requestId, error: String(err && err.message ? err.message : err) });
+    }
+  }
   if (mode === 'status') {
     let account = '';
     try { account = Session.getEffectiveUser().getEmail(); } catch (_) {}
@@ -108,6 +145,258 @@ function doGet(e) {
   return HtmlService
     .createHtmlOutput('<!doctype html><html><body style="font-family:Arial,sans-serif;padding:20px">CAP Uniform Builder patch submission endpoint is running.</body></html>')
     .setTitle('CAP Uniform Builder Patch Submission');
+}
+
+function handleHistoryRequest_(data, requestId) {
+  const source = 'CAPUB_ADMIN_HISTORY';
+  try {
+    const action = String(data.action || '');
+    if (action === 'history_record') {
+      if (String(data.honeypot || '').trim()) {
+        return responsePage_({ source: source, ok: true, requestId: requestId, data: { ignored: true } });
+      }
+      const record = normalizeHistoryRecord_(data.record, false);
+      const lock = LockService.getScriptLock();
+      lock.waitLock(10000);
+      try {
+        cleanupHistorySheet_();
+        upsertHistoryRecord_(record);
+      } finally {
+        lock.releaseLock();
+      }
+      return responsePage_({ source: source, ok: true, requestId: requestId, data: { id: record.id } });
+    }
+
+    verifyHistoryAdmin_(data.adminPassword);
+    const lock = LockService.getScriptLock();
+    lock.waitLock(10000);
+    try {
+      cleanupHistorySheet_();
+      if (action === 'history_list') {
+        return responsePage_({
+          source: source,
+          ok: true,
+          requestId: requestId,
+          data: { records: readHistoryRecords_().slice(0, HISTORY_MAX_RECORDS) }
+        });
+      }
+      if (action === 'history_save') {
+        setHistorySaved_(sanitize_(data.id, 120), !!data.saved);
+        return responsePage_({ source: source, ok: true, requestId: requestId, data: { id: sanitize_(data.id, 120), saved: !!data.saved } });
+      }
+      if (action === 'history_delete') {
+        deleteHistoryRecord_(sanitize_(data.id, 120));
+        return responsePage_({ source: source, ok: true, requestId: requestId, data: { id: sanitize_(data.id, 120) } });
+      }
+      if (action === 'history_cleanup') {
+        return responsePage_({ source: source, ok: true, requestId: requestId, data: { records: readHistoryRecords_().slice(0, HISTORY_MAX_RECORDS) } });
+      }
+      if (action === 'history_import') {
+        const records = Array.isArray(data.records) ? data.records.slice(0, HISTORY_MAX_RECORDS) : [];
+        records.forEach(function(raw) { upsertHistoryRecord_(normalizeHistoryRecord_(raw, true)); });
+        return responsePage_({ source: source, ok: true, requestId: requestId, data: { imported: records.length } });
+      }
+      throw new Error('Unsupported shared-history action.');
+    } finally {
+      lock.releaseLock();
+    }
+  } catch (err) {
+    console.error('Shared history error: ' + (err && err.stack ? err.stack : err));
+    return responsePage_({
+      source: source,
+      ok: false,
+      requestId: requestId,
+      error: String(err && err.message ? err.message : err)
+    });
+  }
+}
+
+function getHistorySheet_() {
+  const properties = PropertiesService.getScriptProperties();
+  let spreadsheetId = properties.getProperty(HISTORY_SPREADSHEET_ID_PROPERTY);
+  let spreadsheet = null;
+  if (spreadsheetId) {
+    try { spreadsheet = SpreadsheetApp.openById(spreadsheetId); }
+    catch (_) { spreadsheet = null; }
+  }
+  if (!spreadsheet) {
+    spreadsheet = SpreadsheetApp.create('CAP Uniform Builder Shared History');
+    spreadsheetId = spreadsheet.getId();
+    properties.setProperty(HISTORY_SPREADSHEET_ID_PROPERTY, spreadsheetId);
+  }
+  let sheet = spreadsheet.getSheetByName(HISTORY_SHEET_NAME);
+  if (!sheet) {
+    sheet = spreadsheet.getSheets()[0];
+    sheet.setName(HISTORY_SHEET_NAME);
+  }
+  const headers = ['id', 'createdAt', 'expiresAt', 'saved', 'summaryJson', 'profileJson'];
+  if (sheet.getLastRow() === 0 || sheet.getRange(1, 1).getValue() !== 'id') {
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function normalizeHistoryRecord_(raw, allowSaved) {
+  if (!raw || typeof raw !== 'object' || !raw.profile || typeof raw.profile !== 'object') {
+    throw new Error('A valid uniform profile is required.');
+  }
+  const profile = JSON.parse(JSON.stringify(raw.profile));
+  delete profile.calib;
+  delete profile.coordinatesByUniform;
+  delete profile.calibration;
+  const profileJson = JSON.stringify(profile);
+  if (profileJson.length > HISTORY_MAX_PROFILE_CHARS) {
+    throw new Error('The uniform profile is too large for shared history.');
+  }
+  const now = new Date();
+  const created = new Date(raw.createdAt || now.toISOString());
+  const createdAt = isNaN(created.getTime()) ? now.toISOString() : created.toISOString();
+  const saved = !!allowSaved && !!raw.saved;
+  const expiry = new Date(raw.expiresAt || (created.getTime() + HISTORY_RETENTION_MS));
+  const expiresAt = saved ? '' : (isNaN(expiry.getTime()) ? new Date(now.getTime() + HISTORY_RETENTION_MS).toISOString() : expiry.toISOString());
+  const summaryRaw = raw.summary && typeof raw.summary === 'object' ? raw.summary : {};
+  const summary = {
+    membership: sanitize_(summaryRaw.membership || profile.membership, 40),
+    gender: sanitize_(summaryRaw.gender || profile.gender, 20),
+    uniform: sanitize_(summaryRaw.uniform || profile.uniform, 60),
+    rank: sanitize_(summaryRaw.rank || profile.rank, 60),
+    ribbons: Math.max(0, Number(summaryRaw.ribbons || (Array.isArray(profile.ribbons) ? profile.ribbons.length : 0)) || 0),
+    badges: Math.max(0, Number(summaryRaw.badges || (Array.isArray(profile.badges) ? profile.badges.length : 0)) || 0),
+    patches: Math.max(0, Number(summaryRaw.patches || (Array.isArray(profile.patches) ? profile.patches.length : 0)) || 0),
+    shoulderCord: sanitize_(summaryRaw.shoulderCord || profile.shoulderCord, 80)
+  };
+  return {
+    id: sanitize_(raw.id, 120) || Utilities.getUuid(),
+    createdAt: createdAt,
+    expiresAt: expiresAt,
+    saved: saved,
+    summary: summary,
+    profile: profile,
+    profileJson: profileJson
+  };
+}
+
+function historyRowValues_(record) {
+  return [
+    record.id,
+    record.createdAt,
+    record.expiresAt || '',
+    !!record.saved,
+    JSON.stringify(record.summary || {}),
+    record.profileJson || JSON.stringify(record.profile || {})
+  ];
+}
+
+function upsertHistoryRecord_(record) {
+  const sheet = getHistorySheet_();
+  const lastRow = sheet.getLastRow();
+  let row = null;
+  if (lastRow > 1) {
+    row = sheet.getRange(2, 1, lastRow - 1, 1).createTextFinder(record.id).matchEntireCell(true).findNext();
+  }
+  if (row) sheet.getRange(row.getRow(), 1, 1, 6).setValues([historyRowValues_(record)]);
+  else sheet.appendRow(historyRowValues_(record));
+}
+
+function readHistoryRecords_() {
+  const sheet = getHistorySheet_();
+  if (sheet.getLastRow() < 2) return [];
+  const values = sheet.getRange(2, 1, sheet.getLastRow() - 1, 6).getValues();
+  return values.map(function(row) {
+    try {
+      return {
+        id: String(row[0] || ''),
+        createdAt: String(row[1] || ''),
+        expiresAt: row[2] ? String(row[2]) : null,
+        saved: row[3] === true || String(row[3]).toLowerCase() === 'true',
+        summary: JSON.parse(String(row[4] || '{}')),
+        profile: JSON.parse(String(row[5] || '{}'))
+      };
+    } catch (err) {
+      console.warn('Skipping malformed history row: ' + err);
+      return null;
+    }
+  }).filter(function(record) { return record && record.id && record.profile; })
+    .sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
+}
+
+function cleanupHistorySheet_() {
+  const sheet = getHistorySheet_();
+  if (sheet.getLastRow() < 2) return;
+  const rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, 4).getValues();
+  const now = Date.now();
+  for (let index = rows.length - 1; index >= 0; index--) {
+    const saved = rows[index][3] === true || String(rows[index][3]).toLowerCase() === 'true';
+    const expiresAt = new Date(rows[index][2]).getTime();
+    if (!saved && (!expiresAt || expiresAt <= now)) sheet.deleteRow(index + 2);
+  }
+}
+
+function findHistoryRow_(id) {
+  const sheet = getHistorySheet_();
+  if (!id || sheet.getLastRow() < 2) return null;
+  return sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).createTextFinder(id).matchEntireCell(true).findNext();
+}
+
+function setHistorySaved_(id, saved) {
+  const sheet = getHistorySheet_();
+  const match = findHistoryRow_(id);
+  if (!match) throw new Error('The shared history record was not found.');
+  sheet.getRange(match.getRow(), 4).setValue(!!saved);
+  sheet.getRange(match.getRow(), 3).setValue(saved ? '' : new Date(Date.now() + HISTORY_RETENTION_MS).toISOString());
+}
+
+function deleteHistoryRecord_(id) {
+  const sheet = getHistorySheet_();
+  const match = findHistoryRow_(id);
+  if (match) sheet.deleteRow(match.getRow());
+}
+
+function verifyHistoryAdmin_(password) {
+  const expected = String(PropertiesService.getScriptProperties().getProperty(HISTORY_PASSWORD_HASH_PROPERTY) || '').toLowerCase();
+  if (!/^[a-f0-9]{64}$/.test(expected)) {
+    throw new Error('Shared history is not configured. Add the CAPUB_ADMIN_PASSWORD_SHA256 script property.');
+  }
+  if (sha256Hex_(String(password || '')) !== expected) throw new Error('Incorrect admin password for shared history.');
+}
+
+function sha256Hex_(text) {
+  return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, text, Utilities.Charset.UTF_8)
+    .map(function(byte) { return ((byte + 256) % 256).toString(16).padStart(2, '0'); })
+    .join('');
+}
+
+function verifyHistoryProof_(action, requestId, timestamp, nonce, signature) {
+  const expectedHash = String(PropertiesService.getScriptProperties().getProperty(HISTORY_PASSWORD_HASH_PROPERTY) || '').toLowerCase();
+  if (!/^[a-f0-9]{64}$/.test(expectedHash)) {
+    throw new Error('Shared history is not configured. Add the CAPUB_ADMIN_PASSWORD_SHA256 script property.');
+  }
+  const timestampNumber = Number(timestamp);
+  if (!Number.isFinite(timestampNumber) || Math.abs(Date.now() - timestampNumber) > 5 * 60 * 1000) {
+    throw new Error('The admin history request expired. Refresh and try again.');
+  }
+  if (!requestId || !nonce || !/^[a-f0-9]{64}$/i.test(signature)) throw new Error('Invalid admin history proof.');
+  const message = [action, requestId, timestamp, nonce].join(':');
+  const keyBytes = [];
+  for (let index = 0; index < expectedHash.length; index += 2) keyBytes.push(parseInt(expectedHash.slice(index, index + 2), 16));
+  const actual = Utilities.computeHmacSha256Signature(Utilities.newBlob(message).getBytes(), keyBytes)
+    .map(function(byte) { return ((byte + 256) % 256).toString(16).padStart(2, '0'); })
+    .join('');
+  if (actual !== String(signature).toLowerCase()) throw new Error('Incorrect admin password for shared history.');
+}
+
+function historyJsonpResponse_(callback, result) {
+  const safeCallback = /^[A-Za-z_$][A-Za-z0-9_$]{0,100}$/.test(callback) ? callback : 'capubHistoryInvalidCallback';
+  const json = JSON.stringify({
+    source: 'CAPUB_ADMIN_HISTORY',
+    ok: !!result.ok,
+    requestId: String(result.requestId || ''),
+    error: result.error ? String(result.error) : '',
+    data: result.data || null
+  }).replace(/</g, '\\u003c');
+  return ContentService.createTextOutput(safeCallback + '(' + json + ');')
+    .setMimeType(ContentService.MimeType.JAVASCRIPT);
 }
 
 function sendPatchEmails_(subject, body, blob, replyTo) {
@@ -166,6 +455,24 @@ function testPatchEmail() {
   return results;
 }
 
+/* Run once after configuring CAPUB_ADMIN_PASSWORD_SHA256. This creates the
+   shared-history spreadsheet and requests the required Sheets authorization. */
+function testSharedHistoryStorage() {
+  const expected = String(PropertiesService.getScriptProperties().getProperty(HISTORY_PASSWORD_HASH_PROPERTY) || '').toLowerCase();
+  if (!/^[a-f0-9]{64}$/.test(expected)) {
+    throw new Error('Add a valid CAPUB_ADMIN_PASSWORD_SHA256 script property first.');
+  }
+  const sheet = getHistorySheet_();
+  const result = {
+    ok: true,
+    spreadsheetId: sheet.getParent().getId(),
+    spreadsheetUrl: sheet.getParent().getUrl(),
+    sheetName: sheet.getName()
+  };
+  console.log(JSON.stringify(result));
+  return result;
+}
+
 function safeAliases_() {
   try { return GmailApp.getAliases(); }
   catch (err) { return ['ERROR: ' + String(err && err.message ? err.message : err)]; }
@@ -180,11 +487,12 @@ function sanitize_(value, maxLen) {
 
 function responsePage_(result) {
   const json = JSON.stringify({
-    source: 'CAPUB_PATCH_SUBMISSION',
+    source: result.source || 'CAPUB_PATCH_SUBMISSION',
     ok: !!result.ok,
     requestId: String(result.requestId || ''),
     error: result.error ? String(result.error) : '',
-    sendResults: result.sendResults || null
+    sendResults: result.sendResults || null,
+    data: result.data || null
   }).replace(/</g, '\\u003c');
 
   const html = '<!doctype html><html><body>' +
