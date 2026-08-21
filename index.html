@@ -1285,6 +1285,18 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
           <div class="col"><button id="expandRibbons" type="button">Choose Ribbons…</button></div>
         </div>
 
+        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+          Ribbon rack layout
+          <select id="ribbonRackColumns" style="display:block;width:100%;margin-top:4px;">
+            <option value="3">3 across — centered</option>
+            <option value="4-left">4 across — left edge aligned (Class A)</option>
+            <option value="4-center">4 across — centered (Class A)</option>
+          </select>
+        </label>
+        <div id="ribbonRackColumnsHint" class="hintText" style="margin-top:4px;">
+          CAPR 39-1 permits four-across racks only on the USAF-style Service Dress (Class A).
+        </div>
+
         <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="ribbonGallery" class="galleryGrid"></div>
 
@@ -1522,6 +1534,7 @@ const State = {
   ribbonDragMode:false,
   forceMini:false,
   miniMountStyle:'mounting',
+  ribbonRackLayout:'4-left',
   showMeasurementOverlay:false,
   garmentOverlayMode:'both',
   garmentMasks:{},
@@ -1630,8 +1643,22 @@ function getRibbonLayout(uniformId = State.uniform){
   const h = override.h ?? RIBBON_HEIGHT;
   const gapX = override.gapX ?? RIBBON_GAP_X;
   const gapY = override.gapY ?? RIBBON_GAP_Y;
-  const columns = override.columns ?? 3;
-  const baseX = override.baseX ?? rackBaseX;
+  // CAPR 39-1 authorizes four-across ribbon rows only on the USAF-style
+  // Service Dress (Class A). All Class B and aviator-shirt racks are
+  // unconditionally limited to rows of three, even if a saved profile carries
+  // a Class A four-across preference.
+  const requestedRackLayout = ['3','4-left','4-center'].includes(String(State.ribbonRackLayout))
+    ? String(State.ribbonRackLayout)
+    : '4-left';
+  const requestedColumns = requestedRackLayout === '3' ? 3 : 4;
+  const columns = baseUniformId === 'blues_a' ? requestedColumns : 3;
+  const configuredBaseX = override.baseX ?? rackBaseX;
+  // The calibrated baseX follows the pocket's left edge. For the alternate
+  // centered four-across option, preserve the three-across pocket centerline.
+  const centeredFourBaseX = configuredBaseX - ((w + gapX) / 2);
+  const baseX = baseUniformId === 'blues_a' && requestedRackLayout === '4-center'
+    ? centeredFourBaseX
+    : configuredBaseX;
   const bottomY = override.bottomY ?? rackBaseY;
   return { baseX, bottomY, columns, w, h, gapX, gapY, centerX: baseX + ((w*columns)+(gapX*(columns-1)))/2 };
 }
@@ -9033,6 +9060,7 @@ function refreshUI(){
   if(overlayToggle) overlayToggle.checked = !!State.showMeasurementOverlay;
   const miniStyleControl = by('miniMountStyle');
   if(miniStyleControl) miniStyleControl.value = State.miniMountStyle === 'holding' ? 'holding' : 'mounting';
+  syncRibbonRackColumnsControl();
   syncCadetFirstSergeantControl();
 
   highlightActiveUniformButton();
@@ -9213,6 +9241,38 @@ function applyCssPolygonClipToCanvas(ctx, clipPath, width, height){
   ctx.closePath();
   ctx.clip();
   return true;
+}
+
+function syncRibbonRackColumnsControl(){
+  const select = by('ribbonRackColumns');
+  const hint = by('ribbonRackColumnsHint');
+  if(!select) return;
+
+  const classA = State.uniform === 'blues_a';
+  const preferredLayout = ['3','4-left','4-center'].includes(String(State.ribbonRackLayout))
+    ? String(State.ribbonRackLayout)
+    : '4-left';
+  select.disabled = !classA;
+  select.value = classA ? preferredLayout : '3';
+
+  if(hint){
+    hint.textContent = classA
+      ? 'Choose three across, or align a four-across rack with the pocket’s left edge or centerline. Partial top rows remain centered and rows have no spacing.'
+      : 'CAPR 39-1 requires rows of three on Class B and aviator shirts. Four-across is available only on Class A.';
+  }
+}
+
+const ribbonRackColumnsSelect = by('ribbonRackColumns');
+if(ribbonRackColumnsSelect){
+  ribbonRackColumnsSelect.addEventListener('change', e=>{
+    State.ribbonRackLayout = ['3','4-left','4-center'].includes(e.target.value)
+      ? e.target.value
+      : '4-left';
+    syncRibbonRackColumnsControl();
+    renderRack();
+    renderAllBadges();
+    renderMeasurementOverlay();
+  });
 }
 
 async function composeUniformPngCanvas(source, outputScale = 2){
@@ -9927,6 +9987,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       patchSelections: State.patchSelections,
       forceMini: State.forceMini,
       miniMountStyle: State.miniMountStyle,
+      ribbonRackLayout: State.ribbonRackLayout,
       garmentOverlayMode: State.garmentOverlayMode,
       garmentMasks: State.garmentMasks,
       text: State.text,
@@ -9954,6 +10015,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.patchSelections = p.patchSelections || {};
     State.forceMini = !!p.forceMini;
     State.miniMountStyle = p.miniMountStyle === 'holding' ? 'holding' : 'mounting';
+    State.ribbonRackLayout = ['3','4-left','4-center'].includes(String(p.ribbonRackLayout))
+      ? String(p.ribbonRackLayout)
+      : (Number(p.ribbonRackColumns) === 3 ? '3' : '4-left');
     State.garmentOverlayMode = ['both','left','right','off'].includes(p.garmentOverlayMode)
       ? p.garmentOverlayMode
       : 'both';
