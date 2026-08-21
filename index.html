@@ -1117,7 +1117,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
     </div>
 
     <div id="calibReadout" style="margin-top:10px;">
-      <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow keys nudge 0.1px, Alt+Arrow nudges 0.01px, and Shift+Arrow nudges 10px.</div>
+      <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow = 0.1px, Alt+Arrow = 0.01px, Ctrl+Arrow = 1px, and Shift+Arrow = 10px.</div>
       <div style="margin-top:6px;">JSON:</div>
       <code id="calibJson" style="display:block;white-space:pre-wrap;"></code>
     </div>
@@ -10198,7 +10198,7 @@ function initCalibratorUI(){
     if(!State.calib.enabled) return;
     if(!State.calib.selectedKey) return;
 
-    const step = e.shiftKey ? 10 : e.altKey ? .01 : .1;
+    const step = e.shiftKey ? 10 : (e.ctrlKey || e.metaKey) ? 1 : e.altKey ? .01 : .1;
     if(e.key==='ArrowLeft'){  nudgeSelected(-step,0); e.preventDefault(); }
     if(e.key==='ArrowRight'){ nudgeSelected(step,0);  e.preventDefault(); }
     if(e.key==='ArrowUp'){    nudgeSelected(0,-step); e.preventDefault(); }
