@@ -1289,12 +1289,23 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
           Ribbon rack layout
           <select id="ribbonRackColumns" style="display:block;width:100%;margin-top:4px;">
             <option value="3">3 across — centered</option>
-            <option value="4-left">4 across — left edge aligned (Class A)</option>
+            <option value="4-left">4 across — wearer-left edge aligned (Class A)</option>
             <option value="4-center">4 across — centered (Class A)</option>
           </select>
         </label>
         <div id="ribbonRackColumnsHint" class="hintText" style="margin-top:4px;">
           CAPR 39-1 permits four-across racks only on the USAF-style Service Dress (Class A).
+        </div>
+
+        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+          Upper-row arrangement
+          <select id="ribbonRackArrangement" style="display:block;width:100%;margin-top:4px;">
+            <option value="standard">Standard — centered partial top row</option>
+            <option value="lapel">Lapel avoidance — stepped outboard</option>
+          </select>
+        </label>
+        <div id="ribbonRackArrangementHint" class="hintText" style="margin-top:4px;">
+          Lapel avoidance follows the stepped Class A arrangements in CAPR 39-1 Figure 11-1.
         </div>
 
         <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
@@ -1535,6 +1546,7 @@ const State = {
   forceMini:false,
   miniMountStyle:'mounting',
   ribbonRackLayout:'4-left',
+  ribbonRackArrangement:'lapel',
   showMeasurementOverlay:false,
   garmentOverlayMode:'both',
   garmentMasks:{},
@@ -1613,9 +1625,9 @@ const RIBBON_GAP_Y  = 0;
 */
 const RIBBON_LAYOUT_BY_UNIFORM = {
   // Men's Class A senior-member calibration: x columns 259/282/305 and top/bottom rows from the latest export.
-  // Class A alone permits rows of four. Keeping the calibrated pocket-left
-  // edge while adding the fourth column moves the rack center outboard and
-  // keeps properly positioned ribbons and badges clear of the lapel.
+  // Class A alone permits rows of four. The calibrated three-across origin is
+  // converted at render time to either the wearer-left/outboard edge alignment
+  // or the pocket-centered four-across placement authorized by CAPR 39-1.
   blues_a: { baseX: 259, bottomY: 206, columns: 4, w: RIBBON_WIDTH, h: RIBBON_HEIGHT, gapX: 0, gapY: 0 },
   // Class B and aviator-shirt racks remain rows of three.
   blues_b: { baseX: 259, bottomY: 206, columns: 3, w: RIBBON_WIDTH, h: RIBBON_HEIGHT, gapX: 0, gapY: 0 }
@@ -1653,12 +1665,20 @@ function getRibbonLayout(uniformId = State.uniform){
   const requestedColumns = requestedRackLayout === '3' ? 3 : 4;
   const columns = baseUniformId === 'blues_a' ? requestedColumns : 3;
   const configuredBaseX = override.baseX ?? rackBaseX;
-  // The calibrated baseX follows the pocket's left edge. For the alternate
-  // centered four-across option, preserve the three-across pocket centerline.
-  const centeredFourBaseX = configuredBaseX - ((w + gapX) / 2);
-  const baseX = baseUniformId === 'blues_a' && requestedRackLayout === '4-center'
-    ? centeredFourBaseX
-    : configuredBaseX;
+  // The calibrated three-across rack is centered over the pocket. In a
+  // front-facing preview, the wearer's left/outboard pocket edge is the
+  // screen-right edge. Preserve that edge for the CAPR-authorized edge-aligned
+  // four-across option; preserve the pocket centerline for the centered option.
+  const threeAcrossWidth = (w*3) + (gapX*2);
+  const requestedRackWidth = (w*columns) + (gapX*(columns-1));
+  const pocketCenterX = configuredBaseX + threeAcrossWidth/2;
+  const pocketOutboardX = configuredBaseX + threeAcrossWidth;
+  let baseX = configuredBaseX;
+  if(baseUniformId === 'blues_a' && requestedRackLayout === '4-center'){
+    baseX = pocketCenterX - requestedRackWidth/2;
+  }else if(baseUniformId === 'blues_a' && requestedRackLayout === '4-left'){
+    baseX = pocketOutboardX - requestedRackWidth;
+  }
   const bottomY = override.bottomY ?? rackBaseY;
   return { baseX, bottomY, columns, w, h, gapX, gapY, centerX: baseX + ((w*columns)+(gapX*(columns-1)))/2 };
 }
@@ -6523,6 +6543,41 @@ function buildRibbonRowsHighToLow(items, perRow=3){
 
   return rows;
 }
+
+// Figure 11-1 permits upper Class A rows to contain fewer ribbons and align
+// outboard when the service-coat lapel would otherwise cover the rack. The
+// illustrated capacity progression is full-width for the two lowest rows,
+// then one fewer ribbon per level until two-wide rows are reached.
+function buildLapelAvoidanceRowsHighToLow(items, perRow=3){
+  const sorted = sortRibbons(items);
+  if(!sorted.length) return [];
+
+  const capacitiesBottomFirst = [];
+  let capacityTotal = 0;
+  while(capacityTotal < sorted.length){
+    const rowFromBottom = capacitiesBottomFirst.length;
+    const capacity = rowFromBottom < 2
+      ? perRow
+      : Math.max(2, perRow - (rowFromBottom - 1));
+    capacitiesBottomFirst.push(capacity);
+    capacityTotal += capacity;
+  }
+
+  let remaining = sorted.length;
+  const countsBottomFirst = capacitiesBottomFirst.map(capacity => {
+    const count = Math.min(capacity, remaining);
+    remaining -= count;
+    return count;
+  }).filter(Boolean);
+  const countsTopFirst = countsBottomFirst.reverse();
+  const rows = [];
+  let cursor = 0;
+  for(const count of countsTopFirst){
+    rows.push(sorted.slice(cursor, cursor + count));
+    cursor += count;
+  }
+  return rows;
+}
 function buildMiniMedalRowsHighToLow(items, style='mounting'){
   const sorted = sortRibbons(items);
   const maxMedals = style === 'holding' ? 28 : 24;
@@ -6733,14 +6788,45 @@ function renderRack(){
     return arr;
   }
 
+  function getRowLeftPositions(rowsTopFirst, topIndex, itemW, gapX){
+    const row = rowsTopFirst[topIndex];
+    const count = row.length;
+    const standard = State.uniform !== 'blues_a' || State.ribbonRackArrangement !== 'lapel';
+    if(standard) return getCenteredRowLeftPositions(count, itemW, gapX);
+
+    const fullRackWidth = RACK_COLUMNS * itemW + (RACK_COLUMNS-1)*gapX;
+    const rackRight = RACK_CENTER_X + fullRackWidth/2;
+    const rowWidth = count * itemW + (count-1)*gapX;
+
+    // All incomplete intermediate rows align toward the wearer's left/outboard
+    // edge (screen right). The final top row is centered over the row directly
+    // below, as explicitly required by CAPR 39-1 paragraph 11.2.7.
+    let rowCenter = RACK_CENTER_X;
+    if(topIndex === 0 && rowsTopFirst.length > 1){
+      const belowCount = rowsTopFirst[1].length;
+      const belowWidth = belowCount * itemW + (belowCount-1)*gapX;
+      rowCenter = belowCount < RACK_COLUMNS
+        ? rackRight - belowWidth/2
+        : RACK_CENTER_X;
+    }else if(count < RACK_COLUMNS){
+      rowCenter = rackRight - rowWidth/2;
+    }
+
+    const rowLeftBase = rowCenter - rowWidth/2;
+    return Array.from({length:count}, (_,index) => rowLeftBase + index*(itemW+gapX));
+  }
+
   if(!useMini && uniformAllowsRibbons){
-    const rowsTopFirst = buildRibbonRowsHighToLow(items, RACK_COLUMNS);
+    const useLapelAvoidance = State.uniform === 'blues_a' && State.ribbonRackArrangement === 'lapel';
+    const rowsTopFirst = useLapelAvoidance
+      ? buildLapelAvoidanceRowsHighToLow(items, RACK_COLUMNS)
+      : buildRibbonRowsHighToLow(items, RACK_COLUMNS);
     const totalRows = rowsTopFirst.length;
 
     rowsTopFirst.forEach((row, topIndex)=>{
       const indexFromBottom = (totalRows - 1 - topIndex);
       const rowTopPx = BOTTOM_ROW_Y - indexFromBottom * (RH + RGY);
-      const leftPositions = getCenteredRowLeftPositions(row.length, RW, RGX);
+      const leftPositions = getRowLeftPositions(rowsTopFirst, topIndex, RW, RGX);
 
       row.forEach((ribbonObj,i)=>{
         const rid = normalizeRibbonId(ribbonObj.id);
@@ -6766,7 +6852,9 @@ function renderRack(){
 
         tile.dataset.tooltipTitle = ribbonObj.id.replace(/_/g,' ').toUpperCase();
         tile.dataset.tooltipReg   = "CAPR 39-3 precedence applies";
-        tile.dataset.tooltipWhy   = `Highest awards render top-left; ${RACK_COLUMNS}-wide rows and centered partial rows follow the selected uniform.`;
+        tile.dataset.tooltipWhy   = useLapelAvoidance
+          ? `Highest awards render in the top row; incomplete upper rows step outboard to avoid the Class A lapel, with the final top row centered over the row below.`
+          : `Highest awards render top-left; ${RACK_COLUMNS}-wide rows and a centered partial top row follow the selected uniform.`;
 
         initRibbonDragHandlers(tile);
         uniformCanvas.appendChild(tile);
@@ -9246,6 +9334,8 @@ function applyCssPolygonClipToCanvas(ctx, clipPath, width, height){
 function syncRibbonRackColumnsControl(){
   const select = by('ribbonRackColumns');
   const hint = by('ribbonRackColumnsHint');
+  const arrangementSelect = by('ribbonRackArrangement');
+  const arrangementHint = by('ribbonRackArrangementHint');
   if(!select) return;
 
   const classA = State.uniform === 'blues_a';
@@ -9257,8 +9347,19 @@ function syncRibbonRackColumnsControl(){
 
   if(hint){
     hint.textContent = classA
-      ? 'Choose three across, or align a four-across rack with the pocket’s left edge or centerline. Partial top rows remain centered and rows have no spacing.'
+      ? 'Choose three across, or align a four-across rack with the wearer-left/outboard pocket edge or the pocket centerline. Rows have no spacing.'
       : 'CAPR 39-1 requires rows of three on Class B and aviator shirts. Four-across is available only on Class A.';
+  }
+
+  if(arrangementSelect){
+    const preferredArrangement = State.ribbonRackArrangement === 'standard' ? 'standard' : 'lapel';
+    arrangementSelect.disabled = !classA;
+    arrangementSelect.value = classA ? preferredArrangement : 'standard';
+  }
+  if(arrangementHint){
+    arrangementHint.textContent = classA
+      ? 'Use lapel avoidance when upper rows would be covered: intermediate partial rows step outboard and the final top row stays centered over the row below.'
+      : 'Lapel-avoidance ribbon arrangements apply only to the Class A service coat.';
   }
 }
 
@@ -9268,6 +9369,17 @@ if(ribbonRackColumnsSelect){
     State.ribbonRackLayout = ['3','4-left','4-center'].includes(e.target.value)
       ? e.target.value
       : '4-left';
+    syncRibbonRackColumnsControl();
+    renderRack();
+    renderAllBadges();
+    renderMeasurementOverlay();
+  });
+}
+
+const ribbonRackArrangementSelect = by('ribbonRackArrangement');
+if(ribbonRackArrangementSelect){
+  ribbonRackArrangementSelect.addEventListener('change', e=>{
+    State.ribbonRackArrangement = e.target.value === 'standard' ? 'standard' : 'lapel';
     syncRibbonRackColumnsControl();
     renderRack();
     renderAllBadges();
@@ -9988,6 +10100,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       forceMini: State.forceMini,
       miniMountStyle: State.miniMountStyle,
       ribbonRackLayout: State.ribbonRackLayout,
+      ribbonRackArrangement: State.ribbonRackArrangement,
       garmentOverlayMode: State.garmentOverlayMode,
       garmentMasks: State.garmentMasks,
       text: State.text,
@@ -10018,6 +10131,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.ribbonRackLayout = ['3','4-left','4-center'].includes(String(p.ribbonRackLayout))
       ? String(p.ribbonRackLayout)
       : (Number(p.ribbonRackColumns) === 3 ? '3' : '4-left');
+    State.ribbonRackArrangement = p.ribbonRackArrangement === 'standard' ? 'standard' : 'lapel';
     State.garmentOverlayMode = ['both','left','right','off'].includes(p.garmentOverlayMode)
       ? p.garmentOverlayMode
       : 'both';
