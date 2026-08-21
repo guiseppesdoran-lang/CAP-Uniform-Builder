@@ -291,6 +291,35 @@
     user-select:none;
     z-index:9000;
   }
+  .garmentMaskEditorLayer{
+    position:absolute;
+    z-index:15000;
+    overflow:visible;
+    cursor:crosshair;
+    touch-action:none;
+  }
+  .garmentMaskEditorLayer polygon{
+    fill:rgba(239,68,68,.42);
+    stroke:#dc2626;
+    stroke-width:.45;
+    vector-effect:non-scaling-stroke;
+  }
+  .garmentMaskEditorLayer circle{
+    fill:#fff;
+    stroke:#dc2626;
+    stroke-width:.5;
+    vector-effect:non-scaling-stroke;
+    cursor:grab;
+  }
+  .garmentMaskEditorLayer circle:active{cursor:grabbing}
+  .maskButtonRow{display:flex;gap:6px;margin-top:6px}
+  .maskButtonRow button{flex:1;width:auto;font-size:12px;padding:7px 6px}
+  #garmentMaskEditorControls{
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px solid var(--line);
+  }
+  #garmentMaskStatus{font-weight:700}
   .measurementOverlay{
     position:absolute;
     inset:0;
@@ -1202,6 +1231,24 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
           <option value="off">Off</option>
         </select>
         <div class="hintText">Uses the collar or lapels from the exact active base image and places them above ribbons, medals, badges, and utility patches.</div>
+        <label class="fieldLabel" for="garmentMaskSide" style="margin-top:10px">Mask piece to edit</label>
+        <select id="garmentMaskSide">
+          <option value="0">Left piece (preview left)</option>
+          <option value="1" selected>Right piece / award side</option>
+        </select>
+        <div class="maskButtonRow">
+          <button id="editGarmentMaskBtn" type="button">Edit mask</button>
+          <button id="resetGarmentMaskBtn" class="ghost" type="button">Reset</button>
+        </div>
+        <div id="garmentMaskEditorControls" class="hidden">
+          <div class="maskButtonRow">
+            <button id="undoGarmentMaskBtn" class="ghost" type="button">Undo</button>
+            <button id="saveGarmentMaskBtn" type="button">Save mask</button>
+            <button id="cancelGarmentMaskBtn" class="ghost" type="button">Cancel</button>
+          </div>
+          <div class="hintText">Drag white points. Click the red area to add a point. Right-click a point to remove it.</div>
+        </div>
+        <div id="garmentMaskStatus" class="hintText">Using the built-in mask.</div>
       </section>
 
       <section id="shoulderCordPanel" class="panelBlock">
@@ -1475,6 +1522,7 @@ const State = {
   miniMountStyle:'mounting',
   showMeasurementOverlay:false,
   garmentOverlayMode:'both',
+  garmentMasks:{},
 
   ribbonSelections:{}, 
   ribbonGalleryExpanded:false,
@@ -1503,6 +1551,14 @@ const State = {
 // Make State globally visible so later patch modules and popup/tooling code can
 // safely read/write State without failing on window.State checks.
 window.State = State;
+
+const CAPUB_GARMENT_MASK_STORAGE_KEY = 'capub_garment_alpha_masks_v1';
+try{
+  const savedGarmentMasks = JSON.parse(localStorage.getItem(CAPUB_GARMENT_MASK_STORAGE_KEY) || '{}');
+  if(savedGarmentMasks && typeof savedGarmentMasks === 'object') State.garmentMasks = savedGarmentMasks;
+}catch(err){
+  State.garmentMasks = {};
+}
 
 let currentDrag = null;
 let dragOffsetX = 0;
@@ -3519,6 +3575,14 @@ const cadetFirstSergeantBlock = by('cadetFirstSergeantBlock');
 const cadetFirstSergeantCheckbox = by('cadetFirstSergeantCheckbox');
 const jacketSelect     = by('jacketSelect');
 const garmentOverlaySelect = by('garmentOverlaySelect');
+const garmentMaskSide = by('garmentMaskSide');
+const editGarmentMaskBtn = by('editGarmentMaskBtn');
+const resetGarmentMaskBtn = by('resetGarmentMaskBtn');
+const garmentMaskEditorControls = by('garmentMaskEditorControls');
+const undoGarmentMaskBtn = by('undoGarmentMaskBtn');
+const saveGarmentMaskBtn = by('saveGarmentMaskBtn');
+const cancelGarmentMaskBtn = by('cancelGarmentMaskBtn');
+const garmentMaskStatus = by('garmentMaskStatus');
 const assetBaseInput   = by('assetBase'); // removed from general UI; may be null
 
 const genderBlock      = by('genderBlock');
@@ -3828,6 +3892,74 @@ function getGarmentForegroundClips(uniformId, loadedPath=''){
   }
 }
 
+function parseGarmentPolygonPoints(clipPath){
+  const match = /^polygon\((.*)\)$/i.exec(String(clipPath || '').trim());
+  if(!match) return [];
+  return match[1].split(',').map(pair => {
+    const [xToken,yToken] = pair.trim().split(/\s+/);
+    const x = parseFloat(xToken);
+    const y = parseFloat(yToken);
+    return Number.isFinite(x) && Number.isFinite(y) ? {x,y} : null;
+  }).filter(Boolean);
+}
+
+function sanitizeGarmentMaskPoints(points){
+  if(!Array.isArray(points)) return [];
+  return points.map(point => ({
+    x:Math.max(0, Math.min(100, Number(point?.x))),
+    y:Math.max(0, Math.min(100, Number(point?.y)))
+  })).filter(point => Number.isFinite(point.x) && Number.isFinite(point.y));
+}
+
+function getGarmentMaskKey(uniformId=State.uniform, gender=State.gender, pieceIndex=1){
+  return `${uniformId || 'uniform'}:${gender || 'unisex'}:${Number(pieceIndex) || 0}`;
+}
+
+function getGarmentMaskPoints(uniformId, loadedPath, pieceIndex){
+  const saved = sanitizeGarmentMaskPoints(State.garmentMasks?.[getGarmentMaskKey(uniformId, State.gender, pieceIndex)]);
+  if(saved.length >= 3) return saved;
+  const defaults = getGarmentForegroundClips(uniformId, loadedPath);
+  return parseGarmentPolygonPoints(defaults[pieceIndex]);
+}
+
+function persistGarmentMasks(){
+  try{
+    localStorage.setItem(CAPUB_GARMENT_MASK_STORAGE_KEY, JSON.stringify(State.garmentMasks || {}));
+  }catch(err){
+    console.warn('Unable to save garment masks in this browser.', err);
+  }
+}
+
+function garmentPointsToClipPath(points){
+  return `polygon(${points.map(point => `${point.x}% ${point.y}%`).join(', ')})`;
+}
+
+function buildGarmentAlphaOverlayDataUrl(baseImg, points){
+  const width = baseImg?.naturalWidth || 0;
+  const height = baseImg?.naturalHeight || 0;
+  if(!width || !height || points.length < 3) return '';
+
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if(!ctx) return '';
+
+  ctx.drawImage(baseImg, 0, 0, width, height);
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.beginPath();
+  points.forEach((point,index) => {
+    const x = point.x * width / 100;
+    const y = point.y * height / 100;
+    if(index) ctx.lineTo(x,y); else ctx.moveTo(x,y);
+  });
+  ctx.closePath();
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+  ctx.globalCompositeOperation = 'source-over';
+  return canvas.toDataURL('image/png');
+}
+
 function projectGarmentClipToRenderedImage(clipPath, baseImg){
   const match = /^polygon\((.*)\)$/i.exec(String(clipPath || '').trim());
   const naturalW = baseImg?.naturalWidth || 0;
@@ -3863,6 +3995,8 @@ function renderGarmentForegroundOverlays(baseImg, loadedPath){
   getGarmentForegroundClips(State.uniform, loadedPath).forEach((clipPath, index) => {
     if(mode === 'left' && index !== 0) return;
     if(mode === 'right' && index !== 1) return;
+    const points = getGarmentMaskPoints(State.uniform, loadedPath, index);
+    if(points.length < 3) return;
     const overlay = baseImg.cloneNode(false);
     overlay.className = 'layer jacket garmentForegroundOverlay';
     overlay.removeAttribute('id');
@@ -3872,14 +4006,235 @@ function renderGarmentForegroundOverlays(baseImg, loadedPath){
     overlay.removeAttribute('data-tooltip-title');
     overlay.removeAttribute('data-tooltip-reg');
     overlay.removeAttribute('data-tooltip-why');
-    const projectedClipPath = projectGarmentClipToRenderedImage(clipPath, baseImg);
-    overlay.style.clipPath = projectedClipPath;
-    overlay.style.webkitClipPath = projectedClipPath;
+    try{
+      const alphaOverlay = buildGarmentAlphaOverlayDataUrl(baseImg, points);
+      if(!alphaOverlay) throw new Error('Mask rasterization returned no image.');
+      overlay.src = alphaOverlay;
+      overlay.style.clipPath = 'none';
+      overlay.style.webkitClipPath = 'none';
+      overlay.dataset.garmentMaskType = 'alpha';
+    }catch(err){
+      // Local file security settings can occasionally block canvas export.
+      // Preserve a clip-path fallback so the overlay remains usable.
+      const customClipPath = garmentPointsToClipPath(points);
+      const projectedClipPath = projectGarmentClipToRenderedImage(customClipPath, baseImg);
+      overlay.style.clipPath = projectedClipPath;
+      overlay.style.webkitClipPath = projectedClipPath;
+      overlay.dataset.garmentMaskType = 'polygon-fallback';
+      console.warn('Falling back to polygon garment overlay.', err);
+    }
     overlay.style.zIndex = '9000';
     overlay.style.pointerEvents = 'none';
     overlay.setAttribute('aria-hidden', 'true');
     uniformCanvas.appendChild(overlay);
   });
+}
+
+const garmentMaskEditor = {
+  active:false,
+  pieceIndex:1,
+  points:[],
+  history:[],
+  draggingIndex:-1,
+  loadedPath:''
+};
+
+function getGarmentEditorBaseImage(){
+  return [...uniformCanvas.querySelectorAll('img.layer.jacket')]
+    .find(img => !img.classList.contains('garmentForegroundOverlay')) || null;
+}
+
+function setGarmentMaskStatus(message){
+  if(garmentMaskStatus) garmentMaskStatus.textContent = message;
+}
+
+function syncGarmentMaskStatus(){
+  if(garmentMaskEditor.active){
+    setGarmentMaskStatus(`Editing ${garmentMaskEditor.points.length} mask points. Save when the red area matches the garment.`);
+    return;
+  }
+  const pieceIndex = Number(garmentMaskSide?.value) || 0;
+  const key = getGarmentMaskKey(State.uniform, State.gender, pieceIndex);
+  const saved = sanitizeGarmentMaskPoints(State.garmentMasks?.[key]);
+  setGarmentMaskStatus(saved.length >= 3
+    ? `Using a saved ${State.uniform.replace(/_/g,' ')} ${State.gender || ''} mask.`
+    : 'Using the built-in mask.');
+}
+
+function getGarmentEditorDrawBounds(baseImg){
+  const naturalW = baseImg?.naturalWidth || 0;
+  const naturalH = baseImg?.naturalHeight || 0;
+  const elementW = parseFloat(baseImg?.style?.width) || baseImg?.offsetWidth || 0;
+  const elementH = parseFloat(baseImg?.style?.height) || baseImg?.offsetHeight || 0;
+  const elementX = parseFloat(baseImg?.style?.left) || 0;
+  const elementY = parseFloat(baseImg?.style?.top) || 0;
+  if(!naturalW || !naturalH || !elementW || !elementH){
+    return {x:elementX,y:elementY,w:elementW,h:elementH};
+  }
+  const ratio = Math.min(elementW / naturalW, elementH / naturalH);
+  const w = naturalW * ratio;
+  const h = naturalH * ratio;
+  return {x:elementX + (elementW-w)/2, y:elementY + (elementH-h)/2, w, h};
+}
+
+function pushGarmentMaskHistory(){
+  garmentMaskEditor.history.push(garmentMaskEditor.points.map(point => ({...point})));
+  if(garmentMaskEditor.history.length > 50) garmentMaskEditor.history.shift();
+  if(undoGarmentMaskBtn) undoGarmentMaskBtn.disabled = !garmentMaskEditor.history.length;
+}
+
+function pointToSegmentDistance(point, a, b, scaleX=1, scaleY=1){
+  const px=point.x*scaleX, py=point.y*scaleY;
+  const ax=a.x*scaleX, ay=a.y*scaleY;
+  const bx=b.x*scaleX, by=b.y*scaleY;
+  const dx=bx-ax, dy=by-ay;
+  const len2=dx*dx+dy*dy;
+  const t=len2 ? Math.max(0,Math.min(1,((px-ax)*dx+(py-ay)*dy)/len2)) : 0;
+  return Math.hypot(px-(ax+t*dx),py-(ay+t*dy));
+}
+
+function insertGarmentMaskPoint(point, bounds){
+  const points = garmentMaskEditor.points;
+  if(points.length < 2){ points.push(point); return; }
+  let bestIndex=points.length;
+  let bestDistance=Infinity;
+  for(let index=0; index<points.length; index++){
+    const next=(index+1)%points.length;
+    const distance=pointToSegmentDistance(point,points[index],points[next],bounds.w/100,bounds.h/100);
+    if(distance<bestDistance){ bestDistance=distance; bestIndex=next; }
+  }
+  points.splice(bestIndex,0,point);
+}
+
+function renderGarmentMaskEditor(){
+  uniformCanvas.querySelectorAll('.garmentMaskEditorLayer').forEach(el => el.remove());
+  if(!garmentMaskEditor.active) return;
+  const baseImg=getGarmentEditorBaseImage();
+  if(!baseImg?.naturalWidth){
+    setGarmentMaskStatus('The base image is still loading. Try Edit mask again in a moment.');
+    return;
+  }
+
+  const bounds=getGarmentEditorDrawBounds(baseImg);
+  const ns='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(ns,'svg');
+  svg.classList.add('garmentMaskEditorLayer');
+  svg.setAttribute('viewBox','0 0 100 100');
+  svg.setAttribute('preserveAspectRatio','none');
+  svg.style.left=`${bounds.x}px`;
+  svg.style.top=`${bounds.y}px`;
+  svg.style.width=`${bounds.w}px`;
+  svg.style.height=`${bounds.h}px`;
+
+  const polygon=document.createElementNS(ns,'polygon');
+  polygon.setAttribute('points',garmentMaskEditor.points.map(point=>`${point.x},${point.y}`).join(' '));
+  svg.appendChild(polygon);
+
+  const clientToPoint = event => {
+    const rect=svg.getBoundingClientRect();
+    return {
+      x:Math.max(0,Math.min(100,(event.clientX-rect.left)/rect.width*100)),
+      y:Math.max(0,Math.min(100,(event.clientY-rect.top)/rect.height*100))
+    };
+  };
+  const updateGeometry = () => {
+    polygon.setAttribute('points',garmentMaskEditor.points.map(point=>`${point.x},${point.y}`).join(' '));
+    [...svg.querySelectorAll('circle')].forEach((circle,index)=>{
+      const point=garmentMaskEditor.points[index];
+      if(point){ circle.setAttribute('cx',point.x); circle.setAttribute('cy',point.y); }
+    });
+    syncGarmentMaskStatus();
+  };
+
+  garmentMaskEditor.points.forEach((point,index)=>{
+    const handle=document.createElementNS(ns,'circle');
+    handle.setAttribute('cx',point.x);
+    handle.setAttribute('cy',point.y);
+    handle.setAttribute('r','1.25');
+    handle.dataset.pointIndex=String(index);
+    handle.addEventListener('pointerdown',event=>{
+      if(event.button!==0) return;
+      event.stopPropagation();
+      pushGarmentMaskHistory();
+      garmentMaskEditor.draggingIndex=index;
+      svg.setPointerCapture?.(event.pointerId);
+    });
+    handle.addEventListener('contextmenu',event=>{
+      event.preventDefault();
+      event.stopPropagation();
+      if(garmentMaskEditor.points.length<=3) return;
+      pushGarmentMaskHistory();
+      garmentMaskEditor.points.splice(index,1);
+      renderGarmentMaskEditor();
+    });
+    svg.appendChild(handle);
+  });
+
+  svg.addEventListener('pointermove',event=>{
+    const index=garmentMaskEditor.draggingIndex;
+    if(index<0 || !garmentMaskEditor.points[index]) return;
+    garmentMaskEditor.points[index]=clientToPoint(event);
+    updateGeometry();
+  });
+  const stopDragging=()=>{ garmentMaskEditor.draggingIndex=-1; };
+  svg.addEventListener('pointerup',stopDragging);
+  svg.addEventListener('pointercancel',stopDragging);
+  svg.addEventListener('click',event=>{
+    if(event.target?.tagName?.toLowerCase()==='circle') return;
+    pushGarmentMaskHistory();
+    insertGarmentMaskPoint(clientToPoint(event),bounds);
+    renderGarmentMaskEditor();
+  });
+
+  uniformCanvas.appendChild(svg);
+}
+
+function beginGarmentMaskEdit(){
+  const baseImg=getGarmentEditorBaseImage();
+  if(!baseImg?.naturalWidth){
+    setGarmentMaskStatus('Wait for the uniform artwork to finish loading, then try again.');
+    return;
+  }
+  garmentMaskEditor.active=true;
+  garmentMaskEditor.pieceIndex=Number(garmentMaskSide?.value) || 0;
+  garmentMaskEditor.loadedPath=String(baseImg.dataset?.tooltipWhy || '').replace(/^Loaded:\s*/,'');
+  garmentMaskEditor.points=getGarmentMaskPoints(State.uniform,garmentMaskEditor.loadedPath,garmentMaskEditor.pieceIndex).map(point=>({...point}));
+  garmentMaskEditor.history=[];
+  garmentMaskEditor.draggingIndex=-1;
+  garmentMaskEditorControls?.classList.remove('hidden');
+  if(garmentMaskSide) garmentMaskSide.disabled=true;
+  if(editGarmentMaskBtn) editGarmentMaskBtn.disabled=true;
+  if(resetGarmentMaskBtn) resetGarmentMaskBtn.disabled=true;
+  if(undoGarmentMaskBtn) undoGarmentMaskBtn.disabled=true;
+  renderGarmentMaskEditor();
+}
+
+function closeGarmentMaskEditor(save=false,rerender=true){
+  if(save && garmentMaskEditor.points.length>=3){
+    const key=getGarmentMaskKey(State.uniform,State.gender,garmentMaskEditor.pieceIndex);
+    State.garmentMasks[key]=sanitizeGarmentMaskPoints(garmentMaskEditor.points);
+    persistGarmentMasks();
+  }
+  garmentMaskEditor.active=false;
+  garmentMaskEditor.draggingIndex=-1;
+  garmentMaskEditor.history=[];
+  uniformCanvas.querySelectorAll('.garmentMaskEditorLayer').forEach(el=>el.remove());
+  garmentMaskEditorControls?.classList.add('hidden');
+  if(garmentMaskSide) garmentMaskSide.disabled=false;
+  if(editGarmentMaskBtn) editGarmentMaskBtn.disabled=false;
+  if(resetGarmentMaskBtn) resetGarmentMaskBtn.disabled=false;
+  syncGarmentMaskStatus();
+  if(rerender) fullRender();
+}
+
+function resetCurrentGarmentMask(){
+  const pieceIndex=Number(garmentMaskSide?.value) || 0;
+  const key=getGarmentMaskKey(State.uniform,State.gender,pieceIndex);
+  delete State.garmentMasks[key];
+  persistGarmentMasks();
+  if(garmentMaskEditor.active) closeGarmentMaskEditor(false,false);
+  fullRender();
+  syncGarmentMaskStatus();
 }
 
 const UI_AUTHZ = {
@@ -5870,6 +6225,18 @@ garmentOverlaySelect?.addEventListener('change', ()=>{
     ? garmentOverlaySelect.value
     : 'both';
   fullRender();
+});
+garmentMaskSide?.addEventListener('change', syncGarmentMaskStatus);
+editGarmentMaskBtn?.addEventListener('click', beginGarmentMaskEdit);
+resetGarmentMaskBtn?.addEventListener('click', resetCurrentGarmentMask);
+saveGarmentMaskBtn?.addEventListener('click', ()=>closeGarmentMaskEditor(true));
+cancelGarmentMaskBtn?.addEventListener('click', ()=>closeGarmentMaskEditor(false));
+undoGarmentMaskBtn?.addEventListener('click', ()=>{
+  const previous=garmentMaskEditor.history.pop();
+  if(!previous) return;
+  garmentMaskEditor.points=previous.map(point=>({...point}));
+  renderGarmentMaskEditor();
+  if(undoGarmentMaskBtn) undoGarmentMaskBtn.disabled=!garmentMaskEditor.history.length;
 });
 
 /* ===========================
@@ -8623,6 +8990,7 @@ function renderMeasurementOverlay(){
 }
 
 function fullRender(prevUniform){
+  if(garmentMaskEditor.active) closeGarmentMaskEditor(false,false);
   applyPreviewRenderArea();
   clearLayers();
   clearMeasurementOverlay();
@@ -8644,6 +9012,7 @@ function refreshUI(){
   if(garmentOverlaySelect) garmentOverlaySelect.value = ['both','left','right','off'].includes(State.garmentOverlayMode)
     ? State.garmentOverlayMode
     : 'both';
+  syncGarmentMaskStatus();
   if(assetBaseInput) assetBaseInput.value=State.assetBase;
   const overlayToggle = by('toggleMeasurementOverlay');
   if(overlayToggle) overlayToggle.checked = !!State.showMeasurementOverlay;
@@ -9544,6 +9913,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       forceMini: State.forceMini,
       miniMountStyle: State.miniMountStyle,
       garmentOverlayMode: State.garmentOverlayMode,
+      garmentMasks: State.garmentMasks,
       text: State.text,
       commandInsignia: State.commandInsignia,
       calib: State.calib
@@ -9572,6 +9942,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.garmentOverlayMode = ['both','left','right','off'].includes(p.garmentOverlayMode)
       ? p.garmentOverlayMode
       : 'both';
+    State.garmentMasks = p.garmentMasks && typeof p.garmentMasks === 'object'
+      ? p.garmentMasks
+      : State.garmentMasks || {};
+    persistGarmentMasks();
     State.text = p.text || State.text || {lastName:'',capTape:'CIVIL AIR PATROL',show:true};
     State.commandInsignia = p.commandInsignia || State.commandInsignia || {graduatedCommander:false};
     State.calib = p.calib || State.calib || {enabled:false, selectedKey:null, selectedKeys:[], map:{}, byUniform:{}};
