@@ -251,6 +251,30 @@
     gap:8px;
     font-size:12px;
   }
+  #ribbonRowOverridePanel{
+    margin-top:8px;
+    padding:8px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:#f8fafc;
+  }
+  #ribbonRowOverrideGrid{display:grid;gap:6px;margin-top:7px;}
+  .ribbonOverrideRow{display:grid;grid-template-columns:54px repeat(4,minmax(0,1fr));gap:4px;align-items:center;}
+  .ribbonOverrideRowLabel{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;}
+  .ribbonOverrideCount{
+    min-height:28px;
+    padding:4px;
+    border:1px solid #b8c4d4;
+    border-radius:6px;
+    background:#fff;
+    color:var(--ink);
+    font-size:11px;
+    font-weight:700;
+  }
+  .ribbonOverrideCount.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+  .ribbonOverrideCount:disabled{opacity:.35;cursor:not-allowed;}
+  #ribbonRowOverrideStatus[data-valid="false"]{color:#a33a21;}
+  #ribbonRowOverrideStatus[data-valid="true"]{color:#2e6b45;}
 
   #previewWrapper{
     flex:1;
@@ -1054,32 +1078,32 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 
     <div class="calib-row">
       <label for="calX">X (left px)</label>
-      <input type="range" id="calX" min="-200" max="900" step="1">
-      <input type="number" id="calXn" class="numField">
+      <input type="range" id="calX" min="-200" max="900" step="0.1">
+      <input type="number" id="calXn" class="numField" step="0.01">
     </div>
 
     <div class="calib-row">
       <label for="calY">Y (top px)</label>
-      <input type="range" id="calY" min="-200" max="1100" step="1">
-      <input type="number" id="calYn" class="numField">
+      <input type="range" id="calY" min="-200" max="1100" step="0.1">
+      <input type="number" id="calYn" class="numField" step="0.01">
     </div>
 
     <div class="calib-row">
       <label for="calW">W (px)</label>
-      <input type="range" id="calW" min="1" max="800" step="1">
-      <input type="number" id="calWn" class="numField">
+      <input type="range" id="calW" min="0.1" max="800" step="0.1">
+      <input type="number" id="calWn" class="numField" min="0.01" step="0.01">
     </div>
 
     <div class="calib-row">
       <label for="calH">H (px)</label>
-      <input type="range" id="calH" min="1" max="800" step="1">
-      <input type="number" id="calHn" class="numField">
+      <input type="range" id="calH" min="0.1" max="800" step="0.1">
+      <input type="number" id="calHn" class="numField" min="0.01" step="0.01">
     </div>
 
     <div class="calib-row">
       <label for="calR">Rotation (deg)</label>
-      <input type="range" id="calR" min="-180" max="180" step="1">
-      <input type="number" id="calRn" class="numField">
+      <input type="range" id="calR" min="-180" max="180" step="0.1">
+      <input type="number" id="calRn" class="numField" step="0.01">
     </div>
 
     <div class="btnRow">
@@ -1093,7 +1117,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
     </div>
 
     <div id="calibReadout" style="margin-top:10px;">
-      <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow keys nudge all selected assets (Shift = 10px).</div>
+      <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow keys nudge 0.1px, Alt+Arrow nudges 0.01px, and Shift+Arrow nudges 10px.</div>
       <div style="margin-top:6px;">JSON:</div>
       <code id="calibJson" style="display:block;white-space:pre-wrap;"></code>
     </div>
@@ -1289,8 +1313,8 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
           Ribbon rack layout
           <select id="ribbonRackColumns" style="display:block;width:100%;margin-top:4px;">
             <option value="3">3 across — centered</option>
-            <option value="4-left">4 across — wearer-left edge aligned (Class A)</option>
-            <option value="4-center">4 across — centered (Class A)</option>
+            <option value="4-left">4 across — left edge aligned with welt/pocket (Class A)</option>
+            <option value="4-center">4 across — centered above welt/pocket (Class A)</option>
           </select>
         </label>
         <div id="ribbonRackColumnsHint" class="hintText" style="margin-top:4px;">
@@ -1301,11 +1325,27 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
           Upper-row arrangement
           <select id="ribbonRackArrangement" style="display:block;width:100%;margin-top:4px;">
             <option value="standard">Standard — centered partial top row</option>
-            <option value="lapel">Lapel avoidance — stepped outboard</option>
+            <option value="lapel">Automatic lapel clearance — partial rows edge-aligned</option>
           </select>
         </label>
         <div id="ribbonRackArrangementHint" class="hintText" style="margin-top:4px;">
           Lapel avoidance follows the stepped Class A arrangements in CAPR 39-1 Figure 11-1.
+        </div>
+
+        <div id="ribbonRowOverridePanel">
+          <label style="font-size:12px;color:var(--muted);display:block;">
+            <input type="checkbox" id="ribbonRowOverrideEnabled">
+            Custom Class A row grid override
+          </label>
+          <div id="ribbonRowOverrideControls" class="hidden">
+            <div class="hintText" style="margin-top:5px;">Top row is listed first. Select 1–4 ribbons for each row.</div>
+            <div id="ribbonRowOverrideGrid"></div>
+            <div class="row two" style="margin-top:7px;">
+              <div class="col"><button id="addRibbonOverrideRow" class="ghost" type="button">Add Top Row</button></div>
+              <div class="col"><button id="removeRibbonOverrideRow" class="ghost" type="button">Remove Top Row</button></div>
+            </div>
+            <div id="ribbonRowOverrideStatus" class="hintText" style="margin-top:5px;"></div>
+          </div>
         </div>
 
         <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
@@ -1547,6 +1587,8 @@ const State = {
   miniMountStyle:'mounting',
   ribbonRackLayout:'4-left',
   ribbonRackArrangement:'lapel',
+  ribbonRowOverrideEnabled:false,
+  ribbonRowOverride:[],
   showMeasurementOverlay:false,
   garmentOverlayMode:'both',
   garmentMasks:{},
@@ -1680,7 +1722,17 @@ function getRibbonLayout(uniformId = State.uniform){
     baseX = pocketOutboardX - requestedRackWidth;
   }
   const bottomY = override.bottomY ?? rackBaseY;
-  return { baseX, bottomY, columns, w, h, gapX, gapY, centerX: baseX + ((w*columns)+(gapX*(columns-1)))/2 };
+  return {
+    baseX,
+    bottomY,
+    columns,
+    w,
+    h,
+    gapX,
+    gapY,
+    centerX: baseX + requestedRackWidth/2,
+    wearerLeftPocketEdgeX: pocketOutboardX
+  };
 }
 
 function rackSpanW(){
@@ -3330,11 +3382,25 @@ function getCalib(key){
   }
   return State.calib.map[key] || (legacyPatchKey ? State.calib.map[legacyPatchKey] : null);
 }
+function normalizeCalibNumber(value,fallback=0){
+  const parsed=Number.parseFloat(value);
+  const safe=Number.isFinite(parsed) ? parsed : fallback;
+  return Math.round(safe*1000)/1000;
+}
+function formatCalibNumber(value,fallback=0){
+  return String(normalizeCalibNumber(value,fallback));
+}
 function setCalib(key, patch){
   if(!key) return;
   const bucket = getCalibBucket();
   const cur = bucket[key] || State.calib.map[key] || {};
-  bucket[key] = { ...cur, ...patch };
+  const precisePatch={...patch};
+  for(const prop of ['x','y','w','h','r']){
+    if(precisePatch[prop]!==undefined){
+      precisePatch[prop]=normalizeCalibNumber(precisePatch[prop],prop==='w'||prop==='h' ? 1 : 0);
+    }
+  }
+  bucket[key] = { ...cur, ...precisePatch };
 }
 function clearCalib(key){
   if(!key) return;
@@ -3367,10 +3433,10 @@ function parseItemIdFromKey(key){
 function readRenderedLayerRecord(el, index=0){
   if(!el) return null;
   const st = window.getComputedStyle(el);
-  const left = Math.round(parseFloat(st.left) || 0);
-  const top = Math.round(parseFloat(st.top) || 0);
-  const width = Math.round(parseFloat(st.width) || 0);
-  const height = Math.round(parseFloat(st.height) || 0);
+  const left = normalizeCalibNumber(st.left,0);
+  const top = normalizeCalibNumber(st.top,0);
+  const width = normalizeCalibNumber(st.width,0);
+  const height = normalizeCalibNumber(st.height,0);
   const transform = st.transform || '';
   const calibKey = el.dataset?.calibKey || `layer:${index}`;
   const calib = getCalib(calibKey) || {};
@@ -3383,7 +3449,7 @@ function readRenderedLayerRecord(el, index=0){
     if(m){
       const parts = m[1].split(',').map(v => parseFloat(v.trim()));
       if(parts.length >= 2){
-        rotation = Math.round(Math.atan2(parts[1], parts[0]) * (180 / Math.PI));
+        rotation = normalizeCalibNumber(Math.atan2(parts[1], parts[0]) * (180 / Math.PI),0);
       }
     }
   }
@@ -3581,10 +3647,10 @@ function nudgeSelected(dx,dy){
     const el = findLayerByCalibKey(key);
     const st = el ? window.getComputedStyle(el) : null;
     const cur = getCalib(key) || {};
-    const x = (cur.x !== undefined) ? parseInt(cur.x,10) : Math.round(parseFloat(st?.left)||0);
-    const y = (cur.y !== undefined) ? parseInt(cur.y,10) : Math.round(parseFloat(st?.top)||0);
-    const nx = x + dx;
-    const ny = y + dy;
+    const x = (cur.x !== undefined) ? normalizeCalibNumber(cur.x,0) : normalizeCalibNumber(st?.left,0);
+    const y = (cur.y !== undefined) ? normalizeCalibNumber(cur.y,0) : normalizeCalibNumber(st?.top,0);
+    const nx = normalizeCalibNumber(x + dx,0);
+    const ny = normalizeCalibNumber(y + dy,0);
     setCalib(key, { x:nx, y:ny });
     if(el){
       el.style.left = nx+'px';
@@ -3596,12 +3662,12 @@ function nudgeSelected(dx,dy){
   const pEl = findLayerByCalibKey(primary);
   if(pEl){
     const st = window.getComputedStyle(pEl);
-    const x = Math.round(parseFloat(st.left)||0);
-    const y = Math.round(parseFloat(st.top)||0);
+    const x = normalizeCalibNumber(st.left,0);
+    const y = normalizeCalibNumber(st.top,0);
     const xr = by('calX'), xn = by('calXn');
     const yr = by('calY'), yn = by('calYn');
-    if(xr) xr.value = x; if(xn) xn.value = x;
-    if(yr) yr.value = y; if(yn) yn.value = y;
+    if(xr) xr.value = formatCalibNumber(x); if(xn) xn.value = formatCalibNumber(x);
+    if(yr) yr.value = formatCalibNumber(y); if(yn) yn.value = formatCalibNumber(y);
   }
   refreshCalibratorReadout();
 }
@@ -6456,6 +6522,7 @@ function applyJacket(){
     const path = candidates[idx++];
     const img=document.createElement('img');
     img.className='layer jacket';
+    img.dataset.assetPath=path;
     img.src=ASSET(path);
     img.style.top='0px';
     img.style.left='0px';
@@ -6500,10 +6567,24 @@ function applyJacket(){
       img.remove();
       tryNext();
     };
-    img.onload = () => renderGarmentForegroundOverlays(img, path);
+    let jacketReadyHandled=false;
+    const finishJacketLoad = () => {
+      if(jacketReadyHandled) return;
+      jacketReadyHandled=true;
+      renderGarmentForegroundOverlays(img,path);
+      // Rebuild a Class A lapel-clear rack after the exact base-image fit and
+      // active editable mask are available. This replaces the pre-load Figure
+      // 11-1 fallback with collision-tested row capacities.
+      if(State.uniform==='blues_a' && State.ribbonRackArrangement==='lapel'){
+        renderRack();
+        renderAllBadges();
+        renderMeasurementOverlay();
+      }
+    };
+    img.onload = finishJacketLoad;
 
     uniformCanvas.appendChild(img);
-    if(img.complete && img.naturalWidth) renderGarmentForegroundOverlays(img, path);
+    if(img.complete && img.naturalWidth) finishJacketLoad();
   }
 
   tryNext();
@@ -6544,21 +6625,176 @@ function buildRibbonRowsHighToLow(items, perRow=3){
   return rows;
 }
 
+function pointInPolygon(point, polygon){
+  let inside = false;
+  for(let i=0,j=polygon.length-1; i<polygon.length; j=i++){
+    const a=polygon[i], b=polygon[j];
+    const crosses = ((a.y>point.y)!==(b.y>point.y)) &&
+      (point.x < (b.x-a.x)*(point.y-a.y)/((b.y-a.y)||Number.EPSILON)+a.x);
+    if(crosses) inside=!inside;
+  }
+  return inside;
+}
+
+function segmentsIntersect(a,b,c,d){
+  const orient=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x);
+  const onSegment=(p,q,r)=>q.x>=Math.min(p.x,r.x)-1e-7 && q.x<=Math.max(p.x,r.x)+1e-7 &&
+    q.y>=Math.min(p.y,r.y)-1e-7 && q.y<=Math.max(p.y,r.y)+1e-7;
+  const o1=orient(a,b,c), o2=orient(a,b,d), o3=orient(c,d,a), o4=orient(c,d,b);
+  if((o1<0)!==(o2<0) && (o3<0)!==(o4<0)) return true;
+  if(Math.abs(o1)<1e-7 && onSegment(a,c,b)) return true;
+  if(Math.abs(o2)<1e-7 && onSegment(a,d,b)) return true;
+  if(Math.abs(o3)<1e-7 && onSegment(c,a,d)) return true;
+  if(Math.abs(o4)<1e-7 && onSegment(c,b,d)) return true;
+  return false;
+}
+
+function rectangleIntersectsPolygon(rect, polygon){
+  if(!Array.isArray(polygon) || polygon.length<3) return false;
+  const corners=[
+    {x:rect.left,y:rect.top},{x:rect.right,y:rect.top},
+    {x:rect.right,y:rect.bottom},{x:rect.left,y:rect.bottom}
+  ];
+  if(corners.some(point=>pointInPolygon(point,polygon))) return true;
+  if(polygon.some(point=>point.x>=rect.left && point.x<=rect.right && point.y>=rect.top && point.y<=rect.bottom)) return true;
+  const rectEdges=corners.map((point,index)=>[point,corners[(index+1)%corners.length]]);
+  for(let i=0;i<polygon.length;i++){
+    const edge=[polygon[i],polygon[(i+1)%polygon.length]];
+    if(rectEdges.some(([a,b])=>segmentsIntersect(a,b,edge[0],edge[1]))) return true;
+  }
+  return false;
+}
+
+function getActiveAwardSideLapelPolygon(){
+  if(State.uniform!=='blues_a') return [];
+  const baseImg=getGarmentEditorBaseImage();
+  if(!baseImg?.naturalWidth || !baseImg?.naturalHeight) return [];
+  const loadedPath=baseImg.dataset.assetPath || '';
+  const points=getGarmentMaskPoints(State.uniform,loadedPath,1);
+  const bounds=getGarmentEditorDrawBounds(baseImg);
+  if(points.length<3 || !bounds.w || !bounds.h) return [];
+  return points.map(point=>({
+    x:bounds.x + point.x*bounds.w/100,
+    y:bounds.y + point.y*bounds.h/100
+  }));
+}
+
+function getLapelSafeRibbonCapacity(rowFromBottom, perRow, layout, polygon){
+  const rowTop=layout.bottomY-rowFromBottom*(layout.h+layout.gapY);
+  for(let count=perRow; count>=1; count--){
+    const rowWidth=count*layout.w+(count-1)*layout.gapX;
+    const rowLeft=count===perRow
+      ? layout.baseX
+      : layout.wearerLeftPocketEdgeX-rowWidth;
+    if(isRibbonRowClear(count,rowTop,rowLeft,layout,polygon)) return count;
+  }
+  return 0;
+}
+
+function isRibbonRowClear(count,rowTop,rowLeft,layout,polygon){
+  const clearance=.5;
+  for(let column=0; column<count; column++){
+    const left=rowLeft+column*(layout.w+layout.gapX);
+    const rect={
+      left:left-clearance,
+      top:rowTop-clearance,
+      right:left+layout.w+clearance,
+      bottom:rowTop+layout.h+clearance
+    };
+    if(rectangleIntersectsPolygon(rect,polygon)) return false;
+  }
+  return true;
+}
+
+function rowsFromBottomCounts(sorted,countsBottomFirst){
+  const rows=[];
+  let cursor=0;
+  for(const count of [...countsBottomFirst].reverse()){
+    rows.push(sorted.slice(cursor,cursor+count));
+    cursor+=count;
+  }
+  return rows;
+}
+
 // Figure 11-1 permits upper Class A rows to contain fewer ribbons and align
-// outboard when the service-coat lapel would otherwise cover the rack. The
-// illustrated capacity progression is full-width for the two lowest rows,
-// then one fewer ribbon per level until two-wide rows are reached.
-function buildLapelAvoidanceRowsHighToLow(items, perRow=3){
+// with the wearer-left welt/pocket edge only when needed to avoid the lapel.
+// Use the active editable lapel polygon so no ribbon is hidden by the overlay.
+function buildLapelAvoidanceRowsHighToLow(items, perRow=3, layout=null){
   const sorted = sortRibbons(items);
   if(!sorted.length) return [];
 
+  const polygon=layout ? getActiveAwardSideLapelPolygon() : [];
+  if(polygon.length){
+    const capacitiesBottomFirst=[];
+    for(let rowFromBottom=0; rowFromBottom<64; rowFromBottom++){
+      capacitiesBottomFirst.push(getLapelSafeRibbonCapacity(rowFromBottom,perRow,layout,polygon));
+      const rowCount=rowFromBottom+1;
+      if(sorted.length<rowCount) continue;
+
+      if(rowCount===1){
+        if(sorted.length>perRow) continue;
+        const width=sorted.length*layout.w+(sorted.length-1)*layout.gapX;
+        const left=layout.centerX-width/2;
+        if(isRibbonRowClear(sorted.length,layout.bottomY,left,layout,polygon)){
+          return [sorted];
+        }
+        continue;
+      }
+
+      const lowerCaps=capacitiesBottomFirst.slice(0,-2);
+      const belowCap=capacitiesBottomFirst[rowCount-2];
+      const topCap=capacitiesBottomFirst[rowCount-1];
+      if(belowCap<1 || topCap<1) continue;
+      let bestCounts=null;
+
+      for(let belowCount=1; belowCount<=belowCap; belowCount++){
+        for(let topCount=1; topCount<=topCap; topCount++){
+          let remaining=sorted.length-belowCount-topCount;
+          if(remaining<lowerCaps.length || remaining>lowerCaps.reduce((sum,value)=>sum+value,0)) continue;
+
+          const lowerCounts=[];
+          for(let index=0; index<lowerCaps.length; index++){
+            const rowsStillNeeded=lowerCaps.length-index-1;
+            const take=Math.min(lowerCaps[index],remaining-rowsStillNeeded);
+            lowerCounts.push(take);
+            remaining-=take;
+          }
+          if(remaining!==0 || lowerCounts.some(count=>count<1)) continue;
+
+          const belowWidth=belowCount*layout.w+(belowCount-1)*layout.gapX;
+          const belowLeft=belowCount===perRow
+            ? layout.baseX
+            : layout.wearerLeftPocketEdgeX-belowWidth;
+          const belowCenter=belowLeft+belowWidth/2;
+          const topWidth=topCount*layout.w+(topCount-1)*layout.gapX;
+          const topLeft=belowCenter-topWidth/2;
+          const topY=layout.bottomY-(rowCount-1)*(layout.h+layout.gapY);
+          if(!isRibbonRowClear(topCount,topY,topLeft,layout,polygon)) continue;
+
+          const candidate=[...lowerCounts,belowCount,topCount];
+          const firstDifference = bestCounts
+            ? candidate.findIndex((count,index)=>count!==bestCounts[index])
+            : -1;
+          if(!bestCounts || (firstDifference>=0 && candidate[firstDifference]>bestCounts[firstDifference])){
+            bestCounts=candidate;
+          }
+        }
+      }
+      if(bestCounts) return rowsFromBottomCounts(sorted,bestCounts);
+    }
+  }
+
+  // When the base image has not loaded yet, use the exact capacity progression
+  // illustrated by Figure 11-1. The image load handler reruns this planner with
+  // the active polygon before the preview is considered final.
   const capacitiesBottomFirst = [];
   let capacityTotal = 0;
-  while(capacityTotal < sorted.length){
+  while(capacityTotal < sorted.length && capacitiesBottomFirst.length<64){
     const rowFromBottom = capacitiesBottomFirst.length;
-    const capacity = rowFromBottom < 2
+    const figureFallback = rowFromBottom < 2
       ? perRow
-      : Math.max(2, perRow - (rowFromBottom - 1));
+      : Math.max(2,perRow-(rowFromBottom-1));
+    const capacity = figureFallback;
     capacitiesBottomFirst.push(capacity);
     capacityTotal += capacity;
   }
@@ -6569,12 +6805,24 @@ function buildLapelAvoidanceRowsHighToLow(items, perRow=3){
     remaining -= count;
     return count;
   }).filter(Boolean);
-  const countsTopFirst = countsBottomFirst.reverse();
-  const rows = [];
-  let cursor = 0;
-  for(const count of countsTopFirst){
-    rows.push(sorted.slice(cursor, cursor + count));
-    cursor += count;
+  return rowsFromBottomCounts(sorted,countsBottomFirst);
+}
+
+function normalizeRibbonRowOverride(value=State.ribbonRowOverride, perRow=getRibbonLayout().columns){
+  if(!Array.isArray(value)) return [];
+  return value.map(Number).filter(count=>Number.isInteger(count) && count>=1 && count<=perRow);
+}
+
+function getCustomRibbonRowsHighToLow(items, perRow){
+  if(State.uniform!=='blues_a' || !State.ribbonRowOverrideEnabled) return null;
+  const counts=normalizeRibbonRowOverride(State.ribbonRowOverride,perRow);
+  if(!counts.length || counts.reduce((sum,count)=>sum+count,0)!==items.length) return null;
+  const sorted=sortRibbons(items);
+  const rows=[];
+  let cursor=0;
+  for(const count of counts){
+    rows.push(sorted.slice(cursor,cursor+count));
+    cursor+=count;
   }
   return rows;
 }
@@ -6752,6 +7000,7 @@ document.addEventListener('mouseup', () => {
 function renderRack(){
   clearMeasurementOverlay();
   [...uniformCanvas.querySelectorAll('.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice')].forEach(n=>n.remove());
+  if(typeof syncRibbonRowOverrideControl==='function') syncRibbonRowOverrideControl();
 
   const baseCfg = UNIFORMS[State.uniform];
   if(!baseCfg) return;
@@ -6796,6 +7045,9 @@ function renderRack(){
 
     const fullRackWidth = RACK_COLUMNS * itemW + (RACK_COLUMNS-1)*gapX;
     const rackRight = RACK_CENTER_X + fullRackWidth/2;
+    const lapelAvoidanceEdge = Number.isFinite(rackLayout.wearerLeftPocketEdgeX)
+      ? rackLayout.wearerLeftPocketEdgeX
+      : rackRight;
     const rowWidth = count * itemW + (count-1)*gapX;
 
     // All incomplete intermediate rows align toward the wearer's left/outboard
@@ -6806,10 +7058,10 @@ function renderRack(){
       const belowCount = rowsTopFirst[1].length;
       const belowWidth = belowCount * itemW + (belowCount-1)*gapX;
       rowCenter = belowCount < RACK_COLUMNS
-        ? rackRight - belowWidth/2
+        ? lapelAvoidanceEdge - belowWidth/2
         : RACK_CENTER_X;
     }else if(count < RACK_COLUMNS){
-      rowCenter = rackRight - rowWidth/2;
+      rowCenter = lapelAvoidanceEdge - rowWidth/2;
     }
 
     const rowLeftBase = rowCenter - rowWidth/2;
@@ -6818,9 +7070,10 @@ function renderRack(){
 
   if(!useMini && uniformAllowsRibbons){
     const useLapelAvoidance = State.uniform === 'blues_a' && State.ribbonRackArrangement === 'lapel';
-    const rowsTopFirst = useLapelAvoidance
-      ? buildLapelAvoidanceRowsHighToLow(items, RACK_COLUMNS)
-      : buildRibbonRowsHighToLow(items, RACK_COLUMNS);
+    const customRows=getCustomRibbonRowsHighToLow(items,RACK_COLUMNS);
+    const rowsTopFirst = customRows || (useLapelAvoidance
+      ? buildLapelAvoidanceRowsHighToLow(items, RACK_COLUMNS, rackLayout)
+      : buildRibbonRowsHighToLow(items, RACK_COLUMNS));
     const totalRows = rowsTopFirst.length;
 
     rowsTopFirst.forEach((row, topIndex)=>{
@@ -6852,7 +7105,9 @@ function renderRack(){
 
         tile.dataset.tooltipTitle = ribbonObj.id.replace(/_/g,' ').toUpperCase();
         tile.dataset.tooltipReg   = "CAPR 39-3 precedence applies";
-        tile.dataset.tooltipWhy   = useLapelAvoidance
+        tile.dataset.tooltipWhy   = customRows
+          ? `This row follows the active custom Class A row-grid override; the final top row remains centered over the row below.`
+          : useLapelAvoidance
           ? `Highest awards render in the top row; incomplete upper rows step outboard to avoid the Class A lapel, with the final top row centered over the row below.`
           : `Highest awards render top-left; ${RACK_COLUMNS}-wide rows and a centered partial top row follow the selected uniform.`;
 
@@ -9358,9 +9613,86 @@ function syncRibbonRackColumnsControl(){
   }
   if(arrangementHint){
     arrangementHint.textContent = classA
-      ? 'Use lapel avoidance when upper rows would be covered: intermediate partial rows step outboard and the final top row stays centered over the row below.'
+      ? 'Use lapel avoidance only when the service-coat lapel would cover ribbons. Partial intermediate rows align with the left welt/pocket edge; the final top row stays centered over the row below.'
       : 'Lapel-avoidance ribbon arrangements apply only to the Class A service coat.';
   }
+  syncRibbonRowOverrideControl();
+}
+
+function getAutomaticRibbonRowCounts(){
+  const layout=getRibbonLayout();
+  const items=sortRibbons(State.ribbons || []);
+  if(!items.length) return [];
+  const rows=State.uniform==='blues_a' && State.ribbonRackArrangement==='lapel'
+    ? buildLapelAvoidanceRowsHighToLow(items,layout.columns,layout)
+    : buildRibbonRowsHighToLow(items,layout.columns);
+  return rows.map(row=>row.length);
+}
+
+function syncRibbonRowOverrideControl(){
+  const checkbox=by('ribbonRowOverrideEnabled');
+  const controls=by('ribbonRowOverrideControls');
+  const grid=by('ribbonRowOverrideGrid');
+  const status=by('ribbonRowOverrideStatus');
+  if(!checkbox || !controls || !grid || !status) return;
+
+  const classA=State.uniform==='blues_a';
+  checkbox.disabled=!classA;
+  checkbox.checked=classA && !!State.ribbonRowOverrideEnabled;
+  controls.classList.toggle('hidden',!checkbox.checked);
+  if(!checkbox.checked){ grid.innerHTML=''; return; }
+
+  const columns=getRibbonLayout().columns;
+  const selectedCount=(State.ribbons || []).length;
+  let counts=Array.isArray(State.ribbonRowOverride)
+    ? State.ribbonRowOverride.map(Number).filter(Number.isInteger)
+    : [];
+  if(!counts.length || counts.some(count=>count<1 || count>columns)){
+    counts=getAutomaticRibbonRowCounts();
+    State.ribbonRowOverride=[...counts];
+  }
+
+  grid.innerHTML='';
+  counts.forEach((count,rowIndex)=>{
+    const row=document.createElement('div');
+    row.className='ribbonOverrideRow';
+    const label=document.createElement('span');
+    label.className='ribbonOverrideRowLabel';
+    label.textContent=rowIndex===0 ? 'Top row' : `Row ${rowIndex+1}`;
+    row.appendChild(label);
+
+    for(let choice=1; choice<=4; choice++){
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='ribbonOverrideCount';
+      button.textContent=String(choice);
+      button.disabled=choice>columns;
+      button.classList.toggle('active',choice===count);
+      button.setAttribute('aria-label',`${label.textContent}: ${choice} ribbon${choice===1?'':'s'}`);
+      button.addEventListener('click',()=>{
+        State.ribbonRowOverride[rowIndex]=choice;
+        renderRack();
+        renderAllBadges();
+        renderMeasurementOverlay();
+      });
+      row.appendChild(button);
+    }
+    grid.appendChild(row);
+  });
+
+  const total=counts.reduce((sum,count)=>sum+count,0);
+  const valid=selectedCount>0 && total===selectedCount;
+  status.dataset.valid=String(valid);
+  status.textContent=!selectedCount
+    ? 'Select ribbons before building a custom row grid.'
+    : valid
+      ? `${total} ribbons assigned. Custom override is active.`
+      : `${total} assigned; ${selectedCount} selected. Adjust the row counts to activate the override.`;
+
+  const addButton=by('addRibbonOverrideRow');
+  const removeButton=by('removeRibbonOverrideRow');
+  if(addButton) addButton.disabled=!selectedCount || counts.length>=selectedCount;
+  if(removeButton) removeButton.disabled=!selectedCount || counts.length<=1;
 }
 
 const ribbonRackColumnsSelect = by('ribbonRackColumns');
@@ -9381,6 +9713,42 @@ if(ribbonRackArrangementSelect){
   ribbonRackArrangementSelect.addEventListener('change', e=>{
     State.ribbonRackArrangement = e.target.value === 'standard' ? 'standard' : 'lapel';
     syncRibbonRackColumnsControl();
+    renderRack();
+    renderAllBadges();
+    renderMeasurementOverlay();
+  });
+}
+
+const ribbonRowOverrideEnabled=by('ribbonRowOverrideEnabled');
+if(ribbonRowOverrideEnabled){
+  ribbonRowOverrideEnabled.addEventListener('change',e=>{
+    State.ribbonRowOverrideEnabled=State.uniform==='blues_a' && !!e.target.checked;
+    if(State.ribbonRowOverrideEnabled){
+      State.ribbonRowOverride=getAutomaticRibbonRowCounts();
+    }
+    syncRibbonRowOverrideControl();
+    renderRack();
+    renderAllBadges();
+    renderMeasurementOverlay();
+  });
+}
+
+const addRibbonOverrideRow=by('addRibbonOverrideRow');
+if(addRibbonOverrideRow){
+  addRibbonOverrideRow.addEventListener('click',()=>{
+    State.ribbonRowOverride=[1,...normalizeRibbonRowOverride(State.ribbonRowOverride,getRibbonLayout().columns)];
+    renderRack();
+    renderAllBadges();
+    renderMeasurementOverlay();
+  });
+}
+
+const removeRibbonOverrideRow=by('removeRibbonOverrideRow');
+if(removeRibbonOverrideRow){
+  removeRibbonOverrideRow.addEventListener('click',()=>{
+    const counts=normalizeRibbonRowOverride(State.ribbonRowOverride,getRibbonLayout().columns);
+    if(counts.length>1) counts.shift();
+    State.ribbonRowOverride=counts;
     renderRack();
     renderAllBadges();
     renderMeasurementOverlay();
@@ -9582,19 +9950,19 @@ function initCalibratorUI(){
     }
 
     const st = window.getComputedStyle(el);
-    const x = Math.round(parseFloat(st.left)||0);
-    const y = Math.round(parseFloat(st.top)||0);
-    const w = Math.round(parseFloat(st.width)||0);
-    const h = Math.round(parseFloat(st.height)||0);
+    const x = normalizeCalibNumber(st.left,0);
+    const y = normalizeCalibNumber(st.top,0);
+    const w = normalizeCalibNumber(st.width,0);
+    const h = normalizeCalibNumber(st.height,0);
 
     const o = getCalib(key) || {};
     const r = (o.r !== undefined) ? o.r : 0;
 
-    calX.value=x; calXn.value=x;
-    calY.value=y; calYn.value=y;
-    calW.value=w; calWn.value=w;
-    calH.value=h; calHn.value=h;
-    calR.value=r; calRn.value=r;
+    calX.value=formatCalibNumber(x); calXn.value=formatCalibNumber(x);
+    calY.value=formatCalibNumber(y); calYn.value=formatCalibNumber(y);
+    calW.value=formatCalibNumber(w); calWn.value=formatCalibNumber(w);
+    calH.value=formatCalibNumber(h); calHn.value=formatCalibNumber(h);
+    calR.value=formatCalibNumber(r); calRn.value=formatCalibNumber(r);
 
     refreshCalibratorReadout();
   }
@@ -9634,19 +10002,19 @@ function initCalibratorUI(){
     const primaryEl = findLayerByCalibKey(primary);
     const pst = primaryEl ? window.getComputedStyle(primaryEl) : null;
     const oldPrimary = {
-      x: Math.round(parseFloat(pst?.left)||0),
-      y: Math.round(parseFloat(pst?.top)||0),
-      w: Math.round(parseFloat(pst?.width)||1),
-      h: Math.round(parseFloat(pst?.height)||1),
-      r: (getCalib(primary)?.r !== undefined) ? parseInt(getCalib(primary).r,10) : 0
+      x: normalizeCalibNumber(pst?.left,0),
+      y: normalizeCalibNumber(pst?.top,0),
+      w: normalizeCalibNumber(pst?.width,1),
+      h: normalizeCalibNumber(pst?.height,1),
+      r: (getCalib(primary)?.r !== undefined) ? normalizeCalibNumber(getCalib(primary).r,0) : 0
     };
 
     const newPrimary = {
-      x: parseInt(calXn.value||"0",10),
-      y: parseInt(calYn.value||"0",10),
-      w: Math.max(1, parseInt(calWn.value||"1",10)),
-      h: Math.max(1, parseInt(calHn.value||"1",10)),
-      r: parseInt(calRn.value||"0",10)
+      x: normalizeCalibNumber(calXn.value,0),
+      y: normalizeCalibNumber(calYn.value,0),
+      w: Math.max(.01,normalizeCalibNumber(calWn.value,1)),
+      h: Math.max(.01,normalizeCalibNumber(calHn.value,1)),
+      r: normalizeCalibNumber(calRn.value,0)
     };
 
     const dx = newPrimary.x - oldPrimary.x;
@@ -9660,19 +10028,19 @@ function initCalibratorUI(){
       const st = el ? window.getComputedStyle(el) : null;
       const cur = getCalib(key) || {};
       const current = {
-        x: (cur.x !== undefined) ? parseInt(cur.x,10) : Math.round(parseFloat(st?.left)||0),
-        y: (cur.y !== undefined) ? parseInt(cur.y,10) : Math.round(parseFloat(st?.top)||0),
-        w: (cur.w !== undefined) ? parseInt(cur.w,10) : Math.round(parseFloat(st?.width)||1),
-        h: (cur.h !== undefined) ? parseInt(cur.h,10) : Math.round(parseFloat(st?.height)||1),
-        r: (cur.r !== undefined) ? parseInt(cur.r,10) : 0
+        x: (cur.x !== undefined) ? normalizeCalibNumber(cur.x,0) : normalizeCalibNumber(st?.left,0),
+        y: (cur.y !== undefined) ? normalizeCalibNumber(cur.y,0) : normalizeCalibNumber(st?.top,0),
+        w: (cur.w !== undefined) ? normalizeCalibNumber(cur.w,1) : normalizeCalibNumber(st?.width,1),
+        h: (cur.h !== undefined) ? normalizeCalibNumber(cur.h,1) : normalizeCalibNumber(st?.height,1),
+        r: (cur.r !== undefined) ? normalizeCalibNumber(cur.r,0) : 0
       };
 
       const next = index === 0 ? newPrimary : {
-        x: current.x + dx,
-        y: current.y + dy,
-        w: Math.max(1, Math.round(current.w * sx)),
-        h: Math.max(1, Math.round(current.h * sy)),
-        r: current.r + dr
+        x: normalizeCalibNumber(current.x + dx,0),
+        y: normalizeCalibNumber(current.y + dy,0),
+        w: Math.max(.01,normalizeCalibNumber(current.w * sx,1)),
+        h: Math.max(.01,normalizeCalibNumber(current.h * sy,1)),
+        r: normalizeCalibNumber(current.r + dr,0)
       };
 
       setCalib(key, next);
@@ -9728,7 +10096,7 @@ function initCalibratorUI(){
     if(!State.calib.enabled) return;
     if(!State.calib.selectedKey) return;
 
-    const step = e.shiftKey ? 10 : 1;
+    const step = e.shiftKey ? 10 : e.altKey ? .01 : .1;
     if(e.key==='ArrowLeft'){  nudgeSelected(-step,0); e.preventDefault(); }
     if(e.key==='ArrowRight'){ nudgeSelected(step,0);  e.preventDefault(); }
     if(e.key==='ArrowUp'){    nudgeSelected(0,-step); e.preventDefault(); }
@@ -10101,6 +10469,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       miniMountStyle: State.miniMountStyle,
       ribbonRackLayout: State.ribbonRackLayout,
       ribbonRackArrangement: State.ribbonRackArrangement,
+      ribbonRowOverrideEnabled: State.ribbonRowOverrideEnabled,
+      ribbonRowOverride: State.ribbonRowOverride,
       garmentOverlayMode: State.garmentOverlayMode,
       garmentMasks: State.garmentMasks,
       text: State.text,
@@ -10132,6 +10502,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       ? String(p.ribbonRackLayout)
       : (Number(p.ribbonRackColumns) === 3 ? '3' : '4-left');
     State.ribbonRackArrangement = p.ribbonRackArrangement === 'standard' ? 'standard' : 'lapel';
+    State.ribbonRowOverrideEnabled = !!p.ribbonRowOverrideEnabled;
+    State.ribbonRowOverride = Array.isArray(p.ribbonRowOverride)
+      ? p.ribbonRowOverride.map(Number).filter(Number.isInteger)
+      : [];
     State.garmentOverlayMode = ['both','left','right','off'].includes(p.garmentOverlayMode)
       ? p.garmentOverlayMode
       : 'both';
