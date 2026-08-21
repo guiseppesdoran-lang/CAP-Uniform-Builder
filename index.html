@@ -3768,10 +3768,10 @@ const UNIFORMS = {
 const GARMENT_FOREGROUND_CLIPS = {
   serviceCoat: [
     'polygon(35% 9%, 29% 20%, 48% 40%, 41% 9%)',
-    // Award-side lapel follows the supplied red reference as one continuous,
-    // gently curved garment edge. The moderate outward bow overlaps the left
-    // edge of the upper badges and rack without the old award-by-award jumps.
-    'polygon(60.2% 13.1%, 61.5% 17%, 62.8% 21%, 63.4% 23%, 63.8% 25%, 62.5% 27%, 61% 29%, 59% 32.5%, 50% 40%, 56% 9%)'
+    // Award-side lapel traced as the complete filled red area from the supplied
+    // reference. Both the award-side edge and inner coat edge are represented,
+    // so the foreground clone covers only the actual lapel surface.
+    'polygon(56.8% 10%, 60.5% 13.1%, 63.2% 17.5%, 64.3% 20.4%, 62.6% 21.1%, 67.4% 23%, 64% 26.2%, 60.7% 29.1%, 57.4% 32%, 53.3% 34.9%, 49.4% 37.8%, 46.9% 39.7%, 47.5% 37.8%, 48.8% 34.9%, 50.2% 32%, 51.6% 29.1%, 52.9% 26.2%, 54.3% 23.3%, 55.6% 20.4%, 56.2% 17.5%, 56.8% 13.1%)'
   ],
   shirtCollar: [
     'polygon(38% 7%, 31% 26%, 48% 34%, 40% 8%)',
