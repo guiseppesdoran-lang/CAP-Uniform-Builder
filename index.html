@@ -1325,7 +1325,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
           Upper-row arrangement
           <select id="ribbonRackArrangement" style="display:block;width:100%;margin-top:4px;">
             <option value="standard">Standard — centered partial top row</option>
-            <option value="lapel">Automatic lapel clearance — maximize ribbons per row</option>
+            <option value="lapel">Automatic — 3 across, switch to 4 above 51% overlap</option>
           </select>
         </label>
         <div id="ribbonRackArrangementHint" class="hintText" style="margin-top:4px;">
@@ -1689,7 +1689,7 @@ const MINI_MEDAL_LAYOUT_BY_UNIFORM = {
   semi_formal_male: { centerX:318, bottomY:198 },
   semi_formal_female: { centerX:317, bottomY:196 }
 };
-function getRibbonLayout(uniformId = State.uniform){
+function getRibbonLayout(uniformId = State.uniform, rackLayoutOverride=null){
   const baseUniformId = uniformId || State.uniform || '';
   const genderBucketId = State.gender ? `${baseUniformId}_${State.gender}` : baseUniformId;
   const override = RIBBON_LAYOUT_BY_UNIFORM[genderBucketId] || RIBBON_LAYOUT_BY_UNIFORM[baseUniformId] || {};
@@ -1701,8 +1701,9 @@ function getRibbonLayout(uniformId = State.uniform){
   // Service Dress (Class A). All Class B and aviator-shirt racks are
   // unconditionally limited to rows of three, even if a saved profile carries
   // a Class A four-across preference.
-  const requestedRackLayout = ['3','4-left','4-center'].includes(String(State.ribbonRackLayout))
-    ? String(State.ribbonRackLayout)
+  const layoutPreference = rackLayoutOverride ?? State.ribbonRackLayout;
+  const requestedRackLayout = ['3','4-left','4-center'].includes(String(layoutPreference))
+    ? String(layoutPreference)
     : '4-left';
   const requestedColumns = requestedRackLayout === '3' ? 3 : 4;
   const columns = baseUniformId === 'blues_a' ? requestedColumns : 3;
@@ -6763,6 +6764,31 @@ function isRibbonRowClear(count,rowTop,rowLeft,layout,polygon){
   return true;
 }
 
+function isStandardThreeRibbonLayoutWithinLapelLimit(items,layout,polygon){
+  const rows=buildRibbonRowsHighToLow(items,3);
+  const totalRows=rows.length;
+  return rows.every((row,topIndex)=>{
+    const rowWidth=row.length*layout.w+(row.length-1)*layout.gapX;
+    const rowLeft=layout.centerX-rowWidth/2;
+    const rowFromBottom=totalRows-1-topIndex;
+    const rowTop=layout.bottomY-rowFromBottom*(layout.h+layout.gapY);
+    return isRibbonRowClear(row.length,rowTop,rowLeft,layout,polygon);
+  });
+}
+
+function getAutomaticClassARibbonLayout(items){
+  const standardLayout=getRibbonLayout('blues_a','3');
+  const polygon=getActiveAwardSideLapelPolygon();
+  if(!polygon.length || isStandardThreeRibbonLayoutWithinLapelLimit(items,standardLayout,polygon)){
+    return {layout:standardLayout,useFourColumns:false};
+  }
+  const fourColumnPreference=State.ribbonRackLayout==='4-center' ? '4-center' : '4-left';
+  return {
+    layout:getRibbonLayout('blues_a',fourColumnPreference),
+    useFourColumns:true
+  };
+}
+
 function rowsFromBottomCounts(sorted,countsBottomFirst){
   const rows=[];
   let cursor=0;
@@ -7078,7 +7104,15 @@ function renderRack(){
   const items = sortRibbons(State.ribbons);
   if(!items.length) return;
 
-  const rackLayout = getRibbonLayout();
+  let rackLayout = getRibbonLayout();
+  const automaticClassALapel = State.uniform==='blues_a' &&
+    State.ribbonRackArrangement==='lapel' && !State.ribbonRowOverrideEnabled;
+  let automaticUsesFourColumns=false;
+  if(automaticClassALapel){
+    const decision=getAutomaticClassARibbonLayout(items);
+    rackLayout=decision.layout;
+    automaticUsesFourColumns=decision.useFourColumns;
+  }
   const BOTTOM_ROW_Y   = rackLayout.bottomY;
   const RACK_CENTER_X  = rackLayout.centerX;
   const RW = rackLayout.w;
@@ -7098,7 +7132,9 @@ function renderRack(){
   function getRowLeftPositions(rowsTopFirst, topIndex, itemW, gapX){
     const row = rowsTopFirst[topIndex];
     const count = row.length;
-    const standard = State.uniform !== 'blues_a' || State.ribbonRackArrangement !== 'lapel';
+    const standard = State.uniform !== 'blues_a' ||
+      State.ribbonRackArrangement !== 'lapel' ||
+      (automaticClassALapel && !automaticUsesFourColumns);
     if(standard) return getCenteredRowLeftPositions(count, itemW, gapX);
 
     const fullRackWidth = RACK_COLUMNS * itemW + (RACK_COLUMNS-1)*gapX;
@@ -7127,7 +7163,9 @@ function renderRack(){
   }
 
   if(!useMini && uniformAllowsRibbons){
-    const useLapelAvoidance = State.uniform === 'blues_a' && State.ribbonRackArrangement === 'lapel';
+    const useLapelAvoidance = State.uniform === 'blues_a' &&
+      State.ribbonRackArrangement === 'lapel' &&
+      (!automaticClassALapel || automaticUsesFourColumns);
     const customRows=getCustomRibbonRowsHighToLow(items,RACK_COLUMNS);
     const rowsTopFirst = customRows || (useLapelAvoidance
       ? buildLapelAvoidanceRowsHighToLow(items, RACK_COLUMNS, rackLayout)
@@ -7166,7 +7204,7 @@ function renderRack(){
         tile.dataset.tooltipWhy   = customRows
           ? `This row follows the active custom Class A row-grid override; the final top row remains centered over the row below.`
           : useLapelAvoidance
-          ? `Highest awards render in the top row; automatic rows use the maximum ribbon count that keeps lapel coverage at or below 51% of every ribbon, with the final top row centered over the row below.`
+          ? `The standard three-across rack exceeded 51% lapel coverage, so automatic mode switched to four-across and keeps each ribbon at or below the overlap limit.`
           : `Highest awards render top-left; ${RACK_COLUMNS}-wide rows and a centered partial top row follow the selected uniform.`;
 
         initRibbonDragHandlers(tile);
@@ -9671,17 +9709,23 @@ function syncRibbonRackColumnsControl(){
   }
   if(arrangementHint){
     arrangementHint.textContent = classA
-      ? 'Automatic mode maximizes ribbons per row while limiting lapel coverage to 51% of each ribbon. Partial intermediate rows align with the left welt/pocket edge; the final top row stays centered over the row below.'
+      ? 'Automatic mode uses the standard three-ribbon layout while every ribbon has 51% or less lapel coverage. It switches to four across only if a ribbon exceeds 51%; the rack-width selection controls that four-column fallback alignment.'
       : 'Lapel-avoidance ribbon arrangements apply only to the Class A service coat.';
   }
   syncRibbonRowOverrideControl();
 }
 
 function getAutomaticRibbonRowCounts(){
-  const layout=getRibbonLayout();
   const items=sortRibbons(State.ribbons || []);
   if(!items.length) return [];
-  const rows=State.uniform==='blues_a' && State.ribbonRackArrangement==='lapel'
+  let layout=getRibbonLayout();
+  let useFourColumnLapelLayout=false;
+  if(State.uniform==='blues_a' && State.ribbonRackArrangement==='lapel'){
+    const decision=getAutomaticClassARibbonLayout(items);
+    layout=decision.layout;
+    useFourColumnLapelLayout=decision.useFourColumns;
+  }
+  const rows=useFourColumnLapelLayout
     ? buildLapelAvoidanceRowsHighToLow(items,layout.columns,layout)
     : buildRibbonRowsHighToLow(items,layout.columns);
   return rows.map(row=>row.length);
