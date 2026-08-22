@@ -2945,7 +2945,8 @@ const AIRCREW_BADGE_IDS = new Set([
   'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B',
   'observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
   'solo_badge','pre_solo_badge',
-  'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
+  'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge',
+  'uas_technician_basic_badge','uas_technician_senior_badge','uas_technician_master_badge'
 ]);
 
 // CAPR 39-1 Attachment 4 badge-position categories.
@@ -2961,7 +2962,8 @@ const GROUND_EMT_BADGE_IDS = new Set([
 ]);
 const OLPU_OCCUPATIONAL_BADGE_IDS = new Set([
   ...GROUND_EMT_BADGE_IDS,
-  'medical_officer','nurse_officer','legal_officer','basic_incident_commander_badge'
+  'medical_officer','nurse_officer','legal_officer',
+  'basic_incident_commander_badge','incident_commander_2_badge','incident_commander_1_badge'
 ]);
 const SPECIALTY_TRACK_BADGE_IDS = new Set([
   'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
@@ -3017,7 +3019,7 @@ const FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS = new Set([
   'cyber_badges','stem_badges'
 ]);
 const INCIDENT_COMMAND_SPECIALTY_BADGE_IDS = new Set([
-  'basic_incident_commander_badge'
+  'basic_incident_commander_badge','incident_commander_2_badge','incident_commander_1_badge'
 ]);
 
 function isFemaleBlueUniform(){
@@ -3337,7 +3339,7 @@ function buildDerivedBadgeCalib(key, base){
     // Exact-family calibrations carry both position and rendered size.
     // Similar badges inherit the reference center but keep their own size.
     const exactFamily =
-      (INCIDENT_COMMAND_SPECIALTY_BADGE_IDS.has(parsed.id) && refKey?.includes('basic_incident_commander_badge')) ||
+      (parsed.id === 'basic_incident_commander_badge' && refKey?.includes('basic_incident_commander_badge')) ||
       (AIRCREW_BADGE_IDS.has(parsed.id) && refKey?.includes(parsed.id));
 
     if(exactFamily){
@@ -5335,7 +5337,7 @@ function getMiniMedalImagePath(ribbonOrId){
    =========================== */
 const badgeList = [
   'AirCrew1_DB3F0FCC3650F','BalloonPilot1_442D89C94185B','CAPMasterPilot1_621A0E2ED15DA','CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','GliderPilot1_7BFB287379918','MasterAirCrew1_72AC4CAE7A310','MasterObserver1_1B88D5071FD5C','SeniorAirCrew1_B289BAE6E515C','SeniorObserver1_0E35802A29801',
-  'buddist_chaplin','christian_chaplin','communications_technician_badge','communications_senior_badge','communications_master_badge','cyber_badges','emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge','volunteer_university_instructor_badge','basic_incident_commander_badge','cadet_programs_badge','administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge','squadron_commander_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges','uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
+  'buddist_chaplin','christian_chaplin','communications_technician_badge','communications_senior_badge','communications_master_badge','cyber_badges','emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge','volunteer_university_instructor_badge','basic_incident_commander_badge','incident_commander_2_badge','incident_commander_1_badge','cadet_programs_badge','administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge','squadron_commander_badge','emt_basic_badge','emt_intermediate','emt_paramedic','ground_team_basic_badge','historian_technicianIbadge','information_technology_technician_badge','jewish_chaplin','legal_officer','master_ground_team_badge','medical_officer','model_rocketry_badge','muslim_chaplin','nra_marksman_badge','nurse_officer','observer_badge','pre_solo_badge','senior_ground_team_badge','solo_badge','stem_badges','uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge','uas_technician_basic_badge','uas_technician_senior_badge','uas_technician_master_badge'
 ];
 
 
@@ -5346,6 +5348,8 @@ const BADGE_IMAGE_OVERRIDES = {
   'senior_emergency_services_badge': 'badges/Senior_ES_Badge.png',
   'volunteer_university_instructor_badge': 'badges/Vol_U_Badge.png',
   'basic_incident_commander_badge': 'badges/Basic_Incident_Commander_Badge.png',
+  'incident_commander_2_badge': 'badges/incident_commander_2_badge.png',
+  'incident_commander_1_badge': 'badges/incident_commander_1_badge.png',
   'cadet_programs_badge': 'badges/cadet programs badge.png',
   'administration_technician_badge': 'badges/administration_technician_badge.png',
   'aerospace_education_technician_badge': 'badges/aerospace_education_technician_badge.png',
@@ -5361,7 +5365,10 @@ const BADGE_IMAGE_OVERRIDES = {
   'communications_master_badge': 'badges/communications_master_badge.png',
   'uas_pilot_basic_badge': 'badges/cap_suas_pilot_badge.png',
   'uas_pilot_senior_badge': 'badges/uas_pilot_senior_badge.png',
-  'uas_pilot_master_badge': 'badges/uas_pilot_master_badge.png'
+  'uas_pilot_master_badge': 'badges/uas_pilot_master_badge.png',
+  'uas_technician_basic_badge': 'badges/uas_technician_basic_badge.png',
+  'uas_technician_senior_badge': 'badges/uas_technician_senior_badge.png',
+  'uas_technician_master_badge': 'badges/uas_technician_master_badge.png'
 };
 
 
@@ -5586,7 +5593,10 @@ const rareCadetBadges = new Set([
 const exclusiveBadges = [
   ['emt_basic_badge','ground_team_basic_badge'],
   ['emt_intermediate','senior_ground_team_badge'],
-  ['emt_paramedic','master_ground_team_badge']
+  ['emt_paramedic','master_ground_team_badge'],
+  ['basic_incident_commander_badge','incident_commander_2_badge'],
+  ['basic_incident_commander_badge','incident_commander_1_badge'],
+  ['incident_commander_2_badge','incident_commander_1_badge']
 ];
 
 const badgeLocations = {
@@ -5594,11 +5604,12 @@ const badgeLocations = {
   'AirCrew1_DB3F0FCC3650F':'OLP','BalloonPilot1_442D89C94185B':'OLP','CAPMasterPilot1_621A0E2ED15DA':'OLP','CAPPilot1_FA9D33EA587D8':'OLP','CAPSeniorPilot1_D9725AE959752':'OLP','GliderPilot1_7BFB287379918':'OLP','MasterAirCrew1_72AC4CAE7A310':'OLP',
   'SeniorAirCrew1_B289BAE6E515C':'OLP','pre_solo_badge':'OLP','solo_badge':'OLP','MasterObserver1_1B88D5071FD5C':'OLP','SeniorObserver1_0E35802A29801':'OLP','observer_badge':'OLP',
   'uas_pilot_basic_badge':'OLP','uas_pilot_senior_badge':'OLP','uas_pilot_master_badge':'OLP',
+  'uas_technician_basic_badge':'OLP','uas_technician_senior_badge':'OLP','uas_technician_master_badge':'OLP',
 
   // Occupational badges per CAPR 39-1 Attachment 4
   'buddist_chaplin':'OLPA','christian_chaplin':'OLPA','jewish_chaplin':'OLPA','muslim_chaplin':'OLPA',
   'medical_officer':'OLPU','nurse_officer':'OLPU','emt_basic_badge':'OLPU','emt_intermediate':'OLPU','emt_paramedic':'OLPU','legal_officer':'OLPU',
-  'ground_team_basic_badge':'OLPU','senior_ground_team_badge':'OLPU','master_ground_team_badge':'OLPU','basic_incident_commander_badge':'OLPU',
+  'ground_team_basic_badge':'OLPU','senior_ground_team_badge':'OLPU','master_ground_team_badge':'OLPU','basic_incident_commander_badge':'OLPU','incident_commander_2_badge':'OLPU','incident_commander_1_badge':'OLPU',
 
   // Specialty-track/service badge placement is dynamic by selection order:
   // first selected specialty badge = LP; second selected specialty badge = RP.
@@ -5634,7 +5645,8 @@ const customBadgeSizes = {
   'jewish_chaplin':{width:60,height:60},'legal_officer':{width:60,height:25},'master_ground_team_badge':{width:25,height:20},
   'medical_officer':{width:60,height:60},'model_rocketry_badge':{width:7,height:28.125},'muslim_chaplin':{width:60,height:60},
   'nra_marksman_badge':{width:40,height:60},'nurse_officer':{width:60,height:60},'observer_badge':{width:60,height:25},
-  'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25},'uas_pilot_basic_badge':{width:60,height:25},'uas_pilot_senior_badge':{width:60,height:25},'uas_pilot_master_badge':{width:60,height:25}
+  'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25},'uas_pilot_basic_badge':{width:60,height:25},'uas_pilot_senior_badge':{width:60,height:25},'uas_pilot_master_badge':{width:60,height:25},
+  'uas_technician_basic_badge':{width:60,height:25},'uas_technician_senior_badge':{width:60,height:25},'uas_technician_master_badge':{width:60,height:25},'incident_commander_2_badge':{width:25,height:12},'incident_commander_1_badge':{width:25,height:12}
 };
 
 // CAPR 39-1 Attachment 7 dimensions, converted with the same scale as the
@@ -5647,7 +5659,16 @@ const CAPUB_PIXELS_PER_INCH = RIBBON_WIDTH / 1.375;
 const CAPUB_BADGE_ASPECT_RATIOS = Object.freeze({
   AirCrew1_DB3F0FCC3650F: 193 / 54,
   SeniorAirCrew1_B289BAE6E515C: 190 / 71,
-  MasterAirCrew1_72AC4CAE7A310: 190 / 68
+  MasterAirCrew1_72AC4CAE7A310: 190 / 68,
+  uas_pilot_basic_badge: 2000 / 649,
+  uas_pilot_senior_badge: 375 / 134,
+  uas_pilot_master_badge: 368 / 139,
+  uas_technician_basic_badge: 374 / 100,
+  uas_technician_senior_badge: 374 / 135,
+  uas_technician_master_badge: 362 / 133,
+  basic_incident_commander_badge: 307 / 140,
+  incident_commander_2_badge: 308 / 185,
+  incident_commander_1_badge: 307 / 188
 });
 const CAPUB_BADGE_DIMENSIONS_INCHES = Object.freeze({
   aviation: { axis:'width', regular:3, miniature:2 },
@@ -5668,7 +5689,7 @@ function getBadgeDimensionRule(id){
   if(id === 'medical_officer' || id === 'nurse_officer') return CAPUB_BADGE_DIMENSIONS_INCHES.health;
   if(id === 'legal_officer') return CAPUB_BADGE_DIMENSIONS_INCHES.legal;
   if(['emt_basic_badge','emt_intermediate','emt_paramedic'].includes(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.emt;
-  if(id === 'basic_incident_commander_badge') return CAPUB_BADGE_DIMENSIONS_INCHES.incidentCommander;
+  if(INCIDENT_COMMAND_SPECIALTY_BADGE_IDS.has(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.incidentCommander;
   if(['ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'].includes(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.groundTeam;
   return null;
 }
@@ -5757,11 +5778,12 @@ const BADGE_CATEGORIES = [
     'observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
     'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B',
     'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge',
+    'uas_technician_basic_badge','uas_technician_senior_badge','uas_technician_master_badge',
     'solo_badge','pre_solo_badge'
   ]},
   { key:'Emergency Services / Ground', ids:[
     'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
-    'basic_incident_commander_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'
+    'basic_incident_commander_badge','incident_commander_2_badge','incident_commander_1_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'
   ]},
   { key:'Medical / EMS', ids:[
     'emt_basic_badge','emt_intermediate','emt_paramedic','medical_officer','nurse_officer'
@@ -5831,6 +5853,12 @@ const BADGE_DISPLAY_NAMES = Object.freeze({
   uas_pilot_basic_badge: 'sUAS Pilot Badge',
   uas_pilot_senior_badge: 'Senior sUAS Pilot Badge',
   uas_pilot_master_badge: 'Command sUAS Pilot Badge',
+  uas_technician_basic_badge: 'sUAS Technician Badge',
+  uas_technician_senior_badge: 'Senior sUAS Technician Badge',
+  uas_technician_master_badge: 'Master sUAS Technician Badge',
+  basic_incident_commander_badge: 'Basic Incident Commander Badge (IC3)',
+  incident_commander_2_badge: 'Senior Incident Commander Badge (IC2)',
+  incident_commander_1_badge: 'Master Incident Commander Badge (IC1)',
   cadet_programs_technician_badge: 'Cadet Programs Technician Badge',
   cadet_programs_senior_badge: 'Cadet Programs Senior Badge',
   cadet_programs_master_badge: 'Cadet Programs Master Badge',
@@ -5904,10 +5932,11 @@ function getBadgeCategoriesForCurrentMembership(){
         'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
         'observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
         'GliderPilot1_7BFB287379918','BalloonPilot1_442D89C94185B',
-        'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
+        'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge',
+        'uas_technician_basic_badge','uas_technician_senior_badge','uas_technician_master_badge'
       ]},
       { key:'Emergency Services / Ground', ids:[
-        'basic_incident_commander_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'
+        'basic_incident_commander_badge','incident_commander_2_badge','incident_commander_1_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'
       ]},
       { key:'Medical / EMS', ids:[
         'emt_basic_badge','emt_intermediate','emt_paramedic','medical_officer','nurse_officer'
@@ -8167,6 +8196,7 @@ function buildBadgeGallery(){
       }
       sel.checked = chk.checked;
       State.badgeSelections[id] = sel;
+      if(chk.checked) enforceExclusive(id);
       rebuildBadgesFromGallery();
     };
     if(gradChk){
@@ -10784,12 +10814,6 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     [...rankListAll].forEach(r=>expected.push({category:'Rank', item:r, id:safeRankFile(r), path:`images/ranks/${safeRankFile(r)}.png`, status:'recommended'}));
     // CAPR 39-1 / ICL additions the current asset set should eventually support.
     [
-      ['sUAS badge','CAP sUAS Pilot','cap_suas_pilot_badge','badges/cap_suas_pilot_badge.png'],
-      ['sUAS badge','CAP Senior sUAS Pilot','cap_senior_suas_pilot_badge','badges/cap_senior_suas_pilot_badge.png'],
-      ['sUAS badge','CAP Command sUAS Pilot','cap_command_suas_pilot_badge','badges/cap_command_suas_pilot_badge.png'],
-      ['sUAS badge','CAP sUAS Technician','cap_suas_technician_badge','badges/cap_suas_technician_badge.png'],
-      ['sUAS badge','CAP Senior sUAS Technician','cap_senior_suas_technician_badge','badges/cap_senior_suas_technician_badge.png'],
-      ['sUAS badge','CAP Master sUAS Technician','cap_master_suas_technician_badge','badges/cap_master_suas_technician_badge.png'],
       ['sUAS badge','Cadet sUAS Badge','cadet_suas_badge','badges/cadet_suas_badge.png']
     ].forEach(([category,item,id,path])=>expected.push({category,item,id,path:`images/${normalizeAssetSubpath(path)}`,status:'not yet in current catalog'}));
     return expected;
@@ -12173,6 +12197,9 @@ function parseCapMemberReport(textRaw){
   if(/CAP\s+(?:Command|Master)\s+sUAS\s+Pilot\s+(?:Rating|Badge)|(?:Command|Master)\s+sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_master_badge');
   else if(/CAP\s+Senior\s+sUAS\s+Pilot\s+(?:Rating|Badge)|Senior\s+sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_senior_badge');
   else if(/CAP\s+sUAS\s+Pilot\s+(?:Rating|Badge)|sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_basic_badge');
+  if(/CAP\s+Master\s+sUAS\s+Technician\s+(?:Rating|Badge)|Master\s+sUAS\s+Technician\s+Badge/i.test(text)) result.badges.push('uas_technician_master_badge');
+  else if(/CAP\s+Senior\s+sUAS\s+Technician\s+(?:Rating|Badge)|Senior\s+sUAS\s+Technician\s+Badge/i.test(text)) result.badges.push('uas_technician_senior_badge');
+  else if(/CAP\s+sUAS\s+Technician\s+(?:Rating|Badge)|sUAS\s+Technician\s+Badge/i.test(text)) result.badges.push('uas_technician_basic_badge');
   // Do not use MO/Mission Observer training qualification as badge authorization.
   // Only import Observer when the report explicitly shows an observer rating/badge.
   if(/CAP\s+Master\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Master\s+Observer\s+Badge/i.test(text)){
@@ -12182,9 +12209,9 @@ function parseCapMemberReport(textRaw){
   }else if(/CAP\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Observer\s+Badge/i.test(text)){
     result.badges.push('observer_badge');
   }
-  if(/Basic Incident Commander Badge|CAP Basic Incident Commander Badge/i.test(text)){
-    result.badges.push('basic_incident_commander_badge');
-  }
+  if(/(?:Master Incident Commander Badge|Incident Commander 1 Badge|\bIC1\b)/i.test(text)) result.badges.push('incident_commander_1_badge');
+  else if(/(?:Senior Incident Commander Badge|Incident Commander 2 Badge|\bIC2\b)/i.test(text)) result.badges.push('incident_commander_2_badge');
+  else if(/(?:Basic Incident Commander Badge|Incident Commander 3 Badge|\bIC3\b)/i.test(text)) result.badges.push('basic_incident_commander_badge');
   if(/CAP Master Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTL|GTM1)\\b')) result.badges.push('master_ground_team_badge');
   else if(/CAP Senior Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\bGTM2\\b')) result.badges.push('senior_ground_team_badge');
   else if(/CAP Basic Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\bGTM3\\b')) result.badges.push('ground_team_basic_badge');
@@ -13511,16 +13538,14 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       'group_commander_badge','squadron_commander_badge'
     ];
     const CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET = new Set(CAPUB_DOCUMENT_UTILITY_BADGE_IDS);
-    const CAPUB_UTILITY_ONLY_BADGE_IDS = new Set([
-      'incident_commander_1_badge','incident_commander_2_badge'
-    ]);
+    const CAPUB_UTILITY_ONLY_BADGE_IDS = new Set([]);
     CAPUB_UTILITY_ONLY_BADGE_IDS.forEach(id => {
       if(!badgeList.includes(id)) badgeList.push(id);
     });
     const CAPUB_UTILITY_BADGE_LABELS = {
-      basic_incident_commander_badge: 'Basic Incident Commander Badge',
-      incident_commander_1_badge: 'Master Incident Commander Badge',
-      incident_commander_2_badge: 'Senior Incident Commander Badge'
+      basic_incident_commander_badge: 'Basic Incident Commander Badge (IC3)',
+      incident_commander_1_badge: 'Master Incident Commander Badge (IC1)',
+      incident_commander_2_badge: 'Senior Incident Commander Badge (IC2)'
     };
     const CAPUB_INCIDENT_COMMANDER_BADGE_IDS = new Set([
       'basic_incident_commander_badge','incident_commander_1_badge','incident_commander_2_badge'
