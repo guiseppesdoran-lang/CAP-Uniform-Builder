@@ -5694,8 +5694,6 @@ const CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS = [
   'aerospace_education_senior_badge','aerospace_education_master_badge',
   'finance_senior_badge','finance_master_badge',
   'cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge',
-  'command_technician_badge','command_senior_badge','command_master_badge',
-  'health_services_technician_badge','health_services_senior_badge','health_services_master_badge',
   'historian_senior_badge','historian_master_badge',
   'information_technology_senior_badge','information_technology_master_badge',
   'logistics_technician_badge','logistics_senior_badge','logistics_master_badge',
@@ -5773,7 +5771,7 @@ const BADGE_CATEGORIES = [
     'information_technology_technician_badge','cyber_badges','stem_badges'
   ]},
   { key:'Professional Development / Cadet Programs', ids:[
-    'volunteer_university_instructor_badge','cadet_programs_badge',
+    'volunteer_university_instructor_badge','cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge',
     'administration_technician_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge'
   ]},
   { key:'Command Insignia', ids:[
@@ -5799,7 +5797,7 @@ const BADGE_CATEGORIES = [
     'information_technology_senior_badge','information_technology_master_badge',
     'historian_senior_badge','historian_master_badge',
     'cdi_technician_badge','cdi_senior_badge','cdi_master_badge',
-    'drug_demand_reduction_basic_badge'
+    'drug_demand_reduction_technician_badge','drug_demand_reduction_senior_badge','drug_demand_reduction_master_badge'
   ]},
   { key:'Other', ids:[
     'model_rocketry_badge','nra_marksman_badge'
@@ -5825,7 +5823,25 @@ function isBadgeEligibleForMembership(id, membership = State.membership){
 }
 
 function getEligibleBadgeIdsForMembership(membership = State.membership){
-  return badgeList.filter(id => isBadgeEligibleForMembership(id, membership));
+  const legacyAliases = new Set(['cadet_programs_badge','drug_demand_reduction_basic_badge']);
+  return badgeList.filter(id => !legacyAliases.has(id) && isBadgeEligibleForMembership(id, membership));
+}
+
+const BADGE_DISPLAY_NAMES = Object.freeze({
+  uas_pilot_basic_badge: 'sUAS Pilot Badge',
+  uas_pilot_senior_badge: 'Senior sUAS Pilot Badge',
+  uas_pilot_master_badge: 'Command sUAS Pilot Badge',
+  cadet_programs_technician_badge: 'Cadet Programs Technician Badge',
+  cadet_programs_senior_badge: 'Cadet Programs Senior Badge',
+  cadet_programs_master_badge: 'Cadet Programs Master Badge',
+  drug_demand_reduction_basic_badge: 'Drug Demand Reduction Basic Badge',
+  drug_demand_reduction_technician_badge: 'Drug Demand Reduction Technician Badge',
+  drug_demand_reduction_senior_badge: 'Drug Demand Reduction Senior Badge',
+  drug_demand_reduction_master_badge: 'Drug Demand Reduction Master Badge'
+});
+function getBadgeDisplayName(id){
+  return BADGE_DISPLAY_NAMES[id]
+    || String(id || '').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 }
 
 const SENIOR_SPECIALTY_TRACK_GROUP_IDS = [
@@ -5837,9 +5853,7 @@ const SENIOR_SPECIALTY_TRACK_GROUP_IDS = [
   'aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge',
   'finance_technician_badge','finance_senior_badge','finance_master_badge',
   'volunteer_university_instructor_badge',
-  'cadet_programs_badge','cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge',
-  'command_technician_badge','command_senior_badge','command_master_badge',
-  'health_services_technician_badge','health_services_senior_badge','health_services_master_badge',
+  'cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge',
   'logistics_technician_badge','logistics_senior_badge','logistics_master_badge',
   'operations_technician_badge','operations_senior_badge','operations_master_badge',
   'personnel_technician_badge','personnel_senior_badge','personnel_master_badge',
@@ -5850,7 +5864,7 @@ const SENIOR_SPECIALTY_TRACK_GROUP_IDS = [
   'inspector_general_technician_badge','inspector_general_senior_badge','inspector_general_master_badge',
   'stan_eval_tech_badge','stan_eval_senior_badge','stan_eval_master_badge',
   'cdi_technician_badge','cdi_senior_badge','cdi_master_badge',
-  'drug_demand_reduction_basic_badge'
+  'drug_demand_reduction_technician_badge','drug_demand_reduction_senior_badge','drug_demand_reduction_master_badge'
 ];
 
 const CADET_SPECIALTY_TRACK_GROUP_IDS = [
@@ -8123,7 +8137,7 @@ function buildBadgeGallery(){
     const tile = document.createElement('div');
     tile.className = 'galleryTile';
 
-    const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    const title = getBadgeDisplayName(id);
     const rareCadetTag = (State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
     tile.innerHTML = `
       <img src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
@@ -8821,7 +8835,7 @@ function placeBadgeSlotAnchored(id){
 
   clone.dataset.tooltipTitle = (id==='squadron_commander_badge' && State.commandInsignia?.graduatedCommander)
     ? 'GRADUATED COMMANDER INSIGNIA'
-    : id.replace(/_/g,' ').toUpperCase();
+    : getBadgeDisplayName(id).toUpperCase();
   clone.dataset.tooltipReg = `Badge slot: ${slot}`;
   clone.dataset.tooltipWhy = (id==='squadron_commander_badge')
     ? (State.commandInsignia?.graduatedCommander ? 'Past/graduated command insignia renders under the name tag (UN).' : 'Current command insignia renders over the name tag (ON).')
@@ -11517,14 +11531,9 @@ const CAPUB_SPECIALTY_TRACK_TO_BADGE = {
     MASTER: "aerospace_education_master_badge"
   },
   "CADET PROGRAMS": {
-    TECHNICIAN: "cadet_programs_badge",
-    SENIOR: "cadet_programs_badge",
-    MASTER: "cadet_programs_badge"
-  },
-  "COMMAND": {
-    TECHNICIAN: "command_technician_badge",
-    SENIOR: "command_senior_badge",
-    MASTER: "command_master_badge"
+    TECHNICIAN: "cadet_programs_technician_badge",
+    SENIOR: "cadet_programs_senior_badge",
+    MASTER: "cadet_programs_master_badge"
   },
   "COMMUNICATIONS": {
     TECHNICIAN: "communications_technician_badge",
@@ -11540,11 +11549,6 @@ const CAPUB_SPECIALTY_TRACK_TO_BADGE = {
     TECHNICIAN: "finance_technician_badge",
     SENIOR: "finance_senior_badge",
     MASTER: "finance_master_badge"
-  },
-  "HEALTH SERVICES": {
-    TECHNICIAN: "health_services_technician_badge",
-    SENIOR: "health_services_senior_badge",
-    MASTER: "health_services_master_badge"
   },
   "HISTORIAN": {
     TECHNICIAN: "historian_technicianIbadge",
@@ -11607,14 +11611,14 @@ const CAPUB_SPECIALTY_TRACK_TO_BADGE = {
     MASTER: "inspector_general_master_badge"
   },
   "DRUG DEMAND REDUCTION": {
-    TECHNICIAN: "drug_demand_reduction_basic_badge",
-    SENIOR: "drug_demand_reduction_basic_badge",
-    MASTER: "drug_demand_reduction_basic_badge"
+    TECHNICIAN: "drug_demand_reduction_technician_badge",
+    SENIOR: "drug_demand_reduction_senior_badge",
+    MASTER: "drug_demand_reduction_master_badge"
   },
   "DDR": {
-    TECHNICIAN: "drug_demand_reduction_basic_badge",
-    SENIOR: "drug_demand_reduction_basic_badge",
-    MASTER: "drug_demand_reduction_basic_badge"
+    TECHNICIAN: "drug_demand_reduction_technician_badge",
+    SENIOR: "drug_demand_reduction_senior_badge",
+    MASTER: "drug_demand_reduction_master_badge"
   },
   "STANDARDIZATION AND EVALUATION": {
     TECHNICIAN: "stan_eval_tech_badge",
@@ -13521,7 +13525,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     const CAPUB_INCIDENT_COMMANDER_BADGE_IDS = new Set([
       'basic_incident_commander_badge','incident_commander_1_badge','incident_commander_2_badge'
     ]);
-    const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'capr-fabric-20260806';
+    const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'capr-fabric-20260822-v2';
 
     function capubUtilityBadgePreviewUrl(id){
       return `${ASSET(`badges/utility/${id}.png`)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`;
