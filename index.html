@@ -3233,12 +3233,39 @@ function countBadgesForLimit(ids = State.badges){
 
 function mergeCalibDefaults(){
   if(!State.calib.byUniform) State.calib.byUniform = {};
+  migrateLegacyClassACalibration();
   for(const [uniformId, bucket] of Object.entries(DEFAULT_CALIBRATION_BY_UNIFORM)){
     if(!State.calib.byUniform[uniformId]) State.calib.byUniform[uniformId] = {};
     for(const [key, value] of Object.entries(bucket)){
       if(!State.calib.byUniform[uniformId][key]){
         State.calib.byUniform[uniformId][key] = { ...value };
       }
+    }
+  }
+}
+
+function calibrationRecordMatches(actual, expected){
+  if(!actual || !expected) return false;
+  return ['x','y','w','h','r'].every(field => {
+    const expectedValue = Number(expected[field] ?? 0);
+    const actualValue = Number(actual[field] ?? 0);
+    return Number.isFinite(actualValue) && Math.abs(actualValue - expectedValue) < 0.001;
+  });
+}
+
+function migrateLegacyClassACalibration(){
+  const bucket = State.calib.byUniform?.blues_a_male;
+  const defaults = DEFAULT_CALIBRATION_BY_UNIFORM.blues_a_male;
+  if(!bucket || !defaults) return;
+
+  const legacyRecords = {
+    'badge:observer_badge:OLP:0': {x:264,y:151,w:60,h:17,r:0},
+    'badge:senior_emergency_services_badge:LP:0': {x:280,y:265,w:28,h:28,r:0}
+  };
+
+  for(const [key, legacy] of Object.entries(legacyRecords)){
+    if(calibrationRecordMatches(bucket[key], legacy) && defaults[key]){
+      bucket[key] = { ...defaults[key] };
     }
   }
 }
@@ -5678,6 +5705,7 @@ const CAPUB_PIXELS_PER_INCH = RIBBON_WIDTH / 1.375;
 // These Aircrew assets have different intrinsic silhouettes. Preserve each
 // image's true proportions instead of stretching it into the legacy 60x25 box.
 const CAPUB_BADGE_ASPECT_RATIOS = Object.freeze({
+  observer_badge: 196 / 56,
   AirCrew1_DB3F0FCC3650F: 193 / 54,
   SeniorAirCrew1_B289BAE6E515C: 190 / 71,
   MasterAirCrew1_72AC4CAE7A310: 190 / 68,
@@ -10685,6 +10713,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.calib = p.calib || State.calib || {enabled:false, selectedKey:null, selectedKeys:[], map:{}, byUniform:{}};
     if(!Array.isArray(State.calib.selectedKeys)) State.calib.selectedKeys = State.calib.selectedKey ? [State.calib.selectedKey] : [];
     if(!State.calib.byUniform) State.calib.byUniform = {};
+    mergeCalibDefaults();
 
     populateRankSetup();
     syncCadetFirstSergeantControl();
