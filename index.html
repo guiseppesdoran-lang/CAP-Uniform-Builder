@@ -2986,7 +2986,14 @@ const OLPU_OCCUPATIONAL_BADGE_IDS = new Set([
   'medical_officer','nurse_officer','legal_officer',
   'basic_incident_commander_badge','incident_commander_2_badge','incident_commander_1_badge'
 ]);
+const GOVERNANCE_SERVICE_BADGE_IDS = new Set([
+  'senior_advisory_group_badge',
+  'command_council_badge',
+  'national_executive_committee_badge',
+  'cap_national_command_board_badge'
+]);
 const SPECIALTY_TRACK_BADGE_IDS = new Set([
+  ...GOVERNANCE_SERVICE_BADGE_IDS,
   'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
   'communications_technician_badge','communications_senior_badge','communications_master_badge',
   'information_technology_technician_badge','historian_technicianIbadge',
@@ -2998,10 +3005,7 @@ const POCKET_SERVICE_BADGE_IDS = new Set([
   ...SPECIALTY_TRACK_BADGE_IDS
 ]);
 const CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS = new Set([
-  'senior_advisory_group_badge',
-  'command_council_badge',
-  'national_executive_committee_badge',
-  'cap_national_command_board_badge'
+  ...GOVERNANCE_SERVICE_BADGE_IDS
 ]);
 
 function isBadgeAuthorizedOnCurrentDressUniform(id){
@@ -3153,6 +3157,16 @@ function getSpecialtyPocketSlotBySelectionOrder(id){
   const specialtyOrder = (State.badges || [])
     .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
     .filter(badgeId => isBadgeEligibleForMembership(badgeId, State.membership));
+
+  // CAPR 39-1 Attachment 4 assigns the CSAG, Command Council, National Board,
+  // and NEC service-badge family to LP on Service Dress. Only one may own that
+  // service-badge position; another flexible specialty badge may use RP.
+  const activeGovernanceBadge = specialtyOrder.find(badgeId => GOVERNANCE_SERVICE_BADGE_IDS.has(badgeId)) || null;
+  if(GOVERNANCE_SERVICE_BADGE_IDS.has(id)) return activeGovernanceBadge === id ? 'LP' : null;
+  if(activeGovernanceBadge){
+    const firstOtherBadge = specialtyOrder.find(badgeId => !GOVERNANCE_SERVICE_BADGE_IDS.has(badgeId)) || null;
+    return firstOtherBadge === id ? 'RP' : null;
+  }
 
   const hasVolunteerUniversity = specialtyOrder.includes('volunteer_university_instructor_badge');
   const activeLpExclusive = getActiveMaleCadetLeftPocketExclusiveBadge();
@@ -5728,7 +5742,8 @@ const CAPUB_BADGE_DIMENSIONS_INCHES = Object.freeze({
   legal: { axis:'width', regular:1.25 },
   emt: { axis:'width', regular:1.125, miniature:0.875 },
   incidentCommander: { axis:'width', regular:1.625, miniature:1.125 },
-  groundTeam: { axis:'width', regular:1.125, miniature:0.875 }
+  groundTeam: { axis:'width', regular:1.125, miniature:0.875 },
+  governanceService: { axis:'height', regular:3 }
 });
 function getBadgeDimensionRule(id){
   if(id === 'solo_badge' || id === 'pre_solo_badge') return CAPUB_BADGE_DIMENSIONS_INCHES.solo;
@@ -5740,6 +5755,7 @@ function getBadgeDimensionRule(id){
   if(['emt_basic_badge','emt_intermediate','emt_paramedic'].includes(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.emt;
   if(INCIDENT_COMMAND_SPECIALTY_BADGE_IDS.has(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.incidentCommander;
   if(['ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'].includes(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.groundTeam;
+  if(GOVERNANCE_SERVICE_BADGE_IDS.has(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.governanceService;
   return null;
 }
 function getBadgeRenderSize(id, uniformId=State.uniform){
@@ -5805,7 +5821,10 @@ CAPUB_NEW_SPECIALTY_BADGE_IDS.forEach(id => {
 });
 
 const CAPUB_NEW_COMMAND_BADGE_IDS = [
-  'group_commander_badge',
+  'group_commander_badge'
+];
+
+const CAPUB_NEW_GOVERNANCE_SERVICE_BADGE_IDS = [
   'senior_advisory_group_badge',
   'national_executive_committee_badge',
   'command_council_badge',
@@ -5817,6 +5836,14 @@ CAPUB_NEW_COMMAND_BADGE_IDS.forEach(id => {
   COMMAND_INSIGNIA_BADGE_IDS.add(id);
   if(!customBadgeSizes[id]) customBadgeSizes[id] = { width:15, height:15 };
   if(!badgeLocations[id]) badgeLocations[id] = 'ON';
+});
+
+CAPUB_NEW_GOVERNANCE_SERVICE_BADGE_IDS.forEach(id => {
+  if(!badgeList.includes(id)) badgeList.push(id);
+  SPECIALTY_TRACK_BADGE_IDS.add(id);
+  POCKET_SERVICE_BADGE_IDS.add(id);
+  customBadgeSizes[id] = { width:50, height:50 };
+  badgeLocations[id] = 'LP';
 });
 
 /* NEW: badge grouping for modal */
@@ -8715,6 +8742,10 @@ function chooseBadgeSlot(id, prefs){
     const activeLpExclusive = getActiveMaleCadetLeftPocketExclusiveBadge();
 
     if(useFemaleOverNameplateSpecialtyLayout(id)){
+      ordered = preferred ? [preferred] : [];
+    }else if(GOVERNANCE_SERVICE_BADGE_IDS.has(id)){
+      // Governance service badges are fixed to the wearer's left side and may
+      // not fall through to the opposite pocket when LP is occupied.
       ordered = preferred ? [preferred] : [];
     }else if(id === 'volunteer_university_instructor_badge'){
       ordered = ['RP'];
@@ -13857,6 +13888,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
           }
           if(chk.checked && CAPUB_INCIDENT_COMMANDER_BADGE_IDS.has(id)){
             CAPUB_INCIDENT_COMMANDER_BADGE_IDS.forEach(otherId => {
+              if(otherId === id) return;
+              if(State.badgeSelections[otherId]) State.badgeSelections[otherId].checked = false;
+              State.badges = (State.badges || []).filter(selectedId => selectedId !== otherId);
+            });
+          }
+          if(chk.checked && GOVERNANCE_SERVICE_BADGE_IDS.has(id)){
+            GOVERNANCE_SERVICE_BADGE_IDS.forEach(otherId => {
               if(otherId === id) return;
               if(State.badgeSelections[otherId]) State.badgeSelections[otherId].checked = false;
               State.badges = (State.badges || []).filter(selectedId => selectedId !== otherId);
