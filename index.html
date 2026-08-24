@@ -2897,6 +2897,27 @@ const CAPUB_IMPORTED_COORDINATE_CORRECTIONS = {"blues_a":{"badge:AirCrew1_DB3F0F
   }
 })();
 
+/* CAPUB COORDINATE UPDATE 2026-08-23
+   Male Senior Member Class A blues, imported from
+   CAPUB_coordinates_1787529720166.json and setup export (11). The observer
+   reference controls the shared aviation-badge position/scale; dependent
+   OLPU badges continue to align beneath it. The left-pocket service badge
+   retains the independently calibrated position and size from the export. */
+(function capubApplyMaleClassAItemCalibrationUpdate(){
+  const bucketId = 'blues_a_male';
+  if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
+  const updates = {
+    'badge:observer_badge:OLP:0': {x:268.409,y:126.71,w:50.172,h:16,r:0},
+    'badge:senior_emergency_services_badge:LP:0': {x:280.9,y:255.6,w:25.5,h:25.5,r:0}
+  };
+  for(const [key, coords] of Object.entries(updates)){
+    DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = {
+      ...(DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] || {}),
+      ...coords
+    };
+  }
+})();
+
 /* CAPUB COORDINATE UPDATE 2026-08-05
    Female Senior Member Class A blues (Captain base image), imported from
    CAPUB_coordinates_1785908806912.json. This gender-specific correction is
