@@ -2990,7 +2990,8 @@ const GOVERNANCE_SERVICE_BADGE_IDS = new Set([
   'senior_advisory_group_badge',
   'command_council_badge',
   'national_executive_committee_badge',
-  'cap_national_command_board_badge'
+  'cap_national_command_board_badge',
+  'national_staff_badge'
 ]);
 const SPECIALTY_TRACK_BADGE_IDS = new Set([
   ...GOVERNANCE_SERVICE_BADGE_IDS,
@@ -5430,7 +5431,10 @@ const BADGE_IMAGE_OVERRIDES = {
   'uas_pilot_master_badge': 'badges/uas_pilot_master_badge.png',
   'uas_technician_basic_badge': 'badges/uas_technician_basic_badge.png',
   'uas_technician_senior_badge': 'badges/uas_technician_senior_badge.png',
-  'uas_technician_master_badge': 'badges/uas_technician_master_badge.png'
+  'uas_technician_master_badge': 'badges/uas_technician_master_badge.png',
+  'cadet_programs_technician_badge': 'badges/cadet_programs_technician_badge_v2.png',
+  'cadet_programs_senior_badge': 'badges/cadet_programs_senior_badge_v2.png',
+  'cadet_programs_master_badge': 'badges/cadet_programs_master_badge_v2.png'
 };
 
 
@@ -5457,6 +5461,7 @@ Object.assign(BADGE_IMAGE_OVERRIDES, {
   'national_executive_committee_badge': 'badges/National_Executive_Committee_Badge.png',
   'command_council_badge': 'badges/Command_Council.png',
   'cap_national_command_board_badge': 'badges/CAP_National_Command_Board.png',
+  'national_staff_badge': 'badges/national_staff_badge.png',
 
   // Standardization / Evaluation
   'stan_eval_tech_badge': 'badges/Stan_eval_tech.png',
@@ -5731,7 +5736,11 @@ const CAPUB_BADGE_ASPECT_RATIOS = Object.freeze({
   uas_technician_master_badge: 362 / 133,
   basic_incident_commander_badge: 307 / 140,
   incident_commander_2_badge: 308 / 185,
-  incident_commander_1_badge: 307 / 188
+  incident_commander_1_badge: 307 / 188,
+  cadet_programs_technician_badge: 0.775,
+  cadet_programs_senior_badge: 0.775,
+  cadet_programs_master_badge: 0.775,
+  national_staff_badge: 1178 / 1154
 });
 const CAPUB_BADGE_DIMENSIONS_INCHES = Object.freeze({
   aviation: { axis:'width', regular:3, miniature:2 },
@@ -5802,6 +5811,14 @@ CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS.forEach(id => {
   FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS.add(id);
 });
 
+// The Cadet Programs badge is taller than it is wide. The old square render box
+// stretched the oval and exaggerated the low-resolution edge artifacts.
+[
+  'cadet_programs_technician_badge',
+  'cadet_programs_senior_badge',
+  'cadet_programs_master_badge'
+].forEach(id => { customBadgeSizes[id] = { width:19.375, height:25 }; });
+
 
 // === CAPUB PATCH 2026-05-13: Register newly supplied badges ===
 const CAPUB_NEW_SPECIALTY_BADGE_IDS = [
@@ -5828,7 +5845,8 @@ const CAPUB_NEW_GOVERNANCE_SERVICE_BADGE_IDS = [
   'senior_advisory_group_badge',
   'national_executive_committee_badge',
   'command_council_badge',
-  'cap_national_command_board_badge'
+  'cap_national_command_board_badge',
+  'national_staff_badge'
 ];
 
 CAPUB_NEW_COMMAND_BADGE_IDS.forEach(id => {
@@ -5876,7 +5894,7 @@ const BADGE_CATEGORIES = [
     'squadron_commander_badge','group_commander_badge'
   ]},
   { key:'Command Council / National Governance', ids:[
-    'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge'
+    'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge','national_staff_badge'
   ]},
   { key:'Chaplain / Legal / Admin', ids:[
     'christian_chaplin','jewish_chaplin','muslim_chaplin','buddist_chaplin','legal_officer','historian_technicianIbadge',
@@ -5938,6 +5956,7 @@ const BADGE_DISPLAY_NAMES = Object.freeze({
   cadet_programs_technician_badge: 'Cadet Programs Technician Badge',
   cadet_programs_senior_badge: 'Cadet Programs Senior Badge',
   cadet_programs_master_badge: 'Cadet Programs Master Badge',
+  national_staff_badge: 'National Staff Badge',
   drug_demand_reduction_basic_badge: 'Drug Demand Reduction Basic Badge',
   drug_demand_reduction_technician_badge: 'Drug Demand Reduction Technician Badge',
   drug_demand_reduction_senior_badge: 'Drug Demand Reduction Senior Badge',
@@ -6025,7 +6044,7 @@ function getBadgeCategoriesForCurrentMembership(){
         'squadron_commander_badge','group_commander_badge'
       ]},
       { key:'Command Council / National Governance', ids:[
-        'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge'
+        'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge','national_staff_badge'
       ]}
     ];
   }
