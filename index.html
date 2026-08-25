@@ -11395,8 +11395,16 @@ function chooseEncampmentValue(count){
 }
 
 function importedBadgePriority(id){
+  const specialtyPriority = getImportedSpecialtyBadgePriority(id);
+  if(specialtyPriority !== null){
+    // Keep rated specialty-track badges after aviation/qualification badges,
+    // but order the specialty badges themselves by rating and duty family.
+    return 100 + specialtyPriority;
+  }
   const i = MEMBER_REPORT_IMPORT_BADGE_PRIORITY.indexOf(id);
-  return i === -1 ? 9999 : i;
+  if(i === -1) return 9999;
+  const legacySpecialtyStart = MEMBER_REPORT_IMPORT_BADGE_PRIORITY.indexOf('master_emergency_services_badge');
+  return legacySpecialtyStart >= 0 && i >= legacySpecialtyStart ? 5000 + i : i;
 }
 
 function selectHighestWearableImportedBadges(ids){
@@ -11820,6 +11828,52 @@ const CAPUB_SPECIALTY_TRACK_TO_BADGE = {
     MASTER: "cdi_master_badge"
   }
 };
+
+// Automatic member-report specialty-badge preference:
+//   1. Highest rating first: Master, Senior, Technician.
+//   2. At the same rating: operations, CP/AE, then personnel/support.
+// The order inside each family makes otherwise equal selections deterministic.
+const CAPUB_SPECIALTY_TRACK_FAMILY_ORDER = {
+  operations: [
+    'OPERATIONS','EMERGENCY SERVICES','COMMUNICATIONS','INFORMATION TECHNOLOGY','IT',
+    'LOGISTICS','SAFETY','STANDARDIZATION AND EVALUATION','STANDARDIZATION EVALUATION','STAN EVAL'
+  ],
+  cadetProgramsAerospace: ['CADET PROGRAMS','AEROSPACE EDUCATION','AEROSPACE'],
+  personnel: [
+    'PERSONNEL','ADMINISTRATION','FINANCE','RECRUITING AND RETENTION OFFICER',
+    'RECRUITING AND RETENTION','PROFESSIONAL DEVELOPMENT','PUBLIC AFFAIRS','HISTORIAN',
+    'INSPECTOR GENERAL','DRUG DEMAND REDUCTION','DDR','CDI','CHARACTER DEVELOPMENT INSTRUCTOR'
+  ]
+};
+
+const CAPUB_SPECIALTY_BADGE_IMPORT_PRIORITY = (() => {
+  const result = new Map();
+  const ratingOrder = { MASTER:0, SENIOR:1, TECHNICIAN:2 };
+  const families = [
+    CAPUB_SPECIALTY_TRACK_FAMILY_ORDER.operations,
+    CAPUB_SPECIALTY_TRACK_FAMILY_ORDER.cadetProgramsAerospace,
+    CAPUB_SPECIALTY_TRACK_FAMILY_ORDER.personnel
+  ];
+
+  families.forEach((tracks, familyIndex) => {
+    tracks.forEach((track, trackIndex) => {
+      const levels = CAPUB_SPECIALTY_TRACK_TO_BADGE[track] || {};
+      Object.entries(levels).forEach(([level, badgeId]) => {
+        if(!badgeId || ratingOrder[level] === undefined) return;
+        const priority = ratingOrder[level] * 100 + familyIndex * 30 + trackIndex;
+        const previous = result.get(badgeId);
+        if(previous === undefined || priority < previous) result.set(badgeId, priority);
+      });
+    });
+  });
+  return result;
+})();
+
+function getImportedSpecialtyBadgePriority(id){
+  return CAPUB_SPECIALTY_BADGE_IMPORT_PRIORITY.has(id)
+    ? CAPUB_SPECIALTY_BADGE_IMPORT_PRIORITY.get(id)
+    : null;
+}
 
 function normalizeSpecialtyTrackName(name){
   return String(name || '')
