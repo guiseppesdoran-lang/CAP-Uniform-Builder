@@ -11875,6 +11875,12 @@ function getImportedSpecialtyBadgePriority(id){
     : null;
 }
 
+function getHighestImportedSpecialtyBadgeIds(ids, limit = 2){
+  return [...new Set((ids || []).filter(id => getImportedSpecialtyBadgePriority(id) !== null))]
+    .sort((a, b) => getImportedSpecialtyBadgePriority(a) - getImportedSpecialtyBadgePriority(b))
+    .slice(0, Math.max(0, Number(limit) || 0));
+}
+
 function normalizeSpecialtyTrackName(name){
   return String(name || '')
     .toUpperCase()
@@ -12889,8 +12895,15 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
 
   const command = out.filter(id => isCommandInsigniaBadge(id));
   const countedSource = out.filter(id => !isCommandInsigniaBadge(id));
-  const protectedIds = ['master_emergency_services_badge','volunteer_university_instructor_badge']
-    .filter(id => countedSource.includes(id));
+  // Reserve the specialty-badge positions before the general badge cap is
+  // applied. Sorting alone was insufficient: aviation and qualification badges
+  // could consume every counted slot before the highest specialty ratings were
+  // reached. The default is now the two highest rated specialty badges, with
+  // the requested operations -> CP/AE -> personnel/support tie-break order.
+  const protectedIds = [
+    ...getHighestImportedSpecialtyBadgeIds(countedSource, 2),
+    'volunteer_university_instructor_badge'
+  ].filter(id => countedSource.includes(id));
 
   const counted = [];
   for(const id of protectedIds){
@@ -13757,7 +13770,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     const CAPUB_INCIDENT_COMMANDER_BADGE_IDS = new Set([
       'basic_incident_commander_badge','incident_commander_1_badge','incident_commander_2_badge'
     ]);
-    const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'capr-fabric-20260822-v2';
+    const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'capr-fabric-20260825-v4';
 
     function capubUtilityBadgePreviewUrl(id){
       return `${ASSET(`badges/utility/${id}.png`)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`;
@@ -14098,12 +14111,14 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     };
     // Imported from the user's OCP positioning example. Placement is keyed by
     // badge identity, not click order, so precedence cannot move these badges.
-    const CAPUB_UTILITY_POSITION_EXAMPLE = {
-      ocp: {
-        master_ground_team_badge: { x:547, y:128, w:30, h:28, r:0 },
-        emt_basic_badge: { x:577, y:131, w:38, h:28, r:0 },
-        AirCrew1_DB3F0FCC3650F: { x:551, y:99, w:57, h:22, r:0 }
-      }
+    const CAPUB_UTILITY_THREE_BADGE_TEMPLATE = {
+      // Imported from CAPUB setup (14): aviation wings centered on the upper
+      // row, with the two occupational badges aligned beneath them.
+      ocp: [
+        { centerX:580, topY:99 },
+        { centerX:562, topY:128 },
+        { centerX:596, topY:131 }
+      ]
     };
 
     const CAPUB_UTILITY_BADGE_PRECEDENCE = [
@@ -14137,9 +14152,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       // CIVIL AIR PATROL tape. A single cloth command insignia is a separate
       // item centered over the wearer's name tape and must not consume a slot
       // or participate in the qualification grid.
-      // CAPR 39-1 paragraph 5.1.2.3.6 permits a combined maximum of two
-      // embroidered aviation/occupational badges over the CAP tape.
-      const qualifications = selected.filter(id => !isCommandInsigniaBadge(id)).slice(0, 2);
+      // OCP supports three selected embroidered aviation/occupational badges.
+      // The renderer already provides the required one-over-two arrangement.
+      const qualifications = selected.filter(id => !isCommandInsigniaBadge(id)).slice(0, 3);
       const command = selected.filter(id => isCommandInsigniaBadge(id)).slice(0, 1);
       return [...qualifications, ...command];
     }
@@ -14199,10 +14214,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
       if(!badges.length) return;
       const sizes = badges.map(img => capubUtilityBadgeSize(img));
-      const exampleLayout = CAPUB_UTILITY_POSITION_EXAMPLE[fieldKey];
-      const usePositionExample = badges.length === 3
-        && !!exampleLayout
-        && badges.every(img => !!exampleLayout[img.dataset.badgeId]);
+      const threeBadgeTemplate = CAPUB_UTILITY_THREE_BADGE_TEMPLATE[fieldKey];
 
       // One/two badges use the 1/2-inch tape clearance. Three/four use 1/8 inch.
       const lowerBottom = tape.topY - (badges.length <= 2 ? halfInch : eighthInch);
@@ -14221,6 +14233,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
           y:lowerBottom - lower.h - halfInch - upper.h
         });
         positions.push({ x:tape.centerX - lower.w/2, y:lowerBottom - lower.h });
+      }else if(badges.length === 3 && threeBadgeTemplate){
+        threeBadgeTemplate.forEach((template, index) => {
+          positions.push({
+            x:template.centerX - sizes[index].w / 2,
+            y:template.topY
+          });
+        });
       }else if(badges.length === 3){
         // Highest-precedence badge is centered on the upper row. The next two
         // are placed left-to-right on the lower row, matching the supplied OCP example.
@@ -14250,11 +14269,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
       badges.forEach((img, i) => {
         const size = sizes[i];
-        const example = usePositionExample
-          ? exampleLayout[img.dataset.badgeId]
-          : null;
         const saved = typeof getCalib === 'function' ? getCalib(img.dataset.calibKey) : null;
-        const placement = saved || example;
+        const placement = saved;
         img.style.left = `${Math.round(placement?.x ?? positions[i].x)}px`;
         img.style.top = `${Math.round(placement?.y ?? positions[i].y)}px`;
         // Preserve calibrated position, but cap stale saved dimensions at the
@@ -14272,12 +14288,19 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         img.dataset.badgeId = id;
         // New key prevents legacy 44-px/in and mixed command-grid coordinates
         // from overriding the regulation-based automatic layout.
-        img.dataset.calibKey = `utilityBadgeRegV4:${id}:${index}`;
+        img.dataset.calibKey = `utilityBadgeRegV5:${id}:${index}`;
         img.dataset.tooltipTitle = (CAPUB_UTILITY_BADGE_LABELS[id] || id.replace(/_/g,' ')).toUpperCase();
         img.dataset.tooltipReg = 'CAPR 39-1, paragraph 5.1.2.3.6';
-        img.dataset.tooltipWhy = 'One of no more than two embroidered aviation/occupational badges centered above the CAP tape.';
+        img.dataset.tooltipWhy = 'One of no more than three embroidered aviation/occupational badges centered above the CAP tape.';
         img.style.display = 'block';
         img.style.objectFit = 'contain';
+        // CAPR cloth insignia is worn on a dark-blue rectangular background
+        // with 1/8 inch of blue showing around the embroidered device. Keep
+        // that field explicit and uniform instead of depending on the varying
+        // transparent/blue margins baked into the source PNG files.
+        img.style.backgroundColor = '#132140';
+        img.style.border = `${CAPUB_UTILITY_BLUE_MARGIN}px solid #132140`;
+        img.style.boxSizing = 'content-box';
         img.style.zIndex = '28';
         img.onload = capubLayoutUtilityBadges;
         applyBadgeAssetWithFallback(img, id);
@@ -14520,7 +14543,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     // complete/adjusted OCP sprite on the male right-sleeve reference view.
     DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male ||= {};
     DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male['patch:tn330_ocp_patch:R_SHOULDER:0'] = {
-      x:76, y:248, w:130, h:65, r:0
+      x:170, y:229, w:120, h:60, r:-16
     };
 
     // Keep the TN-185 metadata normalized and available for the same resolver.
