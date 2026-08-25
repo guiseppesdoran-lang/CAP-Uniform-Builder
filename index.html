@@ -11209,11 +11209,16 @@ function removeMemberReportSection(text, startLabel, endLabels=[]){
 }
 
 function removeLocalActivitiesFromMemberReport(text){
-  return removeMemberReportSection(text, 'Local\\s+Activities', [
-    'Professional\\s+Development','Specialty\\s+Tracks','Cadet\\s+Training','Encampments',
-    'Cadet\\s+Achievements','Awards','Promotions','Decorations','Ribbons',
-    'Current\\s+Duty\\s+Positions','Past\\s+Duty\\s+Positions','Transfer\\s+History'
-  ]);
+  const source = String(text || '');
+  const start = source.search(/Local\s+Activities/i);
+  if(start < 0) return source;
+
+  // Local Activities is the final member-report section. Do not try to locate
+  // a later heading by label: activity descriptions themselves commonly contain
+  // words such as "Professional Development", "Awards", and "Promotions".
+  // Treating those cells as headings ended the exclusion early and allowed an
+  // activity such as "Spaatz Award Presentation" to award a ribbon.
+  return source.slice(0, start).trim();
 }
 
 function normalizeImportedRank(raw){
@@ -12046,7 +12051,7 @@ function hasCurrentFirstSergeantDutyPosition(text){
 }
 
 function parseCapMemberReport(textRaw){
-  const text = removeLocalActivitiesFromMemberReport(normalizeMemberReportText(textRaw));
+  const text = normalizeMemberReportText(removeLocalActivitiesFromMemberReport(textRaw));
   const result = {
     membership:null,
     gender:null,
@@ -12080,8 +12085,11 @@ function parseCapMemberReport(textRaw){
     }
   }
 
-  // Cadet achievement ribbons from the cadet achievements section.
-  const achievementNumMatches = [...text.matchAll(/Achievement\s+(\d+)/gi)].map(m => parseInt(m[1],10)).filter(Number.isFinite);
+  // Cadet milestone ribbons must come only from the Cadet Achievements table.
+  // A milestone name elsewhere in the report (for example, attendance at a
+  // "Spaatz Award Presentation") is not evidence that the member earned it.
+  const cadetAchievements = getReportSection(text, 'Cadet\\s+Achievements', 'Awards');
+  const achievementNumMatches = [...cadetAchievements.matchAll(/Achievement\s+(\d+)/gi)].map(m => parseInt(m[1],10)).filter(Number.isFinite);
   const maxAchievement = achievementNumMatches.length ? Math.max(...achievementNumMatches) : 0;
   const achievementMap = [
     null,
@@ -12096,7 +12104,7 @@ function parseCapMemberReport(textRaw){
   ];
   for(let i=1; i<=Math.min(maxAchievement, 8); i++){
     if(!achievementMap[i]) continue;
-    const honorCredit = hasAchievementHonorCreditFromReport(text, i);
+    const honorCredit = hasAchievementHonorCreditFromReport(cadetAchievements, i);
     let value = honorCredit ? 'honor_credit' : 'earned';
 
     // Goddard uses the same one-star ribbon for either Honor Credit or Model
@@ -12116,11 +12124,11 @@ function parseCapMemberReport(textRaw){
       reason:`Achievement ${i}${honorCredit ? ' with Honor Credit' : ''}`
     });
   }
-  if(/Wright\s+Brothers/i.test(text)) result.ribbons.push({ id:'wright_brothers_award', value:'earned', reason:'Wright Brothers' });
-  if(/Billy\s+Mitchell/i.test(text)) result.ribbons.push({ id:'mitchell_award', value:'earned', reason:'Billy Mitchell' });
-  if(/Amelia\s+Earhart/i.test(text)) result.ribbons.push({ id:'earhart_award', value:'earned', reason:'Amelia Earhart' });
-  if(/\bEaker\b/i.test(text)) result.ribbons.push({ id:'eaker_award', value:'earned', reason:'Eaker' });
-  if(/\bSpaatz\b/i.test(text)) result.ribbons.push({ id:'spaatz_award', value:'earned', reason:'Spaatz' });
+  if(/Wright\s+Brothers/i.test(cadetAchievements)) result.ribbons.push({ id:'wright_brothers_award', value:'earned', reason:'Wright Brothers' });
+  if(/Billy\s+Mitchell/i.test(cadetAchievements)) result.ribbons.push({ id:'mitchell_award', value:'earned', reason:'Billy Mitchell' });
+  if(/Amelia\s+Earhart/i.test(cadetAchievements)) result.ribbons.push({ id:'earhart_award', value:'earned', reason:'Amelia Earhart' });
+  if(/\bEaker\b/i.test(cadetAchievements)) result.ribbons.push({ id:'eaker_award', value:'earned', reason:'Eaker' });
+  if(/\bSpaatz\b/i.test(cadetAchievements)) result.ribbons.push({ id:'spaatz_award', value:'earned', reason:'Spaatz' });
 
   // Decorations / service ribbons.
   const achievementAwardCount = countOccurrences(text, /Achievement Award\s+\d{1,2}\s+[A-Z][a-z]{2}\s+\d{4}/gi) ||
