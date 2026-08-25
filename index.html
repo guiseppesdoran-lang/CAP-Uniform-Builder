@@ -896,6 +896,13 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 .capubPill{background:rgba(255,255,255,.92);border:1px solid rgba(203,213,225,.9);border-radius:999px;padding:6px 10px;font-size:11px;color:#334155;box-shadow:0 7px 18px rgba(15,23,42,.09);backdrop-filter:blur(8px)}
 .capubPill strong{color:#0f172a}.previewTools{position:sticky;top:14px;z-index:80;align-self:flex-start;display:flex;flex-direction:column;gap:8px}.previewToolCard{width:158px;background:rgba(255,255,255,.92);border:1px solid rgba(203,213,225,.85);border-radius:16px;padding:10px;box-shadow:var(--shadow2);backdrop-filter:blur(10px)}.previewToolCard .toolTitle{font-size:11px;font-weight:800;text-transform:uppercase;color:#64748b;letter-spacing:.06em;margin-bottom:8px}.previewToolCard .smallRow{display:flex;gap:6px}.previewToolCard button{padding:7px 8px;font-size:12px}.previewToolCard button.ghost{box-shadow:none}.previewToolCard .zoomReadout{display:block;text-align:center;margin-top:7px;font-size:12px;font-weight:800;color:#102a43}.capubCommandBar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:12000;display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.92);border:1px solid rgba(203,213,225,.9);box-shadow:0 20px 50px rgba(15,23,42,.22);border-radius:999px;padding:8px;backdrop-filter:blur(12px)}.capubCommandBar button{width:auto;margin:0;padding:8px 12px;font-size:12px;border-radius:999px}.capubCommandBar .ghost{background:#fff}.capubToast{position:fixed;right:20px;bottom:84px;z-index:25000;background:#102a43;color:#fff;border-radius:14px;padding:12px 14px;font-size:13px;box-shadow:0 18px 40px rgba(15,23,42,.35);opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .18s ease,transform .18s ease}.capubToast.show{opacity:1;transform:translateY(0)}
 .capubSectionHint{display:flex;align-items:flex-start;gap:8px;border:1px solid #dbeafe;background:#f0f7ff;border-radius:14px;padding:9px 10px;font-size:11.5px;color:#36506d;line-height:1.35;margin-bottom:10px}.capubSectionHint b{color:#0f3c73}.capubSectionHint span{font-size:16px;line-height:1}.layer[data-missing="true"]{outline:2px dashed rgba(217,119,6,.55)!important;outline-offset:2px;}
+@media (min-width:769px){
+  /* Once the controls are collapsed, keep the preview centered in the full
+     remaining workspace. The preview tools float at the right instead of
+     participating in the flex row and pushing the uniform left. */
+  #layoutShell.sidebar-collapsed #previewWrapper{justify-content:center;}
+  #layoutShell.sidebar-collapsed .previewTools{position:absolute;right:16px;top:14px;}
+}
 @media (max-width:980px){.statusGrid{grid-template-columns:repeat(2,minmax(0,1fr));}.previewTools{position:fixed;right:12px;top:84px}.previewToolCard{width:144px}.capubCommandBar{max-width:calc(100vw - 24px);overflow:auto}.capubProgress{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:768px){header h1::after{display:block;margin-left:0;margin-top:4px}.controlsHeader .controlsTitle::after{display:none}#controls,#layoutShell.sidebar-open #controls,#layoutShell.sidebar-collapsed #controls{width:min(92vw,380px);min-width:min(92vw,380px);max-width:min(92vw,380px)}#layoutShell.sidebar-open #controls{transform:translate3d(0,0,0)!important;visibility:visible;pointer-events:auto}#layoutShell.sidebar-collapsed #controls{transform:translate3d(-105%,0,0)!important;visibility:hidden;pointer-events:none}#previewWrapper{padding:16px 12px 96px}#previewArea{transform-origin:top left}.previewTools{right:10px;top:auto;bottom:82px}.previewToolCard{width:132px}.capubCommandBar{left:12px;right:12px;transform:none;justify-content:flex-start}.capubCommandBar button{white-space:nowrap}.capubTopBar{left:12px;right:12px;top:12px;justify-content:center}.capubPill{font-size:10.5px;padding:5px 8px}}
 
@@ -14045,12 +14052,19 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       CAPUB_UTILITY_BADGE_PRECEDENCE.map((id, index) => [id, index])
     );
 
+    function capubUtilityBadgePriority(id){
+      // Aeronautical/aviation wings always occupy the highest utility-uniform
+      // position. The detailed list controls precedence within each category.
+      const category = AIRCREW_BADGE_IDS?.has?.(id) ? 0 : 1;
+      return category * 1000 + (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(id) ?? 999);
+    }
+
     function capubUtilityBadgeIds(){
       const selected = (State.badges || [])
         .filter(id => isBadgeEligibleForMembership(id, State.membership))
         .filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id))
         .filter(id => !isCommandInsigniaBadge(id) || isCommandInsigniaGradeEligible(State.rank))
-        .sort((a, b) => (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(a) ?? 999) - (CAPUB_UTILITY_BADGE_PRECEDENCE_INDEX.get(b) ?? 999));
+        .sort((a, b) => capubUtilityBadgePriority(a) - capubUtilityBadgePriority(b));
       // Qualification badges form the one-to-four-badge arrangement over the
       // CIVIL AIR PATROL tape. A single cloth command insignia is a separate
       // item centered over the wearer's name tape and must not consume a slot
@@ -14126,13 +14140,19 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       const lowerBottom = tape.topY - (badges.length <= 2 ? halfInch : eighthInch);
       const positions = [];
 
-      if(badges.length <= 2){
-        let bottom = lowerBottom;
-        for(let i=0; i<badges.length; i++){
-          const size = sizes[i];
-          positions.push({ x:tape.centerX - size.w/2, y:bottom - size.h });
-          bottom -= size.h + (badges.length === 2 ? halfInch : quarterInch);
-        }
+      if(badges.length === 1){
+        const size = sizes[0];
+        positions.push({ x:tape.centerX - size.w/2, y:lowerBottom - size.h });
+      }else if(badges.length === 2){
+        // The array is in wear precedence. Put the first (aviation wings when
+        // present) in the upper position and the second nearest the CAP tape.
+        const upper = sizes[0];
+        const lower = sizes[1];
+        positions.push({
+          x:tape.centerX - upper.w/2,
+          y:lowerBottom - lower.h - halfInch - upper.h
+        });
+        positions.push({ x:tape.centerX - lower.w/2, y:lowerBottom - lower.h });
       }else if(badges.length === 3){
         // Highest-precedence badge is centered on the upper row. The next two
         // are placed left-to-right on the lower row, matching the supplied OCP example.
@@ -14184,7 +14204,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         img.dataset.badgeId = id;
         // New key prevents legacy 44-px/in and mixed command-grid coordinates
         // from overriding the regulation-based automatic layout.
-        img.dataset.calibKey = `utilityBadgeRegV3:${id}:${index}`;
+        img.dataset.calibKey = `utilityBadgeRegV4:${id}:${index}`;
         img.dataset.tooltipTitle = (CAPUB_UTILITY_BADGE_LABELS[id] || id.replace(/_/g,' ')).toUpperCase();
         img.dataset.tooltipReg = 'CAPR 39-1, paragraph 5.1.2.3.6';
         img.dataset.tooltipWhy = 'One of no more than two embroidered aviation/occupational badges centered above the CAP tape.';
