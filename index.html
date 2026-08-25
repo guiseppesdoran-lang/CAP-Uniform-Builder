@@ -4859,8 +4859,8 @@ function precedence(id){
     : Number.MAX_SAFE_INTEGER;
 }
 
-/* Ribbon eligibility by membership type. Seniors see only ribbons they are eligible to wear,
-   including only the highest cadet milestone-type ribbon represented in this builder. */
+/* Ribbon eligibility by membership type. Senior members may select any cadet
+   achievement ribbon earned, but may wear only one cadet-program award ribbon. */
 const CADET_ACHIEVEMENT_RIBBONS = new Set([
   'curry_achievement','hap_arnold_achievement','mary_feik_achievement','wright_brothers_award',
   'rickenbacker_achievement','lindbergh_achievement','doolittle_achievement','goddard_achievement',
@@ -4870,7 +4870,7 @@ const CADET_MILESTONES = new Set([
   'wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award'
 ]);
 const SENIOR_HIGHEST_CADET_AWARD_RIBBONS = new Set([
-  ...CADET_MILESTONES,
+  ...CADET_ACHIEVEMENT_RIBBONS,
   'cadet_certificate_of_proficiency','historic_cadet_blue_achievement',
   'historic_cadet_white_achievement','historic_cadet_red_achievement',
   'frank_borman_falcon_award'
@@ -4901,7 +4901,7 @@ const SENIOR_ONLY_RIBBONS = new Set([
   'air_medal','cap_world_war_2_service_ribbon','anti_submarine_coastal_patrol_ribbon','southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon','forest_patrol_ribbon','missing_aircraft_ribbon'
 ]);
 const CADET_ELIGIBLE_RIBBONS = new Set([...COMMON_ELIGIBLE_RIBBONS, ...CADET_ONLY_RIBBONS]);
-const SENIOR_ELIGIBLE_RIBBONS = new Set([...COMMON_ELIGIBLE_RIBBONS, ...SENIOR_ONLY_RIBBONS, ...CADET_MILESTONES]);
+const SENIOR_ELIGIBLE_RIBBONS = new Set([...COMMON_ELIGIBLE_RIBBONS, ...SENIOR_ONLY_RIBBONS, ...CADET_ACHIEVEMENT_RIBBONS]);
 function getEligibleRibbonIds(membership = State.membership){
   if(membership === 'cadet'){
     return ribbonList.filter(id => CADET_ELIGIBLE_RIBBONS.has(id));
@@ -7993,23 +7993,25 @@ function setRibbonSelectionFromDropdown(id, value){
 
   State.ribbonSelections[id] = sel;
 
-  // The senior ribbon source permits only the highest cadet-program award earned.
-  if(State.membership === 'senior' && SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(id) && sel.checked){
-    for(const otherId of Object.keys(State.ribbonSelections)){
-      if(otherId !== id && SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(otherId)){
-        State.ribbonSelections[otherId].checked = false;
-        State.ribbonSelections[otherId].awardValue = '';
-        State.ribbonSelections[otherId].awardLabel = '';
-        State.ribbonSelections[otherId].devices = {};
-        State.ribbonSelections[otherId].imageOverride = null;
-      }
-    }
-  }
+  enforceSeniorSingleCadetAwardRibbon(id);
 
   if(id === 'goddard_achievement' || id === 'mitchell_award'){
     syncGoddardRocketryStar();
   }
   rebuildRibbonsFromGallery();
+}
+
+function enforceSeniorSingleCadetAwardRibbon(selectedId){
+  const selected = State.ribbonSelections?.[selectedId];
+  if(State.membership !== 'senior' || !selected?.checked || !SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(selectedId)) return;
+  for(const otherId of Object.keys(State.ribbonSelections)){
+    if(otherId === selectedId || !SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(otherId)) continue;
+    State.ribbonSelections[otherId].checked = false;
+    State.ribbonSelections[otherId].awardValue = '';
+    State.ribbonSelections[otherId].awardLabel = '';
+    State.ribbonSelections[otherId].devices = {};
+    State.ribbonSelections[otherId].imageOverride = null;
+  }
 }
 
 function normalizeRibbonSelections(){
@@ -11193,6 +11195,27 @@ function normalizeMemberReportText(text){
     .trim();
 }
 
+function removeMemberReportSection(text, startLabel, endLabels=[]){
+  const source = String(text || '');
+  const start = source.search(new RegExp(startLabel, 'i'));
+  if(start < 0) return source;
+  const rest = source.slice(start);
+  let end = -1;
+  for(const label of endLabels){
+    const index = rest.search(new RegExp(label, 'i'));
+    if(index > 0 && (end < 0 || index < end)) end = index;
+  }
+  return `${source.slice(0, start)} ${end >= 0 ? rest.slice(end) : ''}`.replace(/\s+/g, ' ').trim();
+}
+
+function removeLocalActivitiesFromMemberReport(text){
+  return removeMemberReportSection(text, 'Local\\s+Activities', [
+    'Professional\\s+Development','Specialty\\s+Tracks','Cadet\\s+Training','Encampments',
+    'Cadet\\s+Achievements','Awards','Promotions','Decorations','Ribbons',
+    'Current\\s+Duty\\s+Positions','Past\\s+Duty\\s+Positions','Transfer\\s+History'
+  ]);
+}
+
 function normalizeImportedRank(raw){
   const r = String(raw || '').trim();
   const fixes = {
@@ -11246,6 +11269,7 @@ function selectImportedRibbon(id, value='earned'){
   State.ribbonSelections[id].awardLabel = option?.label || 'Earned';
   State.ribbonSelections[id].devices = { ...(option?.devices || {}) };
   State.ribbonSelections[id].imageOverride = option?.image || getRibbonImageOverride(id, option?.value || value || 'earned');
+  enforceSeniorSingleCadetAwardRibbon(id);
 }
 
 function chooseSpecialRibbonValueByAwardCount(id, count){
@@ -12022,7 +12046,7 @@ function hasCurrentFirstSergeantDutyPosition(text){
 }
 
 function parseCapMemberReport(textRaw){
-  const text = normalizeMemberReportText(textRaw);
+  const text = removeLocalActivitiesFromMemberReport(normalizeMemberReportText(textRaw));
   const result = {
     membership:null,
     gender:null,
