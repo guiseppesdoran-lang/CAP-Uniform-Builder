@@ -2990,7 +2990,8 @@ const GOVERNANCE_SERVICE_BADGE_IDS = new Set([
   'senior_advisory_group_badge',
   'command_council_badge',
   'national_executive_committee_badge',
-  'cap_national_command_board_badge'
+  'cap_national_command_board_badge',
+  'national_staff_badge'
 ]);
 const SPECIALTY_TRACK_BADGE_IDS = new Set([
   ...GOVERNANCE_SERVICE_BADGE_IDS,
@@ -4858,8 +4859,8 @@ function precedence(id){
     : Number.MAX_SAFE_INTEGER;
 }
 
-/* Ribbon eligibility by membership type. Seniors see only ribbons they are eligible to wear,
-   including only the highest cadet milestone-type ribbon represented in this builder. */
+/* Ribbon eligibility by membership type. Senior members may select any cadet
+   achievement ribbon earned, but may wear only one cadet-program award ribbon. */
 const CADET_ACHIEVEMENT_RIBBONS = new Set([
   'curry_achievement','hap_arnold_achievement','mary_feik_achievement','wright_brothers_award',
   'rickenbacker_achievement','lindbergh_achievement','doolittle_achievement','goddard_achievement',
@@ -4869,7 +4870,7 @@ const CADET_MILESTONES = new Set([
   'wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award'
 ]);
 const SENIOR_HIGHEST_CADET_AWARD_RIBBONS = new Set([
-  ...CADET_MILESTONES,
+  ...CADET_ACHIEVEMENT_RIBBONS,
   'cadet_certificate_of_proficiency','historic_cadet_blue_achievement',
   'historic_cadet_white_achievement','historic_cadet_red_achievement',
   'frank_borman_falcon_award'
@@ -4900,7 +4901,7 @@ const SENIOR_ONLY_RIBBONS = new Set([
   'air_medal','cap_world_war_2_service_ribbon','anti_submarine_coastal_patrol_ribbon','southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon','forest_patrol_ribbon','missing_aircraft_ribbon'
 ]);
 const CADET_ELIGIBLE_RIBBONS = new Set([...COMMON_ELIGIBLE_RIBBONS, ...CADET_ONLY_RIBBONS]);
-const SENIOR_ELIGIBLE_RIBBONS = new Set([...COMMON_ELIGIBLE_RIBBONS, ...SENIOR_ONLY_RIBBONS, ...CADET_MILESTONES]);
+const SENIOR_ELIGIBLE_RIBBONS = new Set([...COMMON_ELIGIBLE_RIBBONS, ...SENIOR_ONLY_RIBBONS, ...CADET_ACHIEVEMENT_RIBBONS]);
 function getEligibleRibbonIds(membership = State.membership){
   if(membership === 'cadet'){
     return ribbonList.filter(id => CADET_ELIGIBLE_RIBBONS.has(id));
@@ -5430,7 +5431,10 @@ const BADGE_IMAGE_OVERRIDES = {
   'uas_pilot_master_badge': 'badges/uas_pilot_master_badge.png',
   'uas_technician_basic_badge': 'badges/uas_technician_basic_badge.png',
   'uas_technician_senior_badge': 'badges/uas_technician_senior_badge.png',
-  'uas_technician_master_badge': 'badges/uas_technician_master_badge.png'
+  'uas_technician_master_badge': 'badges/uas_technician_master_badge.png',
+  'cadet_programs_technician_badge': 'badges/cadet_programs_technician_badge_v2.png',
+  'cadet_programs_senior_badge': 'badges/cadet_programs_senior_badge_v2.png',
+  'cadet_programs_master_badge': 'badges/cadet_programs_master_badge_v2.png'
 };
 
 
@@ -5457,6 +5461,7 @@ Object.assign(BADGE_IMAGE_OVERRIDES, {
   'national_executive_committee_badge': 'badges/National_Executive_Committee_Badge.png',
   'command_council_badge': 'badges/Command_Council.png',
   'cap_national_command_board_badge': 'badges/CAP_National_Command_Board.png',
+  'national_staff_badge': 'badges/national_staff_badge.png',
 
   // Standardization / Evaluation
   'stan_eval_tech_badge': 'badges/Stan_eval_tech.png',
@@ -5731,7 +5736,11 @@ const CAPUB_BADGE_ASPECT_RATIOS = Object.freeze({
   uas_technician_master_badge: 362 / 133,
   basic_incident_commander_badge: 307 / 140,
   incident_commander_2_badge: 308 / 185,
-  incident_commander_1_badge: 307 / 188
+  incident_commander_1_badge: 307 / 188,
+  cadet_programs_technician_badge: 0.775,
+  cadet_programs_senior_badge: 0.775,
+  cadet_programs_master_badge: 0.775,
+  national_staff_badge: 1178 / 1154
 });
 const CAPUB_BADGE_DIMENSIONS_INCHES = Object.freeze({
   aviation: { axis:'width', regular:3, miniature:2 },
@@ -5802,6 +5811,14 @@ CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS.forEach(id => {
   FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS.add(id);
 });
 
+// The Cadet Programs badge is taller than it is wide. The old square render box
+// stretched the oval and exaggerated the low-resolution edge artifacts.
+[
+  'cadet_programs_technician_badge',
+  'cadet_programs_senior_badge',
+  'cadet_programs_master_badge'
+].forEach(id => { customBadgeSizes[id] = { width:19.375, height:25 }; });
+
 
 // === CAPUB PATCH 2026-05-13: Register newly supplied badges ===
 const CAPUB_NEW_SPECIALTY_BADGE_IDS = [
@@ -5828,7 +5845,8 @@ const CAPUB_NEW_GOVERNANCE_SERVICE_BADGE_IDS = [
   'senior_advisory_group_badge',
   'national_executive_committee_badge',
   'command_council_badge',
-  'cap_national_command_board_badge'
+  'cap_national_command_board_badge',
+  'national_staff_badge'
 ];
 
 CAPUB_NEW_COMMAND_BADGE_IDS.forEach(id => {
@@ -5876,7 +5894,7 @@ const BADGE_CATEGORIES = [
     'squadron_commander_badge','group_commander_badge'
   ]},
   { key:'Command Council / National Governance', ids:[
-    'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge'
+    'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge','national_staff_badge'
   ]},
   { key:'Chaplain / Legal / Admin', ids:[
     'christian_chaplin','jewish_chaplin','muslim_chaplin','buddist_chaplin','legal_officer','historian_technicianIbadge',
@@ -5938,6 +5956,7 @@ const BADGE_DISPLAY_NAMES = Object.freeze({
   cadet_programs_technician_badge: 'Cadet Programs Technician Badge',
   cadet_programs_senior_badge: 'Cadet Programs Senior Badge',
   cadet_programs_master_badge: 'Cadet Programs Master Badge',
+  national_staff_badge: 'National Staff Badge',
   drug_demand_reduction_basic_badge: 'Drug Demand Reduction Basic Badge',
   drug_demand_reduction_technician_badge: 'Drug Demand Reduction Technician Badge',
   drug_demand_reduction_senior_badge: 'Drug Demand Reduction Senior Badge',
@@ -6025,7 +6044,7 @@ function getBadgeCategoriesForCurrentMembership(){
         'squadron_commander_badge','group_commander_badge'
       ]},
       { key:'Command Council / National Governance', ids:[
-        'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge'
+        'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge','national_staff_badge'
       ]}
     ];
   }
@@ -7974,23 +7993,25 @@ function setRibbonSelectionFromDropdown(id, value){
 
   State.ribbonSelections[id] = sel;
 
-  // The senior ribbon source permits only the highest cadet-program award earned.
-  if(State.membership === 'senior' && SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(id) && sel.checked){
-    for(const otherId of Object.keys(State.ribbonSelections)){
-      if(otherId !== id && SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(otherId)){
-        State.ribbonSelections[otherId].checked = false;
-        State.ribbonSelections[otherId].awardValue = '';
-        State.ribbonSelections[otherId].awardLabel = '';
-        State.ribbonSelections[otherId].devices = {};
-        State.ribbonSelections[otherId].imageOverride = null;
-      }
-    }
-  }
+  enforceSeniorSingleCadetAwardRibbon(id);
 
   if(id === 'goddard_achievement' || id === 'mitchell_award'){
     syncGoddardRocketryStar();
   }
   rebuildRibbonsFromGallery();
+}
+
+function enforceSeniorSingleCadetAwardRibbon(selectedId){
+  const selected = State.ribbonSelections?.[selectedId];
+  if(State.membership !== 'senior' || !selected?.checked || !SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(selectedId)) return;
+  for(const otherId of Object.keys(State.ribbonSelections)){
+    if(otherId === selectedId || !SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(otherId)) continue;
+    State.ribbonSelections[otherId].checked = false;
+    State.ribbonSelections[otherId].awardValue = '';
+    State.ribbonSelections[otherId].awardLabel = '';
+    State.ribbonSelections[otherId].devices = {};
+    State.ribbonSelections[otherId].imageOverride = null;
+  }
 }
 
 function normalizeRibbonSelections(){
@@ -11174,6 +11195,27 @@ function normalizeMemberReportText(text){
     .trim();
 }
 
+function removeMemberReportSection(text, startLabel, endLabels=[]){
+  const source = String(text || '');
+  const start = source.search(new RegExp(startLabel, 'i'));
+  if(start < 0) return source;
+  const rest = source.slice(start);
+  let end = -1;
+  for(const label of endLabels){
+    const index = rest.search(new RegExp(label, 'i'));
+    if(index > 0 && (end < 0 || index < end)) end = index;
+  }
+  return `${source.slice(0, start)} ${end >= 0 ? rest.slice(end) : ''}`.replace(/\s+/g, ' ').trim();
+}
+
+function removeLocalActivitiesFromMemberReport(text){
+  return removeMemberReportSection(text, 'Local\\s+Activities', [
+    'Professional\\s+Development','Specialty\\s+Tracks','Cadet\\s+Training','Encampments',
+    'Cadet\\s+Achievements','Awards','Promotions','Decorations','Ribbons',
+    'Current\\s+Duty\\s+Positions','Past\\s+Duty\\s+Positions','Transfer\\s+History'
+  ]);
+}
+
 function normalizeImportedRank(raw){
   const r = String(raw || '').trim();
   const fixes = {
@@ -11227,6 +11269,7 @@ function selectImportedRibbon(id, value='earned'){
   State.ribbonSelections[id].awardLabel = option?.label || 'Earned';
   State.ribbonSelections[id].devices = { ...(option?.devices || {}) };
   State.ribbonSelections[id].imageOverride = option?.image || getRibbonImageOverride(id, option?.value || value || 'earned');
+  enforceSeniorSingleCadetAwardRibbon(id);
 }
 
 function chooseSpecialRibbonValueByAwardCount(id, count){
@@ -12003,7 +12046,7 @@ function hasCurrentFirstSergeantDutyPosition(text){
 }
 
 function parseCapMemberReport(textRaw){
-  const text = normalizeMemberReportText(textRaw);
+  const text = removeLocalActivitiesFromMemberReport(normalizeMemberReportText(textRaw));
   const result = {
     membership:null,
     gender:null,
