@@ -9197,11 +9197,25 @@ function renderPatches(){
       el.className='layer patch';
       el.style.display='block';
 
-      const base = getFieldPatchAnchor(slot, idx, meta, W, H);
+      const fieldUniformKey = getFieldUniformLayoutKey();
+      const isOcpUnitSleeveSprite = fieldUniformKey === 'ocp'
+        && id === 'tn185_ocp_patch'
+        && slot === 'R_SHOULDER';
+      // The OCP unit-patch image is a composite sprite: its complete patch
+      // belongs on the detached right-sleeve view while its cropped copy lines
+      // up with the sleeve on the torso artwork. It therefore needs the
+      // mirrored sleeve-sprite origin, not the generic shoulder center anchor.
+      const base = isOcpUnitSleeveSprite
+        ? {x:70, y:212, w:200, h:100, r:0}
+        : getFieldPatchAnchor(slot, idx, meta, W, H);
 
       // Keep each field uniform independent. A patch calibrated on OCP will save
       // under ocp_male/ocp_female and will not reuse ABU or CFU coordinates.
-      el.dataset.calibKey = `patch:${id}:${slot}:${idx}`;
+      // V2 prevents previously saved generic-anchor coordinates from moving
+      // the OCP unit sprite back across the name tape and chest.
+      el.dataset.calibKey = isOcpUnitSleeveSprite
+        ? `patchRegV2:${id}:${slot}:${idx}`
+        : `patch:${id}:${slot}:${idx}`;
       applyCalibToElement(el, el.dataset.calibKey, base);
 
       el.onerror=()=>{};
