@@ -1605,6 +1605,9 @@ const State = {
 
   badgeSelections:{},
   badgeGalleryExpanded:false,
+  // Null until a member report is imported. Once populated, the badge picker
+  // separates report-authorized badges from the remaining eligible catalog.
+  reportAuthorizedBadgeIds:null,
 
   patchSelections:{},
   patchGalleryExpanded:false,
@@ -3017,6 +3020,7 @@ const CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS = new Set([
 ]);
 
 const CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS = new Set([
+  'cadet_programs_badge',
   'cadet_programs_technician_badge',
   'cadet_programs_senior_badge',
   'cadet_programs_master_badge'
@@ -5799,6 +5803,19 @@ function getBadgeRenderSize(id, uniformId=State.uniform){
     return { width:25, height:30 };
   }
 
+  // Specialty-track/service badges share the National Staff badge's 30 px
+  // vertical scale on service uniforms. Preserve each asset's proportions so
+  // rectangular or oval insignia are not stretched into a square.
+  if(SPECIALTY_TRACK_BADGE_IDS.has(id)){
+    const base = customBadgeSizes[id] || { width:30, height:30 };
+    const aspectRatio = CAPUB_BADGE_ASPECT_RATIOS[id] ||
+      ((Number(base.width) || 30) / (Number(base.height) || 30));
+    const targetHeight = (uniformId === 'semi_formal' || uniformId === 'aviator_blazer') && GOVERNANCE_SERVICE_BADGE_IDS.has(id)
+      ? 13
+      : 30;
+    return { width:targetHeight * aspectRatio, height:targetHeight };
+  }
+
   const base = customBadgeSizes[id] || { width:60, height:25 };
   const width = Number(base.width) || 60;
   const height = Number(base.height) || 25;
@@ -5818,6 +5835,7 @@ function getBadgeRenderSize(id, uniformId=State.uniform){
 function hasFixedBadgeRenderSize(id){
   return id === 'national_staff_badge' ||
     CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS.has(id) ||
+    SPECIALTY_TRACK_BADGE_IDS.has(id) ||
     !!getBadgeDimensionRule(id);
 }
 
@@ -8576,6 +8594,42 @@ function getReferenceCalibForKey(uniformId, key){
   return null;
 }
 
+function getNationalStaffTopForSpecialtySlot(slot){
+  const uniformId = getCurrentCalibUniform();
+  const sameSlot = getReferenceCalibForKey(uniformId, `badge:national_staff_badge:${slot}:0`);
+  if(Number.isFinite(Number(sameSlot?.y))) return Number(sameSlot.y);
+
+  // Older calibration files only carried the regulation left-pocket entry.
+  // Its y coordinate is still the correct common top edge for the opposite
+  // pocket and the female over-nameplate specialty row.
+  const leftPocket = getReferenceCalibForKey(uniformId, 'badge:national_staff_badge:LP:0');
+  if(Number.isFinite(Number(leftPocket?.y))) return Number(leftPocket.y);
+
+  // National Staff was added after many saved calibration bundles, so derive
+  // its regulation anchor when no explicit record exists.
+  const renderSize = getCanvasRenderSize();
+  const staffSize = getBadgeRenderSize('national_staff_badge');
+  const base = getBadgeBaseAnchor(
+    slot,
+    'national_staff_badge',
+    0,
+    renderSize.w,
+    renderSize.h,
+    staffSize.width,
+    staffSize.height
+  );
+  const staffKey = `badge:national_staff_badge:${slot}:0`;
+  const resolved = getCalib(staffKey) || buildDerivedBadgeCalib(staffKey, {
+    x:base?.x,
+    y:base?.y,
+    w:staffSize.width,
+    h:staffSize.height,
+    r:0
+  });
+  if(Number.isFinite(Number(resolved?.y))) return Number(resolved.y);
+  return Number.isFinite(Number(base?.y)) ? Number(base.y) : null;
+}
+
 function getOverRibbonReferenceKey(slot, idx=0){
   if(slot === 'OLP'){
     const uniformId = getCurrentCalibUniform();
@@ -9037,6 +9091,17 @@ function placeBadgeSlotAnchored(id){
     clone.style.width = `${bw}px`;
     clone.style.height = `${bh}px`;
     clone.style.transform = 'rotate(0deg)';
+  }
+
+  // All service-uniform specialty badges use the National Staff badge as the
+  // vertical reference. Aligning their top edges (instead of centers) keeps
+  // differently proportioned badges visually level and avoids stale per-badge
+  // y values from older calibration exports.
+  if(isSelectableSpecialtyPocketBadge(id) && id !== 'national_staff_badge' &&
+     ['blues_a','blues_b','aviator'].includes(State.uniform) &&
+     ['LP','RP','ON','UN','FON'].includes(slot)){
+    const referenceTop = getNationalStaffTopForSpecialtySlot(slot);
+    if(Number.isFinite(referenceTop)) clone.style.top = `${referenceTop}px`;
   }
 
   // Above-ribbon badges share the live rack centerline. This prevents stale
@@ -10534,18 +10599,7 @@ function openGalleryModal(kind){
     modalHost.innerHTML = '';
     modalHost.appendChild(host);
 
-    getBadgeCategoriesForCurrentMembership().forEach(cat=>{
-      const ids = cat.ids.filter(id => eligibleSet.has(id));
-      if(!ids.length) return;
-
-      const h = document.createElement('div');
-      h.style.cssText = "margin:10px 0 6px;font-weight:800;color:var(--ink);font-size:13px;";
-      h.textContent = cat.key;
-
-      const subGrid = document.createElement('div');
-      subGrid.className = 'galleryGrid';
-
-      ids.forEach(id=>{
+    const buildTile = id => {
         const sel = State.badgeSelections[id] || {checked:false};
         const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
         const rareCadetTag = (State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
@@ -10587,12 +10641,71 @@ function openGalleryModal(kind){
           };
         }
 
-        subGrid.appendChild(tile);
-      });
+        return tile;
+    };
 
-      modalHost.appendChild(h);
-      modalHost.appendChild(subGrid);
-    });
+    const appendCategorizedBadges = (container, allowedIds) => {
+      const allowedSet = new Set(allowedIds);
+      getBadgeCategoriesForCurrentMembership().forEach(cat=>{
+        const ids = cat.ids.filter(id => eligibleSet.has(id) && allowedSet.has(id));
+        if(!ids.length) return;
+
+        const h = document.createElement('div');
+        h.style.cssText = "margin:10px 0 6px;font-weight:800;color:var(--ink);font-size:13px;";
+        h.textContent = cat.key;
+
+        const subGrid = document.createElement('div');
+        subGrid.className = 'galleryGrid';
+        ids.forEach(id => subGrid.appendChild(buildTile(id)));
+        container.appendChild(h);
+        container.appendChild(subGrid);
+      });
+    };
+
+    const eligibleIds = [...eligibleSet];
+    const importedAuthorized = Array.isArray(State.reportAuthorizedBadgeIds)
+      ? State.reportAuthorizedBadgeIds.filter(id => eligibleSet.has(id))
+      : null;
+
+    if(importedAuthorized){
+      const authorizedSet = new Set(importedAuthorized);
+      const sections = [
+        {
+          label:`Authorized by Member Report (${importedAuthorized.length})`,
+          open:true,
+          ids:importedAuthorized,
+          empty:'No authorized badges were detected in the imported report.'
+        },
+        {
+          label:'Other Possible Badges',
+          open:false,
+          ids:eligibleIds.filter(id => !authorizedSet.has(id)),
+          empty:'No other eligible badges are available.'
+        }
+      ];
+
+      sections.forEach(section => {
+        const details = document.createElement('details');
+        details.open = section.open;
+        details.style.cssText = 'margin:8px 0 12px;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--panel);';
+        const summary = document.createElement('summary');
+        summary.style.cssText = 'cursor:pointer;font-weight:850;color:var(--ink);padding:4px 0;';
+        summary.textContent = section.label;
+        details.appendChild(summary);
+        if(section.ids.length){
+          appendCategorizedBadges(details, section.ids);
+        }else{
+          const empty = document.createElement('div');
+          empty.className = 'sub';
+          empty.style.margin = '10px 0 4px';
+          empty.textContent = section.empty;
+          details.appendChild(empty);
+        }
+        modalHost.appendChild(details);
+      });
+    }else{
+      appendCategorizedBadges(modalHost, eligibleIds);
+    }
   }
 
   function wireModalInteractions(k){
@@ -12170,6 +12283,7 @@ function parseCapMemberReport(textRaw){
     cadetFirstSergeant:false,
     ribbons:[],
     badges:[],
+    authorizedBadges:[],
     patches:[],
     notes:[]
   };
@@ -12290,6 +12404,21 @@ function parseCapMemberReport(textRaw){
   }
   if(/\bWILSON\b|Gill\s+Robb\s+Wilson/i.test(text)){
     result.ribbons.push({ id:'cap_gill_robb_wilson_ribbon', value:'earned', reason:'Gill Robb Wilson Award / Level V' });
+  }
+
+  // Recruiter ribbons are membership-specific. Senior reports often retain a
+  // prior cadet-history entry, so "Cadet Recruiter Ribbon" must never be
+  // interpreted as the senior ribbon. The senior ribbon requires its exact
+  // report label.
+  if(result.membership === 'senior'){
+    if(/\b(?:CAP\s+)?Senior\s+Recruiter\s+Ribbon\b/i.test(text)){
+      result.ribbons.push({ id:'cap_senior_recruiter_ribbon', value:'earned', reason:'Senior Recruiter Ribbon' });
+    }
+    if(/\bCadet\s+Recruiter\s+Ribbon\b/i.test(text)){
+      result.notes.push('Prior Cadet Recruiter Ribbon record ignored for this senior member; only the Senior Recruiter Ribbon is authorized.');
+    }
+  }else if(result.membership === 'cadet' && /\bCadet\s+Recruiter\s+Ribbon\b/i.test(text)){
+    result.ribbons.push({ id:'cadet_recruiter_ribbon', value:'earned', reason:'Cadet Recruiter Ribbon' });
   }
 
   // In the CAP Member Search Report this appears as "Crisis Service Award";
@@ -12469,12 +12598,25 @@ function parseCapMemberReport(textRaw){
 
   if(/Model Rocketry/i.test(text)) result.badges.push('model_rocketry_badge');
 
+  // Preserve every report-authorized badge for the grouped badge picker before
+  // reducing the automatically worn set to the highest four selections.
+  result.authorizedBadges = [...new Set(result.badges)]
+    .filter(id => isBadgeEligibleForMembership(id, result.membership));
   result.badges = selectHighestWearableImportedBadges(result.badges, result.membership);
   result.ribbons = applyCosStarToHighestCadetMilestone(result.ribbons, text);
   result.ribbons = keepOnlyHighestCadetMilestoneForSenior(result.ribbons, result.membership);
+  result.ribbons = normalizeRecruiterRibbonsForMembership(result.ribbons, result.membership);
   result.ribbons = dedupeImportedRibbons(result.ribbons);
 
   return result;
+}
+
+function normalizeRecruiterRibbonsForMembership(ribbons, membership){
+  return (ribbons || []).filter(ribbon => {
+    if(ribbon?.id === 'cadet_recruiter_ribbon') return membership === 'cadet';
+    if(ribbon?.id === 'cap_senior_recruiter_ribbon') return membership === 'senior';
+    return true;
+  });
 }
 
 function dedupeImportedRibbons(ribbons){
@@ -12529,12 +12671,16 @@ function applyCapMemberReportImport(parsed){
   State.patches = [];
 
   for(const r of parsed.ribbons || []){
+    if(State.membership === 'senior' && r.id === 'cadet_recruiter_ribbon') continue;
+    if(State.membership === 'cadet' && r.id === 'cap_senior_recruiter_ribbon') continue;
     if(isRibbonEligibleForMembership(r.id, State.membership)){
       selectImportedRibbon(r.id, r.value || 'earned');
     }
   }
 
   State.badges = [];
+  State.reportAuthorizedBadgeIds = [...new Set(parsed.authorizedBadges || parsed.badges || [])]
+    .filter(id => isBadgeEligibleForMembership(id, State.membership));
   // Reset command-insignia state on every member-report import so a previous
   // member's current/graduated commander status cannot carry over.
   if(State.commandInsignia) State.commandInsignia.graduatedCommander = false;
@@ -12595,6 +12741,9 @@ function wireMemberReportImporter(){
   });
 
   clearBtn?.addEventListener('click', () => {
+    State.reportAuthorizedBadgeIds = null;
+    input.value = '';
+    buildBadgeGallery();
     setMemberReportImportStatus('No report imported yet.');
   });
 
