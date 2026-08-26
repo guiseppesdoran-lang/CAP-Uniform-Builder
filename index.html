@@ -3016,6 +3016,12 @@ const CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS = new Set([
   ...GOVERNANCE_SERVICE_BADGE_IDS
 ]);
 
+const CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS = new Set([
+  'cadet_programs_technician_badge',
+  'cadet_programs_senior_badge',
+  'cadet_programs_master_badge'
+]);
+
 function isBadgeAuthorizedOnCurrentDressUniform(id){
   if(State.uniform !== 'semi_formal') return true;
   // CAPR 39-1 4.2.1/4.2.2 carries forward Corporate Service Dress rules:
@@ -5744,9 +5750,9 @@ const CAPUB_BADGE_ASPECT_RATIOS = Object.freeze({
   basic_incident_commander_badge: 307 / 140,
   incident_commander_2_badge: 308 / 185,
   incident_commander_1_badge: 307 / 188,
-  cadet_programs_technician_badge: 0.775,
-  cadet_programs_senior_badge: 0.775,
-  cadet_programs_master_badge: 0.775,
+  cadet_programs_technician_badge: 25 / 30,
+  cadet_programs_senior_badge: 25 / 30,
+  cadet_programs_master_badge: 25 / 30,
   national_staff_badge: 1178 / 1154
 });
 const CAPUB_BADGE_DIMENSIONS_INCHES = Object.freeze({
@@ -5775,6 +5781,24 @@ function getBadgeDimensionRule(id){
   return null;
 }
 function getBadgeRenderSize(id, uniformId=State.uniform){
+  // The supplied physical references distinguish three different National Staff
+  // insignia: the full-size metal badge, a larger embroidered utility patch, and
+  // the small lapel pin worn with Corporate Dress/Semi-Formal. Utility sizing is
+  // handled by capubUtilityBadgeSize because it uses a separate canvas scale.
+  if(id === 'national_staff_badge'){
+    if(uniformId === 'semi_formal' || uniformId === 'aviator_blazer'){
+      return { width:13, height:13 };
+    }
+    return { width:30, height:30 };
+  }
+
+  // Keep all three Cadet Programs ratings at the user-specified 25 x 30 px.
+  // This explicit branch also keeps stale square calibration exports from
+  // changing the badge's proportions.
+  if(CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS.has(id)){
+    return { width:25, height:30 };
+  }
+
   const base = customBadgeSizes[id] || { width:60, height:25 };
   const width = Number(base.width) || 60;
   const height = Number(base.height) || 25;
@@ -5789,6 +5813,12 @@ function getBadgeRenderSize(id, uniformId=State.uniform){
     return { width:target * aspectRatio, height:target };
   }
   return { width:target, height:target / aspectRatio };
+}
+
+function hasFixedBadgeRenderSize(id){
+  return id === 'national_staff_badge' ||
+    CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS.has(id) ||
+    !!getBadgeDimensionRule(id);
 }
 
 const CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS = [
@@ -5824,7 +5854,7 @@ CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS.forEach(id => {
   'cadet_programs_technician_badge',
   'cadet_programs_senior_badge',
   'cadet_programs_master_badge'
-].forEach(id => { customBadgeSizes[id] = { width:19.375, height:25 }; });
+].forEach(id => { customBadgeSizes[id] = { width:25, height:30 }; });
 
 
 // === CAPUB PATCH 2026-05-13: Register newly supplied badges ===
@@ -8659,7 +8689,7 @@ function getBadgeHeightForLayout(id, slotName=null){
   const baseSize = getBadgeRenderSize(id);
   // Regulation-sized badges must not inherit obsolete heights from saved
   // calibration records, or the stacking engine will reserve the old space.
-  if(getBadgeDimensionRule(id)) return baseSize.height;
+  if(hasFixedBadgeRenderSize(id)) return baseSize.height;
 
   if(slotName){
     const directKey = `badge:${id}:${slotName}:0`;
@@ -8985,7 +9015,7 @@ function placeBadgeSlotAnchored(id){
 
   // Old calibration exports may contain legacy 25/60 px badge dimensions.
   // Keep their calibrated center point, but enforce CAPR 39-1 physical scale.
-  if(getBadgeDimensionRule(id)){
+  if(hasFixedBadgeRenderSize(id)){
     const appliedLeft = parseFloat(clone.style.left);
     const appliedTop = parseFloat(clone.style.top);
     const appliedWidth = parseFloat(clone.style.width);
@@ -13755,7 +13785,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       'emt_paramedic','emt_intermediate','emt_basic_badge',
       'incident_commander_1_badge','incident_commander_2_badge','basic_incident_commander_badge',
       'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge',
-      'group_commander_badge','squadron_commander_badge'
+      'group_commander_badge','squadron_commander_badge','national_staff_badge'
     ];
     const CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET = new Set(CAPUB_DOCUMENT_UTILITY_BADGE_IDS);
     const CAPUB_UTILITY_ONLY_BADGE_IDS = new Set([]);
@@ -13770,7 +13800,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     const CAPUB_INCIDENT_COMMANDER_BADGE_IDS = new Set([
       'basic_incident_commander_badge','incident_commander_1_badge','incident_commander_2_badge'
     ]);
-    const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'capr-fabric-20260825-v5';
+    const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'capr-fabric-20260826-v6';
 
     function capubUtilityBadgePreviewUrl(id){
       return `${ASSET(`badges/utility/${id}.png`)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`;
@@ -14176,6 +14206,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       }else if(GROUND_EMT_BADGE_IDS?.has?.(id)){
         // Figures A7-3/A7-4: regular Ground Team and EMT insignia is 1 1/8 inches wide.
         targetW = CAPUB_UTILITY_PX_PER_INCH * 1.125;
+      }else if(id === 'national_staff_badge'){
+        // IMG_1098 shows the embroidered emblem about 14% wider than the
+        // corresponding full-size metal badge (34 px versus 30 px here).
+        targetW = 34;
       }else{
         targetW = CAPUB_UTILITY_PX_PER_INCH * 1.125;
       }
