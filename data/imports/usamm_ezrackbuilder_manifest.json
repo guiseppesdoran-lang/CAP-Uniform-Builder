@@ -1,0 +1,27 @@
+{
+  "source": "USAMM_EZ_RACK_BUILDER",
+  "sourceUrl": "https://ezrackbuilder.usamm.com/rack-builder/home",
+  "discoveredAt": "2026-08-27T17:14:06.815Z",
+  "accessStatus": "PUBLIC_HTML_INSPECTED",
+  "assetPolicy": "SOURCE_ONLY",
+  "services": [
+    "ARMY",
+    "NAVY",
+    "MARINE_CORPS",
+    "AIR_FORCE",
+    "SPACE_FORCE",
+    "COAST_GUARD",
+    "CAP"
+  ],
+  "pages": [
+    "https://ezrackbuilder.usamm.com/rack-builder/home"
+  ],
+  "branchLinks": [],
+  "scripts": [],
+  "structuredEndpoints": [],
+  "ribbons": [],
+  "devices": [],
+  "relationships": [],
+  "referenceComposites": [],
+  "errors": []
+}

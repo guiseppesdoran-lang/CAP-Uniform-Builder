@@ -1,0 +1,29 @@
+{
+  "NAVY": {
+    "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
+    "regulation": "U.S. Navy Uniform Regulations NAVPERS 15665J; SECNAVINST 1650.1 series",
+    "accessed": "2026-08-27",
+    "awards": [
+      "medal_of_honor",
+      "navy_cross",
+      "defense_distinguished_service",
+      "navy_distinguished_service",
+      "silver_star",
+      "defense_superior_service",
+      "legion_of_merit",
+      "distinguished_flying_cross",
+      "navy_marine_corps_medal",
+      "bronze_star",
+      "purple_heart",
+      "defense_meritorious_service",
+      "meritorious_service",
+      "air_medal",
+      "joint_service_commendation",
+      "navy_marine_corps_commendation",
+      "joint_service_achievement",
+      "navy_marine_corps_achievement",
+      "combat_action",
+      "navy_presidential_unit_citation"
+    ]
+  }
+}

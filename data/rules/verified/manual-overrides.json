@@ -1,0 +1,48 @@
+{
+  "awards": {
+    "air_medal": {
+      "name": "Air Medal",
+      "officialName": "Air Medal",
+      "images": {"ribbon": "images/ribbons/air_medal.png", "assetStatus": "LOCAL_EXISTING"}
+    },
+    "aerial_achievement": {
+      "name": "Aerial Achievement Medal",
+      "officialName": "Aerial Achievement Medal",
+      "images": {"ribbon": "images/ribbons/air_force_aerial_achievement_medal.png", "assetStatus": "LOCAL_EXISTING"}
+    },
+    "air_force_organizational_excellence_award": {
+      "name": "Air and Space Organizational Excellence Award",
+      "officialName": "Air and Space Organizational Excellence Award",
+      "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"],
+      "images": {"ribbon": "images/ribbons/Air_Force_Organizational_Excellence_Award.png", "assetStatus": "LOCAL_EXISTING"}
+    },
+    "air_force_commendation": {
+      "name": "Air and Space Commendation Medal",
+      "officialName": "Air and Space Commendation Medal",
+      "aliases": ["Air Force Commendation Medal", "AFCM"],
+      "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"]
+    },
+    "air_force_achievement": {
+      "name": "Air and Space Achievement Medal",
+      "officialName": "Air and Space Achievement Medal",
+      "aliases": ["Air Force Achievement Medal", "AFAM"],
+      "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"]
+    }
+  },
+  "precedence": {
+    "air_force_commendation": {"SPACE_FORCE": {"order": 16, "side": "LEFT", "verified": false, "source": "DAF_SHARED_PENDING_AWARD_SPECIFIC_REVIEW"}},
+    "air_force_achievement": {"SPACE_FORCE": {"order": 18, "side": "LEFT", "verified": false, "source": "DAF_SHARED_PENDING_AWARD_SPECIFIC_REVIEW"}},
+    "air_force_organizational_excellence_award": {"SPACE_FORCE": {"order": 25, "side": "LEFT", "verified": false, "source": "DAF_SHARED_PENDING_AWARD_SPECIFIC_REVIEW"}}
+  },
+  "devices": {
+    "air_force_commendation": {
+      "AIR_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"]},
+      "SPACE_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"]}
+    },
+    "air_force_achievement": {
+      "AIR_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"]},
+      "SPACE_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"]}
+    }
+  },
+  "note": "Manually verified corrections override all imported catalog data. Import scripts must never overwrite this file."
+}
