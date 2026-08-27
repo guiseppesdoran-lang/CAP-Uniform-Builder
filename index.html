@@ -7031,17 +7031,6 @@ function isStandardThreeRibbonLayoutWithinLapelLimit(items,layout,polygon){
 }
 
 function getAutomaticClassARibbonLayout(items){
-  // The visual four-centered option is an explicit override: its four-ribbon
-  // rows define the pocket centerline even when the ordinary 51% lapel test
-  // would have retained the standard three-across rack. Partial and top rows
-  // still use the existing Class A lapel-avoidance arrangement rules.
-  if(State.ribbonRackLayout==='4-center'){
-    return {
-      layout:getRibbonLayout('blues_a','4-center'),
-      useFourColumns:true
-    };
-  }
-
   const standardLayout=getRibbonLayout('blues_a','3');
   const polygon=getActiveAwardSideLapelPolygon();
   if(!polygon.length || isStandardThreeRibbonLayoutWithinLapelLimit(items,standardLayout,polygon)){
@@ -7370,6 +7359,7 @@ function renderRack(){
   if(!items.length) return;
 
   let rackLayout = getRibbonLayout();
+  let rackTranslationX = 0;
   const automaticClassALapel = State.uniform==='blues_a' &&
     State.ribbonRackArrangement==='lapel' && !State.ribbonRowOverrideEnabled;
   let automaticUsesFourColumns=false;
@@ -7377,6 +7367,17 @@ function renderRack(){
     const decision=getAutomaticClassARibbonLayout(items);
     rackLayout=decision.layout;
     automaticUsesFourColumns=decision.useFourColumns;
+  }
+
+  // Four-centered is a pure translation of the generated four-left rack. Build
+  // every row with the same left-aligned geometry and lapel logic, then move all
+  // rendered ribbons together until a complete row of four is pocket-centered.
+  // This preserves every upper row's position relative to the rack as a whole.
+  if(State.uniform==='blues_a' && State.ribbonRackLayout==='4-center' && rackLayout.columns===4){
+    const centeredLayout=getRibbonLayout('blues_a','4-center');
+    const leftAlignedLayout=getRibbonLayout('blues_a','4-left');
+    rackTranslationX=centeredLayout.baseX-leftAlignedLayout.baseX;
+    rackLayout=leftAlignedLayout;
   }
   const BOTTOM_ROW_Y   = rackLayout.bottomY;
   const RACK_CENTER_X  = rackLayout.centerX;
@@ -7453,7 +7454,7 @@ function renderRack(){
           `ribbons/${rid}.png`
         ]);
 
-        const leftPx = leftPositions[i];
+        const leftPx = leftPositions[i] + rackTranslationX;
         const topPx  = rowTopPx;
 
         tile.dataset.rid=ribbonObj.id;
@@ -10042,7 +10043,7 @@ function syncRibbonRackColumnsControl(){
 
   if(hint){
     hint.textContent = classA && preferredLayout === '4-center'
-      ? 'Visual realism option: each complete row of four is centered over the pocket and defines the rack centerline. This option is not in accordance with CAPR 39-1.'
+      ? 'Visual realism option: the complete left-aligned four-across rack is shifted as one unit until its rows of four are centered over the pocket. This option is not in accordance with CAPR 39-1.'
       : classA
         ? 'Choose three across, or align a four-across rack with the wearer-left/outboard pocket edge. Rows have no spacing.'
         : 'CAPR 39-1 requires rows of three on Class B and aviator shirts. Four-across is available only on Class A.';
@@ -10070,6 +10071,11 @@ function getAutomaticRibbonRowCounts(){
     const decision=getAutomaticClassARibbonLayout(items);
     layout=decision.layout;
     useFourColumnLapelLayout=decision.useFourColumns;
+  }
+  if(useFourColumnLapelLayout && State.ribbonRackLayout==='4-center'){
+    // Row selection must match the left-aligned version exactly; centering is a
+    // render-only translation and must not change any upper-row composition.
+    layout=getRibbonLayout('blues_a','4-left');
   }
   const rows=useFourColumnLapelLayout
     ? buildLapelAvoidanceRowsHighToLow(items,layout.columns,layout)
