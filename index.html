@@ -3003,6 +3003,27 @@ const GOVERNANCE_SERVICE_BADGE_IDS = new Set([
   'cap_national_command_board_badge',
   'national_staff_badge'
 ]);
+const NATIONAL_STAFF_PRECEDENCE_EXCEPTIONS = new Set([
+  'command_council_badge',
+  'senior_advisory_group_badge'
+]);
+
+function getSpecialtySelectionPrecedence(id){
+  if(NATIONAL_STAFF_PRECEDENCE_EXCEPTIONS.has(id)) return 0;
+  if(id === 'national_staff_badge') return 1;
+  return 2;
+}
+
+function applySpecialtySelectionPrecedence(ids){
+  const source = Array.isArray(ids) ? [...ids] : [];
+  const specialty = source
+    .filter(id => SPECIALTY_TRACK_BADGE_IDS.has(id))
+    .map((id, index) => ({ id, index }))
+    .sort((a, b) => getSpecialtySelectionPrecedence(a.id) - getSpecialtySelectionPrecedence(b.id) || a.index - b.index)
+    .map(item => item.id);
+  let specialtyIndex = 0;
+  return source.map(id => SPECIALTY_TRACK_BADGE_IDS.has(id) ? specialty[specialtyIndex++] : id);
+}
 const SPECIALTY_TRACK_BADGE_IDS = new Set([
   ...GOVERNANCE_SERVICE_BADGE_IDS,
   'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
@@ -8286,7 +8307,10 @@ function rebuildBadgesFromGallery(){
     }
   }
 
-  State.badges = current;
+  // Specialty position ownership follows CAP precedence: Command Council and
+  // Senior Advisory Group first, then National Staff, then all other specialty
+  // badges. Equal-priority items retain the user's selection order.
+  State.badges = applySpecialtySelectionPrecedence(current);
 
   // Apply true exclusivity rules after order is preserved.
   for(const id of [...State.badges]){
@@ -11991,6 +12015,11 @@ const CAPUB_SPECIALTY_TRACK_FAMILY_ORDER = {
 
 const CAPUB_SPECIALTY_BADGE_IMPORT_PRIORITY = (() => {
   const result = new Map();
+  // Governance/service precedence: Command Council and Senior Advisory Group
+  // outrank National Staff; National Staff outranks every rated specialty.
+  result.set('command_council_badge', -300);
+  result.set('senior_advisory_group_badge', -300);
+  result.set('national_staff_badge', -200);
   const ratingOrder = { MASTER:0, SENIOR:1, TECHNICIAN:2 };
   const families = [
     CAPUB_SPECIALTY_TRACK_FAMILY_ORDER.operations,
@@ -12558,6 +12587,15 @@ function parseCapMemberReport(textRaw){
 
   // Badge / qualification mapping.
   // Aviation family priority is resolved later as: Pilot > Observer > Aircrew.
+  // Governance/service badges use exact report labels. Their selection order is
+  // resolved separately so Command Council / SAG outrank National Staff, while
+  // National Staff outranks every other specialty badge.
+  if(/\bCommand\s+Council\s+Badge\b/i.test(text)) result.badges.push('command_council_badge');
+  if(/\bSenior\s+Advisory\s+Group\s+Badge\b|\bSAG\s+Badge\b/i.test(text)) result.badges.push('senior_advisory_group_badge');
+  if(/\bNational\s+Staff\s+Badge\b/i.test(text)) result.badges.push('national_staff_badge');
+  if(/\bNational\s+Executive\s+Committee\s+Badge\b|\bNEC\s+Badge\b/i.test(text)) result.badges.push('national_executive_committee_badge');
+  if(/\b(?:CAP\s+)?National\s+Command\s+Board\s+Badge\b/i.test(text)) result.badges.push('cap_national_command_board_badge');
+
   if(/CAP\s+Master\s+Pilot\s+Rating|Master\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPMasterPilot1_621A0E2ED15DA');
   else if(/CAP\s+Senior\s+Pilot\s+Rating|Senior\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPSeniorPilot1_D9725AE959752');
   else if(/CAP\s+Pilot\s+Rating|Basic\s+Pilot\s+Badge|Pilot\s+Badge/i.test(text)) result.badges.push('CAPPilot1_FA9D33EA587D8');
