@@ -1,0 +1,19 @@
+# OfficialMilitaryRibbons.com Import Report
+
+Imported: 2026-08-27T19:37:12.139Z
+Pages visited: 120
+Failed pages: 0
+Skipped pages: 0
+Discovered listings: 1286
+Canonical records: 183
+Ribbons: 177
+Badges: 0
+Lapel pins: 0
+Precedence records: 375
+
+All external images are SOURCE_ONLY because redistribution permission has not been established. The production builder does not hotlink them.
+Imported precedence is discovery data and remains unverified until matched to a current official service publication.
+
+## Failed pages
+
+- None

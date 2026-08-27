@@ -1,0 +1,12 @@
+[
+  {"id":"BRONZE_OLC","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":1,"asset":null,"verificationStatus":"PENDING"},
+  {"id":"SILVER_OLC","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":5,"asset":null,"verificationStatus":"PENDING"},
+  {"id":"BRONZE_SERVICE_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":1,"asset":null,"verificationStatus":"PENDING"},
+  {"id":"SILVER_SERVICE_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":5,"asset":null,"verificationStatus":"PENDING"},
+  {"id":"GOLD_AWARD_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":1,"asset":null,"verificationStatus":"PENDING"},
+  {"id":"SILVER_AWARD_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":5,"asset":null,"verificationStatus":"PENDING"},
+  {"id":"V_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/V_Device.webp","verificationStatus":"PENDING"},
+  {"id":"C_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":null,"verificationStatus":"PENDING"},
+  {"id":"R_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":null,"verificationStatus":"PENDING"},
+  {"id":"ARROWHEAD_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":null,"verificationStatus":"PENDING"}
+]

@@ -1,0 +1,1473 @@
+{
+  "generatedAt": "2026-08-27T19:37:12.415Z",
+  "records": 183,
+  "crossReferenced": 0,
+  "officiallyVerified": 20,
+  "conflicts": [],
+  "items": [
+    {
+      "awardId": "air_force_medal_of_honor",
+      "officialName": "medal of honor",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_cross",
+      "officialName": "air force cross",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "defense_distinguished_service",
+      "officialName": "defense distinguished service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "air_force_distinguished_service",
+      "officialName": "air force distinguishd service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "silver_star",
+      "officialName": "silver star",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "defense_superior_service",
+      "officialName": "defense superior service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "legion_of_merit",
+      "officialName": "legion of merit",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "distinguished_flying_cross",
+      "officialName": "distinguished flying cross",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "airmans_medal",
+      "officialName": "airmans medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "bronze_star",
+      "officialName": "bronze star miltiary ribbon",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "purple_heart",
+      "officialName": "purple heart",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "defense_meritorious_service",
+      "officialName": "defense meritorious service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "meritorious_service",
+      "officialName": "meritorious service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "air_medal",
+      "officialName": "Air Medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "aerial_achievement",
+      "officialName": "Aerial Achievement Medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "joint_service_commendation",
+      "officialName": "joint service commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "air_force_commendation",
+      "officialName": "Air and Space Commendation Medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "joint_service_achievement",
+      "officialName": "joint service achievement",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "air_force_achievement",
+      "officialName": "Air and Space Achievement Medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_combat_action",
+      "officialName": "air force combat action",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_presidential_unit_citation",
+      "officialName": "air force presidential unit citation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_gallant_unit_citation",
+      "officialName": "air force gallant unit citation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "joint_meritorious_unit_award",
+      "officialName": "joint meritorious unit award",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_meritorious_unit_award",
+      "officialName": "air force meritorious unit award",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_outstanding_unit_award",
+      "officialName": "air force outstanding unit award",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_organizational_excellence_award",
+      "officialName": "Air and Space Organizational Excellence Award",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "prisoner_of_war",
+      "officialName": "prisoner of war",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_combat_rediness",
+      "officialName": "air force combat readiness",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_good_conduct",
+      "officialName": "air force good condcut",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_reserve_forces_meritorious_service",
+      "officialName": "air reserve forces meritorious service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "outstanding_airman_of_the_year",
+      "officialName": "air force outstanding airman of the year",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_recognition",
+      "officialName": "air force recognition",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "american_defense",
+      "officialName": "american defense",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "american_campaign",
+      "officialName": "american campaign",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "european_african_middle_eastern_campaign",
+      "officialName": "european african middle eastern campaign",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "asiatic_pacific_campaign",
+      "officialName": "asiatic pacific campaign",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "world_war_2",
+      "officialName": "world war II victory",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_of_occupation_service",
+      "officialName": "army of occupation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "medal_for_humane_action",
+      "officialName": "medal for humane action",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "national_defense_service",
+      "officialName": "national defense military service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "korean_service",
+      "officialName": "korean service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "antarctica_service",
+      "officialName": "antarctica service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "armed_forces_expeditionary",
+      "officialName": "armed forces expeditionary",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "vietnam_service",
+      "officialName": "vietnam service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "southwest_asia_service_military_ribbons",
+      "officialName": "southwest asia service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "kosovo_campaign",
+      "officialName": "kosovo campaign",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "afghanistan_campaign",
+      "officialName": "afghanistan campaign",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "iraq_campaign",
+      "officialName": "iraq campaign",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "global_war_terror_expeditionary",
+      "officialName": "global war on terrorism expeditionary",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "global_war_terror_service",
+      "officialName": "global war on terrorism service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "korean_defense_service",
+      "officialName": "korean defense service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "armed_forces_service",
+      "officialName": "armed forces service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "humanitarian_service",
+      "officialName": "humanitarian service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "outstanding_volunteer_service",
+      "officialName": "outstanding volunteer service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_and_space_campaign",
+      "officialName": "air and space campaign",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "overseas_short_tour",
+      "officialName": "air force overseas short tour",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "overseas_long_tour",
+      "officialName": "air force overseas long tour",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_expeditionary_service",
+      "officialName": "air force expeditionary",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_longevity_service",
+      "officialName": "air force longevity service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_military_training_instructor",
+      "officialName": "air force military training instructor",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_recruiter",
+      "officialName": "air force recruiter",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "armed_forces_reserve_air_force_military_ribbons",
+      "officialName": "armed forces reserve",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "nco_professional_military_education_graduate",
+      "officialName": "air force nco professional military education graduate",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "basic_military_training_honor_graduate",
+      "officialName": "air force basic training honor graduate",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "small_arms_expert_military_ribbons",
+      "officialName": "air force small arms expert marksmanship",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "air_force_training",
+      "officialName": "air force training",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "philippine_defense",
+      "officialName": "philippine defense",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "philippine_liberation",
+      "officialName": "philippine liberation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "philippine_independence",
+      "officialName": "philippine independence",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "vietnam_gallantry_cross",
+      "officialName": "vietnam gallantry cross",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "philippine_presidential_unit_citation",
+      "officialName": "philippine presidential unit citation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "korean_presidential_unit_citation",
+      "officialName": "korean presidential unit citation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "vietnam_gallantry_cross_unit_citation",
+      "officialName": "vietnam gallantry cross unit citation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "vietnam_civil_actions_unit_citation",
+      "officialName": "vietnam civil actions unit citation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "united_nations_service",
+      "officialName": "united nations service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "united_nations",
+      "officialName": "united nations",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "nato_medal",
+      "officialName": "nato",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "nato_kosovo",
+      "officialName": "nato kosovo",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "multinational_force_observers",
+      "officialName": "multinational force and observers",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "inter_american_defense_board",
+      "officialName": "inter american defense board",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "republic_of_vietnam_campaign",
+      "officialName": "republic of vietnam campaign",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "kuwait_liberation_saudi",
+      "officialName": "kuwait liberation saudi arabia",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "kuwait_liberation_kuwait",
+      "officialName": "kuwiat liberation kuwait",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "republic_of_korean_war_service",
+      "officialName": "rok war service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_medal_of_honor",
+      "officialName": "medal of honor",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_distinguished_service_cross_military_ribb0n",
+      "officialName": "army distinguished service cross",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_distinguished_service_military_ribb0n",
+      "officialName": "army distinguished service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_soldiers_medal",
+      "officialName": "army soldiers medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_commendation",
+      "officialName": "army commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_achievement",
+      "officialName": "army achievement",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_good_conduct",
+      "officialName": "Army Good Conduct",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_reserve_components_achievement",
+      "officialName": "Reserve Componets Achievement",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_womens_army_corps_service",
+      "officialName": "Womens's Army Corps Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_sea_duty",
+      "officialName": "Army Sea Duty",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "armed_forces_reserve_army_military_ribbons",
+      "officialName": "Armed Forces Reserve",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_nco_professional_development",
+      "officialName": "NCO Professional Development",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_service",
+      "officialName": "Army Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_overseas_service",
+      "officialName": "Overseas Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_reserve_componentsoverseas_training",
+      "officialName": "Reserve Components Overseas Training",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_presidential_unit_citation",
+      "officialName": "Army Presidential Unit Citation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_valorous_unit_award",
+      "officialName": "Army Valorous Unit Award",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_meritorious_unit_commendation",
+      "officialName": "Army Meritorious Unit Commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_superior_unit_award",
+      "officialName": "Army Superior Unit Award",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "vietnam_presidential_unit_citation",
+      "officialName": "Republic of Vietnam Presidential Unit Citation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "medal_of_honor",
+      "officialName": "medal of honor",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "navy_cross",
+      "officialName": "Navy Cross",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "transportation_distinguished_service",
+      "officialName": "Transportation Distinguished Service Medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_distinguished_service",
+      "officialName": "Coast Guard Distinguished Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_medal",
+      "officialName": "Coast Guard Medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "gold_life_saving",
+      "officialName": "Gold Life Saving Medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "silver_life_saving",
+      "officialName": "Silver Life Saving",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_commendation",
+      "officialName": "Coast Guard Commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "dot_9_11_medal",
+      "officialName": "DOT 9-11 Medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_achievement",
+      "officialName": "Coast Guard Achievement",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_commandants_letter_of_commendation",
+      "officialName": "Commandants Letter Of Commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_combat_action",
+      "officialName": "Comabt Action",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_presidential_unit_citation",
+      "officialName": "coast guard presidential unit citation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_presidential_unit_citation",
+      "officialName": "Navy Presidential Unit Citation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "dot_outstanding_unit_award",
+      "officialName": "DOT Outstanding Unit Award",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_unit_commendation",
+      "officialName": "Coast Guard Unit Commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_meritorious_unit_commendation",
+      "officialName": "Coast Guard Meritorious Unit Commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_meritorious_team_commendation",
+      "officialName": "Coast Guard Meritorious Team Commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_e",
+      "officialName": "Coast Guard E",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_bicentennial_unit_commendation",
+      "officialName": "Coast Guard Bicentennial Unit Commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_good_conduct",
+      "officialName": "Coast Guard Good Conduct",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_reserve_good_conduct",
+      "officialName": "Coast Guard Reserve Good Conduct",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_enlisted_person_of_the_year",
+      "officialName": "Coast Guard Enlisted Person of the Year",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "expeditionary",
+      "officialName": "Navy Expeditionary",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "china_service",
+      "officialName": "China Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "us_antarctic_expedition",
+      "officialName": "us antarctic expedition ribbon",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_occupation_service",
+      "officialName": "Navy Occupation Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_arctic_service",
+      "officialName": "Arctic Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "dot_9_11_ribbon",
+      "officialName": "DOT-9-11 Ribbon",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_special_operations_service",
+      "officialName": "Special Operations Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_sea_duty",
+      "officialName": "Coast Guard Sea Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_restricted_duty",
+      "officialName": "Coast Guard Restricted Duty",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_overseas_service",
+      "officialName": "Coast Guard Overseas Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_basic_training_honor_graduate",
+      "officialName": "Basic Training Honor Graduate",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_recruiting_service",
+      "officialName": "Coast Guard Recruiting Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "armed_forces_reserve_coast_guard_military_ribbons",
+      "officialName": "Armed Forces Reserve",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_rifle_marksmanship",
+      "officialName": "coast guard rifle marksmanship military ribbons",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_pistol_marksmanship",
+      "officialName": "Coast Guard Pistol Marksmanship",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_distinguished_service",
+      "officialName": "Navy Distinguished Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "navy_marine_corps_medal",
+      "officialName": "Navy & Marine Corps Medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "navy_marine_corps_commendation",
+      "officialName": "Navy & Marine Corps Commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "navy_marine_corps_achievement",
+      "officialName": "Navy & Marine Corps Achievement",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "combat_action",
+      "officialName": "Combat Action",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
+    },
+    {
+      "awardId": "navy_unit_commendation",
+      "officialName": "Navy Unit Commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_meritorious_unit_commendation",
+      "officialName": "Navy Meritorious Unit Commendation",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_e",
+      "officialName": "Navy E",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "marine_corps_good_conduct",
+      "officialName": "Marine Corps Good Conduct",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "selected_marine_corps_reserve",
+      "officialName": "Selected Marine Corps Reserve",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "marine_corps_expeditionary",
+      "officialName": "Marine Corps Expeditionary",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_sea_service_deployment",
+      "officialName": "Navy Sea Service Deployment",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_arctic_service",
+      "officialName": "Navy Arctic Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_marine_corps_overseas_service_military_rbbon",
+      "officialName": "Navy & Marine Corps Overseas Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "marine_corps_recruiting",
+      "officialName": "Marine Corps Recruiting",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "marine_corps_drill_instructor",
+      "officialName": "Marine Corps Drill Instructor",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "marine_corps_security_guard",
+      "officialName": "Marine Corps Sercurity Guard",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "marine_corps_combat_instructor",
+      "officialName": "Marine Corps Combat Instructor",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "armed_forces_reserve_military_ribbons",
+      "officialName": "Armed Forces Reserve",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "marine_corps_reserve",
+      "officialName": "Marine Corps Reserve",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "naval_reserve_special_commendation",
+      "officialName": "navy reserve special commendation ribbon",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_good_conduct",
+      "officialName": "navy good conduct",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "naval_reserve_meritorious_service",
+      "officialName": "Naval Reserve Meritorious Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "fleet_marine_force",
+      "officialName": "Fleet Marine Force",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "naval_reserve_sea_service",
+      "officialName": "Naval Reserve Sea Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_recruiting_service",
+      "officialName": "Navy Recruiting Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_recruit_training_service",
+      "officialName": "Navy Recruit Training Service",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "ceremonial_guard",
+      "officialName": "Navy Ceremonial Guard",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "armed_forces_reserve_navy_military_ribbons",
+      "officialName": "Armed Forces Reserve",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "naval_reserve",
+      "officialName": "Naval Reserve",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_rifle_marksmanship",
+      "officialName": "Navy Rifle Marksmanship",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "navy_pistol_marksmanship",
+      "officialName": "Navy Pistol Marksmanship",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "us_air_force_rank_cnc_and_laser_graphics_wood_working",
+      "officialName": "US Air Force Rank Free CNC and Laser Military Graphics and Designs,Free Military Graphics and Designs",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "us_army_rank_cnc_and_laser_graphics_wood_working",
+      "officialName": "US Army Rank Free CNC and Laser Military Graphics and Designs Free Military Graphics and Designs",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "us_coast_guard_rank_cnc_and_laser_graphics_wood_working",
+      "officialName": "US Coast Guard Free CNC and Laser Military Graphics and Designs Free Military Graphics and Designs",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "us_marine_corps_rank_cnc_and_laser_graphics_wood_working",
+      "officialName": "Free Military Graphics and Designs",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "us_navy_rank_cnc_and_laser_graphics_wood_working",
+      "officialName": "Free Military Graphics and Designs",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "us_space_force_rank_cnc_and_laser_graphics_wood_working",
+      "officialName": "US Space Force Free CNC and Laser Military Graphics and Designs",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "coast_guard_medal_of_honor",
+      "officialName": "Medal of Honor",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "army_occupation_of_germany",
+      "officialName": "Army Occupation of Germany Military Medal &",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    },
+    {
+      "awardId": "china_relief_expedition",
+      "officialName": "China Relief Expedition Military Medal",
+      "officialMilitaryRibbons": true,
+      "usamm": false,
+      "officialRegulation": false,
+      "status": "DISCOVERED"
+    }
+  ]
+}
