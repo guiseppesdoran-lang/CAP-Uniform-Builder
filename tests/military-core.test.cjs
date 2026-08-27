@@ -46,6 +46,14 @@ test('campaign and foreign categories are deterministic when source order is unk
   assert.deepEqual(core.sortAwardsForMember([foreign,campaign],{organization:'AIR_FORCE'}).map(x=>x.id),['campaign','foreign']);
 });
 
+test('every Medal of Honor variant outranks lower decorations even with an incomplete service table', () => {
+  const moh=award('coast_guard_medal_of_honor','Medal of Honor',['COAST_GUARD'],{},'UNKNOWN');
+  const cross=award('air_force_cross','Air Force Cross',['AIR_FORCE'],{AIR_FORCE:{order:1}},'UNKNOWN');
+  const sorted=core.sortAwardsForMember([cross,moh],{organization:'AIR_FORCE'});
+  assert.deepEqual(sorted.map(item=>item.id),['coast_guard_medal_of_honor','air_force_cross']);
+  assert.equal(core.inferredCategory(moh),'MEDAL_OF_HONOR');
+});
+
 test('military repeat award devices are service-specific', () => {
   const sample=award('sample','Sample',['AIR_FORCE','NAVY'],{});
   sample.devices={

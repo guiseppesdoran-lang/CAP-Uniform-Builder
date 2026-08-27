@@ -318,7 +318,8 @@
   .militarySourceOnly{color:#9a3412;font-size:10px;}
   .militaryPreviewTitle{position:absolute;left:24px;right:24px;top:24px;text-align:center;font-weight:800;color:#e5e7eb;letter-spacing:.08em;}
   .militaryPreviewNote{position:absolute;left:24px;right:24px;bottom:24px;text-align:center;color:#cbd5e1;font-size:11px;line-height:1.4;}
-  .militaryRackTile{position:absolute;object-fit:fill;box-shadow:0 0 0 1px rgba(255,255,255,.2);}
+  .militaryRackTile{position:absolute;object-fit:fill;filter:saturate(.9) contrast(.97);box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(15,23,42,.2);}
+  .ribbonTile.militaryRibbonTile{object-fit:fill;filter:saturate(.9) contrast(.97);box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(15,23,42,.2);}
   .militaryRackPending{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;padding:2px;background:repeating-linear-gradient(45deg,#334155,#334155 5px,#475569 5px,#475569 10px);color:#fff;font-size:7px;line-height:1.05;overflow:hidden;border:1px dashed #f59e0b;}
   .militaryDeviceSummary{position:absolute;display:flex;align-items:center;justify-content:center;gap:2px;color:#f8fafc;font-size:8px;font-weight:900;text-shadow:0 1px 2px #000;pointer-events:none;}
   .garmentForegroundOverlay{
@@ -993,6 +994,14 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
   border-color:#8bb8e5;
   background:#f0f7ff;
 }
+.ribbonSelectorTile.militaryRibbonSelectorTile > img{
+  width:72px;
+  height:19.64px;
+  object-fit:fill;
+  border-radius:1px;
+  filter:saturate(.9) contrast(.97);
+  box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(15,23,42,.2);
+}
 
 
 
@@ -1599,8 +1608,8 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <script src="purchase-catalog.js"></script>
 <script src="mcchord-ribbon-variants.js"></script>
 <script src="member-report-rules.js"></script>
-<script src="military/military-core.js"></script>
-<script src="military/military-data.js"></script>
+<script src="military/military-core.js?v=20260827-cap-picker-2"></script>
+<script src="military/military-data.js?v=20260827-ribbon-assets-1"></script>
 <script>
 /* ===========================
    GLOBAL STATE
@@ -4952,7 +4961,34 @@ const RIBBON_DISPLAY_NAMES = {
   forest_patrol_ribbon: 'Forest Patrol Ribbon',
   missing_aircraft_ribbon: 'Missing Aircraft Ribbon'
 };
+const MILITARY_RIBBON_PREFIX = 'military:';
+function isMilitaryRibbonId(id){
+  return String(id || '').startsWith(MILITARY_RIBBON_PREFIX);
+}
+function militaryRibbonCatalogId(id){
+  return isMilitaryRibbonId(id) ? String(id).slice(MILITARY_RIBBON_PREFIX.length) : String(id || '');
+}
+function getAllMilitaryRibbonAwards(){
+  return (window.CAPUBMilitaryData?.awards || []).filter(award =>
+    award.type === 'RIBBON' && !window.CAPUBMilitary?.isCapAward(award)
+  );
+}
+function getMilitaryRibbonAward(id){
+  const catalogId = militaryRibbonCatalogId(id);
+  return getAllMilitaryRibbonAwards().find(award => award.id === catalogId) || null;
+}
+function getMilitaryRibbonIds(){
+  const awards = window.CAPUBMilitary?.sortAwardsForMember(
+    getAllMilitaryRibbonAwards(),
+    { organization:'AIR_FORCE', component:'ACTIVE' }
+  ) || getAllMilitaryRibbonAwards();
+  return awards.map(award => `${MILITARY_RIBBON_PREFIX}${award.id}`);
+}
 function getRibbonDisplayName(id){
+  if(isMilitaryRibbonId(id)){
+    const award = getMilitaryRibbonAward(id);
+    return award?.officialName || award?.name || militaryRibbonCatalogId(id).replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+  }
   return RIBBON_DISPLAY_NAMES[id] || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 }
 const RIBBON_PRECEDENCE_INDEX = new Map(ribbonList.map((id, idx) => [id, idx]));
@@ -4960,6 +4996,7 @@ function normalizeRibbonId(id){
   return RIBBON_ID_ALIASES[id] || id;
 }
 function precedence(id){
+  if(isMilitaryRibbonId(id)) return -1;
   const normalized = normalizeRibbonId(id);
   return RIBBON_PRECEDENCE_INDEX.has(normalized)
     ? RIBBON_PRECEDENCE_INDEX.get(normalized)
@@ -5393,6 +5430,7 @@ function normalizeRibbonImageFileName(name){
 
 function getRibbonImagePath(ribbonOrId){
   const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
+  if(isMilitaryRibbonId(id)) return getMilitaryRibbonAward(id)?.images?.ribbon || '';
   if(typeof ribbonOrId !== 'string' && ribbonOrId?.imageOverride){
     return `ribbons/${normalizeRibbonImageFileName(ribbonOrId.imageOverride)}`;
   }
@@ -6895,6 +6933,19 @@ function applyJacket(){
    =========================== */
 function sortRibbons(arr){
   return [...arr].sort((a,b)=>{
+    const aMilitary = isMilitaryRibbonId(a.id);
+    const bMilitary = isMilitaryRibbonId(b.id);
+    if(aMilitary && bMilitary){
+      const aa = getMilitaryRibbonAward(a.id);
+      const ba = getMilitaryRibbonAward(b.id);
+      if(aa && ba && window.CAPUBMilitary?.compareAwardsForMember){
+        return window.CAPUBMilitary.compareAwardsForMember(
+          aa, ba, { organization:'AIR_FORCE', component:'ACTIVE' }
+        );
+      }
+    }
+    // U.S. military decorations precede CAP awards on the CAP rack.
+    if(aMilitary !== bMilitary) return aMilitary ? -1 : 1;
     const ap = precedence(a.id);
     const bp = precedence(b.id);
     if(ap !== bp) return ap - bp;
@@ -7492,6 +7543,7 @@ function renderRack(){
 
         const tile=document.createElement('img');
         tile.className='layer ribbonTile';
+        if(isMilitaryRibbonId(ribbonObj.id)) tile.classList.add('militaryRibbonTile');
         tile.style.display='block';
         capubInstallImageFallback(tile, [
           getRibbonImagePath(ribbonObj),
@@ -7893,6 +7945,7 @@ function capubExtendMcchordOptionsTo84(id, sourceOptions){
 }
 
 function getRibbonAwardOptions(id){
+  if(isMilitaryRibbonId(id)) return ribbonSelectOnlyOptions();
   if(CAPUB_SINGLE_AWARD_RIBBON_IDS.has(id)) return ribbonSelectOnlyOptions();
   const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
   if(Array.isArray(mcchordOptions) && mcchordOptions.length){
@@ -8187,7 +8240,7 @@ function enforceSeniorSingleCadetAwardRibbon(selectedId){
 }
 
 function normalizeRibbonSelections(){
-  ribbonList.forEach(id=>{
+  [...ribbonList, ...getMilitaryRibbonIds()].forEach(id=>{
     if(!State.ribbonSelections[id]){
       State.ribbonSelections[id] = { checked:false, devices:{}, awardValue:'', awardLabel:'' };
     }else{
@@ -8219,7 +8272,7 @@ function rebuildRibbonsFromGallery(){
   normalizeBadgeSelections();
   syncCommandBadgeAndRibbonSelections();
 
-  for(const id of getEligibleRibbonIds()){
+  for(const id of [...getEligibleRibbonIds(), ...getMilitaryRibbonIds()]){
     const sel = State.ribbonSelections[id];
     if(!sel || !sel.checked) continue;
 
@@ -8279,10 +8332,12 @@ function buildRibbonGallery(){
   const visible = State.ribbonGalleryExpanded ? eligible : eligible.slice(0, 12);
   const currentRibbons = visible.filter(id => !HISTORICAL_RIBBONS.has(id));
   const historicalRibbons = visible.filter(id => HISTORICAL_RIBBONS.has(id));
+  const militaryRibbons = State.ribbonGalleryExpanded ? getMilitaryRibbonIds() : [];
   const sections = State.ribbonGalleryExpanded
     ? [
         { title:'Current Ribbons', description:'Currently issued awards and achievements.', ids:currentRibbons },
-        { title:'Historical Ribbons', description:'Legacy cadet awards and wartime service ribbons.', ids:historicalRibbons }
+        { title:'Historical Ribbons', description:'Legacy cadet awards and wartime service ribbons.', ids:historicalRibbons },
+        { title:'U.S. Military Ribbons', description:`All ${militaryRibbons.length} imported military ribbons, in military order of precedence.`, ids:militaryRibbons, military:true }
       ]
     : [{ title:'', description:'', ids:visible }];
 
@@ -8300,6 +8355,7 @@ function buildRibbonGallery(){
 
     const tile = document.createElement('div');
     tile.className = 'galleryTile ribbonSelectorTile';
+    if(section.military) tile.classList.add('militaryRibbonSelectorTile');
     tile.dataset.ribbonId = id;
 
     const title = getRibbonDisplayName(id);
@@ -8323,7 +8379,7 @@ function buildRibbonGallery(){
       <img alt="${title}">
       <div style="flex:1;min-width:0;">
         <div class="title">${title}</div>
-        <div class="sub">(${id})</div>
+        <div class="sub">${section.military ? `${(getMilitaryRibbonAward(id)?.authorizedServices || []).join(' / ').replaceAll('_',' ') || 'U.S. MILITARY'} • ` : ''}(${id})</div>
         ${miniPreview}
         <label class="ribbonAwardLabel">
           Award count / earned level
@@ -9950,15 +10006,18 @@ function renderMilitaryPreview(){
   title.textContent=`${State.organization.replaceAll('_',' ')} • ${State.component.replaceAll('_',' ')}`;
   uniformCanvas.appendChild(title);
   const items=getSelectedMilitaryAwards();
-  const columns=3, width=72, height=20, gap=1;
+  const columns=3, width=66, height=18, gap=0;
   const rows=[];
-  for(let index=0;index<items.length;index+=columns) rows.push(items.slice(index,index+columns));
-  const centerX=225, bottomY=400;
+  const remainder=items.length % columns;
+  let cursor=0;
+  if(remainder){ rows.push(items.slice(0,remainder)); cursor=remainder; }
+  for(;cursor<items.length;cursor+=columns) rows.push(items.slice(cursor,cursor+columns));
+  const centerX=225, topY=210;
   rows.forEach((row,rowIndex)=>{
     const rowWidth=row.length*width+(row.length-1)*gap;
     row.forEach((award,column)=>{
       const left=centerX-rowWidth/2+column*(width+gap);
-      const top=bottomY-rowIndex*(height+gap);
+      const top=topY+rowIndex*(height+gap);
       let tile;
       if(award.images?.ribbon){
         tile=document.createElement('img'); tile.src=award.images.ribbon; tile.alt=award.name; tile.className='layer militaryRackTile';
@@ -9987,7 +10046,7 @@ function renderMilitaryPreview(){
   const note=document.createElement('div');
   note.className='layer militaryPreviewNote';
   note.textContent=items.length
-    ? 'Rack sorted by the selected service precedence table. Hatched tiles identify records whose local production artwork is still pending.'
+    ? 'Rack sorted highest-to-lowest from the top row using the selected service precedence table. Ribbons use the same 1⅜ × ⅜ proportion and edge-to-edge mounting style as the CAP McChord rack.'
     : 'Select military ribbons from the catalog panel. CAP selections remain preserved when you switch back.';
   uniformCanvas.appendChild(note);
 }

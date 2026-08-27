@@ -72,6 +72,43 @@
     return null;
   }
 
+  function inferredCategory(award){
+    const explicit = String(award?.category || '').trim().toUpperCase();
+    if(explicit && explicit !== 'UNKNOWN') return explicit;
+    const text = `${award?.id || ''} ${award?.officialName || ''} ${award?.name || ''}`
+      .toLowerCase().replace(/[_-]+/g, ' ');
+    if(/\bmedal of honor\b/.test(text)) return 'MEDAL_OF_HONOR';
+    if(/\b(?:distinguished service|navy|air force|coast guard) cross\b/.test(text)) return 'SERVICE_CROSS';
+    if(/\bdistinguished service medal\b/.test(text)) return 'DISTINGUISHED_SERVICE';
+    if(/\bsilver star\b/.test(text)) return 'VALOR';
+    if(/\bdefense superior service\b/.test(text)) return 'SUPERIOR_SERVICE';
+    if(/\blegion of merit\b/.test(text)) return 'LEGION_OF_MERIT';
+    if(/\bdistinguished flying cross\b/.test(text)) return 'DISTINGUISHED_FLYING_CROSS';
+    if(/\b(?:airman'?s|soldier'?s|navy and marine corps) medal\b/.test(text)) return 'HEROISM';
+    if(/\bbronze star\b/.test(text)) return 'BRONZE_STAR';
+    if(/\bpurple heart\b/.test(text)) return 'PURPLE_HEART';
+    if(/\bmeritorious service\b/.test(text)) return 'MERITORIOUS_SERVICE';
+    if(/\bair medal\b/.test(text)) return 'AIR_MEDAL';
+    if(/\bcommendation\b/.test(text)) return 'COMMENDATION';
+    if(/\bachievement\b/.test(text)) return 'ACHIEVEMENT';
+    if(/\bprisoner of war\b/.test(text)) return 'PRISONER_OF_WAR';
+    if(/\bgood conduct\b/.test(text)) return 'GOOD_CONDUCT';
+    if(/\bunit (?:award|citation|commendation)\b/.test(text)) return 'UNIT_AWARD';
+    if(/\bcampaign\b/.test(text)) return 'CAMPAIGN';
+    if(/\bexpeditionary\b/.test(text)) return 'EXPEDITIONARY';
+    if(/\breserve\b/.test(text)) return 'RESERVE';
+    if(/\btraining\b/.test(text)) return 'TRAINING';
+    if(/\bservice\b/.test(text)) return 'SERVICE';
+    return 'UNKNOWN';
+  }
+
+  function minimumKnownPrecedenceOrder(award){
+    const orders = Object.values(award?.precedence || {}).map(value =>
+      Number.isFinite(value) ? value : value?.order
+    ).filter(Number.isFinite);
+    return orders.length ? Math.min(...orders) : Number.MAX_SAFE_INTEGER;
+  }
+
   function isCapAward(award){
     const awardClass = String(award?.awardClass || '').trim().toUpperCase();
     const category = String(award?.category || '').trim().toUpperCase();
@@ -96,16 +133,24 @@
     const service = normalizeService(member?.organization || member?.service);
     const record = precedenceRecord(award, service);
     const side = record?.side || award?.wearSide?.[service] || 'LEFT';
-    const categoryIndex = DEFAULT_CATEGORY_ORDER.indexOf(award?.category || 'UNKNOWN');
+    const category = inferredCategory(award);
+    const categoryIndex = DEFAULT_CATEGORY_ORDER.indexOf(category);
+    const medalOfHonor = category === 'MEDAL_OF_HONOR';
+    const fallbackOrder = minimumKnownPrecedenceOrder(award);
     return {
       service,
       side,
       uniform:uniform?.id || uniform || null,
-      sourceOrder:Number.isFinite(record?.order) ? record.order : Number.MAX_SAFE_INTEGER,
+      // The Medal of Honor is the senior U.S. military decoration in every
+      // service table. Protect that invariant even when an imported
+      // service-specific record is missing a table entry (for example USCG).
+      sourceOrder:medalOfHonor ? -1 : (
+        Number.isFinite(record?.order) ? record.order : fallbackOrder
+      ),
       categoryOrder:categoryIndex >= 0 ? categoryIndex : DEFAULT_CATEGORY_ORDER.length,
       name:String(award?.officialName || award?.name || award?.id || ''),
       verified:!!record?.verified,
-      known:!!record
+      known:!!record || Number.isFinite(fallbackOrder)
     };
   }
 
@@ -246,7 +291,7 @@
 
   return {
     ORGANIZATIONS, COMPONENTS, VERIFICATION_STATUSES, AWARD_STATUSES,
-    DEFAULT_CATEGORY_ORDER, normalizeService, normalizeName, slugify,
+    DEFAULT_CATEGORY_ORDER, normalizeService, normalizeName, slugify, inferredCategory,
     isCapAward, isAuthorizedForService, getAwardPrecedence, compareAwardsForMember,
     sortAwardsForMember, calculateDevices, mergeAwardRecords, validateCatalog
   };
