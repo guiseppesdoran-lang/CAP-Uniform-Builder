@@ -5853,6 +5853,11 @@ function getBadgeRenderSize(id, uniformId=State.uniform){
   return { width:target, height:target / aspectRatio };
 }
 
+function isCorporateForegroundLapelPin(id, uniformId=State.uniform){
+  return (uniformId === 'aviator_blazer' || uniformId === 'semi_formal') &&
+    GOVERNANCE_SERVICE_BADGE_IDS.has(id);
+}
+
 function hasFixedBadgeRenderSize(id){
   return id === 'national_staff_badge' ||
     CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS.has(id) ||
@@ -9088,6 +9093,12 @@ function placeBadgeSlotAnchored(id){
     : `Rendered in the CAPR 39-1 category ${slot}.`;
 
   if(isCommandInsigniaBadge(id)) clone.style.zIndex = '30';
+
+  // Corporate Dress and Corporate Semi-Formal wear the miniature governance
+  // insignia as a lapel pin. The pin is physically attached to the lapel, so it
+  // must remain in front of the cloned lapel foreground (z-index 9000), while
+  // ribbons, medals, and every non-lapel badge continue to pass behind it.
+  if(isCorporateForegroundLapelPin(id)) clone.style.zIndex = '9010';
 
   applyCalibToElement(clone, clone.dataset.calibKey, { x: base.x, y: base.y, w: bw, h: bh, r: 0 });
 
