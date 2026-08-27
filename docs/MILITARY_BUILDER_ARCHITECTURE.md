@@ -14,7 +14,7 @@
 - `data/imports/` contains machine-readable manifests.
 - `reports/` contains human- and machine-readable audits.
 
-The service selector keeps CAP and military selections in separate state. Military awards are filtered by service/component and sorted by the selected service table. The military preview uses local assets only. A hatched tile is deliberate: it means the record exists but no production-safe local graphic has been supplied.
+The service selector keeps CAP and military selections in separate state. All federal military ribbons are selectable for every military branch, CAP awards remain isolated to CAP, and the rack is sorted by the selected service table. The military preview uses local assets only. A hatched tile means the record exists but its expected repository asset is missing.
 
 ## Provenance states
 
@@ -24,7 +24,7 @@ The service selector keeps CAP and military selections in separate state. Milita
 - `CONFLICT`: sources disagree; no automatic winner except an official publication.
 - `UNVERIFIED` / `PENDING`: not yet checked.
 
-Commercial sources never become regulatory authority. External graphics are `SOURCE_ONLY` unless reuse rights are established or a separately supplied local asset is approved.
+Commercial sources never become regulatory authority. Approved ribbon graphics are vendored into the repository with source metadata and checksums; source-service metadata remains separate from wear authorization and official precedence verification.
 
 ## Commands
 
@@ -55,4 +55,4 @@ The OfficialMilitaryRibbons importer reuses saved raw pages by default. Use `-- 
 
 ## Current progressive boundary
 
-The military rack catalog, filtering, sorting, count input, local-asset rendering, provenance, and device calculation foundation are integrated. Full uniform/base-art selection, all badge/rank placement rules, and a complete production-safe military artwork library remain later stages. The UI explicitly exposes missing assets instead of hotlinking them.
+The military rack catalog, cross-service selection, sorting, count input, local-asset rendering, provenance, and device calculation foundation are integrated. All catalog ribbon graphics are stored locally. Full uniform/base-art selection and all badge/rank placement rules remain later stages. The UI explicitly exposes a missing repository asset instead of hotlinking it.

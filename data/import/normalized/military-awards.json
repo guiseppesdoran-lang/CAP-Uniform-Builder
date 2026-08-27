@@ -22,9 +22,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_medal_of_honor.png",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/medal-of-honor.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -61,9 +61,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_cross.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_cross.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -130,9 +130,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/defense_distinguished_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/defense_distinguished_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -170,9 +170,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_distinguished_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_distinguished_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -236,9 +236,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/silver_star.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/silver-star-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -305,9 +305,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/defense_superior_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/defense_supeior_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -372,9 +372,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/legion_of_merit.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/legion-of-merit-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -439,9 +439,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/distinguished_flying_cross.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/distinguished-flying-cross-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -479,9 +479,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/airmans_medal.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/airmans_medal.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -546,9 +546,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/bronze_star.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/bronze-star-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -613,9 +613,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/purple_heart.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/purple-heart-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -683,9 +683,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/defense_meritorious_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/defense_meritorious_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -750,9 +750,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/meritorious_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/meritorious-service-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -921,9 +921,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/joint_service_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/joint-service-commendation-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -992,9 +992,9 @@
       }
     },
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_commendation.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1058,9 +1058,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/joint_service_achievement.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/joint-service-achievement-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1129,9 +1129,9 @@
       }
     },
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_achievement.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_achievement.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1167,9 +1167,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_combat_action.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/air-force-combat-action-bumpersticker.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1205,9 +1205,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_presidential_unit_citation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_presidential_unit_citation.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1243,9 +1243,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_gallant_unit_citation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/gallant-unit-citation-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1309,9 +1309,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/joint_meritorious_unit_award.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/joint-meritorious-unit-award-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1347,9 +1347,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_meritorious_unit_award.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/af-meritorious-unit-award-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1385,9 +1385,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_outstanding_unit_award.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_outstanding_unit_award.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1495,9 +1495,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/prisoner_of_war.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/prisoner-of-war-bumpersticker.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1534,9 +1534,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_combat_rediness.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/combat_readiness.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1573,9 +1573,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_good_conduct.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_good_conduct.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1611,9 +1611,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_reserve_forces_meritorious_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/air-reserve-forces-meritorious-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1649,9 +1649,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/outstanding_airman_of_the_year.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_outstanding_airman_of_%20the_%20year.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1687,9 +1687,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_recognition.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_recognition.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1754,9 +1754,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/american_defense.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/american-defense-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1789,9 +1789,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/american_campaign.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/american-campaign-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1826,9 +1826,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/european_african_middle_eastern_campaign.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/european-africian-middle-eastern-campaign-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1861,9 +1861,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/asiatic_pacific_campaign.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/asiatic-pacific-campaign-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1927,9 +1927,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/world_war_2.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/world-war-2-bumpersticker.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -1973,9 +1973,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_of_occupation_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/navy_occupation_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2040,9 +2040,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/medal_for_humane_action.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/medal-for-humane-action-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2106,9 +2106,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/national_defense_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/national-defense-service-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2172,9 +2172,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/korean_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/korean-service-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2238,9 +2238,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/antarctica_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/antarctica-service-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2304,9 +2304,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/armed_forces_expeditionary.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-expeditionary-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2370,9 +2370,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/vietnam_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/vietnam-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2436,9 +2436,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/southwest_asia_service_military_ribbons.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/southwest-asia-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2471,9 +2471,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/kosovo_campaign.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/kosovo-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2506,9 +2506,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/afghanistan_campaign.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/afghan-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2541,9 +2541,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/iraq_campaign.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/iraq-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2607,9 +2607,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/global_war_terror_expeditionary.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/glob-exped-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2673,9 +2673,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/global_war_terror_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/glob-svc-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2739,9 +2739,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/korean_defense_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/korean-defense-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2806,9 +2806,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/armed_forces_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-service-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2872,9 +2872,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/humanitarian_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/humanitarian-service-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2938,9 +2938,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/outstanding_volunteer_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/outstanding-volunteer-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -2970,9 +2970,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_and_space_campaign.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_and_space_campaign.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3009,9 +3009,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/overseas_short_tour.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_overseas_short_tour.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3048,9 +3048,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/overseas_long_tour.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_overseas_long_tour.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3086,9 +3086,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_expeditionary_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_expeditionary_service_no_frame.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3124,9 +3124,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_longevity_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_longetivy_service_award.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3162,9 +3162,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_military_training_instructor.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_military_training_instructor.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3200,9 +3200,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_recruiter.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_recruting.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3238,9 +3238,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/armed_forces_reserve_air_force_military_ribbons.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-reserve-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3277,9 +3277,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/nco_professional_military_education_graduate.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_nco_professional_military_education_graduate.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3315,9 +3315,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/basic_military_training_honor_graduate.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_basic_military_training_honor_graduate.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3353,9 +3353,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/small_arms_expert_military_ribbons.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/small-arms-expert-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3391,9 +3391,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/air_force_training.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_training.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3450,9 +3450,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/philippine_defense.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/philippine-defense-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3509,9 +3509,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/philippine_liberation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/philippine-liberation-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3568,9 +3568,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/philippine_independence.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/philippine-independence-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3635,9 +3635,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/vietnam_gallantry_cross.png",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/vietnam-gallantry-cross.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3694,9 +3694,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/philippine_presidential_unit_citation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/philippine-presidential-unit-citation-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3761,9 +3761,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/korean_presidential_unit_citation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/korean-presidential-unit-citation-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3827,9 +3827,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/vietnam_gallantry_cross_unit_citation.png",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/vietnam-gallantry-cross-bronze-palm.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3893,9 +3893,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/vietnam_civil_actions_unit_citation.png",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/vietnam-civil-actions-bronze-palm.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -3959,9 +3959,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/united_nations_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/united-nations-service-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4026,9 +4026,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/united_nations.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/united-nations-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4093,9 +4093,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/nato_medal.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/nato-medal-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4161,9 +4161,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/nato_kosovo.png",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/nato-kosovo-2.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4223,9 +4223,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/multinational_force_observers.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/multi-national-force-o.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4290,9 +4290,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/inter_american_defense_board.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/inter-american-defense-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4325,9 +4325,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/republic_of_vietnam_campaign.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/republic-of-vietnam-campaign-o.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4392,9 +4392,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/kuwait_liberation_saudi.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/kuwait-lib-saudi-bumpersticker.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4460,9 +4460,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/kuwait_liberation_kuwait.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/kuwait-lib-kuwait-bumpersticker.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4526,9 +4526,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/republic_of_korean_war_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/rok-war-service-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4564,9 +4564,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_medal_of_honor.png",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/medal-of-honor.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4603,9 +4603,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_distinguished_service_cross_military_ribb0n.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_distinguished_service_cross.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4642,9 +4642,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_distinguished_service_military_ribb0n.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_distinguished_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4680,9 +4680,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_soldiers_medal.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/soldiers-medal-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4719,9 +4719,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_commendation.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4758,9 +4758,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_achievement.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_achievement.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4796,9 +4796,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_good_conduct.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_good_conduct.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4834,9 +4834,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_reserve_components_achievement.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/reserve-components-achievement-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4872,9 +4872,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_womens_army_corps_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/womens-army-corps-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4909,9 +4909,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_sea_duty.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/army-sea-duty-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4946,9 +4946,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/armed_forces_reserve_army_military_ribbons.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-reserve-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -4984,9 +4984,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_nco_professional_development.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_nco_professional%20_development.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5021,9 +5021,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5059,9 +5059,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_overseas_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_overseas_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5096,9 +5096,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_reserve_componentsoverseas_training.jpg",
       "source": "http://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/reserve-components-overseas-training-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5133,9 +5133,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_presidential_unit_citation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_presidential_unit_citation_frame.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5170,9 +5170,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_valorous_unit_award.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_valorious_unit_citation_frame.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5207,9 +5207,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_meritorious_unit_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_meritorious_unit_commendation_frame.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5244,9 +5244,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_superior_unit_award.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_superior_unit_award.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5304,9 +5304,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/vietnam_presidential_unit_citation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/vietnam-presidential-unit-citation-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5356,9 +5356,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/medal_of_honor.png",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/medal-of-honor.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5408,9 +5408,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_cross.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-cross-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5446,9 +5446,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/transportation_distinguished_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/transportation_distinguished_service_ribbon.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5484,9 +5484,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_distinguished_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_distinguished_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5522,9 +5522,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_medal.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_medal.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5560,9 +5560,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/gold_life_saving.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/gold-life-saving-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5597,9 +5597,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/silver_life_saving.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/silver-life-saving-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5635,9 +5635,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_commendation_.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5672,9 +5672,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/dot_9_11_medal.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/DOT-9-11-medal-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5709,9 +5709,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_achievement.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/coast-guard-achievement-bumpersticker.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5748,9 +5748,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_commandants_letter_of_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_commandants_letter_of_commendation.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5787,9 +5787,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_combat_action.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/coast-guard-combat-action-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5824,9 +5824,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_presidential_unit_citation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_presidential_unit_citation.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5877,9 +5877,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_presidential_unit_citation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-presidential-unit-citation-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5916,9 +5916,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/dot_outstanding_unit_award.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/dot-outstanding-unit-award-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5953,9 +5953,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_unit_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_unit_commendation.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -5990,9 +5990,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_meritorious_unit_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_meritorious_unit_commendation.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6027,9 +6027,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_meritorious_team_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/cg-meritorious-team-bumpersticker-temp.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6064,9 +6064,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_e.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_e.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6102,9 +6102,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_bicentennial_unit_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_bi_centennial_unit_commendation.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6140,9 +6140,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_good_conduct.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_good_conduct.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6178,9 +6178,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_reserve_good_conduct.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_reserves_good_conduct.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6216,9 +6216,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_enlisted_person_of_the_year.png",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/coast-guard-enlisted-person-of-the-year.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6260,9 +6260,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/expeditionary.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-expeditionary-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6312,9 +6312,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/china_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/china_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6356,9 +6356,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/us_antarctic_expedition.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/us_antarctic_expedition_ribbon.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6407,9 +6407,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_occupation_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/army-of-occupation-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6444,9 +6444,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_arctic_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/cg-arctic-service-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6482,9 +6482,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/dot_9_11_ribbon.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/DOT-9-11-ribbon-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6520,9 +6520,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_special_operations_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_special_operations_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6558,9 +6558,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_sea_duty.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_sea_service.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6596,9 +6596,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_restricted_duty.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_restricted_duty.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6633,9 +6633,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_overseas_service.png",
       "source": "http://www.officialmilitaryribbons.com/images/all_service_ribbons/Coast-guard-overseas-service-ribbon195x58.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6671,9 +6671,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_basic_training_honor_graduate.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/cg-basic-training-honor-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6708,9 +6708,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_recruiting_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/coast-guard-recruiting-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6745,9 +6745,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/armed_forces_reserve_coast_guard_military_ribbons.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-reserve-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6784,9 +6784,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_rifle_marksmanship.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/coast_guard_rifle_marksmanship.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6821,9 +6821,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_pistol_marksmanship.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/cg-pistol-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6865,9 +6865,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_distinguished_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-distinguished-service-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6911,9 +6911,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_marine_corps_medal.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-marine-corps-medal-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -6957,9 +6957,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_marine_corps_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-marine-corps-commendation-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7003,9 +7003,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_marine_corps_achievement.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-marine-corps-achievement-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7048,9 +7048,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/combat_action.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/combat_action.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7093,9 +7093,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_unit_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-unit-commendation-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7137,9 +7137,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_meritorious_unit_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-meritorious-unit-citation-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7181,9 +7181,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_e.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-E-bumpersticker-1.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7218,9 +7218,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/marine_corps_good_conduct.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/mc-good-conduct-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7255,9 +7255,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/selected_marine_corps_reserve.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/selected-marine-corps-reserve-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7292,9 +7292,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/marine_corps_expeditionary.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/marine-corps-expeditionary-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7336,9 +7336,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_sea_service_deployment.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/sea-service-deployment-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7380,9 +7380,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_arctic_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-arctic-service-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7425,9 +7425,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_marine_corps_overseas_service_military_rbbon.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-marine-corps-overseas-service-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7462,9 +7462,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/marine_corps_recruiting.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/mc-recruiting-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7499,9 +7499,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/marine_corps_drill_instructor.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/mc-drill-instructor-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7537,9 +7537,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/marine_corps_security_guard.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/mc-security-guard-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7574,9 +7574,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/marine_corps_combat_instructor.png",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/marine-corps-combat-instructor2.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7611,9 +7611,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/armed_forces_reserve_military_ribbons.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-reserve-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7648,9 +7648,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/marine_corps_reserve.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/marine-corps-reserve-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7685,9 +7685,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/naval_reserve_special_commendation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/navy_reserve_special_commendation_ribbon.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7723,9 +7723,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_good_conduct.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-good-conduct-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7760,9 +7760,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/naval_reserve_meritorious_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-reserve-meritorious-service-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7797,9 +7797,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/fleet_marine_force.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-fleet-marine-force-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7834,9 +7834,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/naval_reserve_sea_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-reserve-sea-service-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7871,9 +7871,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_recruiting_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-recruiting-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7908,9 +7908,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_recruit_training_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-recruit-training-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7946,9 +7946,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/ceremonial_guard.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-ceremonial-guard-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -7983,9 +7983,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/armed_forces_reserve_navy_military_ribbons.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-reserve-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -8020,9 +8020,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/naval_reserve.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/naval-reserve-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -8057,9 +8057,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_rifle_marksmanship.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-rifle-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -8094,9 +8094,9 @@
     },
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/navy_pistol_marksmanship.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-pistol-bumpersticker-0.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -8288,9 +8288,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/coast_guard_medal_of_honor.png",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/medal-of-honor.png",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -8317,9 +8317,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/army_occupation_of_germany.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/army-occupation-germany.jpg",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
@@ -8344,9 +8344,9 @@
     "precedence": {},
     "devices": {},
     "images": {
-      "ribbon": null,
+      "ribbon": "images/military-ribbons/china_relief_expedition.svg",
       "source": "https://www.officialmilitaryribbons.com/images/military_medals_full_size/China_Relief_Navy_Medal.JPG",
-      "assetStatus": "SOURCE_ONLY"
+      "assetStatus": "LOCAL_VERIFIED"
     },
     "sources": {
       "catalog": [

@@ -5,6 +5,7 @@
   "scripts": {
     "test": "node --test tests/*.test.cjs",
     "import:military-catalog": "node scripts/import-military-catalog.cjs",
+    "import:military-assets": "node scripts/download-military-ribbon-assets.cjs",
     "import:usamm-reference": "node scripts/import-usamm-reference.cjs",
     "audit:military-data": "node scripts/audit-military-data.cjs",
     "build:military-browser-data": "node scripts/build-military-browser-data.cjs",

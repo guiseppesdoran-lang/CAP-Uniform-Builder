@@ -11,7 +11,7 @@ Badges: 0
 Lapel pins: 0
 Precedence records: 375
 
-All external images are SOURCE_ONLY because redistribution permission has not been established. The production builder does not hotlink them.
+Catalog image URLs are retained as source metadata. The approved ribbon graphics are vendored into `images/military-ribbons`, recorded in the asset manifest, and served locally by the production builder.
 Imported precedence is discovery data and remains unverified until matched to a current official service publication.
 
 ## Failed pages
