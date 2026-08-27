@@ -5839,7 +5839,7 @@ function getBadgeRenderSize(id, uniformId=State.uniform){
     if(uniformId === 'semi_formal' || uniformId === 'aviator_blazer'){
       return { width:13, height:13 };
     }
-    return { width:30, height:30 };
+    return { width:40, height:40 };
   }
 
   // An approved calibration submission may intentionally refine one badge on
@@ -13085,42 +13085,6 @@ function getRenderableCountedBadgeIds(){
     out.push(id);
   }
   return out;
-}
-
-function getSpecialtyPocketSlotBySelectionOrder(id){
-  if(!isSelectableSpecialtyPocketBadge(id)) return null;
-  if(useFemaleOverNameplateSpecialtyLayout(id)){
-    return getRenderableFemaleClassASpecialtyBadgeIds().includes(id) ? 'FON' : null;
-  }
-
-  const specialtyOrder = (State.badges || [])
-    .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
-    .filter(badgeId => isBadgeEligibleForMembership(badgeId, State.membership));
-
-  const hasVolunteerUniversity = specialtyOrder.includes('volunteer_university_instructor_badge');
-  const activeLpExclusive = getActiveMaleCadetLeftPocketExclusiveBadge();
-
-  // Volunteer University is intentionally forced to the wearer's right pocket.
-  if(id === 'volunteer_university_instructor_badge') return 'RP';
-
-  // These male-cadet-only LP badges cannot be bumped into another slot.
-  if(id === 'cyber_badges' || id === 'stem_badges'){
-    return activeLpExclusive === id ? 'LP' : null;
-  }
-
-  // If Volunteer University is selected, ES and other specialty badges still get LP.
-  // This is the specific fix that allows ES Master + Volunteer University to render together.
-  if(hasVolunteerUniversity){
-    if(activeLpExclusive) return null;
-    return 'LP';
-  }
-
-  if(activeLpExclusive) return 'RP';
-
-  const index = specialtyOrder.indexOf(id);
-  if(index === 0) return 'LP';
-  if(index === 1) return 'RP';
-  return null;
 }
 
 function selectHighestWearableImportedBadges(ids, membershipHint){
