@@ -1123,6 +1123,10 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
       <button id="calibExportAll" type="button">Export All Coords</button>
     </div>
 
+    <div class="btnRow">
+      <button id="calibSubmitUpdate" type="button">Submit Calibration Update</button>
+    </div>
+
     <div id="calibReadout" style="margin-top:10px;">
       <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow = 0.1px, Alt+Arrow = 0.01px, Ctrl+Arrow = 1px, and Shift+Arrow = 10px.</div>
       <div style="margin-top:6px;">JSON:</div>
@@ -15122,6 +15126,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
 </script>
 <script src="purchase-feature.js?v=5"></script>
+<script src="calibration-submission.js?v=1"></script>
 <!-- Loaded directly so patch submission cannot be blocked by stale chained feature loaders. -->
 <script src="patch-submission.js?v=5"></script>
 <script src="ocp-patch-variants.js"></script>
