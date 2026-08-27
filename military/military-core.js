@@ -72,14 +72,24 @@
     return null;
   }
 
+  function isCapAward(award){
+    const awardClass = String(award?.awardClass || '').trim().toUpperCase();
+    const category = String(award?.category || '').trim().toUpperCase();
+    const services = (award?.authorizedServices || []).map(normalizeService);
+    return awardClass === 'CAP' || category === 'CAP' || (
+      services.includes('CAP') && !services.some(service => service !== 'CAP')
+    );
+  }
+
   function isAuthorizedForService(award, service, component){
     const serviceKey = normalizeService(service);
-    if(serviceKey === 'CAP') return award?.awardClass === 'CAP' || (award?.authorizedServices || []).includes('CAP');
-    if(!(award?.authorizedServices || []).map(normalizeService).includes(serviceKey)) return false;
-    if(component && Array.isArray(award.authorizedComponents) && award.authorizedComponents.length){
-      return award.authorizedComponents.includes(component);
-    }
-    return true;
+    if(serviceKey === 'CAP') return isCapAward(award);
+
+    // A member may have earned federal, service, joint, foreign, or state
+    // military awards while serving in another branch. Keep the source-service
+    // metadata for precedence and auditing, but do not use it as a catalog
+    // visibility restriction. CAP-earned awards remain isolated to CAP.
+    return ORGANIZATIONS.includes(serviceKey) && !isCapAward(award);
   }
 
   function getAwardPrecedence(award, member, uniform){
@@ -237,7 +247,7 @@
   return {
     ORGANIZATIONS, COMPONENTS, VERIFICATION_STATUSES, AWARD_STATUSES,
     DEFAULT_CATEGORY_ORDER, normalizeService, normalizeName, slugify,
-    isAuthorizedForService, getAwardPrecedence, compareAwardsForMember,
+    isCapAward, isAuthorizedForService, getAwardPrecedence, compareAwardsForMember,
     sortAwardsForMember, calculateDevices, mergeAwardRecords, validateCatalog
   };
 });

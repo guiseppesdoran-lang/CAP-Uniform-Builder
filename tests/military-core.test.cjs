@@ -81,6 +81,24 @@ test('CAP authorization stays independent of Air Force authorization', () => {
   assert.equal(core.isAuthorizedForService(cap,'AIR_FORCE'),false);
 });
 
+test('military ribbons remain selectable regardless of source branch', () => {
+  const army=award('army','Army Service Ribbon',['ARMY'],{ARMY:{order:80}});
+  const navy=award('navy','Navy Sea Service Deployment Ribbon',['NAVY'],{NAVY:{order:80}});
+  for(const service of allServices){
+    assert.equal(core.isAuthorizedForService(army,service),true,`${service} should see Army ribbons`);
+    assert.equal(core.isAuthorizedForService(navy,service),true,`${service} should see Navy ribbons`);
+  }
+});
+
+test('CAP-category ribbons never appear in a military branch catalog', () => {
+  const cap=award('cap','CAP Achievement Award',['CAP'],{CAP:{order:10}},'CAP');
+  cap.awardClass='CAP';
+  assert.equal(core.isAuthorizedForService(cap,'CAP'),true);
+  for(const service of allServices){
+    assert.equal(core.isAuthorizedForService(cap,service),false);
+  }
+});
+
 test('catalog validator reports duplicate ids and missing metadata', () => {
   const bad={id:'x',name:'X',authorizedServices:[],precedence:{},sources:{catalog:[]}};
   const result=core.validateCatalog({awards:[bad,bad],devices:[]});
