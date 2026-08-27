@@ -2932,6 +2932,24 @@ const CAPUB_IMPORTED_COORDINATE_CORRECTIONS = {"blues_a":{"badge:AirCrew1_DB3F0F
   }
 })();
 
+/* CAPUB CALIBRATION ISSUE #110 — 2026-08-27
+   Approved male Senior Member Class A calibration submitted through the
+   builder. Keep this exact item-specific record separate from the shared
+   Cadet Programs badge family so female and Class B sizing stays unchanged. */
+const CAPUB_APPROVED_CALIBRATION_OVERRIDES = Object.freeze({
+  blues_a_male: Object.freeze({
+    'badge:cadet_programs_master_badge:LP:0': Object.freeze({x:283,y:248,w:25,h:35,r:0})
+  })
+});
+(function capubApplyApprovedCalibrationOverrides(){
+  for(const [bucketId, items] of Object.entries(CAPUB_APPROVED_CALIBRATION_OVERRIDES)){
+    if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
+    for(const [key, coords] of Object.entries(items)){
+      DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = { ...coords };
+    }
+  }
+})();
+
 /* CAPUB COORDINATE UPDATE 2026-08-05
    Female Senior Member Class A blues (Captain base image), imported from
    CAPUB_coordinates_1785908806912.json. This gender-specific correction is
@@ -5824,9 +5842,19 @@ function getBadgeRenderSize(id, uniformId=State.uniform){
     return { width:30, height:30 };
   }
 
-  // Keep all three Cadet Programs ratings at the user-specified 25 x 30 px.
-  // This explicit branch also keeps stale square calibration exports from
-  // changing the badge's proportions.
+  // An approved calibration submission may intentionally refine one badge on
+  // one gender-specific uniform without changing the whole visual family.
+  const approvedBucketId = `${uniformId}_${State.gender}`;
+  const approvedBadgeKey = `badge:${id}:LP:0`;
+  const approvedBadgeSize = CAPUB_APPROVED_CALIBRATION_OVERRIDES?.[approvedBucketId]?.[approvedBadgeKey];
+  if(Number.isFinite(Number(approvedBadgeSize?.w)) && Number.isFinite(Number(approvedBadgeSize?.h))){
+    return { width:Number(approvedBadgeSize.w), height:Number(approvedBadgeSize.h) };
+  }
+
+  // Keep all three Cadet Programs ratings at the user-specified 25 x 30 px
+  // unless an approved uniform-specific calibration above overrides it. This
+  // branch also keeps stale square calibration exports from changing the
+  // badge's proportions.
   if(CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS.has(id)){
     return { width:25, height:30 };
   }
