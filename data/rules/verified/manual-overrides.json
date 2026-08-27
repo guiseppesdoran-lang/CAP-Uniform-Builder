@@ -27,6 +27,9 @@
       "officialName": "Air and Space Achievement Medal",
       "aliases": ["Air Force Achievement Medal", "AFAM"],
       "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"]
+    },
+    "china_relief_expedition": {
+      "images": {"ribbon": "images/military-ribbons/china_relief_expedition.svg", "assetStatus": "LOCAL_VERIFIED"}
     }
   },
   "precedence": {

@@ -284,7 +284,7 @@ async function main(){
     `Discovered listings: ${records.length}`,`Canonical records: ${awards.length}`,
     `Ribbons: ${types.RIBBON||0}`,`Badges: ${types.BADGE||0}`,`Lapel pins: ${types.LAPEL_PIN||0}`,
     `Precedence records: ${precedenceCount}`,'',
-    'All external images are SOURCE_ONLY because redistribution permission has not been established. The production builder does not hotlink them.',
+    'Catalog image URLs are retained as source metadata. Run `npm run import:military-assets` to vendor verified image responses into the production repository.',
     'Imported precedence is discovery data and remains unverified until matched to a current official service publication.','',
     '## Failed pages','',...(failures.length?failures.map(item=>`- ${item.url}: ${item.status||item.error}`):['- None']),''
   ];

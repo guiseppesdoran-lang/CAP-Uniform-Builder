@@ -9901,7 +9901,7 @@ function renderMilitaryAwardSelector(){
     box.type='checkbox'; box.checked=checked;
     const text=document.createElement('span');
     const sourceOnly=!award.images?.ribbon;
-    text.innerHTML=`<strong>${militaryEscapeHtml(award.officialName || award.name)}</strong><br><span class="${sourceOnly?'militarySourceOnly':'hintText'}">${sourceOnly?'Graphic pending licensed local asset':'Local graphic ready'} • ${militaryEscapeHtml(award.verificationStatus || 'UNVERIFIED')}</span>`;
+    text.innerHTML=`<strong>${militaryEscapeHtml(award.officialName || award.name)}</strong><br><span class="${sourceOnly?'militarySourceOnly':'hintText'}">${sourceOnly?'Local graphic missing':'Local graphic ready'} • ${militaryEscapeHtml(award.verificationStatus || 'UNVERIFIED')}</span>`;
     const count=document.createElement('input');
     count.type='number'; count.min='1'; count.max='99';
     count.value=State.militaryAwards[award.id]?.awardCount || 1;
@@ -9964,7 +9964,7 @@ function renderMilitaryPreview(){
         tile=document.createElement('img'); tile.src=award.images.ribbon; tile.alt=award.name; tile.className='layer militaryRackTile';
       }else{
         tile=document.createElement('div'); tile.className='layer militaryRackPending';
-        tile.textContent=award.name; tile.title='Catalog record imported; production graphic not locally licensed or supplied.';
+        tile.textContent=award.name; tile.title='Catalog record imported, but its local graphic is missing.';
       }
       Object.assign(tile.style,{left:`${left}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`});
       uniformCanvas.appendChild(tile);
