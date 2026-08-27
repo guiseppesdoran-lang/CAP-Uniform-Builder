@@ -1123,6 +1123,10 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
       <button id="calibExportAll" type="button">Export All Coords</button>
     </div>
 
+    <div class="btnRow">
+      <button id="calibSubmitUpdate" type="button">Submit Calibration Update</button>
+    </div>
+
     <div id="calibReadout" style="margin-top:10px;">
       <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow = 0.1px, Alt+Arrow = 0.01px, Ctrl+Arrow = 1px, and Shift+Arrow = 10px.</div>
       <div style="margin-top:6px;">JSON:</div>
@@ -3197,14 +3201,17 @@ function getSpecialtyPocketSlotBySelectionOrder(id){
     .filter(badgeId => isSelectableSpecialtyPocketBadge(badgeId))
     .filter(badgeId => isBadgeEligibleForMembership(badgeId, State.membership));
 
-  // CAPR 39-1 Attachment 4 assigns the CSAG, Command Council, National Board,
-  // and NEC service-badge family to LP on Service Dress. Only one may own that
-  // service-badge position; another flexible specialty badge may use RP.
+  // National Staff is worn on the wearer's right pocket (RP). The other
+  // governance/service badges use the wearer's left pocket (LP). Only one may
+  // own the active governance position; a flexible specialty badge may use the
+  // opposite pocket when one remains available.
   const activeGovernanceBadge = specialtyOrder.find(badgeId => GOVERNANCE_SERVICE_BADGE_IDS.has(badgeId)) || null;
-  if(GOVERNANCE_SERVICE_BADGE_IDS.has(id)) return activeGovernanceBadge === id ? 'LP' : null;
+  const governanceSlot = activeGovernanceBadge === 'national_staff_badge' ? 'RP' : 'LP';
+  if(GOVERNANCE_SERVICE_BADGE_IDS.has(id)) return activeGovernanceBadge === id ? governanceSlot : null;
   if(activeGovernanceBadge){
     const firstOtherBadge = specialtyOrder.find(badgeId => !GOVERNANCE_SERVICE_BADGE_IDS.has(badgeId)) || null;
-    return firstOtherBadge === id ? 'RP' : null;
+    const oppositePocket = governanceSlot === 'RP' ? 'LP' : 'RP';
+    return firstOtherBadge === id ? oppositePocket : null;
   }
 
   const hasVolunteerUniversity = specialtyOrder.includes('volunteer_university_instructor_badge');
@@ -8845,7 +8852,9 @@ function getDynamicBadgeTopFromAppliedPosition(el, id=null, slot=null){
 }
 
 function getPreferredBadgeSlotForRendering(id, prefs){
-  if(State.uniform === 'semi_formal' && CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS.has(id)) return 'LP';
+  if(State.uniform === 'semi_formal' && CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS.has(id)){
+    return id === 'national_staff_badge' ? 'RP' : 'LP';
+  }
   if(isCommandInsigniaBadge(id)) return getCommandInsigniaSlot();
   if(id === 'nra_marksman_badge') return 'OLPF';
   if(id === 'model_rocketry_badge' || id === 'cyber_badges' || id === 'stem_badges') return getGenderedPocketSlotForBadge(id);
@@ -15117,6 +15126,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
 </script>
 <script src="purchase-feature.js?v=5"></script>
+<script src="calibration-submission.js?v=1"></script>
 <!-- Loaded directly so patch submission cannot be blocked by stale chained feature loaders. -->
 <script src="patch-submission.js?v=5"></script>
 <script src="ocp-patch-variants.js"></script>

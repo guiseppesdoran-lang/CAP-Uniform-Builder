@@ -32,10 +32,26 @@ At least the patch name or unit/activity is required. Accepted files: PNG, JPG/J
 7. Set **Execute as** to **Me**.
 8. Set **Who has access** to **Anyone** so users of the public builder can submit patches.
 9. In **Project Settings → Script properties**, add `CAPUB_ADMIN_PASSWORD_SHA256`. Set its value to the same SHA-256 hash used by `ADMIN_SHA256` in `admin-history.js`.
-10. Click **Deploy** and authorize the script to send email and manage its shared-history spreadsheet.
-11. Copy the deployed web-app URL. It will normally end in `/exec`.
+10. To activate calibration-to-GitHub handoff, add these Script properties:
+   - `CAPUB_GITHUB_TOKEN` — a fine-grained GitHub personal access token limited to the `guiseppesdoran-lang/CAP-Uniform-Builder` repository with **Issues: Read and write** permission.
+   - `CAPUB_GITHUB_REPOSITORY` — `guiseppesdoran-lang/CAP-Uniform-Builder` (optional while the repository remains the built-in default).
+11. Click **Deploy** and authorize the script to send email and manage its shared-history spreadsheet.
+12. Copy the deployed web-app URL. It will normally end in `/exec`.
 
 When updating an existing deployment, use **Deploy → Manage deployments → Edit**, choose **New version**, and deploy it. Saving `Code.gs` alone does not update the live `/exec` endpoint. Run `testPatchEmail()` and `testSharedHistoryStorage()` once after replacing the backend code so Google requests the required Gmail and Sheets permissions before testing the public site.
+
+Run `testCalibrationGitHubConfiguration()` once from the Apps Script editor. It performs a read-only repository check, validates the token/repository values, and requests the `UrlFetchApp` permission without creating an issue. After deploying the new version, open the `/exec?mode=status` URL and confirm that `calibrationGitHubConfigured` is `true` and `calibrationRepository` names the correct repository.
+
+## Calibration update workflow
+
+1. Open the builder's **CAL** panel and enable Calibrate Mode.
+2. Adjust an item, then leave that item selected. Ctrl/Shift-click selects multiple related items for one submission.
+3. Select **Submit Calibration Update**, describe the correction, and enter the admin password.
+4. The browser sends only the selected assets' exact saved/rendered coordinates, active gender-specific calibration bucket, uniform setup, and a generated PNG preview.
+5. Apps Script verifies the admin password, creates a `[Calibration]` GitHub issue containing the machine-readable package, and emails the JSON plus preview as a backup.
+6. Give Codex the GitHub issue number (for example, “process calibration issue #123”). Codex can apply the package without another screenshot or coordinate export.
+
+Never place `CAPUB_GITHUB_TOKEN` in `index.html`, a JavaScript file, or the repository. Keep it only in Apps Script's server-side Script properties. Revoke and replace it immediately if it is ever exposed.
 
 ## Shared uniform history
 
