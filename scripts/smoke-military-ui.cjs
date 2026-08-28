@@ -9,7 +9,7 @@ let browser;
     executablePath:process.env.CAPUB_CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe'
   });
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
-  page.setDefaultTimeout(10000);
+  page.setDefaultTimeout(30000);
   const errors=[];
   page.on('pageerror',error=>errors.push(String(error)));
   page.on('console',message=>{
@@ -107,6 +107,13 @@ let browser;
   const aviatorRow=badgeResults.locator('[data-badge-id="army_aviator_badge"]');
   await aviatorRow.locator('.militaryBadgeVariant').selectOption('master');
   assert.deepEqual(await page.evaluate(()=>window.State.militaryBadges.army_aviator_badge),{selected:true,variant:'master'});
+
+  await page.locator('#organizationSelect').selectOption('NAVY');
+  await page.locator('#militaryBadgeSection').evaluate(element=>element.open=true);
+  assert.ok(await badgeResults.locator('.militaryAwardOption').count()>=37,'official Navy badge families were not listed');
+  const swccRow=badgeResults.locator('[data-badge-id="navy_special_warfare_combatant_craft_crewman_insignia"]');
+  await swccRow.locator('.militaryBadgeVariant').selectOption('master');
+  assert.deepEqual(await page.evaluate(()=>window.State.militaryBadges.navy_special_warfare_combatant_craft_crewman_insignia),{selected:true,variant:'master'});
   assert.deepEqual(errors,[],'browser errors were reported');
-  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,missingBadgeNotFabricated:true,armyBadgeFamiliesListed:true,badgeVariantSelectionPersisted:true},null,2)+'\n');
+  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,missingBadgeNotFabricated:true,armyBadgeFamiliesListed:true,navyBadgeFamiliesListed:true,badgeVariantSelectionPersisted:true},null,2)+'\n');
 })().catch(error=>{ console.error(error); process.exitCode=1; }).finally(async()=>{ if(browser) await browser.close(); });

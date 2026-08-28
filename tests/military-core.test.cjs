@@ -300,6 +300,21 @@ test('official Coast Guard qualification catalog preserves variants and placemen
   assert.ok(coastGuard.every(badge=>badge.sources.some(source=>/defense\.gov|e-publishing\.af\.mil|army\.mil/i.test(source))));
 });
 
+test('official Navy breast-insignia catalog preserves families, variants, and placement', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const navy=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'NAVY'));
+  const navyFamilies=navy.filter(badge=>badge.id.startsWith('navy_'));
+  assert.ok(navy.length>=37,'expected the official Navy breast-insignia foundation');
+  assert.ok(navyFamilies.length>=33,'expected canonical Navy qualification families');
+  assert.deepEqual(navy.find(badge=>badge.id==='navy_explosive_ordnance_disposal_insignia').variants,['officer','basic','senior','master']);
+  assert.deepEqual(navy.find(badge=>badge.id==='navy_special_warfare_combatant_craft_crewman_insignia').variants,['basic','senior','master']);
+  assert.deepEqual(navy.find(badge=>badge.id==='navy_surface_warfare_insignia').variants,['officer','enlisted','dental','medical','medical_service','nurse','supply']);
+  assert.deepEqual(navy.find(badge=>badge.id==='navy_diving_insignia').variants,['diving_officer','master_diver','diving_officer_medical','diving_medical_technician','first_class_diver','second_class_diver','scuba_diver']);
+  assert.ok(navyFamilies.every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
+  assert.ok(navyFamilies.every(badge=>badge.placement?.nwu?.status==='OFFICIALLY_VERIFIED'));
+  assert.ok(navy.every(badge=>badge.sources.some(source=>/mynavyhr\.navy\.mil/i.test(source))));
+});
+
 test('official Army Institute of Heraldry table preserves cross-service precedence', () => {
   const table=require('../data/rules/verified/service-precedence.json').ARMY;
   const order=id=>table.awards.indexOf(id);
