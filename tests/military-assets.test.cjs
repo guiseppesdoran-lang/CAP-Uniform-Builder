@@ -7,6 +7,7 @@ const path = require('node:path');
 
 const ROOT = path.resolve(__dirname,'..');
 const awards = require('../data/import/normalized/military-awards.json');
+const devices = require('../data/rules/verified/device-definitions.json');
 
 function isSupportedImage(buffer){
   if(buffer.length >= 8 && buffer.subarray(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]))) return true;
@@ -28,4 +29,36 @@ test('every military ribbon has a valid local repository asset', () => {
     assert.ok(buffer.length>0,`${award.id} local asset is empty`);
     assert.ok(isSupportedImage(buffer),`${award.id} local asset is not a supported image`);
   }
+});
+
+test('production military device artwork is local transparent PNG geometry',()=>{
+  const imageDevices=devices.filter(device=>device.asset);
+  assert.ok(imageDevices.length>=14);
+  for(const device of imageDevices){
+    const absolute=path.join(ROOT,...device.asset.split('/'));
+    assert.ok(fs.existsSync(absolute),`${device.id} asset does not exist`);
+    const buffer=fs.readFileSync(absolute);
+    assert.ok(buffer.subarray(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])),`${device.id} is not PNG`);
+    const width=buffer.readUInt32BE(16),height=buffer.readUInt32BE(20),colorType=buffer[25];
+    assert.equal(width,64,`${device.id} width`);
+    assert.equal(height,64,`${device.id} height`);
+    assert.ok(colorType===4 || colorType===6,`${device.id} lacks an alpha channel`);
+  }
+});
+
+test('parametric numeral device sprites cover 2 through 99',()=>{
+  for(let value=2;value<=99;value++){
+    assert.ok(fs.existsSync(path.join(ROOT,'images','devices','military',`numeral_${value}.png`)),`numeral ${value} missing`);
+  }
+});
+
+test('required McChord audit and visual QA reports exist',()=>{
+  for(const file of [
+    'reports/mcchord-asset-analysis.json',
+    'reports/mcchord-ribbon-comparison.png',
+    'reports/mcchord-mini-medal-comparison.png',
+    'reports/military-ribbon-device-contact-sheet.png',
+    'reports/military-mini-medal-device-contact-sheet.png',
+    'reports/military-award-combination-audit.md'
+  ]) assert.ok(fs.existsSync(path.join(ROOT,...file.split('/'))),`${file} missing`);
 });

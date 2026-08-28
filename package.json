@@ -9,6 +9,12 @@
     "import:usamm-reference": "node scripts/import-usamm-reference.cjs",
     "audit:military-data": "node scripts/audit-military-data.cjs",
     "build:military-browser-data": "node scripts/build-military-browser-data.cjs",
-    "reconcile:military-sources": "node scripts/reconcile-military-sources.cjs"
+    "reconcile:military-sources": "node scripts/reconcile-military-sources.cjs",
+    "audit:military-combinations": "node scripts/build-military-award-audit.cjs",
+    "audit:mcchord-assets": "python scripts/analyze_mcchord_assets.py",
+    "build:military-device-assets": "python scripts/build_military_device_assets.py",
+    "apply:military-overrides": "node scripts/apply-military-overrides.cjs",
+    "smoke:military-ui": "node scripts/smoke-military-ui.cjs",
+    "check:inline-syntax": "node scripts/check-inline-syntax.cjs"
   }
 }

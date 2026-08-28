@@ -1,12 +1,17 @@
 [
-  {"id":"BRONZE_OLC","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":1,"asset":null,"verificationStatus":"PENDING"},
-  {"id":"SILVER_OLC","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":5,"asset":null,"verificationStatus":"PENDING"},
-  {"id":"BRONZE_SERVICE_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":1,"asset":null,"verificationStatus":"PENDING"},
-  {"id":"SILVER_SERVICE_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":5,"asset":null,"verificationStatus":"PENDING"},
-  {"id":"GOLD_AWARD_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":1,"asset":null,"verificationStatus":"PENDING"},
-  {"id":"SILVER_AWARD_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":5,"asset":null,"verificationStatus":"PENDING"},
-  {"id":"V_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/V_Device.webp","verificationStatus":"PENDING"},
-  {"id":"C_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":null,"verificationStatus":"PENDING"},
-  {"id":"R_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":null,"verificationStatus":"PENDING"},
-  {"id":"ARROWHEAD_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":null,"verificationStatus":"PENDING"}
+  {"id":"BRONZE_OLC","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":1,"asset":"images/devices/military/bronze_olc.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"SILVER_OLC","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":5,"asset":"images/devices/military/silver_olc.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"BRONZE_SERVICE_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":1,"asset":"images/devices/military/bronze_star.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"SILVER_SERVICE_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":5,"asset":"images/devices/military/silver_star.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"GOLD_AWARD_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":1,"asset":"images/devices/military/gold_star.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"SILVER_AWARD_STAR","type":"REPEAT_AWARD_DEVICE","representsAdditionalAwards":5,"asset":"images/devices/military/silver_star.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"V_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/v_device.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"C_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/c_device.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"R_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/r_device.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"ARROWHEAD_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/arrowhead.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"M_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/m_device.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"BRONZE_HOURGLASS","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/bronze_hourglass.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"SILVER_HOURGLASS","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/silver_hourglass.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"GOLD_HOURGLASS","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/gold_hourglass.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"NUMERAL","type":"PARAMETRIC_DEVICE","assetTemplate":"images/devices/military/numeral_{value}.png","minimum":2,"maximum":99,"verificationStatus":"ARTWORK_REVIEW_PENDING"}
 ]

@@ -131,7 +131,8 @@
           authorizedServices:unique((award.authorizedServices || []).map(normalizeService)),
           precedence:{...(award.precedence || {})},
           devices:{...(award.devices || award.deviceRules || {})},
-          images:{...(award.images || {})}
+          images:{...(award.images || {})},
+          representations:{...(award.representations || {})}
         });
         continue;
       }
@@ -141,6 +142,7 @@
       existing.precedence=Object.assign({}, existing.precedence, award.precedence || {});
       existing.devices=Object.assign({}, existing.devices, award.devices || award.deviceRules || {});
       if(!existing.images?.ribbon && award.images?.ribbon) existing.images={...(award.images || {})};
+      existing.representations=Object.assign({}, existing.representations || {}, award.representations || {});
       if(award.verificationStatus === 'OFFICIALLY_VERIFIED') existing.verificationStatus=award.verificationStatus;
     }
     return [...groups.values()];
@@ -160,10 +162,14 @@
     return String(a?.officialName || a?.name || a?.id || '').localeCompare(String(b?.officialName || b?.name || b?.id || ''));
   }
 
-  function inferDeviceRules(award,service){
+  function inferDeviceRules(award,service,{allowUnverified=false}={}){
     const serviceKey=normalizeService(service);
     const explicit=award?.devices?.[serviceKey] || award?.deviceRules?.[serviceKey];
     if(explicit) return explicit;
+    // A branch/category convention is useful for discovery and manual testing,
+    // but it is not proof that a specific award authorizes that device. Keep
+    // inference out of the normal validated path unless advanced mode opts in.
+    if(!allowUnverified) return null;
     const category=inferredCategory(award);
     const personal=new Set([
       'MEDAL_OF_HONOR','SERVICE_CROSS','DISTINGUISHED_SERVICE','VALOR','SUPERIOR_SERVICE',
@@ -276,17 +282,56 @@
     return remaining === 0 ? devices : null;
   }
 
-  function calculateDevices({ award, service, awardCount=1, campaignCount=0, specialAuthorizations=[], deviceCatalog=[] }){
+  function normalizeRepresentations(award){
+    const configured=award?.representations || {};
+    const legacy=award?.images || {};
+    const normalize=(value,fallbackAsset)=>{
+      if(value && typeof value === 'object') return {
+        ...value,
+        available:value.available !== false && !!(value.asset || fallbackAsset),
+        asset:value.asset || fallbackAsset || null
+      };
+      const asset=typeof value === 'string' ? value : fallbackAsset;
+      return {available:!!asset,asset:asset || null};
+    };
+    return {
+      ribbon:normalize(configured.ribbon,legacy.ribbon),
+      miniatureMedal:normalize(configured.miniatureMedal,legacy.miniatureMedal || legacy.miniMedal),
+      fullSizeMedal:normalize(configured.fullSizeMedal,legacy.fullSizeMedal || legacy.medal)
+    };
+  }
+
+  function createAwardSelection(awardId,{quantity=1,specialDevices=[],manualDevices=[]}={}){
+    return {
+      awardId:String(awardId || ''),
+      quantity:Math.max(1,Math.trunc(Number(quantity) || 1)),
+      specialDevices:unique(specialDevices),
+      manualDevices:unique(manualDevices)
+    };
+  }
+
+  function getAwardRepresentation(award,context){
+    const key={RIBBON:'ribbon',MINIATURE_MEDAL:'miniatureMedal',FULL_SIZE_MEDAL:'fullSizeMedal'}[String(context || '').toUpperCase()] || context;
+    return normalizeRepresentations(award)[key] || {available:false,asset:null};
+  }
+
+  function calculateDevices({ award, service, awardCount=1, campaignCount=0, specialAuthorizations=[], manualDevices=[], deviceCatalog=[], allowUnverifiedRules=false, representation='RIBBON' }){
     const serviceKey = normalizeService(service);
     const warnings=[];
     const count = Math.max(1, Math.trunc(Number(awardCount) || 1));
-    const serviceRules = inferDeviceRules(award,serviceKey);
+    const serviceRules = inferDeviceRules(award,serviceKey,{allowUnverified:allowUnverifiedRules});
     if(!serviceRules){
       if(count > 1) warnings.push(`No repeat-award device rule is available for ${award?.name || award?.id} in ${serviceKey}.`);
+      if(allowUnverifiedRules && (manualDevices || []).length){
+        warnings.push('MANUAL / UNVERIFIED CONFIGURATION: manual devices are not regulatory validation.');
+        return {devices:[...manualDevices],valid:false,warnings};
+      }
       return { devices:[], valid:count === 1, warnings };
     }
 
-    const repeatRule = serviceRules.repeatAward || serviceRules;
+    const representationKey={RIBBON:'ribbon',MINIATURE_MEDAL:'miniatureMedal',FULL_SIZE_MEDAL:'fullSizeMedal'}[String(representation || '').toUpperCase()] || representation;
+    const representationRules=serviceRules.representations?.[representationKey] || serviceRules;
+    const repeatRule = representationRules.repeatAward || representationRules;
     const repeats = expandRepeatDevices(repeatRule, count - 1);
     if(repeats === null){
       warnings.push(`Award count ${count} cannot be represented by the configured ${serviceKey} device rule.`);
@@ -294,20 +339,27 @@
     }
 
     const devices=[...repeats];
-    if(campaignCount > 0 && serviceRules.campaignParticipation){
-      const campaignDevices = expandRepeatDevices(serviceRules.campaignParticipation, Math.trunc(campaignCount));
+    if(campaignCount > 0 && representationRules.campaignParticipation){
+      const campaignDevices = expandRepeatDevices(representationRules.campaignParticipation, Math.trunc(campaignCount));
       if(campaignDevices === null) warnings.push('Campaign participation count cannot be represented by the configured rule.');
       else devices.push(...campaignDevices);
     }
     for(const id of specialAuthorizations || []){
-      const allowed = serviceRules.allowedSpecialDevices || [];
+      const allowed = representationRules.allowedSpecialDevices || [];
       if(!allowed.includes(id)) warnings.push(`${id} is not authorized by the configured rule.`);
       else devices.push(id);
+    }
+    if((manualDevices || []).length){
+      if(!allowUnverifiedRules) warnings.push('Manual devices require Manual / unverified configuration mode.');
+      else{
+        devices.push(...manualDevices);
+        warnings.push('MANUAL / UNVERIFIED CONFIGURATION: manual devices are not regulatory validation.');
+      }
     }
 
     const unknown = devices.filter(id => deviceCatalog.length && !deviceDefinition(deviceCatalog,id));
     if(unknown.length) warnings.push(`Unknown device definition(s): ${unique(unknown).join(', ')}.`);
-    const order = serviceRules.devicePrecedence || [];
+    const order = representationRules.devicePrecedence || [];
     devices.sort((a,b) => {
       const ai=order.indexOf(a), bi=order.indexOf(b);
       if(ai < 0 && bi < 0) return 0;
@@ -379,6 +431,7 @@
     DEFAULT_CATEGORY_ORDER, normalizeService, normalizeName, slugify, inferredCategory,
     isCapAward, isAuthorizedForService, getAwardPrecedence, compareAwardsForMember,
     sortAwardsForMember, canonicalAwardKey, canonicalizeAwards, compareAwardsUniversal,
-    inferDeviceRules, calculateDevices, mergeAwardRecords, validateCatalog
+    inferDeviceRules, normalizeRepresentations, createAwardSelection, getAwardRepresentation,
+    calculateDevices, mergeAwardRecords, validateCatalog
   };
 });
