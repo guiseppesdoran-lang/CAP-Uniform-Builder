@@ -264,7 +264,7 @@ test('military badge authorization and precedence are service-specific', () => {
     {organization:'SPACE_FORCE'}
   );
   assert.equal(sorted[0].id,'presidential_service_badge');
-  assert.equal(sorted.at(-1).id,'headquarters_space_force_staff_identification_badge');
+  assert.equal(sorted[4].id,'headquarters_space_force_staff_identification_badge');
 });
 
 test('official Marine Corps table preserves personal, unit, and campaign precedence', () => {
@@ -326,6 +326,21 @@ test('official Marine Corps breast and marksmanship catalog preserves service-sp
   assert.ok(marines.find(badge=>badge.id==='marine_corps_competition_marksmanship_badge').variants.length>=27);
   assert.ok(marines.every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
   assert.ok(marines.every(badge=>badge.sources.some(source=>/marines\.mil/i.test(source))));
+});
+
+test('official Air Force and Space Force badge catalogs preserve ratings and placement', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const airForce=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'AIR_FORCE'));
+  const spaceForce=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'SPACE_FORCE'));
+  const airForceFamilies=airForce.filter(badge=>badge.id.startsWith('air_force_'));
+  assert.ok(airForce.length>=36,'expected the official Air Force badge foundation');
+  assert.ok(spaceForce.length>=12,'expected the official Space Force badge foundation');
+  assert.deepEqual(airForce.find(badge=>badge.id==='air_force_pilot_badge').variants,['pilot','senior_pilot','command_pilot']);
+  assert.deepEqual(airForce.find(badge=>badge.id==='air_force_enlisted_aircrew_badge').variants,['basic','senior','chief']);
+  assert.deepEqual(airForce.find(badge=>badge.id==='air_force_information_management_badge').variants,['basic','senior']);
+  assert.ok(airForceFamilies.every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
+  assert.ok(airForceFamilies.every(badge=>badge.sources.some(source=>/af\.mil|e-publishing\.af\.mil/i.test(source))));
+  assert.ok(spaceForce.filter(badge=>badge.id.startsWith('air_force_') || badge.id.startsWith('headquarters_space_force_')).every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
 });
 
 test('official Army Institute of Heraldry table preserves cross-service precedence', () => {

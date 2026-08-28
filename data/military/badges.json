@@ -7,41 +7,41 @@
       "id": "presidential_service_badge",
       "officialName": "Presidential Service Badge",
       "family": "IDENTIFICATION",
-      "authorizedServices": ["COAST_GUARD", "NAVY", "SPACE_FORCE"],
+      "authorizedServices": ["AIR_FORCE", "COAST_GUARD", "NAVY", "SPACE_FORCE"],
       "status": "CURRENT",
       "precedence": {"SPACE_FORCE": {"order": 0, "verified": true}},
       "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
-      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=132", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
     },
     {
       "id": "vice_presidential_service_badge",
       "officialName": "Vice Presidential Service Badge",
       "family": "IDENTIFICATION",
-      "authorizedServices": ["COAST_GUARD", "NAVY", "SPACE_FORCE"],
+      "authorizedServices": ["AIR_FORCE", "COAST_GUARD", "NAVY", "SPACE_FORCE"],
       "status": "CURRENT",
       "precedence": {"SPACE_FORCE": {"order": 1, "verified": true}},
       "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
-      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=132", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
     },
     {
       "id": "office_of_secretary_of_defense_identification_badge",
       "officialName": "Office of the Secretary of Defense Identification Badge",
       "family": "IDENTIFICATION",
-      "authorizedServices": ["ARMY", "COAST_GUARD", "NAVY", "SPACE_FORCE"],
+      "authorizedServices": ["AIR_FORCE", "ARMY", "COAST_GUARD", "NAVY", "SPACE_FORCE"],
       "status": "CURRENT",
       "precedence": {"SPACE_FORCE": {"order": 2, "verified": true}},
       "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
-      "sources": ["https://www.army.mil/uniforms/", "https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+      "sources": ["https://www.army.mil/uniforms/", "https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=132", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
     },
     {
       "id": "joint_chiefs_of_staff_identification_badge",
       "officialName": "Joint Chiefs of Staff Identification Badge",
       "family": "IDENTIFICATION",
-      "authorizedServices": ["ARMY", "COAST_GUARD", "NAVY", "SPACE_FORCE"],
+      "authorizedServices": ["AIR_FORCE", "ARMY", "COAST_GUARD", "NAVY", "SPACE_FORCE"],
       "status": "CURRENT",
       "precedence": {"SPACE_FORCE": {"order": 3, "verified": true}},
       "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
-      "sources": ["https://www.army.mil/uniforms/", "https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=129", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+      "sources": ["https://www.army.mil/uniforms/", "https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=129", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=132", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
     },
     {
       "id": "headquarters_space_force_staff_identification_badge",
@@ -383,6 +383,198 @@
       "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
       "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
       "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "headquarters_air_force_identification_badge", "officialName": "Headquarters Air Force Identification Badge", "family": "IDENTIFICATION", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Duty badge placement follows DAFI 36-2903 paragraph 12.3; current assignment and permanent-wear rules are recorded by the awarding authority."}},
+      "sources": ["https://www.af.mil/News/Art/?igsearch=Occupational+Badge", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=132"]
+    },
+    {
+      "id": "air_force_pilot_badge", "officialName": "Air Force Pilot Badge", "family": "AVIATION", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["pilot", "senior_pilot", "command_pilot"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Mandatory aeronautical badge centered 1/2 inch above the top row of ribbons; current billet badge is highest when multiple equal-precedence badges are authorized."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered badge above the U.S. AIR FORCE tape in the mandatory Group 1 stack."}},
+      "sources": ["https://www.af.mil/News/Art/?igsearch=Occupational+Badge", "https://static.e-publishing.af.mil/production/1/af_a3/publication/afman11-402/afman11-402.pdf", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_remotely_piloted_aircraft_pilot_badge", "officialName": "Remotely Piloted Aircraft Pilot Badge", "family": "AVIATION", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "command"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Mandatory aeronautical badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered Group 1 badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://static.e-publishing.af.mil/production/1/af_a3/publication/afman11-402/afman11-402.pdf", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_combat_systems_officer_badge", "officialName": "Combat Systems Officer Badge", "family": "AVIATION", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Mandatory aeronautical badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered Group 1 badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://static.e-publishing.af.mil/production/1/af_a3/publication/afman11-402/afman11-402.pdf", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_air_battle_manager_badge", "officialName": "Air Battle Manager Badge", "family": "AVIATION", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Mandatory aeronautical badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered Group 1 badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://static.e-publishing.af.mil/production/1/af_a3/publication/afman11-402/afman11-402.pdf", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_observer_badge", "officialName": "Air Force Observer Badge", "family": "AVIATION", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Mandatory aeronautical badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered Group 1 badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://static.e-publishing.af.mil/production/1/af_a3/publication/afman11-402/afman11-402.pdf", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_flight_surgeon_badge", "officialName": "Air Force Flight Surgeon Badge", "family": "MEDICAL", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "chief"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Mandatory aeronautical badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered Group 1 badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/News/Art/igpage/16/igsort/PhotoDate/?igsearch=Occupational+Badge", "https://static.e-publishing.af.mil/production/1/af_a3/publication/afman11-402/afman11-402.pdf", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_flight_nurse_badge", "officialName": "Air Force Flight Nurse Badge", "family": "MEDICAL", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "chief"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Mandatory aeronautical badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered Group 1 badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_officer_aircrew_badge", "officialName": "Officer Aircrew Member Badge", "family": "AIRCREW", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Aeronautical badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered Group 1 badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/News/Art/igpage/6/igsort/PhotoDate/?igsearch=enlisted+aircrew", "https://static.e-publishing.af.mil/production/1/af_a3/publication/afman11-402/afman11-402.pdf", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_enlisted_aircrew_badge", "officialName": "Enlisted Aircrew Badge", "family": "AIRCREW", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "chief"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Aeronautical badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered Group 1 badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/News/Art/igpage/6/igsort/PhotoDate/?igsearch=enlisted+aircrew", "https://static.e-publishing.af.mil/production/1/af_a3/publication/afman11-402/afman11-402.pdf", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_missile_operations_badge", "officialName": "Missile Operations Badge", "family": "MISSILE", "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Group 1 badge centered above ribbons; large or small version may be worn where authorized."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered badge above the service tape; top may not exceed the shoulder seam."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=85"]
+    },
+    {
+      "id": "air_force_space_badge", "officialName": "Space Operations Badge", "family": "SPACE", "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "command"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Group 1 badge centered above ribbons; current billet badge is highest when multiple equal-precedence badges are authorized."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered badge above the service tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/4/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=85"]
+    },
+    {
+      "id": "air_force_cyberspace_operations_badge", "officialName": "Cyberspace Operations Badge", "family": "CYBER", "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Group 1 badge centered above ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered badge above the service tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=85"]
+    },
+    {
+      "id": "air_force_cyberspace_support_badge", "officialName": "Cyberspace Support Badge", "family": "CYBER", "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Occupational badge centered above ribbons under the current-service rules."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered badge above the service tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=85"]
+    },
+    {
+      "id": "air_force_parachutist_badge", "officialName": "Air Force Parachutist Badge", "family": "QUALIFICATION", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional; placed below aeronautical, space, or cyberspace badges and above an occupational badge."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered Group 2 qualification badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_explosive_ordnance_disposal_badge", "officialName": "Air Force Explosive Ordnance Disposal Badge", "family": "EOD", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Qualification badge centered above ribbons in the authorized badge stack."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered qualification badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/5/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_force_support_badge", "officialName": "Force Support Badge", "family": "OTHER", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/2/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_logistics_readiness_badge", "officialName": "Logistics Readiness Badge", "family": "OTHER", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/3/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_religious_affairs_badge", "officialName": "Religious Affairs Badge", "family": "CHAPLAIN", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Chaplain occupational badge is mandatory and worn in the highest position."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered mandatory Group 1 badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/3/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_fire_protection_badge", "officialName": "Fire Protection Badge", "family": "QUALIFICATION", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/3/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_security_forces_badge", "officialName": "Security Forces Badge", "family": "QUALIFICATION", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional occupational badge centered in the authorized badge stack."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/3/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_judge_advocate_badge", "officialName": "Judge Advocate Badge", "family": "OTHER", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/3/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_acquisition_financial_management_badge", "officialName": "Acquisition and Financial Management Badge", "family": "OTHER", "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional occupational badge centered above ribbons under the current-service rules."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the service tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/3/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=85"]
+    },
+    {
+      "id": "air_force_paralegal_badge", "officialName": "Paralegal Badge", "family": "OTHER", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/3/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_dental_badge", "officialName": "Air Force Dental Badge", "family": "MEDICAL", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional medical occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/3/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_enlisted_medical_badge", "officialName": "Enlisted Medical Badge", "family": "MEDICAL", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional medical occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/4/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_intelligence_badge", "officialName": "Air Force Intelligence Badge", "family": "QUALIFICATION", "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Occupational badge centered above ribbons under the current-service rules."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the service tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/4/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=85"]
+    },
+    {
+      "id": "air_force_historian_badge", "officialName": "Air Force Historian Badge", "family": "OTHER", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/4/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_information_management_badge", "officialName": "Information Management Badge", "family": "OTHER", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/4/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_operations_support_badge", "officialName": "Operations Support Badge", "family": "QUALIFICATION", "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Occupational badge centered above ribbons under the current-service rules."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the service tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/4/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=85"]
+    },
+    {
+      "id": "air_force_medical_service_badge", "officialName": "Medical Service Badge", "family": "MEDICAL", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional medical occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/4/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
+    },
+    {
+      "id": "air_force_civil_engineer_readiness_badge", "officialName": "Civil Engineer Readiness Badge", "family": "QUALIFICATION", "authorizedServices": ["AIR_FORCE"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional occupational badge centered 1/2 inch above the top row of ribbons."}, "ocp": {"status": "OFFICIALLY_VERIFIED", "notes": "Embroidered occupational badge above the U.S. AIR FORCE tape."}},
+      "sources": ["https://www.af.mil/About-Us/The-Book/Devices/igpage/4/?igtag=Occupational+Badges", "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=130"]
     },
     {
       "id": "marine_corps_astronaut_insignia", "officialName": "Naval Astronaut Insignia (Marine Corps)", "family": "SPACE", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT", "variants": ["pilot", "naval_flight_officer", "mission_specialist"],
