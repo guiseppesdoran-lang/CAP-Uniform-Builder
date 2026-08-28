@@ -1,0 +1,28 @@
+{
+  "$schema": "../../schemas/military-representation-overrides.schema.json",
+  "notes": "Only add a medal representation after matching the canonical award to a local, reviewed asset. A missing entry must remain unavailable; never synthesize a generic pendant.",
+  "awards": {
+    "air_medal": {
+      "miniatureMedal": {
+        "available": true,
+        "asset": "images/mini_medals/mcchord/m_airmedal.png",
+        "verificationStatus": "CROSS_REFERENCED",
+        "sources": [
+          "legacy-builder:MINI_MEDAL_IMAGE_MAP.air_medal",
+          "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/air_medal_military_ribbon.html"
+        ]
+      }
+    },
+    "aerial_achievement_medal": {
+      "miniatureMedal": {
+        "available": true,
+        "asset": "images/mini_medals/mcchord/m_usaf_aam01.png",
+        "verificationStatus": "CROSS_REFERENCED",
+        "sources": [
+          "legacy-builder:MINI_MEDAL_IMAGE_MAP.air_force_aerial_achievement_medal",
+          "https://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/aerial_achievement_military_ribbon.html"
+        ]
+      }
+    }
+  }
+}

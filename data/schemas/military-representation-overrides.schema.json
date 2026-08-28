@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CAP Uniform Builder military award representation overrides",
+  "type": "object",
+  "required": ["awards"],
+  "properties": {
+    "awards": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "ribbon": {"$ref": "#/$defs/representation"},
+          "miniatureMedal": {"$ref": "#/$defs/representation"},
+          "fullSizeMedal": {"$ref": "#/$defs/representation"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "representation": {
+      "type": "object",
+      "required": ["available", "asset", "verificationStatus", "sources"],
+      "properties": {
+        "available": {"type": "boolean"},
+        "asset": {"type": ["string", "null"]},
+        "verificationStatus": {"enum": ["OFFICIALLY_VERIFIED", "CROSS_REFERENCED", "UNVERIFIED"]},
+        "sources": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

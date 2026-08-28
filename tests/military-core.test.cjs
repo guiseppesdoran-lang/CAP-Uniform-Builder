@@ -64,12 +64,44 @@ test('military repeat award devices are service-specific', () => {
   assert.deepEqual(core.calculateDevices({award:sample,service:'NAVY',awardCount:7}).devices,['SILVER_AWARD_STAR','GOLD_AWARD_STAR']);
 });
 
+test('repeat-award conversion remains correct through practical high quantities', () => {
+  const sample=award('repeat','Repeat Medal',['AIR_FORCE'],{});
+  sample.devices={AIR_FORCE:{repeatAward:{bronzeDevice:'BRONZE_OLC',silverDevice:'SILVER_OLC',bronzeValue:1,silverValue:5}}};
+  for(const quantity of [1,2,3,4,5,6,7,8,9,10,11,15,20,25]){
+    const result=core.calculateDevices({award:sample,service:'AIR_FORCE',awardCount:quantity});
+    const represented=result.devices.reduce((sum,id)=>sum+(id==='SILVER_OLC'?5:1),0);
+    assert.equal(represented,quantity-1,`quantity ${quantity}`);
+    assert.equal(result.valid,true,`quantity ${quantity}`);
+  }
+});
+
 test('invalid special device combinations are rejected', () => {
   const sample=award('sample','Sample',['ARMY'],{});
   sample.devices={ARMY:{repeatAward:{bronzeDevice:'BRONZE_OLC'},allowedSpecialDevices:['V_DEVICE']}};
   const result=core.calculateDevices({award:sample,service:'ARMY',specialAuthorizations:['C_DEVICE']});
   assert.equal(result.valid,false);
   assert.match(result.warnings.join(' '),/not authorized/);
+});
+
+test('explicit M and hourglass rules accept only their configured devices', () => {
+  const sample=award('reserve','Reserve Medal',['ARMY'],{});
+  sample.devices={ARMY:{allowedSpecialDevices:['M_DEVICE','BRONZE_HOURGLASS','SILVER_HOURGLASS','GOLD_HOURGLASS']}};
+  const result=core.calculateDevices({
+    award:sample,service:'ARMY',awardCount:1,
+    specialAuthorizations:['M_DEVICE','SILVER_HOURGLASS']
+  });
+  assert.deepEqual(result.devices,['M_DEVICE','SILVER_HOURGLASS']);
+  assert.equal(result.valid,true);
+});
+
+test('numerals are available only through clearly unverified manual mode', () => {
+  const sample=award('numeral_award','Numeral Award',['ARMY'],{});
+  const denied=core.calculateDevices({award:sample,service:'ARMY',manualDevices:['NUMERAL_15']});
+  assert.deepEqual(denied.devices,[]);
+  const manual=core.calculateDevices({award:sample,service:'ARMY',manualDevices:['NUMERAL_15'],allowUnverifiedRules:true});
+  assert.deepEqual(manual.devices,['NUMERAL_15']);
+  assert.equal(manual.valid,false);
+  assert.match(manual.warnings.join(' '),/MANUAL \/ UNVERIFIED/);
 });
 
 test('duplicate catalog listings merge into one canonical award', () => {
@@ -102,13 +134,55 @@ test('universal precedence keeps Medal of Honor above every service cross', () =
 
 test('inferred repeat devices follow Army/Air Force and naval conventions', () => {
   const decoration=award('sample_commendation','Sample Commendation Medal',['AIR_FORCE','NAVY'],{},'UNKNOWN');
-  assert.deepEqual(core.calculateDevices({award:decoration,service:'AIR_FORCE',awardCount:7}).devices,['SILVER_OLC','BRONZE_OLC']);
-  assert.deepEqual(core.calculateDevices({award:decoration,service:'NAVY',awardCount:7}).devices,['SILVER_AWARD_STAR','GOLD_AWARD_STAR']);
+  assert.deepEqual(core.calculateDevices({award:decoration,service:'AIR_FORCE',awardCount:7,allowUnverifiedRules:true}).devices,['SILVER_OLC','BRONZE_OLC']);
+  assert.deepEqual(core.calculateDevices({award:decoration,service:'NAVY',awardCount:7,allowUnverifiedRules:true}).devices,['SILVER_AWARD_STAR','GOLD_AWARD_STAR']);
 });
 
 test('campaign participation uses bronze and silver service stars', () => {
   const campaign=award('sample_campaign','Sample Campaign Medal',['ARMY'],{},'CAMPAIGN');
-  assert.deepEqual(core.calculateDevices({award:campaign,service:'ARMY',awardCount:7}).devices,['SILVER_SERVICE_STAR','BRONZE_SERVICE_STAR']);
+  assert.deepEqual(core.calculateDevices({award:campaign,service:'ARMY',awardCount:7,allowUnverifiedRules:true}).devices,['SILVER_SERVICE_STAR','BRONZE_SERVICE_STAR']);
+});
+
+test('normal mode never guesses a missing award-specific device rule', () => {
+  const decoration=award('unknown_commendation','Unknown Commendation Medal',['AIR_FORCE'],{},'COMMENDATION');
+  const result=core.calculateDevices({award:decoration,service:'AIR_FORCE',awardCount:2});
+  assert.equal(result.valid,false);
+  assert.deepEqual(result.devices,[]);
+  assert.match(result.warnings.join(' '),/No repeat-award device rule/);
+});
+
+test('one canonical selection preserves quantity and devices across representations', () => {
+  const selected=core.createAwardSelection('bronze_star_medal',{quantity:7,specialDevices:['V_DEVICE']});
+  const canonical={
+    id:'bronze_star_medal',
+    representations:{
+      ribbon:{available:true,asset:'ribbon.png'},
+      miniatureMedal:{available:true,asset:'mini.png'},
+      fullSizeMedal:{available:false}
+    }
+  };
+  assert.equal(selected.quantity,7);
+  assert.deepEqual(selected.specialDevices,['V_DEVICE']);
+  assert.equal(core.getAwardRepresentation(canonical,'RIBBON').asset,'ribbon.png');
+  assert.equal(core.getAwardRepresentation(canonical,'MINIATURE_MEDAL').asset,'mini.png');
+  assert.equal(core.getAwardRepresentation(canonical,'FULL_SIZE_MEDAL').available,false);
+});
+
+test('canonicalization preserves reviewed medal representations from source records', () => {
+  const canonical=core.canonicalizeAwards([{
+    id:'aerial_achievement', name:'Aerial Achievement Medal', authorizedServices:['AIR_FORCE'],
+    representations:{miniatureMedal:{available:true,asset:'images/mini.png'}}
+  }]);
+  assert.equal(canonical[0].id,'aerial_achievement_medal');
+  assert.equal(core.getAwardRepresentation(canonical[0],'MINIATURE_MEDAL').asset,'images/mini.png');
+});
+
+test('legacy ribbon-only assets do not create fake miniature medals', () => {
+  const canonical={id:'training_ribbon',images:{ribbon:'training.png'}};
+  const representations=core.normalizeRepresentations(canonical);
+  assert.equal(representations.ribbon.available,true);
+  assert.equal(representations.miniatureMedal.available,false);
+  assert.equal(representations.fullSizeMedal.available,false);
 });
 
 test('CAP authorization stays independent of Air Force authorization', () => {

@@ -1,0 +1,27 @@
+{
+  "accessed": "2026-08-27",
+  "runtimeDependency": false,
+  "sources": [
+    {
+      "sourceName": "Medals of America",
+      "sourceType": "commercial-discovery",
+      "entryPoints": [
+        "https://www.medalsofamerica.com/build-your-medal-rack",
+        "https://www.medalsofamerica.com/build-your-ribbons-rack"
+      ],
+      "observed": ["branch groupings", "ribbon products", "miniature medal products", "full-size medal products", "attachments/devices", "JavaScript builder state"],
+      "regulatoryAuthority": false
+    },
+    {
+      "sourceName": "UltraThin",
+      "sourceType": "commercial-discovery",
+      "entryPoints": [
+        "https://www.ultrathin.com/ultrathin/orderform_update.htm",
+        "https://www.ultrathin.com/awardsrack/"
+      ],
+      "observed": ["HTML award selections", "miniature/full medal choices", "separate attachment counts", "award identifiers"],
+      "limitations": ["legacy order materials state catalog numbers may not represent proper precedence"],
+      "regulatoryAuthority": false
+    }
+  ]
+}

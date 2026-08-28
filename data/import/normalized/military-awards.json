@@ -815,7 +815,22 @@
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"
+      }
+    },
     "images": {
       "ribbon": "images/ribbons/air_medal.png",
       "assetStatus": "LOCAL_EXISTING"
@@ -854,7 +869,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"
+      }
+    },
     "images": {
       "ribbon": "images/ribbons/air_force_aerial_achievement_medal.png",
       "assetStatus": "LOCAL_EXISTING"
@@ -976,7 +1006,9 @@
         "devicePrecedence": [
           "SILVER_OLC",
           "BRONZE_OLC"
-        ]
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"
       },
       "SPACE_FORCE": {
         "repeatAward": {
@@ -988,7 +1020,9 @@
         "devicePrecedence": [
           "SILVER_OLC",
           "BRONZE_OLC"
-        ]
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"
       }
     },
     "images": {
@@ -1113,7 +1147,9 @@
         "devicePrecedence": [
           "SILVER_OLC",
           "BRONZE_OLC"
-        ]
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"
       },
       "SPACE_FORCE": {
         "repeatAward": {
@@ -1125,7 +1161,9 @@
         "devicePrecedence": [
           "SILVER_OLC",
           "BRONZE_OLC"
-        ]
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"
       }
     },
     "images": {
@@ -2804,7 +2842,23 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "ARMY": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_SERVICE_STAR",
+          "silverDevice": "SILVER_SERVICE_STAR",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "allowedSpecialDevices": [],
+        "devicePrecedence": [
+          "SILVER_SERVICE_STAR",
+          "BRONZE_SERVICE_STAR"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://www.hrc.army.mil/content/26999"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/armed_forces_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-service-0.jpg",
@@ -3236,7 +3290,25 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "allowedSpecialDevices": [
+          "M_DEVICE",
+          "BRONZE_HOURGLASS",
+          "SILVER_HOURGLASS",
+          "GOLD_HOURGLASS"
+        ],
+        "devicePrecedence": [
+          "M_DEVICE",
+          "GOLD_HOURGLASS",
+          "SILVER_HOURGLASS",
+          "BRONZE_HOURGLASS"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf",
+        "notes": "A mobilization numeral is order-dependent and remains in Manual / unverified mode until the normal selector accepts a verified numeric authorization."
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/armed_forces_reserve_air_force_military_ribbons.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-reserve-0.jpg",
@@ -8345,7 +8417,6 @@
     "devices": {},
     "images": {
       "ribbon": "images/military-ribbons/china_relief_expedition.svg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_medals_full_size/China_Relief_Navy_Medal.JPG",
       "assetStatus": "LOCAL_VERIFIED"
     },
     "sources": {
