@@ -1,9 +1,9 @@
 {
   "summary": {
-    "generatedAt": "2026-08-28T16:56:14.408Z",
+    "generatedAt": "2026-08-28T22:12:18.748Z",
     "sourceRecords": 183,
-    "officialAdditionRecords": 1,
-    "canonicalAwards": 171,
+    "officialAdditionRecords": 6,
+    "canonicalAwards": 176,
     "discardedNonAwardRecords": 6,
     "badges": 132,
     "explicitBadgeVariants": 254,
@@ -16,19 +16,19 @@
       "MISSING_ASSET": 222,
       "UNVERIFIED": 0
     },
-    "devices": 15,
-    "missingPrecedenceCatalogRecords": 0,
+    "devices": 16,
+    "missingPrecedenceCatalogRecords": 4,
     "byService": {
-      "ARMY": 75,
-      "MARINE_CORPS": 79,
-      "NAVY": 84,
-      "AIR_FORCE": 84,
-      "SPACE_FORCE": 3,
-      "COAST_GUARD": 88
+      "ARMY": 76,
+      "MARINE_CORPS": 80,
+      "NAVY": 85,
+      "AIR_FORCE": 88,
+      "SPACE_FORCE": 8,
+      "COAST_GUARD": 89
     },
     "representationTotals": {
       "RIBBON": {
-        "AVAILABLE": 170,
+        "AVAILABLE": 175,
         "NOT_APPLICABLE": 0,
         "MISSING_ASSET": 1,
         "UNVERIFIED": 0
@@ -36,18 +36,18 @@
       "MINIATURE_MEDAL": {
         "AVAILABLE": 2,
         "NOT_APPLICABLE": 1,
-        "MISSING_ASSET": 168,
+        "MISSING_ASSET": 173,
         "UNVERIFIED": 0
       },
       "FULL_SIZE_MEDAL": {
         "AVAILABLE": 0,
         "NOT_APPLICABLE": 0,
-        "MISSING_ASSET": 171,
+        "MISSING_ASSET": 176,
         "UNVERIFIED": 0
       }
     },
-    "awardsWithVerifiedPrecedence": 86,
-    "awardsWithExplicitDeviceRules": 21,
+    "awardsWithVerifiedPrecedence": 142,
+    "awardsWithExplicitDeviceRules": 26,
     "brokenAvailableAssets": 0
   },
   "discarded": [
@@ -82,7 +82,28 @@
       "type": "RANK"
     }
   ],
-  "missingPrecedenceCatalogRecords": [],
+  "missingPrecedenceCatalogRecords": [
+    {
+      "service": "AIR_FORCE",
+      "id": "air_and_space_nuclear_deterrence_operations_service_medal",
+      "source": "https://www.afpc.af.mil/Portals/70/documents/RECOGNITION/Decorations%20and%20Ribbons.pdf"
+    },
+    {
+      "service": "AIR_FORCE",
+      "id": "developmental_special_duty_ribbon",
+      "source": "https://www.afpc.af.mil/Portals/70/documents/RECOGNITION/Decorations%20and%20Ribbons.pdf"
+    },
+    {
+      "service": "SPACE_FORCE",
+      "id": "air_and_space_nuclear_deterrence_operations_service_medal",
+      "source": "https://www.afpc.af.mil/Portals/70/documents/RECOGNITION/Decorations%20and%20Ribbons.pdf"
+    },
+    {
+      "service": "SPACE_FORCE",
+      "id": "developmental_special_duty_ribbon",
+      "source": "https://www.afpc.af.mil/Portals/70/documents/RECOGNITION/Decorations%20and%20Ribbons.pdf"
+    }
+  ],
   "assets": [
     {
       "ownerType": "AWARD",
@@ -819,39 +840,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_and_space_commendation_medal",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_and_space_commendation_medal.png",
-      "exists": true,
-      "sha256": "b23304f4404ec02e6a884b5186db9625880bf4593e0d94a6dcee2c25a926b501",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_and_space_commendation_medal",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_and_space_commendation_medal",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "coast_guard_commendation",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -908,6 +896,39 @@
     {
       "ownerType": "AWARD",
       "ownerId": "navy_unit_commendation",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_and_space_commendation_medal",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_and_space_commendation_medal.png",
+      "exists": true,
+      "sha256": "b23304f4404ec02e6a884b5186db9625880bf4593e0d94a6dcee2c25a926b501",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_and_space_commendation_medal",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_and_space_commendation_medal",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -1215,42 +1236,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "aerial_achievement_medal",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/aerial_achievement_medal.png",
-      "exists": true,
-      "sha256": "4a2c00943231f930f56393786e6efb7197cc208ba31db1ed9f1c02fc36684602",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "aerial_achievement_medal",
-      "representation": "MINIATURE_MEDAL",
-      "status": "AVAILABLE",
-      "asset": "images/mini_medals/mcchord/m_usaf_aam01.png",
-      "exists": true,
-      "sha256": "3303baa37e0fb6fcdf70a64a1451d5c1268251c4c1de7338a1f8fc3c0d95b9c3",
-      "verificationStatus": "CROSS_REFERENCED",
-      "sources": [
-        "legacy-builder:MINI_MEDAL_IMAGE_MAP.air_force_aerial_achievement_medal",
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/aerial_achievement_military_ribbon.html"
-      ]
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "aerial_achievement_medal",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "joint_service_achievement",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -1317,62 +1302,32 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_and_space_achievement_medal",
+      "ownerId": "aerial_achievement_medal",
       "representation": "RIBBON",
       "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_and_space_achievement_medal.png",
+      "asset": "images/military-ribbons/mcchord-style/aerial_achievement_medal.png",
       "exists": true,
-      "sha256": "bb8e08d29d583882c6bed9e3ad1daa6f96d2e997f2c78f63b8c8e2bc75513816",
+      "sha256": "4a2c00943231f930f56393786e6efb7197cc208ba31db1ed9f1c02fc36684602",
       "verificationStatus": null,
       "sources": []
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_and_space_achievement_medal",
+      "ownerId": "aerial_achievement_medal",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_and_space_achievement_medal",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "reserve_componets_achievement",
-      "representation": "RIBBON",
       "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/reserve_componets_achievement.png",
+      "asset": "images/mini_medals/mcchord/m_usaf_aam01.png",
       "exists": true,
-      "sha256": "2aa68a421339e6b608f878dfd4ca98a8487ac167fe5140f1c92de05e2758ae5c",
-      "verificationStatus": null,
-      "sources": []
+      "sha256": "3303baa37e0fb6fcdf70a64a1451d5c1268251c4c1de7338a1f8fc3c0d95b9c3",
+      "verificationStatus": "CROSS_REFERENCED",
+      "sources": [
+        "legacy-builder:MINI_MEDAL_IMAGE_MAP.air_force_aerial_achievement_medal",
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/aerial_achievement_military_ribbon.html"
+      ]
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "reserve_componets_achievement",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "reserve_componets_achievement",
+      "ownerId": "aerial_achievement_medal",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -1416,6 +1371,39 @@
     },
     {
       "ownerType": "AWARD",
+      "ownerId": "air_and_space_achievement_medal",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_and_space_achievement_medal.png",
+      "exists": true,
+      "sha256": "bb8e08d29d583882c6bed9e3ad1daa6f96d2e997f2c78f63b8c8e2bc75513816",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_and_space_achievement_medal",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_and_space_achievement_medal",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
       "ownerId": "army_achievement",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -1439,6 +1427,39 @@
     {
       "ownerType": "AWARD",
       "ownerId": "army_achievement",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "reserve_componets_achievement",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/reserve_componets_achievement.png",
+      "exists": true,
+      "sha256": "2aa68a421339e6b608f878dfd4ca98a8487ac167fe5140f1c92de05e2758ae5c",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "reserve_componets_achievement",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "reserve_componets_achievement",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -1647,6 +1668,39 @@
     },
     {
       "ownerType": "AWARD",
+      "ownerId": "space_force_good_conduct_medal",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/space_force_good_conduct_medal.png",
+      "exists": true,
+      "sha256": "d423a67eb035c761198954c8998a9ae75815f4bb61c825168565d4adffee87f9",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "space_force_good_conduct_medal",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "space_force_good_conduct_medal",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
       "ownerId": "navy_presidential_unit_citation",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -1680,39 +1734,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_presidential_unit_citation",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_presidential_unit_citation.png",
-      "exists": true,
-      "sha256": "6aa9fb4ecc23792d1b2b731e73f22d89ef654b184a882e7381ab13662124ffde",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_presidential_unit_citation",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_presidential_unit_citation",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "joint_meritorious_unit_award",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -1736,6 +1757,105 @@
     {
       "ownerType": "AWARD",
       "ownerId": "joint_meritorious_unit_award",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "coast_guard_presidential_unit_citation",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/coast_guard_presidential_unit_citation.png",
+      "exists": true,
+      "sha256": "fdd43551eb4bcc4eda2f5aae87c702780d95ecfcc62a0fc09c41469a57015556",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "coast_guard_presidential_unit_citation",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "coast_guard_presidential_unit_citation",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "dot_outstanding_unit_award",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/dot_outstanding_unit_award.png",
+      "exists": true,
+      "sha256": "8a76058cfacc4561a4e5256c1314091f73cb880105f6b3af5d904545b4f81823",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "dot_outstanding_unit_award",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "dot_outstanding_unit_award",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_presidential_unit_citation",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_force_presidential_unit_citation.png",
+      "exists": true,
+      "sha256": "6aa9fb4ecc23792d1b2b731e73f22d89ef654b184a882e7381ab13662124ffde",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_presidential_unit_citation",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_presidential_unit_citation",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -1845,72 +1965,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "coast_guard_presidential_unit_citation",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/coast_guard_presidential_unit_citation.png",
-      "exists": true,
-      "sha256": "fdd43551eb4bcc4eda2f5aae87c702780d95ecfcc62a0fc09c41469a57015556",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "coast_guard_presidential_unit_citation",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "coast_guard_presidential_unit_citation",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "dot_outstanding_unit_award",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/dot_outstanding_unit_award.png",
-      "exists": true,
-      "sha256": "8a76058cfacc4561a4e5256c1314091f73cb880105f6b3af5d904545b4f81823",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "dot_outstanding_unit_award",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "dot_outstanding_unit_award",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "philippine_presidential_unit_citation",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -1977,39 +2031,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "army_presidential_unit_citation",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/army_presidential_unit_citation.png",
-      "exists": true,
-      "sha256": "77579340b4931865ecf3362ae37f13ffbe29fe940807f47e5b5934d99f414db4",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "army_presidential_unit_citation",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "army_presidential_unit_citation",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "republic_of_vietnam_presidential_unit_citation",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -2033,6 +2054,39 @@
     {
       "ownerType": "AWARD",
       "ownerId": "republic_of_vietnam_presidential_unit_citation",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "army_presidential_unit_citation",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/army_presidential_unit_citation.png",
+      "exists": true,
+      "sha256": "77579340b4931865ecf3362ae37f13ffbe29fe940807f47e5b5934d99f414db4",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "army_presidential_unit_citation",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "army_presidential_unit_citation",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -2373,6 +2427,39 @@
     },
     {
       "ownerType": "AWARD",
+      "ownerId": "inherent_resolve_campaign_medal",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/inherent_resolve_campaign_medal.png",
+      "exists": true,
+      "sha256": "939b0b5ab9c21cd3caa62cab8acfca309297435fca5eb227b23558aab6d91f11",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "inherent_resolve_campaign_medal",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "inherent_resolve_campaign_medal",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
       "ownerId": "republic_of_vietnam_campaign",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -2396,6 +2483,39 @@
     {
       "ownerType": "AWARD",
       "ownerId": "republic_of_vietnam_campaign",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "remote_combat_effects_campaign_medal",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/remote_combat_effects_campaign_medal.png",
+      "exists": true,
+      "sha256": "98ae9cc39eba041a23a9ecb2e3500ef347a29077f18d291bd9a6fb1267d2bb39",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "remote_combat_effects_campaign_medal",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "remote_combat_effects_campaign_medal",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -2505,39 +2625,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "global_war_on_terrorism_expeditionary",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/global_war_on_terrorism_expeditionary.png",
-      "exists": true,
-      "sha256": "4c93d8902054d7c0c78885284bb7d54541ac5129869e4e0f34ef035da5abeaec",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "global_war_on_terrorism_expeditionary",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "global_war_on_terrorism_expeditionary",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "armed_forces_expeditionary",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -2561,6 +2648,39 @@
     {
       "ownerType": "AWARD",
       "ownerId": "armed_forces_expeditionary",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "global_war_on_terrorism_expeditionary",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/global_war_on_terrorism_expeditionary.png",
+      "exists": true,
+      "sha256": "4c93d8902054d7c0c78885284bb7d54541ac5129869e4e0f34ef035da5abeaec",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "global_war_on_terrorism_expeditionary",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "global_war_on_terrorism_expeditionary",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -2637,72 +2757,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_distinguishd_service",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_distinguishd_service.png",
-      "exists": true,
-      "sha256": "d60f07b1510bd5a970452cc86ce5238b73d5f3a43958475dd9c233f64aae1965",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_distinguishd_service",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_distinguishd_service",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "army_distinguished_service",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/army_distinguished_service.png",
-      "exists": true,
-      "sha256": "4ddca181745e642a46c070a8fc2ff55f5fe94d2e3752b7c5056328f375526508",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "army_distinguished_service",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "army_distinguished_service",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "navy_distinguished_service",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -2769,18 +2823,18 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "womens_s_army_corps_service",
+      "ownerId": "air_force_distinguishd_service",
       "representation": "RIBBON",
       "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/womens_s_army_corps_service.png",
+      "asset": "images/military-ribbons/mcchord-style/air_force_distinguishd_service.png",
       "exists": true,
-      "sha256": "e338f11d3b615bd8c27454a273a2a1bd45eef1608f04bffe1c388aca23bd07f8",
+      "sha256": "d60f07b1510bd5a970452cc86ce5238b73d5f3a43958475dd9c233f64aae1965",
       "verificationStatus": null,
       "sources": []
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "womens_s_army_corps_service",
+      "ownerId": "air_force_distinguishd_service",
       "representation": "MINIATURE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -2791,7 +2845,7 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "womens_s_army_corps_service",
+      "ownerId": "air_force_distinguishd_service",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -2802,18 +2856,18 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "national_defense_military_service",
+      "ownerId": "army_distinguished_service",
       "representation": "RIBBON",
       "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/national_defense_military_service.png",
+      "asset": "images/military-ribbons/mcchord-style/army_distinguished_service.png",
       "exists": true,
-      "sha256": "98a1624b9136edb98c6b8afc4cd59081667fb8893585ef22208be0ec3f0292a5",
+      "sha256": "4ddca181745e642a46c070a8fc2ff55f5fe94d2e3752b7c5056328f375526508",
       "verificationStatus": null,
       "sources": []
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "national_defense_military_service",
+      "ownerId": "army_distinguished_service",
       "representation": "MINIATURE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -2824,7 +2878,7 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "national_defense_military_service",
+      "ownerId": "army_distinguished_service",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -2901,6 +2955,39 @@
     },
     {
       "ownerType": "AWARD",
+      "ownerId": "national_defense_military_service",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/national_defense_military_service.png",
+      "exists": true,
+      "sha256": "98a1624b9136edb98c6b8afc4cd59081667fb8893585ef22208be0ec3f0292a5",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "national_defense_military_service",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "national_defense_military_service",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
       "ownerId": "korean_service",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -2924,39 +3011,6 @@
     {
       "ownerType": "AWARD",
       "ownerId": "korean_service",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "southwest_asia_service",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/southwest_asia_service.png",
-      "exists": true,
-      "sha256": "ba988930f027131a68f1677f0881dc1ce68f4699ad26a8a6cf1c4034153886da",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "southwest_asia_service",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "southwest_asia_service",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -3000,39 +3054,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "global_war_on_terrorism_service",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/global_war_on_terrorism_service.png",
-      "exists": true,
-      "sha256": "fcbb8328f7c4ebc780f6cd7a322651c0ad0c40bc507b5a1920bfb80b24b195d5",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "global_war_on_terrorism_service",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "global_war_on_terrorism_service",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "vietnam_service",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -3056,6 +3077,72 @@
     {
       "ownerType": "AWARD",
       "ownerId": "vietnam_service",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "southwest_asia_service",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/southwest_asia_service.png",
+      "exists": true,
+      "sha256": "ba988930f027131a68f1677f0881dc1ce68f4699ad26a8a6cf1c4034153886da",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "southwest_asia_service",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "southwest_asia_service",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "global_war_on_terrorism_service",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/global_war_on_terrorism_service.png",
+      "exists": true,
+      "sha256": "fcbb8328f7c4ebc780f6cd7a322651c0ad0c40bc507b5a1920bfb80b24b195d5",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "global_war_on_terrorism_service",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "global_war_on_terrorism_service",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -3122,39 +3209,6 @@
     {
       "ownerType": "AWARD",
       "ownerId": "armed_forces_service",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "overseas_service",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/overseas_service.png",
-      "exists": true,
-      "sha256": "419f6eb8c05bfdc9dcb543581ab642719813fd51628fb2bd716d999be16a932b",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "overseas_service",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "overseas_service",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -3330,6 +3384,39 @@
     },
     {
       "ownerType": "AWARD",
+      "ownerId": "womens_s_army_corps_service",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/womens_s_army_corps_service.png",
+      "exists": true,
+      "sha256": "e338f11d3b615bd8c27454a273a2a1bd45eef1608f04bffe1c388aca23bd07f8",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "womens_s_army_corps_service",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "womens_s_army_corps_service",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
       "ownerId": "navy_and_marine_corps_overseas_service",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -3419,39 +3506,6 @@
     {
       "ownerType": "AWARD",
       "ownerId": "navy_recruiting_service",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_longevity_service",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_longevity_service.png",
-      "exists": true,
-      "sha256": "c2720016e70f2bcbe49fc097a253b03d58e856a816b95b1992fbee19f2355dec",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_longevity_service",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_longevity_service",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -3660,6 +3714,138 @@
     },
     {
       "ownerType": "AWARD",
+      "ownerId": "overseas_service",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/overseas_service.png",
+      "exists": true,
+      "sha256": "419f6eb8c05bfdc9dcb543581ab642719813fd51628fb2bd716d999be16a932b",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "overseas_service",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "overseas_service",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_longevity_service",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_force_longevity_service.png",
+      "exists": true,
+      "sha256": "c2720016e70f2bcbe49fc097a253b03d58e856a816b95b1992fbee19f2355dec",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_longevity_service",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_longevity_service",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "developmental_special_duty",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/developmental_special_duty.png",
+      "exists": true,
+      "sha256": "8e6d01f674ab7e43051e03f229ab2b71e2e996d0be3f2381e5869d704591e69b",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "developmental_special_duty",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "developmental_special_duty",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "nuclear_deterrence_operations_service_medal",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/nuclear_deterrence_operations_service_medal.png",
+      "exists": true,
+      "sha256": "93857e520934e7ba7d41aea4b65b3699c2e3162f4d124129b4fb70284deb7773",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "nuclear_deterrence_operations_service_medal",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "nuclear_deterrence_operations_service_medal",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
       "ownerId": "selected_marine_corps_reserve",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -3693,72 +3879,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "armed_forces_reserve",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/armed_forces_reserve.png",
-      "exists": true,
-      "sha256": "40a88a8cdae8da8e4be12813ddeefd61db47c9a77909becbe3a78aebb55b8101",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "armed_forces_reserve",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "armed_forces_reserve",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "reserve_components_overseas_training",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/reserve_components_overseas_training.png",
-      "exists": true,
-      "sha256": "5af819e34295eb46044bfd6d48e55de1695cc35f771c72ccbe7087e7eca08b21",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "reserve_components_overseas_training",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "reserve_components_overseas_training",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "naval_reserve_sea_service",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -3782,6 +3902,39 @@
     {
       "ownerType": "AWARD",
       "ownerId": "naval_reserve_sea_service",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "armed_forces_reserve",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/armed_forces_reserve.png",
+      "exists": true,
+      "sha256": "40a88a8cdae8da8e4be12813ddeefd61db47c9a77909becbe3a78aebb55b8101",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "armed_forces_reserve",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "armed_forces_reserve",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -3858,6 +4011,39 @@
     },
     {
       "ownerType": "AWARD",
+      "ownerId": "reserve_components_overseas_training",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/reserve_components_overseas_training.png",
+      "exists": true,
+      "sha256": "5af819e34295eb46044bfd6d48e55de1695cc35f771c72ccbe7087e7eca08b21",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "reserve_components_overseas_training",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "reserve_components_overseas_training",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
       "ownerId": "navy_recruit_training_service",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -3881,6 +4067,39 @@
     {
       "ownerType": "AWARD",
       "ownerId": "navy_recruit_training_service",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "basic_training_honor_graduate",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/basic_training_honor_graduate.png",
+      "exists": true,
+      "sha256": "fc1c25f598bf7d9b102c41245e32b2a6dfe3ac48b835664a7b79855d6ab76bfb",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "basic_training_honor_graduate",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "basic_training_honor_graduate",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -3980,39 +4199,6 @@
     {
       "ownerType": "AWARD",
       "ownerId": "air_force_training",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "basic_training_honor_graduate",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/basic_training_honor_graduate.png",
-      "exists": true,
-      "sha256": "fc1c25f598bf7d9b102c41245e32b2a6dfe3ac48b835664a7b79855d6ab76bfb",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "basic_training_honor_graduate",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "basic_training_honor_graduate",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -4155,39 +4341,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_combat_action",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_combat_action.png",
-      "exists": true,
-      "sha256": "878cbbb8c49e423d9d572e92a0e00b123462fc6427a5134d0783db4f99cc4ad3",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_combat_action",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_combat_action",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "dot_9_11_medal",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -4287,138 +4440,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "world_war_ii_victory",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/world_war_ii_victory.png",
-      "exists": true,
-      "sha256": "2b56fcd0a7c43968fdd0556189af33ede008e76694f43b0fa6d419de5843a2b1",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "world_war_ii_victory",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "world_war_ii_victory",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "army_of_occupation",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/army_of_occupation.png",
-      "exists": true,
-      "sha256": "cf01b837b92114518a9282600ef5eb5d25af518a94ba6d93b6c6c9b2c734f9ba",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "army_of_occupation",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "army_of_occupation",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_and_space_organizational_excellence_award",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_and_space_organizational_excellence_award.png",
-      "exists": true,
-      "sha256": "88a7d9214e41a7c86e9969f6af4ccb591905b324cb988d3fa51bb215dd1cf8a8",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_and_space_organizational_excellence_award",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_and_space_organizational_excellence_award",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_combat_readiness",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_combat_readiness.png",
-      "exists": true,
-      "sha256": "402d353b4f6ebe681bb95eae46d16ef0008fa41a028b00838f5c07be49e6f989",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_combat_readiness",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_combat_readiness",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "fleet_marine_force",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -4442,39 +4463,6 @@
     {
       "ownerType": "AWARD",
       "ownerId": "fleet_marine_force",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_good_condcut",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_good_condcut.png",
-      "exists": true,
-      "sha256": "8cb302714004d955ef421928ca3e685469301d4fba162d07bb97fc4ecf87f4a3",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_good_condcut",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_good_condcut",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -4518,18 +4506,18 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_outstanding_airman_of_the_year",
+      "ownerId": "air_force_combat_action",
       "representation": "RIBBON",
       "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_outstanding_airman_of_the_year.png",
+      "asset": "images/military-ribbons/mcchord-style/air_force_combat_action.png",
       "exists": true,
-      "sha256": "882a404081a495c74fa39d6a3a389091c00448252744c805542a632fbe6c076d",
+      "sha256": "878cbbb8c49e423d9d572e92a0e00b123462fc6427a5134d0783db4f99cc4ad3",
       "verificationStatus": null,
       "sources": []
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_outstanding_airman_of_the_year",
+      "ownerId": "air_force_combat_action",
       "representation": "MINIATURE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -4540,40 +4528,7 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_outstanding_airman_of_the_year",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_recognition",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_recognition.png",
-      "exists": true,
-      "sha256": "cae4da68e7efaf6d6638f9f0f1d409a171a93bd2f455ffe35c8e246823862c81",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_recognition",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_recognition",
+      "ownerId": "air_force_combat_action",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -4607,6 +4562,39 @@
     {
       "ownerType": "AWARD",
       "ownerId": "coast_guard_e",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "world_war_ii_victory",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/world_war_ii_victory.png",
+      "exists": true,
+      "sha256": "2b56fcd0a7c43968fdd0556189af33ede008e76694f43b0fa6d419de5843a2b1",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "world_war_ii_victory",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "world_war_ii_victory",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -4716,18 +4704,18 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "nco_professional_development",
+      "ownerId": "air_and_space_organizational_excellence_award",
       "representation": "RIBBON",
       "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/nco_professional_development.png",
+      "asset": "images/military-ribbons/mcchord-style/air_and_space_organizational_excellence_award.png",
       "exists": true,
-      "sha256": "58b81bb84789d31f3d3b08cc24131367cf6c7568e0ed13da827a61a6b84501f5",
+      "sha256": "88a7d9214e41a7c86e9969f6af4ccb591905b324cb988d3fa51bb215dd1cf8a8",
       "verificationStatus": null,
       "sources": []
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "nco_professional_development",
+      "ownerId": "air_and_space_organizational_excellence_award",
       "representation": "MINIATURE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -4738,7 +4726,73 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "nco_professional_development",
+      "ownerId": "air_and_space_organizational_excellence_award",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_combat_readiness",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_force_combat_readiness.png",
+      "exists": true,
+      "sha256": "402d353b4f6ebe681bb95eae46d16ef0008fa41a028b00838f5c07be49e6f989",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_combat_readiness",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_combat_readiness",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_good_condcut",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_force_good_condcut.png",
+      "exists": true,
+      "sha256": "8cb302714004d955ef421928ca3e685469301d4fba162d07bb97fc4ecf87f4a3",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_good_condcut",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_good_condcut",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -4848,6 +4902,39 @@
     },
     {
       "ownerType": "AWARD",
+      "ownerId": "air_force_outstanding_airman_of_the_year",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_force_outstanding_airman_of_the_year.png",
+      "exists": true,
+      "sha256": "882a404081a495c74fa39d6a3a389091c00448252744c805542a632fbe6c076d",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_outstanding_airman_of_the_year",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_outstanding_airman_of_the_year",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
       "ownerId": "philippine_independence",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -4881,18 +4968,18 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_overseas_short_tour",
+      "ownerId": "air_force_recognition",
       "representation": "RIBBON",
       "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_overseas_short_tour.png",
+      "asset": "images/military-ribbons/mcchord-style/air_force_recognition.png",
       "exists": true,
-      "sha256": "1236b76f2bbc2f11449ab2f886294e8964a89c88ecd0a538cc02d047e6f1efa6",
+      "sha256": "cae4da68e7efaf6d6638f9f0f1d409a171a93bd2f455ffe35c8e246823862c81",
       "verificationStatus": null,
       "sources": []
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_overseas_short_tour",
+      "ownerId": "air_force_recognition",
       "representation": "MINIATURE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -4903,40 +4990,7 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_overseas_short_tour",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_overseas_long_tour",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_overseas_long_tour.png",
-      "exists": true,
-      "sha256": "f90940f4e8c0d3292c6fd2179da194e937cb7d201b3f4180802be4acd16591de",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_overseas_long_tour",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_overseas_long_tour",
+      "ownerId": "air_force_recognition",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -4970,39 +5024,6 @@
     {
       "ownerType": "AWARD",
       "ownerId": "inter_american_defense_board",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "marine_corps_sercurity_guard",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/marine_corps_sercurity_guard.png",
-      "exists": true,
-      "sha256": "c56bdc3404cb73ee69530b91ac8586a936a512c9e7f7f10a3203f0e694b46208",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "marine_corps_sercurity_guard",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "marine_corps_sercurity_guard",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -5079,6 +5100,72 @@
     },
     {
       "ownerType": "AWARD",
+      "ownerId": "navy_ceremonial_guard",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/navy_ceremonial_guard.png",
+      "exists": true,
+      "sha256": "8cb443cbbf4ae0b1f52a1b68a29fb67ae7e18c3c0434efeb5ca6c71b07efa999",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "navy_ceremonial_guard",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "navy_ceremonial_guard",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "army_of_occupation",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/army_of_occupation.png",
+      "exists": true,
+      "sha256": "cf01b837b92114518a9282600ef5eb5d25af518a94ba6d93b6c6c9b2c734f9ba",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "army_of_occupation",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "army_of_occupation",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
       "ownerId": "nato_kosovo",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -5102,39 +5189,6 @@
     {
       "ownerType": "AWARD",
       "ownerId": "nato_kosovo",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_recruiter",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_recruiter.png",
-      "exists": true,
-      "sha256": "717c1ccc4b8d697ca113cc5043c946d8bf5dfae073f828da201e2e7e97b4fed2",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_recruiter",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_recruiter",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -5244,72 +5298,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "navy_ceremonial_guard",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/navy_ceremonial_guard.png",
-      "exists": true,
-      "sha256": "8cb443cbbf4ae0b1f52a1b68a29fb67ae7e18c3c0434efeb5ca6c71b07efa999",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "navy_ceremonial_guard",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "navy_ceremonial_guard",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_nco_professional_military_education_graduate",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_nco_professional_military_education_graduate.png",
-      "exists": true,
-      "sha256": "663862f400d1dfbf3d411a095570346e1e847370f40fa2a1d740b5f3a09014e2",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_nco_professional_military_education_graduate",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "air_force_nco_professional_military_education_graduate",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "kuwiat_liberation_kuwait",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -5376,18 +5364,18 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_small_arms_expert_marksmanship",
+      "ownerId": "marine_corps_sercurity_guard",
       "representation": "RIBBON",
       "status": "AVAILABLE",
-      "asset": "images/military-ribbons/mcchord-style/air_force_small_arms_expert_marksmanship.png",
+      "asset": "images/military-ribbons/mcchord-style/marine_corps_sercurity_guard.png",
       "exists": true,
-      "sha256": "df4718e45dac97baf6e4ff3d1aa60868bb8d2d4e6ecd95944c50b9eafc7ea7d2",
+      "sha256": "c56bdc3404cb73ee69530b91ac8586a936a512c9e7f7f10a3203f0e694b46208",
       "verificationStatus": null,
       "sources": []
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_small_arms_expert_marksmanship",
+      "ownerId": "marine_corps_sercurity_guard",
       "representation": "MINIATURE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -5398,7 +5386,7 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "air_force_small_arms_expert_marksmanship",
+      "ownerId": "marine_corps_sercurity_guard",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -5541,6 +5529,72 @@
     },
     {
       "ownerType": "AWARD",
+      "ownerId": "nco_professional_development",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/nco_professional_development.png",
+      "exists": true,
+      "sha256": "58b81bb84789d31f3d3b08cc24131367cf6c7568e0ed13da827a61a6b84501f5",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "nco_professional_development",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "nco_professional_development",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_overseas_short_tour",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_force_overseas_short_tour.png",
+      "exists": true,
+      "sha256": "1236b76f2bbc2f11449ab2f886294e8964a89c88ecd0a538cc02d047e6f1efa6",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_overseas_short_tour",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_overseas_short_tour",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
       "ownerId": "navy_rifle_marksmanship",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -5564,6 +5618,39 @@
     {
       "ownerType": "AWARD",
       "ownerId": "navy_rifle_marksmanship",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_overseas_long_tour",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_force_overseas_long_tour.png",
+      "exists": true,
+      "sha256": "f90940f4e8c0d3292c6fd2179da194e937cb7d201b3f4180802be4acd16591de",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_overseas_long_tour",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_overseas_long_tour",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -5663,6 +5750,105 @@
     {
       "ownerType": "AWARD",
       "ownerId": "coast_guard_pistol_marksmanship",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_recruiter",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_force_recruiter.png",
+      "exists": true,
+      "sha256": "717c1ccc4b8d697ca113cc5043c946d8bf5dfae073f828da201e2e7e97b4fed2",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_recruiter",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_recruiter",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_nco_professional_military_education_graduate",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_force_nco_professional_military_education_graduate.png",
+      "exists": true,
+      "sha256": "663862f400d1dfbf3d411a095570346e1e847370f40fa2a1d740b5f3a09014e2",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_nco_professional_military_education_graduate",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_nco_professional_military_education_graduate",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_small_arms_expert_marksmanship",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/mcchord-style/air_force_small_arms_expert_marksmanship.png",
+      "exists": true,
+      "sha256": "df4718e45dac97baf6e4ff3d1aa60868bb8d2d4e6ecd95944c50b9eafc7ea7d2",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_small_arms_expert_marksmanship",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "air_force_small_arms_expert_marksmanship",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -8342,6 +8528,17 @@
       "exists": true,
       "sha256": "532c555dd87f46486d234ac42fa360a5b220c1c80f91a27db0d554c502e6c700",
       "verificationStatus": "ARTWORK_REVIEW_PENDING",
+      "sources": []
+    },
+    {
+      "ownerType": "DEVICE",
+      "ownerId": "N_DEVICE",
+      "representation": "DEVICE",
+      "status": "AVAILABLE",
+      "asset": "images/devices/military/n_device.png",
+      "exists": true,
+      "sha256": "97d2b7eee55e2d34588328f6201b7be2be512bdbd4f87a1016d33b90573bf71f",
+      "verificationStatus": "OFFICIALLY_VERIFIED",
       "sources": []
     },
     {

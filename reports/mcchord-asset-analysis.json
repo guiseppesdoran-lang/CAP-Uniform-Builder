@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-28T17:02:49.761089+00:00",
+  "generated": "2026-08-28T22:12:20.681879+00:00",
   "mcchordRibbons": {
     "count": 409,
     "commonDimensions": [
@@ -71,12 +71,12 @@
     }
   },
   "importedMilitaryRibbons": {
-    "count": 343,
+    "count": 348,
     "commonDimensions": [
       {
         "width": 100,
         "height": 30,
-        "count": 170
+        "count": 175
       },
       {
         "width": 169,
@@ -146,27 +146,27 @@
     },
     "meanSaturation": {
       "min": 27.07,
-      "median": 136.0,
-      "max": 237.12
+      "median": 136.595,
+      "max": 245.13
     },
     "lumaContrast": {
       "min": 2.83,
-      "median": 57.49,
+      "median": 57.58,
       "max": 117.63
     },
     "edgeEnergy": {
       "min": 2.44,
-      "median": 56.96,
+      "median": 57.115,
       "max": 114.0
     }
   },
   "mcchordStyleMilitaryRibbons": {
-    "count": 170,
+    "count": 175,
     "commonDimensions": [
       {
         "width": 100,
         "height": 30,
-        "count": 170
+        "count": 175
       }
     ],
     "aspectRatio": {
@@ -181,17 +181,17 @@
     },
     "meanSaturation": {
       "min": 27.07,
-      "median": 136.43,
-      "max": 237.09
+      "median": 136.93,
+      "max": 245.13
     },
     "lumaContrast": {
       "min": 4.36,
-      "median": 54.81,
+      "median": 55.34,
       "max": 107.53
     },
     "edgeEnergy": {
       "min": 12.91,
-      "median": 68.355,
+      "median": 67.12,
       "max": 114.0
     }
   },
@@ -18904,6 +18904,24 @@
         "edgeEnergy": 76.27
       },
       {
+        "path": "images/military-ribbons/mcchord-style/developmental_special_duty.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 137.52,
+        "lumaContrast": 90.1,
+        "edgeEnergy": 65.19
+      },
+      {
         "path": "images/military-ribbons/mcchord-style/distinguished_flying_cross.png",
         "format": "PNG",
         "width": 100,
@@ -19082,6 +19100,24 @@
         "meanSaturation": 184.95,
         "lumaContrast": 53.95,
         "edgeEnergy": 50.88
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/inherent_resolve_campaign_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 177.93,
+        "lumaContrast": 56.89,
+        "edgeEnergy": 64.34
       },
       {
         "path": "images/military-ribbons/mcchord-style/inter_american_defense_board.png",
@@ -20002,6 +20038,24 @@
         "edgeEnergy": 81.17
       },
       {
+        "path": "images/military-ribbons/mcchord-style/nuclear_deterrence_operations_service_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 245.13,
+        "lumaContrast": 48.0,
+        "edgeEnergy": 38.79
+      },
+      {
         "path": "images/military-ribbons/mcchord-style/outstanding_volunteer_service.png",
         "format": "PNG",
         "width": 100,
@@ -20144,6 +20198,24 @@
         "meanSaturation": 147.52,
         "lumaContrast": 57.49,
         "edgeEnergy": 49.47
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/remote_combat_effects_campaign_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 229.5,
+        "lumaContrast": 60.93,
+        "edgeEnergy": 40.66
       },
       {
         "path": "images/military-ribbons/mcchord-style/republic_of_vietnam_campaign.png",
@@ -20306,6 +20378,24 @@
         "meanSaturation": 85.57,
         "lumaContrast": 85.66,
         "edgeEnergy": 75.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/space_force_good_conduct_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 64.91,
+        "lumaContrast": 73.15,
+        "edgeEnergy": 65.89
       },
       {
         "path": "images/military-ribbons/mcchord-style/special_operations_service.png",
@@ -22992,6 +23082,24 @@
         "edgeEnergy": 76.27
       },
       {
+        "path": "images/military-ribbons/mcchord-style/developmental_special_duty.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 137.52,
+        "lumaContrast": 90.1,
+        "edgeEnergy": 65.19
+      },
+      {
         "path": "images/military-ribbons/mcchord-style/distinguished_flying_cross.png",
         "format": "PNG",
         "width": 100,
@@ -23170,6 +23278,24 @@
         "meanSaturation": 184.95,
         "lumaContrast": 53.95,
         "edgeEnergy": 50.88
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/inherent_resolve_campaign_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 177.93,
+        "lumaContrast": 56.89,
+        "edgeEnergy": 64.34
       },
       {
         "path": "images/military-ribbons/mcchord-style/inter_american_defense_board.png",
@@ -24090,6 +24216,24 @@
         "edgeEnergy": 81.17
       },
       {
+        "path": "images/military-ribbons/mcchord-style/nuclear_deterrence_operations_service_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 245.13,
+        "lumaContrast": 48.0,
+        "edgeEnergy": 38.79
+      },
+      {
         "path": "images/military-ribbons/mcchord-style/outstanding_volunteer_service.png",
         "format": "PNG",
         "width": 100,
@@ -24232,6 +24376,24 @@
         "meanSaturation": 147.52,
         "lumaContrast": 57.49,
         "edgeEnergy": 49.47
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/remote_combat_effects_campaign_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 229.5,
+        "lumaContrast": 60.93,
+        "edgeEnergy": 40.66
       },
       {
         "path": "images/military-ribbons/mcchord-style/republic_of_vietnam_campaign.png",
@@ -24394,6 +24556,24 @@
         "meanSaturation": 85.57,
         "lumaContrast": 85.66,
         "edgeEnergy": 75.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/space_force_good_conduct_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 64.91,
+        "lumaContrast": 73.15,
+        "edgeEnergy": 65.89
       },
       {
         "path": "images/military-ribbons/mcchord-style/special_operations_service.png",

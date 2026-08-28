@@ -5,18 +5,20 @@ const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
 const core=require('../military/military-core.js');
+const {applyServicePrecedence}=require('./lib/apply-service-precedence.cjs');
 
 const root=path.resolve(__dirname,'..');
 const readJson=relative=>JSON.parse(fs.readFileSync(path.join(root,relative),'utf8'));
 const importedAwards=readJson('data/import/normalized/military-awards.json');
 const officialAdditions=readJson('data/military/catalog-additions.json').awards || [];
-const sourceAwards=[...importedAwards,...officialAdditions];
+let sourceAwards=[...importedAwards,...officialAdditions];
 const overrides=readJson('data/rules/verified/representation-overrides.json').awards || {};
 const stylePath=path.join(root,'data/rules/verified/ribbon-style-overrides.json');
 const styleOverrides=fs.existsSync(stylePath)?JSON.parse(fs.readFileSync(stylePath,'utf8')).awards || {}:{};
 const badges=readJson('data/military/badges.json').badges || [];
 const devices=readJson('data/rules/verified/device-definitions.json');
 const precedenceTables=readJson('data/rules/verified/service-precedence.json');
+sourceAwards=applyServicePrecedence(sourceAwards,precedenceTables,core);
 const canonical=core.canonicalizeAwards(sourceAwards).map(award=>({
   ...award,
   representations:core.normalizeRepresentations({...award,representations:{...(award.representations || {}),...(overrides[award.id] || {}),...(styleOverrides[award.id] || {})}})

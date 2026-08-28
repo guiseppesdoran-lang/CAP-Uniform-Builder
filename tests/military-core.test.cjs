@@ -3,6 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const core = require('../military/military-core.js');
+const {applyServicePrecedence} = require('../scripts/lib/apply-service-precedence.cjs');
 
 function award(id, name, services, precedence, category='SERVICE'){
   return {
@@ -157,6 +158,61 @@ test('Coast Guard Humanitarian Service Medal repeat awards use verified service 
   sample.devices={COAST_GUARD:overrides.humanitarian_service.COAST_GUARD};
   const result=core.calculateDevices({award:sample,service:'COAST_GUARD',awardCount:7});
   assert.deepEqual(result.devices,['SILVER_SERVICE_STAR','BRONZE_SERVICE_STAR']);
+  assert.equal(result.valid,true);
+});
+
+test('current DAF campaign and service awards are present with reviewed local ribbon art', () => {
+  const additions=require('../data/military/catalog-additions.json').awards;
+  for(const id of [
+    'inherent_resolve_campaign_medal',
+    'remote_combat_effects_campaign_medal',
+    'air_and_space_nuclear_deterrence_operations_service_medal',
+    'developmental_special_duty_ribbon',
+    'space_force_good_conduct_medal'
+  ]){
+    const record=additions.find(item=>item.id===id);
+    assert.ok(record,`${id} is missing from the official additions catalog`);
+    assert.equal(record.verificationStatus,'OFFICIALLY_VERIFIED');
+    assert.equal(record.representations.ribbon.status,'AVAILABLE');
+  }
+});
+
+test('verified DAF precedence preserves the current campaign and service sequence', () => {
+  const tables=require('../data/rules/verified/service-precedence.json');
+  const air=tables.AIR_FORCE.awards;
+  const space=tables.SPACE_FORCE.awards;
+  const before=(table,a,b)=>assert.ok(table.indexOf(a)>=0 && table.indexOf(a)<table.indexOf(b),`${a} should precede ${b}`);
+  before(air,'iraq_campaign','inherent_resolve_campaign_medal');
+  before(air,'inherent_resolve_campaign_medal','global_war_on_terrorism_expeditionary');
+  before(air,'outstanding_volunteer_service','remote_combat_effects_campaign_medal');
+  before(air,'remote_combat_effects_campaign_medal','air_and_space_campaign');
+  before(air,'air_and_space_campaign','air_and_space_nuclear_deterrence_operations_service_medal');
+  before(air,'air_and_space_nuclear_deterrence_operations_service_medal','air_force_overseas_short_tour');
+  before(air,'air_force_longevity_service','developmental_special_duty_ribbon');
+  before(air,'developmental_special_duty_ribbon','air_force_military_training_instructor');
+  before(space,'air_force_good_condcut','space_force_good_conduct_medal');
+  before(space,'space_force_good_conduct_medal','army_good_conduct');
+});
+
+test('verified service tables are applied to source records before runtime sorting', () => {
+  const tables=require('../data/rules/verified/service-precedence.json');
+  const additions=require('../data/military/catalog-additions.json').awards;
+  const applied=applyServicePrecedence(additions,tables,core);
+  const resolve=applied.find(item=>item.id==='inherent_resolve_campaign_medal');
+  const gwt=applied.find(item=>item.id==='remote_combat_effects_campaign_medal');
+  assert.equal(resolve.precedence.AIR_FORCE.verified,true);
+  assert.equal(gwt.precedence.SPACE_FORCE.verified,true);
+  assert.match(resolve.precedence.AIR_FORCE.source,/afpc\.af\.mil/i);
+  assert.ok(resolve.precedence.AIR_FORCE.order<gwt.precedence.AIR_FORCE.order);
+});
+
+test('current DAF device rules use service stars, oak leaf clusters, and the N device', () => {
+  const additions=require('../data/military/catalog-additions.json').awards;
+  const rcecm=additions.find(item=>item.id==='remote_combat_effects_campaign_medal');
+  assert.deepEqual(core.calculateDevices({award:rcecm,service:'AIR_FORCE',awardCount:7}).devices,['SILVER_SERVICE_STAR','BRONZE_SERVICE_STAR']);
+  const ndosm=additions.find(item=>item.id==='air_and_space_nuclear_deterrence_operations_service_medal');
+  const result=core.calculateDevices({award:ndosm,service:'AIR_FORCE',awardCount:7,specialAuthorizations:['N_DEVICE']});
+  assert.deepEqual(result.devices,['SILVER_OLC','BRONZE_OLC','N_DEVICE']);
   assert.equal(result.valid,true);
 });
 

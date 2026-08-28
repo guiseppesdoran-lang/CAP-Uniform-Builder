@@ -24,7 +24,8 @@ function sha256(value){return crypto.createHash('sha256').update(value).digest('
 function key(value){
   return normalizeName(String(value||'')).toLowerCase()
     .replace(/\b(united states|u s)\b/g,' ')
-    .replace(/\b(ribbon|medal and ribbon)\b/g,' ')
+    .replace(/\bmilitary medal\s*&?\s*$/,' ')
+    .replace(/\b(medal and ribbon|medal|ribbon|award)\b\s*$/,' ')
     .replace(/\s+/g,' ')
     .trim();
 }
@@ -42,7 +43,7 @@ function runCatalog(catalogSource,deviceSource,precedenceSource){
   return sandbox;
 }
 function localIndex(awards){
-  const exact=new Map(),neutralCandidates=new Map();
+  const exact=new Map(),neutralCandidates=new Map(),candidates=[];
   for(const award of awards) for(const value of [award.name,award.officialName,...(award.aliases||[])]){
     const normalized=key(value);
     if(normalized && !exact.has(normalized)) exact.set(normalized,award.id);
@@ -52,12 +53,53 @@ function localIndex(awards){
       candidates.add(award.id);
       neutralCandidates.set(neutral,candidates);
     }
+    if(normalized) candidates.push({id:award.id,value:normalized});
   }
   const neutral=new Map();
   for(const [name,candidates] of neutralCandidates) if(candidates.size===1) neutral.set(name,[...candidates][0]);
-  return {exact,neutral};
+  return {exact,neutral,candidates};
 }
-function matchLocal(index,value){return index.exact.get(key(value))||index.neutral.get(neutralKey(value))||null;}
+function editSimilarity(left,right){
+  const a=String(left),b=String(right),row=Array.from({length:b.length+1},(_,i)=>i);
+  for(let i=1;i<=a.length;i++){
+    let diagonal=row[0]; row[0]=i;
+    for(let j=1;j<=b.length;j++){
+      const above=row[j],cost=a[i-1]===b[j-1]?0:1;
+      row[j]=Math.min(row[j]+1,row[j-1]+1,diagonal+cost); diagonal=above;
+    }
+  }
+  return 1-row[b.length]/Math.max(1,a.length,b.length);
+}
+function matchLocal(index,value,namespace){
+  const exact=index.exact.get(key(value));
+  if(exact) return {id:exact,method:'EXACT'};
+  const neutral=index.neutral.get(neutralKey(value));
+  if(neutral) return {id:neutral,method:'SERVICE_NEUTRAL_EXACT'};
+  if(namespace!=='FEDERAL_OR_FOREIGN_CANDIDATE') return null;
+  const target=neutralKey(value),byId=new Map();
+  for(const candidate of index.candidates){
+    const candidateName=neutralKey(candidate.value);
+    const protectedToken=['dhs','dot','phs','noaa','cgaux'].find(token=>target.split(' ').includes(token));
+    if(protectedToken && !candidateName.split(' ').includes(protectedToken)) continue;
+    const score=editSimilarity(target,candidateName);
+    if(score>(byId.get(candidate.id)||0)) byId.set(candidate.id,score);
+  }
+  const ranked=[...byId].sort((a,b)=>b[1]-a[1]);
+  if(ranked[0]?.[1]>=0.87 && ranked[0][1]-(ranked[1]?.[1]||0)>=0.06) return {id:ranked[0][0],method:'HIGH_CONFIDENCE_NAME_SIMILARITY',score:Number(ranked[0][1].toFixed(4))};
+  return null;
+}
+function discoveryNamespace(record){
+  const id=String(record.id),name=String(record.title);
+  if(/^CAP\d|^C\d/.test(id)) return 'CAP';
+  if(/^PH/.test(id)) return 'PUBLIC_HEALTH_SERVICE';
+  if(/^NO/.test(id)) return 'NOAA';
+  if(/^MM/.test(id)) return 'MERCHANT_MARINE';
+  if(/^AX|^Obsolete$/.test(id)) return 'COAST_GUARD_AUXILIARY';
+  if(/^CIV|^DOT/.test(id)) return 'CIVILIAN';
+  if(/^State$/i.test(id)) return 'STATE';
+  if(/obsolete/i.test(name)) return 'HISTORICAL';
+  return 'FEDERAL_OR_FOREIGN_CANDIDATE';
+}
 
 async function main(){
   const fetched=Object.fromEntries(await Promise.all(Object.entries(URLS).map(async([name,url])=>[name,await get(url)])));
@@ -70,13 +112,18 @@ async function main(){
     if(!list.includes(service)) list.push(service);
     servicesById.set(String(id),list);
   }
-  const ribbons=source.ribbons.map(record=>({
-    sourceId:String(record.id),name:String(record.title).trim(),services:servicesById.get(String(record.id))||[],
-    localCanonicalId:matchLocal(index,record.title),
-    representations:{miniatureMedal:record.miniature_medal_price===0?'NOT_APPLICABLE':'DISCOVERED',fullSizeMedal:record.large_medal_price===0?'NOT_APPLICABLE':'DISCOVERED'}
-  }));
+  const ribbons=source.ribbons.map(record=>{
+    const namespace=discoveryNamespace(record);
+    const match=matchLocal(index,record.title,namespace);
+    return {
+      sourceId:String(record.id),name:String(record.title).trim(),namespace,services:servicesById.get(String(record.id))||[],
+      localCanonicalId:match?.id||null,matchMethod:match?.method||null,matchScore:match?.score||null,
+      representations:{miniatureMedal:record.miniature_medal_price===0?'NOT_APPLICABLE':'DISCOVERED',fullSizeMedal:record.large_medal_price===0?'NOT_APPLICABLE':'DISCOVERED'}
+    };
+  });
   const devices=source.devices.map(record=>({sourceId:String(record.id),name:String(record.title).trim(),superimposed:Boolean(record.superimpose)}));
   const missing=ribbons.filter(record=>!record.localCanonicalId);
+  const missingByNamespace=Object.fromEntries([...new Set(missing.map(record=>record.namespace))].sort().map(namespace=>[namespace,missing.filter(record=>record.namespace===namespace).length]));
   const manifest={
     source:'ULTRATHIN_RIBBON_PRECEDENCE_VALIDATOR',sourceType:'commercial-discovery',
     sourceUrl:'https://www.ultrathin.com/ultrathin/ribbons_update.htm',accessedAt:new Date().toISOString(),
@@ -87,11 +134,11 @@ async function main(){
       'Precedence and device rules must be verified against current official service publications before production enforcement.'
     ],
     sourceHashes:Object.fromEntries(Object.entries(fetched).map(([name,value])=>[name,sha256(value)])),
-    counts:{ribbons:ribbons.length,devices:devices.length,matchedLocal:ribbons.length-missing.length,unmatchedDiscovery:missing.length},
+    counts:{ribbons:ribbons.length,devices:devices.length,matchedLocal:ribbons.length-missing.length,unmatchedDiscovery:missing.length,unmatchedByNamespace:missingByNamespace},
     ribbons,devices
   };
   fs.writeFileSync(MANIFEST,JSON.stringify(manifest,null,2)+'\n');
-  const lines=['# UltraThin Ribbon Discovery Audit','',`Accessed: ${manifest.accessedAt}`,`Public catalog records: ${ribbons.length}`,`Device/attachment records: ${devices.length}`,`Exact normalized matches to local canonical awards: ${manifest.counts.matchedLocal}`,`Unmatched discovery records requiring reconciliation: ${missing.length}`,'','> UltraThin is used only for discovery. Its precedence, authorization, device, medal-availability, and artwork claims are not treated as official verification. Production has no runtime dependency on UltraThin.','','## Unmatched discovery records','',...(missing.length?missing.map(record=>`- ${record.name} (${record.sourceId}) — ${record.services.join(', ')||'no service table membership recorded'}`):['- None'])];
+  const lines=['# UltraThin Ribbon Discovery Audit','',`Accessed: ${manifest.accessedAt}`,`Public catalog records: ${ribbons.length}`,`Device/attachment records: ${devices.length}`,`Normalized matches to local canonical awards: ${manifest.counts.matchedLocal}`,`Unmatched discovery records requiring reconciliation: ${missing.length}`,'','> UltraThin is used only for discovery. Its precedence, authorization, device, medal-availability, and artwork claims are not treated as official verification. Production has no runtime dependency on UltraThin.','','## Unmatched discovery summary','',...Object.entries(missingByNamespace).map(([namespace,count])=>`- ${namespace}: ${count}`),'',...Object.keys(missingByNamespace).sort().flatMap(namespace=>[`## ${namespace.replaceAll('_',' ')}`,'',...missing.filter(record=>record.namespace===namespace).map(record=>`- ${record.name} (${record.sourceId}) — ${record.services.join(', ')||'no service table membership recorded'}`),''])];
   fs.writeFileSync(REPORT,lines.join('\n')+'\n');
   console.log(JSON.stringify(manifest.counts,null,2));
 }

@@ -3,10 +3,13 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const core=require('../military/military-core.js');
+const {applyServicePrecedence}=require('./lib/apply-service-precedence.cjs');
 const ROOT=path.resolve(__dirname,'..');
-const awards=JSON.parse(fs.readFileSync(path.join(ROOT,'data/import/normalized/military-awards.json'),'utf8'));
+let awards=JSON.parse(fs.readFileSync(path.join(ROOT,'data/import/normalized/military-awards.json'),'utf8'));
 const additionsPath=path.join(ROOT,'data/military/catalog-additions.json');
 if(fs.existsSync(additionsPath)) awards.push(...(JSON.parse(fs.readFileSync(additionsPath,'utf8')).awards || []));
+const precedenceTables=JSON.parse(fs.readFileSync(path.join(ROOT,'data/rules/verified/service-precedence.json'),'utf8'));
+awards=applyServicePrecedence(awards,precedenceTables,core);
 const devices=JSON.parse(fs.readFileSync(path.join(ROOT,'data/rules/verified/device-definitions.json'),'utf8'));
 const representationPath=path.join(ROOT,'data/rules/verified/representation-overrides.json');
 const representationOverrides=fs.existsSync(representationPath)
