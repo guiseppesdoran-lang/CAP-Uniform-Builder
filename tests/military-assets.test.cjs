@@ -71,8 +71,36 @@ test('required McChord audit and visual QA reports exist',()=>{
     'reports/mcchord-asset-analysis.json',
     'reports/mcchord-ribbon-comparison.png',
     'reports/mcchord-mini-medal-comparison.png',
+    'reports/military-ribbon-style-review.png',
+    'reports/military-mini-medal-style-review.png',
+    'reports/military-full-size-medal-style-review.png',
+    'reports/military-badge-style-review.png',
     'reports/military-ribbon-device-contact-sheet.png',
     'reports/military-mini-medal-device-contact-sheet.png',
     'reports/military-award-combination-audit.md'
   ]) assert.ok(fs.existsSync(path.join(ROOT,...file.split('/'))),`${file} missing`);
+});
+
+test('UltraThin remains a discovery-only source with no runtime artwork dependency',()=>{
+  const manifest=require('../data/imports/ultrathin_ribbon_reference_manifest.json');
+  assert.equal(manifest.runtimeDependency,false);
+  assert.equal(manifest.regulatoryAuthority,false);
+  assert.equal(manifest.assetPolicy,'NO_EXTERNAL_ARTWORK_PACKAGED');
+  assert.ok(manifest.counts.ribbons>=300,'expected the public UltraThin discovery catalog');
+  assert.ok(manifest.counts.devices>=80,'expected the public UltraThin device discovery catalog');
+  assert.ok(manifest.ribbons.some(record=>record.name==='Medal of Honor'));
+  assert.ok(manifest.ribbons.every(record=>!('asset' in record)));
+});
+
+test('every available military ribbon uses the generated McChord-style canvas',()=>{
+  const canonical=require('../data/military/canonical-awards.json');
+  for(const award of canonical){
+    const ribbon=award.representations?.ribbon;
+    if(ribbon?.status!=='AVAILABLE') continue;
+    assert.match(ribbon.asset,/^images\/military-ribbons\/mcchord-style\/.+\.png$/,`${award.id} is not mapped to the McChord-style collection`);
+    const buffer=fs.readFileSync(path.join(ROOT,...ribbon.asset.split('/')));
+    assert.ok(buffer.subarray(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])),`${award.id} is not PNG`);
+    assert.equal(buffer.readUInt32BE(16),100,`${award.id} width`);
+    assert.equal(buffer.readUInt32BE(20),30,`${award.id} height`);
+  }
 });

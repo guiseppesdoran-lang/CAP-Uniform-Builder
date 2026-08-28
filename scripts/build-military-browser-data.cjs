@@ -12,14 +12,18 @@ const representationPath=path.join(ROOT,'data/rules/verified/representation-over
 const representationOverrides=fs.existsSync(representationPath)
   ? JSON.parse(fs.readFileSync(representationPath,'utf8')).awards || {}
   : {};
+const stylePath=path.join(ROOT,'data/rules/verified/ribbon-style-overrides.json');
+const styleOverrides=fs.existsSync(stylePath)
+  ? JSON.parse(fs.readFileSync(stylePath,'utf8')).awards || {}
+  : {};
 const canonicalBySourceId=new Map();
 for(const canonical of core.canonicalizeAwards(awards)){
   for(const sourceId of canonical.sourceIds || [canonical.id]) canonicalBySourceId.set(sourceId,canonical.id);
 }
 for(const award of awards){
   const canonicalId=canonicalBySourceId.get(award.id) || award.id;
-  const override=representationOverrides[canonicalId] || representationOverrides[award.id];
-  if(override) award.representations=override;
+  const override={...(representationOverrides[canonicalId] || representationOverrides[award.id] || {}),...(styleOverrides[canonicalId] || styleOverrides[award.id] || {})};
+  if(Object.keys(override).length) award.representations={...(award.representations || {}),...override};
 }
 const badgesPath=path.join(ROOT,'data/military/badges.json');
 const badges=fs.existsSync(badgesPath) ? JSON.parse(fs.readFileSync(badgesPath,'utf8')).badges || [] : [];

@@ -1,6 +1,6 @@
 # Military Award Combination Audit
 
-Generated: 2026-08-28T14:57:05.052Z
+Generated: 2026-08-28T16:56:13.970Z
 
 > This report is intentionally conservative. A local ribbon image does not prove a device rule or medal representation. Missing and unverified fields remain gaps; inferred branch conventions are available only in the builder’s **Manual / unverified configuration** mode.
 

@@ -12,12 +12,14 @@ const importedAwards=readJson('data/import/normalized/military-awards.json');
 const officialAdditions=readJson('data/military/catalog-additions.json').awards || [];
 const sourceAwards=[...importedAwards,...officialAdditions];
 const overrides=readJson('data/rules/verified/representation-overrides.json').awards || {};
+const stylePath=path.join(root,'data/rules/verified/ribbon-style-overrides.json');
+const styleOverrides=fs.existsSync(stylePath)?JSON.parse(fs.readFileSync(stylePath,'utf8')).awards || {}:{};
 const badges=readJson('data/military/badges.json').badges || [];
 const devices=readJson('data/rules/verified/device-definitions.json');
 const precedenceTables=readJson('data/rules/verified/service-precedence.json');
 const canonical=core.canonicalizeAwards(sourceAwards).map(award=>({
   ...award,
-  representations:core.normalizeRepresentations({...award,representations:overrides[award.id] || award.representations})
+  representations:core.normalizeRepresentations({...award,representations:{...(award.representations || {}),...(overrides[award.id] || {}),...(styleOverrides[award.id] || {})}})
 })).sort(core.compareAwardsUniversal);
 
 function localFile(asset){

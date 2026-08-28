@@ -1,0 +1,2046 @@
+{
+  "schemaVersion": 1,
+  "notes": "Generated style mappings preserve source stripe designs and apply only repository-derived McChord geometry, weave, lighting, and edge treatment.",
+  "awards": {
+    "medal_of_honor": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/medal_of_honor.png",
+        "sourceAsset": "images/military-ribbons/air_force_medal_of_honor.png",
+        "sourceSha256": "b3bedf62a4a09ffc11e1b2caf6a232d4e7413001ad6675a00b6326bead92612f",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_cross": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_cross.png",
+        "sourceAsset": "images/military-ribbons/air_force_cross.jpg",
+        "sourceSha256": "98563c426ef3cc21a95af55d1b0ee2bd0d0bf366570faa8c46f19def62854934",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_distinguished_service_cross": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_distinguished_service_cross.png",
+        "sourceAsset": "images/military-ribbons/army_distinguished_service_cross_military_ribb0n.jpg",
+        "sourceSha256": "28f3b8bf6b7915f0e21c6d816d38129f2fb64ee55dac0b43a1ad02d35e19ad0a",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_cross": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_cross.png",
+        "sourceAsset": "images/military-ribbons/navy_cross.jpg",
+        "sourceSha256": "2107d4502c400ed24957e16475948fb60ba13460fa7ae700ff696dd5d64bb12c",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "transportation_distinguished_service_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/transportation_distinguished_service_medal.png",
+        "sourceAsset": "images/military-ribbons/transportation_distinguished_service.jpg",
+        "sourceSha256": "48899000f4f7080f213504a984bb16292a9d73e2450cda0e0cf48c757fed7953",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "silver_star": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/silver_star.png",
+        "sourceAsset": "images/military-ribbons/silver_star.jpg",
+        "sourceSha256": "639a0cfc719ce45c29b4c258c4e475456e60cd42b08a8f9be5c92d2c2b57a070",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "defense_superior_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/defense_superior_service.png",
+        "sourceAsset": "images/military-ribbons/defense_superior_service.jpg",
+        "sourceSha256": "128842550eb1bc8e19ae3e8f4bb213cab8aac6e41d70688637d8004c95877647",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "legion_of_merit": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/legion_of_merit.png",
+        "sourceAsset": "images/military-ribbons/legion_of_merit.jpg",
+        "sourceSha256": "374d6a5240c1ea8e32cf4049c7a50a48e93fa6999292377d2065b030772ccead",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "distinguished_flying_cross": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/distinguished_flying_cross.png",
+        "sourceAsset": "images/military-ribbons/distinguished_flying_cross.jpg",
+        "sourceSha256": "e0d1a3247cc5b7104abd7d7c2764f5ae8070ae4c8bf9c433315027e8122d70fd",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_and_marine_corps_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_and_marine_corps_medal.png",
+        "sourceAsset": "images/military-ribbons/navy_marine_corps_medal.jpg",
+        "sourceSha256": "4def48401d29682f50ce6460ded20db2a717a16c3c170053f7a1ab7c263e25de",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "airmans_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/airmans_medal.png",
+        "sourceAsset": "images/military-ribbons/airmans_medal.jpg",
+        "sourceSha256": "dc786d8d8e21256df13a82ef95ba533cd41e06ab00cfbea42c8ba34b32fd43d2",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_soldiers_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_soldiers_medal.png",
+        "sourceAsset": "images/military-ribbons/army_soldiers_medal.jpg",
+        "sourceSha256": "ec897e3c82c7c181c874ad16dafafa2601a548e1754f2653bedd821b4f7287e1",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "bronze_star_miltiary": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/bronze_star_miltiary.png",
+        "sourceAsset": "images/military-ribbons/bronze_star.jpg",
+        "sourceSha256": "625d415cca19192647ab94a6cb815d76e5eb28cc93ce4c130bcd80bf58b6be7d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "purple_heart": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/purple_heart.png",
+        "sourceAsset": "images/military-ribbons/purple_heart.jpg",
+        "sourceSha256": "19ea60dbaa7731debd449882d9e0ccba17308c0d19711aeb87184749a6719d34",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "defense_meritorious_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/defense_meritorious_service.png",
+        "sourceAsset": "images/military-ribbons/defense_meritorious_service.jpg",
+        "sourceSha256": "9458fd7cdaf274b351ce7a206875adc83df18b1969eadc764f69fd76ccb01da6",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "meritorious_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/meritorious_service.png",
+        "sourceAsset": "images/military-ribbons/meritorious_service.jpg",
+        "sourceSha256": "0d58d7abab3ff4216f9fdb95e5bb6a87bedb739bc6645ac052224f7ea7e3b582",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "naval_reserve_meritorious_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/naval_reserve_meritorious_service.png",
+        "sourceAsset": "images/military-ribbons/naval_reserve_meritorious_service.jpg",
+        "sourceSha256": "ff36125d3044386d33cd7b1f68d0979e05a600d81045fe9ce59ea56db9513007",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_reserve_forces_meritorious_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_reserve_forces_meritorious_service.png",
+        "sourceAsset": "images/military-ribbons/air_reserve_forces_meritorious_service.jpg",
+        "sourceSha256": "03160a16aa3840f27c507ab3d067bcd110ad845d88e4b92835c8c302fed1a7c7",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_medal.png",
+        "sourceAsset": "images/ribbons/air_medal.png",
+        "sourceSha256": "b16a2cd68c4469ef3e982c1d2ac6b83be86246f0d1691eb42fd87ba01b372eb8",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "joint_service_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/joint_service_commendation.png",
+        "sourceAsset": "images/military-ribbons/joint_service_commendation.jpg",
+        "sourceSha256": "a36e01ac2bd08679dd02255d3c21ced6849e34ce09c027e43489a5ed3090d6fd",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_and_marine_corps_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_and_marine_corps_commendation.png",
+        "sourceAsset": "images/military-ribbons/navy_marine_corps_commendation.jpg",
+        "sourceSha256": "7716f4f24cdbe77b87c176cfb5a4ffa5465b2d218f3874b0db6958d1e9d82fde",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_and_space_commendation_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_and_space_commendation_medal.png",
+        "sourceAsset": "images/military-ribbons/air_force_commendation.jpg",
+        "sourceSha256": "93bb79d137e3828449c9d5c02c6387a6efae03abe753b4a3f0627e22f8281838",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_commendation.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_commendation.jpg",
+        "sourceSha256": "d029ac75991e8ab7db13c3636d10d9f64867c96c0621e4c66ec452d1fff3c255",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_unit_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_unit_commendation.png",
+        "sourceAsset": "images/military-ribbons/navy_unit_commendation.jpg",
+        "sourceSha256": "0e1c17bf7c5251fae46e382c1427090f2776165d53b475486fcd717c256244dd",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "commandants_letter_of_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/commandants_letter_of_commendation.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_commandants_letter_of_commendation.jpg",
+        "sourceSha256": "142962fe9296bf0082423d9054290a8b3586946ca662111ce8f3a9dc0407b124",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_meritorious_unit_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_meritorious_unit_commendation.png",
+        "sourceAsset": "images/military-ribbons/navy_meritorious_unit_commendation.jpg",
+        "sourceSha256": "46ad53a82416957fbdc8d7ed3a11d620906cb06d78f5eda0e92add9392494fbf",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_commendation.png",
+        "sourceAsset": "images/military-ribbons/army_commendation.jpg",
+        "sourceSha256": "918ebc504cab9bea112242610257241826596f14c5f5c02697dc0614ca2b1911",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_reserve_special_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_reserve_special_commendation.png",
+        "sourceAsset": "images/military-ribbons/naval_reserve_special_commendation.jpg",
+        "sourceSha256": "784574783d03b4ec05630364aa267600d0b90ae158ae233b1e3f13ab55e971b0",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_unit_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_unit_commendation.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_unit_commendation.jpg",
+        "sourceSha256": "93f8a57d6f512e8d84ae23949ce4f0ad5838c7763e6771be9a25a0e3fbfb75b2",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_meritorious_unit_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_meritorious_unit_commendation.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_meritorious_unit_commendation.jpg",
+        "sourceSha256": "1aeec733ad48240ea093920249aa07489fbf3ecae8be24879ddc72b82263137d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_meritorious_team_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_meritorious_team_commendation.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_meritorious_team_commendation.jpg",
+        "sourceSha256": "25bac69fe72770eecb83d99958f75aeed0b73058d39c0b671cef64e9d341c900",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_bicentennial_unit_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_bicentennial_unit_commendation.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_bicentennial_unit_commendation.jpg",
+        "sourceSha256": "230c0845a0dd7adeec65f8c479362ea878f20d85560782c1d9dd35815dbae90b",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_meritorious_unit_commendation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_meritorious_unit_commendation.png",
+        "sourceAsset": "images/military-ribbons/army_meritorious_unit_commendation.jpg",
+        "sourceSha256": "e2f12339e09a22c07d946af5d85d26961bd8e91aa44ba0f78dcb8aba7f76019d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "aerial_achievement_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/aerial_achievement_medal.png",
+        "sourceAsset": "images/ribbons/air_force_aerial_achievement_medal.png",
+        "sourceSha256": "fdcdb465b8844ca7f9f5678e2620f27237285bc3321a31426aa148bf24856473",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "joint_service_achievement": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/joint_service_achievement.png",
+        "sourceAsset": "images/military-ribbons/joint_service_achievement.jpg",
+        "sourceSha256": "6fc48f893d1406f8c053c287c97660cf28ce0e9febbcd41aeb7c15f362350cb5",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_and_marine_corps_achievement": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_and_marine_corps_achievement.png",
+        "sourceAsset": "images/military-ribbons/navy_marine_corps_achievement.jpg",
+        "sourceSha256": "adee147c05c80099aa7f3d73a6feee03926ba867ce8b149f46404200b5e2803d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_and_space_achievement_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_and_space_achievement_medal.png",
+        "sourceAsset": "images/military-ribbons/air_force_achievement.jpg",
+        "sourceSha256": "10020e591e2821238885b2ea35f79456f0632f7c3d1b9a374b33919c7e29ca6d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "reserve_componets_achievement": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/reserve_componets_achievement.png",
+        "sourceAsset": "images/military-ribbons/army_reserve_components_achievement.jpg",
+        "sourceSha256": "a3feef12918f1326fe5892de0974b15614e21d57a78990911eea0eb94c76ccfa",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_achievement": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_achievement.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_achievement.jpg",
+        "sourceSha256": "a295325957584e9a85ce73f6a9feadb9f9723d1fcbd273edde841ef3c6fa61e7",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_achievement": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_achievement.png",
+        "sourceAsset": "images/military-ribbons/army_achievement.jpg",
+        "sourceSha256": "c3076b65118c295dc8b45134888a44344b1d90dff84544b38e8b883e07a4ca7b",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "prisoner_of_war": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/prisoner_of_war.png",
+        "sourceAsset": "images/military-ribbons/prisoner_of_war.jpg",
+        "sourceSha256": "485c97f515595beea0328b12f97bcef99b5a3b800b362f464fb7ad8ec384b286",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "marine_corps_good_conduct": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/marine_corps_good_conduct.png",
+        "sourceAsset": "images/military-ribbons/marine_corps_good_conduct.jpg",
+        "sourceSha256": "6e648cf7f94bcf32fa729fba0f2ac6020d9a6b85246d32a19da9d5f000a2564b",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_good_conduct": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_good_conduct.png",
+        "sourceAsset": "images/military-ribbons/navy_good_conduct.jpg",
+        "sourceSha256": "ebe0262c35518021d4634db4af001e8a87dd4f0cead7ddacaded1cd5c71aade3",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_good_conduct": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_good_conduct.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_good_conduct.jpg",
+        "sourceSha256": "f665be1e934e9e8b03df8b35436fde7f6c77b5e8295d2baaed5d61f26722c44c",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_reserve_good_conduct": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_reserve_good_conduct.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_reserve_good_conduct.jpg",
+        "sourceSha256": "964d456ac93626ac86cc1dca7f30b711b86dd911d7e0069196eb346d059af285",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_good_conduct": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_good_conduct.png",
+        "sourceAsset": "images/military-ribbons/army_good_conduct.jpg",
+        "sourceSha256": "a895f6712fe5b86b745d8f1a70dd8fea230f015725927367016088c1c14b0c80",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_presidential_unit_citation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_presidential_unit_citation.png",
+        "sourceAsset": "images/military-ribbons/navy_presidential_unit_citation.jpg",
+        "sourceSha256": "49e600de44619d4c8abdd4d173a9e5370650d66fce34fab397356b90dd164785",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_presidential_unit_citation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_presidential_unit_citation.png",
+        "sourceAsset": "images/military-ribbons/air_force_presidential_unit_citation.jpg",
+        "sourceSha256": "5c376cda6368bed244565547d31322fbc6968b312b8fb86cd2b28242231e5ef2",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "joint_meritorious_unit_award": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/joint_meritorious_unit_award.png",
+        "sourceAsset": "images/military-ribbons/joint_meritorious_unit_award.jpg",
+        "sourceSha256": "9f3fe719a2ed056c35b92918c6b188af6a2688bade603c93195f75831c19535c",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_gallant_unit_citation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_gallant_unit_citation.png",
+        "sourceAsset": "images/military-ribbons/air_force_gallant_unit_citation.jpg",
+        "sourceSha256": "4cfb450e0c59380b6b8038988719045127d981855acb23988205b6397febb6fb",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_meritorious_unit_award": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_meritorious_unit_award.png",
+        "sourceAsset": "images/military-ribbons/air_force_meritorious_unit_award.jpg",
+        "sourceSha256": "09b5a31e927c6333d59d397c2690f7b2df87961e4bc1eb23a7a24812d0f4ed85",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_outstanding_unit_award": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_outstanding_unit_award.png",
+        "sourceAsset": "images/military-ribbons/air_force_outstanding_unit_award.jpg",
+        "sourceSha256": "9fd71f0af747e0a44285021c58bfe4315c88646d1614a4f15eaf78719f3c9526",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_presidential_unit_citation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_presidential_unit_citation.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_presidential_unit_citation.jpg",
+        "sourceSha256": "cae61f07eeec46af4395d4957655290c8ef157ed2d397cbc3593b3e360094e3d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "dot_outstanding_unit_award": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/dot_outstanding_unit_award.png",
+        "sourceAsset": "images/military-ribbons/dot_outstanding_unit_award.jpg",
+        "sourceSha256": "d5b1ae3971299a7147a46b5bf815cfa30df1df6f2175fb60a28d46e0460d7eba",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "philippine_presidential_unit_citation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/philippine_presidential_unit_citation.png",
+        "sourceAsset": "images/military-ribbons/philippine_presidential_unit_citation.jpg",
+        "sourceSha256": "52b3d96535c5676cbb4ace328b66c5a5f2641a39f1b85fdf7a78cf7388b14036",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "korean_presidential_unit_citation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/korean_presidential_unit_citation.png",
+        "sourceAsset": "images/military-ribbons/korean_presidential_unit_citation.jpg",
+        "sourceSha256": "d034dd6a6168a8f6d1ea5130ed78fe7539fd9711a0eccd4c59408f095f2d9abf",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_presidential_unit_citation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_presidential_unit_citation.png",
+        "sourceAsset": "images/military-ribbons/army_presidential_unit_citation.jpg",
+        "sourceSha256": "fc5a69f9fe9536c303f6fd51011711379a33ec5788e401a3e6ad1f074deeb914",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "republic_of_vietnam_presidential_unit_citation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/republic_of_vietnam_presidential_unit_citation.png",
+        "sourceAsset": "images/military-ribbons/vietnam_presidential_unit_citation.jpg",
+        "sourceSha256": "a4fd98661ee7a1f7b899417d9bad62db6e4aad9b73ee094cc1293871f0bf8ef8",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "vietnam_gallantry_cross_unit_citation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/vietnam_gallantry_cross_unit_citation.png",
+        "sourceAsset": "images/military-ribbons/vietnam_gallantry_cross_unit_citation.png",
+        "sourceSha256": "8c9011fbb54f1b1f11e5e392937ba91cc3b320e42b51dd4065c8dd2930ef4bd6",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "vietnam_civil_actions_unit_citation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/vietnam_civil_actions_unit_citation.png",
+        "sourceAsset": "images/military-ribbons/vietnam_civil_actions_unit_citation.png",
+        "sourceSha256": "4fe5ec246ae57a0b9e3dd703a3afc258132a8edf12dfafe756dc01df0e4b267d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_valorous_unit_award": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_valorous_unit_award.png",
+        "sourceAsset": "images/military-ribbons/army_valorous_unit_award.jpg",
+        "sourceSha256": "cff4f36e5dd9818c36e5cad030243c5d79a7e2c152a10058bca5f1dba5680d3d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_superior_unit_award": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_superior_unit_award.png",
+        "sourceAsset": "images/military-ribbons/army_superior_unit_award.jpg",
+        "sourceSha256": "204793815db8ecfabd8c9096624fb5a28193e48f3331d8b28f699dffa9b98e11",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "american_campaign": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/american_campaign.png",
+        "sourceAsset": "images/military-ribbons/american_campaign.jpg",
+        "sourceSha256": "8635a2d593eee81db21af3ff52e7e4878ff8fb41ca4f5aa1b82ec7fc4e7dcec4",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "european_african_middle_eastern_campaign": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/european_african_middle_eastern_campaign.png",
+        "sourceAsset": "images/military-ribbons/european_african_middle_eastern_campaign.jpg",
+        "sourceSha256": "4a8bddd328fb8a3b57e4d1970be45244dad653fda6b9a60c5373cfdfc36baa72",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "asiatic_pacific_campaign": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/asiatic_pacific_campaign.png",
+        "sourceAsset": "images/military-ribbons/asiatic_pacific_campaign.jpg",
+        "sourceSha256": "114893995d3f4871404917ac07f3678143e6c6ca390ad27e8ac9b3b922226ecc",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "kosovo_campaign": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/kosovo_campaign.png",
+        "sourceAsset": "images/military-ribbons/kosovo_campaign.jpg",
+        "sourceSha256": "7869193a8cd99d7fe964cff8faa19b393f7295a9a00e2b18085403453ab37fe2",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "afghanistan_campaign": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/afghanistan_campaign.png",
+        "sourceAsset": "images/military-ribbons/afghanistan_campaign.jpg",
+        "sourceSha256": "9fff2a916bfe384d6b1b931fc6631db72a0c69a2740f0b48f4f1e676d4738bc0",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "iraq_campaign": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/iraq_campaign.png",
+        "sourceAsset": "images/military-ribbons/iraq_campaign.jpg",
+        "sourceSha256": "95b0f481236ef51c4eba4f1babc75bdaf34c878904b8c74e5d2a5b484534e78d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "republic_of_vietnam_campaign": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/republic_of_vietnam_campaign.png",
+        "sourceAsset": "images/military-ribbons/republic_of_vietnam_campaign.jpg",
+        "sourceSha256": "7332f42f70fe4bb0db0bee99971b925d3b91ee220e32062d31550bd86d478426",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_and_space_campaign": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_and_space_campaign.png",
+        "sourceAsset": "images/military-ribbons/air_and_space_campaign.jpg",
+        "sourceSha256": "57bb51233a449ba0813432199596ad699b42234eb92a790190515f2198c5fc15",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "marine_corps_expeditionary": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/marine_corps_expeditionary.png",
+        "sourceAsset": "images/military-ribbons/marine_corps_expeditionary.jpg",
+        "sourceSha256": "e95eafc23f52dbe5c2c660034acbb70291c99f49412782c0f8e57a21e931d0cf",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_expeditionary": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_expeditionary.png",
+        "sourceAsset": "images/military-ribbons/expeditionary.jpg",
+        "sourceSha256": "45a781640c8a3fc23ff963bec50908bfadcfe916507ba19a7952ab5e74daf920",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "global_war_on_terrorism_expeditionary": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/global_war_on_terrorism_expeditionary.png",
+        "sourceAsset": "images/military-ribbons/global_war_terror_expeditionary.jpg",
+        "sourceSha256": "a50fcc2aeb7d00f304100b21db4f0a2da76654ccf103c014361593fceaf35e1f",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "armed_forces_expeditionary": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/armed_forces_expeditionary.png",
+        "sourceAsset": "images/military-ribbons/armed_forces_expeditionary.jpg",
+        "sourceSha256": "ed8ef522681e238f062dabcb2ab809af78555cdd07d23148f7db886a74588484",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_expeditionary": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_expeditionary.png",
+        "sourceAsset": "images/military-ribbons/air_force_expeditionary_service.jpg",
+        "sourceSha256": "648561c4992714efae57c7032ba4752c2448df2075fa0eda524afd986a261981",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "defense_distinguished_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/defense_distinguished_service.png",
+        "sourceAsset": "images/military-ribbons/defense_distinguished_service.jpg",
+        "sourceSha256": "15494fcf6aee7daac2042f229e4a6215cc8714a13028cd839a202d835eccd9ee",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_distinguishd_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_distinguishd_service.png",
+        "sourceAsset": "images/military-ribbons/air_force_distinguished_service.jpg",
+        "sourceSha256": "a831fb0b53c194a24ca8b5ce30971f35e7731c05202cdf29d5fc4fc9c11d413d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_distinguished_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_distinguished_service.png",
+        "sourceAsset": "images/military-ribbons/army_distinguished_service_military_ribb0n.jpg",
+        "sourceSha256": "93b47fe74ea88c1c1f58e47087dc7eeabf409a080937b993c81b7388d601b5de",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_distinguished_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_distinguished_service.png",
+        "sourceAsset": "images/military-ribbons/navy_distinguished_service.jpg",
+        "sourceSha256": "322524e98565fbc12359f095f78f02e8ca254d44956d352b80e76945272b0a9c",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_distinguished_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_distinguished_service.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_distinguished_service.jpg",
+        "sourceSha256": "073d8ffaac416649420b6733405017ac46dbdeb6d33baa7321bc2a7d5b694b9d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "womens_s_army_corps_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/womens_s_army_corps_service.png",
+        "sourceAsset": "images/military-ribbons/army_womens_army_corps_service.jpg",
+        "sourceSha256": "c8505049e3a1b1717754d2aba7a2ed64faea7029247e91342838763b84c27953",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "national_defense_military_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/national_defense_military_service.png",
+        "sourceAsset": "images/military-ribbons/national_defense_service.jpg",
+        "sourceSha256": "fab851bee828f0e5f74e53ae040c7baaf7bfe271ebf268c05c2674419d3fe729",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "china_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/china_service.png",
+        "sourceAsset": "images/military-ribbons/china_service.jpg",
+        "sourceSha256": "e64251f88b068747cd16bedbefdd3ee7aeb43f9f9d6c41d066c2cc84c57828bf",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_occupation_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_occupation_service.png",
+        "sourceAsset": "images/military-ribbons/navy_occupation_service.jpg",
+        "sourceSha256": "33683fa140866980a0d75c415e285bd9aad34b30ddd7411f6825ef8335bde3bf",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "korean_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/korean_service.png",
+        "sourceAsset": "images/military-ribbons/korean_service.jpg",
+        "sourceSha256": "7d6b2fc71cb0ea238220701719596f1ca54048dc336cfe6bd3298cb9567a15cd",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "southwest_asia_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/southwest_asia_service.png",
+        "sourceAsset": "images/military-ribbons/southwest_asia_service_military_ribbons.jpg",
+        "sourceSha256": "c803e93e106e83937d752b347d078c1ca326366249cee492a426e18ebbac8cf4",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "antarctica_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/antarctica_service.png",
+        "sourceAsset": "images/military-ribbons/antarctica_service.jpg",
+        "sourceSha256": "d16476ab1ceae597c645edf2a8644641dd891549e8809493a899d2bec16e9e2b",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "global_war_on_terrorism_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/global_war_on_terrorism_service.png",
+        "sourceAsset": "images/military-ribbons/global_war_terror_service.jpg",
+        "sourceSha256": "7bfae74d8346bb6b7c99cd3ad8d15996c33dd0a61677dadce7ebf04995514705",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "vietnam_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/vietnam_service.png",
+        "sourceAsset": "images/military-ribbons/vietnam_service.jpg",
+        "sourceSha256": "32f187b9b576df24214e15e9de9e6ffd8492db3ba9ae9c12a61345125951eed0",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "korean_defense_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/korean_defense_service.png",
+        "sourceAsset": "images/military-ribbons/korean_defense_service.jpg",
+        "sourceSha256": "b253ef0332cf866f72048ab5c16d1bad5cbd8998fe89ce9433834653283c1919",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "armed_forces_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/armed_forces_service.png",
+        "sourceAsset": "images/military-ribbons/armed_forces_service.jpg",
+        "sourceSha256": "b67d3a596bf944e62040a33b71391a8bdc963658bd4b1e2b3cad63a3d1eb5423",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "overseas_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/overseas_service.png",
+        "sourceAsset": "images/military-ribbons/army_overseas_service.jpg",
+        "sourceSha256": "7938757d07807491524a995d92f6662b0da0cafe6ea75155abcad0e307abf2d6",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "humanitarian_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/humanitarian_service.png",
+        "sourceAsset": "images/military-ribbons/humanitarian_service.jpg",
+        "sourceSha256": "503ed66abbe2d143d99a76c09f66d4215097c4d407fe3122a8fe8cbcd991e2d3",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "outstanding_volunteer_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/outstanding_volunteer_service.png",
+        "sourceAsset": "images/military-ribbons/outstanding_volunteer_service.jpg",
+        "sourceSha256": "05167b20e73ea3677e215850a31cdc09dace63819823859ce26672fdec50a400",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_sea_service_deployment": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_sea_service_deployment.png",
+        "sourceAsset": "images/military-ribbons/navy_sea_service_deployment.jpg",
+        "sourceSha256": "518ccabb3af389c8f93faa7a86ef5c6784bb16b82b4e44448459d67354328747",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_arctic_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_arctic_service.png",
+        "sourceAsset": "images/military-ribbons/navy_arctic_service.jpg",
+        "sourceSha256": "83633f2f89e531d26e5ac4bd91fe19e99d2abd9590a2f8171eed5cba25f8fd69",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "arctic_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/arctic_service.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_arctic_service.jpg",
+        "sourceSha256": "e837287192c9aa374026446bf9b6783637a6497c74e0fc4db0eb0b795109ea68",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_and_marine_corps_overseas_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_and_marine_corps_overseas_service.png",
+        "sourceAsset": "images/military-ribbons/navy_marine_corps_overseas_service_military_rbbon.jpg",
+        "sourceSha256": "257573e91c122c1491ed1ef79b540d837af5160f1bcd747b25516b2a26da2f49",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "united_nations_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/united_nations_service.png",
+        "sourceAsset": "images/military-ribbons/united_nations_service.jpg",
+        "sourceSha256": "4e76ccad0f7104a0da6aaa5591d9e3213527c2da339e4f6d792fe321e29f79d9",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_recruiting_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_recruiting_service.png",
+        "sourceAsset": "images/military-ribbons/navy_recruiting_service.jpg",
+        "sourceSha256": "3b9e5fd5f4b89f8f912f47affc20aa0077e85753334f98d65eace88adeb211bc",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_longevity_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_longevity_service.png",
+        "sourceAsset": "images/military-ribbons/air_force_longevity_service.jpg",
+        "sourceSha256": "1c38f54dc45b65389f9aaf2afab3da5175992e0e43b3108272a26fc9c79ef409",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "rok_war_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/rok_war_service.png",
+        "sourceAsset": "images/military-ribbons/republic_of_korean_war_service.jpg",
+        "sourceSha256": "eabe774e49768b4cd122eff5e81f2118d733d1556e487ac04f2510dba84bf326",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "special_operations_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/special_operations_service.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_special_operations_service.jpg",
+        "sourceSha256": "ea8d91037d2dd8d3b880c5e03d00bacb2f7e47fa27044cc98fb840084d7b6b85",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_sea_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_sea_service.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_sea_duty.jpg",
+        "sourceSha256": "a288743b50b1c0f9bcef01c279456c58fe1622505a2fdbb13f05a84428f90e73",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_overseas_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_overseas_service.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_overseas_service.png",
+        "sourceSha256": "7f7a6ea40a1909d46f9f568658ff3f60db33985b5108052f104c6bf74b18651b",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_recruiting_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_recruiting_service.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_recruiting_service.jpg",
+        "sourceSha256": "facb488e339a75b1ac9f23164621dbff272186dab6f6da57e14d9efbace6abc0",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_service.png",
+        "sourceAsset": "images/military-ribbons/army_service.jpg",
+        "sourceSha256": "d836d5572a53b126658e1f1353872385b9d9c435e69288cc9f36acd4d1658b10",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "selected_marine_corps_reserve": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/selected_marine_corps_reserve.png",
+        "sourceAsset": "images/military-ribbons/selected_marine_corps_reserve.jpg",
+        "sourceSha256": "1c52f5229c3d7862899959e13c2a4e2cb02552e010f624b809f3b46699d293c7",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "armed_forces_reserve": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/armed_forces_reserve.png",
+        "sourceAsset": "images/military-ribbons/armed_forces_reserve_air_force_military_ribbons.jpg",
+        "sourceSha256": "b52d274fbef4609b094afec8d321a4e7c7ce149f6097af135710d42fee55700f",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "reserve_components_overseas_training": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/reserve_components_overseas_training.png",
+        "sourceAsset": "images/military-ribbons/army_reserve_componentsoverseas_training.jpg",
+        "sourceSha256": "27dacdfc6d67ef2c72753af19904f4d8382cdee3dba40d16b50adc7f4c46bd65",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "naval_reserve_sea_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/naval_reserve_sea_service.png",
+        "sourceAsset": "images/military-ribbons/naval_reserve_sea_service.jpg",
+        "sourceSha256": "a4903aa47ec8c4e343a4723e1c639556610054f14cbb45c9aeadcea18521f63c",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "naval_reserve": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/naval_reserve.png",
+        "sourceAsset": "images/military-ribbons/naval_reserve.jpg",
+        "sourceSha256": "edf4e972460a26d5ba325610da3d67440a30bf8157fe3ba4ef18b0ef6b1287dc",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "marine_corps_reserve": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/marine_corps_reserve.png",
+        "sourceAsset": "images/military-ribbons/marine_corps_reserve.jpg",
+        "sourceSha256": "f103acc2ee5d70245d82cdc0eb54365c1e31f79b183382a32cf8cfe363569288",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_recruit_training_service": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_recruit_training_service.png",
+        "sourceAsset": "images/military-ribbons/navy_recruit_training_service.jpg",
+        "sourceSha256": "ba3813373b2529b99be353bc6caacabb1573a180a398fac145d8402aa22a3853",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_military_training_instructor": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_military_training_instructor.png",
+        "sourceAsset": "images/military-ribbons/air_force_military_training_instructor.jpg",
+        "sourceSha256": "4ebc2de5a3bbeef0371db07823fcf830f03dcfff8cae0c7c599931d3b734fd44",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_basic_training_honor_graduate": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_basic_training_honor_graduate.png",
+        "sourceAsset": "images/military-ribbons/basic_military_training_honor_graduate.jpg",
+        "sourceSha256": "671ea2cc2de9bc13fbb48398804bd1349d849f98a464f28dec4e642a0b72285d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_training": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_training.png",
+        "sourceAsset": "images/military-ribbons/air_force_training.jpg",
+        "sourceSha256": "79085f2d96745790c0c0a3666374295a7588a3b64a8bc5d93d00156a69a17eea",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "basic_training_honor_graduate": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/basic_training_honor_graduate.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_basic_training_honor_graduate.jpg",
+        "sourceSha256": "34aae519c690cd311dfa193f998bfae033b07c5a758145dd49f9b080235fd064",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_medal.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_medal.jpg",
+        "sourceSha256": "c28ac2e24398dcc1072a6486c261cfae352a230f8ca1365d6780b021f654b27a",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "gold_life_saving_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/gold_life_saving_medal.png",
+        "sourceAsset": "images/military-ribbons/gold_life_saving.jpg",
+        "sourceSha256": "099de34d8c7071452d78d5a560e06dca4a45b298f8b771c7ec01751eefbca26c",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "silver_life_saving": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/silver_life_saving.png",
+        "sourceAsset": "images/military-ribbons/silver_life_saving.jpg",
+        "sourceSha256": "51aaa827a1e396e0a0a5e7026120ae9f7da0ef602072fd2e24946657149259d5",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "combat_action": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/combat_action.png",
+        "sourceAsset": "images/military-ribbons/combat_action.jpg",
+        "sourceSha256": "e665a82fba4b9f0ba660f9acbb6b050182b63b5c5c28aaf0568fe029fa2adc7e",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_combat_action": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_combat_action.png",
+        "sourceAsset": "images/military-ribbons/air_force_combat_action.jpg",
+        "sourceSha256": "71f889de54b996304842aa23664bfd8e1c65c83ba856f90d0d26633746cd43ce",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "dot_9_11_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/dot_9_11_medal.png",
+        "sourceAsset": "images/military-ribbons/dot_9_11_medal.jpg",
+        "sourceSha256": "1ea07a96b4d62218e7b3b59ccbd4a67cec9a6d557eb1745f1607cff1869881cc",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "comabt_action": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/comabt_action.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_combat_action.jpg",
+        "sourceSha256": "f834564a39c76eed84e4c50e09a07061dd3753c4ec60f8f6fc0477a83f46d4fd",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_e": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_e.png",
+        "sourceAsset": "images/military-ribbons/navy_e.jpg",
+        "sourceSha256": "5d5525c2939ae8e03055dc95ef062a497c30aaa58e9d71d0938146672c97911e",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "world_war_ii_victory": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/world_war_ii_victory.png",
+        "sourceAsset": "images/military-ribbons/world_war_2.jpg",
+        "sourceSha256": "0eba8c2e0997f87e59039018cee074e35d95b956d816d2c27171d21345c38f72",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_of_occupation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_of_occupation.png",
+        "sourceAsset": "images/military-ribbons/army_of_occupation_service.jpg",
+        "sourceSha256": "d583071009d02f19bd267481a44524078f254e79454fa4925488656c28842a78",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_and_space_organizational_excellence_award": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_and_space_organizational_excellence_award.png",
+        "sourceAsset": "images/ribbons/Air_Force_Organizational_Excellence_Award.png",
+        "sourceSha256": "a78e521adbf28ca7622847471be73c043537e587d3ef11cf9e78aa3b0b4f4cba",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_combat_readiness": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_combat_readiness.png",
+        "sourceAsset": "images/military-ribbons/air_force_combat_rediness.jpg",
+        "sourceSha256": "a58a7d0823de6fae68b8822f95e19157c87d6244fd1adb22d5deb3add335cbc5",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "fleet_marine_force": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/fleet_marine_force.png",
+        "sourceAsset": "images/military-ribbons/fleet_marine_force.jpg",
+        "sourceSha256": "a9f65254d28cc488ff22dda89d3324fbe7eb5bab2b0724b8ecbc760ae23624a3",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_good_condcut": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_good_condcut.png",
+        "sourceAsset": "images/military-ribbons/air_force_good_conduct.jpg",
+        "sourceSha256": "7710ac95cff58dbb4d7394b2415ab595c93a3dc88032e49bb9cb83fcff0601a1",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "american_defense": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/american_defense.png",
+        "sourceAsset": "images/military-ribbons/american_defense.jpg",
+        "sourceSha256": "e64bab79c71d9cd2f272c6ff9b2cace975c6ac5f15917f44f59e6e3f70db4513",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_outstanding_airman_of_the_year": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_outstanding_airman_of_the_year.png",
+        "sourceAsset": "images/military-ribbons/outstanding_airman_of_the_year.jpg",
+        "sourceSha256": "32ffde595c778247a8a4e4ff607381e65191a24dd0f1f3507c66cbcf9ae2cc68",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_recognition": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_recognition.png",
+        "sourceAsset": "images/military-ribbons/air_force_recognition.jpg",
+        "sourceSha256": "fb8c7aa151bf8730bc7172842eafa38f2955d6c61df2f7a2e064dfe7038d8b02",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_e": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_e.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_e.jpg",
+        "sourceSha256": "f1cff9a7b86c09bf5894ab04fe33235262553698fee2c0a02d9ca12e2f0c483d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "us_antarctic_expedition": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/us_antarctic_expedition.png",
+        "sourceAsset": "images/military-ribbons/us_antarctic_expedition.jpg",
+        "sourceSha256": "3b7c380ead6c148905cd508135c10fdb2d4cc2cf2021d3e0e791efbc8c97f1ba",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "medal_for_humane_action": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/medal_for_humane_action.png",
+        "sourceAsset": "images/military-ribbons/medal_for_humane_action.jpg",
+        "sourceSha256": "8f320417fbc249c65adf9d912c751bcdc709d2f566525d66a206982e64aa0935",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_enlisted_person_of_the_year": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_enlisted_person_of_the_year.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_enlisted_person_of_the_year.png",
+        "sourceSha256": "82c63ae32bb45b9fae4c37b02cc38429a1d3022848912252b37d044de5bf172c",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "nco_professional_development": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/nco_professional_development.png",
+        "sourceAsset": "images/military-ribbons/army_nco_professional_development.jpg",
+        "sourceSha256": "9c6ab746c6653eb42e3b69eef182e8fd0f76b229d420189bb5143ed5e1de5a71",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "vietnam_gallantry_cross": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/vietnam_gallantry_cross.png",
+        "sourceAsset": "images/military-ribbons/vietnam_gallantry_cross.png",
+        "sourceSha256": "e139a9caf1264d94a3daad1223fbbf3d1473e26768013945679a87c952d3315e",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "philippine_defense": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/philippine_defense.png",
+        "sourceAsset": "images/military-ribbons/philippine_defense.jpg",
+        "sourceSha256": "bba28dceb01fb175bbaccd9dd914032d20aa1c6a9d019c831e0036c733564166",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "philippine_liberation": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/philippine_liberation.png",
+        "sourceAsset": "images/military-ribbons/philippine_liberation.jpg",
+        "sourceSha256": "5afc6a1dc0ff89821abc82aef9fc5f8ff8c18ce7ce5ce35c0e4e7dea01155db8",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "philippine_independence": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/philippine_independence.png",
+        "sourceAsset": "images/military-ribbons/philippine_independence.jpg",
+        "sourceSha256": "5c83af6ae3183b6a36a012ce1c91ff53cf2871775e32ac22292ec96a6dd088a9",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_overseas_short_tour": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_overseas_short_tour.png",
+        "sourceAsset": "images/military-ribbons/overseas_short_tour.jpg",
+        "sourceSha256": "cad71cd1eec042862d7dc04260ac7652adc18a1869251bcdce4feb4861eda7f8",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_overseas_long_tour": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_overseas_long_tour.png",
+        "sourceAsset": "images/military-ribbons/overseas_long_tour.jpg",
+        "sourceSha256": "b7b23dabd88782b75560a8e86adf018b9bc252c97bf961b213af3b39a835de7d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "inter_american_defense_board": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/inter_american_defense_board.png",
+        "sourceAsset": "images/military-ribbons/inter_american_defense_board.jpg",
+        "sourceSha256": "0ee4a5d201b379fd502f0559fd839508eec487674d1ef6a55007f3ba00c439cb",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "marine_corps_sercurity_guard": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/marine_corps_sercurity_guard.png",
+        "sourceAsset": "images/military-ribbons/marine_corps_security_guard.jpg",
+        "sourceSha256": "33f6585e97bcb3e10421edfeefe886b2fc8b77a266105acac3ff70b842802393",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "united_nations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/united_nations.png",
+        "sourceAsset": "images/military-ribbons/united_nations.jpg",
+        "sourceSha256": "d33c0146b6b5abab1d52c189ebc8a03a636c0cc2df3a591f387b9f4b0fbf0d8c",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "nato": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/nato.png",
+        "sourceAsset": "images/military-ribbons/nato_medal.jpg",
+        "sourceSha256": "ae9e895501a1095bfe26395f1151c43baba59d9dad373a51b28daa69270357e0",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "nato_kosovo": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/nato_kosovo.png",
+        "sourceAsset": "images/military-ribbons/nato_kosovo.png",
+        "sourceSha256": "26f5b36689f546ee7c9a27ec02c8f4a8761cee2affc59c364a889d9980c9b5af",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_recruiter": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_recruiter.png",
+        "sourceAsset": "images/military-ribbons/air_force_recruiter.jpg",
+        "sourceSha256": "e091c6bc6e3ffb20460cb2b36bb1508349fba983cd41e94f05dbb71ffc2930c4",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "multinational_force_and_observers": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/multinational_force_and_observers.png",
+        "sourceAsset": "images/military-ribbons/multinational_force_observers.jpg",
+        "sourceSha256": "7c7197c004e651d9dd1eddb94680435660eb349334252e80054f694cf5e901cd",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "kuwait_liberation_saudi_arabia": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/kuwait_liberation_saudi_arabia.png",
+        "sourceAsset": "images/military-ribbons/kuwait_liberation_saudi.jpg",
+        "sourceSha256": "dd1c3361ff13673f8a7121eccfb05f4812d97021ce852807ef44ce2552b7b615",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "marine_corps_recruiting": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/marine_corps_recruiting.png",
+        "sourceAsset": "images/military-ribbons/marine_corps_recruiting.jpg",
+        "sourceSha256": "91c0dc0d2a4cf945a46e0cc39cf042b023a64981d469edf485765b3ef917b28b",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_ceremonial_guard": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_ceremonial_guard.png",
+        "sourceAsset": "images/military-ribbons/ceremonial_guard.jpg",
+        "sourceSha256": "d5524f89172645b00f1656e5363c8e99455866ed0fbc3e751db783a7517d7e78",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_nco_professional_military_education_graduate": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_nco_professional_military_education_graduate.png",
+        "sourceAsset": "images/military-ribbons/nco_professional_military_education_graduate.jpg",
+        "sourceSha256": "96f293a23e507a839385435ab5883abd75e7c88f27d6ac557e85588e57d582b5",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "kuwiat_liberation_kuwait": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/kuwiat_liberation_kuwait.png",
+        "sourceAsset": "images/military-ribbons/kuwait_liberation_kuwait.jpg",
+        "sourceSha256": "49b1727eaeffac20b779b3c36d713fed35b0ada6d9c44a57d306bd35f7383671",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "marine_corps_drill_instructor": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/marine_corps_drill_instructor.png",
+        "sourceAsset": "images/military-ribbons/marine_corps_drill_instructor.jpg",
+        "sourceSha256": "481658dcf46074f0b0646748ed2e4eeeadf8c02a936ff902c83bd73951a51c2f",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "air_force_small_arms_expert_marksmanship": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/air_force_small_arms_expert_marksmanship.png",
+        "sourceAsset": "images/military-ribbons/small_arms_expert_military_ribbons.jpg",
+        "sourceSha256": "575e43cdc8336f0c7ed2d1705e9a88d299b459fb8ddbaf758bdc507a5f8dd9e4",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "dot_9_11": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/dot_9_11.png",
+        "sourceAsset": "images/military-ribbons/dot_9_11_ribbon.jpg",
+        "sourceSha256": "24b05232259c8363868aa38614bbbdfb0e3df33a4233ec51db43da8910cf1c06",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "marine_corps_combat_instructor": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/marine_corps_combat_instructor.png",
+        "sourceAsset": "images/military-ribbons/marine_corps_combat_instructor.png",
+        "sourceSha256": "f11e3e8d64e9da3aa79197770c3f230446111f7c4e8f6268c94ea94772bc3a34",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_restricted_duty": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_restricted_duty.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_restricted_duty.jpg",
+        "sourceSha256": "a913c2aa07599c0ea54e16164323a81cf7a48ac5487d7d0481c3408438534ae5",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_sea_duty": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_sea_duty.png",
+        "sourceAsset": "images/military-ribbons/army_sea_duty.jpg",
+        "sourceSha256": "dd131b22142ea34fdb09778d1ac78150fd2f46f27eb43171444735807ff7dd1d",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_rifle_marksmanship": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_rifle_marksmanship.png",
+        "sourceAsset": "images/military-ribbons/navy_rifle_marksmanship.jpg",
+        "sourceSha256": "7ed88b179d2416dc107becf7c795d1511c69cf9eddee3a6a12fb8b0c9b3052d1",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "navy_pistol_marksmanship": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/navy_pistol_marksmanship.png",
+        "sourceAsset": "images/military-ribbons/navy_pistol_marksmanship.jpg",
+        "sourceSha256": "1105623363189a1f279b473bd41964320291fb8855617b919e69cc0583c36201",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_rifle_marksmanship_military_ribbons": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_rifle_marksmanship_military_ribbons.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_rifle_marksmanship.jpg",
+        "sourceSha256": "f54a4b24f1966ac85a7bbc5274b7537ae4cd332231f665e8986874a0424c15e7",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "coast_guard_pistol_marksmanship": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/coast_guard_pistol_marksmanship.png",
+        "sourceAsset": "images/military-ribbons/coast_guard_pistol_marksmanship.jpg",
+        "sourceSha256": "8f2b865d4d932d7a0c529b5252e62784b13a55020dcaba680b3bf88819697b2b",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "army_occupation_of_germany_military_medal_and": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/army_occupation_of_germany_military_medal_and.png",
+        "sourceAsset": "images/military-ribbons/army_occupation_of_germany.jpg",
+        "sourceSha256": "5a2034e48365a878a4b56cd0e15e9970ac9ad4b4dc31d6c97b2ef7e93733aa9b",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    },
+    "china_relief_expedition_military_medal": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/mcchord-style/china_relief_expedition_military_medal.png",
+        "sourceAsset": "images/military-ribbons/china_relief_expedition.svg",
+        "sourceSha256": "e92eccf654f226cc45d06043ceaa3711630e484fcde0b6c605bc311ace9b24a4",
+        "style": "MCCHORD_DERIVED",
+        "reviewStatus": "GENERATED_PENDING_VISUAL_REVIEW",
+        "generatorVersion": 1
+      }
+    }
+  }
+}

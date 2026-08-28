@@ -17,9 +17,10 @@
       "sourceType": "commercial-discovery",
       "entryPoints": [
         "https://www.ultrathin.com/ultrathin/orderform_update.htm",
+        "https://www.ultrathin.com/ultrathin/ribbons_update.htm",
         "https://www.ultrathin.com/awardsrack/"
       ],
-      "observed": ["HTML award selections", "miniature/full medal choices", "separate attachment counts", "award identifiers"],
+      "observed": ["HTML award selections", "public JavaScript ribbon catalog", "service precedence arrays", "public device catalog", "miniature/full medal choices", "separate attachment counts", "award identifiers"],
       "limitations": ["legacy order materials state catalog numbers may not represent proper precedence"],
       "regulatoryAuthority": false
     }

@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import math
 import re
+import shutil
 import statistics
 from collections import Counter
 from pathlib import Path
@@ -26,7 +27,7 @@ MILITARY_DIR = ROOT / "images" / "military-ribbons"
 
 
 def image_paths(folder: Path):
-    return sorted(p for p in folder.glob("*") if p.suffix.lower() in {".png", ".webp", ".jpg", ".jpeg"})
+    return sorted(p for p in folder.rglob("*") if p.suffix.lower() in {".png", ".webp", ".jpg", ".jpeg"})
 
 
 def alpha_bbox(image: Image.Image):
@@ -132,6 +133,7 @@ def main():
     ribbon_paths = [RIBBON_DIR / name for name in variant_names if (RIBBON_DIR / name).exists()]
     mini_paths = image_paths(MINI_DIR)
     military_paths = image_paths(MILITARY_DIR)
+    styled_military_paths = image_paths(MILITARY_DIR / "mcchord-style")
     representation_file = ROOT / "data" / "rules" / "verified" / "representation-overrides.json"
     representation_data = json.loads(representation_file.read_text(encoding="utf-8"))
     reviewed_military_minis = []
@@ -147,15 +149,18 @@ def main():
     ribbon_records = [metrics(path) for path in ribbon_paths]
     mini_records = [metrics(path) for path in mini_paths]
     military_records = [metrics(path) for path in military_paths]
+    styled_military_records = [metrics(path) for path in styled_military_paths]
     report = {
         "generated": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),
         "mcchordRibbons": summarize(ribbon_records),
         "mcchordMiniatureMedals": summarize(mini_records),
         "importedMilitaryRibbons": summarize(military_records),
+        "mcchordStyleMilitaryRibbons": summarize(styled_military_records),
         "records": {
             "mcchordRibbons": ribbon_records,
             "mcchordMiniatureMedals": mini_records,
             "importedMilitaryRibbons": military_records,
+            "mcchordStyleMilitaryRibbons": styled_military_records,
         },
     }
     (REPORTS / "mcchord-asset-analysis.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
@@ -209,10 +214,11 @@ The complete per-file measurements are in `reports/mcchord-asset-analysis.json`.
 
     sheet(
         "McChord ribbon visual comparison",
-        [("Original McChord masters", ribbon_paths[:12]), ("Imported military ribbon candidates", military_paths[:12])],
+        [("Original McChord masters", ribbon_paths[:12]), ("Generated McChord-style military ribbons", styled_military_paths[:12])],
         REPORTS / "mcchord-ribbon-comparison.png",
         cell=(180, 85),
     )
+    shutil.copyfile(REPORTS / "mcchord-ribbon-comparison.png", REPORTS / "military-ribbon-style-review.png")
     sheet(
         "McChord miniature-medal visual comparison",
         [
@@ -220,6 +226,19 @@ The complete per-file measurements are in `reports/mcchord-asset-analysis.json`.
             ("Reviewed military mappings to McChord masters", reviewed_military_minis),
         ],
         REPORTS / "mcchord-mini-medal-comparison.png",
+        cell=(180, 180),
+    )
+    shutil.copyfile(REPORTS / "mcchord-mini-medal-comparison.png", REPORTS / "military-mini-medal-style-review.png")
+    sheet(
+        "Military full-size medal style review",
+        [("Reviewed full-size military medal assets", [])],
+        REPORTS / "military-full-size-medal-style-review.png",
+        cell=(180, 180),
+    )
+    sheet(
+        "Military badge style review",
+        [("Approved local military badge assets", [])],
+        REPORTS / "military-badge-style-review.png",
         cell=(180, 180),
     )
     # Existing McChord variants are purpose-built combination references. These

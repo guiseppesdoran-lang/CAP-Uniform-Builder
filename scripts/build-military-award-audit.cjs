@@ -10,9 +10,11 @@ const additionsPath=path.join(root,'data/military/catalog-additions.json');
 if(fs.existsSync(additionsPath)) awards.push(...(JSON.parse(fs.readFileSync(additionsPath,'utf8')).awards || []));
 const devices=JSON.parse(fs.readFileSync(path.join(root,'data/rules/verified/device-definitions.json'),'utf8'));
 const overrides=JSON.parse(fs.readFileSync(path.join(root,'data/rules/verified/representation-overrides.json'),'utf8')).awards || {};
+const stylePath=path.join(root,'data/rules/verified/ribbon-style-overrides.json');
+const styleOverrides=fs.existsSync(stylePath)?JSON.parse(fs.readFileSync(stylePath,'utf8')).awards || {}:{};
 const canonical=core.canonicalizeAwards(awards).map(award=>{
-  const override=overrides[award.id] || {};
-  const representations=core.normalizeRepresentations({...award,representations:override});
+  const override={...(overrides[award.id] || {}),...(styleOverrides[award.id] || {})};
+  const representations=core.normalizeRepresentations({...award,representations:{...(award.representations || {}),...override}});
   return {...award,representations};
 }).sort(core.compareAwardsUniversal);
 

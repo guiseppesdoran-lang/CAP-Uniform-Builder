@@ -13,7 +13,9 @@ The builder uses the existing McChord CAP ribbon artwork as its production visua
 
 ## Ribbons
 
-- The visible ribbon face uses a `207:56` aspect ratio, matching the imported military ribbon source and the McChord rack presentation.
+- Imported pattern references may use `207 × 56` or other source canvases; the production ribbon face uses the measured McChord `100 × 30` canvas.
+- Production military ribbon assets are normalized to the builder's measured McChord `100 × 30` canvas by `scripts/build_mcchord_style_military_ribbons.py`. The deterministic generator retains each source award's stripe pattern and transfers only the common high-frequency weave, edge shading, lighting, and geometry measured from the local McChord masters.
+- Original discovery artwork remains provenance; production mappings are recorded separately in `data/rules/verified/ribbon-style-overrides.json`, including the source path and source hash.
 - Device combinations are deterministic flattened variants or deterministic local compositions from reviewed device sprites.
 - Device rules are representation- and service-specific. A ribbon device rule must not be assumed to apply to a medal suspension ribbon.
 
