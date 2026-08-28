@@ -151,6 +151,15 @@ test('normal mode never guesses a missing award-specific device rule', () => {
   assert.match(result.warnings.join(' '),/No repeat-award device rule/);
 });
 
+test('Coast Guard Humanitarian Service Medal repeat awards use verified service stars', () => {
+  const overrides=require('../data/rules/verified/manual-overrides.json').devices;
+  const sample=award('humanitarian_service','Humanitarian Service Medal',['COAST_GUARD'],{});
+  sample.devices={COAST_GUARD:overrides.humanitarian_service.COAST_GUARD};
+  const result=core.calculateDevices({award:sample,service:'COAST_GUARD',awardCount:7});
+  assert.deepEqual(result.devices,['SILVER_SERVICE_STAR','BRONZE_SERVICE_STAR']);
+  assert.equal(result.valid,true);
+});
+
 test('one canonical selection preserves quantity and devices across representations', () => {
   const selected=core.createAwardSelection('bronze_star_medal',{quantity:7,specialDevices:['V_DEVICE']});
   const canonical={

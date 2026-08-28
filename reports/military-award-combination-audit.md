@@ -1,6 +1,6 @@
 # Military Award Combination Audit
 
-Generated: 2026-08-28T14:45:40.659Z
+Generated: 2026-08-28T14:57:05.052Z
 
 > This report is intentionally conservative. A local ribbon image does not prove a device rule or medal representation. Missing and unverified fields remain gaps; inferred branch conventions are available only in the builder’s **Manual / unverified configuration** mode.
 
@@ -11,11 +11,11 @@ Generated: 2026-08-28T14:45:40.659Z
 - Miniature medal representations with a reviewed mapping: 2
 - Full-size medal representations with a reviewed mapping: 0
 - Device types in the local catalog: 15
-- Awards with explicit repeat support: 19
+- Awards with explicit repeat support: 20
 - Awards with explicit special-device support: 2
 - Officially verified canonical award records: 1
-- Awards with at least one officially verified device rule: 20
-- Awards missing explicit device rules: 151
+- Awards with at least one officially verified device rule: 21
+- Awards missing explicit device rules: 150
 - Awards missing local ribbon artwork: 1
 - Awards missing reviewed miniature-medal artwork: 169
 - Awards missing reviewed full-size-medal artwork: 171
@@ -117,7 +117,7 @@ Generated: 2026-08-28T14:45:40.659Z
 | korean defense service | `korean_defense_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | armed forces service | `armed_forces_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
 | Overseas Service | `overseas_service` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| humanitarian service | `humanitarian_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| humanitarian service | `humanitarian_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
 | outstanding volunteer service | `outstanding_volunteer_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Sea Service Deployment | `navy_sea_service_deployment` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Arctic Service | `navy_arctic_service` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |

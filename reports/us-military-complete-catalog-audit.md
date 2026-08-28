@@ -1,6 +1,6 @@
 # U.S. Military Complete Catalog Audit
 
-Generated: 2026-08-28T14:45:41.193Z
+Generated: 2026-08-28T14:57:05.502Z
 
 > This audit measures implemented, locally renderable data. It does not treat discovery links as authorization and does not count missing or unverified artwork as complete.
 
@@ -18,7 +18,7 @@ Generated: 2026-08-28T14:45:41.193Z
 - Badge artwork — AVAILABLE: 0; NOT_APPLICABLE: 0; MISSING_ASSET: 35; UNVERIFIED: 0
 - Device definitions: 15
 - Awards with at least one officially verified precedence entry: 86
-- Awards with an explicit service device rule: 20
+- Awards with an explicit service device rule: 21
 - Official precedence-table IDs missing from the canonical catalog: 0
 - Available records with broken local paths: 0
 

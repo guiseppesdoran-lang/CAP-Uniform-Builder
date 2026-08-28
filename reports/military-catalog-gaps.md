@@ -1,6 +1,6 @@
 # Military Catalog Gaps
 
-Generated: 2026-08-28T14:45:41.193Z
+Generated: 2026-08-28T14:57:05.502Z
 
 ## Blocking gaps
 
@@ -9,8 +9,13 @@ Generated: 2026-08-28T14:45:41.193Z
 - Military badge records needing approved local art: 35
 - Badge records without verified precedence: 30
 - Badge records without verified placement: 34
-- Awards without explicit service device rules: 151
+- Awards without explicit service device rules: 150
 - Awards without an officially verified precedence entry: 85
+
+## Official-source access limitations
+
+- The Coast Guard Medals and Awards page links to the Coast Guard Military Medals and Awards Manual, COMDTINST M1650.25E, but that official media.defense.gov PDF currently returns HTTP 404. Coast Guard precedence and award-device exceptions remain unverified unless a separate accessible official Coast Guard source is recorded on the award. No branch-wide convention is inferred from the unavailable manual.
+- Accessible official Coast Guard award messages may verify a narrowly scoped award rule. They do not substitute for the unavailable complete precedence table.
 
 ## Required next work
 

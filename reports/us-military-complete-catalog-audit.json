@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-08-28T14:45:41.193Z",
+    "generatedAt": "2026-08-28T14:57:05.502Z",
     "sourceRecords": 183,
     "officialAdditionRecords": 1,
     "canonicalAwards": 171,
@@ -47,7 +47,7 @@
       }
     },
     "awardsWithVerifiedPrecedence": 86,
-    "awardsWithExplicitDeviceRules": 20,
+    "awardsWithExplicitDeviceRules": 21,
     "brokenAvailableAssets": 0
   },
   "discarded": [

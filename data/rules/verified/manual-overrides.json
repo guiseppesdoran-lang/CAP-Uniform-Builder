@@ -49,6 +49,9 @@
     "armed_forces_service": {
       "ARMY": {"repeatAward": {"bronzeDevice": "BRONZE_SERVICE_STAR", "silverDevice": "SILVER_SERVICE_STAR", "bronzeValue": 1, "silverValue": 5}, "allowedSpecialDevices":[], "devicePrecedence":["SILVER_SERVICE_STAR","BRONZE_SERVICE_STAR"], "verificationStatus":"OFFICIALLY_VERIFIED", "source":"https://www.hrc.army.mil/content/26999"}
     },
+    "humanitarian_service": {
+      "COAST_GUARD": {"repeatAward": {"bronzeDevice": "BRONZE_SERVICE_STAR", "silverDevice": "SILVER_SERVICE_STAR", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence":["SILVER_SERVICE_STAR","BRONZE_SERVICE_STAR"], "verificationStatus":"OFFICIALLY_VERIFIED", "source":"https://www.mycg.uscg.mil/News/Article/2911347/alcgpsc-01522-award-of-the-humanitarian-service-medal-for-haiti-earthquake-reli/", "notes":"The official Coast Guard message specifies a 3/16-inch bronze service star for each subsequent HSM and a silver service star in lieu of five bronze service stars."}
+    },
     "air_medal": {
       "AIR_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"], "verificationStatus":"OFFICIALLY_VERIFIED", "source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"}
     },

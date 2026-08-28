@@ -3273,7 +3273,23 @@
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
-    "devices": {},
+    "devices": {
+      "COAST_GUARD": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_SERVICE_STAR",
+          "silverDevice": "SILVER_SERVICE_STAR",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_SERVICE_STAR",
+          "BRONZE_SERVICE_STAR"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://www.mycg.uscg.mil/News/Article/2911347/alcgpsc-01522-award-of-the-humanitarian-service-medal-for-haiti-earthquake-reli/",
+        "notes": "The official Coast Guard message specifies a 3/16-inch bronze service star for each subsequent HSM and a silver service star in lieu of five bronze service stars."
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/humanitarian_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/humanitarian-service-0.jpg",

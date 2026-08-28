@@ -1,22 +1,15 @@
 {
-  "generatedAt": "2026-08-27T20:47:00.207Z",
+  "generatedAt": "2026-08-28T14:57:05.688Z",
   "counts": {
     "RIBBON": 177,
     "RANK": 6
   },
   "canonicalAwards": 183,
-  "precedenceRecords": 375,
-  "verifiedRules": 20,
+  "precedenceRecords": 433,
+  "verifiedRules": 203,
   "errors": [],
   "warnings": [
-    "american_campaign: unknown precedence.",
-    "european_african_middle_eastern_campaign: unknown precedence.",
-    "asiatic_pacific_campaign: unknown precedence.",
-    "kosovo_campaign: unknown precedence.",
-    "afghanistan_campaign: unknown precedence.",
-    "iraq_campaign: unknown precedence.",
     "air_and_space_campaign: unknown precedence.",
-    "republic_of_vietnam_campaign: unknown precedence.",
     "Duplicate canonical name: medal of honor.",
     "Duplicate canonical name: Armed Forces Reserve.",
     "us_air_force_rank_cnc_and_laser_graphics_wood_working: unknown precedence.",
