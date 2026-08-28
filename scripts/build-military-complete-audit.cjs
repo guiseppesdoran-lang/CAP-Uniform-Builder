@@ -60,6 +60,9 @@ const representationTotals=Object.fromEntries(repNames.map(name=>{
   const rows=awardAssets.filter(item=>item.representation===name);
   return [name,Object.fromEntries(core.REPRESENTATION_STATUSES.map(status=>[status,rows.filter(item=>item.status===status).length]))];
 }));
+const badgeAssetTotals=Object.fromEntries(core.REPRESENTATION_STATUSES.map(status=>[
+  status,badgeAssets.filter(item=>item.status===status).length
+]));
 const discarded=sourceAwards.filter(item=>!core.isWearableAwardRecord(item)).map(item=>({id:item.id,name:item.officialName || item.name,type:item.type}));
 const canonicalIds=new Set(canonical.map(award=>award.id));
 const missingPrecedenceCatalogRecords=Object.entries(precedenceTables).flatMap(([service,table])=>(table.awards || [])
@@ -69,7 +72,12 @@ const byService=Object.fromEntries(core.ORGANIZATIONS.filter(service=>service!==
 ]));
 const summary={
   generatedAt:new Date().toISOString(),sourceRecords:importedAwards.length,officialAdditionRecords:officialAdditions.length,canonicalAwards:canonical.length,
-  discardedNonAwardRecords:discarded.length,badges:badges.length,devices:devices.length,
+  discardedNonAwardRecords:discarded.length,badges:badges.length,
+  explicitBadgeVariants:badges.reduce((sum,badge)=>sum+(badge.variants?.length || 0),0),
+  totalBadgeConfigurations:badges.reduce((sum,badge)=>sum+Math.max(1,badge.variants?.length || 0),0),
+  badgesWithVerifiedPrecedence:badges.filter(badge=>Object.values(badge.precedence || {}).some(rule=>rule?.verified)).length,
+  badgesWithVerifiedPlacement:badges.filter(badge=>Object.values(badge.placement || {}).some(rule=>rule?.status==='OFFICIALLY_VERIFIED')).length,
+  badgeAssetTotals,devices:devices.length,
   missingPrecedenceCatalogRecords:missingPrecedenceCatalogRecords.length,
   byService,representationTotals,
   awardsWithVerifiedPrecedence:canonical.filter(award=>Object.values(award.precedence || {}).some(rule=>rule?.verified)).length,
@@ -92,6 +100,11 @@ const audit=[
   `- Wearable canonical awards after filtering: ${summary.canonicalAwards}`,
   `- Rejected navigation/rank records: ${summary.discardedNonAwardRecords}`,
   `- Military badge records: ${summary.badges}`,
+  `- Explicit badge variants: ${summary.explicitBadgeVariants}`,
+  `- Total badge configurations: ${summary.totalBadgeConfigurations}`,
+  `- Badges with verified precedence: ${summary.badgesWithVerifiedPrecedence}`,
+  `- Badges with verified placement: ${summary.badgesWithVerifiedPlacement}`,
+  `- Badge artwork — ${core.REPRESENTATION_STATUSES.map(status=>`${status}: ${summary.badgeAssetTotals[status]}`).join('; ')}`,
   `- Device definitions: ${summary.devices}`,
   `- Awards with at least one officially verified precedence entry: ${summary.awardsWithVerifiedPrecedence}`,
   `- Awards with an explicit service device rule: ${summary.awardsWithExplicitDeviceRules}`,
@@ -119,7 +132,9 @@ const gaps=[
   '## Blocking gaps','',
   `- Miniature medals needing approved local art: ${representationTotals.MINIATURE_MEDAL.MISSING_ASSET}`,
   `- Full-size medals needing approved local art: ${representationTotals.FULL_SIZE_MEDAL.MISSING_ASSET}`,
-  `- Military badges needing catalog records and approved local art: ${badges.length ? 'catalog partially populated; see manifest' : 'catalog not yet populated'}`,
+  `- Military badge records needing approved local art: ${badgeAssetTotals.MISSING_ASSET}`,
+  `- Badge records without verified precedence: ${summary.badges-summary.badgesWithVerifiedPrecedence}`,
+  `- Badge records without verified placement: ${summary.badges-summary.badgesWithVerifiedPlacement}`,
   `- Awards without explicit service device rules: ${summary.canonicalAwards-summary.awardsWithExplicitDeviceRules}`,
   `- Awards without an officially verified precedence entry: ${summary.canonicalAwards-summary.awardsWithVerifiedPrecedence}`,'',
   '## Required next work','',

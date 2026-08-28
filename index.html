@@ -10373,11 +10373,25 @@ function renderMilitaryBadgeSelector(){
     const status=String(representation.status || 'MISSING_ASSET').replaceAll('_',' ').toLowerCase();
     text.innerHTML=`<strong>${militaryEscapeHtml(badge.officialName || badge.name)}</strong><br><span class="${representation.status==='AVAILABLE'?'hintText':'militarySourceOnly'}">${militaryEscapeHtml(status)} • ${militaryEscapeHtml(badge.family || 'OTHER')}</span>`;
     const info=document.createElement('span'); info.className='hintText'; info.textContent=badge.precedence?.[State.organization]?.verified?'Verified':'Unverified';
+    let variantSelect=null;
+    if(Array.isArray(badge.variants) && badge.variants.length){
+      variantSelect=document.createElement('select'); variantSelect.className='militaryBadgeVariant'; variantSelect.title='Badge level or variant';
+      for(const variant of badge.variants){
+        const option=document.createElement('option'); option.value=variant; option.textContent=variant.replaceAll('_',' ').replace(/\b\w/g,letter=>letter.toUpperCase());
+        variantSelect.appendChild(option);
+      }
+      variantSelect.value=State.militaryBadges?.[badge.id]?.variant || badge.variants[0];
+      variantSelect.addEventListener('change',()=>{
+        box.checked=true;
+        State.militaryBadges[badge.id]={selected:true,variant:variantSelect.value};
+        fullRender();
+      });
+    }
     box.addEventListener('change',()=>{
-      if(box.checked) State.militaryBadges[badge.id]={selected:true}; else delete State.militaryBadges[badge.id];
+      if(box.checked) State.militaryBadges[badge.id]={selected:true,variant:variantSelect?.value || null}; else delete State.militaryBadges[badge.id];
       fullRender();
     });
-    row.append(box,text,info); host.appendChild(row);
+    row.append(box,text); if(variantSelect) row.appendChild(variantSelect); row.appendChild(info); host.appendChild(row);
   }
 }
 

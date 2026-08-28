@@ -28,8 +28,8 @@
       "ARMY": {
         "order": 0,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 0,
@@ -40,8 +40,8 @@
       "MARINE_CORPS": {
         "order": 0,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 0,
@@ -127,6 +127,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "ARMY": {
+        "order": 3,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -252,8 +258,8 @@
       "MARINE_CORPS": {
         "order": 1,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 1,
@@ -272,6 +278,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "ARMY": {
+        "order": 2,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -285,7 +297,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_cross_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_cross_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -442,10 +454,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 4,
+        "order": 10,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 5,
@@ -456,8 +468,8 @@
       "MARINE_CORPS": {
         "order": 4,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 4,
@@ -483,7 +495,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/silver_star_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/silver_star_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -538,10 +550,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 5,
+        "order": 11,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 6,
@@ -552,8 +564,8 @@
       "MARINE_CORPS": {
         "order": 5,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 5,
@@ -579,7 +591,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_superior_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_superior_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -632,10 +644,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 6,
+        "order": 12,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 7,
@@ -646,8 +658,8 @@
       "MARINE_CORPS": {
         "order": 6,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 6,
@@ -673,7 +685,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/legion_of_merit_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/legion_of_merit_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -726,10 +738,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 7,
+        "order": 13,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 8,
@@ -740,8 +752,8 @@
       "MARINE_CORPS": {
         "order": 7,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 7,
@@ -767,7 +779,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/distinguished_flying_cross_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/distinguished_flying_cross_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -781,78 +793,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/distinguished_flying_cross.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "army_soldiers_medal",
-    "name": "army soldiers medal",
-    "officialName": "army soldiers medal",
-    "aliases": [
-      "army soldiers medal",
-      "Soldiers Medal"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "ARMY"
-    ],
-    "precedence": {
-      "ARMY": {
-        "order": 8,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "AIR_FORCE": {
-        "order": 12,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
-      },
-      "SPACE_FORCE": {
-        "order": 12,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/army_soldiers_medal.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/soldiers-medal-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_soldiers_medal_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_soldiers_medal_military_ribbon.html"
-      ],
-      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
-      "regulationDate": "2026-08-28"
-    },
-    "verificationStatus": "CROSS_REFERENCED",
-    "status": "UNKNOWN",
-    "canonicalId": "army_soldiers_medal",
-    "sourceIds": [
-      "army_soldiers_medal"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/army_soldiers_medal.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -960,6 +900,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "ARMY": {
+        "order": 16,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -987,6 +933,78 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/airmans_medal.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "army_soldiers_medal",
+    "name": "army soldiers medal",
+    "officialName": "army soldiers medal",
+    "aliases": [
+      "army soldiers medal",
+      "Soldiers Medal"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "ARMY"
+    ],
+    "precedence": {
+      "ARMY": {
+        "order": 14,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      },
+      "AIR_FORCE": {
+        "order": 12,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 12,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/army_soldiers_medal.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/soldiers-medal-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_soldiers_medal_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_soldiers_medal_military_ribbon.html"
+      ],
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "army_soldiers_medal",
+    "sourceIds": [
+      "army_soldiers_medal"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/army_soldiers_medal.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -1115,10 +1133,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 10,
+        "order": 20,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 12,
@@ -1129,8 +1147,8 @@
       "MARINE_CORPS": {
         "order": 10,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 10,
@@ -1156,7 +1174,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/purple_heart_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/purple_heart_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -1212,10 +1230,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 11,
+        "order": 21,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 13,
@@ -1226,8 +1244,8 @@
       "MARINE_CORPS": {
         "order": 11,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 11,
@@ -1253,7 +1271,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_meritorious_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_meritorious_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -1306,10 +1324,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 12,
+        "order": 22,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 14,
@@ -1320,8 +1338,8 @@
       "MARINE_CORPS": {
         "order": 12,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 12,
@@ -1347,7 +1365,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/meritorious_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/meritorious_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -1533,10 +1551,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 13,
+        "order": 23,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 15,
@@ -1547,8 +1565,8 @@
       "MARINE_CORPS": {
         "order": 13,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 13,
@@ -1588,7 +1606,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/air_medal_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/air_medal_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -1646,10 +1664,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 14,
+        "order": 26,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 17,
@@ -1660,8 +1678,8 @@
       "MARINE_CORPS": {
         "order": 14,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 14,
@@ -1687,7 +1705,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_service_commendation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_service_commendation_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -1701,79 +1719,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/joint_service_commendation.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "army_commendation",
-    "name": "army commendation",
-    "officialName": "army commendation",
-    "aliases": [
-      "army commendation",
-      "Army Commendation",
-      "Army Commendation Military Medal &"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "ARMY"
-    ],
-    "precedence": {
-      "ARMY": {
-        "order": 15,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "AIR_FORCE": {
-        "order": 23,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
-      },
-      "SPACE_FORCE": {
-        "order": 23,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/army_commendation.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_commendation.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_commendation_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_commendation_military_ribbon.html"
-      ],
-      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
-      "regulationDate": "2026-08-28"
-    },
-    "verificationStatus": "CROSS_REFERENCED",
-    "status": "UNKNOWN",
-    "canonicalId": "army_commendation",
-    "sourceIds": [
-      "army_commendation"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/army_commendation.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -1982,6 +1927,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "ARMY": {
+        "order": 30,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -2040,8 +1991,8 @@
       "MARINE_CORPS": {
         "order": 21,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 21,
@@ -2061,7 +2012,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_unit_commendation.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_unit_commendation.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -2166,8 +2117,8 @@
       "MARINE_CORPS": {
         "order": 22,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 22,
@@ -2187,7 +2138,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_meritorious_unit_commendation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_meritorious_unit_commendation_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -2201,6 +2152,79 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_meritorious_unit_commendation.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "army_commendation",
+    "name": "army commendation",
+    "officialName": "army commendation",
+    "aliases": [
+      "army commendation",
+      "Army Commendation",
+      "Army Commendation Military Medal &"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "ARMY"
+    ],
+    "precedence": {
+      "ARMY": {
+        "order": 27,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      },
+      "AIR_FORCE": {
+        "order": 23,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 23,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/army_commendation.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_commendation.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_commendation_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_commendation_military_ribbon.html"
+      ],
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "army_commendation",
+    "sourceIds": [
+      "army_commendation"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/army_commendation.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -2669,10 +2693,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 16,
+        "order": 31,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 20,
@@ -2683,8 +2707,8 @@
       "MARINE_CORPS": {
         "order": 16,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 16,
@@ -2710,7 +2734,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_service_achievement_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_service_achievement_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -2724,79 +2748,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/joint_service_achievement.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "army_achievement",
-    "name": "army achievement",
-    "officialName": "army achievement",
-    "aliases": [
-      "army achievement",
-      "Army Achievement",
-      "Army Achievement Military Medal &"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "ARMY"
-    ],
-    "precedence": {
-      "ARMY": {
-        "order": 17,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "AIR_FORCE": {
-        "order": 28,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
-      },
-      "SPACE_FORCE": {
-        "order": 28,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/army_achievement.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_achievement.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_achievement_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_achievement_military_ribbon.html"
-      ],
-      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
-      "regulationDate": "2026-08-28"
-    },
-    "verificationStatus": "CROSS_REFERENCED",
-    "status": "UNKNOWN",
-    "canonicalId": "army_achievement",
-    "sourceIds": [
-      "army_achievement"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/army_achievement.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -3051,6 +3002,12 @@
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 35,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -3064,9 +3021,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/coast_guard_achievement_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/coast_guard_achievement_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "coast_guard_achievement",
     "sourceIds": [
@@ -3077,6 +3035,79 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_achievement.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "army_achievement",
+    "name": "army achievement",
+    "officialName": "army achievement",
+    "aliases": [
+      "army achievement",
+      "Army Achievement",
+      "Army Achievement Military Medal &"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "ARMY"
+    ],
+    "precedence": {
+      "ARMY": {
+        "order": 32,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      },
+      "AIR_FORCE": {
+        "order": 28,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 28,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/army_achievement.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_achievement.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_achievement_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_achievement_military_ribbon.html"
+      ],
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "army_achievement",
+    "sourceIds": [
+      "army_achievement"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/army_achievement.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -3116,10 +3147,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "ARMY": {
-        "order": 18,
+        "order": 37,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 33,
@@ -3130,8 +3161,8 @@
       "MARINE_CORPS": {
         "order": 24,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 24,
@@ -3151,7 +3182,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/prisoner_of_war_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/prisoner_of_war_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -3165,65 +3196,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/prisoner_of_war.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "army_good_conduct",
-    "name": "Army Good Conduct",
-    "officialName": "Army Good Conduct",
-    "aliases": [
-      "Army Good Conduct",
-      "Army Good Conduct Military Medal &"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "ARMY"
-    ],
-    "precedence": {
-      "ARMY": {
-        "order": 19,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/army_good_conduct.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_good_conduct.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_good_conduct_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_good_conduct_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "army_good_conduct",
-    "sourceIds": [
-      "army_good_conduct"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/army_good_conduct.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -3254,8 +3226,14 @@
       "MARINE_CORPS": {
         "order": 25,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "ARMY": {
+        "order": 41,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -3269,9 +3247,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_good_conduct_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_good_conduct_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "marine_corps_good_conduct",
     "sourceIds": [
@@ -3315,6 +3294,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "ARMY": {
+        "order": 40,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -3375,6 +3360,12 @@
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 43,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -3388,9 +3379,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/coast_guard_good_conduct.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/coast_guard_good_conduct.html"
       ],
-      "regulation": null
+      "regulation": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "coast_guard_good_conduct",
     "sourceIds": [
@@ -3474,6 +3466,66 @@
     }
   },
   {
+    "id": "army_good_conduct",
+    "name": "Army Good Conduct",
+    "officialName": "Army Good Conduct",
+    "aliases": [
+      "Army Good Conduct",
+      "Army Good Conduct Military Medal &"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "ARMY"
+    ],
+    "precedence": {
+      "ARMY": {
+        "order": 39,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/army_good_conduct.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_good_conduct.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_good_conduct_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_good_conduct_military_ribbon.html"
+      ],
+      "regulation": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "army_good_conduct",
+    "sourceIds": [
+      "army_good_conduct"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/army_good_conduct.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "navy_presidential_unit_citation",
     "name": "Navy Presidential Unit Citation",
     "officialName": "Navy Presidential Unit Citation",
@@ -3500,8 +3552,8 @@
       "MARINE_CORPS": {
         "order": 19,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 19,
@@ -3521,7 +3573,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_presidential_unit_citation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_presidential_unit_citation_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -3662,8 +3714,8 @@
       "MARINE_CORPS": {
         "order": 20,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 20,
@@ -3683,7 +3735,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_meritorious_unit_award_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_meritorious_unit_award_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -4080,10 +4132,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 55,
+        "order": 61,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 54,
@@ -4103,7 +4155,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/philippine_presidential_unit_citation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/philippine_presidential_unit_citation_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -4169,10 +4221,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 56,
+        "order": 62,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 55,
@@ -4192,7 +4244,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_presidential_unit_citation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_presidential_unit_citation_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -4396,10 +4448,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 58,
+        "order": 64,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 57,
@@ -4419,7 +4471,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_gallantry_cross_unit_citation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_gallantry_cross_unit_citation_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -4484,10 +4536,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 59,
+        "order": 65,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 58,
@@ -4507,7 +4559,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_civil_actions_unit_citation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_civil_actions_unit_citation_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -4651,6 +4703,218 @@
     }
   },
   {
+    "id": "american_campaign",
+    "name": "american campaign",
+    "officialName": "american campaign",
+    "aliases": [
+      "american campaign",
+      "American Campaign"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "MARINE_CORPS": {
+        "order": 30,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "ARMY": {
+        "order": 48,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/american_campaign.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/american-campaign-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/american_campaign_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/american_campaign_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "american_campaign",
+    "sourceIds": [
+      "american_campaign"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/american_campaign.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "european_african_middle_eastern_campaign",
+    "name": "european african middle eastern campaign",
+    "officialName": "european african middle eastern campaign",
+    "aliases": [
+      "european african middle eastern campaign",
+      "European-African Middle Eastern Campaign",
+      "European African Middle Eastern Campaign",
+      "European African Middle Easteran Campaign"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "MARINE_CORPS": {
+        "order": 31,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "ARMY": {
+        "order": 50,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/european_african_middle_eastern_campaign.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/european-africian-middle-eastern-campaign-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/european_african-middle_eastern_campaign_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/european_african-middle_eastern_campaign_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "european_african_middle_eastern_campaign",
+    "sourceIds": [
+      "european_african_middle_eastern_campaign"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/european_african_middle_eastern_campaign.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "asiatic_pacific_campaign",
+    "name": "asiatic pacific campaign",
+    "officialName": "asiatic pacific campaign",
+    "aliases": [
+      "asiatic pacific campaign",
+      "Asiatic Pacific Campaign"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "MARINE_CORPS": {
+        "order": 32,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "ARMY": {
+        "order": 49,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/asiatic_pacific_campaign.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/asiatic-pacific-campaign-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/asiatic_pacific_campaign_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/asiatic_pacific_campaign_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "asiatic_pacific_campaign",
+    "sourceIds": [
+      "asiatic_pacific_campaign"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/asiatic_pacific_campaign.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "kosovo_campaign",
     "name": "kosovo campaign",
     "officialName": "kosovo campaign",
@@ -4674,6 +4938,18 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "MARINE_CORPS": {
+        "order": 42,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "ARMY": {
+        "order": 61,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -4687,7 +4963,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/kosovo_campaign.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/kosovo_campaign.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -4738,6 +5014,18 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "MARINE_CORPS": {
+        "order": 43,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "ARMY": {
+        "order": 62,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -4751,7 +5039,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/afghanistan_campaign_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/afghanistan_campaign_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -4802,6 +5090,18 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "MARINE_CORPS": {
+        "order": 44,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "ARMY": {
+        "order": 63,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -4815,7 +5115,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/iraq_campaign_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/iraq_campaign_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -4866,6 +5166,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "MARINE_CORPS": {
+        "order": 75,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       }
     },
     "devices": {},
@@ -4879,7 +5185,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/republic_of_vietnam_campaign_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/republic_of_vietnam_campaign_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -4960,176 +5266,6 @@
     }
   },
   {
-    "id": "american_campaign",
-    "name": "american campaign",
-    "officialName": "american campaign",
-    "aliases": [
-      "american campaign",
-      "American Campaign"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/american_campaign.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/american-campaign-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/american_campaign_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/american_campaign_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "american_campaign",
-    "sourceIds": [
-      "american_campaign"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/american_campaign.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "asiatic_pacific_campaign",
-    "name": "asiatic pacific campaign",
-    "officialName": "asiatic pacific campaign",
-    "aliases": [
-      "asiatic pacific campaign",
-      "Asiatic Pacific Campaign"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/asiatic_pacific_campaign.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/asiatic-pacific-campaign-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/asiatic_pacific_campaign_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/asiatic_pacific_campaign_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "asiatic_pacific_campaign",
-    "sourceIds": [
-      "asiatic_pacific_campaign"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/asiatic_pacific_campaign.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "european_african_middle_eastern_campaign",
-    "name": "european african middle eastern campaign",
-    "officialName": "european african middle eastern campaign",
-    "aliases": [
-      "european african middle eastern campaign",
-      "European-African Middle Eastern Campaign",
-      "European African Middle Eastern Campaign",
-      "European African Middle Easteran Campaign"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/european_african_middle_eastern_campaign.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/european-africian-middle-eastern-campaign-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/european_african-middle_eastern_campaign_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/european_african-middle_eastern_campaign_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "european_african_middle_eastern_campaign",
-    "sourceIds": [
-      "european_african_middle_eastern_campaign"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/european_african_middle_eastern_campaign.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
     "id": "marine_corps_expeditionary",
     "name": "Marine Corps Expeditionary",
     "officialName": "Marine Corps Expeditionary",
@@ -5146,8 +5282,8 @@
       "MARINE_CORPS": {
         "order": 27,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       }
     },
     "devices": {},
@@ -5161,9 +5297,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_expeditionary_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_expeditionary_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "marine_corps_expeditionary",
     "sourceIds": [
@@ -5174,94 +5311,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/marine_corps_expeditionary.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "armed_forces_expeditionary",
-    "name": "armed forces expeditionary",
-    "officialName": "armed forces expeditionary",
-    "aliases": [
-      "armed forces expeditionary",
-      "Armed Forces Expeditionary"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {
-      "AIR_FORCE": {
-        "order": 39,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "ARMY": {
-        "order": 29,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "COAST_GUARD": {
-        "order": 48,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "MARINE_CORPS": {
-        "order": 36,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "NAVY": {
-        "order": 33,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/armed_forces_expeditionary.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-expeditionary-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/armed_forces_expeditionary_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/armed_forces_expeditionary_military_ribbon.html"
-      ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
-      "regulationDate": "2026-08-28"
-    },
-    "verificationStatus": "CROSS_REFERENCED",
-    "status": "UNKNOWN",
-    "canonicalId": "armed_forces_expeditionary",
-    "sourceIds": [
-      "armed_forces_expeditionary"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/armed_forces_expeditionary.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -5428,6 +5477,94 @@
     }
   },
   {
+    "id": "armed_forces_expeditionary",
+    "name": "armed forces expeditionary",
+    "officialName": "armed forces expeditionary",
+    "aliases": [
+      "armed forces expeditionary",
+      "Armed Forces Expeditionary"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "AIR_FORCE": {
+        "order": 39,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 58,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      },
+      "COAST_GUARD": {
+        "order": 48,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "MARINE_CORPS": {
+        "order": 39,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "NAVY": {
+        "order": 33,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/armed_forces_expeditionary.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/armed-forces-expeditionary-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/armed_forces_expeditionary_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/armed_forces_expeditionary_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "armed_forces_expeditionary",
+    "sourceIds": [
+      "armed_forces_expeditionary"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/armed_forces_expeditionary.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "air_force_expeditionary",
     "name": "air force expeditionary",
     "officialName": "air force expeditionary",
@@ -5531,10 +5668,10 @@
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
-        "order": 2,
+        "order": 5,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 2,
@@ -5545,8 +5682,8 @@
       "MARINE_CORPS": {
         "order": 2,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 2,
@@ -5572,7 +5709,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_distinguished_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_distinguished_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -5737,14 +5874,20 @@
       "MARINE_CORPS": {
         "order": 3,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 3,
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "ARMY": {
+        "order": 7,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -5758,7 +5901,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_distinguished_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_distinguished_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -5805,6 +5948,12 @@
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 9,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -5818,9 +5967,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/coast_guard_distinguished_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/coast_guard_distinguished_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "coast_guard_distinguished_service",
     "sourceIds": [
@@ -5991,182 +6141,6 @@
     }
   },
   {
-    "id": "korean_service",
-    "name": "korean service",
-    "officialName": "korean service",
-    "aliases": [
-      "korean service",
-      "Korean Service"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {
-      "AIR_FORCE": {
-        "order": 37,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "ARMY": {
-        "order": 27,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "COAST_GUARD": {
-        "order": 45,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "MARINE_CORPS": {
-        "order": 34,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "NAVY": {
-        "order": 31,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/korean_service.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/korean-service-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_service.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_service.html"
-      ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
-      "regulationDate": "2026-08-28"
-    },
-    "verificationStatus": "CROSS_REFERENCED",
-    "status": "UNKNOWN",
-    "canonicalId": "korean_service",
-    "sourceIds": [
-      "korean_service"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/korean_service.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "antarctica_service",
-    "name": "antarctica service",
-    "officialName": "antarctica service",
-    "aliases": [
-      "antarctica service",
-      "Antarctica Service"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {
-      "AIR_FORCE": {
-        "order": 38,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "ARMY": {
-        "order": 28,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "COAST_GUARD": {
-        "order": 46,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "MARINE_CORPS": {
-        "order": 35,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "NAVY": {
-        "order": 32,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/antarctica_service.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/antarctica-service-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/antarctica_service_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/antarctica_service_military_ribbon.html"
-      ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
-      "regulationDate": "2026-08-28"
-    },
-    "verificationStatus": "CROSS_REFERENCED",
-    "status": "UNKNOWN",
-    "canonicalId": "antarctica_service",
-    "sourceIds": [
-      "antarctica_service"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/antarctica_service.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
     "id": "china_service",
     "name": "China Service",
     "officialName": "China Service",
@@ -6192,8 +6166,8 @@
       "MARINE_CORPS": {
         "order": 28,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 30,
@@ -6213,9 +6187,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/china_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/china_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "china_service",
     "sourceIds": [
@@ -6262,10 +6237,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 31,
+        "order": 34,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 29,
@@ -6285,7 +6260,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_occupation_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_occupation_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -6313,12 +6288,12 @@
     }
   },
   {
-    "id": "vietnam_service",
-    "name": "vietnam service",
-    "officialName": "vietnam service",
+    "id": "korean_service",
+    "name": "korean service",
+    "officialName": "korean service",
     "aliases": [
-      "vietnam service",
-      "Vietnam Service"
+      "korean service",
+      "Korean Service"
     ],
     "type": "RIBBON",
     "awardClass": "FEDERAL_MILITARY",
@@ -6332,19 +6307,19 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 40,
+        "order": 37,
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "ARMY": {
-        "order": 30,
+        "order": 55,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
-        "order": 49,
+        "order": 45,
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
@@ -6352,11 +6327,11 @@
       "MARINE_CORPS": {
         "order": 37,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
-        "order": 34,
+        "order": 31,
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
@@ -6364,29 +6339,29 @@
     },
     "devices": {},
     "images": {
-      "ribbon": "images/military-ribbons/vietnam_service.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/vietnam-bumpersticker-0.jpg",
+      "ribbon": "images/military-ribbons/korean_service.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/korean-service-bumpersticker-0.jpg",
       "assetStatus": "LOCAL_IMPORTED"
     },
     "sources": {
       "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_service_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_service_military_ribbon.html"
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_service.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_service.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
-    "canonicalId": "vietnam_service",
+    "canonicalId": "korean_service",
     "sourceIds": [
-      "vietnam_service"
+      "korean_service"
     ],
     "representations": {
       "ribbon": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-ribbons/vietnam_service.jpg"
+        "asset": "images/military-ribbons/korean_service.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -6488,6 +6463,94 @@
     }
   },
   {
+    "id": "antarctica_service",
+    "name": "antarctica service",
+    "officialName": "antarctica service",
+    "aliases": [
+      "antarctica service",
+      "Antarctica Service"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "AIR_FORCE": {
+        "order": 38,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 56,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      },
+      "COAST_GUARD": {
+        "order": 46,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "MARINE_CORPS": {
+        "order": 38,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "NAVY": {
+        "order": 32,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/antarctica_service.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/antarctica-service-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/antarctica_service_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/antarctica_service_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "antarctica_service",
+    "sourceIds": [
+      "antarctica_service"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/antarctica_service.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "global_war_on_terrorism_service",
     "name": "global war on terrorism service",
     "officialName": "global war on terrorism service",
@@ -6575,6 +6638,94 @@
     }
   },
   {
+    "id": "vietnam_service",
+    "name": "vietnam service",
+    "officialName": "vietnam service",
+    "aliases": [
+      "vietnam service",
+      "Vietnam Service"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "AIR_FORCE": {
+        "order": 40,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 59,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      },
+      "COAST_GUARD": {
+        "order": 49,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "MARINE_CORPS": {
+        "order": 40,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "NAVY": {
+        "order": 34,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/vietnam_service.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/vietnam-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_service_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_service_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "vietnam_service",
+    "sourceIds": [
+      "vietnam_service"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/vietnam_service.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "korean_defense_service",
     "name": "korean defense service",
     "officialName": "korean defense service",
@@ -6600,10 +6751,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "ARMY": {
-        "order": 34,
+        "order": 66,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 53,
@@ -6612,10 +6763,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 41,
+        "order": 47,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 41,
@@ -6635,7 +6786,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_defense_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_defense_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -6689,10 +6840,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "ARMY": {
-        "order": 35,
+        "order": 67,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       },
       "COAST_GUARD": {
         "order": 54,
@@ -6701,10 +6852,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 42,
+        "order": 48,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 42,
@@ -6740,7 +6891,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/armed_forces_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/armed_forces_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -6754,240 +6905,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/armed_forces_service.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "humanitarian_service",
-    "name": "humanitarian service",
-    "officialName": "humanitarian service",
-    "aliases": [
-      "humanitarian service",
-      "Humanitarian Service"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {
-      "AIR_FORCE": {
-        "order": 46,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "ARMY": {
-        "order": 36,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "COAST_GUARD": {
-        "order": 55,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "MARINE_CORPS": {
-        "order": 43,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "NAVY": {
-        "order": 43,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/humanitarian_service.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/humanitarian-service-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/humanitarian_service_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/humanitarian_service_military_ribbon.html"
-      ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
-      "regulationDate": "2026-08-28"
-    },
-    "verificationStatus": "CROSS_REFERENCED",
-    "status": "UNKNOWN",
-    "canonicalId": "humanitarian_service",
-    "sourceIds": [
-      "humanitarian_service"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/humanitarian_service.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "outstanding_volunteer_service",
-    "name": "outstanding volunteer service",
-    "officialName": "outstanding volunteer service",
-    "aliases": [
-      "outstanding volunteer service",
-      "Outstanding Volunteer Service"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {
-      "AIR_FORCE": {
-        "order": 47,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "ARMY": {
-        "order": 37,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "COAST_GUARD": {
-        "order": 56,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "MARINE_CORPS": {
-        "order": 44,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "NAVY": {
-        "order": 44,
-        "side": "LEFT",
-        "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/outstanding_volunteer_service.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/outstanding-volunteer-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/outstanding_volunteer_service_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/outstanding_volunteer_service_military_ribbon.html"
-      ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
-      "regulationDate": "2026-08-28"
-    },
-    "verificationStatus": "CROSS_REFERENCED",
-    "status": "UNKNOWN",
-    "canonicalId": "outstanding_volunteer_service",
-    "sourceIds": [
-      "outstanding_volunteer_service"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/outstanding_volunteer_service.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "army_service",
-    "name": "Army Service",
-    "officialName": "Army Service",
-    "aliases": [
-      "Army Service"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "ARMY"
-    ],
-    "precedence": {
-      "ARMY": {
-        "order": 41,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/army_service.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_service.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_service_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_service_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "army_service",
-    "sourceIds": [
-      "army_service"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/army_service.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -7061,6 +6978,182 @@
     }
   },
   {
+    "id": "humanitarian_service",
+    "name": "humanitarian service",
+    "officialName": "humanitarian service",
+    "aliases": [
+      "humanitarian service",
+      "Humanitarian Service"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "AIR_FORCE": {
+        "order": 46,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 68,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      },
+      "COAST_GUARD": {
+        "order": 55,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "MARINE_CORPS": {
+        "order": 49,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "NAVY": {
+        "order": 43,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/humanitarian_service.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/humanitarian-service-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/humanitarian_service_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/humanitarian_service_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "humanitarian_service",
+    "sourceIds": [
+      "humanitarian_service"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/humanitarian_service.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "outstanding_volunteer_service",
+    "name": "outstanding volunteer service",
+    "officialName": "outstanding volunteer service",
+    "aliases": [
+      "outstanding volunteer service",
+      "Outstanding Volunteer Service"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "AIR_FORCE": {
+        "order": 47,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 69,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      },
+      "COAST_GUARD": {
+        "order": 56,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "MARINE_CORPS": {
+        "order": 50,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "NAVY": {
+        "order": 44,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/outstanding_volunteer_service.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/outstanding-volunteer-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/outstanding_volunteer_service_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/outstanding_volunteer_service_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "outstanding_volunteer_service",
+    "sourceIds": [
+      "outstanding_volunteer_service"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/outstanding_volunteer_service.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "navy_sea_service_deployment",
     "name": "Navy Sea Service Deployment",
     "officialName": "Navy Sea Service Deployment",
@@ -7076,10 +7169,10 @@
     ],
     "precedence": {
       "MARINE_CORPS": {
-        "order": 45,
+        "order": 51,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 45,
@@ -7099,7 +7192,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_sea_service_deployment_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_sea_service_deployment_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -7142,10 +7235,10 @@
     ],
     "precedence": {
       "MARINE_CORPS": {
-        "order": 46,
+        "order": 52,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 46,
@@ -7165,7 +7258,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/navy_arctic_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/navy_arctic_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -7354,10 +7447,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 63,
+        "order": 69,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 59,
@@ -7377,7 +7470,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/united_nations_service.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/united_nations_service.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -7844,6 +7937,65 @@
     }
   },
   {
+    "id": "army_service",
+    "name": "Army Service",
+    "officialName": "Army Service",
+    "aliases": [
+      "Army Service"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "ARMY"
+    ],
+    "precedence": {
+      "ARMY": {
+        "order": 73,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/army_service.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_service.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_service_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_service_military_ribbon.html"
+      ],
+      "regulation": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "army_service",
+    "sourceIds": [
+      "army_service"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/army_service.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "selected_marine_corps_reserve",
     "name": "Selected Marine Corps Reserve",
     "officialName": "Selected Marine Corps Reserve",
@@ -7860,8 +8012,8 @@
       "MARINE_CORPS": {
         "order": 26,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       }
     },
     "devices": {},
@@ -7875,9 +8027,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_selected_marine_corps_reserve_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_selected_marine_corps_reserve_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "selected_marine_corps_reserve",
     "sourceIds": [
@@ -8128,64 +8281,6 @@
     }
   },
   {
-    "id": "marine_corps_reserve",
-    "name": "Marine Corps Reserve",
-    "officialName": "Marine Corps Reserve",
-    "aliases": [
-      "Marine Corps Reserve"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "MARINE_CORPS"
-    ],
-    "precedence": {
-      "MARINE_CORPS": {
-        "order": 53,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/marine_corps_reserve.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/marine-corps-reserve-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_reserve_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_reserve_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "marine_corps_reserve",
-    "sourceIds": [
-      "marine_corps_reserve"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/marine_corps_reserve.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
     "id": "naval_reserve",
     "name": "Naval Reserve",
     "officialName": "Naval Reserve",
@@ -8231,6 +8326,65 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/naval_reserve.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "marine_corps_reserve",
+    "name": "Marine Corps Reserve",
+    "officialName": "Marine Corps Reserve",
+    "aliases": [
+      "Marine Corps Reserve"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "MARINE_CORPS"
+    ],
+    "precedence": {
+      "MARINE_CORPS": {
+        "order": 60,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/marine_corps_reserve.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/marine-corps-reserve-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_reserve_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_reserve_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "marine_corps_reserve",
+    "sourceIds": [
+      "marine_corps_reserve"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/marine_corps_reserve.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -8586,6 +8740,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "ARMY": {
+        "order": 17,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -8704,6 +8864,12 @@
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 24,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -8717,9 +8883,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/silver_life_saving_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/silver_life_saving_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "silver_life_saving",
     "sourceIds": [
@@ -8761,8 +8928,8 @@
       "MARINE_CORPS": {
         "order": 18,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 18,
@@ -8782,7 +8949,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/combat_action_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/combat_action_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -8829,6 +8996,12 @@
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 36,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
       }
     },
     "devices": {},
@@ -8842,9 +9015,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/air_force_combat_action_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/air_force_combat_action_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "air_force_combat_action",
     "sourceIds": [
@@ -8913,94 +9087,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/dot_9_11_medal.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "american_defense",
-    "name": "american defense",
-    "officialName": "american defense",
-    "aliases": [
-      "american defense",
-      "American Defense Service",
-      "American Defense"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {
-      "AIR_FORCE": {
-        "order": 32,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "ARMY": {
-        "order": 21,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "COAST_GUARD": {
-        "order": 39,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "MARINE_CORPS": {
-        "order": 29,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "NAVY": {
-        "order": 31,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/american_defense.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/american-defense-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/american_defense.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/american_defense.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "american_defense",
-    "sourceIds": [
-      "american_defense"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/american_defense.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -9092,8 +9178,8 @@
       "MARINE_CORPS": {
         "order": 23,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 23,
@@ -9113,7 +9199,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_e_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_e_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -9390,94 +9476,6 @@
     }
   },
   {
-    "id": "medal_for_humane_action",
-    "name": "medal for humane action",
-    "officialName": "medal for humane action",
-    "aliases": [
-      "medal for humane action",
-      "Medal for Humane Action",
-      "Medal for Human Action"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {
-      "AIR_FORCE": {
-        "order": 35,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "ARMY": {
-        "order": 25,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "COAST_GUARD": {
-        "order": 43,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "MARINE_CORPS": {
-        "order": 32,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "NAVY": {
-        "order": 35,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/medal_for_humane_action.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/medal-for-humane-action-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/medal_for_humane_action_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/medal_for_humane_action_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "medal_for_humane_action",
-    "sourceIds": [
-      "medal_for_humane_action"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/medal_for_humane_action.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
     "id": "air_force_combat_readiness",
     "name": "air force combat readiness",
     "officialName": "air force combat readiness",
@@ -9643,6 +9641,95 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_good_conduct.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "american_defense",
+    "name": "american defense",
+    "officialName": "american defense",
+    "aliases": [
+      "american defense",
+      "American Defense Service",
+      "American Defense"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "AIR_FORCE": {
+        "order": 32,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 46,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      },
+      "COAST_GUARD": {
+        "order": 39,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "MARINE_CORPS": {
+        "order": 29,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "NAVY": {
+        "order": 31,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/american_defense.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/american-defense-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/american_defense.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/american_defense.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "american_defense",
+    "sourceIds": [
+      "american_defense"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/american_defense.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -9932,6 +10019,95 @@
     }
   },
   {
+    "id": "medal_for_humane_action",
+    "name": "medal for humane action",
+    "officialName": "medal for humane action",
+    "aliases": [
+      "medal for humane action",
+      "Medal for Humane Action",
+      "Medal for Human Action"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "AIR_FORCE": {
+        "order": 35,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "ARMY": {
+        "order": 53,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      },
+      "COAST_GUARD": {
+        "order": 43,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "MARINE_CORPS": {
+        "order": 35,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      },
+      "NAVY": {
+        "order": 35,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/medal_for_humane_action.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/medal-for-humane-action-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/medal_for_humane_action_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/medal_for_humane_action_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "medal_for_humane_action",
+    "sourceIds": [
+      "medal_for_humane_action"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/medal_for_humane_action.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "coast_guard_enlisted_person_of_the_year",
     "name": "Coast Guard Enlisted Person of the Year",
     "officialName": "Coast Guard Enlisted Person of the Year",
@@ -9977,64 +10153,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_enlisted_person_of_the_year.png"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "army_sea_duty",
-    "name": "Army Sea Duty",
-    "officialName": "Army Sea Duty",
-    "aliases": [
-      "Army Sea Duty"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "ARMY"
-    ],
-    "precedence": {
-      "ARMY": {
-        "order": 38,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/army_sea_duty.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/army-sea-duty-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_sea_duty.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_sea_duty.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "army_sea_duty",
-    "sourceIds": [
-      "army_sea_duty"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/army_sea_duty.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -10226,10 +10344,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 60,
+        "order": 66,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 63,
@@ -10249,9 +10367,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/philippine_defense_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/philippine_defense_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "philippine_defense",
     "sourceIds": [
@@ -10306,10 +10425,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 61,
+        "order": 67,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 64,
@@ -10329,9 +10448,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/philippine_liberation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/philippine_liberation_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "philippine_liberation",
     "sourceIds": [
@@ -10386,10 +10506,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 62,
+        "order": 68,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 65,
@@ -10409,9 +10529,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/philippine_independence_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/philippine_independence_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "philippine_independence",
     "sourceIds": [
@@ -10498,64 +10619,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/overseas_short_tour.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "marine_corps_recruiting",
-    "name": "Marine Corps Recruiting",
-    "officialName": "Marine Corps Recruiting",
-    "aliases": [
-      "Marine Corps Recruiting"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "MARINE_CORPS"
-    ],
-    "precedence": {
-      "MARINE_CORPS": {
-        "order": 48,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/marine_corps_recruiting.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/mc-recruiting-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_recruiting_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_recruiting_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "marine_corps_recruiting",
-    "sourceIds": [
-      "marine_corps_recruiting"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/marine_corps_recruiting.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -10683,10 +10746,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 68,
+        "order": 74,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 64,
@@ -10706,7 +10769,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/inter_american_defense_board.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/inter_american_defense_board.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -10720,64 +10783,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/inter_american_defense_board.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "marine_corps_drill_instructor",
-    "name": "Marine Corps Drill Instructor",
-    "officialName": "Marine Corps Drill Instructor",
-    "aliases": [
-      "Marine Corps Drill Instructor"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "MARINE_CORPS"
-    ],
-    "precedence": {
-      "MARINE_CORPS": {
-        "order": 49,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/marine_corps_drill_instructor.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/mc-drill-instructor-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_drill_instructor_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_drill_instructor_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "marine_corps_drill_instructor",
-    "sourceIds": [
-      "marine_corps_drill_instructor"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/marine_corps_drill_instructor.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -10889,10 +10894,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 64,
+        "order": 70,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 60,
@@ -10912,7 +10917,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/united_nations_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/united_nations_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -10926,64 +10931,6 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/united_nations.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "marine_corps_combat_instructor",
-    "name": "Marine Corps Combat Instructor",
-    "officialName": "Marine Corps Combat Instructor",
-    "aliases": [
-      "Marine Corps Combat Instructor"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "MARINE_CORPS"
-    ],
-    "precedence": {
-      "MARINE_CORPS": {
-        "order": 51,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/marine_corps_combat_instructor.png",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/marine-corps-combat-instructor2.png",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_combat_instructor_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_combat_instructor_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "marine_corps_combat_instructor",
-    "sourceIds": [
-      "marine_corps_combat_instructor"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/marine_corps_combat_instructor.png"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -11125,10 +11072,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "MARINE_CORPS": {
-        "order": 66,
+        "order": 72,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
       },
       "NAVY": {
         "order": 62,
@@ -11148,7 +11095,7 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/nato_kosovo_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/nato_kosovo_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
       "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
@@ -11421,6 +11368,65 @@
     }
   },
   {
+    "id": "marine_corps_recruiting",
+    "name": "Marine Corps Recruiting",
+    "officialName": "Marine Corps Recruiting",
+    "aliases": [
+      "Marine Corps Recruiting"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "MARINE_CORPS"
+    ],
+    "precedence": {
+      "MARINE_CORPS": {
+        "order": 54,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/marine_corps_recruiting.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/mc-recruiting-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_recruiting_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_recruiting_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "marine_corps_recruiting",
+    "sourceIds": [
+      "marine_corps_recruiting"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/marine_corps_recruiting.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "navy_ceremonial_guard",
     "name": "Navy Ceremonial Guard",
     "officialName": "Navy Ceremonial Guard",
@@ -11644,6 +11650,65 @@
     }
   },
   {
+    "id": "marine_corps_drill_instructor",
+    "name": "Marine Corps Drill Instructor",
+    "officialName": "Marine Corps Drill Instructor",
+    "aliases": [
+      "Marine Corps Drill Instructor"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "MARINE_CORPS"
+    ],
+    "precedence": {
+      "MARINE_CORPS": {
+        "order": 55,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/marine_corps_drill_instructor.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/mc-drill-instructor-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_drill_instructor_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_drill_instructor_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "marine_corps_drill_instructor",
+    "sourceIds": [
+      "marine_corps_drill_instructor"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/marine_corps_drill_instructor.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "air_force_small_arms_expert_marksmanship",
     "name": "air force small arms expert marksmanship",
     "officialName": "air force small arms expert marksmanship",
@@ -11762,6 +11827,65 @@
     }
   },
   {
+    "id": "marine_corps_combat_instructor",
+    "name": "Marine Corps Combat Instructor",
+    "officialName": "Marine Corps Combat Instructor",
+    "aliases": [
+      "Marine Corps Combat Instructor"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "MARINE_CORPS"
+    ],
+    "precedence": {
+      "MARINE_CORPS": {
+        "order": 57,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/marine_corps_combat_instructor.png",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/marine-corps-combat-instructor2.png",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_combat_instructor_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_marine_corps_combat_instructor_military_ribbon.html"
+      ],
+      "regulation": "https://www.marines.mil/Portals/1/Publications/MCO%201020.34H%20v2.pdf#page=123",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "marine_corps_combat_instructor",
+    "sourceIds": [
+      "marine_corps_combat_instructor"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/marine_corps_combat_instructor.png"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
     "id": "coast_guard_restricted_duty",
     "name": "Coast Guard Restricted Duty",
     "officialName": "Coast Guard Restricted Duty",
@@ -11807,6 +11931,65 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_restricted_duty.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "army_sea_duty",
+    "name": "Army Sea Duty",
+    "officialName": "Army Sea Duty",
+    "aliases": [
+      "Army Sea Duty"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "ARMY"
+    ],
+    "precedence": {
+      "ARMY": {
+        "order": 70,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/army_sea_duty.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/army-sea-duty-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_sea_duty.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_sea_duty.html"
+      ],
+      "regulation": "https://tioh.army.mil/Catalog/PageFlow.aspx?CategoryId=5&grp=4&menu=Decorations+and+Medals",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "army_sea_duty",
+    "sourceIds": [
+      "army_sea_duty"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/army_sea_duty.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",

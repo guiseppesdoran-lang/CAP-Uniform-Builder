@@ -18,7 +18,7 @@ let browser;
     if(/ERR_NETWORK_ACCESS_DENIED|favicon.*404|status of 404/i.test(text)) return;
     errors.push(text);
   });
-  await page.goto(process.env.CAPUB_URL || 'http://127.0.0.1:8765/',{waitUntil:'networkidle'});
+  await page.goto(process.env.CAPUB_URL || 'http://127.0.0.1:8765/',{waitUntil:'networkidle',timeout:30000});
   if(errors.length) throw new Error(`Initial browser errors:\n${errors.join('\n')}`);
   assert.equal(await page.evaluate(()=>!!window.State),true,'builder State was not initialized');
 
@@ -100,6 +100,13 @@ let browser;
   assert.equal(await page.evaluate(()=>Object.keys(window.State.militaryBadges || {}).length),1,'military badge state was not updated');
   assert.match(await page.locator('.militaryPreviewNote').innerText(),/selected badge\(s\) have no approved local artwork and were not fabricated/);
   assert.equal(await page.locator('.militaryBadgeTile').count(),0,'missing military badge artwork was fabricated');
+
+  await page.locator('#organizationSelect').selectOption('ARMY');
+  await page.locator('#militaryBadgeSection').evaluate(element=>element.open=true);
+  assert.ok(await badgeResults.locator('.militaryAwardOption').count()>=30,'official Army badge families were not listed');
+  const aviatorRow=badgeResults.locator('[data-badge-id="army_aviator_badge"]');
+  await aviatorRow.locator('.militaryBadgeVariant').selectOption('master');
+  assert.deepEqual(await page.evaluate(()=>window.State.militaryBadges.army_aviator_badge),{selected:true,variant:'master'});
   assert.deepEqual(errors,[],'browser errors were reported');
-  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,missingBadgeNotFabricated:true},null,2)+'\n');
+  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,missingBadgeNotFabricated:true,armyBadgeFamiliesListed:true,badgeVariantSelectionPersisted:true},null,2)+'\n');
 })().catch(error=>{ console.error(error); process.exitCode=1; }).finally(async()=>{ if(browser) await browser.close(); });

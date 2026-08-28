@@ -250,7 +250,44 @@ test('military badge authorization and precedence are service-specific', () => {
   const headquarters=badges.find(badge=>badge.id==='headquarters_space_force_staff_identification_badge');
   assert.equal(core.isBadgeAuthorizedForService(headquarters,'SPACE_FORCE'),true);
   assert.equal(core.isBadgeAuthorizedForService(headquarters,'AIR_FORCE'),false);
-  const sorted=core.sortBadgesForMember([...badges].reverse(),{organization:'SPACE_FORCE'});
+  const sorted=core.sortBadgesForMember(
+    badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'SPACE_FORCE')).reverse(),
+    {organization:'SPACE_FORCE'}
+  );
   assert.equal(sorted[0].id,'presidential_service_badge');
   assert.equal(sorted.at(-1).id,'headquarters_space_force_staff_identification_badge');
+});
+
+test('official Marine Corps table preserves personal, unit, and campaign precedence', () => {
+  const table=require('../data/rules/verified/service-precedence.json').MARINE_CORPS;
+  const order=id=>table.awards.indexOf(id);
+  assert.match(table.source,/marines\.mil/i);
+  assert.ok(order('medal_of_honor')<order('navy_cross'));
+  assert.ok(order('combat_action')<order('navy_presidential_unit_citation'));
+  assert.ok(order('navy_presidential_unit_citation')<order('prisoner_of_war'));
+  assert.ok(order('marine_corps_good_conduct')<order('marine_corps_expeditionary'));
+  assert.ok(order('global_war_on_terrorism_service')<order('marine_corps_recruiting'));
+  assert.ok(order('marine_corps_reserve')<order('philippine_presidential_unit_citation'));
+});
+
+test('official Army badge catalog uses canonical families and variants', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const army=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'ARMY'));
+  assert.ok(army.length>=30,'expected the official Army badge foundation');
+  assert.equal(new Set(badges.map(badge=>badge.id)).size,badges.length,'badge ids must be unique');
+  assert.deepEqual(army.find(badge=>badge.id==='army_aviator_badge').variants,['basic','senior','master']);
+  assert.deepEqual(army.find(badge=>badge.id==='army_diver_badge').variants,['second_class','first_class','salvage','master','special_operations','special_operations_supervisor']);
+  assert.ok(army.every(badge=>badge.sources.some(source=>/army\.mil/i.test(source))));
+});
+
+test('official Army Institute of Heraldry table preserves cross-service precedence', () => {
+  const table=require('../data/rules/verified/service-precedence.json').ARMY;
+  const order=id=>table.awards.indexOf(id);
+  assert.match(table.source,/tioh\.army\.mil/i);
+  assert.ok(order('medal_of_honor')<order('army_distinguished_service_cross'));
+  assert.ok(order('army_distinguished_service_cross')<order('navy_cross'));
+  assert.ok(order('coast_guard_cross')<order('defense_distinguished_service'));
+  assert.ok(order('army_commendation')<order('navy_and_marine_corps_commendation'));
+  assert.ok(order('army_good_conduct')<order('reserve_componets_achievement'));
+  assert.ok(order('outstanding_volunteer_service')<order('army_service'));
 });

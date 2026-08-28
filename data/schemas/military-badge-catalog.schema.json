@@ -16,6 +16,7 @@
           "family": {"enum": ["AVIATION", "AIRCREW", "SPACE", "CYBER", "MISSILE", "EOD", "DIVER", "MEDICAL", "CHAPLAIN", "COMBAT", "QUALIFICATION", "COMMAND", "IDENTIFICATION", "FOREIGN", "OTHER"]},
           "authorizedServices": {"type": "array", "items": {"type": "string"}},
           "status": {"enum": ["CURRENT", "HISTORICAL", "OBSOLETE_BUT_WEARABLE", "UNKNOWN"]},
+          "variants": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
           "representations": {"type": "object"},
           "sources": {"type": "array", "items": {"type": "string"}}
         }
