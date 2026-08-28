@@ -5,7 +5,7 @@
       "officialName": "Air Medal",
       "images": {"ribbon": "images/ribbons/air_medal.png", "assetStatus": "LOCAL_EXISTING"}
     },
-    "aerial_achievement": {
+    "aerial_achievement_medal": {
       "name": "Aerial Achievement Medal",
       "officialName": "Aerial Achievement Medal",
       "images": {"ribbon": "images/ribbons/air_force_aerial_achievement_medal.png", "assetStatus": "LOCAL_EXISTING"}
@@ -16,13 +16,13 @@
       "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"],
       "images": {"ribbon": "images/ribbons/Air_Force_Organizational_Excellence_Award.png", "assetStatus": "LOCAL_EXISTING"}
     },
-    "air_force_commendation": {
+    "air_and_space_commendation_medal": {
       "name": "Air and Space Commendation Medal",
       "officialName": "Air and Space Commendation Medal",
       "aliases": ["Air Force Commendation Medal", "AFCM"],
       "authorizedServices": ["AIR_FORCE", "SPACE_FORCE"]
     },
-    "air_force_achievement": {
+    "air_and_space_achievement_medal": {
       "name": "Air and Space Achievement Medal",
       "officialName": "Air and Space Achievement Medal",
       "aliases": ["Air Force Achievement Medal", "AFAM"],
@@ -33,16 +33,16 @@
     }
   },
   "precedence": {
-    "air_force_commendation": {"SPACE_FORCE": {"order": 16, "side": "LEFT", "verified": false, "source": "DAF_SHARED_PENDING_AWARD_SPECIFIC_REVIEW"}},
-    "air_force_achievement": {"SPACE_FORCE": {"order": 18, "side": "LEFT", "verified": false, "source": "DAF_SHARED_PENDING_AWARD_SPECIFIC_REVIEW"}},
+    "air_and_space_commendation_medal": {"SPACE_FORCE": {"order": 16, "side": "LEFT", "verified": false, "source": "DAF_SHARED_PENDING_AWARD_SPECIFIC_REVIEW"}},
+    "air_and_space_achievement_medal": {"SPACE_FORCE": {"order": 18, "side": "LEFT", "verified": false, "source": "DAF_SHARED_PENDING_AWARD_SPECIFIC_REVIEW"}},
     "air_force_organizational_excellence_award": {"SPACE_FORCE": {"order": 25, "side": "LEFT", "verified": false, "source": "DAF_SHARED_PENDING_AWARD_SPECIFIC_REVIEW"}}
   },
   "devices": {
-    "air_force_commendation": {
+    "air_and_space_commendation_medal": {
       "AIR_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"], "verificationStatus":"OFFICIALLY_VERIFIED", "source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"},
       "SPACE_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"], "verificationStatus":"OFFICIALLY_VERIFIED", "source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"}
     },
-    "air_force_achievement": {
+    "air_and_space_achievement_medal": {
       "AIR_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"], "verificationStatus":"OFFICIALLY_VERIFIED", "source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"},
       "SPACE_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"], "verificationStatus":"OFFICIALLY_VERIFIED", "source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"}
     },
@@ -52,11 +52,54 @@
     "air_medal": {
       "AIR_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"], "verificationStatus":"OFFICIALLY_VERIFIED", "source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"}
     },
-    "aerial_achievement": {
+    "aerial_achievement_medal": {
       "AIR_FORCE": {"repeatAward": {"bronzeDevice": "BRONZE_OLC", "silverDevice": "SILVER_OLC", "bronzeValue": 1, "silverValue": 5}, "devicePrecedence": ["SILVER_OLC", "BRONZE_OLC"], "verificationStatus":"OFFICIALLY_VERIFIED", "source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"}
     },
-    "armed_forces_reserve_air_force_military_ribbons": {
+    "armed_forces_reserve": {
       "AIR_FORCE": {"allowedSpecialDevices":["M_DEVICE","BRONZE_HOURGLASS","SILVER_HOURGLASS","GOLD_HOURGLASS"], "devicePrecedence":["M_DEVICE","GOLD_HOURGLASS","SILVER_HOURGLASS","BRONZE_HOURGLASS"], "verificationStatus":"OFFICIALLY_VERIFIED", "source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf", "notes":"A mobilization numeral is order-dependent and remains in Manual / unverified mode until the normal selector accepts a verified numeric authorization."}
+    },
+    "air_reserve_forces_meritorious_service": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=196"}
+    },
+    "air_force_presidential_unit_citation": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=119"}
+    },
+    "air_force_gallant_unit_citation": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=119"}
+    },
+    "air_force_meritorious_unit_award": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=120"}
+    },
+    "air_force_outstanding_unit_award": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=120"}
+    },
+    "air_and_space_organizational_excellence_award": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=121"},
+      "SPACE_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=121"}
+    },
+    "air_force_outstanding_airman_of_the_year": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"allowedSpecialDevices":["BRONZE_SERVICE_STAR"],"devicePrecedence":["BRONZE_SERVICE_STAR","SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=196"}
+    },
+    "air_force_recognition": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=197"}
+    },
+    "air_force_overseas_short_tour": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=204","notes":"Arctic A device requires a separate reviewed definition before normal-mode selection."}
+    },
+    "air_force_overseas_long_tour": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=204"}
+    },
+    "air_force_expeditionary": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=205","notes":"Gold-border entitlement is a distinct reviewed ribbon representation, not an overlay device."}
+    },
+    "air_force_nco_professional_military_education_graduate": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=208"}
+    },
+    "air_force_military_training_instructor": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=212"}
+    },
+    "air_force_recruiter": {
+      "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=213"}
     }
   },
   "note": "Manually verified corrections override all imported catalog data. Import scripts must never overwrite this file."

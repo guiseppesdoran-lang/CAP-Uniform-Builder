@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-28T09:36:42.447Z",
+  "generatedAt": "2026-08-28T09:56:41.548Z",
   "assets": [
     {
       "ownerType": "AWARD",
@@ -301,39 +301,6 @@
     },
     {
       "ownerType": "AWARD",
-      "ownerId": "airmans_medal",
-      "representation": "RIBBON",
-      "status": "AVAILABLE",
-      "asset": "images/military-ribbons/airmans_medal.jpg",
-      "exists": true,
-      "sha256": "dc786d8d8e21256df13a82ef95ba533cd41e06ab00cfbea42c8ba34b32fd43d2",
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "airmans_medal",
-      "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
-      "ownerId": "airmans_medal",
-      "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
-    },
-    {
-      "ownerType": "AWARD",
       "ownerId": "army_soldiers_medal",
       "representation": "RIBBON",
       "status": "AVAILABLE",
@@ -390,6 +357,39 @@
     {
       "ownerType": "AWARD",
       "ownerId": "navy_and_marine_corps_medal",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "airmans_medal",
+      "representation": "RIBBON",
+      "status": "AVAILABLE",
+      "asset": "images/military-ribbons/airmans_medal.jpg",
+      "exists": true,
+      "sha256": "dc786d8d8e21256df13a82ef95ba533cd41e06ab00cfbea42c8ba34b32fd43d2",
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "airmans_medal",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "airmans_medal",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,

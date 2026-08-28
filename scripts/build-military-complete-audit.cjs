@@ -12,6 +12,7 @@ const sourceAwards=readJson('data/import/normalized/military-awards.json');
 const overrides=readJson('data/rules/verified/representation-overrides.json').awards || {};
 const badges=readJson('data/military/badges.json').badges || [];
 const devices=readJson('data/rules/verified/device-definitions.json');
+const precedenceTables=readJson('data/rules/verified/service-precedence.json');
 const canonical=core.canonicalizeAwards(sourceAwards).map(award=>({
   ...award,
   representations:core.normalizeRepresentations({...award,representations:overrides[award.id] || award.representations})
@@ -58,12 +59,16 @@ const representationTotals=Object.fromEntries(repNames.map(name=>{
   return [name,Object.fromEntries(core.REPRESENTATION_STATUSES.map(status=>[status,rows.filter(item=>item.status===status).length]))];
 }));
 const discarded=sourceAwards.filter(item=>!core.isWearableAwardRecord(item)).map(item=>({id:item.id,name:item.officialName || item.name,type:item.type}));
+const canonicalIds=new Set(canonical.map(award=>award.id));
+const missingPrecedenceCatalogRecords=Object.entries(precedenceTables).flatMap(([service,table])=>(table.awards || [])
+  .filter(id=>!canonicalIds.has(id)).map(id=>({service,id,source:table.source})));
 const byService=Object.fromEntries(core.ORGANIZATIONS.filter(service=>service!=='CAP').map(service=>[
   service,canonical.filter(award=>(award.authorizedServices || []).map(core.normalizeService).includes(service)).length
 ]));
 const summary={
   generatedAt:new Date().toISOString(),sourceRecords:sourceAwards.length,canonicalAwards:canonical.length,
   discardedNonAwardRecords:discarded.length,badges:badges.length,devices:devices.length,
+  missingPrecedenceCatalogRecords:missingPrecedenceCatalogRecords.length,
   byService,representationTotals,
   awardsWithVerifiedPrecedence:canonical.filter(award=>Object.values(award.precedence || {}).some(rule=>rule?.verified)).length,
   awardsWithExplicitDeviceRules:canonical.filter(award=>Object.keys(award.devices || {}).length).length,
@@ -73,7 +78,7 @@ const summary={
 fs.mkdirSync(path.join(root,'reports'),{recursive:true});
 fs.mkdirSync(path.join(root,'data/military'),{recursive:true});
 fs.writeFileSync(path.join(root,'data/military/asset-manifest.json'),JSON.stringify({schemaVersion:1,generatedAt:summary.generatedAt,assets},null,2)+'\n');
-fs.writeFileSync(path.join(root,'reports/us-military-complete-catalog-audit.json'),JSON.stringify({summary,discarded,assets},null,2)+'\n');
+fs.writeFileSync(path.join(root,'reports/us-military-complete-catalog-audit.json'),JSON.stringify({summary,discarded,missingPrecedenceCatalogRecords,assets},null,2)+'\n');
 
 const statusLine=name=>core.REPRESENTATION_STATUSES.map(status=>`${status}: ${representationTotals[name][status]}`).join('; ');
 const audit=[
@@ -87,6 +92,7 @@ const audit=[
   `- Device definitions: ${summary.devices}`,
   `- Awards with at least one officially verified precedence entry: ${summary.awardsWithVerifiedPrecedence}`,
   `- Awards with an explicit service device rule: ${summary.awardsWithExplicitDeviceRules}`,
+  `- Official precedence-table IDs missing from the canonical catalog: ${summary.missingPrecedenceCatalogRecords}`,
   `- Available records with broken local paths: ${summary.brokenAvailableAssets}`,'',
   '## Award representation status','',
   `- Ribbon — ${statusLine('RIBBON')}`,
@@ -96,6 +102,8 @@ const audit=[
   ...Object.entries(byService).map(([service,count])=>`- ${service}: ${count} canonical records containing that source-service tag`),'',
   '## Rejected non-award records','',
   ...(discarded.length ? discarded.map(item=>`- \`${item.id}\` — ${item.name} (${item.type})`) : ['- None']),'',
+  '## Official table records absent from the catalog','',
+  ...(missingPrecedenceCatalogRecords.length ? missingPrecedenceCatalogRecords.map(item=>`- ${item.service}: \`${item.id}\``) : ['- None']),'',
   '## Interpretation','',
   '- Service counts are discovery coverage, not proof that every award is currently authorized for wear by that service.',
   '- The military badge catalog is not complete until official-source records and approved local artwork are added.',

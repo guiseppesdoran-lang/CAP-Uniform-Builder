@@ -1,6 +1,6 @@
 # U.S. Military Complete Catalog Audit
 
-Generated: 2026-08-28T09:36:42.447Z
+Generated: 2026-08-28T09:56:41.548Z
 
 > This audit measures implemented, locally renderable data. It does not treat discovery links as authorization and does not count missing or unverified artwork as complete.
 
@@ -11,8 +11,9 @@ Generated: 2026-08-28T09:36:42.447Z
 - Rejected navigation/rank records: 6
 - Military badge records: 0
 - Device definitions: 15
-- Awards with at least one officially verified precedence entry: 55
-- Awards with an explicit service device rule: 6
+- Awards with at least one officially verified precedence entry: 62
+- Awards with an explicit service device rule: 20
+- Official precedence-table IDs missing from the canonical catalog: 2
 - Available records with broken local paths: 0
 
 ## Award representation status
@@ -38,6 +39,11 @@ Generated: 2026-08-28T09:36:42.447Z
 - `us_marine_corps_rank_cnc_and_laser_graphics_wood_working` — Free Military Graphics and Designs (RANK)
 - `us_navy_rank_cnc_and_laser_graphics_wood_working` — Free Military Graphics and Designs (RANK)
 - `us_space_force_rank_cnc_and_laser_graphics_wood_working` — US Space Force Free CNC and Laser Military Graphics and Designs (RANK)
+
+## Official table records absent from the catalog
+
+- AIR_FORCE: `coast_guard_cross`
+- SPACE_FORCE: `coast_guard_cross`
 
 ## Interpretation
 

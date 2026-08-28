@@ -22,8 +22,8 @@
       "AIR_FORCE": {
         "order": 0,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 0,
@@ -48,6 +48,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 0,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -109,8 +115,14 @@
       "AIR_FORCE": {
         "order": 1,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 1,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -124,9 +136,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/air_force_cross_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/air_force_cross_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "air_force_cross",
     "sourceIds": [
@@ -243,6 +256,18 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "AIR_FORCE": {
+        "order": 3,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 3,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -361,10 +386,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 4,
+        "order": 7,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 4,
@@ -389,6 +414,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 7,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -451,10 +482,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 5,
+        "order": 8,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 5,
@@ -479,6 +510,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 8,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -539,10 +576,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 6,
+        "order": 9,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 6,
@@ -567,6 +604,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 9,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -627,10 +670,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 7,
+        "order": 10,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 7,
@@ -655,6 +698,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 10,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -696,66 +745,6 @@
     }
   },
   {
-    "id": "airmans_medal",
-    "name": "airmans medal",
-    "officialName": "airmans medal",
-    "aliases": [
-      "airmans medal",
-      "Airmans Medal",
-      "Airman's Medal Military Medal &"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE"
-    ],
-    "precedence": {
-      "AIR_FORCE": {
-        "order": 8,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/airmans_medal.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/airmans_medal.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/airmans_medal_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/airmans_medal_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "airmans_medal",
-    "sourceIds": [
-      "airmans_medal"
-    ],
-    "representations": {
-      "ribbon": {
-        "status": "AVAILABLE",
-        "available": true,
-        "asset": "images/military-ribbons/airmans_medal.jpg"
-      },
-      "miniatureMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "status": "MISSING_ASSET",
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
     "id": "army_soldiers_medal",
     "name": "army soldiers medal",
     "officialName": "army soldiers medal",
@@ -775,6 +764,18 @@
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "AIR_FORCE": {
+        "order": 12,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 12,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -788,9 +789,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_soldiers_medal_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_soldiers_medal_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "army_soldiers_medal",
     "sourceIds": [
@@ -868,6 +870,73 @@
         "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_marine_corps_medal.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "airmans_medal",
+    "name": "airmans medal",
+    "officialName": "airmans medal",
+    "aliases": [
+      "airmans medal",
+      "Airmans Medal",
+      "Airman's Medal Military Medal &"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE"
+    ],
+    "precedence": {
+      "AIR_FORCE": {
+        "order": 11,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 11,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/airmans_medal.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/airmans_medal.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/airmans_medal_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/airmans_medal_military_ribbon.html"
+      ],
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "airmans_medal",
+    "sourceIds": [
+      "airmans_medal"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/airmans_medal.jpg"
       },
       "miniatureMedal": {
         "status": "MISSING_ASSET",
@@ -990,10 +1059,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 10,
+        "order": 16,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 10,
@@ -1018,6 +1087,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 16,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -1081,10 +1156,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 11,
+        "order": 17,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 11,
@@ -1109,6 +1184,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 17,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -1169,10 +1250,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 12,
+        "order": 18,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 12,
@@ -1197,6 +1278,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 18,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -1318,7 +1405,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=196"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/air_reserve_forces_meritorious_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/air-reserve-forces-meritorious-bumpersticker-0.jpg",
@@ -1375,10 +1477,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 13,
+        "order": 19,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 13,
@@ -1403,6 +1505,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 19,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {
@@ -1482,10 +1590,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 15,
+        "order": 21,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 14,
@@ -1510,6 +1618,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 21,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -1571,6 +1685,18 @@
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "AIR_FORCE": {
+        "order": 23,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 23,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -1584,9 +1710,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_commendation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_commendation_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "army_commendation",
     "sourceIds": [
@@ -1793,6 +1920,18 @@
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "AIR_FORCE": {
+        "order": 25,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 25,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -1806,9 +1945,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/coast_guard_commendation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/coast_guard_commendation_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "coast_guard_commendation",
     "sourceIds": [
@@ -2473,10 +2613,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 17,
+        "order": 26,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 16,
@@ -2501,6 +2641,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 26,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -2562,6 +2708,18 @@
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "AIR_FORCE": {
+        "order": 28,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 28,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -2575,9 +2733,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_achievement_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_achievement_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "army_achievement",
     "sourceIds": [
@@ -3361,7 +3520,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=119"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/air_force_presidential_unit_citation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_presidential_unit_citation.jpg",
@@ -3508,7 +3682,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=119"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/air_force_gallant_unit_citation.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/gallant-unit-citation-bumpersticker-0.jpg",
@@ -3567,7 +3756,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=120"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/air_force_meritorious_unit_award.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/af-meritorious-unit-award-bumpersticker-0.jpg",
@@ -3626,7 +3830,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=120"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/air_force_outstanding_unit_award.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_outstanding_unit_award.jpg",
@@ -5180,7 +5399,23 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=205",
+        "notes": "Gold-border entitlement is a distinct reviewed ribbon representation, not an overlay device."
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/air_force_expeditionary_service.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_expeditionary_service_no_frame.jpg",
@@ -5240,10 +5475,10 @@
     ],
     "precedence": {
       "AIR_FORCE": {
-        "order": 2,
+        "order": 5,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       },
       "ARMY": {
         "order": 2,
@@ -5268,6 +5503,12 @@
         "side": "LEFT",
         "verified": true,
         "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      },
+      "SPACE_FORCE": {
+        "order": 5,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -8034,7 +8275,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=212"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/air_force_military_training_instructor.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_military_training_instructor.jpg",
@@ -8268,6 +8524,18 @@
         "side": "LEFT",
         "verified": false,
         "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "AIR_FORCE": {
+        "order": 14,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      },
+      "SPACE_FORCE": {
+        "order": 14,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
       }
     },
     "devices": {},
@@ -8281,9 +8549,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/coast_guard_medal_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/uscg_military_ribbons/coast_guard_medal_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "coast_guard_medal",
     "sourceIds": [
@@ -9005,7 +9274,36 @@
         "source": "DAF_SHARED_PENDING_AWARD_SPECIFIC_REVIEW"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=121"
+      },
+      "SPACE_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=121"
+      }
+    },
     "images": {
       "ribbon": "images/ribbons/Air_Force_Organizational_Excellence_Award.png",
       "assetStatus": "LOCAL_EXISTING"
@@ -9330,7 +9628,26 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "allowedSpecialDevices": [
+          "BRONZE_SERVICE_STAR"
+        ],
+        "devicePrecedence": [
+          "BRONZE_SERVICE_STAR",
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=196"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/outstanding_airman_of_the_year.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_outstanding_airman_of_%20the_%20year.jpg",
@@ -9389,7 +9706,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=197"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/air_force_recognition.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_recognition.jpg",
@@ -10076,7 +10408,23 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=204",
+        "notes": "Arctic A device requires a separate reviewed definition before normal-mode selection."
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/overseas_short_tour.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_overseas_short_tour.jpg",
@@ -10194,7 +10542,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=204"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/overseas_long_tour.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_overseas_long_tour.jpg",
@@ -10784,7 +11147,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=213"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/air_force_recruiter.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_recruting.jpg",
@@ -11074,7 +11452,22 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       }
     },
-    "devices": {},
+    "devices": {
+      "AIR_FORCE": {
+        "repeatAward": {
+          "bronzeDevice": "BRONZE_OLC",
+          "silverDevice": "SILVER_OLC",
+          "bronzeValue": 1,
+          "silverValue": 5
+        },
+        "devicePrecedence": [
+          "SILVER_OLC",
+          "BRONZE_OLC"
+        ],
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf#page=208"
+      }
+    },
     "images": {
       "ribbon": "images/military-ribbons/nco_professional_military_education_graduate.jpg",
       "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/air_force_nco_professional_military_education_graduate.jpg",
