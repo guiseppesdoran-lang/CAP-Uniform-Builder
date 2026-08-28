@@ -136,6 +136,7 @@ def main():
     styled_military_paths = image_paths(MILITARY_DIR / "mcchord-style")
     representation_file = ROOT / "data" / "rules" / "verified" / "representation-overrides.json"
     representation_data = json.loads(representation_file.read_text(encoding="utf-8"))
+    badge_catalog = json.loads((ROOT / "data" / "military" / "badges.json").read_text(encoding="utf-8"))
     reviewed_military_minis = []
     for award_id, representations in representation_data.get("awards", {}).items():
         miniature = representations.get("miniatureMedal", {})
@@ -145,6 +146,15 @@ def main():
         asset_path = ROOT / asset
         if asset_path.exists() and asset_path not in reviewed_military_minis:
             reviewed_military_minis.append(asset_path)
+    reviewed_military_badges = []
+    for badge in badge_catalog.get("badges", []):
+        metal = badge.get("representations", {}).get("metal", {})
+        candidates = [metal, *metal.get("variants", {}).values()]
+        for representation in candidates:
+            asset = representation.get("asset") if representation.get("available") else None
+            asset_path = ROOT / asset if asset else None
+            if asset_path and asset_path.exists() and asset_path not in reviewed_military_badges:
+                reviewed_military_badges.append(asset_path)
 
     ribbon_records = [metrics(path) for path in ribbon_paths]
     mini_records = [metrics(path) for path in mini_paths]
@@ -237,7 +247,7 @@ The complete per-file measurements are in `reports/mcchord-asset-analysis.json`.
     )
     sheet(
         "Military badge style review",
-        [("Approved local military badge assets", [])],
+        [("Approved local military badge assets", reviewed_military_badges[:36])],
         REPORTS / "military-badge-style-review.png",
         cell=(180, 180),
     )

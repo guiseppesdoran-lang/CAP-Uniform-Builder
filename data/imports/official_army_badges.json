@@ -1,0 +1,434 @@
+{
+  "source": "https://www.army.mil/uniforms/",
+  "sourceType": "OFFICIAL_SERVICE_ARTWORK",
+  "accessed": "2026-08-28",
+  "licenseNote": "Official U.S. Army imagery; retain source attribution and applicable DoD marks/insignia limitations.",
+  "canvas": {
+    "width": 256,
+    "height": 160,
+    "format": "transparent PNG"
+  },
+  "imported": [
+    {
+      "badgeId": "office_of_secretary_of_defense_identification_badge",
+      "variant": "default",
+      "officialName": "Secretary of Defense Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Secretary_of_Defense_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/office_of_secretary_of_defense_identification_badge/default.png"
+    },
+    {
+      "badgeId": "joint_chiefs_of_staff_identification_badge",
+      "variant": "default",
+      "officialName": "Joint Chiefs of Staff Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Joint_Chiefs_of_Staff_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/joint_chiefs_of_staff_identification_badge/default.png"
+    },
+    {
+      "badgeId": "army_air_assault_badge",
+      "variant": "default",
+      "officialName": "Air Assault Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Air_Assault_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_air_assault_badge/default.png"
+    },
+    {
+      "badgeId": "army_aviator_badge",
+      "variant": "basic",
+      "officialName": "Army Aviator Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Army_Aviator_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_aviator_badge/basic.png"
+    },
+    {
+      "badgeId": "army_aviator_badge",
+      "variant": "senior",
+      "officialName": "Senior Army Aviator Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Senior_Army_Aviator_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_aviator_badge/senior.png"
+    },
+    {
+      "badgeId": "army_aviator_badge",
+      "variant": "master",
+      "officialName": "Master Army Aviator Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Master_Army_Aviator_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_aviator_badge/master.png"
+    },
+    {
+      "badgeId": "army_aviation_badge",
+      "variant": "basic",
+      "officialName": "Basic Aviation Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Basic_Aviation_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_aviation_badge/basic.png"
+    },
+    {
+      "badgeId": "army_aviation_badge",
+      "variant": "senior",
+      "officialName": "Senior Aviation Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Senior_Aviation_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_aviation_badge/senior.png"
+    },
+    {
+      "badgeId": "army_aviation_badge",
+      "variant": "master",
+      "officialName": "Master Aviation Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Master_Aviation_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_aviation_badge/master.png"
+    },
+    {
+      "badgeId": "army_combat_action_badge",
+      "variant": "first_award",
+      "officialName": "Combat Action Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Combat_Action_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_combat_action_badge/first_award.png"
+    },
+    {
+      "badgeId": "army_combat_action_badge",
+      "variant": "master_first_award",
+      "officialName": "Master Combat Action Badge, First Award",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Master_Combat_Action_Badge_First_Award_large.jpg",
+      "asset": "images/military-badges/army/army_combat_action_badge/master_first_award.png"
+    },
+    {
+      "badgeId": "army_combat_action_badge",
+      "variant": "master_second_award",
+      "officialName": "Master Combat Action Badge, Second Award",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Master_Combat_Action_Badge_Second_Award_large.jpg",
+      "asset": "images/military-badges/army/army_combat_action_badge/master_second_award.png"
+    },
+    {
+      "badgeId": "army_combat_infantryman_badge",
+      "variant": "first_award",
+      "officialName": "Combat Infantryman Badge, First Award",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Combat_Infantryman_Badge_First_Award_large.jpg",
+      "asset": "images/military-badges/army/army_combat_infantryman_badge/first_award.png"
+    },
+    {
+      "badgeId": "army_combat_infantryman_badge",
+      "variant": "master_first_award",
+      "officialName": "Master Combat Infantryman Badge, First Award",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Master_Combat_Infantryman_Badge_First_Award_large.jpg",
+      "asset": "images/military-badges/army/army_combat_infantryman_badge/master_first_award.png"
+    },
+    {
+      "badgeId": "army_combat_medical_badge",
+      "variant": "first_award",
+      "officialName": "Combat Medical Badge, First Award",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Combat_Medical_Badge_First_Award_large.jpg",
+      "asset": "images/military-badges/army/army_combat_medical_badge/first_award.png"
+    },
+    {
+      "badgeId": "army_diver_badge",
+      "variant": "second_class",
+      "officialName": "Second Class Diver Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Second_Class_Diver_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_diver_badge/second_class.png"
+    },
+    {
+      "badgeId": "army_diver_badge",
+      "variant": "first_class",
+      "officialName": "First Class Diver Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/First_Class_Diver_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_diver_badge/first_class.png"
+    },
+    {
+      "badgeId": "army_diver_badge",
+      "variant": "salvage",
+      "officialName": "Salvage Diver Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Salvage_Diver_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_diver_badge/salvage.png"
+    },
+    {
+      "badgeId": "army_diver_badge",
+      "variant": "master",
+      "officialName": "Master Diver Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Master_Diver_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_diver_badge/master.png"
+    },
+    {
+      "badgeId": "army_diver_badge",
+      "variant": "special_operations",
+      "officialName": "Special Operations Diver Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Special_Operations_Diver_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_diver_badge/special_operations.png"
+    },
+    {
+      "badgeId": "army_diver_badge",
+      "variant": "special_operations_supervisor",
+      "officialName": "Special Operations Diving Supervisor Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Special_Operations_Diving_Supervisor_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_diver_badge/special_operations_supervisor.png"
+    },
+    {
+      "badgeId": "army_driver_and_mechanic_badge",
+      "variant": "default",
+      "officialName": "Driver and Mechanic Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Driver_and_Mechanic_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_driver_and_mechanic_badge/default.png"
+    },
+    {
+      "badgeId": "army_expert_field_medical_badge",
+      "variant": "default",
+      "officialName": "Expert Field Medical Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Expert_Field_Medical_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_expert_field_medical_badge/default.png"
+    },
+    {
+      "badgeId": "army_expert_infantryman_badge",
+      "variant": "default",
+      "officialName": "Expert Infantryman Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Expert_Infantryman_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_expert_infantryman_badge/default.png"
+    },
+    {
+      "badgeId": "army_expert_soldier_badge",
+      "variant": "default",
+      "officialName": "Expert Soldier Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Expert_Soldier_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_expert_soldier_badge/default.png"
+    },
+    {
+      "badgeId": "army_explosive_ordnance_disposal_badge",
+      "variant": "basic",
+      "officialName": "Explosive Ordnance Disposal Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Explosive_Ordnance_Disposal_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_explosive_ordnance_disposal_badge/basic.png"
+    },
+    {
+      "badgeId": "army_explosive_ordnance_disposal_badge",
+      "variant": "senior",
+      "officialName": "Senior Explosive Ordnance Disposal Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Senior_Explosive_Ordnance_Disposal_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_explosive_ordnance_disposal_badge/senior.png"
+    },
+    {
+      "badgeId": "army_explosive_ordnance_disposal_badge",
+      "variant": "master",
+      "officialName": "Master Explosive Ordnance Disposal Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Master_Explosive_Ordnance_Disposal_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_explosive_ordnance_disposal_badge/master.png"
+    },
+    {
+      "badgeId": "army_flight_surgeon_badge",
+      "variant": "basic",
+      "officialName": "Flight Surgeon Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Flight_Surgeon_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_flight_surgeon_badge/basic.png"
+    },
+    {
+      "badgeId": "army_flight_surgeon_badge",
+      "variant": "senior",
+      "officialName": "Senior Flight Surgeon Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Senior_Flight_Surgeon_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_flight_surgeon_badge/senior.png"
+    },
+    {
+      "badgeId": "army_flight_surgeon_badge",
+      "variant": "master",
+      "officialName": "Master Flight Surgeon Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Master_Flight_Surgeon_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_flight_surgeon_badge/master.png"
+    },
+    {
+      "badgeId": "army_glider_badge",
+      "variant": "default",
+      "officialName": "Glider Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Glider_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_glider_badge/default.png"
+    },
+    {
+      "badgeId": "army_parachutist_badge",
+      "variant": "basic",
+      "officialName": "Parachutist Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Parachutist_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_parachutist_badge/basic.png"
+    },
+    {
+      "badgeId": "army_parachutist_badge",
+      "variant": "senior",
+      "officialName": "Senior Parachutist Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Senior_Parachutist_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_parachutist_badge/senior.png"
+    },
+    {
+      "badgeId": "army_parachutist_badge",
+      "variant": "master",
+      "officialName": "Master Parachutist Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Master_Parachutist_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_parachutist_badge/master.png"
+    },
+    {
+      "badgeId": "army_military_freefall_parachutist_badge",
+      "variant": "basic",
+      "officialName": "Military Freefall Parachutist Basic Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Military_Freefall_Parachutist_Basic_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_military_freefall_parachutist_badge/basic.png"
+    },
+    {
+      "badgeId": "army_military_freefall_parachutist_badge",
+      "variant": "jumpmaster",
+      "officialName": "Military Freefall Parachutist Jumpmaster Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Military_Freefall_Parachutist_Jumpmaster_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_military_freefall_parachutist_badge/jumpmaster.png"
+    },
+    {
+      "badgeId": "army_parachute_rigger_badge",
+      "variant": "default",
+      "officialName": "Parachute Rigger Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Parachute_Rigger_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_parachute_rigger_badge/default.png"
+    },
+    {
+      "badgeId": "army_pathfinder_badge",
+      "variant": "default",
+      "officialName": "Pathfinder Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Pathfinder_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_pathfinder_badge/default.png"
+    },
+    {
+      "badgeId": "army_mariner_badge",
+      "variant": "basic",
+      "officialName": "Mariner Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Army_Mariner_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_mariner_badge/basic.png"
+    },
+    {
+      "badgeId": "army_mariner_badge",
+      "variant": "senior",
+      "officialName": "Mariner Senior Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Army_Mariner_Senior_large.jpg",
+      "asset": "images/military-badges/army/army_mariner_badge/senior.png"
+    },
+    {
+      "badgeId": "army_mariner_badge",
+      "variant": "master",
+      "officialName": "Mariner Master Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Army_Mariner_Master_large.jpg",
+      "asset": "images/military-badges/army/army_mariner_badge/master.png"
+    },
+    {
+      "badgeId": "army_space_badge",
+      "variant": "basic",
+      "officialName": "Space Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Space_Badge_thmb.jpg",
+      "asset": "images/military-badges/army/army_space_badge/basic.png"
+    },
+    {
+      "badgeId": "army_space_badge",
+      "variant": "senior",
+      "officialName": "Senior Space Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Senior_Space_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_space_badge/senior.png"
+    },
+    {
+      "badgeId": "army_space_badge",
+      "variant": "master",
+      "officialName": "Master Space Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Master_Space_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_space_badge/master.png"
+    },
+    {
+      "badgeId": "army_marksmanship_badge",
+      "variant": "marksman",
+      "officialName": "Marksmanship Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Marksmanship_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_marksmanship_badge/marksman.png"
+    },
+    {
+      "badgeId": "army_marksmanship_badge",
+      "variant": "sharpshooter",
+      "officialName": "Sharpshooter Marksmanship Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Sharpshooter_Marksmanship_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_marksmanship_badge/sharpshooter.png"
+    },
+    {
+      "badgeId": "army_marksmanship_badge",
+      "variant": "expert",
+      "officialName": "Expert Marksmanship Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Expert_Marksmenship_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_marksmanship_badge/expert.png"
+    },
+    {
+      "badgeId": "army_career_counselor_identification_badge",
+      "variant": "default",
+      "officialName": "Army Career Counselor Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Army_Career_Counselor_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_career_counselor_identification_badge/default.png"
+    },
+    {
+      "badgeId": "army_staff_identification_badge",
+      "variant": "default",
+      "officialName": "Army Staff Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Army_Staff_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_staff_identification_badge/default.png"
+    },
+    {
+      "badgeId": "army_drill_sergeant_identification_badge",
+      "variant": "default",
+      "officialName": "Drill Sergeant Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Drill_Sergeant_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_drill_sergeant_identification_badge/default.png"
+    },
+    {
+      "badgeId": "army_tomb_guard_identification_badge",
+      "variant": "default",
+      "officialName": "Guard, Tomb of the Unknown Soldier Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Guard_Tomb_of_the_Unknown_Soldier_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_tomb_guard_identification_badge/default.png"
+    },
+    {
+      "badgeId": "army_instructor_identification_badge",
+      "variant": "basic",
+      "officialName": "Instructor Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Instructor_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_instructor_identification_badge/basic.png"
+    },
+    {
+      "badgeId": "army_instructor_identification_badge",
+      "variant": "senior",
+      "officialName": "Senior Instructor Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Senior_Instructor_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_instructor_identification_badge/senior.png"
+    },
+    {
+      "badgeId": "army_instructor_identification_badge",
+      "variant": "master",
+      "officialName": "Master Instructor Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Master_Instructor_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_instructor_identification_badge/master.png"
+    },
+    {
+      "badgeId": "army_master_gunner_identification_badge",
+      "variant": "default",
+      "officialName": "Master Gunner Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Master_Gunner_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_master_gunner_identification_badge/default.png"
+    },
+    {
+      "badgeId": "army_military_horseman_identification_badge",
+      "variant": "default",
+      "officialName": "Military Horseman Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Military_Horseman_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_military_horseman_identification_badge/default.png"
+    },
+    {
+      "badgeId": "army_retired_service_identification_badge",
+      "variant": "default",
+      "officialName": "Retired Service Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/service/Retired_Service_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_retired_service_identification_badge/default.png"
+    },
+    {
+      "badgeId": "army_recruiter_identification_badge",
+      "variant": "basic",
+      "officialName": "U.S. Army Recruiter Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/US_Army_Recruiter_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_recruiter_identification_badge/basic.png"
+    },
+    {
+      "badgeId": "army_recruiter_identification_badge",
+      "variant": "master",
+      "officialName": "U.S. Army Master Recruiter Identification Badge",
+      "source": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/US_Army_Master_Recruiter_Identification_Badge_large.jpg",
+      "asset": "images/military-badges/army/army_recruiter_identification_badge/master.png"
+    }
+  ],
+  "missing": []
+}
