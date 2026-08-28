@@ -319,9 +319,7 @@
   .militaryPreviewTitle{position:absolute;left:24px;right:24px;top:24px;text-align:center;font-weight:800;color:#e5e7eb;letter-spacing:.08em;}
   .militaryPreviewNote{position:absolute;left:24px;right:24px;bottom:24px;text-align:center;color:#cbd5e1;font-size:11px;line-height:1.4;}
   .militaryRackTile,.ribbonTile.militaryRibbonTile{position:absolute;object-fit:fill;filter:saturate(.92) contrast(1.02);box-shadow:inset 0 1px rgba(255,255,255,.22),inset 0 -1px rgba(15,23,42,.28);}
-  .militaryRibbonTexture{position:absolute;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.14) 0,rgba(255,255,255,.14) .45px,rgba(0,0,0,.08) .7px,transparent 1.2px),repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0,transparent .7px,rgba(0,0,0,.08) 1.1px);mix-blend-mode:soft-light;opacity:.72;}
   .militaryRackPending{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;padding:2px;background:repeating-linear-gradient(45deg,#334155,#334155 5px,#475569 5px,#475569 10px);color:#fff;font-size:7px;line-height:1.05;overflow:hidden;border:1px dashed #f59e0b;}
-  .militaryDeviceSummary{position:absolute;display:flex;align-items:center;justify-content:center;gap:2px;color:#f8fafc;font-size:8px;font-weight:900;text-shadow:0 1px 2px #000;pointer-events:none;}
   .garmentForegroundOverlay{
     pointer-events:none;
     user-select:none;
@@ -5998,6 +5996,92 @@ function getBadgeRenderSize(id, uniformId=State.uniform){
   return { width:target, height:target / aspectRatio };
 }
 
+const militaryRibbonVariantCache=new Map();
+function capubLoadCompositeImage(src){
+  return new Promise((resolve,reject)=>{
+    const image=new Image();
+    image.onload=()=>resolve(image);
+    image.onerror=()=>reject(new Error(`Unable to load ${src}`));
+    image.src=src;
+  });
+}
+function militaryDeviceSequence(ribbonObj){
+  if(Array.isArray(ribbonObj?.militaryDevices)) return [...ribbonObj.militaryDevices];
+  const sequence=[];
+  for(const [deviceId,count] of Object.entries(ribbonObj?.devices || {})){
+    for(let index=0;index<Number(count || 0);index++) sequence.push(deviceId);
+  }
+  return sequence.sort((a,b)=>(deviceMeta[b]?.weight || 0)-(deviceMeta[a]?.weight || 0));
+}
+async function buildMilitaryRibbonVariant(ribbonObj){
+  const basePath=getRibbonImagePath(ribbonObj);
+  const devices=militaryDeviceSequence(ribbonObj);
+  const key=`${basePath}|${devices.join(',')}`;
+  if(militaryRibbonVariantCache.has(key)) return militaryRibbonVariantCache.get(key);
+  const promise=(async()=>{
+    const canvas=document.createElement('canvas');
+    canvas.width=100; canvas.height=30;
+    const context=canvas.getContext('2d');
+    const base=await capubLoadCompositeImage(ASSET(basePath));
+    context.drawImage(base,0,0,100,30);
+
+    // Match the woven, shaded finish of the existing McChord 100x30 variants.
+    context.save();
+    context.globalCompositeOperation='soft-light';
+    for(let x=0;x<100;x+=2){
+      context.fillStyle=x%4===0?'rgba(255,255,255,.12)':'rgba(0,0,0,.08)';
+      context.fillRect(x,0,1,30);
+    }
+    context.fillStyle='rgba(255,255,255,.09)'; context.fillRect(0,0,100,1);
+    context.fillStyle='rgba(0,0,0,.16)'; context.fillRect(0,29,100,1);
+    context.restore();
+
+    const rendered=[];
+    for(const deviceId of devices){
+      const meta=deviceMeta[deviceId];
+      if(!meta) continue;
+      if(meta.text) rendered.push({deviceId,meta,image:null,width:9,height:16});
+      else{
+        try{
+          const image=await capubLoadCompositeImage(ASSET(meta.src));
+          const isCluster=deviceId.endsWith('_OLC');
+          rendered.push({deviceId,meta,image,width:isCluster?22:16,height:isCluster?10:16});
+        }catch(error){ console.warn('[MILITARY RIBBON DEVICE]',error); }
+      }
+    }
+    const gap=3;
+    const totalWidth=rendered.reduce((sum,item,index)=>sum+item.width+(index?gap:0),0);
+    let left=Math.round((100-totalWidth)/2);
+    for(const item of rendered){
+      const top=Math.round((30-item.height)/2);
+      if(item.image) context.drawImage(item.image,left,top,item.width,item.height);
+      else{
+        context.save();
+        context.font='900 15px Arial'; context.textAlign='center'; context.textBaseline='middle';
+        context.lineWidth=2; context.strokeStyle='#4b5563'; context.fillStyle='#e5e7eb';
+        context.strokeText(item.meta.text,left+item.width/2,15);
+        context.fillText(item.meta.text,left+item.width/2,15);
+        context.restore();
+      }
+      left+=item.width+gap;
+    }
+    return canvas.toDataURL('image/png');
+  })();
+  militaryRibbonVariantCache.set(key,promise);
+  return promise;
+}
+function applyMilitaryRibbonVariant(image,ribbonObj){
+  if(!image || !isMilitaryRibbonId(ribbonObj?.id)) return;
+  const token=`${ribbonObj.id}|${militaryDeviceSequence(ribbonObj).join(',')}`;
+  image.dataset.militaryVariantToken=token;
+  buildMilitaryRibbonVariant(ribbonObj).then(src=>{
+    if(image.isConnected && image.dataset.militaryVariantToken===token){
+      image.onerror=null;
+      image.src=src;
+    }
+  }).catch(error=>console.warn('[MILITARY RIBBON VARIANT]',error));
+}
+
 function isCorporateForegroundLapelPin(id, uniformId=State.uniform){
   return (uniformId === 'aviator_blazer' || uniformId === 'semi_formal') &&
     GOVERNANCE_SERVICE_BADGE_IDS.has(id);
@@ -7602,19 +7686,13 @@ function renderRack(){
 
         initRibbonDragHandlers(tile);
         uniformCanvas.appendChild(tile);
-
-        if(isMilitaryRibbonId(ribbonObj.id)){
-          const texture=document.createElement('div');
-          texture.className='layer militaryRibbonTexture';
-          Object.assign(texture.style,{left:tile.style.left,top:tile.style.top,width:tile.style.width,height:tile.style.height,zIndex:String((Number(tile.style.zIndex)||0)+1)});
-          uniformCanvas.appendChild(texture);
-        }
+        if(isMilitaryRibbonId(ribbonObj.id)) applyMilitaryRibbonVariant(tile,ribbonObj);
 
         const renderedLeft = parseFloat(tile.style.left) || leftPx;
         const renderedTop  = parseFloat(tile.style.top) || topPx;
         const renderedW    = parseFloat(tile.style.width) || RW;
         const renderedH    = parseFloat(tile.style.height) || RH;
-        drawDevicesOnRibbon(ribbonObj.id, renderedLeft, renderedTop, renderedW, renderedH);
+        if(!isMilitaryRibbonId(ribbonObj.id)) drawDevicesOnRibbon(ribbonObj.id, renderedLeft, renderedTop, renderedW, renderedH);
       });
     });
 
@@ -8372,6 +8450,7 @@ function rebuildRibbonsFromGallery(){
           award:getMilitaryRibbonAward(id),service:getMilitarySelectionService(id,sel),awardCount:sel.awardCount || 1,
           specialAuthorizations:sel.specialAuthorizations || []
         });
+        inst.militaryDevices=[...(calculated?.devices || [])];
         for(const deviceId of calculated?.devices || []) inst.devices[deviceId]=(inst.devices[deviceId] || 0)+1;
       }
 
@@ -8471,6 +8550,7 @@ function buildRibbonGallery(){
       getRibbonImagePath({id, awardValue: sel.awardValue || ''}),
       `ribbons/${normalizeRibbonId(id)}.png`
     ]);
+    if(military) applyMilitaryRibbonVariant(ribbonPreview,{id,devices:sel.devices || {}});
     const miniMedalPreview = tile.querySelector('.miniMedalPreview img');
     if(miniMedalPreview){
       capubInstallImageFallback(miniMedalPreview, [miniPath, miniFallbackPath]);
@@ -10174,32 +10254,12 @@ function renderMilitaryPreview(){
       }
       Object.assign(tile.style,{left:`${left}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`});
       uniformCanvas.appendChild(tile);
-      const texture=document.createElement('div');
-      texture.className='layer militaryRibbonTexture';
-      Object.assign(texture.style,{left:`${left}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`});
-      uniformCanvas.appendChild(texture);
       const awardCount=State.militaryAwards[award.id]?.awardCount || 1;
       const calculated=window.CAPUBMilitary?.calculateDevices({
         award,service:State.organization,awardCount,
         deviceCatalog:window.CAPUBMilitaryData?.devices || []
       });
-      if(calculated?.devices?.length){
-        const devices=document.createElement('div');
-        devices.className='layer militaryDeviceSummary';
-        devices.title=calculated.devices.join(', ');
-        Object.assign(devices.style,{left:`${left}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`});
-        for(const deviceId of calculated.devices){
-          const meta=deviceMeta[deviceId];
-          if(!meta) continue;
-          const element=document.createElement(meta.text ? 'span' : 'img');
-          if(meta.text) element.textContent=meta.text;
-          else element.src=ASSET(meta.src);
-          element.alt=meta.label || deviceId;
-          Object.assign(element.style,{width:`${Math.max(8,meta.w)}px`,height:`${Math.max(8,meta.h)}px`,objectFit:'contain'});
-          devices.appendChild(element);
-        }
-        uniformCanvas.appendChild(devices);
-      }
+      applyMilitaryRibbonVariant(tile,{id:`${MILITARY_RIBBON_PREFIX}${award.id}`,militaryDevices:calculated?.devices || []});
       if(calculated?.warnings?.length) tile.title=`${tile.title || award.name}\n${calculated.warnings.join('\n')}`;
     });
   });
