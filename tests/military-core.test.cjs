@@ -315,6 +315,19 @@ test('official Navy breast-insignia catalog preserves families, variants, and pl
   assert.ok(navy.every(badge=>badge.sources.some(source=>/mynavyhr\.navy\.mil/i.test(source))));
 });
 
+test('official Marine Corps breast and marksmanship catalog preserves service-specific variants', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const marines=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'MARINE_CORPS'));
+  assert.ok(marines.length>=17,'expected the official Marine Corps badge foundation');
+  assert.deepEqual(marines.find(badge=>badge.id==='marine_corps_unmanned_aircraft_system_insignia').variants,['officer','enlisted_operator']);
+  assert.deepEqual(marines.find(badge=>badge.id==='marine_corps_explosive_ordnance_disposal_insignia').variants,['basic','senior','master']);
+  assert.deepEqual(marines.find(badge=>badge.id==='marine_corps_diver_insignia').variants,['master_diver','diving_medical_technician','first_class_diver','combatant_diver','second_class_diver','scuba_diver']);
+  assert.equal(marines.find(badge=>badge.id==='marine_corps_special_operator_insignia').exclusiveWear,true);
+  assert.ok(marines.find(badge=>badge.id==='marine_corps_competition_marksmanship_badge').variants.length>=27);
+  assert.ok(marines.every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
+  assert.ok(marines.every(badge=>badge.sources.some(source=>/marines\.mil/i.test(source))));
+});
+
 test('official Army Institute of Heraldry table preserves cross-service precedence', () => {
   const table=require('../data/rules/verified/service-precedence.json').ARMY;
   const order=id=>table.awards.indexOf(id);

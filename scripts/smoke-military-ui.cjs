@@ -114,6 +114,13 @@ let browser;
   const swccRow=badgeResults.locator('[data-badge-id="navy_special_warfare_combatant_craft_crewman_insignia"]');
   await swccRow.locator('.militaryBadgeVariant').selectOption('master');
   assert.deepEqual(await page.evaluate(()=>window.State.militaryBadges.navy_special_warfare_combatant_craft_crewman_insignia),{selected:true,variant:'master'});
+
+  await page.locator('#organizationSelect').selectOption('MARINE_CORPS');
+  await page.locator('#militaryBadgeSection').evaluate(element=>element.open=true);
+  assert.ok(await badgeResults.locator('.militaryAwardOption').count()>=17,'official Marine Corps badge families were not listed');
+  const uasRow=badgeResults.locator('[data-badge-id="marine_corps_unmanned_aircraft_system_insignia"]');
+  await uasRow.locator('.militaryBadgeVariant').selectOption('officer');
+  assert.deepEqual(await page.evaluate(()=>window.State.militaryBadges.marine_corps_unmanned_aircraft_system_insignia),{selected:true,variant:'officer'});
   assert.deepEqual(errors,[],'browser errors were reported');
-  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,missingBadgeNotFabricated:true,armyBadgeFamiliesListed:true,navyBadgeFamiliesListed:true,badgeVariantSelectionPersisted:true},null,2)+'\n');
+  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,missingBadgeNotFabricated:true,armyBadgeFamiliesListed:true,navyBadgeFamiliesListed:true,marineCorpsBadgeFamiliesListed:true,badgeVariantSelectionPersisted:true},null,2)+'\n');
 })().catch(error=>{ console.error(error); process.exitCode=1; }).finally(async()=>{ if(browser) await browser.close(); });
