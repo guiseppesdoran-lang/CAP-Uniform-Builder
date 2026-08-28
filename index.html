@@ -318,8 +318,8 @@
   .militarySourceOnly{color:#9a3412;font-size:10px;}
   .militaryPreviewTitle{position:absolute;left:24px;right:24px;top:24px;text-align:center;font-weight:800;color:#e5e7eb;letter-spacing:.08em;}
   .militaryPreviewNote{position:absolute;left:24px;right:24px;bottom:24px;text-align:center;color:#cbd5e1;font-size:11px;line-height:1.4;}
-  .militaryRackTile{position:absolute;object-fit:fill;filter:saturate(.9) contrast(.97);box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(15,23,42,.2);}
-  .ribbonTile.militaryRibbonTile{object-fit:fill;filter:saturate(.9) contrast(.97);box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(15,23,42,.2);}
+  .militaryRackTile,.ribbonTile.militaryRibbonTile{position:absolute;object-fit:fill;filter:saturate(.92) contrast(1.02);box-shadow:inset 0 1px rgba(255,255,255,.22),inset 0 -1px rgba(15,23,42,.28);}
+  .militaryRibbonTexture{position:absolute;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.14) 0,rgba(255,255,255,.14) .45px,rgba(0,0,0,.08) .7px,transparent 1.2px),repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0,transparent .7px,rgba(0,0,0,.08) 1.1px);mix-blend-mode:soft-light;opacity:.72;}
   .militaryRackPending{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;padding:2px;background:repeating-linear-gradient(45deg,#334155,#334155 5px,#475569 5px,#475569 10px);color:#fff;font-size:7px;line-height:1.05;overflow:hidden;border:1px dashed #f59e0b;}
   .militaryDeviceSummary{position:absolute;display:flex;align-items:center;justify-content:center;gap:2px;color:#f8fafc;font-size:8px;font-weight:900;text-shadow:0 1px 2px #000;pointer-events:none;}
   .garmentForegroundOverlay{
@@ -994,14 +994,22 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
   border-color:#8bb8e5;
   background:#f0f7ff;
 }
-.ribbonSelectorTile.militaryRibbonSelectorTile > img{
+.militaryRibbonArt{position:relative;display:block;flex:0 0 auto;width:72px;height:19.64px;overflow:hidden;border-radius:1px;box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(15,23,42,.2);}
+.militaryRibbonArt>img{
   width:72px;
   height:19.64px;
   object-fit:fill;
   border-radius:1px;
   filter:saturate(.9) contrast(.97);
-  box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(15,23,42,.2);
 }
+.militaryRibbonArt::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0,rgba(255,255,255,.16) .45px,rgba(0,0,0,.09) .8px,transparent 1.25px),repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0,transparent .7px,rgba(0,0,0,.08) 1.1px);mix-blend-mode:soft-light;opacity:.72;}
+.militaryRibbonMenu,.militaryBranchMenu{grid-column:1/-1;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:8px 10px;margin-top:10px;}
+.militaryRibbonMenu>summary,.militaryBranchMenu>summary{cursor:pointer;font-weight:850;color:var(--ink);padding:5px 2px;}
+.militaryBranchMenu{margin:8px 0 0;background:#f8fafc;}
+.militaryBranchGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin:10px 0 4px;}
+.militaryRibbonSelectorTile{position:relative;}
+.militaryServiceSelect,.militarySpecialDevices{width:100%;margin-top:4px;padding:7px 8px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12px;}
+.militarySpecialDeviceRow{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;font-size:11px;color:var(--muted);}
 
 
 
@@ -1608,7 +1616,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <script src="purchase-catalog.js"></script>
 <script src="mcchord-ribbon-variants.js"></script>
 <script src="member-report-rules.js"></script>
-<script src="military/military-core.js?v=20260827-cap-picker-2"></script>
+<script src="military/military-core.js?v=20260827-branch-devices-1"></script>
 <script src="military/military-data.js?v=20260827-ribbon-assets-1"></script>
 <script>
 /* ===========================
@@ -4969,20 +4977,30 @@ function militaryRibbonCatalogId(id){
   return isMilitaryRibbonId(id) ? String(id).slice(MILITARY_RIBBON_PREFIX.length) : String(id || '');
 }
 function getAllMilitaryRibbonAwards(){
-  return (window.CAPUBMilitaryData?.awards || []).filter(award =>
+  const raw=(window.CAPUBMilitaryData?.awards || []).filter(award =>
     award.type === 'RIBBON' && !window.CAPUBMilitary?.isCapAward(award)
   );
+  return window.CAPUBMilitary?.canonicalizeAwards?.(raw) || raw;
 }
 function getMilitaryRibbonAward(id){
   const catalogId = militaryRibbonCatalogId(id);
-  return getAllMilitaryRibbonAwards().find(award => award.id === catalogId) || null;
+  return getAllMilitaryRibbonAwards().find(award => award.id === catalogId || award.sourceIds?.includes(catalogId)) || null;
 }
 function getMilitaryRibbonIds(){
-  const awards = window.CAPUBMilitary?.sortAwardsForMember(
-    getAllMilitaryRibbonAwards(),
-    { organization:'AIR_FORCE', component:'ACTIVE' }
-  ) || getAllMilitaryRibbonAwards();
+  const awards = [...getAllMilitaryRibbonAwards()];
+  awards.sort(window.CAPUBMilitary?.compareAwardsUniversal || ((a,b)=>String(a.name).localeCompare(String(b.name))));
   return awards.map(award => `${MILITARY_RIBBON_PREFIX}${award.id}`);
+}
+const MILITARY_BRANCH_ORDER=['JOINT','ARMY','MARINE_CORPS','NAVY','AIR_FORCE','SPACE_FORCE','COAST_GUARD'];
+const MILITARY_BRANCH_LABELS={JOINT:'Joint / Multi-Service',ARMY:'Army',MARINE_CORPS:'Marine Corps',NAVY:'Navy',AIR_FORCE:'Air Force',SPACE_FORCE:'Space Force',COAST_GUARD:'Coast Guard'};
+function getMilitaryAwardBranch(award){
+  const services=[...new Set((award?.authorizedServices || []).filter(service=>MILITARY_BRANCH_ORDER.includes(service)))];
+  return services.length === 1 ? services[0] : 'JOINT';
+}
+function getMilitarySelectionService(id,selection=State.ribbonSelections?.[id]){
+  const award=getMilitaryRibbonAward(id);
+  const services=award?.authorizedServices || [];
+  return services.includes(selection?.militaryService) ? selection.militaryService : (services[0] || 'AIR_FORCE');
 }
 function getRibbonDisplayName(id){
   if(isMilitaryRibbonId(id)){
@@ -5065,7 +5083,17 @@ const deviceList = [
 ];
 const deviceMeta = {
   '1_Bronze_Star_Device': { label:'Bronze Star', src:'devices/1_Bronze_Star_Device.webp', w:10, h:10, weight:1 },
-  '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 }
+  '1_Silver_Star_Device': { label:'Silver Star', src:'devices/1_Silver_Star_Device.webp', w:10, h:10, weight:2 },
+  'BRONZE_OLC': { label:'Bronze Oak Leaf Cluster', src:'devices/military/bronze_olc.svg', w:12, h:6, weight:3 },
+  'SILVER_OLC': { label:'Silver Oak Leaf Cluster', src:'devices/military/silver_olc.svg', w:12, h:6, weight:4 },
+  'BRONZE_SERVICE_STAR': { label:'Bronze Service Star', src:'devices/military/bronze_star.svg', w:8, h:8, weight:3 },
+  'SILVER_SERVICE_STAR': { label:'Silver Service Star', src:'devices/military/silver_star.svg', w:8, h:8, weight:4 },
+  'GOLD_AWARD_STAR': { label:'Gold Award Star', src:'devices/military/gold_star.svg', w:8, h:8, weight:3 },
+  'SILVER_AWARD_STAR': { label:'Silver Award Star', src:'devices/military/silver_star.svg', w:8, h:8, weight:4 },
+  'V_DEVICE': { label:'V Device', src:'devices/V_Device.webp', w:8, h:8, weight:8 },
+  'C_DEVICE': { label:'C Device', text:'C', w:7, h:8, weight:7 },
+  'R_DEVICE': { label:'R Device', text:'R', w:7, h:8, weight:7 },
+  'ARROWHEAD_DEVICE': { label:'Arrowhead Device', src:'devices/military/arrowhead.svg', w:7, h:9, weight:9 }
 };
 
 // device cap per ribbon (overflow creates additional ribbon instances)
@@ -6938,10 +6966,8 @@ function sortRibbons(arr){
     if(aMilitary && bMilitary){
       const aa = getMilitaryRibbonAward(a.id);
       const ba = getMilitaryRibbonAward(b.id);
-      if(aa && ba && window.CAPUBMilitary?.compareAwardsForMember){
-        return window.CAPUBMilitary.compareAwardsForMember(
-          aa, ba, { organization:'AIR_FORCE', component:'ACTIVE' }
-        );
+      if(aa && ba && window.CAPUBMilitary?.compareAwardsUniversal){
+        return window.CAPUBMilitary.compareAwardsUniversal(aa,ba);
       }
     }
     // U.S. military decorations precede CAP awards on the CAP rack.
@@ -7317,17 +7343,22 @@ function drawDevicesOnRibbon(rid,leftPx,topPx,w,h){
   const y=Math.round(topPx+(h-10)/2)-1;
 
   flat.forEach((d,i)=>{
-    const im=document.createElement('img');
+    const im=document.createElement(d.text ? 'span' : 'img');
     im.className='layer ribbonDevice';
     im.dataset.parentRid = rid;
     im.dataset.calibKey = `device:${rid}:${d.id}:${i}`;
-    im.src=ASSET(d.src);
-    im.alt=d.label||d.id;
+    if(d.text){
+      im.textContent=d.text;
+      im.style.cssText+='display:flex;align-items:center;justify-content:center;color:#d7dce3;font:900 8px/1 Arial;text-shadow:0 1px #374151;';
+    }else{
+      im.src=ASSET(d.src);
+      im.alt=d.label||d.id;
+      im.onerror=()=>{ im.remove(); };
+    }
     im.style.display='block';
 
     applyCalibToElement(im, im.dataset.calibKey, { x, y, w:d.w, h:d.h, r:0 });
 
-    im.onerror=()=>{ im.remove(); };
     im.dataset.tooltipTitle = d.label||d.id;
     im.dataset.tooltipReg   = "Device on ribbon";
     im.dataset.tooltipWhy   = "Represents additional awards/credit per CAPR 39-3.";
@@ -7571,6 +7602,13 @@ function renderRack(){
 
         initRibbonDragHandlers(tile);
         uniformCanvas.appendChild(tile);
+
+        if(isMilitaryRibbonId(ribbonObj.id)){
+          const texture=document.createElement('div');
+          texture.className='layer militaryRibbonTexture';
+          Object.assign(texture.style,{left:tile.style.left,top:tile.style.top,width:tile.style.width,height:tile.style.height,zIndex:String((Number(tile.style.zIndex)||0)+1)});
+          uniformCanvas.appendChild(texture);
+        }
 
         const renderedLeft = parseFloat(tile.style.left) || leftPx;
         const renderedTop  = parseFloat(tile.style.top) || topPx;
@@ -7945,7 +7983,19 @@ function capubExtendMcchordOptionsTo84(id, sourceOptions){
 }
 
 function getRibbonAwardOptions(id){
-  if(isMilitaryRibbonId(id)) return ribbonSelectOnlyOptions();
+  if(isMilitaryRibbonId(id)){
+    const award=getMilitaryRibbonAward(id);
+    const service=getMilitarySelectionService(id);
+    const options=[{label:'- Select -',value:'',devices:{}}];
+    for(let count=1;count<=21;count++){
+      const calculated=window.CAPUBMilitary?.calculateDevices?.({award,service,awardCount:count}) || {devices:[]};
+      const deviceText=calculated.devices?.length
+        ? ` — ${calculated.devices.map(deviceId=>deviceMeta[deviceId]?.label || deviceId).join(' + ')}`
+        : '';
+      options.push({label:count===1 ? '1st Award' : `${ordinalLabel(count)} Award${deviceText}`,value:`military_award_${count}`,devices:{}});
+    }
+    return options;
+  }
   if(CAPUB_SINGLE_AWARD_RIBBON_IDS.has(id)) return ribbonSelectOnlyOptions();
   const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
   if(Array.isArray(mcchordOptions) && mcchordOptions.length){
@@ -8211,6 +8261,18 @@ function setRibbonSelectionFromDropdown(id, value){
   sel.devices = value ? { ...(option.devices || {}) } : {};
   sel.imageOverride = value ? (option.image || getRibbonImageOverride(id, value)) : null;
 
+  if(isMilitaryRibbonId(id)){
+    sel.awardCount=Math.max(1,Number(String(value || '').match(/military_award_(\d+)/)?.[1]) || 1);
+    sel.militaryService=getMilitarySelectionService(id,sel);
+    const calculated=window.CAPUBMilitary?.calculateDevices?.({
+      award:getMilitaryRibbonAward(id),service:sel.militaryService,awardCount:sel.awardCount,
+      specialAuthorizations:sel.specialAuthorizations || []
+    });
+    sel.devices={};
+    for(const deviceId of calculated?.devices || []) sel.devices[deviceId]=(sel.devices[deviceId] || 0)+1;
+    sel.deviceWarnings=calculated?.warnings || [];
+  }
+
   if(id === 'goddard_achievement'){
     sel.honorCredit = ['honor_credit','honor_credit_and_rocketry'].includes(value);
     sel.rocketryCredit = ['rocketry_star','honor_credit_and_rocketry'].includes(value);
@@ -8240,6 +8302,12 @@ function enforceSeniorSingleCadetAwardRibbon(selectedId){
 }
 
 function normalizeRibbonSelections(){
+  for(const award of getAllMilitaryRibbonAwards()){
+    const canonicalId=`${MILITARY_RIBBON_PREFIX}${award.id}`;
+    if(State.ribbonSelections[canonicalId]) continue;
+    const legacyId=(award.sourceIds || []).map(sourceId=>`${MILITARY_RIBBON_PREFIX}${sourceId}`).find(id=>State.ribbonSelections[id]);
+    if(legacyId) State.ribbonSelections[canonicalId]={...State.ribbonSelections[legacyId]};
+  }
   [...ribbonList, ...getMilitaryRibbonIds()].forEach(id=>{
     if(!State.ribbonSelections[id]){
       State.ribbonSelections[id] = { checked:false, devices:{}, awardValue:'', awardLabel:'' };
@@ -8261,6 +8329,11 @@ function normalizeRibbonSelections(){
       }
       if(State.ribbonSelections[id].imageOverride === undefined){
         State.ribbonSelections[id].imageOverride = getRibbonImageOverride(id, State.ribbonSelections[id].awardValue || '');
+      }
+      if(isMilitaryRibbonId(id)){
+        const sel=State.ribbonSelections[id];
+        sel.awardCount=Math.max(1,Number(sel.awardCount) || Number(String(sel.awardValue || '').match(/military_award_(\d+)/)?.[1]) || 1);
+        sel.militaryService=getMilitarySelectionService(id,sel);
       }
     }
   });
@@ -8294,7 +8367,16 @@ function rebuildRibbonsFromGallery(){
         imageOverride: getRibbonImageOverride(id, sel.awardValue || '')
       };
 
+      if(isMilitaryRibbonId(id)){
+        const calculated=window.CAPUBMilitary?.calculateDevices?.({
+          award:getMilitaryRibbonAward(id),service:getMilitarySelectionService(id,sel),awardCount:sel.awardCount || 1,
+          specialAuthorizations:sel.specialAuthorizations || []
+        });
+        for(const deviceId of calculated?.devices || []) inst.devices[deviceId]=(inst.devices[deviceId] || 0)+1;
+      }
+
       for(const [dev,count] of Object.entries(sel.devices||{})){
+        if(isMilitaryRibbonId(id)) continue;
         const cap = RIBBON_DEVICE_CAP[dev] || 0;
         if(cap<=0) continue;
         const remain = (count||0) - i*cap;
@@ -8324,22 +8406,78 @@ function rebuildRibbonsFromGallery(){
 function buildRibbonGallery(){
   const wrap = by('ribbonGallery');
   if(!wrap) return;
-
   normalizeRibbonSelections();
   wrap.innerHTML = '';
-
   const eligible = getEligibleRibbonIds();
   const visible = State.ribbonGalleryExpanded ? eligible : eligible.slice(0, 12);
   const currentRibbons = visible.filter(id => !HISTORICAL_RIBBONS.has(id));
   const historicalRibbons = visible.filter(id => HISTORICAL_RIBBONS.has(id));
-  const militaryRibbons = State.ribbonGalleryExpanded ? getMilitaryRibbonIds() : [];
   const sections = State.ribbonGalleryExpanded
     ? [
         { title:'Current Ribbons', description:'Currently issued awards and achievements.', ids:currentRibbons },
-        { title:'Historical Ribbons', description:'Legacy cadet awards and wartime service ribbons.', ids:historicalRibbons },
-        { title:'U.S. Military Ribbons', description:`All ${militaryRibbons.length} imported military ribbons, in military order of precedence.`, ids:militaryRibbons, military:true }
+        { title:'Historical Ribbons', description:'Legacy cadet awards and wartime service ribbons.', ids:historicalRibbons }
       ]
     : [{ title:'', description:'', ids:visible }];
+
+  const buildTile=(id,military=false)=>{
+    const sel = State.ribbonSelections[id];
+    const tile = document.createElement('div');
+    tile.className = 'galleryTile ribbonSelectorTile';
+    if(military) tile.classList.add('militaryRibbonSelectorTile');
+    tile.dataset.ribbonId = id;
+    const title = getRibbonDisplayName(id);
+    const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
+    const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
+    const miniPreview = !military && miniPath
+      ? `<div class="miniMedalPreview"><span>Mini medal</span><img alt="${title} mini medal"></div>`
+      : (!military ? `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>` : '');
+    const options = getRibbonAwardOptions(id).map(opt => {
+      const selected = (sel.awardValue || '') === opt.value ? 'selected' : '';
+      return `<option value="${opt.value}" ${selected}>${opt.label}</option>`;
+    }).join('');
+    const deviceSummary = Object.entries(sel.devices || {})
+      .filter(([,qty]) => Number(qty) > 0)
+      .map(([devId,qty]) => `${deviceMeta[devId]?.label || devId}: ${qty}`)
+      .join(' • ');
+    const award=military ? getMilitaryRibbonAward(id) : null;
+    const serviceOptions=military ? (award?.authorizedServices || []).map(service=>
+      `<option value="${service}" ${getMilitarySelectionService(id,sel)===service?'selected':''}>${MILITARY_BRANCH_LABELS[service] || service.replaceAll('_',' ')}</option>`
+    ).join('') : '';
+    const specialIds=['V_DEVICE','C_DEVICE','R_DEVICE','ARROWHEAD_DEVICE'];
+    const specialControls=military ? specialIds.map(deviceId=>
+      `<label><input type="checkbox" class="militarySpecialDevice" data-ribbon-id="${id}" data-device-id="${deviceId}" ${(sel.specialAuthorizations || []).includes(deviceId)?'checked':''}>${deviceMeta[deviceId].label}</label>`
+    ).join('') : '';
+    tile.innerHTML = `
+      ${military ? `<span class="militaryRibbonArt"><img alt="${title}"></span>` : `<img alt="${title}">`}
+      <div style="flex:1;min-width:0;">
+        <div class="title">${title}</div>
+        <div class="sub">${military ? `${(award?.authorizedServices || []).map(service=>MILITARY_BRANCH_LABELS[service] || service).join(' / ') || 'U.S. MILITARY'} • ` : ''}(${id})</div>
+        ${miniPreview}
+        ${military ? `<label class="ribbonAwardLabel">Awarding / wearer service<select class="militaryServiceSelect" data-ribbon-id="${id}">${serviceOptions}</select></label>` : ''}
+        <label class="ribbonAwardLabel">
+          Award count / earned level
+          <select class="rbAwardSelect" data-ribbon-id="${id}">
+            ${options}
+          </select>
+        </label>
+        ${military ? `<div class="militarySpecialDeviceRow" title="Select only devices authorized on your award orders.">${specialControls}</div>` : ''}
+        <div class="sub ribbonDeviceSummary">
+          ${sel.checked ? `Selected: <b>${sel.awardLabel || 'Earned'}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` • ${sel.deviceWarnings.join(' ')}` : ''}` : 'Not selected'}
+        </div>
+      </div>
+    `;
+    const ribbonPreview = tile.querySelector('.militaryRibbonArt img, :scope > img');
+    capubInstallImageFallback(ribbonPreview, [
+      getRibbonImagePath({id, awardValue: sel.awardValue || ''}),
+      `ribbons/${normalizeRibbonId(id)}.png`
+    ]);
+    const miniMedalPreview = tile.querySelector('.miniMedalPreview img');
+    if(miniMedalPreview){
+      capubInstallImageFallback(miniMedalPreview, [miniPath, miniFallbackPath]);
+    }
+    wireRibbonTileControls(tile);
+    return tile;
+  };
 
   for(const section of sections){
     if(!section.ids.length) continue;
@@ -8349,68 +8487,70 @@ function buildRibbonGallery(){
       heading.innerHTML = `${section.title}<span class="sub">${section.description}</span>`;
       wrap.appendChild(heading);
     }
-
-    for(const id of section.ids){
-    const sel = State.ribbonSelections[id];
-
-    const tile = document.createElement('div');
-    tile.className = 'galleryTile ribbonSelectorTile';
-    if(section.military) tile.classList.add('militaryRibbonSelectorTile');
-    tile.dataset.ribbonId = id;
-
-    const title = getRibbonDisplayName(id);
-    const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
-    const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
-    const miniPreview = miniPath
-      ? `<div class="miniMedalPreview"><span>Mini medal</span><img alt="${title} mini medal"></div>`
-      : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
-
-    const options = getRibbonAwardOptions(id).map(opt => {
-      const selected = (sel.awardValue || '') === opt.value ? 'selected' : '';
-      return `<option value="${opt.value}" ${selected}>${opt.label}</option>`;
-    }).join('');
-
-    const deviceSummary = Object.entries(sel.devices || {})
-      .filter(([,qty]) => Number(qty) > 0)
-      .map(([devId,qty]) => `${deviceMeta[devId]?.label || devId}: ${qty}`)
-      .join(' • ');
-
-    tile.innerHTML = `
-      <img alt="${title}">
-      <div style="flex:1;min-width:0;">
-        <div class="title">${title}</div>
-        <div class="sub">${section.military ? `${(getMilitaryRibbonAward(id)?.authorizedServices || []).join(' / ').replaceAll('_',' ') || 'U.S. MILITARY'} • ` : ''}(${id})</div>
-        ${miniPreview}
-        <label class="ribbonAwardLabel">
-          Award count / earned level
-          <select class="rbAwardSelect" data-ribbon-id="${id}">
-            ${options}
-          </select>
-        </label>
-        <div class="sub ribbonDeviceSummary">
-          ${sel.checked ? `Selected: <b>${sel.awardLabel || 'Earned'}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}` : 'Not selected'}
-        </div>
-      </div>
-    `;
-
-    const ribbonPreview = tile.querySelector('img');
-    capubInstallImageFallback(ribbonPreview, [
-      getRibbonImagePath({id, awardValue: sel.awardValue || ''}),
-      `ribbons/${normalizeRibbonId(id)}.png`
-    ]);
-    const miniMedalPreview = tile.querySelector('.miniMedalPreview img');
-    if(miniMedalPreview){
-      capubInstallImageFallback(miniMedalPreview, [miniPath, miniFallbackPath]);
-    }
-
-    const awardSelect = tile.querySelector('.rbAwardSelect');
-    if(awardSelect){
-      awardSelect.onchange = () => setRibbonSelectionFromDropdown(id, awardSelect.value);
-    }
-
-    wrap.appendChild(tile);
-    }
+    section.ids.forEach(id=>wrap.appendChild(buildTile(id,false)));
   }
+
+  if(State.ribbonGalleryExpanded){
+    const militaryIds=getMilitaryRibbonIds();
+    const militaryMenu=document.createElement('details');
+    militaryMenu.className='militaryRibbonMenu';
+    const summary=document.createElement('summary');
+    summary.textContent=`U.S. Military Ribbons (${militaryIds.length} unique awards)`;
+    militaryMenu.appendChild(summary);
+    const intro=document.createElement('div');
+    intro.className='sub';
+    intro.textContent='Shared awards appear once under Joint / Multi-Service. Award counts automatically convert to the selected service’s oak-leaf clusters, award stars, or service stars.';
+    militaryMenu.appendChild(intro);
+    for(const branch of MILITARY_BRANCH_ORDER){
+      const ids=militaryIds.filter(id=>getMilitaryAwardBranch(getMilitaryRibbonAward(id))===branch);
+      const branchMenu=document.createElement('details');
+      branchMenu.className='militaryBranchMenu';
+      const branchSummary=document.createElement('summary');
+      branchSummary.textContent=`${MILITARY_BRANCH_LABELS[branch]} (${ids.length})`;
+      branchMenu.appendChild(branchSummary);
+      const grid=document.createElement('div');
+      grid.className='militaryBranchGrid';
+      if(ids.length) ids.forEach(id=>grid.appendChild(buildTile(id,true)));
+      else{
+        const empty=document.createElement('div');
+        empty.className='sub';
+        empty.textContent=`No ${MILITARY_BRANCH_LABELS[branch]}-only ribbon is in the catalog; shared awards are listed once under Joint / Multi-Service.`;
+        grid.appendChild(empty);
+      }
+      branchMenu.appendChild(grid);
+      militaryMenu.appendChild(branchMenu);
+    }
+    wrap.appendChild(militaryMenu);
+  }
+}
+
+function wireRibbonTileControls(root){
+  root.querySelectorAll('.rbAwardSelect').forEach(select=>{
+    const id=select.dataset.ribbonId;
+    if(id) select.onchange=()=>setRibbonSelectionFromDropdown(id,select.value);
+  });
+  root.querySelectorAll('.militaryServiceSelect').forEach(select=>{
+    const id=select.dataset.ribbonId;
+    if(!id) return;
+    select.onchange=()=>{
+      const sel=State.ribbonSelections[id] || {checked:false,devices:{}};
+      sel.militaryService=select.value;
+      State.ribbonSelections[id]=sel;
+      if(sel.checked) setRibbonSelectionFromDropdown(id,sel.awardValue || `military_award_${sel.awardCount || 1}`);
+      buildRibbonGallery();
+    };
+  });
+  root.querySelectorAll('.militarySpecialDevice').forEach(input=>{
+    input.onchange=()=>{
+      const id=input.dataset.ribbonId;
+      const sel=State.ribbonSelections[id] || {checked:false,devices:{}};
+      const chosen=new Set(sel.specialAuthorizations || []);
+      if(input.checked) chosen.add(input.dataset.deviceId); else chosen.delete(input.dataset.deviceId);
+      sel.specialAuthorizations=[...chosen];
+      State.ribbonSelections[id]=sel;
+      if(sel.checked) setRibbonSelectionFromDropdown(id,sel.awardValue || `military_award_${sel.awardCount || 1}`);
+    };
+  });
 }
 
 
@@ -9916,11 +10056,18 @@ function renderMeasurementOverlay(){
 }
 
 function getMilitaryCatalogAwards(){
-  return (window.CAPUBMilitaryData?.awards || []).filter(award =>
+  const raw=(window.CAPUBMilitaryData?.awards || []).filter(award =>
     award.type === 'RIBBON' && window.CAPUBMilitary?.isAuthorizedForService(
       award, State.organization, State.component
     )
   );
+  const canonical=window.CAPUBMilitary?.canonicalizeAwards?.(raw) || raw;
+  for(const award of canonical){
+    if(State.militaryAwards?.[award.id]) continue;
+    const legacyId=(award.sourceIds || []).find(id=>State.militaryAwards?.[id]);
+    if(legacyId) State.militaryAwards[award.id]={...State.militaryAwards[legacyId]};
+  }
+  return canonical;
 }
 
 function militaryEscapeHtml(value){
@@ -10027,6 +10174,10 @@ function renderMilitaryPreview(){
       }
       Object.assign(tile.style,{left:`${left}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`});
       uniformCanvas.appendChild(tile);
+      const texture=document.createElement('div');
+      texture.className='layer militaryRibbonTexture';
+      Object.assign(texture.style,{left:`${left}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`});
+      uniformCanvas.appendChild(texture);
       const awardCount=State.militaryAwards[award.id]?.awardCount || 1;
       const calculated=window.CAPUBMilitary?.calculateDevices({
         award,service:State.organization,awardCount,
@@ -10036,8 +10187,17 @@ function renderMilitaryPreview(){
         const devices=document.createElement('div');
         devices.className='layer militaryDeviceSummary';
         devices.title=calculated.devices.join(', ');
-        devices.textContent=calculated.devices.map(id=>id.startsWith('SILVER')?'◆':'●').join(' ');
         Object.assign(devices.style,{left:`${left}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`});
+        for(const deviceId of calculated.devices){
+          const meta=deviceMeta[deviceId];
+          if(!meta) continue;
+          const element=document.createElement(meta.text ? 'span' : 'img');
+          if(meta.text) element.textContent=meta.text;
+          else element.src=ASSET(meta.src);
+          element.alt=meta.label || deviceId;
+          Object.assign(element.style,{width:`${Math.max(8,meta.w)}px`,height:`${Math.max(8,meta.h)}px`,objectFit:'contain'});
+          devices.appendChild(element);
+        }
         uniformCanvas.appendChild(devices);
       }
       if(calculated?.warnings?.length) tile.title=`${tile.title || award.name}\n${calculated.warnings.join('\n')}`;
@@ -11064,14 +11224,10 @@ function openGalleryModal(kind){
 
   function wireModalInteractions(k){
     if(k==='ribbons'){
-      const selects = [...grid.querySelectorAll('.rbAwardSelect')];
-      selects.forEach(select => {
-        const id = select.dataset.ribbonId;
-        if(!id) return;
-        select.onchange = () => {
-          setRibbonSelectionFromDropdown(id, select.value);
-          syncFromSidebar();
-        };
+      wireRibbonTileControls(grid);
+      grid.querySelectorAll('.rbAwardSelect,.militaryServiceSelect,.militarySpecialDevice').forEach(control=>{
+        const original=control.onchange;
+        control.onchange=(event)=>{ original?.call(control,event); syncFromSidebar(); };
       });
     }
 

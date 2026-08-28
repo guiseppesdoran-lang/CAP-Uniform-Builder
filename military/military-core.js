@@ -109,6 +109,91 @@
     return orders.length ? Math.min(...orders) : Number.MAX_SAFE_INTEGER;
   }
 
+  function canonicalAwardKey(award){
+    return slugify(normalizeName(award?.officialName || award?.name || award?.sourceName || award?.id))
+      .replace(/^(?:air_force|army|coast_guard|navy|marine_corps|space_force)_medal_of_honor$/, 'medal_of_honor');
+  }
+
+  function canonicalizeAwards(awards){
+    const groups=new Map();
+    for(const award of awards || []){
+      if(!award) continue;
+      const key=canonicalAwardKey(award);
+      if(!key) continue;
+      const existing=groups.get(key);
+      if(!existing){
+        groups.set(key, {
+          ...award,
+          id:key,
+          canonicalId:key,
+          sourceIds:unique([award.id]),
+          aliases:unique([...(award.aliases || []), award.name, award.officialName]),
+          authorizedServices:unique((award.authorizedServices || []).map(normalizeService)),
+          precedence:{...(award.precedence || {})},
+          devices:{...(award.devices || award.deviceRules || {})},
+          images:{...(award.images || {})}
+        });
+        continue;
+      }
+      existing.sourceIds=unique([...(existing.sourceIds || []), award.id]);
+      existing.aliases=unique([...(existing.aliases || []), ...(award.aliases || []), award.name, award.officialName]);
+      existing.authorizedServices=unique([...(existing.authorizedServices || []), ...(award.authorizedServices || [])].map(normalizeService));
+      existing.precedence=Object.assign({}, existing.precedence, award.precedence || {});
+      existing.devices=Object.assign({}, existing.devices, award.devices || award.deviceRules || {});
+      if(!existing.images?.ribbon && award.images?.ribbon) existing.images={...(award.images || {})};
+      if(award.verificationStatus === 'OFFICIALLY_VERIFIED') existing.verificationStatus=award.verificationStatus;
+    }
+    return [...groups.values()];
+  }
+
+  function compareAwardsUniversal(a,b){
+    const sideA=Object.values(a?.precedence || {}).find(Boolean)?.side || 'LEFT';
+    const sideB=Object.values(b?.precedence || {}).find(Boolean)?.side || 'LEFT';
+    if(sideA !== sideB) return sideA === 'LEFT' ? -1 : 1;
+    const categoryA=inferredCategory(a), categoryB=inferredCategory(b);
+    const categoryIndexA=DEFAULT_CATEGORY_ORDER.indexOf(categoryA);
+    const categoryIndexB=DEFAULT_CATEGORY_ORDER.indexOf(categoryB);
+    if(categoryIndexA !== categoryIndexB) return categoryIndexA - categoryIndexB;
+    const orderA=categoryA === 'MEDAL_OF_HONOR' ? -1 : minimumKnownPrecedenceOrder(a);
+    const orderB=categoryB === 'MEDAL_OF_HONOR' ? -1 : minimumKnownPrecedenceOrder(b);
+    if(orderA !== orderB) return orderA-orderB;
+    return String(a?.officialName || a?.name || a?.id || '').localeCompare(String(b?.officialName || b?.name || b?.id || ''));
+  }
+
+  function inferDeviceRules(award,service){
+    const serviceKey=normalizeService(service);
+    const explicit=award?.devices?.[serviceKey] || award?.deviceRules?.[serviceKey];
+    if(explicit) return explicit;
+    const category=inferredCategory(award);
+    const personal=new Set([
+      'MEDAL_OF_HONOR','SERVICE_CROSS','DISTINGUISHED_SERVICE','VALOR','SUPERIOR_SERVICE',
+      'LEGION_OF_MERIT','DISTINGUISHED_FLYING_CROSS','HEROISM','BRONZE_STAR','PURPLE_HEART',
+      'MERITORIOUS_SERVICE','COMMENDATION','ACHIEVEMENT'
+    ]);
+    const campaign=new Set(['CAMPAIGN','EXPEDITIONARY','SERVICE']);
+    const allowedSpecialDevices=['V_DEVICE','C_DEVICE','R_DEVICE','ARROWHEAD_DEVICE'];
+    if(personal.has(category)){
+      const naval=['NAVY','MARINE_CORPS','COAST_GUARD'].includes(serviceKey);
+      return {
+        repeatAward:naval
+          ? {bronzeDevice:'GOLD_AWARD_STAR',silverDevice:'SILVER_AWARD_STAR'}
+          : {bronzeDevice:'BRONZE_OLC',silverDevice:'SILVER_OLC'},
+        allowedSpecialDevices,
+        devicePrecedence:['V_DEVICE','C_DEVICE','R_DEVICE','ARROWHEAD_DEVICE','SILVER_OLC','BRONZE_OLC','SILVER_AWARD_STAR','GOLD_AWARD_STAR'],
+        inferred:true
+      };
+    }
+    if(campaign.has(category)){
+      return {
+        repeatAward:{bronzeDevice:'BRONZE_SERVICE_STAR',silverDevice:'SILVER_SERVICE_STAR'},
+        allowedSpecialDevices,
+        devicePrecedence:['ARROWHEAD_DEVICE','V_DEVICE','C_DEVICE','R_DEVICE','SILVER_SERVICE_STAR','BRONZE_SERVICE_STAR'],
+        inferred:true
+      };
+    }
+    return null;
+  }
+
   function isCapAward(award){
     const awardClass = String(award?.awardClass || '').trim().toUpperCase();
     const category = String(award?.category || '').trim().toUpperCase();
@@ -195,9 +280,9 @@
     const serviceKey = normalizeService(service);
     const warnings=[];
     const count = Math.max(1, Math.trunc(Number(awardCount) || 1));
-    const serviceRules = award?.devices?.[serviceKey] || award?.deviceRules?.[serviceKey] || null;
+    const serviceRules = inferDeviceRules(award,serviceKey);
     if(!serviceRules){
-      if(count > 1) warnings.push(`No verified repeat-award device rule is available for ${award?.name || award?.id} in ${serviceKey}.`);
+      if(count > 1) warnings.push(`No repeat-award device rule is available for ${award?.name || award?.id} in ${serviceKey}.`);
       return { devices:[], valid:count === 1, warnings };
     }
 
@@ -293,6 +378,7 @@
     ORGANIZATIONS, COMPONENTS, VERIFICATION_STATUSES, AWARD_STATUSES,
     DEFAULT_CATEGORY_ORDER, normalizeService, normalizeName, slugify, inferredCategory,
     isCapAward, isAuthorizedForService, getAwardPrecedence, compareAwardsForMember,
-    sortAwardsForMember, calculateDevices, mergeAwardRecords, validateCatalog
+    sortAwardsForMember, canonicalAwardKey, canonicalizeAwards, compareAwardsUniversal,
+    inferDeviceRules, calculateDevices, mergeAwardRecords, validateCatalog
   };
 });
