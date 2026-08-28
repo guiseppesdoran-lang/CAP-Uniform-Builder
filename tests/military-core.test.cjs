@@ -151,6 +151,15 @@ test('normal mode never guesses a missing award-specific device rule', () => {
   assert.match(result.warnings.join(' '),/No repeat-award device rule/);
 });
 
+test('Coast Guard Humanitarian Service Medal repeat awards use verified service stars', () => {
+  const overrides=require('../data/rules/verified/manual-overrides.json').devices;
+  const sample=award('humanitarian_service','Humanitarian Service Medal',['COAST_GUARD'],{});
+  sample.devices={COAST_GUARD:overrides.humanitarian_service.COAST_GUARD};
+  const result=core.calculateDevices({award:sample,service:'COAST_GUARD',awardCount:7});
+  assert.deepEqual(result.devices,['SILVER_SERVICE_STAR','BRONZE_SERVICE_STAR']);
+  assert.equal(result.valid,true);
+});
+
 test('one canonical selection preserves quantity and devices across representations', () => {
   const selected=core.createAwardSelection('bronze_star_medal',{quantity:7,specialDevices:['V_DEVICE']});
   const canonical={
@@ -175,6 +184,33 @@ test('canonicalization preserves reviewed medal representations from source reco
   }]);
   assert.equal(canonical[0].id,'aerial_achievement_medal');
   assert.equal(core.getAwardRepresentation(canonical[0],'MINIATURE_MEDAL').asset,'images/mini.png');
+});
+
+test('canonicalization rejects navigation and rank pages discovered by the crawler', () => {
+  const records=[
+    {id:'valid',name:'Air Medal',type:'RIBBON'},
+    {id:'graphics',name:'Free Military Graphics and Designs',type:'RIBBON'},
+    {id:'rank',name:'US Army Rank Free CNC and Laser Military Graphics and Designs',type:'RIBBON'},
+    {id:'badge-page',name:'Example Badge Page',type:'BADGE'}
+  ];
+  assert.deepEqual(core.canonicalizeAwards(records).map(item=>item.id),['air_medal']);
+});
+
+test('representation status distinguishes available, missing, not applicable, and unverified art', () => {
+  assert.equal(core.normalizeRepresentations({images:{ribbon:'images/ribbon.png'}}).ribbon.status,'AVAILABLE');
+  assert.equal(core.normalizeRepresentations({}).miniatureMedal.status,'MISSING_ASSET');
+  assert.equal(core.normalizeRepresentations({representations:{fullSizeMedal:{status:'NOT_APPLICABLE'}}}).fullSizeMedal.status,'NOT_APPLICABLE');
+  const unverified=core.normalizeRepresentations({representations:{miniatureMedal:{asset:'images/mini.png',status:'UNVERIFIED'}}});
+  assert.equal(unverified.miniatureMedal.status,'UNVERIFIED');
+  assert.equal(unverified.miniatureMedal.available,false);
+});
+
+test('Medal of Honor miniature is explicitly not applicable', () => {
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  const representation=core.normalizeRepresentations({representations:overrides.medal_of_honor}).miniatureMedal;
+  assert.equal(representation.status,'NOT_APPLICABLE');
+  assert.equal(representation.available,false);
+  assert.equal(representation.asset,null);
 });
 
 test('legacy ribbon-only assets do not create fake miniature medals', () => {
@@ -216,4 +252,90 @@ test('catalog validator reports duplicate ids and missing metadata', () => {
   assert.equal(result.valid,false);
   assert.ok(result.errors.some(x=>x.includes('Duplicate award id')));
   assert.ok(result.warnings.some(x=>x.includes('missing service authorization')));
+});
+
+test('military badge authorization and precedence are service-specific', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const headquarters=badges.find(badge=>badge.id==='headquarters_space_force_staff_identification_badge');
+  assert.equal(core.isBadgeAuthorizedForService(headquarters,'SPACE_FORCE'),true);
+  assert.equal(core.isBadgeAuthorizedForService(headquarters,'AIR_FORCE'),false);
+  const sorted=core.sortBadgesForMember(
+    badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'SPACE_FORCE')).reverse(),
+    {organization:'SPACE_FORCE'}
+  );
+  assert.equal(sorted[0].id,'presidential_service_badge');
+  assert.equal(sorted.at(-1).id,'headquarters_space_force_staff_identification_badge');
+});
+
+test('official Marine Corps table preserves personal, unit, and campaign precedence', () => {
+  const table=require('../data/rules/verified/service-precedence.json').MARINE_CORPS;
+  const order=id=>table.awards.indexOf(id);
+  assert.match(table.source,/marines\.mil/i);
+  assert.ok(order('medal_of_honor')<order('navy_cross'));
+  assert.ok(order('combat_action')<order('navy_presidential_unit_citation'));
+  assert.ok(order('navy_presidential_unit_citation')<order('prisoner_of_war'));
+  assert.ok(order('marine_corps_good_conduct')<order('marine_corps_expeditionary'));
+  assert.ok(order('global_war_on_terrorism_service')<order('marine_corps_recruiting'));
+  assert.ok(order('marine_corps_reserve')<order('philippine_presidential_unit_citation'));
+});
+
+test('official Army badge catalog uses canonical families and variants', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const army=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'ARMY'));
+  assert.ok(army.length>=30,'expected the official Army badge foundation');
+  assert.equal(new Set(badges.map(badge=>badge.id)).size,badges.length,'badge ids must be unique');
+  assert.deepEqual(army.find(badge=>badge.id==='army_aviator_badge').variants,['basic','senior','master']);
+  assert.deepEqual(army.find(badge=>badge.id==='army_diver_badge').variants,['second_class','first_class','salvage','master','special_operations','special_operations_supervisor']);
+  assert.ok(army.every(badge=>badge.sources.some(source=>/army\.mil/i.test(source))));
+});
+
+test('official Coast Guard qualification catalog preserves variants and placement', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const coastGuard=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'COAST_GUARD'));
+  assert.ok(coastGuard.length>=24,'expected the official Coast Guard badge foundation');
+  assert.deepEqual(coastGuard.find(badge=>badge.id==='coast_guard_boat_force_operations_insignia').variants,['basic_pewter','advanced_pewter_gold']);
+  assert.deepEqual(coastGuard.find(badge=>badge.id==='coast_guard_command_device').variants,['command_afloat','command_ashore','officer_in_charge_afloat','officer_in_charge_ashore']);
+  assert.equal(coastGuard.find(badge=>badge.id==='coast_guard_surfman_insignia').exclusions[0],'coast_guard_coxswain_insignia');
+  assert.ok(coastGuard.filter(badge=>badge.id.startsWith('coast_guard_')).every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
+  assert.ok(coastGuard.every(badge=>badge.sources.some(source=>/defense\.gov|e-publishing\.af\.mil|army\.mil/i.test(source))));
+});
+
+test('official Navy breast-insignia catalog preserves families, variants, and placement', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const navy=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'NAVY'));
+  const navyFamilies=navy.filter(badge=>badge.id.startsWith('navy_'));
+  assert.ok(navy.length>=37,'expected the official Navy breast-insignia foundation');
+  assert.ok(navyFamilies.length>=33,'expected canonical Navy qualification families');
+  assert.deepEqual(navy.find(badge=>badge.id==='navy_explosive_ordnance_disposal_insignia').variants,['officer','basic','senior','master']);
+  assert.deepEqual(navy.find(badge=>badge.id==='navy_special_warfare_combatant_craft_crewman_insignia').variants,['basic','senior','master']);
+  assert.deepEqual(navy.find(badge=>badge.id==='navy_surface_warfare_insignia').variants,['officer','enlisted','dental','medical','medical_service','nurse','supply']);
+  assert.deepEqual(navy.find(badge=>badge.id==='navy_diving_insignia').variants,['diving_officer','master_diver','diving_officer_medical','diving_medical_technician','first_class_diver','second_class_diver','scuba_diver']);
+  assert.ok(navyFamilies.every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
+  assert.ok(navyFamilies.every(badge=>badge.placement?.nwu?.status==='OFFICIALLY_VERIFIED'));
+  assert.ok(navy.every(badge=>badge.sources.some(source=>/mynavyhr\.navy\.mil/i.test(source))));
+});
+
+test('official Marine Corps breast and marksmanship catalog preserves service-specific variants', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const marines=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'MARINE_CORPS'));
+  assert.ok(marines.length>=17,'expected the official Marine Corps badge foundation');
+  assert.deepEqual(marines.find(badge=>badge.id==='marine_corps_unmanned_aircraft_system_insignia').variants,['officer','enlisted_operator']);
+  assert.deepEqual(marines.find(badge=>badge.id==='marine_corps_explosive_ordnance_disposal_insignia').variants,['basic','senior','master']);
+  assert.deepEqual(marines.find(badge=>badge.id==='marine_corps_diver_insignia').variants,['master_diver','diving_medical_technician','first_class_diver','combatant_diver','second_class_diver','scuba_diver']);
+  assert.equal(marines.find(badge=>badge.id==='marine_corps_special_operator_insignia').exclusiveWear,true);
+  assert.ok(marines.find(badge=>badge.id==='marine_corps_competition_marksmanship_badge').variants.length>=27);
+  assert.ok(marines.every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
+  assert.ok(marines.every(badge=>badge.sources.some(source=>/marines\.mil/i.test(source))));
+});
+
+test('official Army Institute of Heraldry table preserves cross-service precedence', () => {
+  const table=require('../data/rules/verified/service-precedence.json').ARMY;
+  const order=id=>table.awards.indexOf(id);
+  assert.match(table.source,/tioh\.army\.mil/i);
+  assert.ok(order('medal_of_honor')<order('army_distinguished_service_cross'));
+  assert.ok(order('army_distinguished_service_cross')<order('navy_cross'));
+  assert.ok(order('coast_guard_cross')<order('defense_distinguished_service'));
+  assert.ok(order('army_commendation')<order('navy_and_marine_corps_commendation'));
+  assert.ok(order('army_good_conduct')<order('reserve_componets_achievement'));
+  assert.ok(order('outstanding_volunteer_service')<order('army_service'));
 });

@@ -1,0 +1,574 @@
+{
+  "$schema": "../schemas/military-badge-catalog.schema.json",
+  "schemaVersion": 1,
+  "notes": "Badge records are added only with service-specific authorization/precedence sources. Missing artwork remains non-renderable. CAP badges remain in the existing CAP catalog.",
+  "badges": [
+    {
+      "id": "presidential_service_badge",
+      "officialName": "Presidential Service Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": ["COAST_GUARD", "NAVY", "SPACE_FORCE"],
+      "status": "CURRENT",
+      "precedence": {"SPACE_FORCE": {"order": 0, "verified": true}},
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    },
+    {
+      "id": "vice_presidential_service_badge",
+      "officialName": "Vice Presidential Service Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": ["COAST_GUARD", "NAVY", "SPACE_FORCE"],
+      "status": "CURRENT",
+      "precedence": {"SPACE_FORCE": {"order": 1, "verified": true}},
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    },
+    {
+      "id": "office_of_secretary_of_defense_identification_badge",
+      "officialName": "Office of the Secretary of Defense Identification Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": ["ARMY", "COAST_GUARD", "NAVY", "SPACE_FORCE"],
+      "status": "CURRENT",
+      "precedence": {"SPACE_FORCE": {"order": 2, "verified": true}},
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "sources": ["https://www.army.mil/uniforms/", "https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    },
+    {
+      "id": "joint_chiefs_of_staff_identification_badge",
+      "officialName": "Joint Chiefs of Staff Identification Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": ["ARMY", "COAST_GUARD", "NAVY", "SPACE_FORCE"],
+      "status": "CURRENT",
+      "precedence": {"SPACE_FORCE": {"order": 3, "verified": true}},
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "sources": ["https://www.army.mil/uniforms/", "https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=129", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    },
+    {
+      "id": "headquarters_space_force_staff_identification_badge",
+      "officialName": "Headquarters Space Force Staff Identification Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": ["SPACE_FORCE"],
+      "status": "CURRENT",
+      "precedence": {"SPACE_FORCE": {"order": 4, "verified": true}},
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "When two staff identification badges are worn, the senior badge is on the wearer's left one-half inch below the bottom row of medals; the next is on the wearer's right one-half inch below the lapel insignia."
+        }
+      },
+      "sources": ["https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    },
+    {
+      "id": "coast_guard_aviator_insignia", "officialName": "Coast Guard Aviator Insignia", "family": "AVIATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons; when two insignia are worn, the current-assignment or most recently earned insignia is uppermost."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=120"]
+    },
+    {
+      "id": "coast_guard_air_crew_insignia", "officialName": "Coast Guard Air Crew Insignia", "family": "AIRCREW", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons; when two insignia are worn, the current-assignment or most recently earned insignia is uppermost."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=120"]
+    },
+    {
+      "id": "coast_guard_flight_officer_insignia", "officialName": "Coast Guard Flight Officer Insignia", "family": "AVIATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=120"]
+    },
+    {
+      "id": "coast_guard_flight_surgeon_insignia", "officialName": "Coast Guard Flight Surgeon Insignia", "family": "MEDICAL", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=120"]
+    },
+    {
+      "id": "coast_guard_aviation_rescue_swimmer_insignia", "officialName": "Coast Guard Aviation Rescue Swimmer Insignia", "family": "AIRCREW", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "exclusions": ["coast_guard_air_crew_insignia"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Worn in lieu of Air Crew insignia and centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=120"]
+    },
+    {
+      "id": "coast_guard_astronaut_insignia", "officialName": "Coast Guard Astronaut Insignia", "family": "SPACE", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=121"]
+    },
+    {
+      "id": "coast_guard_aviation_mission_specialist_insignia", "officialName": "Coast Guard Aviation Mission Specialist Insignia", "family": "AVIATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=121"]
+    },
+    {
+      "id": "coast_guard_cutterman_insignia", "officialName": "Coast Guard Cutterman Insignia", "family": "QUALIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["officer_gold", "enlisted_pewter"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=121"]
+    },
+    {
+      "id": "coast_guard_boat_force_operations_insignia", "officialName": "Coast Guard Boat Force Operations Insignia", "family": "QUALIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["basic_pewter", "advanced_pewter_gold"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=121"]
+    },
+    {
+      "id": "coast_guard_coxswain_insignia", "officialName": "Coast Guard Coxswain Insignia", "family": "QUALIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=122"]
+    },
+    {
+      "id": "coast_guard_enlisted_expeditionary_warfare_specialist_insignia", "officialName": "Coast Guard Enlisted Expeditionary Warfare Specialist Insignia", "family": "COMBAT", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=122"]
+    },
+    {
+      "id": "coast_guard_surfman_insignia", "officialName": "Coast Guard Surfman Insignia", "family": "QUALIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "exclusions": ["coast_guard_coxswain_insignia"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Always worn in lieu of Coxswain insignia and centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=122"]
+    },
+    {
+      "id": "coast_guard_scuba_diver_insignia", "officialName": "Coast Guard Scuba Diver Insignia", "family": "DIVER", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["officer_gold", "enlisted_pewter"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=122"]
+    },
+    {
+      "id": "coast_guard_diver_insignia", "officialName": "Coast Guard Diver Insignia", "family": "DIVER", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["second_class", "first_class", "master", "diving_officer", "diving_medical_technician"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=122"]
+    },
+    {
+      "id": "coast_guard_port_security_insignia", "officialName": "Coast Guard Port Security Insignia", "family": "COMBAT", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["officer_gold", "enlisted_pewter"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=123"]
+    },
+    {
+      "id": "coast_guard_marine_safety_insignia", "officialName": "Coast Guard Marine Safety Insignia", "family": "QUALIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=124"]
+    },
+    {
+      "id": "coast_guard_tactical_law_enforcement_insignia", "officialName": "Coast Guard Law Enforcement Detachment and Tactical Law Enforcement Team Insignia", "family": "COMBAT", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=124"]
+    },
+    {
+      "id": "coast_guard_ceremonial_honor_guard_insignia", "officialName": "Coast Guard Ceremonial Honor Guard Insignia", "family": "IDENTIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Qualification insignia placement centered 1/4 inch above ribbons; authorized for past and present members assigned to the Ceremonial Honor Guard."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=124"]
+    },
+    {
+      "id": "coast_guard_company_commander_insignia", "officialName": "Coast Guard Company Commander Insignia", "family": "IDENTIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Qualification insignia placement centered 1/4 inch above ribbons."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=124"]
+    },
+    {
+      "id": "coast_guard_physician_assistant_nurse_practitioner_insignia", "officialName": "Coast Guard Physician Assistant and Nurse Practitioner Insignia", "family": "MEDICAL", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "miniature": {"status": "NOT_APPLICABLE", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "One-inch insignia centered 1/4 inch above ribbons; no miniature version exists."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=124"]
+    },
+    {
+      "id": "coast_guard_command_device", "officialName": "Coast Guard Command Device", "family": "COMMAND", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["command_afloat", "command_ashore", "officer_in_charge_afloat", "officer_in_charge_ashore"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Incumbent CO/OIC device centered 1/4 inch above the nametag on the right pocket; formerly earned devices follow the left-pocket rules in section 4.B.4."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "Incumbent CO/OIC may wear one current embroidered miniature command device."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=127"]
+    },
+    {
+      "id": "navy_astronaut_insignia", "officialName": "Naval Astronaut Insignia", "family": "SPACE", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["naval_astronaut", "naval_astronaut_nfo"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_aviator_insignia", "officialName": "Naval Aviator Insignia", "family": "AVIATION", "authorizedServices": ["MARINE_CORPS", "NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_aviation_observer_insignia", "officialName": "Naval Aviation Observer and Flight Meteorologist Insignia", "family": "AVIATION", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["naval_aviation_observer", "flight_meteorologist"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_flight_medical_insignia", "officialName": "Naval Flight Medical Insignia", "family": "MEDICAL", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["flight_surgeon", "flight_nurse", "medical_service_corps_flight_officer"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_flight_officer_insignia", "officialName": "Naval Flight Officer Insignia", "family": "AVIATION", "authorizedServices": ["MARINE_CORPS", "NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_aviation_science_insignia", "officialName": "Aviation Experimental Psychologist and Aviation Physiologist Insignia", "family": "AVIATION", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["aviation_experimental_psychologist", "aviation_physiologist"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_professional_aviation_maintenance_officer_insignia", "officialName": "Professional Aviation Maintenance Officer Insignia", "family": "AVIATION", "authorizedServices": ["NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_enlisted_aviation_warfare_specialist_insignia", "officialName": "Enlisted Aviation Warfare Specialist Insignia", "family": "AIRCREW", "authorizedServices": ["NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_aviation_supply_corps_insignia", "officialName": "Naval Aviation Supply Corps Insignia", "family": "AVIATION", "authorizedServices": ["NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_aircrew_warfare_specialist_insignia", "officialName": "Naval Aircrew Warfare Specialist Insignia", "family": "AIRCREW", "authorizedServices": ["MARINE_CORPS", "NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_aerial_vehicle_pilot_insignia", "officialName": "Aerial Vehicle Pilot Insignia", "family": "AVIATION", "authorizedServices": ["NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_engineering_duty_officer_insignia", "officialName": "Engineering Duty Officer Insignia", "family": "QUALIFICATION", "authorizedServices": ["NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_expeditionary_warfare_insignia", "officialName": "Navy Expeditionary Warfare Insignia", "family": "COMBAT", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["supply_corps_officer", "enlisted"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_explosive_ordnance_disposal_insignia", "officialName": "Explosive Ordnance Disposal Warfare Insignia", "family": "EOD", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["officer", "basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_fleet_marine_force_insignia", "officialName": "Fleet Marine Force Insignia", "family": "COMBAT", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["officer", "chaplain", "enlisted"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_information_warfare_insignia", "officialName": "Information Warfare Insignia", "family": "CYBER", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["officer", "enlisted"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_integrated_undersea_surveillance_insignia", "officialName": "Integrated Undersea Surveillance System Insignia", "family": "QUALIFICATION", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["officer", "enlisted"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_marine_corps_combat_aircrew_insignia", "officialName": "Marine Corps Combat Aircrew Insignia", "family": "AIRCREW", "authorizedServices": ["MARINE_CORPS", "NAVY"], "status": "CURRENT", "variants": ["base", "one_gold_star", "two_gold_stars", "three_gold_stars", "one_silver_star"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_marine_corps_combatant_diver_insignia", "officialName": "Marine Corps Combatant Diver Insignia", "family": "DIVER", "authorizedServices": ["MARINE_CORPS", "NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=96", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_security_force_insignia", "officialName": "Navy Security Force Insignia", "family": "QUALIFICATION", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["officer", "specialist", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_nuclear_weapons_security_insignia", "officialName": "Nuclear Weapons Security Insignia", "family": "QUALIFICATION", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["officer", "enlisted"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_parachutist_insignia", "officialName": "Navy/Marine Corps Parachutist Insignia", "family": "QUALIFICATION", "authorizedServices": ["MARINE_CORPS", "NAVY"], "status": "CURRENT", "variants": ["navy_marine_corps_parachutist", "basic_parachutist"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=96", "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_seabee_combat_warfare_insignia", "officialName": "Seabee Combat Warfare Insignia", "family": "COMBAT", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["officer", "enlisted"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_small_craft_insignia", "officialName": "Small Craft Insignia", "family": "QUALIFICATION", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["officer", "enlisted", "craftmaster"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_special_operations_warfare_insignia", "officialName": "Special Operations Warfare Insignia", "family": "COMBAT", "authorizedServices": ["NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_special_warfare_insignia", "officialName": "Special Warfare Insignia (SEAL)", "family": "COMBAT", "authorizedServices": ["NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_special_warfare_combatant_craft_crewman_insignia", "officialName": "Special Warfare Combatant-Craft Crewman Insignia", "family": "COMBAT", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_strategic_sealift_officer_warfare_insignia", "officialName": "Strategic Sealift Officer Warfare Insignia", "family": "QUALIFICATION", "authorizedServices": ["NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_submarine_patrol_insignia", "officialName": "Submarine Patrol Insignia", "family": "QUALIFICATION", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["submarine_combat_patrol", "ssbn_deterrent_patrol"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Patrol insignia follows the dedicated submarine patrol placement and star rules in article 5201; no unsupported star combination is generated."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Wear follows the current Navy breast-insignia rules; missing artwork remains disclosed."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_submarine_warfare_insignia", "officialName": "Submarine Warfare Insignia", "family": "QUALIFICATION", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["officer", "enlisted", "medical", "engineering_duty", "supply", "deep_submergence_officer", "deep_submergence_enlisted"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_surface_warfare_insignia", "officialName": "Surface Warfare Insignia", "family": "QUALIFICATION", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["officer", "enlisted", "dental", "medical", "medical_service", "nurse", "supply"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_diving_insignia", "officialName": "Navy Diving Insignia", "family": "DIVER", "authorizedServices": ["NAVY"], "status": "CURRENT", "variants": ["diving_officer", "master_diver", "diving_officer_medical", "diving_medical_technician", "first_class_diver", "second_class_diver", "scuba_diver"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "navy_surface_chaplain_qualification_insignia", "officialName": "Surface Chaplain Officer Qualification Insignia", "family": "CHAPLAIN", "authorizedServices": ["NAVY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above ribbons or medals with lower edge 1/4 inch above; a secondary insignia is centered 1/4 inch below the ribbons or pocket top."}, "nwu": {"status": "OFFICIALLY_VERIFIED", "notes": "Primary insignia centered above and flush with the U.S. NAVY tape; secondary insignia centered below the tape."}},
+      "sources": ["https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"]
+    },
+    {
+      "id": "marine_corps_astronaut_insignia", "officialName": "Naval Astronaut Insignia (Marine Corps)", "family": "SPACE", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT", "variants": ["pilot", "naval_flight_officer", "mission_specialist"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered with the bottom of the insignia 1/8 inch above the top row of ribbons, medals, or marksmanship badges."}, "utility": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional on the utility coat; kept horizontal to the top corner of the service tape."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=94"]
+    },
+    {
+      "id": "marine_corps_aerial_navigator_insignia", "officialName": "Marine Aerial Navigator Insignia", "family": "AVIATION", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered with the bottom of the insignia 1/8 inch above the top row of ribbons, medals, or marksmanship badges."}, "utility": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional on the utility coat; kept horizontal to the top corner of the service tape."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95"]
+    },
+    {
+      "id": "marine_corps_naval_aviation_observer_insignia", "officialName": "Naval Aviation Observer Insignia (Marine Corps Wear)", "family": "AVIATION", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered with the bottom of the insignia 1/8 inch above the top row of ribbons, medals, or marksmanship badges."}, "utility": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional on the utility coat; kept horizontal to the top corner of the service tape."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95"]
+    },
+    {
+      "id": "marine_corps_unmanned_aircraft_system_insignia", "officialName": "Marine Unmanned Aircraft System Insignia", "family": "AVIATION", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT", "variants": ["officer", "enlisted_operator"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered with the bottom of the insignia 1/8 inch above the top row of ribbons, medals, or marksmanship badges."}, "utility": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional on the utility coat; kept horizontal to the top corner of the service tape."}},
+      "sources": ["https://www.marines.mil/News/Messages/MARADMINS/Article/1517048/marine-unmanned-aircraft-system-breast-insignia/", "https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95"]
+    },
+    {
+      "id": "marine_corps_flight_surgeon_insignia", "officialName": "Naval Flight Surgeon Insignia (Marine Corps Wear)", "family": "MEDICAL", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Authorized for designated naval medical officers assigned to Marine Corps units; centered 1/8 inch above the top row of awards."}, "utility": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional on the utility coat for authorized flight surgeons."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=94"]
+    },
+    {
+      "id": "marine_corps_explosive_ordnance_disposal_insignia", "officialName": "Marine Corps Explosive Ordnance Disposal Insignia", "family": "EOD", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT", "variants": ["basic", "senior", "master"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "EOD is centered 1/8 inch above aviation or parachutist insignia and otherwise centered 1/8 inch above the top row of awards."}, "utility": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional on the utility coat; EOD remains senior to aviation and parachutist insignia."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=96"]
+    },
+    {
+      "id": "marine_corps_diver_insignia", "officialName": "U.S. Navy Diver Insignia (Marine Corps Wear)", "family": "DIVER", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT", "variants": ["master_diver", "diving_medical_technician", "first_class_diver", "combatant_diver", "second_class_diver", "scuba_diver"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Wear only the senior diver insignia; when worn with another breast insignia, the diver insignia is centered 1/8 inch above it."}, "utility": {"status": "OFFICIALLY_VERIFIED", "notes": "Optional on the utility coat; only the senior diver insignia is worn."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=96"]
+    },
+    {
+      "id": "marine_corps_special_operator_insignia", "officialName": "Marine Special Operator Insignia", "family": "COMBAT", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT", "exclusiveWear": true,
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/8 inch above the top row of awards. No additional breast insignia is authorized when this insignia is worn."}, "utility": {"status": "OFFICIALLY_VERIFIED", "notes": "Only the oxidized insignia is worn on the utility uniform; no additional breast insignia is authorized."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=96"]
+    },
+    {
+      "id": "marine_corps_rifle_qualification_badge", "officialName": "Marine Corps Rifle Qualification Badge", "family": "QUALIFICATION", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT", "variants": ["expert", "sharpshooter", "marksman"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Worn by seniority above the left pocket with the bottom of the highest holding bar 1/8 inch above the pocket; not authorized on Blue Dress A."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=156"]
+    },
+    {
+      "id": "marine_corps_pistol_qualification_badge", "officialName": "Marine Corps Pistol Qualification Badge", "family": "QUALIFICATION", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT", "variants": ["expert", "sharpshooter", "marksman"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Worn by seniority above the left pocket with the bottom of the highest holding bar 1/8 inch above the pocket; not authorized on Blue Dress A."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=156"]
+    },
+    {
+      "id": "marine_corps_competition_marksmanship_badge", "officialName": "Marine Corps Competition Marksmanship Badge", "family": "QUALIFICATION", "authorizedServices": ["MARINE_CORPS"], "status": "CURRENT", "variants": ["distinguished_international_shooter", "distinguished_marksman", "distinguished_pistol_shot", "lauchheimer_trophy_gold", "lauchheimer_trophy_silver", "lauchheimer_trophy_bronze", "mcdugal_trophy", "walsh_trophy", "rifle_competition_gold", "rifle_competition_silver", "rifle_competition_bronze", "pistol_competition_gold", "pistol_competition_silver", "pistol_competition_bronze", "interdivision_rifle_gold", "interdivision_pistol_gold", "fmf_combat_infantry_trophy_bronze", "annual_rifle_squad_gold", "annual_rifle_squad_silver", "annual_rifle_squad_bronze", "division_rifle_gold", "division_rifle_silver", "division_rifle_bronze", "division_pistol_gold", "division_pistol_silver", "division_pistol_bronze", "authorized_team_match_gold"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Worn in the official paragraph 5500 precedence order above the left pocket; no more than three marksmanship badges are worn."}},
+      "sources": ["https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=155"]
+    },
+    {
+      "id": "army_air_assault_badge", "officialName": "Air Assault Badge", "family": "QUALIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_aviator_badge", "officialName": "Army Aviator Badge", "family": "AVIATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["basic", "senior", "master"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_aviation_badge", "officialName": "Army Aviation Badge", "family": "AIRCREW", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["basic", "senior", "master"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_combat_action_badge", "officialName": "Combat Action Badge", "family": "COMBAT", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["first_award", "master_first_award", "master_second_award"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_combat_infantryman_badge", "officialName": "Combat Infantryman Badge", "family": "COMBAT", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["first_award", "master_first_award"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_combat_medical_badge", "officialName": "Combat Medical Badge", "family": "MEDICAL", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["first_award"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_diver_badge", "officialName": "Army Diver Badge", "family": "DIVER", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["second_class", "first_class", "salvage", "master", "special_operations", "special_operations_supervisor"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_driver_and_mechanic_badge", "officialName": "Driver and Mechanic Badge", "family": "QUALIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_expert_field_medical_badge", "officialName": "Expert Field Medical Badge", "family": "MEDICAL", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_expert_infantryman_badge", "officialName": "Expert Infantryman Badge", "family": "COMBAT", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_expert_soldier_badge", "officialName": "Expert Soldier Badge", "family": "COMBAT", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_explosive_ordnance_disposal_badge", "officialName": "Explosive Ordnance Disposal Badge", "family": "EOD", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["basic", "senior", "master"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_flight_surgeon_badge", "officialName": "Flight Surgeon Badge", "family": "MEDICAL", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["basic", "senior", "master"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_glider_badge", "officialName": "Glider Badge", "family": "QUALIFICATION", "authorizedServices": ["ARMY"], "status": "HISTORICAL",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_parachutist_badge", "officialName": "Parachutist Badge", "family": "QUALIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["basic", "senior", "master"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_military_freefall_parachutist_badge", "officialName": "Military Freefall Parachutist Badge", "family": "QUALIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["basic", "jumpmaster"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_parachute_rigger_badge", "officialName": "Parachute Rigger Badge", "family": "QUALIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_pathfinder_badge", "officialName": "Pathfinder Badge", "family": "QUALIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_mariner_badge", "officialName": "Mariner Badge", "family": "QUALIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["basic", "senior", "master"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_space_badge", "officialName": "Army Space Badge", "family": "SPACE", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["basic", "senior", "master"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_marksmanship_badge", "officialName": "Army Marksmanship Qualification Badge", "family": "QUALIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["marksman", "sharpshooter", "expert"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_career_counselor_identification_badge", "officialName": "Army Career Counselor Identification Badge", "family": "IDENTIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_staff_identification_badge", "officialName": "Army Staff Identification Badge", "family": "IDENTIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_drill_sergeant_identification_badge", "officialName": "Drill Sergeant Identification Badge", "family": "IDENTIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_tomb_guard_identification_badge", "officialName": "Guard, Tomb of the Unknown Soldier Identification Badge", "family": "IDENTIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_instructor_identification_badge", "officialName": "Army Instructor Identification Badge", "family": "IDENTIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "variants": ["basic", "senior", "master"], "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_master_gunner_identification_badge", "officialName": "Master Gunner Identification Badge", "family": "IDENTIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_military_horseman_identification_badge", "officialName": "Military Horseman Identification Badge", "family": "IDENTIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_retired_service_identification_badge", "officialName": "Retired Service Identification Badge", "family": "IDENTIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    },
+    {
+      "id": "army_recruiter_identification_badge", "officialName": "U.S. Army Recruiter Identification Badge", "family": "IDENTIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}}, "sources": ["https://www.army.mil/uniforms/"]
+    }
+  ]
+}

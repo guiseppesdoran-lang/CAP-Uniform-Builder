@@ -169,7 +169,7 @@ function awardCandidates(document){
     for(const link of document.links){
       const label=normalizeName(link.imageAlt || link.text);
       if(!link.imageSrc || !/\/military_ribbon_info\//i.test(new URL(link.href).pathname)) continue;
-      if(!label || label.length<3 || /home|products|precedence|campaign streamer|graphics/i.test(label)) continue;
+      if(!label || label.length<3 || /home|products|precedence|campaign streamer|graphics|\brank\b/i.test(label)) continue;
       candidates.push({ canonicalId:canonicalIdFromSourceUrl(link.href,label), sourceName:label, sourceUrl:link.href, imageSourceUrl:link.imageSrc, type:'RIBBON', services:document.services });
     }
   }else if(['RIBBON','BADGE','LAPEL_PIN','MEDAL','DEVICE','RANK'].includes(document.category)){
@@ -177,7 +177,7 @@ function awardCandidates(document){
     const sourcePath=new URL(document.url).pathname;
     const isRibbonItem=/\/military_ribbon_info\//i.test(sourcePath);
     const image=document.images.find(img=>img.alt && !/banner|logo/i.test(img.alt))?.src || null;
-    if(label && (document.category !== 'RIBBON' || isRibbonItem)) candidates.push({ canonicalId:canonicalIdFromSourceUrl(document.url,label), sourceName:label, sourceUrl:document.url, imageSourceUrl:image, type:document.category, services:document.services });
+    if(label && !/free military graphics|\brank\b/i.test(label) && (document.category !== 'RIBBON' || isRibbonItem)) candidates.push({ canonicalId:canonicalIdFromSourceUrl(document.url,label), sourceName:label, sourceUrl:document.url, imageSourceUrl:image, type:document.category, services:document.services });
   }
   return candidates;
 }

@@ -6,6 +6,8 @@ const core=require('../military/military-core.js');
 
 const root=path.resolve(__dirname,'..');
 const awards=JSON.parse(fs.readFileSync(path.join(root,'data/import/normalized/military-awards.json'),'utf8'));
+const additionsPath=path.join(root,'data/military/catalog-additions.json');
+if(fs.existsSync(additionsPath)) awards.push(...(JSON.parse(fs.readFileSync(additionsPath,'utf8')).awards || []));
 const devices=JSON.parse(fs.readFileSync(path.join(root,'data/rules/verified/device-definitions.json'),'utf8'));
 const overrides=JSON.parse(fs.readFileSync(path.join(root,'data/rules/verified/representation-overrides.json'),'utf8')).awards || {};
 const canonical=core.canonicalizeAwards(awards).map(award=>{

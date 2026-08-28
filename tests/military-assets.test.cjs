@@ -6,7 +6,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const ROOT = path.resolve(__dirname,'..');
-const awards = require('../data/import/normalized/military-awards.json');
+const core = require('../military/military-core.js');
+const importedAwards = require('../data/import/normalized/military-awards.json');
+const officialAdditions = require('../data/military/catalog-additions.json').awards;
+const awards = [...importedAwards,...officialAdditions];
 const devices = require('../data/rules/verified/device-definitions.json');
 
 function isSupportedImage(buffer){
@@ -17,10 +20,12 @@ function isSupportedImage(buffer){
   return /^(?:<\?xml[\s\S]*?\?>\s*)?<svg\b/i.test(buffer.toString('utf8',0,Math.min(buffer.length,1024)).trim());
 }
 
-test('every military ribbon has a valid local repository asset', () => {
+test('every available military ribbon has a valid local repository asset', () => {
   const ribbons=awards.filter(award=>award.type === 'RIBBON');
   assert.ok(ribbons.length>0);
   for(const award of ribbons){
+    const representation=core.getAwardRepresentation(award,'RIBBON');
+    if(representation.status!=='AVAILABLE') continue;
     assert.ok(award.images?.ribbon,`${award.id} is missing images.ribbon`);
     assert.notEqual(award.images?.assetStatus,'SOURCE_ONLY',`${award.id} is still source-only`);
     const absolute=path.join(ROOT,...award.images.ribbon.split('/'));
@@ -29,6 +34,15 @@ test('every military ribbon has a valid local repository asset', () => {
     assert.ok(buffer.length>0,`${award.id} local asset is empty`);
     assert.ok(isSupportedImage(buffer),`${award.id} local asset is not a supported image`);
   }
+});
+
+test('official awards without artwork remain explicit missing records', () => {
+  const cross=awards.find(award=>award.id==='coast_guard_cross');
+  assert.ok(cross,'Coast Guard Cross official-source record is missing');
+  const representation=core.getAwardRepresentation(cross,'RIBBON');
+  assert.equal(representation.status,'MISSING_ASSET');
+  assert.equal(representation.available,false);
+  assert.equal(representation.asset,null);
 });
 
 test('production military device artwork is local transparent PNG geometry',()=>{

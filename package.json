@@ -11,6 +11,7 @@
     "build:military-browser-data": "node scripts/build-military-browser-data.cjs",
     "reconcile:military-sources": "node scripts/reconcile-military-sources.cjs",
     "audit:military-combinations": "node scripts/build-military-award-audit.cjs",
+    "audit:military-complete": "node scripts/build-military-complete-audit.cjs",
     "audit:mcchord-assets": "python scripts/analyze_mcchord_assets.py",
     "build:military-device-assets": "python scripts/build_military_device_assets.py",
     "apply:military-overrides": "node scripts/apply-military-overrides.cjs",

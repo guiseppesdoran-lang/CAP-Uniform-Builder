@@ -9,6 +9,7 @@ let browser;
     executablePath:process.env.CAPUB_CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe'
   });
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
+  page.setDefaultTimeout(30000);
   const errors=[];
   page.on('pageerror',error=>errors.push(String(error)));
   page.on('console',message=>{
@@ -17,7 +18,7 @@ let browser;
     if(/ERR_NETWORK_ACCESS_DENIED|favicon.*404|status of 404/i.test(text)) return;
     errors.push(text);
   });
-  await page.goto(process.env.CAPUB_URL || 'http://127.0.0.1:8765/',{waitUntil:'networkidle'});
+  await page.goto(process.env.CAPUB_URL || 'http://127.0.0.1:8765/',{waitUntil:'networkidle',timeout:30000});
   if(errors.length) throw new Error(`Initial browser errors:\n${errors.join('\n')}`);
   assert.equal(await page.evaluate(()=>!!window.State),true,'builder State was not initialized');
 
@@ -57,6 +58,7 @@ let browser;
   assert.equal(await page.locator('#militaryAwardServiceFilter').inputValue(),'NAVY');
   assert.equal(await results.evaluate(element=>element.scrollTop),before,'catalog scroll position changed');
   assert.equal(await checkbox.isChecked(),true,'award selection did not persist');
+  assert.equal(await page.locator('#militarySelectedAwards .militarySelectedAward').count(),1,'selected-awards panel was not updated');
   await page.evaluate(()=>{
     window.State.organization='AIR_FORCE';
     window.State.militaryAwards={air_force_commendation:{awardCount:7}};
@@ -69,6 +71,10 @@ let browser;
   assert.deepEqual(await composed.evaluate(image=>[image.naturalWidth,image.naturalHeight]),[100,30]);
   await page.locator('#militaryRepresentationMode').selectOption('MINIATURE_MEDAL');
   assert.match(await page.locator('.militaryPreviewNote').innerText(),/No selected award has a reviewed local miniature medal representation/);
+  await page.locator('#militaryAwardServiceFilter').selectOption('ALL');
+  await page.locator('#militaryAwardSearch').fill('');
+  await page.locator('#militaryRenderableOnly').check();
+  assert.equal(await page.locator('#militaryAwardResults .militaryAwardOption').count(),2,'miniature-medal availability filter did not use representation status');
 
   await page.evaluate(()=>{
     window.State.organization='AIR_FORCE';
@@ -83,6 +89,38 @@ let browser;
     const awards=window.CAPUBMilitary.canonicalizeAwards(window.CAPUBMilitaryData.awards);
     return window.CAPUBMilitary.getAwardRepresentation(awards.find(award=>award.id==='air_medal'),'MINIATURE_MEDAL').asset;
   }),'images/mini_medals/mcchord/m_airmedal.png');
+
+  await page.locator('#organizationSelect').selectOption('SPACE_FORCE');
+  await page.locator('#militaryBadgeSection').evaluate(element=>element.open=true);
+  const badgeResults=page.locator('#militaryBadgeResults');
+  assert.equal(await badgeResults.locator('.militaryAwardOption').count(),5,'Space Force official identification badges were not listed');
+  const badgeCheckbox=badgeResults.locator('input[type="checkbox"]').first();
+  await badgeCheckbox.check();
+  assert.equal(await badgeCheckbox.isChecked(),true,'military badge selection did not persist');
+  assert.equal(await page.evaluate(()=>Object.keys(window.State.militaryBadges || {}).length),1,'military badge state was not updated');
+  assert.match(await page.locator('.militaryPreviewNote').innerText(),/selected badge\(s\) have no approved local artwork and were not fabricated/);
+  assert.equal(await page.locator('.militaryBadgeTile').count(),0,'missing military badge artwork was fabricated');
+
+  await page.locator('#organizationSelect').selectOption('ARMY');
+  await page.locator('#militaryBadgeSection').evaluate(element=>element.open=true);
+  assert.ok(await badgeResults.locator('.militaryAwardOption').count()>=30,'official Army badge families were not listed');
+  const aviatorRow=badgeResults.locator('[data-badge-id="army_aviator_badge"]');
+  await aviatorRow.locator('.militaryBadgeVariant').selectOption('master');
+  assert.deepEqual(await page.evaluate(()=>window.State.militaryBadges.army_aviator_badge),{selected:true,variant:'master'});
+
+  await page.locator('#organizationSelect').selectOption('NAVY');
+  await page.locator('#militaryBadgeSection').evaluate(element=>element.open=true);
+  assert.ok(await badgeResults.locator('.militaryAwardOption').count()>=37,'official Navy badge families were not listed');
+  const swccRow=badgeResults.locator('[data-badge-id="navy_special_warfare_combatant_craft_crewman_insignia"]');
+  await swccRow.locator('.militaryBadgeVariant').selectOption('master');
+  assert.deepEqual(await page.evaluate(()=>window.State.militaryBadges.navy_special_warfare_combatant_craft_crewman_insignia),{selected:true,variant:'master'});
+
+  await page.locator('#organizationSelect').selectOption('MARINE_CORPS');
+  await page.locator('#militaryBadgeSection').evaluate(element=>element.open=true);
+  assert.ok(await badgeResults.locator('.militaryAwardOption').count()>=17,'official Marine Corps badge families were not listed');
+  const uasRow=badgeResults.locator('[data-badge-id="marine_corps_unmanned_aircraft_system_insignia"]');
+  await uasRow.locator('.militaryBadgeVariant').selectOption('officer');
+  assert.deepEqual(await page.evaluate(()=>window.State.militaryBadges.marine_corps_unmanned_aircraft_system_insignia),{selected:true,variant:'officer'});
   assert.deepEqual(errors,[],'browser errors were reported');
-  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true},null,2)+'\n');
+  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,missingBadgeNotFabricated:true,armyBadgeFamiliesListed:true,navyBadgeFamiliesListed:true,marineCorpsBadgeFamiliesListed:true,badgeVariantSelectionPersisted:true},null,2)+'\n');
 })().catch(error=>{ console.error(error); process.exitCode=1; }).finally(async()=>{ if(browser) await browser.close(); });

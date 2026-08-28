@@ -1,12 +1,12 @@
 # Military Data Audit
 
-Generated: 2026-08-27T20:47:00.207Z
+Generated: 2026-08-28T14:57:05.688Z
 Canonical records: 183
 Ribbons: 177
 Badges: 0
 Lapel pins: 0
-Precedence records: 375
-Officially verified rules: 20
+Precedence records: 433
+Officially verified rules: 203
 Missing production images: 6
 Broken asset paths: 0
 Duplicate image hashes: 7
@@ -17,14 +17,7 @@ Duplicate image hashes: 7
 
 ## Warnings
 
-- american_campaign: unknown precedence.
-- european_african_middle_eastern_campaign: unknown precedence.
-- asiatic_pacific_campaign: unknown precedence.
-- kosovo_campaign: unknown precedence.
-- afghanistan_campaign: unknown precedence.
-- iraq_campaign: unknown precedence.
 - air_and_space_campaign: unknown precedence.
-- republic_of_vietnam_campaign: unknown precedence.
 - Duplicate canonical name: medal of honor.
 - Duplicate canonical name: Armed Forces Reserve.
 - us_air_force_rank_cnc_and_laser_graphics_wood_working: unknown precedence.
