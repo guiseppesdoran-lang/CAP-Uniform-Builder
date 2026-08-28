@@ -82,6 +82,35 @@ test('duplicate catalog listings merge into one canonical award', () => {
   assert.equal(merged[0].sources.catalog.length,2);
 });
 
+test('canonical catalog collapses branch copies of the Medal of Honor', () => {
+  const canonical=core.canonicalizeAwards([
+    award('air_force_medal_of_honor','Medal of Honor',['AIR_FORCE'],{AIR_FORCE:{order:0}}),
+    award('army_medal_of_honor','Medal of Honor',['ARMY'],{ARMY:{order:0}}),
+    award('medal_of_honor','Medal of Honor',['NAVY','MARINE_CORPS'],{NAVY:{order:0}})
+  ]);
+  assert.equal(canonical.length,1);
+  assert.equal(canonical[0].id,'medal_of_honor');
+  assert.deepEqual(canonical[0].authorizedServices,['AIR_FORCE','ARMY','NAVY','MARINE_CORPS']);
+  assert.equal(canonical[0].sourceIds.length,3);
+});
+
+test('universal precedence keeps Medal of Honor above every service cross', () => {
+  const moh=award('medal_of_honor','Medal of Honor',['ARMY','NAVY'],{},'UNKNOWN');
+  const cross=award('air_force_cross','Air Force Cross',['AIR_FORCE'],{AIR_FORCE:{order:1}},'UNKNOWN');
+  assert.deepEqual([cross,moh].sort(core.compareAwardsUniversal).map(item=>item.id),['medal_of_honor','air_force_cross']);
+});
+
+test('inferred repeat devices follow Army/Air Force and naval conventions', () => {
+  const decoration=award('sample_commendation','Sample Commendation Medal',['AIR_FORCE','NAVY'],{},'UNKNOWN');
+  assert.deepEqual(core.calculateDevices({award:decoration,service:'AIR_FORCE',awardCount:7}).devices,['SILVER_OLC','BRONZE_OLC']);
+  assert.deepEqual(core.calculateDevices({award:decoration,service:'NAVY',awardCount:7}).devices,['SILVER_AWARD_STAR','GOLD_AWARD_STAR']);
+});
+
+test('campaign participation uses bronze and silver service stars', () => {
+  const campaign=award('sample_campaign','Sample Campaign Medal',['ARMY'],{},'CAMPAIGN');
+  assert.deepEqual(core.calculateDevices({award:campaign,service:'ARMY',awardCount:7}).devices,['SILVER_SERVICE_STAR','BRONZE_SERVICE_STAR']);
+});
+
 test('CAP authorization stays independent of Air Force authorization', () => {
   const cap=award('cap','CAP Ribbon',['CAP'],{CAP:{order:1}});
   cap.awardClass='CAP';
