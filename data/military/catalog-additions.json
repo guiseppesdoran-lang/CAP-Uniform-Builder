@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "notes": "Official-source records absent from the discovery crawl. These records remain non-renderable until approved local artwork is added.",
+  "awards": [
+    {
+      "id": "coast_guard_cross",
+      "canonicalId": "coast_guard_cross",
+      "name": "Coast Guard Cross",
+      "officialName": "Coast Guard Cross",
+      "aliases": [],
+      "type": "RIBBON",
+      "awardClass": "FEDERAL_MILITARY",
+      "category": "SERVICE_CROSS",
+      "originatingService": "COAST_GUARD",
+      "authorizedServices": ["COAST_GUARD"],
+      "precedence": {},
+      "devices": {},
+      "images": {},
+      "representations": {
+        "ribbon": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null,
+          "verificationStatus": "OFFICIALLY_VERIFIED",
+          "sources": ["https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"]
+        }
+      },
+      "sources": {
+        "catalog": [],
+        "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+        "regulationDate": "2026-08-28"
+      },
+      "verificationStatus": "OFFICIALLY_VERIFIED",
+      "status": "CURRENT"
+    }
+  ]
+}

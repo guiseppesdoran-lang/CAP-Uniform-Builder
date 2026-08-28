@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-28T09:56:41.548Z",
+  "generatedAt": "2026-08-28T10:28:13.143Z",
   "assets": [
     {
       "ownerType": "AWARD",
@@ -17,12 +17,14 @@
       "ownerType": "AWARD",
       "ownerId": "medal_of_honor",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
+      "status": "NOT_APPLICABLE",
       "asset": null,
       "exists": false,
       "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": [
+        "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -126,6 +128,41 @@
     {
       "ownerType": "AWARD",
       "ownerId": "navy_cross",
+      "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "coast_guard_cross",
+      "representation": "RIBBON",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": [
+        "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119"
+      ]
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "coast_guard_cross",
+      "representation": "MINIATURE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "AWARD",
+      "ownerId": "coast_guard_cross",
       "representation": "FULL_SIZE_MEDAL",
       "status": "MISSING_ASSET",
       "asset": null,
@@ -5611,6 +5648,61 @@
       "ownerType": "AWARD",
       "ownerId": "china_relief_expedition_military_medal",
       "representation": "FULL_SIZE_MEDAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "presidential_service_badge",
+      "representation": "METAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "vice_presidential_service_badge",
+      "representation": "METAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "office_of_secretary_of_defense_identification_badge",
+      "representation": "METAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "joint_chiefs_of_staff_identification_badge",
+      "representation": "METAL",
+      "status": "MISSING_ASSET",
+      "asset": null,
+      "exists": false,
+      "sha256": null,
+      "verificationStatus": null,
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "headquarters_space_force_staff_identification_badge",
+      "representation": "METAL",
       "status": "MISSING_ASSET",
       "asset": null,
       "exists": false,

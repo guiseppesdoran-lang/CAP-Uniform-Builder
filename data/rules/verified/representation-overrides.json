@@ -2,6 +2,17 @@
   "$schema": "../../schemas/military-representation-overrides.schema.json",
   "notes": "Only add a medal representation after matching the canonical award to a local, reviewed asset. A missing entry must remain unavailable; never synthesize a generic pendant.",
   "awards": {
+    "medal_of_honor": {
+      "miniatureMedal": {
+        "status": "NOT_APPLICABLE",
+        "available": false,
+        "asset": null,
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "sources": [
+          "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+        ]
+      }
+    },
     "air_medal": {
       "miniatureMedal": {
         "status": "AVAILABLE",

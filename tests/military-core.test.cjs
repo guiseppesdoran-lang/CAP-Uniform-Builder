@@ -196,6 +196,14 @@ test('representation status distinguishes available, missing, not applicable, an
   assert.equal(unverified.miniatureMedal.available,false);
 });
 
+test('Medal of Honor miniature is explicitly not applicable', () => {
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  const representation=core.normalizeRepresentations({representations:overrides.medal_of_honor}).miniatureMedal;
+  assert.equal(representation.status,'NOT_APPLICABLE');
+  assert.equal(representation.available,false);
+  assert.equal(representation.asset,null);
+});
+
 test('legacy ribbon-only assets do not create fake miniature medals', () => {
   const canonical={id:'training_ribbon',images:{ribbon:'training.png'}};
   const representations=core.normalizeRepresentations(canonical);
@@ -235,4 +243,14 @@ test('catalog validator reports duplicate ids and missing metadata', () => {
   assert.equal(result.valid,false);
   assert.ok(result.errors.some(x=>x.includes('Duplicate award id')));
   assert.ok(result.warnings.some(x=>x.includes('missing service authorization')));
+});
+
+test('military badge authorization and precedence are service-specific', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const headquarters=badges.find(badge=>badge.id==='headquarters_space_force_staff_identification_badge');
+  assert.equal(core.isBadgeAuthorizedForService(headquarters,'SPACE_FORCE'),true);
+  assert.equal(core.isBadgeAuthorizedForService(headquarters,'AIR_FORCE'),false);
+  const sorted=core.sortBadgesForMember([...badges].reverse(),{organization:'SPACE_FORCE'});
+  assert.equal(sorted[0].id,'presidential_service_badge');
+  assert.equal(sorted.at(-1).id,'headquarters_space_force_staff_identification_badge');
 });

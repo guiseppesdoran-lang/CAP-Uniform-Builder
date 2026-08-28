@@ -1,26 +1,27 @@
 # U.S. Military Complete Catalog Audit
 
-Generated: 2026-08-28T09:56:41.548Z
+Generated: 2026-08-28T10:28:13.143Z
 
 > This audit measures implemented, locally renderable data. It does not treat discovery links as authorization and does not count missing or unverified artwork as complete.
 
 ## Coverage
 
 - Source discovery records: 183
-- Wearable canonical awards after filtering: 170
+- Official-source addition records: 1
+- Wearable canonical awards after filtering: 171
 - Rejected navigation/rank records: 6
-- Military badge records: 0
+- Military badge records: 5
 - Device definitions: 15
 - Awards with at least one officially verified precedence entry: 62
 - Awards with an explicit service device rule: 20
-- Official precedence-table IDs missing from the canonical catalog: 2
+- Official precedence-table IDs missing from the canonical catalog: 0
 - Available records with broken local paths: 0
 
 ## Award representation status
 
-- Ribbon — AVAILABLE: 170; NOT_APPLICABLE: 0; MISSING_ASSET: 0; UNVERIFIED: 0
-- Miniature medal — AVAILABLE: 2; NOT_APPLICABLE: 0; MISSING_ASSET: 168; UNVERIFIED: 0
-- Full-size medal — AVAILABLE: 0; NOT_APPLICABLE: 0; MISSING_ASSET: 170; UNVERIFIED: 0
+- Ribbon — AVAILABLE: 170; NOT_APPLICABLE: 0; MISSING_ASSET: 1; UNVERIFIED: 0
+- Miniature medal — AVAILABLE: 2; NOT_APPLICABLE: 1; MISSING_ASSET: 168; UNVERIFIED: 0
+- Full-size medal — AVAILABLE: 0; NOT_APPLICABLE: 0; MISSING_ASSET: 171; UNVERIFIED: 0
 
 ## Service discovery coverage
 
@@ -29,7 +30,7 @@ Generated: 2026-08-28T09:56:41.548Z
 - NAVY: 84 canonical records containing that source-service tag
 - AIR_FORCE: 84 canonical records containing that source-service tag
 - SPACE_FORCE: 3 canonical records containing that source-service tag
-- COAST_GUARD: 87 canonical records containing that source-service tag
+- COAST_GUARD: 88 canonical records containing that source-service tag
 
 ## Rejected non-award records
 
@@ -42,8 +43,7 @@ Generated: 2026-08-28T09:56:41.548Z
 
 ## Official table records absent from the catalog
 
-- AIR_FORCE: `coast_guard_cross`
-- SPACE_FORCE: `coast_guard_cross`
+- None
 
 ## Interpretation
 

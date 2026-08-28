@@ -1,6 +1,63 @@
 {
   "$schema": "../schemas/military-badge-catalog.schema.json",
   "schemaVersion": 1,
-  "notes": "The military badge catalog is intentionally empty until badge records, authorization, precedence, placement, and local artwork are verified from official service sources. CAP badges remain in the existing CAP catalog.",
-  "badges": []
+  "notes": "Badge records are added only with service-specific authorization/precedence sources. Missing artwork remains non-renderable. CAP badges remain in the existing CAP catalog.",
+  "badges": [
+    {
+      "id": "presidential_service_badge",
+      "officialName": "Presidential Service Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": ["SPACE_FORCE"],
+      "status": "CURRENT",
+      "precedence": {"SPACE_FORCE": {"order": 0, "verified": true}},
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "sources": ["https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    },
+    {
+      "id": "vice_presidential_service_badge",
+      "officialName": "Vice Presidential Service Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": ["SPACE_FORCE"],
+      "status": "CURRENT",
+      "precedence": {"SPACE_FORCE": {"order": 1, "verified": true}},
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "sources": ["https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    },
+    {
+      "id": "office_of_secretary_of_defense_identification_badge",
+      "officialName": "Office of the Secretary of Defense Identification Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": ["SPACE_FORCE"],
+      "status": "CURRENT",
+      "precedence": {"SPACE_FORCE": {"order": 2, "verified": true}},
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "sources": ["https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    },
+    {
+      "id": "joint_chiefs_of_staff_identification_badge",
+      "officialName": "Joint Chiefs of Staff Identification Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": ["SPACE_FORCE"],
+      "status": "CURRENT",
+      "precedence": {"SPACE_FORCE": {"order": 3, "verified": true}},
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "sources": ["https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    },
+    {
+      "id": "headquarters_space_force_staff_identification_badge",
+      "officialName": "Headquarters Space Force Staff Identification Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": ["SPACE_FORCE"],
+      "status": "CURRENT",
+      "precedence": {"SPACE_FORCE": {"order": 4, "verified": true}},
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "When two staff identification badges are worn, the senior badge is on the wearer's left one-half inch below the bottom row of medals; the next is on the wearer's right one-half inch below the lapel insignia."
+        }
+      },
+      "sources": ["https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    }
+  ]
 }

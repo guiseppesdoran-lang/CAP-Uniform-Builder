@@ -9,6 +9,7 @@ let browser;
     executablePath:process.env.CAPUB_CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe'
   });
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
+  page.setDefaultTimeout(10000);
   const errors=[];
   page.on('pageerror',error=>errors.push(String(error)));
   page.on('console',message=>{
@@ -88,6 +89,17 @@ let browser;
     const awards=window.CAPUBMilitary.canonicalizeAwards(window.CAPUBMilitaryData.awards);
     return window.CAPUBMilitary.getAwardRepresentation(awards.find(award=>award.id==='air_medal'),'MINIATURE_MEDAL').asset;
   }),'images/mini_medals/mcchord/m_airmedal.png');
+
+  await page.locator('#organizationSelect').selectOption('SPACE_FORCE');
+  await page.locator('#militaryBadgeSection').evaluate(element=>element.open=true);
+  const badgeResults=page.locator('#militaryBadgeResults');
+  assert.equal(await badgeResults.locator('.militaryAwardOption').count(),5,'Space Force official identification badges were not listed');
+  const badgeCheckbox=badgeResults.locator('input[type="checkbox"]').first();
+  await badgeCheckbox.check();
+  assert.equal(await badgeCheckbox.isChecked(),true,'military badge selection did not persist');
+  assert.equal(await page.evaluate(()=>Object.keys(window.State.militaryBadges || {}).length),1,'military badge state was not updated');
+  assert.match(await page.locator('.militaryPreviewNote').innerText(),/selected badge\(s\) have no approved local artwork and were not fabricated/);
+  assert.equal(await page.locator('.militaryBadgeTile').count(),0,'missing military badge artwork was fabricated');
   assert.deepEqual(errors,[],'browser errors were reported');
-  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true},null,2)+'\n');
+  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,missingBadgeNotFabricated:true},null,2)+'\n');
 })().catch(error=>{ console.error(error); process.exitCode=1; }).finally(async()=>{ if(browser) await browser.close(); });

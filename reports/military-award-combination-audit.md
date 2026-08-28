@@ -1,24 +1,24 @@
 # Military Award Combination Audit
 
-Generated: 2026-08-28T09:56:41.241Z
+Generated: 2026-08-28T10:28:12.887Z
 
 > This report is intentionally conservative. A local ribbon image does not prove a device rule or medal representation. Missing and unverified fields remain gaps; inferred branch conventions are available only in the builder’s **Manual / unverified configuration** mode.
 
 ## Totals
 
-- Total canonical awards: 170
+- Total canonical awards: 171
 - Ribbon representations with a catalog asset reference: 170
 - Miniature medal representations with a reviewed mapping: 2
 - Full-size medal representations with a reviewed mapping: 0
 - Device types in the local catalog: 15
 - Awards with explicit repeat support: 19
 - Awards with explicit special-device support: 2
-- Officially verified canonical award records: 0
+- Officially verified canonical award records: 1
 - Awards with at least one officially verified device rule: 20
-- Awards missing explicit device rules: 150
-- Awards missing local ribbon artwork: 0
-- Awards missing reviewed miniature-medal artwork: 168
-- Awards missing reviewed full-size-medal artwork: 170
+- Awards missing explicit device rules: 151
+- Awards missing local ribbon artwork: 1
+- Awards missing reviewed miniature-medal artwork: 169
+- Awards missing reviewed full-size-medal artwork: 171
 
 ## Award records
 
@@ -28,6 +28,7 @@ Generated: 2026-08-28T09:56:41.241Z
 | air force cross | `air_force_cross` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | army distinguished service cross | `army_distinguished_service_cross` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Cross | `navy_cross` | COAST_GUARD | COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| Coast Guard Cross | `coast_guard_cross` | COAST_GUARD | COAST_GUARD | No | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Transportation Distinguished Service Medal | `transportation_distinguished_service_medal` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | silver star | `silver_star` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | defense superior service | `defense_superior_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY, JOINT_DOD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |

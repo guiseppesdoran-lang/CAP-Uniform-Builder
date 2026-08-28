@@ -85,9 +85,13 @@
         "asset": "images/military-ribbons/air_force_medal_of_honor.png"
       },
       "miniatureMedal": {
-        "status": "MISSING_ASSET",
+        "status": "NOT_APPLICABLE",
         "available": false,
-        "asset": null
+        "asset": null,
+        "verificationStatus": "OFFICIALLY_VERIFIED",
+        "sources": [
+          "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+        ]
       },
       "fullSizeMedal": {
         "status": "MISSING_ASSET",
@@ -307,6 +311,52 @@
         "asset": null
       }
     }
+  },
+  {
+    "id": "coast_guard_cross",
+    "canonicalId": "coast_guard_cross",
+    "name": "Coast Guard Cross",
+    "officialName": "Coast Guard Cross",
+    "aliases": [
+      "Coast Guard Cross"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "SERVICE_CROSS",
+    "originatingService": "COAST_GUARD",
+    "authorizedServices": [
+      "COAST_GUARD"
+    ],
+    "precedence": {},
+    "devices": {},
+    "images": {},
+    "representations": {
+      "ribbon": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    },
+    "sources": {
+      "catalog": [],
+      "regulation": "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=119",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "OFFICIALLY_VERIFIED",
+    "status": "CURRENT",
+    "sourceIds": [
+      "coast_guard_cross"
+    ]
   },
   {
     "id": "transportation_distinguished_service_medal",

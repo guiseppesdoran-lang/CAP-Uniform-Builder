@@ -277,6 +277,30 @@
     return [...(awards || [])].sort((a,b) => compareAwardsForMember(a,b,member,uniform));
   }
 
+  function isBadgeAuthorizedForService(badge,service){
+    const serviceKey=normalizeService(service);
+    return (badge?.authorizedServices || []).map(normalizeService).includes(serviceKey);
+  }
+
+  function getBadgePrecedence(badge,service){
+    const serviceKey=normalizeService(service);
+    const record=badge?.precedence?.[serviceKey];
+    return {
+      service:serviceKey,
+      order:Number.isFinite(record) ? record : (Number.isFinite(record?.order) ? record.order : Number.MAX_SAFE_INTEGER),
+      verified:!!record?.verified,
+      name:String(badge?.officialName || badge?.name || badge?.id || '')
+    };
+  }
+
+  function sortBadgesForMember(badges,member){
+    const service=normalizeService(member?.organization || member?.service);
+    return [...(badges || [])].sort((a,b)=>{
+      const pa=getBadgePrecedence(a,service),pb=getBadgePrecedence(b,service);
+      return pa.order-pb.order || pa.name.localeCompare(pb.name);
+    });
+  }
+
   function deviceDefinition(deviceCatalog, id){
     return (deviceCatalog || []).find(device => device.id === id) || null;
   }
@@ -461,6 +485,7 @@
     isWearableAwardRecord,
     isCapAward, isAuthorizedForService, getAwardPrecedence, compareAwardsForMember,
     sortAwardsForMember, canonicalAwardKey, canonicalizeAwards, compareAwardsUniversal,
+    isBadgeAuthorizedForService, getBadgePrecedence, sortBadgesForMember,
     inferDeviceRules, normalizeRepresentations, createAwardSelection, getAwardRepresentation,
     calculateDevices, mergeAwardRecords, validateCatalog
   };

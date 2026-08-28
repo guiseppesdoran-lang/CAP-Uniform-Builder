@@ -8,7 +8,9 @@ const core=require('../military/military-core.js');
 
 const root=path.resolve(__dirname,'..');
 const readJson=relative=>JSON.parse(fs.readFileSync(path.join(root,relative),'utf8'));
-const sourceAwards=readJson('data/import/normalized/military-awards.json');
+const importedAwards=readJson('data/import/normalized/military-awards.json');
+const officialAdditions=readJson('data/military/catalog-additions.json').awards || [];
+const sourceAwards=[...importedAwards,...officialAdditions];
 const overrides=readJson('data/rules/verified/representation-overrides.json').awards || {};
 const badges=readJson('data/military/badges.json').badges || [];
 const devices=readJson('data/rules/verified/device-definitions.json');
@@ -66,7 +68,7 @@ const byService=Object.fromEntries(core.ORGANIZATIONS.filter(service=>service!==
   service,canonical.filter(award=>(award.authorizedServices || []).map(core.normalizeService).includes(service)).length
 ]));
 const summary={
-  generatedAt:new Date().toISOString(),sourceRecords:sourceAwards.length,canonicalAwards:canonical.length,
+  generatedAt:new Date().toISOString(),sourceRecords:importedAwards.length,officialAdditionRecords:officialAdditions.length,canonicalAwards:canonical.length,
   discardedNonAwardRecords:discarded.length,badges:badges.length,devices:devices.length,
   missingPrecedenceCatalogRecords:missingPrecedenceCatalogRecords.length,
   byService,representationTotals,
@@ -86,6 +88,7 @@ const audit=[
   '> This audit measures implemented, locally renderable data. It does not treat discovery links as authorization and does not count missing or unverified artwork as complete.','',
   '## Coverage','',
   `- Source discovery records: ${summary.sourceRecords}`,
+  `- Official-source addition records: ${summary.officialAdditionRecords}`,
   `- Wearable canonical awards after filtering: ${summary.canonicalAwards}`,
   `- Rejected navigation/rank records: ${summary.discardedNonAwardRecords}`,
   `- Military badge records: ${summary.badges}`,
