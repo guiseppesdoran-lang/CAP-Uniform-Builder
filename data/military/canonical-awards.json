@@ -47,7 +47,7 @@
         "order": 0,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -74,14 +74,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_medal_of_honor.png"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -131,14 +134,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_cross.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -188,14 +194,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_distinguished_service_cross_military_ribb0n.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -233,7 +242,7 @@
         "order": 1,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -247,8 +256,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_cross_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_cross_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -258,14 +267,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_cross.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -313,14 +325,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/transportation_distinguished_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -373,7 +388,7 @@
         "order": 4,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -387,8 +402,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/silver_star_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/silver_star_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -398,14 +413,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/silver_star.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -460,7 +478,7 @@
         "order": 5,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -474,8 +492,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_superior_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_superior_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -485,14 +503,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/defense_superior_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -545,7 +566,7 @@
         "order": 6,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -559,8 +580,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/legion_of_merit_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/legion_of_merit_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -570,14 +591,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/legion_of_merit.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -630,7 +654,7 @@
         "order": 7,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -644,8 +668,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/distinguished_flying_cross_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/distinguished_flying_cross_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -655,14 +679,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/distinguished_flying_cross.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -712,14 +739,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/airmans_medal.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -768,14 +798,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_soldiers_medal.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -832,14 +865,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_marine_corps_medal.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -918,14 +954,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/bronze_star.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -978,7 +1017,7 @@
         "order": 10,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -992,8 +1031,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/purple_heart_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/purple_heart_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -1003,14 +1042,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/purple_heart.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1066,7 +1108,7 @@
         "order": 11,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -1080,8 +1122,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_meritorious_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_meritorious_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -1091,14 +1133,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/defense_meritorious_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1151,7 +1196,7 @@
         "order": 12,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -1165,8 +1210,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/meritorious_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/meritorious_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -1176,14 +1221,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/meritorious_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1204,10 +1252,10 @@
     ],
     "precedence": {
       "NAVY": {
-        "order": 27,
+        "order": 26,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -1221,9 +1269,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_naval_reserve_meritorious_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_naval_reserve_meritorious_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "naval_reserve_meritorious_service",
     "sourceIds": [
@@ -1231,14 +1280,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/naval_reserve_meritorious_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1287,14 +1339,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_reserve_forces_meritorious_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1347,7 +1402,7 @@
         "order": 13,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {
@@ -1375,8 +1430,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/air_medal_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/air_medal_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -1386,10 +1441,12 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/ribbons/air_medal.png"
       },
       "miniatureMedal": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/mini_medals/mcchord/m_airmedal.png",
         "verificationStatus": "CROSS_REFERENCED",
@@ -1399,6 +1456,7 @@
         ]
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1451,7 +1509,7 @@
         "order": 14,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -1465,8 +1523,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_service_commendation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_service_commendation_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -1476,14 +1534,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/joint_service_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1533,14 +1594,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1597,14 +1661,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_marine_corps_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1690,14 +1757,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1746,14 +1816,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1783,8 +1856,8 @@
       "NAVY": {
         "order": 21,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -1798,9 +1871,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_unit_commendation.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_unit_commendation.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "navy_unit_commendation",
     "sourceIds": [
@@ -1808,14 +1882,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_unit_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1865,14 +1942,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_commandants_letter_of_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1902,8 +1982,8 @@
       "NAVY": {
         "order": 22,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -1917,9 +1997,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_meritorious_unit_commendation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_meritorious_unit_commendation_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "navy_meritorious_unit_commendation",
     "sourceIds": [
@@ -1927,14 +2008,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_meritorious_unit_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -1982,14 +2066,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/naval_reserve_special_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2037,14 +2124,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_unit_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2092,14 +2182,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_meritorious_unit_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2147,14 +2240,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_meritorious_team_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2203,14 +2299,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_bicentennial_unit_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2258,14 +2357,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_meritorious_unit_commendation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2330,10 +2432,12 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/ribbons/air_force_aerial_achievement_medal.png"
       },
       "miniatureMedal": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/mini_medals/mcchord/m_usaf_aam01.png",
         "verificationStatus": "CROSS_REFERENCED",
@@ -2343,6 +2447,7 @@
         ]
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2395,7 +2500,7 @@
         "order": 16,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -2409,8 +2514,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_service_achievement_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_service_achievement_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -2420,14 +2525,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/joint_service_achievement.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2477,14 +2585,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_achievement.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2541,14 +2652,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_marine_corps_achievement.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2634,14 +2748,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_achievement.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2690,14 +2807,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_reserve_components_achievement.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2745,14 +2865,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_achievement.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2804,8 +2927,8 @@
       "NAVY": {
         "order": 24,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -2819,9 +2942,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/prisoner_of_war_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/prisoner_of_war_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "prisoner_of_war",
     "sourceIds": [
@@ -2829,14 +2953,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/prisoner_of_war.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2885,14 +3012,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_good_conduct.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2940,14 +3070,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/marine_corps_good_conduct.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -2969,10 +3102,10 @@
     ],
     "precedence": {
       "NAVY": {
-        "order": 26,
+        "order": 25,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -2986,9 +3119,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_navy_good_conduct_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_navy_good_conduct_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "navy_good_conduct",
     "sourceIds": [
@@ -2996,14 +3130,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_good_conduct.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3052,14 +3189,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_good_conduct.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3108,14 +3248,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_reserve_good_conduct.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3155,7 +3298,7 @@
         "order": 19,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -3169,8 +3312,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_presidential_unit_citation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_presidential_unit_citation_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -3180,14 +3323,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_presidential_unit_citation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3236,14 +3382,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_presidential_unit_citation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3295,8 +3444,8 @@
       "NAVY": {
         "order": 20,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -3310,9 +3459,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_meritorious_unit_award_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/joint_meritorious_unit_award_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "joint_meritorious_unit_award",
     "sourceIds": [
@@ -3320,14 +3470,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/joint_meritorious_unit_award.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3376,14 +3529,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_gallant_unit_citation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3432,14 +3588,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_meritorious_unit_award.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3488,14 +3647,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_outstanding_unit_award.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3543,14 +3705,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_presidential_unit_citation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3599,14 +3764,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/dot_outstanding_unit_award.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3649,10 +3817,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 58,
+        "order": 54,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -3666,9 +3834,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/philippine_presidential_unit_citation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/philippine_presidential_unit_citation_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "philippine_presidential_unit_citation",
     "sourceIds": [
@@ -3676,14 +3845,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/philippine_presidential_unit_citation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3734,10 +3906,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 59,
+        "order": 55,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -3751,9 +3923,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_presidential_unit_citation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_presidential_unit_citation_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "korean_presidential_unit_citation",
     "sourceIds": [
@@ -3761,14 +3934,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/korean_presidential_unit_citation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3816,14 +3992,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_presidential_unit_citation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3894,14 +4073,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/vietnam_presidential_unit_citation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -3951,10 +4133,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 61,
+        "order": 57,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -3968,9 +4150,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_gallantry_cross_unit_citation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_gallantry_cross_unit_citation_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "vietnam_gallantry_cross_unit_citation",
     "sourceIds": [
@@ -3978,69 +4161,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/vietnam_gallantry_cross_unit_citation.png"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "army_valorous_unit_award",
-    "name": "Army Valorous Unit Award",
-    "officialName": "Army Valorous Unit Award",
-    "aliases": [
-      "Army Valorous Unit Award"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "ARMY"
-    ],
-    "precedence": {
-      "ARMY": {
-        "order": 59,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/army_valorous_unit_award.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_valorious_unit_citation_frame.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_valorous_unit_award_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_valorous_unit_award_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "army_valorous_unit_award",
-    "sourceIds": [
-      "army_valorous_unit_award"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": true,
-        "asset": "images/military-ribbons/army_valorous_unit_award.jpg"
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4090,10 +4221,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 62,
+        "order": 58,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -4107,9 +4238,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_civil_actions_unit_citation_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_civil_actions_unit_citation_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "vietnam_civil_actions_unit_citation",
     "sourceIds": [
@@ -4117,14 +4249,75 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/vietnam_civil_actions_unit_citation.png"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "army_valorous_unit_award",
+    "name": "Army Valorous Unit Award",
+    "officialName": "Army Valorous Unit Award",
+    "aliases": [
+      "Army Valorous Unit Award"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "ARMY"
+    ],
+    "precedence": {
+      "ARMY": {
+        "order": 59,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/army_valorous_unit_award.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/all_service_ribbons/army_valorious_unit_citation_frame.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_valorous_unit_award_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usa_military_ribbons/army_valorous_unit_award_military_ribbon.html"
+      ],
+      "regulation": null
+    },
+    "verificationStatus": "PENDING",
+    "status": "UNKNOWN",
+    "canonicalId": "army_valorous_unit_award",
+    "sourceIds": [
+      "army_valorous_unit_award"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/army_valorous_unit_award.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4172,14 +4365,81 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_superior_unit_award.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "kosovo_campaign",
+    "name": "kosovo campaign",
+    "officialName": "kosovo campaign",
+    "aliases": [
+      "kosovo campaign",
+      "Kosovo Campaign"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "NAVY": {
+        "order": 36,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/kosovo_campaign.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/kosovo-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/kosovo_campaign.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/kosovo_campaign.html"
+      ],
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "kosovo_campaign",
+    "sourceIds": [
+      "kosovo_campaign"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/kosovo_campaign.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4203,7 +4463,14 @@
       "MARINE_CORPS",
       "NAVY"
     ],
-    "precedence": {},
+    "precedence": {
+      "NAVY": {
+        "order": 37,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
     "devices": {},
     "images": {
       "ribbon": "images/military-ribbons/afghanistan_campaign.jpg",
@@ -4215,9 +4482,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/afghanistan_campaign_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/afghanistan_campaign_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "afghanistan_campaign",
     "sourceIds": [
@@ -4225,14 +4493,145 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/afghanistan_campaign.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "iraq_campaign",
+    "name": "iraq campaign",
+    "officialName": "iraq campaign",
+    "aliases": [
+      "iraq campaign",
+      "Iraq Campaign"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "NAVY": {
+        "order": 38,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/iraq_campaign.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/iraq-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/iraq_campaign_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/iraq_campaign_military_ribbon.html"
+      ],
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "iraq_campaign",
+    "sourceIds": [
+      "iraq_campaign"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/iraq_campaign.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "republic_of_vietnam_campaign",
+    "name": "republic of vietnam campaign",
+    "officialName": "republic of vietnam campaign",
+    "aliases": [
+      "republic of vietnam campaign",
+      "Republic of Vietnam Campaign"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "AIR_FORCE",
+      "ARMY",
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "NAVY": {
+        "order": 65,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/republic_of_vietnam_campaign.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/republic-of-vietnam-campaign-o.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/republic_of_vietnam_campaign_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/republic_of_vietnam_campaign_military_ribbon.html"
+      ],
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "republic_of_vietnam_campaign",
+    "sourceIds": [
+      "republic_of_vietnam_campaign"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/republic_of_vietnam_campaign.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4275,14 +4674,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_and_space_campaign.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4328,14 +4730,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/american_campaign.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4381,14 +4786,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/asiatic_pacific_campaign.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4436,173 +4844,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/european_african_middle_eastern_campaign.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "iraq_campaign",
-    "name": "iraq campaign",
-    "officialName": "iraq campaign",
-    "aliases": [
-      "iraq campaign",
-      "Iraq Campaign"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/iraq_campaign.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/iraq-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/iraq_campaign_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/iraq_campaign_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "iraq_campaign",
-    "sourceIds": [
-      "iraq_campaign"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": true,
-        "asset": "images/military-ribbons/iraq_campaign.jpg"
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "kosovo_campaign",
-    "name": "kosovo campaign",
-    "officialName": "kosovo campaign",
-    "aliases": [
-      "kosovo campaign",
-      "Kosovo Campaign"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/kosovo_campaign.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/kosovo-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/kosovo_campaign.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/kosovo_campaign.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "kosovo_campaign",
-    "sourceIds": [
-      "kosovo_campaign"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": true,
-        "asset": "images/military-ribbons/kosovo_campaign.jpg"
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "republic_of_vietnam_campaign",
-    "name": "republic of vietnam campaign",
-    "officialName": "republic of vietnam campaign",
-    "aliases": [
-      "republic of vietnam campaign",
-      "Republic of Vietnam Campaign"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE",
-      "ARMY",
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/republic_of_vietnam_campaign.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/republic-of-vietnam-campaign-o.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/republic_of_vietnam_campaign_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/republic_of_vietnam_campaign_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "republic_of_vietnam_campaign",
-    "sourceIds": [
-      "republic_of_vietnam_campaign"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": true,
-        "asset": "images/military-ribbons/republic_of_vietnam_campaign.jpg"
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4650,14 +4902,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/marine_corps_expeditionary.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4707,10 +4962,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 39,
+        "order": 33,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -4724,9 +4979,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/armed_forces_expeditionary_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/armed_forces_expeditionary_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "armed_forces_expeditionary",
     "sourceIds": [
@@ -4734,14 +4990,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/armed_forces_expeditionary.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4796,14 +5055,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/expeditionary.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4880,14 +5142,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/global_war_terror_expeditionary.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4936,14 +5201,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_expeditionary_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -4999,7 +5267,7 @@
         "order": 2,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -5013,8 +5281,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_distinguished_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/defense_distinguished_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -5024,14 +5292,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/defense_distinguished_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5081,14 +5352,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_distinguished_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5138,14 +5412,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_distinguished_service_military_ribb0n.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5176,7 +5453,7 @@
         "order": 3,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -5190,8 +5467,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_distinguished_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_distinguished_service_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -5201,14 +5478,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_distinguished_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5257,14 +5537,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_distinguished_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5313,14 +5596,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_womens_army_corps_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5397,14 +5683,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/national_defense_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5454,10 +5743,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 37,
+        "order": 31,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -5471,9 +5760,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_service.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_service.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "korean_service",
     "sourceIds": [
@@ -5481,14 +5771,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/korean_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5538,10 +5831,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 38,
+        "order": 32,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -5555,9 +5848,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/antarctica_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/antarctica_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "antarctica_service",
     "sourceIds": [
@@ -5565,14 +5859,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/antarctica_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5635,14 +5932,90 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/china_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "navy_occupation_service",
+    "name": "Navy Occupation Service",
+    "officialName": "Navy Occupation Service",
+    "aliases": [
+      "Navy Occupation Service"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "COAST_GUARD",
+      "MARINE_CORPS",
+      "NAVY"
+    ],
+    "precedence": {
+      "COAST_GUARD": {
+        "order": 42,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "MARINE_CORPS": {
+        "order": 31,
+        "side": "LEFT",
+        "verified": false,
+        "source": "OFFICIAL_MILITARY_RIBBONS"
+      },
+      "NAVY": {
+        "order": 29,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/navy_occupation_service.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/army-of-occupation-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_occupation_service_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_occupation_service_military_ribbon.html"
+      ],
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "navy_occupation_service",
+    "sourceIds": [
+      "navy_occupation_service"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/navy_occupation_service.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5692,10 +6065,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 40,
+        "order": 34,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -5709,9 +6082,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/vietnam_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "vietnam_service",
     "sourceIds": [
@@ -5719,83 +6093,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/vietnam_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "navy_occupation_service",
-    "name": "Navy Occupation Service",
-    "officialName": "Navy Occupation Service",
-    "aliases": [
-      "Navy Occupation Service"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "COAST_GUARD",
-      "MARINE_CORPS",
-      "NAVY"
-    ],
-    "precedence": {
-      "COAST_GUARD": {
-        "order": 42,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "MARINE_CORPS": {
-        "order": 31,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      },
-      "NAVY": {
-        "order": 34,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/navy_occupation_service.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/army-of-occupation-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_occupation_service_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_occupation_service_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "navy_occupation_service",
-    "sourceIds": [
-      "navy_occupation_service"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": true,
-        "asset": "images/military-ribbons/navy_occupation_service.jpg"
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5872,14 +6180,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/southwest_asia_service_military_ribbons.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -5956,14 +6267,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/global_war_terror_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6013,10 +6327,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 44,
+        "order": 41,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -6030,9 +6344,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_defense_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/korean_defense_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "korean_defense_service",
     "sourceIds": [
@@ -6040,14 +6355,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/korean_defense_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6098,10 +6416,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 45,
+        "order": 42,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {
@@ -6131,9 +6449,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/armed_forces_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/armed_forces_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "armed_forces_service",
     "sourceIds": [
@@ -6141,14 +6460,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/armed_forces_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6198,10 +6520,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 46,
+        "order": 43,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -6215,9 +6537,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/humanitarian_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/humanitarian_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "humanitarian_service",
     "sourceIds": [
@@ -6225,14 +6548,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/humanitarian_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6282,10 +6608,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 47,
+        "order": 44,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -6299,9 +6625,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/outstanding_volunteer_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/outstanding_volunteer_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "outstanding_volunteer_service",
     "sourceIds": [
@@ -6309,14 +6636,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/outstanding_volunteer_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6364,14 +6694,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6420,14 +6753,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_overseas_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6455,10 +6791,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 48,
+        "order": 45,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -6472,9 +6808,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_sea_service_deployment_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_sea_service_deployment_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "navy_sea_service_deployment",
     "sourceIds": [
@@ -6482,14 +6819,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_sea_service_deployment.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6517,10 +6857,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 49,
+        "order": 46,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -6534,9 +6874,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/navy_arctic_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/navy_arctic_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "navy_arctic_service",
     "sourceIds": [
@@ -6544,14 +6885,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_arctic_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6599,14 +6943,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_arctic_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6662,14 +7009,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_marine_corps_overseas_service_military_rbbon.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6719,10 +7069,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 66,
+        "order": 59,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -6736,9 +7086,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/united_nations_service.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/united_nations_service.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "united_nations_service",
     "sourceIds": [
@@ -6746,14 +7097,76 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/united_nations_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "navy_recruiting_service",
+    "name": "Navy Recruiting Service",
+    "officialName": "Navy Recruiting Service",
+    "aliases": [
+      "Navy Recruiting Service"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "NAVY"
+    ],
+    "precedence": {
+      "NAVY": {
+        "order": 49,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/navy_recruiting_service.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-recruiting-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_navy_recruiting_service_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_navy_recruiting_service_military_ribbon.html"
+      ],
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "navy_recruiting_service",
+    "sourceIds": [
+      "navy_recruiting_service"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/navy_recruiting_service.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6802,69 +7215,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_longevity_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "navy_recruiting_service",
-    "name": "Navy Recruiting Service",
-    "officialName": "Navy Recruiting Service",
-    "aliases": [
-      "Navy Recruiting Service"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "NAVY"
-    ],
-    "precedence": {
-      "NAVY": {
-        "order": 52,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/navy_recruiting_service.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-recruiting-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_navy_recruiting_service_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_navy_recruiting_service_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "navy_recruiting_service",
-    "sourceIds": [
-      "navy_recruiting_service"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": true,
-        "asset": "images/military-ribbons/navy_recruiting_service.jpg"
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6941,14 +7302,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/republic_of_korean_war_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -6997,14 +7361,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_special_operations_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7053,14 +7420,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_sea_duty.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7108,14 +7478,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_overseas_service.png"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7163,14 +7536,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_recruiting_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7218,14 +7594,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/selected_marine_corps_reserve.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7324,14 +7703,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/armed_forces_reserve_air_force_military_ribbons.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7379,14 +7761,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_reserve_componentsoverseas_training.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7407,10 +7792,10 @@
     ],
     "precedence": {
       "NAVY": {
-        "order": 50,
+        "order": 47,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -7424,9 +7809,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_naval_reserve_sea_service_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_naval_reserve_sea_service_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "naval_reserve_sea_service",
     "sourceIds": [
@@ -7434,14 +7820,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/naval_reserve_sea_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7489,14 +7878,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/marine_corps_reserve.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7517,10 +7909,10 @@
     ],
     "precedence": {
       "NAVY": {
-        "order": 56,
+        "order": 53,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -7534,9 +7926,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_naval_reserve_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_naval_reserve_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "naval_reserve",
     "sourceIds": [
@@ -7544,14 +7937,76 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/naval_reserve.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "navy_recruit_training_service",
+    "name": "Navy Recruit Training Service",
+    "officialName": "Navy Recruit Training Service",
+    "aliases": [
+      "Navy Recruit Training Service"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "NAVY"
+    ],
+    "precedence": {
+      "NAVY": {
+        "order": 50,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/navy_recruit_training_service.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-recruit-training-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_navy_recruit_training_service_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_navy_recruit_training_service_military_ribbon.html"
+      ],
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "navy_recruit_training_service",
+    "sourceIds": [
+      "navy_recruit_training_service"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/navy_recruit_training_service.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7600,69 +8055,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_military_training_instructor.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "navy_recruit_training_service",
-    "name": "Navy Recruit Training Service",
-    "officialName": "Navy Recruit Training Service",
-    "aliases": [
-      "Navy Recruit Training Service"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "NAVY"
-    ],
-    "precedence": {
-      "NAVY": {
-        "order": 53,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/navy_recruit_training_service.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-recruit-training-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_navy_recruit_training_service_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_navy_recruit_training_service_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "navy_recruit_training_service",
-    "sourceIds": [
-      "navy_recruit_training_service"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": true,
-        "asset": "images/military-ribbons/navy_recruit_training_service.jpg"
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7711,14 +8114,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/basic_military_training_honor_graduate.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7767,14 +8173,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_training.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7823,14 +8232,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_basic_training_honor_graduate.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7879,14 +8291,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_medal.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7935,14 +8350,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/gold_life_saving.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -7990,14 +8408,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/silver_life_saving.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8028,7 +8449,7 @@
         "order": 18,
         "side": "LEFT",
         "verified": true,
-        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/"
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -8042,8 +8463,8 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/combat_action_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/combat_action_military_ribbon.html"
       ],
-      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Navy-Awards-Precedence/",
-      "regulationDate": "2026-08-27"
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
     "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
@@ -8053,14 +8474,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/combat_action.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8109,14 +8533,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_combat_action.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8164,14 +8591,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/dot_9_11_medal.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8249,14 +8679,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/american_defense.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8306,14 +8739,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_combat_action.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8343,8 +8779,8 @@
       "NAVY": {
         "order": 23,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -8358,9 +8794,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_e_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/usmc_navy_e_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "navy_e",
     "sourceIds": [
@@ -8368,14 +8805,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_e.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8452,14 +8892,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/world_war_2.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8516,14 +8959,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_of_occupation_service.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8579,14 +9025,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/ribbons/Air_Force_Organizational_Excellence_Award.png"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8664,14 +9113,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/medal_for_humane_action.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8721,14 +9173,76 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_combat_rediness.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      }
+    }
+  },
+  {
+    "id": "fleet_marine_force",
+    "name": "Fleet Marine Force",
+    "officialName": "Fleet Marine Force",
+    "aliases": [
+      "Fleet Marine Force"
+    ],
+    "type": "RIBBON",
+    "awardClass": "FEDERAL_MILITARY",
+    "category": "UNKNOWN",
+    "authorizedServices": [
+      "NAVY"
+    ],
+    "precedence": {
+      "NAVY": {
+        "order": 27,
+        "side": "LEFT",
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
+      }
+    },
+    "devices": {},
+    "images": {
+      "ribbon": "images/military-ribbons/fleet_marine_force.jpg",
+      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-fleet-marine-force-bumpersticker-0.jpg",
+      "assetStatus": "LOCAL_IMPORTED"
+    },
+    "sources": {
+      "catalog": [
+        "https://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_fleet_marine_force_military_ribbon.html",
+        "http://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_fleet_marine_force_military_ribbon.html"
+      ],
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
+    },
+    "verificationStatus": "CROSS_REFERENCED",
+    "status": "UNKNOWN",
+    "canonicalId": "fleet_marine_force",
+    "sourceIds": [
+      "fleet_marine_force"
+    ],
+    "representations": {
+      "ribbon": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-ribbons/fleet_marine_force.jpg"
+      },
+      "miniatureMedal": {
+        "status": "MISSING_ASSET",
+        "available": false,
+        "asset": null
+      },
+      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8778,69 +9292,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_good_conduct.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "fleet_marine_force",
-    "name": "Fleet Marine Force",
-    "officialName": "Fleet Marine Force",
-    "aliases": [
-      "Fleet Marine Force"
-    ],
-    "type": "RIBBON",
-    "awardClass": "FEDERAL_MILITARY",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "NAVY"
-    ],
-    "precedence": {
-      "NAVY": {
-        "order": 28,
-        "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
-      }
-    },
-    "devices": {},
-    "images": {
-      "ribbon": "images/military-ribbons/fleet_marine_force.jpg",
-      "source": "https://www.officialmilitaryribbons.com/images/military_ribbon_products_207x56/navy-fleet-marine-force-bumpersticker-0.jpg",
-      "assetStatus": "LOCAL_IMPORTED"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_fleet_marine_force_military_ribbon.html",
-        "http://www.officialmilitaryribbons.com/military_ribbon_info/usn_military_ribbons/usn_fleet_marine_force_military_ribbon.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "fleet_marine_force",
-    "sourceIds": [
-      "fleet_marine_force"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": true,
-        "asset": "images/military-ribbons/fleet_marine_force.jpg"
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8889,14 +9351,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/outstanding_airman_of_the_year.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -8945,14 +9410,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_recognition.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9000,14 +9468,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_e.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9062,14 +9533,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/us_antarctic_expedition.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9118,14 +9592,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_enlisted_person_of_the_year.png"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9173,14 +9650,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_sea_duty.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9229,14 +9709,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_nco_professional_development.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9314,14 +9797,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/vietnam_gallantry_cross.png"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9391,14 +9877,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/philippine_defense.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9468,14 +9957,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/philippine_liberation.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9545,14 +10037,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/philippine_independence.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9602,14 +10097,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/overseas_short_tour.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9657,14 +10155,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/marine_corps_recruiting.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9714,14 +10215,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/overseas_long_tour.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9772,10 +10276,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 71,
+        "order": 64,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -9789,9 +10293,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/inter_american_defense_board.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/inter_american_defense_board.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "inter_american_defense_board",
     "sourceIds": [
@@ -9799,14 +10304,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/inter_american_defense_board.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9854,14 +10362,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/marine_corps_drill_instructor.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9910,14 +10421,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/marine_corps_security_guard.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -9968,10 +10482,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 67,
+        "order": 60,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -9985,9 +10499,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/united_nations_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/united_nations_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "united_nations",
     "sourceIds": [
@@ -9995,14 +10510,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/united_nations.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10050,14 +10568,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/marine_corps_combat_instructor.png"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10135,14 +10656,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/nato_medal.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10194,10 +10718,10 @@
         "source": "OFFICIAL_MILITARY_RIBBONS"
       },
       "NAVY": {
-        "order": 69,
+        "order": 62,
         "side": "LEFT",
-        "verified": false,
-        "source": "OFFICIAL_MILITARY_RIBBONS"
+        "verified": true,
+        "source": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/"
       }
     },
     "devices": {},
@@ -10211,9 +10735,10 @@
         "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/nato_kosovo_military_ribbon.html",
         "http://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/nato_kosovo_military_ribbon.html"
       ],
-      "regulation": null
+      "regulation": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5301-Awards/",
+      "regulationDate": "2026-08-28"
     },
-    "verificationStatus": "PENDING",
+    "verificationStatus": "CROSS_REFERENCED",
     "status": "UNKNOWN",
     "canonicalId": "nato_kosovo",
     "sourceIds": [
@@ -10221,14 +10746,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/nato_kosovo.png"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10277,14 +10805,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/air_force_recruiter.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10357,14 +10888,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/multinational_force_observers.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10442,14 +10976,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/kuwait_liberation_saudi.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10498,14 +11035,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/ceremonial_guard.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10555,14 +11095,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/nco_professional_military_education_graduate.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10641,14 +11184,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/kuwait_liberation_kuwait.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10697,14 +11243,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/small_arms_expert_military_ribbons.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10753,14 +11302,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/dot_9_11_ribbon.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10809,14 +11361,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_restricted_duty.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10864,14 +11419,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_rifle_marksmanship.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10919,14 +11477,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/navy_pistol_marksmanship.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -10976,14 +11537,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_rifle_marksmanship.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -11031,14 +11595,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/coast_guard_pistol_marksmanship.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -11078,14 +11645,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/army_occupation_of_germany.jpg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }
@@ -11122,243 +11692,17 @@
     ],
     "representations": {
       "ribbon": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/military-ribbons/china_relief_expedition.svg"
       },
       "miniatureMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       },
       "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "free_military_graphics_and_designs",
-    "name": "Free Military Graphics and Designs",
-    "officialName": "Free Military Graphics and Designs",
-    "aliases": [
-      "Free Military Graphics and Designs"
-    ],
-    "type": "RANK",
-    "awardClass": "MILITARY_INSIGNIA",
-    "category": "UNKNOWN",
-    "authorizedServices": [],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "source": null,
-      "assetStatus": "SOURCE_ONLY"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/wood/us_marine_corps_rank_cnc_and_laser_graphics_wood_working.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "free_military_graphics_and_designs",
-    "sourceIds": [
-      "us_marine_corps_rank_cnc_and_laser_graphics_wood_working",
-      "us_navy_rank_cnc_and_laser_graphics_wood_working"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": false,
-        "asset": null
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "us_air_force_rank_free_cnc_and_laser_military_graphics_and_designs_free_military_graphics_and_designs",
-    "name": "US Air Force Rank Free CNC and Laser Military Graphics and Designs,Free Military Graphics and Designs",
-    "officialName": "US Air Force Rank Free CNC and Laser Military Graphics and Designs,Free Military Graphics and Designs",
-    "aliases": [
-      "US Air Force Rank Free CNC and Laser Military Graphics and Designs,Free Military Graphics and Designs"
-    ],
-    "type": "RANK",
-    "awardClass": "MILITARY_INSIGNIA",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "AIR_FORCE"
-    ],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "source": null,
-      "assetStatus": "SOURCE_ONLY"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/wood/us_air_force_rank_cnc_and_laser_graphics_wood_working.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "us_air_force_rank_free_cnc_and_laser_military_graphics_and_designs_free_military_graphics_and_designs",
-    "sourceIds": [
-      "us_air_force_rank_cnc_and_laser_graphics_wood_working"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": false,
-        "asset": null
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "us_army_rank_free_cnc_and_laser_military_graphics_and_designs_free_military_graphics_and_designs",
-    "name": "US Army Rank Free CNC and Laser Military Graphics and Designs Free Military Graphics and Designs",
-    "officialName": "US Army Rank Free CNC and Laser Military Graphics and Designs Free Military Graphics and Designs",
-    "aliases": [
-      "US Army Rank Free CNC and Laser Military Graphics and Designs Free Military Graphics and Designs"
-    ],
-    "type": "RANK",
-    "awardClass": "MILITARY_INSIGNIA",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "ARMY"
-    ],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "source": null,
-      "assetStatus": "SOURCE_ONLY"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/wood/us_army_rank_cnc_and_laser_graphics_wood_working.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "us_army_rank_free_cnc_and_laser_military_graphics_and_designs_free_military_graphics_and_designs",
-    "sourceIds": [
-      "us_army_rank_cnc_and_laser_graphics_wood_working"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": false,
-        "asset": null
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "us_coast_guard_free_cnc_and_laser_military_graphics_and_designs_free_military_graphics_and_designs",
-    "name": "US Coast Guard Free CNC and Laser Military Graphics and Designs Free Military Graphics and Designs",
-    "officialName": "US Coast Guard Free CNC and Laser Military Graphics and Designs Free Military Graphics and Designs",
-    "aliases": [
-      "US Coast Guard Free CNC and Laser Military Graphics and Designs Free Military Graphics and Designs"
-    ],
-    "type": "RANK",
-    "awardClass": "MILITARY_INSIGNIA",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "COAST_GUARD"
-    ],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "source": null,
-      "assetStatus": "SOURCE_ONLY"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/wood/us_coast-guard_rank_cnc_and_laser_graphics_wood_working.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "us_coast_guard_free_cnc_and_laser_military_graphics_and_designs_free_military_graphics_and_designs",
-    "sourceIds": [
-      "us_coast_guard_rank_cnc_and_laser_graphics_wood_working"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": false,
-        "asset": null
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
-        "available": false,
-        "asset": null
-      }
-    }
-  },
-  {
-    "id": "us_space_force_free_cnc_and_laser_military_graphics_and_designs",
-    "name": "US Space Force Free CNC and Laser Military Graphics and Designs",
-    "officialName": "US Space Force Free CNC and Laser Military Graphics and Designs",
-    "aliases": [
-      "US Space Force Free CNC and Laser Military Graphics and Designs"
-    ],
-    "type": "RANK",
-    "awardClass": "MILITARY_INSIGNIA",
-    "category": "UNKNOWN",
-    "authorizedServices": [
-      "SPACE_FORCE"
-    ],
-    "precedence": {},
-    "devices": {},
-    "images": {
-      "source": null,
-      "assetStatus": "SOURCE_ONLY"
-    },
-    "sources": {
-      "catalog": [
-        "https://www.officialmilitaryribbons.com/wood/us_space_force_rank_cnc_and_laser_graphics_wood_working.html"
-      ],
-      "regulation": null
-    },
-    "verificationStatus": "PENDING",
-    "status": "UNKNOWN",
-    "canonicalId": "us_space_force_free_cnc_and_laser_military_graphics_and_designs",
-    "sourceIds": [
-      "us_space_force_rank_cnc_and_laser_graphics_wood_working"
-    ],
-    "representations": {
-      "ribbon": {
-        "available": false,
-        "asset": null
-      },
-      "miniatureMedal": {
-        "available": false,
-        "asset": null
-      },
-      "fullSizeMedal": {
+        "status": "MISSING_ASSET",
         "available": false,
         "asset": null
       }

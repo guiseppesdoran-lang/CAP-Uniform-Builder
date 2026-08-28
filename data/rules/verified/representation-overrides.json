@@ -4,6 +4,7 @@
   "awards": {
     "air_medal": {
       "miniatureMedal": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/mini_medals/mcchord/m_airmedal.png",
         "verificationStatus": "CROSS_REFERENCED",
@@ -15,6 +16,7 @@
     },
     "aerial_achievement_medal": {
       "miniatureMedal": {
+        "status": "AVAILABLE",
         "available": true,
         "asset": "images/mini_medals/mcchord/m_usaf_aam01.png",
         "verificationStatus": "CROSS_REFERENCED",

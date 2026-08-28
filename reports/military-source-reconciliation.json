@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-27T20:38:29.806Z",
+  "generatedAt": "2026-08-28T09:36:42.556Z",
   "records": 183,
   "crossReferenced": 0,
-  "officiallyVerified": 20,
+  "officiallyVerified": 55,
   "conflicts": [],
   "items": [
     {
@@ -186,8 +186,8 @@
       "officialName": "joint meritorious unit award",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "air_force_meritorious_unit_award",
@@ -218,8 +218,8 @@
       "officialName": "prisoner of war",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "air_force_combat_rediness",
@@ -330,32 +330,32 @@
       "officialName": "korean service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "antarctica_service",
       "officialName": "antarctica service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "armed_forces_expeditionary",
       "officialName": "armed forces expeditionary",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "vietnam_service",
       "officialName": "vietnam service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "southwest_asia_service_military_ribbons",
@@ -370,24 +370,24 @@
       "officialName": "kosovo campaign",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "afghanistan_campaign",
       "officialName": "afghanistan campaign",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "iraq_campaign",
       "officialName": "iraq campaign",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "global_war_terror_expeditionary",
@@ -410,32 +410,32 @@
       "officialName": "korean defense service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "armed_forces_service",
       "officialName": "armed forces service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "humanitarian_service",
       "officialName": "humanitarian service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "outstanding_volunteer_service",
       "officialName": "outstanding volunteer service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "air_and_space_campaign",
@@ -570,48 +570,48 @@
       "officialName": "philippine presidential unit citation",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "korean_presidential_unit_citation",
       "officialName": "korean presidential unit citation",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "vietnam_gallantry_cross_unit_citation",
       "officialName": "vietnam gallantry cross unit citation",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "vietnam_civil_actions_unit_citation",
       "officialName": "vietnam civil actions unit citation",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "united_nations_service",
       "officialName": "united nations service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "united_nations",
       "officialName": "united nations",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "nato_medal",
@@ -626,8 +626,8 @@
       "officialName": "nato kosovo",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "multinational_force_observers",
@@ -642,16 +642,16 @@
       "officialName": "inter american defense board",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "republic_of_vietnam_campaign",
       "officialName": "republic of vietnam campaign",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "kuwait_liberation_saudi",
@@ -1050,8 +1050,8 @@
       "officialName": "Navy Occupation Service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "coast_guard_arctic_service",
@@ -1186,24 +1186,24 @@
       "officialName": "Navy Unit Commendation",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "navy_meritorious_unit_commendation",
       "officialName": "Navy Meritorious Unit Commendation",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "navy_e",
       "officialName": "Navy E",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "marine_corps_good_conduct",
@@ -1234,16 +1234,16 @@
       "officialName": "Navy Sea Service Deployment",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "navy_arctic_service",
       "officialName": "Navy Arctic Service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "navy_marine_corps_overseas_service_military_rbbon",
@@ -1314,48 +1314,48 @@
       "officialName": "navy good conduct",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "naval_reserve_meritorious_service",
       "officialName": "Naval Reserve Meritorious Service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "fleet_marine_force",
       "officialName": "Fleet Marine Force",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "naval_reserve_sea_service",
       "officialName": "Naval Reserve Sea Service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "navy_recruiting_service",
       "officialName": "Navy Recruiting Service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "navy_recruit_training_service",
       "officialName": "Navy Recruit Training Service",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "ceremonial_guard",
@@ -1378,8 +1378,8 @@
       "officialName": "Naval Reserve",
       "officialMilitaryRibbons": true,
       "usamm": false,
-      "officialRegulation": false,
-      "status": "DISCOVERED"
+      "officialRegulation": true,
+      "status": "OFFICIALLY_VERIFIED"
     },
     {
       "awardId": "navy_rifle_marksmanship",

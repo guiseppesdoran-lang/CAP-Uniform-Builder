@@ -20,8 +20,9 @@
   "$defs": {
     "representation": {
       "type": "object",
-      "required": ["available", "asset", "verificationStatus", "sources"],
+      "required": ["status", "asset", "verificationStatus", "sources"],
       "properties": {
+        "status": {"enum": ["AVAILABLE", "NOT_APPLICABLE", "MISSING_ASSET", "UNVERIFIED"]},
         "available": {"type": "boolean"},
         "asset": {"type": ["string", "null"]},
         "verificationStatus": {"enum": ["OFFICIALLY_VERIFIED", "CROSS_REFERENCED", "UNVERIFIED"]},

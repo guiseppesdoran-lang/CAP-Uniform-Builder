@@ -15,6 +15,25 @@
   const AWARD_STATUSES = Object.freeze([
     'CURRENT', 'HISTORICAL', 'OBSOLETE_BUT_WEARABLE', 'FOREIGN', 'UNKNOWN'
   ]);
+  const REPRESENTATION_STATUSES = Object.freeze([
+    'AVAILABLE', 'NOT_APPLICABLE', 'MISSING_ASSET', 'UNVERIFIED'
+  ]);
+
+  // Source discovery can encounter navigation, marketing, and rank pages whose
+  // titles resemble catalog records. Keep these records in the raw import for
+  // provenance, but never promote them into the wearable canonical catalog.
+  const NON_AWARD_PATTERNS = Object.freeze([
+    /free military graphics and designs/i,
+    /\b(?:air force|army|coast guard|space force) rank\b/i
+  ]);
+
+  function isWearableAwardRecord(award){
+    if(!award) return false;
+    const type=String(award.type || 'RIBBON').toUpperCase();
+    if(type !== 'RIBBON') return false;
+    const text=[award.id,award.name,award.officialName,award.sourceName].filter(Boolean).join(' ');
+    return !NON_AWARD_PATTERNS.some(pattern=>pattern.test(text));
+  }
 
   const DEFAULT_CATEGORY_ORDER = Object.freeze([
     'MEDAL_OF_HONOR', 'SERVICE_CROSS', 'DISTINGUISHED_SERVICE', 'VALOR',
@@ -117,7 +136,7 @@
   function canonicalizeAwards(awards){
     const groups=new Map();
     for(const award of awards || []){
-      if(!award) continue;
+      if(!isWearableAwardRecord(award)) continue;
       const key=canonicalAwardKey(award);
       if(!key) continue;
       const existing=groups.get(key);
@@ -285,14 +304,24 @@
   function normalizeRepresentations(award){
     const configured=award?.representations || {};
     const legacy=award?.images || {};
-    const normalize=(value,fallbackAsset)=>{
-      if(value && typeof value === 'object') return {
-        ...value,
-        available:value.available !== false && !!(value.asset || fallbackAsset),
-        asset:value.asset || fallbackAsset || null
-      };
+    const normalize=(value,fallbackAsset,{applicable=true}={})=>{
+      if(value && typeof value === 'object'){
+        const asset=value.asset || fallbackAsset || null;
+        let status=String(value.status || '').toUpperCase();
+        if(!REPRESENTATION_STATUSES.includes(status)){
+          if(value.available === true && asset) status='AVAILABLE';
+          else if(value.notApplicable === true || applicable === false) status='NOT_APPLICABLE';
+          else if(value.verificationStatus === 'UNVERIFIED' && asset) status='UNVERIFIED';
+          else status=asset ? 'UNVERIFIED' : 'MISSING_ASSET';
+        }
+        return {...value,status,available:status === 'AVAILABLE',asset};
+      }
       const asset=typeof value === 'string' ? value : fallbackAsset;
-      return {available:!!asset,asset:asset || null};
+      return {
+        status:applicable === false ? 'NOT_APPLICABLE' : (asset ? 'AVAILABLE' : 'MISSING_ASSET'),
+        available:applicable !== false && !!asset,
+        asset:asset || null
+      };
     };
     return {
       ribbon:normalize(configured.ribbon,legacy.ribbon),
@@ -427,8 +456,9 @@
   }
 
   return {
-    ORGANIZATIONS, COMPONENTS, VERIFICATION_STATUSES, AWARD_STATUSES,
+    ORGANIZATIONS, COMPONENTS, VERIFICATION_STATUSES, AWARD_STATUSES, REPRESENTATION_STATUSES,
     DEFAULT_CATEGORY_ORDER, normalizeService, normalizeName, slugify, inferredCategory,
+    isWearableAwardRecord,
     isCapAward, isAuthorizedForService, getAwardPrecedence, compareAwardsForMember,
     sortAwardsForMember, canonicalAwardKey, canonicalizeAwards, compareAwardsUniversal,
     inferDeviceRules, normalizeRepresentations, createAwardSelection, getAwardRepresentation,

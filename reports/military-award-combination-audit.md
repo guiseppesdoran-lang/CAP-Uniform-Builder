@@ -1,12 +1,12 @@
 # Military Award Combination Audit
 
-Generated: 2026-08-28T08:49:04.431Z
+Generated: 2026-08-28T09:36:42.218Z
 
 > This report is intentionally conservative. A local ribbon image does not prove a device rule or medal representation. Missing and unverified fields remain gaps; inferred branch conventions are available only in the builder’s **Manual / unverified configuration** mode.
 
 ## Totals
 
-- Total canonical awards: 175
+- Total canonical awards: 170
 - Ribbon representations with a catalog asset reference: 170
 - Miniature medal representations with a reviewed mapping: 2
 - Full-size medal representations with a reviewed mapping: 0
@@ -15,10 +15,10 @@ Generated: 2026-08-28T08:49:04.431Z
 - Awards with explicit special-device support: 1
 - Officially verified canonical award records: 0
 - Awards with at least one officially verified device rule: 6
-- Awards missing explicit device rules: 169
-- Awards missing local ribbon artwork: 5
-- Awards missing reviewed miniature-medal artwork: 173
-- Awards missing reviewed full-size-medal artwork: 175
+- Awards missing explicit device rules: 164
+- Awards missing local ribbon artwork: 0
+- Awards missing reviewed miniature-medal artwork: 168
+- Awards missing reviewed full-size-medal artwork: 170
 
 ## Award records
 
@@ -83,17 +83,17 @@ Generated: 2026-08-28T08:49:04.431Z
 | Army Presidential Unit Citation | `army_presidential_unit_citation` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Republic of Vietnam Presidential Unit Citation | `republic_of_vietnam_presidential_unit_citation` | ARMY | ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | vietnam gallantry cross unit citation | `vietnam_gallantry_cross_unit_citation` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| Army Valorous Unit Award | `army_valorous_unit_award` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | vietnam civil actions unit citation | `vietnam_civil_actions_unit_citation` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| Army Valorous Unit Award | `army_valorous_unit_award` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Army Superior Unit Award | `army_superior_unit_award` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| kosovo campaign | `kosovo_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | afghanistan campaign | `afghanistan_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| iraq campaign | `iraq_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| republic of vietnam campaign | `republic_of_vietnam_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | air and space campaign | `air_and_space_campaign` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | american campaign | `american_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | asiatic pacific campaign | `asiatic_pacific_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | european african middle eastern campaign | `european_african_middle_eastern_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| iraq campaign | `iraq_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| kosovo campaign | `kosovo_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| republic of vietnam campaign | `republic_of_vietnam_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Marine Corps Expeditionary | `marine_corps_expeditionary` | MARINE_CORPS | MARINE_CORPS | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | armed forces expeditionary | `armed_forces_expeditionary` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Expeditionary | `navy_expeditionary` | COAST_GUARD | COAST_GUARD, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
@@ -109,8 +109,8 @@ Generated: 2026-08-28T08:49:04.431Z
 | korean service | `korean_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | antarctica service | `antarctica_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | China Service | `china_service` | COAST_GUARD | COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| vietnam service | `vietnam_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Occupation Service | `navy_occupation_service` | COAST_GUARD | COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| vietnam service | `vietnam_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | southwest asia service | `southwest_asia_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | global war on terrorism service | `global_war_on_terrorism_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | korean defense service | `korean_defense_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
@@ -124,8 +124,8 @@ Generated: 2026-08-28T08:49:04.431Z
 | Arctic Service | `arctic_service` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy & Marine Corps Overseas Service | `navy_and_marine_corps_overseas_service` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | united nations service | `united_nations_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| air force longevity service | `air_force_longevity_service` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Recruiting Service | `navy_recruiting_service` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| air force longevity service | `air_force_longevity_service` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | rok war service | `rok_war_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Special Operations Service | `special_operations_service` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Coast Guard Sea Service | `coast_guard_sea_service` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
@@ -137,8 +137,8 @@ Generated: 2026-08-28T08:49:04.431Z
 | Naval Reserve Sea Service | `naval_reserve_sea_service` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Marine Corps Reserve | `marine_corps_reserve` | MARINE_CORPS | MARINE_CORPS | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Naval Reserve | `naval_reserve` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| air force military training instructor | `air_force_military_training_instructor` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Recruit Training Service | `navy_recruit_training_service` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| air force military training instructor | `air_force_military_training_instructor` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | air force basic training honor graduate | `air_force_basic_training_honor_graduate` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | air force training | `air_force_training` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Basic Training Honor Graduate | `basic_training_honor_graduate` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
@@ -156,8 +156,8 @@ Generated: 2026-08-28T08:49:04.431Z
 | Air and Space Organizational Excellence Award | `air_and_space_organizational_excellence_award` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | medal for humane action | `medal_for_humane_action` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | air force combat readiness | `air_force_combat_readiness` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| air force good condcut | `air_force_good_condcut` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Fleet Marine Force | `fleet_marine_force` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| air force good condcut | `air_force_good_condcut` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | air force outstanding airman of the year | `air_force_outstanding_airman_of_the_year` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | air force recognition | `air_force_recognition` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Coast Guard E | `coast_guard_e` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
@@ -194,11 +194,6 @@ Generated: 2026-08-28T08:49:04.431Z
 | Coast Guard Pistol Marksmanship | `coast_guard_pistol_marksmanship` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Army Occupation of Germany Military Medal & | `army_occupation_of_germany_military_medal_and` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | China Relief Expedition Military Medal | `china_relief_expedition_military_medal` | UNKNOWN |  | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| Free Military Graphics and Designs | `free_military_graphics_and_designs` | UNKNOWN |  | No | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| US Air Force Rank Free CNC and Laser Military Graphics and Designs,Free Military Graphics and Designs | `us_air_force_rank_free_cnc_and_laser_military_graphics_and_designs_free_military_graphics_and_designs` | AIR_FORCE | AIR_FORCE | No | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| US Army Rank Free CNC and Laser Military Graphics and Designs Free Military Graphics and Designs | `us_army_rank_free_cnc_and_laser_military_graphics_and_designs_free_military_graphics_and_designs` | ARMY | ARMY | No | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| US Coast Guard Free CNC and Laser Military Graphics and Designs Free Military Graphics and Designs | `us_coast_guard_free_cnc_and_laser_military_graphics_and_designs_free_military_graphics_and_designs` | COAST_GUARD | COAST_GUARD | No | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| US Space Force Free CNC and Laser Military Graphics and Designs | `us_space_force_free_cnc_and_laser_military_graphics_and_designs` | SPACE_FORCE | SPACE_FORCE | No | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 
 ## Known limitations
 

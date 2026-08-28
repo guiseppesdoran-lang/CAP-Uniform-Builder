@@ -177,6 +177,25 @@ test('canonicalization preserves reviewed medal representations from source reco
   assert.equal(core.getAwardRepresentation(canonical[0],'MINIATURE_MEDAL').asset,'images/mini.png');
 });
 
+test('canonicalization rejects navigation and rank pages discovered by the crawler', () => {
+  const records=[
+    {id:'valid',name:'Air Medal',type:'RIBBON'},
+    {id:'graphics',name:'Free Military Graphics and Designs',type:'RIBBON'},
+    {id:'rank',name:'US Army Rank Free CNC and Laser Military Graphics and Designs',type:'RIBBON'},
+    {id:'badge-page',name:'Example Badge Page',type:'BADGE'}
+  ];
+  assert.deepEqual(core.canonicalizeAwards(records).map(item=>item.id),['air_medal']);
+});
+
+test('representation status distinguishes available, missing, not applicable, and unverified art', () => {
+  assert.equal(core.normalizeRepresentations({images:{ribbon:'images/ribbon.png'}}).ribbon.status,'AVAILABLE');
+  assert.equal(core.normalizeRepresentations({}).miniatureMedal.status,'MISSING_ASSET');
+  assert.equal(core.normalizeRepresentations({representations:{fullSizeMedal:{status:'NOT_APPLICABLE'}}}).fullSizeMedal.status,'NOT_APPLICABLE');
+  const unverified=core.normalizeRepresentations({representations:{miniatureMedal:{asset:'images/mini.png',status:'UNVERIFIED'}}});
+  assert.equal(unverified.miniatureMedal.status,'UNVERIFIED');
+  assert.equal(unverified.miniatureMedal.available,false);
+});
+
 test('legacy ribbon-only assets do not create fake miniature medals', () => {
   const canonical={id:'training_ribbon',images:{ribbon:'training.png'}};
   const representations=core.normalizeRepresentations(canonical);

@@ -1,0 +1,6 @@
+{
+  "$schema": "../schemas/military-badge-catalog.schema.json",
+  "schemaVersion": 1,
+  "notes": "The military badge catalog is intentionally empty until badge records, authorization, precedence, placement, and local artwork are verified from official service sources. CAP badges remain in the existing CAP catalog.",
+  "badges": []
+}

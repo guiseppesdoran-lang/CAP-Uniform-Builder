@@ -57,6 +57,7 @@ let browser;
   assert.equal(await page.locator('#militaryAwardServiceFilter').inputValue(),'NAVY');
   assert.equal(await results.evaluate(element=>element.scrollTop),before,'catalog scroll position changed');
   assert.equal(await checkbox.isChecked(),true,'award selection did not persist');
+  assert.equal(await page.locator('#militarySelectedAwards .militarySelectedAward').count(),1,'selected-awards panel was not updated');
   await page.evaluate(()=>{
     window.State.organization='AIR_FORCE';
     window.State.militaryAwards={air_force_commendation:{awardCount:7}};
@@ -69,6 +70,10 @@ let browser;
   assert.deepEqual(await composed.evaluate(image=>[image.naturalWidth,image.naturalHeight]),[100,30]);
   await page.locator('#militaryRepresentationMode').selectOption('MINIATURE_MEDAL');
   assert.match(await page.locator('.militaryPreviewNote').innerText(),/No selected award has a reviewed local miniature medal representation/);
+  await page.locator('#militaryAwardServiceFilter').selectOption('ALL');
+  await page.locator('#militaryAwardSearch').fill('');
+  await page.locator('#militaryRenderableOnly').check();
+  assert.equal(await page.locator('#militaryAwardResults .militaryAwardOption').count(),2,'miniature-medal availability filter did not use representation status');
 
   await page.evaluate(()=>{
     window.State.organization='AIR_FORCE';
@@ -84,5 +89,5 @@ let browser;
     return window.CAPUBMilitary.getAwardRepresentation(awards.find(award=>award.id==='air_medal'),'MINIATURE_MEDAL').asset;
   }),'images/mini_medals/mcchord/m_airmedal.png');
   assert.deepEqual(errors,[],'browser errors were reported');
-  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true},null,2)+'\n');
+  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true},null,2)+'\n');
 })().catch(error=>{ console.error(error); process.exitCode=1; }).finally(async()=>{ if(browser) await browser.close(); });
