@@ -7,41 +7,41 @@
       "id": "presidential_service_badge",
       "officialName": "Presidential Service Badge",
       "family": "IDENTIFICATION",
-      "authorizedServices": ["SPACE_FORCE"],
+      "authorizedServices": ["COAST_GUARD", "SPACE_FORCE"],
       "status": "CURRENT",
       "precedence": {"SPACE_FORCE": {"order": 0, "verified": true}},
       "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
-      "sources": ["https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
     },
     {
       "id": "vice_presidential_service_badge",
       "officialName": "Vice Presidential Service Badge",
       "family": "IDENTIFICATION",
-      "authorizedServices": ["SPACE_FORCE"],
+      "authorizedServices": ["COAST_GUARD", "SPACE_FORCE"],
       "status": "CURRENT",
       "precedence": {"SPACE_FORCE": {"order": 1, "verified": true}},
       "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
-      "sources": ["https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
     },
     {
       "id": "office_of_secretary_of_defense_identification_badge",
       "officialName": "Office of the Secretary of Defense Identification Badge",
       "family": "IDENTIFICATION",
-      "authorizedServices": ["ARMY", "SPACE_FORCE"],
+      "authorizedServices": ["ARMY", "COAST_GUARD", "SPACE_FORCE"],
       "status": "CURRENT",
       "precedence": {"SPACE_FORCE": {"order": 2, "verified": true}},
       "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
-      "sources": ["https://www.army.mil/uniforms/", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+      "sources": ["https://www.army.mil/uniforms/", "https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=128", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
     },
     {
       "id": "joint_chiefs_of_staff_identification_badge",
       "officialName": "Joint Chiefs of Staff Identification Badge",
       "family": "IDENTIFICATION",
-      "authorizedServices": ["ARMY", "SPACE_FORCE"],
+      "authorizedServices": ["ARMY", "COAST_GUARD", "SPACE_FORCE"],
       "status": "CURRENT",
       "precedence": {"SPACE_FORCE": {"order": 3, "verified": true}},
       "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
-      "sources": ["https://www.army.mil/uniforms/", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+      "sources": ["https://www.army.mil/uniforms/", "https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=129", "https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
     },
     {
       "id": "headquarters_space_force_staff_identification_badge",
@@ -58,6 +58,133 @@
         }
       },
       "sources": ["https://static.e-publishing.af.mil/production/1/ussf/publication/spfi36-2903/spfi36-2903.pdf#page=101"]
+    },
+    {
+      "id": "coast_guard_aviator_insignia", "officialName": "Coast Guard Aviator Insignia", "family": "AVIATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons; when two insignia are worn, the current-assignment or most recently earned insignia is uppermost."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=120"]
+    },
+    {
+      "id": "coast_guard_air_crew_insignia", "officialName": "Coast Guard Air Crew Insignia", "family": "AIRCREW", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons; when two insignia are worn, the current-assignment or most recently earned insignia is uppermost."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=120"]
+    },
+    {
+      "id": "coast_guard_flight_officer_insignia", "officialName": "Coast Guard Flight Officer Insignia", "family": "AVIATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=120"]
+    },
+    {
+      "id": "coast_guard_flight_surgeon_insignia", "officialName": "Coast Guard Flight Surgeon Insignia", "family": "MEDICAL", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=120"]
+    },
+    {
+      "id": "coast_guard_aviation_rescue_swimmer_insignia", "officialName": "Coast Guard Aviation Rescue Swimmer Insignia", "family": "AIRCREW", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "exclusions": ["coast_guard_air_crew_insignia"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Worn in lieu of Air Crew insignia and centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=120"]
+    },
+    {
+      "id": "coast_guard_astronaut_insignia", "officialName": "Coast Guard Astronaut Insignia", "family": "SPACE", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=121"]
+    },
+    {
+      "id": "coast_guard_aviation_mission_specialist_insignia", "officialName": "Coast Guard Aviation Mission Specialist Insignia", "family": "AVIATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=121"]
+    },
+    {
+      "id": "coast_guard_cutterman_insignia", "officialName": "Coast Guard Cutterman Insignia", "family": "QUALIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["officer_gold", "enlisted_pewter"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=121"]
+    },
+    {
+      "id": "coast_guard_boat_force_operations_insignia", "officialName": "Coast Guard Boat Force Operations Insignia", "family": "QUALIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["basic_pewter", "advanced_pewter_gold"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=121"]
+    },
+    {
+      "id": "coast_guard_coxswain_insignia", "officialName": "Coast Guard Coxswain Insignia", "family": "QUALIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=122"]
+    },
+    {
+      "id": "coast_guard_enlisted_expeditionary_warfare_specialist_insignia", "officialName": "Coast Guard Enlisted Expeditionary Warfare Specialist Insignia", "family": "COMBAT", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=122"]
+    },
+    {
+      "id": "coast_guard_surfman_insignia", "officialName": "Coast Guard Surfman Insignia", "family": "QUALIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "exclusions": ["coast_guard_coxswain_insignia"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Always worn in lieu of Coxswain insignia and centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=122"]
+    },
+    {
+      "id": "coast_guard_scuba_diver_insignia", "officialName": "Coast Guard Scuba Diver Insignia", "family": "DIVER", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["officer_gold", "enlisted_pewter"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=122"]
+    },
+    {
+      "id": "coast_guard_diver_insignia", "officialName": "Coast Guard Diver Insignia", "family": "DIVER", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["second_class", "first_class", "master", "diving_officer", "diving_medical_technician"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=122"]
+    },
+    {
+      "id": "coast_guard_port_security_insignia", "officialName": "Coast Guard Port Security Insignia", "family": "COMBAT", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["officer_gold", "enlisted_pewter"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=123"]
+    },
+    {
+      "id": "coast_guard_marine_safety_insignia", "officialName": "Coast Guard Marine Safety Insignia", "family": "QUALIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=124"]
+    },
+    {
+      "id": "coast_guard_tactical_law_enforcement_insignia", "officialName": "Coast Guard Law Enforcement Detachment and Tactical Law Enforcement Team Insignia", "family": "COMBAT", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Centered 1/4 inch above ribbons."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "One pocket-length embroidered insignia centered immediately above the U.S. Coast Guard tape."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=124"]
+    },
+    {
+      "id": "coast_guard_ceremonial_honor_guard_insignia", "officialName": "Coast Guard Ceremonial Honor Guard Insignia", "family": "IDENTIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Qualification insignia placement centered 1/4 inch above ribbons; authorized for past and present members assigned to the Ceremonial Honor Guard."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=124"]
+    },
+    {
+      "id": "coast_guard_company_commander_insignia", "officialName": "Coast Guard Company Commander Insignia", "family": "IDENTIFICATION", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Qualification insignia placement centered 1/4 inch above ribbons."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=124"]
+    },
+    {
+      "id": "coast_guard_physician_assistant_nurse_practitioner_insignia", "officialName": "Coast Guard Physician Assistant and Nurse Practitioner Insignia", "family": "MEDICAL", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT",
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "miniature": {"status": "NOT_APPLICABLE", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "One-inch insignia centered 1/4 inch above ribbons; no miniature version exists."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=124"]
+    },
+    {
+      "id": "coast_guard_command_device", "officialName": "Coast Guard Command Device", "family": "COMMAND", "authorizedServices": ["COAST_GUARD"], "status": "CURRENT", "variants": ["command_afloat", "command_ashore", "officer_in_charge_afloat", "officer_in_charge_ashore"],
+      "representations": {"metal": {"status": "MISSING_ASSET", "available": false, "asset": null}, "embroidered": {"status": "MISSING_ASSET", "available": false, "asset": null}},
+      "placement": {"serviceDress": {"status": "OFFICIALLY_VERIFIED", "notes": "Incumbent CO/OIC device centered 1/4 inch above the nametag on the right pocket; formerly earned devices follow the left-pocket rules in section 4.B.4."}, "odu": {"status": "OFFICIALLY_VERIFIED", "notes": "Incumbent CO/OIC may wear one current embroidered miniature command device."}},
+      "sources": ["https://media.defense.gov/2020/Jul/09/2002451108/-1/-1/0/CIM_1020_6K.PDF#page=127"]
     },
     {
       "id": "army_air_assault_badge", "officialName": "Air Assault Badge", "family": "QUALIFICATION", "authorizedServices": ["ARMY"], "status": "CURRENT",

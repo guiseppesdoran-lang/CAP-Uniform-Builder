@@ -1,6 +1,6 @@
 # U.S. Military Complete Catalog Audit
 
-Generated: 2026-08-28T14:57:05.502Z
+Generated: 2026-08-28T15:17:59.763Z
 
 > This audit measures implemented, locally renderable data. It does not treat discovery links as authorization and does not count missing or unverified artwork as complete.
 
@@ -10,12 +10,12 @@ Generated: 2026-08-28T14:57:05.502Z
 - Official-source addition records: 1
 - Wearable canonical awards after filtering: 171
 - Rejected navigation/rank records: 6
-- Military badge records: 35
-- Explicit badge variants: 41
-- Total badge configurations: 62
+- Military badge records: 56
+- Explicit badge variants: 58
+- Total badge configurations: 94
 - Badges with verified precedence: 5
-- Badges with verified placement: 1
-- Badge artwork — AVAILABLE: 0; NOT_APPLICABLE: 0; MISSING_ASSET: 35; UNVERIFIED: 0
+- Badges with verified placement: 22
+- Badge artwork — AVAILABLE: 0; NOT_APPLICABLE: 1; MISSING_ASSET: 74; UNVERIFIED: 0
 - Device definitions: 15
 - Awards with at least one officially verified precedence entry: 86
 - Awards with an explicit service device rule: 21

@@ -289,6 +289,17 @@ test('official Army badge catalog uses canonical families and variants', () => {
   assert.ok(army.every(badge=>badge.sources.some(source=>/army\.mil/i.test(source))));
 });
 
+test('official Coast Guard qualification catalog preserves variants and placement', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const coastGuard=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'COAST_GUARD'));
+  assert.ok(coastGuard.length>=24,'expected the official Coast Guard badge foundation');
+  assert.deepEqual(coastGuard.find(badge=>badge.id==='coast_guard_boat_force_operations_insignia').variants,['basic_pewter','advanced_pewter_gold']);
+  assert.deepEqual(coastGuard.find(badge=>badge.id==='coast_guard_command_device').variants,['command_afloat','command_ashore','officer_in_charge_afloat','officer_in_charge_ashore']);
+  assert.equal(coastGuard.find(badge=>badge.id==='coast_guard_surfman_insignia').exclusions[0],'coast_guard_coxswain_insignia');
+  assert.ok(coastGuard.filter(badge=>badge.id.startsWith('coast_guard_')).every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
+  assert.ok(coastGuard.every(badge=>badge.sources.some(source=>/defense\.gov|e-publishing\.af\.mil|army\.mil/i.test(source))));
+});
+
 test('official Army Institute of Heraldry table preserves cross-service precedence', () => {
   const table=require('../data/rules/verified/service-precedence.json').ARMY;
   const order=id=>table.awards.indexOf(id);
