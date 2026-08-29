@@ -13,6 +13,7 @@ const awards = [...importedAwards,...officialAdditions];
 const devices = require('../data/rules/verified/device-definitions.json');
 const badges = require('../data/military/badges.json').badges;
 const officialArmyBadgeImport = require('../data/imports/official_army_badges.json');
+const commonsNavyBadgeImport = require('../data/imports/commons_navy_badges.json');
 
 function isSupportedImage(buffer){
   if(buffer.length >= 8 && buffer.subarray(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]))) return true;
@@ -140,4 +141,19 @@ test('official Army badge import manifest is complete',()=>{
   assert.equal(new Set(officialArmyBadgeImport.imported.map(record=>record.badgeId)).size,32);
   assert.equal(officialArmyBadgeImport.imported.length,60);
   assert.deepEqual(officialArmyBadgeImport.missing,[]);
+});
+
+test('reviewed Navy artwork copies preserve official and asset provenance',()=>{
+  assert.ok(commonsNavyBadgeImport.imported.length>=14,'expected the reviewed Navy artwork checkpoint');
+  for(const record of commonsNavyBadgeImport.imported){
+    assert.match(record.asset,/^images\/military-badges\/navy\/.+\.png$/);
+    assert.ok(record.descriptionUrl?.startsWith('https://commons.wikimedia.org/'));
+    const absolute=path.join(ROOT,...record.asset.split('/'));
+    assert.ok(fs.existsSync(absolute),`${record.badgeId}:${record.variant} asset missing`);
+    const buffer=fs.readFileSync(absolute);
+    assert.equal(buffer.readUInt32BE(16),256,`${record.badgeId}:${record.variant} width`);
+    assert.equal(buffer.readUInt32BE(20),160,`${record.badgeId}:${record.variant} height`);
+    assert.ok([4,6].includes(buffer[25]),`${record.badgeId}:${record.variant} lacks alpha`);
+  }
+  assert.ok(fs.existsSync(path.join(ROOT,'reports','navy-badge-style-review.png')));
 });
