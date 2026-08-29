@@ -248,6 +248,29 @@ test('Army medal checkpoint preserves split medal geometry',()=>{
   }
 });
 
+test('naval service medal checkpoints preserve split geometry and local assets',()=>{
+  for(const service of ['navy','marine_corps','coast_guard']){
+    for(const representation of ['miniatureMedal','fullSizeMedal']){
+      const manifest=JSON.parse(fs.readFileSync(path.join(ROOT,`data/imports/vanguard_${service}_${representation}.json`),'utf8'));
+      assert.ok(manifest.imported.length > 0,`${service} ${representation}`);
+      assert.match(manifest.geometryPolicy,/never stretched as one image/i);
+      for(const record of manifest.imported) assert.ok(fs.existsSync(path.join(ROOT,record.asset)),record.awardId);
+    }
+  }
+});
+
+test('Navy and Marine utility badge counterparts retain distinct regulated backings',()=>{
+  const expected={NAVY:'NAVAL_BLACK_NWU_III',MARINE_CORPS:'MARINE_BLACK_MARPAT'};
+  for(const [service,profile] of Object.entries(expected)){
+    const records=badges.map(badge=>badge.representations?.embroidered?.byService?.[service]).filter(Boolean);
+    assert.ok(records.length > 0,service);
+    for(const rep of records){
+      assert.equal(rep.backingProfile,profile);
+      assert.ok(fs.existsSync(path.join(ROOT,rep.asset)));
+    }
+  }
+});
+
 test('reviewed naval-service artwork copies preserve official and asset provenance',()=>{
   assert.ok(commonsNavyBadgeImport.imported.length>=14,'expected the reviewed Navy artwork checkpoint');
   for(const record of commonsNavyBadgeImport.imported){

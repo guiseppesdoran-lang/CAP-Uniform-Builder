@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-29T21:52:12.909Z",
+  "generatedAt": "2026-08-29T22:08:16.950Z",
   "assets": [
     {
       "ownerType": "AWARD",
@@ -122,23 +122,27 @@
       "ownerType": "AWARD",
       "ownerId": "navy_cross",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/coast-guard/navy_cross.png",
+      "exists": true,
+      "sha256": "3119c2e379b1867e037d726aa97d7efc075c531f882901649b5d5597daee35ba",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-navy-cross-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "navy_cross",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/navy_cross.png",
+      "exists": true,
+      "sha256": "7831749d818e92907bd0f710055d051adcc627e2f77b3ac5764152e826d48fc1",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-cross-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -367,23 +371,27 @@
       "ownerType": "AWARD",
       "ownerId": "navy_and_marine_corps_medal",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/marine-corps/navy_and_marine_corps_medal.png",
+      "exists": true,
+      "sha256": "640e90c4d502e23910ec7c980ade123a8763a7c388ed9712533ad74ea8618931",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-and-usmc-medal-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "navy_and_marine_corps_medal",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_medal.png",
+      "exists": true,
+      "sha256": "6d112ca35b0308086cd6d212b93f9ae0affdcdc628e943357d56307acd5bb894",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-and-usmc-medal-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -764,23 +772,27 @@
       "ownerType": "AWARD",
       "ownerId": "navy_and_marine_corps_commendation",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/marine-corps/navy_and_marine_corps_commendation.png",
+      "exists": true,
+      "sha256": "cefa14341a7aac499bf6acdbf4b27d237145c0675191ae6c0bca44d09b41383e",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-and-usmc-commendation-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "navy_and_marine_corps_commendation",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_commendation.png",
+      "exists": true,
+      "sha256": "5a6d37bf8c0cd96c0e79219f7c1a82cfb7d3e12abb3c45fddef7a00ac06a90e4",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-and-usmc-commendation-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -797,23 +809,27 @@
       "ownerType": "AWARD",
       "ownerId": "coast_guard_commendation",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/coast-guard/coast_guard_commendation.png",
+      "exists": true,
+      "sha256": "1aa7bed724c5d608f31fab23c42af2a32e9e60434ba76953ff62074ecdba1649",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-commendation-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "coast_guard_commendation",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/coast-guard/coast_guard_commendation.png",
+      "exists": true,
+      "sha256": "86513418075d06c85c5d89f9bf2cce8252958f111cf93bdb8e3b5c138234e638",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-commendation-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1238,23 +1254,27 @@
       "ownerType": "AWARD",
       "ownerId": "navy_and_marine_corps_achievement",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/marine-corps/navy_and_marine_corps_achievement.png",
+      "exists": true,
+      "sha256": "13e2eb770e14f711c8da93bb3a3b1016efe0e593c7b94871bd1751eac28c8f72",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/miniature-medal-navy-and-marine-corps-achievement"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "navy_and_marine_corps_achievement",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_achievement.png",
+      "exists": true,
+      "sha256": "20addc1742868f9f8b3ff88ff62cec9c38ce77966011d4226a0a16ba40e161f5",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-achievement-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1308,23 +1328,27 @@
       "ownerType": "AWARD",
       "ownerId": "coast_guard_achievement",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/coast-guard/coast_guard_achievement.png",
+      "exists": true,
+      "sha256": "b464d4f1e1ce5b971a20ebe8fbf41f245f94c8baeb5b2cf29f80fbd06852575f",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-achievement-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "coast_guard_achievement",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/coast-guard/coast_guard_achievement.png",
+      "exists": true,
+      "sha256": "4a6a8ffeb7d71da2f5fd7891bd675be143285b481239e0f7fcfe5fb7503dd6ba",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-achievement-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1483,23 +1507,27 @@
       "ownerType": "AWARD",
       "ownerId": "marine_corps_good_conduct",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/marine-corps/marine_corps_good_conduct.png",
+      "exists": true,
+      "sha256": "bf9522ab933d86be4668dc27d1d9600e2c52dc3597bfdeeb5fff299d548c2cb6",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usmc-good-conduct-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "marine_corps_good_conduct",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/marine-corps/marine_corps_good_conduct.png",
+      "exists": true,
+      "sha256": "8bd09df31cd14b8f5afe36af210366f9f5885d0dae26bdc4c4b1fd507c929ec9",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usmc-good-conduct-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1516,23 +1544,27 @@
       "ownerType": "AWARD",
       "ownerId": "navy_good_conduct",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/navy/navy_good_conduct.png",
+      "exists": true,
+      "sha256": "45d7531ecb2c2ed673d610969b0365a4731406c1768e73ffa4a02f4ad71212b6",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-good-conduct-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "navy_good_conduct",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/navy_good_conduct.png",
+      "exists": true,
+      "sha256": "b95ec117c28923c2fcdbe4fae694b62ee9c4bf5a77b2c51d81b6b6d2a5ff4f82",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-good-conduct-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1560,12 +1592,14 @@
       "ownerType": "AWARD",
       "ownerId": "coast_guard_good_conduct",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/coast-guard/coast_guard_good_conduct.png",
+      "exists": true,
+      "sha256": "07f1bc30e12a288f4a268c6249bbee65aaeb707e3d66ae3264bd4d8213543a5a",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-good-conduct-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1582,12 +1616,14 @@
       "ownerType": "AWARD",
       "ownerId": "coast_guard_reserve_good_conduct",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/coast-guard/coast_guard_reserve_good_conduct.png",
+      "exists": true,
+      "sha256": "1d04ea3ce9726bd26188db9c1b0459cb9501944e15a8cbe328a79f17cefea81e",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-reserve-good-conduct-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2581,23 +2617,27 @@
       "ownerType": "AWARD",
       "ownerId": "marine_corps_expeditionary",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/marine-corps/marine_corps_expeditionary.png",
+      "exists": true,
+      "sha256": "5446e6c56795d5f96b4317095ccb8f4bec3177aa1208ea168fe5ecdbb2383bb7",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usmc-expeditionary-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "marine_corps_expeditionary",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/marine-corps/marine_corps_expeditionary.png",
+      "exists": true,
+      "sha256": "fe825a15da1b758602b9966871c5eee4173159b8f3a4bf7ee7f4cae3f9a36a47",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usmc-expeditionary-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2614,23 +2654,27 @@
       "ownerType": "AWARD",
       "ownerId": "navy_expeditionary",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/coast-guard/navy_expeditionary.png",
+      "exists": true,
+      "sha256": "19d56ac7df789c9c4c25830a8434d55811dd94e3aca8e49ae681e32079b90aa7",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-expeditionary-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "navy_expeditionary",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/navy_expeditionary.png",
+      "exists": true,
+      "sha256": "876473c52e05e4b9a639a139df8f3d8a26213ba79bb8945b67fba33011a3bc14",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-expeditionary-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2791,12 +2835,14 @@
       "ownerType": "AWARD",
       "ownerId": "navy_distinguished_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/marine-corps/navy_distinguished_service.png",
+      "exists": true,
+      "sha256": "1a7141aaed4d2edd55ca1e02a5ba242b51344658d462426a8d0d3aa19b9e03e6",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/miniature-medal-navy-distinguished-service"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2824,12 +2870,14 @@
       "ownerType": "AWARD",
       "ownerId": "coast_guard_distinguished_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/coast-guard/coast_guard_distinguished_service.png",
+      "exists": true,
+      "sha256": "3371bdb9ff54e5f6796ecee4b948d888fc97d9c9c3df353668fb5a20b3b4fe50",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-distinguished-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3396,23 +3444,27 @@
       "ownerType": "AWARD",
       "ownerId": "navy_arctic_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/marine-corps/navy_arctic_service.png",
+      "exists": true,
+      "sha256": "d4a57da55477dd9d9ac116c7cc39a17408e3209d99211664fafc56ee1f537929",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/miniature-medal-us-navy-arctic-service"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "navy_arctic_service",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/navy_arctic_service.png",
+      "exists": true,
+      "sha256": "00ccab10cb132f66c1133a5507baaecb316e7891e5656dba189abe05b4765b4f",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/full-size-medal-u-s-navy-arctic-service"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -4046,12 +4098,14 @@
       "ownerType": "AWARD",
       "ownerId": "naval_reserve",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/naval_reserve.png",
+      "exists": true,
+      "sha256": "1ebb5b082e8591381bc3d2ac55e43a01f26ac5dd90b0294d63595b60249ebf4a",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/naval-reserve-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -4398,23 +4452,27 @@
       "ownerType": "AWARD",
       "ownerId": "combat_action",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/marine-corps/combat_action.png",
+      "exists": true,
+      "sha256": "513e9745677c9b6fdd0d2eaea24c75a746adc2ecf2ff61ce48c949ae2410624f",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usaf-combat-action-medal-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "combat_action",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/combat_action.png",
+      "exists": true,
+      "sha256": "6a9baca65303b00cf6d730c3697e9c9b099a3bba5ac54cbca7111abb554a6467",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usaf-combat-action-medal-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -4464,23 +4522,27 @@
       "ownerType": "AWARD",
       "ownerId": "comabt_action",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/coast-guard/comabt_action.png",
+      "exists": true,
+      "sha256": "861d2554fdc3014ad7d92a923777c45849d5af158f8489da88231fefc51e1747",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usaf-combat-action-medal-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "comabt_action",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/coast-guard/comabt_action.png",
+      "exists": true,
+      "sha256": "3015c1cc162fccfa0e2439e4102039cb4cde30cff4266f1d09f9dafd8189ea93",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usaf-combat-action-medal-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -6578,11 +6640,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_aviator_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_aviator_insignia/default.png",
+      "exists": true,
+      "sha256": "db8afe51dc33356d746ab0d76313c651e1390692a35a4e668224727b317fea26",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -6644,11 +6706,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_flight_officer_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_flight_officer_insignia/default.png",
+      "exists": true,
+      "sha256": "d119dfa74fabbe2ae22379022aec1d3247698f774baa70e2afbaec7ff685bf4d",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -6710,11 +6772,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_enlisted_aviation_warfare_specialist_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
+      "exists": true,
+      "sha256": "6bfcbe49dd213a8890f6b6f2187e53b9b65735a3c650b22a5094ffce188d835f",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -6732,11 +6794,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_aviation_supply_corps_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_aviation_supply_corps_insignia/default.png",
+      "exists": true,
+      "sha256": "b5d617d72d9df2b83cb4828bcc2e65af2454fab3aaa76408afa68ced33619aea",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -6864,11 +6926,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_fleet_marine_force_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/officer.png",
+      "exists": true,
+      "sha256": "1cd4a40eca42ca6cf3f814112f1891d4c9e5dd4ab7aec353508121464b1a0213",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -6886,11 +6948,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_information_warfare_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/officer.png",
+      "exists": true,
+      "sha256": "71cc3dbe9f7f2e393a09ff436fdbdbe6933937472998532efb7583736e22087e",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -7018,11 +7080,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_parachutist_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+      "exists": true,
+      "sha256": "8b476507435f223d79c685fe27623314a9124095431b18b50ae613562bb2ac4a",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -7194,11 +7256,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_submarine_warfare_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/officer.png",
+      "exists": true,
+      "sha256": "ddb57818de994a7a0a70a870350c0a057c10bdd0d088839510159f8b245075b9",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -7216,11 +7278,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_surface_warfare_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/officer.png",
+      "exists": true,
+      "sha256": "117dfa1a4ace28bd806e0bdfdbcda662f7bd6dbe9ef23c8e885f91dc81054d2a",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -7238,11 +7300,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_diving_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_diving_insignia/diving_officer.png",
+      "exists": true,
+      "sha256": "98f41ab849383a239dcf95a57d929bcf91c9ae0fcbe776950c36fcd4226ecb3a",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -7997,11 +8059,11 @@
       "ownerType": "BADGE",
       "ownerId": "marine_corps_aerial_navigator_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
+      "exists": true,
+      "sha256": "28fca33d6af6dc53faf9c8e5ef3f7273a478e74ea5bb46a98fe5a469eb0a85cf",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -8019,11 +8081,11 @@
       "ownerType": "BADGE",
       "ownerId": "marine_corps_naval_aviation_observer_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "9e2fbe17bc1e75a88275ffa9a8000efaedaac7beadb8bab18b7d292bc340a8d0",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {

@@ -24,8 +24,13 @@ ELIGIBLE_FAMILIES = {
 }
 
 
-def ocp_pattern(size: tuple[int, int]) -> Image.Image:
-    palette = ["#c6b37e", "#9a8958", "#756346", "#53624a", "#d2c48f"]
+def camouflage_pattern(size: tuple[int, int], pattern: str) -> Image.Image:
+    palettes = {
+        "OCP": ["#c6b37e", "#9a8958", "#756346", "#53624a", "#d2c48f"],
+        "NWU_TYPE_III": ["#727e63", "#465448", "#1f2c27", "#a5a68a", "#273833"],
+        "MARPAT_WOODLAND": ["#756d4f", "#404838", "#20251f", "#9a9270", "#5a5f47"],
+    }
+    palette = palettes.get(pattern, palettes["OCP"])
     image = Image.new("RGB", size, palette[0])
     draw = ImageDraw.Draw(image)
     # Deterministic, low-frequency digital textile fields; no camera texture.
@@ -49,7 +54,7 @@ def embroidered(source: Path, foreground: str, background_pattern: str | None, b
     mask = ImageOps.autocontrast(gray).point(lambda value: 255 if value > 58 else max(0, value * 3))
     mask = ImageChops.lighter(mask, metal.getchannel("A")).filter(ImageFilter.GaussianBlur(0.35))
     canvas = (360, 220)
-    backing = ocp_pattern(canvas) if background_pattern == "OCP" else Image.new("RGB", canvas, background or "#132140")
+    backing = camouflage_pattern(canvas, background_pattern) if background_pattern else Image.new("RGB", canvas, background or "#132140")
     output = backing.convert("RGBA")
     glyph = Image.new("RGBA", metal.size, foreground)
     glyph.putalpha(mask)

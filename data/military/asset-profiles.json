@@ -37,8 +37,15 @@
       "backgroundPattern": "NWU_TYPE_III",
       "foreground": "#161a17",
       "borderInches": 0.125,
-      "services": ["NAVY", "MARINE_CORPS"],
-      "uniformFamilies": ["NWU_TYPE_III", "MCCUU"]
+      "services": ["NAVY"],
+      "uniformFamilies": ["NWU_TYPE_III"]
+    },
+    "MARINE_BLACK_MARPAT": {
+      "backgroundPattern": "MARPAT_WOODLAND",
+      "foreground": "#151712",
+      "borderInches": 0.125,
+      "services": ["MARINE_CORPS"],
+      "uniformFamilies": ["MCCUU"]
     },
     "COAST_GUARD_BLUE": {
       "background": "#243654",
@@ -54,7 +61,7 @@
     "SPACE_FORCE": { "embroideredBacking": "DAF_SPICE_BROWN_OCP" },
     "ARMY": { "embroideredBacking": "ARMY_BLACK_OCP" },
     "NAVY": { "embroideredBacking": "NAVAL_BLACK_NWU_III" },
-    "MARINE_CORPS": { "embroideredBacking": "NAVAL_BLACK_NWU_III" },
+    "MARINE_CORPS": { "embroideredBacking": "MARINE_BLACK_MARPAT" },
     "COAST_GUARD": { "embroideredBacking": "COAST_GUARD_BLUE" }
   }
 }

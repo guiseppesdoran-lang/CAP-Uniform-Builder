@@ -1416,6 +1416,383 @@
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/228_army_distinguished_service_medal.jpeg?v=1423544761"
       }
+    },
+    "combat_action": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/combat_action.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usaf-combat-action-medal-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/308_air_force_combat_action_medal.jpeg?v=1423543841"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/marine-corps/combat_action.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usaf-combat-action-medal-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617333.jpg?v=1617287462"
+      }
+    },
+    "naval_reserve": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/naval_reserve.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/naval-reserve-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/179_navy_reserve_medal.jpeg?v=1423543036"
+      }
+    },
+    "navy_and_marine_corps_achievement": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_achievement.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-achievement-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/168_navy_marine_corps_achiev_medal.jpeg?v=1423544614"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/marine-corps/navy_and_marine_corps_achievement.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/miniature-medal-navy-and-marine-corps-achievement"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/navy_and_marine_corps_achievement_miniature_medal_2067_navach_mini_1_1.jpeg?v=1423544612"
+      }
+    },
+    "navy_and_marine_corps_commendation": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_commendation.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-and-usmc-commendation-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/169_navy_marine_corps_commendation_medal.jpeg?v=1423544610"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/marine-corps/navy_and_marine_corps_commendation.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-and-usmc-commendation-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/navy_and_marine_corps_commendation_miniature_medal_2068_navcom_mini_1_1.jpeg?v=1423544608"
+      }
+    },
+    "navy_and_marine_corps_medal": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-and-usmc-medal-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609800.jpg?v=1617287690"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/marine-corps/navy_and_marine_corps_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-and-usmc-medal-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/navy_and_marine_corps_miniature_medal_2069_navmc_mini_1_1.jpeg?v=1423544603"
+      }
+    },
+    "navy_cross": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/navy_cross.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-cross-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609470.jpg?v=1617287687"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/coast-guard/navy_cross.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-navy-cross-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/navy_cross_miniature_medal_2071_navcross_mini_1_1.jpeg?v=1423544598"
+      }
+    },
+    "navy_expeditionary": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/navy_expeditionary.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-expeditionary-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/173_navy_expeditionary_medal_1b7943ef-fb06-4bc8-b5a0-0a301b09df1a.jpeg?v=1423544595"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/coast-guard/navy_expeditionary.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-expeditionary-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/navy_expeditionary_miniature_medal_2073_navexp_mini_1_1.jpeg?v=1423544594"
+      }
+    },
+    "navy_good_conduct": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/navy_good_conduct.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-good-conduct-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/176_navy_good_conduct_medal.jpeg?v=1423544586"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/navy/navy_good_conduct.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-good-conduct-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/navy_good_conduct_miniature_medal_2076_navgood_mini_1_1.jpeg?v=1423544584"
+      }
+    },
+    "navy_arctic_service": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/navy_arctic_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/full-size-medal-u-s-navy-arctic-service"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/files/6609345.jpg?v=1750973484"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/marine-corps/navy_arctic_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/miniature-medal-us-navy-arctic-service"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/files/6617146.jpg?v=1755193453"
+      }
+    },
+    "comabt_action": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/coast-guard/comabt_action.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usaf-combat-action-medal-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/308_air_force_combat_action_medal.jpeg?v=1423543841"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/coast-guard/comabt_action.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usaf-combat-action-medal-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617333.jpg?v=1617287462"
+      }
+    },
+    "coast_guard_achievement": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/coast-guard/coast_guard_achievement.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-achievement-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609270.jpg?v=1617287765"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/coast-guard/coast_guard_achievement.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-achievement-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/coast_guard_achievement_mini_medal_2027_1_6d4dc740-5586-4620-a989-2318f0add12f.jpeg?v=1423544731"
+      }
+    },
+    "coast_guard_commendation": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/coast-guard/coast_guard_commendation.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-commendation-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609410.jpg?v=1617287761"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/coast-guard/coast_guard_commendation.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-commendation-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/coast_guard_commendation_miniature_medal_2029_cgcomm_mini_1_1_ca2e0f2c-41b5-4972-bc42-0774ce1752f7.jpeg?v=1423544723"
+      }
+    },
+    "coast_guard_good_conduct": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/coast-guard/coast_guard_good_conduct.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-good-conduct-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/coast_guard_good_conduct_medal_132.jpeg?v=1423544713"
+      }
+    },
+    "coast_guard_distinguished_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/coast-guard/coast_guard_distinguished_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-distinguished-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/coast_guard_distinguished_service_miniature_medal_2030_cgdist_mini_1_1_4e829213-ddd5-43cc-9ae2-45371525b4cd.jpeg?v=1423544720"
+      }
+    },
+    "coast_guard_reserve_good_conduct": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/coast-guard/coast_guard_reserve_good_conduct.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-reserve-good-conduct-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/coast_guard_reserve_good_conduct_mini_medal_2035_1.jpeg?v=1423544706"
+      }
+    },
+    "marine_corps_expeditionary": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/marine-corps/marine_corps_expeditionary.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usmc-expeditionary-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/marine_corps_expeditionary_medal_157_1_b98bf087-5107-4d02-b1f4-fcd4742631e7.jpeg?v=1423544640"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/marine-corps/marine_corps_expeditionary.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usmc-expeditionary-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/marine_corps_expeditionary_miniature_medal_2058_mcexp_mini_1_1_ecb78f81-a329-4d54-8bc4-8b042d0859e3.jpeg?v=1423544639"
+      }
+    },
+    "marine_corps_good_conduct": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/marine-corps/marine_corps_good_conduct.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usmc-good-conduct-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609660.jpg?v=1617287710"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/marine-corps/marine_corps_good_conduct.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usmc-good-conduct-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/marine_corps_good_conduct_miniature_medal_2059_mcgd_mini_1.jpeg?v=1423544636"
+      }
+    },
+    "navy_distinguished_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/marine-corps/navy_distinguished_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/miniature-medal-navy-distinguished-service"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/navy_distinguished_service_miniature_medal_2072_navdist_mini_1_2.jpeg?v=1423542426"
+      }
     }
   }
 }
