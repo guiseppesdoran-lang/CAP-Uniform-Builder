@@ -17,24 +17,546 @@
       "miniatureMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/mini_medals/mcchord/m_airmedal.png",
-        "verificationStatus": "CROSS_REFERENCED",
+        "asset": "images/military-mini-medals/air-force/air_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
-          "legacy-builder:MINI_MEDAL_IMAGE_MAP.air_medal",
-          "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/air_medal_military_ribbon.html"
-        ]
+          "https://www.vanguardmil.com/products/air-medal-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Miniature-Medal_ad12a406-2a3e-46ae-ab31-d2f52a0a752f.jpeg?v=1423544810"
       }
     },
     "aerial_achievement_medal": {
       "miniatureMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/mini_medals/mcchord/m_usaf_aam01.png",
-        "verificationStatus": "CROSS_REFERENCED",
+        "asset": "images/military-mini-medals/air-force/aerial_achievement_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
-          "legacy-builder:MINI_MEDAL_IMAGE_MAP.air_force_aerial_achievement_medal",
-          "https://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/aerial_achievement_military_ribbon.html"
-        ]
+          "https://www.vanguardmil.com/products/usaf-aerial-achievement-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Aerial-Achievement-Miniature-Medal.jpeg?v=1423544843"
+      }
+    },
+    "afghanistan_campaign": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/afghanistan_campaign.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/afghanistan-campaign-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/66171240.jpg?v=1622836570"
+      }
+    },
+    "air_and_space_achievement_medal": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/air_and_space_achievement_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usaf-achievement-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Achievement-Miniature-Medal.jpeg?v=1423544847"
+      }
+    },
+    "armed_forces_reserve": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/armed_forces_reserve.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usaf-armed-forces-reserve-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Armed-Forces-Reserve-Miniature-Medal---Air-Force-Version_8731f298-ad88-4043-a170-f9bf70080bd4.jpeg?v=1423544786"
+      }
+    },
+    "air_force_combat_action": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/air_force_combat_action.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usaf-combat-action-medal-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617333.jpg?v=1617287462"
+      }
+    },
+    "air_force_combat_readiness": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/air_force_combat_readiness.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usaf-combat-readiness-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/combat_readiness_miniature_medal_2036_cmbredi_mini_1_1.jpeg?v=1423544836"
+      }
+    },
+    "air_and_space_commendation_medal": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/air_and_space_commendation_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usaf-commendation-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Commendation-Miniature-Medal.jpeg?v=1423544832"
+      }
+    },
+    "air_force_good_condcut": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/air_force_good_condcut.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usaf-good-conduct-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Good-Conduct-Miniature-Medal_85b33665-133c-40dd-98eb-d4dad41a6dfe.jpeg?v=1423544821"
+      }
+    },
+    "remote_combat_effects_campaign_medal": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/remote_combat_effects_campaign_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/miniature-medal-air-force-remote-combat-effects-campaign-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617907.jpg?v=1617290960"
+      }
+    },
+    "air_reserve_forces_meritorious_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/air_reserve_forces_meritorious_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/air-reserve-meritorious-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Reserve-Meritorious-Service-Miniature-Medal_72b82d07-8ee0-47ba-bee7-59b034a0fc8f.jpeg?v=1423544807"
+      }
+    },
+    "american_campaign": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/american_campaign.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/american-campaign-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/American-Campaign-Miniature-Medal---WWII.jpeg?v=1423544799"
+      }
+    },
+    "american_defense": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/american_defense.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/american-defense-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/American-Defense-Miniature-Medal---WWII_f3961991-eb76-4ff3-a8fb-b20ca78c5bc5.jpeg?v=1423544796"
+      }
+    },
+    "antarctica_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/antarctica_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/antarctica-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Antarctica-Service-Miniature-Medal_f79626d9-50d5-43fe-88b2-07e729919ed5.jpeg?v=1423544793"
+      }
+    },
+    "armed_forces_expeditionary": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/armed_forces_expeditionary.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/armed-forces-expeditionary-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Armed-Forces-Expeditionary-Miniature-Medal.jpeg?v=1423544790"
+      }
+    },
+    "armed_forces_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/armed_forces_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/armed-forces-service-medal-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617152.jpg?v=1617287786"
+      }
+    },
+    "asiatic_pacific_campaign": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/asiatic_pacific_campaign.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/asiatic-pacific-campaign-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/asiatic_pacific_campaign_miniature_medal_ww_ii_2025_asiat_mini_1.jpeg?v=1423544743"
+      }
+    },
+    "bronze_star_miltiary": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/bronze_star_miltiary.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/bronze-star-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/bronze_star_miniature_medal_2026_hi_res.jpeg?v=1423544739"
+      }
+    },
+    "defense_distinguished_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/defense_distinguished_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/defense-distinguished-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/department_of_defense_distinguished_service_miniature_medal_2039_defdist_mini_1_1.jpeg?v=1423544698"
+      }
+    },
+    "defense_meritorious_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/defense_meritorious_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/defense-meritorious-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617415.jpg?v=1617287743"
+      }
+    },
+    "defense_superior_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/defense_superior_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/defense-superior-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/defense_superior_service_miniature_medal_2038_defsup_mini_1.jpeg?v=1423544692"
+      }
+    },
+    "distinguished_flying_cross": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/distinguished_flying_cross.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/distinguished-flying-cross-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/distinguished_flying_cross_miniature_medal_2041_flycross_minik_1.jpeg?v=1423544688"
+      }
+    },
+    "global_war_on_terrorism_expeditionary": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/global_war_on_terrorism_expeditionary.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/global-war-on-terrorism-expeditionary-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/global_war_on_terrorism_expeditionary_miniature_medal_2044_gwotex_mini_1_1.jpeg?v=1423544674"
+      }
+    },
+    "global_war_on_terrorism_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/global_war_on_terrorism_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/global-war-on-terrorism-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/global_war_on_terrorism_service_miniature_medal_2045_gwostv_mini_1.jpeg?v=1423544670"
+      }
+    },
+    "humanitarian_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/humanitarian_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/humanitarian-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/humanitarian_service_miniature_medal_2046_humanit_mini_1.jpeg?v=1423544666"
+      }
+    },
+    "inherent_resolve_campaign_medal": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/inherent_resolve_campaign_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/miniature-medal-inherent-resolve-campaign"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617620.jpg?v=1617289939"
+      }
+    },
+    "inter_american_defense_board": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/inter_american_defense_board.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/inter-american-defense-board-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/inter_american_defense_board_miniature_medal_2047_1_1_d010ba28-8c13-4573-9976-fcce6fe9c57a.jpeg?v=1423544530"
+      }
+    },
+    "iraq_campaign": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/iraq_campaign.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/iraq-campaign-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/iraq_campaign_miniature_medal_2048_iraq_mini_1_1_318fd716-36ee-424e-91c4-69bb2c06c64c.jpeg?v=1423544017"
+      }
+    },
+    "joint_service_achievement": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/joint_service_achievement.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/joint-service-achievement-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/joint_service_achievement_miniature_medal_2049_jointach_mini_1_1.jpeg?v=1423544659"
+      }
+    },
+    "korean_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/korean_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/korean-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/korean_service_miniature_medal_2052_korserv_mini_1_1.jpeg?v=1423544647"
+      }
+    },
+    "kosovo_campaign": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/kosovo_campaign.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/kosovo-campaign-medal-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/kosovo_campaignn_miniature_medal_2053_kosocmp_mini_1_b9d4a429-feef-450e-8100-6f585188a0be.jpeg?v=1423544526"
+      }
+    },
+    "kuwait_liberation_saudi_arabia": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/kuwait_liberation_saudi_arabia.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/kuwait-liberation-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/saudi_arabian_miniature_medal_for_the_liberation_of_kuwait_2090_saudi_mini_1.jpeg?v=1423544520"
+      }
+    },
+    "medal_for_humane_action": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/medal_for_humane_action.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/medal-for-humane-action-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/medal_for_humane_action_miniature_medal_2060_humane_mini_1_1.jpeg?v=1423544632"
+      }
+    },
+    "meritorious_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/meritorious_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/meritorious-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/meritorious_service_miniature_medal_2061_meritsrv_mini_2_1.jpeg?v=1423544628"
+      }
+    },
+    "nato_kosovo": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/nato_kosovo.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/nato-kosovo-medal-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/nato_kosovo_miniature_medal_2065_nkoso_mini_1_1.jpeg?v=1423544516"
+      }
+    },
+    "nato": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/nato.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/nato-medal-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/nato_miniature_medal_2064_nbosnia_mini_1_1.jpeg?v=1423544512"
+      }
+    },
+    "prisoner_of_war": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/prisoner_of_war.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/prisoner-of-war-pow-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/prisoner_of_war_miniature_medal_2082_priswar_mini_1_1.jpeg?v=1423544571"
+      }
+    },
+    "purple_heart": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/purple_heart.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/purple-heart-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/purple_heart_mini_medal_2083_1.jpeg?v=1423544568"
+      }
+    },
+    "silver_star": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/silver_star.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/silver-star-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/silver_star_miniature_medal_2092_silvstr_mini_1_1.jpeg?v=1423544555"
+      }
+    },
+    "southwest_asia_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/southwest_asia_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/southwest-asia-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/southwest_asia_service_miniature_medal_2093_swasia_mini_1_1.jpeg?v=1423544548"
+      }
+    },
+    "united_nations_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/united_nations_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/united-nations-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/united_nations_un_korean_service_miniature_medal_2094_unkorea_mini_1.jpeg?v=1423544491"
+      }
+    },
+    "vietnam_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/vietnam_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/vietnam-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6618195.jpg?v=1617287618"
       }
     }
   }

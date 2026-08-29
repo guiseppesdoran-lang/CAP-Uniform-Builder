@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-08-29T09:58:56.868Z",
+    "generatedAt": "2026-08-29T16:16:50.601Z",
     "sourceRecords": 183,
     "officialAdditionRecords": 6,
     "canonicalAwards": 176,
@@ -34,9 +34,9 @@
         "UNVERIFIED": 0
       },
       "MINIATURE_MEDAL": {
-        "AVAILABLE": 2,
+        "AVAILABLE": 42,
         "NOT_APPLICABLE": 1,
-        "MISSING_ASSET": 173,
+        "MISSING_ASSET": 133,
         "UNVERIFIED": 0
       },
       "FULL_SIZE_MEDAL": {
@@ -322,12 +322,14 @@
       "ownerType": "AWARD",
       "ownerId": "silver_star",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/silver_star.png",
+      "exists": true,
+      "sha256": "eb3a40358b0b913271201c0177296751a11d59948291d20d5987fc8765fbe412",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/silver-star-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -355,12 +357,14 @@
       "ownerType": "AWARD",
       "ownerId": "defense_superior_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/defense_superior_service.png",
+      "exists": true,
+      "sha256": "0bd5d338e0f85da65f7955361a83d5633fadd368cc8ab987471dfc92ad6f4978",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/defense-superior-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -421,12 +425,14 @@
       "ownerType": "AWARD",
       "ownerId": "distinguished_flying_cross",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/distinguished_flying_cross.png",
+      "exists": true,
+      "sha256": "c9c5c78916943a6eb7a0e8a002738e9aa7389bcccacb040dc4be55f926b0821e",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/distinguished-flying-cross-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -553,12 +559,14 @@
       "ownerType": "AWARD",
       "ownerId": "bronze_star_miltiary",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/bronze_star_miltiary.png",
+      "exists": true,
+      "sha256": "c4e818f9b92d5f49df404ab8b98f9a856d3bad82f7f267e8f7f2e0a90f7faae2",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/bronze-star-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -586,12 +594,14 @@
       "ownerType": "AWARD",
       "ownerId": "purple_heart",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/purple_heart.png",
+      "exists": true,
+      "sha256": "fb1e8a5d7148121daebf79649bf89e2a3e62639b5a3c192c3ed1df41b5b3f21d",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/purple-heart-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -619,12 +629,14 @@
       "ownerType": "AWARD",
       "ownerId": "defense_meritorious_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/defense_meritorious_service.png",
+      "exists": true,
+      "sha256": "bd1e105f62b8a0099bdd5e8c75c34a0515d548a98835ed801735ceb5e2e10fbd",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/defense-meritorious-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -652,12 +664,14 @@
       "ownerType": "AWARD",
       "ownerId": "meritorious_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/meritorious_service.png",
+      "exists": true,
+      "sha256": "0d2e092663b5726bdf1ade47ede913069ef37fb4bdcc1965902e1b656d4c14d2",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/meritorious-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -718,12 +732,14 @@
       "ownerType": "AWARD",
       "ownerId": "air_reserve_forces_meritorious_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/air_reserve_forces_meritorious_service.png",
+      "exists": true,
+      "sha256": "ceff1dd3bcf3fe07cf0f1b9b150dcc4b2a44f3f981cd8af801dfe21dc404d04b",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/air-reserve-meritorious-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -752,13 +768,12 @@
       "ownerId": "air_medal",
       "representation": "MINIATURE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/mini_medals/mcchord/m_airmedal.png",
+      "asset": "images/military-mini-medals/air-force/air_medal.png",
       "exists": true,
-      "sha256": "96c9a47825167f12ac4274120f1d12f8329e4cbf6933cf14cc6e1a4f48b81df2",
-      "verificationStatus": "CROSS_REFERENCED",
+      "sha256": "5690cb78b3b816ba031d8bec45a26767d3d370ec54a68441c92d3d88ece54e20",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
-        "legacy-builder:MINI_MEDAL_IMAGE_MAP.air_medal",
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usmc_military_ribbons/air_medal_military_ribbon.html"
+        "https://www.vanguardmil.com/products/air-medal-miniature-medal"
       ]
     },
     {
@@ -919,12 +934,14 @@
       "ownerType": "AWARD",
       "ownerId": "air_and_space_commendation_medal",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/air_and_space_commendation_medal.png",
+      "exists": true,
+      "sha256": "a0aa596b53ea9e260014b3b0503649410461b6585445e75975abb21b72d0dc32",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usaf-commendation-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1249,12 +1266,14 @@
       "ownerType": "AWARD",
       "ownerId": "joint_service_achievement",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/joint_service_achievement.png",
+      "exists": true,
+      "sha256": "a83e7dc29a9cdddc85583f45f68a60380d85759dce1d01f4fb8b0749a54eb51f",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/joint-service-achievement-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1316,13 +1335,12 @@
       "ownerId": "aerial_achievement_medal",
       "representation": "MINIATURE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/mini_medals/mcchord/m_usaf_aam01.png",
+      "asset": "images/military-mini-medals/air-force/aerial_achievement_medal.png",
       "exists": true,
-      "sha256": "3303baa37e0fb6fcdf70a64a1451d5c1268251c4c1de7338a1f8fc3c0d95b9c3",
-      "verificationStatus": "CROSS_REFERENCED",
+      "sha256": "1b5c15d5c387e4454b41049e76bd3d712daedb6d1a2f5998a24a92e45c307e18",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
-        "legacy-builder:MINI_MEDAL_IMAGE_MAP.air_force_aerial_achievement_medal",
-        "https://www.officialmilitaryribbons.com/military_ribbon_info/usaf_military_ribbons/aerial_achievement_military_ribbon.html"
+        "https://www.vanguardmil.com/products/usaf-aerial-achievement-miniature-medal"
       ]
     },
     {
@@ -1384,12 +1402,14 @@
       "ownerType": "AWARD",
       "ownerId": "air_and_space_achievement_medal",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/air_and_space_achievement_medal.png",
+      "exists": true,
+      "sha256": "868e751193b5966514fa0b75b897df8970b257ed78b99b891c0ee18992a35436",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usaf-achievement-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1483,12 +1503,14 @@
       "ownerType": "AWARD",
       "ownerId": "prisoner_of_war",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/prisoner_of_war.png",
+      "exists": true,
+      "sha256": "324dfca3fb7db8a9cf200c5a9d41cc48601dc1bc13cba937760e459851f030a1",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/prisoner-of-war-pow-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2242,12 +2264,14 @@
       "ownerType": "AWARD",
       "ownerId": "american_campaign",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/american_campaign.png",
+      "exists": true,
+      "sha256": "f1e764011d96272acb5f26edda57be9906ecca167348b96cad7f009a568fe316",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/american-campaign-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2308,12 +2332,14 @@
       "ownerType": "AWARD",
       "ownerId": "asiatic_pacific_campaign",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/asiatic_pacific_campaign.png",
+      "exists": true,
+      "sha256": "4c18fa6d104081eef709b3830f0b2b89a8f86cdf6c1e605b552512175b70b1b2",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/asiatic-pacific-campaign-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2341,12 +2367,14 @@
       "ownerType": "AWARD",
       "ownerId": "kosovo_campaign",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/kosovo_campaign.png",
+      "exists": true,
+      "sha256": "394340858654c55ac08f6b54fd7fb0e0941ac284ca813a869c2e2fdd65858e56",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/kosovo-campaign-medal-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2374,12 +2402,14 @@
       "ownerType": "AWARD",
       "ownerId": "afghanistan_campaign",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/afghanistan_campaign.png",
+      "exists": true,
+      "sha256": "347e47054f52948f98bfa1397b6473baf84baed7e06ac86e7b66bc5ce40a256b",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/afghanistan-campaign-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2407,12 +2437,14 @@
       "ownerType": "AWARD",
       "ownerId": "iraq_campaign",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/iraq_campaign.png",
+      "exists": true,
+      "sha256": "1ab399c1d58d106e0ef4c2f34bd8d6481a47aac569b4b250c94212438a419f3f",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/iraq-campaign-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2440,12 +2472,14 @@
       "ownerType": "AWARD",
       "ownerId": "inherent_resolve_campaign_medal",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/inherent_resolve_campaign_medal.png",
+      "exists": true,
+      "sha256": "a0b7b71b08b1e8a4148dfb336f3b8e1b46d5e2d09f94e87ab309eda71de42a95",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/miniature-medal-inherent-resolve-campaign"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2506,12 +2540,14 @@
       "ownerType": "AWARD",
       "ownerId": "remote_combat_effects_campaign_medal",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/remote_combat_effects_campaign_medal.png",
+      "exists": true,
+      "sha256": "960793637e64882f072749afbbb9e320e27f249bbb153cf1ff8d029dedd244b8",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/miniature-medal-air-force-remote-combat-effects-campaign-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2638,12 +2674,14 @@
       "ownerType": "AWARD",
       "ownerId": "armed_forces_expeditionary",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/armed_forces_expeditionary.png",
+      "exists": true,
+      "sha256": "750a7d9d75bfbe289e47dbcff5e5b588f71c0b909afcc53c6177f4a3bb66322a",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/armed-forces-expeditionary-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2671,12 +2709,14 @@
       "ownerType": "AWARD",
       "ownerId": "global_war_on_terrorism_expeditionary",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/global_war_on_terrorism_expeditionary.png",
+      "exists": true,
+      "sha256": "cd19508232acf5d8f37bb3a1da435c96589f82f2627a5d9b0d01bbc088126846",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/global-war-on-terrorism-expeditionary-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2737,12 +2777,14 @@
       "ownerType": "AWARD",
       "ownerId": "defense_distinguished_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/defense_distinguished_service.png",
+      "exists": true,
+      "sha256": "fe1179fde096330e77e7cd39e1f84af23ad3440c6484a3176445bc2defda199b",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/defense-distinguished-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3001,12 +3043,14 @@
       "ownerType": "AWARD",
       "ownerId": "korean_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/korean_service.png",
+      "exists": true,
+      "sha256": "2afcacc6a8d09837f5267ea4c14f5f6111331890281b17ba3b8ddc1ba860455f",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/korean-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3034,12 +3078,14 @@
       "ownerType": "AWARD",
       "ownerId": "antarctica_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/antarctica_service.png",
+      "exists": true,
+      "sha256": "55104fde145749e7a6d0dfa259ad0cb674621bf5955642120710a3153ee8b315",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/antarctica-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3067,12 +3113,14 @@
       "ownerType": "AWARD",
       "ownerId": "vietnam_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/vietnam_service.png",
+      "exists": true,
+      "sha256": "6a4465918b648c8263d4e007bad3509191634a9913c54649d7c1f2b46f342162",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/vietnam-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3100,12 +3148,14 @@
       "ownerType": "AWARD",
       "ownerId": "southwest_asia_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/southwest_asia_service.png",
+      "exists": true,
+      "sha256": "dbe84b74bb858167b4589f35e3ff9b0f2f09f993c8b900024c3f66c73cd230d5",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/southwest-asia-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3133,12 +3183,14 @@
       "ownerType": "AWARD",
       "ownerId": "global_war_on_terrorism_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/global_war_on_terrorism_service.png",
+      "exists": true,
+      "sha256": "908f0b3b7eb4ce76262ced4c749dc868d118196f926416fae2318a686b3719ca",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/global-war-on-terrorism-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3199,12 +3251,14 @@
       "ownerType": "AWARD",
       "ownerId": "armed_forces_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/armed_forces_service.png",
+      "exists": true,
+      "sha256": "fee9eaa4e9fb5c57eda0880834ba25fe0865a3da61f6f32d4fc917e92ec0171f",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/armed-forces-service-medal-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3232,12 +3286,14 @@
       "ownerType": "AWARD",
       "ownerId": "humanitarian_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/humanitarian_service.png",
+      "exists": true,
+      "sha256": "8bf872e8c04807fe533e57f33e8cec16e05ea33f67c0ada6ee1bf94a7cb33b75",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/humanitarian-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3463,12 +3519,14 @@
       "ownerType": "AWARD",
       "ownerId": "united_nations_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/united_nations_service.png",
+      "exists": true,
+      "sha256": "dab4e8209d89022392c41a819c76b06c992acea7d802e753e3dd932673498652",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/united-nations-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3925,12 +3983,14 @@
       "ownerType": "AWARD",
       "ownerId": "armed_forces_reserve",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/armed_forces_reserve.png",
+      "exists": true,
+      "sha256": "c811d7347549d50f79ea6047dec1cd03ae72052b457987e47cf96d0af98149bf",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usaf-armed-forces-reserve-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -4486,12 +4546,14 @@
       "ownerType": "AWARD",
       "ownerId": "american_defense",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/american_defense.png",
+      "exists": true,
+      "sha256": "083175e7810a383f61c38fffd82f95e99fa6ee63ab184ba8de54c3ff63ad7450",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/american-defense-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -4519,12 +4581,14 @@
       "ownerType": "AWARD",
       "ownerId": "air_force_combat_action",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/air_force_combat_action.png",
+      "exists": true,
+      "sha256": "17754f397a95134f69ae906bd20baa157b656c8a89b215660866cef2a597e731",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usaf-combat-action-medal-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -4651,12 +4715,14 @@
       "ownerType": "AWARD",
       "ownerId": "medal_for_humane_action",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/medal_for_humane_action.png",
+      "exists": true,
+      "sha256": "8a2250c29ff3dbc7fa50796058b58282a5841040b086ae2ccdfc3032827c50cd",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/medal-for-humane-action-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -4750,12 +4816,14 @@
       "ownerType": "AWARD",
       "ownerId": "air_force_combat_readiness",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/air_force_combat_readiness.png",
+      "exists": true,
+      "sha256": "15efbb273a208623ba4a980ec7dbade12a2ea576479e04dbd5b8d17026ac9bc2",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usaf-combat-readiness-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -4783,12 +4851,14 @@
       "ownerType": "AWARD",
       "ownerId": "air_force_good_condcut",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/air_force_good_condcut.png",
+      "exists": true,
+      "sha256": "c0972aba96aefcd5bd8955e1adca367f93a6bc04b2765d7bc7466352893e2f07",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usaf-good-conduct-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5014,12 +5084,14 @@
       "ownerType": "AWARD",
       "ownerId": "inter_american_defense_board",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/inter_american_defense_board.png",
+      "exists": true,
+      "sha256": "3612be99fc5111e06abcafcb823ab18248ce6d46d27de362f582af8792493828",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/inter-american-defense-board-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5080,12 +5152,14 @@
       "ownerType": "AWARD",
       "ownerId": "nato",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/nato.png",
+      "exists": true,
+      "sha256": "75e9ff4cb459a4e64584e792d2c197f86207e644991bf8243d9f5b548c2d19c3",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/nato-medal-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5179,12 +5253,14 @@
       "ownerType": "AWARD",
       "ownerId": "nato_kosovo",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/nato_kosovo.png",
+      "exists": true,
+      "sha256": "610f2f22bc04d62a3bb4dfb44997d33c3a17f1e3d0e93a4bf868f7b7119e75c8",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/nato-kosovo-medal-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5245,12 +5321,14 @@
       "ownerType": "AWARD",
       "ownerId": "kuwait_liberation_saudi_arabia",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/kuwait_liberation_saudi_arabia.png",
+      "exists": true,
+      "sha256": "6dbb326f4994da46abf1ce0b8f1c3bfa3da170d960c96b48abd5a5b5d3131a36",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/kuwait-liberation-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
