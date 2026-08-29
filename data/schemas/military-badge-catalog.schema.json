@@ -13,7 +13,7 @@
         "properties": {
           "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
           "officialName": {"type": "string", "minLength": 1},
-          "family": {"enum": ["AVIATION", "AIRCREW", "SPACE", "CYBER", "MISSILE", "EOD", "DIVER", "MEDICAL", "CHAPLAIN", "COMBAT", "QUALIFICATION", "COMMAND", "IDENTIFICATION", "FOREIGN", "OTHER"]},
+          "family": {"enum": ["AVIATION", "AIRCREW", "SPACE", "CYBER", "MISSILE", "EOD", "DIVER", "MEDICAL", "CHAPLAIN", "COMBAT", "QUALIFICATION", "OCCUPATIONAL", "COMMAND", "IDENTIFICATION", "FOREIGN", "OTHER"]},
           "authorizedServices": {"type": "array", "items": {"type": "string"}},
           "status": {"enum": ["CURRENT", "HISTORICAL", "OBSOLETE_BUT_WEARABLE", "UNKNOWN"]},
           "variants": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},

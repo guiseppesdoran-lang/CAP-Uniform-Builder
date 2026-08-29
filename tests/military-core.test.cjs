@@ -321,6 +321,13 @@ test('military badge authorization and precedence are service-specific', () => {
   );
   assert.equal(sorted[0].id,'presidential_service_badge');
   assert.equal(sorted[4].id,'headquarters_space_force_staff_identification_badge');
+  const airForceSorted=core.sortBadgesForMember(
+    badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'AIR_FORCE')).reverse(),
+    {organization:'AIR_FORCE'}
+  );
+  assert.equal(airForceSorted[0].id,'presidential_service_badge');
+  assert.equal(airForceSorted[1].id,'vice_presidential_service_badge');
+  assert.equal(airForceSorted[0].precedence.AIR_FORCE.regulation,'DAFI 36-2903, paragraph 12.6.7');
 });
 
 test('official Marine Corps table preserves personal, unit, and campaign precedence', () => {
@@ -389,11 +396,13 @@ test('official Air Force and Space Force badge catalogs preserve ratings and pla
   const airForce=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'AIR_FORCE'));
   const spaceForce=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'SPACE_FORCE'));
   const airForceFamilies=airForce.filter(badge=>badge.id.startsWith('air_force_'));
-  assert.ok(airForce.length>=36,'expected the official Air Force badge foundation');
+  assert.ok(airForce.length>=70,'expected the expanded Air Force badge catalog');
   assert.ok(spaceForce.length>=12,'expected the official Space Force badge foundation');
   assert.deepEqual(airForce.find(badge=>badge.id==='air_force_pilot_badge').variants,['pilot','senior_pilot','command_pilot']);
   assert.deepEqual(airForce.find(badge=>badge.id==='air_force_enlisted_aircrew_badge').variants,['basic','senior','chief']);
   assert.deepEqual(airForce.find(badge=>badge.id==='air_force_information_management_badge').variants,['basic','senior']);
+  assert.deepEqual(airForce.find(badge=>badge.id==='air_force_multi_domain_warfare_officer_badge').variants,['basic','senior','master']);
+  assert.deepEqual(airForce.find(badge=>badge.id==='air_force_nurse_badge').variants,['basic','senior','chief']);
   assert.ok(airForceFamilies.every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
   assert.ok(airForceFamilies.every(badge=>badge.sources.some(source=>/af\.mil|e-publishing\.af\.mil/i.test(source))));
   assert.ok(spaceForce.filter(badge=>badge.id.startsWith('air_force_') || badge.id.startsWith('headquarters_space_force_')).every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));

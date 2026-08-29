@@ -160,10 +160,19 @@ let browser;
 
   await page.locator('#organizationSelect').selectOption('AIR_FORCE');
   await page.locator('#militaryBadgeSection').evaluate(element=>element.open=true);
-  assert.ok(await badgeResults.locator('.militaryAwardOption').count()>=36,'official Air Force badge families were not listed');
+  assert.ok(await badgeResults.locator('.militaryAwardOption').count()>=70,'expanded Air Force badge families were not listed');
   const pilotRow=badgeResults.locator('[data-badge-id="air_force_pilot_badge"]');
   await pilotRow.locator('.militaryBadgeVariant').selectOption('command_pilot');
   assert.deepEqual(await page.evaluate(()=>window.State.militaryBadges.air_force_pilot_badge),{selected:true,variant:'command_pilot'});
+  await page.evaluate(()=>{ window.State.militaryBadges={}; renderMilitaryBadgeSelector(); fullRender(); });
+  const airForceAvailable=badgeResults.locator('.militaryAwardOption:has(.militaryBadgeSelectorPreview) input[type="checkbox"]');
+  for(let index=0;index<4;index++) await airForceAvailable.nth(index).check();
+  let badgeLimitMessage='';
+  page.once('dialog',async dialog=>{ badgeLimitMessage=dialog.message(); await dialog.accept(); });
+  await airForceAvailable.nth(4).click();
+  assert.match(badgeLimitMessage,/maximum of 4 badges/i,'Air Force four-badge limit warning was not shown');
+  assert.equal(await page.evaluate(()=>Object.keys(window.State.militaryBadges).length),4,'Air Force selection exceeded four badges');
+  assert.equal(await page.locator('.militaryBadgeTile').count(),4,'Air Force preview exceeded four badges');
 
   await page.locator('#organizationSelect').selectOption('CAP');
   await page.evaluate(()=>{
@@ -179,5 +188,5 @@ let browser;
   assert.equal(await page.evaluate(()=>!!window.State.militaryBadges.army_aviator_badge),true,'CAP badge picker did not retain the military badge selection');
   assert.equal(await page.locator('.capMilitaryBadge').count(),1,'selected military badge did not render on the CAP uniform');
   assert.deepEqual(errors,[],'browser errors were reported');
-  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,gallerySearchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,capMilitaryBadgeSelection:true,capMilitaryBadgeRendered:true,missingBadgeNotFabricated:true,armyBadgeFamiliesListed:true,armyBadgeArtworkRendered:true,navyBadgeFamiliesListed:true,marineCorpsBadgeFamiliesListed:true,airForceBadgeFamiliesListed:true,spaceForceBadgeFamiliesListed:true,badgeVariantSelectionPersisted:true},null,2)+'\n');
+  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,gallerySearchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,capMilitaryBadgeSelection:true,capMilitaryBadgeRendered:true,missingBadgeNotFabricated:true,armyBadgeFamiliesListed:true,armyBadgeArtworkRendered:true,navyBadgeFamiliesListed:true,marineCorpsBadgeFamiliesListed:true,airForceBadgeFamiliesListed:true,airForceBadgeLimit:true,spaceForceBadgeFamiliesListed:true,badgeVariantSelectionPersisted:true},null,2)+'\n');
 })().catch(error=>{ console.error(error); process.exitCode=1; }).finally(async()=>{ if(browser) await browser.close(); });

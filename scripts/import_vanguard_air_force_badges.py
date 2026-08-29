@@ -124,6 +124,138 @@ FAMILIES = {
         "basic": "civil engineer readiness basic", "senior": "civil engineer readiness senior",
         "master": "civil engineer readiness master",
     },
+    "air_force_aircraft_maintenance_badge": {
+        "basic": "air maintenance", "senior": "air maintenance senior", "master": "air maintenance master",
+    },
+    "air_force_air_traffic_control_badge": {
+        "basic": "air traffic control", "senior": "air traffic control senior", "master": "air traffic controller master",
+    },
+    "air_force_band_badge": {"basic": "band", "senior": "band senior", "master": "band master"},
+    "air_force_civil_engineer_badge": {
+        "basic": "civil engineer", "senior": "civil engineer senior", "master": "civil engineer master",
+    },
+    "air_force_command_and_control_badge": {
+        "basic": "command and control", "senior": "command and control senior", "master": "command and control master",
+    },
+    "air_force_communications_information_badge": {
+        "basic": "communications and information", "senior": "communications and information senior",
+        "master": "communications and information master",
+    },
+    "air_force_force_protection_badge": {
+        "basic": "force protection", "senior": "force protection senior", "master": "force protection master",
+    },
+    "air_force_ground_radar_airfield_systems_badge": {
+        "basic": "ground radar airfield systems", "senior": "ground radar airfield systems senior",
+        "master": "ground radar airfield systems master",
+    },
+    "air_force_manpower_personnel_badge": {
+        "basic": "manpower and personnel", "senior": "manpower and personnel senior",
+        "master": "manpower and personnel master",
+    },
+    "air_force_munitions_badge": {
+        "basic": "munitions basic", "senior": "munitions senior", "master": "munitions master",
+    },
+    "air_force_public_affairs_badge": {
+        "basic": "public affairs", "senior": "public affairs senior", "master": "public affairs master",
+    },
+    "air_force_services_badge": {
+        "basic": "services", "senior": "services senior", "master": "services master",
+    },
+    "air_force_supply_fuels_badge": {
+        "basic": "supply fuels", "senior": "supply fuels senior", "master": "supply fuels master",
+    },
+    "air_force_transportation_badge": {
+        "basic": "transportation", "senior": "transportation senior", "master": "transportation master",
+    },
+    "air_force_weather_operations_badge": {
+        "basic": "weather operations", "senior": "weather operations senior", "master": "weather operations master",
+    },
+    "air_force_safety_badge": {
+        "basic": "basic safety", "senior": "senior safety", "master": "master safety",
+    },
+    "air_force_operations_research_analyst_badge": {
+        "basic": "basic operations research analyst", "senior": "senior operations research analyst",
+        "master": "master operations research analyst",
+    },
+    "air_force_multi_domain_warfare_officer_badge": {
+        "basic": "basic multi domain warfare officer", "senior": "senior multi domain warfare officer",
+        "master": "master multi domain warfare officer",
+    },
+    "air_force_foreign_area_officer_badge": {
+        "basic": "basic foreign area officer career field", "senior": "senior foreign area officer career field",
+        "master": "master foreign area officer career field",
+    },
+    "air_force_weapons_controller_badge": {
+        "basic": "weapons controller", "senior": "weapons controller senior", "master": "weapons controller master",
+    },
+    "air_force_information_operations_officer_badge": {
+        "basic": "information operations officer", "senior": "senior information operations officer",
+        "master": "master information operations officer",
+    },
+    "air_force_biomedical_scientist_badge": {
+        "basic": "bio medical scientist", "senior": "bio medical scientist senior", "master": "bio medical scientist master",
+    },
+    "air_force_nurse_badge": {"basic": "nurse", "senior": "nurse senior", "chief": "nurse chief"},
+    "air_force_physician_badge": {"basic": "physician", "senior": "physician senior", "chief": "physician chief"},
+    "air_force_veterinarian_badge": {
+        "basic": "veterinarian", "senior": "veterinarian senior", "chief": "veterinarian chief",
+    },
+    "air_force_scientific_applications_specialist_badge": {
+        "basic": "scientific applications specialist", "senior": "scientific applications specialist senior",
+        "master": "scientific applications specialist master",
+    },
+    "air_force_airfield_operations_officer_badge": {
+        "basic": "basic airfield operations officer", "senior": "senior airfield operations officer",
+        "master": "master airfield operations officer",
+    },
+    "air_force_aetc_instructor_badge": {
+        "basic": "air education and training command instructor",
+        "master": "air education and training command master instructor",
+    },
+    "air_force_pararescue_badge": {"default": "pararescue"},
+    "air_force_combat_control_team_badge": {"default": "combat control team"},
+    "air_force_combat_rescue_officer_badge": {"default": "combat rescue officer"},
+    "air_force_commanders_badge": {"default": "commanders badge"},
+    "air_force_base_honor_guard_badge": {"default": "base honor guard"},
+    "air_force_professional_military_education_badge": {"default": "professional military education"},
+}
+
+
+NEW_FAMILY_METADATA = {
+    "air_force_aircraft_maintenance_badge": ("Aircraft Maintenance Badge", "OCCUPATIONAL"),
+    "air_force_air_traffic_control_badge": ("Air Traffic Control Badge", "OCCUPATIONAL"),
+    "air_force_band_badge": ("Air Force Band Badge", "OCCUPATIONAL"),
+    "air_force_civil_engineer_badge": ("Civil Engineer Badge", "OCCUPATIONAL"),
+    "air_force_command_and_control_badge": ("Command and Control Badge", "OCCUPATIONAL"),
+    "air_force_communications_information_badge": ("Communications and Information Badge", "CYBER"),
+    "air_force_force_protection_badge": ("Force Protection Badge", "OCCUPATIONAL"),
+    "air_force_ground_radar_airfield_systems_badge": ("Ground Radar Airfield Systems Badge", "OCCUPATIONAL"),
+    "air_force_manpower_personnel_badge": ("Manpower and Personnel Badge", "OCCUPATIONAL"),
+    "air_force_munitions_badge": ("Munitions Badge", "OCCUPATIONAL"),
+    "air_force_public_affairs_badge": ("Public Affairs Badge", "OCCUPATIONAL"),
+    "air_force_services_badge": ("Services Badge", "OCCUPATIONAL"),
+    "air_force_supply_fuels_badge": ("Supply and Fuels Badge", "OCCUPATIONAL"),
+    "air_force_transportation_badge": ("Transportation Badge", "OCCUPATIONAL"),
+    "air_force_weather_operations_badge": ("Weather Operations Badge", "OCCUPATIONAL"),
+    "air_force_safety_badge": ("Safety Badge", "OCCUPATIONAL"),
+    "air_force_operations_research_analyst_badge": ("Operations Research Analyst Badge", "OCCUPATIONAL"),
+    "air_force_multi_domain_warfare_officer_badge": ("Multi-Domain Warfare Officer Badge", "QUALIFICATION"),
+    "air_force_foreign_area_officer_badge": ("Foreign Area Officer Badge", "OCCUPATIONAL"),
+    "air_force_weapons_controller_badge": ("Weapons Controller Badge", "OCCUPATIONAL"),
+    "air_force_information_operations_officer_badge": ("Information Operations Officer Badge", "OCCUPATIONAL"),
+    "air_force_biomedical_scientist_badge": ("Biomedical Scientist Badge", "MEDICAL"),
+    "air_force_nurse_badge": ("Air Force Nurse Badge", "MEDICAL"),
+    "air_force_physician_badge": ("Air Force Physician Badge", "MEDICAL"),
+    "air_force_veterinarian_badge": ("Air Force Veterinarian Badge", "MEDICAL"),
+    "air_force_scientific_applications_specialist_badge": ("Scientific Applications Specialist Badge", "OCCUPATIONAL"),
+    "air_force_airfield_operations_officer_badge": ("Airfield Operations Officer Badge", "OCCUPATIONAL"),
+    "air_force_aetc_instructor_badge": ("Air Education and Training Command Instructor Badge", "IDENTIFICATION"),
+    "air_force_pararescue_badge": ("Pararescue Badge", "QUALIFICATION"),
+    "air_force_combat_control_team_badge": ("Combat Control Team Badge", "QUALIFICATION"),
+    "air_force_combat_rescue_officer_badge": ("Combat Rescue Officer Badge", "QUALIFICATION"),
+    "air_force_commanders_badge": ("Air Force Commander's Insignia", "COMMAND"),
+    "air_force_base_honor_guard_badge": ("Base Honor Guard Badge", "IDENTIFICATION"),
+    "air_force_professional_military_education_badge": ("Professional Military Education Badge", "IDENTIFICATION"),
 }
 
 
@@ -250,6 +382,39 @@ def main() -> None:
     args = parser.parse_args()
     catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
     badges = {badge["id"]: badge for badge in catalog["badges"]}
+    dafi_source = "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+    devices_source = "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges"
+    for badge_id, (official_name, family) in NEW_FAMILY_METADATA.items():
+        if badge_id in badges:
+            continue
+        variants = list(FAMILIES[badge_id])
+        badge = {
+            "id": badge_id,
+            "officialName": official_name,
+            "family": family,
+            "authorizedServices": ["AIR_FORCE"],
+            "status": "CURRENT",
+            "variants": variants if variants != ["default"] else None,
+            "representations": {
+                "metal": {"status": "MISSING_ASSET", "available": False, "asset": None},
+                "embroidered": {"status": "MISSING_ASSET", "available": False, "asset": None},
+            },
+            "placement": {
+                "serviceDress": {
+                    "status": "OFFICIALLY_VERIFIED",
+                    "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2.",
+                },
+                "ocp": {
+                    "status": "OFFICIALLY_VERIFIED",
+                    "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1.",
+                },
+            },
+            "sources": [devices_source, dafi_source],
+        }
+        if badge["variants"] is None:
+            badge.pop("variants")
+        catalog["badges"].append(badge)
+        badges[badge_id] = badge
     candidates = [product for product in products() if usable_product(product)]
     proposed = []
     unmatched = []
