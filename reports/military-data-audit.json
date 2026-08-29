@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-28T14:57:05.688Z",
+  "generatedAt": "2026-08-29T08:42:33.676Z",
   "counts": {
     "RIBBON": 177,
     "RANK": 6
   },
   "canonicalAwards": 183,
   "precedenceRecords": 433,
-  "verifiedRules": 203,
+  "verifiedRules": 204,
   "errors": [],
   "warnings": [
     "air_and_space_campaign: unknown precedence.",
