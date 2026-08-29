@@ -1,6 +1,6 @@
 # U.S. Military Complete Catalog Audit
 
-Generated: 2026-08-29T04:14:02.258Z
+Generated: 2026-08-29T08:42:35.166Z
 
 > This audit measures implemented, locally renderable data. It does not treat discovery links as authorization and does not count missing or unverified artwork as complete.
 

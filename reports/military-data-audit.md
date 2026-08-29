@@ -1,12 +1,12 @@
 # Military Data Audit
 
-Generated: 2026-08-28T14:57:05.688Z
+Generated: 2026-08-29T08:42:33.676Z
 Canonical records: 183
 Ribbons: 177
 Badges: 0
 Lapel pins: 0
 Precedence records: 433
-Officially verified rules: 203
+Officially verified rules: 204
 Missing production images: 6
 Broken asset paths: 0
 Duplicate image hashes: 7
