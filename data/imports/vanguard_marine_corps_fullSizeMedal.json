@@ -12,14 +12,6 @@
   "geometryPolicy": "Suspension ribbon and pendant are normalized independently; the photographed medal is never stretched as one image.",
   "imported": [
     {
-      "awardId": "combat_action",
-      "productTitle": "Full Size Medal: Air Force Combat Action Medal",
-      "productUrl": "https://www.vanguardmil.com/products/usaf-combat-action-medal-full-size-medal",
-      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/308_air_force_combat_action_medal.jpeg?v=1423543841",
-      "score": 4.8,
-      "asset": "images/military-full-size-medals/marine-corps/combat_action.png"
-    },
-    {
       "awardId": "marine_corps_expeditionary",
       "productTitle": "Full Size Medal: Marine Corps Expeditionary",
       "productUrl": "https://www.vanguardmil.com/products/usmc-expeditionary-full-size-medal",
@@ -533,5 +525,8 @@
       "score": 0.95,
       "runnerUp": 0.421
     }
+  ],
+  "excludedRibbonOnly": [
+    "combat_action"
   ]
 }

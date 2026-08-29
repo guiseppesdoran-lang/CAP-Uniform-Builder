@@ -246,6 +246,17 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617907.jpg?v=1617290960"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/air-force/remote_combat_effects_campaign_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/full-size-medal-air-force-remote-combat-effects-campaign"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/nophoto_2d7dfaf3-4b99-4b53-ae37-892f44b1a449.jpg?v=1624998233"
       }
     },
     "air_reserve_forces_meritorious_service": {
@@ -3814,6 +3825,30 @@
           "COMDTINST M1650.25 series award classifications"
         ],
         "notes": "This award is represented by a ribbon or unit-award emblem, not a hanging medal."
+      }
+    },
+    "space_force_good_conduct_medal": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/space-force/space_force_good_conduct_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/miniature-medal-space-force-good-conduct"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617571.jpg?v=1674668564"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/space-force/space_force_good_conduct_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/full-size-medal-space-force-good-conduct"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609635.jpg?v=1650039872"
       }
     }
   }

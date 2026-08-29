@@ -1,6 +1,6 @@
 # U.S. Military Complete Catalog Audit
 
-Generated: 2026-08-29T22:22:56.813Z
+Generated: 2026-08-29T23:05:52.584Z
 
 > This audit measures implemented, locally renderable data. It does not treat discovery links as authorization and does not count missing or unverified artwork as complete.
 
@@ -27,8 +27,8 @@ Generated: 2026-08-29T22:22:56.813Z
 ## Award representation status
 
 - Ribbon — AVAILABLE: 175; NOT_APPLICABLE: 0; MISSING_ASSET: 1; UNVERIFIED: 0
-- Miniature medal — AVAILABLE: 72; NOT_APPLICABLE: 70; MISSING_ASSET: 34; UNVERIFIED: 0
-- Full-size medal — AVAILABLE: 71; NOT_APPLICABLE: 69; MISSING_ASSET: 36; UNVERIFIED: 0
+- Miniature medal — AVAILABLE: 73; NOT_APPLICABLE: 70; MISSING_ASSET: 33; UNVERIFIED: 0
+- Full-size medal — AVAILABLE: 73; NOT_APPLICABLE: 69; MISSING_ASSET: 34; UNVERIFIED: 0
 
 ## Service discovery coverage
 

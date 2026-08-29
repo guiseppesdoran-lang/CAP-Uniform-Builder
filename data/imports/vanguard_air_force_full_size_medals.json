@@ -24,7 +24,7 @@
       "productTitle": "Full Size Medal: Air Force Achievement",
       "productUrl": "https://www.vanguardmil.com/products/usaf-achievement-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609240_219b2d63-7745-4013-b2e1-a9db3b8b334d.jpg?v=1617287827",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/air_and_space_achievement_medal.png"
     },
     {
@@ -32,7 +32,7 @@
       "productTitle": "Full Size Medal: Air Force Aerial Achievement",
       "productUrl": "https://www.vanguardmil.com/products/usaf-aerial-achievement-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609290.jpg?v=1617287826",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/aerial_achievement_medal.png"
     },
     {
@@ -40,7 +40,7 @@
       "productTitle": "Full Size Medal: Air Force Air and Space Campaign",
       "productUrl": "https://www.vanguardmil.com/products/usaf-air-and-space-campaign-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609297.jpg?v=1617287824",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/air_and_space_campaign.png"
     },
     {
@@ -52,19 +52,11 @@
       "asset": "images/military-full-size-medals/air-force/armed_forces_reserve.png"
     },
     {
-      "awardId": "air_force_combat_action",
-      "productTitle": "Full Size Medal: Air Force Combat Action Medal",
-      "productUrl": "https://www.vanguardmil.com/products/usaf-combat-action-medal-full-size-medal",
-      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/308_air_force_combat_action_medal.jpeg?v=1423543841",
-      "score": 10.0,
-      "asset": "images/military-full-size-medals/air-force/air_force_combat_action.png"
-    },
-    {
       "awardId": "air_force_combat_readiness",
       "productTitle": "Full Size Medal: Air Force Combat Readiness",
       "productUrl": "https://www.vanguardmil.com/products/usaf-combat-readiness-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/137_combat_readiness_medal.jpeg?v=1423544838",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/air_force_combat_readiness.png"
     },
     {
@@ -72,7 +64,7 @@
       "productTitle": "Full Size Medal: Air Force Commendation",
       "productUrl": "https://www.vanguardmil.com/products/usaf-commendation-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Commendation-Medal.jpeg?v=1423544834",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/air_and_space_commendation_medal.png"
     },
     {
@@ -80,7 +72,7 @@
       "productTitle": "Full Size Medal: Air Force Distinguished Service",
       "productUrl": "https://www.vanguardmil.com/products/full-size-medal-air-force-distinguished-service",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609510.jpg?v=1654797097",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/air_force_distinguishd_service.png"
     },
     {
@@ -88,7 +80,7 @@
       "productTitle": "Full Size Medal: Air Force Good Conduct",
       "productUrl": "https://www.vanguardmil.com/products/usaf-good-conduct-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Good-Conduct-Medal.jpeg?v=1423544823",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/air_force_good_condcut.png"
     },
     {
@@ -96,7 +88,7 @@
       "productTitle": "Full Size Medal: Air Force Nuclear Deterrence Operations Service",
       "productUrl": "https://www.vanguardmil.com/products/full-size-medal-air-force-nuclear-deterrence-operations-service",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/84369-usaf-nuclear-deterrence-operations-medal.jpeg?v=1423542354",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/nuclear_deterrence_operations_service_medal.png"
     },
     {
@@ -120,7 +112,7 @@
       "productTitle": "Full Size Medal: Airman Medal",
       "productUrl": "https://www.vanguardmil.com/products/airman-medal-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609300.jpg?v=1617287803",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/airmans_medal.png"
     },
     {
@@ -208,7 +200,7 @@
       "productTitle": "Full Size Medal: European African Middle East Campaign",
       "productUrl": "https://www.vanguardmil.com/products/european-african-middle-east-campaign-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609550.jpg?v=1617287734",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/european_african_middle_eastern_campaign.png"
     },
     {
@@ -272,7 +264,7 @@
       "productTitle": "Full Size Medal: Korea Defense Service Medal",
       "productUrl": "https://www.vanguardmil.com/products/korea-defense-service-medal-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609688.jpg?v=1617287719",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/korean_defense_service.png"
     },
     {
@@ -320,7 +312,7 @@
       "productTitle": "Full Size Medal: Military Outstanding Volunteer Service",
       "productUrl": "https://www.vanguardmil.com/products/military-outstanding-volunteer-service-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609845.jpg?v=1617287702",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/outstanding_volunteer_service.png"
     },
     {
@@ -328,7 +320,7 @@
       "productTitle": "Full Size Medal: Multinational Force and Observer",
       "productUrl": "https://www.vanguardmil.com/products/multinational-force-and-observer-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/163_multi_national_forces_and_observers_medal.jpeg?v=1423544620",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/multinational_force_and_observers.png"
     },
     {
@@ -336,7 +328,7 @@
       "productTitle": "Full Size Medal: National Defense",
       "productUrl": "https://www.vanguardmil.com/products/national-defense-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/164_national_defense_service_military_medal.jpeg?v=1423544618",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/national_defense_military_service.png"
     },
     {
@@ -408,7 +400,7 @@
       "productTitle": "Full Size Medal: Vietnam Campaign",
       "productUrl": "https://www.vanguardmil.com/products/vietnam-campaign-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/189_republic_of_vietnam_rvn_campaign_medal.jpeg?v=1423544490",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/republic_of_vietnam_campaign.png"
     },
     {
@@ -424,8 +416,16 @@
       "productTitle": "Full Size Medal: WWII Victory",
       "productUrl": "https://www.vanguardmil.com/products/wwii-victory-full-size-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/215_world_war_ii_victory_medal.jpeg?v=1423544534",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-full-size-medals/air-force/world_war_ii_victory.png"
+    },
+    {
+      "awardId": "remote_combat_effects_campaign_medal",
+      "productTitle": null,
+      "productUrl": "https://www.vanguardmil.com/products/full-size-medal-air-force-remote-combat-effects-campaign",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/nophoto_2d7dfaf3-4b99-4b53-ae37-892f44b1a449.jpg?v=1624998233",
+      "score": null,
+      "asset": "images/military-full-size-medals/air-force/remote_combat_effects_campaign_medal.png"
     }
   ],
   "failed": [],
@@ -820,5 +820,10 @@
       "score": 0.76,
       "runnerUp": 0.577
     }
-  ]
+  ],
+  "excludedRibbonOnly": [
+    "air_force_combat_action"
+  ],
+  "service": "AIR_FORCE",
+  "representation": "fullSizeMedal"
 }

@@ -347,3 +347,32 @@ test('reviewed CAP fabric badges have a dress counterpart and regulation blue ba
   const nationalStaff=manifest.records.find(record=>record.id==='national_staff_badge');
   assert.equal(nationalStaff.representations.embroidered.placementRole,'OCP_LEFT_SLEEVE_PATCH');
 });
+
+test('service medal provenance manifests never reintroduce ribbon-only awards',()=>{
+  const ribbonOnly=new Set(require('../data/rules/verified/medal-representation-applicability.json').ribbonOnlyAwardIds);
+  const manifests=fs.readdirSync(path.join(ROOT,'data','imports')).filter(name=>/^vanguard_.*(?:mini|full).*medal/i.test(name));
+  assert.ok(manifests.length >= 10,'expected service medal provenance manifests');
+  for(const name of manifests){
+    const manifest=JSON.parse(fs.readFileSync(path.join(ROOT,'data','imports',name),'utf8'));
+    for(const record of manifest.imported || []) assert.ok(!ribbonOnly.has(record.awardId),`${name}:${record.awardId}`);
+  }
+});
+
+test('Space Force checkpoint uses distinct local McChord-style medal canvases',()=>{
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  const award=overrides.space_force_good_conduct_medal;
+  for(const [representation,width,height] of [['miniatureMedal',50,176],['fullSizeMedal',100,220]]){
+    const record=award[representation];
+    assert.equal(record.status,'AVAILABLE',representation);
+    assert.match(record.asset,/\/space-force\//,representation);
+    const buffer=fs.readFileSync(path.join(ROOT,...record.asset.split('/')));
+    assert.equal(buffer.readUInt32BE(16),width,representation);
+    assert.equal(buffer.readUInt32BE(20),height,representation);
+  }
+});
+
+test('complete asset manifest contains no broken AVAILABLE records',()=>{
+  const manifest=require('../data/military/asset-manifest.json');
+  const broken=manifest.assets.filter(record=>record.status==='AVAILABLE'&&!record.exists);
+  assert.deepEqual(broken,[]);
+});

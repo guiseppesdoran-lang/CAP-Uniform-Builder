@@ -12,14 +12,6 @@
   "geometryPolicy": "Suspension ribbon and pendant are normalized independently; the photographed medal is never stretched as one image.",
   "imported": [
     {
-      "awardId": "combat_action",
-      "productTitle": "Miniature Medal: Air Force Combat Action Medal",
-      "productUrl": "https://www.vanguardmil.com/products/usaf-combat-action-medal-miniature-medal",
-      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617333.jpg?v=1617287462",
-      "score": 4.8,
-      "asset": "images/military-mini-medals/marine-corps/combat_action.png"
-    },
-    {
       "awardId": "marine_corps_expeditionary",
       "productTitle": "Miniature Medal: Marine Corps Expeditionary",
       "productUrl": "https://www.vanguardmil.com/products/usmc-expeditionary-miniature-medal",
@@ -407,7 +399,7 @@
       "title": "Miniature Medal: Navy Reserve",
       "key": "navy reserve",
       "score": 1.467,
-      "runnerUp": 1.0
+      "runnerUp": 1
     },
     {
       "title": "Miniature Medal: Navy Reserve Meritorious Service",
@@ -571,5 +563,8 @@
       "score": 0.781,
       "runnerUp": 0.733
     }
+  ],
+  "excludedRibbonOnly": [
+    "combat_action"
   ]
 }

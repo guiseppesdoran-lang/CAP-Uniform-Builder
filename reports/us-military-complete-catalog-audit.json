@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-08-29T22:22:56.813Z",
+    "generatedAt": "2026-08-29T23:05:52.584Z",
     "sourceRecords": 183,
     "officialAdditionRecords": 6,
     "canonicalAwards": 176,
@@ -41,15 +41,15 @@
         "UNVERIFIED": 0
       },
       "MINIATURE_MEDAL": {
-        "AVAILABLE": 72,
+        "AVAILABLE": 73,
         "NOT_APPLICABLE": 70,
-        "MISSING_ASSET": 34,
+        "MISSING_ASSET": 33,
         "UNVERIFIED": 0
       },
       "FULL_SIZE_MEDAL": {
-        "AVAILABLE": 71,
+        "AVAILABLE": 73,
         "NOT_APPLICABLE": 69,
-        "MISSING_ASSET": 36,
+        "MISSING_ASSET": 34,
         "UNVERIFIED": 0
       }
     },
@@ -1906,23 +1906,27 @@
       "ownerType": "AWARD",
       "ownerId": "space_force_good_conduct_medal",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/space-force/space_force_good_conduct_medal.png",
+      "exists": true,
+      "sha256": "a94479e40ab31682566f2f80f300c6daa2fec333fa97cebbfc6e755cacf9d37e",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/miniature-medal-space-force-good-conduct"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "space_force_good_conduct_medal",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/space-force/space_force_good_conduct_medal.png",
+      "exists": true,
+      "sha256": "eb202bf453b0e4fed01f5cdc78c0bb563d16f7a24477e7492d17777511580550",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/full-size-medal-space-force-good-conduct"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2968,12 +2972,14 @@
       "ownerType": "AWARD",
       "ownerId": "remote_combat_effects_campaign_medal",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/air-force/remote_combat_effects_campaign_medal.png",
+      "exists": true,
+      "sha256": "44d653dcf3cd24c12e3fc9f8861c405ad6e667ff0bbdf729d227eb3d84928151",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/full-size-medal-air-force-remote-combat-effects-campaign"
+      ]
     },
     {
       "ownerType": "AWARD",

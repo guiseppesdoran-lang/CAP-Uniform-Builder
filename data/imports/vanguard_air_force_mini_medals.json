@@ -24,7 +24,7 @@
       "productTitle": "Miniature Medal: Air Force Achievement",
       "productUrl": "https://www.vanguardmil.com/products/usaf-achievement-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Achievement-Miniature-Medal.jpeg?v=1423544847",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/air_and_space_achievement_medal.png"
     },
     {
@@ -32,7 +32,7 @@
       "productTitle": "Miniature Medal: Air Force Aerial Achievement",
       "productUrl": "https://www.vanguardmil.com/products/usaf-aerial-achievement-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Aerial-Achievement-Miniature-Medal.jpeg?v=1423544843",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/aerial_achievement_medal.png"
     },
     {
@@ -40,7 +40,7 @@
       "productTitle": "Miniature Medal: Air Force Air and Space Campaign",
       "productUrl": "https://www.vanguardmil.com/products/usaf-air-and-space-campaign-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-and-Space-Campaign-Miniature-Medal.jpeg?v=1423544841",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/air_and_space_campaign.png"
     },
     {
@@ -52,19 +52,11 @@
       "asset": "images/military-mini-medals/air-force/armed_forces_reserve.png"
     },
     {
-      "awardId": "air_force_combat_action",
-      "productTitle": "Miniature Medal: Air Force Combat Action Medal",
-      "productUrl": "https://www.vanguardmil.com/products/usaf-combat-action-medal-miniature-medal",
-      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617333.jpg?v=1617287462",
-      "score": 10.0,
-      "asset": "images/military-mini-medals/air-force/air_force_combat_action.png"
-    },
-    {
       "awardId": "air_force_combat_readiness",
       "productTitle": "Miniature Medal: Air Force Combat Readiness",
       "productUrl": "https://www.vanguardmil.com/products/usaf-combat-readiness-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/combat_readiness_miniature_medal_2036_cmbredi_mini_1_1.jpeg?v=1423544836",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/air_force_combat_readiness.png"
     },
     {
@@ -72,7 +64,7 @@
       "productTitle": "Miniature Medal: Air Force Commendation",
       "productUrl": "https://www.vanguardmil.com/products/usaf-commendation-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Commendation-Miniature-Medal.jpeg?v=1423544832",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/air_and_space_commendation_medal.png"
     },
     {
@@ -80,7 +72,7 @@
       "productTitle": "Miniature Medal: Air Force Good Conduct",
       "productUrl": "https://www.vanguardmil.com/products/usaf-good-conduct-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Good-Conduct-Miniature-Medal_85b33665-133c-40dd-98eb-d4dad41a6dfe.jpeg?v=1423544821",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/air_force_good_condcut.png"
     },
     {
@@ -88,7 +80,7 @@
       "productTitle": "Miniature Medal: Air Force Nuclear Deterrence Operations Service",
       "productUrl": "https://www.vanguardmil.com/products/air-force-miniature-medal-nuclear-deterrence-operations-service",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Nuclear-Deterrence-Operations-Miniature-Medal_2c5a5deb-c8cb-46d9-8315-099758c9b21f.jpeg?v=1423542352",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/nuclear_deterrence_operations_service_medal.png"
     },
     {
@@ -96,7 +88,7 @@
       "productTitle": "Miniature Medal: Air Force Remote Combat Effects Campaign  Medal",
       "productUrl": "https://www.vanguardmil.com/products/miniature-medal-air-force-remote-combat-effects-campaign-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617907.jpg?v=1617290960",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/remote_combat_effects_campaign_medal.png"
     },
     {
@@ -120,7 +112,7 @@
       "productTitle": "Miniature Medal: Airman Medal",
       "productUrl": "https://www.vanguardmil.com/products/airman-medal-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Airmans-Miniature-Medal-for-Heroism.jpeg?v=1423544803",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/airmans_medal.png"
     },
     {
@@ -216,7 +208,7 @@
       "productTitle": "Miniature Medal: European African Middle East Campaign",
       "productUrl": "https://www.vanguardmil.com/products/european-african-middle-east-campaign-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/european_african_middle_eastern_campaign_miniature_medal_2042_eruocam_mini_2_1.jpeg?v=1423544678",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/european_african_middle_eastern_campaign.png"
     },
     {
@@ -280,7 +272,7 @@
       "productTitle": "Miniature Medal: Korea Defense Service Medal",
       "productUrl": "https://www.vanguardmil.com/products/korea-defense-service-medal-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617628.jpg?v=1633457502",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/korean_defense_service.png"
     },
     {
@@ -304,7 +296,7 @@
       "productTitle": "Miniature Medal: Kuwait Liberation Government of Kuwait",
       "productUrl": "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/kuwait_liberation_of_kuwait_miniature_medal_2054_kuwlib_mini_1.jpeg?v=1423544523",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/kuwiat_liberation_kuwait.png"
     },
     {
@@ -336,7 +328,7 @@
       "productTitle": "Miniature Medal: Military Outstanding Volunteer Service",
       "productUrl": "https://www.vanguardmil.com/products/military-outstanding-volunteer-service-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/outstanding_volunteer_service_miniature_medal_2078_outsvol_mini_1_1.jpeg?v=1423544622",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/outstanding_volunteer_service.png"
     },
     {
@@ -344,7 +336,7 @@
       "productTitle": "Miniature Medal: Multinational Force and Observer",
       "productUrl": "https://www.vanguardmil.com/products/multinational-force-and-observer-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/multi_national_forces_and_observers_miniature_medal_2062_multin_mini_2.jpeg?v=1423544518",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/multinational_force_and_observers.png"
     },
     {
@@ -352,7 +344,7 @@
       "productTitle": "Miniature Medal: National Defense",
       "productUrl": "https://www.vanguardmil.com/products/national-defense-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/national_defense_service_miniature_medal_2063_natdef_mini_1_1.jpeg?v=1423544616",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/national_defense_military_service.png"
     },
     {
@@ -416,7 +408,7 @@
       "productTitle": "Miniature Medal: Vietnam Campaign",
       "productUrl": "https://www.vanguardmil.com/products/vietnam-campaign-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6618010.jpg?v=1622836611",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/republic_of_vietnam_campaign.png"
     },
     {
@@ -432,7 +424,7 @@
       "productTitle": "Miniature Medal: WWII Victory",
       "productUrl": "https://www.vanguardmil.com/products/wwii-victory-miniature-medal",
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/world_war_ii_victory_mini_medal_2099_1.jpeg?v=1423544532",
-      "score": 10.0,
+      "score": 10,
       "asset": "images/military-mini-medals/air-force/world_war_ii_victory.png"
     }
   ],
@@ -857,5 +849,10 @@
       "score": 0.781,
       "runnerUp": 0.733
     }
-  ]
+  ],
+  "excludedRibbonOnly": [
+    "air_force_combat_action"
+  ],
+  "service": "AIR_FORCE",
+  "representation": "miniatureMedal"
 }
