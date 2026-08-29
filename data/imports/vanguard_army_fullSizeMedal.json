@@ -58,6 +58,30 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/122_army_soldiers_medal_heroism.jpeg?v=1423544554",
       "score": 4.8,
       "asset": "images/military-full-size-medals/army/army_soldiers_medal.png"
+    },
+    {
+      "awardId": "army_of_occupation",
+      "productTitle": "Full Size Medal: WWII Occupation Army and Air Force",
+      "productUrl": "https://www.vanguardmil.com/products/wwii-occupation-army-and-usaf-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/216_world_war_ii_army_of_occupation_medal_1.jpeg?v=1423543629",
+      "score": 10,
+      "asset": "images/military-full-size-medals/army/army_of_occupation.png"
+    },
+    {
+      "awardId": "reserve_componets_achievement",
+      "productTitle": "Full Size Medal: Army NATIONAL GUARD Reserve Component Achievement",
+      "productUrl": "https://www.vanguardmil.com/products/full-size-medal-army-national-guard-reserve-component-achievement",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_reserve_components_achievement_medal_217_hires_1_ae0c7176-8848-4a34-92d1-efa400297c60.jpeg?v=1501169591",
+      "score": 10,
+      "asset": "images/military-full-size-medals/army/reserve_componets_achievement.png"
+    },
+    {
+      "awardId": "womens_s_army_corps_service",
+      "productTitle": "Full Size Medal: Women's Army Corp",
+      "productUrl": "https://www.vanguardmil.com/products/womans-army-corp-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/211_womens_army_corps_service_medal.jpeg?v=1423544544",
+      "score": 10,
+      "asset": "images/military-full-size-medals/army/womens_s_army_corps_service.png"
     }
   ],
   "unmatched": [
@@ -138,18 +162,6 @@
       "key": "army armed forces reserve",
       "score": 2.439,
       "runnerUp": 1.2
-    },
-    {
-      "title": "Full Size Medal: Army NATIONAL GUARD Reserve Component Achievement",
-      "key": "army national guard reserve component achievement",
-      "score": 1.626,
-      "runnerUp": 1.238
-    },
-    {
-      "title": "Full Size Medal: Army Reserve Component Achievement",
-      "key": "army reserve component achievement",
-      "score": 1.94,
-      "runnerUp": 1.586
     },
     {
       "title": "Full Size Medal: California National Guard Achievement Medal",
@@ -434,12 +446,6 @@
       "runnerUp": 0.516
     },
     {
-      "title": "Full Size Medal: Republic of Korea War Service No Device",
-      "key": "republic of korea war service no device",
-      "score": 2.367,
-      "runnerUp": 0.902
-    },
-    {
       "title": "Full Size Medal: Selective Marine Corps Reserve",
       "key": "selective marine corps reserve",
       "score": 0.767,
@@ -494,22 +500,10 @@
       "runnerUp": 0.64
     },
     {
-      "title": "Full Size Medal: Women's Army Corp",
-      "key": "women s army corp",
-      "score": 1.291,
-      "runnerUp": 0.667
-    },
-    {
       "title": "Full Size Medal: WWI Victory",
       "key": "wwi victory",
       "score": 0.91,
       "runnerUp": 0.385
-    },
-    {
-      "title": "Full Size Medal: WWII Occupation Army and Air Force",
-      "key": "wwii occupation army and",
-      "score": 1.191,
-      "runnerUp": 1.032
     },
     {
       "title": "Full Size Medal: WWII Occupation Marine Corps",

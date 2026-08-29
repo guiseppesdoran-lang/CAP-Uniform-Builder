@@ -288,22 +288,10 @@
       "runnerUp": 2.155
     },
     {
-      "title": "Miniature Medal: Marine Corps China Service",
-      "key": "marine corps china service",
-      "score": 1.967,
-      "runnerUp": 1.183
-    },
-    {
       "title": "Miniature Medal: Marine Corps Selected Reserve",
       "key": "marine corps selected reserve",
       "score": 2.49,
       "runnerUp": 2.366
-    },
-    {
-      "title": "Miniature Medal: Marine Corps WWII Occupation",
-      "key": "marine corps wwii occupation",
-      "score": 1.106,
-      "runnerUp": 1.067
     },
     {
       "title": "Miniature Medal: Mexican Border Defense",
@@ -563,8 +551,5 @@
       "score": 0.781,
       "runnerUp": 0.733
     }
-  ],
-  "excludedRibbonOnly": [
-    "combat_action"
   ]
 }

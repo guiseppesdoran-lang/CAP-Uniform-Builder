@@ -50,6 +50,22 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_soldiers_medal_heroism_miniature_medal_2024_sold_mini_2_b50dc37e-a78c-41d5-822a-3db6ed01791d.jpeg?v=1423544552",
       "score": 4.8,
       "asset": "images/military-mini-medals/army/army_soldiers_medal.png"
+    },
+    {
+      "awardId": "army_of_occupation",
+      "productTitle": "Miniature Medal: Army and Air Force WWII Occupation",
+      "productUrl": "https://www.vanguardmil.com/products/army-and-usaf-wwii-occupation-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/world_war_ii_ww_ii_army_of_occupation_miniature_medal_2097_wwiiarmy_mini_1_1.jpeg?v=1423544541",
+      "score": 10,
+      "asset": "images/military-mini-medals/army/army_of_occupation.png"
+    },
+    {
+      "awardId": "reserve_componets_achievement",
+      "productTitle": "Miniature Medal: Army National Guard Reserve Component Achievement",
+      "productUrl": "https://www.vanguardmil.com/products/army-national-guard-arng-reserve-component-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_national_guard_components_achievement_miniature_medal_2022_ngach_mini_1_1.jpeg?v=1423544563",
+      "score": 10,
+      "asset": "images/military-mini-medals/army/reserve_componets_achievement.png"
     }
   ],
   "unmatched": [
@@ -126,12 +142,6 @@
       "runnerUp": 0.6
     },
     {
-      "title": "Miniature Medal: Army and Air Force WWII Occupation",
-      "key": "army and wwii occupation",
-      "score": 1.162,
-      "runnerUp": 0.933
-    },
-    {
       "title": "Miniature Medal: Army Armed Forces Reserve",
       "key": "army armed forces reserve",
       "score": 2.439,
@@ -148,18 +158,6 @@
       "key": "army meritorious public service",
       "score": 2.06,
       "runnerUp": 1.858
-    },
-    {
-      "title": "Miniature Medal: Army National Guard Reserve Component Achievement",
-      "key": "army national guard reserve component achievement",
-      "score": 1.626,
-      "runnerUp": 1.238
-    },
-    {
-      "title": "Miniature Medal: Army Reserve Component Achievement",
-      "key": "army reserve component achievement",
-      "score": 1.94,
-      "runnerUp": 1.586
     },
     {
       "title": "Miniature Medal: Army Superior Civilian Service - old style",

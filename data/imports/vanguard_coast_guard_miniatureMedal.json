@@ -66,6 +66,14 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/navy_expeditionary_miniature_medal_2073_navexp_mini_1_1.jpeg?v=1423544594",
       "score": 4.8,
       "asset": "images/military-mini-medals/coast-guard/navy_expeditionary.png"
+    },
+    {
+      "awardId": "coast_guard_medal",
+      "productTitle": "Miniature Medal: Coast Guard Medal for Heroism",
+      "productUrl": "https://www.vanguardmil.com/products/uscg-medal-for-heroism-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/coast_guard_miniature_medal_for_heroism_2034_cgmedl_mini_1.jpeg?v=1423544711",
+      "score": 10,
+      "asset": "images/military-mini-medals/coast-guard/coast_guard_medal.png"
     }
   ],
   "unmatched": [
@@ -218,12 +226,6 @@
       "key": "coast guard expert rifle",
       "score": 1.929,
       "runnerUp": 1.23
-    },
-    {
-      "title": "Miniature Medal: Coast Guard Medal for Heroism",
-      "key": "coast guard for heroism",
-      "score": 1.947,
-      "runnerUp": 1.15
     },
     {
       "title": "Miniature Medal: Distinguished Service Cross",

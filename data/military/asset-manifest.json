@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-29T23:05:52.584Z",
+  "generatedAt": "2026-08-29T23:27:27.573Z",
   "assets": [
     {
       "ownerType": "AWARD",
@@ -1547,23 +1547,27 @@
       "ownerType": "AWARD",
       "ownerId": "reserve_componets_achievement",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/army/reserve_componets_achievement.png",
+      "exists": true,
+      "sha256": "77f51d09649df937575cd2938260019efc949094915f30728340d871267681a7",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/army-national-guard-arng-reserve-component-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "reserve_componets_achievement",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/army/reserve_componets_achievement.png",
+      "exists": true,
+      "sha256": "b87b1a14f451d6772c09ffc5637864e4ceef5ce393c96366e966e3af571a95fb",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/full-size-medal-army-national-guard-reserve-component-achievement"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3281,23 +3285,27 @@
       "ownerType": "AWARD",
       "ownerId": "china_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/navy/china_service.png",
+      "exists": true,
+      "sha256": "9e95df98cb34aab8b033fa7d703eba8150dece351f55b966218b7826fa00c5e9",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-china-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "china_service",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/china_service.png",
+      "exists": true,
+      "sha256": "c3149c86b1127a65261c80a9641889f55875fff49c3faaa0bf1628dba0fe1a3e",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-china-service-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3314,23 +3322,27 @@
       "ownerType": "AWARD",
       "ownerId": "navy_occupation_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/navy/navy_occupation_service.png",
+      "exists": true,
+      "sha256": "25f4fd8676422a3d8ae56c7758984a9d4143a40fbb1cb4f83eb53568af330ce5",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/usn-and-uscg-occupation-wwii-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "navy_occupation_service",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/navy/navy_occupation_service.png",
+      "exists": true,
+      "sha256": "6098ff3ee0d059129c6007f291fff65a8607398db982df77018d94d896c2a6e5",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/wwii-occupation-usn-and-uscg-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -3843,12 +3855,14 @@
       "ownerType": "AWARD",
       "ownerId": "womens_s_army_corps_service",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/army/womens_s_army_corps_service.png",
+      "exists": true,
+      "sha256": "220237c51b1176a6a79de5892e47e58afef409c5fc76eafb25e01193abcc81ff",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/womans-army-corp-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -4003,12 +4017,14 @@
       "ownerType": "AWARD",
       "ownerId": "rok_war_service",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/air-force/rok_war_service.png",
+      "exists": true,
+      "sha256": "5a34ab4050d54ef6b309cbd53995b8a22ed4186fb125dc3e8dc11a32c574b9cb",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/republic-of-korea-war-service-no-device-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -4875,23 +4891,27 @@
       "ownerType": "AWARD",
       "ownerId": "coast_guard_medal",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/coast-guard/coast_guard_medal.png",
+      "exists": true,
+      "sha256": "2ce62d2f002edc64ef7b4bb3dbff9cc8f8065ab36223fb12296a376a96f56939",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-medal-for-heroism-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "coast_guard_medal",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/coast-guard/coast_guard_medal.png",
+      "exists": true,
+      "sha256": "debc4922651c951a67db9980aee7af1e00a6e352d8de91628dc74b80adda02dd",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-medal-for-heroism-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5836,23 +5856,27 @@
       "ownerType": "AWARD",
       "ownerId": "united_nations",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/united_nations.png",
+      "exists": true,
+      "sha256": "56ab07045b2a9801a07db9fcf05fabb84e19b3aa7cf9ff8f2499596d0d30466b",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/united-nations-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "united_nations",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/air-force/united_nations.png",
+      "exists": true,
+      "sha256": "29b7924703a687ac425405cf6ad9f424174560b18ce1d3a02e8aa8f92a60aba4",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/united-nation-service-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5951,23 +5975,27 @@
       "ownerType": "AWARD",
       "ownerId": "army_of_occupation",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/army/army_of_occupation.png",
+      "exists": true,
+      "sha256": "ed1984116bec7c6df19ab598d25bbbf589c5b5166be7bce39dd66cfdd034d4fd",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/army-and-usaf-wwii-occupation-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "army_of_occupation",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/army/army_of_occupation.png",
+      "exists": true,
+      "sha256": "4604983018e76a95f9e63514ae314668a1ae0bf27bb941951abbdec24100491a",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/wwii-occupation-army-and-usaf-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",

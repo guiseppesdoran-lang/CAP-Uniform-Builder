@@ -58,6 +58,14 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/173_navy_expeditionary_medal_1b7943ef-fb06-4bc8-b5a0-0a301b09df1a.jpeg?v=1423544595",
       "score": 4.8,
       "asset": "images/military-full-size-medals/coast-guard/navy_expeditionary.png"
+    },
+    {
+      "awardId": "coast_guard_medal",
+      "productTitle": "Full Size Medal: U.S.C.G. Medal for Heroism",
+      "productUrl": "https://www.vanguardmil.com/products/uscg-medal-for-heroism-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609730.jpg?v=1617287753",
+      "score": 10,
+      "asset": "images/military-full-size-medals/coast-guard/coast_guard_medal.png"
     }
   ],
   "unmatched": [
@@ -440,12 +448,6 @@
       "runnerUp": 0.584
     },
     {
-      "title": "Full Size Medal: Republic of Korea War Service No Device",
-      "key": "republic of korea war service no device",
-      "score": 2.367,
-      "runnerUp": 0.902
-    },
-    {
       "title": "Full Size Medal: Selective Marine Corps Reserve",
       "key": "selective marine corps reserve",
       "score": 0.767,
@@ -462,12 +464,6 @@
       "key": "space force good conduct",
       "score": 1,
       "runnerUp": 0.893
-    },
-    {
-      "title": "Full Size Medal: U.S.C.G. Medal for Heroism",
-      "key": "c g for heroism",
-      "score": 0.554,
-      "runnerUp": 0.5
     },
     {
       "title": "Full Size Medal: United Nation Observer",

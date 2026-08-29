@@ -74,6 +74,22 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/files/6609345.jpg?v=1750973484",
       "score": 2.477,
       "asset": "images/military-full-size-medals/navy/navy_arctic_service.png"
+    },
+    {
+      "awardId": "china_service",
+      "productTitle": "Full Size Medal: Navy China Service",
+      "productUrl": "https://www.vanguardmil.com/products/usn-china-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609371.jpg?v=1617287767",
+      "score": 10,
+      "asset": "images/military-full-size-medals/navy/china_service.png"
+    },
+    {
+      "awardId": "navy_occupation_service",
+      "productTitle": "Full Size Medal: WWII Occupation Navy and Coast Guard",
+      "productUrl": "https://www.vanguardmil.com/products/wwii-occupation-usn-and-uscg-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/178_wwii_navy_occupation_service_medal.jpeg?v=1423544538",
+      "score": 10,
+      "asset": "images/military-full-size-medals/navy/navy_occupation_service.png"
     }
   ],
   "unmatched": [
@@ -360,12 +376,6 @@
       "runnerUp": 1.2
     },
     {
-      "title": "Full Size Medal: Navy China Service",
-      "key": "navy china service",
-      "score": 2.305,
-      "runnerUp": 1.28
-    },
-    {
       "title": "Full Size Medal: Navy Expert Pistol",
       "key": "navy expert pistol",
       "score": 1.024,
@@ -430,12 +440,6 @@
       "key": "public health service special assignment service",
       "score": 0.662,
       "runnerUp": 0.605
-    },
-    {
-      "title": "Full Size Medal: Republic of Korea War Service No Device",
-      "key": "republic of korea war service no device",
-      "score": 2.367,
-      "runnerUp": 0.902
     },
     {
       "title": "Full Size Medal: Selective Marine Corps Reserve",
@@ -516,19 +520,10 @@
       "runnerUp": 0.825
     },
     {
-      "title": "Full Size Medal: WWII Occupation Navy and Coast Guard",
-      "key": "wwii occupation navy and coast guard",
-      "score": 0.777,
-      "runnerUp": 0.76
-    },
-    {
       "title": "Full Size Medal: WWII Victory",
       "key": "wwii victory",
       "score": 0.95,
       "runnerUp": 0.421
     }
-  ],
-  "excludedRibbonOnly": [
-    "combat_action"
   ]
 }

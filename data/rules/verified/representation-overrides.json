@@ -3850,6 +3850,176 @@
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609635.jpg?v=1650039872"
       }
+    },
+    "united_nations": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/united_nations.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/united-nations-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/united_nations_un_korean_service_miniature_medal_2094_unkorea_mini_1.jpeg?v=1423544491"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/air-force/united_nations.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/united-nation-service-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/208_united_nations_korean_service_medal.jpeg?v=1423544492"
+      }
+    },
+    "rok_war_service": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/air-force/rok_war_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/republic-of-korea-war-service-no-device-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/186_republic_of_korea_korean_war_service_medal.jpeg?v=1423544501"
+      }
+    },
+    "army_of_occupation": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/army/army_of_occupation.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/army-and-usaf-wwii-occupation-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/world_war_ii_ww_ii_army_of_occupation_miniature_medal_2097_wwiiarmy_mini_1_1.jpeg?v=1423544541"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/army/army_of_occupation.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/wwii-occupation-army-and-usaf-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/216_world_war_ii_army_of_occupation_medal_1.jpeg?v=1423543629"
+      }
+    },
+    "reserve_componets_achievement": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/army/reserve_componets_achievement.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/army-national-guard-arng-reserve-component-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_national_guard_components_achievement_miniature_medal_2022_ngach_mini_1_1.jpeg?v=1423544563"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/army/reserve_componets_achievement.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/full-size-medal-army-national-guard-reserve-component-achievement"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_reserve_components_achievement_medal_217_hires_1_ae0c7176-8848-4a34-92d1-efa400297c60.jpeg?v=1501169591"
+      }
+    },
+    "womens_s_army_corps_service": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/army/womens_s_army_corps_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/womans-army-corp-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/211_womens_army_corps_service_medal.jpeg?v=1423544544"
+      }
+    },
+    "navy_occupation_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/navy/navy_occupation_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-and-uscg-occupation-wwii-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/world_war_ii_ww_ii_navy_occupation_service_miniature_medal_2098_wwiinavy_mini_1_1.jpeg?v=1423544536"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/navy_occupation_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/wwii-occupation-usn-and-uscg-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/178_wwii_navy_occupation_service_medal.jpeg?v=1423544538"
+      }
+    },
+    "china_service": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/navy/china_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-china-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617315.jpg?v=1431540085"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/navy/china_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/usn-china-service-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609371.jpg?v=1617287767"
+      }
+    },
+    "coast_guard_medal": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/coast-guard/coast_guard_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-medal-for-heroism-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/coast_guard_miniature_medal_for_heroism_2034_cgmedl_mini_1.jpeg?v=1423544711"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/coast-guard/coast_guard_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-medal-for-heroism-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609730.jpg?v=1617287753"
+      }
     }
   }
 }

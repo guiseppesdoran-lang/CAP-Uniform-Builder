@@ -74,6 +74,22 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/files/6617146.jpg?v=1755193453",
       "score": 2.477,
       "asset": "images/military-mini-medals/navy/navy_arctic_service.png"
+    },
+    {
+      "awardId": "china_service",
+      "productTitle": "Miniature Medal: Navy China Service",
+      "productUrl": "https://www.vanguardmil.com/products/usn-china-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617315.jpg?v=1431540085",
+      "score": 10,
+      "asset": "images/military-mini-medals/navy/china_service.png"
+    },
+    {
+      "awardId": "navy_occupation_service",
+      "productTitle": "Miniature Medal: Navy and Coast Guard Occupation WWII",
+      "productUrl": "https://www.vanguardmil.com/products/usn-and-uscg-occupation-wwii-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/world_war_ii_ww_ii_navy_occupation_service_miniature_medal_2098_wwiinavy_mini_1_1.jpeg?v=1423544536",
+      "score": 10,
+      "asset": "images/military-mini-medals/navy/navy_occupation_service.png"
     }
   ],
   "unmatched": [
@@ -366,22 +382,10 @@
       "runnerUp": 0.607
     },
     {
-      "title": "Miniature Medal: Navy and Coast Guard Occupation WWII",
-      "key": "navy and coast guard occupation wwii",
-      "score": 0.862,
-      "runnerUp": 0.777
-    },
-    {
       "title": "Miniature Medal: Navy Armed Forces Reserve",
       "key": "navy armed forces reserve",
       "score": 2.439,
       "runnerUp": 1.2
-    },
-    {
-      "title": "Miniature Medal: Navy China Service",
-      "key": "navy china service",
-      "score": 2.305,
-      "runnerUp": 1.28
     },
     {
       "title": "Miniature Medal: Navy Expert Pistol",
@@ -563,8 +567,5 @@
       "score": 0.781,
       "runnerUp": 0.733
     }
-  ],
-  "excludedRibbonOnly": [
-    "combat_action"
   ]
 }

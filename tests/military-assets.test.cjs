@@ -376,3 +376,25 @@ test('complete asset manifest contains no broken AVAILABLE records',()=>{
   const broken=manifest.assets.filter(record=>record.status==='AVAILABLE'&&!record.exists);
   assert.deepEqual(broken,[]);
 });
+
+test('curated service-title aliases fill only the reviewed canonical medal records',()=>{
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  const expected={
+    reserve_componets_achievement:['miniatureMedal','fullSizeMedal'],
+    army_of_occupation:['miniatureMedal','fullSizeMedal'],
+    womens_s_army_corps_service:['fullSizeMedal'],
+    china_service:['miniatureMedal','fullSizeMedal'],
+    navy_occupation_service:['miniatureMedal','fullSizeMedal'],
+    coast_guard_medal:['miniatureMedal','fullSizeMedal'],
+    united_nations:['miniatureMedal','fullSizeMedal'],
+    rok_war_service:['fullSizeMedal']
+  };
+  for(const [awardId,representations] of Object.entries(expected)){
+    for(const representation of representations){
+      const record=overrides[awardId]?.[representation];
+      assert.equal(record?.status,'AVAILABLE',`${awardId}:${representation}`);
+      assert.equal(record?.style,'MCCHORD_DIGITAL_MEDAL',`${awardId}:${representation}`);
+      assert.ok(fs.existsSync(path.join(ROOT,...record.asset.split('/'))),`${awardId}:${representation}`);
+    }
+  }
+});
