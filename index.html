@@ -5596,6 +5596,11 @@ Object.assign(miniMedalImages, {
 
 function getMiniMedalImagePath(ribbonOrId){
   const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
+  if(isMilitaryRibbonId(id)){
+    const award = getMilitaryRibbonAward(id);
+    const representation = window.CAPUBMilitary?.getAwardRepresentation?.(award,'MINIATURE_MEDAL');
+    return representation?.available && representation.asset ? representation.asset : '';
+  }
   const normalized = normalizeRibbonId(id);
   const base = miniMedalImages[normalized] || miniMedalImages[id] || '';
   if(!base) return '';
@@ -7837,7 +7842,12 @@ function renderRack(){
   for(const r of items){
     const medalPath = getMiniMedalImagePath(r);
     if(medalPath){
-      medalItems.push({ id:r.id, path:medalPath, awardValue:r.awardValue || '' });
+      medalItems.push({
+        id:r.id,
+        path:medalPath,
+        awardValue:r.awardValue || '',
+        militaryDevices:isMilitaryRibbonId(r.id) ? [...(r.militaryDevices || [])] : []
+      });
     }
   }
   if(!medalItems.length) return;
@@ -7883,6 +7893,9 @@ function renderRack(){
         : "CAPR 39-1 Table 11-1 mounting bars: four per row, maximum 24 medals.";
 
       uniformCanvas.appendChild(mimg);
+      if(isMilitaryRibbonId(entry.id)){
+        applyMilitaryMedalVariant(mimg,entry.path,entry.militaryDevices,'MINIATURE_MEDAL');
+      }
     });
   });
 }
@@ -8689,9 +8702,9 @@ function buildRibbonGallery(options={}){
     const title = getRibbonDisplayName(id);
     const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
     const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
-    const miniPreview = !military && miniPath
+    const miniPreview = miniPath
       ? `<div class="miniMedalPreview"><span>Mini medal</span><img alt="${title} mini medal"></div>`
-      : (!military ? `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>` : '');
+      : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
     const options = getRibbonAwardOptions(id).map(opt => {
       const selected = (sel.awardValue || '') === opt.value ? 'selected' : '';
       return `<option value="${opt.value}" ${selected}>${opt.label}</option>`;
