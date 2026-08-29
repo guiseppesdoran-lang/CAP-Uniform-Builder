@@ -1,0 +1,60 @@
+{
+  "$schema": "../schemas/military-asset-profiles.schema.json",
+  "schemaVersion": 1,
+  "notes": "Rendering profiles describe repository-native geometry and uniform-specific embroidered backings. Authorization remains award- and badge-specific; a profile never authorizes an otherwise unauthorized item.",
+  "awardGeometry": {
+    "ribbon": { "canvas": [100, 30], "visibleWidthInches": 1.375, "style": "MCCHORD_DIGITAL" },
+    "miniatureMedal": { "canvas": [50, 176], "suspensionRibbonHeight": 116, "style": "MCCHORD_DIGITAL_MEDAL" },
+    "fullSizeMedal": { "canvas": [100, 220], "suspensionRibbonHeight": 132, "style": "MCCHORD_DIGITAL_MEDAL" }
+  },
+  "badgeGeometry": {
+    "metal": { "canvas": [320, 180], "transparent": true, "style": "MCCHORD_DIGITAL_METAL" },
+    "embroidered": { "canvas": [360, 220], "transparent": false, "style": "REGULATION_EMBROIDERED" }
+  },
+  "backingProfiles": {
+    "CAP_DARK_BLUE": {
+      "background": "#132140",
+      "foreground": "#eef2f6",
+      "borderInches": 0.125,
+      "services": ["CAP"],
+      "uniformFamilies": ["CAP_OCP", "CAP_ABU"]
+    },
+    "DAF_SPICE_BROWN_OCP": {
+      "backgroundPattern": "OCP",
+      "foreground": "#6b4423",
+      "borderInches": 0.125,
+      "services": ["AIR_FORCE", "SPACE_FORCE"],
+      "uniformFamilies": ["OCP"]
+    },
+    "ARMY_BLACK_OCP": {
+      "backgroundPattern": "OCP",
+      "foreground": "#171717",
+      "borderInches": 0.125,
+      "services": ["ARMY"],
+      "uniformFamilies": ["OCP"]
+    },
+    "NAVAL_BLACK_NWU_III": {
+      "backgroundPattern": "NWU_TYPE_III",
+      "foreground": "#161a17",
+      "borderInches": 0.125,
+      "services": ["NAVY", "MARINE_CORPS"],
+      "uniformFamilies": ["NWU_TYPE_III", "MCCUU"]
+    },
+    "COAST_GUARD_BLUE": {
+      "background": "#243654",
+      "foreground": "#ffffff",
+      "borderInches": 0.125,
+      "services": ["COAST_GUARD"],
+      "uniformFamilies": ["ODU"]
+    }
+  },
+  "serviceDefaults": {
+    "CAP": { "embroideredBacking": "CAP_DARK_BLUE" },
+    "AIR_FORCE": { "embroideredBacking": "DAF_SPICE_BROWN_OCP" },
+    "SPACE_FORCE": { "embroideredBacking": "DAF_SPICE_BROWN_OCP" },
+    "ARMY": { "embroideredBacking": "ARMY_BLACK_OCP" },
+    "NAVY": { "embroideredBacking": "NAVAL_BLACK_NWU_III" },
+    "MARINE_CORPS": { "embroideredBacking": "NAVAL_BLACK_NWU_III" },
+    "COAST_GUARD": { "embroideredBacking": "COAST_GUARD_BLUE" }
+  }
+}

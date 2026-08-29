@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "military-asset-profiles.schema.json",
+  "title": "Military asset generation and backing profiles",
+  "type": "object",
+  "required": ["schemaVersion", "awardGeometry", "badgeGeometry", "backingProfiles", "serviceDefaults"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "minimum": 1 },
+    "awardGeometry": { "type": "object" },
+    "badgeGeometry": { "type": "object" },
+    "backingProfiles": { "type": "object" },
+    "serviceDefaults": { "type": "object" }
+  },
+  "additionalProperties": true
+}

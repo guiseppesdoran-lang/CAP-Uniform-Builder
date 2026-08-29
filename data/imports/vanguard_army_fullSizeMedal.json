@@ -1,0 +1,533 @@
+{
+  "source": "https://www.vanguardmil.com/collections/medals",
+  "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
+  "service": "ARMY",
+  "representation": "fullSizeMedal",
+  "accessed": "2026-08-29",
+  "canvas": [
+    100,
+    220
+  ],
+  "suspensionRibbonHeight": 132,
+  "geometryPolicy": "Suspension ribbon and pendant are normalized independently; the photographed medal is never stretched as one image.",
+  "imported": [
+    {
+      "awardId": "army_achievement",
+      "productTitle": "Full Size Medal: Army Achievement",
+      "productUrl": "https://www.vanguardmil.com/products/army-achievement-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609260.jpg?v=1617287785",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/army/army_achievement.png"
+    },
+    {
+      "awardId": "army_commendation",
+      "productTitle": "Full Size Medal: Army Commendation",
+      "productUrl": "https://www.vanguardmil.com/products/army-commendation-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Army-Commendation-Medal.jpeg?v=1423544765",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/army/army_commendation.png"
+    },
+    {
+      "awardId": "army_distinguished_service",
+      "productTitle": "Full Size Medal: Army Distinguished Service",
+      "productUrl": "https://www.vanguardmil.com/products/army-distinguished-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/228_army_distinguished_service_medal.jpeg?v=1423544761",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/army/army_distinguished_service.png"
+    },
+    {
+      "awardId": "army_good_conduct",
+      "productTitle": "Full Size Medal: Army Good Conduct",
+      "productUrl": "https://www.vanguardmil.com/products/army-good-conduct-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Army-Good-Conduct-Medal.jpeg?v=1423544755",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/army/army_good_conduct.png"
+    },
+    {
+      "awardId": "army_distinguished_service_cross",
+      "productTitle": "Full Size Medal: Distinguished Service Cross",
+      "productUrl": "https://www.vanguardmil.com/products/distinguished-service-cross-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609460.jpg?v=1617287778",
+      "score": 2.465,
+      "asset": "images/military-full-size-medals/army/army_distinguished_service_cross.png"
+    },
+    {
+      "awardId": "army_soldiers_medal",
+      "productTitle": "Full Size Medal: Soldiers Medal",
+      "productUrl": "https://www.vanguardmil.com/products/soldiers-medal-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/122_army_soldiers_medal_heroism.jpeg?v=1423544554",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/army/army_soldiers_medal.png"
+    }
+  ],
+  "unmatched": [
+    {
+      "title": "Full Size Medal: Air Force Achievement",
+      "key": "achievement",
+      "score": 2.115,
+      "runnerUp": 1.744
+    },
+    {
+      "title": "Full Size Medal: Air Force Aerial Achievement",
+      "key": "aerial achievement",
+      "score": 1.157,
+      "runnerUp": 0.948
+    },
+    {
+      "title": "Full Size Medal: Air Force Air and Space Campaign",
+      "key": "air and space campaign",
+      "score": 1.29,
+      "runnerUp": 0.886
+    },
+    {
+      "title": "Full Size Medal: Air Force Combat Action Medal",
+      "key": "combat action",
+      "score": 0.94,
+      "runnerUp": 0.533
+    },
+    {
+      "title": "Full Size Medal: Air Force Combat Readiness",
+      "key": "combat readiness",
+      "score": 0.424,
+      "runnerUp": 0.421
+    },
+    {
+      "title": "Full Size Medal: Air Force Commendation",
+      "key": "commendation",
+      "score": 2.128,
+      "runnerUp": 1.765
+    },
+    {
+      "title": "Full Size Medal: Air Force Distinguished Service",
+      "key": "distinguished service",
+      "score": 2.36,
+      "runnerUp": 2.307
+    },
+    {
+      "title": "Full Size Medal: Air Force Good Conduct",
+      "key": "good conduct",
+      "score": 2.294,
+      "runnerUp": 0.414
+    },
+    {
+      "title": "Full Size Medal: Air Force Nuclear Deterrence Operations Service",
+      "key": "nuclear deterrence operations service",
+      "score": 0.792,
+      "runnerUp": 0.79
+    },
+    {
+      "title": "Full Size Medal: Air Force Remote Combat Effects Campaign",
+      "key": "remote combat effects campaign",
+      "score": 0.712,
+      "runnerUp": 0.712
+    },
+    {
+      "title": "Full Size Medal: Air Reserve Meritorious Service",
+      "key": "air reserve meritorious service",
+      "score": 2.06,
+      "runnerUp": 1.226
+    },
+    {
+      "title": "Full Size Medal: Airman Medal",
+      "key": "airman",
+      "score": 0.667,
+      "runnerUp": 0.6
+    },
+    {
+      "title": "Full Size Medal: Army Armed Forces Reserve",
+      "key": "army armed forces reserve",
+      "score": 2.439,
+      "runnerUp": 1.2
+    },
+    {
+      "title": "Full Size Medal: Army NATIONAL GUARD Reserve Component Achievement",
+      "key": "army national guard reserve component achievement",
+      "score": 1.626,
+      "runnerUp": 1.238
+    },
+    {
+      "title": "Full Size Medal: Army Reserve Component Achievement",
+      "key": "army reserve component achievement",
+      "score": 1.94,
+      "runnerUp": 1.586
+    },
+    {
+      "title": "Full Size Medal: California National Guard Achievement Medal",
+      "key": "california national guard achievement",
+      "score": 0.747,
+      "runnerUp": 0.728
+    },
+    {
+      "title": "Full Size Medal: California National Guard Commendation Medal",
+      "key": "california national guard commendation",
+      "score": 0.76,
+      "runnerUp": 0.745
+    },
+    {
+      "title": "Full Size Medal: California National Guard Good Conduct Medal",
+      "key": "california national guard good conduct",
+      "score": 0.879,
+      "runnerUp": 0.58
+    },
+    {
+      "title": "Full Size Medal: California National Guard Medal of Merit",
+      "key": "california national guard of merit",
+      "score": 0.864,
+      "runnerUp": 0.75
+    },
+    {
+      "title": "Full Size Medal: California National Guard Service Medal",
+      "key": "california national guard service",
+      "score": 1.032,
+      "runnerUp": 0.785
+    },
+    {
+      "title": "Full Size Medal: Coast Guard 9-11",
+      "key": "coast guard 9 11",
+      "score": 0.905,
+      "runnerUp": 0.622
+    },
+    {
+      "title": "Full Size Medal: Coast Guard Achievement",
+      "key": "coast guard achievement",
+      "score": 0.968,
+      "runnerUp": 0.946
+    },
+    {
+      "title": "Full Size Medal: Coast Guard Armed Forces Reserve",
+      "key": "coast guard armed forces reserve",
+      "score": 2.169,
+      "runnerUp": 1.026
+    },
+    {
+      "title": "Full Size Medal: Coast Guard Commendation",
+      "key": "coast guard commendation",
+      "score": 1.053,
+      "runnerUp": 0.982
+    },
+    {
+      "title": "Full Size Medal: Coast Guard Expert Pistol",
+      "key": "coast guard expert pistol",
+      "score": 0.835,
+      "runnerUp": 0.601
+    },
+    {
+      "title": "Full Size Medal: Coast Guard Expert Rifle",
+      "key": "coast guard expert rifle",
+      "score": 0.846,
+      "runnerUp": 0.661
+    },
+    {
+      "title": "Full Size Medal: Coast Guard Good Conduct",
+      "key": "coast guard good conduct",
+      "score": 1.132,
+      "runnerUp": 0.926
+    },
+    {
+      "title": "Full Size Medal: European African Middle East Campaign",
+      "key": "european african middle east campaign",
+      "score": 1.628,
+      "runnerUp": 0.728
+    },
+    {
+      "title": "Full Size Medal: Korea Defense Service Medal",
+      "key": "korea defense service",
+      "score": 1.477,
+      "runnerUp": 1.256
+    },
+    {
+      "title": "Full Size Medal: Kuwait Liberation Government of Kuwait #466",
+      "key": "kuwait liberation government of kuwait 466",
+      "score": 1.927,
+      "runnerUp": 0.949
+    },
+    {
+      "title": "Full Size Medal: Marine Corps Armed Forces Reserve",
+      "key": "marine corps armed forces reserve",
+      "score": 2.155,
+      "runnerUp": 1.013
+    },
+    {
+      "title": "Full Size Medal: Marine Corps China Service",
+      "key": "marine corps china service",
+      "score": 0.94,
+      "runnerUp": 0.822
+    },
+    {
+      "title": "Full Size Medal: Marine Corps Expeditionary",
+      "key": "marine corps expeditionary",
+      "score": 1.008,
+      "runnerUp": 0.833
+    },
+    {
+      "title": "Full Size Medal: Marine Corps Good Conduct",
+      "key": "marine corps good conduct",
+      "score": 1.114,
+      "runnerUp": 0.556
+    },
+    {
+      "title": "Full Size Medal: Mexican Border Defense",
+      "key": "mexican border defense",
+      "score": 0.987,
+      "runnerUp": 0.8
+    },
+    {
+      "title": "Full Size Medal: Military Outstanding Volunteer Service",
+      "key": "military outstanding volunteer service",
+      "score": 2.416,
+      "runnerUp": 0.784
+    },
+    {
+      "title": "Full Size Medal: Multinational Force and Observer",
+      "key": "multinational force and observer",
+      "score": 1.585,
+      "runnerUp": 0.607
+    },
+    {
+      "title": "Full Size Medal: National Defense",
+      "key": "national defense",
+      "score": 2.267,
+      "runnerUp": 1.021
+    },
+    {
+      "title": "Full Size Medal: National Guard Armed Forces Reserve",
+      "key": "national guard armed forces reserve",
+      "score": 2.127,
+      "runnerUp": 0.988
+    },
+    {
+      "title": "Full Size Medal: NATO Article 5 Active Endeavour Medal",
+      "key": "nato article 5 active endeavour",
+      "score": 1.229,
+      "runnerUp": 0.5
+    },
+    {
+      "title": "Full Size Medal: NATO Balkans Operation Non Article 5 Medal",
+      "key": "nato balkans operation non article 5",
+      "score": 1.167,
+      "runnerUp": 0.532
+    },
+    {
+      "title": "Full Size Medal: NATO Non-Article 5 Medal for Afghanistan",
+      "key": "nato non article 5 for afghanistan",
+      "score": 1.177,
+      "runnerUp": 0.55
+    },
+    {
+      "title": "Full Size Medal: Naval Reserve",
+      "key": "naval reserve",
+      "score": 0.795,
+      "runnerUp": 0.595
+    },
+    {
+      "title": "Full Size Medal: Navy and Marine Corps Achievement",
+      "key": "navy and marine corps achievement",
+      "score": 0.756,
+      "runnerUp": 0.738
+    },
+    {
+      "title": "Full Size Medal: Navy and Marine Corps Commendation",
+      "key": "navy and marine corps commendation",
+      "score": 0.755,
+      "runnerUp": 0.71
+    },
+    {
+      "title": "Full Size Medal: Navy and Marine Corps Medal",
+      "key": "navy and marine corps",
+      "score": 0.551,
+      "runnerUp": 0.476
+    },
+    {
+      "title": "Full Size Medal: Navy Armed Forces Reserve",
+      "key": "navy armed forces reserve",
+      "score": 2.439,
+      "runnerUp": 1.2
+    },
+    {
+      "title": "Full Size Medal: Navy China Service",
+      "key": "navy china service",
+      "score": 0.917,
+      "runnerUp": 0.875
+    },
+    {
+      "title": "Full Size Medal: Navy Cross",
+      "key": "navy cross",
+      "score": 0.795,
+      "runnerUp": 0.694
+    },
+    {
+      "title": "Full Size Medal: Navy Expeditionary",
+      "key": "navy expeditionary",
+      "score": 0.932,
+      "runnerUp": 0.812
+    },
+    {
+      "title": "Full Size Medal: Navy Expert Pistol",
+      "key": "navy expert pistol",
+      "score": 0.414,
+      "runnerUp": 0.409
+    },
+    {
+      "title": "Full Size Medal: Navy Expert Rifle",
+      "key": "navy expert rifle",
+      "score": 0.483,
+      "runnerUp": 0.439
+    },
+    {
+      "title": "Full Size Medal: Navy Good Conduct",
+      "key": "navy good conduct",
+      "score": 1.382,
+      "runnerUp": 0.471
+    },
+    {
+      "title": "Full Size Medal: Navy Reserve Meritorious Service",
+      "key": "navy reserve meritorious service",
+      "score": 2.045,
+      "runnerUp": 1.18
+    },
+    {
+      "title": "Full Size Medal: PHS Covid-19 Pandemic Campaign Medal",
+      "key": "phs covid 19 pandemic campaign",
+      "score": 0.735,
+      "runnerUp": 0.72
+    },
+    {
+      "title": "Full Size Medal: PHS Covid-19 Pandemic Civilian Service Medal",
+      "key": "phs covid 19 pandemic civilian service",
+      "score": 0.66,
+      "runnerUp": 0.607
+    },
+    {
+      "title": "Full Size Medal: Public Health Service Crisis Response",
+      "key": "public health service crisis response",
+      "score": 0.627,
+      "runnerUp": 0.626
+    },
+    {
+      "title": "Full Size Medal: Public Health Service Ebola Campaign",
+      "key": "public health service ebola campaign",
+      "score": 0.781,
+      "runnerUp": 0.733
+    },
+    {
+      "title": "Full Size Medal: Public Health Service Foreign Duty Service Award",
+      "key": "public health service foreign duty service award",
+      "score": 0.585,
+      "runnerUp": 0.542
+    },
+    {
+      "title": "Full Size Medal: Public Health Service Hazardous Duty Service Award",
+      "key": "public health service hazardous duty service award",
+      "score": 0.598,
+      "runnerUp": 0.53
+    },
+    {
+      "title": "Full Size Medal: Public Health Service Isolated Duty",
+      "key": "public health service isolated duty",
+      "score": 0.642,
+      "runnerUp": 0.61
+    },
+    {
+      "title": "Full Size Medal: Public Health Service Special Assignment Service",
+      "key": "public health service special assignment service",
+      "score": 0.553,
+      "runnerUp": 0.516
+    },
+    {
+      "title": "Full Size Medal: Republic of Korea War Service No Device",
+      "key": "republic of korea war service no device",
+      "score": 2.367,
+      "runnerUp": 0.902
+    },
+    {
+      "title": "Full Size Medal: Selective Marine Corps Reserve",
+      "key": "selective marine corps reserve",
+      "score": 0.767,
+      "runnerUp": 0.661
+    },
+    {
+      "title": "Full Size Medal: Space Force Good Conduct",
+      "key": "space force good conduct",
+      "score": 1.132,
+      "runnerUp": 0.625
+    },
+    {
+      "title": "Full Size Medal: U.S.C.G. Medal for Heroism",
+      "key": "c g for heroism",
+      "score": 0.554,
+      "runnerUp": 0.5
+    },
+    {
+      "title": "Full Size Medal: United Nation Observer",
+      "key": "united nation observer",
+      "score": 1.064,
+      "runnerUp": 1.028
+    },
+    {
+      "title": "Full Size Medal: United Nations Advance Mission In Cambodia",
+      "key": "united nations advance mission in cambodia",
+      "score": 1.633,
+      "runnerUp": 0.848
+    },
+    {
+      "title": "Full Size Medal: United Nations Operations In Somalia",
+      "key": "united nations operations in somalia",
+      "score": 1.76,
+      "runnerUp": 0.954
+    },
+    {
+      "title": "Full Size Medal: US Navy Arctic Service",
+      "key": "us navy arctic service",
+      "score": 0.95,
+      "runnerUp": 0.819
+    },
+    {
+      "title": "Full Size Medal: Vietnam Campaign",
+      "key": "vietnam campaign",
+      "score": 2.027,
+      "runnerUp": 1.092
+    },
+    {
+      "title": "Full Size Medal: Vietnam Civil Action First Class",
+      "key": "vietnam civil action first class",
+      "score": 0.996,
+      "runnerUp": 0.64
+    },
+    {
+      "title": "Full Size Medal: Women's Army Corp",
+      "key": "women s army corp",
+      "score": 1.291,
+      "runnerUp": 0.667
+    },
+    {
+      "title": "Full Size Medal: WWI Victory",
+      "key": "wwi victory",
+      "score": 0.91,
+      "runnerUp": 0.385
+    },
+    {
+      "title": "Full Size Medal: WWII Occupation Army and Air Force",
+      "key": "wwii occupation army and",
+      "score": 1.191,
+      "runnerUp": 1.032
+    },
+    {
+      "title": "Full Size Medal: WWII Occupation Marine Corps",
+      "key": "wwii occupation marine corps",
+      "score": 0.698,
+      "runnerUp": 0.667
+    },
+    {
+      "title": "Full Size Medal: WWII Occupation Navy and Coast Guard",
+      "key": "wwii occupation navy and coast guard",
+      "score": 0.76,
+      "runnerUp": 0.68
+    },
+    {
+      "title": "Full Size Medal: WWII Victory",
+      "key": "wwii victory",
+      "score": 0.95,
+      "runnerUp": 0.375
+    }
+  ]
+}

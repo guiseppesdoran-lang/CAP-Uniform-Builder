@@ -1,6 +1,6 @@
 # Military Award Combination Audit
 
-Generated: 2026-08-29T08:42:36.215Z
+Generated: 2026-08-29T21:14:22.554Z
 
 > This report is intentionally conservative. A local ribbon image does not prove a device rule or medal representation. Missing and unverified fields remain gaps; inferred branch conventions are available only in the builder’s **Manual / unverified configuration** mode.
 
@@ -8,8 +8,8 @@ Generated: 2026-08-29T08:42:36.215Z
 
 - Total canonical awards: 176
 - Ribbon representations with a catalog asset reference: 175
-- Miniature medal representations with a reviewed mapping: 2
-- Full-size medal representations with a reviewed mapping: 0
+- Miniature medal representations with a reviewed mapping: 53
+- Full-size medal representations with a reviewed mapping: 52
 - Device types in the local catalog: 16
 - Awards with explicit repeat support: 25
 - Awards with explicit special-device support: 3
@@ -17,8 +17,8 @@ Generated: 2026-08-29T08:42:36.215Z
 - Awards with at least one officially verified device rule: 26
 - Awards missing explicit device rules: 150
 - Awards missing local ribbon artwork: 1
-- Awards missing reviewed miniature-medal artwork: 174
-- Awards missing reviewed full-size-medal artwork: 176
+- Awards missing reviewed miniature-medal artwork: 123
+- Awards missing reviewed full-size-medal artwork: 124
 
 ## Award records
 
@@ -30,25 +30,25 @@ Generated: 2026-08-29T08:42:36.215Z
 | Navy Cross | `navy_cross` | COAST_GUARD | COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Coast Guard Cross | `coast_guard_cross` | COAST_GUARD | COAST_GUARD | No | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Transportation Distinguished Service Medal | `transportation_distinguished_service_medal` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| silver star | `silver_star` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| defense superior service | `defense_superior_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY, JOINT_DOD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| legion of merit | `legion_of_merit` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| distinguished flying cross | `distinguished_flying_cross` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| silver star | `silver_star` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| defense superior service | `defense_superior_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY, JOINT_DOD | Yes | Yes | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| legion of merit | `legion_of_merit` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| distinguished flying cross | `distinguished_flying_cross` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy & Marine Corps Medal | `navy_and_marine_corps_medal` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| airmans medal | `airmans_medal` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| airmans medal | `airmans_medal` | AIR_FORCE | AIR_FORCE | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | army soldiers medal | `army_soldiers_medal` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| bronze star miltiary ribbon | `bronze_star_miltiary` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| purple heart | `purple_heart` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| defense meritorious service | `defense_meritorious_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY, JOINT_DOD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| meritorious service | `meritorious_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| bronze star miltiary ribbon | `bronze_star_miltiary` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| purple heart | `purple_heart` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| defense meritorious service | `defense_meritorious_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY, JOINT_DOD | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| meritorious service | `meritorious_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Naval Reserve Meritorious Service | `naval_reserve_meritorious_service` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| air reserve forces meritorious service | `air_reserve_forces_meritorious_service` | AIR_FORCE | AIR_FORCE | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
-| Air Medal | `air_medal` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
-| joint service commendation | `joint_service_commendation` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| air reserve forces meritorious service | `air_reserve_forces_meritorious_service` | AIR_FORCE | AIR_FORCE | Yes | Yes | Yes | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
+| Air Medal | `air_medal` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
+| joint service commendation | `joint_service_commendation` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy & Marine Corps Commendation | `navy_and_marine_corps_commendation` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Coast Guard Commendation | `coast_guard_commendation` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Unit Commendation | `navy_unit_commendation` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| Air and Space Commendation Medal | `air_and_space_commendation_medal` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
+| Air and Space Commendation Medal | `air_and_space_commendation_medal` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | Yes | Yes | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
 | Commandants Letter Of Commendation | `commandants_letter_of_commendation` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Meritorious Unit Commendation | `navy_meritorious_unit_commendation` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | army commendation | `army_commendation` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
@@ -58,14 +58,14 @@ Generated: 2026-08-29T08:42:36.215Z
 | Coast Guard Meritorious Team Commendation | `coast_guard_meritorious_team_commendation` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Coast Guard Bicentennial Unit Commendation | `coast_guard_bicentennial_unit_commendation` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Army Meritorious Unit Commendation | `army_meritorious_unit_commendation` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| joint service achievement | `joint_service_achievement` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| joint service achievement | `joint_service_achievement` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy & Marine Corps Achievement | `navy_and_marine_corps_achievement` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| Aerial Achievement Medal | `aerial_achievement_medal` | AIR_FORCE | AIR_FORCE | Yes | Yes | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
+| Aerial Achievement Medal | `aerial_achievement_medal` | AIR_FORCE | AIR_FORCE | Yes | Yes | Yes | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
 | Coast Guard Achievement | `coast_guard_achievement` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| Air and Space Achievement Medal | `air_and_space_achievement_medal` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
+| Air and Space Achievement Medal | `air_and_space_achievement_medal` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | Yes | Yes | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
 | army achievement | `army_achievement` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Reserve Componets Achievement | `reserve_componets_achievement` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| prisoner of war | `prisoner_of_war` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| prisoner of war | `prisoner_of_war` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Marine Corps Good Conduct | `marine_corps_good_conduct` | MARINE_CORPS | MARINE_CORPS | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | navy good conduct | `navy_good_conduct` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Coast Guard Good Conduct | `coast_guard_good_conduct` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
@@ -88,44 +88,44 @@ Generated: 2026-08-29T08:42:36.215Z
 | vietnam civil actions unit citation | `vietnam_civil_actions_unit_citation` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Army Valorous Unit Award | `army_valorous_unit_award` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Army Superior Unit Award | `army_superior_unit_award` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| american campaign | `american_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| european african middle eastern campaign | `european_african_middle_eastern_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| asiatic pacific campaign | `asiatic_pacific_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| kosovo campaign | `kosovo_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| afghanistan campaign | `afghanistan_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| iraq campaign | `iraq_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| Inherent Resolve Campaign Medal | `inherent_resolve_campaign_medal` | DOD | ARMY, AIR_FORCE, SPACE_FORCE, NAVY, MARINE_CORPS, COAST_GUARD | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
-| republic of vietnam campaign | `republic_of_vietnam_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| Remote Combat Effects Campaign Medal | `remote_combat_effects_campaign_medal` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
-| air and space campaign | `air_and_space_campaign` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| american campaign | `american_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| european african middle eastern campaign | `european_african_middle_eastern_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| asiatic pacific campaign | `asiatic_pacific_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| kosovo campaign | `kosovo_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| afghanistan campaign | `afghanistan_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| iraq campaign | `iraq_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| Inherent Resolve Campaign Medal | `inherent_resolve_campaign_medal` | DOD | ARMY, AIR_FORCE, SPACE_FORCE, NAVY, MARINE_CORPS, COAST_GUARD | Yes | Yes | Yes | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
+| republic of vietnam campaign | `republic_of_vietnam_campaign` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| Remote Combat Effects Campaign Medal | `remote_combat_effects_campaign_medal` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | Yes | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
+| air and space campaign | `air_and_space_campaign` | AIR_FORCE | AIR_FORCE | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Marine Corps Expeditionary | `marine_corps_expeditionary` | MARINE_CORPS | MARINE_CORPS | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Expeditionary | `navy_expeditionary` | COAST_GUARD | COAST_GUARD, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| armed forces expeditionary | `armed_forces_expeditionary` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| global war on terrorism expeditionary | `global_war_on_terrorism_expeditionary` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| armed forces expeditionary | `armed_forces_expeditionary` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| global war on terrorism expeditionary | `global_war_on_terrorism_expeditionary` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | air force expeditionary | `air_force_expeditionary` | AIR_FORCE | AIR_FORCE | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
-| defense distinguished service | `defense_distinguished_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY, JOINT_DOD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| defense distinguished service | `defense_distinguished_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY, JOINT_DOD | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Distinguished Service | `navy_distinguished_service` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Coast Guard Distinguished Service | `coast_guard_distinguished_service` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| air force distinguishd service | `air_force_distinguishd_service` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| air force distinguishd service | `air_force_distinguishd_service` | AIR_FORCE | AIR_FORCE | Yes | No | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | army distinguished service | `army_distinguished_service` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | China Service | `china_service` | COAST_GUARD | COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Occupation Service | `navy_occupation_service` | COAST_GUARD | COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| national defense military service | `national_defense_military_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| korean service | `korean_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| antarctica service | `antarctica_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| vietnam service | `vietnam_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| southwest asia service | `southwest_asia_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| global war on terrorism service | `global_war_on_terrorism_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| korean defense service | `korean_defense_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| armed forces service | `armed_forces_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
-| humanitarian service | `humanitarian_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
-| outstanding volunteer service | `outstanding_volunteer_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| national defense military service | `national_defense_military_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| korean service | `korean_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| antarctica service | `antarctica_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| vietnam service | `vietnam_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| southwest asia service | `southwest_asia_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| global war on terrorism service | `global_war_on_terrorism_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| korean defense service | `korean_defense_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| armed forces service | `armed_forces_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
+| humanitarian service | `humanitarian_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
+| outstanding volunteer service | `outstanding_volunteer_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Sea Service Deployment | `navy_sea_service_deployment` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Arctic Service | `navy_arctic_service` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Arctic Service | `arctic_service` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Womens's Army Corps Service | `womens_s_army_corps_service` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy & Marine Corps Overseas Service | `navy_and_marine_corps_overseas_service` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| united nations service | `united_nations_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| united nations service | `united_nations_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Recruiting Service | `navy_recruiting_service` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | rok war service | `rok_war_service` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Special Operations Service | `special_operations_service` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
@@ -136,10 +136,10 @@ Generated: 2026-08-29T08:42:36.215Z
 | Overseas Service | `overseas_service` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | air force longevity service | `air_force_longevity_service` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Developmental Special Duty Ribbon | `developmental_special_duty` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
-| Nuclear Deterrence Operations Service Medal | `nuclear_deterrence_operations_service_medal` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | No | No | configured | not stated | N_DEVICE | base, repeat quantity, authorized special | No | No | Yes | No | Yes |
+| Nuclear Deterrence Operations Service Medal | `nuclear_deterrence_operations_service_medal` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | Yes | Yes | configured | not stated | N_DEVICE | base, repeat quantity, authorized special | No | No | Yes | No | Yes |
 | Selected Marine Corps Reserve | `selected_marine_corps_reserve` | MARINE_CORPS | MARINE_CORPS | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Naval Reserve Sea Service | `naval_reserve_sea_service` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| armed forces reserve | `armed_forces_reserve` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | not stated | M_DEVICE, BRONZE_HOURGLASS, SILVER_HOURGLASS, GOLD_HOURGLASS | base, authorized special | No | No | Yes | No | Yes |
+| armed forces reserve | `armed_forces_reserve` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | not stated | M_DEVICE, BRONZE_HOURGLASS, SILVER_HOURGLASS, GOLD_HOURGLASS | base, authorized special | No | No | Yes | No | Yes |
 | Naval Reserve | `naval_reserve` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Marine Corps Reserve | `marine_corps_reserve` | MARINE_CORPS | MARINE_CORPS | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Reserve Components Overseas Training | `reserve_components_overseas_training` | ARMY | ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
@@ -156,32 +156,32 @@ Generated: 2026-08-29T08:42:36.215Z
 | Comabt Action | `comabt_action` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy E | `navy_e` | MARINE_CORPS | MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Fleet Marine Force | `fleet_marine_force` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| american defense | `american_defense` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| air force combat action | `air_force_combat_action` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| american defense | `american_defense` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| air force combat action | `air_force_combat_action` | AIR_FORCE | AIR_FORCE | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Coast Guard E | `coast_guard_e` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| world war II victory | `world_war_ii_victory` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| world war II victory | `world_war_ii_victory` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | us antarctic expedition ribbon | `us_antarctic_expedition` | COAST_GUARD | COAST_GUARD, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| medal for humane action | `medal_for_humane_action` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| medal for humane action | `medal_for_humane_action` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Coast Guard Enlisted Person of the Year | `coast_guard_enlisted_person_of_the_year` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Air and Space Organizational Excellence Award | `air_and_space_organizational_excellence_award` | AIR_FORCE | AIR_FORCE, SPACE_FORCE | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
-| air force combat readiness | `air_force_combat_readiness` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| air force good condcut | `air_force_good_condcut` | AIR_FORCE | AIR_FORCE | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| air force combat readiness | `air_force_combat_readiness` | AIR_FORCE | AIR_FORCE | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| air force good condcut | `air_force_good_condcut` | AIR_FORCE | AIR_FORCE | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | vietnam gallantry cross | `vietnam_gallantry_cross` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | philippine defense | `philippine_defense` | AIR_FORCE | AIR_FORCE, ARMY, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| philippine liberation | `philippine_liberation` | AIR_FORCE | AIR_FORCE, ARMY, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| philippine liberation | `philippine_liberation` | AIR_FORCE | AIR_FORCE, ARMY, MARINE_CORPS, NAVY | Yes | No | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | air force outstanding airman of the year | `air_force_outstanding_airman_of_the_year` | AIR_FORCE | AIR_FORCE | Yes | No | No | configured | not stated | BRONZE_SERVICE_STAR | base, repeat quantity, authorized special | No | No | Yes | No | Yes |
-| philippine independence | `philippine_independence` | AIR_FORCE | AIR_FORCE, ARMY, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| philippine independence | `philippine_independence` | AIR_FORCE | AIR_FORCE, ARMY, MARINE_CORPS, NAVY | Yes | No | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | air force recognition | `air_force_recognition` | AIR_FORCE | AIR_FORCE | Yes | No | No | configured | not stated | — | base, repeat quantity | No | No | Yes | No | Yes |
-| inter american defense board | `inter_american_defense_board` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| inter american defense board | `inter_american_defense_board` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | united nations | `united_nations` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| nato | `nato` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| nato | `nato` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Navy Ceremonial Guard | `navy_ceremonial_guard` | NAVY | NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | army of occupation | `army_of_occupation` | AIR_FORCE | AIR_FORCE, ARMY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| nato kosovo | `nato_kosovo` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| multinational force and observers | `multinational_force_and_observers` | AIR_FORCE | AIR_FORCE, ARMY, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| kuwait liberation saudi arabia | `kuwait_liberation_saudi_arabia` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| nato kosovo | `nato_kosovo` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| multinational force and observers | `multinational_force_and_observers` | AIR_FORCE | AIR_FORCE, ARMY, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
+| kuwait liberation saudi arabia | `kuwait_liberation_saudi_arabia` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | Yes | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Marine Corps Recruiting | `marine_corps_recruiting` | MARINE_CORPS | MARINE_CORPS | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
-| kuwiat liberation kuwait | `kuwiat_liberation_kuwait` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
+| kuwiat liberation kuwait | `kuwiat_liberation_kuwait` | AIR_FORCE | AIR_FORCE, ARMY, COAST_GUARD, MARINE_CORPS, NAVY | Yes | Yes | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Marine Corps Drill Instructor | `marine_corps_drill_instructor` | MARINE_CORPS | MARINE_CORPS | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | Marine Corps Sercurity Guard | `marine_corps_sercurity_guard` | MARINE_CORPS | MARINE_CORPS | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |
 | DOT-9-11 Ribbon | `dot_9_11` | COAST_GUARD | COAST_GUARD | Yes | No | No | — | UNVERIFIED | — | base | No | No | No | No | No |

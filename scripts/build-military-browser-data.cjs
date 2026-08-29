@@ -30,6 +30,9 @@ for(const award of awards){
 }
 const badgesPath=path.join(ROOT,'data/military/badges.json');
 const badges=fs.existsSync(badgesPath) ? JSON.parse(fs.readFileSync(badgesPath,'utf8')).badges || [] : [];
-const payload=`(function(root){ root.CAPUBMilitaryData = Object.freeze(${JSON.stringify({awards,devices,badges})}); })(typeof globalThis !== 'undefined' ? globalThis : window);\n`;
+const assetProfiles=JSON.parse(fs.readFileSync(path.join(ROOT,'data/military/asset-profiles.json'),'utf8'));
+const deviceVariantPath=path.join(ROOT,'data/military/device-variant-manifest.json');
+const deviceVariants=fs.existsSync(deviceVariantPath) ? JSON.parse(fs.readFileSync(deviceVariantPath,'utf8')) : {entries:[]};
+const payload=`(function(root){ root.CAPUBMilitaryData = Object.freeze(${JSON.stringify({awards,devices,badges,assetProfiles,deviceVariants})}); })(typeof globalThis !== 'undefined' ? globalThis : window);\n`;
 fs.writeFileSync(path.join(ROOT,'military','military-data.js'),payload);
 console.log(`Wrote ${awards.length} awards, ${devices.length} devices, and ${badges.length} badges to military/military-data.js`);

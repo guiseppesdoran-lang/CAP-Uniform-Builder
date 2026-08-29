@@ -207,6 +207,47 @@ test('Air Force full-size medal checkpoint uses separate reviewed local artwork'
   }
 });
 
+test('Air Force and Space Force utility badge counterparts use the regulation OCP backing profile',()=>{
+  const candidates=badges.filter(badge=>
+    (badge.authorizedServices || []).some(service=>['AIR_FORCE','SPACE_FORCE'].includes(service)) &&
+    badge.representations?.embroidered?.status==='AVAILABLE'
+  );
+  assert.ok(candidates.length >= 20,'expected a substantial DAF embroidered badge checkpoint');
+  for(const badge of candidates){
+    const rep=badge.representations.embroidered.byService?.AIR_FORCE || badge.representations.embroidered.byService?.SPACE_FORCE || badge.representations.embroidered;
+    assert.equal(rep.backingProfile,'DAF_SPICE_BROWN_OCP',badge.id);
+    assert.equal(rep.style,'REGULATION_EMBROIDERED',badge.id);
+    assert.ok(fs.existsSync(path.join(ROOT,rep.asset)),badge.id);
+  }
+});
+
+test('military medal import manifests record split suspension and pendant geometry',()=>{
+  for(const file of ['data/imports/vanguard_air_force_mini_medals.json','data/imports/vanguard_air_force_full_size_medals.json']){
+    const manifest=JSON.parse(fs.readFileSync(path.join(ROOT,file),'utf8'));
+    assert.match(manifest.geometryPolicy,/never stretched as one image/i,file);
+    assert.ok(Number.isFinite(manifest.suspensionRibbonHeight),file);
+  }
+});
+
+test('Army utility badge counterparts use the Army black OCP profile',()=>{
+  const candidates=badges.map(badge=>badge.representations?.embroidered?.byService?.ARMY).filter(Boolean);
+  assert.ok(candidates.length >= 10,'expected reviewed Army cloth counterparts');
+  for(const rep of candidates){
+    assert.equal(rep.backingProfile,'ARMY_BLACK_OCP');
+    assert.equal(rep.style,'REGULATION_EMBROIDERED');
+    assert.ok(fs.existsSync(path.join(ROOT,rep.asset)));
+  }
+});
+
+test('Army medal checkpoint preserves split medal geometry',()=>{
+  for(const representation of ['miniatureMedal','fullSizeMedal']){
+    const manifest=JSON.parse(fs.readFileSync(path.join(ROOT,`data/imports/vanguard_army_${representation}.json`),'utf8'));
+    assert.ok(manifest.imported.length > 0,representation);
+    assert.match(manifest.geometryPolicy,/never stretched as one image/i);
+    for(const record of manifest.imported) assert.ok(fs.existsSync(path.join(ROOT,record.asset)),record.awardId);
+  }
+});
+
 test('reviewed naval-service artwork copies preserve official and asset provenance',()=>{
   assert.ok(commonsNavyBadgeImport.imported.length>=14,'expected the reviewed Navy artwork checkpoint');
   for(const record of commonsNavyBadgeImport.imported){

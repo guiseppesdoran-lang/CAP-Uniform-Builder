@@ -408,6 +408,41 @@
     };
   }
 
+  function canonicalDeviceVariantKey({awardId,service,representation='RIBBON',awardCount=1,specialDevices=[]}={}){
+    const normalizedRepresentation=String(representation || 'RIBBON').trim().toUpperCase();
+    const count=Math.max(1,Math.trunc(Number(awardCount) || 1));
+    const specials=unique((specialDevices || []).map(value=>String(value || '').trim().toUpperCase()))
+      .sort();
+    return [
+      slugify(awardId),normalizeService(service),normalizedRepresentation,`COUNT_${count}`,
+      specials.length ? specials.join('+') : 'NO_SPECIAL_DEVICE'
+    ].join('::');
+  }
+
+  function resolveBadgeRepresentation(badge,{service,uniformFamily,preferred='AUTO',assetProfiles=null,variant=null}={}){
+    const reps=badge?.representations || {};
+    const serviceKey=normalizeService(service);
+    const family=String(uniformFamily || '').trim().toUpperCase();
+    const utility=/OCP|ABU|ODU|NWU|MCCUU|UTILITY/.test(family);
+    const requested=String(preferred || 'AUTO').trim().toLowerCase();
+    const representationName=requested === 'auto' ? (utility ? 'embroidered' : 'metal') : requested;
+    const configured=reps[representationName] || {
+      status:'NOT_APPLICABLE',available:false,asset:null
+    };
+    const base=configured.byService?.[serviceKey] || configured;
+    const variantId=variant || base.defaultVariant;
+    const selected=variantId && base.variants?.[variantId] ? base.variants[variantId] : base;
+    const backingId=selected.backingProfile || base.backingProfile ||
+      assetProfiles?.serviceDefaults?.[serviceKey]?.embroideredBacking || null;
+    return {
+      ...selected,
+      representation:representationName,
+      variant:variantId || null,
+      backingProfile:backingId,
+      backing:backingId ? assetProfiles?.backingProfiles?.[backingId] || null : null
+    };
+  }
+
   function getAwardRepresentation(award,context){
     const key={RIBBON:'ribbon',MINIATURE_MEDAL:'miniatureMedal',FULL_SIZE_MEDAL:'fullSizeMedal'}[String(context || '').toUpperCase()] || context;
     return normalizeRepresentations(award)[key] || {available:false,asset:null};
@@ -531,7 +566,8 @@
     isCapAward, isAuthorizedForService, getAwardPrecedence, compareAwardsForMember,
     sortAwardsForMember, canonicalAwardKey, canonicalizeAwards, compareAwardsUniversal,
     isBadgeAuthorizedForService, getBadgePrecedence, sortBadgesForMember,
-    inferDeviceRules, normalizeRepresentations, createAwardSelection, getAwardRepresentation,
+    inferDeviceRules, normalizeRepresentations, createAwardSelection, canonicalDeviceVariantKey,
+    resolveBadgeRepresentation, getAwardRepresentation,
     calculateDevices, mergeAwardRecords, validateCatalog
   };
 });

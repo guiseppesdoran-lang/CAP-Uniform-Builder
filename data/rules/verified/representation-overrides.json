@@ -1283,6 +1283,139 @@
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609850.jpg?v=1617287634"
       }
+    },
+    "army_achievement": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/army/army_achievement.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/army-achievement-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617112.jpg?v=1617287784"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/army/army_achievement.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/army-achievement-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609260.jpg?v=1617287785"
+      }
+    },
+    "army_commendation": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/army/army_commendation.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/army-commendation-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_commendation_miniature_medal_2018_arcom_mini_1.jpeg?v=1423544763"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/army/army_commendation.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/army-commendation-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Army-Commendation-Medal.jpeg?v=1423544765"
+      }
+    },
+    "army_good_conduct": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/army/army_good_conduct.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/army-good-conduct-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_good_conduct_miniature_medal_2021_armygood_mini_1_94af51d1-5483-486d-9a9c-037d21b1c222.jpeg?v=1423544753"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/army/army_good_conduct.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/army-good-conduct-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/Army-Good-Conduct-Medal.jpeg?v=1423544755"
+      }
+    },
+    "army_distinguished_service_cross": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/army/army_distinguished_service_cross.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/distinguished-service-cross-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_distinguished_service_cross_miniature_medal_2019_armydsc_mini_1.jpeg?v=1423544756"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/army/army_distinguished_service_cross.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/distinguished-service-cross-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609460.jpg?v=1617287778"
+      }
+    },
+    "army_soldiers_medal": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/army/army_soldiers_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/soldiers-medal-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_soldiers_medal_heroism_miniature_medal_2024_sold_mini_2_b50dc37e-a78c-41d5-822a-3db6ed01791d.jpeg?v=1423544552"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/army/army_soldiers_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/soldiers-medal-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/122_army_soldiers_medal_heroism.jpeg?v=1423544554"
+      }
+    },
+    "army_distinguished_service": {
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/army/army_distinguished_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/army-distinguished-service-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/228_army_distinguished_service_medal.jpeg?v=1423544761"
+      }
     }
   }
 }
