@@ -1,0 +1,643 @@
+{
+  "source": "https://www.vanguardmil.com/collections/miniature-medals",
+  "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
+  "service": "SPACE_FORCE",
+  "representation": "miniatureMedal",
+  "accessed": "2026-08-29",
+  "canvas": [
+    50,
+    176
+  ],
+  "suspensionRibbonHeight": 116,
+  "geometryPolicy": "Suspension ribbon and pendant are normalized independently; the photographed medal is never stretched as one image.",
+  "imported": [
+    {
+      "awardId": "space_force_good_conduct_medal",
+      "productTitle": null,
+      "productUrl": "https://www.vanguardmil.com/products/miniature-medal-space-force-good-conduct",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617571.jpg?v=1674668564",
+      "score": null,
+      "asset": "images/military-mini-medals/space-force/space_force_good_conduct_medal.png"
+    }
+  ],
+  "unmatched": [
+    {
+      "title": "Miniature Medal: Afghanistan Campaign",
+      "key": "afghanistan campaign",
+      "score": 0.739,
+      "runnerUp": 0.64
+    },
+    {
+      "title": "Miniature Medal: Air Force Armed Forces Reserve",
+      "key": "armed forces reserve",
+      "score": 0.585,
+      "runnerUp": 0.476
+    },
+    {
+      "title": "Miniature Medal: Air Force Meritorious Civilian Service",
+      "key": "meritorious civilian service",
+      "score": 0.597,
+      "runnerUp": 0.373
+    },
+    {
+      "title": "Miniature Medal: Air Medal",
+      "key": "air",
+      "score": 1.383,
+      "runnerUp": 1.373
+    },
+    {
+      "title": "Miniature Medal: Air Reserve Meritorious Service",
+      "key": "air reserve meritorious service",
+      "score": 0.79,
+      "runnerUp": 0.48
+    },
+    {
+      "title": "Miniature Medal: American Campaign",
+      "key": "american campaign",
+      "score": 0.821,
+      "runnerUp": 0.711
+    },
+    {
+      "title": "Miniature Medal: American Defense Service",
+      "key": "american defense service",
+      "score": 0.658,
+      "runnerUp": 0.372
+    },
+    {
+      "title": "Miniature Medal: Antarctica Service",
+      "key": "antarctica service",
+      "score": 0.709,
+      "runnerUp": 0.465
+    },
+    {
+      "title": "Miniature Medal: Armed Forces Expeditionary",
+      "key": "armed forces expeditionary",
+      "score": 0.625,
+      "runnerUp": 0.48
+    },
+    {
+      "title": "Miniature Medal: Armed Forces Service Medal",
+      "key": "armed forces service",
+      "score": 0.693,
+      "runnerUp": 0.537
+    },
+    {
+      "title": "Miniature Medal: Army Achievement",
+      "key": "army achievement",
+      "score": 2.115,
+      "runnerUp": 0.476
+    },
+    {
+      "title": "Miniature Medal: Army and Air Force WWII Occupation",
+      "key": "army and wwii occupation",
+      "score": 0.663,
+      "runnerUp": 0.592
+    },
+    {
+      "title": "Miniature Medal: Army Armed Forces Reserve",
+      "key": "army armed forces reserve",
+      "score": 0.522,
+      "runnerUp": 0.426
+    },
+    {
+      "title": "Miniature Medal: ARMY CIVILIAN SERVICE ACHIEVEMENT",
+      "key": "army civilian service achievement",
+      "score": 1.55,
+      "runnerUp": 0.52
+    },
+    {
+      "title": "Miniature Medal: Army Commendation",
+      "key": "army commendation",
+      "score": 2.128,
+      "runnerUp": 0.429
+    },
+    {
+      "title": "Miniature Medal: Army Good Conduct",
+      "key": "army good conduct",
+      "score": 1.132,
+      "runnerUp": 0.513
+    },
+    {
+      "title": "Miniature Medal: ARMY MERITORIOUS PUBLIC SERVICE MEDAL",
+      "key": "army meritorious public service",
+      "score": 0.643,
+      "runnerUp": 0.321
+    },
+    {
+      "title": "Miniature Medal: Army National Guard Reserve Component Achievement",
+      "key": "army national guard reserve component achievement",
+      "score": 1.333,
+      "runnerUp": 0.432
+    },
+    {
+      "title": "Miniature Medal: Army Reserve Component Achievement",
+      "key": "army reserve component achievement",
+      "score": 1.539,
+      "runnerUp": 0.464
+    },
+    {
+      "title": "Miniature Medal: Army Superior Civilian Service - old style",
+      "key": "army superior civilian service old style",
+      "score": 0.558,
+      "runnerUp": 0.364
+    },
+    {
+      "title": "Miniature Medal: Asiatic Pacific Campaign",
+      "key": "asiatic pacific campaign",
+      "score": 0.69,
+      "runnerUp": 0.685
+    },
+    {
+      "title": "Miniature Medal: Bronze Star",
+      "key": "bronze star",
+      "score": 0.333,
+      "runnerUp": 0.312
+    },
+    {
+      "title": "Miniature Medal: Coast Guard 9-11",
+      "key": "coast guard 9 11",
+      "score": 0.269,
+      "runnerUp": 0.261
+    },
+    {
+      "title": "Miniature Medal: Coast Guard Achievement",
+      "key": "coast guard achievement",
+      "score": 1.78,
+      "runnerUp": 0.408
+    },
+    {
+      "title": "Miniature Medal: Coast Guard Armed Forces Reserve",
+      "key": "coast guard armed forces reserve",
+      "score": 0.453,
+      "runnerUp": 0.377
+    },
+    {
+      "title": "Miniature Medal: Coast Guard Commendation",
+      "key": "coast guard commendation",
+      "score": 1.8,
+      "runnerUp": 0.417
+    },
+    {
+      "title": "Miniature Medal: Coast Guard Distinguished Service",
+      "key": "coast guard distinguished service",
+      "score": 0.629,
+      "runnerUp": 0.345
+    },
+    {
+      "title": "Miniature Medal: Coast Guard Expert Pistol",
+      "key": "coast guard expert pistol",
+      "score": 0.355,
+      "runnerUp": 0.328
+    },
+    {
+      "title": "Miniature Medal: Coast Guard Expert Rifle",
+      "key": "coast guard expert rifle",
+      "score": 0.367,
+      "runnerUp": 0.361
+    },
+    {
+      "title": "Miniature Medal: Coast Guard Medal for Heroism",
+      "key": "coast guard for heroism",
+      "score": 0.409,
+      "runnerUp": 0.4
+    },
+    {
+      "title": "Miniature Medal: Coast Guard Reserve Good Conduct",
+      "key": "coast guard reserve good conduct",
+      "score": 0.929,
+      "runnerUp": 0.414
+    },
+    {
+      "title": "Miniature Medal: Defense Distinguished Service",
+      "key": "defense distinguished service",
+      "score": 0.652,
+      "runnerUp": 0.333
+    },
+    {
+      "title": "Miniature Medal: Defense Meritorious Service",
+      "key": "defense meritorious service",
+      "score": 0.667,
+      "runnerUp": 0.377
+    },
+    {
+      "title": "Miniature Medal: Defense Superior Service",
+      "key": "defense superior service",
+      "score": 0.79,
+      "runnerUp": 0.386
+    },
+    {
+      "title": "Miniature Medal: Distinguished Flying Cross",
+      "key": "distinguished flying cross",
+      "score": 0.32,
+      "runnerUp": 0.275
+    },
+    {
+      "title": "Miniature Medal: Distinguished Service Cross",
+      "key": "distinguished service cross",
+      "score": 0.573,
+      "runnerUp": 0.377
+    },
+    {
+      "title": "Miniature Medal: Global War on Terrorism Expeditionary",
+      "key": "global war on terrorism expeditionary",
+      "score": 0.432,
+      "runnerUp": 0.407
+    },
+    {
+      "title": "Miniature Medal: Global War on Terrorism Service",
+      "key": "global war on terrorism service",
+      "score": 0.713,
+      "runnerUp": 0.286
+    },
+    {
+      "title": "Miniature Medal: Humanitarian Service",
+      "key": "humanitarian service",
+      "score": 0.621,
+      "runnerUp": 0.444
+    },
+    {
+      "title": "Miniature Medal: Inter American Defense Board",
+      "key": "inter american defense board",
+      "score": 0.414,
+      "runnerUp": 0.407
+    },
+    {
+      "title": "Miniature Medal: Iraq Campaign",
+      "key": "iraq campaign",
+      "score": 0.829,
+      "runnerUp": 0.712
+    },
+    {
+      "title": "Miniature Medal: Joint Service Achievement",
+      "key": "joint service achievement",
+      "score": 1.744,
+      "runnerUp": 0.525
+    },
+    {
+      "title": "Miniature Medal: Korean Service",
+      "key": "korean service",
+      "score": 0.631,
+      "runnerUp": 0.359
+    },
+    {
+      "title": "Miniature Medal: Kosovo Campaign Medal",
+      "key": "kosovo campaign",
+      "score": 0.85,
+      "runnerUp": 0.689
+    },
+    {
+      "title": "Miniature Medal: Kuwait Liberation Saudi",
+      "key": "kuwait liberation saudi",
+      "score": 0.4,
+      "runnerUp": 0.375
+    },
+    {
+      "title": "Miniature Medal: Marine Corps Armed Forces Reserve",
+      "key": "marine corps armed forces reserve",
+      "score": 0.481,
+      "runnerUp": 0.4
+    },
+    {
+      "title": "Miniature Medal: Marine Corps China Service",
+      "key": "marine corps china service",
+      "score": 0.651,
+      "runnerUp": 0.511
+    },
+    {
+      "title": "Miniature Medal: Marine Corps Expeditionary",
+      "key": "marine corps expeditionary",
+      "score": 0.5,
+      "runnerUp": 0.413
+    },
+    {
+      "title": "Miniature Medal: Marine Corps Good Conduct",
+      "key": "marine corps good conduct",
+      "score": 1.068,
+      "runnerUp": 0.392
+    },
+    {
+      "title": "Miniature Medal: Marine Corps Selected Reserve",
+      "key": "marine corps selected reserve",
+      "score": 0.444,
+      "runnerUp": 0.44
+    },
+    {
+      "title": "Miniature Medal: Marine Corps WWII Occupation",
+      "key": "marine corps wwii occupation",
+      "score": 0.444,
+      "runnerUp": 0.376
+    },
+    {
+      "title": "Miniature Medal: Medal for Humane Action",
+      "key": "for humane action",
+      "score": 0.513,
+      "runnerUp": 0.476
+    },
+    {
+      "title": "Miniature Medal: Meritorious Service",
+      "key": "meritorious service",
+      "score": 0.7,
+      "runnerUp": 0.364
+    },
+    {
+      "title": "Miniature Medal: Mexican Border Defense",
+      "key": "mexican border defense",
+      "score": 0.348,
+      "runnerUp": 0.339
+    },
+    {
+      "title": "Miniature Medal: National Guard Armed Forces Reserve",
+      "key": "national guard armed forces reserve",
+      "score": 0.467,
+      "runnerUp": 0.464
+    },
+    {
+      "title": "Miniature Medal: NATO Article 5 Medal: Active Endeavour",
+      "key": "nato article 5 active endeavour",
+      "score": 0.456,
+      "runnerUp": 0.452
+    },
+    {
+      "title": "Miniature Medal: NATO Kosovo Medal",
+      "key": "nato kosovo",
+      "score": 0.375,
+      "runnerUp": 0.348
+    },
+    {
+      "title": "Miniature Medal: NATO Medal",
+      "key": "nato",
+      "score": 0.5,
+      "runnerUp": 0.444
+    },
+    {
+      "title": "Miniature Medal: NATO Non-Article 5 Medal: All Balkans Operation",
+      "key": "nato non article 5 all balkans operation",
+      "score": 0.442,
+      "runnerUp": 0.394
+    },
+    {
+      "title": "Miniature Medal: NATO Non-Article-5 Medal: Afghanistan",
+      "key": "nato non article 5 afghanistan",
+      "score": 0.364,
+      "runnerUp": 0.321
+    },
+    {
+      "title": "Miniature Medal: Navy and Coast Guard Occupation WWII",
+      "key": "navy and coast guard occupation wwii",
+      "score": 0.563,
+      "runnerUp": 0.55
+    },
+    {
+      "title": "Miniature Medal: Navy and Marine Corps Achievement",
+      "key": "navy and marine corps achievement",
+      "score": 1.5,
+      "runnerUp": 0.633
+    },
+    {
+      "title": "Miniature Medal: Navy and Marine Corps Commendation",
+      "key": "navy and marine corps commendation",
+      "score": 1.522,
+      "runnerUp": 0.6
+    },
+    {
+      "title": "Miniature Medal: Navy and Marine Corps Medal",
+      "key": "navy and marine corps",
+      "score": 0.611,
+      "runnerUp": 0.578
+    },
+    {
+      "title": "Miniature Medal: Navy Armed Forces Reserve",
+      "key": "navy armed forces reserve",
+      "score": 0.522,
+      "runnerUp": 0.426
+    },
+    {
+      "title": "Miniature Medal: Navy China Service",
+      "key": "navy china service",
+      "score": 0.567,
+      "runnerUp": 0.483
+    },
+    {
+      "title": "Miniature Medal: Navy Cross",
+      "key": "navy cross",
+      "score": 0.4,
+      "runnerUp": 0.345
+    },
+    {
+      "title": "Miniature Medal: Navy Distinguished Service",
+      "key": "navy distinguished service",
+      "score": 0.675,
+      "runnerUp": 0.353
+    },
+    {
+      "title": "Miniature Medal: Navy Expeditionary",
+      "key": "navy expeditionary",
+      "score": 0.4,
+      "runnerUp": 0.378
+    },
+    {
+      "title": "Miniature Medal: Navy Expert Pistol",
+      "key": "navy expert pistol",
+      "score": 0.372,
+      "runnerUp": 0.326
+    },
+    {
+      "title": "Miniature Medal: Navy Expert Rifle",
+      "key": "navy expert rifle",
+      "score": 0.381,
+      "runnerUp": 0.333
+    },
+    {
+      "title": "Miniature Medal: Navy Good Conduct",
+      "key": "navy good conduct",
+      "score": 1.083,
+      "runnerUp": 0.462
+    },
+    {
+      "title": "Miniature Medal: Navy Reserve",
+      "key": "navy reserve",
+      "score": 0.408,
+      "runnerUp": 0.378
+    },
+    {
+      "title": "Miniature Medal: Navy Reserve Meritorious Service",
+      "key": "navy reserve meritorious service",
+      "score": 0.723,
+      "runnerUp": 0.345
+    },
+    {
+      "title": "Miniature Medal: Navy Superior Civilian Service",
+      "key": "navy superior civilian service",
+      "score": 0.62,
+      "runnerUp": 0.367
+    },
+    {
+      "title": "Miniature Medal: PHS Covid-19 Pandemic Campaign Medal",
+      "key": "phs covid 19 pandemic campaign",
+      "score": 0.592,
+      "runnerUp": 0.579
+    },
+    {
+      "title": "Miniature Medal: PHS Covid-19 Pandemic Civilian Service Medal",
+      "key": "phs covid 19 pandemic civilian service",
+      "score": 0.431,
+      "runnerUp": 0.316
+    },
+    {
+      "title": "Miniature Medal: PHS Global Response Service Award",
+      "key": "phs global response service award",
+      "score": 0.612,
+      "runnerUp": 0.611
+    },
+    {
+      "title": "Miniature Medal: PHS Response Service Award",
+      "key": "phs response service award",
+      "score": 0.623,
+      "runnerUp": 0.619
+    },
+    {
+      "title": "Miniature Medal: Prisoner of War",
+      "key": "prisoner of war",
+      "score": 0.391,
+      "runnerUp": 0.3
+    },
+    {
+      "title": "Miniature Medal: Public Health Service Crisis Response",
+      "key": "public health service crisis response",
+      "score": 0.486,
+      "runnerUp": 0.355
+    },
+    {
+      "title": "Miniature Medal: Public Health Service Foreign Duty Service Award",
+      "key": "public health service foreign duty service award",
+      "score": 0.506,
+      "runnerUp": 0.504
+    },
+    {
+      "title": "Miniature Medal: Public Health Service Hazardous Duty",
+      "key": "public health service hazardous duty",
+      "score": 0.562,
+      "runnerUp": 0.491
+    },
+    {
+      "title": "Miniature Medal: Public Health Service Isolated Duty",
+      "key": "public health service isolated duty",
+      "score": 0.602,
+      "runnerUp": 0.521
+    },
+    {
+      "title": "Miniature Medal: Public Health Service Special Assignment",
+      "key": "public health service special assignment",
+      "score": 0.537,
+      "runnerUp": 0.497
+    },
+    {
+      "title": "Miniature Medal: Purple Heart",
+      "key": "purple heart",
+      "score": 0.368,
+      "runnerUp": 0.324
+    },
+    {
+      "title": "Miniature Medal: Silver Star",
+      "key": "silver star",
+      "score": 0.364,
+      "runnerUp": 0.333
+    },
+    {
+      "title": "Miniature Medal: Soldiers Medal",
+      "key": "soldiers",
+      "score": 0.333,
+      "runnerUp": 0.308
+    },
+    {
+      "title": "Miniature Medal: Southwest Asia Service",
+      "key": "southwest asia service",
+      "score": 0.573,
+      "runnerUp": 0.341
+    },
+    {
+      "title": "Miniature Medal: United Nation Iraq/Kuwait Observer Mission",
+      "key": "united nation iraq kuwait observer mission",
+      "score": 0.4,
+      "runnerUp": 0.358
+    },
+    {
+      "title": "Miniature Medal: United Nation Operations in Haiti",
+      "key": "united nation operations in haiti",
+      "score": 0.611,
+      "runnerUp": 0.381
+    },
+    {
+      "title": "Miniature Medal: United Nation Operations in Somalia",
+      "key": "united nation operations in somalia",
+      "score": 0.625,
+      "runnerUp": 0.388
+    },
+    {
+      "title": "Miniature Medal: United Nation Operations in Western Sahara",
+      "key": "united nation operations in western sahara",
+      "score": 0.594,
+      "runnerUp": 0.438
+    },
+    {
+      "title": "Miniature Medal: United Nations Service",
+      "key": "united nations service",
+      "score": 0.777,
+      "runnerUp": 0.468
+    },
+    {
+      "title": "Miniature Medal: US Navy Arctic Service",
+      "key": "us navy arctic service",
+      "score": 0.617,
+      "runnerUp": 0.364
+    },
+    {
+      "title": "Miniature Medal: Vietnam Civil Action First Class",
+      "key": "vietnam civil action first class",
+      "score": 0.377,
+      "runnerUp": 0.353
+    },
+    {
+      "title": "Miniature Medal: Vietnam Civil Action Second Class",
+      "key": "vietnam civil action second class",
+      "score": 0.421,
+      "runnerUp": 0.4
+    },
+    {
+      "title": "Miniature Medal: Vietnam Service",
+      "key": "vietnam service",
+      "score": 0.662,
+      "runnerUp": 0.4
+    },
+    {
+      "title": "Miniature Size Medal: California National Guard Commendation Medal",
+      "key": "california national guard commendation",
+      "score": 1.53,
+      "runnerUp": 0.476
+    },
+    {
+      "title": "Miniature Size Medal: California National Guard Good Conduct",
+      "key": "california national guard good conduct",
+      "score": 0.834,
+      "runnerUp": 0.476
+    },
+    {
+      "title": "Miniature Size Medal: California National Guard Medal of Merit",
+      "key": "california national guard of merit",
+      "score": 0.48,
+      "runnerUp": 0.429
+    },
+    {
+      "title": "Miniature Size Medal: California National Guard Service",
+      "key": "california national guard service",
+      "score": 0.629,
+      "runnerUp": 0.517
+    },
+    {
+      "title": "Miniature Size Medal: Public Health Service Ebola Campaign",
+      "key": "public health service ebola campaign",
+      "score": 0.733,
+      "runnerUp": 0.549
+    }
+  ]
+}

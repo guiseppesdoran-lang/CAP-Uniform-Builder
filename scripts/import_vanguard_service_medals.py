@@ -43,7 +43,9 @@ def main() -> None:
     missing = []
     for match in matches:
         current = overrides.get("awards", {}).get(match["awardId"], {}).get(args.representation, {})
-        if current.get("status") != "AVAILABLE":
+        # NOT_APPLICABLE is an explicit regulatory classification, not an art
+        # gap. Commercial product names must never override that decision.
+        if current.get("status") not in {"AVAILABLE", "NOT_APPLICABLE"}:
             missing.append(match)
     if not args.apply:
         print(json.dumps({"service": service, "representation": args.representation, "matches": missing, "unmatched": unmatched}, indent=2))
@@ -67,12 +69,15 @@ def main() -> None:
         imported.append({**match, "asset": relative.as_posix()})
     OVERRIDES.write_text(json.dumps(overrides, indent=2) + "\n", encoding="utf-8")
     manifest = ROOT / "data" / "imports" / f"vanguard_{slug.replace('-', '_')}_{args.representation}.json"
+    previous = json.loads(manifest.read_text(encoding="utf-8")) if manifest.exists() else {}
+    merged_imports = {record["awardId"]: record for record in previous.get("imported", [])}
+    merged_imports.update({record["awardId"]: record for record in imported})
     manifest.write_text(json.dumps({
         "source": template.split("/products.json", 1)[0], "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
         "service": service, "representation": args.representation, "accessed": date.today().isoformat(),
         "canvas": list(canvas), "suspensionRibbonHeight": suspension_height,
         "geometryPolicy": "Suspension ribbon and pendant are normalized independently; the photographed medal is never stretched as one image.",
-        "imported": imported, "unmatched": unmatched
+        "imported": sorted(merged_imports.values(), key=lambda record: record["awardId"]), "unmatched": unmatched
     }, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"service": service, "representation": args.representation, "imported": len(imported), "unmatched": len(unmatched)}, indent=2))
 

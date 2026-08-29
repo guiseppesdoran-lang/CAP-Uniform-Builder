@@ -994,9 +994,78 @@
           "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_aviator_insignia/default.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_aviator_insignia/default.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_aviator_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_aviator_insignia/default.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_aviator_insignia/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            },
+            "MARINE_CORPS": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/marine-corps/navy_aviator_insignia/default.png",
+              "backingProfile": "MARINE_BLACK_MARPAT",
+              "sourceMetalAsset": "images/military-badges/navy/navy_aviator_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/marine-corps/navy_aviator_insignia/default.png",
+                  "backingProfile": "MARINE_BLACK_MARPAT",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_aviator_insignia/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_aviator_insignia/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_aviator_insignia/default.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_aviator_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -1123,9 +1192,78 @@
           "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_flight_officer_insignia/default.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_flight_officer_insignia/default.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_flight_officer_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_flight_officer_insignia/default.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_flight_officer_insignia/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            },
+            "MARINE_CORPS": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/marine-corps/navy_flight_officer_insignia/default.png",
+              "backingProfile": "MARINE_BLACK_MARPAT",
+              "sourceMetalAsset": "images/military-badges/navy/navy_flight_officer_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/marine-corps/navy_flight_officer_insignia/default.png",
+                  "backingProfile": "MARINE_BLACK_MARPAT",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_flight_officer_insignia/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_flight_officer_insignia/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_flight_officer_insignia/default.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_flight_officer_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -1245,9 +1383,54 @@
           "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -1294,9 +1477,54 @@
           "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_aviation_supply_corps_insignia/default.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_aviation_supply_corps_insignia/default.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_aviation_supply_corps_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_aviation_supply_corps_insignia/default.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_aviation_supply_corps_insignia/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_aviation_supply_corps_insignia/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_aviation_supply_corps_insignia/default.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_aviation_supply_corps_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -1541,9 +1769,72 @@
           "defaultVariant": "officer"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/officer.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_fleet_marine_force_insignia/officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "officer",
+              "variants": {
+                "officer": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/officer.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_fleet_marine_force_insignia/officer.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "chaplain": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/chaplain.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_fleet_marine_force_insignia/chaplain.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_fleet_marine_force_insignia/officer.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "officer",
+          "variants": {
+            "officer": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_fleet_marine_force_insignia/officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "chaplain": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/chaplain.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_fleet_marine_force_insignia/chaplain.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -1603,9 +1894,72 @@
           "defaultVariant": "officer"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/officer.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_information_warfare_insignia/officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "officer",
+              "variants": {
+                "officer": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/officer.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_information_warfare_insignia/officer.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "enlisted": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/enlisted.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_information_warfare_insignia/enlisted.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_information_warfare_insignia/officer.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "officer",
+          "variants": {
+            "officer": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_information_warfare_insignia/officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "enlisted": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/enlisted.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_information_warfare_insignia/enlisted.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -1862,9 +2216,105 @@
           "defaultVariant": "navy_marine_corps_parachutist"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "navy_marine_corps_parachutist",
+              "variants": {
+                "navy_marine_corps_parachutist": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "basic_parachutist": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_parachutist_insignia/basic_parachutist.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/army/army_parachutist_badge/basic.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            },
+            "MARINE_CORPS": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/marine-corps/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+              "backingProfile": "MARINE_BLACK_MARPAT",
+              "sourceMetalAsset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "navy_marine_corps_parachutist",
+              "variants": {
+                "navy_marine_corps_parachutist": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/marine-corps/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+                  "backingProfile": "MARINE_BLACK_MARPAT",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "basic_parachutist": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/marine-corps/navy_parachutist_insignia/basic_parachutist.png",
+                  "backingProfile": "MARINE_BLACK_MARPAT",
+                  "sourceMetalAsset": "images/military-badges/army/army_parachutist_badge/basic.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "navy_marine_corps_parachutist",
+          "variants": {
+            "navy_marine_corps_parachutist": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "basic_parachutist": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_parachutist_insignia/basic_parachutist.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/army/army_parachutist_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -2233,9 +2683,162 @@
           "defaultVariant": "officer"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/officer.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "officer",
+              "variants": {
+                "officer": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/officer.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/officer.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "enlisted": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/enlisted.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/enlisted.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "medical": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/medical.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/medical.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "engineering_duty": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/engineering_duty.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/engineering_duty.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "supply": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/supply.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/supply.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "deep_submergence_officer": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/deep_submergence_officer.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/deep_submergence_officer.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "deep_submergence_enlisted": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/deep_submergence_enlisted.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/deep_submergence_enlisted.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/officer.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "officer",
+          "variants": {
+            "officer": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "enlisted": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/enlisted.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/enlisted.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "medical": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/medical.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/medical.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "engineering_duty": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/engineering_duty.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/engineering_duty.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "supply": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/supply.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/supply.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "deep_submergence_officer": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/deep_submergence_officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/deep_submergence_officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "deep_submergence_enlisted": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/deep_submergence_enlisted.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_submarine_warfare_insignia/deep_submergence_enlisted.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -2345,9 +2948,162 @@
           "defaultVariant": "officer"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/officer.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "officer",
+              "variants": {
+                "officer": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/officer.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/officer.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "enlisted": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/enlisted.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/enlisted.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "dental": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/dental.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/dental.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "medical": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/medical.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/medical.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "medical_service": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/medical_service.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/medical_service.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "nurse": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/nurse.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/nurse.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                },
+                "supply": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/supply.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/supply.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/officer.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "officer",
+          "variants": {
+            "officer": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "enlisted": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/enlisted.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/enlisted.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "dental": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/dental.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/dental.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "medical": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/medical.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/medical.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "medical_service": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/medical_service.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/medical_service.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "nurse": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/nurse.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/nurse.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "supply": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/supply.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_surface_warfare_insignia/supply.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -2403,9 +3159,54 @@
           "defaultVariant": "diving_officer"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_diving_insignia/diving_officer.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_diving_insignia/diving_officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_diving_insignia/diving_officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "diving_officer",
+              "variants": {
+                "diving_officer": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_diving_insignia/diving_officer.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_diving_insignia/diving_officer.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_diving_insignia/diving_officer.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "diving_officer",
+          "variants": {
+            "diving_officer": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_diving_insignia/diving_officer.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_diving_insignia/diving_officer.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6496,9 +7297,54 @@
           "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
+          "byService": {
+            "MARINE_CORPS": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
+              "backingProfile": "MARINE_BLACK_MARPAT",
+              "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
+                  "backingProfile": "MARINE_BLACK_MARPAT",
+                  "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "MARINE_BLACK_MARPAT",
+          "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
+              "backingProfile": "MARINE_BLACK_MARPAT",
+              "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6545,9 +7391,54 @@
           "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
+          "byService": {
+            "MARINE_CORPS": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
+              "backingProfile": "MARINE_BLACK_MARPAT",
+              "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
+                  "backingProfile": "MARINE_BLACK_MARPAT",
+                  "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "MARINE_BLACK_MARPAT",
+          "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
+              "backingProfile": "MARINE_BLACK_MARPAT",
+              "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {

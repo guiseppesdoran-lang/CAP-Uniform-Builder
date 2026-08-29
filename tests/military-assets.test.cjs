@@ -182,8 +182,13 @@ test('Air Force miniature-medal checkpoint uses reviewed local McChord geometry'
     assert.equal(buffer.readUInt32BE(16),50,`${record.awardId} width`);
     assert.equal(buffer.readUInt32BE(20),176,`${record.awardId} height`);
     assert.ok([4,6].includes(buffer[25]),`${record.awardId} lacks alpha`);
-    assert.equal(overrides[record.awardId]?.miniatureMedal?.asset,record.asset,`${record.awardId} override mapping`);
-    assert.equal(overrides[record.awardId]?.miniatureMedal?.style,'MCCHORD_DIGITAL_MEDAL');
+    const resolved=overrides[record.awardId]?.miniatureMedal;
+    if(resolved?.status==='NOT_APPLICABLE'){
+      assert.equal(resolved.asset,null,`${record.awardId} ribbon-only override`);
+      continue;
+    }
+    assert.equal(resolved?.asset,record.asset,`${record.awardId} override mapping`);
+    assert.equal(resolved?.style,'MCCHORD_DIGITAL_MEDAL');
   }
 });
 
@@ -203,7 +208,12 @@ test('Air Force full-size medal checkpoint uses separate reviewed local artwork'
     assert.equal(buffer.readUInt32BE(16),100,`${record.awardId} width`);
     assert.equal(buffer.readUInt32BE(20),220,`${record.awardId} height`);
     assert.ok([4,6].includes(buffer[25]),`${record.awardId} lacks alpha`);
-    assert.equal(overrides[record.awardId]?.fullSizeMedal?.asset,record.asset,`${record.awardId} full-size mapping`);
+    const resolved=overrides[record.awardId]?.fullSizeMedal;
+    if(resolved?.status==='NOT_APPLICABLE'){
+      assert.equal(resolved.asset,null,`${record.awardId} ribbon-only override`);
+      continue;
+    }
+    assert.equal(resolved?.asset,record.asset,`${record.awardId} full-size mapping`);
   }
 });
 
@@ -248,6 +258,29 @@ test('Army medal checkpoint preserves split medal geometry',()=>{
   }
 });
 
+test('naval service medal checkpoints preserve split geometry and local assets',()=>{
+  for(const service of ['navy','marine_corps','coast_guard']){
+    for(const representation of ['miniatureMedal','fullSizeMedal']){
+      const manifest=JSON.parse(fs.readFileSync(path.join(ROOT,`data/imports/vanguard_${service}_${representation}.json`),'utf8'));
+      assert.ok(manifest.imported.length > 0,`${service} ${representation}`);
+      assert.match(manifest.geometryPolicy,/never stretched as one image/i);
+      for(const record of manifest.imported) assert.ok(fs.existsSync(path.join(ROOT,record.asset)),record.awardId);
+    }
+  }
+});
+
+test('Navy and Marine utility badge counterparts retain distinct regulated backings',()=>{
+  const expected={NAVY:'NAVAL_BLACK_NWU_III',MARINE_CORPS:'MARINE_BLACK_MARPAT'};
+  for(const [service,profile] of Object.entries(expected)){
+    const records=badges.map(badge=>badge.representations?.embroidered?.byService?.[service]).filter(Boolean);
+    assert.ok(records.length > 0,service);
+    for(const rep of records){
+      assert.equal(rep.backingProfile,profile);
+      assert.ok(fs.existsSync(path.join(ROOT,rep.asset)));
+    }
+  }
+});
+
 test('reviewed naval-service artwork copies preserve official and asset provenance',()=>{
   assert.ok(commonsNavyBadgeImport.imported.length>=14,'expected the reviewed Navy artwork checkpoint');
   for(const record of commonsNavyBadgeImport.imported){
@@ -275,4 +308,71 @@ test('Navy and Marine Corps parachutist variants use reviewed local artwork',()=
     const absolute=path.join(ROOT,...variant.asset.split('/'));
     assert.ok(fs.existsSync(absolute),`${variant.asset} missing`);
   }
+});
+
+test('ribbon-only awards cannot resolve to miniature or full-size medals',()=>{
+  const applicability=require('../data/rules/verified/medal-representation-applicability.json');
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  assert.ok(applicability.ribbonOnlyAwardIds.length >= 50,'expected a substantive explicit ribbon-only classification');
+  for(const awardId of applicability.ribbonOnlyAwardIds){
+    for(const representation of ['miniatureMedal','fullSizeMedal']){
+      const record=overrides[awardId]?.[representation];
+      assert.equal(record?.status,'NOT_APPLICABLE',`${awardId}:${representation}`);
+      assert.equal(record?.asset,null,`${awardId}:${representation}`);
+      assert.equal(record?.verificationStatus,'OFFICIALLY_CLASSIFIED_RIBBON_ONLY',`${awardId}:${representation}`);
+    }
+  }
+});
+
+test('combat action and unit awards remain ribbon-only even when catalog artwork resembles a medal',()=>{
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  for(const awardId of ['combat_action','air_force_combat_action','joint_meritorious_unit_award','navy_unit_commendation']){
+    assert.equal(overrides[awardId].miniatureMedal.status,'NOT_APPLICABLE',awardId);
+    assert.equal(overrides[awardId].fullSizeMedal.status,'NOT_APPLICABLE',awardId);
+  }
+});
+
+test('reviewed CAP fabric badges have a dress counterpart and regulation blue backing metadata',()=>{
+  const manifest=require('../data/military/cap-badge-representations.json');
+  assert.ok(manifest.records.length >= 25,'expected reviewed CAP metal/fabric pairs');
+  for(const badge of manifest.records){
+    assert.equal(badge.organization,'CAP',badge.id);
+    assert.equal(badge.representations.metal.status,'AVAILABLE',badge.id);
+    assert.equal(badge.representations.embroidered.status,'AVAILABLE',badge.id);
+    assert.equal(badge.representations.embroidered.backingProfile,'CAP_DARK_BLUE',badge.id);
+    assert.equal(badge.representations.embroidered.borderInches,0.125,badge.id);
+    assert.ok(fs.existsSync(path.join(ROOT,...badge.representations.metal.asset.split('/'))),`${badge.id}:metal`);
+    assert.ok(fs.existsSync(path.join(ROOT,...badge.representations.embroidered.asset.split('/'))),`${badge.id}:embroidered`);
+  }
+  const nationalStaff=manifest.records.find(record=>record.id==='national_staff_badge');
+  assert.equal(nationalStaff.representations.embroidered.placementRole,'OCP_LEFT_SLEEVE_PATCH');
+});
+
+test('service medal provenance manifests never reintroduce ribbon-only awards',()=>{
+  const ribbonOnly=new Set(require('../data/rules/verified/medal-representation-applicability.json').ribbonOnlyAwardIds);
+  const manifests=fs.readdirSync(path.join(ROOT,'data','imports')).filter(name=>/^vanguard_.*(?:mini|full).*medal/i.test(name));
+  assert.ok(manifests.length >= 10,'expected service medal provenance manifests');
+  for(const name of manifests){
+    const manifest=JSON.parse(fs.readFileSync(path.join(ROOT,'data','imports',name),'utf8'));
+    for(const record of manifest.imported || []) assert.ok(!ribbonOnly.has(record.awardId),`${name}:${record.awardId}`);
+  }
+});
+
+test('Space Force checkpoint uses distinct local McChord-style medal canvases',()=>{
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  const award=overrides.space_force_good_conduct_medal;
+  for(const [representation,width,height] of [['miniatureMedal',50,176],['fullSizeMedal',100,220]]){
+    const record=award[representation];
+    assert.equal(record.status,'AVAILABLE',representation);
+    assert.match(record.asset,/\/space-force\//,representation);
+    const buffer=fs.readFileSync(path.join(ROOT,...record.asset.split('/')));
+    assert.equal(buffer.readUInt32BE(16),width,representation);
+    assert.equal(buffer.readUInt32BE(20),height,representation);
+  }
+});
+
+test('complete asset manifest contains no broken AVAILABLE records',()=>{
+  const manifest=require('../data/military/asset-manifest.json');
+  const broken=manifest.assets.filter(record=>record.status==='AVAILABLE'&&!record.exists);
+  assert.deepEqual(broken,[]);
 });
