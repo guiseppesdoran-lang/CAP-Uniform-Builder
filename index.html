@@ -10522,6 +10522,8 @@ function renderMilitaryBadgeSelector(){
   if(!host) return;
   host.replaceChildren();
   const badges=getMilitaryCatalogBadges();
+  const badgeLimit=['AIR_FORCE','SPACE_FORCE'].includes(State.organization) ? 4 : Number.POSITIVE_INFINITY;
+  const selectedCount=()=>Object.keys(State.militaryBadges || {}).filter(id=>badges.some(badge=>badge.id===id)).length;
   if(!badges.length){
     const empty=document.createElement('div'); empty.className='hintText';
     empty.textContent='No officially sourced military badge records are available for this service yet.';
@@ -10547,12 +10549,22 @@ function renderMilitaryBadgeSelector(){
       }
       variantSelect.value=State.militaryBadges?.[badge.id]?.variant || badge.representations?.metal?.defaultVariant || selectorVariants[0];
       variantSelect.addEventListener('change',()=>{
+        if(!box.checked && selectedCount()>=badgeLimit){
+          variantSelect.value=badge.representations?.metal?.defaultVariant || selectorVariants[0];
+          window.alert(`A maximum of ${badgeLimit} badges may be worn on this service uniform.`);
+          return;
+        }
         box.checked=true;
         State.militaryBadges[badge.id]={selected:true,variant:variantSelect.value};
         fullRender();
       });
     }
     box.addEventListener('change',()=>{
+      if(box.checked && selectedCount()>=badgeLimit){
+        box.checked=false;
+        window.alert(`A maximum of ${badgeLimit} badges may be worn on this service uniform.`);
+        return;
+      }
       if(box.checked) State.militaryBadges[badge.id]={selected:true,variant:variantSelect?.value || null}; else delete State.militaryBadges[badge.id];
       fullRender();
     });
@@ -10669,6 +10681,10 @@ function renderMilitaryAwardSelector(){
     count.className='militaryAwardCount';
     count.disabled=!checked; count.title='Number of awards';
     box.addEventListener('change',()=>{
+      // Capture synchronously: a programmatic/keyboard selection can trigger a
+      // full render before the passive scroll listener has stored the latest
+      // catalog position.
+      ui.catalogScrollTop=host.scrollTop;
       if(box.checked) State.militaryAwards[award.id]={awardCount:Math.max(1,Number(count.value)||1)};
       else delete State.militaryAwards[award.id];
       count.disabled=!box.checked;
@@ -10677,6 +10693,7 @@ function renderMilitaryAwardSelector(){
       fullRender();
     });
     count.addEventListener('change',()=>{
+      ui.catalogScrollTop=host.scrollTop;
       if(State.militaryAwards[award.id]) State.militaryAwards[award.id].awardCount=Math.max(1,Number(count.value)||1);
       fullRender();
     });
@@ -10716,7 +10733,8 @@ function applyMilitaryPreviewArea(){
 function renderMilitaryPreviewBadges(badges,startY=105){
   const entries=badges.map(badge=>({badge,representation:getMilitaryBadgeRepresentation(badge)}))
     .filter(entry=>entry.representation?.status==='AVAILABLE' && entry.representation.asset);
-  const visible=entries.slice(0,6);
+  const limit=['AIR_FORCE','SPACE_FORCE'].includes(State.organization) ? 4 : 6;
+  const visible=entries.slice(0,limit);
   const columns=Math.min(3,Math.max(1,visible.length));
   const cellWidth=92,cellHeight=48;
   visible.forEach((entry,index)=>{

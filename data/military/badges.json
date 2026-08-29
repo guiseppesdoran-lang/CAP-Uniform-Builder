@@ -15,6 +15,12 @@
       ],
       "status": "CURRENT",
       "precedence": {
+        "AIR_FORCE": {
+          "order": 0,
+          "verified": true,
+          "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=128",
+          "regulation": "DAFI 36-2903, paragraph 12.6.7"
+        },
         "SPACE_FORCE": {
           "order": 0,
           "verified": true
@@ -46,6 +52,12 @@
       ],
       "status": "CURRENT",
       "precedence": {
+        "AIR_FORCE": {
+          "order": 1,
+          "verified": true,
+          "source": "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=128",
+          "regulation": "DAFI 36-2903, paragraph 12.6.7"
+        },
         "SPACE_FORCE": {
           "order": 1,
           "verified": true
@@ -2454,9 +2466,25 @@
       "status": "CURRENT",
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/headquarters_air_force_identification_badge/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/headquarters_air_force_identification_badge/default.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-full-size-air-staff-identification-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150050.jpg?v=1617287468"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-full-size-air-staff-identification-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150050.jpg?v=1617287468",
+          "defaultVariant": "default"
         }
       },
       "placement": {
@@ -2485,9 +2513,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_pilot_badge/pilot.png",
+          "variants": {
+            "pilot": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_pilot_badge/pilot.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-pilot-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153700.jpg?v=1568744031"
+            },
+            "senior_pilot": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_pilot_badge/senior_pilot.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-pilot-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153701.jpg?v=1617288280"
+            },
+            "command_pilot": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_pilot_badge/command_pilot.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-command-pilot-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153702.jpg?v=1617288281"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-pilot-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153700.jpg?v=1568744031",
+          "defaultVariant": "pilot"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2526,9 +2588,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-unmanned-aircraft-systems-basic-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/83773_af_basic_unmanned_aircraft_systems_mf_1_9474866c-66b7-45fb-9723-a648d9de881b.jpeg?v=1423542775"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-unmanned-aircraft-systems-senior-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/83774_af_senior_unmanned_aircraft_systems_mf_c2a37e65-a46d-49b6-8c27-d520e2e09eda.jpeg?v=1423542774"
+            },
+            "command": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/command.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-unmanned-aircraft-systems-master-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/83775_af_master_unmanned_aircraft_systems_mf.jpeg?v=1423542774"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-unmanned-aircraft-systems-basic-regulation-size",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/83773_af_basic_unmanned_aircraft_systems_mf_1_9474866c-66b7-45fb-9723-a648d9de881b.jpeg?v=1423542775",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2566,9 +2662,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-navigator-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153712.jpg?v=1617288278"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-navigator-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153713.jpg?v=1617288278"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-navigator-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153714.jpg?v=1617288277"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-navigator-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153712.jpg?v=1617288278",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2606,9 +2736,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_air_battle_manager_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_air_battle_manager_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-air-battle-manager-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_basic_air_battle_manager_badge_mirror_finish_7073.jpeg?v=1423546101"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_air_battle_manager_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-air-battle-manager-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_senior_air_battle_manager_badge_mirror_finish_7074.jpeg?v=1423546100"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_air_battle_manager_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-air-battle-manager-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_air_battle_manager_bagde_mirror_finish_7075.jpeg?v=1423546100"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-air-battle-manager-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_basic_air_battle_manager_badge_mirror_finish_7073.jpeg?v=1423546101",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2686,9 +2850,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_flight_surgeon_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_flight_surgeon_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-flight-surgeon-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153752.jpg?v=1617288275"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_flight_surgeon_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-flight-surgeon-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153753.jpg?v=1617288274"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_flight_surgeon_badge/chief.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-chief-flight-surgeon-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153754.jpg?v=1617288274"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-flight-surgeon-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153752.jpg?v=1617288275",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2727,9 +2925,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_flight_nurse_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_flight_nurse_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-flight-nurse-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153794.jpg?v=1617288268"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_flight_nurse_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-flight-nurse-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153795.jpg?v=1617288268"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_flight_nurse_badge/chief.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-chief-flight-nurse-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153796.jpg?v=1617288268"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-flight-nurse-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153794.jpg?v=1617288268",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2767,9 +2999,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_officer_aircrew_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_officer_aircrew_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-officer-aircrew-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153745.jpg?v=1617288275"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_officer_aircrew_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-officer-aircrew-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_senior_aircrew_officer_badge_mirror_finish_7080.jpeg?v=1423546157"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_officer_aircrew_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-officer-aircrew-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_aircrew_officer_badge_mirror_finish_7081.jpeg?v=1423546156"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-officer-aircrew-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153745.jpg?v=1617288275",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2808,9 +3074,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-aircrew-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153733.jpg?v=1617288277"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-aircrew-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153734.jpg?v=1617288276"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/chief.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-chief-aircrew-badge-1",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153735_40240d47-8ba5-4a39-a3ac-6578b2b64635.jpg?v=1617288277"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-aircrew-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153733.jpg?v=1617288277",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2850,9 +3150,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_missile_operations_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_missile_operations_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-missile-operator-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153801.jpg?v=1617288267"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_missile_operations_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-missile-operator-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153802.jpg?v=1617288266"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_missile_operations_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-missile-operator-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153803.jpg?v=1617288266"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-missile-operator-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153801.jpg?v=1617288267",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2892,9 +3226,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_space_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_space_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-space-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153837.jpg?v=1617288263"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_space_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-space-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153838.jpg?v=1617288262"
+            },
+            "command": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_space_badge/command.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-space-badge-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153839.jpg?v=1617288262"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-space-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153837.jpg?v=1617288263",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2934,9 +3302,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-cyberspace-operator-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/80566_air_force_cyberspace_operator_badge_mf.jpeg?v=1423543540"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-cyberspace-operator-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/80567_air_force_senior_cyberspave_operator_badge_mf.jpeg?v=1423543540"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-cyberspace-operator-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/af_master_cyberspace_operator_badge_mf_7175_3.jpeg?v=1423543539"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-cyberspace-operator-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/80566_air_force_cyberspace_operator_badge_mf.jpeg?v=1423543540",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2976,9 +3378,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_cyberspace_support_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_cyberspace_support_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-cyberspace-support-basic-midsize",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/83473_af_bdg_reg_basic_cyberspace_support_mf.jpeg?v=1423544153"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_cyberspace_support_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-cyberspace-support-senior-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/files/83474_af_bdg_reg_senior_cyberspace_support_mf.jpg?v=1780947133"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_cyberspace_support_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-cyberspace-support-master-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/83475_af_bdg_reg_master_cyberspace_mf_a71687e0-d63f-456a-8669-98308d891fe4.jpeg?v=1423544154"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-cyberspace-support-basic-midsize",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/83473_af_bdg_reg_basic_cyberspace_support_mf.jpeg?v=1423544153",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3017,9 +3453,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_parachutist_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_parachutist_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-midsize-parachutist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/1109_us_army_basic_parachutist_badge_nf_13006178-865d-49ff-a929-6f490c25fd9d.jpeg?v=1423546242"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_parachutist_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-midsize-senior-parachutist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2156567.jpg?v=1617288321"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_parachutist_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-midsize-master-parachutist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/1244_us_army_master_parachutist_badge_nf_f062c871-ac42-497e-8841-cdde1dc28177.jpeg?v=1423546240"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-midsize-parachutist-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/1109_us_army_basic_parachutist_badge_nf_13006178-865d-49ff-a929-6f490c25fd9d.jpeg?v=1423546242",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3057,9 +3527,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-explosive-ordnance-disposal-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/us_army_basic_explosive_ordnance_disposal_eod_badge_nickel_finish_1147_ord_b_nk.jpeg?v=1423546224"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-senior-explosive-ordnance-disposal-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_senior_explosive_ordnance_disposal_eod_badge_nickel_finish_1247_ord_snr_nik_a65dee73-2b2d-4b12-b956-6c87252057d5.jpeg?v=1423546224"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-master-explosive-ordnance-disposal-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_master_explosive_ordnance_disposal_eod_badge_nickel_finish_1250_ord_mst_nik_2_c773335c-b971-46df-9edc-23713bc01f75.jpeg?v=1423546223"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-explosive-ordnance-disposal-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/us_army_basic_explosive_ordnance_disposal_eod_badge_nickel_finish_1147_ord_b_nk.jpeg?v=1423546224",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3097,9 +3601,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_force_support_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_force_support_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-force-support-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153908_78e24382-e7eb-4f0e-b40a-83e7f4a82087.jpeg?v=1423543552"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_force_support_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-force-support-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153909.jpg?v=1467307066"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_force_support_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-force-support-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153910.jpeg?v=1423543532"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-force-support-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153908_78e24382-e7eb-4f0e-b40a-83e7f4a82087.jpeg?v=1423543552",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3137,9 +3675,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_logistics_readiness_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_logistics_readiness_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-logistics-readiness-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/af_basic_logistics_readiness_badge_mf_7172_ee8011b9-288a-450f-b09a-71072b40ae9c.jpeg?v=1423546099"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_logistics_readiness_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-logistics-readiness-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153903.jpg?v=1617288239"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_logistics_readiness_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-logistics-readiness-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/af_master_logistics_readiness_badge_mf_7174_f6e7f4dd-c9c8-43f1-b9ff-522ee6a2f784.jpeg?v=1423546097"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-logistics-readiness-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/af_basic_logistics_readiness_badge_mf_7172_ee8011b9-288a-450f-b09a-71072b40ae9c.jpeg?v=1423546099",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3177,9 +3749,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_religious_affairs_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_religious_affairs_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-chapel-management-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_basic_chaplains_assistant_badge_mirror_finish_7158.jpeg?v=1423546250"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_religious_affairs_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-chaplain-service-support-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_senior_chaplains_assistant_badge_mirror_finish_7159_2fdcba8b-fd68-485e-8a3c-9086fa78408b.jpeg?v=1423546110"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_religious_affairs_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-chaplain-service-support-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_chaplains_assistant_badge_mirror_finish_7160_4945d398-e98f-412c-aed8-abf88e2a3dd9.jpeg?v=1423546110"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-chapel-management-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_basic_chaplains_assistant_badge_mirror_finish_7158.jpeg?v=1423546250",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3212,9 +3818,25 @@
       "status": "CURRENT",
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_fire_protection_badge/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_fire_protection_badge/default.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-fire-protection-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153756.jpg?v=1617288273"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-fire-protection-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153756.jpg?v=1617288273",
+          "defaultVariant": "default"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3282,9 +3904,25 @@
       "status": "CURRENT",
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_judge_advocate_badge/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_judge_advocate_badge/default.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-judge-advocate-general-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151240.jpg?v=1617288289"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-judge-advocate-general-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151240.jpg?v=1617288289",
+          "defaultVariant": "default"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3323,9 +3961,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_acquisition_financial_management_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_acquisition_financial_management_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-acquisition-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153884.jpg?v=1617288244"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_acquisition_financial_management_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-acquisition-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153885.jpg?v=1617288244"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_acquisition_financial_management_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-acquisition-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153886.jpg?v=1617288245"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-acquisition-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153884.jpg?v=1617288244",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3364,9 +4036,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_paralegal_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_paralegal_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-paralegal-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153875.jpg?v=1617288248"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_paralegal_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-paralegal-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153876.jpg?v=1617288248"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_paralegal_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-paralegal-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153877.jpg?v=1617288248"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-paralegal-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153875.jpg?v=1617288248",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3404,9 +4110,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_dental_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_dental_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-dentist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151248.jpg?v=1617288288"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_dental_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-senior-dentist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151249.jpg?v=1617288288"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_dental_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-chief-dentist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151250.jpg?v=1617288287"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-dentist-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151248.jpg?v=1617288288",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3444,9 +4184,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_enlisted_medical_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_enlisted_medical_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-medical-technician-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151283.jpg?v=1617288282"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_enlisted_medical_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-senior-medical-technician-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151284.jpg?v=1617288281"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_enlisted_medical_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-master-medical-technician-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151285.jpg?v=1617288280"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-medical-technician-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151283.jpg?v=1617288282",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3485,9 +4259,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_intelligence_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_intelligence_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-intelligence-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153849.jpg?v=1617288258"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_intelligence_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-intelligence-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153850.jpg?v=1617288258"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_intelligence_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-intelligence-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153851.jpg?v=1617288259"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-intelligence-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153849.jpg?v=1617288258",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3526,9 +4334,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_historian_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_historian_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-historian-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153872.jpg?v=1617288249"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_historian_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-historian-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153873.jpg?v=1617288249"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_historian_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-historian-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153874.jpg?v=1617288249"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-historian-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153872.jpg?v=1617288249",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3565,9 +4407,34 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_information_management_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_information_management_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-information-manager-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153829.jpg?v=1617288264"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_information_management_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-information-manager-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153830.jpg?v=1617288264"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-information-manager-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153829.jpg?v=1617288264",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3606,9 +4473,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_operations_support_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_operations_support_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-operations-support-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153852.jpg?v=1617288258"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_operations_support_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-operations-support-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153853.jpg?v=1617288257"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_operations_support_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-operations-support-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153854.jpg?v=1617288257"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-operations-support-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153852.jpg?v=1617288258",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3647,9 +4548,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_medical_service_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_medical_service_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-medical-service-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151269.jpg?v=1617288284"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_medical_service_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-senior-medical-service-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151270.jpg?v=1617288283"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_medical_service_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-chief-medical-service-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151271.jpg?v=1617288283"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-medical-service-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151269.jpg?v=1617288284",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -3687,9 +4622,43 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-basic-civil-engineer-readiness-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_emergency_management_ce_readiness_badge_mirror_finish_7013_2.jpeg?v=1423543709"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-senior-civil-engineer-readiness-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_senior_emergency_management_ce_readiness_badge_mirror_finish_7014_2.jpeg?v=1423543708"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-master-civil-engineer-readiness-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_emergency_management_ce_readiness_badge_mirror_finish_7015_2.jpeg?v=1423543732"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-basic-civil-engineer-readiness-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_emergency_management_ce_readiness_badge_mirror_finish_7013_2.jpeg?v=1423543709",
+          "defaultVariant": "basic"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -5352,6 +6321,2358 @@
       "variants": [
         "basic",
         "master"
+      ]
+    },
+    {
+      "id": "air_force_aircraft_maintenance_badge",
+      "officialName": "Aircraft Maintenance Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-air-maintenance",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153759.jpg?v=1617288272"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-air-maintenance-senior",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153760.jpg?v=1617288272"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-air-maintenance-master",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153761.jpg?v=1622836681"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-air-maintenance",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153759.jpg?v=1617288272",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_air_traffic_control_badge",
+      "officialName": "Air Traffic Control Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_air_traffic_control_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_air_traffic_control_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-air-traffic-control-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153705.jpg?v=1617288279"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_air_traffic_control_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-air-traffic-control-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153706.jpg?v=1617288279"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_air_traffic_control_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-master-air-traffic-controller-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153707.jpg?v=1617288278"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-air-traffic-control-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153705.jpg?v=1617288279",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_band_badge",
+      "officialName": "Air Force Band Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_band_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_band_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-band-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/7007_air_force_band_badge_mf_998ad2cf-a23f-4107-85b0-660c4368e25c.jpeg?v=1423546116"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_band_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-band-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153871.jpg?v=1617288250"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_band_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-band-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/21538711_f5f11ea8-8ef0-4854-95f2-a86c1f3fdfd8.jpg?v=1617288238"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-band-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/7007_air_force_band_badge_mf_998ad2cf-a23f-4107-85b0-660c4368e25c.jpeg?v=1423546116",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_civil_engineer_badge",
+      "officialName": "Civil Engineer Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_civil_engineer_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_civil_engineer_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-midsize-civil-engineer-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2156607.jpg?v=1617288310"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_civil_engineer_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-civil-engineer-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_senior_civil_engineer_badge_mirror_finish_7144_2.jpeg?v=1423546125"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_civil_engineer_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-civil-engineer-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_civil_engineer_badge_mirror_finish_7145_2_02447c5b-8377-4482-a8b7-8898dcbb54d3.jpeg?v=1423546124"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-midsize-civil-engineer-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2156607.jpg?v=1617288310",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_command_and_control_badge",
+      "officialName": "Command and Control Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_command_and_control_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_command_and_control_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-command-and-control-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153846.jpg?v=1617288259"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_command_and_control_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-command-and-control-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153847.jpg?v=1622836680"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_command_and_control_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-command-and-control-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153848.jpg?v=1617288259"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-command-and-control-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153846.jpg?v=1617288259",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_communications_information_badge",
+      "officialName": "Communications and Information Badge",
+      "family": "CYBER",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_communications_information_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_communications_information_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-communications-and-information-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153858.jpg?v=1617288255"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_communications_information_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-communications-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/7023_air_force_senior_communications_and_info_badge_mf_1a851444-de3e-4e7a-935a-6a21cc8aba18.jpeg?v=1423546123"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_communications_information_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-communications-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153860.jpg?v=1617288255"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-communications-and-information-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153858.jpg?v=1617288255",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_force_protection_badge",
+      "officialName": "Force Protection Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_force_protection_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_force_protection_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-force-protection-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153881.jpg?v=1617288247"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_force_protection_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-force-protection-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153882.jpg?v=1617288246"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_force_protection_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-force-protection-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153883.jpg?v=1617288245"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-force-protection-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153881.jpg?v=1617288247",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_ground_radar_airfield_systems_badge",
+      "officialName": "Ground Radar Airfield Systems Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-ground-radar-airfield-systems",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153822.jpg?v=1432745468"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-ground-radar-airfield-systems-senior",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153823.jpg?v=1432745497"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-ground-radar-airfield-systems-master",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153824.jpg?v=1432745517"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-ground-radar-airfield-systems",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153822.jpg?v=1432745468",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_manpower_personnel_badge",
+      "officialName": "Manpower and Personnel Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_manpower_personnel_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_manpower_personnel_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-manpower-and-personnel-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153864.jpg?v=1617288252"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_manpower_personnel_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-senior-manpower-and-personnel-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153865.jpg?v=1617288253"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_manpower_personnel_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-master-manpower-and-personnel-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153866.jpg?v=1617288253"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-manpower-and-personnel-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153864.jpg?v=1617288252",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_munitions_badge",
+      "officialName": "Munitions Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_munitions_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_munitions_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-munitions-basic-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153811.jpg?v=1572901839"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_munitions_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-munitions-basic-senior-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153812.jpg?v=1574286881"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_munitions_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-munitions-basic-master-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153813.jpg?v=1576603607"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-munitions-basic-regulation-size",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153811.jpg?v=1572901839",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_public_affairs_badge",
+      "officialName": "Public Affairs Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_public_affairs_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_public_affairs_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-public-affairs-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153867.jpg?v=1617288251"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_public_affairs_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-public-affairs-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153868.jpg?v=1617288252"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_public_affairs_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-public-affairs-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153869.jpg?v=1617288251"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-public-affairs-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153867.jpg?v=1617288251",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_services_badge",
+      "officialName": "Services Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_services_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_services_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-services-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153861.jpg?v=1617288254"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_services_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-services-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153862.jpg?v=1617288254"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_services_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-services-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153863.jpg?v=1617288254"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-services-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153861.jpg?v=1617288254",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_supply_fuels_badge",
+      "officialName": "Supply and Fuels Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_supply_fuels_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_supply_fuels_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-midsize-supply-fuels-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2156562.jpg?v=1617288324"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_supply_fuels_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-supply-fuels-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153809.jpg?v=1617288265"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_supply_fuels_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-supply-fuels-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153810.jpg?v=1622836680"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-midsize-supply-fuels-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2156562.jpg?v=1617288324",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_transportation_badge",
+      "officialName": "Transportation Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_transportation_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_transportation_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-transportation-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153887.jpg?v=1617288243"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_transportation_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-transportation-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153888.jpg?v=1617288243"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_transportation_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-transportation-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153889.jpg?v=1617288243"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-transportation-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153887.jpg?v=1617288243",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_weather_operations_badge",
+      "officialName": "Weather Operations Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_weather_operations_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_weather_operations_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-meteorologist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153815.jpg?v=1617288265"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_weather_operations_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-meteorologist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153816.jpg?v=1617288265"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_weather_operations_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-meteorologist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153817.jpg?v=1617288265"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-meteorologist-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153815.jpg?v=1617288265",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_safety_badge",
+      "officialName": "Safety Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_safety_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_safety_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-basic-safety-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153920.jpg?v=1429546201"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_safety_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-senior-safety-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153921.jpg?v=1429546247"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_safety_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-master-safety-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153922.jpg?v=1429546335"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-basic-safety-regulation-size",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153920.jpg?v=1429546201",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_operations_research_analyst_badge",
+      "officialName": "Operations Research Analyst Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-basic-operations-research-analyst-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153926.jpg?v=1617291067"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-senior-operations-research-analyst-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153927.jpg?v=1617291069"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-master-operations-research-analyst-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153928.jpg?v=1617291068"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-basic-operations-research-analyst-regulation-size",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153926.jpg?v=1617291067",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_multi_domain_warfare_officer_badge",
+      "officialName": "Multi-Domain Warfare Officer Badge",
+      "family": "QUALIFICATION",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-basic-multi-domain-warfare-officer-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153923.jpg?v=1617290779"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-senior-multi-domain-warfare-officer-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153924.jpg?v=1617290946"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-master-multi-domain-warfare-officer-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153925.jpg?v=1617290927"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-basic-multi-domain-warfare-officer-regulation-size",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153923.jpg?v=1617290779",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_foreign_area_officer_badge",
+      "officialName": "Foreign Area Officer Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-basic-foreign-area-officer-career-field-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/files/2153937.jpg?v=1701376227"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-senior-foreign-area-officer-career-field-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/files/2156669_d6d758ff-e671-49b0-a206-e74ad358fd05.jpg?v=1703197308"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-master-foreign-area-officer-career-field-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/files/2156670_951f64dc-9dad-443d-ba6e-4dd1da549eb5.jpg?v=1703197294"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-basic-foreign-area-officer-career-field-regulation-size",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/files/2153937.jpg?v=1701376227",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_weapons_controller_badge",
+      "officialName": "Weapons Controller Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_weapons_controller_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_weapons_controller_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-weapons-controller-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153787.jpg?v=1617288269"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_weapons_controller_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-weapons-controller-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153788.jpg?v=1617288269"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_weapons_controller_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-regulation-size-master-weapons-controller-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153789.jpg?v=1617288268"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-regulation-size-weapons-controller-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153787.jpg?v=1617288269",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_information_operations_officer_badge",
+      "officialName": "Information Operations Officer Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_information_operations_officer_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_information_operations_officer_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-information-operations-officer-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153730.jpg?v=1617290362"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_information_operations_officer_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-senior-information-operation-officer-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153731.jpg?v=1617290361"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_information_operations_officer_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-master-information-operations-officer-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153732.jpg?v=1674592346"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-information-operations-officer-regulation-size",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153730.jpg?v=1617290362",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_biomedical_scientist_badge",
+      "officialName": "Biomedical Scientist Badge",
+      "family": "MEDICAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-biomedical-scientist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151276.jpg?v=1617288283"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-senior-biomedical-scientist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151277.jpg?v=1617288282"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-master-biomedical-scientist-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_biomedical_service_corps_badge_mirror_finish_7096.jpeg?v=1423546169"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-biomedical-scientist-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151276.jpg?v=1617288283",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_nurse_badge",
+      "officialName": "Air Force Nurse Badge",
+      "family": "MEDICAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "chief"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_nurse_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_nurse_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-nurse-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151262.jpg?v=1617288285"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_nurse_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-senior-nurse-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151263.jpg?v=1617288284"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_nurse_badge/chief.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-chief-nurse-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151264.jpg?v=1617288285"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-nurse-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151262.jpg?v=1617288285",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_physician_badge",
+      "officialName": "Air Force Physician Badge",
+      "family": "MEDICAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "chief"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_physician_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_physician_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-physician-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151241.jpg?v=1617288289"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_physician_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-senior-physician-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151242.jpg?v=1617288291"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_physician_badge/chief.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-chief-physician-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151243.jpg?v=1617288289"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-physician-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151241.jpg?v=1617288289",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_veterinarian_badge",
+      "officialName": "Air Force Veterinarian Badge",
+      "family": "MEDICAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "chief"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_veterinarian_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_veterinarian_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-veterinarian-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151255.jpg?v=1617288286"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_veterinarian_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-senior-veterinarian-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151256.jpg?v=1617288286"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_veterinarian_badge/chief.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-chief-veterinarian-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151257.jpg?v=1617288286"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-veterinarian-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151255.jpg?v=1617288286",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_scientific_applications_specialist_badge",
+      "officialName": "Scientific Applications Specialist Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-scientific-applications-specialist",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151290.jpg?v=1617290086"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-scientific-applications-specialist-senior",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151291.jpg?v=1617290086"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-scientific-applications-specialist-master",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151292.jpg?v=1617290087"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-scientific-applications-specialist",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151290.jpg?v=1617290086",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_airfield_operations_officer_badge",
+      "officialName": "Airfield Operations Officer Badge",
+      "family": "OCCUPATIONAL",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "senior",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-basic-airfield-operations-officer-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153932.jpg?v=1677885482"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/senior.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-senior-airfield-operations-officer-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153933.jpg?v=1677885422"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/air-force-badge-master-airfield-operations-officer-regulation-size",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153934.jpg?v=1678313053"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/air-force-badge-basic-airfield-operations-officer-regulation-size",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153932.jpg?v=1677885482",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_aetc_instructor_badge",
+      "officialName": "Air Education and Training Command Instructor Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "variants": [
+        "basic",
+        "master"
+      ],
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_aetc_instructor_badge/basic.png",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_aetc_instructor_badge/basic.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-air-education-and-training-command-instructor-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150100.jpg?v=1622836685"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_aetc_instructor_badge/master.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-master-instructor-air-education-and-training-command-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150200.jpg?v=1622836684"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-air-education-and-training-command-instructor-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150100.jpg?v=1622836685",
+          "defaultVariant": "basic"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_pararescue_badge",
+      "officialName": "Pararescue Badge",
+      "family": "QUALIFICATION",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_pararescue_badge/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_pararescue_badge/default.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-pararescue-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153424.jpg?v=1622836682"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-pararescue-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153424.jpg?v=1622836682",
+          "defaultVariant": "default"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_combat_control_team_badge",
+      "officialName": "Combat Control Team Badge",
+      "family": "QUALIFICATION",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_combat_control_team_badge/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_combat_control_team_badge/default.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-combat-control-team-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_combat_control_team_badge_mirror_finish_7146_1.jpeg?v=1423546092"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-combat-control-team-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_combat_control_team_badge_mirror_finish_7146_1.jpeg?v=1423546092",
+          "defaultVariant": "default"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_combat_rescue_officer_badge",
+      "officialName": "Combat Rescue Officer Badge",
+      "family": "QUALIFICATION",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_combat_rescue_officer_badge/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_combat_rescue_officer_badge/default.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-combat-rescue-officer-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_combat_rescue_officer_badge_mirror_finish_7166_1_10b553f6-c9d8-4db3-b4a6-93b6e076bbda.jpeg?v=1423546166"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-combat-rescue-officer-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_combat_rescue_officer_badge_mirror_finish_7166_1_10b553f6-c9d8-4db3-b4a6-93b6e076bbda.jpeg?v=1423546166",
+          "defaultVariant": "default"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_commanders_badge",
+      "officialName": "Air Force Commander's Insignia",
+      "family": "COMMAND",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_commanders_badge/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_commanders_badge/default.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-commanders-badge-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_commanders_insignia_badge_mirror_finish_7134_1.jpeg?v=1423546099"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-commanders-badge-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_commanders_insignia_badge_mirror_finish_7134_1.jpeg?v=1423546099",
+          "defaultVariant": "default"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_base_honor_guard_badge",
+      "officialName": "Base Honor Guard Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "representations": {
+        "metal": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
+      ]
+    },
+    {
+      "id": "air_force_professional_military_education_badge",
+      "officialName": "Professional Military Education Badge",
+      "family": "IDENTIFICATION",
+      "authorizedServices": [
+        "AIR_FORCE"
+      ],
+      "status": "CURRENT",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_professional_military_education_badge/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_professional_military_education_badge/default.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-professional-military-education-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_professional_military_education_badge_mirror_finish_7147_1.jpeg?v=1423546183"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-professional-military-education-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_professional_military_education_badge_mirror_finish_7147_1.jpeg?v=1423546183",
+          "defaultVariant": "default"
+        },
+        "embroidered": {
+          "status": "MISSING_ASSET",
+          "available": false,
+          "asset": null
+        }
+      },
+      "placement": {
+        "serviceDress": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Wear under the Air Force badge stacking and placement rules in DAFI 36-2903, paragraphs 12.1 and 12.2."
+        },
+        "ocp": {
+          "status": "OFFICIALLY_VERIFIED",
+          "notes": "Embroidered badge above the U.S. Air Force tape; maximum four badges under DAFI 36-2903, paragraphs 5.1.5 and 12.2.1."
+        }
+      },
+      "sources": [
+        "https://www.af.mil/About-Us/The-Book/Devices/?igtag=Occupational+Badges",
+        "https://static.e-publishing.af.mil/production/1/af_a1/publication/dafi36-2903/dafi36-2903.pdf#page=116"
       ]
     }
   ]

@@ -1,0 +1,1770 @@
+{
+  "source": "https://www.vanguardmil.com/collections/badges",
+  "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
+  "accessed": "2026-08-29",
+  "runtimePolicy": "Source photographs are not used directly. Runtime assets are deterministic posterized digital derivatives.",
+  "style": {
+    "name": "MCCHORD_DIGITAL_SILVER",
+    "canvas": [
+      320,
+      180
+    ],
+    "transparent": true
+  },
+  "imported": [
+    {
+      "badgeId": "headquarters_air_force_identification_badge",
+      "variant": "default",
+      "query": "air staff identification",
+      "productTitle": "Air Force Identification Badge: Air Staff - regulation",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-full-size-air-staff-identification-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150050.jpg?v=1617287468",
+      "score": 3.883,
+      "asset": "images/military-badges/air-force/headquarters_air_force_identification_badge/default.png"
+    },
+    {
+      "badgeId": "air_force_pilot_badge",
+      "variant": "pilot",
+      "query": "pilot",
+      "productTitle": "Air Force Badge: Pilot - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-pilot-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153700.jpg?v=1568744031",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_pilot_badge/pilot.png"
+    },
+    {
+      "badgeId": "air_force_pilot_badge",
+      "variant": "senior_pilot",
+      "query": "senior pilot",
+      "productTitle": "Air Force Badge: Pilot: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-pilot-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153701.jpg?v=1617288280",
+      "score": 3.8,
+      "asset": "images/military-badges/air-force/air_force_pilot_badge/senior_pilot.png"
+    },
+    {
+      "badgeId": "air_force_pilot_badge",
+      "variant": "command_pilot",
+      "query": "command pilot",
+      "productTitle": "Air Force Badge: Command Pilot - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-command-pilot-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153702.jpg?v=1617288281",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_pilot_badge/command_pilot.png"
+    },
+    {
+      "badgeId": "air_force_remotely_piloted_aircraft_pilot_badge",
+      "variant": "basic",
+      "query": "unmanned aircraft systems basic",
+      "productTitle": "Air Force Badge: Unmanned Aircraft Systems Basic - Regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-unmanned-aircraft-systems-basic-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/83773_af_basic_unmanned_aircraft_systems_mf_1_9474866c-66b7-45fb-9723-a648d9de881b.jpeg?v=1423542775",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_remotely_piloted_aircraft_pilot_badge",
+      "variant": "senior",
+      "query": "unmanned aircraft systems senior",
+      "productTitle": "Air Force Badge: Unmanned Aircraft Systems Senior - Regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-unmanned-aircraft-systems-senior-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/83774_af_senior_unmanned_aircraft_systems_mf_c2a37e65-a46d-49b6-8c27-d520e2e09eda.jpeg?v=1423542774",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_remotely_piloted_aircraft_pilot_badge",
+      "variant": "command",
+      "query": "unmanned aircraft systems master",
+      "productTitle": "Air Force Badge: Unmanned Aircraft Systems Master - Regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-unmanned-aircraft-systems-master-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/83775_af_master_unmanned_aircraft_systems_mf.jpeg?v=1423542774",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/command.png"
+    },
+    {
+      "badgeId": "air_force_combat_systems_officer_badge",
+      "variant": "basic",
+      "query": "navigator",
+      "productTitle": "Air Force Badge: Navigator - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-navigator-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153712.jpg?v=1617288278",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_combat_systems_officer_badge",
+      "variant": "senior",
+      "query": "navigator senior",
+      "productTitle": "Air Force Badge: Navigator: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-navigator-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153713.jpg?v=1617288278",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_combat_systems_officer_badge",
+      "variant": "master",
+      "query": "navigator master",
+      "productTitle": "Air Force Badge: Navigator: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-navigator-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153714.jpg?v=1617288277",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_air_battle_manager_badge",
+      "variant": "basic",
+      "query": "air battle manager",
+      "productTitle": "Air Force Badge: Air Battle Manager - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-air-battle-manager-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_basic_air_battle_manager_badge_mirror_finish_7073.jpeg?v=1423546101",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_air_battle_manager_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_air_battle_manager_badge",
+      "variant": "senior",
+      "query": "senior air battle manager",
+      "productTitle": "Air Force Badge: Air Battle Manager: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-air-battle-manager-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_senior_air_battle_manager_badge_mirror_finish_7074.jpeg?v=1423546100",
+      "score": 4.02,
+      "asset": "images/military-badges/air-force/air_force_air_battle_manager_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_air_battle_manager_badge",
+      "variant": "master",
+      "query": "master air battle manager",
+      "productTitle": "Air Force Badge: Air Battle Manager: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-air-battle-manager-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_air_battle_manager_bagde_mirror_finish_7075.jpeg?v=1423546100",
+      "score": 4.02,
+      "asset": "images/military-badges/air-force/air_force_air_battle_manager_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_flight_surgeon_badge",
+      "variant": "basic",
+      "query": "flight surgeon",
+      "productTitle": "Air Force Badge: Flight Surgeon - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-flight-surgeon-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153752.jpg?v=1617288275",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_flight_surgeon_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_flight_surgeon_badge",
+      "variant": "senior",
+      "query": "senior flight surgeon",
+      "productTitle": "Air Force Badge: Flight Surgeon: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-flight-surgeon-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153753.jpg?v=1617288274",
+      "score": 3.967,
+      "asset": "images/military-badges/air-force/air_force_flight_surgeon_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_flight_surgeon_badge",
+      "variant": "chief",
+      "query": "chief flight surgeon",
+      "productTitle": "Air Force Badge: Flight Surgeon: Chief - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-chief-flight-surgeon-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153754.jpg?v=1617288274",
+      "score": 4.0,
+      "asset": "images/military-badges/air-force/air_force_flight_surgeon_badge/chief.png"
+    },
+    {
+      "badgeId": "air_force_flight_nurse_badge",
+      "variant": "basic",
+      "query": "flight nurse",
+      "productTitle": "Air Force Badge: Flight Nurse - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-flight-nurse-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153794.jpg?v=1617288268",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_flight_nurse_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_flight_nurse_badge",
+      "variant": "senior",
+      "query": "senior flight nurse",
+      "productTitle": "Air Force Badge: Flight Nurse: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-flight-nurse-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153795.jpg?v=1617288268",
+      "score": 3.932,
+      "asset": "images/military-badges/air-force/air_force_flight_nurse_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_flight_nurse_badge",
+      "variant": "chief",
+      "query": "chief flight nurse",
+      "productTitle": "Air Force Badge: Flight Nurse: Chief - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-chief-flight-nurse-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153796.jpg?v=1617288268",
+      "score": 3.967,
+      "asset": "images/military-badges/air-force/air_force_flight_nurse_badge/chief.png"
+    },
+    {
+      "badgeId": "air_force_officer_aircrew_badge",
+      "variant": "basic",
+      "query": "officer aircrew",
+      "productTitle": "Air Force Badge: Officer Aircrew - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-officer-aircrew-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153745.jpg?v=1617288275",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_officer_aircrew_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_officer_aircrew_badge",
+      "variant": "senior",
+      "query": "senior officer aircrew",
+      "productTitle": "Air Force Badge: Officer Aircrew: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-officer-aircrew-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_senior_aircrew_officer_badge_mirror_finish_7080.jpeg?v=1423546157",
+      "score": 3.982,
+      "asset": "images/military-badges/air-force/air_force_officer_aircrew_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_officer_aircrew_badge",
+      "variant": "master",
+      "query": "master officer aircrew",
+      "productTitle": "Air Force Badge: Officer Aircrew: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-officer-aircrew-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_aircrew_officer_badge_mirror_finish_7081.jpeg?v=1423546156",
+      "score": 3.982,
+      "asset": "images/military-badges/air-force/air_force_officer_aircrew_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_enlisted_aircrew_badge",
+      "variant": "basic",
+      "query": "aircrew",
+      "productTitle": "Air Force Badge: Aircrew - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-aircrew-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153733.jpg?v=1617288277",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_enlisted_aircrew_badge",
+      "variant": "senior",
+      "query": "senior aircrew",
+      "productTitle": "Air Force Badge: Aircrew: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-aircrew-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153734.jpg?v=1617288276",
+      "score": 3.8,
+      "asset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_enlisted_aircrew_badge",
+      "variant": "chief",
+      "query": "chief aircrew",
+      "productTitle": "Air Force Badge: Aircrew: Chief- regulation",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-chief-aircrew-badge-1",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153735_40240d47-8ba5-4a39-a3ac-6578b2b64635.jpg?v=1617288277",
+      "score": 3.838,
+      "asset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/chief.png"
+    },
+    {
+      "badgeId": "air_force_missile_operations_badge",
+      "variant": "basic",
+      "query": "missile operator",
+      "productTitle": "Air Force Badge: Missile Operator - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-missile-operator-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153801.jpg?v=1617288267",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_missile_operations_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_missile_operations_badge",
+      "variant": "senior",
+      "query": "senior missile operator",
+      "productTitle": "Air Force Badge: Missile Operator: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-missile-operator-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153802.jpg?v=1617288266",
+      "score": 3.996,
+      "asset": "images/military-badges/air-force/air_force_missile_operations_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_missile_operations_badge",
+      "variant": "master",
+      "query": "master missile operator",
+      "productTitle": "Air Force Badge: Missile Operator: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-missile-operator-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153803.jpg?v=1617288266",
+      "score": 3.996,
+      "asset": "images/military-badges/air-force/air_force_missile_operations_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_space_badge",
+      "variant": "basic",
+      "query": "space basic",
+      "productTitle": "Air Force and Army Badge: Space Basic- regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-space-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153837.jpg?v=1617288263",
+      "score": 3.51,
+      "asset": "images/military-badges/air-force/air_force_space_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_space_badge",
+      "variant": "senior",
+      "query": "space senior",
+      "productTitle": "Air Force and Army Badge: Space Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-space-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153838.jpg?v=1617288262",
+      "score": 3.527,
+      "asset": "images/military-badges/air-force/air_force_space_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_space_badge",
+      "variant": "command",
+      "query": "space master",
+      "productTitle": "Air Force and Army Badge: Space Master Badge - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-space-badge-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153839.jpg?v=1617288262",
+      "score": 3.527,
+      "asset": "images/military-badges/air-force/air_force_space_badge/command.png"
+    },
+    {
+      "badgeId": "air_force_cyberspace_operations_badge",
+      "variant": "basic",
+      "query": "basic cyberspace operator",
+      "productTitle": "Air Force Badge: Basic Cyberspace Operator - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-cyberspace-operator-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/80566_air_force_cyberspace_operator_badge_mf.jpeg?v=1423543540",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_cyberspace_operations_badge",
+      "variant": "senior",
+      "query": "senior cyberspace operator",
+      "productTitle": "Air Force Badge: Senior Cyberspace Operator: Regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-cyberspace-operator-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/80567_air_force_senior_cyberspave_operator_badge_mf.jpeg?v=1423543540",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_cyberspace_operations_badge",
+      "variant": "master",
+      "query": "master cyberspace operator",
+      "productTitle": "Air Force Badge: Master Cyberspace Operator: Regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-cyberspace-operator-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/af_master_cyberspace_operator_badge_mf_7175_3.jpeg?v=1423543539",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_cyberspace_support_badge",
+      "variant": "basic",
+      "query": "cyberspace support basic",
+      "productTitle": "Air Force Badge: Cyberspace Support: Basic - miniature",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-cyberspace-support-basic-midsize",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/83473_af_bdg_reg_basic_cyberspace_support_mf.jpeg?v=1423544153",
+      "score": 3.578,
+      "asset": "images/military-badges/air-force/air_force_cyberspace_support_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_cyberspace_support_badge",
+      "variant": "senior",
+      "query": "cyberspace support senior",
+      "productTitle": "Air Force Badge: Cyberspace Support: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-cyberspace-support-senior-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/files/83474_af_bdg_reg_senior_cyberspace_support_mf.jpg?v=1780947133",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_cyberspace_support_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_cyberspace_support_badge",
+      "variant": "master",
+      "query": "cyberspace support master",
+      "productTitle": "Air Force Badge: Cyberspace Support: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-cyberspace-support-master-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/83475_af_bdg_reg_master_cyberspace_mf_a71687e0-d63f-456a-8669-98308d891fe4.jpeg?v=1423544154",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_cyberspace_support_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_parachutist_badge",
+      "variant": "basic",
+      "query": "parachutist",
+      "productTitle": "Air Force Badge: Parachutist - midsize",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-midsize-parachutist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/1109_us_army_basic_parachutist_badge_nf_13006178-865d-49ff-a929-6f490c25fd9d.jpeg?v=1423546242",
+      "score": 3.333,
+      "asset": "images/military-badges/air-force/air_force_parachutist_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_parachutist_badge",
+      "variant": "senior",
+      "query": "senior parachutist",
+      "productTitle": "Air Force Badge: Parachutist: Senior - midsize",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-midsize-senior-parachutist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2156567.jpg?v=1617288321",
+      "score": 3.267,
+      "asset": "images/military-badges/air-force/air_force_parachutist_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_parachutist_badge",
+      "variant": "master",
+      "query": "master parachutist",
+      "productTitle": "Air Force Badge: Parachutist: Master - midsize",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-midsize-master-parachutist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/1244_us_army_master_parachutist_badge_nf_f062c871-ac42-497e-8841-cdde1dc28177.jpeg?v=1423546240",
+      "score": 3.267,
+      "asset": "images/military-badges/air-force/air_force_parachutist_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_explosive_ordnance_disposal_badge",
+      "variant": "basic",
+      "query": "explosive ordnance disposal",
+      "productTitle": "Air Force Badge: Explosive Ordnance Disposal - midsize",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-explosive-ordnance-disposal-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/us_army_basic_explosive_ordnance_disposal_eod_badge_nickel_finish_1147_ord_b_nk.jpeg?v=1423546224",
+      "score": 3.721,
+      "asset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_explosive_ordnance_disposal_badge",
+      "variant": "senior",
+      "query": "senior explosive ordnance disposal",
+      "productTitle": "Air Force Badge: Explosive Ordnance Disposal: Senior - midsize",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-senior-explosive-ordnance-disposal-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_senior_explosive_ordnance_disposal_eod_badge_nickel_finish_1247_ord_snr_nik_a65dee73-2b2d-4b12-b956-6c87252057d5.jpeg?v=1423546224",
+      "score": 3.611,
+      "asset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_explosive_ordnance_disposal_badge",
+      "variant": "master",
+      "query": "master explosive ordnance disposal",
+      "productTitle": "Air Force Badge: Explosive Ordnance Disposal: Master - midsize",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-master-explosive-ordnance-disposal-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/army_master_explosive_ordnance_disposal_eod_badge_nickel_finish_1250_ord_mst_nik_2_c773335c-b971-46df-9edc-23713bc01f75.jpeg?v=1423546223",
+      "score": 3.611,
+      "asset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_force_support_badge",
+      "variant": "basic",
+      "query": "force support",
+      "productTitle": "Air Force Badge: Force Support - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-force-support-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153908_78e24382-e7eb-4f0e-b40a-83e7f4a82087.jpeg?v=1423543552",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_force_support_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_force_support_badge",
+      "variant": "senior",
+      "query": "force support senior",
+      "productTitle": "Air Force Badge: Force Support: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-force-support-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153909.jpg?v=1467307066",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_force_support_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_force_support_badge",
+      "variant": "master",
+      "query": "force support master",
+      "productTitle": "Air Force Badge: Force Support: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-force-support-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153910.jpeg?v=1423543532",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_force_support_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_logistics_readiness_badge",
+      "variant": "basic",
+      "query": "logistics readiness",
+      "productTitle": "Air Force Badge: Logistics Readiness - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-logistics-readiness-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/af_basic_logistics_readiness_badge_mf_7172_ee8011b9-288a-450f-b09a-71072b40ae9c.jpeg?v=1423546099",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_logistics_readiness_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_logistics_readiness_badge",
+      "variant": "senior",
+      "query": "logistics readiness senior",
+      "productTitle": "Air Force Badge: Logistics Readiness: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-logistics-readiness-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153903.jpg?v=1617288239",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_logistics_readiness_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_logistics_readiness_badge",
+      "variant": "master",
+      "query": "logistics readiness master",
+      "productTitle": "Air Force Badge: Logistics Readiness: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-logistics-readiness-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/af_master_logistics_readiness_badge_mf_7174_f6e7f4dd-c9c8-43f1-b9ff-522ee6a2f784.jpeg?v=1423546097",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_logistics_readiness_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_religious_affairs_badge",
+      "variant": "basic",
+      "query": "chaplain assistant",
+      "productTitle": "Air Force Badge: Chaplain Assistant - midsize",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-chapel-management-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_basic_chaplains_assistant_badge_mirror_finish_7158.jpeg?v=1423546250",
+      "score": 3.585,
+      "asset": "images/military-badges/air-force/air_force_religious_affairs_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_religious_affairs_badge",
+      "variant": "senior",
+      "query": "chaplain assistant senior",
+      "productTitle": "Air Force Badge: Chaplain Assistant: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-chaplain-service-support-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_senior_chaplains_assistant_badge_mirror_finish_7159_2fdcba8b-fd68-485e-8a3c-9086fa78408b.jpeg?v=1423546110",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_religious_affairs_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_religious_affairs_badge",
+      "variant": "master",
+      "query": "chaplain assistant master",
+      "productTitle": "Air Force Badge: Chaplain Assistant: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-chaplain-service-support-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_chaplains_assistant_badge_mirror_finish_7160_4945d398-e98f-412c-aed8-abf88e2a3dd9.jpeg?v=1423546110",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_religious_affairs_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_fire_protection_badge",
+      "variant": "default",
+      "query": "fire fighter",
+      "productTitle": "Air Force Badge: Fire Protection Fire Fighter - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-fire-protection-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153756.jpg?v=1617288273",
+      "score": 3.567,
+      "asset": "images/military-badges/air-force/air_force_fire_protection_badge/default.png"
+    },
+    {
+      "badgeId": "air_force_judge_advocate_badge",
+      "variant": "default",
+      "query": "judge advocate general",
+      "productTitle": "Air Force Badge: Judge Advocate General",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-judge-advocate-general-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151240.jpg?v=1617288289",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_judge_advocate_badge/default.png"
+    },
+    {
+      "badgeId": "air_force_acquisition_financial_management_badge",
+      "variant": "basic",
+      "query": "acquisition",
+      "productTitle": "Air Force Badge: Acquisition - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-acquisition-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153884.jpg?v=1617288244",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_acquisition_financial_management_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_acquisition_financial_management_badge",
+      "variant": "senior",
+      "query": "acquisition senior",
+      "productTitle": "Air Force Badge: Acquisition: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-acquisition-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153885.jpg?v=1617288244",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_acquisition_financial_management_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_acquisition_financial_management_badge",
+      "variant": "master",
+      "query": "acquisition master",
+      "productTitle": "Air Force Badge: Acquisition: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-acquisition-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153886.jpg?v=1617288245",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_acquisition_financial_management_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_paralegal_badge",
+      "variant": "basic",
+      "query": "paralegal",
+      "productTitle": "Air Force Badge: Paralegal - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-paralegal-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153875.jpg?v=1617288248",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_paralegal_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_paralegal_badge",
+      "variant": "senior",
+      "query": "senior paralegal",
+      "productTitle": "Air Force Badge: Paralegal: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-paralegal-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153876.jpg?v=1617288248",
+      "score": 3.862,
+      "asset": "images/military-badges/air-force/air_force_paralegal_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_paralegal_badge",
+      "variant": "master",
+      "query": "master paralegal",
+      "productTitle": "Air Force Badge: Paralegal: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-paralegal-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153877.jpg?v=1617288248",
+      "score": 3.862,
+      "asset": "images/military-badges/air-force/air_force_paralegal_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_dental_badge",
+      "variant": "basic",
+      "query": "dentist",
+      "productTitle": "Air Force Badge: Dentist",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-dentist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151248.jpg?v=1617288288",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_dental_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_dental_badge",
+      "variant": "senior",
+      "query": "dentist senior",
+      "productTitle": "Air Force Badge: Dentist: Senior",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-senior-dentist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151249.jpg?v=1617288288",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_dental_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_dental_badge",
+      "variant": "master",
+      "query": "dentist chief",
+      "productTitle": "Air Force Badge: Dentist: Chief",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-chief-dentist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151250.jpg?v=1617288287",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_dental_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_enlisted_medical_badge",
+      "variant": "basic",
+      "query": "medical technician",
+      "productTitle": "Air Force Badge: Medical Technician",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-medical-technician-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151283.jpg?v=1617288282",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_enlisted_medical_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_enlisted_medical_badge",
+      "variant": "senior",
+      "query": "medical technician senior",
+      "productTitle": "Air Force Badge: Medical Technician: Senior",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-senior-medical-technician-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151284.jpg?v=1617288281",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_enlisted_medical_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_enlisted_medical_badge",
+      "variant": "master",
+      "query": "medical technician master",
+      "productTitle": "Air Force Badge: Medical Technician: Master",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-master-medical-technician-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151285.jpg?v=1617288280",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_enlisted_medical_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_intelligence_badge",
+      "variant": "basic",
+      "query": "intelligence",
+      "productTitle": "Air Force Badge: Intelligence - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-intelligence-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153849.jpg?v=1617288258",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_intelligence_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_intelligence_badge",
+      "variant": "senior",
+      "query": "intelligence senior",
+      "productTitle": "Air Force Badge: Intelligence: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-intelligence-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153850.jpg?v=1617288258",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_intelligence_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_intelligence_badge",
+      "variant": "master",
+      "query": "intelligence master",
+      "productTitle": "Air Force Badge: Intelligence: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-intelligence-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153851.jpg?v=1617288259",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_intelligence_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_historian_badge",
+      "variant": "basic",
+      "query": "historian",
+      "productTitle": "Air Force Badge: Historian - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-historian-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153872.jpg?v=1617288249",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_historian_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_historian_badge",
+      "variant": "senior",
+      "query": "historian senior",
+      "productTitle": "Air Force Badge: Historian: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-historian-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153873.jpg?v=1617288249",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_historian_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_historian_badge",
+      "variant": "master",
+      "query": "historian master",
+      "productTitle": "Air Force Badge: Historian: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-historian-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153874.jpg?v=1617288249",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_historian_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_information_management_badge",
+      "variant": "basic",
+      "query": "administration",
+      "productTitle": "Air Force Badge: Administration - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-information-manager-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153829.jpg?v=1617288264",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_information_management_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_information_management_badge",
+      "variant": "senior",
+      "query": "administration senior",
+      "productTitle": "Air Force Badge: Administration: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-information-manager-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153830.jpg?v=1617288264",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_information_management_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_operations_support_badge",
+      "variant": "basic",
+      "query": "operations support",
+      "productTitle": "Air Force Badge: Operations Support - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-operations-support-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153852.jpg?v=1617288258",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_operations_support_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_operations_support_badge",
+      "variant": "senior",
+      "query": "operations support senior",
+      "productTitle": "Air Force Badge: Operations Support: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-operations-support-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153853.jpg?v=1617288257",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_operations_support_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_operations_support_badge",
+      "variant": "master",
+      "query": "operations support master",
+      "productTitle": "Air Force Badge: Operations Support: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-operations-support-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153854.jpg?v=1617288257",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_operations_support_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_medical_service_badge",
+      "variant": "basic",
+      "query": "medical service",
+      "productTitle": "Air Force Badge: Medical Service",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-medical-service-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151269.jpg?v=1617288284",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_medical_service_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_medical_service_badge",
+      "variant": "senior",
+      "query": "medical service senior",
+      "productTitle": "Air Force Badge: Medical Service: Senior",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-senior-medical-service-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151270.jpg?v=1617288283",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_medical_service_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_medical_service_badge",
+      "variant": "master",
+      "query": "medical service chief",
+      "productTitle": "Air Force Badge: Medical Service: Chief",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-chief-medical-service-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151271.jpg?v=1617288283",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_medical_service_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_civil_engineer_readiness_badge",
+      "variant": "basic",
+      "query": "civil engineer readiness basic",
+      "productTitle": "Air Force Badge: Civil Engineer Readiness: Basic - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-basic-civil-engineer-readiness-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_emergency_management_ce_readiness_badge_mirror_finish_7013_2.jpeg?v=1423543709",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_civil_engineer_readiness_badge",
+      "variant": "senior",
+      "query": "civil engineer readiness senior",
+      "productTitle": "Air Force Badge: Civil Engineer Readiness: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-senior-civil-engineer-readiness-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_senior_emergency_management_ce_readiness_badge_mirror_finish_7014_2.jpeg?v=1423543708",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_civil_engineer_readiness_badge",
+      "variant": "master",
+      "query": "civil engineer readiness master",
+      "productTitle": "Air Force Badge: Civil Engineer Readiness: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-master-civil-engineer-readiness-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_emergency_management_ce_readiness_badge_mirror_finish_7015_2.jpeg?v=1423543732",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_aircraft_maintenance_badge",
+      "variant": "basic",
+      "query": "air maintenance",
+      "productTitle": "Air Force Badge: Air Maintenance - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-air-maintenance",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153759.jpg?v=1617288272",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_aircraft_maintenance_badge",
+      "variant": "senior",
+      "query": "air maintenance senior",
+      "productTitle": "Air Force Badge: Air Maintenance : Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-air-maintenance-senior",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153760.jpg?v=1617288272",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_aircraft_maintenance_badge",
+      "variant": "master",
+      "query": "air maintenance master",
+      "productTitle": "Air Force Badge: Air Maintenance : Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-air-maintenance-master",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153761.jpg?v=1622836681",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_air_traffic_control_badge",
+      "variant": "basic",
+      "query": "air traffic control",
+      "productTitle": "Air Force Badge: Air Traffic Control - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-air-traffic-control-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153705.jpg?v=1617288279",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_air_traffic_control_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_air_traffic_control_badge",
+      "variant": "senior",
+      "query": "air traffic control senior",
+      "productTitle": "Air Force Badge: Air Traffic Control: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-air-traffic-control-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153706.jpg?v=1617288279",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_air_traffic_control_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_air_traffic_control_badge",
+      "variant": "master",
+      "query": "air traffic controller master",
+      "productTitle": "Air Force Badge: Air Traffic Controller: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-master-air-traffic-controller-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153707.jpg?v=1617288278",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_air_traffic_control_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_band_badge",
+      "variant": "basic",
+      "query": "band",
+      "productTitle": "Air Force Badge: Band - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-band-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/7007_air_force_band_badge_mf_998ad2cf-a23f-4107-85b0-660c4368e25c.jpeg?v=1423546116",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_band_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_band_badge",
+      "variant": "senior",
+      "query": "band senior",
+      "productTitle": "Air Force Badge: Band: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-band-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153871.jpg?v=1617288250",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_band_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_band_badge",
+      "variant": "master",
+      "query": "band master",
+      "productTitle": "Air Force Badge: Band: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-band-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/21538711_f5f11ea8-8ef0-4854-95f2-a86c1f3fdfd8.jpg?v=1617288238",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_band_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_civil_engineer_badge",
+      "variant": "basic",
+      "query": "civil engineer",
+      "productTitle": "Air Force Badge: Civil Engineer - midsize",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-midsize-civil-engineer-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2156607.jpg?v=1617288310",
+      "score": 3.544,
+      "asset": "images/military-badges/air-force/air_force_civil_engineer_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_civil_engineer_badge",
+      "variant": "senior",
+      "query": "civil engineer senior",
+      "productTitle": "Air Force Badge: Civil Engineer: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-civil-engineer-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_senior_civil_engineer_badge_mirror_finish_7144_2.jpeg?v=1423546125",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_civil_engineer_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_civil_engineer_badge",
+      "variant": "master",
+      "query": "civil engineer master",
+      "productTitle": "Air Force Badge: Civil Engineer: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-civil-engineer-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_civil_engineer_badge_mirror_finish_7145_2_02447c5b-8377-4482-a8b7-8898dcbb54d3.jpeg?v=1423546124",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_civil_engineer_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_command_and_control_badge",
+      "variant": "basic",
+      "query": "command and control",
+      "productTitle": "Air Force Badge: Command and Control - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-command-and-control-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153846.jpg?v=1617288259",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_command_and_control_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_command_and_control_badge",
+      "variant": "senior",
+      "query": "command and control senior",
+      "productTitle": "Air Force Badge: Command and Control: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-command-and-control-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153847.jpg?v=1622836680",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_command_and_control_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_command_and_control_badge",
+      "variant": "master",
+      "query": "command and control master",
+      "productTitle": "Air Force Badge: Command and Control: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-command-and-control-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153848.jpg?v=1617288259",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_command_and_control_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_communications_information_badge",
+      "variant": "basic",
+      "query": "communications and information",
+      "productTitle": "Air Force Badge: Communications and Information - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-communications-and-information-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153858.jpg?v=1617288255",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_communications_information_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_communications_information_badge",
+      "variant": "senior",
+      "query": "communications and information senior",
+      "productTitle": "Air Force Badge: Communications and Information: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-communications-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/7023_air_force_senior_communications_and_info_badge_mf_1a851444-de3e-4e7a-935a-6a21cc8aba18.jpeg?v=1423546123",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_communications_information_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_communications_information_badge",
+      "variant": "master",
+      "query": "communications and information master",
+      "productTitle": "Air Force Badge: Communications and Information: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-communications-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153860.jpg?v=1617288255",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_communications_information_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_force_protection_badge",
+      "variant": "basic",
+      "query": "force protection",
+      "productTitle": "Air Force Badge: Force Protection - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-force-protection-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153881.jpg?v=1617288247",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_force_protection_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_force_protection_badge",
+      "variant": "senior",
+      "query": "force protection senior",
+      "productTitle": "Air Force Badge: Force Protection: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-force-protection-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153882.jpg?v=1617288246",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_force_protection_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_force_protection_badge",
+      "variant": "master",
+      "query": "force protection master",
+      "productTitle": "Air Force Badge: Force Protection: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-force-protection-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153883.jpg?v=1617288245",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_force_protection_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_ground_radar_airfield_systems_badge",
+      "variant": "basic",
+      "query": "ground radar airfield systems",
+      "productTitle": "Air Force Badge: Ground Radar Airfield Systems",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-ground-radar-airfield-systems",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153822.jpg?v=1432745468",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_ground_radar_airfield_systems_badge",
+      "variant": "senior",
+      "query": "ground radar airfield systems senior",
+      "productTitle": "Air Force Badge: Ground Radar Airfield Systems Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-ground-radar-airfield-systems-senior",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153823.jpg?v=1432745497",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_ground_radar_airfield_systems_badge",
+      "variant": "master",
+      "query": "ground radar airfield systems master",
+      "productTitle": "Air Force Badge: Ground Radar Airfield Systems Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-ground-radar-airfield-systems-master",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153824.jpg?v=1432745517",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_manpower_personnel_badge",
+      "variant": "basic",
+      "query": "manpower and personnel",
+      "productTitle": "Air Force Badge: Manpower and Personnel - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-manpower-and-personnel-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153864.jpg?v=1617288252",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_manpower_personnel_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_manpower_personnel_badge",
+      "variant": "senior",
+      "query": "manpower and personnel senior",
+      "productTitle": "Air Force Badge: Manpower and Personnel: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-senior-manpower-and-personnel-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153865.jpg?v=1617288253",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_manpower_personnel_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_manpower_personnel_badge",
+      "variant": "master",
+      "query": "manpower and personnel master",
+      "productTitle": "Air Force Badge: Manpower and Personnel: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-master-manpower-and-personnel-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153866.jpg?v=1617288253",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_manpower_personnel_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_munitions_badge",
+      "variant": "basic",
+      "query": "munitions basic",
+      "productTitle": "Air Force Badge: Munitions: Basic - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-munitions-basic-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153811.jpg?v=1572901839",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_munitions_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_munitions_badge",
+      "variant": "senior",
+      "query": "munitions senior",
+      "productTitle": "Air Force Badge: Munitions: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-munitions-basic-senior-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153812.jpg?v=1574286881",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_munitions_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_munitions_badge",
+      "variant": "master",
+      "query": "munitions master",
+      "productTitle": "Air Force Badge: Munitions: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-munitions-basic-master-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153813.jpg?v=1576603607",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_munitions_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_public_affairs_badge",
+      "variant": "basic",
+      "query": "public affairs",
+      "productTitle": "Air Force Badge: Public Affairs - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-public-affairs-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153867.jpg?v=1617288251",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_public_affairs_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_public_affairs_badge",
+      "variant": "senior",
+      "query": "public affairs senior",
+      "productTitle": "Air Force Badge: Public Affairs: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-public-affairs-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153868.jpg?v=1617288252",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_public_affairs_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_public_affairs_badge",
+      "variant": "master",
+      "query": "public affairs master",
+      "productTitle": "Air Force Badge: Public Affairs: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-public-affairs-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153869.jpg?v=1617288251",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_public_affairs_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_services_badge",
+      "variant": "basic",
+      "query": "services",
+      "productTitle": "Air Force Badge: Services - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-services-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153861.jpg?v=1617288254",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_services_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_services_badge",
+      "variant": "senior",
+      "query": "services senior",
+      "productTitle": "Air Force Badge: Services: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-services-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153862.jpg?v=1617288254",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_services_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_services_badge",
+      "variant": "master",
+      "query": "services master",
+      "productTitle": "Air Force Badge: Services: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-services-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153863.jpg?v=1617288254",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_services_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_supply_fuels_badge",
+      "variant": "basic",
+      "query": "supply fuels",
+      "productTitle": "Air Force Badge: Supply Fuels - midsize",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-midsize-supply-fuels-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2156562.jpg?v=1617288324",
+      "score": 3.517,
+      "asset": "images/military-badges/air-force/air_force_supply_fuels_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_supply_fuels_badge",
+      "variant": "senior",
+      "query": "supply fuels senior",
+      "productTitle": "Air Force Badge: Supply Fuels: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-supply-fuels-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153809.jpg?v=1617288265",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_supply_fuels_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_supply_fuels_badge",
+      "variant": "master",
+      "query": "supply fuels master",
+      "productTitle": "Air Force Badge: Supply Fuels: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-supply-fuels-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153810.jpg?v=1622836680",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_supply_fuels_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_transportation_badge",
+      "variant": "basic",
+      "query": "transportation",
+      "productTitle": "Air Force Badge: Transportation - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-transportation-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153887.jpg?v=1617288243",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_transportation_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_transportation_badge",
+      "variant": "senior",
+      "query": "transportation senior",
+      "productTitle": "Air Force Badge: Transportation: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-transportation-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153888.jpg?v=1617288243",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_transportation_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_transportation_badge",
+      "variant": "master",
+      "query": "transportation master",
+      "productTitle": "Air Force Badge: Transportation: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-transportation-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153889.jpg?v=1617288243",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_transportation_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_weather_operations_badge",
+      "variant": "basic",
+      "query": "weather operations",
+      "productTitle": "Air Force Badge: Weather Operations - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-meteorologist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153815.jpg?v=1617288265",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_weather_operations_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_weather_operations_badge",
+      "variant": "senior",
+      "query": "weather operations senior",
+      "productTitle": "Air Force Badge: Weather Operations: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-meteorologist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153816.jpg?v=1617288265",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_weather_operations_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_weather_operations_badge",
+      "variant": "master",
+      "query": "weather operations master",
+      "productTitle": "Air Force Badge: Weather Operations: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-meteorologist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153817.jpg?v=1617288265",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_weather_operations_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_safety_badge",
+      "variant": "basic",
+      "query": "basic safety",
+      "productTitle": "Air Force Badge: Basic Safety - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-basic-safety-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153920.jpg?v=1429546201",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_safety_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_safety_badge",
+      "variant": "senior",
+      "query": "senior safety",
+      "productTitle": "Air Force Badge: Senior Safety - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-senior-safety-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153921.jpg?v=1429546247",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_safety_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_safety_badge",
+      "variant": "master",
+      "query": "master safety",
+      "productTitle": "Air Force Badge: Master Safety - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-master-safety-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153922.jpg?v=1429546335",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_safety_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_operations_research_analyst_badge",
+      "variant": "basic",
+      "query": "basic operations research analyst",
+      "productTitle": "Air Force Badge: Basic Operations Research Analyst - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-basic-operations-research-analyst-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153926.jpg?v=1617291067",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_operations_research_analyst_badge",
+      "variant": "senior",
+      "query": "senior operations research analyst",
+      "productTitle": "Air Force Badge: Senior Operations Research Analyst - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-senior-operations-research-analyst-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153927.jpg?v=1617291069",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_operations_research_analyst_badge",
+      "variant": "master",
+      "query": "master operations research analyst",
+      "productTitle": "Air Force Badge: Master Operations Research Analyst - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-master-operations-research-analyst-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153928.jpg?v=1617291068",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_multi_domain_warfare_officer_badge",
+      "variant": "basic",
+      "query": "basic multi domain warfare officer",
+      "productTitle": "Air Force Badge: Basic Multi Domain Warfare Officer - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-basic-multi-domain-warfare-officer-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153923.jpg?v=1617290779",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_multi_domain_warfare_officer_badge",
+      "variant": "senior",
+      "query": "senior multi domain warfare officer",
+      "productTitle": "Air Force Badge: Senior Multi Domain Warfare Officer - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-senior-multi-domain-warfare-officer-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153924.jpg?v=1617290946",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_multi_domain_warfare_officer_badge",
+      "variant": "master",
+      "query": "master multi domain warfare officer",
+      "productTitle": "Air Force Badge: Master Multi Domain Warfare Officer - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-master-multi-domain-warfare-officer-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153925.jpg?v=1617290927",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_foreign_area_officer_badge",
+      "variant": "basic",
+      "query": "basic foreign area officer career field",
+      "productTitle": "Air Force Badge: Basic Foreign Area Officer Career Field - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-basic-foreign-area-officer-career-field-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/files/2153937.jpg?v=1701376227",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_foreign_area_officer_badge",
+      "variant": "senior",
+      "query": "senior foreign area officer career field",
+      "productTitle": "Air Force Badge: Senior Foreign Area Officer Career Field - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-senior-foreign-area-officer-career-field-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/files/2156669_d6d758ff-e671-49b0-a206-e74ad358fd05.jpg?v=1703197308",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_foreign_area_officer_badge",
+      "variant": "master",
+      "query": "master foreign area officer career field",
+      "productTitle": "Air Force Badge: Master Foreign Area Officer Career Field - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-master-foreign-area-officer-career-field-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/files/2156670_951f64dc-9dad-443d-ba6e-4dd1da549eb5.jpg?v=1703197294",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_weapons_controller_badge",
+      "variant": "basic",
+      "query": "weapons controller",
+      "productTitle": "Air Force Badge: Weapons Controller - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-weapons-controller-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153787.jpg?v=1617288269",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_weapons_controller_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_weapons_controller_badge",
+      "variant": "senior",
+      "query": "weapons controller senior",
+      "productTitle": "Air Force Badge: Weapons Controller: Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-senior-weapons-controller-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153788.jpg?v=1617288269",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_weapons_controller_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_weapons_controller_badge",
+      "variant": "master",
+      "query": "weapons controller master",
+      "productTitle": "Air Force Badge: Weapons Controller: Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-regulation-size-master-weapons-controller-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153789.jpg?v=1617288268",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_weapons_controller_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_information_operations_officer_badge",
+      "variant": "basic",
+      "query": "information operations officer",
+      "productTitle": "Air Force Badge: Information Operations Officer - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-information-operations-officer-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153730.jpg?v=1617290362",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_information_operations_officer_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_information_operations_officer_badge",
+      "variant": "senior",
+      "query": "senior information operations officer",
+      "productTitle": "Air Force Badge: Senior Information Operations Officer - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-senior-information-operation-officer-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153731.jpg?v=1617290361",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_information_operations_officer_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_information_operations_officer_badge",
+      "variant": "master",
+      "query": "master information operations officer",
+      "productTitle": "Air Force Badge: Master Information Operations Officer - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-master-information-operations-officer-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153732.jpg?v=1674592346",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_information_operations_officer_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_biomedical_scientist_badge",
+      "variant": "basic",
+      "query": "bio medical scientist",
+      "productTitle": "Air Force Badge: Bio-Medical Scientist",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-biomedical-scientist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151276.jpg?v=1617288283",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_biomedical_scientist_badge",
+      "variant": "senior",
+      "query": "bio medical scientist senior",
+      "productTitle": "Air Force Badge: Bio-Medical Scientist: Senior",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-senior-biomedical-scientist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151277.jpg?v=1617288282",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_biomedical_scientist_badge",
+      "variant": "master",
+      "query": "bio medical scientist master",
+      "productTitle": "Air Force Badge: Bio-Medical Scientist: Master",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-master-biomedical-scientist-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_master_biomedical_service_corps_badge_mirror_finish_7096.jpeg?v=1423546169",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_nurse_badge",
+      "variant": "basic",
+      "query": "nurse",
+      "productTitle": "Air Force Badge: Nurse",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-nurse-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151262.jpg?v=1617288285",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_nurse_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_nurse_badge",
+      "variant": "senior",
+      "query": "nurse senior",
+      "productTitle": "Air Force Badge: Nurse: Senior",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-senior-nurse-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151263.jpg?v=1617288284",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_nurse_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_nurse_badge",
+      "variant": "chief",
+      "query": "nurse chief",
+      "productTitle": "Air Force Badge: Nurse: Chief",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-chief-nurse-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151264.jpg?v=1617288285",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_nurse_badge/chief.png"
+    },
+    {
+      "badgeId": "air_force_physician_badge",
+      "variant": "basic",
+      "query": "physician",
+      "productTitle": "Air Force Badge: Physician",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-physician-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151241.jpg?v=1617288289",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_physician_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_physician_badge",
+      "variant": "senior",
+      "query": "physician senior",
+      "productTitle": "Air Force Badge: Physician: Senior",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-senior-physician-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151242.jpg?v=1617288291",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_physician_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_physician_badge",
+      "variant": "chief",
+      "query": "physician chief",
+      "productTitle": "Air Force Badge: Physician: Chief",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-chief-physician-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151243.jpg?v=1617288289",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_physician_badge/chief.png"
+    },
+    {
+      "badgeId": "air_force_veterinarian_badge",
+      "variant": "basic",
+      "query": "veterinarian",
+      "productTitle": "Air Force Badge: Veterinarian",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-veterinarian-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151255.jpg?v=1617288286",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_veterinarian_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_veterinarian_badge",
+      "variant": "senior",
+      "query": "veterinarian senior",
+      "productTitle": "Air Force Badge: Veterinarian: Senior",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-senior-veterinarian-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151256.jpg?v=1617288286",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_veterinarian_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_veterinarian_badge",
+      "variant": "chief",
+      "query": "veterinarian chief",
+      "productTitle": "Air Force Badge: Veterinarian: Chief",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-chief-veterinarian-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151257.jpg?v=1617288286",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_veterinarian_badge/chief.png"
+    },
+    {
+      "badgeId": "air_force_scientific_applications_specialist_badge",
+      "variant": "basic",
+      "query": "scientific applications specialist",
+      "productTitle": "Air Force Badge: Scientific Applications Specialist - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-scientific-applications-specialist",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151290.jpg?v=1617290086",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_scientific_applications_specialist_badge",
+      "variant": "senior",
+      "query": "scientific applications specialist senior",
+      "productTitle": "Air Force Badge: Scientific Applications Specialist - Senior - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-scientific-applications-specialist-senior",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151291.jpg?v=1617290086",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_scientific_applications_specialist_badge",
+      "variant": "master",
+      "query": "scientific applications specialist master",
+      "productTitle": "Air Force Badge: Scientific Applications Specialist - Master - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-scientific-applications-specialist-master",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2151292.jpg?v=1617290087",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_airfield_operations_officer_badge",
+      "variant": "basic",
+      "query": "basic airfield operations officer",
+      "productTitle": "Air Force Badge: Basic Airfield Operations Officer - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-basic-airfield-operations-officer-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153932.jpg?v=1677885482",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_airfield_operations_officer_badge",
+      "variant": "senior",
+      "query": "senior airfield operations officer",
+      "productTitle": "Air Force Badge: Senior Airfield Operations Officer - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-senior-airfield-operations-officer-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153933.jpg?v=1677885422",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/senior.png"
+    },
+    {
+      "badgeId": "air_force_airfield_operations_officer_badge",
+      "variant": "master",
+      "query": "master airfield operations officer",
+      "productTitle": "Air Force Badge: Master Airfield Operations Officer - regulation size",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-badge-master-airfield-operations-officer-regulation-size",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153934.jpg?v=1678313053",
+      "score": 4.3,
+      "asset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_aetc_instructor_badge",
+      "variant": "basic",
+      "query": "air education and training command instructor",
+      "productTitle": "Air Force Badge: Air Education and Training Command: Instructor",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-air-education-and-training-command-instructor-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150100.jpg?v=1622836685",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_aetc_instructor_badge/basic.png"
+    },
+    {
+      "badgeId": "air_force_aetc_instructor_badge",
+      "variant": "master",
+      "query": "air education and training command master instructor",
+      "productTitle": "Air Force Badge: Air Education and Training Command: Master Instructor",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-master-instructor-air-education-and-training-command-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150200.jpg?v=1622836684",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_aetc_instructor_badge/master.png"
+    },
+    {
+      "badgeId": "air_force_pararescue_badge",
+      "variant": "default",
+      "query": "pararescue",
+      "productTitle": "Air Force Badge: Pararescue",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-pararescue-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2153424.jpg?v=1622836682",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_pararescue_badge/default.png"
+    },
+    {
+      "badgeId": "air_force_combat_control_team_badge",
+      "variant": "default",
+      "query": "combat control team",
+      "productTitle": "Air Force Badge: Combat Control Team",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-combat-control-team-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_combat_control_team_badge_mirror_finish_7146_1.jpeg?v=1423546092",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_combat_control_team_badge/default.png"
+    },
+    {
+      "badgeId": "air_force_combat_rescue_officer_badge",
+      "variant": "default",
+      "query": "combat rescue officer",
+      "productTitle": "Air Force Badge: Combat Rescue Officer",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-combat-rescue-officer-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_combat_rescue_officer_badge_mirror_finish_7166_1_10b553f6-c9d8-4db3-b4a6-93b6e076bbda.jpeg?v=1423546166",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_combat_rescue_officer_badge/default.png"
+    },
+    {
+      "badgeId": "air_force_commanders_badge",
+      "variant": "default",
+      "query": "commanders badge",
+      "productTitle": "Air Force Badge: Commanders Badge",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-commanders-badge-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_commanders_insignia_badge_mirror_finish_7134_1.jpeg?v=1423546099",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_commanders_badge/default.png"
+    },
+    {
+      "badgeId": "air_force_professional_military_education_badge",
+      "variant": "default",
+      "query": "professional military education",
+      "productTitle": "Air Force Badge: Professional Military Education",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-professional-military-education-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air_force_professional_military_education_badge_mirror_finish_7147_1.jpeg?v=1423546183",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_professional_military_education_badge/default.png"
+    }
+  ],
+  "unmatched": [
+    {
+      "badgeId": "presidential_service_badge",
+      "variant": "default",
+      "query": "presidential service",
+      "score": 1.119
+    },
+    {
+      "badgeId": "vice_presidential_service_badge",
+      "variant": "default",
+      "query": "vice presidential service",
+      "score": 0.95
+    },
+    {
+      "badgeId": "air_force_observer_badge",
+      "variant": "basic",
+      "query": "observer",
+      "score": 0.925
+    },
+    {
+      "badgeId": "air_force_observer_badge",
+      "variant": "senior",
+      "query": "senior observer",
+      "score": 1.276
+    },
+    {
+      "badgeId": "air_force_observer_badge",
+      "variant": "master",
+      "query": "master observer",
+      "score": 1.276
+    },
+    {
+      "badgeId": "air_force_security_forces_badge",
+      "variant": "default",
+      "query": "security forces",
+      "score": 0.909
+    },
+    {
+      "badgeId": "air_force_base_honor_guard_badge",
+      "variant": "default",
+      "query": "base honor guard",
+      "score": 1.095
+    }
+  ]
+}

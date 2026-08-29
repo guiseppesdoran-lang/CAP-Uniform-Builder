@@ -138,14 +138,18 @@ def main():
     representation_data = json.loads(representation_file.read_text(encoding="utf-8"))
     badge_catalog = json.loads((ROOT / "data" / "military" / "badges.json").read_text(encoding="utf-8"))
     reviewed_military_minis = []
+    reviewed_military_full_size = []
     for award_id, representations in representation_data.get("awards", {}).items():
         miniature = representations.get("miniatureMedal", {})
         asset = miniature.get("asset") if miniature.get("available") else None
-        if not asset:
-            continue
-        asset_path = ROOT / asset
-        if asset_path.exists() and asset_path not in reviewed_military_minis:
+        asset_path = ROOT / asset if asset else None
+        if asset_path and asset_path.exists() and asset_path not in reviewed_military_minis:
             reviewed_military_minis.append(asset_path)
+        full_size = representations.get("fullSizeMedal", {})
+        full_asset = full_size.get("asset") if full_size.get("available") else None
+        full_path = ROOT / full_asset if full_asset else None
+        if full_path and full_path.exists() and full_path not in reviewed_military_full_size:
+            reviewed_military_full_size.append(full_path)
     reviewed_military_badges = []
     for badge in badge_catalog.get("badges", []):
         metal = badge.get("representations", {}).get("metal", {})
@@ -241,7 +245,7 @@ The complete per-file measurements are in `reports/mcchord-asset-analysis.json`.
     shutil.copyfile(REPORTS / "mcchord-mini-medal-comparison.png", REPORTS / "military-mini-medal-style-review.png")
     sheet(
         "Military full-size medal style review",
-        [("Reviewed full-size military medal assets", [])],
+        [("Reviewed full-size military medal assets", reviewed_military_full_size)],
         REPORTS / "military-full-size-medal-style-review.png",
         cell=(180, 180),
     )
@@ -285,6 +289,7 @@ The complete per-file measurements are in `reports/mcchord-asset-analysis.json`.
         "mcchordRibbons": len(ribbon_paths),
         "mcchordMiniatureMedals": len(mini_paths),
         "reviewedMilitaryMiniatureMedals": len(reviewed_military_minis),
+        "reviewedMilitaryFullSizeMedals": len(reviewed_military_full_size),
         "importedMilitaryRibbons": len(military_paths),
     }, indent=2))
 
