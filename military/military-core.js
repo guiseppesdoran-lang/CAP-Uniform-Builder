@@ -282,12 +282,57 @@
     return (badge?.authorizedServices || []).map(normalizeService).includes(serviceKey);
   }
 
+  function getAirForceBadgeFallbackOrder(badge){
+    const id=String(badge?.id || '').toLowerCase();
+    const family=String(badge?.family || '').toUpperCase();
+
+    // DAFI 36-2903, paragraphs 12.1 and 12.6.7: Presidential and Vice
+    // Presidential Service Badges are the two highest-precedence duty badges.
+    if(id==='presidential_service_badge') return 0;
+    if(id==='vice_presidential_service_badge') return 1;
+
+    // DAFI 36-2903, paragraph 12.1.1: the chaplain badge is worn above all
+    // other occupational badges. Religious-affairs badges share this catalog
+    // family but do not outrank an explicit chaplain badge when one is added.
+    if(/(^|_)chaplain(_|$)/.test(id)) return 10;
+    if(family==='CHAPLAIN') return 11;
+
+    // DAFI 36-2903 treats aeronautical, space, cyberspace, multi-domain and
+    // missile badges as an equal-precedence group. Keep a stable catalog order
+    // within the group without implying a regulatory distinction.
+    if(['AVIATION','AIRCREW','SPACE','CYBER','MISSILE'].includes(family) || id.includes('multi_domain')) return 20;
+
+    // Parachutist badges follow the rated/space/cyber/missile group and precede
+    // occupational badges. Other qualification badges retain equal fallback
+    // precedence rather than receiving an invented regulatory order.
+    if(id.includes('parachutist')) return 30;
+    if(family==='EOD') return 31;
+    if(family==='QUALIFICATION') return 32;
+
+    // DAFI 36-2903, paragraph 12.6.12: when both are worn, the Munitions badge
+    // precedes the Aircraft Maintenance badge.
+    if(id==='air_force_munitions_badge') return 40;
+    if(id==='air_force_aircraft_maintenance_badge') return 41;
+    if(['OCCUPATIONAL','MEDICAL','OTHER'].includes(family)) return 42;
+
+    // Command insignia and identification badges use their own placement rules;
+    // keep them after the above-the-ribbon occupational stack unless an explicit
+    // service precedence record says otherwise.
+    if(family==='COMMAND') return 80;
+    if(family==='IDENTIFICATION') return 90;
+    return 100;
+  }
+
   function getBadgePrecedence(badge,service){
     const serviceKey=normalizeService(service);
     const record=badge?.precedence?.[serviceKey];
+    const explicitOrder=Number.isFinite(record) ? record : (Number.isFinite(record?.order) ? record.order : null);
+    const fallbackOrder=['AIR_FORCE','SPACE_FORCE'].includes(serviceKey)
+      ? getAirForceBadgeFallbackOrder(badge)
+      : Number.MAX_SAFE_INTEGER;
     return {
       service:serviceKey,
-      order:Number.isFinite(record) ? record : (Number.isFinite(record?.order) ? record.order : Number.MAX_SAFE_INTEGER),
+      order:explicitOrder ?? fallbackOrder,
       verified:!!record?.verified,
       name:String(badge?.officialName || badge?.name || badge?.id || '')
     };

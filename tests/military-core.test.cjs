@@ -330,6 +330,28 @@ test('military badge authorization and precedence are service-specific', () => {
   assert.equal(airForceSorted[0].precedence.AIR_FORCE.regulation,'DAFI 36-2903, paragraph 12.6.7');
 });
 
+test('Air Force badge fallback follows DAFI hierarchy and the munitions exception', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const ids=[
+    'air_force_aircraft_maintenance_badge',
+    'air_force_munitions_badge',
+    'air_force_parachutist_badge',
+    'air_force_space_badge',
+    'air_force_religious_affairs_badge'
+  ];
+  const sorted=core.sortBadgesForMember(
+    ids.map(id=>badges.find(badge=>badge.id===id)),
+    {organization:'AIR_FORCE'}
+  );
+  assert.deepEqual(sorted.map(badge=>badge.id),[
+    'air_force_religious_affairs_badge',
+    'air_force_space_badge',
+    'air_force_parachutist_badge',
+    'air_force_munitions_badge',
+    'air_force_aircraft_maintenance_badge'
+  ]);
+});
+
 test('official Marine Corps table preserves personal, unit, and campaign precedence', () => {
   const table=require('../data/rules/verified/service-precedence.json').MARINE_CORPS;
   const order=id=>table.awards.indexOf(id);
