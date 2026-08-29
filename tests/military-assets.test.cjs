@@ -171,7 +171,7 @@ test('Air Force miniature-medal checkpoint uses reviewed local McChord geometry'
   assert.equal(manifest.sourceType,'COMMERCIAL_CATALOG_DISCOVERY_REFERENCE');
   assert.equal(manifest.style,'MCCHORD_DIGITAL_MEDAL');
   assert.deepEqual(manifest.canvas,[50,176]);
-  assert.ok(manifest.imported.length>=42,'expected the first Air Force miniature-medal checkpoint');
+  assert.ok(manifest.imported.length>=50,'expected the expanded Air Force miniature-medal checkpoint');
   assert.equal(new Set(manifest.imported.map(record=>record.awardId)).size,manifest.imported.length);
   for(const record of manifest.imported){
     assert.match(record.asset,/^images\/military-mini-medals\/air-force\/.+\.png$/);
@@ -184,6 +184,26 @@ test('Air Force miniature-medal checkpoint uses reviewed local McChord geometry'
     assert.ok([4,6].includes(buffer[25]),`${record.awardId} lacks alpha`);
     assert.equal(overrides[record.awardId]?.miniatureMedal?.asset,record.asset,`${record.awardId} override mapping`);
     assert.equal(overrides[record.awardId]?.miniatureMedal?.style,'MCCHORD_DIGITAL_MEDAL');
+  }
+});
+
+test('Air Force full-size medal checkpoint uses separate reviewed local artwork',()=>{
+  const manifest=require('../data/imports/vanguard_air_force_full_size_medals.json');
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  assert.equal(manifest.sourceType,'COMMERCIAL_CATALOG_DISCOVERY_REFERENCE');
+  assert.equal(manifest.style,'MCCHORD_DIGITAL_MEDAL');
+  assert.deepEqual(manifest.canvas,[100,220]);
+  assert.ok(manifest.imported.length>=50,'expected the first full-size Air Force medal checkpoint');
+  assert.equal(manifest.failed.length,0,'catalog image failures must remain audited');
+  for(const record of manifest.imported){
+    assert.match(record.asset,/^images\/military-full-size-medals\/air-force\/.+\.png$/);
+    const absolute=path.join(ROOT,...record.asset.split('/'));
+    assert.ok(fs.existsSync(absolute),`${record.awardId} full-size medal missing`);
+    const buffer=fs.readFileSync(absolute);
+    assert.equal(buffer.readUInt32BE(16),100,`${record.awardId} width`);
+    assert.equal(buffer.readUInt32BE(20),220,`${record.awardId} height`);
+    assert.ok([4,6].includes(buffer[25]),`${record.awardId} lacks alpha`);
+    assert.equal(overrides[record.awardId]?.fullSizeMedal?.asset,record.asset,`${record.awardId} full-size mapping`);
   }
 });
 

@@ -34,14 +34,24 @@ COLLECTION = "https://www.vanguardmil.com/collections/miniature-medals/products.
 DAF_TITLE_ALIASES = {
     "achievement": "air_and_space_achievement_medal",
     "aerial achievement": "aerial_achievement_medal",
-    "air and space campaign": "air_and_space_campaign_medal",
+    "air and space campaign": "air_and_space_campaign",
     "combat action": "air_force_combat_action",
     "combat readiness": "air_force_combat_readiness",
     "commendation": "air_and_space_commendation_medal",
     "distinguished service": "air_force_distinguishd_service",
     "good conduct": "air_force_good_condcut",
-    "nuclear deterrence operations service": "nuclear_deterrence_operations_service",
+    "airman": "airmans_medal",
+    "european african middle east campaign": "european_african_middle_eastern_campaign",
+    "korea defense service": "korean_defense_service",
+    "kuwait liberation government of kuwait": "kuwiat_liberation_kuwait",
+    "military outstanding volunteer service": "outstanding_volunteer_service",
+    "multinational force and observer": "multinational_force_and_observers",
+    "national defense": "national_defense_military_service",
+    "nuclear deterrence operations service": "nuclear_deterrence_operations_service_medal",
+    "republic of korean war service no device": "korean_service",
     "remote combat effects campaign": "remote_combat_effects_campaign_medal",
+    "vietnam campaign": "republic_of_vietnam_campaign",
+    "wwii victory": "world_war_ii_victory",
 }
 
 
@@ -66,7 +76,7 @@ def products() -> list[dict]:
 
 def normalized(value: str) -> str:
     value = value.lower().replace("&", " and ").replace("u.s.", " ")
-    value = re.sub(r"\b(?:miniature|mini|medal|usaf|air force|24k|gold|plated|anodized|size)\b", " ", value)
+    value = re.sub(r"\b(?:miniature|mini|medal|usaf|air force|full|24k|gold|plated|anodized|size)\b", " ", value)
     value = re.sub(r"[^a-z0-9]+", " ", value)
     return " ".join(value.split())
 
@@ -97,7 +107,7 @@ def score_name(product_name: str, award_names: set[str]) -> float:
     return best
 
 
-def match_products(catalog: list[dict], source_products: list[dict]) -> tuple[list[dict], list[dict]]:
+def match_products(catalog: list[dict], source_products: list[dict], required_keyword="miniature") -> tuple[list[dict], list[dict]]:
     air_force_awards = {
         award["id"]: award for award in catalog
         if "AIR_FORCE" in award.get("authorizedServices", [])
@@ -107,7 +117,10 @@ def match_products(catalog: list[dict], source_products: list[dict]) -> tuple[li
     used_awards = set()
     for product in source_products:
         title = product.get("title", "")
-        if "miniature" not in title.lower() or not product.get("images"):
+        title_lower = title.lower()
+        if required_keyword not in title_lower or not product.get("images"):
+            continue
+        if any(marker in title_lower for marker in ("24k", "gold plated", "mirror finish", "jrotc", "civil air patrol")):
             continue
         key = product_key(product)
         award_id = DAF_TITLE_ALIASES.get(key)
