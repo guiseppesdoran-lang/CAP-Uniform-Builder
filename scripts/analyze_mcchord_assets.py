@@ -258,6 +258,13 @@ The complete per-file measurements are in `reports/mcchord-asset-analysis.json`.
         REPORTS / "navy-badge-style-review.png",
         cell=(180, 180),
     )
+    marine_badges = [path for path in reviewed_military_badges if "military-badges/marine-corps/" in path.relative_to(ROOT).as_posix()]
+    sheet(
+        "Marine Corps badge import review",
+        [("High-confidence licensed copies of officially documented insignia", marine_badges)],
+        REPORTS / "marine-corps-badge-style-review.png",
+        cell=(180, 180),
+    )
     # Existing McChord variants are purpose-built combination references. These
     # sheets intentionally do not fabricate unsupported military combinations.
     device_variants = [RIBBON_DIR / name for name in variant_names if any(token in name.lower() for token in ("02", "03", "04", "05", "06")) and (RIBBON_DIR / name).exists()][:20]

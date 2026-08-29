@@ -1,5 +1,11 @@
 {
-  "officialCatalogSource": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/",
+  "officialCatalogSources": [
+    "https://www.marines.mil/News/Messages/MARADMINS/Article/1517048/marine-unmanned-aircraft-system-breast-insignia/",
+    "https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=94",
+    "https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95",
+    "https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=96",
+    "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"
+  ],
   "artworkRepository": "https://commons.wikimedia.org/",
   "policy": "Only freely licensed/public-domain candidates scoring at least 0.76 are imported; ambiguous results remain missing.",
   "canvas": {
@@ -65,46 +71,18 @@
       "asset": "images/military-badges/navy/navy_aviation_supply_corps_insignia/default.png"
     },
     {
-      "badgeId": "navy_fleet_marine_force_insignia",
-      "variant": "officer",
-      "query": "Fleet Marine Force Officer Insignia",
-      "title": "File:USN - Fleet Marine Force Officer Insignia.png",
-      "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/USN_-_Fleet_Marine_Force_Officer_Insignia.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_Fleet_Marine_Force_Officer_Insignia.png",
-      "width": 587,
-      "height": 249,
-      "mime": "image/png",
-      "license": "Public domain",
-      "score": 0.9803,
-      "asset": "images/military-badges/navy/navy_fleet_marine_force_insignia/officer.png"
-    },
-    {
-      "badgeId": "navy_information_warfare_insignia",
-      "variant": "officer",
-      "query": "Information Warfare Officer Badge Navy",
-      "title": "File:Information dominance warfare officer device.PNG",
-      "url": "https://upload.wikimedia.org/wikipedia/commons/2/26/Information_dominance_warfare_officer_device.PNG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Information_dominance_warfare_officer_device.PNG",
-      "width": 898,
-      "height": 315,
-      "mime": "image/png",
-      "license": "Public domain",
-      "score": 0.939,
-      "asset": "images/military-badges/navy/navy_information_warfare_insignia/officer.png"
-    },
-    {
-      "badgeId": "navy_information_warfare_insignia",
-      "variant": "enlisted",
-      "query": "Enlisted Information Warfare Specialist Badge",
-      "title": "File:Enlisted Information Warfare Specialist Breast Insignia.jpg",
-      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Enlisted_Information_Warfare_Specialist_Breast_Insignia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Enlisted_Information_Warfare_Specialist_Breast_Insignia.jpg",
-      "width": 600,
-      "height": 300,
+      "badgeId": "navy_parachutist_insignia",
+      "variant": "navy_marine_corps_parachutist",
+      "query": "Navy Marine Corps Parachutist Badge",
+      "title": "File:Navy and Marine Corps Parachutist Insignia.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/95/Navy_and_Marine_Corps_Parachutist_Insignia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Navy_and_Marine_Corps_Parachutist_Insignia.jpg",
+      "width": 291,
+      "height": 96,
       "mime": "image/jpeg",
       "license": "Public domain",
-      "score": 0.965,
-      "asset": "images/military-badges/navy/navy_information_warfare_insignia/enlisted.png"
+      "score": 0.9513,
+      "asset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png"
     },
     {
       "badgeId": "navy_submarine_warfare_insignia",
@@ -163,32 +141,32 @@
       "asset": "images/military-badges/navy/navy_submarine_warfare_insignia/engineering_duty.png"
     },
     {
-      "badgeId": "navy_surface_warfare_insignia",
-      "variant": "nurse",
-      "query": "Surface Warfare Nurse Corps Badge",
-      "title": "File:US Navy Surface Warfare - Nurse Corps insignia.jpg",
-      "url": "https://upload.wikimedia.org/wikipedia/commons/5/50/US_Navy_Surface_Warfare_-_Nurse_Corps_insignia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:US_Navy_Surface_Warfare_-_Nurse_Corps_insignia.jpg",
-      "width": 486,
-      "height": 133,
+      "badgeId": "navy_submarine_warfare_insignia",
+      "variant": "deep_submergence_officer",
+      "query": "Deep Submergence Officer Badge",
+      "title": "File:Deep Submergence Officer badge.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Deep_Submergence_Officer_badge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Deep_Submergence_Officer_badge.jpg",
+      "width": 1195,
+      "height": 756,
       "mime": "image/jpeg",
       "license": "Public domain",
-      "score": 0.9335,
-      "asset": "images/military-badges/navy/navy_surface_warfare_insignia/nurse.png"
+      "score": 1.0,
+      "asset": "images/military-badges/navy/navy_submarine_warfare_insignia/deep_submergence_officer.png"
     },
     {
       "badgeId": "navy_surface_warfare_insignia",
-      "variant": "supply",
-      "query": "Surface Warfare Supply Corps Badge",
-      "title": "File:Warfare Device - Surface Warfare Supply Corps Officer - White.jpg",
-      "url": "https://upload.wikimedia.org/wikipedia/commons/1/14/Warfare_Device_-_Surface_Warfare_Supply_Corps_Officer_-_White.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Warfare_Device_-_Surface_Warfare_Supply_Corps_Officer_-_White.jpg",
-      "width": 390,
-      "height": 144,
-      "mime": "image/jpeg",
+      "variant": "officer",
+      "query": "Surface Warfare Officer Badge",
+      "title": "File:Surface Warfare Officer Insignia.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/24/Surface_Warfare_Officer_Insignia.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Surface_Warfare_Officer_Insignia.png",
+      "width": 1901,
+      "height": 671,
+      "mime": "image/png",
       "license": "Public domain",
-      "score": 0.9079,
-      "asset": "images/military-badges/navy/navy_surface_warfare_insignia/supply.png"
+      "score": 0.9549,
+      "asset": "images/military-badges/navy/navy_surface_warfare_insignia/officer.png"
     },
     {
       "badgeId": "navy_diving_insignia",
@@ -203,6 +181,34 @@
       "license": "Public domain",
       "score": 0.9079,
       "asset": "images/military-badges/navy/navy_diving_insignia/diving_officer.png"
+    },
+    {
+      "badgeId": "marine_corps_aerial_navigator_insignia",
+      "variant": "default",
+      "query": "Marine Aerial Navigator Badge",
+      "title": "File:Marine Aerial Navigator Insignia.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/54/Marine_Aerial_Navigator_Insignia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Marine_Aerial_Navigator_Insignia.jpg",
+      "width": 324,
+      "height": 89,
+      "mime": "image/jpeg",
+      "license": "Public domain",
+      "score": 0.9549,
+      "asset": "images/military-badges/marine-corps/marine_corps_aerial_navigator_insignia/default.png"
+    },
+    {
+      "badgeId": "marine_corps_naval_aviation_observer_insignia",
+      "variant": "default",
+      "query": "Naval Aviation Observer Badge",
+      "title": "File:Naval Aviation Observer Badge.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/72/Naval_Aviation_Observer_Badge.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Naval_Aviation_Observer_Badge.png",
+      "width": 432,
+      "height": 143,
+      "mime": "image/png",
+      "license": "CC BY-SA 4.0",
+      "score": 1.0,
+      "asset": "images/military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png"
     }
   ],
   "rejected": [
@@ -211,6 +217,50 @@
       "variant": "default",
       "query": "Naval Aircrew Warfare Specialist Badge",
       "candidates": []
+    },
+    {
+      "badgeId": "navy_marine_corps_combat_aircrew_insignia",
+      "variant": "base",
+      "query": "Marine Corps Combat Aircrew Badge",
+      "candidates": [
+        {
+          "title": "File:USMC Combat Aircrew Badge.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/8/8e/USMC_Combat_Aircrew_Badge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USMC_Combat_Aircrew_Badge.jpg",
+          "width": 374,
+          "height": 183,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.5733
+        },
+        {
+          "title": "File:USMC Combat Aircrew Badge.png",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/USMC_Combat_Aircrew_Badge.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USMC_Combat_Aircrew_Badge.png",
+          "width": 140,
+          "height": 66,
+          "mime": "image/png",
+          "license": "Public domain",
+          "score": 0.5733
+        }
+      ]
+    },
+    {
+      "badgeId": "navy_marine_corps_combatant_diver_insignia",
+      "variant": "default",
+      "query": "Marine Corps Combatant Diver Badge",
+      "candidates": [
+        {
+          "title": "File:Diver Badge (USMC).jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Diver_Badge_%28USMC%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Diver_Badge_(USMC).jpg",
+          "width": 143,
+          "height": 148,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.2933
+        }
+      ]
     },
     {
       "badgeId": "navy_explosive_ordnance_disposal_insignia",
@@ -250,45 +300,19 @@
       "badgeId": "navy_explosive_ordnance_disposal_insignia",
       "variant": "senior",
       "query": "Senior Explosive Ordnance Disposal Badge Navy",
-      "candidates": [
-        {
-          "title": "File:USN - EOD Senior.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/USN_-_EOD_Senior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_EOD_Senior.jpg",
-          "width": 470,
-          "height": 277,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.2367
-        }
-      ]
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "navy_explosive_ordnance_disposal_insignia",
       "variant": "master",
       "query": "Master Explosive Ordnance Disposal Badge Navy",
-      "candidates": [
-        {
-          "title": "File:USN - EOD Master.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/USN_-_EOD_Master.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_EOD_Master.jpg",
-          "width": 452,
-          "height": 347,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.2367
-        },
-        {
-          "title": "File:EOD Pin.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/EOD_Pin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:EOD_Pin.jpg",
-          "width": 160,
-          "height": 128,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.0481
-        }
-      ]
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "badgeId": "navy_fleet_marine_force_insignia",
+      "variant": "officer",
+      "query": "Fleet Marine Force Officer Insignia",
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "navy_fleet_marine_force_insignia",
@@ -300,6 +324,18 @@
       "badgeId": "navy_fleet_marine_force_insignia",
       "variant": "enlisted",
       "query": "Fleet Marine Force Enlisted Warfare Specialist Insignia",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "badgeId": "navy_information_warfare_insignia",
+      "variant": "officer",
+      "query": "Information Warfare Officer Badge Navy",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "badgeId": "navy_information_warfare_insignia",
+      "variant": "enlisted",
+      "query": "Enlisted Information Warfare Specialist Badge",
       "error": "HTTP Error 429: Too Many Requests"
     },
     {
@@ -392,24 +428,12 @@
       "badgeId": "navy_submarine_warfare_insignia",
       "variant": "supply",
       "query": "Submarine Supply Corps Badge",
-      "error": "HTTP Error 429: Too Many Requests"
-    },
-    {
-      "badgeId": "navy_submarine_warfare_insignia",
-      "variant": "deep_submergence_officer",
-      "query": "Deep Submergence Officer Badge",
-      "error": "HTTP Error 429: Too Many Requests"
+      "candidates": []
     },
     {
       "badgeId": "navy_submarine_warfare_insignia",
       "variant": "deep_submergence_enlisted",
       "query": "Deep Submergence Enlisted Badge",
-      "error": "HTTP Error 429: Too Many Requests"
-    },
-    {
-      "badgeId": "navy_surface_warfare_insignia",
-      "variant": "officer",
-      "query": "Surface Warfare Officer Badge",
       "error": "HTTP Error 429: Too Many Requests"
     },
     {
@@ -434,6 +458,18 @@
       "badgeId": "navy_surface_warfare_insignia",
       "variant": "medical_service",
       "query": "Surface Warfare Medical Service Corps Badge",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "badgeId": "navy_surface_warfare_insignia",
+      "variant": "nurse",
+      "query": "Surface Warfare Nurse Corps Badge",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "badgeId": "navy_surface_warfare_insignia",
+      "variant": "supply",
+      "query": "Surface Warfare Supply Corps Badge",
       "error": "HTTP Error 429: Too Many Requests"
     },
     {
@@ -535,6 +571,30 @@
           "score": 0.516
         }
       ]
+    },
+    {
+      "badgeId": "marine_corps_unmanned_aircraft_system_insignia",
+      "variant": "officer",
+      "query": "Marine Unmanned Aircraft System Officer Badge",
+      "candidates": []
+    },
+    {
+      "badgeId": "marine_corps_unmanned_aircraft_system_insignia",
+      "variant": "enlisted_operator",
+      "query": "Marine Unmanned Aircraft System Operator Badge",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "badgeId": "marine_corps_flight_surgeon_insignia",
+      "variant": "default",
+      "query": "Naval Flight Surgeon Badge",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "badgeId": "marine_corps_special_operator_insignia",
+      "variant": "default",
+      "query": "Marine Special Operator Insignia",
+      "error": "HTTP Error 429: Too Many Requests"
     }
   ]
 }
