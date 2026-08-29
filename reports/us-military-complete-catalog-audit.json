@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-08-29T04:00:55.157Z",
+    "generatedAt": "2026-08-29T04:14:02.258Z",
     "sourceRecords": 183,
     "officialAdditionRecords": 6,
     "canonicalAwards": 176,
@@ -11,9 +11,9 @@
     "badgesWithVerifiedPrecedence": 5,
     "badgesWithVerifiedPlacement": 98,
     "badgeAssetTotals": {
-      "AVAILABLE": 42,
+      "AVAILABLE": 44,
       "NOT_APPLICABLE": 1,
-      "MISSING_ASSET": 180,
+      "MISSING_ASSET": 178,
       "UNVERIFIED": 0
     },
     "devices": 16,
@@ -7863,11 +7863,11 @@
       "ownerType": "BADGE",
       "ownerId": "marine_corps_aerial_navigator_insignia",
       "representation": "METAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
+      "exists": true,
+      "sha256": "33b8637b75485f743798f6bb6fdd0ccf7511b484220fe46c59b84fbf0dd77736",
+      "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
       "sources": []
     },
     {
@@ -7885,11 +7885,11 @@
       "ownerType": "BADGE",
       "ownerId": "marine_corps_naval_aviation_observer_insignia",
       "representation": "METAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "814f3f383469fcf3ad75d2dc04232585c15831a24654f255b1529dbf447612cb",
+      "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
       "sources": []
     },
     {

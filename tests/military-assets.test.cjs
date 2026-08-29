@@ -143,10 +143,10 @@ test('official Army badge import manifest is complete',()=>{
   assert.deepEqual(officialArmyBadgeImport.missing,[]);
 });
 
-test('reviewed Navy artwork copies preserve official and asset provenance',()=>{
+test('reviewed naval-service artwork copies preserve official and asset provenance',()=>{
   assert.ok(commonsNavyBadgeImport.imported.length>=14,'expected the reviewed Navy artwork checkpoint');
   for(const record of commonsNavyBadgeImport.imported){
-    assert.match(record.asset,/^images\/military-badges\/navy\/.+\.png$/);
+    assert.match(record.asset,/^images\/military-badges\/(?:navy|marine-corps)\/.+\.png$/);
     assert.ok(record.descriptionUrl?.startsWith('https://commons.wikimedia.org/'));
     const absolute=path.join(ROOT,...record.asset.split('/'));
     assert.ok(fs.existsSync(absolute),`${record.badgeId}:${record.variant} asset missing`);
@@ -156,6 +156,9 @@ test('reviewed Navy artwork copies preserve official and asset provenance',()=>{
     assert.ok([4,6].includes(buffer[25]),`${record.badgeId}:${record.variant} lacks alpha`);
   }
   assert.ok(fs.existsSync(path.join(ROOT,'reports','navy-badge-style-review.png')));
+  assert.ok(fs.existsSync(path.join(ROOT,'reports','marine-corps-badge-style-review.png')));
+  const marineImports=commonsNavyBadgeImport.imported.filter(record=>record.badgeId.startsWith('marine_corps_'));
+  assert.ok(marineImports.length>=2,'expected reviewed Marine Corps artwork copies');
 });
 
 test('Navy and Marine Corps parachutist variants use reviewed local artwork',()=>{

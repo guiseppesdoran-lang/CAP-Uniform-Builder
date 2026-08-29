@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Import high-confidence Navy badge artwork copies from Wikimedia Commons.
+"""Import high-confidence naval-service badge artwork copies from Wikimedia Commons.
 
 MyNavyHR is the regulatory authority and remains the catalog source. Its CDN
 blocks unattended downloads, so this importer uses freely licensed/public-domain
@@ -25,7 +25,10 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 BADGES_PATH = ROOT / "data" / "military" / "badges.json"
 MANIFEST_PATH = ROOT / "data" / "imports" / "commons_navy_badges.json"
-OUT_ROOT = ROOT / "images" / "military-badges" / "navy"
+OUT_ROOTS = {
+    "navy": ROOT / "images" / "military-badges" / "navy",
+    "marine-corps": ROOT / "images" / "military-badges" / "marine-corps",
+}
 API = "https://commons.wikimedia.org/w/api.php"
 OFFICIAL_SOURCE = "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"
 USER_AGENT = "CAP-Uniform-Builder/1.0 (asset provenance audit)"
@@ -88,6 +91,14 @@ QUERY_OVERRIDES = {
         "second_class_diver": "Navy Second Class Diver Badge",
         "scuba_diver": "Navy Scuba Diver Badge",
     },
+    "marine_corps_aerial_navigator_insignia": {"default": "Marine Aerial Navigator Badge"},
+    "marine_corps_naval_aviation_observer_insignia": {"default": "Naval Aviation Observer Badge"},
+    "marine_corps_unmanned_aircraft_system_insignia": {
+        "officer": "Marine Unmanned Aircraft System Officer Badge",
+        "enlisted_operator": "Marine Unmanned Aircraft System Operator Badge",
+    },
+    "marine_corps_flight_surgeon_insignia": {"default": "Naval Flight Surgeon Badge"},
+    "marine_corps_special_operator_insignia": {"default": "Marine Special Operator Insignia"},
 }
 
 STOP = {"badge", "insignia", "navy", "naval", "united", "states", "us", "the", "and"}
@@ -206,6 +217,8 @@ def main() -> None:
     imported, rejected = [], []
     for badge_id, variants in QUERY_OVERRIDES.items():
         badge = by_id[badge_id]
+        official_source = (badge.get("sources") or [OFFICIAL_SOURCE])[0]
+        service_folder = "marine-corps" if badge_id.startswith("marine_corps_") else "navy"
         metal = badge.setdefault("representations", {}).setdefault("metal", {})
         variant_records = metal.setdefault("variants", {})
         for stale_variant, stale_record in list(variant_records.items()):
@@ -229,7 +242,7 @@ def main() -> None:
                 rejected.append({"badgeId": badge_id, "variant": variant, "query": query, "candidates": candidates[:3]})
                 continue
             try:
-                destination = OUT_ROOT / badge_id / f"{variant}.png"
+                destination = OUT_ROOTS[service_folder] / badge_id / f"{variant}.png"
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 if not destination.exists():
                     data = download(best["title"])
@@ -241,7 +254,7 @@ def main() -> None:
             record = {
                 "status": "AVAILABLE", "available": True, "asset": asset,
                 "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
-                "officialSource": OFFICIAL_SOURCE, "assetSource": best["descriptionUrl"],
+                "officialSource": official_source, "assetSource": best["descriptionUrl"],
                 "license": best["license"],
             }
             variant_records[variant] = record
@@ -258,7 +271,11 @@ def main() -> None:
             metal.update({"status": "MISSING_ASSET", "available": False, "asset": None})
     BADGES_PATH.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     manifest = {
-        "officialCatalogSource": OFFICIAL_SOURCE,
+        "officialCatalogSources": sorted({
+            source
+            for badge_id in QUERY_OVERRIDES
+            for source in (by_id[badge_id].get("sources") or [OFFICIAL_SOURCE])[:1]
+        }),
         "artworkRepository": "https://commons.wikimedia.org/",
         "policy": "Only freely licensed/public-domain candidates scoring at least 0.76 are imported; ambiguous results remain missing.",
         "canvas": {"width": 256, "height": 160, "format": "transparent PNG"},
