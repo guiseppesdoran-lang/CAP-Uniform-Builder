@@ -16,6 +16,8 @@ const overrides=readJson('data/rules/verified/representation-overrides.json').aw
 const stylePath=path.join(root,'data/rules/verified/ribbon-style-overrides.json');
 const styleOverrides=fs.existsSync(stylePath)?JSON.parse(fs.readFileSync(stylePath,'utf8')).awards || {}:{};
 const badges=readJson('data/military/badges.json').badges || [];
+const capBadgePath=path.join(root,'data/military/cap-badge-representations.json');
+const capBadgeRepresentations=fs.existsSync(capBadgePath)?JSON.parse(fs.readFileSync(capBadgePath,'utf8')).records || []:[];
 const devices=readJson('data/rules/verified/device-definitions.json');
 const precedenceTables=readJson('data/rules/verified/service-precedence.json');
 sourceAwards=applyServicePrecedence(sourceAwards,precedenceTables,core);
@@ -46,8 +48,20 @@ const awardAssets=canonical.flatMap(award=>[
   assetRecord('AWARD',award.id,{name:'MINIATURE_MEDAL',value:award.representations.miniatureMedal}),
   assetRecord('AWARD',award.id,{name:'FULL_SIZE_MEDAL',value:award.representations.fullSizeMedal})
 ]);
-const badgeAssets=badges.flatMap(badge=>Object.entries(badge.representations || {}).map(([name,value])=>
-  assetRecord('BADGE',badge.id,{name:name.toUpperCase(),value})
+function representationLeaves(value,label){
+  if(!value || typeof value!=='object') return [];
+  const rows=[];
+  if(value.status || value.asset) rows.push({name:label,value});
+  for(const [group,children] of [['SERVICE',value.byService],['VARIANT',value.variants]]){
+    for(const [id,child] of Object.entries(children || {})) rows.push(...representationLeaves(child,`${label}_${group}_${id}`));
+  }
+  return rows;
+}
+const badgeAssets=badges.flatMap(badge=>Object.entries(badge.representations || {}).flatMap(([name,value])=>
+  representationLeaves(value,name.toUpperCase()).map(representation=>assetRecord('BADGE',badge.id,representation))
+));
+const capBadgeAssets=capBadgeRepresentations.flatMap(badge=>Object.entries(badge.representations || {}).flatMap(([name,value])=>
+  representationLeaves(value,`CAP_${name.toUpperCase()}`).map(representation=>assetRecord('CAP_BADGE',badge.id,representation))
 ));
 const deviceAssets=devices.map(device=>{
   const full=localFile(device.asset);
@@ -58,7 +72,7 @@ const deviceAssets=devices.map(device=>{
     verificationStatus:device.verificationStatus || null,sources:device.sources || []
   };
 });
-const assets=[...awardAssets,...badgeAssets,...deviceAssets];
+const assets=[...awardAssets,...badgeAssets,...capBadgeAssets,...deviceAssets];
 const repNames=['RIBBON','MINIATURE_MEDAL','FULL_SIZE_MEDAL'];
 const representationTotals=Object.fromEntries(repNames.map(name=>{
   const rows=awardAssets.filter(item=>item.representation===name);
@@ -66,6 +80,9 @@ const representationTotals=Object.fromEntries(repNames.map(name=>{
 }));
 const badgeAssetTotals=Object.fromEntries(core.REPRESENTATION_STATUSES.map(status=>[
   status,badgeAssets.filter(item=>item.status===status).length
+]));
+const capBadgeAssetTotals=Object.fromEntries(core.REPRESENTATION_STATUSES.map(status=>[
+  status,capBadgeAssets.filter(item=>item.status===status).length
 ]));
 const discarded=sourceAwards.filter(item=>!core.isWearableAwardRecord(item)).map(item=>({id:item.id,name:item.officialName || item.name,type:item.type}));
 const canonicalIds=new Set(canonical.map(award=>award.id));
@@ -81,7 +98,7 @@ const summary={
   totalBadgeConfigurations:badges.reduce((sum,badge)=>sum+Math.max(1,badge.variants?.length || 0),0),
   badgesWithVerifiedPrecedence:badges.filter(badge=>Object.values(badge.precedence || {}).some(rule=>rule?.verified)).length,
   badgesWithVerifiedPlacement:badges.filter(badge=>Object.values(badge.placement || {}).some(rule=>rule?.status==='OFFICIALLY_VERIFIED')).length,
-  badgeAssetTotals,devices:devices.length,
+  badgeAssetTotals,capBadgePairs:capBadgeRepresentations.length,capBadgeAssetTotals,devices:devices.length,
   missingPrecedenceCatalogRecords:missingPrecedenceCatalogRecords.length,
   byService,representationTotals,
   awardsWithVerifiedPrecedence:canonical.filter(award=>Object.values(award.precedence || {}).some(rule=>rule?.verified)).length,
@@ -109,6 +126,8 @@ const audit=[
   `- Badges with verified precedence: ${summary.badgesWithVerifiedPrecedence}`,
   `- Badges with verified placement: ${summary.badgesWithVerifiedPlacement}`,
   `- Badge artwork — ${core.REPRESENTATION_STATUSES.map(status=>`${status}: ${summary.badgeAssetTotals[status]}`).join('; ')}`,
+  `- CAP metal/embroidered badge pairs: ${summary.capBadgePairs}`,
+  `- CAP paired badge artwork — ${core.REPRESENTATION_STATUSES.map(status=>`${status}: ${summary.capBadgeAssetTotals[status]}`).join('; ')}`,
   `- Device definitions: ${summary.devices}`,
   `- Awards with at least one officially verified precedence entry: ${summary.awardsWithVerifiedPrecedence}`,
   `- Awards with an explicit service device rule: ${summary.awardsWithExplicitDeviceRules}`,

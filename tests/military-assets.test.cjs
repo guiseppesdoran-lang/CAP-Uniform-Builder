@@ -182,8 +182,13 @@ test('Air Force miniature-medal checkpoint uses reviewed local McChord geometry'
     assert.equal(buffer.readUInt32BE(16),50,`${record.awardId} width`);
     assert.equal(buffer.readUInt32BE(20),176,`${record.awardId} height`);
     assert.ok([4,6].includes(buffer[25]),`${record.awardId} lacks alpha`);
-    assert.equal(overrides[record.awardId]?.miniatureMedal?.asset,record.asset,`${record.awardId} override mapping`);
-    assert.equal(overrides[record.awardId]?.miniatureMedal?.style,'MCCHORD_DIGITAL_MEDAL');
+    const resolved=overrides[record.awardId]?.miniatureMedal;
+    if(resolved?.status==='NOT_APPLICABLE'){
+      assert.equal(resolved.asset,null,`${record.awardId} ribbon-only override`);
+      continue;
+    }
+    assert.equal(resolved?.asset,record.asset,`${record.awardId} override mapping`);
+    assert.equal(resolved?.style,'MCCHORD_DIGITAL_MEDAL');
   }
 });
 
@@ -203,7 +208,12 @@ test('Air Force full-size medal checkpoint uses separate reviewed local artwork'
     assert.equal(buffer.readUInt32BE(16),100,`${record.awardId} width`);
     assert.equal(buffer.readUInt32BE(20),220,`${record.awardId} height`);
     assert.ok([4,6].includes(buffer[25]),`${record.awardId} lacks alpha`);
-    assert.equal(overrides[record.awardId]?.fullSizeMedal?.asset,record.asset,`${record.awardId} full-size mapping`);
+    const resolved=overrides[record.awardId]?.fullSizeMedal;
+    if(resolved?.status==='NOT_APPLICABLE'){
+      assert.equal(resolved.asset,null,`${record.awardId} ribbon-only override`);
+      continue;
+    }
+    assert.equal(resolved?.asset,record.asset,`${record.awardId} full-size mapping`);
   }
 });
 
@@ -298,4 +308,42 @@ test('Navy and Marine Corps parachutist variants use reviewed local artwork',()=
     const absolute=path.join(ROOT,...variant.asset.split('/'));
     assert.ok(fs.existsSync(absolute),`${variant.asset} missing`);
   }
+});
+
+test('ribbon-only awards cannot resolve to miniature or full-size medals',()=>{
+  const applicability=require('../data/rules/verified/medal-representation-applicability.json');
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  assert.ok(applicability.ribbonOnlyAwardIds.length >= 50,'expected a substantive explicit ribbon-only classification');
+  for(const awardId of applicability.ribbonOnlyAwardIds){
+    for(const representation of ['miniatureMedal','fullSizeMedal']){
+      const record=overrides[awardId]?.[representation];
+      assert.equal(record?.status,'NOT_APPLICABLE',`${awardId}:${representation}`);
+      assert.equal(record?.asset,null,`${awardId}:${representation}`);
+      assert.equal(record?.verificationStatus,'OFFICIALLY_CLASSIFIED_RIBBON_ONLY',`${awardId}:${representation}`);
+    }
+  }
+});
+
+test('combat action and unit awards remain ribbon-only even when catalog artwork resembles a medal',()=>{
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  for(const awardId of ['combat_action','air_force_combat_action','joint_meritorious_unit_award','navy_unit_commendation']){
+    assert.equal(overrides[awardId].miniatureMedal.status,'NOT_APPLICABLE',awardId);
+    assert.equal(overrides[awardId].fullSizeMedal.status,'NOT_APPLICABLE',awardId);
+  }
+});
+
+test('reviewed CAP fabric badges have a dress counterpart and regulation blue backing metadata',()=>{
+  const manifest=require('../data/military/cap-badge-representations.json');
+  assert.ok(manifest.records.length >= 25,'expected reviewed CAP metal/fabric pairs');
+  for(const badge of manifest.records){
+    assert.equal(badge.organization,'CAP',badge.id);
+    assert.equal(badge.representations.metal.status,'AVAILABLE',badge.id);
+    assert.equal(badge.representations.embroidered.status,'AVAILABLE',badge.id);
+    assert.equal(badge.representations.embroidered.backingProfile,'CAP_DARK_BLUE',badge.id);
+    assert.equal(badge.representations.embroidered.borderInches,0.125,badge.id);
+    assert.ok(fs.existsSync(path.join(ROOT,...badge.representations.metal.asset.split('/'))),`${badge.id}:metal`);
+    assert.ok(fs.existsSync(path.join(ROOT,...badge.representations.embroidered.asset.split('/'))),`${badge.id}:embroidered`);
+  }
+  const nationalStaff=manifest.records.find(record=>record.id==='national_staff_badge');
+  assert.equal(nationalStaff.representations.embroidered.placementRole,'OCP_LEFT_SLEEVE_PATCH');
 });

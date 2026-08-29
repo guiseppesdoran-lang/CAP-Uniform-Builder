@@ -1,0 +1,582 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29T22:20:18.147Z",
+  "notes": "CAP badges with both reviewed metal and embroidered counterparts. Specialty-track badges without an authorized utility counterpart are intentionally absent rather than synthesized.",
+  "records": [
+    {
+      "id": "AirCrew1_DB3F0FCC3650F",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/AirCrew1_DB3F0FCC3650F.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/AirCrew1_DB3F0FCC3650F.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "basic_incident_commander_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/Basic_Incident_Commander_Badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/basic_incident_commander_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "buddist_chaplin",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/buddist_chaplin.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/buddist_chaplin.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "christian_chaplin",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/christian_chaplin.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/christian_chaplin.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "emt_basic_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/emt_basic_badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/emt_basic_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "emt_intermediate",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/emt_intermediate.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/emt_intermediate.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "emt_paramedic",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/emt_paramedic.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/emt_paramedic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "ground_team_basic_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/ground_team_basic_badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/ground_team_basic_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "group_commander_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/Group_commander_badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/group_commander_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "incident_commander_1_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/incident_commander_1_badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/incident_commander_1_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "incident_commander_2_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/incident_commander_2_badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/incident_commander_2_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "jewish_chaplin",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/jewish_chaplin.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/jewish_chaplin.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "legal_officer",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/Legal_officer.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/legal_officer.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "master_ground_team_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/master_ground_team_badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/master_ground_team_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "MasterAirCrew1_72AC4CAE7A310",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/MasterAirCrew1_72AC4CAE7A310.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/MasterAirCrew1_72AC4CAE7A310.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "MasterObserver1_1B88D5071FD5C",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/MasterObserver1_1B88D5071FD5C.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/MasterObserver1_1B88D5071FD5C.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "medical_officer",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/Medical_officer.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/medical_officer.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "muslim_chaplin",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/muslim_chaplin.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/muslim_chaplin.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "national_staff_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/national_staff_badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/national_staff_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_LEFT_SLEEVE_PATCH"
+        }
+      }
+    },
+    {
+      "id": "nurse_officer",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/Nurse.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/nurse_officer.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "observer_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/observer_badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/observer_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "senior_ground_team_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/senior_ground_team_badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/senior_ground_team_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "SeniorAirCrew1_B289BAE6E515C",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/SeniorAirCrew1_B289BAE6E515C.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/SeniorAirCrew1_B289BAE6E515C.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "SeniorObserver1_0E35802A29801",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/SeniorObserver1_0E35802A29801.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/SeniorObserver1_0E35802A29801.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    },
+    {
+      "id": "squadron_commander_badge",
+      "organization": "CAP",
+      "representations": {
+        "metal": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/Squadron Commander badge.png",
+          "style": "REGULATION_METAL",
+          "verificationStatus": "LOCAL_REVIEWED_ASSET"
+        },
+        "embroidered": {
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/badges/utility/squadron_commander_badge.png",
+          "style": "REGULATION_EMBROIDERED",
+          "backingProfile": "CAP_DARK_BLUE",
+          "borderInches": 0.125,
+          "verificationStatus": "LOCAL_REVIEWED_ASSET",
+          "placementRole": "OCP_CHEST_BADGE"
+        }
+      }
+    }
+  ]
+}
