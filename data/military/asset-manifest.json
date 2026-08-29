@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-29T21:39:34.972Z",
+  "generatedAt": "2026-08-29T21:52:12.909Z",
   "assets": [
     {
       "ownerType": "AWARD",
@@ -85,23 +85,27 @@
       "ownerType": "AWARD",
       "ownerId": "army_distinguished_service_cross",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/army/army_distinguished_service_cross.png",
+      "exists": true,
+      "sha256": "761b841aa2bf6c748287a5f118fdafe224ce9dccc68bb96df6fb6477a21a2c03",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/distinguished-service-cross-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "army_distinguished_service_cross",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/army/army_distinguished_service_cross.png",
+      "exists": true,
+      "sha256": "fe2f19a3e8efd602c4cfbf761d974cd9316945e0b7283b2af47eba6b7f4c930e",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/distinguished-service-cross-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -433,23 +437,27 @@
       "ownerType": "AWARD",
       "ownerId": "army_soldiers_medal",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/army/army_soldiers_medal.png",
+      "exists": true,
+      "sha256": "ee6e6ccf48bffa88f0ddd45c6253de83c26ef60526e7faf2e695cbc75fc67b49",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/soldiers-medal-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "army_soldiers_medal",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/army/army_soldiers_medal.png",
+      "exists": true,
+      "sha256": "fcbb3f1f121251a6c685cd1372aba50d4a83b65767cee326f12339b7f2dc3caa",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/soldiers-medal-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -958,23 +966,27 @@
       "ownerType": "AWARD",
       "ownerId": "army_commendation",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/army/army_commendation.png",
+      "exists": true,
+      "sha256": "0d77fa92acc31bc454f59c81418fb636dda826c976a90a8ef58096fea3640f62",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/army-commendation-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "army_commendation",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/army/army_commendation.png",
+      "exists": true,
+      "sha256": "1961e42d972bb66369de98266d2bb6f69827d148e2d4bdd5354d3391fdf5033f",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/army-commendation-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1366,23 +1378,27 @@
       "ownerType": "AWARD",
       "ownerId": "army_achievement",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/army/army_achievement.png",
+      "exists": true,
+      "sha256": "129914389a39dec575cb8f50c68a944739c6d2c7bbe2a225c2aca656626dbcf3",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/army-achievement-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "army_achievement",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/army/army_achievement.png",
+      "exists": true,
+      "sha256": "cdb7bc69ceecdcad4de14bc1f0f42b94d0497fe9d2b2175b01a933f958771ad5",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/army-achievement-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1599,23 +1615,27 @@
       "ownerType": "AWARD",
       "ownerId": "army_good_conduct",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/army/army_good_conduct.png",
+      "exists": true,
+      "sha256": "1b7fa8a71c74a5646f9b642ee1e9927da7aeb05757eaee60182e04b557c66225",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/army-good-conduct-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "army_good_conduct",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/army/army_good_conduct.png",
+      "exists": true,
+      "sha256": "92d150a482065b21dd0aaffc9c84083271dc1b3320c014f289a45838ff531dd0",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/army-good-conduct-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2883,12 +2903,14 @@
       "ownerType": "AWARD",
       "ownerId": "army_distinguished_service",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/army/army_distinguished_service.png",
+      "exists": true,
+      "sha256": "2f97aa72eee1f0c83254a695976f73aaf3980299bd3294b83492090aa41adcd8",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/army-distinguished-service-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -8160,6 +8182,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_air_assault_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_air_assault_badge/default.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_aviator_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8167,6 +8200,17 @@
       "exists": true,
       "sha256": "48d28cee77d62ea82971ded13082c49c72c6a2d2900bb2596e2fbdd890263c26",
       "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "army_aviator_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_aviator_badge/basic.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -8182,6 +8226,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_aviation_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_aviation_badge/basic.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_combat_action_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8189,6 +8244,17 @@
       "exists": true,
       "sha256": "8e769d5ffe3abc03ff3fdb513d43d68c088dea99e81f533a7bf7ef4cd7cb29ba",
       "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "army_combat_action_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_combat_action_badge/first_award.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -8204,6 +8270,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_combat_infantryman_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_combat_infantryman_badge/first_award.png",
+      "exists": true,
+      "sha256": "6a8f36574bd0b720812096d8a767ba07dbd64fb7f2a2321df81ce622f49d1e56",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_combat_medical_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8211,6 +8288,17 @@
       "exists": true,
       "sha256": "1d51144ac0cc78826fc0d83fed322fd8a32d712ee5e0fad86d7b54f5de363453",
       "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "army_combat_medical_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_combat_medical_badge/first_award.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -8226,6 +8314,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_diver_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_diver_badge/second_class.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_driver_and_mechanic_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8233,6 +8332,17 @@
       "exists": true,
       "sha256": "433c0d596cb15cfb67cfff8b042191c6b5c7eb6238c8d84f73e49db9f5ddf00f",
       "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "army_driver_and_mechanic_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_driver_and_mechanic_badge/default.png",
+      "exists": true,
+      "sha256": "a69d8f1e0ed9629d70f10a548f34fed8edefdc550589902150207bb9c99f3d32",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -8248,6 +8358,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_expert_field_medical_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_expert_field_medical_badge/default.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_expert_infantryman_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8255,6 +8376,17 @@
       "exists": true,
       "sha256": "fc9a113f8d0f587b702f871cdff4fecd71cbc487a57b69943e3db343b41bdccd",
       "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "army_expert_infantryman_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_expert_infantryman_badge/default.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -8270,6 +8402,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_expert_soldier_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_expert_soldier_badge/default.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_explosive_ordnance_disposal_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8277,6 +8420,17 @@
       "exists": true,
       "sha256": "fc975ebb81d23e189c301625dbbde40a86435af13c3f7cc06e4550e3509f2afe",
       "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "army_explosive_ordnance_disposal_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_explosive_ordnance_disposal_badge/basic.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -8292,6 +8446,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_flight_surgeon_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_flight_surgeon_badge/basic.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_glider_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8299,6 +8464,17 @@
       "exists": true,
       "sha256": "8c51cbced899265ad7dc3bb2e8a803a4d5c205695e267bef74986dcb8d6bdee2",
       "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "army_glider_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_glider_badge/default.png",
+      "exists": true,
+      "sha256": "20a1f3170949b6d70d509f76af2b1c26ffb5bef6988e4b4c7a7f2b38e1dcc0bd",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -8314,6 +8490,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_parachutist_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_parachutist_badge/basic.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_military_freefall_parachutist_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8321,6 +8508,17 @@
       "exists": true,
       "sha256": "27e9a978302546e918be9a6f79af05ffc41a922a4a7a0b3bf0b40c1bd1c3585a",
       "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "army_military_freefall_parachutist_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_military_freefall_parachutist_badge/basic.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -8336,6 +8534,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_parachute_rigger_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_parachute_rigger_badge/default.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_pathfinder_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8343,6 +8552,17 @@
       "exists": true,
       "sha256": "206f4b1fc188d5290e40239e7d9d3fadeba35537a392064bb7b6187af61fe15c",
       "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "army_pathfinder_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_pathfinder_badge/default.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -8358,6 +8578,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_mariner_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_mariner_badge/basic.png",
+      "exists": true,
+      "sha256": "8d4aaf328b911351be05813cc63837905504c1ee305c8e60d2990500af81d1f5",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_space_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8369,6 +8600,17 @@
     },
     {
       "ownerType": "BADGE",
+      "ownerId": "army_space_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_space_badge/basic.png",
+      "exists": true,
+      "sha256": "4c7aec6f4462325329c8fcb7731715b2b7833fb5d8cf01a2eeed1c3233ccf740",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
       "ownerId": "army_marksmanship_badge",
       "representation": "METAL",
       "status": "AVAILABLE",
@@ -8376,6 +8618,17 @@
       "exists": true,
       "sha256": "75f721bac8a03f796da14e1b586c310bd33d2ac7454d9bb31e2e5cc91d5b82fe",
       "verificationStatus": "OFFICIALLY_VERIFIED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "army_marksmanship_badge",
+      "representation": "EMBROIDERED",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/army/army_marksmanship_badge/marksman.png",
+      "exists": true,
+      "sha256": "85237bee6ed9a55a5eecb5da3613e828449bda99e5b58736eed2500af68477e6",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {

@@ -107,10 +107,10 @@ def score_name(product_name: str, award_names: set[str]) -> float:
     return best
 
 
-def match_products(catalog: list[dict], source_products: list[dict], required_keyword="miniature") -> tuple[list[dict], list[dict]]:
+def match_products(catalog: list[dict], source_products: list[dict], required_keyword="miniature", service="AIR_FORCE") -> tuple[list[dict], list[dict]]:
     air_force_awards = {
         award["id"]: award for award in catalog
-        if "AIR_FORCE" in award.get("authorizedServices", [])
+        if service in award.get("authorizedServices", [])
     }
     matches = []
     unmatched = []
@@ -123,7 +123,7 @@ def match_products(catalog: list[dict], source_products: list[dict], required_ke
         if any(marker in title_lower for marker in ("24k", "gold plated", "mirror finish", "jrotc", "civil air patrol")):
             continue
         key = product_key(product)
-        award_id = DAF_TITLE_ALIASES.get(key)
+        award_id = DAF_TITLE_ALIASES.get(key) if service in {"AIR_FORCE", "SPACE_FORCE"} else None
         score = 10.0 if award_id else 0.0
         if not award_id:
             scored = sorted(

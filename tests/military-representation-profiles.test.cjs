@@ -24,6 +24,17 @@ test('badge representation resolver selects metal for dress and embroidered for 
   assert.equal(cloth.backingProfile,'DAF_SPICE_BROWN_OCP');
 });
 
+test('badge representation resolver uses the wearer service embroidered profile',()=>{
+  const badge={representations:{embroidered:{
+    byService:{
+      AIR_FORCE:{status:'AVAILABLE',available:true,asset:'daf.png',backingProfile:'DAF_SPICE_BROWN_OCP'},
+      ARMY:{status:'AVAILABLE',available:true,asset:'army.png',backingProfile:'ARMY_BLACK_OCP'}
+    }
+  }}};
+  assert.equal(core.resolveBadgeRepresentation(badge,{service:'ARMY',uniformFamily:'OCP',assetProfiles:profiles}).asset,'army.png');
+  assert.equal(core.resolveBadgeRepresentation(badge,{service:'AIR_FORCE',uniformFamily:'OCP',assetProfiles:profiles}).asset,'daf.png');
+});
+
 test('miniature medal profile preserves the McChord 50 by 176 template and suspension split',()=>{
   assert.deepEqual(profiles.awardGeometry.miniatureMedal.canvas,[50,176]);
   assert.equal(profiles.awardGeometry.miniatureMedal.suspensionRibbonHeight,116);

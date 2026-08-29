@@ -36,7 +36,8 @@ def main() -> None:
         if service not in badge.get("authorizedServices", []):
             continue
         for name in ("metal", "embroidered"):
-            rep = badge.get("representations", {}).get(name, {})
+            configured = badge.get("representations", {}).get(name, {})
+            rep = configured.get("byService", {}).get(service, configured)
             variants = rep.get("variants") or ({rep.get("defaultVariant", "default"): rep} if rep.get("asset") else {})
             for variant, item in variants.items():
                 if item.get("status") == "AVAILABLE" and item.get("asset"):

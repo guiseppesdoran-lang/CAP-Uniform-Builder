@@ -99,10 +99,14 @@ def main() -> None:
             generated += 1
         if cloth_variants:
             default = metal.get("defaultVariant") if metal.get("defaultVariant") in cloth_variants else next(iter(cloth_variants))
-            badge.setdefault("representations", {})["embroidered"] = {
+            service_representation = {
                 **cloth_variants[default], "defaultVariant": default, "variants": cloth_variants,
                 "authorizedUniformFamilies": ["OCP"], "backingProfile": profile_id
             }
+            embroidered_record = badge.setdefault("representations", {}).setdefault("embroidered", {})
+            embroidered_record.setdefault("byService", {})[service] = service_representation
+            if embroidered_record.get("status") != "AVAILABLE":
+                embroidered_record.update(service_representation)
     CATALOG.write_text(json.dumps(catalog, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"generated": generated, "services": args.services}, indent=2))
 

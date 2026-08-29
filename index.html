@@ -10502,8 +10502,9 @@ function getMilitaryCatalogBadges(){
   return window.CAPUBMilitary?.sortBadgesForMember?.(raw,{organization:State.organization,component:State.component}) || raw;
 }
 
-function getAvailableMilitaryBadgeVariants(badge,representationName='metal'){
-  const representation=badge?.representations?.[representationName] || {};
+function getAvailableMilitaryBadgeVariants(badge,representationName='metal',service=State.organization){
+  const configured=badge?.representations?.[representationName] || {};
+  const representation=configured.byService?.[service] || configured;
   const variants=representation.variants || {};
   const available=Object.entries(variants)
     .filter(([,record])=>record?.status==='AVAILABLE' && record.asset)
@@ -10524,8 +10525,9 @@ function getMilitaryBadgeRepresentation(badge,preferred='metal',uniformFamily='S
   const representationName=preferred==='auto'
     ? (/OCP|ABU|ODU|NWU|MCCUU|UTILITY/i.test(uniformFamily) ? 'embroidered' : 'metal')
     : preferred;
-  const base=badge?.representations?.[representationName] || {status:'MISSING_ASSET',available:false,asset:null};
-  const available=getAvailableMilitaryBadgeVariants(badge,representationName);
+  const configured=badge?.representations?.[representationName] || {status:'MISSING_ASSET',available:false,asset:null};
+  const base=configured.byService?.[State.organization] || configured;
+  const available=getAvailableMilitaryBadgeVariants(badge,representationName,State.organization);
   const requested=State.militaryBadges?.[badge?.id]?.variant;
   const selectedVariant=requested || base.defaultVariant || available[0]?.id || badge?.variants?.[0] || 'default';
   const resolved=window.CAPUBMilitary?.resolveBadgeRepresentation?.(badge,{

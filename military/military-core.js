@@ -426,9 +426,10 @@
     const utility=/OCP|ABU|ODU|NWU|MCCUU|UTILITY/.test(family);
     const requested=String(preferred || 'AUTO').trim().toLowerCase();
     const representationName=requested === 'auto' ? (utility ? 'embroidered' : 'metal') : requested;
-    const base=reps[representationName] || {
+    const configured=reps[representationName] || {
       status:'NOT_APPLICABLE',available:false,asset:null
     };
+    const base=configured.byService?.[serviceKey] || configured;
     const variantId=variant || base.defaultVariant;
     const selected=variantId && base.variants?.[variantId] ? base.variants[variantId] : base;
     const backingId=selected.backingProfile || base.backingProfile ||
