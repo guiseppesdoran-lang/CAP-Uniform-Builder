@@ -2552,9 +2552,46 @@
           "defaultVariant": "pilot"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_pilot_badge/pilot.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_pilot_badge/pilot.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "pilot",
+          "variants": {
+            "pilot": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_pilot_badge/pilot.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_pilot_badge/pilot.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior_pilot": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_pilot_badge/senior_pilot.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_pilot_badge/senior_pilot.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "command_pilot": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_pilot_badge/command_pilot.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_pilot_badge/command_pilot.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -2627,9 +2664,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_remotely_piloted_aircraft_pilot_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_remotely_piloted_aircraft_pilot_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_remotely_piloted_aircraft_pilot_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "command": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_remotely_piloted_aircraft_pilot_badge/command.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_remotely_piloted_aircraft_pilot_badge/command.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -2701,9 +2775,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_combat_systems_officer_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_combat_systems_officer_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_combat_systems_officer_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_combat_systems_officer_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_combat_systems_officer_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -2775,9 +2886,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_air_battle_manager_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_air_battle_manager_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_air_battle_manager_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_air_battle_manager_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_air_battle_manager_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_air_battle_manager_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_air_battle_manager_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_air_battle_manager_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -2889,9 +3037,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_flight_surgeon_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_flight_surgeon_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_flight_surgeon_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_flight_surgeon_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_flight_surgeon_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_flight_surgeon_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_flight_surgeon_badge/chief.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_flight_surgeon_badge/chief.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -2964,9 +3149,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_flight_nurse_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_flight_nurse_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_flight_nurse_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_flight_nurse_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_flight_nurse_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_flight_nurse_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_flight_nurse_badge/chief.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_flight_nurse_badge/chief.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -3038,9 +3260,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_officer_aircrew_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_officer_aircrew_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_officer_aircrew_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_officer_aircrew_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_officer_aircrew_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_officer_aircrew_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_officer_aircrew_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_officer_aircrew_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -3113,9 +3372,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_enlisted_aircrew_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_enlisted_aircrew_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_enlisted_aircrew_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_enlisted_aircrew_badge/chief.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_enlisted_aircrew_badge/chief.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -3189,9 +3485,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_missile_operations_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_missile_operations_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_missile_operations_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_missile_operations_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_missile_operations_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_missile_operations_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_missile_operations_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_missile_operations_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -3265,9 +3598,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_space_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_space_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_space_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_space_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_space_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_space_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "command": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_space_badge/command.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_space_badge/command.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -3341,9 +3711,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_cyberspace_operations_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_cyberspace_operations_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_cyberspace_operations_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_cyberspace_operations_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_cyberspace_operations_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -3417,9 +3824,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_cyberspace_support_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_cyberspace_support_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_cyberspace_support_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_cyberspace_support_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_cyberspace_support_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_cyberspace_support_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_cyberspace_support_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_cyberspace_support_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -3492,9 +3936,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_parachutist_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_parachutist_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_parachutist_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_parachutist_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_parachutist_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_parachutist_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_parachutist_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_parachutist_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -3566,9 +4047,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_explosive_ordnance_disposal_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_explosive_ordnance_disposal_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_explosive_ordnance_disposal_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_explosive_ordnance_disposal_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_explosive_ordnance_disposal_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -3788,9 +4306,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_religious_affairs_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_religious_affairs_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_religious_affairs_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_religious_affairs_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_religious_affairs_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_religious_affairs_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_religious_affairs_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_religious_affairs_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -3839,9 +4394,28 @@
           "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_fire_protection_badge/default.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_fire_protection_badge/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_fire_protection_badge/default.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_fire_protection_badge/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -4149,9 +4723,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_dental_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_dental_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_dental_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_dental_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_dental_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_dental_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_dental_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_dental_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -4223,9 +4834,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_enlisted_medical_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_enlisted_medical_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_enlisted_medical_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_enlisted_medical_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_enlisted_medical_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_enlisted_medical_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_enlisted_medical_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_enlisted_medical_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -4298,9 +4946,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_intelligence_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_intelligence_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_intelligence_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_intelligence_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_intelligence_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_intelligence_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_intelligence_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_intelligence_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -4512,9 +5197,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_operations_support_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_operations_support_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_operations_support_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_operations_support_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_operations_support_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_operations_support_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_operations_support_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_operations_support_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -4587,9 +5309,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_medical_service_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_medical_service_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_medical_service_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_medical_service_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_medical_service_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_medical_service_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_medical_service_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_medical_service_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -4661,9 +5420,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_civil_engineer_readiness_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_civil_engineer_readiness_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_civil_engineer_readiness_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_civil_engineer_readiness_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_civil_engineer_readiness_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6377,9 +7173,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_aircraft_maintenance_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_aircraft_maintenance_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_aircraft_maintenance_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_aircraft_maintenance_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_aircraft_maintenance_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6451,9 +7284,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_air_traffic_control_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_air_traffic_control_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_air_traffic_control_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_air_traffic_control_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_air_traffic_control_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_air_traffic_control_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_air_traffic_control_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_air_traffic_control_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6525,9 +7395,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_band_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_band_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_band_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_band_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_band_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_band_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_band_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_band_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6599,9 +7506,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_civil_engineer_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_civil_engineer_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_civil_engineer_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_civil_engineer_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_civil_engineer_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_civil_engineer_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_civil_engineer_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_civil_engineer_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6673,9 +7617,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_command_and_control_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_command_and_control_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_command_and_control_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_command_and_control_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_command_and_control_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_command_and_control_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_command_and_control_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_command_and_control_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6747,9 +7728,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_communications_information_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_communications_information_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_communications_information_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_communications_information_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_communications_information_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_communications_information_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_communications_information_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_communications_information_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6821,9 +7839,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_force_protection_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_force_protection_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_force_protection_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_force_protection_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_force_protection_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_force_protection_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_force_protection_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_force_protection_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6895,9 +7950,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_ground_radar_airfield_systems_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_ground_radar_airfield_systems_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_ground_radar_airfield_systems_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_ground_radar_airfield_systems_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_ground_radar_airfield_systems_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -6969,9 +8061,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_manpower_personnel_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_manpower_personnel_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_manpower_personnel_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_manpower_personnel_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_manpower_personnel_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_manpower_personnel_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_manpower_personnel_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_manpower_personnel_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7043,9 +8172,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_munitions_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_munitions_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_munitions_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_munitions_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_munitions_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_munitions_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_munitions_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_munitions_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7117,9 +8283,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_public_affairs_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_public_affairs_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_public_affairs_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_public_affairs_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_public_affairs_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_public_affairs_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_public_affairs_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_public_affairs_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7191,9 +8394,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_services_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_services_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_services_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_services_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_services_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_services_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_services_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_services_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7265,9 +8505,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_supply_fuels_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_supply_fuels_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_supply_fuels_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_supply_fuels_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_supply_fuels_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_supply_fuels_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_supply_fuels_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_supply_fuels_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7339,9 +8616,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_transportation_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_transportation_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_transportation_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_transportation_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_transportation_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_transportation_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_transportation_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_transportation_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7413,9 +8727,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_weather_operations_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_weather_operations_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_weather_operations_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_weather_operations_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_weather_operations_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_weather_operations_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_weather_operations_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_weather_operations_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7487,9 +8838,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_safety_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_safety_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_safety_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_safety_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_safety_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_safety_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_safety_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_safety_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7561,9 +8949,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_operations_research_analyst_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_operations_research_analyst_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_operations_research_analyst_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_operations_research_analyst_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_operations_research_analyst_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7635,9 +9060,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_multi_domain_warfare_officer_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_multi_domain_warfare_officer_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_multi_domain_warfare_officer_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_multi_domain_warfare_officer_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_multi_domain_warfare_officer_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7709,9 +9171,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_foreign_area_officer_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_foreign_area_officer_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_foreign_area_officer_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_foreign_area_officer_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_foreign_area_officer_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7783,9 +9282,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_weapons_controller_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_weapons_controller_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_weapons_controller_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_weapons_controller_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_weapons_controller_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_weapons_controller_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_weapons_controller_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_weapons_controller_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7857,9 +9393,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_information_operations_officer_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_information_operations_officer_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_information_operations_officer_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_information_operations_officer_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_information_operations_officer_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_information_operations_officer_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_information_operations_officer_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_information_operations_officer_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -7931,9 +9504,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_biomedical_scientist_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_biomedical_scientist_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_biomedical_scientist_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_biomedical_scientist_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_biomedical_scientist_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -8005,9 +9615,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_nurse_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_nurse_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_nurse_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_nurse_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_nurse_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_nurse_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_nurse_badge/chief.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_nurse_badge/chief.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -8079,9 +9726,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_physician_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_physician_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_physician_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_physician_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_physician_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_physician_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_physician_badge/chief.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_physician_badge/chief.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -8153,9 +9837,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_veterinarian_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_veterinarian_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_veterinarian_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_veterinarian_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_veterinarian_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_veterinarian_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "chief": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_veterinarian_badge/chief.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_veterinarian_badge/chief.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -8227,9 +9948,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_scientific_applications_specialist_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_scientific_applications_specialist_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_scientific_applications_specialist_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_scientific_applications_specialist_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_scientific_applications_specialist_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -8301,9 +10059,46 @@
           "defaultVariant": "basic"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_airfield_operations_officer_badge/basic.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/basic.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "basic",
+          "variants": {
+            "basic": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_airfield_operations_officer_badge/basic.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/basic.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "senior": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_airfield_operations_officer_badge/senior.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/senior.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            },
+            "master": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_airfield_operations_officer_badge/master.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_airfield_operations_officer_badge/master.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -8416,9 +10211,28 @@
           "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_pararescue_badge/default.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_pararescue_badge/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_pararescue_badge/default.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_pararescue_badge/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -8467,9 +10281,28 @@
           "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_combat_control_team_badge/default.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_combat_control_team_badge/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_combat_control_team_badge/default.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_combat_control_team_badge/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -8518,9 +10351,28 @@
           "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_combat_rescue_officer_badge/default.png",
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_combat_rescue_officer_badge/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_combat_rescue_officer_badge/default.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_combat_rescue_officer_badge/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {

@@ -8,6 +8,8 @@
     50,
     176
   ],
+  "suspensionRibbonHeight": 116,
+  "geometryPolicy": "Suspension ribbon and pendant are normalized independently; the photographed medal is never stretched as one image.",
   "imported": [
     {
       "awardId": "afghanistan_campaign",

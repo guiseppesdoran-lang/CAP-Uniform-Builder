@@ -19,7 +19,7 @@ from datetime import date
 from difflib import SequenceMatcher
 from pathlib import Path
 
-from PIL import Image, ImageEnhance, ImageFilter, ImageOps
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "data" / "military" / "canonical-awards.json"
@@ -228,13 +228,52 @@ def normalize_national_defense_palette(image: Image.Image) -> Image.Image:
     return image
 
 
-def digital_medal(source: bytes, award_id: str, canvas=(50, 176)) -> Image.Image:
+def suspension_from_ribbon(ribbon: Image.Image, width: int, height: int) -> Image.Image:
+    """Build a regulation-shaped suspension from reviewed ribbon colors.
+
+    Ribbon-rack artwork is the authoritative stripe source. Sampling the middle
+    row removes product-photo color casts while preserving the exact stripe
+    sequence. The lower chevron matches the McChord miniature template.
+    """
+    ribbon = ribbon.convert("RGB").resize((width, 30), Image.Resampling.LANCZOS)
+    stripe = ribbon.crop((0, 14, width, 15)).resize((width, height), Image.Resampling.NEAREST)
+    weave = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    weave.alpha_composite(stripe.convert("RGBA"))
+    pixels = weave.load()
+    for y in range(height):
+        factor = 0.90 if y % 2 else 1.0
+        for x in range(width):
+            r, g, b, a = pixels[x, y]
+            pixels[x, y] = (round(r * factor), round(g * factor), round(b * factor), a)
+    mask = Image.new("L", (width, height), 0)
+    draw = ImageDraw.Draw(mask)
+    chevron = min(28, height // 4)
+    draw.polygon([(0, 0), (width, 0), (width, height - chevron), (width // 2, height), (0, height - chevron)], fill=255)
+    weave.putalpha(mask)
+    return weave
+
+
+def pendant_from_source(source: bytes) -> Image.Image:
     image = remove_edge_background(Image.open(io.BytesIO(source)))
     alpha = image.getchannel("A")
     bbox = alpha.getbbox()
     if not bbox:
         raise ValueError("source became empty during background removal")
     image = image.crop(bbox)
+    alpha = image.getchannel("A")
+    width, height = image.size
+    rows = [sum(1 for x in range(width) if alpha.getpixel((x, y)) > 24) for y in range(height)]
+    search_start, search_end = max(1, int(height * 0.34)), max(2, int(height * 0.72))
+    split = min(range(search_start, search_end), key=lambda y: rows[y])
+    pendant = image.crop((0, max(0, split - 2), width, height))
+    pendant_bbox = pendant.getchannel("A").getbbox()
+    if not pendant_bbox:
+        raise ValueError("pendant became empty during suspension split")
+    return pendant.crop(pendant_bbox)
+
+
+def digital_medal(source: bytes, award_id: str, canvas=(50, 176), ribbon: Image.Image | None = None, suspension_height: int | None = None) -> Image.Image:
+    image = pendant_from_source(source)
     alpha = image.getchannel("A")
     rgb = image.convert("RGB").filter(ImageFilter.MedianFilter(3))
     rgb = ImageEnhance.Contrast(rgb).enhance(1.10)
@@ -243,12 +282,20 @@ def digital_medal(source: bytes, award_id: str, canvas=(50, 176)) -> Image.Image
     # official suspension-ribbon colors and pendant details.
     rgb = ImageOps.posterize(rgb, 5).convert("RGBA")
     rgb.putalpha(alpha)
-    # McChord CAP miniature-medal artwork occupies the complete 50 x 176
-    # suspension geometry. Product photographs have inconsistent empty space
-    # and aspect ratios, so preserving each photo's aspect ratio made otherwise
-    # identical physical medals render at visibly different heights. Normalize
-    # the cropped artwork to the same production canvas used by CAP medals.
-    output = rgb.resize(canvas, Image.Resampling.LANCZOS)
+    suspension_height = suspension_height or (116 if canvas == (50, 176) else round(canvas[1] * 0.60))
+    output = Image.new("RGBA", canvas, (0, 0, 0, 0))
+    if ribbon is not None:
+        output.alpha_composite(suspension_from_ribbon(ribbon, canvas[0], suspension_height))
+    else:
+        # Legacy fallback remains proportional; it never stretches a complete
+        # photographed medal into the production canvas.
+        fallback = remove_edge_background(Image.open(io.BytesIO(source)))
+        fallback.thumbnail((canvas[0], suspension_height), Image.Resampling.LANCZOS)
+        output.alpha_composite(fallback, ((canvas[0] - fallback.width) // 2, 0))
+    available_height = canvas[1] - suspension_height + min(12, canvas[1] // 14)
+    rgb.thumbnail((canvas[0], available_height), Image.Resampling.LANCZOS)
+    pendant_y = canvas[1] - rgb.height
+    output.alpha_composite(rgb, ((canvas[0] - rgb.width) // 2, pendant_y))
     if award_id == "national_defense_military_service":
         output = normalize_national_defense_palette(output)
     return output
@@ -274,7 +321,10 @@ def main() -> None:
         relative = Path("images") / "military-mini-medals" / "air-force" / f"{match['awardId']}.png"
         output = ROOT / relative
         output.parent.mkdir(parents=True, exist_ok=True)
-        digital_medal(fetch(match["image"]), match["awardId"]).save(output, optimize=True)
+        award = next(item for item in catalog if item["id"] == match["awardId"])
+        ribbon_asset = award.get("representations", {}).get("ribbon", {}).get("asset") or award.get("images", {}).get("ribbon")
+        ribbon = Image.open(ROOT / ribbon_asset) if ribbon_asset and (ROOT / ribbon_asset).exists() else None
+        digital_medal(fetch(match["image"]), match["awardId"], ribbon=ribbon).save(output, optimize=True)
         representation = {
             "status": "AVAILABLE",
             "available": True,
@@ -306,6 +356,8 @@ def main() -> None:
         "accessed": date.today().isoformat(),
         "style": "MCCHORD_DIGITAL_MEDAL",
         "canvas": [50, 176],
+        "suspensionRibbonHeight": 116,
+        "geometryPolicy": "Suspension ribbon and pendant are normalized independently; the photographed medal is never stretched as one image.",
         "imported": manifest_imported,
         "unmatched": manifest_unmatched,
     }, indent=2) + "\n", encoding="utf-8")

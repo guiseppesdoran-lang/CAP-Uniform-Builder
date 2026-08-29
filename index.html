@@ -10502,14 +10502,14 @@ function getMilitaryCatalogBadges(){
   return window.CAPUBMilitary?.sortBadgesForMember?.(raw,{organization:State.organization,component:State.component}) || raw;
 }
 
-function getAvailableMilitaryBadgeVariants(badge){
-  const metal=badge?.representations?.metal || {};
-  const variants=metal.variants || {};
+function getAvailableMilitaryBadgeVariants(badge,representationName='metal'){
+  const representation=badge?.representations?.[representationName] || {};
+  const variants=representation.variants || {};
   const available=Object.entries(variants)
     .filter(([,record])=>record?.status==='AVAILABLE' && record.asset)
     .map(([id,record])=>({id,record}));
-  if(!available.length && metal.status==='AVAILABLE' && metal.asset){
-    available.push({id:metal.defaultVariant || 'default',record:metal});
+  if(!available.length && representation.status==='AVAILABLE' && representation.asset){
+    available.push({id:representation.defaultVariant || 'default',record:representation});
   }
   return available;
 }
@@ -10520,14 +10520,20 @@ function getAllSelectableMilitaryBadges(){
     .sort((a,b)=>String(a.officialName || a.id).localeCompare(String(b.officialName || b.id)));
 }
 
-function getMilitaryBadgeRepresentation(badge){
-  const metal=badge?.representations?.metal || {status:'MISSING_ASSET',available:false,asset:null};
-  const available=getAvailableMilitaryBadgeVariants(badge);
+function getMilitaryBadgeRepresentation(badge,preferred='metal',uniformFamily='SERVICE_DRESS'){
+  const representationName=preferred==='auto'
+    ? (/OCP|ABU|ODU|NWU|MCCUU|UTILITY/i.test(uniformFamily) ? 'embroidered' : 'metal')
+    : preferred;
+  const base=badge?.representations?.[representationName] || {status:'MISSING_ASSET',available:false,asset:null};
+  const available=getAvailableMilitaryBadgeVariants(badge,representationName);
   const requested=State.militaryBadges?.[badge?.id]?.variant;
-  const selectedVariant=requested || metal.defaultVariant || available[0]?.id || badge?.variants?.[0] || 'default';
-  const selected=metal.variants?.[selectedVariant];
-  if(selected?.status==='AVAILABLE' && selected.asset) return selected;
-  return available[0]?.record || metal;
+  const selectedVariant=requested || base.defaultVariant || available[0]?.id || badge?.variants?.[0] || 'default';
+  const resolved=window.CAPUBMilitary?.resolveBadgeRepresentation?.(badge,{
+    service:State.organization,uniformFamily,preferred:representationName,
+    assetProfiles:window.CAPUBMilitaryData?.assetProfiles,variant:selectedVariant
+  });
+  if(resolved?.status==='AVAILABLE' && resolved.asset) return resolved;
+  return available[0]?.record || base;
 }
 
 function renderMilitaryBadgeSelector(){

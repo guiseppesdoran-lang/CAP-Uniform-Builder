@@ -7,6 +7,7 @@ import argparse
 import json
 from datetime import date
 from pathlib import Path
+from PIL import Image
 
 from import_vanguard_air_force_mini_medals import (
     ROOT,
@@ -51,7 +52,10 @@ def main() -> None:
         output = ROOT / relative
         output.parent.mkdir(parents=True, exist_ok=True)
         try:
-            digital_medal(fetch(match["image"]), canvas=(100, 220)).save(output, optimize=True)
+            award = next(item for item in catalog if item["id"] == match["awardId"])
+            ribbon_asset = award.get("representations", {}).get("ribbon", {}).get("asset") or award.get("images", {}).get("ribbon")
+            ribbon = Image.open(ROOT / ribbon_asset) if ribbon_asset and (ROOT / ribbon_asset).exists() else None
+            digital_medal(fetch(match["image"]), match["awardId"], canvas=(100, 220), ribbon=ribbon, suspension_height=132).save(output, optimize=True)
         except Exception as error:  # keep a transparent audit trail; never substitute generic art
             failed.append({**match, "error": str(error)})
             continue
@@ -75,6 +79,8 @@ def main() -> None:
         "accessed": date.today().isoformat(),
         "style": "MCCHORD_DIGITAL_MEDAL",
         "canvas": [100, 220],
+        "suspensionRibbonHeight": 132,
+        "geometryPolicy": "Suspension ribbon and pendant are normalized independently; the photographed medal is never stretched as one image.",
         "imported": imported,
         "failed": failed,
         "unmatched": unmatched,
