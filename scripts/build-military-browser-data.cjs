@@ -3,14 +3,21 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const core=require('../military/military-core.js');
+const {applyServicePrecedence}=require('./lib/apply-service-precedence.cjs');
 const ROOT=path.resolve(__dirname,'..');
-const awards=JSON.parse(fs.readFileSync(path.join(ROOT,'data/import/normalized/military-awards.json'),'utf8'));
+let awards=JSON.parse(fs.readFileSync(path.join(ROOT,'data/import/normalized/military-awards.json'),'utf8'));
 const additionsPath=path.join(ROOT,'data/military/catalog-additions.json');
 if(fs.existsSync(additionsPath)) awards.push(...(JSON.parse(fs.readFileSync(additionsPath,'utf8')).awards || []));
+const precedenceTables=JSON.parse(fs.readFileSync(path.join(ROOT,'data/rules/verified/service-precedence.json'),'utf8'));
+awards=applyServicePrecedence(awards,precedenceTables,core);
 const devices=JSON.parse(fs.readFileSync(path.join(ROOT,'data/rules/verified/device-definitions.json'),'utf8'));
 const representationPath=path.join(ROOT,'data/rules/verified/representation-overrides.json');
 const representationOverrides=fs.existsSync(representationPath)
   ? JSON.parse(fs.readFileSync(representationPath,'utf8')).awards || {}
+  : {};
+const stylePath=path.join(ROOT,'data/rules/verified/ribbon-style-overrides.json');
+const styleOverrides=fs.existsSync(stylePath)
+  ? JSON.parse(fs.readFileSync(stylePath,'utf8')).awards || {}
   : {};
 const canonicalBySourceId=new Map();
 for(const canonical of core.canonicalizeAwards(awards)){
@@ -18,8 +25,8 @@ for(const canonical of core.canonicalizeAwards(awards)){
 }
 for(const award of awards){
   const canonicalId=canonicalBySourceId.get(award.id) || award.id;
-  const override=representationOverrides[canonicalId] || representationOverrides[award.id];
-  if(override) award.representations=override;
+  const override={...(representationOverrides[canonicalId] || representationOverrides[award.id] || {}),...(styleOverrides[canonicalId] || styleOverrides[award.id] || {})};
+  if(Object.keys(override).length) award.representations={...(award.representations || {}),...override};
 }
 const badgesPath=path.join(ROOT,'data/military/badges.json');
 const badges=fs.existsSync(badgesPath) ? JSON.parse(fs.readFileSync(badgesPath,'utf8')).badges || [] : [];

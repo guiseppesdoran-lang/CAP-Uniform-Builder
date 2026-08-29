@@ -5150,6 +5150,7 @@ const deviceMeta = {
   'C_DEVICE': { label:'C Device', src:'devices/military/c_device.png', w:8, h:9, weight:7 },
   'R_DEVICE': { label:'R Device', src:'devices/military/r_device.png', w:8, h:9, weight:7 },
   'M_DEVICE': { label:'M Device', src:'devices/military/m_device.png', w:9, h:9, weight:7 },
+  'N_DEVICE': { label:'N Device', src:'devices/military/n_device.png', w:9, h:9, weight:7 },
   'BRONZE_HOURGLASS': { label:'Bronze Hourglass', src:'devices/military/bronze_hourglass.png', w:8, h:9, weight:6 },
   'SILVER_HOURGLASS': { label:'Silver Hourglass', src:'devices/military/silver_hourglass.png', w:8, h:9, weight:6 },
   'GOLD_HOURGLASS': { label:'Gold Hourglass', src:'devices/military/gold_hourglass.png', w:8, h:9, weight:6 },
@@ -8688,7 +8689,7 @@ function buildRibbonGallery(){
       ? [...new Set([...(militaryRules?.allowedSpecialDevices || []),'V_DEVICE','C_DEVICE','R_DEVICE','ARROWHEAD_DEVICE','M_DEVICE','BRONZE_HOURGLASS','SILVER_HOURGLASS','GOLD_HOURGLASS'])]
       : (militaryRules?.allowedSpecialDevices || []);
     const specialControls=military ? specialIds.map(deviceId=>
-      `<label><input type="checkbox" class="militarySpecialDevice" data-ribbon-id="${id}" data-device-id="${deviceId}" ${(sel.specialAuthorizations || []).includes(deviceId)?'checked':''}>${deviceMeta[deviceId].label}</label>`
+      `<label><input type="checkbox" class="militarySpecialDevice" data-ribbon-id="${id}" data-device-id="${deviceId}" ${(sel.specialAuthorizations || []).includes(deviceId)?'checked':''}>${deviceMeta[deviceId]?.label || deviceId.replaceAll('_',' ')}</label>`
     ).join('') + (advanced ? `<label>Numeral <input type="number" class="militaryNumeralDevice" data-ribbon-id="${id}" min="0" max="99" value="${Number(sel.manualNumeral)||0}" style="width:62px" title="0 means no numeral"></label>` : '') : '';
     tile.innerHTML = `
       ${military ? `<span class="militaryRibbonArt"><img alt="${title}"></span>` : `<img alt="${title}">`}
@@ -10355,6 +10356,12 @@ function getMilitaryCatalogBadges(){
   return window.CAPUBMilitary?.sortBadgesForMember?.(raw,{organization:State.organization,component:State.component}) || raw;
 }
 
+function getMilitaryBadgeRepresentation(badge){
+  const metal=badge?.representations?.metal || {status:'MISSING_ASSET',available:false,asset:null};
+  const selectedVariant=State.militaryBadges?.[badge?.id]?.variant || metal.defaultVariant || badge?.variants?.[0] || 'default';
+  return metal.variants?.[selectedVariant] || metal;
+}
+
 function renderMilitaryBadgeSelector(){
   const host=by('militaryBadgeResults');
   if(!host) return;
@@ -10369,7 +10376,7 @@ function renderMilitaryBadgeSelector(){
     const row=document.createElement('label'); row.className='militaryAwardOption'; row.dataset.badgeId=badge.id;
     const box=document.createElement('input'); box.type='checkbox'; box.checked=!!State.militaryBadges?.[badge.id];
     const text=document.createElement('span');
-    const representation=badge.representations?.metal || {status:'MISSING_ASSET'};
+    const representation=getMilitaryBadgeRepresentation(badge);
     const status=String(representation.status || 'MISSING_ASSET').replaceAll('_',' ').toLowerCase();
     text.innerHTML=`<strong>${militaryEscapeHtml(badge.officialName || badge.name)}</strong><br><span class="${representation.status==='AVAILABLE'?'hintText':'militarySourceOnly'}">${militaryEscapeHtml(status)} • ${militaryEscapeHtml(badge.family || 'OTHER')}</span>`;
     const info=document.createElement('span'); info.className='hintText'; info.textContent=badge.precedence?.[State.organization]?.verified?'Verified':'Unverified';
@@ -10391,7 +10398,13 @@ function renderMilitaryBadgeSelector(){
       if(box.checked) State.militaryBadges[badge.id]={selected:true,variant:variantSelect?.value || null}; else delete State.militaryBadges[badge.id];
       fullRender();
     });
-    row.append(box,text); if(variantSelect) row.appendChild(variantSelect); row.appendChild(info); host.appendChild(row);
+    if(representation.status==='AVAILABLE' && representation.asset){
+      const preview=document.createElement('img');
+      preview.src=representation.asset; preview.alt=''; preview.className='militaryBadgeSelectorPreview';
+      Object.assign(preview.style,{width:'52px',height:'34px',objectFit:'contain'});
+      row.append(box,preview,text);
+    }else row.append(box,text);
+    if(variantSelect) row.appendChild(variantSelect); row.appendChild(info); host.appendChild(row);
   }
 }
 
@@ -10540,6 +10553,30 @@ function applyMilitaryPreviewArea(){
   }
 }
 
+function renderMilitaryPreviewBadges(badges,startY=105){
+  const entries=badges.map(badge=>({badge,representation:getMilitaryBadgeRepresentation(badge)}))
+    .filter(entry=>entry.representation?.status==='AVAILABLE' && entry.representation.asset);
+  const visible=entries.slice(0,6);
+  const columns=Math.min(3,Math.max(1,visible.length));
+  const cellWidth=92,cellHeight=48;
+  visible.forEach((entry,index)=>{
+    const row=Math.floor(index/columns),column=index%columns;
+    const rowCount=Math.min(columns,visible.length-row*columns);
+    const rowWidth=rowCount*cellWidth;
+    const image=document.createElement('img');
+    image.className='layer militaryBadgeTile';
+    image.src=entry.representation.asset;
+    image.alt=entry.badge.officialName || entry.badge.id;
+    image.title=`${entry.badge.officialName || entry.badge.id}${State.militaryBadges?.[entry.badge.id]?.variant ? ` — ${State.militaryBadges[entry.badge.id].variant.replaceAll('_',' ')}` : ''}`;
+    Object.assign(image.style,{
+      left:`${225-rowWidth/2+column*cellWidth}px`,top:`${startY+row*cellHeight}px`,
+      width:`${cellWidth}px`,height:`42px`,objectFit:'contain',zIndex:String(180+index)
+    });
+    uniformCanvas.appendChild(image);
+  });
+  return {available:entries.length,visible:visible.length};
+}
+
 function renderMilitaryPreview(){
   applyMilitaryPreviewArea();
   clearLayers(); clearMeasurementOverlay();
@@ -10550,7 +10587,10 @@ function renderMilitaryPreview(){
   uniformCanvas.appendChild(title);
   const items=getSelectedMilitaryAwards();
   const selectedBadges=getMilitaryCatalogBadges().filter(badge=>State.militaryBadges?.[badge.id]);
-  const renderableBadges=selectedBadges.filter(badge=>badge.representations?.metal?.status==='AVAILABLE' && badge.representations.metal.asset);
+  const renderableBadges=selectedBadges.filter(badge=>{
+    const representation=getMilitaryBadgeRepresentation(badge);
+    return representation.status==='AVAILABLE' && representation.asset;
+  });
   const representation=State.militaryRepresentation || 'RIBBON';
   if(representation!=='RIBBON'){
     const context=representation==='FULL_SIZE_MEDAL'?'FULL_SIZE_MEDAL':'MINIATURE_MEDAL';
@@ -10587,11 +10627,13 @@ function renderMilitaryPreview(){
       });
     });
     const note=document.createElement('div');
+    const badgeRender=renderMilitaryPreviewBadges(selectedBadges,92);
     note.className='layer militaryPreviewNote';
     note.textContent=available.length
       ? `${context==='FULL_SIZE_MEDAL'?'Full-size':'Miniature'} medal rack uses canonical award state and a separate suspension-device placement context. ${missing ? `${missing} selected award(s) have no reviewed local representation and were not fabricated.` : ''}`
       : `No selected award has a reviewed local ${context==='FULL_SIZE_MEDAL'?'full-size':'miniature'} medal representation. Missing medals are not replaced with generic artwork.`;
     if(selectedBadges.length>renderableBadges.length) note.textContent+=` ${selectedBadges.length-renderableBadges.length} selected badge(s) have no approved local artwork and were not fabricated.`;
+    if(badgeRender.available>badgeRender.visible) note.textContent+=` ${badgeRender.available-badgeRender.visible} additional badge selection(s) exceed the six-badge generic preview limit.`;
     uniformCanvas.appendChild(note);
     return;
   }
@@ -10627,11 +10669,13 @@ function renderMilitaryPreview(){
     });
   });
   const note=document.createElement('div');
+  const badgeRender=renderMilitaryPreviewBadges(selectedBadges,92);
   note.className='layer militaryPreviewNote';
   note.textContent=items.length
     ? 'Rack sorted highest-to-lowest from the top row using the selected service precedence table. Ribbons use the same 1⅜ × ⅜ proportion and edge-to-edge mounting style as the CAP McChord rack.'
     : 'Select military ribbons from the catalog panel. CAP selections remain preserved when you switch back.';
   if(selectedBadges.length>renderableBadges.length) note.textContent+=` ${selectedBadges.length-renderableBadges.length} selected badge(s) have no approved local artwork and were not fabricated.`;
+  if(badgeRender.available>badgeRender.visible) note.textContent+=` ${badgeRender.available-badgeRender.visible} additional badge selection(s) exceed the six-badge generic preview limit.`;
   uniformCanvas.appendChild(note);
 }
 

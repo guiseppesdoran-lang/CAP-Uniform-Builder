@@ -3,6 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const core = require('../military/military-core.js');
+const {applyServicePrecedence} = require('../scripts/lib/apply-service-precedence.cjs');
 
 function award(id, name, services, precedence, category='SERVICE'){
   return {
@@ -160,6 +161,61 @@ test('Coast Guard Humanitarian Service Medal repeat awards use verified service 
   assert.equal(result.valid,true);
 });
 
+test('current DAF campaign and service awards are present with reviewed local ribbon art', () => {
+  const additions=require('../data/military/catalog-additions.json').awards;
+  for(const id of [
+    'inherent_resolve_campaign_medal',
+    'remote_combat_effects_campaign_medal',
+    'air_and_space_nuclear_deterrence_operations_service_medal',
+    'developmental_special_duty_ribbon',
+    'space_force_good_conduct_medal'
+  ]){
+    const record=additions.find(item=>item.id===id);
+    assert.ok(record,`${id} is missing from the official additions catalog`);
+    assert.equal(record.verificationStatus,'OFFICIALLY_VERIFIED');
+    assert.equal(record.representations.ribbon.status,'AVAILABLE');
+  }
+});
+
+test('verified DAF precedence preserves the current campaign and service sequence', () => {
+  const tables=require('../data/rules/verified/service-precedence.json');
+  const air=tables.AIR_FORCE.awards;
+  const space=tables.SPACE_FORCE.awards;
+  const before=(table,a,b)=>assert.ok(table.indexOf(a)>=0 && table.indexOf(a)<table.indexOf(b),`${a} should precede ${b}`);
+  before(air,'iraq_campaign','inherent_resolve_campaign_medal');
+  before(air,'inherent_resolve_campaign_medal','global_war_on_terrorism_expeditionary');
+  before(air,'outstanding_volunteer_service','remote_combat_effects_campaign_medal');
+  before(air,'remote_combat_effects_campaign_medal','air_and_space_campaign');
+  before(air,'air_and_space_campaign','air_and_space_nuclear_deterrence_operations_service_medal');
+  before(air,'air_and_space_nuclear_deterrence_operations_service_medal','air_force_overseas_short_tour');
+  before(air,'air_force_longevity_service','developmental_special_duty_ribbon');
+  before(air,'developmental_special_duty_ribbon','air_force_military_training_instructor');
+  before(space,'air_force_good_condcut','space_force_good_conduct_medal');
+  before(space,'space_force_good_conduct_medal','army_good_conduct');
+});
+
+test('verified service tables are applied to source records before runtime sorting', () => {
+  const tables=require('../data/rules/verified/service-precedence.json');
+  const additions=require('../data/military/catalog-additions.json').awards;
+  const applied=applyServicePrecedence(additions,tables,core);
+  const resolve=applied.find(item=>item.id==='inherent_resolve_campaign_medal');
+  const gwt=applied.find(item=>item.id==='remote_combat_effects_campaign_medal');
+  assert.equal(resolve.precedence.AIR_FORCE.verified,true);
+  assert.equal(gwt.precedence.SPACE_FORCE.verified,true);
+  assert.match(resolve.precedence.AIR_FORCE.source,/afpc\.af\.mil/i);
+  assert.ok(resolve.precedence.AIR_FORCE.order<gwt.precedence.AIR_FORCE.order);
+});
+
+test('current DAF device rules use service stars, oak leaf clusters, and the N device', () => {
+  const additions=require('../data/military/catalog-additions.json').awards;
+  const rcecm=additions.find(item=>item.id==='remote_combat_effects_campaign_medal');
+  assert.deepEqual(core.calculateDevices({award:rcecm,service:'AIR_FORCE',awardCount:7}).devices,['SILVER_SERVICE_STAR','BRONZE_SERVICE_STAR']);
+  const ndosm=additions.find(item=>item.id==='air_and_space_nuclear_deterrence_operations_service_medal');
+  const result=core.calculateDevices({award:ndosm,service:'AIR_FORCE',awardCount:7,specialAuthorizations:['N_DEVICE']});
+  assert.deepEqual(result.devices,['SILVER_OLC','BRONZE_OLC','N_DEVICE']);
+  assert.equal(result.valid,true);
+});
+
 test('one canonical selection preserves quantity and devices across representations', () => {
   const selected=core.createAwardSelection('bronze_star_medal',{quantity:7,specialDevices:['V_DEVICE']});
   const canonical={
@@ -264,7 +320,7 @@ test('military badge authorization and precedence are service-specific', () => {
     {organization:'SPACE_FORCE'}
   );
   assert.equal(sorted[0].id,'presidential_service_badge');
-  assert.equal(sorted.at(-1).id,'headquarters_space_force_staff_identification_badge');
+  assert.equal(sorted[4].id,'headquarters_space_force_staff_identification_badge');
 });
 
 test('official Marine Corps table preserves personal, unit, and campaign precedence', () => {
@@ -326,6 +382,21 @@ test('official Marine Corps breast and marksmanship catalog preserves service-sp
   assert.ok(marines.find(badge=>badge.id==='marine_corps_competition_marksmanship_badge').variants.length>=27);
   assert.ok(marines.every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
   assert.ok(marines.every(badge=>badge.sources.some(source=>/marines\.mil/i.test(source))));
+});
+
+test('official Air Force and Space Force badge catalogs preserve ratings and placement', () => {
+  const badges=require('../data/military/badges.json').badges;
+  const airForce=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'AIR_FORCE'));
+  const spaceForce=badges.filter(badge=>core.isBadgeAuthorizedForService(badge,'SPACE_FORCE'));
+  const airForceFamilies=airForce.filter(badge=>badge.id.startsWith('air_force_'));
+  assert.ok(airForce.length>=36,'expected the official Air Force badge foundation');
+  assert.ok(spaceForce.length>=12,'expected the official Space Force badge foundation');
+  assert.deepEqual(airForce.find(badge=>badge.id==='air_force_pilot_badge').variants,['pilot','senior_pilot','command_pilot']);
+  assert.deepEqual(airForce.find(badge=>badge.id==='air_force_enlisted_aircrew_badge').variants,['basic','senior','chief']);
+  assert.deepEqual(airForce.find(badge=>badge.id==='air_force_information_management_badge').variants,['basic','senior']);
+  assert.ok(airForceFamilies.every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
+  assert.ok(airForceFamilies.every(badge=>badge.sources.some(source=>/af\.mil|e-publishing\.af\.mil/i.test(source))));
+  assert.ok(spaceForce.filter(badge=>badge.id.startsWith('air_force_') || badge.id.startsWith('headquarters_space_force_')).every(badge=>badge.placement?.serviceDress?.status==='OFFICIALLY_VERIFIED'));
 });
 
 test('official Army Institute of Heraldry table preserves cross-service precedence', () => {

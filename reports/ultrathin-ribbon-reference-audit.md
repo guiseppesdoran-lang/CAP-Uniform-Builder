@@ -1,0 +1,306 @@
+# UltraThin Ribbon Discovery Audit
+
+Accessed: 2026-08-28T17:19:40.688Z
+Public catalog records: 386
+Device/attachment records: 95
+Normalized matches to local canonical awards: 124
+Unmatched discovery records requiring reconciliation: 262
+
+> UltraThin is used only for discovery. Its precedence, authorization, device, medal-availability, and artwork claims are not treated as official verification. Production has no runtime dependency on UltraThin.
+
+## Unmatched discovery summary
+
+- CAP: 56
+- CIVILIAN: 19
+- COAST_GUARD_AUXILIARY: 33
+- FEDERAL_OR_FOREIGN_CANDIDATE: 80
+- MERCHANT_MARINE: 14
+- NOAA: 25
+- PUBLIC_HEALTH_SERVICE: 34
+- STATE: 1
+
+## CAP
+
+- Air Force Organizational Excellence Award for Civil Air Patrol (CAP46) — no service table membership recorded
+- CAP Silver Medal of Valor (C1) — no service table membership recorded
+- CAP Bronze Medal of Valor (C2) — no service table membership recorded
+- CAP Distinguished Service Medal (C3) — no service table membership recorded
+- CAP Exceptional Service Award (C4) — no service table membership recorded
+- CAP Meritorious Service Award (C5) — no service table membership recorded
+- CAP Commander's Commendation (C6) — no service table membership recorded
+- CAP Achievement (C6C) — no service table membership recorded
+- CAP Lifesaving Award (C7) — no service table membership recorded
+- CAP National Commanders Unit Award (C7C) — no service table membership recorded
+- CAP Unit Citation Award (C8) — no service table membership recorded
+- CAP National Commanders Commendation Award (C8A) — no service table membership recorded
+- CAP Gill Robb Wilson Award (C9) — no service table membership recorded
+- CAP Paul E Garber Award (C10) — no service table membership recorded
+- CAP Grover Loening Award (C11) — no service table membership recorded
+- CAP Leadership Award (C12) — no service table membership recorded
+- CAP Membership Award (C13) — no service table membership recorded
+- CAP A Scott Crossfield Award (C14) — no service table membership recorded
+- CAP Gen Chuck Yaeger Award (C15) — no service table membership recorded
+- CAP Cadet Certificate of Proficiency (C15A) — no service table membership recorded
+- CAP Gen Carl A Spaatz Award (C16) — no service table membership recorded
+- CAP Ira C Eaker Award (C17) — no service table membership recorded
+- CAP Amelia Earhart Award (C18) — no service table membership recorded
+- CAP Gen Billy Mitchell Award (C19) — no service table membership recorded
+- CAP Neil Armstrong Achievement (C20) — no service table membership recorded
+- CAP Dr Robert H Goddard Achievement (C21) — no service table membership recorded
+- CAP Gen Jimmy Doolittle Achievement (C22) — no service table membership recorded
+- CAP Charles A Lindbergh Achievement (C23) — no service table membership recorded
+- CAP Cpt Eddie Richenbacker Achievement (C24) — no service table membership recorded
+- CAP Wright Brothers Achievement (C25) — no service table membership recorded
+- CAP Mary Feik Achievement (C25M) — no service table membership recorded
+- CAP Gen Hap Arnold Achievement (C26) — no service table membership recorded
+- CAP Gen J F Curry Achievement (C27) — no service table membership recorded
+- CAP Command Service (C28) — no service table membership recorded
+- CAP Crisis Service (C28C) — no service table membership recorded
+- CAP Red Service (C29) — no service table membership recorded
+- CAP Professional Military Education Faculty (C29A) — no service table membership recorded
+- CAP Search -Find- (C30) — no service table membership recorded
+- CAP Search and Rescue (C31) — no service table membership recorded
+- CAP Counterdrug (C32) — no service table membership recorded
+- CAP Disaster Relief (C33) — no service table membership recorded
+- CAP Homeland Security Ribbon (C33H) — no service table membership recorded
+- CAP Cadet Community Service (C34) — no service table membership recorded
+- CAP Cadet Orientation Pilot (C35) — no service table membership recorded
+- CAP IACE (C36) — no service table membership recorded
+- CAP National Cadet Competition (C37) — no service table membership recorded
+- CAP National Color Guard Competition (C38) — no service table membership recorded
+- CAP Cadet Advisory Council (C39) — no service table membership recorded
+- CAP Cadet Special Activities (C40) — no service table membership recorded
+- CAP Encampment (C41) — no service table membership recorded
+- CAP Senior Recruiter (C42) — no service table membership recorded
+- CAP Cadet Recruiter (C43) — no service table membership recorded
+- CAP AFA Cadet of the Year (C44) — no service table membership recorded
+- CAP AFSA Award to Unit Cadet NCO of the Year (C45) — no service table membership recorded
+- CAP VFW Award to Unit Cadet NCO of the Year (C46) — no service table membership recorded
+- CAP VFW Cadet Officer Award (C47) — no service table membership recorded
+
+## CIVILIAN
+
+- Presidential Medal of Freedom (CIV1) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- National Security Medal (CIV10) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Department of State Meritorious Honor (CIV30) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- National Intelligence Distinguished Service Medal (CIV40) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- National Intelligence Medal of Achievement (CIV011) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- NASA Distinguished Service Medal (CIV60) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- NASA Flight Medal (CIV65) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- NASA Medal for Exceptional Bravery (CIV70) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- NASA Medal for Exceptional Service (CIV75) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Navy Distinguished Civilian Service Medal (CIV80) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Navy Distinguished Achievement in Science (CIV85) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Navy Distinguished Public Service Award (CIV90) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Selective Service Distinguished Service Award (CIV100) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Selective Service Exceptional Service Award (CIV105) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Selective Service Meritorious Service Award (CIV110) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- DOT Distinguished Service Medal (DOT1) — ARMY, COAST_GUARD
+- DOT Secretary's Outstanding Achievement Medal (DOT2) — ARMY, AIR_FORCE, SPACE_FORCE
+- DOT Secretary's Award for Meritorious Achievement (DOT3) — ARMY, AIR_FORCE, SPACE_FORCE
+- DOT Superior Achievement Medal (DOT4) — ARMY, AIR_FORCE, SPACE_FORCE
+
+## COAST GUARD AUXILIARY
+
+- CGAUX Distinguished Service Award (AX1) — no service table membership recorded
+- CGAUX Legion of Merit (AX1A) — no service table membership recorded
+- CGAUX Plaque of Merit (AX2) — no service table membership recorded
+- CGAUX Meritorious Service Award (AX2A) — no service table membership recorded
+- CGAUX Award of Operational Merit (AX3) — no service table membership recorded
+- CGAUX Commendation Award (AX4) — no service table membership recorded
+- CGAUX Achievement Award (AX5) — no service table membership recorded
+- CGAUX Commandant's Letter of Commendation (AX5B) — no service table membership recorded
+- CGAUX Sustained Service Award (AX5A) — no service table membership recorded
+- CGAUX Humanitarian Service Award (AX6A) — no service table membership recorded
+- CGAUX Operational Excellence 'E' Ribbon (AX6B) — no service table membership recorded
+- CGAUX Recruiting Service Award (AX15) — no service table membership recorded
+- CGAUX Specialty Training (AX7) — no service table membership recorded
+- CGAUX Marine Safety (Trident) Training (AX7A) — no service table membership recorded
+- CGAUX Operations Program Ribbon (AX8) — no service table membership recorded
+- CGAUX Examiner Program Ribbon (AX10) — no service table membership recorded
+- CGAUX Instructor Program Ribbon (AX11) — no service table membership recorded
+- CGAUX Public Affairs Ribbon (AX11A) — no service table membership recorded
+- CGAUX Membership Ribbon (AX13) — no service table membership recorded
+- CGAUX Flotilla Meritorious Achievement (AX14) — no service table membership recorded
+- CGAUX Operations Service (AX18) — no service table membership recorded
+- CGAUX Visitation Award (AX16) — no service table membership recorded
+- CGAUX Public Education Award (AX17) — no service table membership recorded
+- Obsolete Ribbons past here (Obsolete) — no service table membership recorded
+- CGAUX Group Action Award (obsolete) (AX6) — no service table membership recorded
+- CGAUX Air Observer (obsolete) (AX9) — no service table membership recorded
+- CGAUX Service Award (obsolete) (AX12) — no service table membership recorded
+- CGAUX Flotilla One Achievement (obsolete) (AX19) — no service table membership recorded
+- CGAUX Flotilla PEC (obsolete) (AX20) — no service table membership recorded
+- CGAUX Flotilla Operations (obsolete) (AX21) — no service table membership recorded
+- CGAUX Flotilla Member Training (obsolete) (AX22) — no service table membership recorded
+- CGAUX Flotilla Growth (obsolete) (AX23) — no service table membership recorded
+- CGAUX Flotilla Public Affairs (obsolete) (AX24) — no service table membership recorded
+
+## FEDERAL OR FOREIGN CANDIDATE
+
+- Guardian Medal (10A) — ARMY, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- 9_11 Medal (30A) — ARMY, COAST_GUARD
+- Distinguished Presidential Unit Citation (37) — NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Joint Meritorious Unit Citation (39) — NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- DHS Outstanding Unit Award (39G) — MARINE_CORPS, COAST_GUARD
+- DOT Secretary Outstanding Unit (39A) — AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Air Force Gallant Unit Award (40G) — NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Meritorious Unit Commendation (47) — NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Coast Guard 'E' Ribbon (48A) — NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Coast Guard Meritorious Team (48B) — NAVY, COAST_GUARD
+- Navy 'E' Ribbon (49) — NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Coast Guard Bicentennial Unit Award (49A) — COAST_GUARD
+- Good Conduct Medal (53) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Space Force Good Conduct Medal (58) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Coast Guard Person of the Year Medal (62A) — ARMY, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Marine Expeditionary Medal (65) — ARMY, NAVY, MARINE_CORPS, COAST_GUARD
+- Asian-Pacific Campaign Medal (70) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Occupation Medal (73) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Coast Guard Arctic Service (79) — ARMY, NAVY, MARINE_CORPS, COAST_GUARD
+- Inherent Resolve Campaign Medal (814) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- GWOT Expeditionary Medal (81L) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- GWOT Service Medal (81S) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Mexican Border Service Medal (816) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Military Outstanding Volunteer Service Medal (82B) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- 9_11 Ribbon (82M) — ARMY, COAST_GUARD
+- Air Force Remote Combat Action Effects Campaign (86R) — AIR_FORCE, SPACE_FORCE
+- Nuclear Deterrence Operations Service Medal (NDOS) — AIR_FORCE, SPACE_FORCE
+- Air Force Overseas Ribbon (short) (87) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Marine Recruiting Ribbon (87A) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Navy Accession Training Service Ribbon (87N) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Marine Security Guard Ribbon (87S) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Air Force Overseas Ribbon (long) (88) — ARMY, NAVY, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Air Force Longevity Service Award Ribbon (89) — AIR_FORCE, SPACE_FORCE
+- Air Force Special Duty Ribbon (89S) — AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Navy Basic Training Honor Graduate (91N) — NAVY, COAST_GUARD
+- Army Overseas Ribbon (95) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Army Reserve Overseas Training (96) — ARMY, NAVY, AIR_FORCE, SPACE_FORCE
+- AF Professional Military Ed. Graduate Ribbon (98) — ARMY, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- USAF BMT Honor Graduate Ribbon (99) — ARMY, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- US Marine Corps Reserve Ribbon (OBSO) (103) — ARMY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Vietnam Military Merit (111) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Vietnam Air Gallantry (112) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Vietnam Honor Medal 1st Class (113-1) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Vietnam Honor Medal 2nd Class (113-2) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Vietnam Staff Service 1st Class (114-1) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Vietnam Staff Service 2nd Class (114-2) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Vietnam Tech Service 1st Class (115-1) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Vietnam Tech Service 2nd Class (115-2) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Vietnam Training Service 1st Class (116-1) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Vietnam Training Service 2nd Class (116-2) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Vietnam Civil Action 1st Class (118A-1) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Vietnam Civil Action 2nd Class (118A-2) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- InterAmerican Defense (119A) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- UN Service Cambodia (UNTAC) (120-UNTAC) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- UN Service Cambodia (UNAMIC) (120-UNAMIC) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- UN Service Haiti (UNMIH) (120-UNMIH) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- UN Service Iraq/Kuwait (UNIKOM) (120-UNIKOM) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- UN Service India/Pakistan (UNIPOM) (120-UNIPOM) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- UN Service Sahara (MINURSO) (120-MINURSO) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- UN Service Somalia (UNOSOM) (120-UNOSOM) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- UN Service Croatia (UNCRO) (120-UNCRO) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- UN Service (UNPREDEP) (120-UNPREDEP) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- UN Service Yugoslavia/Croatia (UNPROFOR) (120-UNPROFOR) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Kosovo NATO Medal (120K) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- NATO NON-Article 5 ISAF (NATOISAF) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- NATO NON-Article 5 Balkans (NATOBALKANS) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- NATO Article 5 Eagle Assist (NATOEAGLE) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- NATO Article 5 Active Endeavor (NATOENDEAVOR) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Vietnam Air Service Medal (121) — ARMY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Kuwait Liberation Medal (Kingdom of Saudi Arabia) (122A) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Kuwait Liberation Medal (Government of Kuwait) (123A) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Korean War Service Medal (124K) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Navy Expert Rifle (125E) — NAVY, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Navy Marksman Rifle (125) — NAVY, COAST_GUARD
+- Navy Expert Pistol (126E) — NAVY, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Navy Marksman Pistol (126) — NAVY, COAST_GUARD
+- Coast Guard Expert Rifleman (127E) — AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Coast Guard Rifleman (127) — COAST_GUARD
+- Coast Guard Expert Pistol (128E) — AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Coast Guard Pistol (128) — COAST_GUARD
+
+## MERCHANT MARINE
+
+- Merchant Marine Distinguished Service Medal (MM1) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Merchant Marine Meritorious Service Medal (MM2) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Merchant Marine Mariners Medal (MM3) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Merchant Marine Outstanding Achievement (MM3A) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Merchant Marine Gallant Ship Unit Citation (MM4) — ARMY, NAVY, MARINE_CORPS
+- Merchant Marine Defense Bar (MM5) — ARMY, NAVY, MARINE_CORPS, COAST_GUARD
+- Merchant Marine Combat Bar (MM6) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Merchant Marine Atlantic War Zone Bar (MM7) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE
+- Merchant Marine Med / Mid East War Zone Bar (MM8) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Merchant Marine Pacific War Zone Bar (MM9) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Merchant Marine WWII Victory Medal (MM10) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Merchant Marine Korean Service Bar (MM11) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Merchant Marine Vietnam Service Bar (MM12) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+- Merchant Marine Expeditionary Med (MM13) — ARMY, NAVY, MARINE_CORPS, AIR_FORCE, SPACE_FORCE, COAST_GUARD
+
+## NOAA
+
+- Department of Commerce Gold Medal (NO1) — no service table membership recorded
+- Department of Commerce Silver Medal (NO2) — no service table membership recorded
+- Department of Commerce Bronze Medal (NO3) — NAVY
+- NOAA Meritorious Service Medal (NO3A) — no service table membership recorded
+- NOAA Administrator's Award Medal (NO4) — NAVY
+- NOAA Corps Commendation Medal (NO5) — NAVY
+- NOAA Special Achievement Medal (NO6) — NAVY
+- NOAA Corps Director's Award (NO7) — no service table membership recorded
+- NOAA Unit Citation Award (NO8) — no service table membership recorded
+- NOAA ACO Awards Medal (NO9) — no service table membership recorded
+- NOAA Meritorious Team Commendation (NO9A) — no service table membership recorded
+- Society of American Engineers Colbert Medal (NO10) — no service table membership recorded
+- Society of American Engineers Karo Award Ribbon (NO11) — no service table membership recorded
+- NOAA National Response Deployment (NO11A) — no service table membership recorded
+- NOAA Outstanding Volunteer Service (NO11B) — no service table membership recorded
+- NOAA Corps Sea Service Ribbon (NO11C) — no service table membership recorded
+- NOAA Corps Atlantic Service (NO12) — no service table membership recorded
+- NOAA Corps Pacific Service (NO13) — no service table membership recorded
+- NOAA Corps Mobile Duty Service (NO14) — no service table membership recorded
+- NOAA Corps International Service (NO15) — no service table membership recorded
+- NOAA National Response Service (NO15A) — no service table membership recorded
+- NOAA Corps Rifle Ribbon (obsolete) (NO16) — no service table membership recorded
+- NOAA Corps Pistol Ribbon (obsolete) (NO17) — no service table membership recorded
+- NOAA Special Duty Award (NO18) — no service table membership recorded
+- NOAA Recruiting Achievement (NO19) — no service table membership recorded
+
+## PUBLIC HEALTH SERVICE
+
+- PHS Distinguished Service Medal (PH1) — ARMY, NAVY, AIR_FORCE, SPACE_FORCE
+- PHS Meritorious Service Medal (PH2) — ARMY, NAVY, AIR_FORCE, SPACE_FORCE
+- PHS Assistant Secretary for Health's Exceptional Service Medal (PH2A) — no service table membership recorded
+- Surgeon General's Exemplary Service Medal (PH3) — ARMY
+- PHS Outstanding Service Medal (PH4) — ARMY, NAVY, AIR_FORCE, SPACE_FORCE
+- PHS Commendation Medal (PH5) — ARMY, NAVY, AIR_FORCE, SPACE_FORCE
+- PHS Achievement Medal (PH6) — ARMY, NAVY, AIR_FORCE, SPACE_FORCE
+- PHS Citation (PH7) — no service table membership recorded
+- PHS Presidential Unit Citation (PH7A) — no service table membership recorded
+- PHS Outstanding Unit Citation (PH8) — ARMY, NAVY
+- PHS Unit Commendation (PH9) — ARMY, NAVY
+- PHS Bicentennial Unit Comm (PH9A) — no service table membership recorded
+- PHS Hazardous Duty Service Award (PH30) — COAST_GUARD
+- PHS Foreign Duty Award (PH31) — COAST_GUARD
+- PHS Special Assignment Service Award (PH32) — COAST_GUARD
+- PHS Isolated Hardship Service Award (PH33) — COAST_GUARD
+- PHS Crisis Response Service Award (PH34) — no service table membership recorded
+- PHS National Emergency Preparedness Award (PH35) — no service table membership recorded
+- PHS Bicentennial Unit Commendation (PH36) — no service table membership recorded
+- PHS Smallpox Eradication Campaign Ribbon (PH37) — no service table membership recorded
+- PHS Global Health Campaign (PH37G) — no service table membership recorded
+- PHS Ebola Campaign (PH37H) — no service table membership recorded
+- PHS COVID-19 Pandemic Campaign Medal (PH37I) — no service table membership recorded
+- PHS Regular Corps Ribbon (PH38) — no service table membership recorded
+- PHS Commissioned Corps Training Ribbon (PH39) — no service table membership recorded
+- PHS Response (PH40) — no service table membership recorded
+- PHS Global Response (PH41) — no service table membership recorded
+- PHS Recruitment (PH42) — NAVY
+- PHS Global Health Initiative Service (PH42G) — no service table membership recorded
+- Commissioned Officer's Association (PH50) — no service table membership recorded
+- Association of Military Surgeons (PH51) — no service table membership recorded
+- Reserve Officer's Association (PH52) — no service table membership recorded
+- Society of American Engineers (PH53) — no service table membership recorded
+- PHS COVID-19 Pandemic Civilian Service (PH54) — no service table membership recorded
+
+## STATE
+
+- State Guard Ribbon (State) — ARMY, AIR_FORCE, SPACE_FORCE

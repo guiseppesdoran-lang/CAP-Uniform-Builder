@@ -66,7 +66,7 @@ def star_asset(name,tint):
         points.append((32+math.cos(angle)*radius,32+math.sin(angle)*radius))
     polygon_asset(points,name,tint)
 
-for char in ('C','R','M','V'):
+for char in ('C','R','M','N','V'):
     letter_asset(char,f'{char.lower()}_device.png')
 for numeral in range(2,100):
     letter_asset(str(numeral),f'numeral_{numeral}.png',point=31 if numeral<10 else 25)

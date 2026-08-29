@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "notes": "Official-source records absent from the discovery crawl. These records remain non-renderable until approved local artwork is added.",
+  "notes": "Official-source records absent from the discovery crawl. Ribbon patterns are locally reconstructed from official DLA/TIOH specifications or public-domain federal artwork, then normalized by the McChord-style generator.",
   "awards": [
     {
       "id": "coast_guard_cross",
@@ -32,6 +32,51 @@
       },
       "verificationStatus": "OFFICIALLY_VERIFIED",
       "status": "CURRENT"
+    },
+    {
+      "id": "inherent_resolve_campaign_medal",
+      "canonicalId": "inherent_resolve_campaign_medal",
+      "name": "Inherent Resolve Campaign Medal",
+      "officialName": "Inherent Resolve Campaign Medal",
+      "aliases": ["IRCM"],
+      "type": "RIBBON",
+      "awardClass": "FEDERAL_MILITARY",
+      "category": "CAMPAIGN",
+      "originatingService": "DOD",
+      "authorizedServices": ["ARMY", "AIR_FORCE", "SPACE_FORCE", "NAVY", "MARINE_CORPS", "COAST_GUARD"],
+      "precedence": {},
+      "devices": {
+        "ARMY": {"repeatAward":{"bronzeDevice":"BRONZE_SERVICE_STAR","silverDevice":"SILVER_SERVICE_STAR","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_SERVICE_STAR","BRONZE_SERVICE_STAR"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://prhome.defense.gov/Portals/52/Documents/MRA_Docs/OEPM/DoD%20Manual%201348.33%20Volume%202.pdf"},
+        "AIR_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_SERVICE_STAR","silverDevice":"SILVER_SERVICE_STAR","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_SERVICE_STAR","BRONZE_SERVICE_STAR"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"},
+        "SPACE_FORCE": {"repeatAward":{"bronzeDevice":"BRONZE_SERVICE_STAR","silverDevice":"SILVER_SERVICE_STAR","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_SERVICE_STAR","BRONZE_SERVICE_STAR"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"},
+        "NAVY": {"repeatAward":{"bronzeDevice":"BRONZE_SERVICE_STAR","silverDevice":"SILVER_SERVICE_STAR","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_SERVICE_STAR","BRONZE_SERVICE_STAR"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://www.secnav.navy.mil/doni/SECNAV%20Manuals1/1650.1.pdf"},
+        "MARINE_CORPS": {"repeatAward":{"bronzeDevice":"BRONZE_SERVICE_STAR","silverDevice":"SILVER_SERVICE_STAR","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_SERVICE_STAR","BRONZE_SERVICE_STAR"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://www.marines.mil/Portals/1/Publications/SECNAV%20M-1650.1.pdf"},
+        "COAST_GUARD": {"repeatAward":{"bronzeDevice":"BRONZE_SERVICE_STAR","silverDevice":"SILVER_SERVICE_STAR","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_SERVICE_STAR","BRONZE_SERVICE_STAR"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://media.defense.gov/2017/Mar/29/2001723556/-1/-1/0/CIM_1650_25E.PDF"}
+      },
+      "images": {"ribbon":"images/military-ribbons/source-patterns/inherent_resolve_campaign_medal.svg","assetStatus":"LOCAL_VERIFIED"},
+      "representations": {"ribbon":{"status":"AVAILABLE","available":true,"asset":"images/military-ribbons/source-patterns/inherent_resolve_campaign_medal.svg","verificationStatus":"OFFICIALLY_VERIFIED","sources":["https://tioh.army.mil/Catalog/Heraldry.aspx?CategoryId=4&HeraldryId=17956&grp=4&menu=Decorations+and+Medals&p=0&ps=24"]}},
+      "sources": {"catalog":[],"regulation":"https://prhome.defense.gov/Portals/52/Documents/MRA_Docs/OEPM/DoD%20Manual%201348.33%20Volume%202.pdf","regulationDate":"2026-08-28"},
+      "verificationStatus":"OFFICIALLY_VERIFIED","status":"CURRENT"
+    },
+    {
+      "id":"remote_combat_effects_campaign_medal","canonicalId":"remote_combat_effects_campaign_medal","name":"Remote Combat Effects Campaign Medal","officialName":"Remote Combat Effects Campaign Medal","aliases":["RCECM"],"type":"RIBBON","awardClass":"FEDERAL_MILITARY","category":"CAMPAIGN","originatingService":"AIR_FORCE","authorizedServices":["AIR_FORCE","SPACE_FORCE"],"precedence":{},
+      "devices":{"AIR_FORCE":{"repeatAward":{"bronzeDevice":"BRONZE_SERVICE_STAR","silverDevice":"SILVER_SERVICE_STAR","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_SERVICE_STAR","BRONZE_SERVICE_STAR"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://www.afpc.af.mil/Fact-Sheets/Display/Article/2000587/remote-combat-effects-campaign-medal/"},"SPACE_FORCE":{"repeatAward":{"bronzeDevice":"BRONZE_SERVICE_STAR","silverDevice":"SILVER_SERVICE_STAR","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_SERVICE_STAR","BRONZE_SERVICE_STAR"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"}},
+      "images":{"ribbon":"images/military-ribbons/source-patterns/remote_combat_effects_campaign_medal.svg","assetStatus":"LOCAL_VERIFIED"},"representations":{"ribbon":{"status":"AVAILABLE","available":true,"asset":"images/military-ribbons/source-patterns/remote_combat_effects_campaign_medal.svg","verificationStatus":"OFFICIALLY_VERIFIED","sources":["https://www.afpc.af.mil/Fact-Sheets/Display/Article/2000587/remote-combat-effects-campaign-medal/"]}},"sources":{"catalog":[],"regulation":"https://www.afpc.af.mil/Fact-Sheets/Display/Article/2000587/remote-combat-effects-campaign-medal/","regulationDate":"2026-08-28"},"verificationStatus":"OFFICIALLY_VERIFIED","status":"CURRENT"
+    },
+    {
+      "id":"air_and_space_nuclear_deterrence_operations_service_medal","canonicalId":"air_and_space_nuclear_deterrence_operations_service_medal","name":"Nuclear Deterrence Operations Service Medal","officialName":"Nuclear Deterrence Operations Service Medal","aliases":["NDOSM"],"type":"RIBBON","awardClass":"FEDERAL_MILITARY","category":"SERVICE","originatingService":"AIR_FORCE","authorizedServices":["AIR_FORCE","SPACE_FORCE"],"precedence":{},
+      "devices":{"AIR_FORCE":{"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"allowedSpecialDevices":["N_DEVICE"],"devicePrecedence":["SILVER_OLC","BRONZE_OLC","N_DEVICE"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://www.afpc.af.mil/Fact-Sheets/Display/Article/856019/nuclear-deterrence-operations-service-medal/","notes":"Only one N device is worn; when combined with OLCs it is placed to the wearer's right of the clusters."},"SPACE_FORCE":{"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"allowedSpecialDevices":["N_DEVICE"],"devicePrecedence":["SILVER_OLC","BRONZE_OLC","N_DEVICE"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf","notes":"Only one N device is worn; when combined with OLCs it is placed to the wearer's right of the clusters."}},
+      "images":{"ribbon":"images/military-ribbons/source-patterns/nuclear_deterrence_operations_service_medal.svg","assetStatus":"LOCAL_VERIFIED"},"representations":{"ribbon":{"status":"AVAILABLE","available":true,"asset":"images/military-ribbons/source-patterns/nuclear_deterrence_operations_service_medal.svg","verificationStatus":"OFFICIALLY_VERIFIED","sources":["https://quicksearch.dla.mil/qsDocDetails.aspx?ident_number=280699"]}},"sources":{"catalog":[],"regulation":"https://www.afpc.af.mil/Fact-Sheets/Display/Article/856019/nuclear-deterrence-operations-service-medal/","regulationDate":"2026-08-28"},"verificationStatus":"OFFICIALLY_VERIFIED","status":"CURRENT"
+    },
+    {
+      "id":"developmental_special_duty_ribbon","canonicalId":"developmental_special_duty_ribbon","name":"Developmental Special Duty Ribbon","officialName":"Developmental Special Duty Ribbon","aliases":["Air Force Special Duty Ribbon"],"type":"RIBBON","awardClass":"FEDERAL_MILITARY","category":"SERVICE","originatingService":"AIR_FORCE","authorizedServices":["AIR_FORCE","SPACE_FORCE"],"precedence":{},
+      "devices":{"AIR_FORCE":{"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://www.afpc.af.mil/Fact-Sheets/Display/Article/873189/developmental-special-duty-ribbon/"},"SPACE_FORCE":{"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://static.e-publishing.af.mil/production/1/af_a1/publication/dafman36-2806/dafman36_2806.pdf"}},
+      "images":{"ribbon":"images/military-ribbons/source-patterns/developmental_special_duty_ribbon.svg","assetStatus":"LOCAL_VERIFIED"},"representations":{"ribbon":{"status":"AVAILABLE","available":true,"asset":"images/military-ribbons/source-patterns/developmental_special_duty_ribbon.svg","verificationStatus":"OFFICIALLY_VERIFIED","sources":["https://www.afpc.af.mil/Fact-Sheets/Display/Article/873189/developmental-special-duty-ribbon/"]}},"sources":{"catalog":[],"regulation":"https://www.afpc.af.mil/Fact-Sheets/Display/Article/873189/developmental-special-duty-ribbon/","regulationDate":"2026-08-28"},"verificationStatus":"OFFICIALLY_VERIFIED","status":"CURRENT"
+    },
+    {
+      "id":"space_force_good_conduct_medal","canonicalId":"space_force_good_conduct_medal","name":"Space Force Good Conduct Medal","officialName":"Space Force Good Conduct Medal","aliases":["SFGCM"],"type":"RIBBON","awardClass":"FEDERAL_MILITARY","category":"GOOD_CONDUCT","originatingService":"SPACE_FORCE","authorizedServices":["SPACE_FORCE"],"precedence":{},
+      "devices":{"SPACE_FORCE":{"repeatAward":{"bronzeDevice":"BRONZE_OLC","silverDevice":"SILVER_OLC","bronzeValue":1,"silverValue":5},"devicePrecedence":["SILVER_OLC","BRONZE_OLC"],"verificationStatus":"OFFICIALLY_VERIFIED","source":"https://www.afpc.af.mil/Fact-Sheets/Display/Article/3736733/space-force-good-conduct-medal/"}},
+      "images":{"ribbon":"images/military-ribbons/source-patterns/space_force_good_conduct_medal.svg","assetStatus":"LOCAL_VERIFIED"},"representations":{"ribbon":{"status":"AVAILABLE","available":true,"asset":"images/military-ribbons/source-patterns/space_force_good_conduct_medal.svg","verificationStatus":"OFFICIALLY_VERIFIED","sources":["https://quicksearch.dla.mil/qsDocDetails.aspx?ident_number=284380"]}},"sources":{"catalog":[],"regulation":"https://www.afpc.af.mil/Fact-Sheets/Display/Article/3736733/space-force-good-conduct-medal/","regulationDate":"2026-08-28"},"verificationStatus":"OFFICIALLY_VERIFIED","status":"CURRENT"
     }
   ]
 }

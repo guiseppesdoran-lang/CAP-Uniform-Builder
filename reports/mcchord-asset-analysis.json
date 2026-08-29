@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-28T08:49:24.826833+00:00",
+  "generated": "2026-08-29T03:35:10.353659+00:00",
   "mcchordRibbons": {
     "count": 409,
     "commonDimensions": [
@@ -71,8 +71,13 @@
     }
   },
   "importedMilitaryRibbons": {
-    "count": 173,
+    "count": 348,
     "commonDimensions": [
+      {
+        "width": 100,
+        "height": 30,
+        "count": 175
+      },
       {
         "width": 169,
         "height": 56,
@@ -127,16 +132,11 @@
         "width": 195,
         "height": 54,
         "count": 2
-      },
-      {
-        "width": 211,
-        "height": 59,
-        "count": 2
       }
     ],
     "aspectRatio": {
       "min": 2.2553,
-      "median": 3.0179,
+      "median": 3.3333,
       "max": 3.9444
     },
     "alphaCoverage": {
@@ -145,19 +145,54 @@
       "max": 1.0
     },
     "meanSaturation": {
-      "min": 27.08,
-      "median": 136.0,
-      "max": 237.12
+      "min": 27.07,
+      "median": 136.595,
+      "max": 245.13
     },
     "lumaContrast": {
       "min": 2.83,
-      "median": 59.63,
+      "median": 57.58,
       "max": 117.63
     },
     "edgeEnergy": {
       "min": 2.44,
-      "median": 22.85,
-      "max": 100.8
+      "median": 57.115,
+      "max": 114.0
+    }
+  },
+  "mcchordStyleMilitaryRibbons": {
+    "count": 175,
+    "commonDimensions": [
+      {
+        "width": 100,
+        "height": 30,
+        "count": 175
+      }
+    ],
+    "aspectRatio": {
+      "min": 3.3333,
+      "median": 3.3333,
+      "max": 3.3333
+    },
+    "alphaCoverage": {
+      "min": 1.0,
+      "median": 1.0,
+      "max": 1.0
+    },
+    "meanSaturation": {
+      "min": 27.07,
+      "median": 136.93,
+      "max": 245.13
+    },
+    "lumaContrast": {
+      "min": 4.36,
+      "median": 55.34,
+      "max": 107.53
+    },
+    "edgeEnergy": {
+      "min": 12.91,
+      "median": 67.12,
+      "max": 114.0
     }
   },
   "records": {
@@ -17411,6 +17446,3156 @@
         "edgeEnergy": 10.97
       },
       {
+        "path": "images/military-ribbons/mcchord-style/aerial_achievement_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 232.34,
+        "lumaContrast": 59.66,
+        "edgeEnergy": 114.0
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/afghanistan_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 94.19,
+        "lumaContrast": 92.19,
+        "edgeEnergy": 65.79
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_and_space_achievement_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 63.45,
+        "lumaContrast": 46.88,
+        "edgeEnergy": 86.09
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_and_space_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 76.96,
+        "lumaContrast": 49.23,
+        "edgeEnergy": 81.45
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_and_space_commendation_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 173.22,
+        "lumaContrast": 44.33,
+        "edgeEnergy": 57.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_and_space_organizational_excellence_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 199.06,
+        "lumaContrast": 61.69,
+        "edgeEnergy": 54.15
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_basic_training_honor_graduate.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 91.69,
+        "lumaContrast": 53.4,
+        "edgeEnergy": 98.47
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_combat_action.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 215.31,
+        "lumaContrast": 48.36,
+        "edgeEnergy": 71.03
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_combat_readiness.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 126.28,
+        "lumaContrast": 36.91,
+        "edgeEnergy": 72.93
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_cross.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 71.93,
+        "lumaContrast": 40.83,
+        "edgeEnergy": 74.17
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_distinguishd_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 95.44,
+        "lumaContrast": 58.78,
+        "edgeEnergy": 95.13
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_expeditionary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 131.25,
+        "lumaContrast": 46.16,
+        "edgeEnergy": 74.46
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_gallant_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 138.02,
+        "lumaContrast": 73.13,
+        "edgeEnergy": 49.71
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_good_condcut.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 45.49,
+        "lumaContrast": 38.71,
+        "edgeEnergy": 79.99
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_longevity_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 133.63,
+        "lumaContrast": 39.71,
+        "edgeEnergy": 87.87
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_meritorious_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 114.13,
+        "lumaContrast": 81.64,
+        "edgeEnergy": 66.73
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_military_training_instructor.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 70.85,
+        "lumaContrast": 39.93,
+        "edgeEnergy": 55.65
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_nco_professional_military_education_graduate.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 179.95,
+        "lumaContrast": 41.16,
+        "edgeEnergy": 70.84
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_outstanding_airman_of_the_year.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 121.42,
+        "lumaContrast": 44.39,
+        "edgeEnergy": 64.69
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_outstanding_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 115.62,
+        "lumaContrast": 48.32,
+        "edgeEnergy": 65.68
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_overseas_long_tour.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 52.77,
+        "lumaContrast": 52.37,
+        "edgeEnergy": 84.87
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_overseas_short_tour.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 55.45,
+        "lumaContrast": 54.16,
+        "edgeEnergy": 79.03
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 125.8,
+        "lumaContrast": 47.68,
+        "edgeEnergy": 78.42
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_recognition.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 88.06,
+        "lumaContrast": 46.46,
+        "edgeEnergy": 82.92
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_recruiter.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 105.96,
+        "lumaContrast": 45.58,
+        "edgeEnergy": 74.3
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_small_arms_expert_marksmanship.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 111.42,
+        "lumaContrast": 55.36,
+        "edgeEnergy": 62.08
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_training.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 143.14,
+        "lumaContrast": 45.5,
+        "edgeEnergy": 77.8
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 217.54,
+        "lumaContrast": 70.08,
+        "edgeEnergy": 61.11
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_reserve_forces_meritorious_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 78.61,
+        "lumaContrast": 62.75,
+        "edgeEnergy": 74.23
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/airmans_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 97.16,
+        "lumaContrast": 44.94,
+        "edgeEnergy": 89.77
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/american_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 125.26,
+        "lumaContrast": 67.88,
+        "edgeEnergy": 69.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/american_defense.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 210.89,
+        "lumaContrast": 42.6,
+        "edgeEnergy": 85.54
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/antarctica_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 66.41,
+        "lumaContrast": 81.25,
+        "edgeEnergy": 59.52
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/arctic_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 119.48,
+        "lumaContrast": 71.79,
+        "edgeEnergy": 71.19
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/armed_forces_expeditionary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 181.1,
+        "lumaContrast": 64.86,
+        "edgeEnergy": 54.77
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/armed_forces_reserve.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 94.43,
+        "lumaContrast": 47.13,
+        "edgeEnergy": 92.5
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/armed_forces_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 129.84,
+        "lumaContrast": 62.36,
+        "edgeEnergy": 63.37
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_achievement.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 81.58,
+        "lumaContrast": 46.39,
+        "edgeEnergy": 74.11
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 69.06,
+        "lumaContrast": 53.43,
+        "edgeEnergy": 90.19
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_distinguished_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 105.8,
+        "lumaContrast": 61.04,
+        "edgeEnergy": 66.55
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_distinguished_service_cross.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 136.87,
+        "lumaContrast": 40.99,
+        "edgeEnergy": 76.56
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_good_conduct.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 128.74,
+        "lumaContrast": 53.25,
+        "edgeEnergy": 73.54
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_meritorious_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 155.47,
+        "lumaContrast": 47.26,
+        "edgeEnergy": 66.44
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_occupation_of_germany_military_medal_and.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 53.53,
+        "lumaContrast": 107.53,
+        "edgeEnergy": 60.54
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_of_occupation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 100.68,
+        "lumaContrast": 68.82,
+        "edgeEnergy": 79.11
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 120.43,
+        "lumaContrast": 53.61,
+        "edgeEnergy": 63.86
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_sea_duty.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 189.71,
+        "lumaContrast": 47.73,
+        "edgeEnergy": 63.01
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 179.12,
+        "lumaContrast": 36.68,
+        "edgeEnergy": 84.07
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_soldiers_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 128.09,
+        "lumaContrast": 72.76,
+        "edgeEnergy": 66.34
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_superior_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 128.31,
+        "lumaContrast": 43.41,
+        "edgeEnergy": 71.2
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_valorous_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 123.92,
+        "lumaContrast": 55.34,
+        "edgeEnergy": 73.76
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/asiatic_pacific_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 167.41,
+        "lumaContrast": 54.24,
+        "edgeEnergy": 87.28
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/basic_training_honor_graduate.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 103.81,
+        "lumaContrast": 85.61,
+        "edgeEnergy": 74.55
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/bronze_star_miltiary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 175.46,
+        "lumaContrast": 55.25,
+        "edgeEnergy": 58.2
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/china_relief_expedition_military_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 231.75,
+        "lumaContrast": 42.22,
+        "edgeEnergy": 82.01
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/china_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 209.96,
+        "lumaContrast": 40.36,
+        "edgeEnergy": 86.44
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_achievement.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 183.01,
+        "lumaContrast": 48.97,
+        "edgeEnergy": 52.37
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_bicentennial_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 132.47,
+        "lumaContrast": 50.26,
+        "edgeEnergy": 62.98
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 101.02,
+        "lumaContrast": 67.69,
+        "edgeEnergy": 92.64
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_distinguished_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 140.33,
+        "lumaContrast": 42.44,
+        "edgeEnergy": 78.86
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_e.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 80.29,
+        "lumaContrast": 65.78,
+        "edgeEnergy": 92.83
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_enlisted_person_of_the_year.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 98.87,
+        "lumaContrast": 82.05,
+        "edgeEnergy": 71.46
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_good_conduct.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 151.53,
+        "lumaContrast": 47.86,
+        "edgeEnergy": 65.31
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 97.12,
+        "lumaContrast": 43.4,
+        "edgeEnergy": 84.8
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_meritorious_team_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 174.84,
+        "lumaContrast": 59.63,
+        "edgeEnergy": 56.86
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_meritorious_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 57.74,
+        "lumaContrast": 54.04,
+        "edgeEnergy": 89.46
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_overseas_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 164.39,
+        "lumaContrast": 67.66,
+        "edgeEnergy": 58.5
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_pistol_marksmanship.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 165.32,
+        "lumaContrast": 36.34,
+        "edgeEnergy": 28.41
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 113.08,
+        "lumaContrast": 83.18,
+        "edgeEnergy": 77.15
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_recruiting_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 181.33,
+        "lumaContrast": 77.11,
+        "edgeEnergy": 75.52
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_reserve_good_conduct.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 173.12,
+        "lumaContrast": 36.13,
+        "edgeEnergy": 65.18
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_restricted_duty.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 117.69,
+        "lumaContrast": 46.21,
+        "edgeEnergy": 76.53
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_rifle_marksmanship_military_ribbons.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 66.63,
+        "lumaContrast": 32.57,
+        "edgeEnergy": 60.58
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_sea_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 118.72,
+        "lumaContrast": 48.76,
+        "edgeEnergy": 68.95
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 118.14,
+        "lumaContrast": 46.85,
+        "edgeEnergy": 76.96
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/comabt_action.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 171.94,
+        "lumaContrast": 71.27,
+        "edgeEnergy": 74.84
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/combat_action.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 173.56,
+        "lumaContrast": 51.03,
+        "edgeEnergy": 62.76
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/commandants_letter_of_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 119.55,
+        "lumaContrast": 46.96,
+        "edgeEnergy": 85.04
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/defense_distinguished_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 148.21,
+        "lumaContrast": 40.21,
+        "edgeEnergy": 88.87
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/defense_meritorious_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 79.43,
+        "lumaContrast": 53.1,
+        "edgeEnergy": 74.97
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/defense_superior_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 123.68,
+        "lumaContrast": 41.12,
+        "edgeEnergy": 76.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/developmental_special_duty.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 137.52,
+        "lumaContrast": 90.1,
+        "edgeEnergy": 65.19
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/distinguished_flying_cross.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 127.44,
+        "lumaContrast": 70.69,
+        "edgeEnergy": 60.06
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/dot_9_11.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 106.92,
+        "lumaContrast": 79.99,
+        "edgeEnergy": 68.18
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/dot_9_11_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 118.73,
+        "lumaContrast": 82.21,
+        "edgeEnergy": 62.09
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/dot_outstanding_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 127.59,
+        "lumaContrast": 77.37,
+        "edgeEnergy": 86.96
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/european_african_middle_eastern_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 130.09,
+        "lumaContrast": 69.96,
+        "edgeEnergy": 55.23
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/fleet_marine_force.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 181.91,
+        "lumaContrast": 64.98,
+        "edgeEnergy": 50.08
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/global_war_on_terrorism_expeditionary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 141.38,
+        "lumaContrast": 56.23,
+        "edgeEnergy": 68.52
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/global_war_on_terrorism_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 164.19,
+        "lumaContrast": 69.37,
+        "edgeEnergy": 58.5
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/gold_life_saving_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 201.82,
+        "lumaContrast": 55.59,
+        "edgeEnergy": 77.61
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/humanitarian_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 184.95,
+        "lumaContrast": 53.95,
+        "edgeEnergy": 50.88
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/inherent_resolve_campaign_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 177.93,
+        "lumaContrast": 56.89,
+        "edgeEnergy": 64.34
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/inter_american_defense_board.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 165.86,
+        "lumaContrast": 81.58,
+        "edgeEnergy": 57.72
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/iraq_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 79.16,
+        "lumaContrast": 89.41,
+        "edgeEnergy": 71.67
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/joint_meritorious_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 180.29,
+        "lumaContrast": 41.8,
+        "edgeEnergy": 87.47
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/joint_service_achievement.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 160.37,
+        "lumaContrast": 66.55,
+        "edgeEnergy": 56.94
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/joint_service_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 85.56,
+        "lumaContrast": 72.14,
+        "edgeEnergy": 72.85
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/korean_defense_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 136.93,
+        "lumaContrast": 56.02,
+        "edgeEnergy": 49.77
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/korean_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 132.46,
+        "lumaContrast": 62.32,
+        "edgeEnergy": 90.54
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/korean_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 121.44,
+        "lumaContrast": 52.67,
+        "edgeEnergy": 71.84
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/kosovo_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 164.4,
+        "lumaContrast": 55.57,
+        "edgeEnergy": 46.49
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/kuwait_liberation_saudi_arabia.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 144.92,
+        "lumaContrast": 73.44,
+        "edgeEnergy": 56.52
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/kuwiat_liberation_kuwait.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 131.0,
+        "lumaContrast": 77.73,
+        "edgeEnergy": 39.8
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/legion_of_merit.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 193.71,
+        "lumaContrast": 48.94,
+        "edgeEnergy": 44.14
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_combat_instructor.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 45.63,
+        "lumaContrast": 54.37,
+        "edgeEnergy": 76.78
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_drill_instructor.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 133.99,
+        "lumaContrast": 49.32,
+        "edgeEnergy": 47.45
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_expeditionary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 149.31,
+        "lumaContrast": 53.06,
+        "edgeEnergy": 70.16
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_good_conduct.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 212.08,
+        "lumaContrast": 12.57,
+        "edgeEnergy": 26.01
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_recruiting.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 165.21,
+        "lumaContrast": 10.43,
+        "edgeEnergy": 31.42
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_reserve.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 132.2,
+        "lumaContrast": 31.22,
+        "edgeEnergy": 81.21
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_sercurity_guard.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 127.54,
+        "lumaContrast": 87.92,
+        "edgeEnergy": 42.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/medal_for_humane_action.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 68.38,
+        "lumaContrast": 82.89,
+        "edgeEnergy": 46.25
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/medal_of_honor.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 235.85,
+        "lumaContrast": 52.71,
+        "edgeEnergy": 22.76
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/meritorious_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 135.99,
+        "lumaContrast": 84.58,
+        "edgeEnergy": 56.7
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/multinational_force_and_observers.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 147.37,
+        "lumaContrast": 68.25,
+        "edgeEnergy": 63.79
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/national_defense_military_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 191.33,
+        "lumaContrast": 62.51,
+        "edgeEnergy": 71.84
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/nato.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 128.12,
+        "lumaContrast": 72.81,
+        "edgeEnergy": 44.92
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/nato_kosovo.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 160.5,
+        "lumaContrast": 70.38,
+        "edgeEnergy": 42.19
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/naval_reserve.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 200.45,
+        "lumaContrast": 31.4,
+        "edgeEnergy": 43.06
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/naval_reserve_meritorious_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 201.63,
+        "lumaContrast": 26.41,
+        "edgeEnergy": 50.2
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/naval_reserve_sea_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 204.21,
+        "lumaContrast": 47.74,
+        "edgeEnergy": 66.65
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_and_marine_corps_achievement.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 159.35,
+        "lumaContrast": 19.96,
+        "edgeEnergy": 44.54
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_and_marine_corps_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 102.68,
+        "lumaContrast": 79.42,
+        "edgeEnergy": 50.29
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_and_marine_corps_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 198.7,
+        "lumaContrast": 57.88,
+        "edgeEnergy": 50.2
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_and_marine_corps_overseas_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 178.53,
+        "lumaContrast": 61.6,
+        "edgeEnergy": 53.03
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_arctic_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 206.69,
+        "lumaContrast": 61.22,
+        "edgeEnergy": 51.3
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_ceremonial_guard.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 121.21,
+        "lumaContrast": 86.77,
+        "edgeEnergy": 68.67
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_cross.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 142.87,
+        "lumaContrast": 85.93,
+        "edgeEnergy": 31.75
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_distinguished_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 156.72,
+        "lumaContrast": 71.37,
+        "edgeEnergy": 29.79
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_e.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 123.1,
+        "lumaContrast": 79.06,
+        "edgeEnergy": 52.68
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_expeditionary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 206.89,
+        "lumaContrast": 70.46,
+        "edgeEnergy": 72.42
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_good_conduct.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 223.79,
+        "lumaContrast": 4.36,
+        "edgeEnergy": 19.58
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_meritorious_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 156.13,
+        "lumaContrast": 53.5,
+        "edgeEnergy": 49.11
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_occupation_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 82.29,
+        "lumaContrast": 92.08,
+        "edgeEnergy": 47.3
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_pistol_marksmanship.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 165.53,
+        "lumaContrast": 6.0,
+        "edgeEnergy": 12.91
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 207.4,
+        "lumaContrast": 62.21,
+        "edgeEnergy": 63.25
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_recruit_training_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 168.45,
+        "lumaContrast": 64.04,
+        "edgeEnergy": 44.75
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_recruiting_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 208.08,
+        "lumaContrast": 74.9,
+        "edgeEnergy": 74.77
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_reserve_special_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 225.16,
+        "lumaContrast": 28.65,
+        "edgeEnergy": 47.78
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_rifle_marksmanship.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 153.22,
+        "lumaContrast": 8.37,
+        "edgeEnergy": 16.8
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_sea_service_deployment.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 191.8,
+        "lumaContrast": 57.78,
+        "edgeEnergy": 56.58
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 187.4,
+        "lumaContrast": 51.41,
+        "edgeEnergy": 48.79
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/nco_professional_development.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 117.73,
+        "lumaContrast": 39.4,
+        "edgeEnergy": 81.17
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/nuclear_deterrence_operations_service_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 245.13,
+        "lumaContrast": 48.0,
+        "edgeEnergy": 38.79
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/outstanding_volunteer_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 142.4,
+        "lumaContrast": 65.94,
+        "edgeEnergy": 68.19
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/overseas_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 115.15,
+        "lumaContrast": 45.94,
+        "edgeEnergy": 75.03
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/philippine_defense.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 141.78,
+        "lumaContrast": 80.78,
+        "edgeEnergy": 58.66
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/philippine_independence.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 157.25,
+        "lumaContrast": 75.22,
+        "edgeEnergy": 54.59
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/philippine_liberation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 181.71,
+        "lumaContrast": 53.98,
+        "edgeEnergy": 43.22
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/philippine_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 165.56,
+        "lumaContrast": 68.36,
+        "edgeEnergy": 75.49
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/prisoner_of_war.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 27.07,
+        "lumaContrast": 106.99,
+        "edgeEnergy": 46.78
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/purple_heart.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 147.52,
+        "lumaContrast": 57.49,
+        "edgeEnergy": 49.47
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/remote_combat_effects_campaign_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 229.5,
+        "lumaContrast": 60.93,
+        "edgeEnergy": 40.66
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/republic_of_vietnam_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 96.24,
+        "lumaContrast": 76.58,
+        "edgeEnergy": 70.75
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/republic_of_vietnam_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 236.73,
+        "lumaContrast": 40.43,
+        "edgeEnergy": 88.97
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/reserve_components_overseas_training.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 132.13,
+        "lumaContrast": 67.97,
+        "edgeEnergy": 79.35
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/reserve_componets_achievement.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 200.66,
+        "lumaContrast": 65.53,
+        "edgeEnergy": 78.16
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/rok_war_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 161.06,
+        "lumaContrast": 70.08,
+        "edgeEnergy": 90.57
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/selected_marine_corps_reserve.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 172.93,
+        "lumaContrast": 71.01,
+        "edgeEnergy": 70.66
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/silver_life_saving.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 50.53,
+        "lumaContrast": 57.88,
+        "edgeEnergy": 77.97
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/silver_star.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 109.5,
+        "lumaContrast": 78.23,
+        "edgeEnergy": 66.53
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/southwest_asia_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 85.57,
+        "lumaContrast": 85.66,
+        "edgeEnergy": 75.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/space_force_good_conduct_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 64.91,
+        "lumaContrast": 73.15,
+        "edgeEnergy": 65.89
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/special_operations_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 103.73,
+        "lumaContrast": 46.42,
+        "edgeEnergy": 66.99
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/transportation_distinguished_service_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 181.36,
+        "lumaContrast": 56.94,
+        "edgeEnergy": 39.36
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/united_nations.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 110.96,
+        "lumaContrast": 38.36,
+        "edgeEnergy": 68.78
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/united_nations_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 75.99,
+        "lumaContrast": 59.72,
+        "edgeEnergy": 82.39
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/us_antarctic_expedition.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 68.58,
+        "lumaContrast": 54.22,
+        "edgeEnergy": 82.48
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/vietnam_civil_actions_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 221.48,
+        "lumaContrast": 51.9,
+        "edgeEnergy": 72.34
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/vietnam_gallantry_cross.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 211.76,
+        "lumaContrast": 41.68,
+        "edgeEnergy": 69.03
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/vietnam_gallantry_cross_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 223.82,
+        "lumaContrast": 46.3,
+        "edgeEnergy": 89.45
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/vietnam_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 237.09,
+        "lumaContrast": 55.85,
+        "edgeEnergy": 84.84
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/womens_s_army_corps_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 141.2,
+        "lumaContrast": 35.46,
+        "edgeEnergy": 67.12
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/world_war_ii_victory.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 189.17,
+        "lumaContrast": 47.85,
+        "edgeEnergy": 61.81
+      },
+      {
         "path": "images/military-ribbons/medal_for_humane_action.jpg",
         "format": "JPEG",
         "width": 169,
@@ -18435,6 +21620,3158 @@
         "meanSaturation": 190.1,
         "lumaContrast": 50.31,
         "edgeEnergy": 27.45
+      }
+    ],
+    "mcchordStyleMilitaryRibbons": [
+      {
+        "path": "images/military-ribbons/mcchord-style/aerial_achievement_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 232.34,
+        "lumaContrast": 59.66,
+        "edgeEnergy": 114.0
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/afghanistan_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 94.19,
+        "lumaContrast": 92.19,
+        "edgeEnergy": 65.79
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_and_space_achievement_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 63.45,
+        "lumaContrast": 46.88,
+        "edgeEnergy": 86.09
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_and_space_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 76.96,
+        "lumaContrast": 49.23,
+        "edgeEnergy": 81.45
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_and_space_commendation_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 173.22,
+        "lumaContrast": 44.33,
+        "edgeEnergy": 57.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_and_space_organizational_excellence_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 199.06,
+        "lumaContrast": 61.69,
+        "edgeEnergy": 54.15
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_basic_training_honor_graduate.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 91.69,
+        "lumaContrast": 53.4,
+        "edgeEnergy": 98.47
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_combat_action.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 215.31,
+        "lumaContrast": 48.36,
+        "edgeEnergy": 71.03
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_combat_readiness.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 126.28,
+        "lumaContrast": 36.91,
+        "edgeEnergy": 72.93
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_cross.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 71.93,
+        "lumaContrast": 40.83,
+        "edgeEnergy": 74.17
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_distinguishd_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 95.44,
+        "lumaContrast": 58.78,
+        "edgeEnergy": 95.13
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_expeditionary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 131.25,
+        "lumaContrast": 46.16,
+        "edgeEnergy": 74.46
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_gallant_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 138.02,
+        "lumaContrast": 73.13,
+        "edgeEnergy": 49.71
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_good_condcut.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 45.49,
+        "lumaContrast": 38.71,
+        "edgeEnergy": 79.99
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_longevity_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 133.63,
+        "lumaContrast": 39.71,
+        "edgeEnergy": 87.87
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_meritorious_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 114.13,
+        "lumaContrast": 81.64,
+        "edgeEnergy": 66.73
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_military_training_instructor.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 70.85,
+        "lumaContrast": 39.93,
+        "edgeEnergy": 55.65
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_nco_professional_military_education_graduate.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 179.95,
+        "lumaContrast": 41.16,
+        "edgeEnergy": 70.84
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_outstanding_airman_of_the_year.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 121.42,
+        "lumaContrast": 44.39,
+        "edgeEnergy": 64.69
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_outstanding_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 115.62,
+        "lumaContrast": 48.32,
+        "edgeEnergy": 65.68
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_overseas_long_tour.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 52.77,
+        "lumaContrast": 52.37,
+        "edgeEnergy": 84.87
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_overseas_short_tour.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 55.45,
+        "lumaContrast": 54.16,
+        "edgeEnergy": 79.03
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 125.8,
+        "lumaContrast": 47.68,
+        "edgeEnergy": 78.42
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_recognition.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 88.06,
+        "lumaContrast": 46.46,
+        "edgeEnergy": 82.92
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_recruiter.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 105.96,
+        "lumaContrast": 45.58,
+        "edgeEnergy": 74.3
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_small_arms_expert_marksmanship.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 111.42,
+        "lumaContrast": 55.36,
+        "edgeEnergy": 62.08
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_force_training.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 143.14,
+        "lumaContrast": 45.5,
+        "edgeEnergy": 77.8
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 217.54,
+        "lumaContrast": 70.08,
+        "edgeEnergy": 61.11
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/air_reserve_forces_meritorious_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 78.61,
+        "lumaContrast": 62.75,
+        "edgeEnergy": 74.23
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/airmans_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 97.16,
+        "lumaContrast": 44.94,
+        "edgeEnergy": 89.77
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/american_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 125.26,
+        "lumaContrast": 67.88,
+        "edgeEnergy": 69.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/american_defense.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 210.89,
+        "lumaContrast": 42.6,
+        "edgeEnergy": 85.54
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/antarctica_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 66.41,
+        "lumaContrast": 81.25,
+        "edgeEnergy": 59.52
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/arctic_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 119.48,
+        "lumaContrast": 71.79,
+        "edgeEnergy": 71.19
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/armed_forces_expeditionary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 181.1,
+        "lumaContrast": 64.86,
+        "edgeEnergy": 54.77
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/armed_forces_reserve.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 94.43,
+        "lumaContrast": 47.13,
+        "edgeEnergy": 92.5
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/armed_forces_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 129.84,
+        "lumaContrast": 62.36,
+        "edgeEnergy": 63.37
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_achievement.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 81.58,
+        "lumaContrast": 46.39,
+        "edgeEnergy": 74.11
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 69.06,
+        "lumaContrast": 53.43,
+        "edgeEnergy": 90.19
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_distinguished_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 105.8,
+        "lumaContrast": 61.04,
+        "edgeEnergy": 66.55
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_distinguished_service_cross.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 136.87,
+        "lumaContrast": 40.99,
+        "edgeEnergy": 76.56
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_good_conduct.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 128.74,
+        "lumaContrast": 53.25,
+        "edgeEnergy": 73.54
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_meritorious_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 155.47,
+        "lumaContrast": 47.26,
+        "edgeEnergy": 66.44
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_occupation_of_germany_military_medal_and.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 53.53,
+        "lumaContrast": 107.53,
+        "edgeEnergy": 60.54
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_of_occupation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 100.68,
+        "lumaContrast": 68.82,
+        "edgeEnergy": 79.11
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 120.43,
+        "lumaContrast": 53.61,
+        "edgeEnergy": 63.86
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_sea_duty.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 189.71,
+        "lumaContrast": 47.73,
+        "edgeEnergy": 63.01
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 179.12,
+        "lumaContrast": 36.68,
+        "edgeEnergy": 84.07
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_soldiers_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 128.09,
+        "lumaContrast": 72.76,
+        "edgeEnergy": 66.34
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_superior_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 128.31,
+        "lumaContrast": 43.41,
+        "edgeEnergy": 71.2
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/army_valorous_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 123.92,
+        "lumaContrast": 55.34,
+        "edgeEnergy": 73.76
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/asiatic_pacific_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 167.41,
+        "lumaContrast": 54.24,
+        "edgeEnergy": 87.28
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/basic_training_honor_graduate.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 103.81,
+        "lumaContrast": 85.61,
+        "edgeEnergy": 74.55
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/bronze_star_miltiary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 175.46,
+        "lumaContrast": 55.25,
+        "edgeEnergy": 58.2
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/china_relief_expedition_military_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 231.75,
+        "lumaContrast": 42.22,
+        "edgeEnergy": 82.01
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/china_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 209.96,
+        "lumaContrast": 40.36,
+        "edgeEnergy": 86.44
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_achievement.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 183.01,
+        "lumaContrast": 48.97,
+        "edgeEnergy": 52.37
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_bicentennial_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 132.47,
+        "lumaContrast": 50.26,
+        "edgeEnergy": 62.98
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 101.02,
+        "lumaContrast": 67.69,
+        "edgeEnergy": 92.64
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_distinguished_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 140.33,
+        "lumaContrast": 42.44,
+        "edgeEnergy": 78.86
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_e.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 80.29,
+        "lumaContrast": 65.78,
+        "edgeEnergy": 92.83
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_enlisted_person_of_the_year.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 98.87,
+        "lumaContrast": 82.05,
+        "edgeEnergy": 71.46
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_good_conduct.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 151.53,
+        "lumaContrast": 47.86,
+        "edgeEnergy": 65.31
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 97.12,
+        "lumaContrast": 43.4,
+        "edgeEnergy": 84.8
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_meritorious_team_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 174.84,
+        "lumaContrast": 59.63,
+        "edgeEnergy": 56.86
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_meritorious_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 57.74,
+        "lumaContrast": 54.04,
+        "edgeEnergy": 89.46
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_overseas_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 164.39,
+        "lumaContrast": 67.66,
+        "edgeEnergy": 58.5
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_pistol_marksmanship.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 165.32,
+        "lumaContrast": 36.34,
+        "edgeEnergy": 28.41
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 113.08,
+        "lumaContrast": 83.18,
+        "edgeEnergy": 77.15
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_recruiting_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 181.33,
+        "lumaContrast": 77.11,
+        "edgeEnergy": 75.52
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_reserve_good_conduct.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 173.12,
+        "lumaContrast": 36.13,
+        "edgeEnergy": 65.18
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_restricted_duty.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 117.69,
+        "lumaContrast": 46.21,
+        "edgeEnergy": 76.53
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_rifle_marksmanship_military_ribbons.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 66.63,
+        "lumaContrast": 32.57,
+        "edgeEnergy": 60.58
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_sea_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 118.72,
+        "lumaContrast": 48.76,
+        "edgeEnergy": 68.95
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/coast_guard_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 118.14,
+        "lumaContrast": 46.85,
+        "edgeEnergy": 76.96
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/comabt_action.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 171.94,
+        "lumaContrast": 71.27,
+        "edgeEnergy": 74.84
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/combat_action.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 173.56,
+        "lumaContrast": 51.03,
+        "edgeEnergy": 62.76
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/commandants_letter_of_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 119.55,
+        "lumaContrast": 46.96,
+        "edgeEnergy": 85.04
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/defense_distinguished_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 148.21,
+        "lumaContrast": 40.21,
+        "edgeEnergy": 88.87
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/defense_meritorious_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 79.43,
+        "lumaContrast": 53.1,
+        "edgeEnergy": 74.97
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/defense_superior_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 123.68,
+        "lumaContrast": 41.12,
+        "edgeEnergy": 76.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/developmental_special_duty.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 137.52,
+        "lumaContrast": 90.1,
+        "edgeEnergy": 65.19
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/distinguished_flying_cross.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 127.44,
+        "lumaContrast": 70.69,
+        "edgeEnergy": 60.06
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/dot_9_11.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 106.92,
+        "lumaContrast": 79.99,
+        "edgeEnergy": 68.18
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/dot_9_11_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 118.73,
+        "lumaContrast": 82.21,
+        "edgeEnergy": 62.09
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/dot_outstanding_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 127.59,
+        "lumaContrast": 77.37,
+        "edgeEnergy": 86.96
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/european_african_middle_eastern_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 130.09,
+        "lumaContrast": 69.96,
+        "edgeEnergy": 55.23
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/fleet_marine_force.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 181.91,
+        "lumaContrast": 64.98,
+        "edgeEnergy": 50.08
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/global_war_on_terrorism_expeditionary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 141.38,
+        "lumaContrast": 56.23,
+        "edgeEnergy": 68.52
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/global_war_on_terrorism_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 164.19,
+        "lumaContrast": 69.37,
+        "edgeEnergy": 58.5
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/gold_life_saving_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 201.82,
+        "lumaContrast": 55.59,
+        "edgeEnergy": 77.61
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/humanitarian_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 184.95,
+        "lumaContrast": 53.95,
+        "edgeEnergy": 50.88
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/inherent_resolve_campaign_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 177.93,
+        "lumaContrast": 56.89,
+        "edgeEnergy": 64.34
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/inter_american_defense_board.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 165.86,
+        "lumaContrast": 81.58,
+        "edgeEnergy": 57.72
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/iraq_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 79.16,
+        "lumaContrast": 89.41,
+        "edgeEnergy": 71.67
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/joint_meritorious_unit_award.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 180.29,
+        "lumaContrast": 41.8,
+        "edgeEnergy": 87.47
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/joint_service_achievement.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 160.37,
+        "lumaContrast": 66.55,
+        "edgeEnergy": 56.94
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/joint_service_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 85.56,
+        "lumaContrast": 72.14,
+        "edgeEnergy": 72.85
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/korean_defense_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 136.93,
+        "lumaContrast": 56.02,
+        "edgeEnergy": 49.77
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/korean_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 132.46,
+        "lumaContrast": 62.32,
+        "edgeEnergy": 90.54
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/korean_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 121.44,
+        "lumaContrast": 52.67,
+        "edgeEnergy": 71.84
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/kosovo_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 164.4,
+        "lumaContrast": 55.57,
+        "edgeEnergy": 46.49
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/kuwait_liberation_saudi_arabia.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 144.92,
+        "lumaContrast": 73.44,
+        "edgeEnergy": 56.52
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/kuwiat_liberation_kuwait.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 131.0,
+        "lumaContrast": 77.73,
+        "edgeEnergy": 39.8
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/legion_of_merit.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 193.71,
+        "lumaContrast": 48.94,
+        "edgeEnergy": 44.14
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_combat_instructor.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 45.63,
+        "lumaContrast": 54.37,
+        "edgeEnergy": 76.78
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_drill_instructor.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 133.99,
+        "lumaContrast": 49.32,
+        "edgeEnergy": 47.45
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_expeditionary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 149.31,
+        "lumaContrast": 53.06,
+        "edgeEnergy": 70.16
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_good_conduct.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 212.08,
+        "lumaContrast": 12.57,
+        "edgeEnergy": 26.01
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_recruiting.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 165.21,
+        "lumaContrast": 10.43,
+        "edgeEnergy": 31.42
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_reserve.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 132.2,
+        "lumaContrast": 31.22,
+        "edgeEnergy": 81.21
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/marine_corps_sercurity_guard.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 127.54,
+        "lumaContrast": 87.92,
+        "edgeEnergy": 42.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/medal_for_humane_action.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 68.38,
+        "lumaContrast": 82.89,
+        "edgeEnergy": 46.25
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/medal_of_honor.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 235.85,
+        "lumaContrast": 52.71,
+        "edgeEnergy": 22.76
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/meritorious_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 135.99,
+        "lumaContrast": 84.58,
+        "edgeEnergy": 56.7
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/multinational_force_and_observers.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 147.37,
+        "lumaContrast": 68.25,
+        "edgeEnergy": 63.79
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/national_defense_military_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 191.33,
+        "lumaContrast": 62.51,
+        "edgeEnergy": 71.84
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/nato.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 128.12,
+        "lumaContrast": 72.81,
+        "edgeEnergy": 44.92
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/nato_kosovo.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 160.5,
+        "lumaContrast": 70.38,
+        "edgeEnergy": 42.19
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/naval_reserve.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 200.45,
+        "lumaContrast": 31.4,
+        "edgeEnergy": 43.06
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/naval_reserve_meritorious_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 201.63,
+        "lumaContrast": 26.41,
+        "edgeEnergy": 50.2
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/naval_reserve_sea_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 204.21,
+        "lumaContrast": 47.74,
+        "edgeEnergy": 66.65
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_and_marine_corps_achievement.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 159.35,
+        "lumaContrast": 19.96,
+        "edgeEnergy": 44.54
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_and_marine_corps_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 102.68,
+        "lumaContrast": 79.42,
+        "edgeEnergy": 50.29
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_and_marine_corps_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 198.7,
+        "lumaContrast": 57.88,
+        "edgeEnergy": 50.2
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_and_marine_corps_overseas_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 178.53,
+        "lumaContrast": 61.6,
+        "edgeEnergy": 53.03
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_arctic_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 206.69,
+        "lumaContrast": 61.22,
+        "edgeEnergy": 51.3
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_ceremonial_guard.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 121.21,
+        "lumaContrast": 86.77,
+        "edgeEnergy": 68.67
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_cross.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 142.87,
+        "lumaContrast": 85.93,
+        "edgeEnergy": 31.75
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_distinguished_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 156.72,
+        "lumaContrast": 71.37,
+        "edgeEnergy": 29.79
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_e.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 123.1,
+        "lumaContrast": 79.06,
+        "edgeEnergy": 52.68
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_expeditionary.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 206.89,
+        "lumaContrast": 70.46,
+        "edgeEnergy": 72.42
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_good_conduct.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 223.79,
+        "lumaContrast": 4.36,
+        "edgeEnergy": 19.58
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_meritorious_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 156.13,
+        "lumaContrast": 53.5,
+        "edgeEnergy": 49.11
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_occupation_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 82.29,
+        "lumaContrast": 92.08,
+        "edgeEnergy": 47.3
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_pistol_marksmanship.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 165.53,
+        "lumaContrast": 6.0,
+        "edgeEnergy": 12.91
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 207.4,
+        "lumaContrast": 62.21,
+        "edgeEnergy": 63.25
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_recruit_training_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 168.45,
+        "lumaContrast": 64.04,
+        "edgeEnergy": 44.75
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_recruiting_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 208.08,
+        "lumaContrast": 74.9,
+        "edgeEnergy": 74.77
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_reserve_special_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 225.16,
+        "lumaContrast": 28.65,
+        "edgeEnergy": 47.78
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_rifle_marksmanship.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 153.22,
+        "lumaContrast": 8.37,
+        "edgeEnergy": 16.8
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_sea_service_deployment.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 191.8,
+        "lumaContrast": 57.78,
+        "edgeEnergy": 56.58
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/navy_unit_commendation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 187.4,
+        "lumaContrast": 51.41,
+        "edgeEnergy": 48.79
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/nco_professional_development.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 117.73,
+        "lumaContrast": 39.4,
+        "edgeEnergy": 81.17
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/nuclear_deterrence_operations_service_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 245.13,
+        "lumaContrast": 48.0,
+        "edgeEnergy": 38.79
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/outstanding_volunteer_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 142.4,
+        "lumaContrast": 65.94,
+        "edgeEnergy": 68.19
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/overseas_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 115.15,
+        "lumaContrast": 45.94,
+        "edgeEnergy": 75.03
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/philippine_defense.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 141.78,
+        "lumaContrast": 80.78,
+        "edgeEnergy": 58.66
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/philippine_independence.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 157.25,
+        "lumaContrast": 75.22,
+        "edgeEnergy": 54.59
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/philippine_liberation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 181.71,
+        "lumaContrast": 53.98,
+        "edgeEnergy": 43.22
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/philippine_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 165.56,
+        "lumaContrast": 68.36,
+        "edgeEnergy": 75.49
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/prisoner_of_war.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 27.07,
+        "lumaContrast": 106.99,
+        "edgeEnergy": 46.78
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/purple_heart.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 147.52,
+        "lumaContrast": 57.49,
+        "edgeEnergy": 49.47
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/remote_combat_effects_campaign_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 229.5,
+        "lumaContrast": 60.93,
+        "edgeEnergy": 40.66
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/republic_of_vietnam_campaign.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 96.24,
+        "lumaContrast": 76.58,
+        "edgeEnergy": 70.75
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/republic_of_vietnam_presidential_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 236.73,
+        "lumaContrast": 40.43,
+        "edgeEnergy": 88.97
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/reserve_components_overseas_training.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 132.13,
+        "lumaContrast": 67.97,
+        "edgeEnergy": 79.35
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/reserve_componets_achievement.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 200.66,
+        "lumaContrast": 65.53,
+        "edgeEnergy": 78.16
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/rok_war_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 161.06,
+        "lumaContrast": 70.08,
+        "edgeEnergy": 90.57
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/selected_marine_corps_reserve.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 172.93,
+        "lumaContrast": 71.01,
+        "edgeEnergy": 70.66
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/silver_life_saving.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 50.53,
+        "lumaContrast": 57.88,
+        "edgeEnergy": 77.97
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/silver_star.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 109.5,
+        "lumaContrast": 78.23,
+        "edgeEnergy": 66.53
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/southwest_asia_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 85.57,
+        "lumaContrast": 85.66,
+        "edgeEnergy": 75.27
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/space_force_good_conduct_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 64.91,
+        "lumaContrast": 73.15,
+        "edgeEnergy": 65.89
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/special_operations_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 103.73,
+        "lumaContrast": 46.42,
+        "edgeEnergy": 66.99
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/transportation_distinguished_service_medal.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 181.36,
+        "lumaContrast": 56.94,
+        "edgeEnergy": 39.36
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/united_nations.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 110.96,
+        "lumaContrast": 38.36,
+        "edgeEnergy": 68.78
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/united_nations_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 75.99,
+        "lumaContrast": 59.72,
+        "edgeEnergy": 82.39
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/us_antarctic_expedition.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 68.58,
+        "lumaContrast": 54.22,
+        "edgeEnergy": 82.48
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/vietnam_civil_actions_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 221.48,
+        "lumaContrast": 51.9,
+        "edgeEnergy": 72.34
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/vietnam_gallantry_cross.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 211.76,
+        "lumaContrast": 41.68,
+        "edgeEnergy": 69.03
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/vietnam_gallantry_cross_unit_citation.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 223.82,
+        "lumaContrast": 46.3,
+        "edgeEnergy": 89.45
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/vietnam_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 237.09,
+        "lumaContrast": 55.85,
+        "edgeEnergy": 84.84
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/womens_s_army_corps_service.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 141.2,
+        "lumaContrast": 35.46,
+        "edgeEnergy": 67.12
+      },
+      {
+        "path": "images/military-ribbons/mcchord-style/world_war_ii_victory.png",
+        "format": "PNG",
+        "width": 100,
+        "height": 30,
+        "aspectRatio": 3.3333,
+        "mode": "RGB",
+        "alphaCoverage": 1.0,
+        "contentBounds": [
+          0,
+          0,
+          100,
+          30
+        ],
+        "meanSaturation": 189.17,
+        "lumaContrast": 47.85,
+        "edgeEnergy": 61.81
       }
     ]
   }

@@ -1,0 +1,6998 @@
+{
+  "source": "ULTRATHIN_RIBBON_PRECEDENCE_VALIDATOR",
+  "sourceType": "commercial-discovery",
+  "sourceUrl": "https://www.ultrathin.com/ultrathin/ribbons_update.htm",
+  "accessedAt": "2026-08-28T17:19:40.688Z",
+  "runtimeDependency": false,
+  "regulatoryAuthority": false,
+  "assetPolicy": "NO_EXTERNAL_ARTWORK_PACKAGED",
+  "limitations": [
+    "UltraThin is a secondary commercial discovery source, not regulatory authority.",
+    "The public catalog includes historical, civilian, CAP, state, and non-U.S. records; discovery does not establish current wear authorization.",
+    "Precedence and device rules must be verified against current official service publications before production enforcement."
+  ],
+  "sourceHashes": {
+    "catalog": "9086784c2a1396ed320a8c00365a10820f038daa2b0f942ab4666d05d5c15a23",
+    "devices": "e70f555bf05d86c5faccdc7a666c33489797ff238e5145e8a40cad9b86c3487c",
+    "precedence": "53996de64b4455e7815f6e979f3cd2c6294f7bd61d8ccab7a0485e004ad3c247"
+  },
+  "counts": {
+    "ribbons": 386,
+    "devices": 95,
+    "matchedLocal": 124,
+    "unmatchedDiscovery": 262,
+    "unmatchedByNamespace": {
+      "CAP": 56,
+      "CIVILIAN": 19,
+      "COAST_GUARD_AUXILIARY": 33,
+      "FEDERAL_OR_FOREIGN_CANDIDATE": 80,
+      "MERCHANT_MARINE": 14,
+      "NOAA": 25,
+      "PUBLIC_HEALTH_SERVICE": 34,
+      "STATE": 1
+    }
+  },
+  "ribbons": [
+    {
+      "sourceId": "A",
+      "name": "Medal of Honor",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "medal_of_honor",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "1",
+      "name": "Distinguished Service Cross",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "army_distinguished_service_cross",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "2",
+      "name": "Navy Cross",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_cross",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "3",
+      "name": "Air Force Cross",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_force_cross",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "4",
+      "name": "Defense Distinguished Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "defense_distinguished_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "5",
+      "name": "Army Distinguished Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "army_distinguished_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "6",
+      "name": "Navy Distinguished Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_distinguished_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "7",
+      "name": "Air Force Distinguished Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_force_distinguishd_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "8",
+      "name": "Coast Guard Distinguished Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_distinguished_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "9",
+      "name": "Silver Star",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "silver_star",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "10",
+      "name": "Defense Superior Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "defense_superior_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "10A",
+      "name": "Guardian Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "11",
+      "name": "Legion of Merit",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "legion_of_merit",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "12",
+      "name": "Distinguished Flying Cross",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "distinguished_flying_cross",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "13",
+      "name": "Soldier's Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "army_soldiers_medal",
+      "matchMethod": "HIGH_CONFIDENCE_NAME_SIMILARITY",
+      "matchScore": 0.8889,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "14",
+      "name": "Navy and Marine Corps Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_and_marine_corps_medal",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "15",
+      "name": "Airman's Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "airmans_medal",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "16",
+      "name": "Coast Guard Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_medal",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "17",
+      "name": "Gold Lifesaving Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "gold_life_saving_medal",
+      "matchMethod": "HIGH_CONFIDENCE_NAME_SIMILARITY",
+      "matchScore": 0.9375,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "18",
+      "name": "Bronze Star Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "bronze_star_miltiary",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "19",
+      "name": "Purple Heart",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "purple_heart",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "20",
+      "name": "Defense Meritorious Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "defense_meritorious_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "21",
+      "name": "Meritorious Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "meritorious_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "22",
+      "name": "Air Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_medal",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "23",
+      "name": "Aerial Achievement Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "aerial_achievement_medal",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "24",
+      "name": "Silver Lifesaving Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "silver_life_saving",
+      "matchMethod": "HIGH_CONFIDENCE_NAME_SIMILARITY",
+      "matchScore": 0.9444,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "25",
+      "name": "Joint Service Commendation Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "joint_service_commendation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "26",
+      "name": "Army Commendation Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "army_commendation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "27",
+      "name": "Navy and Marine Corps Commendation Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_and_marine_corps_commendation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "28",
+      "name": "Air Force Commendation Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_and_space_commendation_medal",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "29",
+      "name": "Coast Guard Commendation Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_commendation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "30",
+      "name": "Joint Service Achievement Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "joint_service_achievement",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "30A",
+      "name": "9_11 Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "31",
+      "name": "Army Achievement Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "army_achievement",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "32",
+      "name": "Navy and Marine Corps Achievement Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_and_marine_corps_achievement",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "33",
+      "name": "Air Force Achievement Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_and_space_achievement_medal",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "34",
+      "name": "Coast Guard Achievement Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_achievement",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "35",
+      "name": "Coast Guard Commandants Letter of Commendation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "commandants_letter_of_commendation",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "36",
+      "name": "Combat Action Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "combat_action",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "36C",
+      "name": "Air Force Combat Action Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_force_combat_action",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "36G",
+      "name": "Coast Guard Combat Action",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "comabt_action",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "37",
+      "name": "Distinguished Presidential Unit Citation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "38",
+      "name": "Navy Presidential Unit Citation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_presidential_unit_citation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "38B",
+      "name": "Coast Guard Presidential Unit Citation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_presidential_unit_citation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "39",
+      "name": "Joint Meritorious Unit Citation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "39G",
+      "name": "DHS Outstanding Unit Award",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "MARINE_CORPS",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "39A",
+      "name": "DOT Secretary Outstanding Unit",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "40",
+      "name": "Valorous Unit Award",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "army_valorous_unit_award",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "40G",
+      "name": "Air Force Gallant Unit Award",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "41",
+      "name": "Army Meritorious Unit Award",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_force_meritorious_unit_award",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "41A",
+      "name": "Air Force Meritorious Unit Award",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_force_meritorious_unit_award",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "42",
+      "name": "Navy Unit Commendation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_unit_commendation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "43",
+      "name": "Air Force Outstanding Unit Award",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_force_outstanding_unit_award",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "44",
+      "name": "Coast Guard Unit Commendation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_unit_commendation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "45",
+      "name": "Army Superior Unit Award",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "army_superior_unit_award",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "46",
+      "name": "Air Force Organizational Excellence Award",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_and_space_organizational_excellence_award",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "47",
+      "name": "Meritorious Unit Commendation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "48",
+      "name": "Coast Guard Meritorious Unit Commendation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_meritorious_unit_commendation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "48A",
+      "name": "Coast Guard 'E' Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "48B",
+      "name": "Coast Guard Meritorious Team",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "49",
+      "name": "Navy 'E' Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "49A",
+      "name": "Coast Guard Bicentennial Unit Award",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "50A",
+      "name": "Prisoner of War Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "prisoner_of_war",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "51",
+      "name": "Combat Readiness Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": "air_force_combat_readiness",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "52",
+      "name": "Reserve Special Commendation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY"
+      ],
+      "localCanonicalId": "navy_reserve_special_commendation",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "53",
+      "name": "Good Conduct Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "54",
+      "name": "Navy Good Conduct Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_good_conduct",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "55",
+      "name": "Marine Corps Good Conduct Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "marine_corps_good_conduct",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "56",
+      "name": "Air Force Good Conduct Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_force_good_condcut",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "57",
+      "name": "Coast Guard Good Conduct Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_good_conduct",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "58",
+      "name": "Space Force Good Conduct Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "58A",
+      "name": "Air Reserve Forces Meritorious Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_reserve_forces_meritorious_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "59",
+      "name": "Army Reserve Component Achievement Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "reserve_componets_achievement",
+      "matchMethod": "HIGH_CONFIDENCE_NAME_SIMILARITY",
+      "matchScore": 0.9667,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "60",
+      "name": "Naval Reserve Meritorious Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "naval_reserve_meritorious_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "61",
+      "name": "Selected Marine Corps Reserve Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "selected_marine_corps_reserve",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "62",
+      "name": "Coast Guard Reserve Good Conduct Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_reserve_good_conduct",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "62A",
+      "name": "Coast Guard Person of the Year Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "63",
+      "name": "Fleet Marine Force Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY"
+      ],
+      "localCanonicalId": "fleet_marine_force",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "64",
+      "name": "Navy Expeditionary Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_expeditionary",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "65",
+      "name": "Marine Expeditionary Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "66",
+      "name": "Outstanding Airman of the Year Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_force_outstanding_airman_of_the_year",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "67",
+      "name": "Air Force Recognition Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": "air_force_recognition",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "67A",
+      "name": "China Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "china_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "68",
+      "name": "American Defense Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "american_defense",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "WAC",
+      "name": "Women's Army Corps Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": "womens_s_army_corps_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "69",
+      "name": "American Campaign Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "american_campaign",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "70",
+      "name": "Asian-Pacific Campaign Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "71",
+      "name": "European-African-Middle Eastern Campaign Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "european_african_middle_eastern_campaign",
+      "matchMethod": "HIGH_CONFIDENCE_NAME_SIMILARITY",
+      "matchScore": 0.975,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "72",
+      "name": "World War II Victory Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "world_war_ii_victory",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "73",
+      "name": "Occupation Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "74",
+      "name": "Medal for Humane Action",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "medal_for_humane_action",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "76",
+      "name": "National Defense Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "national_defense_military_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "77",
+      "name": "Korean Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "korean_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "78",
+      "name": "Antarctica Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "antarctica_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "79",
+      "name": "Coast Guard Arctic Service",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "80",
+      "name": "Armed Forces Expeditionary Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "armed_forces_expeditionary",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "81",
+      "name": "Vietnam Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "vietnam_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "81A",
+      "name": "Southwest Asia Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "southwest_asia_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "81K",
+      "name": "Kosovo Campaign Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "kosovo_campaign",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "812",
+      "name": "Afghanistan Campaign Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "afghanistan_campaign",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "813",
+      "name": "Iraq Campaign Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "iraq_campaign",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "814",
+      "name": "Inherent Resolve Campaign Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "81L",
+      "name": "GWOT Expeditionary Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "81S",
+      "name": "GWOT Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "KDSM",
+      "name": "Korea Defense Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "korean_defense_service",
+      "matchMethod": "HIGH_CONFIDENCE_NAME_SIMILARITY",
+      "matchScore": 0.9545,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "816",
+      "name": "Mexican Border Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "81M",
+      "name": "Armed Forces Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "armed_forces_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "82",
+      "name": "Humanitarian Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "humanitarian_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "82A",
+      "name": "Coast Guard Special Operations Service",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "special_operations_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "82B",
+      "name": "Military Outstanding Volunteer Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "82M",
+      "name": "9_11 Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "83",
+      "name": "Sea Service Deployment Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_sea_service_deployment",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "84",
+      "name": "Coast Guard Sea Service Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_sea_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "84A",
+      "name": "Army Sea Duty Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "army_sea_duty",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "85",
+      "name": "Navy Arctic Service Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_arctic_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "85Rose",
+      "name": "Navy Arctic Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS"
+      ],
+      "localCanonicalId": "navy_arctic_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "85A",
+      "name": "Naval Reserve Sea Service Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "naval_reserve_sea_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "86",
+      "name": "Navy and Marine Corps Overseas Service Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_and_marine_corps_overseas_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "86A",
+      "name": "Navy Recruiting Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "marine_corps_recruiting",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "86R",
+      "name": "Air Force Remote Combat Action Effects Campaign",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "86M",
+      "name": "Air and Space Campaign Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": "air_and_space_campaign",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NDOS",
+      "name": "Nuclear Deterrence Operations Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "87",
+      "name": "Air Force Overseas Ribbon (short)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "87A",
+      "name": "Marine Recruiting Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "87D",
+      "name": "Marine Corps Drill Instructor Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "marine_corps_drill_instructor",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "87N",
+      "name": "Navy Accession Training Service Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "87S",
+      "name": "Marine Security Guard Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "87C",
+      "name": "Marine Corps Combat Instructor Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "MARINE_CORPS"
+      ],
+      "localCanonicalId": "marine_corps_combat_instructor",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "88",
+      "name": "Air Force Overseas Ribbon (long)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "88M",
+      "name": "Air Force Expeditionary Service Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "air_force_expeditionary",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "89",
+      "name": "Air Force Longevity Service Award Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "89S",
+      "name": "Air Force Special Duty Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "89A",
+      "name": "Air Force Military Training Instructor",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": "air_force_military_training_instructor",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "89R",
+      "name": "Air Force Recruiting Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": "marine_corps_recruiting",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "90",
+      "name": "Coast Guard Restricted Duty Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_restricted_duty",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "90C",
+      "name": "Coast Guard Overseas Service Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "coast_guard_overseas_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "91",
+      "name": "Coast Guard Basic Training Honor Graduate",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "basic_training_honor_graduate",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "91A",
+      "name": "Coast Guard Recruiting Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "marine_corps_recruiting",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "91G",
+      "name": "Navy Ceremonial Guard",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "navy_ceremonial_guard",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "91N",
+      "name": "Navy Basic Training Honor Graduate",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "92",
+      "name": "Armed Forces Reserve Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "armed_forces_reserve",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "93",
+      "name": "Army NCO Professional Development Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "nco_professional_development",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "94",
+      "name": "Army Service Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "army_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "95",
+      "name": "Army Overseas Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "96",
+      "name": "Army Reserve Overseas Training",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "97",
+      "name": "Army Recruiting Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY"
+      ],
+      "localCanonicalId": "marine_corps_recruiting",
+      "matchMethod": "SERVICE_NEUTRAL_EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "98",
+      "name": "AF Professional Military Ed. Graduate Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "99",
+      "name": "USAF BMT Honor Graduate Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "100",
+      "name": "Small Arms Expert Marksmanship Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": "air_force_small_arms_expert_marksmanship",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "101",
+      "name": "Air Force Training Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": "air_force_training",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "102",
+      "name": "Naval Reserve Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "naval_reserve",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "103",
+      "name": "US Marine Corps Reserve Ribbon (OBSO)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "104",
+      "name": "Philippine Defense Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "philippine_defense",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "105",
+      "name": "Philippine Liberation Ribbon",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "philippine_liberation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "106",
+      "name": "Philippine Independence",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "philippine_independence",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "107",
+      "name": "Philippine Presidential Unit Citation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "philippine_presidential_unit_citation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "108",
+      "name": "Republic of Korea Presidential Unit Citation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "korean_presidential_unit_citation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "109",
+      "name": "Republic of Vietnam Presidential Unit Citation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "republic_of_vietnam_presidential_unit_citation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "111",
+      "name": "Vietnam Military Merit",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "112",
+      "name": "Vietnam Air Gallantry",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "113-1",
+      "name": "Vietnam Honor Medal 1st Class",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "113-2",
+      "name": "Vietnam Honor Medal 2nd Class",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "114-1",
+      "name": "Vietnam Staff Service 1st Class",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "114-2",
+      "name": "Vietnam Staff Service 2nd Class",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "115-1",
+      "name": "Vietnam Tech Service 1st Class",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "115-2",
+      "name": "Vietnam Tech Service 2nd Class",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "116-1",
+      "name": "Vietnam Training Service 1st Class",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "116-2",
+      "name": "Vietnam Training Service 2nd Class",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "118",
+      "name": "Vietnam Gallantry Cross Unit Citation",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "vietnam_gallantry_cross_unit_citation",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "118A-1",
+      "name": "Vietnam Civil Action 1st Class",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "118A-2",
+      "name": "Vietnam Civil Action 2nd Class",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "119",
+      "name": "United Nations Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "united_nations_service",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "119A",
+      "name": "InterAmerican Defense",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120",
+      "name": "United Nations Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": "united_nations",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120A",
+      "name": "Multi National Forces Observer",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "multinational_force_and_observers",
+      "matchMethod": "HIGH_CONFIDENCE_NAME_SIMILARITY",
+      "matchScore": 0.875,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120B",
+      "name": "NATO Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "nato",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120-UNTAC",
+      "name": "UN Service Cambodia (UNTAC)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120-UNAMIC",
+      "name": "UN Service Cambodia (UNAMIC)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120-UNMIH",
+      "name": "UN Service Haiti (UNMIH)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120-UNIKOM",
+      "name": "UN Service Iraq/Kuwait (UNIKOM)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120-UNIPOM",
+      "name": "UN Service India/Pakistan (UNIPOM)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120-MINURSO",
+      "name": "UN Service Sahara (MINURSO)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120-UNOSOM",
+      "name": "UN Service Somalia (UNOSOM)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120-UNCRO",
+      "name": "UN Service Croatia (UNCRO)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120-UNPREDEP",
+      "name": "UN Service (UNPREDEP)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120-UNPROFOR",
+      "name": "UN Service Yugoslavia/Croatia (UNPROFOR)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "120K",
+      "name": "Kosovo NATO Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NATOISAF",
+      "name": "NATO NON-Article 5 ISAF",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NATOBALKANS",
+      "name": "NATO NON-Article 5 Balkans",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NATOEAGLE",
+      "name": "NATO Article 5 Eagle Assist",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NATOENDEAVOR",
+      "name": "NATO Article 5 Active Endeavor",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "121",
+      "name": "Vietnam Air Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "122",
+      "name": "Republic of Vietnam Campaign Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": "republic_of_vietnam_campaign",
+      "matchMethod": "EXACT",
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "122A",
+      "name": "Kuwait Liberation Medal (Kingdom of Saudi Arabia)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "123A",
+      "name": "Kuwait Liberation Medal (Government of Kuwait)",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "124K",
+      "name": "Korean War Service Medal",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "125E",
+      "name": "Navy Expert Rifle",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "125",
+      "name": "Navy Marksman Rifle",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "126E",
+      "name": "Navy Expert Pistol",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "126",
+      "name": "Navy Marksman Pistol",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "NAVY",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "127E",
+      "name": "Coast Guard Expert Rifleman",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "127",
+      "name": "Coast Guard Rifleman",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "128E",
+      "name": "Coast Guard Expert Pistol",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "128",
+      "name": "Coast Guard Pistol",
+      "namespace": "FEDERAL_OR_FOREIGN_CANDIDATE",
+      "services": [
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "CIV1",
+      "name": "Presidential Medal of Freedom",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV10",
+      "name": "National Security Medal",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV30",
+      "name": "Department of State Meritorious Honor",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV40",
+      "name": "National Intelligence Distinguished Service Medal",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV011",
+      "name": "National Intelligence Medal of Achievement",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV60",
+      "name": "NASA Distinguished Service Medal",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV65",
+      "name": "NASA Flight Medal",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV70",
+      "name": "NASA Medal for Exceptional Bravery",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV75",
+      "name": "NASA Medal for Exceptional Service",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV80",
+      "name": "Navy Distinguished Civilian Service Medal",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV85",
+      "name": "Navy Distinguished Achievement in Science",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV90",
+      "name": "Navy Distinguished Public Service Award",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV100",
+      "name": "Selective Service Distinguished Service Award",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV105",
+      "name": "Selective Service Exceptional Service Award",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "CIV110",
+      "name": "Selective Service Meritorious Service Award",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "DOT1",
+      "name": "DOT Distinguished Service Medal",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "DOT2",
+      "name": "DOT Secretary's Outstanding Achievement Medal",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "DOT3",
+      "name": "DOT Secretary's Award for Meritorious Achievement",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "DOT4",
+      "name": "DOT Superior Achievement Medal",
+      "namespace": "CIVILIAN",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH1",
+      "name": "PHS Distinguished Service Medal",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH2",
+      "name": "PHS Meritorious Service Medal",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH2A",
+      "name": "PHS Assistant Secretary for Health's Exceptional Service Medal",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "PH3",
+      "name": "Surgeon General's Exemplary Service Medal",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "ARMY"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH4",
+      "name": "PHS Outstanding Service Medal",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH5",
+      "name": "PHS Commendation Medal",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH6",
+      "name": "PHS Achievement Medal",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH7",
+      "name": "PHS Citation",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH7A",
+      "name": "PHS Presidential Unit Citation",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "PH8",
+      "name": "PHS Outstanding Unit Citation",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "ARMY",
+        "NAVY"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "PH9",
+      "name": "PHS Unit Commendation",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "ARMY",
+        "NAVY"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "PH9A",
+      "name": "PHS Bicentennial Unit Comm",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH30",
+      "name": "PHS Hazardous Duty Service Award",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH31",
+      "name": "PHS Foreign Duty Award",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH32",
+      "name": "PHS Special Assignment Service Award",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH33",
+      "name": "PHS Isolated Hardship Service Award",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH34",
+      "name": "PHS Crisis Response Service Award",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH35",
+      "name": "PHS National Emergency Preparedness Award",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH36",
+      "name": "PHS Bicentennial Unit Commendation",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH37",
+      "name": "PHS Smallpox Eradication Campaign Ribbon",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "PH37G",
+      "name": "PHS Global Health Campaign",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH37H",
+      "name": "PHS Ebola Campaign",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH37I",
+      "name": "PHS COVID-19 Pandemic Campaign Medal",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH38",
+      "name": "PHS Regular Corps Ribbon",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "PH39",
+      "name": "PHS Commissioned Corps Training Ribbon",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "PH40",
+      "name": "PHS Response",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH41",
+      "name": "PHS Global Response",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH42",
+      "name": "PHS Recruitment",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [
+        "NAVY"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH42G",
+      "name": "PHS Global Health Initiative Service",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH50",
+      "name": "Commissioned Officer's Association",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH51",
+      "name": "Association of Military Surgeons",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH52",
+      "name": "Reserve Officer's Association",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH53",
+      "name": "Society of American Engineers",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "PH54",
+      "name": "PHS COVID-19 Pandemic Civilian Service",
+      "namespace": "PUBLIC_HEALTH_SERVICE",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO1",
+      "name": "Department of Commerce Gold Medal",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO2",
+      "name": "Department of Commerce Silver Medal",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO3",
+      "name": "Department of Commerce Bronze Medal",
+      "namespace": "NOAA",
+      "services": [
+        "NAVY"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO3A",
+      "name": "NOAA Meritorious Service Medal",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO4",
+      "name": "NOAA Administrator's Award Medal",
+      "namespace": "NOAA",
+      "services": [
+        "NAVY"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO5",
+      "name": "NOAA Corps Commendation Medal",
+      "namespace": "NOAA",
+      "services": [
+        "NAVY"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO6",
+      "name": "NOAA Special Achievement Medal",
+      "namespace": "NOAA",
+      "services": [
+        "NAVY"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO7",
+      "name": "NOAA Corps Director's Award",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO8",
+      "name": "NOAA Unit Citation Award",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO9",
+      "name": "NOAA ACO Awards Medal",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO9A",
+      "name": "NOAA Meritorious Team Commendation",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO10",
+      "name": "Society of American Engineers Colbert Medal",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO11",
+      "name": "Society of American Engineers Karo Award Ribbon",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO11A",
+      "name": "NOAA National Response Deployment",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO11B",
+      "name": "NOAA Outstanding Volunteer Service",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "NO11C",
+      "name": "NOAA Corps Sea Service Ribbon",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO12",
+      "name": "NOAA Corps Atlantic Service",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO13",
+      "name": "NOAA Corps Pacific Service",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO14",
+      "name": "NOAA Corps Mobile Duty Service",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO15",
+      "name": "NOAA Corps International Service",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO15A",
+      "name": "NOAA National Response Service",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO16",
+      "name": "NOAA Corps Rifle Ribbon (obsolete)",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO17",
+      "name": "NOAA Corps Pistol Ribbon (obsolete)",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO18",
+      "name": "NOAA Special Duty Award",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "NO19",
+      "name": "NOAA Recruiting Achievement",
+      "namespace": "NOAA",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "MM1",
+      "name": "Merchant Marine Distinguished Service Medal",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "MM2",
+      "name": "Merchant Marine Meritorious Service Medal",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "MM3",
+      "name": "Merchant Marine Mariners Medal",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "MM3A",
+      "name": "Merchant Marine Outstanding Achievement",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "MM4",
+      "name": "Merchant Marine Gallant Ship Unit Citation",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "MM5",
+      "name": "Merchant Marine Defense Bar",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "MM6",
+      "name": "Merchant Marine Combat Bar",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "MM7",
+      "name": "Merchant Marine Atlantic War Zone Bar",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "MM8",
+      "name": "Merchant Marine Med / Mid East War Zone Bar",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "MM9",
+      "name": "Merchant Marine Pacific War Zone Bar",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "MM10",
+      "name": "Merchant Marine WWII Victory Medal",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "MM11",
+      "name": "Merchant Marine Korean Service Bar",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "MM12",
+      "name": "Merchant Marine Vietnam Service Bar",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "MM13",
+      "name": "Merchant Marine Expeditionary Med",
+      "namespace": "MERCHANT_MARINE",
+      "services": [
+        "ARMY",
+        "NAVY",
+        "MARINE_CORPS",
+        "AIR_FORCE",
+        "SPACE_FORCE",
+        "COAST_GUARD"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "AX1",
+      "name": "CGAUX Distinguished Service Award",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX1A",
+      "name": "CGAUX Legion of Merit",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX2",
+      "name": "CGAUX Plaque of Merit",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX2A",
+      "name": "CGAUX Meritorious Service Award",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX3",
+      "name": "CGAUX Award of Operational Merit",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX4",
+      "name": "CGAUX Commendation Award",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX5",
+      "name": "CGAUX Achievement Award",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX5B",
+      "name": "CGAUX Commandant's Letter of Commendation",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX5A",
+      "name": "CGAUX Sustained Service Award",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX6A",
+      "name": "CGAUX Humanitarian Service Award",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX6B",
+      "name": "CGAUX Operational Excellence 'E' Ribbon",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX15",
+      "name": "CGAUX Recruiting Service Award",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX7",
+      "name": "CGAUX Specialty Training",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX7A",
+      "name": "CGAUX Marine Safety (Trident) Training",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX8",
+      "name": "CGAUX Operations Program Ribbon",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX10",
+      "name": "CGAUX Examiner Program Ribbon",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX11",
+      "name": "CGAUX Instructor Program Ribbon",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX11A",
+      "name": "CGAUX Public Affairs Ribbon",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX13",
+      "name": "CGAUX Membership Ribbon",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX14",
+      "name": "CGAUX Flotilla Meritorious Achievement",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX18",
+      "name": "CGAUX Operations Service",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX16",
+      "name": "CGAUX Visitation Award",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX17",
+      "name": "CGAUX Public Education Award",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "Obsolete",
+      "name": "Obsolete Ribbons past here",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX6",
+      "name": "CGAUX Group Action Award (obsolete)",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX9",
+      "name": "CGAUX Air Observer (obsolete)",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX12",
+      "name": "CGAUX Service Award (obsolete)",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX19",
+      "name": "CGAUX Flotilla One Achievement (obsolete)",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX20",
+      "name": "CGAUX Flotilla PEC (obsolete)",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX21",
+      "name": "CGAUX Flotilla Operations (obsolete)",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX22",
+      "name": "CGAUX Flotilla Member Training (obsolete)",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX23",
+      "name": "CGAUX Flotilla Growth (obsolete)",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "AX24",
+      "name": "CGAUX Flotilla Public Affairs (obsolete)",
+      "namespace": "COAST_GUARD_AUXILIARY",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "CAP46",
+      "name": "Air Force Organizational Excellence Award for Civil Air Patrol",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C1",
+      "name": "CAP Silver Medal of Valor",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C2",
+      "name": "CAP Bronze Medal of Valor",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C3",
+      "name": "CAP Distinguished Service Medal",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C4",
+      "name": "CAP Exceptional Service Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C5",
+      "name": "CAP Meritorious Service Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C6",
+      "name": "CAP Commander's Commendation",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C6C",
+      "name": "CAP Achievement",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C7",
+      "name": "CAP Lifesaving Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C7C",
+      "name": "CAP National Commanders Unit Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C8",
+      "name": "CAP Unit Citation Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C8A",
+      "name": "CAP National Commanders Commendation Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "C9",
+      "name": "CAP Gill Robb Wilson Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C10",
+      "name": "CAP Paul E Garber Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C11",
+      "name": "CAP Grover Loening Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C12",
+      "name": "CAP Leadership Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C13",
+      "name": "CAP Membership Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C14",
+      "name": "CAP A Scott Crossfield Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C15",
+      "name": "CAP Gen Chuck Yaeger Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C15A",
+      "name": "CAP Cadet Certificate of Proficiency",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "C16",
+      "name": "CAP Gen Carl A Spaatz Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C17",
+      "name": "CAP Ira C Eaker Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C18",
+      "name": "CAP Amelia Earhart Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C19",
+      "name": "CAP Gen Billy Mitchell Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C20",
+      "name": "CAP Neil Armstrong Achievement",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C21",
+      "name": "CAP Dr Robert H Goddard Achievement",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C22",
+      "name": "CAP Gen Jimmy Doolittle Achievement",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C23",
+      "name": "CAP Charles A Lindbergh Achievement",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C24",
+      "name": "CAP Cpt Eddie Richenbacker Achievement",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C25",
+      "name": "CAP Wright Brothers Achievement",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C25M",
+      "name": "CAP Mary Feik Achievement",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C26",
+      "name": "CAP Gen Hap Arnold Achievement",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C27",
+      "name": "CAP Gen J F Curry Achievement",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C28",
+      "name": "CAP Command Service",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C28C",
+      "name": "CAP Crisis Service",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C29",
+      "name": "CAP Red Service",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C29A",
+      "name": "CAP Professional Military Education Faculty",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "C30",
+      "name": "CAP Search -Find-",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C31",
+      "name": "CAP Search and Rescue",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C32",
+      "name": "CAP Counterdrug",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C33",
+      "name": "CAP Disaster Relief",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C33H",
+      "name": "CAP Homeland Security Ribbon",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C34",
+      "name": "CAP Cadet Community Service",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C35",
+      "name": "CAP Cadet Orientation Pilot",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C36",
+      "name": "CAP IACE",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C37",
+      "name": "CAP National Cadet Competition",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C38",
+      "name": "CAP National Color Guard Competition",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C39",
+      "name": "CAP Cadet Advisory Council",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C40",
+      "name": "CAP Cadet Special Activities",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C41",
+      "name": "CAP Encampment",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C42",
+      "name": "CAP Senior Recruiter",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C43",
+      "name": "CAP Cadet Recruiter",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "NOT_APPLICABLE",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "sourceId": "C44",
+      "name": "CAP AFA Cadet of the Year",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "C45",
+      "name": "CAP AFSA Award to Unit Cadet NCO of the Year",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "C46",
+      "name": "CAP VFW Award to Unit Cadet NCO of the Year",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "C47",
+      "name": "CAP VFW Cadet Officer Award",
+      "namespace": "CAP",
+      "services": [],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "DISCOVERED"
+      }
+    },
+    {
+      "sourceId": "State",
+      "name": "State Guard Ribbon",
+      "namespace": "STATE",
+      "services": [
+        "ARMY",
+        "AIR_FORCE",
+        "SPACE_FORCE"
+      ],
+      "localCanonicalId": null,
+      "matchMethod": null,
+      "matchScore": null,
+      "representations": {
+        "miniatureMedal": "DISCOVERED",
+        "fullSizeMedal": "NOT_APPLICABLE"
+      }
+    }
+  ],
+  "devices": [
+    {
+      "sourceId": "Spacer",
+      "name": "1-Space",
+      "superimposed": false
+    },
+    {
+      "sourceId": "Halfspace",
+      "name": "1/2-Space",
+      "superimposed": false
+    },
+    {
+      "sourceId": "Fourthspace",
+      "name": "1/4-Space",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BOL",
+      "name": "Bronze Oak Leaf",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SOL",
+      "name": "Silver Oak Leaf",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SBS",
+      "name": "Small Bronze Star",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SSS",
+      "name": "Small Silver Star",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SGS",
+      "name": "Small Gold Star",
+      "superimposed": false
+    },
+    {
+      "sourceId": "LBS",
+      "name": "Large Bronze Star",
+      "superimposed": false
+    },
+    {
+      "sourceId": "LSS",
+      "name": "Large Silver Star",
+      "superimposed": false
+    },
+    {
+      "sourceId": "LGS",
+      "name": "Large Gold Star",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GF",
+      "name": "Gold Frame",
+      "superimposed": true
+    },
+    {
+      "sourceId": "Spacer",
+      "name": "1-Space",
+      "superimposed": false
+    },
+    {
+      "sourceId": "Halfspace",
+      "name": "1/2-Space",
+      "superimposed": false
+    },
+    {
+      "sourceId": "Fourthspace",
+      "name": "1/4-Space",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BA",
+      "name": "Bronze A",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SE",
+      "name": "Large Silver E",
+      "superimposed": false
+    },
+    {
+      "sourceId": "NE",
+      "name": "Navy E",
+      "superimposed": false
+    },
+    {
+      "sourceId": "NEW",
+      "name": "Navy E Wreath",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BM",
+      "name": "Bronze M",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GN",
+      "name": "Gold N",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SO",
+      "name": "Silver O",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BS",
+      "name": "Bronze S",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SS",
+      "name": "Silver S",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BV",
+      "name": "Bronze V",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SV",
+      "name": "Silver V",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GV",
+      "name": "Gold V",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BVW",
+      "name": "Bronze V Wreath",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SVW",
+      "name": "Silver V Wreath",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GVW",
+      "name": "Gold V Wreath",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BC",
+      "name": "Bronze C",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SC",
+      "name": "Silver C",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GC",
+      "name": "Gold C",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BCW",
+      "name": "Bronze C Wreath",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SCW",
+      "name": "Silver C Wreath",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GCW",
+      "name": "Gold C Wreath",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BR",
+      "name": "Bronze R",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SR",
+      "name": "Silver R",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GR",
+      "name": "Gold R",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BRW",
+      "name": "Bronze R Wreath",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SRW",
+      "name": "Silver R Wreath",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GRW",
+      "name": "Gold R Wreath",
+      "superimposed": false
+    },
+    {
+      "sourceId": "HA",
+      "name": "Hurricane Attachment",
+      "superimposed": false
+    },
+    {
+      "sourceId": "PT",
+      "name": "Palm Tree",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BHG",
+      "name": "Bronze Hourglass",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SHG",
+      "name": "Silver Hourglass",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GHG",
+      "name": "Gold Hourglass",
+      "superimposed": false
+    },
+    {
+      "sourceId": "ME",
+      "name": "Marine Emblem",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BAD",
+      "name": "Berlin Airlift",
+      "superimposed": false
+    },
+    {
+      "sourceId": "ARROW",
+      "name": "Arrowhead",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BWO",
+      "name": "Bronze Winter Over",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SWO",
+      "name": "Silver Winter Over",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GWO",
+      "name": "Gold Winter Over",
+      "superimposed": false
+    },
+    {
+      "sourceId": "YY",
+      "name": "Ying-Yang Korea",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BP",
+      "name": "Bronze Palm",
+      "superimposed": false
+    },
+    {
+      "sourceId": "EA",
+      "name": "Expeditionary Attachment",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BDIA",
+      "name": "Bronze Diamond",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SDIA",
+      "name": "Silver Diamond",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GDIA",
+      "name": "Gold Diamond",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BPROP",
+      "name": "Bronze Propellor",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SPROP",
+      "name": "Silver Propellor",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GPROP",
+      "name": "Gold Propellor",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BCAP",
+      "name": "CAP Bronze Triangle",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SCAP",
+      "name": "CAP Silver Triangle",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BNOA",
+      "name": "NOAA Bronze Triangle",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SNOA",
+      "name": "NOAA Silver Triangle",
+      "superimposed": false
+    },
+    {
+      "sourceId": "BBEE",
+      "name": "Bronze Beehive",
+      "superimposed": false
+    },
+    {
+      "sourceId": "SBEE",
+      "name": "Silver Beehive",
+      "superimposed": false
+    },
+    {
+      "sourceId": "GBEE",
+      "name": "Gold Beehive",
+      "superimposed": false
+    },
+    {
+      "sourceId": "2BK",
+      "name": "2 Bronze Knots",
+      "superimposed": false
+    },
+    {
+      "sourceId": "3BK",
+      "name": "3 Bronze Knots",
+      "superimposed": false
+    },
+    {
+      "sourceId": "4BK",
+      "name": "4 Bronze Knots",
+      "superimposed": false
+    },
+    {
+      "sourceId": "5BK",
+      "name": "5 Bronze Knots",
+      "superimposed": false
+    },
+    {
+      "sourceId": "1SK",
+      "name": "1 Silver Knot",
+      "superimposed": false
+    },
+    {
+      "sourceId": "2SK",
+      "name": "2 Silver Knots",
+      "superimposed": false
+    },
+    {
+      "sourceId": "B0",
+      "name": "Bronze 0",
+      "superimposed": false
+    },
+    {
+      "sourceId": "B1",
+      "name": "Bronze 1",
+      "superimposed": false
+    },
+    {
+      "sourceId": "B2",
+      "name": "Bronze 2",
+      "superimposed": false
+    },
+    {
+      "sourceId": "B3",
+      "name": "Bronze 3",
+      "superimposed": false
+    },
+    {
+      "sourceId": "B4",
+      "name": "Bronze 4",
+      "superimposed": false
+    },
+    {
+      "sourceId": "B5",
+      "name": "Bronze 5",
+      "superimposed": false
+    },
+    {
+      "sourceId": "B6",
+      "name": "Bronze 6",
+      "superimposed": false
+    },
+    {
+      "sourceId": "B7",
+      "name": "Bronze 7",
+      "superimposed": false
+    },
+    {
+      "sourceId": "B8",
+      "name": "Bronze 8",
+      "superimposed": false
+    },
+    {
+      "sourceId": "B9",
+      "name": "Bronze 9",
+      "superimposed": false
+    },
+    {
+      "sourceId": "G0",
+      "name": "Gold 0",
+      "superimposed": false
+    },
+    {
+      "sourceId": "G1",
+      "name": "Gold 1",
+      "superimposed": false
+    },
+    {
+      "sourceId": "G2",
+      "name": "Gold 2",
+      "superimposed": false
+    },
+    {
+      "sourceId": "G3",
+      "name": "Gold 3",
+      "superimposed": false
+    },
+    {
+      "sourceId": "G4",
+      "name": "Gold 4",
+      "superimposed": false
+    },
+    {
+      "sourceId": "G5",
+      "name": "Gold 5",
+      "superimposed": false
+    },
+    {
+      "sourceId": "G6",
+      "name": "Gold 6",
+      "superimposed": false
+    },
+    {
+      "sourceId": "G7",
+      "name": "Gold 7",
+      "superimposed": false
+    },
+    {
+      "sourceId": "G8",
+      "name": "Gold 8",
+      "superimposed": false
+    },
+    {
+      "sourceId": "G9",
+      "name": "Gold 9",
+      "superimposed": false
+    }
+  ]
+}

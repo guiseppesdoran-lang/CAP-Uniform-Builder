@@ -13,5 +13,6 @@
   {"id":"BRONZE_HOURGLASS","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/bronze_hourglass.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
   {"id":"SILVER_HOURGLASS","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/silver_hourglass.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
   {"id":"GOLD_HOURGLASS","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/gold_hourglass.png","verificationStatus":"ARTWORK_REVIEW_PENDING"},
+  {"id":"N_DEVICE","type":"SPECIAL_AUTHORIZATION_DEVICE","asset":"images/devices/military/n_device.png","verificationStatus":"OFFICIALLY_VERIFIED","source":"https://www.afpc.af.mil/Fact-Sheets/Display/Article/856019/nuclear-deterrence-operations-service-medal/"},
   {"id":"NUMERAL","type":"PARAMETRIC_DEVICE","assetTemplate":"images/devices/military/numeral_{value}.png","minimum":2,"maximum":99,"verificationStatus":"ARTWORK_REVIEW_PENDING"}
 ]
