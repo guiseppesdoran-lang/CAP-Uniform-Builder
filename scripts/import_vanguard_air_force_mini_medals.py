@@ -177,7 +177,58 @@ def remove_edge_background(image: Image.Image) -> Image.Image:
     return image
 
 
-def digital_medal(source: bytes, canvas=(50, 176)) -> Image.Image:
+def normalize_national_defense_palette(image: Image.Image) -> Image.Image:
+    """Match the clean scarlet/gold/navy/white National Defense reference.
+
+    The catalog photograph used for discovery has a heavy bronze cast. Preserve
+    its engraved shading, but map the suspension ribbon and pendant to the
+    colors visible on the supplied physical reference instead of retaining the
+    product-photo white balance.
+    """
+    image = image.convert("RGBA")
+    pixels = image.load()
+    width, height = image.size
+
+    def shaded(base: tuple[int, int, int], factor: float) -> tuple[int, int, int]:
+        return tuple(max(0, min(255, round(channel * factor))) for channel in base)
+
+    for y in range(height):
+        for x in range(width):
+            r, g, b, a = pixels[x, y]
+            if not a:
+                continue
+            luminance = 0.299 * r + 0.587 * g + 0.114 * b
+            # Reconstruct the suspension ribbon from its official stripe
+            # proportions. The source photo is too brown/dark for reliable hue
+            # sampling, especially after posterization.
+            triangle_inset = max(0, y - 84)
+            ribbon_zone = y < 116 and triangle_inset <= x < width - triangle_inset
+            if ribbon_zone:
+                if x <= 16 or x >= 33:
+                    base = (218, 24, 48)  # scarlet
+                elif x in (17, 20, 29, 32):
+                    base = (248, 247, 238)  # warm white
+                elif x in (18, 19, 30, 31):
+                    base = (20, 35, 78)  # navy
+                else:
+                    base = (245, 184, 28)  # golden yellow
+                # A restrained two-line weave matches the McChord artwork
+                # without reintroducing the catalog photo's color cast.
+                nr, ng, nb = shaded(base, 0.91 if y % 2 else 1.0)
+            elif y >= 96:
+                # Keep relief and lettering legible while removing the brown
+                # cast from the photographed pendant.
+                gold_level = 128 + round(127 * max(0.0, min(1.0, luminance / 210.0)))
+                nr = min(255, gold_level)
+                ng = min(235, round(gold_level * 0.78))
+                nb = min(118, round(gold_level * 0.30))
+            else:
+                continue
+            pixels[x, y] = (nr, ng, nb, a)
+    return image
+
+
+def digital_medal(source: bytes, award_id: str, canvas=(50, 176)) -> Image.Image:
     image = remove_edge_background(Image.open(io.BytesIO(source)))
     alpha = image.getchannel("A")
     bbox = alpha.getbbox()
@@ -192,19 +243,27 @@ def digital_medal(source: bytes, canvas=(50, 176)) -> Image.Image:
     # official suspension-ribbon colors and pendant details.
     rgb = ImageOps.posterize(rgb, 5).convert("RGBA")
     rgb.putalpha(alpha)
-    rgb.thumbnail((canvas[0], canvas[1] - 2), Image.Resampling.LANCZOS)
-    output = Image.new("RGBA", canvas, (0, 0, 0, 0))
-    output.alpha_composite(rgb, ((canvas[0] - rgb.width) // 2, 1))
+    # McChord CAP miniature-medal artwork occupies the complete 50 x 176
+    # suspension geometry. Product photographs have inconsistent empty space
+    # and aspect ratios, so preserving each photo's aspect ratio made otherwise
+    # identical physical medals render at visibly different heights. Normalize
+    # the cropped artwork to the same production canvas used by CAP medals.
+    output = rgb.resize(canvas, Image.Resampling.LANCZOS)
+    if award_id == "national_defense_military_service":
+        output = normalize_national_defense_palette(output)
     return output
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--award-id", help="Regenerate only one matched canonical award")
     args = parser.parse_args()
 
     catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
     matches, unmatched = match_products(catalog, products())
+    if args.award_id:
+        matches = [match for match in matches if match["awardId"] == args.award_id]
     if not args.apply:
         print(json.dumps({"matched": matches, "unmatched": unmatched}, indent=2))
         return
@@ -215,7 +274,7 @@ def main() -> None:
         relative = Path("images") / "military-mini-medals" / "air-force" / f"{match['awardId']}.png"
         output = ROOT / relative
         output.parent.mkdir(parents=True, exist_ok=True)
-        digital_medal(fetch(match["image"])).save(output, optimize=True)
+        digital_medal(fetch(match["image"]), match["awardId"]).save(output, optimize=True)
         representation = {
             "status": "AVAILABLE",
             "available": True,
@@ -229,6 +288,17 @@ def main() -> None:
         imported.append({**match, "asset": relative.as_posix()})
 
     OVERRIDES.write_text(json.dumps(overrides, indent=2) + "\n", encoding="utf-8")
+    manifest_imported = imported
+    manifest_unmatched = unmatched
+    if args.award_id and MANIFEST.exists():
+        existing_manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+        replacements = {record["awardId"]: record for record in imported}
+        manifest_imported = [
+            replacements.pop(record.get("awardId"), record)
+            for record in existing_manifest.get("imported", [])
+        ]
+        manifest_imported.extend(replacements.values())
+        manifest_unmatched = existing_manifest.get("unmatched", [])
     MANIFEST.write_text(json.dumps({
         "source": "https://www.vanguardmil.com/collections/miniature-medals",
         "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
@@ -236,8 +306,8 @@ def main() -> None:
         "accessed": date.today().isoformat(),
         "style": "MCCHORD_DIGITAL_MEDAL",
         "canvas": [50, 176],
-        "imported": imported,
-        "unmatched": unmatched,
+        "imported": manifest_imported,
+        "unmatched": manifest_unmatched,
     }, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"imported": len(imported), "unmatched": len(unmatched)}, indent=2))
 
