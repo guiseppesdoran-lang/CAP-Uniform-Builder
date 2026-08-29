@@ -31,8 +31,26 @@ let browser;
   await page.locator('#expandRibbons').click();
   const root=page.locator('#galleryModalHost details[data-military-section="military-root"]');
   await root.evaluate(element=>element.open=true);
-  const branch=page.locator('#galleryModalHost details[data-military-section^="military-branch-"]').filter({has:page.locator('.rbAwardSelect')}).first();
+  const gallerySearch=page.locator('#galleryModalHost .militaryRibbonCatalogSearch');
+  await gallerySearch.fill('air force cross');
+  await page.locator('#galleryModalHost .militaryRibbonCatalogService').selectOption('AIR_FORCE');
+  await page.waitForFunction(()=>document.querySelectorAll('#galleryModalHost .rbAwardSelect').length>=1);
+  await page.locator('#capubV2ModalSearch').fill('air force cross');
+  const filteredSelect=page.locator('#galleryModalHost .galleryTile:not(.isFilteredOut) .rbAwardSelect').first();
+  await root.evaluate(element=>element.open=true);
+  await filteredSelect.locator('xpath=ancestor::details[1]').evaluate(element=>element.open=true);
+  await filteredSelect.selectOption(await filteredSelect.locator('option').nth(1).getAttribute('value'));
+  assert.equal(await page.locator('#capubV2ModalSearch').inputValue(),'air force cross','main modal search reset after changing an award attribute');
+  assert.equal(await page.locator('#galleryModalHost .militaryRibbonCatalogSearch').inputValue(),'air force cross','gallery search reset after changing an award attribute');
+  assert.equal(await page.locator('#galleryModalHost .militaryRibbonCatalogService').inputValue(),'AIR_FORCE','gallery service filter reset after changing an award attribute');
+  await page.locator('#galleryModalHost .militaryRibbonCatalogSearch').fill('');
+  await page.locator('#galleryModalHost .militaryRibbonCatalogService').selectOption('ALL');
+  await page.locator('#capubV2ModalSearch').fill('');
+  await page.waitForTimeout(250);
+  await page.waitForFunction(()=>document.querySelector('#galleryModalHost .militaryRibbonCatalogSearch')?.value==='');
+  const branch=page.locator('#galleryModalHost details[data-military-section^="military-branch-"]').first();
   await branch.evaluate(element=>element.open=true);
+  await branch.locator('.rbAwardSelect').first().waitFor();
   const select=branch.locator('.rbAwardSelect').first();
   await select.scrollIntoViewIfNeeded();
   await page.locator('#galleryModalHost').evaluate(element=>element.parentElement.scrollTop=180);
@@ -61,10 +79,20 @@ let browser;
   assert.equal(await page.locator('#militarySelectedAwards .militarySelectedAward').count(),1,'selected-awards panel was not updated');
   await page.evaluate(()=>{
     window.State.organization='AIR_FORCE';
-    window.State.militaryAwards={air_force_commendation:{awardCount:7}};
+    window.State.militaryAwards={air_and_space_commendation_medal:{awardCount:7}};
     window.State.militaryRepresentation='RIBBON';
     fullRender();
   });
+  const rackDiagnostic=await page.evaluate(()=>({
+    organization:window.State.organization,
+    representation:window.State.militaryRepresentation,
+    awards:window.State.militaryAwards,
+    selected:typeof getSelectedMilitaryAwards==='function' ? getSelectedMilitaryAwards().map(award=>award.id) : null,
+    tiles:document.querySelectorAll('.militaryRackTile').length,
+    note:document.querySelector('.militaryPreviewNote')?.textContent || '',
+    errors:window.__capubErrors || []
+  }));
+  assert.ok(rackDiagnostic.tiles>0,`military ribbon rack did not render: ${JSON.stringify({rackDiagnostic,errors})}`);
   const composed=page.locator('.militaryRackTile').first();
   await composed.waitFor({state:'visible'});
   await page.waitForFunction(()=>document.querySelector('.militaryRackTile')?.src.startsWith('data:image/png;base64,'));
@@ -134,6 +162,20 @@ let browser;
   const pilotRow=badgeResults.locator('[data-badge-id="air_force_pilot_badge"]');
   await pilotRow.locator('.militaryBadgeVariant').selectOption('command_pilot');
   assert.deepEqual(await page.evaluate(()=>window.State.militaryBadges.air_force_pilot_badge),{selected:true,variant:'command_pilot'});
+
+  await page.locator('#organizationSelect').selectOption('CAP');
+  await page.evaluate(()=>{
+    window.State.membership='senior'; window.State.gender='male'; window.State.rank='capt'; window.State.uniform='blues_a';
+    window.State.militaryBadges={}; refreshUI(); fullRender();
+  });
+  await page.locator('#expandBadges').click();
+  const capMilitaryRoot=page.locator('#galleryModalHost details[data-military-badge-catalog="true"]');
+  await capMilitaryRoot.evaluate(element=>element.open=true);
+  const capArmyBadge=page.locator('#galleryModalHost [data-military-badge-id="army_aviator_badge"]');
+  await capArmyBadge.locator('xpath=ancestor::details[1]').evaluate(element=>element.open=true);
+  await capArmyBadge.locator('.militaryBadgeCatalogCheck').check();
+  assert.equal(await page.evaluate(()=>!!window.State.militaryBadges.army_aviator_badge),true,'CAP badge picker did not retain the military badge selection');
+  assert.equal(await page.locator('.capMilitaryBadge').count(),1,'selected military badge did not render on the CAP uniform');
   assert.deepEqual(errors,[],'browser errors were reported');
-  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,missingBadgeNotFabricated:true,armyBadgeFamiliesListed:true,armyBadgeArtworkRendered:true,navyBadgeFamiliesListed:true,marineCorpsBadgeFamiliesListed:true,airForceBadgeFamiliesListed:true,spaceForceBadgeFamiliesListed:true,badgeVariantSelectionPersisted:true},null,2)+'\n');
+  process.stdout.write(JSON.stringify({modalAccordionPreserved:true,modalScrollPreserved:true,searchPreserved:true,gallerySearchPreserved:true,filterPreserved:true,catalogScrollPreserved:true,selectedPanel:true,representationAvailabilityFilter:true,flattenedRibbonPng:true,missingMiniatureNotFabricated:true,reviewedMiniatureRendered:true,officialBadgeCatalogListed:true,badgeSelectionPersisted:true,capMilitaryBadgeSelection:true,capMilitaryBadgeRendered:true,missingBadgeNotFabricated:true,armyBadgeFamiliesListed:true,armyBadgeArtworkRendered:true,navyBadgeFamiliesListed:true,marineCorpsBadgeFamiliesListed:true,airForceBadgeFamiliesListed:true,spaceForceBadgeFamiliesListed:true,badgeVariantSelectionPersisted:true},null,2)+'\n');
 })().catch(error=>{ console.error(error); process.exitCode=1; }).finally(async()=>{ if(browser) await browser.close(); });

@@ -5026,6 +5026,7 @@ const RIBBON_DISPLAY_NAMES = {
   missing_aircraft_ribbon: 'Missing Aircraft Ribbon'
 };
 const MILITARY_RIBBON_PREFIX = 'military:';
+let militaryRibbonCatalogCache={dataRef:null,awards:[],byId:new Map(),ids:[]};
 function isMilitaryRibbonId(id){
   return String(id || '').startsWith(MILITARY_RIBBON_PREFIX);
 }
@@ -5033,19 +5034,34 @@ function militaryRibbonCatalogId(id){
   return isMilitaryRibbonId(id) ? String(id).slice(MILITARY_RIBBON_PREFIX.length) : String(id || '');
 }
 function getAllMilitaryRibbonAwards(){
+  const dataRef=window.CAPUBMilitaryData?.awards || null;
+  if(militaryRibbonCatalogCache.dataRef===dataRef) return militaryRibbonCatalogCache.awards;
   const raw=(window.CAPUBMilitaryData?.awards || []).filter(award =>
     award.type === 'RIBBON' && !window.CAPUBMilitary?.isCapAward(award)
   );
-  return window.CAPUBMilitary?.canonicalizeAwards?.(raw) || raw;
+  const awards=window.CAPUBMilitary?.canonicalizeAwards?.(raw) || raw;
+  const sorted=[...awards].sort(window.CAPUBMilitary?.compareAwardsUniversal || ((a,b)=>String(a.name).localeCompare(String(b.name))));
+  const byId=new Map();
+  for(const award of awards){
+    byId.set(award.id,award);
+    for(const sourceId of award.sourceIds || []) byId.set(sourceId,award);
+  }
+  militaryRibbonCatalogCache={
+    dataRef,
+    awards,
+    byId,
+    ids:sorted.map(award=>`${MILITARY_RIBBON_PREFIX}${award.id}`)
+  };
+  return awards;
 }
 function getMilitaryRibbonAward(id){
+  getAllMilitaryRibbonAwards();
   const catalogId = militaryRibbonCatalogId(id);
-  return getAllMilitaryRibbonAwards().find(award => award.id === catalogId || award.sourceIds?.includes(catalogId)) || null;
+  return militaryRibbonCatalogCache.byId.get(catalogId) || null;
 }
 function getMilitaryRibbonIds(){
-  const awards = [...getAllMilitaryRibbonAwards()];
-  awards.sort(window.CAPUBMilitary?.compareAwardsUniversal || ((a,b)=>String(a.name).localeCompare(String(b.name))));
-  return awards.map(award => `${MILITARY_RIBBON_PREFIX}${award.id}`);
+  getAllMilitaryRibbonAwards();
+  return [...militaryRibbonCatalogCache.ids];
 }
 const MILITARY_BRANCH_ORDER=['JOINT','ARMY','MARINE_CORPS','NAVY','AIR_FORCE','SPACE_FORCE','COAST_GUARD'];
 const MILITARY_BRANCH_LABELS={JOINT:'Joint / Multi-Service',ARMY:'Army',MARINE_CORPS:'Marine Corps',NAVY:'Navy',AIR_FORCE:'Air Force',SPACE_FORCE:'Space Force',COAST_GUARD:'Coast Guard'};
@@ -8597,6 +8613,9 @@ function getMilitaryUIState(){
   if(!Array.isArray(ui.expandedSections)) ui.expandedSections=[];
   if(!ui.serviceFilter) ui.serviceFilter='ALL';
   if(!ui.awardTypeFilter) ui.awardTypeFilter='ALL';
+  if(typeof ui.gallerySearchValue!=='string') ui.gallerySearchValue='';
+  if(!ui.galleryServiceFilter) ui.galleryServiceFilter='ALL';
+  if(!ui.galleryAwardTypeFilter) ui.galleryAwardTypeFilter='ALL';
   return ui;
 }
 
@@ -8611,7 +8630,7 @@ function captureMilitaryGalleryUI(root,scrollHost,scrollKey='sidebarScrollTop'){
     ui.focusedControl={
       ribbonId:active.dataset?.ribbonId || active.closest?.('[data-ribbon-id]')?.dataset?.ribbonId || '',
       deviceId:active.dataset?.deviceId || '',
-      className:[...active.classList].find(name=>/rbAwardSelect|militaryServiceSelect|militarySpecialDevice|militaryNumeralDevice/.test(name)) || '',
+      className:[...active.classList].find(name=>/rbAwardSelect|militaryServiceSelect|militarySpecialDevice|militaryNumeralDevice|militaryRibbonCatalogSearch|militaryRibbonCatalogService|militaryRibbonCatalogType/.test(name)) || '',
       selectionStart:Number.isFinite(active.selectionStart) ? active.selectionStart : null
     };
   }
@@ -8627,12 +8646,15 @@ function restoreMilitaryGalleryUI(root,scrollHost,scrollKey='sidebarScrollTop'){
       const current=new Set(getMilitaryUIState().expandedSections || []);
       if(details.open) current.add(details.dataset.militarySection); else current.delete(details.dataset.militarySection);
       getMilitaryUIState().expandedSections=[...current];
+      if(details.open && details.querySelector(':scope > [data-military-lazy="true"]') && root===by('ribbonGallery')) buildRibbonGallery();
     });
   });
   if(scrollHost) scrollHost.scrollTop=Number(ui[scrollKey]) || 0;
   const focus=ui.focusedControl;
-  if(focus?.ribbonId && focus.className){
-    const selector=`[data-ribbon-id="${CSS.escape(focus.ribbonId)}"].${CSS.escape(focus.className)}`;
+  if(focus?.className){
+    const selector=focus.ribbonId
+      ? `[data-ribbon-id="${CSS.escape(focus.ribbonId)}"].${CSS.escape(focus.className)}`
+      : `.${CSS.escape(focus.className)}`;
     const target=root.querySelector(selector);
     if(target){
       target.focus({preventScroll:true});
@@ -8641,10 +8663,10 @@ function restoreMilitaryGalleryUI(root,scrollHost,scrollKey='sidebarScrollTop'){
   }
 }
 
-function buildRibbonGallery(){
+function buildRibbonGallery(options={}){
   const wrap = by('ribbonGallery');
   if(!wrap) return;
-  captureMilitaryGalleryUI(wrap,wrap,'sidebarScrollTop');
+  if(options.capture!==false) captureMilitaryGalleryUI(wrap,wrap,'sidebarScrollTop');
   normalizeRibbonSelections();
   wrap.innerHTML = '';
   const eligible = getEligibleRibbonIds();
@@ -8736,7 +8758,21 @@ function buildRibbonGallery(){
   }
 
   if(State.ribbonGalleryExpanded){
-    const militaryIds=getMilitaryRibbonIds();
+    const ui=getMilitaryUIState();
+    const galleryQuery=ui.gallerySearchValue.trim().toLowerCase();
+    const allMilitaryIds=getMilitaryRibbonIds();
+    const militaryIds=allMilitaryIds.filter(id=>{
+      const award=getMilitaryRibbonAward(id);
+      const services=(award?.authorizedServices || []).map(service=>String(service).toUpperCase());
+      const branch=getMilitaryAwardBranch(award);
+      const serviceMatch=ui.galleryServiceFilter==='ALL'
+        || branch===ui.galleryServiceFilter
+        || services.includes(ui.galleryServiceFilter);
+      const typeMatch=ui.galleryAwardTypeFilter==='ALL'
+        || militaryAwardFilterType(award)===ui.galleryAwardTypeFilter;
+      const haystack=[award?.name,award?.officialName,...(award?.aliases || []),award?.id,...services,militaryAwardFilterType(award)].join(' ').toLowerCase();
+      return serviceMatch && typeMatch && (!galleryQuery || haystack.includes(galleryQuery));
+    });
     const militaryMenu=document.createElement('details');
     militaryMenu.className='militaryRibbonMenu';
     militaryMenu.dataset.militarySection='military-root';
@@ -8747,17 +8783,47 @@ function buildRibbonGallery(){
     intro.className='sub';
     intro.innerHTML=`Shared awards appear once under Joint / Multi-Service. Normal mode only exposes award-specific device rules in the local verified dataset. <label style="display:inline-flex;gap:5px;align-items:center;margin-left:8px"><input class="militaryAdvancedMode" type="checkbox" ${getMilitaryUIState().advancedMode?'checked':''}> Manual / unverified configurations</label>`;
     militaryMenu.appendChild(intro);
+    const filters=document.createElement('div');
+    filters.className='militaryRibbonCatalogFilters';
+    filters.style.cssText='display:grid;grid-template-columns:minmax(180px,1fr) minmax(130px,.55fr) minmax(150px,.65fr);gap:7px;margin:8px 0;';
+    filters.innerHTML=`
+      <input class="militaryRibbonCatalogSearch" type="search" placeholder="Search military ribbons…" value="${militaryEscapeHtml(ui.gallerySearchValue)}" aria-label="Search military ribbons">
+      <select class="militaryRibbonCatalogService" aria-label="Filter military ribbons by service">
+        <option value="ALL">All services</option>
+        ${MILITARY_BRANCH_ORDER.map(branch=>`<option value="${branch}" ${ui.galleryServiceFilter===branch?'selected':''}>${MILITARY_BRANCH_LABELS[branch]}</option>`).join('')}
+      </select>
+      <select class="militaryRibbonCatalogType" aria-label="Filter military ribbons by type">
+        <option value="ALL">All award types</option>
+        ${[['DECORATIONS','Decorations'],['UNIT_AWARD','Unit awards'],['CAMPAIGN_EXPEDITIONARY','Campaign / Expeditionary'],['SERVICE','Service awards'],['TRAINING','Training'],['FOREIGN','Foreign'],['OTHER','Other']].map(([value,label])=>`<option value="${value}" ${ui.galleryAwardTypeFilter===value?'selected':''}>${label}</option>`).join('')}
+      </select>
+    `;
+    militaryMenu.appendChild(filters);
+    const resultSummary=document.createElement('div');
+    resultSummary.className='sub militaryRibbonCatalogSummary';
+    resultSummary.textContent=`${militaryIds.length} of ${allMilitaryIds.length} unique military awards shown. Branch contents load when opened.`;
+    militaryMenu.appendChild(resultSummary);
+    const filtersActive=!!galleryQuery || ui.galleryServiceFilter!=='ALL' || ui.galleryAwardTypeFilter!=='ALL';
+    const expandedSections=new Set(ui.expandedSections || []);
     for(const branch of MILITARY_BRANCH_ORDER){
       const ids=militaryIds.filter(id=>getMilitaryAwardBranch(getMilitaryRibbonAward(id))===branch);
       const branchMenu=document.createElement('details');
       branchMenu.className='militaryBranchMenu';
-      branchMenu.dataset.militarySection=`military-branch-${branch}`;
+      const branchKey=`military-branch-${branch}`;
+      branchMenu.dataset.militarySection=branchKey;
+      const shouldPopulate=expandedSections.has(branchKey) || (filtersActive && ids.length>0);
+      branchMenu.open=shouldPopulate;
       const branchSummary=document.createElement('summary');
       branchSummary.textContent=`${MILITARY_BRANCH_LABELS[branch]} (${ids.length})`;
       branchMenu.appendChild(branchSummary);
       const grid=document.createElement('div');
       grid.className='militaryBranchGrid';
-      if(ids.length) ids.forEach(id=>grid.appendChild(buildTile(id,true)));
+      if(shouldPopulate && ids.length) ids.forEach(id=>grid.appendChild(buildTile(id,true)));
+      else if(!shouldPopulate){
+        grid.dataset.militaryLazy='true';
+        const lazy=document.createElement('div');
+        lazy.className='sub'; lazy.textContent='Open this branch to load its ribbon controls.';
+        grid.appendChild(lazy);
+      }
       else{
         const empty=document.createElement('div');
         empty.className='sub';
@@ -8774,6 +8840,27 @@ function buildRibbonGallery(){
 }
 
 function wireRibbonTileControls(root){
+  root.querySelectorAll('.militaryRibbonCatalogSearch').forEach(input=>{
+    input.oninput=()=>{
+      const ui=getMilitaryUIState();
+      ui.gallerySearchValue=input.value;
+      ui.focusedControl={ribbonId:'',deviceId:'',className:'militaryRibbonCatalogSearch',selectionStart:input.selectionStart};
+      clearTimeout(wireRibbonTileControls.searchTimer);
+      wireRibbonTileControls.searchTimer=setTimeout(()=>buildRibbonGallery(),100);
+    };
+  });
+  root.querySelectorAll('.militaryRibbonCatalogService').forEach(select=>{
+    select.onchange=()=>{
+      getMilitaryUIState().galleryServiceFilter=select.value || 'ALL';
+      buildRibbonGallery();
+    };
+  });
+  root.querySelectorAll('.militaryRibbonCatalogType').forEach(select=>{
+    select.onchange=()=>{
+      getMilitaryUIState().galleryAwardTypeFilter=select.value || 'ALL';
+      buildRibbonGallery();
+    };
+  });
   root.querySelectorAll('.militaryAdvancedMode').forEach(input=>{
     input.onchange=()=>{
       getMilitaryUIState().advancedMode=!!input.checked;
@@ -9129,7 +9216,46 @@ function renderAllBadges(){
     placeBadgeSlotAnchored(id);
   }
 
+  renderSelectedMilitaryBadgesOnCap();
+
   renderMeasurementOverlay();
+}
+
+function renderSelectedMilitaryBadgesOnCap(){
+  if(State.organization!=='CAP') return;
+  const remaining=Math.max(0,4-getRenderableCountedBadgeIds().length);
+  if(!remaining) return;
+  const selected=getAllSelectableMilitaryBadges()
+    .filter(badge=>State.militaryBadges?.[badge.id])
+    .slice(0,remaining)
+    .map(badge=>({badge,representation:getMilitaryBadgeRepresentation(badge)}))
+    .filter(entry=>entry.representation?.status==='AVAILABLE' && entry.representation.asset);
+  if(!selected.length) return;
+
+  const renderSize=getCanvasRenderSize();
+  const rack=getRenderedAwardRackElements();
+  const rackTop=rack.length ? Math.min(...rack.map(el=>parseFloat(el.style.top)||0)) : renderSize.h*.38;
+  const rackCenter=getTopRibbonRowCenterX() ?? renderSize.w*.65;
+  const existing=[...uniformCanvas.querySelectorAll('.layer.badge:not(.capMilitaryBadge)')]
+    .map(el=>({top:parseFloat(el.style.top)||0,bottom:(parseFloat(el.style.top)||0)+(parseFloat(el.style.height)||0)}))
+    .filter(box=>box.bottom<=rackTop+1 && Math.abs(rackCenter-renderSize.w*.65)<renderSize.w);
+  const stackBottom=existing.length ? Math.min(rackTop-4,...existing.map(box=>box.top-4)) : rackTop-4;
+  const width=Math.max(46,Math.min(62,renderSize.w*.067));
+  const height=width*.625;
+  selected.forEach((entry,index)=>{
+    const image=document.createElement('img');
+    image.className='layer badge militaryBadgeTile capMilitaryBadge';
+    image.dataset.militaryBadgeId=entry.badge.id;
+    image.src=entry.representation.asset;
+    image.alt=entry.badge.officialName || entry.badge.id;
+    image.title=`U.S. military badge: ${entry.badge.officialName || entry.badge.id}`;
+    const top=stackBottom-(selected.length-index)*height;
+    Object.assign(image.style,{
+      left:`${rackCenter-width/2}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`,
+      objectFit:'contain',zIndex:String(176+index)
+    });
+    uniformCanvas.appendChild(image);
+  });
 }
 
 function getRenderedAwardRackElements() {
@@ -10319,7 +10445,13 @@ function renderMeasurementOverlay(){
   }
 }
 
+let militaryServiceAwardCache={dataRef:null,key:'',awards:[]};
 function getMilitaryCatalogAwards(){
+  const dataRef=window.CAPUBMilitaryData?.awards || null;
+  const key=`${State.organization}|${State.component}`;
+  if(militaryServiceAwardCache.dataRef===dataRef && militaryServiceAwardCache.key===key){
+    return militaryServiceAwardCache.awards;
+  }
   const raw=(window.CAPUBMilitaryData?.awards || []).filter(award =>
     award.type === 'RIBBON' && window.CAPUBMilitary?.isAuthorizedForService(
       award, State.organization, State.component
@@ -10331,6 +10463,7 @@ function getMilitaryCatalogAwards(){
     const legacyId=(award.sourceIds || []).find(id=>State.militaryAwards?.[id]);
     if(legacyId) State.militaryAwards[award.id]={...State.militaryAwards[legacyId]};
   }
+  militaryServiceAwardCache={dataRef,key,awards:canonical};
   return canonical;
 }
 
@@ -10356,10 +10489,32 @@ function getMilitaryCatalogBadges(){
   return window.CAPUBMilitary?.sortBadgesForMember?.(raw,{organization:State.organization,component:State.component}) || raw;
 }
 
+function getAvailableMilitaryBadgeVariants(badge){
+  const metal=badge?.representations?.metal || {};
+  const variants=metal.variants || {};
+  const available=Object.entries(variants)
+    .filter(([,record])=>record?.status==='AVAILABLE' && record.asset)
+    .map(([id,record])=>({id,record}));
+  if(!available.length && metal.status==='AVAILABLE' && metal.asset){
+    available.push({id:metal.defaultVariant || 'default',record:metal});
+  }
+  return available;
+}
+
+function getAllSelectableMilitaryBadges(){
+  return (window.CAPUBMilitaryData?.badges || [])
+    .filter(badge=>getAvailableMilitaryBadgeVariants(badge).length)
+    .sort((a,b)=>String(a.officialName || a.id).localeCompare(String(b.officialName || b.id)));
+}
+
 function getMilitaryBadgeRepresentation(badge){
   const metal=badge?.representations?.metal || {status:'MISSING_ASSET',available:false,asset:null};
-  const selectedVariant=State.militaryBadges?.[badge?.id]?.variant || metal.defaultVariant || badge?.variants?.[0] || 'default';
-  return metal.variants?.[selectedVariant] || metal;
+  const available=getAvailableMilitaryBadgeVariants(badge);
+  const requested=State.militaryBadges?.[badge?.id]?.variant;
+  const selectedVariant=requested || metal.defaultVariant || available[0]?.id || badge?.variants?.[0] || 'default';
+  const selected=metal.variants?.[selectedVariant];
+  if(selected?.status==='AVAILABLE' && selected.asset) return selected;
+  return available[0]?.record || metal;
 }
 
 function renderMilitaryBadgeSelector(){
@@ -10381,13 +10536,16 @@ function renderMilitaryBadgeSelector(){
     text.innerHTML=`<strong>${militaryEscapeHtml(badge.officialName || badge.name)}</strong><br><span class="${representation.status==='AVAILABLE'?'hintText':'militarySourceOnly'}">${militaryEscapeHtml(status)} • ${militaryEscapeHtml(badge.family || 'OTHER')}</span>`;
     const info=document.createElement('span'); info.className='hintText'; info.textContent=badge.precedence?.[State.organization]?.verified?'Verified':'Unverified';
     let variantSelect=null;
-    if(Array.isArray(badge.variants) && badge.variants.length){
+    const selectorVariants=Array.isArray(badge.variants) && badge.variants.length
+      ? badge.variants
+      : getAvailableMilitaryBadgeVariants(badge).map(item=>item.id);
+    if(selectorVariants.length>1){
       variantSelect=document.createElement('select'); variantSelect.className='militaryBadgeVariant'; variantSelect.title='Badge level or variant';
-      for(const variant of badge.variants){
+      for(const variant of selectorVariants){
         const option=document.createElement('option'); option.value=variant; option.textContent=variant.replaceAll('_',' ').replace(/\b\w/g,letter=>letter.toUpperCase());
         variantSelect.appendChild(option);
       }
-      variantSelect.value=State.militaryBadges?.[badge.id]?.variant || badge.variants[0];
+      variantSelect.value=State.militaryBadges?.[badge.id]?.variant || badge.representations?.metal?.defaultVariant || selectorVariants[0];
       variantSelect.addEventListener('change',()=>{
         box.checked=true;
         State.militaryBadges[badge.id]={selected:true,variant:variantSelect.value};
@@ -10492,6 +10650,7 @@ function renderMilitaryAwardSelector(){
   const previousScroll=host.scrollTop;
   host.replaceChildren();
   renderSelectedMilitaryAwards(all);
+  const fragment=document.createDocumentFragment();
   for(const award of filtered){
     const row=document.createElement('label');
     row.className='militaryAwardOption';
@@ -10521,8 +10680,9 @@ function renderMilitaryAwardSelector(){
       if(State.militaryAwards[award.id]) State.militaryAwards[award.id].awardCount=Math.max(1,Number(count.value)||1);
       fullRender();
     });
-    row.append(box,text,count); host.appendChild(row);
+    row.append(box,text,count); fragment.appendChild(row);
   }
+  host.appendChild(fragment);
   host.scrollTop=Number.isFinite(ui.catalogScrollTop) ? ui.catalogScrollTop : previousScroll;
   updateMilitaryAwardSummary(all.length,filtered.length);
   if(activeAwardId){
@@ -10704,7 +10864,12 @@ function wireOrganizationSelector(){
   if(typeFilter) typeFilter.value=ui.awardTypeFilter || 'ALL';
   if(representation) representation.value=State.militaryRepresentation || 'RIBBON';
   if(renderableOnly) renderableOnly.checked=!!ui.renderableOnly;
-  search?.addEventListener('input',()=>{ ui.searchValue=search.value; renderMilitaryAwardSelector(); });
+  let militarySearchTimer=0;
+  search?.addEventListener('input',()=>{
+    ui.searchValue=search.value;
+    clearTimeout(militarySearchTimer);
+    militarySearchTimer=setTimeout(()=>renderMilitaryAwardSelector(),90);
+  });
   serviceFilter?.addEventListener('change',()=>{ ui.serviceFilter=serviceFilter.value; renderMilitaryAwardSelector(); });
   typeFilter?.addEventListener('change',()=>{ ui.awardTypeFilter=typeFilter.value; renderMilitaryAwardSelector(); });
   representation?.addEventListener('change',()=>{ State.militaryRepresentation=representation.value || 'RIBBON'; renderMilitaryAwardSelector(); fullRender(); });
@@ -11568,7 +11733,7 @@ function openGalleryModal(kind){
         focusedControl:ui.focusedControl ? {...ui.focusedControl} : null
       } : null;
       State.ribbonGalleryExpanded = true;
-      buildRibbonGallery();
+      buildRibbonGallery({capture:false});
       if(modalSnapshot){
         ui.expandedSections=modalSnapshot.expandedSections;
         ui.modalScrollTop=modalSnapshot.modalScrollTop;
@@ -11579,6 +11744,7 @@ function openGalleryModal(kind){
       grid.innerHTML = sidebar ? sidebar.innerHTML : '';
       wireModalInteractions('ribbons');
       restoreMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
+      queueMicrotask(()=>window.CAPUB_refreshModalGallerySearch?.('ribbons'));
     }
 
     if(kind==='badges'){
@@ -11717,11 +11883,113 @@ function openGalleryModal(kind){
     }else{
       appendCategorizedBadges(modalHost, eligibleIds);
     }
+
+    const militaryBadges=getAllSelectableMilitaryBadges();
+    if(militaryBadges.length){
+      const militaryRoot=document.createElement('details');
+      militaryRoot.dataset.militaryBadgeCatalog='true';
+      militaryRoot.style.cssText='margin:14px 0 12px;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--panel);';
+      const militarySummary=document.createElement('summary');
+      militarySummary.style.cssText='cursor:pointer;font-weight:850;color:var(--ink);padding:4px 0;';
+      militarySummary.textContent=`U.S. Military Badges (${militaryBadges.length} with reviewed artwork)`;
+      militaryRoot.appendChild(militarySummary);
+      const note=document.createElement('div');
+      note.className='sub'; note.style.margin='6px 0 8px';
+      note.textContent='Only badge variants with reviewed local artwork are selectable. Missing artwork is never substituted.';
+      militaryRoot.appendChild(note);
+
+      for(const branch of MILITARY_BRANCH_ORDER){
+        const records=militaryBadges.filter(badge=>{
+          const services=(badge.authorizedServices || []).filter(service=>MILITARY_BRANCH_ORDER.includes(service));
+          return (services.length===1 ? services[0] : 'JOINT')===branch;
+        });
+        if(!records.length) continue;
+        const details=document.createElement('details');
+        details.className='militaryBadgeBranchMenu';
+        const summary=document.createElement('summary');
+        summary.textContent=`${MILITARY_BRANCH_LABELS[branch]} (${records.length})`;
+        details.appendChild(summary);
+        const branchGrid=document.createElement('div');
+        branchGrid.className='galleryGrid';
+        for(const badge of records){
+          const variants=getAvailableMilitaryBadgeVariants(badge);
+          const selected=State.militaryBadges?.[badge.id];
+          const activeVariant=selected?.variant || badge.representations?.metal?.defaultVariant || variants[0].id;
+          const representation=variants.find(item=>item.id===activeVariant)?.record || variants[0].record;
+          const tile=document.createElement('div');
+          tile.className='galleryTile militaryBadgeGalleryTile';
+          tile.dataset.militaryBadgeId=badge.id;
+          const preview=document.createElement('img');
+          preview.src=representation.asset; preview.alt=badge.officialName || badge.id;
+          const body=document.createElement('div'); body.style.cssText='flex:1;min-width:0;';
+          const title=document.createElement('div'); title.className='title'; title.textContent=badge.officialName || badge.id;
+          const sub=document.createElement('div'); sub.className='sub'; sub.textContent=`${badge.family || 'OTHER'} • ${(badge.authorizedServices || []).map(service=>MILITARY_BRANCH_LABELS[service] || service).join(' / ')}`;
+          const controls=document.createElement('div'); controls.className='miniRow';
+          const label=document.createElement('label');
+          const checkbox=document.createElement('input'); checkbox.type='checkbox'; checkbox.className='militaryBadgeCatalogCheck'; checkbox.checked=!!selected;
+          label.append(checkbox,document.createTextNode(' Add'));
+          controls.appendChild(label);
+          let variantSelect=null;
+          if(variants.length>1){
+            variantSelect=document.createElement('select'); variantSelect.className='militaryBadgeVariant'; variantSelect.title='Badge level or variant';
+            for(const variant of variants){
+              const option=document.createElement('option'); option.value=variant.id;
+              option.textContent=variant.id.replaceAll('_',' ').replace(/\b\w/g,letter=>letter.toUpperCase());
+              variantSelect.appendChild(option);
+            }
+            variantSelect.value=activeVariant;
+            controls.appendChild(variantSelect);
+          }
+          checkbox.onchange=()=>{
+            if(!State.militaryBadges) State.militaryBadges={};
+            if(checkbox.checked) State.militaryBadges[badge.id]={selected:true,variant:variantSelect?.value || activeVariant};
+            else delete State.militaryBadges[badge.id];
+            fullRender();
+          };
+          if(variantSelect) variantSelect.onchange=()=>{
+            if(!State.militaryBadges) State.militaryBadges={};
+            checkbox.checked=true;
+            State.militaryBadges[badge.id]={selected:true,variant:variantSelect.value};
+            preview.src=getMilitaryBadgeRepresentation(badge).asset;
+            fullRender();
+          };
+          body.append(title,sub,controls); tile.append(preview,body); branchGrid.appendChild(tile);
+        }
+        details.appendChild(branchGrid); militaryRoot.appendChild(details);
+      }
+      modalHost.appendChild(militaryRoot);
+    }
   }
 
   function wireModalInteractions(k){
     if(k==='ribbons'){
       wireRibbonTileControls(grid);
+      grid.querySelectorAll('.militaryRibbonCatalogSearch').forEach(input=>{
+        input.oninput=()=>{
+          const ui=getMilitaryUIState();
+          ui.gallerySearchValue=input.value;
+          ui.focusedControl={ribbonId:'',deviceId:'',className:'militaryRibbonCatalogSearch',selectionStart:input.selectionStart};
+          clearTimeout(wireModalInteractions.searchTimer);
+          wireModalInteractions.searchTimer=setTimeout(()=>syncFromSidebar(),100);
+        };
+      });
+      grid.querySelectorAll('.militaryRibbonCatalogService,.militaryRibbonCatalogType').forEach(select=>{
+        select.onchange=()=>{
+          const ui=getMilitaryUIState();
+          if(select.classList.contains('militaryRibbonCatalogService')) ui.galleryServiceFilter=select.value || 'ALL';
+          else ui.galleryAwardTypeFilter=select.value || 'ALL';
+          captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
+          syncFromSidebar();
+        };
+      });
+      grid.querySelectorAll('details[data-military-section]').forEach(details=>{
+        details.addEventListener('toggle',()=>{
+          if(details.open && details.querySelector(':scope > [data-military-lazy="true"]')){
+            captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
+            syncFromSidebar();
+          }
+        });
+      });
       grid.querySelectorAll('.rbAwardSelect,.militaryServiceSelect,.militarySpecialDevice,.militaryNumeralDevice,.militaryAdvancedMode').forEach(control=>{
         const original=control.onchange;
         control.onchange=(event)=>{
@@ -12114,15 +12382,22 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
 
   function injectModalSearch(kind){
     const body = modalHost;
-    if(!body || body.querySelector('.capubV2Search')) return;
+    if(!body) return;
+    if(!State.modalGallerySearchValues) State.modalGallerySearchValues={};
+    if(body.querySelector('.capubV2Search')){
+      window.CAPUB_refreshModalGallerySearch?.(kind);
+      return;
+    }
     const wrap = document.createElement('div');
     wrap.className = 'capubV2Search';
     wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name, id, slot, or category..."/><div class="sub"><span id="capubV2ModalCount"></span> visible. Tip: use this popup for fast selection; selected items stay checked.</div>`;
     body.insertBefore(wrap, body.firstChild);
     const input = wrap.querySelector('input');
     const count = wrap.querySelector('#capubV2ModalCount');
+    input.value=State.modalGallerySearchValues[kind] || '';
     function filter(){
       const q = input.value.trim().toLowerCase();
+      State.modalGallerySearchValues[kind]=input.value;
       let visible = 0;
       body.querySelectorAll('.galleryTile').forEach(tile=>{
         const show = !q || tile.textContent.toLowerCase().includes(q);
@@ -12132,6 +12407,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       if(count) count.textContent = visible;
     }
     input.addEventListener('input', filter);
+    window.CAPUB_refreshModalGallerySearch = requestedKind=>{
+      if(requestedKind && requestedKind!==kind) return;
+      filter();
+    };
     filter();
     setTimeout(()=>input.focus(),50);
   }
