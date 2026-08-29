@@ -1668,7 +1668,8 @@
         "metal": {
           "status": "MISSING_ASSET",
           "available": false,
-          "asset": null
+          "asset": null,
+          "variants": {}
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -1704,7 +1705,8 @@
         "metal": {
           "status": "MISSING_ASSET",
           "available": false,
-          "asset": null
+          "asset": null,
+          "variants": {}
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -1820,9 +1822,32 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+          "variants": {
+            "navy_marine_corps_parachutist": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+              "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
+              "officialSource": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/",
+              "assetSource": "https://commons.wikimedia.org/wiki/File:Navy_and_Marine_Corps_Parachutist_Insignia.jpg",
+              "license": "Public domain"
+            },
+            "basic_parachutist": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/army/army_parachutist_badge/basic.png",
+              "verificationStatus": "OFFICIALLY_VERIFIED_SHARED_INSIGNIA",
+              "officialSource": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/",
+              "assetSource": "https://www.army.mil/e2/images/rv7/uniforms/badges/combat/Parachutist_Badge_large.jpg"
+            }
+          },
+          "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
+          "officialSource": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/",
+          "assetSource": "https://commons.wikimedia.org/wiki/File:Navy_and_Marine_Corps_Parachutist_Insignia.jpg",
+          "defaultVariant": "navy_marine_corps_parachutist"
         },
         "embroidered": {
           "status": "MISSING_ASSET",
@@ -2271,7 +2296,7 @@
               "asset": "images/military-badges/navy/navy_surface_warfare_insignia/medical.png",
               "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
               "officialSource": "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/",
-              "assetSource": "https://commons.wikimedia.org/wiki/File:US_Navy_Surface_Warfare_-_Medical_Corps_insignia.jpg",
+              "assetSource": "https://commons.wikimedia.org/wiki/File:US_Navy_Surface_Warfare_-_Medical_Service_Corps_insignia.jpg",
               "license": "Public domain"
             },
             "medical_service": {

@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-08-29T03:34:44.875Z",
+    "generatedAt": "2026-08-29T04:00:55.157Z",
     "sourceRecords": 183,
     "officialAdditionRecords": 6,
     "canonicalAwards": 176,
@@ -11,9 +11,9 @@
     "badgesWithVerifiedPrecedence": 5,
     "badgesWithVerifiedPlacement": 98,
     "badgeAssetTotals": {
-      "AVAILABLE": 41,
+      "AVAILABLE": 42,
       "NOT_APPLICABLE": 1,
-      "MISSING_ASSET": 181,
+      "MISSING_ASSET": 180,
       "UNVERIFIED": 0
     },
     "devices": 16,
@@ -6884,11 +6884,11 @@
       "ownerType": "BADGE",
       "ownerId": "navy_parachutist_insignia",
       "representation": "METAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
+      "exists": true,
+      "sha256": "b3e158b43716bdd60588d660cd8e94e9c6aeaf290c39311d2ffb76fab4a84445",
+      "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
       "sources": []
     },
     {

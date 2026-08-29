@@ -37,6 +37,9 @@ QUERY_OVERRIDES = {
     "navy_enlisted_aviation_warfare_specialist_insignia": {"default": "Enlisted Aviation Warfare Specialist Badge"},
     "navy_aviation_supply_corps_insignia": {"default": "Naval Aviation Supply Corps insignia"},
     "navy_aircrew_warfare_specialist_insignia": {"default": "Naval Aircrew Warfare Specialist Badge"},
+    "navy_marine_corps_combat_aircrew_insignia": {"base": "Marine Corps Combat Aircrew Badge"},
+    "navy_marine_corps_combatant_diver_insignia": {"default": "Marine Corps Combatant Diver Badge"},
+    "navy_parachutist_insignia": {"navy_marine_corps_parachutist": "Navy Marine Corps Parachutist Badge"},
     "navy_explosive_ordnance_disposal_insignia": {
         "officer": "Explosive Ordnance Disposal Officer Badge Navy",
         "basic": "Basic Explosive Ordnance Disposal Badge Navy",

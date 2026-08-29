@@ -157,3 +157,14 @@ test('reviewed Navy artwork copies preserve official and asset provenance',()=>{
   }
   assert.ok(fs.existsSync(path.join(ROOT,'reports','navy-badge-style-review.png')));
 });
+
+test('Navy and Marine Corps parachutist variants use reviewed local artwork',()=>{
+  const badge=badges.find(record=>record.id==='navy_parachutist_insignia');
+  const variants=badge?.representations?.metal?.variants||{};
+  assert.equal(variants.navy_marine_corps_parachutist?.status,'AVAILABLE');
+  assert.equal(variants.basic_parachutist?.status,'AVAILABLE');
+  for(const variant of Object.values(variants)){
+    const absolute=path.join(ROOT,...variant.asset.split('/'));
+    assert.ok(fs.existsSync(absolute),`${variant.asset} missing`);
+  }
+});
