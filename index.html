@@ -10669,6 +10669,10 @@ function renderMilitaryAwardSelector(){
     count.className='militaryAwardCount';
     count.disabled=!checked; count.title='Number of awards';
     box.addEventListener('change',()=>{
+      // Capture synchronously: a programmatic/keyboard selection can trigger a
+      // full render before the passive scroll listener has stored the latest
+      // catalog position.
+      ui.catalogScrollTop=host.scrollTop;
       if(box.checked) State.militaryAwards[award.id]={awardCount:Math.max(1,Number(count.value)||1)};
       else delete State.militaryAwards[award.id];
       count.disabled=!box.checked;
@@ -10677,6 +10681,7 @@ function renderMilitaryAwardSelector(){
       fullRender();
     });
     count.addEventListener('change',()=>{
+      ui.catalogScrollTop=host.scrollTop;
       if(State.militaryAwards[award.id]) State.militaryAwards[award.id].awardCount=Math.max(1,Number(count.value)||1);
       fullRender();
     });

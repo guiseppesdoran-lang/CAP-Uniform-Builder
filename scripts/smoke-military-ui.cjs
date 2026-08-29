@@ -65,6 +65,8 @@ let browser;
   await page.locator('#organizationSelect').selectOption('AIR_FORCE');
   await page.locator('#militaryAwardSearch').fill('medal');
   await page.locator('#militaryAwardServiceFilter').selectOption('NAVY');
+  // Let the debounced search render settle before interacting with a result.
+  await page.waitForTimeout(180);
   const results=page.locator('#militaryAwardResults');
   const checkbox=results.locator('.militaryAwardOption input[type="checkbox"]').nth(6);
   await checkbox.scrollIntoViewIfNeeded();

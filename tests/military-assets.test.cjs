@@ -143,6 +143,28 @@ test('official Army badge import manifest is complete',()=>{
   assert.deepEqual(officialArmyBadgeImport.missing,[]);
 });
 
+test('Air Force badge checkpoint uses normalized local digital artwork',()=>{
+  const manifest=require('../data/imports/vanguard_air_force_badges.json');
+  assert.equal(manifest.sourceType,'COMMERCIAL_CATALOG_DISCOVERY_REFERENCE');
+  assert.equal(manifest.style.name,'MCCHORD_DIGITAL_SILVER');
+  assert.equal(manifest.imported.length,83);
+  assert.equal(new Set(manifest.imported.map(record=>record.badgeId)).size,30);
+  assert.ok(manifest.imported.every(record=>record.asset&&!record.asset.startsWith('http')));
+  for(const record of manifest.imported){
+    const absolute=path.join(ROOT,...record.asset.split('/'));
+    assert.ok(fs.existsSync(absolute),`${record.badgeId}:${record.variant} asset missing`);
+    const buffer=fs.readFileSync(absolute);
+    assert.ok(buffer.subarray(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])),`${record.badgeId}:${record.variant} is not PNG`);
+    assert.equal(buffer.readUInt32BE(16),320,`${record.badgeId}:${record.variant} width`);
+    assert.equal(buffer.readUInt32BE(20),180,`${record.badgeId}:${record.variant} height`);
+    assert.ok([4,6].includes(buffer[25]),`${record.badgeId}:${record.variant} lacks alpha`);
+    const badge=badges.find(candidate=>candidate.id===record.badgeId);
+    const representation=badge?.representations?.metal?.variants?.[record.variant];
+    assert.equal(representation?.asset,record.asset,`${record.badgeId}:${record.variant} catalog mapping`);
+    assert.equal(representation?.style,'MCCHORD_DIGITAL_SILVER');
+  }
+});
+
 test('reviewed naval-service artwork copies preserve official and asset provenance',()=>{
   assert.ok(commonsNavyBadgeImport.imported.length>=14,'expected the reviewed Navy artwork checkpoint');
   for(const record of commonsNavyBadgeImport.imported){
