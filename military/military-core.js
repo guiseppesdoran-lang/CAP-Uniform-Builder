@@ -503,6 +503,53 @@
     return { devices, valid:warnings.length === 0, warnings };
   }
 
+  function splitRibbonAwardInstances({
+    award, service, awardCount=1, campaignCount=0, specialAuthorizations=[],
+    manualDevices=[], deviceCatalog=[], allowUnverifiedRules=false, maxDevices=4
+  }){
+    const totalCount=Math.max(1,Math.trunc(Number(awardCount) || 1));
+    const limit=Math.max(1,Math.trunc(Number(maxDevices) || 4));
+    const shared={award,service,deviceCatalog,allowUnverifiedRules,representation:'RIBBON'};
+    const complete=calculateDevices({
+      ...shared,awardCount:totalCount,campaignCount,specialAuthorizations,manualDevices
+    });
+    if((complete.devices || []).length <= limit){
+      return [{awardCount:totalCount,...complete}];
+    }
+
+    const instances=[];
+    let remaining=totalCount;
+    let first=true;
+    while(remaining > 0){
+      let selected=null;
+      for(let candidate=remaining;candidate>=1;candidate-=1){
+        const calculated=calculateDevices({
+          ...shared,
+          awardCount:candidate,
+          campaignCount:first ? campaignCount : 0,
+          specialAuthorizations:first ? specialAuthorizations : [],
+          manualDevices:first ? manualDevices : []
+        });
+        if((calculated.devices || []).length <= limit){
+          selected={awardCount:candidate,...calculated};
+          break;
+        }
+      }
+      if(!selected){
+        return [{
+          awardCount:totalCount,
+          ...complete,
+          valid:false,
+          warnings:[...(complete.warnings || []),`The configured devices cannot be divided into groups of ${limit} without changing the represented award count.`]
+        }];
+      }
+      instances.push(selected);
+      remaining-=selected.awardCount;
+      first=false;
+    }
+    return instances;
+  }
+
   function mergeAwardRecords(records){
     const merged = new Map();
     for(const source of records || []){
@@ -568,6 +615,6 @@
     isBadgeAuthorizedForService, getBadgePrecedence, sortBadgesForMember,
     inferDeviceRules, normalizeRepresentations, createAwardSelection, canonicalDeviceVariantKey,
     resolveBadgeRepresentation, getAwardRepresentation,
-    calculateDevices, mergeAwardRecords, validateCatalog
+    calculateDevices, splitRibbonAwardInstances, mergeAwardRecords, validateCatalog
   };
 });
