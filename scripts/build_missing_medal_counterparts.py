@@ -39,6 +39,7 @@ CONFIG = {
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--service", default="AIR_FORCE")
+    parser.add_argument("--refresh-reviewed", action="store_true", help="Reapply the service's recorded reviewed counterpart manifest.")
     parser.add_argument("--apply", action="store_true")
     args = parser.parse_args()
     service = args.service.upper()
@@ -50,8 +51,12 @@ def main() -> None:
     source_by_id = {award["id"]: award for award in source_catalog}
     overrides = json.loads(OVERRIDES.read_text(encoding="utf-8"))
     candidates = []
+    manifest = ROOT / "data" / "imports" / f"reviewed_{slug}_medal_counterparts.json"
 
-    for award in canonical:
+    if args.refresh_reviewed and manifest.exists():
+        candidates = json.loads(manifest.read_text(encoding="utf-8")).get("imported", [])
+
+    for award in canonical if not args.refresh_reviewed else []:
         if service not in award.get("authorizedServices", []):
             continue
         representations = award.get("representations", {})
@@ -121,7 +126,6 @@ def main() -> None:
         imported.append({**candidate, "asset": relative.as_posix()})
 
     OVERRIDES.write_text(json.dumps(overrides, indent=2) + "\n", encoding="utf-8")
-    manifest = ROOT / "data" / "imports" / f"reviewed_{slug}_medal_counterparts.json"
     manifest.write_text(json.dumps({
         "service": service,
         "accessed": date.today().isoformat(),

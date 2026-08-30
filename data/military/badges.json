@@ -1237,15 +1237,74 @@
       ],
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null,
-          "variants": {}
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png",
+              "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
+              "officialSource": "https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95",
+              "assetSource": "https://commons.wikimedia.org/wiki/File:Naval_Aviation_Observer_Badge.png",
+              "license": "CC BY-SA 4.0"
+            }
+          },
+          "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
+          "officialSource": "https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=95",
+          "assetSource": "https://commons.wikimedia.org/wiki/File:Naval_Aviation_Observer_Badge.png",
+          "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+          "byService": {
+            "NAVY": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+                  "backingProfile": "NAVAL_BLACK_NWU_III",
+                  "sourceMetalAsset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "NAVAL_BLACK_NWU_III",
+          "sourceMetalAsset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+              "backingProfile": "NAVAL_BLACK_NWU_III",
+              "sourceMetalAsset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {
@@ -16313,14 +16372,75 @@
       "status": "CURRENT",
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png",
+              "verificationStatus": "CATALOG_CROSS_REFERENCED",
+              "source": "https://www.vanguardmil.com/products/usaf-base-honor-guard-badge",
+              "style": "MCCHORD_DIGITAL_SILVER",
+              "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150225.jpg?v=1617288218"
+            }
+          },
+          "verificationStatus": "CATALOG_CROSS_REFERENCED",
+          "source": "https://www.vanguardmil.com/products/usaf-base-honor-guard-badge",
+          "style": "MCCHORD_DIGITAL_SILVER",
+          "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150225.jpg?v=1617288218",
+          "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+          "byService": {
+            "AIR_FORCE": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+                  "backingProfile": "DAF_SPICE_BROWN_OCP",
+                  "sourceMetalAsset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "DAF_SPICE_BROWN_OCP",
+          "sourceMetalAsset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+              "backingProfile": "DAF_SPICE_BROWN_OCP",
+              "sourceMetalAsset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {

@@ -292,9 +292,11 @@ def usable_product(product: dict) -> bool:
         return False
     if any(word in title for word in ("embroidered", "ocp", "rotc", "academy")):
         return False
+    reviewed_unqualified_titles = {"air force badge: base honor guard"}
     return (
         "full size" in tags or "regulation" in title or "identification badge" in title
         or "midsize" in title or "mid-size" in title or "miniature" in title
+        or title in reviewed_unqualified_titles
     )
 
 

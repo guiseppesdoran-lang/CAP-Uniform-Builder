@@ -2,7 +2,7 @@
   "source": "https://www.vanguardmil.com/collections/medals",
   "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
   "regulatoryAuthority": "DAFMAN 36-2806, Attachment 2 and Attachment 16",
-  "accessed": "2026-08-29",
+  "accessed": "2026-08-30",
   "style": "MCCHORD_DIGITAL_MEDAL",
   "canvas": [
     100,
@@ -422,8 +422,8 @@
     {
       "awardId": "remote_combat_effects_campaign_medal",
       "productTitle": null,
-      "productUrl": "https://www.vanguardmil.com/products/full-size-medal-air-force-remote-combat-effects-campaign",
-      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/nophoto_2d7dfaf3-4b99-4b53-ae37-892f44b1a449.jpg?v=1624998233",
+      "productUrl": "https://www.vanguardmil.com/products/miniature-medal-air-force-remote-combat-effects-campaign-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617907.jpg?v=1617290960",
       "score": null,
       "asset": "images/military-full-size-medals/air-force/remote_combat_effects_campaign_medal.png"
     },
@@ -446,10 +446,42 @@
     {
       "awardId": "kuwiat_liberation_kuwait",
       "productTitle": null,
-      "productUrl": "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-466-full-size-medal",
-      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6590100.jpg?v=1617287643",
+      "productUrl": "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/kuwait_liberation_of_kuwait_miniature_medal_2054_kuwlib_mini_1.jpeg?v=1423544523",
       "score": null,
       "asset": "images/military-full-size-medals/air-force/kuwiat_liberation_kuwait.png"
+    },
+    {
+      "awardId": "defense_superior_service",
+      "productTitle": null,
+      "productUrl": "https://www.vanguardmil.com/products/defense-superior-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/defense_superior_service_miniature_medal_2038_defsup_mini_1.jpeg?v=1423544692",
+      "score": null,
+      "asset": "images/military-full-size-medals/air-force/defense_superior_service.png"
+    },
+    {
+      "awardId": "inter_american_defense_board",
+      "productTitle": null,
+      "productUrl": "https://www.vanguardmil.com/products/inter-american-defense-board-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/inter_american_defense_board_miniature_medal_2047_1_1_d010ba28-8c13-4573-9976-fcce6fe9c57a.jpeg?v=1423544530",
+      "score": null,
+      "asset": "images/military-full-size-medals/air-force/inter_american_defense_board.png"
+    },
+    {
+      "awardId": "medal_for_humane_action",
+      "productTitle": null,
+      "productUrl": "https://www.vanguardmil.com/products/medal-for-humane-action-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/medal_for_humane_action_miniature_medal_2060_humane_mini_1_1.jpeg?v=1423544632",
+      "score": null,
+      "asset": "images/military-full-size-medals/air-force/medal_for_humane_action.png"
+    },
+    {
+      "awardId": "prisoner_of_war",
+      "productTitle": null,
+      "productUrl": "https://www.vanguardmil.com/products/prisoner-of-war-pow-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/prisoner_of_war_miniature_medal_2082_priswar_mini_1_1.jpeg?v=1423544571",
+      "score": null,
+      "asset": "images/military-full-size-medals/air-force/prisoner_of_war.png"
     }
   ],
   "failed": [],
@@ -527,12 +559,6 @@
       "runnerUp": 0.785
     },
     {
-      "title": "Full Size Medal: Coast Guard 9-11",
-      "key": "coast guard 9 11",
-      "score": 0.905,
-      "runnerUp": 0.622
-    },
-    {
       "title": "Full Size Medal: Coast Guard Achievement",
       "key": "coast guard achievement",
       "score": 1.78,
@@ -573,12 +599,6 @@
       "key": "distinguished service cross",
       "score": 2.342,
       "runnerUp": 1.446
-    },
-    {
-      "title": "Full Size Medal: Kuwait Liberation Government of Kuwait #466",
-      "key": "kuwait liberation government of kuwait 466",
-      "score": 1.927,
-      "runnerUp": 0.949
     },
     {
       "title": "Full Size Medal: Marine Corps Armed Forces Reserve",
@@ -753,12 +773,6 @@
       "key": "public health service special assignment service",
       "score": 0.553,
       "runnerUp": 0.54
-    },
-    {
-      "title": "Full Size Medal: Republic of Korea War Service No Device",
-      "key": "republic of korea war service no device",
-      "score": 2.367,
-      "runnerUp": 0.902
     },
     {
       "title": "Full Size Medal: Selective Marine Corps Reserve",

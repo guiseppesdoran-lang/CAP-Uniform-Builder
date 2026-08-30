@@ -6509,6 +6509,7 @@ function getBadgeCategoriesForCurrentMembership(){
 }
 
 const patchList = [
+  'national_staff_ocp_patch',
   'ner_patch','nywg_patch','comms_patch','check_pilot_patch',
   'pjoc_ocp_patch',
   'pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch',
@@ -6522,6 +6523,15 @@ const patchList = [
 const FIELD_BASE_BUILT_IN_PATCH_IDS = new Set(['us_flag_patch','aux_duty_identifier']);
 
 const PATCH_META = {
+  'national_staff_ocp_patch':{
+    label:'National Staff OCP Sleeve Patch',
+    slotHint:'L_SHOULDER',
+    w:70,h:70,
+    img:'badges/utility/national_staff_badge.png',
+    authorizedUniforms:['ocp'],
+    allowedMemberships:['senior'],
+    sourceBadgeId:'national_staff_badge'
+  },
    // Previously added field-uniform patches.
   'ner_patch':{label:'Northeast Region Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/ner_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'nywg_patch':{label:'New York Wing Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nywg_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
@@ -6641,11 +6651,13 @@ function buildUnitPatchSelector(filterText=''){
 
 const ALTERNATES = {
   badgeToPatch: {
+    'national_staff_badge':'national_staff_ocp_patch',
     'communications_technician_badge':'comms_patch',
     'communications_senior_badge':'comms_patch',
     'communications_master_badge':'comms_patch'
   },
   patchToBadge: {
+    'national_staff_ocp_patch':'national_staff_badge',
     'comms_patch':'communications_technician_badge',
     'communications_patch':'communications_technician_badge'
   },
@@ -10803,25 +10815,50 @@ function applyMilitaryPreviewArea(){
   }
 }
 
-function renderMilitaryPreviewBadges(badges,startY=105){
+const MILITARY_LEFT_CHEST_CENTER_X=285;
+
+function militaryBadgeDressPlacementRole(badge){
+  const family=String(badge?.family || '').toUpperCase();
+  const notes=JSON.stringify(badge?.placement?.serviceDress || '').toLowerCase();
+  const id=String(badge?.id || '').toLowerCase();
+  if(/right pocket|above the nametag|above the name tag/.test(notes)) return 'RIGHT_POCKET';
+  if(/wearer's left|left pocket|below the bottom row|below the ribbons|below the medals/.test(notes)) return 'LEFT_POCKET';
+  if(/marksmanship|rifle_qualification|pistol_qualification/.test(id)) return 'LEFT_POCKET';
+  // Identification and command badges use dedicated pocket/duty-badge zones;
+  // they must not be mixed into the occupational stack over the awards.
+  if(family==='IDENTIFICATION' || family==='COMMAND') return 'RIGHT_POCKET';
+  return 'ABOVE_AWARDS';
+}
+
+function renderMilitaryPreviewBadges(badges,startY=92){
   const entries=badges.map(badge=>({badge,representation:getMilitaryBadgeRepresentation(badge)}))
     .filter(entry=>entry.representation?.status==='AVAILABLE' && entry.representation.asset);
   const limit=['AIR_FORCE','SPACE_FORCE'].includes(State.organization) ? 4 : 6;
   const visible=entries.slice(0,limit);
-  const columns=Math.min(3,Math.max(1,visible.length));
-  const cellWidth=92,cellHeight=48;
+  const roleCounts=new Map();
   visible.forEach((entry,index)=>{
-    const row=Math.floor(index/columns),column=index%columns;
-    const rowCount=Math.min(columns,visible.length-row*columns);
-    const rowWidth=rowCount*cellWidth;
+    const role=militaryBadgeDressPlacementRole(entry.badge);
+    const roleIndex=roleCounts.get(role) || 0;
+    roleCounts.set(role,roleIndex+1);
+    const pocket=role!=='ABOVE_AWARDS';
+    const width=pocket ? 52 : 78;
+    const height=pocket ? 44 : 36;
+    const centerX=role==='RIGHT_POCKET' ? 130 : MILITARY_LEFT_CHEST_CENTER_X;
+    const top=role==='ABOVE_AWARDS'
+      ? startY+roleIndex*38
+      : (role==='LEFT_POCKET' ? 330 : 285)+roleIndex*48;
     const image=document.createElement('img');
     image.className='layer militaryBadgeTile';
     image.src=entry.representation.asset;
     image.alt=entry.badge.officialName || entry.badge.id;
     image.title=`${entry.badge.officialName || entry.badge.id}${State.militaryBadges?.[entry.badge.id]?.variant ? ` — ${State.militaryBadges[entry.badge.id].variant.replaceAll('_',' ')}` : ''}`;
-    Object.assign(image.style,{
-      left:`${225-rowWidth/2+column*cellWidth}px`,top:`${startY+row*cellHeight}px`,
-      width:`${cellWidth}px`,height:`42px`,objectFit:'contain',zIndex:String(180+index)
+    image.dataset.badgeId=entry.badge.id;
+    image.dataset.placementRole=role;
+    image.dataset.calibKey=`militaryBadge:${State.organization}:${entry.badge.id}:${role}:${roleIndex}`;
+    image.style.objectFit='contain';
+    image.style.zIndex=String(180+index);
+    applyCalibToElement(image,image.dataset.calibKey,{
+      x:centerX-width/2,y:top,w:width,h:height,r:0
     });
     uniformCanvas.appendChild(image);
   });
@@ -10865,7 +10902,7 @@ function renderMilitaryPreview(){
         const image=document.createElement('img');
         image.className='layer militaryMedalTile'; image.alt=entry.award.name;
         Object.assign(image.style,{
-          left:`${225-rowWidth/2+column*step}px`,top:`${startY+rowIndex*(medalHeight*.56)}px`,
+          left:`${MILITARY_LEFT_CHEST_CENTER_X-rowWidth/2+column*step}px`,top:`${startY+rowIndex*(medalHeight*.56)}px`,
           width:`${medalWidth}px`,height:`${medalHeight}px`,objectFit:'contain',zIndex:String(100+column)
         });
         uniformCanvas.appendChild(image);
@@ -10894,7 +10931,7 @@ function renderMilitaryPreview(){
   let cursor=0;
   if(remainder){ rows.push(items.slice(0,remainder)); cursor=remainder; }
   for(;cursor<items.length;cursor+=columns) rows.push(items.slice(cursor,cursor+columns));
-  const centerX=225, topY=210;
+  const centerX=MILITARY_LEFT_CHEST_CENTER_X, topY=210;
   rows.forEach((row,rowIndex)=>{
     const rowWidth=row.length*width+(row.length-1)*gap;
     row.forEach((award,column)=>{
@@ -15308,7 +15345,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       'emt_paramedic','emt_intermediate','emt_basic_badge',
       'incident_commander_1_badge','incident_commander_2_badge','basic_incident_commander_badge',
       'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge',
-      'group_commander_badge','squadron_commander_badge','national_staff_badge'
+      'group_commander_badge','squadron_commander_badge'
     ];
     const CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET = new Set(CAPUB_DOCUMENT_UTILITY_BADGE_IDS);
     const CAPUB_UTILITY_ONLY_BADGE_IDS = new Set([]);

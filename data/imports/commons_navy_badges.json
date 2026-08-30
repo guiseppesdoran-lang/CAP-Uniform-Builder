@@ -389,6 +389,20 @@
       "asset": "images/military-badges/navy/navy_astronaut_insignia/default.png"
     },
     {
+      "badgeId": "navy_aviation_observer_insignia",
+      "variant": "default",
+      "query": "Naval Aviation Observer Badge",
+      "title": "File:Naval Aviation Observer Badge.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/72/Naval_Aviation_Observer_Badge.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Naval_Aviation_Observer_Badge.png",
+      "width": 432,
+      "height": 143,
+      "mime": "image/png",
+      "license": "CC BY-SA 4.0",
+      "score": 1.0,
+      "asset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png"
+    },
+    {
       "badgeId": "navy_flight_medical_insignia",
       "variant": "default",
       "query": "Naval Flight Surgeon Badge",
@@ -737,24 +751,13 @@
       "badgeId": "navy_special_warfare_combatant_craft_crewman_insignia",
       "variant": "master",
       "query": "Master Special Warfare Combatant Craft Crewman Badge",
-      "candidates": []
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "navy_diving_insignia",
       "variant": "master_diver",
       "query": "Navy Master Diver Badge",
-      "candidates": [
-        {
-          "title": "File:MDV Pin.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/d/dc/MDV_Pin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:MDV_Pin.jpg",
-          "width": 358,
-          "height": 295,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.0167
-        }
-      ]
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "navy_diving_insignia",
@@ -852,22 +855,27 @@
       "candidates": []
     },
     {
-      "badgeId": "navy_aviation_observer_insignia",
-      "variant": "default",
-      "query": "Naval Aviation Observer Badge",
-      "error": "HTTP Error 429: Too Many Requests"
-    },
-    {
       "badgeId": "navy_aviation_science_insignia",
       "variant": "default",
       "query": "Naval Aviation Science Badge",
-      "error": "HTTP Error 429: Too Many Requests"
+      "candidates": []
     },
     {
       "badgeId": "navy_aerial_vehicle_pilot_insignia",
       "variant": "default",
       "query": "Navy Aerial Vehicle Pilot Badge",
-      "error": "HTTP Error 429: Too Many Requests"
+      "candidates": [
+        {
+          "title": "File:AVP badge.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/f/f0/AVP_badge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:AVP_badge.jpg",
+          "width": 225,
+          "height": 225,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.1125
+        }
+      ]
     },
     {
       "badgeId": "navy_expeditionary_warfare_insignia",
@@ -897,51 +905,19 @@
       "badgeId": "navy_special_operations_warfare_insignia",
       "variant": "default",
       "query": "Navy Special Operations Warfare Badge",
-      "candidates": [
-        {
-          "title": "File:Navy SPECOPS Warfare Insignia.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Navy_SPECOPS_Warfare_Insignia.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Navy_SPECOPS_Warfare_Insignia.png",
-          "width": 648,
-          "height": 219,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.4167
-        }
-      ]
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "navy_submarine_patrol_insignia",
       "variant": "default",
       "query": "Navy Submarine Patrol Insignia",
-      "candidate": {
-        "title": "File:Navy Submarine Patrol Insignia.png",
-        "url": "https://upload.wikimedia.org/wikipedia/commons/2/24/Navy_Submarine_Patrol_Insignia.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Navy_Submarine_Patrol_Insignia.png",
-        "width": 1812,
-        "height": 335,
-        "mime": "image/png",
-        "license": "Public domain",
-        "score": 1.0
-      },
-      "error": "candidate is a multi-insignia catalog plate"
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "navy_surface_chaplain_qualification_insignia",
       "variant": "default",
       "query": "Surface Warfare Chaplain Badge",
-      "candidates": [
-        {
-          "title": "File:US Navy Surface Chaplain Officer Qualification Insignia.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/0/01/US_Navy_Surface_Chaplain_Officer_Qualification_Insignia.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:US_Navy_Surface_Chaplain_Officer_Qualification_Insignia.png",
-          "width": 776,
-          "height": 325,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.6118
-        }
-      ]
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "marine_corps_astronaut_insignia",
@@ -1104,19 +1080,82 @@
       "badgeId": "coast_guard_air_crew_insignia",
       "variant": "default",
       "query": "Coast Guard Aircrew Badge",
-      "error": "HTTP Error 429: Too Many Requests"
+      "candidates": [
+        {
+          "title": "File:USCG Auxiliary Aircrew Badge.png",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/3/30/USCG_Auxiliary_Aircrew_Badge.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_Auxiliary_Aircrew_Badge.png",
+          "width": 1946,
+          "height": 608,
+          "mime": "image/png",
+          "license": "Public domain",
+          "score": 0.4292
+        },
+        {
+          "title": "File:En-NavyAircrew.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/En-NavyAircrew.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-NavyAircrew.jpg",
+          "width": 380,
+          "height": 120,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.1026
+        }
+      ]
     },
     {
       "badgeId": "coast_guard_flight_surgeon_insignia",
       "variant": "default",
       "query": "Coast Guard Flight Surgeon Badge",
-      "error": "HTTP Error 429: Too Many Requests"
+      "candidates": [
+        {
+          "title": "File:USCG - Flight Surgeon.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/8/80/USCG_-_Flight_Surgeon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Flight_Surgeon.jpg",
+          "width": 935,
+          "height": 216,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.5354
+        },
+        {
+          "title": "File:USCgFSBadge.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ea/USCgFSBadge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCgFSBadge.jpg",
+          "width": 344,
+          "height": 88,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.0814
+        }
+      ]
     },
     {
       "badgeId": "coast_guard_aviation_rescue_swimmer_insignia",
       "variant": "default",
       "query": "Coast Guard Aviation Rescue Swimmer Badge",
-      "error": "HTTP Error 429: Too Many Requests"
+      "candidates": [
+        {
+          "title": "File:USCG - Rescue Swimmer.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/USCG_-_Rescue_Swimmer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Rescue_Swimmer.jpg",
+          "width": 600,
+          "height": 176,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.4371
+        },
+        {
+          "title": "File:Bedford-Jones--Boy Scouts of the Air at Cape Peril.djvu",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Bedford-Jones--Boy_Scouts_of_the_Air_at_Cape_Peril.djvu?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Bedford-Jones--Boy_Scouts_of_the_Air_at_Cape_Peril.djvu",
+          "width": 2084,
+          "height": 3100,
+          "mime": "image/vnd.djvu",
+          "license": "Public domain",
+          "score": 0.0549
+        }
+      ]
     },
     {
       "badgeId": "coast_guard_astronaut_insignia",
@@ -1146,72 +1185,19 @@
       "badgeId": "coast_guard_coxswain_insignia",
       "variant": "default",
       "query": "Coast Guard Coxswain Insignia",
-      "candidates": [
-        {
-          "title": "File:Auxiliary Coxswain.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Auxiliary_Coxswain.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Auxiliary_Coxswain.jpg",
-          "width": 295,
-          "height": 111,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.3883
-        },
-        {
-          "title": "File:Coxswain.jpeg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/2/21/Coxswain.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Coxswain.jpeg",
-          "width": 600,
-          "height": 236,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.3581
-        },
-        {
-          "title": "File:Marine Rescue NSW Coxswain.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Marine_Rescue_NSW_Coxswain.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Marine_Rescue_NSW_Coxswain.png",
-          "width": 120,
-          "height": 60,
-          "mime": "image/png",
-          "license": "CC BY-SA 4.0",
-          "score": 0.35
-        }
-      ]
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "coast_guard_enlisted_expeditionary_warfare_specialist_insignia",
       "variant": "default",
       "query": "Coast Guard Enlisted Expeditionary Warfare Specialist Badge",
-      "candidates": [
-        {
-          "title": "File:EXW Badge.JPG",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/EXW_Badge.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:EXW_Badge.JPG",
-          "width": 590,
-          "height": 188,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.0662
-        }
-      ]
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "coast_guard_surfman_insignia",
       "variant": "default",
       "query": "Coast Guard Surfman Badge",
-      "candidates": [
-        {
-          "title": "File:Surfman.jpeg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Surfman.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Surfman.jpeg",
-          "width": 600,
-          "height": 584,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.3594
-        }
-      ]
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "coast_guard_scuba_diver_insignia",
@@ -1375,13 +1361,44 @@
       "badgeId": "coast_guard_physician_assistant_nurse_practitioner_insignia",
       "variant": "default",
       "query": "Coast Guard Physician Assistant Nurse Practitioner Badge",
-      "error": "HTTP Error 429: Too Many Requests"
+      "candidates": [
+        {
+          "title": "File:Coast Guard Pistol Shot EIC Badge.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Coast_Guard_Pistol_Shot_EIC_Badge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Coast_Guard_Pistol_Shot_EIC_Badge.jpg",
+          "width": 800,
+          "height": 415,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.3961
+        },
+        {
+          "title": "File:USCG - Physician Assistant.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/53/USCG_-_Physician_Assistant.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Physician_Assistant.jpg",
+          "width": 146,
+          "height": 156,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.3841
+        },
+        {
+          "title": "File:Coast Guard Air Station Salem patch.png",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/21/Coast_Guard_Air_Station_Salem_patch.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Coast_Guard_Air_Station_Salem_patch.png",
+          "width": 380,
+          "height": 527,
+          "mime": "image/png",
+          "license": "Public domain",
+          "score": 0.3819
+        }
+      ]
     },
     {
       "badgeId": "coast_guard_command_device",
       "variant": "default",
       "query": "Coast Guard Command Afloat Ashore Device",
-      "error": "HTTP Error 429: Too Many Requests"
+      "candidates": []
     }
   ]
 }

@@ -3,7 +3,7 @@
   "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
   "service": "SPACE_FORCE",
   "representation": "fullSizeMedal",
-  "accessed": "2026-08-29",
+  "accessed": "2026-08-30",
   "canvas": [
     100,
     220
@@ -18,6 +18,46 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609635.jpg?v=1650039872",
       "score": null,
       "asset": "images/military-full-size-medals/space-force/space_force_good_conduct_medal.png"
+    },
+    {
+      "awardId": "air_and_space_achievement_medal",
+      "productTitle": "Full Size Medal: Air Force Achievement",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-achievement-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609240_219b2d63-7745-4013-b2e1-a9db3b8b334d.jpg?v=1617287827",
+      "score": 10,
+      "asset": "images/military-full-size-medals/space-force/air_and_space_achievement_medal.png"
+    },
+    {
+      "awardId": "air_and_space_commendation_medal",
+      "productTitle": "Full Size Medal: Air Force Commendation",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-commendation-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Commendation-Medal.jpeg?v=1423544834",
+      "score": 10,
+      "asset": "images/military-full-size-medals/space-force/air_and_space_commendation_medal.png"
+    },
+    {
+      "awardId": "inherent_resolve_campaign_medal",
+      "productTitle": "Full Size Medal: Inherent Resolve Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/full-size-medal-inherent-resolver-campaign",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609684.jpg?v=1467754965",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/space-force/inherent_resolve_campaign_medal.png"
+    },
+    {
+      "awardId": "nuclear_deterrence_operations_service_medal",
+      "productTitle": "Full Size Medal: Air Force Nuclear Deterrence Operations Service",
+      "productUrl": "https://www.vanguardmil.com/products/full-size-medal-air-force-nuclear-deterrence-operations-service",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/84369-usaf-nuclear-deterrence-operations-medal.jpeg?v=1423542354",
+      "score": 10,
+      "asset": "images/military-full-size-medals/space-force/nuclear_deterrence_operations_service_medal.png"
+    },
+    {
+      "awardId": "remote_combat_effects_campaign_medal",
+      "productTitle": "Full Size Medal: Air Force Remote Combat Effects Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/full-size-medal-air-force-remote-combat-effects-campaign",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/nophoto_2d7dfaf3-4b99-4b53-ae37-892f44b1a449.jpg?v=1624998233",
+      "score": 10,
+      "asset": "images/military-full-size-medals/space-force/remote_combat_effects_campaign_medal.png"
     }
   ],
   "unmatched": [
@@ -160,12 +200,6 @@
       "runnerUp": 0.517
     },
     {
-      "title": "Full Size Medal: Coast Guard 9-11",
-      "key": "coast guard 9 11",
-      "score": 0.269,
-      "runnerUp": 0.261
-    },
-    {
       "title": "Full Size Medal: Coast Guard Achievement",
       "key": "coast guard achievement",
       "score": 1.78,
@@ -266,12 +300,6 @@
       "key": "kosovo campaign",
       "score": 0.85,
       "runnerUp": 0.689
-    },
-    {
-      "title": "Full Size Medal: Kuwait Liberation Government of Kuwait #466",
-      "key": "kuwait liberation government of kuwait 466",
-      "score": 0.361,
-      "runnerUp": 0.353
     },
     {
       "title": "Full Size Medal: Kuwait Liberation Saudi",
@@ -422,18 +450,6 @@
       "key": "navy reserve meritorious service",
       "score": 0.723,
       "runnerUp": 0.345
-    },
-    {
-      "title": "Full Size Medal: Philippine Independence",
-      "key": "philippine independence",
-      "score": 0.375,
-      "runnerUp": 0.367
-    },
-    {
-      "title": "Full Size Medal: Philippine Liberation",
-      "key": "philippine liberation",
-      "score": 0.426,
-      "runnerUp": 0.35
     },
     {
       "title": "Full Size Medal: PHS Covid-19 Pandemic Campaign Medal",

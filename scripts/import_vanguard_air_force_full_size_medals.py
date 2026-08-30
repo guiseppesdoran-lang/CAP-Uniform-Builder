@@ -50,6 +50,9 @@ def main() -> None:
     imported = []
     failed = []
     for match in matches:
+        current = overrides.get("awards", {}).get(match["awardId"], {}).get("fullSizeMedal", {})
+        if current.get("status") == "NOT_APPLICABLE":
+            continue
         relative = Path("images") / "military-full-size-medals" / "air-force" / f"{match['awardId']}.png"
         output = ROOT / relative
         output.parent.mkdir(parents=True, exist_ok=True)

@@ -1,6 +1,6 @@
 # U.S. Military Complete Catalog Audit
 
-Generated: 2026-08-30T06:49:23.699Z
+Generated: 2026-08-30T10:46:15.647Z
 
 > This audit measures implemented, locally renderable data. It does not treat discovery links as authorization and does not count missing or unverified artwork as complete.
 
@@ -15,7 +15,7 @@ Generated: 2026-08-30T06:49:23.699Z
 - Total badge configurations: 401
 - Badges with verified precedence: 5
 - Badges with verified placement: 132
-- Badge artwork — AVAILABLE: 1108; NOT_APPLICABLE: 1; MISSING_ASSET: 89; UNVERIFIED: 0
+- Badge artwork — AVAILABLE: 1120; NOT_APPLICABLE: 1; MISSING_ASSET: 85; UNVERIFIED: 0
 - CAP metal/embroidered badge pairs: 25
 - CAP paired badge artwork — AVAILABLE: 50; NOT_APPLICABLE: 0; MISSING_ASSET: 0; UNVERIFIED: 0
 - Device definitions: 16

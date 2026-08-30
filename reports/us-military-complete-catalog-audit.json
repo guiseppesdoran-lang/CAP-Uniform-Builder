@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-08-30T06:49:23.699Z",
+    "generatedAt": "2026-08-30T10:46:15.647Z",
     "sourceRecords": 183,
     "officialAdditionRecords": 6,
     "canonicalAwards": 176,
@@ -11,9 +11,9 @@
     "badgesWithVerifiedPrecedence": 5,
     "badgesWithVerifiedPlacement": 132,
     "badgeAssetTotals": {
-      "AVAILABLE": 1108,
+      "AVAILABLE": 1120,
       "NOT_APPLICABLE": 1,
-      "MISSING_ASSET": 89,
+      "MISSING_ASSET": 85,
       "UNVERIFIED": 0
     },
     "capBadgePairs": 25,
@@ -198,7 +198,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/army/army_distinguished_service_cross.png",
       "exists": true,
-      "sha256": "761b841aa2bf6c748287a5f118fdafe224ce9dccc68bb96df6fb6477a21a2c03",
+      "sha256": "655e81e3fa96e2fa795b433d7ca12e4e52bb84247e2098c5a33d29b48f7291da",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/distinguished-service-cross-miniature-medal"
@@ -235,7 +235,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/coast-guard/navy_cross.png",
       "exists": true,
-      "sha256": "3119c2e379b1867e037d726aa97d7efc075c531f882901649b5d5597daee35ba",
+      "sha256": "9c4c3bae0ec5a7dc8b29130dfce739fdc82b0cdbb0175037bb791c0cc9a9ec23",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usn-navy-cross-miniature-medal"
@@ -246,7 +246,7 @@
       "ownerId": "navy_cross",
       "representation": "FULL_SIZE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/military-full-size-medals/navy/navy_cross.png",
+      "asset": "images/military-full-size-medals/coast-guard/navy_cross.png",
       "exists": true,
       "sha256": "7831749d818e92907bd0f710055d051adcc627e2f77b3ac5764152e826d48fc1",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
@@ -340,7 +340,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/silver_star.png",
       "exists": true,
-      "sha256": "6af3b49c7aece768111e2dd9a6b8bdf9e585403fc4bbe73e309c92d77d34391b",
+      "sha256": "2d9bf316b2c228884278cbef55dc38b991ca7e799e4bf6421d90a73954898e51",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/silver-star-miniature-medal"
@@ -377,7 +377,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/defense_superior_service.png",
       "exists": true,
-      "sha256": "17a61cc8ef9fa3d104c03c62328a0a0fe1f27a0e6807215d625b41b05980038f",
+      "sha256": "22487037bbb2064d3db3d008a432bb6bbfe9840e8eef5d0ffc0eb09edc16344b",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/defense-superior-service-miniature-medal"
@@ -414,7 +414,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/legion_of_merit.png",
       "exists": true,
-      "sha256": "b76a96029d87c109c45373ded43dbca19df8fd151e525f61be7bd1de006edc69",
+      "sha256": "0cf3e8f22e4674d2b1b5385a301a8219b1f0eefe34e8f19d29d9eb2b954fe3e6",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/legion-of-merit-full-size-medal"
@@ -451,7 +451,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/distinguished_flying_cross.png",
       "exists": true,
-      "sha256": "c108a7bdf9fdae27da9cbc784548544fcf05a59912d8678e4df8040fd9e6d78a",
+      "sha256": "4aaa788abf4a6cdcd59bb0b1c97ec12035b5f7db3d04be5ef11c66de1a1e3de4",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/distinguished-flying-cross-miniature-medal"
@@ -488,7 +488,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/marine-corps/navy_and_marine_corps_medal.png",
       "exists": true,
-      "sha256": "640e90c4d502e23910ec7c980ade123a8763a7c388ed9712533ad74ea8618931",
+      "sha256": "d8eb462749058572076c4c70b98044c2bf33c482465efca38e424df955f7fc6f",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usn-and-usmc-medal-miniature-medal"
@@ -499,7 +499,7 @@
       "ownerId": "navy_and_marine_corps_medal",
       "representation": "FULL_SIZE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_medal.png",
+      "asset": "images/military-full-size-medals/marine-corps/navy_and_marine_corps_medal.png",
       "exists": true,
       "sha256": "6d112ca35b0308086cd6d212b93f9ae0affdcdc628e943357d56307acd5bb894",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
@@ -525,7 +525,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/airmans_medal.png",
       "exists": true,
-      "sha256": "c6a563e9fb4552ce9cf14e1b96c1a9402b8687353f1b43d014f4f75634fae363",
+      "sha256": "587296e32e03b4ab80fe764eb44985a532e04b6f573a72c9a4d0754232474d8b",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/airman-medal-miniature-medal"
@@ -562,7 +562,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/army/army_soldiers_medal.png",
       "exists": true,
-      "sha256": "ee6e6ccf48bffa88f0ddd45c6253de83c26ef60526e7faf2e695cbc75fc67b49",
+      "sha256": "0a37ccf46c2d98a5cd09a017ced1e41eb7e73130d23144665f6c438b9951b80e",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/soldiers-medal-miniature-medal"
@@ -599,7 +599,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/bronze_star_miltiary.png",
       "exists": true,
-      "sha256": "4e970cbe824bd29af1c656758fd3433544f5b155ada87ee8ad520e8dd9c9a05a",
+      "sha256": "58082352c9e1327730edb660ede7ba83b39a806e6c0fa53d5952ac839da72c98",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/bronze-star-miniature-medal"
@@ -710,7 +710,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/meritorious_service.png",
       "exists": true,
-      "sha256": "aee34a31c557869c7bea99f02dd705cb0b32edcb5ce468ed405990b42c5a687c",
+      "sha256": "e4ba9a569314aa10a24784b384fc12fdb5c77f20edb5504250d261b6b48caad0",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/meritorious-service-miniature-medal"
@@ -780,7 +780,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/air_reserve_forces_meritorious_service.png",
       "exists": true,
-      "sha256": "8d328d006a686005292eafd0f1757a6d5a2736a210bab412f9d1ce6370e3f217",
+      "sha256": "d49d009a1ad92d3ef31a38ae837eaa4818b6bc52f062d13a1f81ae041a590e83",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/air-reserve-meritorious-service-miniature-medal"
@@ -817,7 +817,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/air_medal.png",
       "exists": true,
-      "sha256": "2d894fca55af818401debf86310a1c6f686d26a6098fb27e8351a95d21a7a581",
+      "sha256": "dde3da941e38c4106b2729d4c25d434617ff59a462f10fc9e604e48c6f6e8827",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/air-medal-miniature-medal"
@@ -854,7 +854,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/joint_service_commendation.png",
       "exists": true,
-      "sha256": "ec7a39387803af9ca928dfa02aa6357e8996d1f5b89c2b549e6dead592f3782a",
+      "sha256": "b2bfba46cabde571acf5265914af51b0d12c3cd80d322f388ee116a697cf05c1",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/joint-service-commendation-full-size-medal"
@@ -891,7 +891,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/marine-corps/navy_and_marine_corps_commendation.png",
       "exists": true,
-      "sha256": "cefa14341a7aac499bf6acdbf4b27d237145c0675191ae6c0bca44d09b41383e",
+      "sha256": "10d440d6bf84975327d0e2dc61f6b8dd4cfce5817ba50172def8401257003a87",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usn-and-usmc-commendation-miniature-medal"
@@ -902,7 +902,7 @@
       "ownerId": "navy_and_marine_corps_commendation",
       "representation": "FULL_SIZE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_commendation.png",
+      "asset": "images/military-full-size-medals/marine-corps/navy_and_marine_corps_commendation.png",
       "exists": true,
       "sha256": "5a6d37bf8c0cd96c0e79219f7c1a82cfb7d3e12abb3c45fddef7a00ac06a90e4",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
@@ -928,7 +928,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/coast-guard/coast_guard_commendation.png",
       "exists": true,
-      "sha256": "1aa7bed724c5d608f31fab23c42af2a32e9e60434ba76953ff62074ecdba1649",
+      "sha256": "faf98ab8927e83a605cb9007f692ee5fe25670b747a125d08d83edb479c8319b",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/uscg-commendation-miniature-medal"
@@ -1010,7 +1010,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/air_and_space_commendation_medal.png",
       "exists": true,
-      "sha256": "198ad564defdc712efe9d1609c0da487a5653fef220d01600e38a8b3589c4ac8",
+      "sha256": "add64895c75c65809a5318d4f5969468cdd767e253000f674da5fdab45be9897",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usaf-commendation-miniature-medal"
@@ -1137,7 +1137,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/army/army_commendation.png",
       "exists": true,
-      "sha256": "0d77fa92acc31bc454f59c81418fb636dda826c976a90a8ef58096fea3640f62",
+      "sha256": "acd93e02887ee3ddb92298e8e55ac08d84ac169ccbe6e77fa0d7a19c2225f67c",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/army-commendation-miniature-medal"
@@ -1444,7 +1444,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/joint_service_achievement.png",
       "exists": true,
-      "sha256": "1224f54802eda5f1d9e68bd8f65736bb49dbc8d596b792923f8ef4afedbd3766",
+      "sha256": "e295c7891554cebdbeb7f452b03b1f95a0ee69a9ae1502797708167dcd53dec5",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/joint-service-achievement-miniature-medal"
@@ -1481,7 +1481,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/marine-corps/navy_and_marine_corps_achievement.png",
       "exists": true,
-      "sha256": "13e2eb770e14f711c8da93bb3a3b1016efe0e593c7b94871bd1751eac28c8f72",
+      "sha256": "8bf1aa99beff09db0fe4c5bc8749073e1c94186f29be9b800b23ecba2d070ff5",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/miniature-medal-navy-and-marine-corps-achievement"
@@ -1492,7 +1492,7 @@
       "ownerId": "navy_and_marine_corps_achievement",
       "representation": "FULL_SIZE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_achievement.png",
+      "asset": "images/military-full-size-medals/marine-corps/navy_and_marine_corps_achievement.png",
       "exists": true,
       "sha256": "20addc1742868f9f8b3ff88ff62cec9c38ce77966011d4226a0a16ba40e161f5",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
@@ -1518,7 +1518,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/aerial_achievement_medal.png",
       "exists": true,
-      "sha256": "d04714a743ac4a4dd3c64a7435bdd17b4684c6593eecd223c347108ed27a9f9e",
+      "sha256": "11ef4f89c6c3a70b39cad2bd68b63d9b93f25b137277ff134df55a9a24316099",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usaf-aerial-achievement-miniature-medal"
@@ -1555,7 +1555,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/coast-guard/coast_guard_achievement.png",
       "exists": true,
-      "sha256": "b464d4f1e1ce5b971a20ebe8fbf41f245f94c8baeb5b2cf29f80fbd06852575f",
+      "sha256": "8fa081412e4f0cd2bda02d8ad8afcf011a0d5ade9e2a13960e89b44a922cc05d",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/uscg-achievement-miniature-medal"
@@ -1592,7 +1592,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/air_and_space_achievement_medal.png",
       "exists": true,
-      "sha256": "f53829c34b245e7f3cf6737da4a36a9dd494c879c9b1c7e1d38f8acb006b322e",
+      "sha256": "1db2c015ccb06966cc24f609b2564f629901c5029191511353b804c11edf1b2d",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usaf-achievement-miniature-medal"
@@ -1629,7 +1629,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/army/army_achievement.png",
       "exists": true,
-      "sha256": "129914389a39dec575cb8f50c68a944739c6d2c7bbe2a225c2aca656626dbcf3",
+      "sha256": "9ec34fbf1413819b0f5c4308bb90346f8ea1f8efad857470a65543ce3bfc4cf8",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/army-achievement-miniature-medal"
@@ -1666,7 +1666,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/army/reserve_componets_achievement.png",
       "exists": true,
-      "sha256": "77f51d09649df937575cd2938260019efc949094915f30728340d871267681a7",
+      "sha256": "684eb76476d5554d07eb553ec743aeeebab245b210cc106a458d0d75a68f84de",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/army-national-guard-arng-reserve-component-miniature-medal"
@@ -1703,7 +1703,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/prisoner_of_war.png",
       "exists": true,
-      "sha256": "5efa6e89e5b764bfc17d7f9604e19d1aae257bd52ef2f6f3df81309f376300d4",
+      "sha256": "9033c2f0d9d19c063c879fec03b6312a05cbce442c60168f20c5ea2a50862125",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/prisoner-of-war-pow-miniature-medal"
@@ -1740,7 +1740,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/marine-corps/marine_corps_good_conduct.png",
       "exists": true,
-      "sha256": "bf9522ab933d86be4668dc27d1d9600e2c52dc3597bfdeeb5fff299d548c2cb6",
+      "sha256": "5d7a4506b6b033b0d93dd25f3a532b049a9846329e11c75e441fa6eeda0e084d",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usmc-good-conduct-miniature-medal"
@@ -1777,7 +1777,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/navy/navy_good_conduct.png",
       "exists": true,
-      "sha256": "45d7531ecb2c2ed673d610969b0365a4731406c1768e73ffa4a02f4ad71212b6",
+      "sha256": "8cd077192db668c325bcbcd937d3c573ed51023f45348c85ac2dde0980256657",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usn-good-conduct-miniature-medal"
@@ -1849,7 +1849,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/coast-guard/coast_guard_reserve_good_conduct.png",
       "exists": true,
-      "sha256": "1d04ea3ce9726bd26188db9c1b0459cb9501944e15a8cbe328a79f17cefea81e",
+      "sha256": "9f9952805c0ab2999be3ff04d30f2d51668c1738578160805bf14de30b851c06",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/uscg-reserve-good-conduct-miniature-medal"
@@ -1884,7 +1884,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/army/army_good_conduct.png",
       "exists": true,
-      "sha256": "1b7fa8a71c74a5646f9b642ee1e9927da7aeb05757eaee60182e04b557c66225",
+      "sha256": "52496a4b656503062cebb1240a7bed1dc21dbb90d8995323df3f822e2c027a2a",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/army-good-conduct-miniature-medal"
@@ -1921,7 +1921,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/space-force/space_force_good_conduct_medal.png",
       "exists": true,
-      "sha256": "a94479e40ab31682566f2f80f300c6daa2fec333fa97cebbfc6e755cacf9d37e",
+      "sha256": "c29b39eb55ed7fc0a0e6d73927460a52ff4f54fccb35af63d2288f941b1f7211",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/miniature-medal-space-force-good-conduct"
@@ -2678,7 +2678,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/american_campaign.png",
       "exists": true,
-      "sha256": "934a3ea014cfa65bf84542d5b49d3bcc0038a193174772574cdbbecdd169d909",
+      "sha256": "fff0f3534e1baf806dc1fa6956565e1af1665af6083d8abf90e13a6745c96b20",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/american-campaign-miniature-medal"
@@ -2715,7 +2715,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/european_african_middle_eastern_campaign.png",
       "exists": true,
-      "sha256": "bcb9af738df59edb5ef415481764cc34558934390435979e5582ac47d43ccf37",
+      "sha256": "b8fb78f3d9dbd68677f63058128f236c89617aa73b1415c9e90c6e7bf273e901",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/european-african-middle-east-campaign-miniature-medal"
@@ -2752,7 +2752,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/asiatic_pacific_campaign.png",
       "exists": true,
-      "sha256": "0df1e62f69db737f460b6e3308204bf8ab268085dc9bf559ae2b329657b16465",
+      "sha256": "ed39a56c9b5079469bc0a578e1f50813c8bc58b8faadc518035488f6b86c4c31",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/asiatic-pacific-campaign-miniature-medal"
@@ -2789,7 +2789,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/kosovo_campaign.png",
       "exists": true,
-      "sha256": "7e6d7e857233495d9c7464aa63e97c09810510d592fa39f185787c46a7739819",
+      "sha256": "b5060199bb27f697bd55c0c5e085ca1e2b04f4691c2bd15cb51557f1c9a92087",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/kosovo-campaign-medal-miniature-medal"
@@ -2826,7 +2826,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/afghanistan_campaign.png",
       "exists": true,
-      "sha256": "64a77e6fd5d24d547a46cd122c0da67223bd2818f2d78cc8e6a4ffe7ae67a9cf",
+      "sha256": "01462fbd4f736f98fc5ad64952917997490f16d41de43f38953334f264dcb494",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/afghanistan-campaign-miniature-medal"
@@ -2863,7 +2863,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/iraq_campaign.png",
       "exists": true,
-      "sha256": "4c32541357ba5a913ff47fdb2cfb2fb1787cfc6821681a10fc57dddc94aa8b01",
+      "sha256": "49a5e43fd4f234b5312440ffc3839451ddf9bfe0225351bce85657e512ca7d24",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/iraq-campaign-miniature-medal"
@@ -2900,7 +2900,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/inherent_resolve_campaign_medal.png",
       "exists": true,
-      "sha256": "314e969be44847f43abb7dc74fb273702db89dc0fde2be3270398f730286d9ce",
+      "sha256": "3b1f833239b0cbcc70b6f347be46c3e432e75ea33976cbc605cfe80e989d49c5",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/miniature-medal-inherent-resolve-campaign"
@@ -2937,7 +2937,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/republic_of_vietnam_campaign.png",
       "exists": true,
-      "sha256": "9821d7b5320daf0d2e16bbdea91a687b61e3920001c796160249b5a81fa04c21",
+      "sha256": "70653fda71973a0ce84f30a578216e12b4af37b40b3ce2e98da2b694ce610821",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/vietnam-campaign-miniature-medal"
@@ -2974,7 +2974,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/remote_combat_effects_campaign_medal.png",
       "exists": true,
-      "sha256": "185afd0c7c05789accf53978ac75d9814e40bded8056c926febde8c6115c2ad6",
+      "sha256": "3aee761452cbefbf6a694311db0272d6dd6ea12b35be849350968e25fff60795",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/miniature-medal-air-force-remote-combat-effects-campaign-medal"
@@ -3011,7 +3011,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/air_and_space_campaign.png",
       "exists": true,
-      "sha256": "44acfce7f74dd68ea1787a356ddb264270bf4d03d290fe764a1be50a773ebb1b",
+      "sha256": "e962342f497e6b64fa9c6e758103deb7572c032dc52076d59b2168722f00f085",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usaf-air-and-space-campaign-miniature-medal"
@@ -3048,7 +3048,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/marine-corps/marine_corps_expeditionary.png",
       "exists": true,
-      "sha256": "5446e6c56795d5f96b4317095ccb8f4bec3177aa1208ea168fe5ecdbb2383bb7",
+      "sha256": "3a9fc987888041695da743b975b94ceff9dbcfea665f311c7b825d0e2e30118e",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usmc-expeditionary-miniature-medal"
@@ -3085,7 +3085,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/coast-guard/navy_expeditionary.png",
       "exists": true,
-      "sha256": "19d56ac7df789c9c4c25830a8434d55811dd94e3aca8e49ae681e32079b90aa7",
+      "sha256": "098f46cc7a33c04fe53e50d7416ef0c7253a4b74229ff4e8e464e1796a85e556",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usn-expeditionary-miniature-medal"
@@ -3096,7 +3096,7 @@
       "ownerId": "navy_expeditionary",
       "representation": "FULL_SIZE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/military-full-size-medals/navy/navy_expeditionary.png",
+      "asset": "images/military-full-size-medals/coast-guard/navy_expeditionary.png",
       "exists": true,
       "sha256": "876473c52e05e4b9a639a139df8f3d8a26213ba79bb8945b67fba33011a3bc14",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
@@ -3122,7 +3122,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/armed_forces_expeditionary.png",
       "exists": true,
-      "sha256": "f343ce099a7046c4cb6d6198dae1eb4305a9aabeb38d5bc8b1e79c90a5a0ee02",
+      "sha256": "617520e17790b3c4d45469d3be663a3233d97c214ea8dd2ece02d6faee8200a1",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/armed-forces-expeditionary-miniature-medal"
@@ -3159,7 +3159,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/global_war_on_terrorism_expeditionary.png",
       "exists": true,
-      "sha256": "8d77d814fb67659a3c6cae31c114b4dc27006fb5f63cef44ae008970651a37f2",
+      "sha256": "fb9eabe1bcb33d61d6dd63479f389082dba3dbb18d60808a6a75c6c500df079a",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/global-war-on-terrorism-expeditionary-miniature-medal"
@@ -3241,7 +3241,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/defense_distinguished_service.png",
       "exists": true,
-      "sha256": "2a8183b0e1882fe5d464536bc970f3a1af1751ee13dc8b8772eda4748e3cd540",
+      "sha256": "c295236881a71e46a77441d31098b19ca8a6da4e38e61a736891c58025f5e8fe",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/defense-distinguished-service-miniature-medal"
@@ -3313,7 +3313,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/coast-guard/coast_guard_distinguished_service.png",
       "exists": true,
-      "sha256": "3371bdb9ff54e5f6796ecee4b948d888fc97d9c9c3df353668fb5a20b3b4fe50",
+      "sha256": "6b45533f52cc1fdd26d4a9f34db845577f0ebf5b9f82d2b6b9ff2cd857f83033",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/uscg-distinguished-service-miniature-medal"
@@ -3348,7 +3348,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/air_force_distinguishd_service.png",
       "exists": true,
-      "sha256": "5dad0a61238774dc8dd5ca5a02fb67dbf21a82c8a48ebb96d4cf5a6e44937b6d",
+      "sha256": "028aa347a87196122043497795e7ddb66a82d1b50f771f598bbd063df3f54fbb",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/full-size-medal-air-force-distinguished-service"
@@ -3418,12 +3418,12 @@
       "ownerId": "china_service",
       "representation": "MINIATURE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/military-mini-medals/navy/china_service.png",
+      "asset": "images/military-mini-medals/marine-corps/china_service.png",
       "exists": true,
-      "sha256": "9e95df98cb34aab8b033fa7d703eba8150dece351f55b966218b7826fa00c5e9",
+      "sha256": "b339d2c924509e2376e863ae7b8645bcda0b6056e589331657fabbaee802a709",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
-        "https://www.vanguardmil.com/products/usn-china-service-miniature-medal"
+        "https://www.vanguardmil.com/products/usmc-china-service-miniature-medal"
       ]
     },
     {
@@ -3431,12 +3431,12 @@
       "ownerId": "china_service",
       "representation": "FULL_SIZE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/military-full-size-medals/navy/china_service.png",
+      "asset": "images/military-full-size-medals/marine-corps/china_service.png",
       "exists": true,
-      "sha256": "c3149c86b1127a65261c80a9641889f55875fff49c3faaa0bf1628dba0fe1a3e",
+      "sha256": "9b00aff3f61cef5850e0150b2c19583801bbafc1bfac8e8cf8ecd9a49a0cc2db",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
-        "https://www.vanguardmil.com/products/usn-china-service-full-size-medal"
+        "https://www.vanguardmil.com/products/usmc-china-service-full-size-medal"
       ]
     },
     {
@@ -3455,12 +3455,12 @@
       "ownerId": "navy_occupation_service",
       "representation": "MINIATURE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/military-mini-medals/navy/navy_occupation_service.png",
+      "asset": "images/military-mini-medals/marine-corps/navy_occupation_service.png",
       "exists": true,
-      "sha256": "25f4fd8676422a3d8ae56c7758984a9d4143a40fbb1cb4f83eb53568af330ce5",
+      "sha256": "5eee2fc09f4c6f18dcfa13cd5c81e619cc648177a65b6751f04481a815feee47",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
-        "https://www.vanguardmil.com/products/usn-and-uscg-occupation-wwii-miniature-medal"
+        "https://www.vanguardmil.com/products/usmc-wwii-occupation-miniature-medal"
       ]
     },
     {
@@ -3468,12 +3468,12 @@
       "ownerId": "navy_occupation_service",
       "representation": "FULL_SIZE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/military-full-size-medals/navy/navy_occupation_service.png",
+      "asset": "images/military-full-size-medals/marine-corps/navy_occupation_service.png",
       "exists": true,
-      "sha256": "6098ff3ee0d059129c6007f291fff65a8607398db982df77018d94d896c2a6e5",
+      "sha256": "f6d2e8559c056754cd41178243540bb9a41ba4d2d43bba491b7a0a13437de9e6",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
-        "https://www.vanguardmil.com/products/wwii-occupation-usn-and-uscg-full-size-medal"
+        "https://www.vanguardmil.com/products/wwii-occupation-usmc-full-size-medal"
       ]
     },
     {
@@ -3494,7 +3494,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/national_defense_military_service.png",
       "exists": true,
-      "sha256": "f0a00a8eceb2c3dc2214d9e4c13818c07562e563b4b7803b8595a366bbe92f8b",
+      "sha256": "eb8a2d5f05d6850dd6c8b6d13cb062865b3dbe007c00470bcf7afacde626d358",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/national-defense-miniature-medal"
@@ -3531,7 +3531,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/korean_service.png",
       "exists": true,
-      "sha256": "57e663db97fa3c523c31cb45a4431de2388908bbf2d9bddae67c804f5274e502",
+      "sha256": "9840b32c1b9a4382b840feb397cecca24fa901d79ce039e0e2dcf758449ac5d1",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/korean-service-miniature-medal"
@@ -3568,7 +3568,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/antarctica_service.png",
       "exists": true,
-      "sha256": "64f3f036d562256ea01e524c0d45aacc2ff90f1017aa709271356a67bf584d4b",
+      "sha256": "7b8cb3dc92dd599a83fc312978ccc06138fd5b12a52a58e895ec8a7b7215cc8e",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/antarctica-service-miniature-medal"
@@ -3605,7 +3605,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/vietnam_service.png",
       "exists": true,
-      "sha256": "e6257eb3e2888738d4621dea32298ecfefe3e3e5c5cc3eb357e2a1ff3f635d79",
+      "sha256": "2feda616e5d558be3541f0d1abaa0f886514a1b5fcb5c2dc6b78f47532ac78a5",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/vietnam-service-miniature-medal"
@@ -3642,7 +3642,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/southwest_asia_service.png",
       "exists": true,
-      "sha256": "6ec4895d4c3fbe0d2b446c361ebad32d3c8b911ab9cc6eb74940c17eb7b95652",
+      "sha256": "997d15904e6b5e7487048ac3e46591f01c9e0e30374b5a1ad1aeb3c08bf1e9c9",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/southwest-asia-service-miniature-medal"
@@ -3679,7 +3679,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/global_war_on_terrorism_service.png",
       "exists": true,
-      "sha256": "b528a9a8fac0f498249fbaa7223d93a30069f290d3cc9c558a0d6fd2d21b4dc9",
+      "sha256": "057fe75c695b4cb603ec2f4eda3311711999df3e6d90aedefe568e2b5046139a",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/global-war-on-terrorism-service-miniature-medal"
@@ -3716,7 +3716,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/korean_defense_service.png",
       "exists": true,
-      "sha256": "6640b67d1803ea1a5b1c2397df867235e45b208d75b559f563a65410d4b0621e",
+      "sha256": "41837b3af8824ebe12b5cff4719f9a9249601437f37b04b3edd51069db516d15",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/korea-defense-service-medal-miniature-medal"
@@ -3753,7 +3753,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/armed_forces_service.png",
       "exists": true,
-      "sha256": "4987d636173a5f22a1b3c8c715c97280cca38a2c4bb291d37f679b2c51df9555",
+      "sha256": "90006ad7cbe24ff501c172af43d429378568a1d1e0a3f3df61c6ff50fd3a56cc",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/armed-forces-service-medal-miniature-medal"
@@ -3790,7 +3790,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/humanitarian_service.png",
       "exists": true,
-      "sha256": "dd82912a1e982d221aa3f9cfdc8b08fa02a95812080b7ad69a2946c5c7bb0fa5",
+      "sha256": "49240b83871575599b5296c838f030faffdc2769707b555d9071539e1b747e62",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/humanitarian-service-miniature-medal"
@@ -3827,7 +3827,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/outstanding_volunteer_service.png",
       "exists": true,
-      "sha256": "90a7f15961ae73ff1d88c3d929d3aa56f65d87a1506c1e0eee610e12e45268e1",
+      "sha256": "c5ec405103ab688722750ee4c7843fe1c20ffec9d56481f01a314829275c4c99",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/military-outstanding-volunteer-service-miniature-medal"
@@ -3909,7 +3909,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/marine-corps/navy_arctic_service.png",
       "exists": true,
-      "sha256": "d4a57da55477dd9d9ac116c7cc39a17408e3209d99211664fafc56ee1f537929",
+      "sha256": "b4b767a2371633fabac5b3770f99e4c6ce489bbb37ac6d8bf697f52b2c3830f1",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/miniature-medal-us-navy-arctic-service"
@@ -3920,9 +3920,9 @@
       "ownerId": "navy_arctic_service",
       "representation": "FULL_SIZE_MEDAL",
       "status": "AVAILABLE",
-      "asset": "images/military-full-size-medals/navy/navy_arctic_service.png",
+      "asset": "images/military-full-size-medals/marine-corps/navy_arctic_service.png",
       "exists": true,
-      "sha256": "00ccab10cb132f66c1133a5507baaecb316e7891e5656dba189abe05b4765b4f",
+      "sha256": "0a10ba9a771c53d6f1c23c0f4e0dd224b92473d71157ad6ce4c45fb2386107a0",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/full-size-medal-u-s-navy-arctic-service"
@@ -4059,7 +4059,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/united_nations_service.png",
       "exists": true,
-      "sha256": "f6fa3ba5f6e295cc3b579835b076d52ebd6fbf3534c966e8258f78aef0f24727",
+      "sha256": "dbe1bc26627c99074c5aee7040a0628ae61ce297f5ea1b1e9d817c2ac75c40c3",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/united-nations-service-miniature-medal"
@@ -4536,7 +4536,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/nuclear_deterrence_operations_service_medal.png",
       "exists": true,
-      "sha256": "3ff0da8eba82dd5eab98b4a42e0a2d4194abba19ce9db9ff20a625d2a1fab293",
+      "sha256": "74eeaf4e3b83c70b770022b950873f29f0ba0d8318505aa737a1a14bceb4ee1a",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/air-force-miniature-medal-nuclear-deterrence-operations-service"
@@ -4663,7 +4663,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/armed_forces_reserve.png",
       "exists": true,
-      "sha256": "30a6915aae9412e85a2eaff4dda033ab1580db485e7fa5609fa9eb985e0a3ba8",
+      "sha256": "7e4c423ed15751b1cdbda60bc7dc5cc4c442fbaaa25632fe1cfb63e9f24cfe1f",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usaf-armed-forces-reserve-miniature-medal"
@@ -5038,7 +5038,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/coast-guard/coast_guard_medal.png",
       "exists": true,
-      "sha256": "2ce62d2f002edc64ef7b4bb3dbff9cc8f8065ab36223fb12296a376a96f56939",
+      "sha256": "bbc86f09a1931802f2da697ee53995c9460ed93c2c020c0002a5e1ac05b833b9",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/uscg-medal-for-heroism-miniature-medal"
@@ -5186,7 +5186,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/coast-guard/dot_9_11_medal.png",
       "exists": true,
-      "sha256": "ea7bc98fd79d09162c0ce920eacb35ab106fe7275da9af043124fcc64ea91c1e",
+      "sha256": "7be66cd5668870ec948cecfc302ba99654a83b6f5388574f97314cfe32ba5ca0",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/uscg-911-miniature-medal"
@@ -5223,7 +5223,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/coast-guard/comabt_action.png",
       "exists": true,
-      "sha256": "861d2554fdc3014ad7d92a923777c45849d5af158f8489da88231fefc51e1747",
+      "sha256": "8e142316ac0ee34fe7d16f92f3ed61f25860af7c18d012435d7687c22795f537",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usaf-combat-action-medal-miniature-medal"
@@ -5350,7 +5350,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/american_defense.png",
       "exists": true,
-      "sha256": "17c6ecaefa9ec4850dd8d3d428ec842d4173028d1bd6d9b4722a46818912c3b7",
+      "sha256": "1ef3415e0e40788c6eaf8781ce7fccfedaaa35303698cfdf46a4641a77255224",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/american-defense-service-miniature-medal"
@@ -5477,7 +5477,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/world_war_ii_victory.png",
       "exists": true,
-      "sha256": "42b2aa61603dbf9911783515e858423fba552f5ecca33a8ab263f1c05509c922",
+      "sha256": "550d0dadfd45fa4025714d22fccf2891e5511db798b7fbd2d36dcd9303ba6e6d",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/wwii-victory-miniature-medal"
@@ -5559,7 +5559,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/medal_for_humane_action.png",
       "exists": true,
-      "sha256": "c60a129293b0a1fac6bda47954e2641c18510ad66f8d4efdabde2cad131596a2",
+      "sha256": "611759971ca8d960794ce6cd0332b52e271f596f40fc152b98a21d9a8bb79614",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/medal-for-humane-action-miniature-medal"
@@ -5686,7 +5686,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/air_force_combat_readiness.png",
       "exists": true,
-      "sha256": "df848d8f98ef085b2d1fb1b2a3eadfb4a286386f5c0e264134a4a8f5845212e5",
+      "sha256": "469fc5f9d5d6f87b9cdeb143f0515baee6355cd7039159e1cbd616b80ad71502",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usaf-combat-readiness-miniature-medal"
@@ -5723,7 +5723,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/air_force_good_condcut.png",
       "exists": true,
-      "sha256": "9d00bd35d9019a61230388521072cdff16d727fb1032f10bd72ac16de2e9ce9f",
+      "sha256": "2e597337256088f895144877f55d09d0cbddb727689e5f19006b216c8486bbbb",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/usaf-good-conduct-miniature-medal"
@@ -5908,7 +5908,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/philippine_independence.png",
       "exists": true,
-      "sha256": "d2d4c64ca221388bf9f60fd2787d6310fa2bcc5e81f31bf56ac808eb3f2cbf71",
+      "sha256": "9a118a82a65d2780471640965ff4e07458cf69278a56733b7627ad6835fc1b78",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/philippine-independence-full-size-medal"
@@ -5990,7 +5990,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/inter_american_defense_board.png",
       "exists": true,
-      "sha256": "aa27eeaab5abad70cd25f586a182d69fd438c5e5742e49e69a9d630c1c7d2f5c",
+      "sha256": "f98921bb9699bebe2d42497e2b29c3d53cb1a3bca35202855692c99dd6609f0e",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/inter-american-defense-board-miniature-medal"
@@ -6027,7 +6027,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/united_nations.png",
       "exists": true,
-      "sha256": "56ab07045b2a9801a07db9fcf05fabb84e19b3aa7cf9ff8f2499596d0d30466b",
+      "sha256": "c80827fab876b4e6ba14b5b23d95e09ec2020cc41c82e1f05c573217a2204704",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/united-nations-service-miniature-medal"
@@ -6064,7 +6064,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/nato.png",
       "exists": true,
-      "sha256": "b6895461e122d916b213942fcede26e0c03e26a56b5590afeb43dcc9e2586d3a",
+      "sha256": "a00a44856898dce3ac6fabbd94b2357c4d080218df1f36233fb18deb5800360e",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/nato-medal-miniature-medal"
@@ -6146,7 +6146,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/army/army_of_occupation.png",
       "exists": true,
-      "sha256": "ed1984116bec7c6df19ab598d25bbbf589c5b5166be7bce39dd66cfdd034d4fd",
+      "sha256": "18d9f0b4ba7568e74f9afb316da994d09637a9a52b9221c327682f7d4f3fd90a",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/army-and-usaf-wwii-occupation-miniature-medal"
@@ -6183,7 +6183,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/nato_kosovo.png",
       "exists": true,
-      "sha256": "ae1e49f0da98a06c9e10357846130a293c30d844e4ca295aef2e06532dc6ca5e",
+      "sha256": "27e6aaafd44be7ea60f27e52aad3a4c7f503e9c0863df9f3e54106f4bfc48680",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/nato-kosovo-medal-miniature-medal"
@@ -6257,7 +6257,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/kuwait_liberation_saudi_arabia.png",
       "exists": true,
-      "sha256": "3b03223da8ea01f03d0aae3eb94dc1c850412c126453c9232c7c94e54f6c50d7",
+      "sha256": "b39601572071a26c01e38283b37a75f4801d8e276494ec7d19544da40a667f32",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/kuwait-liberation-miniature-medal"
@@ -6339,7 +6339,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-mini-medals/air-force/kuwiat_liberation_kuwait.png",
       "exists": true,
-      "sha256": "ef87d3e7873b08164afe75afab10377c2e9345b9881edc7f672b46cc09806634",
+      "sha256": "87c9684a4251311ceecace86594c6bf1a1e9fbbc87c603e212f8ba0b613d840b",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
         "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-miniature-medal"
@@ -7863,22 +7863,66 @@
       "ownerType": "BADGE",
       "ownerId": "navy_aviation_observer_insignia",
       "representation": "METAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "e875dd2f347ead6339cce533328f88ae659ef66a67cf1b60b815152d54007784",
+      "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "navy_aviation_observer_insignia",
+      "representation": "METAL_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "e875dd2f347ead6339cce533328f88ae659ef66a67cf1b60b815152d54007784",
+      "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
       "sources": []
     },
     {
       "ownerType": "BADGE",
       "ownerId": "navy_aviation_observer_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "50f8c449094e8e13d83df916f6be87dba85e5fc990e9c06e4b1fee12323d4553",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "navy_aviation_observer_insignia",
+      "representation": "EMBROIDERED_SERVICE_NAVY",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "50f8c449094e8e13d83df916f6be87dba85e5fc990e9c06e4b1fee12323d4553",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "navy_aviation_observer_insignia",
+      "representation": "EMBROIDERED_SERVICE_NAVY_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "50f8c449094e8e13d83df916f6be87dba85e5fc990e9c06e4b1fee12323d4553",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "navy_aviation_observer_insignia",
+      "representation": "EMBROIDERED_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "50f8c449094e8e13d83df916f6be87dba85e5fc990e9c06e4b1fee12323d4553",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
@@ -20238,22 +20282,66 @@
       "ownerType": "BADGE",
       "ownerId": "air_force_base_honor_guard_badge",
       "representation": "METAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "dd692c6547f00f9d0f694353df5989678224050df6b9059ecb8cef70a73b6323",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "air_force_base_honor_guard_badge",
+      "representation": "METAL_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "dd692c6547f00f9d0f694353df5989678224050df6b9059ecb8cef70a73b6323",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": []
     },
     {
       "ownerType": "BADGE",
       "ownerId": "air_force_base_honor_guard_badge",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "ffd07df05495e379318aa41021832c0830036ef2fe1ea63df2211cad2cc37f55",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "air_force_base_honor_guard_badge",
+      "representation": "EMBROIDERED_SERVICE_AIR_FORCE",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "ffd07df05495e379318aa41021832c0830036ef2fe1ea63df2211cad2cc37f55",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "air_force_base_honor_guard_badge",
+      "representation": "EMBROIDERED_SERVICE_AIR_FORCE_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "ffd07df05495e379318aa41021832c0830036ef2fe1ea63df2211cad2cc37f55",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "air_force_base_honor_guard_badge",
+      "representation": "EMBROIDERED_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "ffd07df05495e379318aa41021832c0830036ef2fe1ea63df2211cad2cc37f55",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {

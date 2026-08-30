@@ -3,7 +3,7 @@
   "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
   "service": "COAST_GUARD",
   "representation": "miniatureMedal",
-  "accessed": "2026-08-29",
+  "accessed": "2026-08-30",
   "canvas": [
     50,
     176
@@ -82,6 +82,278 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/department_of_transportation_9_11_miniature_medal_2040_dot911_mini_1_1.jpeg?v=1423544686",
       "score": 10,
       "asset": "images/military-mini-medals/coast-guard/dot_9_11_medal.png"
+    },
+    {
+      "awardId": "afghanistan_campaign",
+      "productTitle": "Miniature Medal: Afghanistan Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/afghanistan-campaign-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/66171240.jpg?v=1622836570",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/afghanistan_campaign.png"
+    },
+    {
+      "awardId": "air_medal",
+      "productTitle": "Miniature Medal: Air Medal",
+      "productUrl": "https://www.vanguardmil.com/products/air-medal-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Miniature-Medal_ad12a406-2a3e-46ae-ab31-d2f52a0a752f.jpeg?v=1423544810",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/air_medal.png"
+    },
+    {
+      "awardId": "american_campaign",
+      "productTitle": "Miniature Medal: American Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/american-campaign-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/American-Campaign-Miniature-Medal---WWII.jpeg?v=1423544799",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/american_campaign.png"
+    },
+    {
+      "awardId": "american_defense",
+      "productTitle": "Miniature Medal: American Defense Service",
+      "productUrl": "https://www.vanguardmil.com/products/american-defense-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/American-Defense-Miniature-Medal---WWII_f3961991-eb76-4ff3-a8fb-b20ca78c5bc5.jpeg?v=1423544796",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/american_defense.png"
+    },
+    {
+      "awardId": "antarctica_service",
+      "productTitle": "Miniature Medal: Antarctica Service",
+      "productUrl": "https://www.vanguardmil.com/products/antarctica-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Antarctica-Service-Miniature-Medal_f79626d9-50d5-43fe-88b2-07e729919ed5.jpeg?v=1423544793",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/antarctica_service.png"
+    },
+    {
+      "awardId": "armed_forces_expeditionary",
+      "productTitle": "Miniature Medal: Armed Forces Expeditionary",
+      "productUrl": "https://www.vanguardmil.com/products/armed-forces-expeditionary-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Armed-Forces-Expeditionary-Miniature-Medal.jpeg?v=1423544790",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/armed_forces_expeditionary.png"
+    },
+    {
+      "awardId": "armed_forces_reserve",
+      "productTitle": "Miniature Medal: Air Force Armed Forces Reserve",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-armed-forces-reserve-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Armed-Forces-Reserve-Miniature-Medal---Air-Force-Version_8731f298-ad88-4043-a170-f9bf70080bd4.jpeg?v=1423544786",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/armed_forces_reserve.png"
+    },
+    {
+      "awardId": "armed_forces_service",
+      "productTitle": "Miniature Medal: Armed Forces Service Medal",
+      "productUrl": "https://www.vanguardmil.com/products/armed-forces-service-medal-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617152.jpg?v=1617287786",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/armed_forces_service.png"
+    },
+    {
+      "awardId": "asiatic_pacific_campaign",
+      "productTitle": "Miniature Medal: Asiatic Pacific Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/asiatic-pacific-campaign-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/asiatic_pacific_campaign_miniature_medal_ww_ii_2025_asiat_mini_1.jpeg?v=1423544743",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/asiatic_pacific_campaign.png"
+    },
+    {
+      "awardId": "bronze_star_miltiary",
+      "productTitle": "Miniature Medal: Bronze Star",
+      "productUrl": "https://www.vanguardmil.com/products/bronze-star-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/bronze_star_miniature_medal_2026_hi_res.jpeg?v=1423544739",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/bronze_star_miltiary.png"
+    },
+    {
+      "awardId": "defense_distinguished_service",
+      "productTitle": "Miniature Medal: Defense Distinguished Service",
+      "productUrl": "https://www.vanguardmil.com/products/defense-distinguished-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/department_of_defense_distinguished_service_miniature_medal_2039_defdist_mini_1_1.jpeg?v=1423544698",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/defense_distinguished_service.png"
+    },
+    {
+      "awardId": "defense_meritorious_service",
+      "productTitle": "Miniature Medal: Defense Meritorious Service",
+      "productUrl": "https://www.vanguardmil.com/products/defense-meritorious-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617415.jpg?v=1617287743",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/defense_meritorious_service.png"
+    },
+    {
+      "awardId": "defense_superior_service",
+      "productTitle": "Miniature Medal: Defense Superior Service",
+      "productUrl": "https://www.vanguardmil.com/products/defense-superior-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/defense_superior_service_miniature_medal_2038_defsup_mini_1.jpeg?v=1423544692",
+      "score": 10,
+      "asset": "images/military-mini-medals/coast-guard/defense_superior_service.png"
+    },
+    {
+      "awardId": "distinguished_flying_cross",
+      "productTitle": "Miniature Medal: Distinguished Flying Cross",
+      "productUrl": "https://www.vanguardmil.com/products/distinguished-flying-cross-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/distinguished_flying_cross_miniature_medal_2041_flycross_minik_1.jpeg?v=1423544688",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/distinguished_flying_cross.png"
+    },
+    {
+      "awardId": "global_war_on_terrorism_expeditionary",
+      "productTitle": "Miniature Medal: Global War on Terrorism Expeditionary",
+      "productUrl": "https://www.vanguardmil.com/products/global-war-on-terrorism-expeditionary-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/global_war_on_terrorism_expeditionary_miniature_medal_2044_gwotex_mini_1_1.jpeg?v=1423544674",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/global_war_on_terrorism_expeditionary.png"
+    },
+    {
+      "awardId": "global_war_on_terrorism_service",
+      "productTitle": "Miniature Medal: Global War on Terrorism Service",
+      "productUrl": "https://www.vanguardmil.com/products/global-war-on-terrorism-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/global_war_on_terrorism_service_miniature_medal_2045_gwostv_mini_1.jpeg?v=1423544670",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/global_war_on_terrorism_service.png"
+    },
+    {
+      "awardId": "humanitarian_service",
+      "productTitle": "Miniature Medal: Humanitarian Service",
+      "productUrl": "https://www.vanguardmil.com/products/humanitarian-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/humanitarian_service_miniature_medal_2046_humanit_mini_1.jpeg?v=1423544666",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/humanitarian_service.png"
+    },
+    {
+      "awardId": "inherent_resolve_campaign_medal",
+      "productTitle": "Miniature Medal: Inherent Resolve Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/miniature-medal-inherent-resolve-campaign",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617620.jpg?v=1617289939",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/inherent_resolve_campaign_medal.png"
+    },
+    {
+      "awardId": "inter_american_defense_board",
+      "productTitle": "Miniature Medal: Inter American Defense Board",
+      "productUrl": "https://www.vanguardmil.com/products/inter-american-defense-board-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/inter_american_defense_board_miniature_medal_2047_1_1_d010ba28-8c13-4573-9976-fcce6fe9c57a.jpeg?v=1423544530",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/inter_american_defense_board.png"
+    },
+    {
+      "awardId": "iraq_campaign",
+      "productTitle": "Miniature Medal: Iraq Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/iraq-campaign-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/iraq_campaign_miniature_medal_2048_iraq_mini_1_1_318fd716-36ee-424e-91c4-69bb2c06c64c.jpeg?v=1423544017",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/iraq_campaign.png"
+    },
+    {
+      "awardId": "joint_service_achievement",
+      "productTitle": "Miniature Medal: Joint Service Achievement",
+      "productUrl": "https://www.vanguardmil.com/products/joint-service-achievement-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/joint_service_achievement_miniature_medal_2049_jointach_mini_1_1.jpeg?v=1423544659",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/joint_service_achievement.png"
+    },
+    {
+      "awardId": "korean_service",
+      "productTitle": "Miniature Medal: Korean Service",
+      "productUrl": "https://www.vanguardmil.com/products/korean-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/korean_service_miniature_medal_2052_korserv_mini_1_1.jpeg?v=1423544647",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/korean_service.png"
+    },
+    {
+      "awardId": "kosovo_campaign",
+      "productTitle": "Miniature Medal: Kosovo Campaign Medal",
+      "productUrl": "https://www.vanguardmil.com/products/kosovo-campaign-medal-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/kosovo_campaignn_miniature_medal_2053_kosocmp_mini_1_b9d4a429-feef-450e-8100-6f585188a0be.jpeg?v=1423544526",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/kosovo_campaign.png"
+    },
+    {
+      "awardId": "kuwait_liberation_saudi_arabia",
+      "productTitle": "Miniature Medal: Kuwait Liberation Saudi",
+      "productUrl": "https://www.vanguardmil.com/products/kuwait-liberation-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/saudi_arabian_miniature_medal_for_the_liberation_of_kuwait_2090_saudi_mini_1.jpeg?v=1423544520",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/kuwait_liberation_saudi_arabia.png"
+    },
+    {
+      "awardId": "medal_for_humane_action",
+      "productTitle": "Miniature Medal: Medal for Humane Action",
+      "productUrl": "https://www.vanguardmil.com/products/medal-for-humane-action-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/medal_for_humane_action_miniature_medal_2060_humane_mini_1_1.jpeg?v=1423544632",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/medal_for_humane_action.png"
+    },
+    {
+      "awardId": "meritorious_service",
+      "productTitle": "Miniature Medal: Meritorious Service",
+      "productUrl": "https://www.vanguardmil.com/products/meritorious-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/meritorious_service_miniature_medal_2061_meritsrv_mini_2_1.jpeg?v=1423544628",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/meritorious_service.png"
+    },
+    {
+      "awardId": "nato",
+      "productTitle": "Miniature Medal: NATO Medal",
+      "productUrl": "https://www.vanguardmil.com/products/nato-medal-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/nato_miniature_medal_2064_nbosnia_mini_1_1.jpeg?v=1423544512",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/nato.png"
+    },
+    {
+      "awardId": "nato_kosovo",
+      "productTitle": "Miniature Medal: NATO Kosovo Medal",
+      "productUrl": "https://www.vanguardmil.com/products/nato-kosovo-medal-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/nato_kosovo_miniature_medal_2065_nkoso_mini_1_1.jpeg?v=1423544516",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/nato_kosovo.png"
+    },
+    {
+      "awardId": "prisoner_of_war",
+      "productTitle": "Miniature Medal: Prisoner of War",
+      "productUrl": "https://www.vanguardmil.com/products/prisoner-of-war-pow-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/prisoner_of_war_miniature_medal_2082_priswar_mini_1_1.jpeg?v=1423544571",
+      "score": 10,
+      "asset": "images/military-mini-medals/coast-guard/prisoner_of_war.png"
+    },
+    {
+      "awardId": "purple_heart",
+      "productTitle": "Miniature Medal: Purple Heart",
+      "productUrl": "https://www.vanguardmil.com/products/purple-heart-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/purple_heart_mini_medal_2083_1.jpeg?v=1423544568",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/purple_heart.png"
+    },
+    {
+      "awardId": "silver_star",
+      "productTitle": "Miniature Medal: Silver Star",
+      "productUrl": "https://www.vanguardmil.com/products/silver-star-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/silver_star_miniature_medal_2092_silvstr_mini_1_1.jpeg?v=1423544555",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/silver_star.png"
+    },
+    {
+      "awardId": "southwest_asia_service",
+      "productTitle": "Miniature Medal: Southwest Asia Service",
+      "productUrl": "https://www.vanguardmil.com/products/southwest-asia-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/southwest_asia_service_miniature_medal_2093_swasia_mini_1_1.jpeg?v=1423544548",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/southwest_asia_service.png"
+    },
+    {
+      "awardId": "united_nations",
+      "productTitle": "Miniature Medal: United Nations Service",
+      "productUrl": "https://www.vanguardmil.com/products/united-nations-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/united_nations_un_korean_service_miniature_medal_2094_unkorea_mini_1.jpeg?v=1423544491",
+      "score": 10,
+      "asset": "images/military-mini-medals/coast-guard/united_nations.png"
+    },
+    {
+      "awardId": "vietnam_service",
+      "productTitle": "Miniature Medal: Vietnam Service",
+      "productUrl": "https://www.vanguardmil.com/products/vietnam-service-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6618195.jpg?v=1617287618",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/coast-guard/vietnam_service.png"
     }
   ],
   "unmatched": [

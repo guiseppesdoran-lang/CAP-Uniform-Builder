@@ -147,8 +147,8 @@ test('Air Force badge checkpoint uses normalized local digital artwork',()=>{
   const manifest=require('../data/imports/vanguard_air_force_badges.json');
   assert.equal(manifest.sourceType,'COMMERCIAL_CATALOG_DISCOVERY_REFERENCE');
   assert.equal(manifest.style.name,'MCCHORD_DIGITAL_SILVER');
-  assert.equal(manifest.imported.length,171);
-  assert.equal(new Set(manifest.imported.map(record=>record.badgeId)).size,63);
+  assert.equal(manifest.imported.length,172);
+  assert.equal(new Set(manifest.imported.map(record=>record.badgeId)).size,64);
   assert.ok(manifest.imported.every(record=>record.asset&&!record.asset.startsWith('http')));
   for(const record of manifest.imported){
     const absolute=path.join(ROOT,...record.asset.split('/'));
@@ -391,6 +391,12 @@ test('complete asset manifest contains no broken AVAILABLE records',()=>{
   const manifest=require('../data/military/asset-manifest.json');
   const broken=manifest.assets.filter(record=>record.status==='AVAILABLE'&&!record.exists);
   assert.deepEqual(broken,[]);
+});
+
+test('available hanging medals have no transparent suspension break',()=>{
+  const report=require('../reports/military-medal-connectivity-audit.json');
+  assert.ok(report.checked>=170,'expected the complete available medal catalog to be audited');
+  assert.equal(report.issueCount,0,JSON.stringify(report.issues,null,2));
 });
 
 test('curated service-title aliases fill only the reviewed canonical medal records',()=>{

@@ -356,7 +356,8 @@ def digital_medal(source: bytes, award_id: str, canvas=(50, 176), ribbon: Image.
     # background. Reconstruct it behind the reviewed pendant so a miniature
     # medal can never render as two disconnected objects.
     if ribbon is not None and pendant_y > suspension_height - 2:
-        opaque = [pixel[:3] for pixel in rgb.getdata() if pixel[3] > 96]
+        pixels = rgb.get_flattened_data() if hasattr(rgb, "get_flattened_data") else rgb.getdata()
+        opaque = [pixel[:3] for pixel in pixels if pixel[3] > 96]
         if opaque:
             opaque.sort(key=lambda color: sum(color), reverse=True)
             metal = opaque[max(0, len(opaque) // 12)]
@@ -402,6 +403,22 @@ def main() -> None:
     matches = [match for match in matches if match["awardId"] not in protected_ribbon_only]
     if args.award_id:
         matches = [match for match in matches if match["awardId"] == args.award_id]
+        # A previously reviewed product can move out of the current Shopify
+        # collection page without invalidating its recorded source. Permit a
+        # targeted regeneration from that reviewed override so geometry fixes
+        # do not depend on the storefront's current merchandising.
+        if not matches:
+            recorded = overrides.get("awards", {}).get(args.award_id, {}).get("miniatureMedal", {})
+            source_image = recorded.get("sourceImage")
+            source_urls = recorded.get("sources") or []
+            if source_image and source_urls and "vanguardmil.com" in source_urls[0]:
+                matches = [{
+                    "awardId": args.award_id,
+                    "productTitle": f"Recorded reviewed source: {args.award_id}",
+                    "productUrl": source_urls[0],
+                    "image": source_image,
+                    "score": 10.0,
+                }]
     if not args.apply:
         print(json.dumps({"matched": matches, "unmatched": unmatched}, indent=2))
         return
@@ -424,6 +441,9 @@ def main() -> None:
             "style": "MCCHORD_DIGITAL_MEDAL",
             "sourceImage": match["image"],
         }
+        previous = overrides.get("awards", {}).get(match["awardId"], {}).get("miniatureMedal", {})
+        if previous.get("derivedFromReviewedRepresentation"):
+            representation["derivedFromReviewedRepresentation"] = previous["derivedFromReviewedRepresentation"]
         overrides.setdefault("awards", {}).setdefault(match["awardId"], {})["miniatureMedal"] = representation
         imported.append({**match, "asset": relative.as_posix()})
 

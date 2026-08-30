@@ -1,7 +1,7 @@
 {
   "source": "https://www.vanguardmil.com/collections/badges",
   "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
-  "accessed": "2026-08-29",
+  "accessed": "2026-08-30",
   "runtimePolicy": "Source photographs are not used directly. Runtime assets are deterministic posterized digital derivatives.",
   "style": {
     "name": "MCCHORD_DIGITAL_SILVER",
@@ -1713,6 +1713,16 @@
       "asset": "images/military-badges/air-force/air_force_commanders_badge/default.png"
     },
     {
+      "badgeId": "air_force_base_honor_guard_badge",
+      "variant": "default",
+      "query": "base honor guard",
+      "productTitle": "Air Force Badge: Base Honor Guard",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-base-honor-guard-badge",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/2150225.jpg?v=1617288218",
+      "score": 4.1,
+      "asset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png"
+    },
+    {
       "badgeId": "air_force_professional_military_education_badge",
       "variant": "default",
       "query": "professional military education",
@@ -1759,12 +1769,6 @@
       "variant": "default",
       "query": "security forces",
       "score": 0.909
-    },
-    {
-      "badgeId": "air_force_base_honor_guard_badge",
-      "variant": "default",
-      "query": "base honor guard",
-      "score": 1.095
     }
   ]
 }
