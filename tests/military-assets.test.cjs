@@ -398,3 +398,20 @@ test('curated service-title aliases fill only the reviewed canonical medal recor
     }
   }
 });
+
+test('DOT 9-11 medal stays distinct from the DOT 9-11 ribbon record',()=>{
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  for(const representation of ['miniatureMedal','fullSizeMedal']){
+    assert.equal(overrides.dot_9_11[representation].status,'NOT_APPLICABLE',`ribbon:${representation}`);
+    assert.equal(overrides.dot_9_11_medal[representation].status,'AVAILABLE',`medal:${representation}`);
+    assert.ok(fs.existsSync(path.join(ROOT,...overrides.dot_9_11_medal[representation].asset.split('/'))));
+  }
+});
+
+test('explicitly named ribbon records are excluded from both medal representations',()=>{
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  for(const awardId of ['dot_9_11','special_operations_service','us_antarctic_expedition']){
+    assert.equal(overrides[awardId].miniatureMedal.status,'NOT_APPLICABLE',awardId);
+    assert.equal(overrides[awardId].fullSizeMedal.status,'NOT_APPLICABLE',awardId);
+  }
+});

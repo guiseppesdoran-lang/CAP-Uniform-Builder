@@ -66,6 +66,14 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609730.jpg?v=1617287753",
       "score": 10,
       "asset": "images/military-full-size-medals/coast-guard/coast_guard_medal.png"
+    },
+    {
+      "awardId": "dot_9_11_medal",
+      "productTitle": "Full Size Medal: Coast Guard 9-11",
+      "productUrl": "https://www.vanguardmil.com/products/uscg-911-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609508.jpg?v=1617287738",
+      "score": 10,
+      "asset": "images/military-full-size-medals/coast-guard/dot_9_11_medal.png"
     }
   ],
   "unmatched": [
@@ -208,12 +216,6 @@
       "runnerUp": 0.976
     },
     {
-      "title": "Full Size Medal: Coast Guard 9-11",
-      "key": "coast guard 9 11",
-      "score": 2.115,
-      "runnerUp": 1.228
-    },
-    {
       "title": "Full Size Medal: Coast Guard Armed Forces Reserve",
       "key": "coast guard armed forces reserve",
       "score": 2.169,
@@ -248,12 +250,6 @@
       "key": "korea defense service",
       "score": 1.477,
       "runnerUp": 1.256
-    },
-    {
-      "title": "Full Size Medal: Kuwait Liberation Government of Kuwait #466",
-      "key": "kuwait liberation government of kuwait 466",
-      "score": 1.927,
-      "runnerUp": 0.949
     },
     {
       "title": "Full Size Medal: Marine Corps Armed Forces Reserve",
@@ -386,18 +382,6 @@
       "key": "navy reserve meritorious service",
       "score": 2.045,
       "runnerUp": 1.18
-    },
-    {
-      "title": "Full Size Medal: Philippine Independence",
-      "key": "philippine independence",
-      "score": 0.431,
-      "runnerUp": 0.426
-    },
-    {
-      "title": "Full Size Medal: Philippine Liberation",
-      "key": "philippine liberation",
-      "score": 0.867,
-      "runnerUp": 0.795
     },
     {
       "title": "Full Size Medal: PHS Covid-19 Pandemic Campaign Medal",

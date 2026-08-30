@@ -57,6 +57,7 @@ DAF_TITLE_ALIASES = {
 }
 
 SHARED_TITLE_ALIASES = {
+    "coast guard 9 11": "dot_9_11_medal",
     "defense superior service": "defense_superior_service",
     "joint service commendation": "joint_service_commendation",
     "legion of merit": "legion_of_merit",
@@ -65,6 +66,11 @@ SHARED_TITLE_ALIASES = {
     "united nations service": "united_nations",
     "medal for humane action": "medal_for_humane_action",
     "humane action": "medal_for_humane_action",
+    "kuwait liberation government of kuwait 466": "kuwiat_liberation_kuwait",
+    "philippine defense": "philippine_defense",
+    "philippine independence": "philippine_independence",
+    "philippine liberation": "philippine_liberation",
+    "vietnam gallantry cross w palm": "vietnam_gallantry_cross",
 }
 
 SERVICE_TITLE_ALIASES = {

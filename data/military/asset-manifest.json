@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-29T23:27:27.573Z",
+  "generatedAt": "2026-08-30T00:57:41.923Z",
   "assets": [
     {
       "ownerType": "AWARD",
@@ -4041,23 +4041,35 @@
       "ownerType": "AWARD",
       "ownerId": "special_operations_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
+      "status": "NOT_APPLICABLE",
       "asset": null,
       "exists": false,
       "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+      "sources": [
+        "CAPR 39-1, current supplied edition",
+        "DAFMAN 36-2806, current supplied edition",
+        "AR 600-8-22, current supplied edition",
+        "SECNAV M-1650.1, current supplied edition",
+        "COMDTINST M1650.25 series award classifications"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "special_operations_service",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
+      "status": "NOT_APPLICABLE",
       "asset": null,
       "exists": false,
       "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+      "sources": [
+        "CAPR 39-1, current supplied edition",
+        "DAFMAN 36-2806, current supplied edition",
+        "AR 600-8-22, current supplied edition",
+        "SECNAV M-1650.1, current supplied edition",
+        "COMDTINST M1650.25 series award classifications"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5039,23 +5051,27 @@
       "ownerType": "AWARD",
       "ownerId": "dot_9_11_medal",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/coast-guard/dot_9_11_medal.png",
+      "exists": true,
+      "sha256": "ea7bc98fd79d09162c0ce920eacb35ab106fe7275da9af043124fcc64ea91c1e",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-911-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "dot_9_11_medal",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/coast-guard/dot_9_11_medal.png",
+      "exists": true,
+      "sha256": "14ec992459435fa32c43384abac3db8b4db0068a5d7a75b2fcc420345c7d99bf",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/uscg-911-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5363,23 +5379,35 @@
       "ownerType": "AWARD",
       "ownerId": "us_antarctic_expedition",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
+      "status": "NOT_APPLICABLE",
       "asset": null,
       "exists": false,
       "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+      "sources": [
+        "CAPR 39-1, current supplied edition",
+        "DAFMAN 36-2806, current supplied edition",
+        "AR 600-8-22, current supplied edition",
+        "SECNAV M-1650.1, current supplied edition",
+        "COMDTINST M1650.25 series award classifications"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "us_antarctic_expedition",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
+      "status": "NOT_APPLICABLE",
       "asset": null,
       "exists": false,
       "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+      "sources": [
+        "CAPR 39-1, current supplied edition",
+        "DAFMAN 36-2806, current supplied edition",
+        "AR 600-8-22, current supplied edition",
+        "SECNAV M-1650.1, current supplied edition",
+        "COMDTINST M1650.25 series award classifications"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -6181,12 +6209,14 @@
       "ownerType": "AWARD",
       "ownerId": "kuwiat_liberation_kuwait",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/air-force/kuwiat_liberation_kuwait.png",
+      "exists": true,
+      "sha256": "8e5496626a59b04bb1b290b92cacc0ba441edbcc40bea9ba44fd6f0816d0614c",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-466-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -6293,23 +6323,35 @@
       "ownerType": "AWARD",
       "ownerId": "dot_9_11",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
+      "status": "NOT_APPLICABLE",
       "asset": null,
       "exists": false,
       "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+      "sources": [
+        "CAPR 39-1, current supplied edition",
+        "DAFMAN 36-2806, current supplied edition",
+        "AR 600-8-22, current supplied edition",
+        "SECNAV M-1650.1, current supplied edition",
+        "COMDTINST M1650.25 series award classifications"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "dot_9_11",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
+      "status": "NOT_APPLICABLE",
       "asset": null,
       "exists": false,
       "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+      "sources": [
+        "CAPR 39-1, current supplied edition",
+        "DAFMAN 36-2806, current supplied edition",
+        "AR 600-8-22, current supplied edition",
+        "SECNAV M-1650.1, current supplied edition",
+        "COMDTINST M1650.25 series award classifications"
+      ]
     },
     {
       "ownerType": "AWARD",

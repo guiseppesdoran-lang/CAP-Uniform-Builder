@@ -1066,6 +1066,17 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/kuwait_liberation_of_kuwait_miniature_medal_2054_kuwlib_mini_1.jpeg?v=1423544523"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/air-force/kuwiat_liberation_kuwait.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-466-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6590100.jpg?v=1617287643"
       }
     },
     "outstanding_volunteer_service": {
@@ -4019,6 +4030,120 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609730.jpg?v=1617287753"
+      }
+    },
+    "dot_9_11": {
+      "miniatureMedal": {
+        "status": "NOT_APPLICABLE",
+        "available": false,
+        "asset": null,
+        "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+        "sources": [
+          "CAPR 39-1, current supplied edition",
+          "DAFMAN 36-2806, current supplied edition",
+          "AR 600-8-22, current supplied edition",
+          "SECNAV M-1650.1, current supplied edition",
+          "COMDTINST M1650.25 series award classifications"
+        ],
+        "notes": "This award is represented by a ribbon or unit-award emblem, not a hanging medal."
+      },
+      "fullSizeMedal": {
+        "status": "NOT_APPLICABLE",
+        "available": false,
+        "asset": null,
+        "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+        "sources": [
+          "CAPR 39-1, current supplied edition",
+          "DAFMAN 36-2806, current supplied edition",
+          "AR 600-8-22, current supplied edition",
+          "SECNAV M-1650.1, current supplied edition",
+          "COMDTINST M1650.25 series award classifications"
+        ],
+        "notes": "This award is represented by a ribbon or unit-award emblem, not a hanging medal."
+      }
+    },
+    "special_operations_service": {
+      "miniatureMedal": {
+        "status": "NOT_APPLICABLE",
+        "available": false,
+        "asset": null,
+        "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+        "sources": [
+          "CAPR 39-1, current supplied edition",
+          "DAFMAN 36-2806, current supplied edition",
+          "AR 600-8-22, current supplied edition",
+          "SECNAV M-1650.1, current supplied edition",
+          "COMDTINST M1650.25 series award classifications"
+        ],
+        "notes": "This award is represented by a ribbon or unit-award emblem, not a hanging medal."
+      },
+      "fullSizeMedal": {
+        "status": "NOT_APPLICABLE",
+        "available": false,
+        "asset": null,
+        "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+        "sources": [
+          "CAPR 39-1, current supplied edition",
+          "DAFMAN 36-2806, current supplied edition",
+          "AR 600-8-22, current supplied edition",
+          "SECNAV M-1650.1, current supplied edition",
+          "COMDTINST M1650.25 series award classifications"
+        ],
+        "notes": "This award is represented by a ribbon or unit-award emblem, not a hanging medal."
+      }
+    },
+    "us_antarctic_expedition": {
+      "miniatureMedal": {
+        "status": "NOT_APPLICABLE",
+        "available": false,
+        "asset": null,
+        "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+        "sources": [
+          "CAPR 39-1, current supplied edition",
+          "DAFMAN 36-2806, current supplied edition",
+          "AR 600-8-22, current supplied edition",
+          "SECNAV M-1650.1, current supplied edition",
+          "COMDTINST M1650.25 series award classifications"
+        ],
+        "notes": "This award is represented by a ribbon or unit-award emblem, not a hanging medal."
+      },
+      "fullSizeMedal": {
+        "status": "NOT_APPLICABLE",
+        "available": false,
+        "asset": null,
+        "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+        "sources": [
+          "CAPR 39-1, current supplied edition",
+          "DAFMAN 36-2806, current supplied edition",
+          "AR 600-8-22, current supplied edition",
+          "SECNAV M-1650.1, current supplied edition",
+          "COMDTINST M1650.25 series award classifications"
+        ],
+        "notes": "This award is represented by a ribbon or unit-award emblem, not a hanging medal."
+      }
+    },
+    "dot_9_11_medal": {
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/coast-guard/dot_9_11_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-911-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/department_of_transportation_9_11_miniature_medal_2040_dot911_mini_1_1.jpeg?v=1423544686"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/coast-guard/dot_9_11_medal.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/uscg-911-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609508.jpg?v=1617287738"
       }
     }
   }
