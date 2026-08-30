@@ -284,7 +284,7 @@ test('Navy and Marine utility badge counterparts retain distinct regulated backi
 test('reviewed naval-service artwork copies preserve official and asset provenance',()=>{
   assert.ok(commonsNavyBadgeImport.imported.length>=14,'expected the reviewed Navy artwork checkpoint');
   for(const record of commonsNavyBadgeImport.imported){
-    assert.match(record.asset,/^images\/military-badges\/(?:navy|marine-corps)\/.+\.png$/);
+    assert.match(record.asset,/^images\/military-badges\/(?:navy|marine-corps|coast-guard)\/.+\.png$/);
     assert.ok(record.descriptionUrl?.startsWith('https://commons.wikimedia.org/'));
     const absolute=path.join(ROOT,...record.asset.split('/'));
     assert.ok(fs.existsSync(absolute),`${record.badgeId}:${record.variant} asset missing`);

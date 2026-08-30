@@ -28,11 +28,18 @@ MANIFEST_PATH = ROOT / "data" / "imports" / "commons_navy_badges.json"
 OUT_ROOTS = {
     "navy": ROOT / "images" / "military-badges" / "navy",
     "marine-corps": ROOT / "images" / "military-badges" / "marine-corps",
+    "coast-guard": ROOT / "images" / "military-badges" / "coast-guard",
 }
 API = "https://commons.wikimedia.org/w/api.php"
 OFFICIAL_SOURCE = "https://www.mynavyhr.navy.mil/References/US-Navy-Uniforms/Uniform-Regulations/Chapter-5/5201-Breast-Insignia/"
 USER_AGENT = "CAP-Uniform-Builder/1.0 (asset provenance audit)"
 ALLOWED_LICENSE_MARKERS = ("public domain", "cc0", "cc by", "cc-by")
+COMPOSITE_ASSET_MARKERS = (
+    "integrated_undersea_surveillance_system_insignia",
+    "navy_security_force_insignias",
+    "navy_seabee_combat_warfare_specialist_insignia",
+    "submarine_patrol_insignia",
+)
 
 QUERY_OVERRIDES = {
     "navy_aviator_insignia": {"default": "Naval Aviator Badge"},
@@ -100,6 +107,56 @@ QUERY_OVERRIDES = {
     "marine_corps_flight_surgeon_insignia": {"default": "Naval Flight Surgeon Badge"},
     "marine_corps_special_operator_insignia": {"default": "Marine Special Operator Insignia"},
 }
+
+# Exact catalog-family searches for the remaining documented naval-service
+# gaps.  These labels are deliberately narrow; the confidence and licensing
+# gates below still reject portraits, ceremonies, manuals, and ambiguous art.
+QUERY_OVERRIDES.update({
+    "navy_astronaut_insignia": {"default": "United States Navy Astronaut Badge"},
+    "navy_aviation_observer_insignia": {"default": "Naval Aviation Observer Badge"},
+    "navy_flight_medical_insignia": {"default": "Naval Flight Surgeon Badge"},
+    "navy_aviation_science_insignia": {"default": "Naval Aviation Science Badge"},
+    "navy_professional_aviation_maintenance_officer_insignia": {"default": "Professional Aviation Maintenance Officer Badge"},
+    "navy_aerial_vehicle_pilot_insignia": {"default": "Navy Aerial Vehicle Pilot Badge"},
+    "navy_engineering_duty_officer_insignia": {"default": "Navy Engineering Duty Officer Badge"},
+    "navy_expeditionary_warfare_insignia": {"default": "Navy Expeditionary Warfare Specialist Badge"},
+    "navy_integrated_undersea_surveillance_insignia": {"default": "Integrated Undersea Surveillance Badge"},
+    "navy_security_force_insignia": {"default": "Navy Security Force Badge"},
+    "navy_nuclear_weapons_security_insignia": {"default": "Navy Nuclear Weapons Security Badge"},
+    "navy_seabee_combat_warfare_insignia": {"default": "Seabee Combat Warfare Specialist Badge"},
+    "navy_small_craft_insignia": {"default": "Navy Small Craft Insignia"},
+    "navy_special_operations_warfare_insignia": {"default": "Navy Special Operations Warfare Badge"},
+    "navy_strategic_sealift_officer_warfare_insignia": {"default": "Strategic Sealift Officer Warfare Insignia"},
+    "navy_submarine_patrol_insignia": {"default": "Navy Submarine Patrol Insignia"},
+    "navy_surface_chaplain_qualification_insignia": {"default": "Surface Warfare Chaplain Badge"},
+    "marine_corps_astronaut_insignia": {"default": "United States Marine Corps Astronaut Badge"},
+    "marine_corps_explosive_ordnance_disposal_insignia": {"default": "Marine Corps Explosive Ordnance Disposal Badge"},
+    "marine_corps_diver_insignia": {"default": "Marine Corps Diver Badge"},
+    "marine_corps_rifle_qualification_badge": {"default": "Marine Corps Rifle Qualification Badge"},
+    "marine_corps_pistol_qualification_badge": {"default": "Marine Corps Pistol Qualification Badge"},
+    "marine_corps_competition_marksmanship_badge": {"default": "Marine Corps Competition Marksmanship Badge"},
+    "coast_guard_aviator_insignia": {"default": "Coast Guard Aviator Badge"},
+    "coast_guard_air_crew_insignia": {"default": "Coast Guard Aircrew Badge"},
+    "coast_guard_flight_officer_insignia": {"default": "Coast Guard Flight Officer Badge"},
+    "coast_guard_flight_surgeon_insignia": {"default": "Coast Guard Flight Surgeon Badge"},
+    "coast_guard_aviation_rescue_swimmer_insignia": {"default": "Coast Guard Aviation Rescue Swimmer Badge"},
+    "coast_guard_astronaut_insignia": {"default": "Coast Guard Astronaut Badge"},
+    "coast_guard_aviation_mission_specialist_insignia": {"default": "Coast Guard Aviation Mission Specialist Badge"},
+    "coast_guard_cutterman_insignia": {"default": "Coast Guard Cutterman Insignia"},
+    "coast_guard_boat_force_operations_insignia": {"default": "Coast Guard Boat Force Operations Insignia"},
+    "coast_guard_coxswain_insignia": {"default": "Coast Guard Coxswain Insignia"},
+    "coast_guard_enlisted_expeditionary_warfare_specialist_insignia": {"default": "Coast Guard Enlisted Expeditionary Warfare Specialist Badge"},
+    "coast_guard_surfman_insignia": {"default": "Coast Guard Surfman Badge"},
+    "coast_guard_scuba_diver_insignia": {"default": "Coast Guard Scuba Diver Badge"},
+    "coast_guard_diver_insignia": {"default": "Coast Guard Diver Badge"},
+    "coast_guard_port_security_insignia": {"default": "Coast Guard Port Security Badge"},
+    "coast_guard_marine_safety_insignia": {"default": "Coast Guard Marine Safety Insignia"},
+    "coast_guard_tactical_law_enforcement_insignia": {"default": "Coast Guard Tactical Law Enforcement Badge"},
+    "coast_guard_ceremonial_honor_guard_insignia": {"default": "Coast Guard Ceremonial Honor Guard Badge"},
+    "coast_guard_company_commander_insignia": {"default": "Coast Guard Company Commander Badge"},
+    "coast_guard_physician_assistant_nurse_practitioner_insignia": {"default": "Coast Guard Physician Assistant Nurse Practitioner Badge"},
+    "coast_guard_command_device": {"default": "Coast Guard Command Afloat Ashore Device"},
+})
 
 STOP = {"badge", "insignia", "navy", "naval", "united", "states", "us", "the", "and"}
 
@@ -201,6 +258,29 @@ def transparent_canvas(data: bytes) -> Image.Image:
         if alpha and min(red, green, blue) >= 238 and max(red, green, blue) - min(red, green, blue) <= 14:
             pixels[x, y] = (red, green, blue, 0)
             queue.extend(((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)))
+    # Remove pale antialiasing connected to the cleared background without
+    # stripping neutral silver highlights from the interior of the insignia.
+    # Repeating the one-pixel boundary pass handles the two-to-three-pixel
+    # white halos common in otherwise valid isolated Commons artwork.
+    for _ in range(3):
+        alpha_snapshot = source.getchannel("A")
+        alpha_pixels = alpha_snapshot.load()
+        changes = []
+        for y in range(source.height):
+            for x in range(source.width):
+                red, green, blue, alpha = pixels[x, y]
+                if not alpha or min(red, green, blue) < 190 or max(red, green, blue) - min(red, green, blue) > 24:
+                    continue
+                touches_clear = any(
+                    0 <= nx < source.width and 0 <= ny < source.height and alpha_pixels[nx, ny] < 48
+                    for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1))
+                )
+                if touches_clear:
+                    cleaned_alpha = min(alpha, max(0, (238 - min(red, green, blue)) * 5))
+                    changes.append((x, y, cleaned_alpha))
+        for x, y, cleaned_alpha in changes:
+            red, green, blue, _ = pixels[x, y]
+            pixels[x, y] = (red, green, blue, cleaned_alpha)
     alpha = source.getchannel("A")
     box = alpha.getbbox()
     if box:
@@ -214,11 +294,43 @@ def transparent_canvas(data: bytes) -> Image.Image:
 def main() -> None:
     catalog = json.loads(BADGES_PATH.read_text(encoding="utf-8"))
     by_id = {badge["id"]: badge for badge in catalog["badges"]}
+    prior_manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8")) if MANIFEST_PATH.exists() else {}
+    prior_imports = {
+        (entry.get("badgeId"), entry.get("variant")): entry
+        for entry in prior_manifest.get("imported", [])
+    }
     imported, rejected = [], []
+
+    def checkpoint() -> None:
+        """Persist accepted/rejected work so an interrupted API pass can resume."""
+        BADGES_PATH.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        manifest = {
+            "officialCatalogSources": sorted({
+                source
+                for catalog_badge_id in QUERY_OVERRIDES
+                if catalog_badge_id in by_id
+                for source in (by_id[catalog_badge_id].get("sources") or [OFFICIAL_SOURCE])[:1]
+            }),
+            "artworkRepository": "https://commons.wikimedia.org/",
+            "policy": "Only freely licensed/public-domain candidates scoring at least 0.76 are imported; ambiguous results remain missing.",
+            "canvas": {"width": 256, "height": 160, "format": "transparent PNG"},
+            "imported": imported,
+            "rejected": rejected,
+        }
+        MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
     for badge_id, variants in QUERY_OVERRIDES.items():
+        if badge_id not in by_id:
+            rejected.append({"badgeId": badge_id, "error": "Badge id is not present in the regulatory catalog"})
+            checkpoint()
+            continue
         badge = by_id[badge_id]
         official_source = (badge.get("sources") or [OFFICIAL_SOURCE])[0]
-        service_folder = "marine-corps" if badge_id.startswith("marine_corps_") else "navy"
+        service_folder = (
+            "marine-corps" if badge_id.startswith("marine_corps_")
+            else "coast-guard" if badge_id.startswith("coast_guard_")
+            else "navy"
+        )
         metal = badge.setdefault("representations", {}).setdefault("metal", {})
         variant_records = metal.setdefault("variants", {})
         for stale_variant, stale_record in list(variant_records.items()):
@@ -226,29 +338,54 @@ def main() -> None:
             if stale_record.get("verificationStatus") == "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY" and any(
                 marker in source for marker in (
                     "receives_the_badge", "memorial_service", "late_husband", "waits_to_receive", "hospital_corpsman",
-                    "presents_a", "presented_a", "receiving_a", "awarded_a"
+                    "presents_a", "presented_a", "receiving_a", "awarded_a", *COMPOSITE_ASSET_MARKERS
                 )
             ):
+                existing_asset = stale_record.get("asset")
+                if existing_asset:
+                    (ROOT / existing_asset).unlink(missing_ok=True)
                 del variant_records[stale_variant]
+                continue
         for variant, query in variants.items():
+            existing = variant_records.get(variant, {})
+            existing_asset = existing.get("asset")
+            if existing.get("status") == "AVAILABLE" and existing_asset and (ROOT / existing_asset).exists():
+                imported.append(prior_imports.get((badge_id, variant), {
+                    "badgeId": badge_id, "variant": variant, "query": query,
+                    "asset": existing_asset, "title": "Previously reviewed local asset",
+                    "descriptionUrl": existing.get("assetSource"),
+                    "license": existing.get("license"), "score": 1.0,
+                }))
+                continue
             print(f"{badge_id}:{variant}", flush=True)
             try:
                 candidates = search(query)
             except Exception as error:
                 rejected.append({"badgeId": badge_id, "variant": variant, "query": query, "error": str(error)})
+                checkpoint()
                 continue
             best = candidates[0] if candidates else None
             if not best or best["score"] < 0.76 or not best.get("url"):
                 rejected.append({"badgeId": badge_id, "variant": variant, "query": query, "candidates": candidates[:3]})
+                checkpoint()
+                continue
+            normalized_title = re.sub(r"[^a-z0-9]+", "_", best.get("title", "").lower())
+            if any(marker in normalized_title for marker in COMPOSITE_ASSET_MARKERS):
+                rejected.append({
+                    "badgeId": badge_id, "variant": variant, "query": query,
+                    "candidate": best, "error": "candidate is a multi-insignia catalog plate",
+                })
+                checkpoint()
                 continue
             try:
                 destination = OUT_ROOTS[service_folder] / badge_id / f"{variant}.png"
                 destination.parent.mkdir(parents=True, exist_ok=True)
-                if not destination.exists():
-                    data = download(best["title"])
-                    transparent_canvas(data).save(destination, "PNG", optimize=True)
+                data = destination.read_bytes() if destination.exists() else download(best["title"])
+                transparent_canvas(data).save(destination, "PNG", optimize=True)
             except Exception as error:
+                destination.unlink(missing_ok=True)
                 rejected.append({"badgeId": badge_id, "variant": variant, "query": query, "candidate": best, "error": str(error)})
+                checkpoint()
                 continue
             asset = destination.relative_to(ROOT).as_posix()
             record = {
@@ -259,6 +396,13 @@ def main() -> None:
             }
             variant_records[variant] = record
             imported.append({"badgeId": badge_id, "variant": variant, "query": query, **best, "asset": asset})
+            # Make a newly accepted family usable immediately even if the API
+            # interrupts the process before the remaining variants are queried.
+            if metal.get("status") != "AVAILABLE":
+                metal.update({key: value for key, value in record.items() if key != "license"})
+                metal["defaultVariant"] = variant
+                metal["variants"] = variant_records
+            checkpoint()
         available_variants = {variant: record for variant, record in variant_records.items() if record.get("status") == "AVAILABLE"}
         if available_variants:
             default_variant = next((variant for variant in variants if variant in available_variants), next(iter(available_variants)))
@@ -269,19 +413,7 @@ def main() -> None:
         elif metal.get("verificationStatus") == "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY":
             metal.clear()
             metal.update({"status": "MISSING_ASSET", "available": False, "asset": None})
-    BADGES_PATH.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    manifest = {
-        "officialCatalogSources": sorted({
-            source
-            for badge_id in QUERY_OVERRIDES
-            for source in (by_id[badge_id].get("sources") or [OFFICIAL_SOURCE])[:1]
-        }),
-        "artworkRepository": "https://commons.wikimedia.org/",
-        "policy": "Only freely licensed/public-domain candidates scoring at least 0.76 are imported; ambiguous results remain missing.",
-        "canvas": {"width": 256, "height": 160, "format": "transparent PNG"},
-        "imported": imported, "rejected": rejected,
-    }
-    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    checkpoint()
     print(json.dumps({"imported": len(imported), "rejected": len(rejected)}, indent=2))
 
 
