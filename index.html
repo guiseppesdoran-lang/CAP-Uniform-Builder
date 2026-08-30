@@ -6151,7 +6151,7 @@ async function buildMilitaryRibbonVariant(ribbonObj){
       try{
         const image=await capubLoadCompositeImage(ASSET(meta.src));
         const isCluster=deviceId.endsWith('_OLC');
-        rendered.push({deviceId,meta,image,width:isCluster?22:16,height:isCluster?11:16});
+        rendered.push({deviceId,meta,image,width:isCluster?25:18,height:isCluster?13:18});
       }catch(error){ console.warn('[MILITARY RIBBON DEVICE]',error); }
     }
     const sizes=Object.fromEntries(rendered.map(item=>[item.deviceId,{width:item.width,height:item.height}]));
@@ -8598,7 +8598,17 @@ function rebuildRibbonsFromGallery(){
     // compute stacks needed due to caps or special rules.
     // Silver Medal of Valor has no device for multiple awards in this builder;
     // it renders as multiple separate ribbons, capped at three.
+    let militaryInstances=null;
     let stacks = getRibbonDuplicateCountForSelection(id, sel.awardValue || '');
+    if(isMilitaryRibbonId(id)){
+      militaryInstances=window.CAPUBMilitary?.splitRibbonAwardInstances?.({
+        award:getMilitaryRibbonAward(id),service:getMilitarySelectionService(id,sel),awardCount:sel.awardCount || 1,
+        specialAuthorizations:sel.specialAuthorizations || [],
+        manualDevices:Number(sel.manualNumeral)>1 ? [`NUMERAL_${Math.min(99,Math.max(2,Math.trunc(Number(sel.manualNumeral))))}`] : [],
+        allowUnverifiedRules:!!getMilitaryUIState().advancedMode,maxDevices:4
+      }) || null;
+      if(militaryInstances?.length) stacks=militaryInstances.length;
+    }
     for(const [dev,count] of Object.entries(sel.devices||{})){
       const cap = RIBBON_DEVICE_CAP[dev] || 0;
       if(cap > 0) stacks = Math.max(stacks, Math.ceil((count||0)/cap));
@@ -8614,13 +8624,9 @@ function rebuildRibbonsFromGallery(){
       };
 
       if(isMilitaryRibbonId(id)){
-        const calculated=window.CAPUBMilitary?.calculateDevices?.({
-          award:getMilitaryRibbonAward(id),service:getMilitarySelectionService(id,sel),awardCount:sel.awardCount || 1,
-          specialAuthorizations:sel.specialAuthorizations || [],
-          manualDevices:Number(sel.manualNumeral)>1 ? [`NUMERAL_${Math.min(99,Math.max(2,Math.trunc(Number(sel.manualNumeral))))}`] : [],
-          allowUnverifiedRules:!!getMilitaryUIState().advancedMode
-        });
+        const calculated=militaryInstances?.[i] || {devices:[]};
         inst.militaryDevices=[...(calculated?.devices || [])];
+        inst.militaryAwardCount=calculated?.awardCount || 1;
         for(const deviceId of calculated?.devices || []) inst.devices[deviceId]=(inst.devices[deviceId] || 0)+1;
       }
 
@@ -10925,16 +10931,29 @@ function renderMilitaryPreview(){
     uniformCanvas.appendChild(note);
     return;
   }
+  const ribbonInstances=items.flatMap(award=>{
+    const selection=State.militaryAwards?.[award.id] || {};
+    const instances=window.CAPUBMilitary?.splitRibbonAwardInstances?.({
+      award,service:State.organization,awardCount:selection.awardCount || 1,
+      campaignCount:selection.campaignCount || 0,
+      specialAuthorizations:selection.specialAuthorizations || [],
+      manualDevices:selection.manualDevices || [],
+      deviceCatalog:window.CAPUBMilitaryData?.devices || [],
+      allowUnverifiedRules:!!getMilitaryUIState().advancedMode,maxDevices:4
+    }) || [{awardCount:selection.awardCount || 1,devices:[]}];
+    return instances.map((instance,instanceIndex)=>({award,instance,instanceIndex}));
+  });
   const columns=3, width=66, height=18, gap=0;
   const rows=[];
-  const remainder=items.length % columns;
+  const remainder=ribbonInstances.length % columns;
   let cursor=0;
-  if(remainder){ rows.push(items.slice(0,remainder)); cursor=remainder; }
-  for(;cursor<items.length;cursor+=columns) rows.push(items.slice(cursor,cursor+columns));
+  if(remainder){ rows.push(ribbonInstances.slice(0,remainder)); cursor=remainder; }
+  for(;cursor<ribbonInstances.length;cursor+=columns) rows.push(ribbonInstances.slice(cursor,cursor+columns));
   const centerX=MILITARY_LEFT_CHEST_CENTER_X, topY=210;
   rows.forEach((row,rowIndex)=>{
     const rowWidth=row.length*width+(row.length-1)*gap;
-    row.forEach((award,column)=>{
+    row.forEach((entry,column)=>{
+      const {award,instance}=entry;
       const left=centerX-rowWidth/2+column*(width+gap);
       const top=topY+rowIndex*(height+gap);
       let tile;
@@ -10946,14 +10965,8 @@ function renderMilitaryPreview(){
       }
       Object.assign(tile.style,{left:`${left}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`});
       uniformCanvas.appendChild(tile);
-      const awardCount=State.militaryAwards[award.id]?.awardCount || 1;
-      const calculated=window.CAPUBMilitary?.calculateDevices({
-        award,service:State.organization,awardCount,
-        deviceCatalog:window.CAPUBMilitaryData?.devices || [],
-        allowUnverifiedRules:!!getMilitaryUIState().advancedMode
-      });
-      applyMilitaryRibbonVariant(tile,{id:`${MILITARY_RIBBON_PREFIX}${award.id}`,militaryDevices:calculated?.devices || []});
-      if(calculated?.warnings?.length) tile.title=`${tile.title || award.name}\n${calculated.warnings.join('\n')}`;
+      applyMilitaryRibbonVariant(tile,{id:`${MILITARY_RIBBON_PREFIX}${award.id}`,militaryDevices:instance.devices || []});
+      if(instance.warnings?.length) tile.title=`${tile.title || award.name}\n${instance.warnings.join('\n')}`;
     });
   });
   const note=document.createElement('div');

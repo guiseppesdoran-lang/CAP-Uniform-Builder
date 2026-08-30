@@ -76,6 +76,35 @@ test('repeat-award conversion remains correct through practical high quantities'
   }
 });
 
+test('military ribbons spill repeat awards across physical ribbons at four devices', () => {
+  const sample=award('repeat_split','Repeat Medal',['AIR_FORCE'],{});
+  sample.devices={AIR_FORCE:{repeatAward:{bronzeDevice:'BRONZE_OLC',silverDevice:'SILVER_OLC',bronzeValue:1,silverValue:5}}};
+  const instances=core.splitRibbonAwardInstances({
+    award:sample,service:'AIR_FORCE',awardCount:10,maxDevices:4
+  });
+  assert.deepEqual(instances.map(item=>item.awardCount),[9,1]);
+  assert.deepEqual(instances[0].devices,['SILVER_OLC','BRONZE_OLC','BRONZE_OLC','BRONZE_OLC']);
+  assert.deepEqual(instances[1].devices,[]);
+  assert.ok(instances.every(item=>item.devices.length<=4));
+  assert.equal(instances.reduce((sum,item)=>sum+item.awardCount,0),10);
+});
+
+test('special devices remain on the first physical ribbon when repeat awards spill', () => {
+  const sample=award('repeat_special','Repeat Medal',['AIR_FORCE'],{});
+  sample.devices={AIR_FORCE:{
+    repeatAward:{bronzeDevice:'BRONZE_OLC',silverDevice:'SILVER_OLC',bronzeValue:1,silverValue:5},
+    allowedSpecialDevices:['V_DEVICE'],
+    devicePrecedence:['V_DEVICE','SILVER_OLC','BRONZE_OLC']
+  }};
+  const instances=core.splitRibbonAwardInstances({
+    award:sample,service:'AIR_FORCE',awardCount:10,specialAuthorizations:['V_DEVICE'],maxDevices:4
+  });
+  assert.equal(instances[0].devices[0],'V_DEVICE');
+  assert.equal(instances.slice(1).flatMap(item=>item.devices).includes('V_DEVICE'),false);
+  assert.ok(instances.every(item=>item.devices.length<=4));
+  assert.equal(instances.reduce((sum,item)=>sum+item.awardCount,0),10);
+});
+
 test('invalid special device combinations are rejected', () => {
   const sample=award('sample','Sample',['ARMY'],{});
   sample.devices={ARMY:{repeatAward:{bronzeDevice:'BRONZE_OLC'},allowedSpecialDevices:['V_DEVICE']}};
