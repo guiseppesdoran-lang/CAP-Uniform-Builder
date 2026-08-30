@@ -426,6 +426,30 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/nophoto_2d7dfaf3-4b99-4b53-ae37-892f44b1a449.jpg?v=1624998233",
       "score": null,
       "asset": "images/military-full-size-medals/air-force/remote_combat_effects_campaign_medal.png"
+    },
+    {
+      "awardId": "united_nations",
+      "productTitle": null,
+      "productUrl": "https://www.vanguardmil.com/products/united-nation-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/208_united_nations_korean_service_medal.jpeg?v=1423544492",
+      "score": null,
+      "asset": "images/military-full-size-medals/air-force/united_nations.png"
+    },
+    {
+      "awardId": "rok_war_service",
+      "productTitle": null,
+      "productUrl": "https://www.vanguardmil.com/products/republic-of-korea-war-service-no-device-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/186_republic_of_korea_korean_war_service_medal.jpeg?v=1423544501",
+      "score": null,
+      "asset": "images/military-full-size-medals/air-force/rok_war_service.png"
+    },
+    {
+      "awardId": "kuwiat_liberation_kuwait",
+      "productTitle": null,
+      "productUrl": "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-466-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6590100.jpg?v=1617287643",
+      "score": null,
+      "asset": "images/military-full-size-medals/air-force/kuwiat_liberation_kuwait.png"
     }
   ],
   "failed": [],
@@ -820,9 +844,6 @@
       "score": 0.76,
       "runnerUp": 0.577
     }
-  ],
-  "excludedRibbonOnly": [
-    "air_force_combat_action"
   ],
   "service": "AIR_FORCE",
   "representation": "fullSizeMedal"

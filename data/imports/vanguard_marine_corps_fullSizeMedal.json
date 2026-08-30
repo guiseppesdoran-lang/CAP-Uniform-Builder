@@ -208,12 +208,6 @@
       "runnerUp": 0.785
     },
     {
-      "title": "Full Size Medal: Coast Guard 9-11",
-      "key": "coast guard 9 11",
-      "score": 0.905,
-      "runnerUp": 0.622
-    },
-    {
       "title": "Full Size Medal: Coast Guard Achievement",
       "key": "coast guard achievement",
       "score": 0.946,
@@ -268,22 +262,10 @@
       "runnerUp": 1.256
     },
     {
-      "title": "Full Size Medal: Kuwait Liberation Government of Kuwait #466",
-      "key": "kuwait liberation government of kuwait 466",
-      "score": 1.927,
-      "runnerUp": 0.949
-    },
-    {
       "title": "Full Size Medal: Marine Corps Armed Forces Reserve",
       "key": "marine corps armed forces reserve",
       "score": 2.155,
       "runnerUp": 2.155
-    },
-    {
-      "title": "Full Size Medal: Marine Corps China Service",
-      "key": "marine corps china service",
-      "score": 1.967,
-      "runnerUp": 1.183
     },
     {
       "title": "Full Size Medal: Mexican Border Defense",
@@ -430,12 +412,6 @@
       "runnerUp": 0.584
     },
     {
-      "title": "Full Size Medal: Republic of Korea War Service No Device",
-      "key": "republic of korea war service no device",
-      "score": 2.367,
-      "runnerUp": 0.902
-    },
-    {
       "title": "Full Size Medal: Selective Marine Corps Reserve",
       "key": "selective marine corps reserve",
       "score": 2.35,
@@ -508,12 +484,6 @@
       "runnerUp": 0.583
     },
     {
-      "title": "Full Size Medal: WWII Occupation Marine Corps",
-      "key": "wwii occupation marine corps",
-      "score": 0.905,
-      "runnerUp": 0.9
-    },
-    {
       "title": "Full Size Medal: WWII Occupation Navy and Coast Guard",
       "key": "wwii occupation navy and coast guard",
       "score": 0.76,
@@ -525,8 +495,5 @@
       "score": 0.95,
       "runnerUp": 0.421
     }
-  ],
-  "excludedRibbonOnly": [
-    "combat_action"
   ]
 }

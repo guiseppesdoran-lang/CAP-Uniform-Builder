@@ -66,6 +66,22 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/navy_expeditionary_miniature_medal_2073_navexp_mini_1_1.jpeg?v=1423544594",
       "score": 4.8,
       "asset": "images/military-mini-medals/coast-guard/navy_expeditionary.png"
+    },
+    {
+      "awardId": "coast_guard_medal",
+      "productTitle": "Miniature Medal: Coast Guard Medal for Heroism",
+      "productUrl": "https://www.vanguardmil.com/products/uscg-medal-for-heroism-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/coast_guard_miniature_medal_for_heroism_2034_cgmedl_mini_1.jpeg?v=1423544711",
+      "score": 10,
+      "asset": "images/military-mini-medals/coast-guard/coast_guard_medal.png"
+    },
+    {
+      "awardId": "dot_9_11_medal",
+      "productTitle": "Miniature Medal: Coast Guard 9-11",
+      "productUrl": "https://www.vanguardmil.com/products/uscg-911-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/department_of_transportation_9_11_miniature_medal_2040_dot911_mini_1_1.jpeg?v=1423544686",
+      "score": 10,
+      "asset": "images/military-mini-medals/coast-guard/dot_9_11_medal.png"
     }
   ],
   "unmatched": [
@@ -196,12 +212,6 @@
       "runnerUp": 0.651
     },
     {
-      "title": "Miniature Medal: Coast Guard 9-11",
-      "key": "coast guard 9 11",
-      "score": 2.115,
-      "runnerUp": 1.228
-    },
-    {
       "title": "Miniature Medal: Coast Guard Armed Forces Reserve",
       "key": "coast guard armed forces reserve",
       "score": 2.169,
@@ -218,12 +228,6 @@
       "key": "coast guard expert rifle",
       "score": 1.929,
       "runnerUp": 1.23
-    },
-    {
-      "title": "Miniature Medal: Coast Guard Medal for Heroism",
-      "key": "coast guard for heroism",
-      "score": 1.947,
-      "runnerUp": 1.15
     },
     {
       "title": "Miniature Medal: Distinguished Service Cross",

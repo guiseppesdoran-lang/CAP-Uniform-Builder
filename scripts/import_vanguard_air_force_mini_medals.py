@@ -52,6 +52,55 @@ DAF_TITLE_ALIASES = {
     "remote combat effects campaign": "remote_combat_effects_campaign_medal",
     "vietnam campaign": "republic_of_vietnam_campaign",
     "wwii victory": "world_war_ii_victory",
+    "cross": "air_force_cross",
+    "expeditionary": "air_force_expeditionary",
+}
+
+SHARED_TITLE_ALIASES = {
+    "coast guard 9 11": "dot_9_11_medal",
+    "defense superior service": "defense_superior_service",
+    "joint service commendation": "joint_service_commendation",
+    "legion of merit": "legion_of_merit",
+    "prisoner of war": "prisoner_of_war",
+    "republic of korea war service no device": "rok_war_service",
+    "united nations service": "united_nations",
+    "medal for humane action": "medal_for_humane_action",
+    "humane action": "medal_for_humane_action",
+    "kuwait liberation government of kuwait 466": "kuwiat_liberation_kuwait",
+    "philippine defense": "philippine_defense",
+    "philippine independence": "philippine_independence",
+    "philippine liberation": "philippine_liberation",
+    "vietnam gallantry cross w palm": "vietnam_gallantry_cross",
+}
+
+SERVICE_TITLE_ALIASES = {
+    "ARMY": {
+        "army national guard reserve component achievement": "reserve_componets_achievement",
+        "army reserve component achievement": "reserve_componets_achievement",
+        "army distinguished service": "army_distinguished_service",
+        "army and wwii occupation": "army_of_occupation",
+        "wwii occupation army and": "army_of_occupation",
+        "women s army corp": "womens_s_army_corps_service",
+    },
+    "NAVY": {
+        "navy china service": "china_service",
+        "navy and coast guard occupation wwii": "navy_occupation_service",
+        "wwii occupation navy and coast guard": "navy_occupation_service",
+        "navy distinguished service": "navy_distinguished_service",
+    },
+    "MARINE_CORPS": {
+        "marine corps china service": "china_service",
+        "marine corps wwii occupation": "navy_occupation_service",
+        "wwii occupation marine corps": "navy_occupation_service",
+        "navy distinguished service": "navy_distinguished_service",
+    },
+    "COAST_GUARD": {
+        "coast guard distinguished service": "coast_guard_distinguished_service",
+        "coast guard for heroism": "coast_guard_medal",
+        "c g for heroism": "coast_guard_medal",
+        "coast guard good conduct": "coast_guard_good_conduct",
+        "coast guard reserve good conduct": "coast_guard_reserve_good_conduct",
+    },
 }
 
 
@@ -123,7 +172,11 @@ def match_products(catalog: list[dict], source_products: list[dict], required_ke
         if any(marker in title_lower for marker in ("24k", "gold plated", "mirror finish", "jrotc", "civil air patrol")):
             continue
         key = product_key(product)
-        award_id = DAF_TITLE_ALIASES.get(key) if service in {"AIR_FORCE", "SPACE_FORCE"} else None
+        aliases = dict(SHARED_TITLE_ALIASES)
+        aliases.update(SERVICE_TITLE_ALIASES.get(service, {}))
+        if service in {"AIR_FORCE", "SPACE_FORCE"}:
+            aliases.update(DAF_TITLE_ALIASES)
+        award_id = aliases.get(key)
         score = 10.0 if award_id else 0.0
         if not award_id:
             scored = sorted(

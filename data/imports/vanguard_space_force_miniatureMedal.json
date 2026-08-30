@@ -220,12 +220,6 @@
       "runnerUp": 0.377
     },
     {
-      "title": "Miniature Medal: Defense Superior Service",
-      "key": "defense superior service",
-      "score": 0.79,
-      "runnerUp": 0.386
-    },
-    {
       "title": "Miniature Medal: Distinguished Flying Cross",
       "key": "distinguished flying cross",
       "score": 0.32,
@@ -496,12 +490,6 @@
       "runnerUp": 0.619
     },
     {
-      "title": "Miniature Medal: Prisoner of War",
-      "key": "prisoner of war",
-      "score": 0.391,
-      "runnerUp": 0.3
-    },
-    {
       "title": "Miniature Medal: Public Health Service Crisis Response",
       "key": "public health service crisis response",
       "score": 0.486,
@@ -578,12 +566,6 @@
       "key": "united nation operations in western sahara",
       "score": 0.594,
       "runnerUp": 0.438
-    },
-    {
-      "title": "Miniature Medal: United Nations Service",
-      "key": "united nations service",
-      "score": 0.777,
-      "runnerUp": 0.468
     },
     {
       "title": "Miniature Medal: US Navy Arctic Service",
