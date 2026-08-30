@@ -6509,6 +6509,7 @@ function getBadgeCategoriesForCurrentMembership(){
 }
 
 const patchList = [
+  'national_staff_ocp_patch',
   'ner_patch','nywg_patch','comms_patch','check_pilot_patch',
   'pjoc_ocp_patch',
   'pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch',
@@ -6522,6 +6523,15 @@ const patchList = [
 const FIELD_BASE_BUILT_IN_PATCH_IDS = new Set(['us_flag_patch','aux_duty_identifier']);
 
 const PATCH_META = {
+  'national_staff_ocp_patch':{
+    label:'National Staff OCP Sleeve Patch',
+    slotHint:'L_SHOULDER',
+    w:70,h:70,
+    img:'badges/utility/national_staff_badge.png',
+    authorizedUniforms:['ocp'],
+    allowedMemberships:['senior'],
+    sourceBadgeId:'national_staff_badge'
+  },
    // Previously added field-uniform patches.
   'ner_patch':{label:'Northeast Region Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/ner_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'nywg_patch':{label:'New York Wing Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nywg_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
@@ -6641,11 +6651,13 @@ function buildUnitPatchSelector(filterText=''){
 
 const ALTERNATES = {
   badgeToPatch: {
+    'national_staff_badge':'national_staff_ocp_patch',
     'communications_technician_badge':'comms_patch',
     'communications_senior_badge':'comms_patch',
     'communications_master_badge':'comms_patch'
   },
   patchToBadge: {
+    'national_staff_ocp_patch':'national_staff_badge',
     'comms_patch':'communications_technician_badge',
     'communications_patch':'communications_technician_badge'
   },
@@ -15308,7 +15320,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       'emt_paramedic','emt_intermediate','emt_basic_badge',
       'incident_commander_1_badge','incident_commander_2_badge','basic_incident_commander_badge',
       'master_ground_team_badge','senior_ground_team_badge','ground_team_basic_badge',
-      'group_commander_badge','squadron_commander_badge','national_staff_badge'
+      'group_commander_badge','squadron_commander_badge'
     ];
     const CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET = new Set(CAPUB_DOCUMENT_UTILITY_BADGE_IDS);
     const CAPUB_UTILITY_ONLY_BADGE_IDS = new Set([]);
