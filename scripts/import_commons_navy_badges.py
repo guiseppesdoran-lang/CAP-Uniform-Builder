@@ -41,6 +41,28 @@ COMPOSITE_ASSET_MARKERS = (
     "submarine_patrol_insignia",
 )
 
+# Exact public-domain/licensed filenames reviewed against the governing badge
+# catalog. These may score below the generic token threshold because Commons
+# titles use abbreviations such as USN/USCG/USMC, but are not fuzzy guesses.
+APPROVED_CANDIDATE_TITLES = {
+    ("navy_diving_insignia", "diving_officer_medical"): "File:US Navy Dive Medical Officer.png",
+    ("navy_special_warfare_insignia", "default"): "File:United States Navy Special Warfare insignia.png",
+    ("navy_marine_corps_combat_aircrew_insignia", "base"): "File:USMC Combat Aircrew Badge.png",
+    ("navy_marine_corps_combatant_diver_insignia", "default"): "File:Diver Badge (USMC).jpg",
+    ("navy_explosive_ordnance_disposal_insignia", "officer"): "File:USN - EOD Officer.png",
+    ("navy_explosive_ordnance_disposal_insignia", "basic"): "File:USN - EOD Basic.png",
+    ("navy_explosive_ordnance_disposal_insignia", "senior"): "File:USN - EOD Senior.jpg",
+    ("navy_explosive_ordnance_disposal_insignia", "master"): "File:USN - EOD Master.jpg",
+    ("coast_guard_tactical_law_enforcement_insignia", "default"): "File:USCG - Tactical Law Enforcement.jpg",
+    ("coast_guard_marine_safety_insignia", "default"): "File:Marine Safety Insignia.png",
+    ("coast_guard_scuba_diver_insignia", "default"): "File:USCG Scuba Diver-Officer Badge.png",
+    ("coast_guard_company_commander_insignia", "default"): "File:USCG - COMPANY COMMANDER.jpg",
+    ("coast_guard_flight_surgeon_insignia", "default"): "File:USCG - Flight Surgeon.jpg",
+    ("coast_guard_port_security_insignia", "default"): "File:USCG Port Security Law Enforcement Badge.png",
+    ("coast_guard_aviation_rescue_swimmer_insignia", "default"): "File:USCG - Rescue Swimmer.jpg",
+    ("marine_corps_diver_insignia", "default"): "File:Diver Badge (USMC).jpg",
+}
+
 QUERY_OVERRIDES = {
     "navy_aviator_insignia": {"default": "Naval Aviator Badge"},
     "navy_flight_officer_insignia": {"default": "Naval Flight Officer Badge"},
@@ -364,8 +386,10 @@ def main() -> None:
                 rejected.append({"badgeId": badge_id, "variant": variant, "query": query, "error": str(error)})
                 checkpoint()
                 continue
-            best = candidates[0] if candidates else None
-            if not best or best["score"] < 0.76 or not best.get("url"):
+            approved_title = APPROVED_CANDIDATE_TITLES.get((badge_id, variant))
+            approved = next((candidate for candidate in candidates if candidate.get("title") == approved_title), None)
+            best = approved or (candidates[0] if candidates else None)
+            if not best or (not approved and best["score"] < 0.76) or not best.get("url"):
                 rejected.append({"badgeId": badge_id, "variant": variant, "query": query, "candidates": candidates[:3]})
                 checkpoint()
                 continue

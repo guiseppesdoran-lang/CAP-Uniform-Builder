@@ -79,6 +79,34 @@
       "asset": "images/military-badges/navy/navy_aviation_supply_corps_insignia/default.png"
     },
     {
+      "badgeId": "navy_marine_corps_combat_aircrew_insignia",
+      "variant": "base",
+      "query": "Marine Corps Combat Aircrew Badge",
+      "title": "File:USMC Combat Aircrew Badge.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/USMC_Combat_Aircrew_Badge.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USMC_Combat_Aircrew_Badge.png",
+      "width": 140,
+      "height": 66,
+      "mime": "image/png",
+      "license": "Public domain",
+      "score": 0.5733,
+      "asset": "images/military-badges/navy/navy_marine_corps_combat_aircrew_insignia/base.png"
+    },
+    {
+      "badgeId": "navy_marine_corps_combatant_diver_insignia",
+      "variant": "default",
+      "query": "Marine Corps Combatant Diver Badge",
+      "title": "File:Diver Badge (USMC).jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Diver_Badge_%28USMC%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Diver_Badge_(USMC).jpg",
+      "width": 143,
+      "height": 148,
+      "mime": "image/jpeg",
+      "license": "Public domain",
+      "score": 0.2933,
+      "asset": "images/military-badges/navy/navy_marine_corps_combatant_diver_insignia/default.png"
+    },
+    {
       "badgeId": "navy_parachutist_insignia",
       "variant": "navy_marine_corps_parachutist",
       "query": "Navy Marine Corps Parachutist Badge",
@@ -91,6 +119,62 @@
       "license": "Public domain",
       "score": 0.9513,
       "asset": "images/military-badges/navy/navy_parachutist_insignia/navy_marine_corps_parachutist.png"
+    },
+    {
+      "badgeId": "navy_explosive_ordnance_disposal_insignia",
+      "variant": "officer",
+      "query": "Explosive Ordnance Disposal Officer Badge Navy",
+      "title": "File:USN - EOD Officer.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/USN_-_EOD_Officer.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_EOD_Officer.png",
+      "width": 600,
+      "height": 475,
+      "mime": "image/png",
+      "license": "Public domain",
+      "score": 0.2748,
+      "asset": "images/military-badges/navy/navy_explosive_ordnance_disposal_insignia/officer.png"
+    },
+    {
+      "badgeId": "navy_explosive_ordnance_disposal_insignia",
+      "variant": "basic",
+      "query": "Basic Explosive Ordnance Disposal Badge Navy",
+      "title": "File:USN - EOD Basic.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/8/8d/USN_-_EOD_Basic.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_EOD_Basic.png",
+      "width": 600,
+      "height": 340,
+      "mime": "image/png",
+      "license": "Public domain",
+      "score": 0.2299,
+      "asset": "images/military-badges/navy/navy_explosive_ordnance_disposal_insignia/basic.png"
+    },
+    {
+      "badgeId": "navy_explosive_ordnance_disposal_insignia",
+      "variant": "senior",
+      "query": "Senior Explosive Ordnance Disposal Badge Navy",
+      "title": "File:USN - EOD Senior.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/USN_-_EOD_Senior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_EOD_Senior.jpg",
+      "width": 470,
+      "height": 277,
+      "mime": "image/jpeg",
+      "license": "Public domain",
+      "score": 0.2367,
+      "asset": "images/military-badges/navy/navy_explosive_ordnance_disposal_insignia/senior.png"
+    },
+    {
+      "badgeId": "navy_explosive_ordnance_disposal_insignia",
+      "variant": "master",
+      "query": "Master Explosive Ordnance Disposal Badge Navy",
+      "title": "File:USN - EOD Master.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/USN_-_EOD_Master.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_EOD_Master.jpg",
+      "width": 452,
+      "height": 347,
+      "mime": "image/jpeg",
+      "license": "Public domain",
+      "score": 0.2367,
+      "asset": "images/military-badges/navy/navy_explosive_ordnance_disposal_insignia/master.png"
     },
     {
       "badgeId": "navy_fleet_marine_force_insignia",
@@ -135,6 +219,20 @@
       "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Enlisted_Information_Warfare_Specialist_Breast_Insignia.jpg",
       "license": "Public domain",
       "score": 1.0
+    },
+    {
+      "badgeId": "navy_special_warfare_insignia",
+      "variant": "default",
+      "query": "Special Warfare insignia SEAL Badge",
+      "title": "File:United States Navy Special Warfare insignia.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/United_States_Navy_Special_Warfare_insignia.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:United_States_Navy_Special_Warfare_insignia.png",
+      "width": 587,
+      "height": 305,
+      "mime": "image/png",
+      "license": "Public domain",
+      "score": 0.6538,
+      "asset": "images/military-badges/navy/navy_special_warfare_insignia/default.png"
     },
     {
       "badgeId": "navy_submarine_warfare_insignia",
@@ -319,6 +417,20 @@
       "score": 1.0
     },
     {
+      "badgeId": "navy_diving_insignia",
+      "variant": "diving_officer_medical",
+      "query": "Navy Diving Medical Officer Badge",
+      "title": "File:US Navy Dive Medical Officer.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/48/US_Navy_Dive_Medical_Officer.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:US_Navy_Dive_Medical_Officer.png",
+      "width": 600,
+      "height": 520,
+      "mime": "image/png",
+      "license": "Public domain",
+      "score": 0.6967,
+      "asset": "images/military-badges/navy/navy_diving_insignia/diving_officer_medical.png"
+    },
+    {
       "badgeId": "marine_corps_aerial_navigator_insignia",
       "variant": "default",
       "query": "Marine Aerial Navigator Badge",
@@ -487,6 +599,20 @@
       "asset": "images/military-badges/navy/navy_strategic_sealift_officer_warfare_insignia/default.png"
     },
     {
+      "badgeId": "marine_corps_diver_insignia",
+      "variant": "default",
+      "query": "Marine Corps Diver Badge",
+      "title": "File:Diver Badge (USMC).jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Diver_Badge_%28USMC%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Diver_Badge_(USMC).jpg",
+      "width": 143,
+      "height": 148,
+      "mime": "image/jpeg",
+      "license": "Public domain",
+      "score": 0.381,
+      "asset": "images/military-badges/marine-corps/marine_corps_diver_insignia/default.png"
+    },
+    {
       "badgeId": "coast_guard_flight_officer_insignia",
       "variant": "default",
       "query": "Coast Guard Flight Officer Badge",
@@ -499,6 +625,48 @@
       "license": "Public domain",
       "score": 0.95,
       "asset": "images/military-badges/coast-guard/coast_guard_flight_officer_insignia/default.png"
+    },
+    {
+      "badgeId": "coast_guard_flight_surgeon_insignia",
+      "variant": "default",
+      "query": "Coast Guard Flight Surgeon Badge",
+      "title": "File:USCG - Flight Surgeon.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/8/80/USCG_-_Flight_Surgeon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Flight_Surgeon.jpg",
+      "width": 935,
+      "height": 216,
+      "mime": "image/jpeg",
+      "license": "Public domain",
+      "score": 0.5354,
+      "asset": "images/military-badges/coast-guard/coast_guard_flight_surgeon_insignia/default.png"
+    },
+    {
+      "badgeId": "coast_guard_aviation_rescue_swimmer_insignia",
+      "variant": "default",
+      "query": "Coast Guard Aviation Rescue Swimmer Badge",
+      "title": "File:USCG - Rescue Swimmer.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/USCG_-_Rescue_Swimmer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Rescue_Swimmer.jpg",
+      "width": 600,
+      "height": 176,
+      "mime": "image/jpeg",
+      "license": "Public domain",
+      "score": 0.4371,
+      "asset": "images/military-badges/coast-guard/coast_guard_aviation_rescue_swimmer_insignia/default.png"
+    },
+    {
+      "badgeId": "coast_guard_scuba_diver_insignia",
+      "variant": "default",
+      "query": "Coast Guard Scuba Diver Badge",
+      "title": "File:USCG Scuba Diver-Officer Badge.png",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/c/cf/USCG_Scuba_Diver-Officer_Badge.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_Scuba_Diver-Officer_Badge.png",
+      "width": 110,
+      "height": 112,
+      "mime": "image/png",
+      "license": "Public domain",
+      "score": 0.5445,
+      "asset": "images/military-badges/coast-guard/coast_guard_scuba_diver_insignia/default.png"
     }
   ],
   "rejected": [
@@ -507,128 +675,6 @@
       "variant": "default",
       "query": "Naval Aircrew Warfare Specialist Badge",
       "candidates": []
-    },
-    {
-      "badgeId": "navy_marine_corps_combat_aircrew_insignia",
-      "variant": "base",
-      "query": "Marine Corps Combat Aircrew Badge",
-      "candidates": [
-        {
-          "title": "File:USMC Combat Aircrew Badge.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/8/8e/USMC_Combat_Aircrew_Badge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USMC_Combat_Aircrew_Badge.jpg",
-          "width": 374,
-          "height": 183,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.5733
-        },
-        {
-          "title": "File:USMC Combat Aircrew Badge.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/USMC_Combat_Aircrew_Badge.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USMC_Combat_Aircrew_Badge.png",
-          "width": 140,
-          "height": 66,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.5733
-        }
-      ]
-    },
-    {
-      "badgeId": "navy_marine_corps_combatant_diver_insignia",
-      "variant": "default",
-      "query": "Marine Corps Combatant Diver Badge",
-      "candidates": [
-        {
-          "title": "File:Diver Badge (USMC).jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Diver_Badge_%28USMC%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Diver_Badge_(USMC).jpg",
-          "width": 143,
-          "height": 148,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.2933
-        }
-      ]
-    },
-    {
-      "badgeId": "navy_explosive_ordnance_disposal_insignia",
-      "variant": "officer",
-      "query": "Explosive Ordnance Disposal Officer Badge Navy",
-      "candidates": [
-        {
-          "title": "File:USN - EOD Officer.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/USN_-_EOD_Officer.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_EOD_Officer.png",
-          "width": 600,
-          "height": 475,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.2748
-        }
-      ]
-    },
-    {
-      "badgeId": "navy_explosive_ordnance_disposal_insignia",
-      "variant": "basic",
-      "query": "Basic Explosive Ordnance Disposal Badge Navy",
-      "candidates": [
-        {
-          "title": "File:USN - EOD Basic.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/8/8d/USN_-_EOD_Basic.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_EOD_Basic.png",
-          "width": 600,
-          "height": 340,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.2299
-        }
-      ]
-    },
-    {
-      "badgeId": "navy_explosive_ordnance_disposal_insignia",
-      "variant": "senior",
-      "query": "Senior Explosive Ordnance Disposal Badge Navy",
-      "candidates": [
-        {
-          "title": "File:USN - EOD Senior.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/USN_-_EOD_Senior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_EOD_Senior.jpg",
-          "width": 470,
-          "height": 277,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.2367
-        }
-      ]
-    },
-    {
-      "badgeId": "navy_explosive_ordnance_disposal_insignia",
-      "variant": "master",
-      "query": "Master Explosive Ordnance Disposal Badge Navy",
-      "candidates": [
-        {
-          "title": "File:USN - EOD Master.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/USN_-_EOD_Master.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_-_EOD_Master.jpg",
-          "width": 452,
-          "height": 347,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.2367
-        },
-        {
-          "title": "File:EOD Pin.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/EOD_Pin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:EOD_Pin.jpg",
-          "width": 160,
-          "height": 128,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.0481
-        }
-      ]
     },
     {
       "badgeId": "navy_fleet_marine_force_insignia",
@@ -664,43 +710,6 @@
           "mime": "image/jpeg",
           "license": "Public domain",
           "score": 0.5057
-        }
-      ]
-    },
-    {
-      "badgeId": "navy_special_warfare_insignia",
-      "variant": "default",
-      "query": "Special Warfare insignia SEAL Badge",
-      "candidates": [
-        {
-          "title": "File:United States Navy Special Warfare insignia.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/United_States_Navy_Special_Warfare_insignia.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:United_States_Navy_Special_Warfare_insignia.png",
-          "width": 587,
-          "height": 305,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.6538
-        },
-        {
-          "title": "File:USN SEAL badge, coveralls.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/4/48/USN_SEAL_badge%2C_coveralls.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN_SEAL_badge,_coveralls.png",
-          "width": 938,
-          "height": 371,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.3583
-        },
-        {
-          "title": "File:Navye Seal seal (1).png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/0/08/Navye_Seal_seal_%281%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Navye_Seal_seal_(1).png",
-          "width": 679,
-          "height": 354,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.3241
         }
       ]
     },
@@ -758,43 +767,6 @@
       "variant": "master_diver",
       "query": "Navy Master Diver Badge",
       "error": "HTTP Error 429: Too Many Requests"
-    },
-    {
-      "badgeId": "navy_diving_insignia",
-      "variant": "diving_officer_medical",
-      "query": "Navy Diving Medical Officer Badge",
-      "candidates": [
-        {
-          "title": "File:US Navy Dive Medical Officer.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/4/48/US_Navy_Dive_Medical_Officer.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:US_Navy_Dive_Medical_Officer.png",
-          "width": 600,
-          "height": 520,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.6967
-        },
-        {
-          "title": "File:USN-USCG Diving Officer insignia.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e8/USN-USCG_Diving_Officer_insignia.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USN-USCG_Diving_Officer_insignia.png",
-          "width": 160,
-          "height": 139,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.6385
-        },
-        {
-          "title": "File:NavyMedicalDiver.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/8/87/NavyMedicalDiver.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:NavyMedicalDiver.jpg",
-          "width": 600,
-          "height": 518,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.1429
-        }
-      ]
     },
     {
       "badgeId": "navy_diving_insignia",
@@ -881,7 +853,18 @@
       "badgeId": "navy_expeditionary_warfare_insignia",
       "variant": "default",
       "query": "Navy Expeditionary Warfare Specialist Badge",
-      "error": "HTTP Error 429: Too Many Requests"
+      "candidates": [
+        {
+          "title": "File:EXW Badge.JPG",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/EXW_Badge.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:EXW_Badge.JPG",
+          "width": 590,
+          "height": 188,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.0865
+        }
+      ]
     },
     {
       "badgeId": "navy_integrated_undersea_surveillance_insignia",
@@ -923,71 +906,13 @@
       "badgeId": "marine_corps_astronaut_insignia",
       "variant": "default",
       "query": "United States Marine Corps Astronaut Badge",
-      "candidates": [
-        {
-          "title": "File:U.S. Navy NFO Astronaut insignia.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/U.S._Navy_NFO_Astronaut_insignia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:U.S._Navy_NFO_Astronaut_insignia.jpg",
-          "width": 491,
-          "height": 146,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.3649
-        },
-        {
-          "title": "File:U.S. Navy Astronaut insignia.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/7/7f/U.S._Navy_Astronaut_insignia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:U.S._Navy_Astronaut_insignia.jpg",
-          "width": 473,
-          "height": 167,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.3571
-        },
-        {
-          "title": "File:En-Flightastrobadge.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/1/10/En-Flightastrobadge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-Flightastrobadge.jpg",
-          "width": 280,
-          "height": 80,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.1066
-        }
-      ]
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "badgeId": "marine_corps_explosive_ordnance_disposal_insignia",
       "variant": "default",
       "query": "Marine Corps Explosive Ordnance Disposal Badge",
       "candidates": []
-    },
-    {
-      "badgeId": "marine_corps_diver_insignia",
-      "variant": "default",
-      "query": "Marine Corps Diver Badge",
-      "candidates": [
-        {
-          "title": "File:Diver Badge (USMC).jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Diver_Badge_%28USMC%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Diver_Badge_(USMC).jpg",
-          "width": 143,
-          "height": 148,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.381
-        },
-        {
-          "title": "File:USMC - Divers Insignia.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/d/d1/USMC_-_Divers_Insignia.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USMC_-_Divers_Insignia.png",
-          "width": 371,
-          "height": 336,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.1087
-        }
-      ]
     },
     {
       "badgeId": "marine_corps_rifle_qualification_badge",
@@ -1104,64 +1029,41 @@
       ]
     },
     {
-      "badgeId": "coast_guard_flight_surgeon_insignia",
-      "variant": "default",
-      "query": "Coast Guard Flight Surgeon Badge",
-      "candidates": [
-        {
-          "title": "File:USCG - Flight Surgeon.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/8/80/USCG_-_Flight_Surgeon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Flight_Surgeon.jpg",
-          "width": 935,
-          "height": 216,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.5354
-        },
-        {
-          "title": "File:USCgFSBadge.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ea/USCgFSBadge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCgFSBadge.jpg",
-          "width": 344,
-          "height": 88,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.0814
-        }
-      ]
-    },
-    {
-      "badgeId": "coast_guard_aviation_rescue_swimmer_insignia",
-      "variant": "default",
-      "query": "Coast Guard Aviation Rescue Swimmer Badge",
-      "candidates": [
-        {
-          "title": "File:USCG - Rescue Swimmer.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/USCG_-_Rescue_Swimmer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Rescue_Swimmer.jpg",
-          "width": 600,
-          "height": 176,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.4371
-        },
-        {
-          "title": "File:Bedford-Jones--Boy Scouts of the Air at Cape Peril.djvu",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Bedford-Jones--Boy_Scouts_of_the_Air_at_Cape_Peril.djvu?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Bedford-Jones--Boy_Scouts_of_the_Air_at_Cape_Peril.djvu",
-          "width": 2084,
-          "height": 3100,
-          "mime": "image/vnd.djvu",
-          "license": "Public domain",
-          "score": 0.0549
-        }
-      ]
-    },
-    {
       "badgeId": "coast_guard_astronaut_insignia",
       "variant": "default",
       "query": "Coast Guard Astronaut Badge",
-      "error": "HTTP Error 429: Too Many Requests"
+      "candidates": [
+        {
+          "title": "File:USCGAstrobadge.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/6d/USCGAstrobadge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCGAstrobadge.jpg",
+          "width": 338,
+          "height": 96,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.1463
+        },
+        {
+          "title": "File:USCGAstrobadge2.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/USCGAstrobadge2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCGAstrobadge2.jpg",
+          "width": 338,
+          "height": 96,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.1429
+        },
+        {
+          "title": "File:MilAstroWngs.jpg",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e7/MilAstroWngs.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:MilAstroWngs.jpg",
+          "width": 1131,
+          "height": 781,
+          "mime": "image/jpeg",
+          "license": "Public domain",
+          "score": 0.0897
+        }
+      ]
     },
     {
       "badgeId": "coast_guard_aviation_mission_specialist_insignia",
@@ -1200,23 +1102,6 @@
       "error": "HTTP Error 429: Too Many Requests"
     },
     {
-      "badgeId": "coast_guard_scuba_diver_insignia",
-      "variant": "default",
-      "query": "Coast Guard Scuba Diver Badge",
-      "candidates": [
-        {
-          "title": "File:USCG Scuba Diver-Officer Badge.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/c/cf/USCG_Scuba_Diver-Officer_Badge.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_Scuba_Diver-Officer_Badge.png",
-          "width": 110,
-          "height": 112,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.5445
-        }
-      ]
-    },
-    {
       "badgeId": "coast_guard_diver_insignia",
       "variant": "default",
       "query": "Coast Guard Diver Badge",
@@ -1252,153 +1137,6 @@
           "score": 0.3777
         }
       ]
-    },
-    {
-      "badgeId": "coast_guard_port_security_insignia",
-      "variant": "default",
-      "query": "Coast Guard Port Security Badge",
-      "candidates": [
-        {
-          "title": "File:USCG Port Security Law Enforcement Badge.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/USCG_Port_Security_Law_Enforcement_Badge.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_Port_Security_Law_Enforcement_Badge.png",
-          "width": 351,
-          "height": 382,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.5299
-        },
-        {
-          "title": "File:USCG - Port Security Officer.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/d/db/USCG_-_Port_Security_Officer.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Port_Security_Officer.png",
-          "width": 600,
-          "height": 257,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.5275
-        },
-        {
-          "title": "File:USCG - Port Security Enlisted.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/USCG_-_Port_Security_Enlisted.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Port_Security_Enlisted.png",
-          "width": 394,
-          "height": 165,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.525
-        }
-      ]
-    },
-    {
-      "badgeId": "coast_guard_marine_safety_insignia",
-      "variant": "default",
-      "query": "Coast Guard Marine Safety Insignia",
-      "candidates": [
-        {
-          "title": "File:Marine Safety Insignia.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/5/56/Marine_Safety_Insignia.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Marine_Safety_Insignia.png",
-          "width": 368,
-          "height": 128,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.5714
-        },
-        {
-          "title": "File:USCG Aux Marine Safety Trident Training Ribbon.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/1/12/USCG_Aux_Marine_Safety_Trident_Training_Ribbon.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_Aux_Marine_Safety_Trident_Training_Ribbon.png",
-          "width": 301,
-          "height": 81,
-          "mime": "image/png",
-          "license": "CC BY-SA 4.0",
-          "score": 0.5188
-        }
-      ]
-    },
-    {
-      "badgeId": "coast_guard_tactical_law_enforcement_insignia",
-      "variant": "default",
-      "query": "Coast Guard Tactical Law Enforcement Badge",
-      "candidates": [
-        {
-          "title": "File:USCG - Tactical Law Enforcement.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/USCG_-_Tactical_Law_Enforcement.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Tactical_Law_Enforcement.jpg",
-          "width": 600,
-          "height": 250,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.6849
-        }
-      ]
-    },
-    {
-      "badgeId": "coast_guard_ceremonial_honor_guard_insignia",
-      "variant": "default",
-      "query": "Coast Guard Ceremonial Honor Guard Badge",
-      "candidates": []
-    },
-    {
-      "badgeId": "coast_guard_company_commander_insignia",
-      "variant": "default",
-      "query": "Coast Guard Company Commander Badge",
-      "candidates": [
-        {
-          "title": "File:USCG - COMPANY COMMANDER.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/USCG_-_COMPANY_COMMANDER.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_COMPANY_COMMANDER.jpg",
-          "width": 600,
-          "height": 276,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.5445
-        }
-      ]
-    },
-    {
-      "badgeId": "coast_guard_physician_assistant_nurse_practitioner_insignia",
-      "variant": "default",
-      "query": "Coast Guard Physician Assistant Nurse Practitioner Badge",
-      "candidates": [
-        {
-          "title": "File:Coast Guard Pistol Shot EIC Badge.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Coast_Guard_Pistol_Shot_EIC_Badge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Coast_Guard_Pistol_Shot_EIC_Badge.jpg",
-          "width": 800,
-          "height": 415,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.3961
-        },
-        {
-          "title": "File:USCG - Physician Assistant.jpg",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/5/53/USCG_-_Physician_Assistant.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:USCG_-_Physician_Assistant.jpg",
-          "width": 146,
-          "height": 156,
-          "mime": "image/jpeg",
-          "license": "Public domain",
-          "score": 0.3841
-        },
-        {
-          "title": "File:Coast Guard Air Station Salem patch.png",
-          "url": "https://upload.wikimedia.org/wikipedia/commons/2/21/Coast_Guard_Air_Station_Salem_patch.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-          "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Coast_Guard_Air_Station_Salem_patch.png",
-          "width": 380,
-          "height": 527,
-          "mime": "image/png",
-          "license": "Public domain",
-          "score": 0.3819
-        }
-      ]
-    },
-    {
-      "badgeId": "coast_guard_command_device",
-      "variant": "default",
-      "query": "Coast Guard Command Afloat Ashore Device",
-      "candidates": []
     }
   ]
 }
