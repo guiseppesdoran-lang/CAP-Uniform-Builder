@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-30T10:12:05.862Z",
+  "generatedAt": "2026-08-30T10:46:15.647Z",
   "assets": [
     {
       "ownerType": "AWARD",
@@ -7753,22 +7753,66 @@
       "ownerType": "BADGE",
       "ownerId": "navy_aviation_observer_insignia",
       "representation": "METAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "e875dd2f347ead6339cce533328f88ae659ef66a67cf1b60b815152d54007784",
+      "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "navy_aviation_observer_insignia",
+      "representation": "METAL_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "e875dd2f347ead6339cce533328f88ae659ef66a67cf1b60b815152d54007784",
+      "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
       "sources": []
     },
     {
       "ownerType": "BADGE",
       "ownerId": "navy_aviation_observer_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "50f8c449094e8e13d83df916f6be87dba85e5fc990e9c06e4b1fee12323d4553",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "navy_aviation_observer_insignia",
+      "representation": "EMBROIDERED_SERVICE_NAVY",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "50f8c449094e8e13d83df916f6be87dba85e5fc990e9c06e4b1fee12323d4553",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "navy_aviation_observer_insignia",
+      "representation": "EMBROIDERED_SERVICE_NAVY_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "50f8c449094e8e13d83df916f6be87dba85e5fc990e9c06e4b1fee12323d4553",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "navy_aviation_observer_insignia",
+      "representation": "EMBROIDERED_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/navy/navy_aviation_observer_insignia/default.png",
+      "exists": true,
+      "sha256": "50f8c449094e8e13d83df916f6be87dba85e5fc990e9c06e4b1fee12323d4553",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
