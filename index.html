@@ -1434,6 +1434,10 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
           <div class="col"><button id="clearRibbons" class="ghost" type="button">Clear Ribbons</button></div>
           <div class="col"><button id="expandRibbons" type="button">Choose Ribbons…</button></div>
         </div>
+        <div class="row two" style="margin-top:6px">
+          <div class="col"><button id="capSelectAllBasic" class="ghost" type="button">Select all (basic)</button></div>
+          <div class="col"><button id="capSelectAllMax" class="ghost" type="button">Select max devices</button></div>
+        </div>
 
         <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
           Ribbon rack layout
@@ -1676,6 +1680,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 <script src="purchase-catalog.js"></script>
 <script src="mcchord-ribbon-variants.js"></script>
 <script src="member-report-rules.js"></script>
+<script src="ribbon-layout.js?v=20260830-monotonic-lapel-1"></script>
 <script src="military/military-core.js?v=20260828-canonical-representations-1"></script>
 <script src="military/military-device-layout.js?v=20260828-context-layout-1"></script>
 <script src="military/military-data.js?v=20260827-ribbon-assets-1"></script>
@@ -3067,13 +3072,14 @@ const CAPUB_IMPORTED_COORDINATE_CORRECTIONS = {"blues_a":{"badge:AirCrew1_DB3F0F
   }
 })();
 
-/* CAPUB CALIBRATION ISSUE #110 — 2026-08-27
-   Approved male Senior Member Class A calibration submitted through the
-   builder. Keep this exact item-specific record separate from the shared
-   Cadet Programs badge family so female and Class B sizing stays unchanged. */
+/* CAPUB APPROVED CALIBRATION ISSUES #110 AND #137
+   Male Senior Member Class A item-specific records submitted through the
+   builder. Female, Class B, and shared badge-family defaults stay unchanged. */
 const CAPUB_APPROVED_CALIBRATION_OVERRIDES = Object.freeze({
   blues_a_male: Object.freeze({
-    'badge:cadet_programs_master_badge:LP:0': Object.freeze({x:283,y:248,w:25,h:35,r:0})
+    'badge:cadet_programs_master_badge:LP:0': Object.freeze({x:283,y:248,w:25,h:35,r:0}),
+    'badge:master_emergency_services_badge:LP:0': Object.freeze({x:280.7,y:249.5,w:25,h:25,r:0}),
+    'badge:volunteer_university_instructor_badge:RP:0': Object.freeze({x:130.4,y:248,w:40,h:40,r:0})
   })
 });
 (function capubApplyApprovedCalibrationOverrides(){
@@ -7442,26 +7448,13 @@ function buildLapelAvoidanceRowsHighToLow(items, perRow=3, layout=null){
         continue;
       }
 
-      const lowerCaps=capacitiesBottomFirst.slice(0,-2);
-      const belowCap=capacitiesBottomFirst[rowCount-2];
-      const topCap=capacitiesBottomFirst[rowCount-1];
-      if(belowCap<1 || topCap<1) continue;
-      let bestCounts=null;
-
-      for(let belowCount=1; belowCount<=belowCap; belowCount++){
-        for(let topCount=1; topCount<=topCap; topCount++){
-          let remaining=sorted.length-belowCount-topCount;
-          if(remaining<lowerCaps.length || remaining>lowerCaps.reduce((sum,value)=>sum+value,0)) continue;
-
-          const lowerCounts=[];
-          for(let index=0; index<lowerCaps.length; index++){
-            const rowsStillNeeded=lowerCaps.length-index-1;
-            const take=Math.min(lowerCaps[index],remaining-rowsStillNeeded);
-            lowerCounts.push(take);
-            remaining-=take;
-          }
-          if(remaining!==0 || lowerCounts.some(count=>count<1)) continue;
-
+      const rowCapacities=capacitiesBottomFirst.slice(0,rowCount);
+      const bestCounts=window.CAPUBRibbonLayout?.findMonotonicRibbonRowCounts?.(
+        rowCapacities,
+        sorted.length,
+        {validator:candidate=>{
+          const belowCount=candidate[rowCount-2];
+          const topCount=candidate[rowCount-1];
           const belowWidth=belowCount*layout.w+(belowCount-1)*layout.gapX;
           const belowLeft=belowCount===perRow
             ? layout.baseX
@@ -7470,17 +7463,9 @@ function buildLapelAvoidanceRowsHighToLow(items, perRow=3, layout=null){
           const topWidth=topCount*layout.w+(topCount-1)*layout.gapX;
           const topLeft=belowCenter-topWidth/2;
           const topY=layout.bottomY-(rowCount-1)*(layout.h+layout.gapY);
-          if(!isRibbonRowClear(topCount,topY,topLeft,layout,polygon)) continue;
-
-          const candidate=[...lowerCounts,belowCount,topCount];
-          const firstDifference = bestCounts
-            ? candidate.findIndex((count,index)=>count!==bestCounts[index])
-            : -1;
-          if(!bestCounts || (firstDifference>=0 && candidate[firstDifference]>bestCounts[firstDifference])){
-            bestCounts=candidate;
-          }
-        }
-      }
+          return isRibbonRowClear(topCount,topY,topLeft,layout,polygon);
+        }}
+      ) || null;
       if(bestCounts) return rowsFromBottomCounts(sorted,bestCounts);
     }
   }
@@ -8494,7 +8479,7 @@ function syncGoddardRocketryStar(){
   return true;
 }
 
-function setRibbonSelectionFromDropdown(id, value){
+function setRibbonSelectionFromDropdown(id, value,{deferRender=false}={}){
   normalizeRibbonSelections();
   const sel = State.ribbonSelections[id] || { checked:false, devices:{} };
   const option = getRibbonSelectionOption(id, value);
@@ -8531,7 +8516,27 @@ function setRibbonSelectionFromDropdown(id, value){
   if(id === 'goddard_achievement' || id === 'mitchell_award'){
     syncGoddardRocketryStar();
   }
+  if(!deferRender) rebuildRibbonsFromGallery();
+}
+
+function selectAllCapUniformAwards({maximum=false}={}){
+  State.ribbonSelections={};
+  normalizeRibbonSelections();
+
+  for(const id of getEligibleRibbonIds()){
+    const usable=getRibbonAwardOptions(id).filter(option=>option.value);
+    const selected=maximum ? usable[usable.length-1] : usable[0];
+    if(selected) setRibbonSelectionFromDropdown(id,selected.value,{deferRender:true});
+  }
+
+  for(const id of getMilitaryRibbonIds()){
+    const award=getMilitaryRibbonAward(id);
+    const count=maximum ? maximumRenderableMilitaryAwardCount(award,'RIBBON') : 1;
+    setRibbonSelectionFromDropdown(id,`military_award_${count}`,{deferRender:true});
+  }
+
   rebuildRibbonsFromGallery();
+  buildRibbonGallery();
 }
 
 function enforceSeniorSingleCadetAwardRibbon(selectedId){
@@ -10658,8 +10663,8 @@ function militaryRepresentationRecord(award){
   return window.CAPUBMilitary?.getAwardRepresentation?.(award,State.militaryRepresentation || 'RIBBON') || {status:'MISSING_ASSET',available:false,asset:null};
 }
 
-function maximumRenderableMilitaryAwardCount(award){
-  const representation=State.militaryRepresentation || 'RIBBON';
+function maximumRenderableMilitaryAwardCount(award,representationOverride=null){
+  const representation=representationOverride || State.militaryRepresentation || 'RIBBON';
   const service=State.organization;
   const deviceCatalog=window.CAPUBMilitaryData?.devices || [];
   let maximum=1;
@@ -11144,6 +11149,8 @@ by('clearRibbons').addEventListener('click', ()=>{
   renderRack();
   renderAllBadges();
 });
+by('capSelectAllBasic')?.addEventListener('click',()=>selectAllCapUniformAwards({maximum:false}));
+by('capSelectAllMax')?.addEventListener('click',()=>selectAllCapUniformAwards({maximum:true}));
 
 /* Badge gallery buttons */
 by('clearBadges').addEventListener('click', ()=>{
@@ -11855,6 +11862,7 @@ function openGalleryModal(kind){
       Tip: Drag the bottom-right corner to resize this window.
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
+      ${kind==='ribbons' ? '<button id="modalSelectAllBasic" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Select all (basic)</button><button id="modalSelectAllMax" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Select max devices</button>' : ''}
       <button id="modalShowLess" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show Less</button>
       <button id="modalShowAll" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show All</button>
     </div>
@@ -12180,6 +12188,14 @@ function openGalleryModal(kind){
     if(kind==='patches'){ State.patchGalleryExpanded=true; buildPatchGallery(); }
     syncFromSidebar();
   };
+  host.querySelector('#modalSelectAllBasic')?.addEventListener('click',()=>{
+    selectAllCapUniformAwards({maximum:false});
+    syncFromSidebar();
+  });
+  host.querySelector('#modalSelectAllMax')?.addEventListener('click',()=>{
+    selectAllCapUniformAwards({maximum:true});
+    syncFromSidebar();
+  });
 
   syncFromSidebar();
 
