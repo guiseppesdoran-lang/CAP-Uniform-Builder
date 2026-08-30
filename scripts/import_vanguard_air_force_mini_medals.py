@@ -115,7 +115,10 @@ def fetch(url: str) -> bytes:
 
 def products() -> list[dict]:
     result = []
-    for page in range(1, 5):
+    # Shopify can enforce the storefront page size even when a larger `limit`
+    # is requested. Continue until the collection returns an empty page so
+    # alphabetically late awards are not silently omitted.
+    for page in range(1, 20):
         batch = json.loads(fetch(COLLECTION.format(page))).get("products", [])
         if not batch:
             break
@@ -348,6 +351,27 @@ def digital_medal(source: bytes, award_id: str, canvas=(50, 176), ribbon: Image.
     available_height = canvas[1] - suspension_height + min(12, canvas[1] // 14)
     rgb.thumbnail((canvas[0], available_height), Image.Resampling.LANCZOS)
     pendant_y = canvas[1] - rgb.height
+    # A narrow metal hanger physically joins the chevron point to the pendant.
+    # Product photos often leave this part faint or remove it with the white
+    # background. Reconstruct it behind the reviewed pendant so a miniature
+    # medal can never render as two disconnected objects.
+    if ribbon is not None and pendant_y > suspension_height - 2:
+        opaque = [pixel[:3] for pixel in rgb.getdata() if pixel[3] > 96]
+        if opaque:
+            opaque.sort(key=lambda color: sum(color), reverse=True)
+            metal = opaque[max(0, len(opaque) // 12)]
+        else:
+            metal = (190, 164, 90)
+        connector = ImageDraw.Draw(output)
+        connector_width = max(4, canvas[0] // 10)
+        center = canvas[0] // 2
+        connector.rounded_rectangle(
+            (center - connector_width // 2, suspension_height - 3,
+             center + connector_width // 2, pendant_y + min(6, rgb.height // 5)),
+            radius=max(1, connector_width // 3),
+            fill=(*metal, 255),
+            outline=(max(0, metal[0] - 45), max(0, metal[1] - 45), max(0, metal[2] - 45), 255),
+        )
     output.alpha_composite(rgb, ((canvas[0] - rgb.width) // 2, pendant_y))
     if award_id == "national_defense_military_service":
         output = normalize_national_defense_palette(output)
@@ -361,14 +385,27 @@ def main() -> None:
     args = parser.parse_args()
 
     catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
+    overrides = json.loads(OVERRIDES.read_text(encoding="utf-8"))
+    protected_ribbon_only = {
+        award_id
+        for award_id, records in overrides.get("awards", {}).items()
+        if any(
+            record.get("verificationStatus") == "OFFICIALLY_CLASSIFIED_RIBBON_ONLY"
+            for record in records.values()
+            if isinstance(record, dict)
+        )
+    }
     matches, unmatched = match_products(catalog, products())
+    # A commercial product title can contain the word "medal" even when the
+    # governing award classification authorizes only a ribbon. Regulation
+    # applicability always wins over a catalog discovery match.
+    matches = [match for match in matches if match["awardId"] not in protected_ribbon_only]
     if args.award_id:
         matches = [match for match in matches if match["awardId"] == args.award_id]
     if not args.apply:
         print(json.dumps({"matched": matches, "unmatched": unmatched}, indent=2))
         return
 
-    overrides = json.loads(OVERRIDES.read_text(encoding="utf-8"))
     imported = []
     for match in matches:
         relative = Path("images") / "military-mini-medals" / "air-force" / f"{match['awardId']}.png"
@@ -397,8 +434,9 @@ def main() -> None:
         existing_manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
         replacements = {record["awardId"]: record for record in imported}
         manifest_imported = [
-            replacements.pop(record.get("awardId"), record)
+            record
             for record in existing_manifest.get("imported", [])
+            if record.get("awardId") != args.award_id
         ]
         manifest_imported.extend(replacements.values())
         manifest_unmatched = existing_manifest.get("unmatched", [])

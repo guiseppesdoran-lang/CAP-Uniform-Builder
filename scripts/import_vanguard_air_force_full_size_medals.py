@@ -24,7 +24,9 @@ COLLECTION = "https://www.vanguardmil.com/collections/medals/products.json?limit
 
 def products() -> list[dict]:
     result = []
-    for page in range(1, 6):
+    # Shopify may apply the storefront page size despite the requested limit.
+    # Stop on the first empty page rather than assuming five pages is enough.
+    for page in range(1, 20):
         batch = json.loads(fetch(COLLECTION.format(page))).get("products", [])
         if not batch:
             break

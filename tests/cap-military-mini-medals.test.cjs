@@ -25,3 +25,11 @@ test('calibrator stays within the visible viewport', () => {
   assert.match(indexSource, /grid-template-columns:minmax\(0,1fr\) 68px/);
   assert.match(indexSource, /#calibKeyPill\{[\s\S]*?overflow-wrap:anywhere/);
 });
+
+test('military award bulk controls select basic and maximum verified quantities', () => {
+  assert.match(indexSource, /id="militarySelectAllBasic"/);
+  assert.match(indexSource, /id="militarySelectAllMax"/);
+  assert.match(indexSource, /function maximumRenderableMilitaryAwardCount\(award\)/);
+  assert.match(indexSource, /representation\.status==='AVAILABLE' && !!representation\.asset/);
+  assert.match(indexSource, /awardCount:maximum \? maximumRenderableMilitaryAwardCount\(award\) : 1/);
+});

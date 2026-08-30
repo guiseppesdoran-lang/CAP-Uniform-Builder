@@ -358,6 +358,22 @@ test('service medal provenance manifests never reintroduce ribbon-only awards',(
   }
 });
 
+test('reviewed Air Force medal counterparts use the target McChord canvases',()=>{
+  const manifest=require('../data/imports/reviewed_air-force_medal_counterparts.json');
+  const overrides=require('../data/rules/verified/representation-overrides.json').awards;
+  assert.ok(manifest.imported.length>=11,'expected the reviewed Air Force counterpart checkpoint');
+  assert.deepEqual(manifest.failed,[]);
+  for(const item of manifest.imported){
+    const record=overrides[item.awardId]?.[item.target];
+    assert.equal(record?.status,'AVAILABLE',`${item.awardId}:${item.target}`);
+    assert.equal(record?.derivedFromReviewedRepresentation,item.sourceRepresentation,`${item.awardId}:${item.target}`);
+    const buffer=fs.readFileSync(path.join(ROOT,...record.asset.split('/')));
+    const expected=item.target==='miniatureMedal' ? [50,176] : [100,220];
+    assert.equal(buffer.readUInt32BE(16),expected[0],`${item.awardId}:${item.target}:width`);
+    assert.equal(buffer.readUInt32BE(20),expected[1],`${item.awardId}:${item.target}:height`);
+  }
+});
+
 test('Space Force checkpoint uses distinct local McChord-style medal canvases',()=>{
   const overrides=require('../data/rules/verified/representation-overrides.json').awards;
   const award=overrides.space_force_good_conduct_medal;
@@ -410,7 +426,7 @@ test('DOT 9-11 medal stays distinct from the DOT 9-11 ribbon record',()=>{
 
 test('explicitly named ribbon records are excluded from both medal representations',()=>{
   const overrides=require('../data/rules/verified/representation-overrides.json').awards;
-  for(const awardId of ['dot_9_11','special_operations_service','us_antarctic_expedition']){
+  for(const awardId of ['dot_9_11','special_operations_service','us_antarctic_expedition','air_force_expeditionary']){
     assert.equal(overrides[awardId].miniatureMedal.status,'NOT_APPLICABLE',awardId);
     assert.equal(overrides[awardId].fullSizeMedal.status,'NOT_APPLICABLE',awardId);
   }
