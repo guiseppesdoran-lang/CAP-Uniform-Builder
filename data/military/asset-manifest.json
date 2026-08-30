@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-30T06:41:27.824Z",
+  "generatedAt": "2026-08-30T06:49:23.699Z",
   "assets": [
     {
       "ownerType": "AWARD",
@@ -3083,23 +3083,35 @@
       "ownerType": "AWARD",
       "ownerId": "air_force_expeditionary",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
+      "status": "NOT_APPLICABLE",
       "asset": null,
       "exists": false,
       "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+      "sources": [
+        "CAPR 39-1, current supplied edition",
+        "DAFMAN 36-2806, current supplied edition",
+        "AR 600-8-22, current supplied edition",
+        "SECNAV M-1650.1, current supplied edition",
+        "COMDTINST M1650.25 series award classifications"
+      ]
     },
     {
       "ownerType": "AWARD",
       "ownerId": "air_force_expeditionary",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
+      "status": "NOT_APPLICABLE",
       "asset": null,
       "exists": false,
       "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+      "sources": [
+        "CAPR 39-1, current supplied edition",
+        "DAFMAN 36-2806, current supplied edition",
+        "AR 600-8-22, current supplied edition",
+        "SECNAV M-1650.1, current supplied edition",
+        "COMDTINST M1650.25 series award classifications"
+      ]
     },
     {
       "ownerType": "AWARD",

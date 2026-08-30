@@ -340,14 +340,6 @@
       "asset": "images/military-mini-medals/air-force/multinational_force_and_observers.png"
     },
     {
-      "awardId": "national_defense_military_service",
-      "productTitle": "Miniature Medal: National Defense",
-      "productUrl": "https://www.vanguardmil.com/products/national-defense-miniature-medal",
-      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/national_defense_service_miniature_medal_2063_natdef_mini_1_1.jpeg?v=1423544616",
-      "score": 10.0,
-      "asset": "images/military-mini-medals/air-force/national_defense_military_service.png"
-    },
-    {
       "awardId": "nato_kosovo",
       "productTitle": "Miniature Medal: NATO Kosovo Medal",
       "productUrl": "https://www.vanguardmil.com/products/nato-kosovo-medal-miniature-medal",
@@ -426,6 +418,14 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/world_war_ii_victory_mini_medal_2099_1.jpeg?v=1423544532",
       "score": 10.0,
       "asset": "images/military-mini-medals/air-force/world_war_ii_victory.png"
+    },
+    {
+      "awardId": "national_defense_military_service",
+      "productTitle": "Miniature Medal: National Defense",
+      "productUrl": "https://www.vanguardmil.com/products/national-defense-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/national_defense_service_miniature_medal_2063_natdef_mini_1_1.jpeg?v=1423544616",
+      "score": 10.0,
+      "asset": "images/military-mini-medals/air-force/national_defense_military_service.png"
     }
   ],
   "unmatched": [

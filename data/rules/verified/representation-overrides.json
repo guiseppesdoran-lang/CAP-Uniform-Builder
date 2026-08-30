@@ -4255,6 +4255,36 @@
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609508.jpg?v=1617287738"
       }
+    },
+    "air_force_expeditionary": {
+      "miniatureMedal": {
+        "status": "NOT_APPLICABLE",
+        "available": false,
+        "asset": null,
+        "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+        "sources": [
+          "CAPR 39-1, current supplied edition",
+          "DAFMAN 36-2806, current supplied edition",
+          "AR 600-8-22, current supplied edition",
+          "SECNAV M-1650.1, current supplied edition",
+          "COMDTINST M1650.25 series award classifications"
+        ],
+        "notes": "This award is represented by a ribbon or unit-award emblem, not a hanging medal."
+      },
+      "fullSizeMedal": {
+        "status": "NOT_APPLICABLE",
+        "available": false,
+        "asset": null,
+        "verificationStatus": "OFFICIALLY_CLASSIFIED_RIBBON_ONLY",
+        "sources": [
+          "CAPR 39-1, current supplied edition",
+          "DAFMAN 36-2806, current supplied edition",
+          "AR 600-8-22, current supplied edition",
+          "SECNAV M-1650.1, current supplied edition",
+          "COMDTINST M1650.25 series award classifications"
+        ],
+        "notes": "This award is represented by a ribbon or unit-award emblem, not a hanging medal."
+      }
     }
   }
 }

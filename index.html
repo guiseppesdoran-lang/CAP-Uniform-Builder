@@ -312,6 +312,8 @@
   }
   .militaryBuilderPanel{display:grid;gap:8px;}
   .militaryAwardResults{max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:6px;}
+  .militaryBulkActions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:7px;}
+  .militaryBulkActions button{min-width:0;padding:7px 8px;white-space:normal;line-height:1.15;}
   .militaryAwardFilters{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;}
   .militaryAwardOption:focus-within{outline:2px solid color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:1px;}
   .militaryAwardOption{display:grid;grid-template-columns:auto 1fr auto;gap:7px;align-items:center;padding:5px;border-bottom:1px solid var(--line);font-size:12px;}
@@ -1244,6 +1246,11 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
         <label class="hintText" style="display:flex;align-items:center;gap:6px;margin-top:6px">
           <input id="militaryRenderableOnly" type="checkbox" /> Show only awards renderable in the selected representation
         </label>
+        <div class="militaryBulkActions" role="group" aria-label="Bulk military award selection">
+          <button id="militarySelectAllBasic" type="button" class="ghost">Select all (basic)</button>
+          <button id="militarySelectAllMax" type="button" class="ghost">Select max devices</button>
+        </div>
+        <div class="hintText">Bulk selection applies only to awards with local artwork for the selected ribbon, miniature-medal, or full-size-medal view.</div>
         <div id="militaryAwardSummary" class="hintText" style="margin-top:5px"></div>
         <div id="militarySelectedAwards" class="militarySelectedAwards"></div>
         <div id="militaryAwardResults" class="militaryAwardResults" style="margin-top:6px"></div>
@@ -10633,6 +10640,38 @@ function militaryRepresentationRecord(award){
   return window.CAPUBMilitary?.getAwardRepresentation?.(award,State.militaryRepresentation || 'RIBBON') || {status:'MISSING_ASSET',available:false,asset:null};
 }
 
+function maximumRenderableMilitaryAwardCount(award){
+  const representation=State.militaryRepresentation || 'RIBBON';
+  const service=State.organization;
+  const deviceCatalog=window.CAPUBMilitaryData?.devices || [];
+  let maximum=1;
+  // The generated device matrix currently contains verified repeat-award
+  // combinations through the twentieth award. Stop at the highest count the
+  // configured service rule can represent without inventing a device.
+  for(let count=2;count<=20;count+=1){
+    const result=window.CAPUBMilitary?.calculateDevices?.({
+      award,service,awardCount:count,representation,deviceCatalog
+    });
+    if(result?.valid) maximum=count;
+  }
+  return maximum;
+}
+
+function selectAllMilitaryAwards({maximum=false}={}){
+  const awards=getMilitaryCatalogAwards().filter(award=>{
+    const representation=militaryRepresentationRecord(award);
+    return representation.status==='AVAILABLE' && !!representation.asset;
+  });
+  State.militaryAwards={};
+  for(const award of awards){
+    State.militaryAwards[award.id]={
+      awardCount:maximum ? maximumRenderableMilitaryAwardCount(award) : 1
+    };
+  }
+  renderMilitaryAwardSelector();
+  fullRender();
+}
+
 function renderSelectedMilitaryAwards(all){
   const host=by('militarySelectedAwards');
   if(!host) return;
@@ -10899,6 +10938,8 @@ function wireOrganizationSelector(){
   const typeFilter=by('militaryAwardTypeFilter');
   const representation=by('militaryRepresentationMode');
   const renderableOnly=by('militaryRenderableOnly');
+  const selectAllBasic=by('militarySelectAllBasic');
+  const selectAllMax=by('militarySelectAllMax');
   if(!organization || organization.dataset.wired==='1') return;
   organization.dataset.wired='1'; organization.value=State.organization;
   component.value=State.component;
@@ -10926,6 +10967,8 @@ function wireOrganizationSelector(){
   typeFilter?.addEventListener('change',()=>{ ui.awardTypeFilter=typeFilter.value; renderMilitaryAwardSelector(); });
   representation?.addEventListener('change',()=>{ State.militaryRepresentation=representation.value || 'RIBBON'; renderMilitaryAwardSelector(); fullRender(); });
   renderableOnly?.addEventListener('change',()=>{ ui.renderableOnly=renderableOnly.checked; renderMilitaryAwardSelector(); });
+  selectAllBasic?.addEventListener('click',()=>selectAllMilitaryAwards({maximum:false}));
+  selectAllMax?.addEventListener('click',()=>selectAllMilitaryAwards({maximum:true}));
   by('militaryAwardResults')?.addEventListener('scroll',event=>{ ui.catalogScrollTop=event.currentTarget.scrollTop; },{passive:true});
   setOrganizationMode();
 }

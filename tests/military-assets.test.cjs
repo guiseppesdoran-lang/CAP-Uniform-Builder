@@ -426,7 +426,7 @@ test('DOT 9-11 medal stays distinct from the DOT 9-11 ribbon record',()=>{
 
 test('explicitly named ribbon records are excluded from both medal representations',()=>{
   const overrides=require('../data/rules/verified/representation-overrides.json').awards;
-  for(const awardId of ['dot_9_11','special_operations_service','us_antarctic_expedition']){
+  for(const awardId of ['dot_9_11','special_operations_service','us_antarctic_expedition','air_force_expeditionary']){
     assert.equal(overrides[awardId].miniatureMedal.status,'NOT_APPLICABLE',awardId);
     assert.equal(overrides[awardId].fullSizeMedal.status,'NOT_APPLICABLE',awardId);
   }
