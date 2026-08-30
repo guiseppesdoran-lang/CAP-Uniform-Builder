@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-30T09:25:27.553Z",
+  "generatedAt": "2026-08-30T10:12:05.862Z",
   "assets": [
     {
       "ownerType": "AWARD",
@@ -20128,22 +20128,66 @@
       "ownerType": "BADGE",
       "ownerId": "air_force_base_honor_guard_badge",
       "representation": "METAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "dd692c6547f00f9d0f694353df5989678224050df6b9059ecb8cef70a73b6323",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "air_force_base_honor_guard_badge",
+      "representation": "METAL_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "dd692c6547f00f9d0f694353df5989678224050df6b9059ecb8cef70a73b6323",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": []
     },
     {
       "ownerType": "BADGE",
       "ownerId": "air_force_base_honor_guard_badge",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "ffd07df05495e379318aa41021832c0830036ef2fe1ea63df2211cad2cc37f55",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "air_force_base_honor_guard_badge",
+      "representation": "EMBROIDERED_SERVICE_AIR_FORCE",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "ffd07df05495e379318aa41021832c0830036ef2fe1ea63df2211cad2cc37f55",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "air_force_base_honor_guard_badge",
+      "representation": "EMBROIDERED_SERVICE_AIR_FORCE_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "ffd07df05495e379318aa41021832c0830036ef2fe1ea63df2211cad2cc37f55",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "air_force_base_honor_guard_badge",
+      "representation": "EMBROIDERED_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/air-force/air_force_base_honor_guard_badge/default.png",
+      "exists": true,
+      "sha256": "ffd07df05495e379318aa41021832c0830036ef2fe1ea63df2211cad2cc37f55",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {

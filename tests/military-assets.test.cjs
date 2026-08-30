@@ -147,8 +147,8 @@ test('Air Force badge checkpoint uses normalized local digital artwork',()=>{
   const manifest=require('../data/imports/vanguard_air_force_badges.json');
   assert.equal(manifest.sourceType,'COMMERCIAL_CATALOG_DISCOVERY_REFERENCE');
   assert.equal(manifest.style.name,'MCCHORD_DIGITAL_SILVER');
-  assert.equal(manifest.imported.length,171);
-  assert.equal(new Set(manifest.imported.map(record=>record.badgeId)).size,63);
+  assert.equal(manifest.imported.length,172);
+  assert.equal(new Set(manifest.imported.map(record=>record.badgeId)).size,64);
   assert.ok(manifest.imported.every(record=>record.asset&&!record.asset.startsWith('http')));
   for(const record of manifest.imported){
     const absolute=path.join(ROOT,...record.asset.split('/'));
