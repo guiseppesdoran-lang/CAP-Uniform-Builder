@@ -8018,15 +8018,74 @@
       "status": "CURRENT",
       "representations": {
         "metal": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null,
-          "variants": {}
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+              "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
+              "officialSource": "https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=94",
+              "assetSource": "https://commons.wikimedia.org/wiki/File:WWII_Naval_Flight_Surgeon_Insignia.png",
+              "license": "Public domain"
+            }
+          },
+          "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
+          "officialSource": "https://www.marines.mil/portals/1/Publications/MCO%201020.34H%20v2.pdf#page=94",
+          "assetSource": "https://commons.wikimedia.org/wiki/File:WWII_Naval_Flight_Surgeon_Insignia.png",
+          "defaultVariant": "default"
         },
         "embroidered": {
-          "status": "MISSING_ASSET",
-          "available": false,
-          "asset": null
+          "status": "AVAILABLE",
+          "available": true,
+          "asset": "images/military-badges/embroidered/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+          "byService": {
+            "MARINE_CORPS": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+              "backingProfile": "MARINE_BLACK_MARPAT",
+              "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+              "defaultVariant": "default",
+              "variants": {
+                "default": {
+                  "status": "AVAILABLE",
+                  "available": true,
+                  "asset": "images/military-badges/embroidered/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+                  "backingProfile": "MARINE_BLACK_MARPAT",
+                  "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+                  "style": "REGULATION_EMBROIDERED",
+                  "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+                }
+              },
+              "authorizedUniformFamilies": [
+                "OCP"
+              ]
+            }
+          },
+          "backingProfile": "MARINE_BLACK_MARPAT",
+          "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+          "style": "REGULATION_EMBROIDERED",
+          "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+          "defaultVariant": "default",
+          "variants": {
+            "default": {
+              "status": "AVAILABLE",
+              "available": true,
+              "asset": "images/military-badges/embroidered/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+              "backingProfile": "MARINE_BLACK_MARPAT",
+              "sourceMetalAsset": "images/military-badges/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+              "style": "REGULATION_EMBROIDERED",
+              "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART"
+            }
+          },
+          "authorizedUniformFamilies": [
+            "OCP"
+          ]
         }
       },
       "placement": {

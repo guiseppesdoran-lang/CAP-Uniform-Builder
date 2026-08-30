@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-30T02:48:59.967Z",
+  "generatedAt": "2026-08-30T05:19:55.184Z",
   "assets": [
     {
       "ownerType": "AWARD",
@@ -7605,7 +7605,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/navy_aviator_insignia/default.png",
       "exists": true,
-      "sha256": "f880bc3ffa4cdc7528a3190234788f0d584a23ec960afcb8161ffb6e19b7e874",
+      "sha256": "31ba7cad3585c18a2a7ff9d47f8d35a9cacbd761978517833d3a3d684877ac85",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7616,7 +7616,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/navy_aviator_insignia/default.png",
       "exists": true,
-      "sha256": "f880bc3ffa4cdc7528a3190234788f0d584a23ec960afcb8161ffb6e19b7e874",
+      "sha256": "31ba7cad3585c18a2a7ff9d47f8d35a9cacbd761978517833d3a3d684877ac85",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7737,7 +7737,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/navy_flight_officer_insignia/default.png",
       "exists": true,
-      "sha256": "a15190f123460b02a4d2a0fc47666178e98208079a961292ad5ee24516655cc6",
+      "sha256": "e5be9fa2bd6c15bda51ddb4b40419e6c44fd9308d5a7f081a14890801ffe070d",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7748,7 +7748,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/navy_flight_officer_insignia/default.png",
       "exists": true,
-      "sha256": "a15190f123460b02a4d2a0fc47666178e98208079a961292ad5ee24516655cc6",
+      "sha256": "e5be9fa2bd6c15bda51ddb4b40419e6c44fd9308d5a7f081a14890801ffe070d",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7836,7 +7836,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
       "exists": true,
-      "sha256": "6bfcbe49dd213a8890f6b6f2187e53b9b65735a3c650b22a5094ffce188d835f",
+      "sha256": "0b718a86a78e976585047433ffc5279012f3bd8cbbc4b466318b03d8fc3881fe",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7847,7 +7847,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
       "exists": true,
-      "sha256": "6bfcbe49dd213a8890f6b6f2187e53b9b65735a3c650b22a5094ffce188d835f",
+      "sha256": "0b718a86a78e976585047433ffc5279012f3bd8cbbc4b466318b03d8fc3881fe",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7858,7 +7858,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
       "exists": true,
-      "sha256": "6bfcbe49dd213a8890f6b6f2187e53b9b65735a3c650b22a5094ffce188d835f",
+      "sha256": "0b718a86a78e976585047433ffc5279012f3bd8cbbc4b466318b03d8fc3881fe",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7869,7 +7869,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_enlisted_aviation_warfare_specialist_insignia/default.png",
       "exists": true,
-      "sha256": "6bfcbe49dd213a8890f6b6f2187e53b9b65735a3c650b22a5094ffce188d835f",
+      "sha256": "0b718a86a78e976585047433ffc5279012f3bd8cbbc4b466318b03d8fc3881fe",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7902,7 +7902,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_aviation_supply_corps_insignia/default.png",
       "exists": true,
-      "sha256": "b5d617d72d9df2b83cb4828bcc2e65af2454fab3aaa76408afa68ced33619aea",
+      "sha256": "1d6d3667d6b5a90db2b6013449c530fb18c8fe8111e81c89404289cf6999f836",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7913,7 +7913,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_aviation_supply_corps_insignia/default.png",
       "exists": true,
-      "sha256": "b5d617d72d9df2b83cb4828bcc2e65af2454fab3aaa76408afa68ced33619aea",
+      "sha256": "1d6d3667d6b5a90db2b6013449c530fb18c8fe8111e81c89404289cf6999f836",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7924,7 +7924,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_aviation_supply_corps_insignia/default.png",
       "exists": true,
-      "sha256": "b5d617d72d9df2b83cb4828bcc2e65af2454fab3aaa76408afa68ced33619aea",
+      "sha256": "1d6d3667d6b5a90db2b6013449c530fb18c8fe8111e81c89404289cf6999f836",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -7935,7 +7935,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_aviation_supply_corps_insignia/default.png",
       "exists": true,
-      "sha256": "b5d617d72d9df2b83cb4828bcc2e65af2454fab3aaa76408afa68ced33619aea",
+      "sha256": "1d6d3667d6b5a90db2b6013449c530fb18c8fe8111e81c89404289cf6999f836",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8089,7 +8089,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/officer.png",
       "exists": true,
-      "sha256": "1cd4a40eca42ca6cf3f814112f1891d4c9e5dd4ab7aec353508121464b1a0213",
+      "sha256": "93da515228ab26f54e0234a81a0a7ebfffd85f77a8652bcdb4eee874c54f9a8e",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8100,7 +8100,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/officer.png",
       "exists": true,
-      "sha256": "1cd4a40eca42ca6cf3f814112f1891d4c9e5dd4ab7aec353508121464b1a0213",
+      "sha256": "93da515228ab26f54e0234a81a0a7ebfffd85f77a8652bcdb4eee874c54f9a8e",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8111,7 +8111,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/officer.png",
       "exists": true,
-      "sha256": "1cd4a40eca42ca6cf3f814112f1891d4c9e5dd4ab7aec353508121464b1a0213",
+      "sha256": "93da515228ab26f54e0234a81a0a7ebfffd85f77a8652bcdb4eee874c54f9a8e",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8122,7 +8122,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/chaplain.png",
       "exists": true,
-      "sha256": "8b5208ec480816167210541805567bb46ede1a176f631e61ab5abf65f5c1d97b",
+      "sha256": "1b8aaa64a04ff0a2ef81b40d04f16691b5910e4aea4f5e30e4090679d9676118",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8133,7 +8133,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/officer.png",
       "exists": true,
-      "sha256": "1cd4a40eca42ca6cf3f814112f1891d4c9e5dd4ab7aec353508121464b1a0213",
+      "sha256": "93da515228ab26f54e0234a81a0a7ebfffd85f77a8652bcdb4eee874c54f9a8e",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8144,7 +8144,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_fleet_marine_force_insignia/chaplain.png",
       "exists": true,
-      "sha256": "8b5208ec480816167210541805567bb46ede1a176f631e61ab5abf65f5c1d97b",
+      "sha256": "1b8aaa64a04ff0a2ef81b40d04f16691b5910e4aea4f5e30e4090679d9676118",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8188,7 +8188,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "71cc3dbe9f7f2e393a09ff436fdbdbe6933937472998532efb7583736e22087e",
+      "sha256": "b21ebdd4630f097c5760e797c442522e84d335c7dac8c93e31c98b662864081b",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8199,7 +8199,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "71cc3dbe9f7f2e393a09ff436fdbdbe6933937472998532efb7583736e22087e",
+      "sha256": "b21ebdd4630f097c5760e797c442522e84d335c7dac8c93e31c98b662864081b",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8210,7 +8210,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "71cc3dbe9f7f2e393a09ff436fdbdbe6933937472998532efb7583736e22087e",
+      "sha256": "b21ebdd4630f097c5760e797c442522e84d335c7dac8c93e31c98b662864081b",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8221,7 +8221,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/enlisted.png",
       "exists": true,
-      "sha256": "4713cac6be9d80da6384f46ac7cebeca91ba004c640e1e6057073205f7bc718c",
+      "sha256": "e524383732648cda660880e112ab212a9e68ce9bff780a8f8e9416478845afc7",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8232,7 +8232,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "71cc3dbe9f7f2e393a09ff436fdbdbe6933937472998532efb7583736e22087e",
+      "sha256": "b21ebdd4630f097c5760e797c442522e84d335c7dac8c93e31c98b662864081b",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8243,7 +8243,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_information_warfare_insignia/enlisted.png",
       "exists": true,
-      "sha256": "4713cac6be9d80da6384f46ac7cebeca91ba004c640e1e6057073205f7bc718c",
+      "sha256": "e524383732648cda660880e112ab212a9e68ce9bff780a8f8e9416478845afc7",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8441,7 +8441,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
       "exists": true,
-      "sha256": "d3ba0c2cca9104a35445f6daa1f6cf2d37ca7a6bea95e4bc6732a36b4db4f186",
+      "sha256": "36cd53352182224576d2fee27fe8384a5d20f51cae07b436de7a4da5f862be12",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8452,7 +8452,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/navy_parachutist_insignia/navy_marine_corps_parachutist.png",
       "exists": true,
-      "sha256": "d3ba0c2cca9104a35445f6daa1f6cf2d37ca7a6bea95e4bc6732a36b4db4f186",
+      "sha256": "36cd53352182224576d2fee27fe8384a5d20f51cae07b436de7a4da5f862be12",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8463,7 +8463,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/navy_parachutist_insignia/basic_parachutist.png",
       "exists": true,
-      "sha256": "1170657259df2e85523f9b8a47f91844f5cc61dce1811853ff860366bc7e38af",
+      "sha256": "a05da02a83eb2284899639cb3bf91564e8ae8804148e11bb8771b4e54c60546a",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8738,7 +8738,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "ddb57818de994a7a0a70a870350c0a057c10bdd0d088839510159f8b245075b9",
+      "sha256": "cd2f62fe13cd295afbf2165da7748e6e436db426a125ee381f5987aacb02bed3",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8749,7 +8749,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "ddb57818de994a7a0a70a870350c0a057c10bdd0d088839510159f8b245075b9",
+      "sha256": "cd2f62fe13cd295afbf2165da7748e6e436db426a125ee381f5987aacb02bed3",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8760,7 +8760,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "ddb57818de994a7a0a70a870350c0a057c10bdd0d088839510159f8b245075b9",
+      "sha256": "cd2f62fe13cd295afbf2165da7748e6e436db426a125ee381f5987aacb02bed3",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8771,7 +8771,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/enlisted.png",
       "exists": true,
-      "sha256": "c2243281a1aa5085b46c235da67c84660f0fc63e3bc3bedccc99063a6fb61d43",
+      "sha256": "a1ddec9755a61712f29d73a5a146098c13fe9059b0c4cb702ac6e08811274a8d",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8782,7 +8782,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/medical.png",
       "exists": true,
-      "sha256": "c5c6f001a9dafb2f4ee4a6171e8f573477d35647e7e3fcee586ce8eb85e9589f",
+      "sha256": "f47898ce13e8bed8c6adbc706f8e4660377a2fa215c68435b35405bf9a128e57",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8793,7 +8793,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/engineering_duty.png",
       "exists": true,
-      "sha256": "16846179000e92f4f5b1411c706cab271d88e8f24e96dfdc0c0569e0235c2580",
+      "sha256": "8cba3d340e50f6a7fe6501aafb44c574c1919f014431ee530787141c19c9e663",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8804,7 +8804,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/supply.png",
       "exists": true,
-      "sha256": "a3d35e42bf3e66e30f0a93409ca823f941eaf33e879d1939d9fa55b1ea50ce79",
+      "sha256": "f87d9b92de2fcbf96348d705b79ad866c256e9dd911cf20fff5054df4cd7f35f",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8815,7 +8815,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/deep_submergence_officer.png",
       "exists": true,
-      "sha256": "56834da4e082fd4567e1c8beee4582a500e140c08fbae1226aa0cc2bc60d801e",
+      "sha256": "a98a90a498847f808a30a7223be06541bb2b9262e5d1d6e6a042c3a9d311f06d",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8826,7 +8826,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/deep_submergence_enlisted.png",
       "exists": true,
-      "sha256": "08793dbd011381e63d85761a9f34a7ba44660f6a6d8ede99d0d29256db380bcf",
+      "sha256": "a09536f2fb3150042d01a0311c86cc8fe68919ef7b854fa5900e102a25c08661",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8837,7 +8837,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "ddb57818de994a7a0a70a870350c0a057c10bdd0d088839510159f8b245075b9",
+      "sha256": "cd2f62fe13cd295afbf2165da7748e6e436db426a125ee381f5987aacb02bed3",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8848,7 +8848,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/enlisted.png",
       "exists": true,
-      "sha256": "c2243281a1aa5085b46c235da67c84660f0fc63e3bc3bedccc99063a6fb61d43",
+      "sha256": "a1ddec9755a61712f29d73a5a146098c13fe9059b0c4cb702ac6e08811274a8d",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8859,7 +8859,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/medical.png",
       "exists": true,
-      "sha256": "c5c6f001a9dafb2f4ee4a6171e8f573477d35647e7e3fcee586ce8eb85e9589f",
+      "sha256": "f47898ce13e8bed8c6adbc706f8e4660377a2fa215c68435b35405bf9a128e57",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8870,7 +8870,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/engineering_duty.png",
       "exists": true,
-      "sha256": "16846179000e92f4f5b1411c706cab271d88e8f24e96dfdc0c0569e0235c2580",
+      "sha256": "8cba3d340e50f6a7fe6501aafb44c574c1919f014431ee530787141c19c9e663",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8881,7 +8881,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/supply.png",
       "exists": true,
-      "sha256": "a3d35e42bf3e66e30f0a93409ca823f941eaf33e879d1939d9fa55b1ea50ce79",
+      "sha256": "f87d9b92de2fcbf96348d705b79ad866c256e9dd911cf20fff5054df4cd7f35f",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8892,7 +8892,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/deep_submergence_officer.png",
       "exists": true,
-      "sha256": "56834da4e082fd4567e1c8beee4582a500e140c08fbae1226aa0cc2bc60d801e",
+      "sha256": "a98a90a498847f808a30a7223be06541bb2b9262e5d1d6e6a042c3a9d311f06d",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -8903,7 +8903,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_submarine_warfare_insignia/deep_submergence_enlisted.png",
       "exists": true,
-      "sha256": "08793dbd011381e63d85761a9f34a7ba44660f6a6d8ede99d0d29256db380bcf",
+      "sha256": "a09536f2fb3150042d01a0311c86cc8fe68919ef7b854fa5900e102a25c08661",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9002,7 +9002,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "117dfa1a4ace28bd806e0bdfdbcda662f7bd6dbe9ef23c8e885f91dc81054d2a",
+      "sha256": "7e7c1718f1ab8629a4576cdd762a8fde49d7749c8f02b2447b65da313ee76a6f",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9013,7 +9013,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "117dfa1a4ace28bd806e0bdfdbcda662f7bd6dbe9ef23c8e885f91dc81054d2a",
+      "sha256": "7e7c1718f1ab8629a4576cdd762a8fde49d7749c8f02b2447b65da313ee76a6f",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9024,7 +9024,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "117dfa1a4ace28bd806e0bdfdbcda662f7bd6dbe9ef23c8e885f91dc81054d2a",
+      "sha256": "7e7c1718f1ab8629a4576cdd762a8fde49d7749c8f02b2447b65da313ee76a6f",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9035,7 +9035,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/enlisted.png",
       "exists": true,
-      "sha256": "e356878e7c30275bda960c9af70bff70b7995bbcff0eaf58660272684d480680",
+      "sha256": "5f8f9c725d45cfdc2471d654186f31e39482aa0c5326eb90a384ee06efa0c83f",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9046,7 +9046,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/dental.png",
       "exists": true,
-      "sha256": "b71054ab10fc1f5d04611752d08564077bea65a9e961e76cedafb9c432536d17",
+      "sha256": "b9883f65f229befa6113065db17a88aff223d231f068d28829e9aad8df2424aa",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9057,7 +9057,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/medical.png",
       "exists": true,
-      "sha256": "084e564e4044fe6489b891b372003d2a1a83b16db16200f406c2c8c58e4a812d",
+      "sha256": "2078bc5c41ce007774545b32057923b98f2dbaa7029071e5288b82720da9d5c0",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9068,7 +9068,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/medical_service.png",
       "exists": true,
-      "sha256": "1281217353df2aceca18b9fc62eca1e341c40051e1697b0eb7ca931b2a15010e",
+      "sha256": "eb676b659e51072507178b1fd316b7a51ff8385ee2a251f0a41c3243a3eed06c",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9079,7 +9079,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/nurse.png",
       "exists": true,
-      "sha256": "dd1dc732bf6ccd9768ee59d929ee20ce188680dbd97b32929cad2997b30b4116",
+      "sha256": "9dae196ac21842281161468afee47928d22daec68c00294d9db939c56bc6c1fc",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9090,7 +9090,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/supply.png",
       "exists": true,
-      "sha256": "086c0f9258e17b278ea39c3bc839dafff2b34437f4e8c9773c716e1b5031f0f1",
+      "sha256": "0e56b00a5bcd72dac8b7f42f293b1c1e07014312e427f3bc7c5a77bdf89f7057",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9101,7 +9101,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/officer.png",
       "exists": true,
-      "sha256": "117dfa1a4ace28bd806e0bdfdbcda662f7bd6dbe9ef23c8e885f91dc81054d2a",
+      "sha256": "7e7c1718f1ab8629a4576cdd762a8fde49d7749c8f02b2447b65da313ee76a6f",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9112,7 +9112,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/enlisted.png",
       "exists": true,
-      "sha256": "e356878e7c30275bda960c9af70bff70b7995bbcff0eaf58660272684d480680",
+      "sha256": "5f8f9c725d45cfdc2471d654186f31e39482aa0c5326eb90a384ee06efa0c83f",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9123,7 +9123,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/dental.png",
       "exists": true,
-      "sha256": "b71054ab10fc1f5d04611752d08564077bea65a9e961e76cedafb9c432536d17",
+      "sha256": "b9883f65f229befa6113065db17a88aff223d231f068d28829e9aad8df2424aa",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9134,7 +9134,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/medical.png",
       "exists": true,
-      "sha256": "084e564e4044fe6489b891b372003d2a1a83b16db16200f406c2c8c58e4a812d",
+      "sha256": "2078bc5c41ce007774545b32057923b98f2dbaa7029071e5288b82720da9d5c0",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9145,7 +9145,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/medical_service.png",
       "exists": true,
-      "sha256": "1281217353df2aceca18b9fc62eca1e341c40051e1697b0eb7ca931b2a15010e",
+      "sha256": "eb676b659e51072507178b1fd316b7a51ff8385ee2a251f0a41c3243a3eed06c",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9156,7 +9156,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/nurse.png",
       "exists": true,
-      "sha256": "dd1dc732bf6ccd9768ee59d929ee20ce188680dbd97b32929cad2997b30b4116",
+      "sha256": "9dae196ac21842281161468afee47928d22daec68c00294d9db939c56bc6c1fc",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9167,7 +9167,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_surface_warfare_insignia/supply.png",
       "exists": true,
-      "sha256": "086c0f9258e17b278ea39c3bc839dafff2b34437f4e8c9773c716e1b5031f0f1",
+      "sha256": "0e56b00a5bcd72dac8b7f42f293b1c1e07014312e427f3bc7c5a77bdf89f7057",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9200,7 +9200,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_diving_insignia/diving_officer.png",
       "exists": true,
-      "sha256": "98f41ab849383a239dcf95a57d929bcf91c9ae0fcbe776950c36fcd4226ecb3a",
+      "sha256": "a37ec72aed2c6530ea729a6c61f6415c87bb6514809072d534e8d5f33af9cf34",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9211,7 +9211,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_diving_insignia/diving_officer.png",
       "exists": true,
-      "sha256": "98f41ab849383a239dcf95a57d929bcf91c9ae0fcbe776950c36fcd4226ecb3a",
+      "sha256": "a37ec72aed2c6530ea729a6c61f6415c87bb6514809072d534e8d5f33af9cf34",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9222,7 +9222,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_diving_insignia/diving_officer.png",
       "exists": true,
-      "sha256": "98f41ab849383a239dcf95a57d929bcf91c9ae0fcbe776950c36fcd4226ecb3a",
+      "sha256": "a37ec72aed2c6530ea729a6c61f6415c87bb6514809072d534e8d5f33af9cf34",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -9233,7 +9233,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/navy/navy_diving_insignia/diving_officer.png",
       "exists": true,
-      "sha256": "98f41ab849383a239dcf95a57d929bcf91c9ae0fcbe776950c36fcd4226ecb3a",
+      "sha256": "a37ec72aed2c6530ea729a6c61f6415c87bb6514809072d534e8d5f33af9cf34",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -13039,7 +13039,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
       "exists": true,
-      "sha256": "28fca33d6af6dc53faf9c8e5ef3f7273a478e74ea5bb46a98fe5a469eb0a85cf",
+      "sha256": "633f3b4824d7adcc5b5e9e5d7456e7ba33a5cb7aa491c173fe473b2f5ad7a9a9",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -13050,7 +13050,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
       "exists": true,
-      "sha256": "28fca33d6af6dc53faf9c8e5ef3f7273a478e74ea5bb46a98fe5a469eb0a85cf",
+      "sha256": "633f3b4824d7adcc5b5e9e5d7456e7ba33a5cb7aa491c173fe473b2f5ad7a9a9",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -13061,7 +13061,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
       "exists": true,
-      "sha256": "28fca33d6af6dc53faf9c8e5ef3f7273a478e74ea5bb46a98fe5a469eb0a85cf",
+      "sha256": "633f3b4824d7adcc5b5e9e5d7456e7ba33a5cb7aa491c173fe473b2f5ad7a9a9",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -13072,7 +13072,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/marine_corps_aerial_navigator_insignia/default.png",
       "exists": true,
-      "sha256": "28fca33d6af6dc53faf9c8e5ef3f7273a478e74ea5bb46a98fe5a469eb0a85cf",
+      "sha256": "633f3b4824d7adcc5b5e9e5d7456e7ba33a5cb7aa491c173fe473b2f5ad7a9a9",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -13105,7 +13105,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
       "exists": true,
-      "sha256": "9e2fbe17bc1e75a88275ffa9a8000efaedaac7beadb8bab18b7d292bc340a8d0",
+      "sha256": "56284966bc4506286738dcb2b9fe54a23199a39aa892278f3b935d6004961df3",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -13116,7 +13116,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
       "exists": true,
-      "sha256": "9e2fbe17bc1e75a88275ffa9a8000efaedaac7beadb8bab18b7d292bc340a8d0",
+      "sha256": "56284966bc4506286738dcb2b9fe54a23199a39aa892278f3b935d6004961df3",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -13127,7 +13127,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
       "exists": true,
-      "sha256": "9e2fbe17bc1e75a88275ffa9a8000efaedaac7beadb8bab18b7d292bc340a8d0",
+      "sha256": "56284966bc4506286738dcb2b9fe54a23199a39aa892278f3b935d6004961df3",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -13138,7 +13138,7 @@
       "status": "AVAILABLE",
       "asset": "images/military-badges/embroidered/marine-corps/marine_corps_naval_aviation_observer_insignia/default.png",
       "exists": true,
-      "sha256": "9e2fbe17bc1e75a88275ffa9a8000efaedaac7beadb8bab18b7d292bc340a8d0",
+      "sha256": "56284966bc4506286738dcb2b9fe54a23199a39aa892278f3b935d6004961df3",
       "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
@@ -13168,22 +13168,66 @@
       "ownerType": "BADGE",
       "ownerId": "marine_corps_flight_surgeon_insignia",
       "representation": "METAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+      "exists": true,
+      "sha256": "9af6596de85bd54ce18200141cc6aaea355d6f1266d1263eebafcc8e9bd5808b",
+      "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "marine_corps_flight_surgeon_insignia",
+      "representation": "METAL_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+      "exists": true,
+      "sha256": "9af6596de85bd54ce18200141cc6aaea355d6f1266d1263eebafcc8e9bd5808b",
+      "verificationStatus": "OFFICIALLY_DOCUMENTED_THIRD_PARTY_COPY",
       "sources": []
     },
     {
       "ownerType": "BADGE",
       "ownerId": "marine_corps_flight_surgeon_insignia",
       "representation": "EMBROIDERED",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+      "exists": true,
+      "sha256": "451ded1cb29fbca7e876faa79de6d63b072a02fa6806032d434f43bd8348536e",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "marine_corps_flight_surgeon_insignia",
+      "representation": "EMBROIDERED_SERVICE_MARINE_CORPS",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+      "exists": true,
+      "sha256": "451ded1cb29fbca7e876faa79de6d63b072a02fa6806032d434f43bd8348536e",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "marine_corps_flight_surgeon_insignia",
+      "representation": "EMBROIDERED_SERVICE_MARINE_CORPS_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+      "exists": true,
+      "sha256": "451ded1cb29fbca7e876faa79de6d63b072a02fa6806032d434f43bd8348536e",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
+      "sources": []
+    },
+    {
+      "ownerType": "BADGE",
+      "ownerId": "marine_corps_flight_surgeon_insignia",
+      "representation": "EMBROIDERED_VARIANT_default",
+      "status": "AVAILABLE",
+      "asset": "images/military-badges/embroidered/marine-corps/marine_corps_flight_surgeon_insignia/default.png",
+      "exists": true,
+      "sha256": "451ded1cb29fbca7e876faa79de6d63b072a02fa6806032d434f43bd8348536e",
+      "verificationStatus": "DERIVED_FROM_REVIEWED_METAL_ART",
       "sources": []
     },
     {
