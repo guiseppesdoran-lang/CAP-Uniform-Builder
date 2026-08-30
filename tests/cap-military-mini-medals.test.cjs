@@ -15,3 +15,13 @@ test('CAP miniature medal rack applies military award devices', () => {
   assert.match(indexSource, /applyMilitaryMedalVariant\(mimg,entry\.path,entry\.militaryDevices,'MINIATURE_MEDAL'\)/);
 });
 
+test('military miniature medal calibration survives rerendering', () => {
+  assert.match(indexSource, /if\(String\(key \|\| ''\)\.startsWith\('ribbon:'\) && over\)/);
+  assert.doesNotMatch(indexSource, /startsWith\('ribbon:'\) \|\| String\(key \|\| ''\)\.startsWith\('mini:'\)/);
+});
+
+test('calibrator stays within the visible viewport', () => {
+  assert.match(indexSource, /width:min\(360px,calc\(100vw - 42px\)\)/);
+  assert.match(indexSource, /grid-template-columns:minmax\(0,1fr\) 68px/);
+  assert.match(indexSource, /#calibKeyPill\{[\s\S]*?overflow-wrap:anywhere/);
+});
