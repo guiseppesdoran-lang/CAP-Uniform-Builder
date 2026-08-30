@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-08-30T06:03:22.247Z",
+    "generatedAt": "2026-08-30T06:41:27.824Z",
     "sourceRecords": 183,
     "officialAdditionRecords": 6,
     "canonicalAwards": 176,
@@ -41,15 +41,15 @@
         "UNVERIFIED": 0
       },
       "MINIATURE_MEDAL": {
-        "AVAILABLE": 80,
+        "AVAILABLE": 85,
         "NOT_APPLICABLE": 73,
-        "MISSING_ASSET": 23,
+        "MISSING_ASSET": 18,
         "UNVERIFIED": 0
       },
       "FULL_SIZE_MEDAL": {
-        "AVAILABLE": 83,
+        "AVAILABLE": 87,
         "NOT_APPLICABLE": 72,
-        "MISSING_ASSET": 21,
+        "MISSING_ASSET": 17,
         "UNVERIFIED": 0
       }
     },
@@ -387,12 +387,14 @@
       "ownerType": "AWARD",
       "ownerId": "defense_superior_service",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/air-force/defense_superior_service.png",
+      "exists": true,
+      "sha256": "76ea6f3edb074c67cd5af4ad7482ca138dc3628f4c965befdf6837aa6efa0cf1",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/defense-superior-service-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -409,12 +411,14 @@
       "ownerType": "AWARD",
       "ownerId": "legion_of_merit",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/legion_of_merit.png",
+      "exists": true,
+      "sha256": "b76a96029d87c109c45373ded43dbca19df8fd151e525f61be7bd1de006edc69",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/legion-of-merit-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -847,12 +851,14 @@
       "ownerType": "AWARD",
       "ownerId": "joint_service_commendation",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/joint_service_commendation.png",
+      "exists": true,
+      "sha256": "ec7a39387803af9ca928dfa02aa6357e8996d1f5b89c2b549e6dead592f3782a",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/joint-service-commendation-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -1707,12 +1713,14 @@
       "ownerType": "AWARD",
       "ownerId": "prisoner_of_war",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/air-force/prisoner_of_war.png",
+      "exists": true,
+      "sha256": "cb88ac2f168b52addabb567d077086a9ccadbb1dbfee1975f79f28de28ac41cd",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/prisoner-of-war-pow-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -2979,10 +2987,10 @@
       "status": "AVAILABLE",
       "asset": "images/military-full-size-medals/air-force/remote_combat_effects_campaign_medal.png",
       "exists": true,
-      "sha256": "44d653dcf3cd24c12e3fc9f8861c405ad6e667ff0bbdf729d227eb3d84928151",
+      "sha256": "22b4c87039c4b40b3f44a1390815581f45e9bf560fc3a13efc8829c5b2c03386",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
-        "https://www.vanguardmil.com/products/full-size-medal-air-force-remote-combat-effects-campaign"
+        "https://www.vanguardmil.com/products/miniature-medal-air-force-remote-combat-effects-campaign-medal"
       ]
     },
     {
@@ -3325,12 +3333,14 @@
       "ownerType": "AWARD",
       "ownerId": "air_force_distinguishd_service",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/air_force_distinguishd_service.png",
+      "exists": true,
+      "sha256": "5dad0a61238774dc8dd5ca5a02fb67dbf21a82c8a48ebb96d4cf5a6e44937b6d",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/full-size-medal-air-force-distinguished-service"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5547,12 +5557,14 @@
       "ownerType": "AWARD",
       "ownerId": "medal_for_humane_action",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/air-force/medal_for_humane_action.png",
+      "exists": true,
+      "sha256": "0322016c0c9c5f2cc712334f05bef7f1d4f69bd86f7caf2579e9f20a3ca8fe83",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/medal-for-humane-action-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5799,12 +5811,14 @@
       "ownerType": "AWARD",
       "ownerId": "philippine_liberation",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/philippine_liberation.png",
+      "exists": true,
+      "sha256": "fad584b7452a82323dc3cafd10b271fe64e909b50d5a7712b2caa47cb79192fa",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/philippine-liberation-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5879,12 +5893,14 @@
       "ownerType": "AWARD",
       "ownerId": "philippine_independence",
       "representation": "MINIATURE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-mini-medals/air-force/philippine_independence.png",
+      "exists": true,
+      "sha256": "d2d4c64ca221388bf9f60fd2787d6310fa2bcc5e81f31bf56ac808eb3f2cbf71",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/philippine-independence-full-size-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -5972,12 +5988,14 @@
       "ownerType": "AWARD",
       "ownerId": "inter_american_defense_board",
       "representation": "FULL_SIZE_MEDAL",
-      "status": "MISSING_ASSET",
-      "asset": null,
-      "exists": false,
-      "sha256": null,
-      "verificationStatus": null,
-      "sources": []
+      "status": "AVAILABLE",
+      "asset": "images/military-full-size-medals/air-force/inter_american_defense_board.png",
+      "exists": true,
+      "sha256": "36b3a3db354f57d37b4005a98b1dbc4de242fea8038cf0b67375b2abb09e9ce0",
+      "verificationStatus": "CATALOG_CROSS_REFERENCED",
+      "sources": [
+        "https://www.vanguardmil.com/products/inter-american-defense-board-miniature-medal"
+      ]
     },
     {
       "ownerType": "AWARD",
@@ -6322,10 +6340,10 @@
       "status": "AVAILABLE",
       "asset": "images/military-full-size-medals/air-force/kuwiat_liberation_kuwait.png",
       "exists": true,
-      "sha256": "8e5496626a59b04bb1b290b92cacc0ba441edbcc40bea9ba44fd6f0816d0614c",
+      "sha256": "fb2bb593ffd97d651722753b59b856044f7d034ee7bb63257d7329b687fd24c3",
       "verificationStatus": "CATALOG_CROSS_REFERENCED",
       "sources": [
-        "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-466-full-size-medal"
+        "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-miniature-medal"
       ]
     },
     {

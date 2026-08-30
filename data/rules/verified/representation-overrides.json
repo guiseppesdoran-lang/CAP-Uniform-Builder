@@ -253,10 +253,11 @@
         "asset": "images/military-full-size-medals/air-force/remote_combat_effects_campaign_medal.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
-          "https://www.vanguardmil.com/products/full-size-medal-air-force-remote-combat-effects-campaign"
+          "https://www.vanguardmil.com/products/miniature-medal-air-force-remote-combat-effects-campaign-medal"
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
-        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/nophoto_2d7dfaf3-4b99-4b53-ae37-892f44b1a449.jpg?v=1624998233"
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617907.jpg?v=1617290960",
+        "derivedFromReviewedRepresentation": "miniatureMedal"
       }
     },
     "air_reserve_forces_meritorious_service": {
@@ -510,6 +511,18 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/defense_superior_service_miniature_medal_2038_defsup_mini_1.jpeg?v=1423544692"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/air-force/defense_superior_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/defense-superior-service-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/defense_superior_service_miniature_medal_2038_defsup_mini_1.jpeg?v=1423544692",
+        "derivedFromReviewedRepresentation": "miniatureMedal"
       }
     },
     "distinguished_flying_cross": {
@@ -643,6 +656,18 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/inter_american_defense_board_miniature_medal_2047_1_1_d010ba28-8c13-4573-9976-fcce6fe9c57a.jpeg?v=1423544530"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/air-force/inter_american_defense_board.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/inter-american-defense-board-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/inter_american_defense_board_miniature_medal_2047_1_1_d010ba28-8c13-4573-9976-fcce6fe9c57a.jpeg?v=1423544530",
+        "derivedFromReviewedRepresentation": "miniatureMedal"
       }
     },
     "iraq_campaign": {
@@ -776,6 +801,18 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/medal_for_humane_action_miniature_medal_2060_humane_mini_1_1.jpeg?v=1423544632"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/air-force/medal_for_humane_action.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/medal-for-humane-action-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/medal_for_humane_action_miniature_medal_2060_humane_mini_1_1.jpeg?v=1423544632",
+        "derivedFromReviewedRepresentation": "miniatureMedal"
       }
     },
     "meritorious_service": {
@@ -861,6 +898,18 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/prisoner_of_war_miniature_medal_2082_priswar_mini_1_1.jpeg?v=1423544571"
+      },
+      "fullSizeMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-full-size-medals/air-force/prisoner_of_war.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/prisoner-of-war-pow-miniature-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/prisoner_of_war_miniature_medal_2082_priswar_mini_1_1.jpeg?v=1423544571",
+        "derivedFromReviewedRepresentation": "miniatureMedal"
       }
     },
     "purple_heart": {
@@ -1073,10 +1122,11 @@
         "asset": "images/military-full-size-medals/air-force/kuwiat_liberation_kuwait.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
-          "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-466-full-size-medal"
+          "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-miniature-medal"
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
-        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6590100.jpg?v=1617287643"
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/kuwait_liberation_of_kuwait_miniature_medal_2054_kuwlib_mini_1.jpeg?v=1423544523",
+        "derivedFromReviewedRepresentation": "miniatureMedal"
       }
     },
     "outstanding_volunteer_service": {
@@ -1258,6 +1308,18 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609420.jpg?v=1617287721"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/joint_service_commendation.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/joint-service-commendation-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609420.jpg?v=1617287721",
+        "derivedFromReviewedRepresentation": "fullSizeMedal"
       }
     },
     "air_force_distinguishd_service": {
@@ -1271,6 +1333,18 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609510.jpg?v=1654797097"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/air_force_distinguishd_service.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/full-size-medal-air-force-distinguished-service"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609510.jpg?v=1654797097",
+        "derivedFromReviewedRepresentation": "fullSizeMedal"
       }
     },
     "legion_of_merit": {
@@ -1284,6 +1358,18 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/legion_of_merit_medal_155_web.jpeg_1.jpeg?v=1423544644"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/legion_of_merit.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/legion-of-merit-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/legion_of_merit_medal_155_web.jpeg_1.jpeg?v=1423544644",
+        "derivedFromReviewedRepresentation": "fullSizeMedal"
       }
     },
     "philippine_independence": {
@@ -1297,6 +1383,18 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/182_philippine_independence_medal.jpeg?v=1423544509"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/philippine_independence.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/philippine-independence-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/182_philippine_independence_medal.jpeg?v=1423544509",
+        "derivedFromReviewedRepresentation": "fullSizeMedal"
       }
     },
     "philippine_liberation": {
@@ -1310,6 +1408,18 @@
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
         "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609850.jpg?v=1617287634"
+      },
+      "miniatureMedal": {
+        "status": "AVAILABLE",
+        "available": true,
+        "asset": "images/military-mini-medals/air-force/philippine_liberation.png",
+        "verificationStatus": "CATALOG_CROSS_REFERENCED",
+        "sources": [
+          "https://www.vanguardmil.com/products/philippine-liberation-full-size-medal"
+        ],
+        "style": "MCCHORD_DIGITAL_MEDAL",
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609850.jpg?v=1617287634",
+        "derivedFromReviewedRepresentation": "fullSizeMedal"
       }
     },
     "army_achievement": {

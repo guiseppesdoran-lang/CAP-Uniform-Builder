@@ -361,14 +361,27 @@ def main() -> None:
     args = parser.parse_args()
 
     catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
+    overrides = json.loads(OVERRIDES.read_text(encoding="utf-8"))
+    protected_ribbon_only = {
+        award_id
+        for award_id, records in overrides.get("awards", {}).items()
+        if any(
+            record.get("verificationStatus") == "OFFICIALLY_CLASSIFIED_RIBBON_ONLY"
+            for record in records.values()
+            if isinstance(record, dict)
+        )
+    }
     matches, unmatched = match_products(catalog, products())
+    # A commercial product title can contain the word "medal" even when the
+    # governing award classification authorizes only a ribbon. Regulation
+    # applicability always wins over a catalog discovery match.
+    matches = [match for match in matches if match["awardId"] not in protected_ribbon_only]
     if args.award_id:
         matches = [match for match in matches if match["awardId"] == args.award_id]
     if not args.apply:
         print(json.dumps({"matched": matches, "unmatched": unmatched}, indent=2))
         return
 
-    overrides = json.loads(OVERRIDES.read_text(encoding="utf-8"))
     imported = []
     for match in matches:
         relative = Path("images") / "military-mini-medals" / "air-force" / f"{match['awardId']}.png"
@@ -397,8 +410,9 @@ def main() -> None:
         existing_manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
         replacements = {record["awardId"]: record for record in imported}
         manifest_imported = [
-            replacements.pop(record.get("awardId"), record)
+            record
             for record in existing_manifest.get("imported", [])
+            if record.get("awardId") != args.award_id
         ]
         manifest_imported.extend(replacements.values())
         manifest_unmatched = existing_manifest.get("unmatched", [])
