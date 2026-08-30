@@ -20,7 +20,12 @@ CATALOG = ROOT / "data" / "military" / "badges.json"
 PROFILES = ROOT / "data" / "military" / "asset-profiles.json"
 ELIGIBLE_FAMILIES = {
     "OCCUPATIONAL", "AVIATION", "AIRCREW", "SPACE", "CYBER", "MISSILE",
-    "EOD", "DIVER", "MEDICAL", "CHAPLAIN", "COMBAT", "QUALIFICATION"
+    "EOD", "DIVER", "MEDICAL", "CHAPLAIN", "COMBAT", "QUALIFICATION",
+    # Several service catalogs group valid occupational and duty badges under
+    # these broader families.  Keep them eligible when the catalog explicitly
+    # declares an embroidered representation instead of silently leaving the
+    # OCP counterpart missing.
+    "OTHER", "COMMAND", "IDENTIFICATION"
 }
 
 
@@ -33,14 +38,24 @@ def camouflage_pattern(size: tuple[int, int], pattern: str) -> Image.Image:
     palette = palettes.get(pattern, palettes["OCP"])
     image = Image.new("RGB", size, palette[0])
     draw = ImageDraw.Draw(image)
-    # Deterministic, low-frequency digital textile fields; no camera texture.
-    for index in range(54):
-        x = (index * 67) % (size[0] + 80) - 40
-        y = (index * 43) % (size[1] + 50) - 25
-        w = 28 + (index * 13) % 58
-        h = 9 + (index * 7) % 24
-        draw.ellipse((x, y, x + w, y + h), fill=palette[(index + 1) % len(palette)])
-    return image.filter(ImageFilter.GaussianBlur(1.1))
+    # Deterministic, hard-edged textile fields.  These are intentionally clean
+    # vector-like approximations rather than blurred blobs or product-photo
+    # texture, matching the rest of the builder's generated asset style.
+    for index in range(64):
+        x = (index * 67) % (size[0] + 96) - 48
+        y = (index * 43) % (size[1] + 60) - 30
+        w = 34 + (index * 13) % 70
+        h = 10 + (index * 7) % 28
+        step = max(5, h // 3)
+        points = [
+            (x, y + step), (x + step, y + step), (x + step, y),
+            (x + w - step, y), (x + w - step, y + step), (x + w, y + step),
+            (x + w, y + h - step), (x + w - step, y + h - step),
+            (x + w - step, y + h), (x + step, y + h),
+            (x + step, y + h - step), (x, y + h - step),
+        ]
+        draw.polygon(points, fill=palette[(index + 1) % len(palette)])
+    return image
 
 
 def embroidered(source: Path, foreground: str, background_pattern: str | None, background: str | None) -> Image.Image:
@@ -51,8 +66,22 @@ def embroidered(source: Path, foreground: str, background_pattern: str | None, b
         raise ValueError(f"empty badge source: {source}")
     metal = metal.crop(bbox)
     gray = ImageOps.grayscale(metal)
-    mask = ImageOps.autocontrast(gray).point(lambda value: 255 if value > 58 else max(0, value * 3))
-    mask = ImageChops.lighter(mask, metal.getchannel("A")).filter(ImageFilter.GaussianBlur(0.35))
+    alpha = metal.getchannel("A")
+    # Convert reviewed silver artwork into embroidered line art.  The former
+    # implementation merged the full alpha channel into the thread mask,
+    # producing a solid silhouette and discarding the badge's internal design.
+    # Dark relief, local edges, and the outside contour are retained here while
+    # the open metal fields remain transparent to the regulation backing.
+    relief = ImageOps.autocontrast(ImageOps.invert(gray), cutoff=2).point(
+        lambda value: max(0, min(255, int((value - 26) * 1.55)))
+    )
+    detail_edges = ImageOps.autocontrast(gray.filter(ImageFilter.FIND_EDGES), cutoff=2).point(
+        lambda value: 255 if value > 42 else max(0, value * 4)
+    )
+    contour = alpha.filter(ImageFilter.FIND_EDGES).point(lambda value: 255 if value > 18 else 0)
+    mask = ImageChops.lighter(relief, detail_edges)
+    mask = ImageChops.lighter(mask, contour)
+    mask = ImageChops.multiply(mask, alpha).filter(ImageFilter.GaussianBlur(0.22))
     canvas = (360, 220)
     backing = camouflage_pattern(canvas, background_pattern) if background_pattern else Image.new("RGB", canvas, background or "#132140")
     output = backing.convert("RGBA")
@@ -79,6 +108,11 @@ def main() -> None:
     for badge in catalog["badges"]:
         services = [service for service in badge.get("authorizedServices", []) if service in args.services]
         if not services or badge.get("family") not in ELIGIBLE_FAMILIES:
+            continue
+        # The representation catalog is the authorization boundary.  Do not
+        # invent a cloth version for a badge that is intentionally metal-only.
+        declared_embroidered = badge.get("representations", {}).get("embroidered")
+        if declared_embroidered is None:
             continue
         metal = badge.get("representations", {}).get("metal", {})
         metal_variants = metal.get("variants") or ({metal.get("defaultVariant", "default"): metal} if metal.get("asset") else {})
