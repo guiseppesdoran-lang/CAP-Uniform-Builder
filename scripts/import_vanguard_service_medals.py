@@ -31,9 +31,12 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--service", required=True)
     parser.add_argument("--representation", choices=list(COLLECTIONS), required=True)
+    parser.add_argument("--award-id", action="append", default=[], help="Restrict the pass to one or more canonical award IDs.")
+    parser.add_argument("--refresh-existing", action="store_true", help="Regenerate matching AVAILABLE artwork in place.")
     parser.add_argument("--apply", action="store_true")
     args = parser.parse_args()
     service = args.service.upper()
+    slug = service.lower().replace("_", "-")
     template, keyword, canvas, suspension_height, folder = COLLECTIONS[args.representation]
     catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
     matches, unmatched = match_products(catalog, products(template), required_keyword=keyword, service=service)
@@ -41,17 +44,23 @@ def main() -> None:
     # Shared awards keep the first reviewed canonical representation. This pass
     # fills only actual gaps and never creates duplicate branch copies.
     missing = []
+    requested = set(args.award_id)
     for match in matches:
+        if requested and match["awardId"] not in requested:
+            continue
         current = overrides.get("awards", {}).get(match["awardId"], {}).get(args.representation, {})
         # NOT_APPLICABLE is an explicit regulatory classification, not an art
         # gap. Commercial product names must never override that decision.
-        if current.get("status") not in {"AVAILABLE", "NOT_APPLICABLE"}:
+        current_asset = current.get("asset") or ""
+        owned_by_service = f"/{slug}/" in current_asset
+        if current.get("status") == "AVAILABLE" and args.refresh_existing and owned_by_service:
+            missing.append(match)
+        elif current.get("status") not in {"AVAILABLE", "NOT_APPLICABLE"}:
             missing.append(match)
     if not args.apply:
         print(json.dumps({"service": service, "representation": args.representation, "matches": missing, "unmatched": unmatched}, indent=2))
         return
     imported = []
-    slug = service.lower().replace("_", "-")
     for match in missing:
         award = next(item for item in catalog if item["id"] == match["awardId"])
         ribbon_asset = award.get("representations", {}).get("ribbon", {}).get("asset") or award.get("images", {}).get("ribbon")

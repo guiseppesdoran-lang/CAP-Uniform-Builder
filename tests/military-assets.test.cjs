@@ -393,6 +393,12 @@ test('complete asset manifest contains no broken AVAILABLE records',()=>{
   assert.deepEqual(broken,[]);
 });
 
+test('available hanging medals have no transparent suspension break',()=>{
+  const report=require('../reports/military-medal-connectivity-audit.json');
+  assert.ok(report.checked>=170,'expected the complete available medal catalog to be audited');
+  assert.equal(report.issueCount,0,JSON.stringify(report.issues,null,2));
+});
+
 test('curated service-title aliases fill only the reviewed canonical medal records',()=>{
   const overrides=require('../data/rules/verified/representation-overrides.json').awards;
   const expected={

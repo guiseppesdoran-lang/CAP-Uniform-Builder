@@ -3,7 +3,7 @@
   "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
   "service": "SPACE_FORCE",
   "representation": "miniatureMedal",
-  "accessed": "2026-08-29",
+  "accessed": "2026-08-30",
   "canvas": [
     50,
     176
@@ -18,6 +18,46 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617571.jpg?v=1674668564",
       "score": null,
       "asset": "images/military-mini-medals/space-force/space_force_good_conduct_medal.png"
+    },
+    {
+      "awardId": "air_and_space_achievement_medal",
+      "productTitle": "Miniature Medal: Air Force Achievement",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-achievement-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Achievement-Miniature-Medal.jpeg?v=1423544847",
+      "score": 10,
+      "asset": "images/military-mini-medals/space-force/air_and_space_achievement_medal.png"
+    },
+    {
+      "awardId": "air_and_space_commendation_medal",
+      "productTitle": "Miniature Medal: Air Force Commendation",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-commendation-miniature-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Commendation-Miniature-Medal.jpeg?v=1423544832",
+      "score": 10,
+      "asset": "images/military-mini-medals/space-force/air_and_space_commendation_medal.png"
+    },
+    {
+      "awardId": "inherent_resolve_campaign_medal",
+      "productTitle": "Miniature Medal: Inherent Resolve Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/miniature-medal-inherent-resolve-campaign",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617620.jpg?v=1617289939",
+      "score": 4.8,
+      "asset": "images/military-mini-medals/space-force/inherent_resolve_campaign_medal.png"
+    },
+    {
+      "awardId": "nuclear_deterrence_operations_service_medal",
+      "productTitle": "Miniature Medal: Air Force Nuclear Deterrence Operations Service",
+      "productUrl": "https://www.vanguardmil.com/products/air-force-miniature-medal-nuclear-deterrence-operations-service",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Air-Force-Nuclear-Deterrence-Operations-Miniature-Medal_2c5a5deb-c8cb-46d9-8315-099758c9b21f.jpeg?v=1423542352",
+      "score": 10,
+      "asset": "images/military-mini-medals/space-force/nuclear_deterrence_operations_service_medal.png"
+    },
+    {
+      "awardId": "remote_combat_effects_campaign_medal",
+      "productTitle": "Miniature Medal: Air Force Remote Combat Effects Campaign  Medal",
+      "productUrl": "https://www.vanguardmil.com/products/miniature-medal-air-force-remote-combat-effects-campaign-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617907.jpg?v=1617290960",
+      "score": 10,
+      "asset": "images/military-mini-medals/space-force/remote_combat_effects_campaign_medal.png"
     }
   ],
   "unmatched": [
@@ -152,12 +192,6 @@
       "key": "bronze star",
       "score": 0.333,
       "runnerUp": 0.312
-    },
-    {
-      "title": "Miniature Medal: Coast Guard 9-11",
-      "key": "coast guard 9 11",
-      "score": 0.269,
-      "runnerUp": 0.261
     },
     {
       "title": "Miniature Medal: Coast Guard Achievement",

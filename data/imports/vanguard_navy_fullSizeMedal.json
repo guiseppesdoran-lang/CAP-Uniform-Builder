@@ -3,7 +3,7 @@
   "sourceType": "COMMERCIAL_CATALOG_DISCOVERY_REFERENCE",
   "service": "NAVY",
   "representation": "fullSizeMedal",
-  "accessed": "2026-08-29",
+  "accessed": "2026-08-30",
   "canvas": [
     100,
     220
@@ -90,6 +90,294 @@
       "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/178_wwii_navy_occupation_service_medal.jpeg?v=1423544538",
       "score": 10,
       "asset": "images/military-full-size-medals/navy/navy_occupation_service.png"
+    },
+    {
+      "awardId": "afghanistan_campaign",
+      "productTitle": "Full Size Medal: Afghanistan Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/afghanistan-campaign-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/100_afghan_campaign_military_medal.jpeg?v=1423544006",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/afghanistan_campaign.png"
+    },
+    {
+      "awardId": "air_medal",
+      "productTitle": "Full Size Medal: Air Medal",
+      "productUrl": "https://www.vanguardmil.com/products/air-medal-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/air-medal_6e96c00e-d60e-4031-abba-0e6cdd409c2f.jpeg?v=1423544811",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/air_medal.png"
+    },
+    {
+      "awardId": "american_campaign",
+      "productTitle": "Full Size Medal: American Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/american-campaign-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609320.jpg?v=1617287802",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/american_campaign.png"
+    },
+    {
+      "awardId": "american_defense",
+      "productTitle": "Full Size Medal: American Defense Service",
+      "productUrl": "https://www.vanguardmil.com/products/american-defense-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/American-Defense-Medal---WW-II_39c8a3db-9c68-435a-a5a0-b0e0b9d7cd3a.jpeg?v=1423544797",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/american_defense.png"
+    },
+    {
+      "awardId": "antarctica_service",
+      "productTitle": "Full Size Medal: Antarctica Service",
+      "productUrl": "https://www.vanguardmil.com/products/antarctica-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Antarctica-Service-Medal_43ff8e52-dede-46c2-8ac6-4b2e25bd1c83.jpeg?v=1423544794",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/antarctica_service.png"
+    },
+    {
+      "awardId": "armed_forces_expeditionary",
+      "productTitle": "Full Size Medal: Armed Forces Expeditionary",
+      "productUrl": "https://www.vanguardmil.com/products/armed-forces-expeditionary-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609560.jpg?v=1617287796",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/armed_forces_expeditionary.png"
+    },
+    {
+      "awardId": "armed_forces_reserve",
+      "productTitle": "Full Size Medal: Air Force Armed Forces Reserve",
+      "productUrl": "https://www.vanguardmil.com/products/usaf-armed-forces-reserve-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/Armed-Forces-Reserve-Medal---Air-Force-Version.jpeg?v=1423544788",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/armed_forces_reserve.png"
+    },
+    {
+      "awardId": "armed_forces_service",
+      "productTitle": "Full Size Medal: Armed Forces Service Medal",
+      "productUrl": "https://www.vanguardmil.com/products/armed-forces-service-medal-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609355.jpg?v=1617287787",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/armed_forces_service.png"
+    },
+    {
+      "awardId": "asiatic_pacific_campaign",
+      "productTitle": "Full Size Medal: Asiatic Pacific Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/asiatic-pacific-campaign-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/123_asiatic_pacific_campaign_medal_wwii.jpeg?v=1423544746",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/asiatic_pacific_campaign.png"
+    },
+    {
+      "awardId": "bronze_star_miltiary",
+      "productTitle": "Full Size Medal: Bronze Star",
+      "productUrl": "https://www.vanguardmil.com/products/bronze-star-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609980.jpg?v=1617287770",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/bronze_star_miltiary.png"
+    },
+    {
+      "awardId": "defense_distinguished_service",
+      "productTitle": "Full Size Medal: Defense Distinguished Service",
+      "productUrl": "https://www.vanguardmil.com/products/defense-distinguished-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/140_department_defense_distinguished_service_medal.jpeg?v=1423544700",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/defense_distinguished_service.png"
+    },
+    {
+      "awardId": "defense_meritorious_service",
+      "productTitle": "Full Size Medal: Defense Meritorious Service",
+      "productUrl": "https://www.vanguardmil.com/products/defense-meritorious-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609480.jpg?v=1617287745",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/defense_meritorious_service.png"
+    },
+    {
+      "awardId": "distinguished_flying_cross",
+      "productTitle": "Full Size Medal: Distinguished Flying Cross",
+      "productUrl": "https://www.vanguardmil.com/products/distinguished-flying-cross-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609450.jpg?v=1617287740",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/distinguished_flying_cross.png"
+    },
+    {
+      "awardId": "global_war_on_terrorism_expeditionary",
+      "productTitle": "Full Size Medal: Global War on Terrorism Expeditionary",
+      "productUrl": "https://www.vanguardmil.com/products/global-war-on-terrorism-expeditionary-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/144_global_war_on_terrorism_expeditionary_medal_0733b302-aa04-42bb-a6b6-4d9284b335a4.jpeg?v=1423544676",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/global_war_on_terrorism_expeditionary.png"
+    },
+    {
+      "awardId": "global_war_on_terrorism_service",
+      "productTitle": "Full Size Medal: Global War on Terrorism Service",
+      "productUrl": "https://www.vanguardmil.com/products/global-war-on-terrorism-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/145_global_war_on_terrorism_service_military_ribbon_2bdd86e6-3fd2-48af-a46f-5937e76030dc.jpeg?v=1423544672",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/global_war_on_terrorism_service.png"
+    },
+    {
+      "awardId": "humanitarian_service",
+      "productTitle": "Full Size Medal: Humanitarian Service",
+      "productUrl": "https://www.vanguardmil.com/products/humanitarian-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/146_humanitarian_service_medal_5653fd00-bd05-41a6-bdf6-a3c9a5139f4b.jpeg?v=1423544668",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/humanitarian_service.png"
+    },
+    {
+      "awardId": "inherent_resolve_campaign_medal",
+      "productTitle": "Full Size Medal: Inherent Resolve Campaign",
+      "productUrl": "https://www.vanguardmil.com/products/full-size-medal-inherent-resolver-campaign",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609684.jpg?v=1467754965",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/inherent_resolve_campaign_medal.png"
+    },
+    {
+      "awardId": "iraq_campaign",
+      "productTitle": "Full Size Medal: Iraq Campaign Medal",
+      "productUrl": "https://www.vanguardmil.com/products/iraq-campaign-medal-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609687.jpg?v=1617287478",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/iraq_campaign.png"
+    },
+    {
+      "awardId": "joint_service_achievement",
+      "productTitle": "Full Size Medal: Joint Service Achievement",
+      "productUrl": "https://www.vanguardmil.com/products/joint-service-achievement-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/joint_service_achievement_medal_148_web.jpeg_1.jpeg?v=1423544661",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/joint_service_achievement.png"
+    },
+    {
+      "awardId": "joint_service_commendation",
+      "productTitle": "Full Size Medal: Joint Service Commendation",
+      "productUrl": "https://www.vanguardmil.com/products/joint-service-commendation-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609420.jpg?v=1617287721",
+      "score": 10,
+      "asset": "images/military-full-size-medals/navy/joint_service_commendation.png"
+    },
+    {
+      "awardId": "korean_service",
+      "productTitle": "Full Size Medal: Korean Service",
+      "productUrl": "https://www.vanguardmil.com/products/korean-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/korean_service_medal_152_web.jpeg_1_1_28b6e137-361d-442a-a80e-977facdd7e50.jpeg?v=1423544649",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/korean_service.png"
+    },
+    {
+      "awardId": "kosovo_campaign",
+      "productTitle": "Full Size Medal: Kosovo Campaign Medal",
+      "productUrl": "https://www.vanguardmil.com/products/kosovo-campaign-medal-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609695.jpg?v=1617287645",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/kosovo_campaign.png"
+    },
+    {
+      "awardId": "kuwait_liberation_saudi_arabia",
+      "productTitle": "Full Size Medal: Kuwait Liberation Saudi",
+      "productUrl": "https://www.vanguardmil.com/products/kuwait-liberation-saudi-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6590000.jpg?v=1617287642",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/kuwait_liberation_saudi_arabia.png"
+    },
+    {
+      "awardId": "kuwiat_liberation_kuwait",
+      "productTitle": "Full Size Medal: Kuwait Liberation Government of Kuwait #466",
+      "productUrl": "https://www.vanguardmil.com/products/kuwait-liberation-government-of-kuwait-466-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6590100.jpg?v=1617287643",
+      "score": 10,
+      "asset": "images/military-full-size-medals/navy/kuwiat_liberation_kuwait.png"
+    },
+    {
+      "awardId": "legion_of_merit",
+      "productTitle": "Full Size Medal: Legion of Merit",
+      "productUrl": "https://www.vanguardmil.com/products/legion-of-merit-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/legion_of_merit_medal_155_web.jpeg_1.jpeg?v=1423544644",
+      "score": 10,
+      "asset": "images/military-full-size-medals/navy/legion_of_merit.png"
+    },
+    {
+      "awardId": "meritorious_service",
+      "productTitle": "Full Size Medal: Meritorious Service",
+      "productUrl": "https://www.vanguardmil.com/products/meritorious-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609750.jpg?v=1617287706",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/meritorious_service.png"
+    },
+    {
+      "awardId": "nato",
+      "productTitle": "Full Size Medal: NATO Medal",
+      "productUrl": "https://www.vanguardmil.com/products/nato-medal-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609795.jpg?v=1617287638",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/nato.png"
+    },
+    {
+      "awardId": "nato_kosovo",
+      "productTitle": "Full Size Medal: NATO Kosovo Medal",
+      "productUrl": "https://www.vanguardmil.com/products/nato-kosovo-medal-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609793.jpg?v=1617287640",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/nato_kosovo.png"
+    },
+    {
+      "awardId": "philippine_independence",
+      "productTitle": "Full Size Medal: Philippine Independence",
+      "productUrl": "https://www.vanguardmil.com/products/philippine-independence-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/182_philippine_independence_medal.jpeg?v=1423544509",
+      "score": 10,
+      "asset": "images/military-full-size-medals/navy/philippine_independence.png"
+    },
+    {
+      "awardId": "philippine_liberation",
+      "productTitle": "Full Size Medal: Philippine Liberation",
+      "productUrl": "https://www.vanguardmil.com/products/philippine-liberation-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609850.jpg?v=1617287634",
+      "score": 10,
+      "asset": "images/military-full-size-medals/navy/philippine_liberation.png"
+    },
+    {
+      "awardId": "purple_heart",
+      "productTitle": "Full Size Medal: Purple Heart",
+      "productUrl": "https://www.vanguardmil.com/products/purple-heart-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609870.jpg?v=1617287670",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/purple_heart.png"
+    },
+    {
+      "awardId": "rok_war_service",
+      "productTitle": "Full Size Medal: Republic of Korea War Service No Device",
+      "productUrl": "https://www.vanguardmil.com/products/republic-of-korea-war-service-no-device-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/186_republic_of_korea_korean_war_service_medal.jpeg?v=1423544501",
+      "score": 10,
+      "asset": "images/military-full-size-medals/navy/rok_war_service.png"
+    },
+    {
+      "awardId": "silver_star",
+      "productTitle": "Full Size Medal: Silver Star",
+      "productUrl": "https://www.vanguardmil.com/products/silver-star-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609990.jpg?v=1617287662",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/silver_star.png"
+    },
+    {
+      "awardId": "southwest_asia_service",
+      "productTitle": "Full Size Medal: Southwest Asia Service",
+      "productUrl": "https://www.vanguardmil.com/products/southwest-asia-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609970.jpg?v=1617287657",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/southwest_asia_service.png"
+    },
+    {
+      "awardId": "united_nations",
+      "productTitle": "Full Size Medal: United Nations Service",
+      "productUrl": "https://www.vanguardmil.com/products/united-nation-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/208_united_nations_korean_service_medal.jpeg?v=1423544492",
+      "score": 10,
+      "asset": "images/military-full-size-medals/navy/united_nations.png"
+    },
+    {
+      "awardId": "vietnam_service",
+      "productTitle": "Full Size Medal: Vietnam Service",
+      "productUrl": "https://www.vanguardmil.com/products/vietnam-service-full-size-medal",
+      "image": "https://cdn.shopify.com/s/files/1/0720/2413/products/vietnam_service_medal_210_web.jpeg_1.jpeg?v=1423544546",
+      "score": 4.8,
+      "asset": "images/military-full-size-medals/navy/vietnam_service.png"
     }
   ],
   "unmatched": [

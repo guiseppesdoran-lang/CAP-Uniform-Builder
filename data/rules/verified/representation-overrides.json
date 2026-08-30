@@ -1602,7 +1602,7 @@
       "fullSizeMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_achievement.png",
+        "asset": "images/military-full-size-medals/marine-corps/navy_and_marine_corps_achievement.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
           "https://www.vanguardmil.com/products/usn-achievement-full-size-medal"
@@ -1626,7 +1626,7 @@
       "fullSizeMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_commendation.png",
+        "asset": "images/military-full-size-medals/marine-corps/navy_and_marine_corps_commendation.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
           "https://www.vanguardmil.com/products/usn-and-usmc-commendation-full-size-medal"
@@ -1650,7 +1650,7 @@
       "fullSizeMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-full-size-medals/navy/navy_and_marine_corps_medal.png",
+        "asset": "images/military-full-size-medals/marine-corps/navy_and_marine_corps_medal.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
           "https://www.vanguardmil.com/products/usn-and-usmc-medal-full-size-medal"
@@ -1674,7 +1674,7 @@
       "fullSizeMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-full-size-medals/navy/navy_cross.png",
+        "asset": "images/military-full-size-medals/coast-guard/navy_cross.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
           "https://www.vanguardmil.com/products/usn-cross-full-size-medal"
@@ -1698,7 +1698,7 @@
       "fullSizeMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-full-size-medals/navy/navy_expeditionary.png",
+        "asset": "images/military-full-size-medals/coast-guard/navy_expeditionary.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
           "https://www.vanguardmil.com/products/usn-expeditionary-full-size-medal"
@@ -1746,7 +1746,7 @@
       "fullSizeMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-full-size-medals/navy/navy_arctic_service.png",
+        "asset": "images/military-full-size-medals/marine-corps/navy_arctic_service.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
           "https://www.vanguardmil.com/products/full-size-medal-u-s-navy-arctic-service"
@@ -4074,48 +4074,48 @@
       "miniatureMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-mini-medals/navy/navy_occupation_service.png",
+        "asset": "images/military-mini-medals/marine-corps/navy_occupation_service.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
-          "https://www.vanguardmil.com/products/usn-and-uscg-occupation-wwii-miniature-medal"
+          "https://www.vanguardmil.com/products/usmc-wwii-occupation-miniature-medal"
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
-        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/world_war_ii_ww_ii_navy_occupation_service_miniature_medal_2098_wwiinavy_mini_1_1.jpeg?v=1423544536"
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/world_war_ii_ww_ii_marine_corps_occupation_miniature_medal_2100_wwiima_mini_1_1.jpeg?v=1423544539"
       },
       "fullSizeMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-full-size-medals/navy/navy_occupation_service.png",
+        "asset": "images/military-full-size-medals/marine-corps/navy_occupation_service.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
-          "https://www.vanguardmil.com/products/wwii-occupation-usn-and-uscg-full-size-medal"
+          "https://www.vanguardmil.com/products/wwii-occupation-usmc-full-size-medal"
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
-        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/178_wwii_navy_occupation_service_medal.jpeg?v=1423544538"
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609830.jpg?v=1617287651"
       }
     },
     "china_service": {
       "miniatureMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-mini-medals/navy/china_service.png",
+        "asset": "images/military-mini-medals/marine-corps/china_service.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
-          "https://www.vanguardmil.com/products/usn-china-service-miniature-medal"
+          "https://www.vanguardmil.com/products/usmc-china-service-miniature-medal"
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
-        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6617315.jpg?v=1431540085"
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/marine_corps_china_service_miniature_medal_2057_mcchina_mini_1_1.jpeg?v=1423544737"
       },
       "fullSizeMedal": {
         "status": "AVAILABLE",
         "available": true,
-        "asset": "images/military-full-size-medals/navy/china_service.png",
+        "asset": "images/military-full-size-medals/marine-corps/china_service.png",
         "verificationStatus": "CATALOG_CROSS_REFERENCED",
         "sources": [
-          "https://www.vanguardmil.com/products/usn-china-service-full-size-medal"
+          "https://www.vanguardmil.com/products/usmc-china-service-full-size-medal"
         ],
         "style": "MCCHORD_DIGITAL_MEDAL",
-        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609371.jpg?v=1617287767"
+        "sourceImage": "https://cdn.shopify.com/s/files/1/0720/2413/products/6609370.jpg?v=1617287768"
       }
     },
     "coast_guard_medal": {
