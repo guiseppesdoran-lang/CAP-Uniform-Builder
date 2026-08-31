@@ -72,6 +72,11 @@
     return getSelectedCalibKeys().filter(Boolean);
   }
 
+  function masterSessionSnapshot(){
+    const snapshot=window.CAPUB_MASTER_CALIBRATION?.getSnapshot?.();
+    return snapshot && snapshot.active && snapshot.changeCount ? snapshot : null;
+  }
+
   function prettyUniform(){
     return String(State.uniform || 'uniform').replace(/_/g,' ').replace(/\b\w/g,char=>char.toUpperCase());
   }
@@ -98,17 +103,22 @@
 
   function openModal(){
     const keys=currentSelectedKeys();
+    const master=masterSessionSnapshot();
     ensureModal();
     clearStatus();
     const bucket=typeof getCurrentCalibUniform === 'function' ? getCurrentCalibUniform() : State.uniform;
     const summary=byId('capubCalibrationSubmitSummary');
     if(summary){
-      summary.innerHTML=`<b>${esc(prettyUniform())}</b> · ${esc(State.gender || 'gender not selected')} · ${esc(State.membership || 'membership not selected')}<br>`+
-        `Calibration bucket: <code>${esc(bucket || 'unknown')}</code><br>`+
-        `Selected assets: <b>${keys.length}</b>${keys.length ? `<br><span>${esc(keys.join(', '))}</span>` : '<br><span>Select one or more items on the uniform before submitting.</span>'}`;
+      summary.innerHTML=master
+        ? `<b>Master calibration session</b><br>Uniform buckets: <b>${master.uniformCount}</b><br>Changed assets: <b>${master.changeCount}</b><br><span>${esc(master.scopes.map(scope=>scope.calibrationBucket).join(', '))}</span>`
+        : `<b>${esc(prettyUniform())}</b> · ${esc(State.gender || 'gender not selected')} · ${esc(State.membership || 'membership not selected')}<br>`+
+          `Calibration bucket: <code>${esc(bucket || 'unknown')}</code><br>`+
+          `Selected assets: <b>${keys.length}</b>${keys.length ? `<br><span>${esc(keys.join(', '))}</span>` : '<br><span>Select one or more items on the uniform before submitting.</span>'}`;
     }
     const title=byId('capubCalibrationTitle');
-    if(title && !title.value) title.value=`Calibration: ${prettyUniform()} ${State.gender || ''}`.trim();
+    if(title && !title.value) title.value=master
+      ? `Master calibration: ${master.uniformCount} uniforms`
+      : `Calibration: ${prettyUniform()} ${State.gender || ''}`.trim();
     byId('capubCalibrationSubmitOverlay')?.classList.add('open');
   }
 
@@ -116,19 +126,30 @@
 
   function buildCalibrationPackage(title,notes,submitterName,submitterEmail){
     const keys=currentSelectedKeys();
-    if(!keys.length) throw new Error('Select at least one badge, ribbon, medal, patch, or uniform item in Calibrate Mode first.');
-    if(keys.length>MAX_SELECTED_KEYS) throw new Error(`Select no more than ${MAX_SELECTED_KEYS} assets in one submission.`);
+    const master=masterSessionSnapshot();
+    const selectedCount=master?.changeCount || keys.length;
+    if(!selectedCount) throw new Error('Select at least one badge, ribbon, medal, patch, or uniform item in Calibrate Mode first.');
+    if(selectedCount>MAX_SELECTED_KEYS) throw new Error(`Select no more than ${MAX_SELECTED_KEYS} assets in one submission.`);
 
     const bucket=typeof getCurrentCalibUniform === 'function' ? getCurrentCalibUniform() : State.uniform;
-    const changes=keys.map(key=>({
-      key,
-      savedCalibration: typeof getCalib === 'function' ? (getCalib(key) || {}) : {},
-      rendered: typeof getRenderedRecordForKey === 'function' ? getRenderedRecordForKey(key) : null
-    }));
+    const calibrationScopes=master?.scopes || [{
+      calibrationBucket:bucket,
+      context:null,
+      changes:keys.map(key=>({
+        key,
+        savedCalibration:typeof getCalib === 'function' ? (getCalib(key) || {}) : {},
+        rendered:typeof getRenderedRecordForKey === 'function' ? getRenderedRecordForKey(key) : null
+      }))
+    }];
+    const changes=calibrationScopes.flatMap(scope=>scope.changes.map(change=>({
+      ...change,
+      calibrationBucket:scope.calibrationBucket
+    })));
 
     return {
-      schemaVersion:1,
+      schemaVersion:master ? 2 : 1,
       type:'capub-calibration-change-request',
+      submissionMode:master ? 'MASTER_MULTI_UNIFORM' : 'SINGLE_UNIFORM',
       submittedAt:new Date().toISOString(),
       title,
       notes,
@@ -148,8 +169,11 @@
         ribbonRowOverrideEnabled:!!State.ribbonRowOverrideEnabled,
         ribbonRowOverride:Array.isArray(State.ribbonRowOverride) ? State.ribbonRowOverride : []
       },
-      selectedKeys:keys,
+      selectedKeys:master
+        ? changes.map(change=>`${change.calibrationBucket}::${change.key}`)
+        : keys,
       changes,
+      calibrationScopes,
       selectedUniformItems:{
         ribbons:(State.ribbons || []).map(item=>({id:item.id,awardValue:item.awardValue || ''})),
         badges:[...(State.badges || [])],

@@ -1125,6 +1125,15 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
     </div>
 
     <div class="calib-row">
+      <label>Admin master session</label>
+      <div class="row" style="gap:8px;">
+        <button id="calibMasterSession" type="button" class="ghost" style="flex:1;">Master Session: OFF</button>
+        <button id="calibMasterClear" type="button" class="ghost" style="width:auto;">Clear</button>
+      </div>
+      <div id="calibMasterStatus" style="margin-top:5px;font-size:10px;color:var(--muted);line-height:1.35;">One-uniform submission mode.</div>
+    </div>
+
+    <div class="calib-row">
       <label>Selected Asset(s)</label>
       <div id="calibKeyPill">none</div>
     </div>
@@ -1767,7 +1776,13 @@ const State = {
     selectedKey:null,
     selectedKeys:[], // multi-select layer keys for admin calibration
     map:{}, // legacy/global fallback: key -> {x,y,w,h,r}
-    byUniform:{} // uniformId -> { layerKey -> {x,y,w,h,r} }
+    byUniform:{}, // uniformId -> { layerKey -> {x,y,w,h,r} }
+    masterSession:{
+      active:false,
+      startedAt:null,
+      changesByUniform:{},
+      contextByUniform:{}
+    }
   }
 };
 
@@ -1907,6 +1922,7 @@ function getRackOrigin(){
    =========================== */
 const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260805_female_class_a_capt_1785908806912';
 const CAPUB_LEGACY_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform';
+const CAPUB_ISSUE_137_MIGRATION_KEY = 'capub_calibration_issue_137_applied_v2';
 function genderBucketFor(uniform, gender){
   const u = uniform || 'global';
   const g = gender || '';
@@ -1963,6 +1979,87 @@ function getCalibBucket(uniformId=getCurrentCalibUniform()){
   if(!State.calib.byUniform[uniformId]) State.calib.byUniform[uniformId] = {};
   return State.calib.byUniform[uniformId];
 }
+
+function ensureMasterCalibrationSession(){
+  if(!State.calib.masterSession || typeof State.calib.masterSession !== 'object'){
+    State.calib.masterSession={active:false,startedAt:null,changesByUniform:{},contextByUniform:{}};
+  }
+  const session=State.calib.masterSession;
+  if(!session.changesByUniform || typeof session.changesByUniform !== 'object') session.changesByUniform={};
+  if(!session.contextByUniform || typeof session.contextByUniform !== 'object') session.contextByUniform={};
+  return session;
+}
+
+function getCalibrationContextSnapshot(){
+  return {
+    uniform:State.uniform || null,
+    calibrationBucket:getCurrentCalibUniform(),
+    gender:State.gender || null,
+    membership:State.membership || null,
+    rank:State.rank || null,
+    organization:State.organization || 'CAP',
+    militaryRepresentation:State.militaryRepresentation || null,
+    baseCandidates:typeof getBaseCandidates === 'function' ? getBaseCandidates() : [],
+    canvas:typeof getCanvasRenderSize === 'function' ? getCanvasRenderSize() : null,
+    selectedUniformItems:{
+      ribbons:(State.ribbons || []).map(item=>({id:item.id,awardValue:item.awardValue || ''})),
+      badges:[...(State.badges || [])],
+      patches:[...(State.patches || [])],
+      militaryAwards:Object.keys(State.militaryAwards || {}),
+      militaryBadges:Object.keys(State.militaryBadges || {})
+    }
+  };
+}
+
+function recordMasterCalibrationChange(key, calibration){
+  const session=ensureMasterCalibrationSession();
+  if(!session.active || !key) return;
+  const bucketId=getCurrentCalibUniform();
+  if(!session.changesByUniform[bucketId]) session.changesByUniform[bucketId]={};
+  session.changesByUniform[bucketId][key]={...calibration};
+  session.contextByUniform[bucketId]=getCalibrationContextSnapshot();
+  updateMasterCalibrationStatus();
+}
+
+function getMasterCalibrationSessionSnapshot(){
+  const session=ensureMasterCalibrationSession();
+  const scopes=Object.entries(session.changesByUniform).map(([calibrationBucket,items])=>({
+    calibrationBucket,
+    context:{...(session.contextByUniform[calibrationBucket] || {})},
+    changes:Object.entries(items || {}).map(([key,savedCalibration])=>({key,savedCalibration:{...savedCalibration}}))
+  })).filter(scope=>scope.changes.length);
+  return {
+    active:!!session.active,
+    startedAt:session.startedAt || null,
+    uniformCount:scopes.length,
+    changeCount:scopes.reduce((sum,scope)=>sum+scope.changes.length,0),
+    scopes
+  };
+}
+
+function updateMasterCalibrationStatus(){
+  const snapshot=getMasterCalibrationSessionSnapshot();
+  const button=document.getElementById('calibMasterSession');
+  const clear=document.getElementById('calibMasterClear');
+  const status=document.getElementById('calibMasterStatus');
+  if(button){
+    button.textContent=`Master Session: ${snapshot.active ? 'ON' : 'OFF'}`;
+    button.classList.toggle('ghost',!snapshot.active);
+  }
+  if(clear) clear.disabled=!snapshot.changeCount;
+  if(status){
+    status.textContent=snapshot.active
+      ? `${snapshot.changeCount} changed item${snapshot.changeCount===1?'':'s'} across ${snapshot.uniformCount} uniform${snapshot.uniformCount===1?'':'s'} will be included in one push.`
+      : snapshot.changeCount
+        ? `${snapshot.changeCount} staged change${snapshot.changeCount===1?'':'s'} retained. Turn the master session on to submit them together.`
+        : 'One-uniform submission mode.';
+  }
+}
+
+window.CAPUB_MASTER_CALIBRATION={
+  getSnapshot:getMasterCalibrationSessionSnapshot,
+  isActive:()=>!!ensureMasterCalibrationSession().active
+};
 
 const DEFAULT_CALIBRATION_BY_UNIFORM = {
   "blues_a": {
@@ -3502,15 +3599,20 @@ function migrateApprovedCalibrationIssues(){
   // browsers may still have the superseded default persisted in localStorage.
   // Replace only the exact old records so later user-made calibrations remain
   // untouched.
+  let forceIssue137=false;
+  try{ forceIssue137=localStorage.getItem(CAPUB_ISSUE_137_MIGRATION_KEY)!=='1'; }catch(_){ forceIssue137=true; }
   for(const [uniformId, legacyItems] of Object.entries(CAPUB_SUPERSEDED_APPROVED_CALIBRATIONS)){
     const savedBucket = State.calib.byUniform?.[uniformId];
     const approvedBucket = CAPUB_APPROVED_CALIBRATION_OVERRIDES?.[uniformId];
     if(!savedBucket || !approvedBucket) continue;
     for(const [key, legacyRecord] of Object.entries(legacyItems)){
-      if(calibrationRecordMatches(savedBucket[key], legacyRecord) && approvedBucket[key]){
+      if(approvedBucket[key] && (forceIssue137 || calibrationRecordMatches(savedBucket[key], legacyRecord))){
         savedBucket[key] = { ...approvedBucket[key] };
       }
     }
+  }
+  if(forceIssue137){
+    try{ localStorage.setItem(CAPUB_ISSUE_137_MIGRATION_KEY,'1'); }catch(_){}
   }
 }
 
@@ -3696,12 +3798,23 @@ function setCalib(key, patch){
     }
   }
   bucket[key] = { ...cur, ...precisePatch };
+  recordMasterCalibrationChange(key,bucket[key]);
 }
 function clearCalib(key){
   if(!key) return;
   const bucket = getCalibBucket();
   delete bucket[key];
   delete State.calib.map[key];
+  const session=ensureMasterCalibrationSession();
+  const bucketChanges=session.changesByUniform?.[getCurrentCalibUniform()];
+  if(bucketChanges){
+    delete bucketChanges[key];
+    if(!Object.keys(bucketChanges).length){
+      delete session.changesByUniform[getCurrentCalibUniform()];
+      delete session.contextByUniform[getCurrentCalibUniform()];
+    }
+    updateMasterCalibrationStatus();
+  }
 }
 function getLayerTypeFromKey(key, className=''){
   const k = String(key || '');
@@ -10937,9 +11050,13 @@ function renderMilitaryPreview(){
       row.forEach((entry,column)=>{
         const image=document.createElement('img');
         image.className='layer militaryMedalTile'; image.alt=entry.award.name;
-        Object.assign(image.style,{
-          left:`${MILITARY_LEFT_CHEST_CENTER_X-rowWidth/2+column*step}px`,top:`${startY+rowIndex*(medalHeight*.56)}px`,
-          width:`${medalWidth}px`,height:`${medalHeight}px`,objectFit:'contain',zIndex:String(100+column)
+        image.dataset.calibKey=`militaryMedal:${State.organization}:${context}:${entry.award.id}`;
+        image.style.objectFit='contain';
+        image.style.zIndex=String(100+column);
+        applyCalibToElement(image,image.dataset.calibKey,{
+          x:MILITARY_LEFT_CHEST_CENTER_X-rowWidth/2+column*step,
+          y:startY+rowIndex*(medalHeight*.56),
+          w:medalWidth,h:medalHeight,r:0
         });
         uniformCanvas.appendChild(image);
         const awardCount=State.militaryAwards[entry.award.id]?.awardCount || 1;
@@ -11599,6 +11716,8 @@ function initCalibratorUI(){
   const btnCopy  = by('calibCopy');
   const btnSaveUniform = by('calibSaveUniform');
   const btnExportAll = by('calibExportAll');
+  const btnMasterSession = by('calibMasterSession');
+  const btnMasterClear = by('calibMasterClear');
 
   let open=false;
   function requireAdminUnlock(){
@@ -11783,6 +11902,23 @@ function initCalibratorUI(){
     }
   });
 
+  btnMasterSession?.addEventListener('click',()=>{
+    if(!requireAdminUnlock()) return;
+    const session=ensureMasterCalibrationSession();
+    session.active=!session.active;
+    if(session.active && !session.startedAt) session.startedAt=new Date().toISOString();
+    updateMasterCalibrationStatus();
+  });
+
+  btnMasterClear?.addEventListener('click',()=>{
+    if(!requireAdminUnlock()) return;
+    const session=ensureMasterCalibrationSession();
+    session.changesByUniform={};
+    session.contextByUniform={};
+    session.startedAt=session.active ? new Date().toISOString() : null;
+    updateMasterCalibrationStatus();
+  });
+
   uniformCanvas.addEventListener('click', (e)=>{
     if(!State.calib.enabled) return;
     const layer = e.target.closest('.layer');
@@ -11860,6 +11996,7 @@ function initCalibratorUI(){
       downloadCalibrationJson();
     });
   }
+  updateMasterCalibrationStatus();
 }
 
 /* ===========================
