@@ -108,6 +108,32 @@ test('every available military ribbon uses the generated McChord-style canvas',(
   }
 });
 
+test('Air Force device combinations use precomposed McChord-style PNG assets',()=>{
+  const manifest=require('../data/military/device-variant-manifest.json');
+  const records=(manifest.ribbonAssets || []).filter(record=>record.service==='AIR_FORCE');
+  const composites=records.filter(record=>record.strategy==='PRECOMPOSED_PNG');
+  assert.equal(manifest.maximumDevicesPerPhysicalRibbon,4);
+  assert.ok(composites.length>=300,`expected at least 300 Air Force composites, received ${composites.length}`);
+  for(const record of records){
+    assert.ok(record.devices.length<=4,`${record.key} exceeds four devices`);
+    assert.ok(record.asset,`${record.key} has no asset`);
+    const absolute=path.join(ROOT,...record.asset.split('/'));
+    assert.ok(fs.existsSync(absolute),`${record.key} asset does not exist: ${record.asset}`);
+    const buffer=fs.readFileSync(absolute);
+    assert.ok(buffer.subarray(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])),`${record.key} is not PNG`);
+    assert.equal(buffer.readUInt32BE(16),100,`${record.key} width`);
+    assert.equal(buffer.readUInt32BE(20),30,`${record.key} height`);
+    if(record.strategy==='PRECOMPOSED_PNG'){
+      assert.equal(record.deviceAspectPreserved,true,`${record.key} does not declare aspect-preserving device rendering`);
+      assert.equal(record.deviceStyleReference,'CAP_McCHORD_AERIAL_ACHIEVEMENT',`${record.key} lacks the CAP McChord device reference`);
+    }
+  }
+  for(const entry of manifest.entries.filter(record=>record.service==='AIR_FORCE' && record.representation==='RIBBON')){
+    assert.ok(Array.isArray(entry.physicalRibbons) && entry.physicalRibbons.length,`${entry.key} has no physical ribbon plan`);
+    assert.ok(entry.physicalRibbons.every(item=>item.devices.length<=4),`${entry.key} contains an overfilled physical ribbon`);
+  }
+});
+
 test('every Army-authorized badge has reviewed local transparent artwork',()=>{
   const armyBadges=badges.filter(badge=>(badge.authorizedServices || []).includes('ARMY'));
   assert.equal(armyBadges.length,32,'unexpected Army badge catalog size');
