@@ -39,6 +39,15 @@ test('CAP miniature medal rack centers rows using saved calibrated widths', () =
   assert.match(indexSource, /const medalRowGeometry = medalRowsTopFirst\.map/);
   assert.match(indexSource, /getCalibratedLayerGeometry\(key,\{x:0,y:0,w:MINI_W,h:MINI_H,r:0\}\)/);
   assert.match(indexSource, /MINI_RACK_CENTER_X - geometry\.rowWidth \/ 2/);
+  assert.match(indexSource, /geometry\.offsets\[i\]/);
+  assert.match(indexSource, /medalRowGeometry\[index\]\.suspensionHeight/);
+  assert.match(indexSource, /mimg\.style\.objectFit='fill'/);
+});
+
+test('military medals allow independent width and height stretching', () => {
+  assert.match(indexSource, /image\.style\.objectFit='fill'/);
+  assert.match(indexSource, /w:geometry\.entries\[column\]\.size\.w,h:geometry\.entries\[column\]\.size\.h/);
+  assert.match(indexSource, /function buildVariableMedalRowGeometry\(entries/);
 });
 
 test('standalone military calibration is isolated by service component and representation', () => {
@@ -81,4 +90,13 @@ test('calibration issue 137 applies only to the male Class A bucket', () => {
   assert.match(indexSource, /migrateApprovedCalibrationIssues\(\);/);
   assert.match(indexSource, /CAPUB_ISSUE_137_MIGRATION_KEY/);
   assert.match(indexSource, /forceIssue137 \|\| calibrationRecordMatches/);
+});
+
+test('master calibration issue 143 preserves partial records across its uniform buckets', () => {
+  assert.match(indexSource, /const CAPUB_ISSUE_143_CALIBRATION_OVERRIDES = Object\.freeze/);
+  assert.match(indexSource, /'badge:cadet_programs_master_badge:FON:0': Object\.freeze\(\{x:136,y:160\.3\}\)/);
+  assert.match(indexSource, /'badge:master_emergency_services_badge:LP:0': Object\.freeze\(\{x:283\.4,y:248,w:20,h:20,r:0\}\)/);
+  assert.match(indexSource, /'patch:national_staff_ocp_patch:L_SHOULDER:0': Object\.freeze\(\{x:834\.5,y:251,w:55,h:55,r:0\}\)/);
+  assert.match(indexSource, /CAPUB_ISSUE_143_MIGRATION_KEY/);
+  assert.match(indexSource, /State\.calib\.byUniform\[uniformId\]\[key\] = \{/);
 });
