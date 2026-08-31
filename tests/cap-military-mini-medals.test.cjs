@@ -24,8 +24,21 @@ test('standalone military full-size and miniature medals are independently calib
   assert.match(indexSource, /function getMilitaryMedalCalibrationKey\(context,awardId\)/);
   assert.match(indexSource, /\? `medal:military:\$\{normalizedId\}`/);
   assert.match(indexSource, /: `mini:military:\$\{normalizedId\}`/);
-  assert.match(indexSource, /image\.dataset\.calibKey=getMilitaryMedalCalibrationKey\(context,entry\.award\.id\)/);
+  assert.match(indexSource, /const key=getMilitaryMedalCalibrationKey\(context,entry\.award\.id\)/);
+  assert.match(indexSource, /image\.dataset\.calibKey=geometry\.entries\[column\]\.key/);
   assert.match(indexSource, /applyCalibToElement\(image,image\.dataset\.calibKey/);
+});
+
+test('standalone military miniature medals preserve the repository 50 by 176 geometry', () => {
+  assert.match(indexSource, /MINIATURE_MEDAL:Object\.freeze\(\{width:50,height:176,overlap:22\}\)/);
+  assert.doesNotMatch(indexSource, /const medalHeight=context==='FULL_SIZE_MEDAL'\?120:88/);
+  assert.match(indexSource, /getCalibratedLayerGeometry\(key,\{x:0,y:0,w:medalWidth,h:medalHeight,r:0\}\)/);
+});
+
+test('CAP miniature medal rack centers rows using saved calibrated widths', () => {
+  assert.match(indexSource, /const medalRowGeometry = medalRowsTopFirst\.map/);
+  assert.match(indexSource, /getCalibratedLayerGeometry\(key,\{x:0,y:0,w:MINI_W,h:MINI_H,r:0\}\)/);
+  assert.match(indexSource, /MINI_RACK_CENTER_X - geometry\.rowWidth \/ 2/);
 });
 
 test('standalone military calibration is isolated by service component and representation', () => {
