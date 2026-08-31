@@ -17,6 +17,7 @@
     "build:mcchord-style-ribbons": "python scripts/build_mcchord_style_military_ribbons.py",
     "build:military-device-assets": "python scripts/build_military_device_assets.py",
     "build:military-device-variants": "node scripts/build-military-device-variant-manifest.cjs",
+    "build:air-force-ribbon-device-assets": "python scripts/build_air_force_ribbon_device_variants.py",
     "apply:military-overrides": "node scripts/apply-military-overrides.cjs",
     "smoke:military-ui": "node scripts/smoke-military-ui.cjs",
     "check:inline-syntax": "node scripts/check-inline-syntax.cjs"
