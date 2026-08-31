@@ -11870,9 +11870,24 @@ async function composeUniformPngCanvas(source, outputScale = 2){
     if(style.display === 'none' || style.visibility === 'hidden') continue;
     const x = parseFloat(el.style.left || style.left) || 0;
     const y = parseFloat(el.style.top || style.top) || 0;
-    const w = parseFloat(el.style.width || style.width) || el.offsetWidth || 0;
-    const h = parseFloat(el.style.height || style.height) || el.offsetHeight || 0;
-    if(w <= 0 || h <= 0) continue;
+    const cssW = parseFloat(el.style.width || style.width) || el.offsetWidth || 0;
+    const cssH = parseFloat(el.style.height || style.height) || el.offsetHeight || 0;
+    const borderLeft = parseFloat(style.borderLeftWidth) || 0;
+    const borderRight = parseFloat(style.borderRightWidth) || 0;
+    const borderTop = parseFloat(style.borderTopWidth) || 0;
+    const borderBottom = parseFloat(style.borderBottomWidth) || 0;
+    const paddingLeft = parseFloat(style.paddingLeft) || 0;
+    const paddingRight = parseFloat(style.paddingRight) || 0;
+    const paddingTop = parseFloat(style.paddingTop) || 0;
+    const paddingBottom = parseFloat(style.paddingBottom) || 0;
+    const contentBox = style.boxSizing !== 'border-box';
+    const horizontalChrome = borderLeft + borderRight + paddingLeft + paddingRight;
+    const verticalChrome = borderTop + borderBottom + paddingTop + paddingBottom;
+    const outerW = contentBox ? cssW + horizontalChrome : cssW;
+    const outerH = contentBox ? cssH + verticalChrome : cssH;
+    const contentW = contentBox ? cssW : Math.max(0, cssW - horizontalChrome);
+    const contentH = contentBox ? cssH : Math.max(0, cssH - verticalChrome);
+    if(outerW <= 0 || outerH <= 0 || contentW <= 0 || contentH <= 0) continue;
 
     let rotation = 0;
     if(style.transform && style.transform !== 'none'){
@@ -11887,38 +11902,63 @@ async function composeUniformPngCanvas(source, outputScale = 2){
 
     ctx.save();
     ctx.globalAlpha = Number.parseFloat(style.opacity) || 1;
-    ctx.translate(x + w/2, y + h/2);
+    // CSS left/top identifies the outer border-box origin. Preserve that box
+    // exactly so bordered badges do not shift when the DOM preview is painted
+    // into the downloaded PNG.
+    ctx.translate(x + outerW/2, y + outerH/2);
     ctx.rotate(rotation);
-    applyCssPolygonClipToCanvas(ctx, style.clipPath || style.webkitClipPath, w, h);
+    applyCssPolygonClipToCanvas(ctx, style.clipPath || style.webkitClipPath, outerW, outerH);
+
+    const outerLeft = -outerW/2;
+    const outerTop = -outerH/2;
+    const contentLeft = outerLeft + borderLeft + paddingLeft;
+    const contentTop = outerTop + borderTop + paddingTop;
+    const contentCenterX = contentLeft + contentW/2;
+    const contentCenterY = contentTop + contentH/2;
+
+    if(style.backgroundColor && style.backgroundColor !== 'rgba(0, 0, 0, 0)'){
+      ctx.fillStyle = style.backgroundColor;
+      ctx.fillRect(outerLeft, outerTop, outerW, outerH);
+    }
 
     if(el instanceof HTMLImageElement && el.naturalWidth && el.naturalHeight){
       if(style.objectFit === 'contain'){
-        const ratio = Math.min(w / el.naturalWidth, h / el.naturalHeight);
+        const ratio = Math.min(contentW / el.naturalWidth, contentH / el.naturalHeight);
         const drawW = el.naturalWidth * ratio;
         const drawH = el.naturalHeight * ratio;
-        ctx.drawImage(el, -drawW/2, -drawH/2, drawW, drawH);
+        ctx.drawImage(el, contentCenterX - drawW/2, contentCenterY - drawH/2, drawW, drawH);
       }else{
-        ctx.drawImage(el, -w/2, -h/2, w, h);
+        ctx.drawImage(el, contentLeft, contentTop, contentW, contentH);
       }
     }else{
-      if(style.backgroundColor && style.backgroundColor !== 'rgba(0, 0, 0, 0)'){
-        ctx.fillStyle = style.backgroundColor;
-        ctx.fillRect(-w/2, -h/2, w, h);
-      }
-      const borderWidth = parseFloat(style.borderTopWidth) || 0;
-      if(borderWidth && style.borderTopColor){
-        ctx.strokeStyle = style.borderTopColor;
-        ctx.lineWidth = borderWidth;
-        ctx.strokeRect(-w/2, -h/2, w, h);
-      }
       const label = String(el.innerText || el.textContent || '').trim();
       if(label){
         ctx.fillStyle = style.color || '#000000';
         ctx.font = `${style.fontWeight || '400'} ${style.fontSize || '12px'} ${style.fontFamily || 'Arial'}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(label, 0, 0, Math.max(1, w - 4));
+        ctx.fillText(label, contentCenterX, contentCenterY, Math.max(1, contentW - 4));
       }
+    }
+
+    // Paint each border edge separately. Besides matching asymmetric borders,
+    // this keeps the badge artwork centered inside the same content area used
+    // by the live browser preview.
+    if(borderTop && style.borderTopStyle !== 'none'){
+      ctx.fillStyle = style.borderTopColor;
+      ctx.fillRect(outerLeft, outerTop, outerW, borderTop);
+    }
+    if(borderBottom && style.borderBottomStyle !== 'none'){
+      ctx.fillStyle = style.borderBottomColor;
+      ctx.fillRect(outerLeft, outerTop + outerH - borderBottom, outerW, borderBottom);
+    }
+    if(borderLeft && style.borderLeftStyle !== 'none'){
+      ctx.fillStyle = style.borderLeftColor;
+      ctx.fillRect(outerLeft, outerTop, borderLeft, outerH);
+    }
+    if(borderRight && style.borderRightStyle !== 'none'){
+      ctx.fillStyle = style.borderRightColor;
+      ctx.fillRect(outerLeft + outerW - borderRight, outerTop, borderRight, outerH);
     }
     ctx.restore();
   }
@@ -16252,11 +16292,16 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       // intentionally outside the occupational/qualification badge array.
       commandBadges.forEach(img => {
         const size = capubUtilityBadgeSize(img);
-        img.style.left = `${Math.round(nameTape.centerX - size.w / 2)}px`;
-        img.style.top = `${Math.round(nameTape.topY - halfInch - size.h)}px`;
-        img.style.width = `${size.w}px`;
-        img.style.height = `${size.h}px`;
-        img.style.transform = 'rotate(0deg)';
+        const saved = typeof getCalib === 'function' ? getCalib(img.dataset.calibKey) : null;
+        const x = Number.isFinite(Number(saved?.x)) ? Number(saved.x) : nameTape.centerX - size.w / 2;
+        const y = Number.isFinite(Number(saved?.y)) ? Number(saved.y) : nameTape.topY - halfInch - size.h;
+        const w = Math.min(Number(saved?.w) || size.w, size.w);
+        const h = Math.min(Number(saved?.h) || size.h, size.h);
+        img.style.left = `${x}px`;
+        img.style.top = `${y}px`;
+        img.style.width = `${w}px`;
+        img.style.height = `${h}px`;
+        img.style.transform = `rotate(${Number(saved?.r || 0)}deg)`;
       });
 
       if(!badges.length) return;
@@ -16318,12 +16363,12 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const size = sizes[i];
         const saved = typeof getCalib === 'function' ? getCalib(img.dataset.calibKey) : null;
         const placement = saved;
-        img.style.left = `${Math.round(placement?.x ?? positions[i].x)}px`;
-        img.style.top = `${Math.round(placement?.y ?? positions[i].y)}px`;
+        img.style.left = `${Number(placement?.x ?? positions[i].x)}px`;
+        img.style.top = `${Number(placement?.y ?? positions[i].y)}px`;
         // Preserve calibrated position, but cap stale saved dimensions at the
         // current regulation-scaled size so old 44-px/in data cannot double badges.
-        img.style.width = `${Math.round(Math.min(Number(placement?.w) || size.w, size.w))}px`;
-        img.style.height = `${Math.round(Math.min(Number(placement?.h) || size.h, size.h))}px`;
+        img.style.width = `${Math.min(Number(placement?.w) || size.w, size.w)}px`;
+        img.style.height = `${Math.min(Number(placement?.h) || size.h, size.h)}px`;
         img.style.transform = `rotate(${Number(placement?.r || 0)}deg)`;
       });
     }
