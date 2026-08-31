@@ -1923,6 +1923,7 @@ function getRackOrigin(){
 const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260805_female_class_a_capt_1785908806912';
 const CAPUB_LEGACY_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform';
 const CAPUB_ISSUE_137_MIGRATION_KEY = 'capub_calibration_issue_137_applied_v2';
+const CAPUB_ISSUE_143_MIGRATION_KEY = 'capub_calibration_issue_143_applied_v1';
 function genderBucketFor(uniform, gender){
   const u = uniform || 'global';
   const g = gender || '';
@@ -3205,6 +3206,58 @@ const CAPUB_SUPERSEDED_APPROVED_CALIBRATIONS = Object.freeze({
   }
 })();
 
+/* CAPUB APPROVED MASTER CALIBRATION ISSUE #143
+   Twenty-two item records submitted together from four calibrated uniform
+   sessions. Records are intentionally partial: omitted dimensions inherit the
+   established bucket defaults while the submitted fields take final priority. */
+const CAPUB_ISSUE_143_CALIBRATION_OVERRIDES = Object.freeze({
+  blues_a_female: Object.freeze({
+    'badge:cadet_programs_master_badge:FON:0': Object.freeze({x:136,y:160.3})
+  }),
+  blues_a_male: Object.freeze({
+    'base:jacket': Object.freeze({x:0,y:0,w:450,h:600,r:0}),
+    'badge:group_commander_badge:UN:0': Object.freeze({x:140.8,y:227.1,w:20,h:20,r:0}),
+    'badge:group_commander_badge:ON:0': Object.freeze({x:140.5,y:177.1,w:20,h:20,r:0}),
+    'badge:master_emergency_services_badge:LP:0': Object.freeze({x:283.4,y:248,w:20,h:20,r:0})
+  }),
+  semi_formal_male: Object.freeze({
+    'badge:national_staff_badge:RP:0': Object.freeze({x:288,y:140})
+  }),
+  aviator_male: Object.freeze({
+    'badge:squadron_commander_badge:UN:0': Object.freeze({x:159.6,y:216.3}),
+    'badge:national_staff_badge:RP:0': Object.freeze({x:146.6,y:256}),
+    'badge:master_emergency_services_badge:LP:0': Object.freeze({x:281.3,y:256,w:25,h:25,r:0})
+  }),
+  ocp_male: Object.freeze({
+    'patchRegV2:tn185_ocp_patch:R_SHOULDER:0': Object.freeze({x:80.9,y:210.6}),
+    'patch:national_staff_ocp_patch:L_SHOULDER:0': Object.freeze({x:834.4,y:250.6,w:55,h:55,r:0}),
+    'utilityBadgeRegV5:AirCrew1_DB3F0FCC3650F:0': Object.freeze({x:540,y:87.1}),
+    'utilityBadgeRegV5:basic_incident_commander_badge:1': Object.freeze({x:536.6,y:130}),
+    'utilityBadgeRegV5:master_ground_team_badge:2': Object.freeze({x:584,y:127.3}),
+    'utilityBadgeRegV5:squadron_commander_badge:3': Object.freeze({x:386.3,y:118.2})
+  }),
+  ocp_female: Object.freeze({
+    'patchRegV2:tn185_ocp_patch:R_SHOULDER:0': Object.freeze({x:82.3,y:210.6}),
+    'patch:national_staff_ocp_patch:L_SHOULDER:0': Object.freeze({x:834.5,y:251,w:55,h:55,r:0}),
+    'utilityBadgeRegV5:squadron_commander_badge:3': Object.freeze({x:385.7,y:120.7}),
+    'utilityBadgeRegV5:basic_incident_commander_badge:1': Object.freeze({x:538.5,y:129.5}),
+    'utilityBadgeRegV5:AirCrew1_DB3F0FCC3650F:0': Object.freeze({x:540.6,y:88.1}),
+    'base:jacket': Object.freeze({x:0,y:0}),
+    'utilityBadgeRegV5:master_ground_team_badge:2': Object.freeze({x:584.5,y:126.5})
+  })
+});
+(function capubApplyIssue143CalibrationOverrides(){
+  for(const [bucketId, items] of Object.entries(CAPUB_ISSUE_143_CALIBRATION_OVERRIDES)){
+    if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
+    for(const [key, coords] of Object.entries(items)){
+      DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = {
+        ...(DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] || {}),
+        ...coords
+      };
+    }
+  }
+})();
+
 /* CAPUB COORDINATE UPDATE 2026-08-05
    Female Senior Member Class A blues (Captain base image), imported from
    CAPUB_coordinates_1785908806912.json. This gender-specific correction is
@@ -3623,6 +3676,24 @@ function migrateApprovedCalibrationIssues(){
   }
   if(forceIssue137){
     try{ localStorage.setItem(CAPUB_ISSUE_137_MIGRATION_KEY,'1'); }catch(_){}
+  }
+
+  // Issue #143 is an explicit master-calibration submission. Apply each
+  // selected field once to existing browser storage, retaining dimensions the
+  // submission intentionally omitted and leaving all unrelated keys intact.
+  let applyIssue143=false;
+  try{ applyIssue143=localStorage.getItem(CAPUB_ISSUE_143_MIGRATION_KEY)!=='1'; }catch(_){ applyIssue143=true; }
+  if(applyIssue143){
+    for(const [uniformId, items] of Object.entries(CAPUB_ISSUE_143_CALIBRATION_OVERRIDES)){
+      State.calib.byUniform[uniformId] ||= {};
+      for(const [key, coords] of Object.entries(items)){
+        State.calib.byUniform[uniformId][key] = {
+          ...(State.calib.byUniform[uniformId][key] || {}),
+          ...coords
+        };
+      }
+    }
+    try{ localStorage.setItem(CAPUB_ISSUE_143_MIGRATION_KEY,'1'); }catch(_){}
   }
 }
 
@@ -8083,31 +8154,39 @@ function renderRack(){
       const key=`mini:${entry.id}`;
       return {entry,key,size:getCalibratedLayerGeometry(key,{x:0,y:0,w:MINI_W,h:MINI_H,r:0})};
     });
-    const slotWidth=Math.max(MINI_W,...entries.map(item=>item.size.w));
-    const horizontalStep=miniMountStyle === 'holding' && row.length > 4
-      ? Math.max(slotWidth * 0.5, ((slotWidth * 4) - slotWidth) / (row.length - 1))
-      : slotWidth;
-    return {
-      entries,
-      horizontalStep,
-      rowWidth:slotWidth + Math.max(0,row.length - 1) * horizontalStep
-    };
+    return buildVariableMedalRowGeometry(entries,{
+      holding:miniMountStyle === 'holding',
+      suspensionRatio:(116/176)
+    });
   });
+
+  // Work upward from the calibrated bottom row. Mixed CAP/military rows now
+  // derive vertical overlap from their actual calibrated heights rather than
+  // assuming every image retained the original McChord dimensions.
+  const medalRowTops=Array(totalMedalRows).fill(BOTTOM_ROW_Y_MEDALS);
+  for(let index=totalMedalRows-2;index>=0;index--){
+    const dynamicStep=Math.max(
+      medalRowGeometry[index].suspensionHeight,
+      medalRowGeometry[index+1].suspensionHeight
+    )*.5;
+    const rowStep=miniLayout.rowStepY ?? dynamicStep ?? MEDAL_STEP_Y;
+    medalRowTops[index]=medalRowTops[index+1]-rowStep;
+  }
 
   medalRowsTopFirst.forEach((row,topIndex)=>{
     const indexFromBottom = (totalMedalRows - 1 - topIndex);
-    const rowTopPx = BOTTOM_ROW_Y_MEDALS - indexFromBottom * MEDAL_STEP_Y;
+    const rowTopPx = medalRowTops[topIndex];
     // Holding bars keep a four-medal exposed span. Rows of five through seven
     // overlap equally, never exceeding CAPR 39-1's 50-percent limit.
     const geometry=medalRowGeometry[topIndex];
     const rowLeft = MINI_RACK_CENTER_X - geometry.rowWidth / 2;
-    const leftPositions = row.map((_,i) => rowLeft + i * geometry.horizontalStep);
+    const leftPositions = row.map((_,i) => rowLeft + geometry.offsets[i]);
 
     row.forEach((entry,i)=>{
       const mimg=document.createElement('img');
       mimg.className='layer ribbonMini';
       mimg.style.display='block';
-      mimg.style.objectFit='contain';
+      mimg.style.objectFit='fill';
       // Upper rows cover the ribbon portion of lower rows, so they render in
       // front. Within a row, the higher-precedence (left) medal stays on top.
       mimg.style.zIndex=String(300 + indexFromBottom * 20 + (row.length - i));
@@ -8116,7 +8195,9 @@ function renderRack(){
       const topPx =rowTopPx;
 
       mimg.dataset.calibKey = geometry.entries[i].key;
-      applyCalibToElement(mimg, mimg.dataset.calibKey, { x:leftPx, y:topPx, w:MINI_W, h:MINI_H, r:0 });
+      applyCalibToElement(mimg, mimg.dataset.calibKey, {
+        x:leftPx,y:topPx,w:geometry.entries[i].size.w,h:geometry.entries[i].size.h,r:0
+      });
 
       const fallbackPath = miniMedalImages[normalizeRibbonId(entry.id)] || miniMedalImages[entry.id];
       capubInstallImageFallback(mimg, [entry.path, fallbackPath]);
@@ -11080,6 +11161,34 @@ const MILITARY_MEDAL_DEFAULT_GEOMETRY=Object.freeze({
   FULL_SIZE_MEDAL:Object.freeze({width:60,height:132,overlap:26})
 });
 
+function buildVariableMedalRowGeometry(entries,{holding=false,overlapPixels=0,suspensionRatio=(116/176)}={}){
+  const widths=entries.map(item=>Math.max(.01,Number(item.size.w) || 1));
+  const heights=entries.map(item=>Math.max(.01,Number(item.size.h) || 1));
+  const offsets=[];
+  let cursor=0;
+  for(let index=0;index<entries.length;index++){
+    offsets.push(cursor);
+    if(index===entries.length-1) continue;
+    let overlap=0;
+    if(holding && entries.length>4){
+      const naturalWidth=widths.reduce((sum,width)=>sum+width,0);
+      const targetWidth=Math.max(...widths)*4;
+      const desired=Math.max(0,(naturalWidth-targetWidth)/(entries.length-1));
+      overlap=Math.min(desired,Math.min(widths[index],widths[index+1])*.5);
+    }else if(overlapPixels>0){
+      overlap=Math.min(overlapPixels,Math.min(widths[index],widths[index+1])*.5);
+    }
+    cursor+=widths[index]-overlap;
+  }
+  return {
+    entries,
+    offsets,
+    rowWidth:(offsets.at(-1) || 0)+(widths.at(-1) || 0),
+    slotHeight:Math.max(1,...heights),
+    suspensionHeight:Math.max(1,...heights.map(height=>height*suspensionRatio))
+  };
+}
+
 function getCalibratedLayerGeometry(key,base){
   const saved=getCalib(key) || {};
   return {
@@ -11182,10 +11291,10 @@ function renderMilitaryPreview(){
         const key=getMilitaryMedalCalibrationKey(context,entry.award.id);
         return {entry,key,size:getCalibratedLayerGeometry(key,{x:0,y:0,w:medalWidth,h:medalHeight,r:0})};
       });
-      const slotWidth=Math.max(medalWidth,...entries.map(item=>item.size.w));
-      const slotHeight=Math.max(medalHeight,...entries.map(item=>item.size.h));
-      const slotStep=Math.max(slotWidth*.5,slotWidth-overlap);
-      return {entries,slotWidth,slotHeight,slotStep,rowWidth:slotWidth+Math.max(0,entries.length-1)*slotStep};
+      return buildVariableMedalRowGeometry(entries,{
+        overlapPixels:overlap,
+        suspensionRatio:context==='FULL_SIZE_MEDAL' ? (132/220) : (116/176)
+      });
     });
     const rowSteps=rowGeometry.map(row=>row.slotHeight*.56);
     rows.forEach((row,rowIndex)=>{
@@ -11200,12 +11309,12 @@ function renderMilitaryPreview(){
         // exactly the same path as CAP medal artwork.
         image.dataset.calibKey=geometry.entries[column].key;
         image.style.display='block';
-        image.style.objectFit='contain';
+        image.style.objectFit='fill';
         image.style.zIndex=String(100+column);
         applyCalibToElement(image,image.dataset.calibKey,{
-          x:MILITARY_LEFT_CHEST_CENTER_X-geometry.rowWidth/2+column*geometry.slotStep,
+          x:MILITARY_LEFT_CHEST_CENTER_X-geometry.rowWidth/2+geometry.offsets[column],
           y:startY+rowOffsetY,
-          w:medalWidth,h:medalHeight,r:0
+          w:geometry.entries[column].size.w,h:geometry.entries[column].size.h,r:0
         });
         uniformCanvas.appendChild(image);
         const awardCount=State.militaryAwards[entry.award.id]?.awardCount || 1;
