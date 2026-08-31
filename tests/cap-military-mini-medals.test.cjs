@@ -45,4 +45,7 @@ test('CAP uniform ribbon and medal UI exposes working basic and maximum bulk con
 test('calibration issue 137 applies only to the male Class A bucket', () => {
   assert.match(indexSource, /'badge:master_emergency_services_badge:LP:0': Object\.freeze\(\{x:280\.7,y:249\.5,w:25,h:25,r:0\}\)/);
   assert.match(indexSource, /'badge:volunteer_university_instructor_badge:RP:0': Object\.freeze\(\{x:130\.4,y:248,w:40,h:40,r:0\}\)/);
+  assert.match(indexSource, /function migrateApprovedCalibrationIssues\(\)/);
+  assert.match(indexSource, /calibrationRecordMatches\(savedBucket\[key\], legacyRecord\)/);
+  assert.match(indexSource, /migrateApprovedCalibrationIssues\(\);/);
 });

@@ -3082,6 +3082,13 @@ const CAPUB_APPROVED_CALIBRATION_OVERRIDES = Object.freeze({
     'badge:volunteer_university_instructor_badge:RP:0': Object.freeze({x:130.4,y:248,w:40,h:40,r:0})
   })
 });
+const CAPUB_SUPERSEDED_APPROVED_CALIBRATIONS = Object.freeze({
+  blues_a_male: Object.freeze({
+    // Values saved by builders before calibration issue #137 was approved.
+    'badge:master_emergency_services_badge:LP:0': Object.freeze({x:280,y:269,w:28,h:28,r:0}),
+    'badge:volunteer_university_instructor_badge:RP:0': Object.freeze({x:125,y:268,w:45,h:45,r:0})
+  })
+});
 (function capubApplyApprovedCalibrationOverrides(){
   for(const [bucketId, items] of Object.entries(CAPUB_APPROVED_CALIBRATION_OVERRIDES)){
     if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
@@ -3453,6 +3460,7 @@ function countBadgesForLimit(ids = State.badges){
 function mergeCalibDefaults(){
   if(!State.calib.byUniform) State.calib.byUniform = {};
   migrateLegacyClassACalibration();
+  migrateApprovedCalibrationIssues();
   for(const [uniformId, bucket] of Object.entries(DEFAULT_CALIBRATION_BY_UNIFORM)){
     if(!State.calib.byUniform[uniformId]) State.calib.byUniform[uniformId] = {};
     for(const [key, value] of Object.entries(bucket)){
@@ -3485,6 +3493,23 @@ function migrateLegacyClassACalibration(){
   for(const [key, legacy] of Object.entries(legacyRecords)){
     if(calibrationRecordMatches(bucket[key], legacy) && defaults[key]){
       bucket[key] = { ...defaults[key] };
+    }
+  }
+}
+
+function migrateApprovedCalibrationIssues(){
+  // A calibration submission becomes a new canonical default, but existing
+  // browsers may still have the superseded default persisted in localStorage.
+  // Replace only the exact old records so later user-made calibrations remain
+  // untouched.
+  for(const [uniformId, legacyItems] of Object.entries(CAPUB_SUPERSEDED_APPROVED_CALIBRATIONS)){
+    const savedBucket = State.calib.byUniform?.[uniformId];
+    const approvedBucket = CAPUB_APPROVED_CALIBRATION_OVERRIDES?.[uniformId];
+    if(!savedBucket || !approvedBucket) continue;
+    for(const [key, legacyRecord] of Object.entries(legacyItems)){
+      if(calibrationRecordMatches(savedBucket[key], legacyRecord) && approvedBucket[key]){
+        savedBucket[key] = { ...approvedBucket[key] };
+      }
     }
   }
 }
