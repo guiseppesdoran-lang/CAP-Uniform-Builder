@@ -20,6 +20,11 @@ test('military miniature medal calibration survives rerendering', () => {
   assert.doesNotMatch(indexSource, /startsWith\('ribbon:'\) \|\| String\(key \|\| ''\)\.startsWith\('mini:'\)/);
 });
 
+test('standalone military full-size and miniature medals are independently calibratable', () => {
+  assert.match(indexSource, /image\.dataset\.calibKey=`militaryMedal:\$\{State\.organization\}:\$\{context\}:\$\{entry\.award\.id\}`/);
+  assert.match(indexSource, /applyCalibToElement\(image,image\.dataset\.calibKey/);
+});
+
 test('calibrator stays within the visible viewport', () => {
   assert.match(indexSource, /width:min\(360px,calc\(100vw - 42px\)\)/);
   assert.match(indexSource, /grid-template-columns:minmax\(0,1fr\) 68px/);
@@ -48,4 +53,6 @@ test('calibration issue 137 applies only to the male Class A bucket', () => {
   assert.match(indexSource, /function migrateApprovedCalibrationIssues\(\)/);
   assert.match(indexSource, /calibrationRecordMatches\(savedBucket\[key\], legacyRecord\)/);
   assert.match(indexSource, /migrateApprovedCalibrationIssues\(\);/);
+  assert.match(indexSource, /CAPUB_ISSUE_137_MIGRATION_KEY/);
+  assert.match(indexSource, /forceIssue137 \|\| calibrationRecordMatches/);
 });
