@@ -8052,18 +8052,30 @@ function renderRack(){
   const totalMedalRows = medalRowsTopFirst.length;
   const BOTTOM_ROW_Y_MEDALS = miniLayout.bottomY ?? (BOTTOM_ROW_Y + 20);
   const MINI_RACK_CENTER_X = miniLayout.centerX ?? RACK_CENTER_X;
+  const medalRowGeometry = medalRowsTopFirst.map(row=>{
+    const entries=row.map(entry=>{
+      const key=`mini:${entry.id}`;
+      return {entry,key,size:getCalibratedLayerGeometry(key,{x:0,y:0,w:MINI_W,h:MINI_H,r:0})};
+    });
+    const slotWidth=Math.max(MINI_W,...entries.map(item=>item.size.w));
+    const horizontalStep=miniMountStyle === 'holding' && row.length > 4
+      ? Math.max(slotWidth * 0.5, ((slotWidth * 4) - slotWidth) / (row.length - 1))
+      : slotWidth;
+    return {
+      entries,
+      horizontalStep,
+      rowWidth:slotWidth + Math.max(0,row.length - 1) * horizontalStep
+    };
+  });
 
   medalRowsTopFirst.forEach((row,topIndex)=>{
     const indexFromBottom = (totalMedalRows - 1 - topIndex);
     const rowTopPx = BOTTOM_ROW_Y_MEDALS - indexFromBottom * MEDAL_STEP_Y;
     // Holding bars keep a four-medal exposed span. Rows of five through seven
     // overlap equally, never exceeding CAPR 39-1's 50-percent limit.
-    const horizontalStep = miniMountStyle === 'holding' && row.length > 4
-      ? Math.max(MINI_W * 0.5, ((MINI_W * 4) - MINI_W) / (row.length - 1))
-      : MINI_W;
-    const rowWidth = MINI_W + Math.max(0, row.length - 1) * horizontalStep;
-    const rowLeft = MINI_RACK_CENTER_X - rowWidth / 2;
-    const leftPositions = row.map((_,i) => rowLeft + i * horizontalStep);
+    const geometry=medalRowGeometry[topIndex];
+    const rowLeft = MINI_RACK_CENTER_X - geometry.rowWidth / 2;
+    const leftPositions = row.map((_,i) => rowLeft + i * geometry.horizontalStep);
 
     row.forEach((entry,i)=>{
       const mimg=document.createElement('img');
@@ -8077,7 +8089,7 @@ function renderRack(){
       const leftPx=leftPositions[i];
       const topPx =rowTopPx;
 
-      mimg.dataset.calibKey = `mini:${entry.id}`;
+      mimg.dataset.calibKey = geometry.entries[i].key;
       applyCalibToElement(mimg, mimg.dataset.calibKey, { x:leftPx, y:topPx, w:MINI_W, h:MINI_H, r:0 });
 
       const fallbackPath = miniMedalImages[normalizeRibbonId(entry.id)] || miniMedalImages[entry.id];
@@ -8551,6 +8563,31 @@ function getRibbonSelectionOption(id, value){
     if(value === 'region_bronze_star_bronze_clasp_1') return labelMatch(/^2nd Award \(Region Cmdr\)$/i) || usable[0];
     if(value === 'national_silver_star_bronze_clasp_1') return labelMatch(/^2nd Award \(National Cmdr\)$/i) || usable[0];
     if(value === 'national_silver_star_bronze_clasp_2') return labelMatch(/^3rd Award \(National Cmdr\)$/i) || usable[0];
+  }
+
+  // The member-report importer and older saved setups use descriptive values
+  // for the two competition ribbons, while the complete McChord catalog uses
+  // mcchord_* identifiers. Match by the visible star pattern so every saved
+  // level survives reopening the selector instead of falling back to Basic.
+  if(id === 'national_cadet_competition_ribbon' || id === 'national_color_guard_competition_ribbon'){
+    const competitionPatterns = {
+      region_bronze_star: /^Bronze Star$/i,
+      national_silver_star: /^Silver Star$/i,
+      two_bronze_stars: /^B-B Stars$/i,
+      silver_star_bronze_star: /^S-B Stars$/i,
+      two_silver_stars: /^S-S Stars$/i,
+      three_bronze_stars: /^B-B-B Stars$/i,
+      silver_star_two_bronze_stars: /^S-B-B Stars$/i,
+      two_silver_stars_bronze_star: /^S-S-B Stars$/i,
+      three_silver_stars: /^S-S-S Stars$/i,
+      four_bronze_stars: /^B-B-B-B Stars$/i,
+      silver_star_three_bronze_stars: /^S-B-B-B Stars$/i,
+      two_silver_stars_two_bronze_stars: /^S-S-B-B Stars$/i,
+      three_silver_stars_bronze_star: /^S-S-S-B Stars$/i,
+      four_silver_stars: /^S-S-S-S Stars$/i
+    };
+    const found = competitionPatterns[value] ? labelMatch(competitionPatterns[value]) : null;
+    if(found) return found;
   }
 
   const semantic = String(value || '');
@@ -11007,6 +11044,26 @@ function applyMilitaryPreviewArea(){
 
 const MILITARY_LEFT_CHEST_CENTER_X=285;
 
+// Repository-native McChord medal canvases.  The former 50x88 miniature box
+// cropped/squashed a 50x176 asset and made calibrator width/height changes look
+// ineffective.  Keep these ratios identical to data/military/asset-profiles.json
+// and to CAP miniature-medal rendering.
+const MILITARY_MEDAL_DEFAULT_GEOMETRY=Object.freeze({
+  MINIATURE_MEDAL:Object.freeze({width:50,height:176,overlap:22}),
+  FULL_SIZE_MEDAL:Object.freeze({width:60,height:132,overlap:26})
+});
+
+function getCalibratedLayerGeometry(key,base){
+  const saved=getCalib(key) || {};
+  return {
+    x:saved.x!==undefined ? normalizeCalibNumber(saved.x,base.x || 0) : base.x,
+    y:saved.y!==undefined ? normalizeCalibNumber(saved.y,base.y || 0) : base.y,
+    w:saved.w!==undefined ? Math.max(.01,normalizeCalibNumber(saved.w,base.w || 1)) : base.w,
+    h:saved.h!==undefined ? Math.max(.01,normalizeCalibNumber(saved.h,base.h || 1)) : base.h,
+    r:saved.r!==undefined ? normalizeCalibNumber(saved.r,base.r || 0) : (base.r || 0)
+  };
+}
+
 function getMilitaryMedalCalibrationKey(context,awardId){
   const normalizedId=String(awardId || '').replace(/^military:/,'');
   return context==='FULL_SIZE_MEDAL'
@@ -11083,18 +11140,30 @@ function renderMilitaryPreview(){
       .filter(entry=>entry.representation?.available && entry.representation.asset);
     const missing=items.length-available.length;
     const perRow={ARMY:4,MARINE_CORPS:5,NAVY:5,AIR_FORCE:4,SPACE_FORCE:4,COAST_GUARD:5}[State.organization] || 4;
-    const medalWidth=context==='FULL_SIZE_MEDAL'?60:50;
-    const medalHeight=context==='FULL_SIZE_MEDAL'?120:88;
-    const overlap=context==='FULL_SIZE_MEDAL'?26:22;
-    const step=medalWidth-overlap;
+    const defaultGeometry=MILITARY_MEDAL_DEFAULT_GEOMETRY[context];
+    const medalWidth=defaultGeometry.width;
+    const medalHeight=defaultGeometry.height;
+    const overlap=defaultGeometry.overlap;
     const rows=[];
     const remainder=available.length%perRow;
     let cursor=0;
     if(remainder){ rows.push(available.slice(0,remainder)); cursor=remainder; }
     for(;cursor<available.length;cursor+=perRow) rows.push(available.slice(cursor,cursor+perRow));
     const startY=context==='FULL_SIZE_MEDAL'?165:185;
+    const rowGeometry=rows.map(row=>{
+      const entries=row.map(entry=>{
+        const key=getMilitaryMedalCalibrationKey(context,entry.award.id);
+        return {entry,key,size:getCalibratedLayerGeometry(key,{x:0,y:0,w:medalWidth,h:medalHeight,r:0})};
+      });
+      const slotWidth=Math.max(medalWidth,...entries.map(item=>item.size.w));
+      const slotHeight=Math.max(medalHeight,...entries.map(item=>item.size.h));
+      const slotStep=Math.max(slotWidth*.5,slotWidth-overlap);
+      return {entries,slotWidth,slotHeight,slotStep,rowWidth:slotWidth+Math.max(0,entries.length-1)*slotStep};
+    });
+    const rowSteps=rowGeometry.map(row=>row.slotHeight*.56);
     rows.forEach((row,rowIndex)=>{
-      const rowWidth=medalWidth+(row.length-1)*step;
+      const geometry=rowGeometry[rowIndex];
+      const rowOffsetY=rowSteps.slice(0,rowIndex).reduce((sum,value)=>sum+value,0);
       row.forEach((entry,column)=>{
         const image=document.createElement('img');
         image.className='layer militaryMedalTile'; image.alt=entry.award.name;
@@ -11102,13 +11171,13 @@ function renderMilitaryPreview(){
         // placed on CAP uniforms.  Full-size medals use the parallel medal:
         // namespace.  This lets the universal calibrator resize these images by
         // exactly the same path as CAP medal artwork.
-        image.dataset.calibKey=getMilitaryMedalCalibrationKey(context,entry.award.id);
+        image.dataset.calibKey=geometry.entries[column].key;
         image.style.display='block';
         image.style.objectFit='contain';
         image.style.zIndex=String(100+column);
         applyCalibToElement(image,image.dataset.calibKey,{
-          x:MILITARY_LEFT_CHEST_CENTER_X-rowWidth/2+column*step,
-          y:startY+rowIndex*(medalHeight*.56),
+          x:MILITARY_LEFT_CHEST_CENTER_X-geometry.rowWidth/2+column*geometry.slotStep,
+          y:startY+rowOffsetY,
           w:medalWidth,h:medalHeight,r:0
         });
         uniformCanvas.appendChild(image);
