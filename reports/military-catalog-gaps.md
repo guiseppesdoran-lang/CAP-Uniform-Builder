@@ -1,12 +1,12 @@
 # Military Catalog Gaps
 
-Generated: 2026-08-30T10:46:15.647Z
+Generated: 2026-08-30T18:16:06.533Z
 
 ## Blocking gaps
 
 - Miniature medals needing approved local art: 17
 - Full-size medals needing approved local art: 16
-- Military badge records needing approved local art: 85
+- Military badge records needing approved local art: 69
 - Badge records without verified precedence: 161
 - Badge records without verified placement: 34
 - Awards without explicit service device rules: 150
