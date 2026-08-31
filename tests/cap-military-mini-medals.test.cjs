@@ -21,8 +21,21 @@ test('military miniature medal calibration survives rerendering', () => {
 });
 
 test('standalone military full-size and miniature medals are independently calibratable', () => {
-  assert.match(indexSource, /image\.dataset\.calibKey=`militaryMedal:\$\{State\.organization\}:\$\{context\}:\$\{entry\.award\.id\}`/);
+  assert.match(indexSource, /function getMilitaryMedalCalibrationKey\(context,awardId\)/);
+  assert.match(indexSource, /\? `medal:military:\$\{normalizedId\}`/);
+  assert.match(indexSource, /: `mini:military:\$\{normalizedId\}`/);
+  assert.match(indexSource, /image\.dataset\.calibKey=getMilitaryMedalCalibrationKey\(context,entry\.award\.id\)/);
   assert.match(indexSource, /applyCalibToElement\(image,image\.dataset\.calibKey/);
+});
+
+test('standalone military calibration is isolated by service component and representation', () => {
+  assert.match(indexSource, /if\(State\.organization && State\.organization !== 'CAP'\)/);
+  assert.match(indexSource, /return `military_\$\{service\}_\$\{component\}_\$\{representation\}`/);
+});
+
+test('legacy standalone military medal calibration remains readable', () => {
+  assert.match(indexSource, /function getLegacyMilitaryMedalCalibKeys\(key\)/);
+  assert.match(indexSource, /`militaryMedal:\$\{service\}:\$\{context\}:\$\{awardId\}`/);
 });
 
 test('calibrator stays within the visible viewport', () => {
