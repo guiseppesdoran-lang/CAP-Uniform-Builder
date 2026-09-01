@@ -5306,6 +5306,27 @@ let militaryRibbonCatalogCache={dataRef:null,awards:[],byId:new Map(),ids:[]};
 function isMilitaryRibbonId(id){
   return String(id || '').startsWith(MILITARY_RIBBON_PREFIX);
 }
+
+function applyMiniRackCalibToElement(el, key, base){
+  // Miniature-medal rack placement is calculated from the medals that are
+  // currently selected.  Old per-medal x/y values describe a previous rack
+  // composition and must not move an item out of its newly calculated row.
+  // Administrators can still calibrate every medal's width, height, and
+  // rotation; the rack planner immediately incorporates those dimensions.
+  const over = getCalib(key) || {};
+  const v = {
+    ...base,
+    ...(over.w !== undefined ? {w:over.w} : {}),
+    ...(over.h !== undefined ? {h:over.h} : {}),
+    ...(over.r !== undefined ? {r:over.r} : {})
+  };
+  if(v.x !== undefined) el.style.left = `${v.x}px`;
+  if(v.y !== undefined) el.style.top = `${v.y}px`;
+  if(v.w !== undefined) el.style.width = `${v.w}px`;
+  if(v.h !== undefined) el.style.height = `${v.h}px`;
+  el.style.transform = `rotate(${v.r !== undefined ? v.r : 0}deg)`;
+  el.style.transformOrigin = 'center center';
+}
 function militaryRibbonCatalogId(id){
   return isMilitaryRibbonId(id) ? String(id).slice(MILITARY_RIBBON_PREFIX.length) : String(id || '');
 }
@@ -8195,7 +8216,7 @@ function renderRack(){
       const topPx =rowTopPx;
 
       mimg.dataset.calibKey = geometry.entries[i].key;
-      applyCalibToElement(mimg, mimg.dataset.calibKey, {
+      applyMiniRackCalibToElement(mimg, mimg.dataset.calibKey, {
         x:leftPx,y:topPx,w:geometry.entries[i].size.w,h:geometry.entries[i].size.h,r:0
       });
 

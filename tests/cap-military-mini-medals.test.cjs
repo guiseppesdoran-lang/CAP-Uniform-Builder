@@ -15,9 +15,14 @@ test('CAP miniature medal rack applies military award devices', () => {
   assert.match(indexSource, /applyMilitaryMedalVariant\(mimg,entry\.path,entry\.militaryDevices,'MINIATURE_MEDAL'\)/);
 });
 
-test('military miniature medal calibration survives rerendering', () => {
+test('military miniature medal size calibration survives while rack positions stay dynamic', () => {
   assert.match(indexSource, /if\(String\(key \|\| ''\)\.startsWith\('ribbon:'\) && over\)/);
   assert.doesNotMatch(indexSource, /startsWith\('ribbon:'\) \|\| String\(key \|\| ''\)\.startsWith\('mini:'\)/);
+  assert.match(indexSource, /function applyMiniRackCalibToElement\(el, key, base\)/);
+  assert.match(indexSource, /\.\.\.\(over\.w !== undefined \? \{w:over\.w\} : \{\}\)/);
+  assert.match(indexSource, /\.\.\.\(over\.h !== undefined \? \{h:over\.h\} : \{\}\)/);
+  assert.match(indexSource, /applyMiniRackCalibToElement\(mimg, mimg\.dataset\.calibKey/);
+  assert.doesNotMatch(indexSource, /applyCalibToElement\(mimg, mimg\.dataset\.calibKey/);
 });
 
 test('standalone military full-size and miniature medals are independently calibratable', () => {
