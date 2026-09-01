@@ -15,9 +15,14 @@ test('CAP miniature medal rack applies military award devices', () => {
   assert.match(indexSource, /applyMilitaryMedalVariant\(mimg,entry\.path,entry\.militaryDevices,'MINIATURE_MEDAL'\)/);
 });
 
-test('military miniature medal calibration survives rerendering', () => {
+test('military miniature medal size calibration survives while rack positions stay dynamic', () => {
   assert.match(indexSource, /if\(String\(key \|\| ''\)\.startsWith\('ribbon:'\) && over\)/);
   assert.doesNotMatch(indexSource, /startsWith\('ribbon:'\) \|\| String\(key \|\| ''\)\.startsWith\('mini:'\)/);
+  assert.match(indexSource, /function applyMiniRackCalibToElement\(el, key, base\)/);
+  assert.match(indexSource, /\.\.\.\(over\.w !== undefined \? \{w:over\.w\} : \{\}\)/);
+  assert.match(indexSource, /\.\.\.\(over\.h !== undefined \? \{h:over\.h\} : \{\}\)/);
+  assert.match(indexSource, /applyMiniRackCalibToElement\(mimg, mimg\.dataset\.calibKey/);
+  assert.doesNotMatch(indexSource, /applyCalibToElement\(mimg, mimg\.dataset\.calibKey/);
 });
 
 test('standalone military full-size and miniature medals are independently calibratable', () => {
@@ -99,4 +104,14 @@ test('master calibration issue 143 preserves partial records across its uniform 
   assert.match(indexSource, /'patch:national_staff_ocp_patch:L_SHOULDER:0': Object\.freeze\(\{x:834\.5,y:251,w:55,h:55,r:0\}\)/);
   assert.match(indexSource, /CAPUB_ISSUE_143_MIGRATION_KEY/);
   assert.match(indexSource, /State\.calib\.byUniform\[uniformId\]\[key\] = \{/);
+});
+
+test('master calibration issue 143 safely extrapolates related badge families', () => {
+  assert.match(indexSource, /const CAPUB_ISSUE_143_FAMILY_CALIBRATION_EXTRAPOLATIONS = Object\.freeze/);
+  assert.match(indexSource, /'badge:squadron_commander_badge:UN:0': Object\.freeze\(\{x:140\.8,y:227\.1\}\)/);
+  assert.match(indexSource, /'badge:senior_emergency_services_badge:LP:0': Object\.freeze\(\{x:283\.4,y:248\}\)/);
+  assert.match(indexSource, /'badge:cadet_programs_senior_badge:FON:0': Object\.freeze\(\{x:136,y:160\.3\}\)/);
+  assert.match(indexSource, /'badge:command_council_badge:LP:0': Object\.freeze\(\{y:140\}\)/);
+  assert.match(indexSource, /CAPUB_ISSUE_143_FAMILY_MIGRATION_KEY/);
+  assert.match(indexSource, /applyIssue143Families/);
 });
