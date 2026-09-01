@@ -10514,13 +10514,16 @@ function updateAvailabilityUI(prevUniform){
   if(badgeCommand) badgeCommand.classList.toggle('hidden', !auth.showBadges);
   if(patchCommand) patchCommand.classList.toggle('hidden', !auth.showPatches);
 
+  if(prevUniform && prevUniform!==State.uniform){
+    // Convert metal/cloth counterparts while the previous selections still
+    // exist. Target-uniform cleanup would otherwise remove OCP-only patches
+    // before they can become their dress-uniform metal equivalents.
+    applyAlternates(prevUniform, State.uniform);
+  }
+
   clearUnauthorizedPatchesForCurrentUniform();
   buildPatchGallery();
   if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(by('unitPatchSearch')?.value || '');
-
-  if(prevUniform && prevUniform!==State.uniform){
-    applyAlternates(prevUniform, State.uniform);
-  }
 }
 
 function applyAlternates(fromU,toU){
@@ -16264,21 +16267,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     const capubPreviousGetRenderableCountedBadgeIds = getRenderableCountedBadgeIds;
     getRenderableCountedBadgeIds = function capubGetRenderableCountedBadgeIdsUtilityAware(){
       if(!capubIsUtilityUniform()) return capubPreviousGetRenderableCountedBadgeIds();
-      // Field uniforms use utility badge rendering and keep the same selected badge identities.
-      // Do not enforce the blues four-badge display cap here because OCP/ABU/CFU coordinates
-      // will be calibrated independently by item and slot.
-      return (State.badges || [])
-        .filter(id => isBadgeEligibleForMembership(id, State.membership))
-        .filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id))
-        .filter(id => !isCommandInsigniaBadge(id));
+      return capubUtilityBadgeIds().filter(id => !isCommandInsigniaBadge(id));
     };
 
     const capubPreviousGetRenderableCommandBadgeIds = getRenderableCommandBadgeIds;
     getRenderableCommandBadgeIds = function capubGetRenderableCommandBadgeIdsUtilityAware(){
       if(!capubIsUtilityUniform()) return capubPreviousGetRenderableCommandBadgeIds();
-      return (State.badges || [])
-        .filter(id => isBadgeEligibleForMembership(id, State.membership))
-        .filter(id => isCommandInsigniaBadge(id));
+      return capubUtilityBadgeIds().filter(id => isCommandInsigniaBadge(id));
     };
 
     /*
