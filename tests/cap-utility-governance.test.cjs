@@ -23,6 +23,18 @@ test('utility uniforms replace the metal badge picker with patch selection', () 
   }
 });
 
+test('reviewed OCP cloth qualification insignia are selectable as patches', () => {
+  assert.match(source, /const CAPUB_UTILITY_BADGE_PATCH_BY_BADGE_ID = new Map\(\)/);
+  assert.match(source, /function capubUtilityBadgePatchId\(id\)\{ return `\$\{id\}_ocp_patch`; \}/);
+  assert.match(source, /utilityBadgePatch:true/);
+  assert.match(source, /slotHint:'OCP_BADGE_GRID'/);
+  assert.match(source, /if\(meta\.utilityBadgePatch\) continue/);
+  assert.match(source, /\.map\(patchId => CAPUB_UTILITY_BADGE_ID_BY_PATCH_ID\.get\(patchId\)\)/);
+  assert.match(source, /ALTERNATES\.badgeToPatch\[id\] = patchId/);
+  assert.match(source, /ALTERNATES\.patchToBadge\[patchId\] = id/);
+  assert.match(source, /capubRenderUtilityBadges\(\);/);
+});
+
 test('governance metal badges are absent from the utility chest-badge catalog', () => {
   const utilityList = source.match(/const CAPUB_DOCUMENT_UTILITY_BADGE_IDS = \[([\s\S]*?)\n\s*\];/)?.[1] || '';
   for(const id of [
