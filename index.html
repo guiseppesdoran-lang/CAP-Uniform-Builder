@@ -1924,6 +1924,7 @@ const CAPUB_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform_v20260
 const CAPUB_LEGACY_CALIBRATION_STORAGE_KEY = 'capub_admin_calibration_by_uniform';
 const CAPUB_ISSUE_137_MIGRATION_KEY = 'capub_calibration_issue_137_applied_v2';
 const CAPUB_ISSUE_143_MIGRATION_KEY = 'capub_calibration_issue_143_applied_v1';
+const CAPUB_ISSUE_143_FAMILY_MIGRATION_KEY = 'capub_calibration_issue_143_family_extrapolation_v1';
 function genderBucketFor(uniform, gender){
   const u = uniform || 'global';
   const g = gender || '';
@@ -3258,6 +3259,49 @@ const CAPUB_ISSUE_143_CALIBRATION_OVERRIDES = Object.freeze({
   }
 })();
 
+/* Issue #143 calibrated representative members of visual/placement families.
+   Propagate only fields that are physically shared. Horizontal coordinates are
+   not copied between opposite pockets, and badge-specific sizes are retained. */
+const CAPUB_ISSUE_143_FAMILY_CALIBRATION_EXTRAPOLATIONS = Object.freeze({
+  blues_a_female: Object.freeze({
+    'badge:cadet_programs_badge:FON:0': Object.freeze({x:136,y:160.3}),
+    'badge:cadet_programs_technician_badge:FON:0': Object.freeze({x:136,y:160.3}),
+    'badge:cadet_programs_senior_badge:FON:0': Object.freeze({x:136,y:160.3})
+  }),
+  blues_a_male: Object.freeze({
+    'badge:squadron_commander_badge:UN:0': Object.freeze({x:140.8,y:227.1}),
+    'badge:squadron_commander_badge:ON:0': Object.freeze({x:140.5,y:177.1}),
+    'badge:emergency_services_badge:LP:0': Object.freeze({x:283.4,y:248}),
+    'badge:senior_emergency_services_badge:LP:0': Object.freeze({x:283.4,y:248})
+  }),
+  semi_formal_male: Object.freeze({
+    'badge:senior_advisory_group_badge:LP:0': Object.freeze({y:140}),
+    'badge:command_council_badge:LP:0': Object.freeze({y:140}),
+    'badge:national_executive_committee_badge:LP:0': Object.freeze({y:140}),
+    'badge:cap_national_command_board_badge:LP:0': Object.freeze({y:140})
+  }),
+  aviator_male: Object.freeze({
+    'badge:group_commander_badge:UN:0': Object.freeze({x:159.6,y:216.3}),
+    'badge:emergency_services_badge:LP:0': Object.freeze({x:281.3,y:256}),
+    'badge:senior_emergency_services_badge:LP:0': Object.freeze({x:281.3,y:256}),
+    'badge:senior_advisory_group_badge:LP:0': Object.freeze({y:256}),
+    'badge:command_council_badge:LP:0': Object.freeze({y:256}),
+    'badge:national_executive_committee_badge:LP:0': Object.freeze({y:256}),
+    'badge:cap_national_command_board_badge:LP:0': Object.freeze({y:256})
+  })
+});
+(function capubApplyIssue143FamilyCalibrationExtrapolations(){
+  for(const [bucketId, items] of Object.entries(CAPUB_ISSUE_143_FAMILY_CALIBRATION_EXTRAPOLATIONS)){
+    if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
+    for(const [key, coords] of Object.entries(items)){
+      DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = {
+        ...(DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] || {}),
+        ...coords
+      };
+    }
+  }
+})();
+
 /* CAPUB COORDINATE UPDATE 2026-08-05
    Female Senior Member Class A blues (Captain base image), imported from
    CAPUB_coordinates_1785908806912.json. This gender-specific correction is
@@ -3360,7 +3404,7 @@ const SPECIALTY_TRACK_BADGE_IDS = new Set([
   'communications_technician_badge','communications_senior_badge','communications_master_badge',
   'information_technology_technician_badge','historian_technicianIbadge',
   'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
-  'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge','administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
+  'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge','cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge','administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
   'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge'
 ]);
 const POCKET_SERVICE_BADGE_IDS = new Set([
@@ -3396,7 +3440,7 @@ const SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS = new Set([
   'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge'
 ]);
 const LARGE_RIGHT_POCKET_SPECIALTY_BADGE_IDS = new Set([
-  'volunteer_university_instructor_badge','cadet_programs_badge'
+  'volunteer_university_instructor_badge','cadet_programs_badge','cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge'
 ]);
 const UNDER_NAMEPLATE_SPECIALTY_BADGE_IDS = new Set([
   ...SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS,
@@ -3407,7 +3451,7 @@ const FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS = new Set([
   'communications_technician_badge','communications_senior_badge','communications_master_badge',
   'information_technology_technician_badge','historian_technicianIbadge',
   'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
-  'cadet_programs_badge',
+  'cadet_programs_badge','cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge',
   // Female cadet-specific specialty badges. These are limited to the two-badge
   // specialty row above the nameplate on the female Class A uniform.
   'cyber_badges','stem_badges'
@@ -3694,6 +3738,21 @@ function migrateApprovedCalibrationIssues(){
       }
     }
     try{ localStorage.setItem(CAPUB_ISSUE_143_MIGRATION_KEY,'1'); }catch(_){}
+  }
+
+  let applyIssue143Families=false;
+  try{ applyIssue143Families=localStorage.getItem(CAPUB_ISSUE_143_FAMILY_MIGRATION_KEY)!=='1'; }catch(_){ applyIssue143Families=true; }
+  if(applyIssue143Families){
+    for(const [uniformId, items] of Object.entries(CAPUB_ISSUE_143_FAMILY_CALIBRATION_EXTRAPOLATIONS)){
+      State.calib.byUniform[uniformId] ||= {};
+      for(const [key, coords] of Object.entries(items)){
+        State.calib.byUniform[uniformId][key] = {
+          ...(State.calib.byUniform[uniformId][key] || {}),
+          ...coords
+        };
+      }
+    }
+    try{ localStorage.setItem(CAPUB_ISSUE_143_FAMILY_MIGRATION_KEY,'1'); }catch(_){}
   }
 }
 

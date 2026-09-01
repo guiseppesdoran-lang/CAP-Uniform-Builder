@@ -105,3 +105,13 @@ test('master calibration issue 143 preserves partial records across its uniform 
   assert.match(indexSource, /CAPUB_ISSUE_143_MIGRATION_KEY/);
   assert.match(indexSource, /State\.calib\.byUniform\[uniformId\]\[key\] = \{/);
 });
+
+test('master calibration issue 143 safely extrapolates related badge families', () => {
+  assert.match(indexSource, /const CAPUB_ISSUE_143_FAMILY_CALIBRATION_EXTRAPOLATIONS = Object\.freeze/);
+  assert.match(indexSource, /'badge:squadron_commander_badge:UN:0': Object\.freeze\(\{x:140\.8,y:227\.1\}\)/);
+  assert.match(indexSource, /'badge:senior_emergency_services_badge:LP:0': Object\.freeze\(\{x:283\.4,y:248\}\)/);
+  assert.match(indexSource, /'badge:cadet_programs_senior_badge:FON:0': Object\.freeze\(\{x:136,y:160\.3\}\)/);
+  assert.match(indexSource, /'badge:command_council_badge:LP:0': Object\.freeze\(\{y:140\}\)/);
+  assert.match(indexSource, /CAPUB_ISSUE_143_FAMILY_MIGRATION_KEY/);
+  assert.match(indexSource, /applyIssue143Families/);
+});
