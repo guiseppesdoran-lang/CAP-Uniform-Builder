@@ -1529,7 +1529,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
       </section>
 
       <!-- BADGES: PICKER BUTTON (NO SIDEBAR THUMBS) -->
-      <section class="panelBlock">
+      <section id="groupBadges" class="panelBlock">
         <label class="fieldLabel">Badges</label>
 
         <div class="hintText">
@@ -10445,7 +10445,12 @@ function renderPatches(){
 function updateAvailabilityUI(prevUniform){
   const auth = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
   by('groupRibbons').classList.toggle('hidden', !auth.showRibbons && !UNIFORMS[State.uniform].mini);
+  by('groupBadges').classList.toggle('hidden', !auth.showBadges);
   by('groupPatches').classList.toggle('hidden', !auth.showPatches);
+  const badgeCommand = by('cmdBadges');
+  const patchCommand = by('cmdPatches');
+  if(badgeCommand) badgeCommand.classList.toggle('hidden', !auth.showBadges);
+  if(patchCommand) patchCommand.classList.toggle('hidden', !auth.showPatches);
 
   clearUnauthorizedPatchesForCurrentUniform();
   buildPatchGallery();
@@ -13191,6 +13196,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(status) status.textContent = warnings ? `${warnings} warning${warnings===1?'':'s'}` : 'Good';
     if(uniform) uniform.textContent = State.uniform ? State.uniform.replace(/_/g,' ').toUpperCase() : 'None';
     if(items) items.textContent = ((State.ribbons||[]).length + (State.badges||[]).length + (State.patches||[]).length).toString();
+    const auth = (typeof UI_AUTHZ !== 'undefined' && UI_AUTHZ[State.uniform]) || {showBadges:true,showPatches:true};
+    safeBy('cmdBadges')?.classList.toggle('hidden', !auth.showBadges);
+    safeBy('cmdPatches')?.classList.toggle('hidden', !auth.showPatches);
   }
   function ensureCommandBar(){
     if(safeBy('capubCommandBar')) return;
@@ -15907,11 +15915,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return true;
     }
 
-    // Field/utility uniforms should use the same badge picker, but its content becomes
-    // utility-badge oriented and renders from images/badges/[badge_id].png first.
-    ['ocp','abu','corporate_field','flight_suit'].forEach(id => {
-      if(UI_AUTHZ[id]) UI_AUTHZ[id].showBadges = true;
-    });
+    // Utility uniforms select cloth insignia from Patches. Metal badge controls
+    // remain a dress-uniform feature; known counterparts (for example National
+    // Staff) are converted through ALTERNATES when the uniform changes.
 
     // Treat these two OCP patch assets as calibrated tall sleeve patches until final
     // natural dimensions are supplied. Each rendered layer remains editable in CAL.

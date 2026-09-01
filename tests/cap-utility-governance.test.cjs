@@ -12,6 +12,17 @@ test('National Staff uses a dedicated OCP sleeve patch selection', () => {
   assert.match(source, /'national_staff_badge':'national_staff_ocp_patch'/);
 });
 
+test('utility uniforms replace the metal badge picker with patch selection', () => {
+  assert.match(source, /<section id="groupBadges" class="panelBlock">/);
+  assert.match(source, /by\('groupBadges'\)\.classList\.toggle\('hidden', !auth\.showBadges\)/);
+  assert.match(source, /badgeCommand\.classList\.toggle\('hidden', !auth\.showBadges\)/);
+  assert.match(source, /patchCommand\.classList\.toggle\('hidden', !auth\.showPatches\)/);
+  assert.doesNotMatch(source, /UI_AUTHZ\[id\]\.showBadges = true/);
+  for(const id of ['corporate_field','abu','ocp','flight_suit']){
+    assert.match(source, new RegExp(`${id}:\\{ showRibbons:(?:true|false), showBadges:false, showPatches:true \\}`));
+  }
+});
+
 test('governance metal badges are absent from the utility chest-badge catalog', () => {
   const utilityList = source.match(/const CAPUB_DOCUMENT_UTILITY_BADGE_IDS = \[([\s\S]*?)\n\s*\];/)?.[1] || '';
   for(const id of [
