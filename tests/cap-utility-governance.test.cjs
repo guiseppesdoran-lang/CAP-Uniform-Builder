@@ -35,6 +35,13 @@ test('reviewed OCP cloth qualification insignia are selectable as patches', () =
   assert.match(source, /capubRenderUtilityBadges\(\);/);
 });
 
+test('utility patch badges participate in validation and survive uniform conversion', () => {
+  assert.match(source, /getRenderableCountedBadgeIds = function capubGetRenderableCountedBadgeIdsUtilityAware\(\)\{[\s\S]*?return capubUtilityBadgeIds\(\)\.filter\(id => !isCommandInsigniaBadge\(id\)\)/);
+  assert.match(source, /getRenderableCommandBadgeIds = function capubGetRenderableCommandBadgeIdsUtilityAware\(\)\{[\s\S]*?return capubUtilityBadgeIds\(\)\.filter\(id => isCommandInsigniaBadge\(id\)\)/);
+  const availability = source.match(/function updateAvailabilityUI\(prevUniform\)\{([\s\S]*?)\n\}/)?.[1] || '';
+  assert.ok(availability.indexOf('applyAlternates(prevUniform, State.uniform)') < availability.indexOf('clearUnauthorizedPatchesForCurrentUniform()'));
+});
+
 test('governance metal badges are absent from the utility chest-badge catalog', () => {
   const utilityList = source.match(/const CAPUB_DOCUMENT_UTILITY_BADGE_IDS = \[([\s\S]*?)\n\s*\];/)?.[1] || '';
   for(const id of [
