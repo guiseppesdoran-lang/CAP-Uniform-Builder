@@ -12,30 +12,27 @@ test('National Staff uses a dedicated OCP sleeve patch selection', () => {
   assert.match(source, /'national_staff_badge':'national_staff_ocp_patch'/);
 });
 
-test('utility uniforms replace the metal badge picker with patch selection', () => {
+test('utility uniforms expose both fabric badge and patch selection', () => {
   assert.match(source, /<section id="groupBadges" class="panelBlock">/);
   assert.match(source, /by\('groupBadges'\)\.classList\.toggle\('hidden', !auth\.showBadges\)/);
   assert.match(source, /badgeCommand\.classList\.toggle\('hidden', !auth\.showBadges\)/);
   assert.match(source, /patchCommand\.classList\.toggle\('hidden', !auth\.showPatches\)/);
-  assert.doesNotMatch(source, /UI_AUTHZ\[id\]\.showBadges = true/);
   for(const id of ['corporate_field','abu','ocp','flight_suit']){
-    assert.match(source, new RegExp(`${id}:\\{ showRibbons:(?:true|false), showBadges:false, showPatches:true \\}`));
+    assert.match(source, new RegExp(`${id}:\\{ showRibbons:(?:true|false), showBadges:true, showPatches:true \\}`));
   }
 });
 
-test('reviewed OCP cloth qualification insignia are selectable as patches', () => {
-  assert.match(source, /const CAPUB_UTILITY_BADGE_PATCH_BY_BADGE_ID = new Map\(\)/);
-  assert.match(source, /function capubUtilityBadgePatchId\(id\)\{ return `\$\{id\}_ocp_patch`; \}/);
-  assert.match(source, /utilityBadgePatch:true/);
-  assert.match(source, /slotHint:'OCP_BADGE_GRID'/);
-  assert.match(source, /if\(meta\.utilityBadgePatch\) continue/);
-  assert.match(source, /\.map\(patchId => CAPUB_UTILITY_BADGE_ID_BY_PATCH_ID\.get\(patchId\)\)/);
-  assert.match(source, /ALTERNATES\.badgeToPatch\[id\] = patchId/);
-  assert.match(source, /ALTERNATES\.patchToBadge\[patchId\] = id/);
-  assert.match(source, /capubRenderUtilityBadges\(\);/);
+test('utility badge picker previews and renders fabric-only badge assets', () => {
+  assert.match(source, /function capubUtilityBadgePreviewUrl\(id\)/);
+  assert.match(source, /badges\/utility\/\$\{id\}\.png/);
+  assert.match(source, /class="utilityBadgePreview"/);
+  assert.match(source, /Never fall back to metal\/non-fabric artwork on a utility uniform/);
+  assert.match(source, /return \[`badges\/utility\/\$\{id\}\.png`\]/);
+  assert.match(source, /const selected = \[\.\.\.new Set\(State\.badges \|\| \[\]\)\]/);
+  assert.doesNotMatch(source, /utilityBadgePatch:true/);
 });
 
-test('utility patch badges participate in validation and survive uniform conversion', () => {
+test('utility badge selections participate in validation and patch alternates survive conversion', () => {
   assert.match(source, /getRenderableCountedBadgeIds = function capubGetRenderableCountedBadgeIdsUtilityAware\(\)\{[\s\S]*?return capubUtilityBadgeIds\(\)\.filter\(id => !isCommandInsigniaBadge\(id\)\)/);
   assert.match(source, /getRenderableCommandBadgeIds = function capubGetRenderableCommandBadgeIdsUtilityAware\(\)\{[\s\S]*?return capubUtilityBadgeIds\(\)\.filter\(id => isCommandInsigniaBadge\(id\)\)/);
   const availability = source.match(/function updateAvailabilityUI\(prevUniform\)\{([\s\S]*?)\n\}/)?.[1] || '';

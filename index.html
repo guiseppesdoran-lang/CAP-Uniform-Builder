@@ -4952,12 +4952,12 @@ const UI_AUTHZ = {
   blues_b:{ showRibbons:true, showBadges:true,  showPatches:false },
   aviator:{ showRibbons:true, showBadges:true,  showPatches:false },
   aviator_blazer:{ showRibbons:true, showBadges:true, showPatches:false },
-  corporate_field:{ showRibbons:true, showBadges:false, showPatches:true },
+  corporate_field:{ showRibbons:true, showBadges:true, showPatches:true },
   mess_dress:{ showRibbons:false, showBadges:true,  showPatches:false },
   semi_formal:{ showRibbons:false, showBadges:true, showPatches:false },
-  abu:{ showRibbons:false, showBadges:false, showPatches:true },
-  ocp:{ showRibbons:false, showBadges:false, showPatches:true },
-  flight_suit:{ showRibbons:false, showBadges:false, showPatches:true },
+  abu:{ showRibbons:false, showBadges:true, showPatches:true },
+  ocp:{ showRibbons:false, showBadges:true, showPatches:true },
+  flight_suit:{ showRibbons:false, showBadges:true, showPatches:true },
   polo:{ showRibbons:false, showBadges:false, showPatches:false }
 };
 
@@ -10434,9 +10434,6 @@ function planPatches(ids){
   for(const id of plannedIds){
     if(FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) continue;
     const meta=PATCH_META[id]; if(!meta) continue;
-    // Embroidered qualification insignia are selected in the patch picker but
-    // use the regulation OCP badge grid rather than a generic patch anchor.
-    if(meta.utilityBadgePatch) continue;
     if(!isPatchAuthorizedForUniform(id)) continue;
     const hint=meta.slotHint || 'L_SHOULDER';
     const cap=capsPerUniform[hint]??0;
@@ -15944,29 +15941,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       incident_commander_1_badge: 'Master Incident Commander Badge (IC1)',
       incident_commander_2_badge: 'Senior Incident Commander Badge (IC2)'
     };
-    const CAPUB_UTILITY_BADGE_PATCH_BY_BADGE_ID = new Map();
-    const CAPUB_UTILITY_BADGE_ID_BY_PATCH_ID = new Map();
-    function capubUtilityBadgePatchId(id){ return `${id}_ocp_patch`; }
-    CAPUB_DOCUMENT_UTILITY_BADGE_IDS.forEach(id => {
-      if(id === 'national_staff_badge') return;
-      const patchId = capubUtilityBadgePatchId(id);
-      const label = CAPUB_UTILITY_BADGE_LABELS[id]
-        || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-      CAPUB_UTILITY_BADGE_PATCH_BY_BADGE_ID.set(id, patchId);
-      CAPUB_UTILITY_BADGE_ID_BY_PATCH_ID.set(patchId, id);
-      PATCH_META[patchId] = {
-        label:`${label} — OCP Cloth Insignia`,
-        slotHint:'OCP_BADGE_GRID',
-        w:60,h:25,
-        img:`badges/utility/${id}.png`,
-        authorizedUniforms:['ocp'],
-        utilityBadgePatch:true,
-        sourceBadgeId:id
-      };
-      if(!patchList.includes(patchId)) patchList.push(patchId);
-      ALTERNATES.badgeToPatch[id] = patchId;
-      ALTERNATES.patchToBadge[patchId] = id;
-    });
     const CAPUB_INCIDENT_COMMANDER_BADGE_IDS = new Set([
       'basic_incident_commander_badge','incident_commander_1_badge','incident_commander_2_badge'
     ]);
@@ -16050,9 +16024,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     const capubPreviousIsPatchAuthorizedForUniform = isPatchAuthorizedForUniform;
     isPatchAuthorizedForUniform = function capubIsPatchAuthorizedForUniformOcpFiltered(patchId, uniformId = State.uniform, membership = State.membership){
       if(!capubPreviousIsPatchAuthorizedForUniform(patchId, uniformId, membership)) return false;
-      const sourceBadgeId = PATCH_META?.[patchId]?.utilityBadgePatch ? PATCH_META[patchId].sourceBadgeId : null;
-      if(sourceBadgeId && !isBadgeEligibleForMembership(sourceBadgeId, membership)) return false;
-      if(sourceBadgeId && isCommandInsigniaBadge(sourceBadgeId) && !isCommandInsigniaGradeEligible(State.rank)) return false;
       const uniformKey = capubFieldUniformKey(uniformId);
       if(uniformKey === 'ocp' && !capubPatchIsUnitPatchId(patchId)){
         return capubPatchHasOcpAsset(patchId);
@@ -16171,8 +16142,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       const eligible = utilityMode
         ? capubGetUtilityBadgeIds()
         : getEligibleBadgeIdsForMembership(State.membership).filter(id => !CAPUB_UTILITY_ONLY_BADGE_IDS.has(id));
-      // The document-defined utility set is intentionally small; always show
-      // all 16 so none are hidden behind the gallery expansion control.
+      // The document-defined utility set is intentionally small; show the
+      // complete reviewed fabric-insignia catalog without an expansion step.
       const showCount = utilityMode ? eligible.length : (State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length));
 
       for(let idx=0; idx<showCount; idx++){
@@ -16336,13 +16307,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     }
 
     function capubUtilityBadgeIds(){
-      const patchSelected = (State.patches || [])
-        .map(patchId => CAPUB_UTILITY_BADGE_ID_BY_PATCH_ID.get(patchId))
-        .filter(Boolean);
-      // Retain compatibility with setups saved before utility insignia moved
-      // from the Badge picker into Patches.
-      const legacySelected = (State.badges || []).filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id));
-      const selected = [...new Set([...patchSelected, ...legacySelected])]
+      const selected = [...new Set(State.badges || [])]
         .filter(id => isBadgeEligibleForMembership(id, State.membership))
         .filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id))
         .filter(id => !isCommandInsigniaBadge(id) || isCommandInsigniaGradeEligible(State.rank))
@@ -16523,7 +16488,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       clearMeasurementOverlay();
       [...uniformCanvas.querySelectorAll('.layer.badge')].forEach(node => node.remove());
       resetBadgeSlots();
-      capubRenderUtilityBadges();
+      if(UI_AUTHZ[State.uniform]?.showBadges) capubRenderUtilityBadges();
       renderMeasurementOverlay();
     };
 
