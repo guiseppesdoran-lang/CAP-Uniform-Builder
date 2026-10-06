@@ -47,12 +47,16 @@
   // variant whose authorized slot is the left shoulder. Chest patches retain
   // their existing, independently calibrated chest anchors.
   const ocpMaleHigherHeadquartersLocation = {x:690, y:212, w:200, h:100, r:0};
-  DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male ||= {};
-  for(const variantId of variantIds){
-    if(PATCH_META[variantId]?.slotHint !== 'L_SHOULDER') continue;
-    DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male[`patch:${variantId}:L_SHOULDER:0`] = {
-      ...ocpMaleHigherHeadquartersLocation
-    };
+  // Both cuts use the same OCP blouse/sleeve canvas. Seed both buckets so
+  // female previews do not fall back to the old 450-pixel shoulder anchors.
+  for(const bucket of ['ocp_male','ocp_female']){
+    DEFAULT_CALIBRATION_BY_UNIFORM[bucket] ||= {};
+    for(const variantId of variantIds){
+      if(PATCH_META[variantId]?.slotHint !== 'L_SHOULDER') continue;
+      DEFAULT_CALIBRATION_BY_UNIFORM[bucket][`patch:${variantId}:L_SHOULDER:0`] = {
+        ...ocpMaleHigherHeadquartersLocation
+      };
+    }
   }
 
   const previousResolver = window.capubResolvePatchIdForUniform;
