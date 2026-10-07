@@ -20,8 +20,6 @@
     "build:air-force-ribbon-device-assets": "python scripts/build_air_force_ribbon_device_variants.py",
     "apply:military-overrides": "node scripts/apply-military-overrides.cjs",
     "smoke:military-ui": "node scripts/smoke-military-ui.cjs",
-    "audit:uniform-render": "node scripts/audit-uniform-render.cjs",
-    "review:uniform-samples": "node scripts/review-uniform-samples.cjs",
     "check:inline-syntax": "node scripts/check-inline-syntax.cjs"
   }
 }
