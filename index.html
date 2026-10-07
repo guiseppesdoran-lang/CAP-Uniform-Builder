@@ -7517,7 +7517,7 @@ function applyJacket(){
     // between uniforms.
     img.dataset.calibKey = 'base:jacket';
     const renderSize = getCanvasRenderSize();
-    const isAviatorArtwork = ['aviator','aviator_blazer'].includes(State.uniform);
+    const isAviatorArtwork = State.uniform==='aviator' || (State.uniform==='aviator_blazer' && !window.CAPUBCompletion);
     const aviatorArtworkLayout = isAviatorArtwork && State.gender === 'male'
       // Scale proportionally around the left-pocket/rack anchor so the pocket
       // stays directly beneath the fixed ribbon rack.
@@ -8072,7 +8072,8 @@ function renderRack(){
   const useMini = State.membership === 'senior' && !isFieldUniform(State.uniform) &&
     ((uniformPrefersMini && autoMini) || (uniformPrefersMini && manualMini));
 
-  const items = sortRibbons(State.ribbons);
+  const items = sortRibbons(['aviator','semi_formal'].includes(State.uniform)
+    ? State.ribbons.filter(item=>!isMilitaryRibbonId(item.id)) : State.ribbons);
   if(!items.length) return;
 
   let rackLayout = getRibbonLayout();
@@ -13014,7 +13015,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(!State.rank) addNotice('warn','Select rank before building the uniform.');
     if(!State.gender) addNotice('warn','Select male/female cut before final placement tuning.');
     if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)) addNotice('err','Selected uniform is not authorized for the selected membership type.');
-    if(['aviator_blazer','corporate_field','flight_suit','polo'].includes(State.uniform)){
+    if(!window.CAPUBCompletion && ['aviator_blazer','corporate_field','flight_suit','polo'].includes(State.uniform)){
       addNotice('warn','The '+pretty(State.uniform)+' preview currently uses substitute white-shirt artwork. The garment silhouette and item placement are incomplete.');
     }
     const loadedJacket=uniformCanvas.querySelector('img.jacket:not(.garmentForegroundOverlay)');
@@ -16390,6 +16391,15 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     }
 
     function capubLayoutUtilityBadges(){
+      if(State.uniform==='flight_suit' && window.CAPUBCompletion){
+        uniformCanvas.querySelectorAll('.capubUtilityBadge').forEach(img=>{
+          applyCalibToElement(img,`flightNameBadgeV1:${img.dataset.badgeId}`,{x:239,y:134,w:45,h:11,r:0});
+          img.style.border='none';
+          img.style.height='8px';
+          img.style.zIndex='9002';
+        });
+        return;
+      }
       const allBadges = [...uniformCanvas.querySelectorAll('.capubUtilityBadge')];
       if(!allBadges.length) return;
 
@@ -16398,12 +16408,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       // photographic fallback. Use their actual tape edge for default badge
       // clearance; explicitly saved badge coordinates still take precedence.
       const officerOcp = fieldKey==='ocp' && usingSeniorOfficerOcpBase();
-      const tape = officerOcp
+      const garmentGeometry=window.CAPUBGarmentGeometry?.[fieldKey];
+      const tape = garmentGeometry?.capTape || (officerOcp
         ? {...CAPUB_UTILITY_CAP_TAPE.ocp,topY:156}
-        : CAPUB_UTILITY_CAP_TAPE[fieldKey] || CAPUB_UTILITY_CAP_TAPE.ocp;
-      const nameTape = officerOcp
+        : CAPUB_UTILITY_CAP_TAPE[fieldKey] || CAPUB_UTILITY_CAP_TAPE.ocp);
+      const nameTape = garmentGeometry?.nameTape || (officerOcp
         ? {...CAPUB_UTILITY_NAME_TAPE.ocp,centerX:396,topY:156}
-        : CAPUB_UTILITY_NAME_TAPE[fieldKey] || CAPUB_UTILITY_NAME_TAPE.ocp;
+        : CAPUB_UTILITY_NAME_TAPE[fieldKey] || CAPUB_UTILITY_NAME_TAPE.ocp);
       const halfInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 2);
       const quarterInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 4);
       const eighthInch = CAPUB_UTILITY_BLUE_MARGIN;
@@ -17103,5 +17114,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 <!-- Loaded directly so patch submission cannot be blocked by stale chained feature loaders. -->
 <script src="patch-submission.js?v=5"></script>
 <script src="ocp-patch-variants.js"></script>
+<script src="uniform-rank-assets.js"></script>
+<script src="uniform-completion.js"></script>
 </body>
 </html>

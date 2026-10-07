@@ -8,9 +8,9 @@ const {chromium}=require('playwright');
  await require('./local-preview-route.cjs')(page);
  await page.goto('http://127.0.0.1:8765/',{waitUntil:'networkidle'});
  fs.mkdirSync('reports/uniform-render',{recursive:true});
- for(const gender of ['male','female'])for(const uniform of ['blues_a','blues_b','ocp']){
+ for(const gender of ['male','female'])for(const uniform of ['blues_a','blues_b','ocp','corporate_field','flight_suit','polo','aviator_blazer','semi_formal']){
   await page.evaluate(({gender,uniform})=>{
-   Object.assign(State,{organization:'CAP',membership:'senior',rank:'Capt',gender,uniform,ribbonSelections:{},militaryBadges:{},ribbons:['cap_achievment_award','commander_commendation_award','meritorious_service_award','lifesaving_award','unit_citation_award','national_commander_unit_citation_award'].map(id=>({id,devices:{}})),badges:['pilot_badge','senior_ground_team_badge','communications_technician_badge'],patches:uniform==='ocp'?['nywg_patch']:[]});
+   Object.assign(State,{organization:'CAP',membership:'senior',rank:'Capt',gender,uniform,ribbonSelections:{},militaryBadges:{},ribbons:['cap_achievment_award','commander_commendation_award','meritorious_service_award','lifesaving_award','unit_citation_award','national_commander_unit_citation_award'].map(id=>({id,devices:{}})),badges:['AirCrew1_DB3F0FCC3650F','senior_ground_team_badge','communications_technician_badge'],patches:uniform==='ocp'?['nywg_patch']:[]});
    refreshUI();fullRender();
   },{gender,uniform});
   await page.waitForFunction(()=>[...document.querySelectorAll('#uniformCanvas img')].every(i=>i.complete && (i.naturalWidth>0 || i.dataset.missing==='true')));

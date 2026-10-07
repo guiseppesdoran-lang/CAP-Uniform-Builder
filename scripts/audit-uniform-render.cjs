@@ -13,6 +13,7 @@ const {chromium} = require('playwright');
  fs.mkdirSync('reports/uniform-render',{recursive:true});
  for(const c of cases){
   await page.evaluate(c=>{Object.assign(State,c,{organization:'CAP',ribbons:[],badges:[],patches:[],militaryAwards:{},militaryBadges:{}});refreshUI();fullRender();},c);
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   await page.waitForFunction(()=>{
    const jacket=document.querySelector('#uniformCanvas img.jacket');
    return jacket?.complete && jacket.naturalWidth>0 && [...document.querySelectorAll('#uniformCanvas img')].every(i=>i.complete && i.naturalWidth>0);
@@ -34,6 +35,7 @@ const {chromium} = require('playwright');
     if(option.kind==='ribbons') selectAllCapUniformAwards({maximum:option.id==='maximum'});
     fullRender();
    },{c,option});
+   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
    await page.waitForFunction(()=>[...document.querySelectorAll('#uniformCanvas img')].every(i=>i.complete && (i.naturalWidth>0 || i.dataset.missing==='true')),null,{timeout:5000}).catch(()=>{});
    optionResults.push(await page.evaluate(({c,option})=>({ ...c,...option,broken:[...document.querySelectorAll('#uniformCanvas img')].filter(i=>!i.naturalWidth).map(i=>i.getAttribute('src')),layers:document.querySelectorAll('#uniformCanvas .layer').length}),{c,option}));
   }

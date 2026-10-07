@@ -1,0 +1,62 @@
+{
+  "source": "https://www.gocivilairpatrol.com/media/cms/CAPR_391_90e08bf91538b.pdf",
+  "method": "Unchanged extracted figure raster embedded in SVG, with local fabric masks covering baked decorations.",
+  "figures": [
+    {
+      "id": "semi_formal_male",
+      "pdfPage": 84,
+      "figure": "4.12",
+      "width": 425,
+      "height": 605,
+      "asset": "base/capr39-1/semi_formal_male.svg"
+    },
+    {
+      "id": "semi_formal_female",
+      "pdfPage": 85,
+      "figure": "4.13",
+      "width": 312,
+      "height": 514,
+      "asset": "base/capr39-1/semi_formal_female.svg"
+    },
+    {
+      "id": "aviator_blazer_male",
+      "pdfPage": 87,
+      "figure": "4.14",
+      "width": 406,
+      "height": 652,
+      "asset": "base/capr39-1/aviator_blazer_male.svg"
+    },
+    {
+      "id": "aviator_blazer_female",
+      "pdfPage": 89,
+      "figure": "4.15",
+      "width": 428,
+      "height": 624,
+      "asset": "base/capr39-1/aviator_blazer_female.svg"
+    },
+    {
+      "id": "corporate_field",
+      "pdfPage": 106,
+      "figure": "5.4",
+      "width": 284,
+      "height": 372,
+      "asset": "base/capr39-1/corporate_field.svg"
+    },
+    {
+      "id": "polo",
+      "pdfPage": 108,
+      "figure": "5.5",
+      "width": 552,
+      "height": 622,
+      "asset": "base/capr39-1/polo.svg"
+    },
+    {
+      "id": "flight_suit",
+      "pdfPage": 133,
+      "figure": "8.1",
+      "width": 330,
+      "height": 495,
+      "asset": "base/capr39-1/flight_suit.svg"
+    }
+  ]
+}
