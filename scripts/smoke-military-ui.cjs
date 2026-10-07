@@ -9,6 +9,7 @@ let browser;
     executablePath:process.env.CAPUB_CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe'
   });
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
+  if(!process.env.CAPUB_URL) await require('./local-preview-route.cjs')(page);
   page.setDefaultTimeout(30000);
   const errors=[];
   page.on('pageerror',error=>errors.push(String(error)));
@@ -97,14 +98,20 @@ let browser;
   assert.ok(rackDiagnostic.tiles>0,`military ribbon rack did not render: ${JSON.stringify({rackDiagnostic,errors})}`);
   const composed=page.locator('.militaryRackTile').first();
   await composed.waitFor({state:'visible'});
-  await page.waitForFunction(()=>document.querySelector('.militaryRackTile')?.src.startsWith('data:image/png;base64,'));
+  await page.waitForFunction(()=>{
+    const image=document.querySelector('.militaryRackTile');
+    return image?.complete && image.naturalWidth>0 &&
+      (image.src.startsWith('data:image/png;base64,') || /PRECOMPOSED/.test(image.dataset.militaryVariantStrategy || ''));
+  });
   assert.deepEqual(await composed.evaluate(image=>[image.naturalWidth,image.naturalHeight]),[100,30]);
   await page.locator('#militaryRepresentationMode').selectOption('MINIATURE_MEDAL');
-  assert.match(await page.locator('.militaryPreviewNote').innerText(),/No selected award has a reviewed local miniature medal representation/);
+  assert.ok(await page.locator('.militaryMedalTile').count()>0,'reviewed commendation miniature did not render');
+  await page.evaluate(()=>{State.militaryAwards={air_force_organizational_excellence_award:{awardCount:1}};fullRender();});
+  assert.equal(await page.locator('.militaryMedalTile').count(),0,'ribbon-only award rendered as a miniature medal');
   await page.locator('#militaryAwardServiceFilter').selectOption('ALL');
   await page.locator('#militaryAwardSearch').fill('');
   await page.locator('#militaryRenderableOnly').check();
-  assert.equal(await page.locator('#militaryAwardResults .militaryAwardOption').count(),2,'miniature-medal availability filter did not use representation status');
+  assert.ok(await page.locator('#militaryAwardResults .militaryAwardOption').count()>2,'expanded miniature-medal catalog was not available');
 
   await page.evaluate(()=>{
     window.State.organization='AIR_FORCE';
@@ -118,7 +125,7 @@ let browser;
   assert.equal(await page.evaluate(()=>{
     const awards=window.CAPUBMilitary.canonicalizeAwards(window.CAPUBMilitaryData.awards);
     return window.CAPUBMilitary.getAwardRepresentation(awards.find(award=>award.id==='air_medal'),'MINIATURE_MEDAL').asset;
-  }),'images/mini_medals/mcchord/m_airmedal.png');
+  }),'images/military-mini-medals/air-force/air_medal.png');
 
   await page.locator('#organizationSelect').selectOption('SPACE_FORCE');
   await page.locator('#militaryBadgeSection').evaluate(element=>element.open=true);
