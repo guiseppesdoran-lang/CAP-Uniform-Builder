@@ -1,9 +1,10 @@
 const test = require('node:test');
+const { readAppSource } = require('./helpers/app-source.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const indexSource = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const indexSource = readAppSource();
 const styleSource = fs.readFileSync(path.join(__dirname, '..', 'styles', 'app.css'), 'utf8');
 
 test('CAP miniature medal resolver uses canonical military representations', () => {

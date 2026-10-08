@@ -1,11 +1,12 @@
 'use strict';
 
 const test=require('node:test');
+const { readAppSource } = require('./helpers/app-source.cjs');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 
-const indexSource=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
+const indexSource=readAppSource();
 
 test('military ribbon renderer prefers a single precomposed repository asset',()=>{
   assert.match(indexSource,/function getMilitaryPrecomposedRibbonAsset\(ribbonObj\)/);
