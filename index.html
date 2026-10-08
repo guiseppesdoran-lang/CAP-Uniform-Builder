@@ -12450,8 +12450,11 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(typeof State==='undefined') return;
     const status=safeBy('topStatusText'), uniform=safeBy('topUniformText'), items=safeBy('topItemsText');
     const warnings=parseInt((safeBy('capubV2WarningCount')||{}).textContent||'0',10)||0;
-    if(status) status.textContent = warnings ? `${warnings} warning${warnings===1?'':'s'}` : 'Good';
-    if(uniform) uniform.textContent = State.uniform ? State.uniform.replace(/_/g,' ').toUpperCase() : 'None';
+    // Until membership, rank and cut are chosen the defaults would read as a real
+    // selection ("BLUES A", "3 warnings") over an empty preview.
+    const setupNeeded = (State.organization||'CAP')==='CAP' && !(State.membership && State.rank && State.gender);
+    if(status) status.textContent = setupNeeded ? 'Setup needed' : (warnings ? `${warnings} warning${warnings===1?'':'s'}` : 'Good');
+    if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? State.uniform.replace(/_/g,' ').toUpperCase() : '—';
     if(items) items.textContent = ((State.ribbons||[]).length + (State.badges||[]).length + (State.patches||[]).length).toString();
     const auth = (typeof UI_AUTHZ !== 'undefined' && UI_AUTHZ[State.uniform]) || {showBadges:true,showPatches:true};
     safeBy('cmdBadges')?.classList.toggle('hidden', !auth.showBadges);
