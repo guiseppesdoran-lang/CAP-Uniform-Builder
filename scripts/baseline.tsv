@@ -1,5 +1,5 @@
 # CAP Uniform Builder ribbon rack baseline (structural)
-# generated=2026-08-23T20:07:14.506Z families=68 entries=1712
+# generated=2026-08-23T20:15:37.618Z families=68 entries=1712
 # capture=structural-only; pixel hashing requires a visible pane, see runHarness({pixels:true})
 # columns: family	value	label	instances	devices	structHash	box
 air_force_aerial_achievement_medal	mcchord_50601	Basic Award	1	0	0cefedcd58f60df4	31x15
@@ -850,24 +850,24 @@ unit_citation_award	capub_total_83	83rd Award	5	18	26464541a3614c1e	77x22
 unit_citation_award	capub_total_84	84th Award	4	16	d9e8dd623021282a	77x22
 national_commanders_citation	earned	Earned	1	0	9aacf52b1839efed	31x15
 cap_gill_robb_wilson_ribbon	mcchord_40000	Basic Award	1	0	bc2dcf349e349a39	31x15
-cap_gill_robb_wilson_ribbon	mcchord_40100	Bronze Star	1	0	6664d6ec7354dd62	31x15
-cap_gill_robb_wilson_ribbon	mcchord_40200	Silver Star	1	0	16828d78d292a8a0	31x15
-cap_gill_robb_wilson_ribbon	mcchord_40210	Gold Star	1	0	87c8456c787a73b5	31x15
+cap_gill_robb_wilson_ribbon	mcchord_40100	Bronze Star	1	1	87f10127e143d5ef	31x15
+cap_gill_robb_wilson_ribbon	mcchord_40200	Silver Star	1	1	6a2b7229c4d11690	31x15
+cap_gill_robb_wilson_ribbon	mcchord_40210	Gold Star	1	0	bc2dcf349e349a39	31x15
 cap_paul_e_garber_ribbon	mcchord_25000	Basic Award	1	0	db27e1f45d67e89e	31x15
-cap_paul_e_garber_ribbon	mcchord_25100	Bronze Star	1	0	380fa95db7d03116	31x15
-cap_paul_e_garber_ribbon	mcchord_25110	Silver Star	1	0	3f8183e6bac1ac29	31x15
-cap_paul_e_garber_ribbon	mcchord_25120	Gold Star	1	0	30252e33eb01f56b	31x15
+cap_paul_e_garber_ribbon	mcchord_25100	Bronze Star	1	1	3e6a55b015452c93	31x15
+cap_paul_e_garber_ribbon	mcchord_25110	Silver Star	1	1	5d783f2682143e7d	31x15
+cap_paul_e_garber_ribbon	mcchord_25120	Gold Star	1	0	db27e1f45d67e89e	31x15
 cap_grover_loening_aerospace_ribbon	earned	Earned	1	0	a1bf0666b1cc4c55	31x15
 cap_leadership_ribbon	mcchord_26900	Basic Award	1	0	3c7abc5da1277139	31x15
-cap_leadership_ribbon	mcchord_27000	Bronze Star	1	0	0f575bf0125bf44c	31x15
-cap_leadership_ribbon	mcchord_27300	Silver Star	1	0	a083ebfc077e9427	31x15
-cap_leadership_ribbon	mcchord_27100	B-B Stars	1	0	ab0636a68c7bbd8b	31x15
-cap_leadership_ribbon	mcchord_27400	S-B Stars	1	0	c3dac7aafd575538	31x15
-cap_leadership_ribbon	mcchord_27600	S-S Stars	1	0	d1cf5148bc5ca47d	31x15
-cap_leadership_ribbon	mcchord_27200	B-B-B Stars	1	0	2737f9def9080975	31x15
-cap_leadership_ribbon	mcchord_27500	S-B-B Stars	1	0	7eda6e9693a54dd6	31x15
-cap_leadership_ribbon	mcchord_27700	S-S-B Stars	1	0	86af31a6b4ed7389	31x15
-cap_leadership_ribbon	mcchord_27800	S-S-S Stars	1	0	877de811e9d49b43	31x15
+cap_leadership_ribbon	mcchord_27000	Bronze Star	1	1	321a9bb7c51bc48a	31x15
+cap_leadership_ribbon	mcchord_27300	Silver Star	1	1	72d2424be87783be	31x15
+cap_leadership_ribbon	mcchord_27100	B-B Stars	1	2	aaff67fb6f79e4d7	31x15
+cap_leadership_ribbon	mcchord_27400	S-B Stars	1	2	434af84cdaf38624	31x15
+cap_leadership_ribbon	mcchord_27600	S-S Stars	1	2	3079be5a440ea28a	31x15
+cap_leadership_ribbon	mcchord_27200	B-B-B Stars	1	3	8c9fe301e615b6a6	31x15
+cap_leadership_ribbon	mcchord_27500	S-B-B Stars	1	3	286af9a35b7f39ae	31x15
+cap_leadership_ribbon	mcchord_27700	S-S-B Stars	1	3	1db53a598a26d753	31x15
+cap_leadership_ribbon	mcchord_27800	S-S-S Stars	1	3	ba38b33ef51ba2a8	31x15
 cap_membership_ribbon	earned	Earned	1	0	17d5895b4f3650b7	31x15
 cap_a_scott_crossfield_ribbon	earned	Earned	1	0	592471507935943f	31x15
 cap_bridgadier_general_charles_yaeger_ribbon	earned	Earned	1	0	b073adf5f87ea994	31x15
@@ -1474,39 +1474,39 @@ community_service_ribbon	capub_total_83	4,980 Hours	5	0	07a6db7db812f537	77x22
 community_service_ribbon	capub_total_84	5,040 Hours	4	0	fdbe1ecfc4690c2a	77x22
 iace_ribbon	earned	Earned	1	0	785689a872df0b39	31x15
 national_cadet_competition_ribbon	mcchord_30200	Basic Award	1	0	ecc3f5d880c02da6	31x15
-national_cadet_competition_ribbon	mcchord_30300	Bronze Star	1	0	7185f75062c00ef8	31x15
-national_cadet_competition_ribbon	mcchord_30600	Silver Star	1	0	3e435be170c5ee09	31x15
-national_cadet_competition_ribbon	mcchord_30400	B-B Stars	1	0	7aa300d632a96a9d	31x15
-national_cadet_competition_ribbon	mcchord_30700	S-B Stars	1	0	5e7e0c2c7c0fe390	31x15
-national_cadet_competition_ribbon	mcchord_30900	S-S Stars	1	0	f1329919f17a1096	31x15
-national_cadet_competition_ribbon	mcchord_30500	B-B-B Stars	1	0	4ee00c764c4114eb	31x15
-national_cadet_competition_ribbon	mcchord_30800	S-B-B Stars	1	0	c1163a5ebaef91f0	31x15
-national_cadet_competition_ribbon	mcchord_31000	S-S-B Stars	1	0	10c46544c65fb180	31x15
-national_cadet_competition_ribbon	mcchord_31100	S-S-S Stars	1	0	eb53ab302b4701be	31x15
-national_cadet_competition_ribbon	mcchord_31110	B-B-B-B Stars	1	0	5803c36f4df4ca19	31x15
-national_cadet_competition_ribbon	mcchord_31120	S-B-B-B Stars	1	0	598a53d7c04c4087	31x15
-national_cadet_competition_ribbon	mcchord_31130	S-S-B-B Stars	1	0	78ebbe53ba097c5f	31x15
-national_cadet_competition_ribbon	mcchord_31140	S-S-S-B Stars	1	0	0154b877352b1c6d	31x15
-national_cadet_competition_ribbon	mcchord_31150	S-S-S-S Stars	1	0	1bfdc9cc0f2fb192	31x15
+national_cadet_competition_ribbon	mcchord_30300	Bronze Star	1	1	69aab6afed39b3b9	31x15
+national_cadet_competition_ribbon	mcchord_30600	Silver Star	1	1	cb6d4804a9c25f6c	31x15
+national_cadet_competition_ribbon	mcchord_30400	B-B Stars	1	2	f15e55a6acf9e883	31x15
+national_cadet_competition_ribbon	mcchord_30700	S-B Stars	1	2	41b897c875bc3091	31x15
+national_cadet_competition_ribbon	mcchord_30900	S-S Stars	1	2	d70999e83afcf9d5	31x15
+national_cadet_competition_ribbon	mcchord_30500	B-B-B Stars	1	3	7f198c822b2f118f	31x15
+national_cadet_competition_ribbon	mcchord_30800	S-B-B Stars	1	3	2dc4e4f8ff4b0636	31x15
+national_cadet_competition_ribbon	mcchord_31000	S-S-B Stars	1	3	888e0ae1227ddc76	31x15
+national_cadet_competition_ribbon	mcchord_31100	S-S-S Stars	1	3	5ab93065382176b5	31x15
+national_cadet_competition_ribbon	mcchord_31110	B-B-B-B Stars	1	4	3b607ad462cfc0ba	31x15
+national_cadet_competition_ribbon	mcchord_31120	S-B-B-B Stars	1	4	d29136e1ff1d5e95	31x15
+national_cadet_competition_ribbon	mcchord_31130	S-S-B-B Stars	1	4	4c4b5f515d58d731	31x15
+national_cadet_competition_ribbon	mcchord_31140	S-S-S-B Stars	1	4	277a8ac2d5c17899	31x15
+national_cadet_competition_ribbon	mcchord_31150	S-S-S-S Stars	1	4	6a32148a72c462e7	31x15
 national_color_guard_competition_ribbon	mcchord_31200	Basic Award	1	0	af1a53b9e7e1c09b	31x15
-national_color_guard_competition_ribbon	mcchord_31300	Bronze Star	1	0	21e03197919ff6cb	31x15
-national_color_guard_competition_ribbon	mcchord_31600	Silver Star	1	0	a763d9ed262604f7	31x15
-national_color_guard_competition_ribbon	mcchord_31400	B-B Stars	1	0	0072b372d68487d5	31x15
-national_color_guard_competition_ribbon	mcchord_31700	S-B Stars	1	0	d8126a8893b99dc9	31x15
-national_color_guard_competition_ribbon	mcchord_31900	S-S Stars	1	0	7bf5200356de71e4	31x15
-national_color_guard_competition_ribbon	mcchord_31500	B-B-B Stars	1	0	8854c330d8818663	31x15
-national_color_guard_competition_ribbon	mcchord_31800	S-B-B Stars	1	0	e1465453d5d85931	31x15
-national_color_guard_competition_ribbon	mcchord_32000	S-S-B Stars	1	0	2836a825163613ca	31x15
-national_color_guard_competition_ribbon	mcchord_32100	S-S-S Stars	1	0	416014577692ea00	31x15
-national_color_guard_competition_ribbon	mcchord_32110	B-B-B-B Stars	1	0	12bce02ca9b72fcb	31x15
-national_color_guard_competition_ribbon	mcchord_32120	S-B-B-B Stars	1	0	16b09b6f85652a5a	31x15
-national_color_guard_competition_ribbon	mcchord_32130	S-S-B-B Stars	1	0	385b6b67a0bc59a2	31x15
-national_color_guard_competition_ribbon	mcchord_32140	S-S-S-B Stars	1	0	ce984e2c88d2edcc	31x15
-national_color_guard_competition_ribbon	mcchord_32150	S-S-S-S Stars	1	0	0af6765aeaa2d77d	31x15
+national_color_guard_competition_ribbon	mcchord_31300	Bronze Star	1	1	98261d905e6dc0ed	31x15
+national_color_guard_competition_ribbon	mcchord_31600	Silver Star	1	1	26ee66c6a8bde595	31x15
+national_color_guard_competition_ribbon	mcchord_31400	B-B Stars	1	2	821cf0db97ada222	31x15
+national_color_guard_competition_ribbon	mcchord_31700	S-B Stars	1	2	b37b11d64cbae06d	31x15
+national_color_guard_competition_ribbon	mcchord_31900	S-S Stars	1	2	56b62c49461924a4	31x15
+national_color_guard_competition_ribbon	mcchord_31500	B-B-B Stars	1	3	e4f2acfc1d33c3fb	31x15
+national_color_guard_competition_ribbon	mcchord_31800	S-B-B Stars	1	3	5f77d0442206d8c6	31x15
+national_color_guard_competition_ribbon	mcchord_32000	S-S-B Stars	1	3	c5f6e541024c77b9	31x15
+national_color_guard_competition_ribbon	mcchord_32100	S-S-S Stars	1	3	76b7d378993a634c	31x15
+national_color_guard_competition_ribbon	mcchord_32110	B-B-B-B Stars	1	4	446492a192976b55	31x15
+national_color_guard_competition_ribbon	mcchord_32120	S-B-B-B Stars	1	4	38a8c49687fb6c13	31x15
+national_color_guard_competition_ribbon	mcchord_32130	S-S-B-B Stars	1	4	faaa1c667b0b7955	31x15
+national_color_guard_competition_ribbon	mcchord_32140	S-S-S-B Stars	1	4	3bf389c941b06702	31x15
+national_color_guard_competition_ribbon	mcchord_32150	S-S-S-S Stars	1	4	68967927de96d2b8	31x15
 cadet_advisory_council_ribbon	mcchord_10800	Basic Award	1	0	153426a928e31d30	31x15
-cadet_advisory_council_ribbon	mcchord_10900	Bronze Star	1	0	0e92a47edaffea49	31x15
-cadet_advisory_council_ribbon	mcchord_11100	Silver Star	1	0	cdafa33007d53f3c	31x15
-cadet_advisory_council_ribbon	mcchord_11000	Gold Star	1	0	293446710913fca3	31x15
+cadet_advisory_council_ribbon	mcchord_10900	Bronze Star	1	1	4b0174e1a9cc174e	31x15
+cadet_advisory_council_ribbon	mcchord_11100	Silver Star	1	1	7533cc778c6a6ad9	31x15
+cadet_advisory_council_ribbon	mcchord_11000	Gold Star	1	0	153426a928e31d30	31x15
 cadet_special_activity_ribbon	mcchord_32200	Basic Award	1	0	4a1feae11e79e3df	31x15
 cadet_special_activity_ribbon	mcchord_32300	2nd Award	1	1	709e210d7e7680de	31x15
 cadet_special_activity_ribbon	mcchord_32400	3rd Award	1	2	0584f7e538ccd11d	31x15

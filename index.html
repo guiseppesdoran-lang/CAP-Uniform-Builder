@@ -5901,6 +5901,7 @@ function getRibbonImageOverride(id, awardValue){
   // consumer agrees - the rack, the gallery thumbnail and the PNG export - and
   // so the per-level artwork can be deleted.
   if(CAPUB_COMPOSITED_AWARD_FAMILIES[id]) return CAPUB_COMPOSITED_AWARD_FAMILIES[id];
+  if(CAPUB_STAR_COMBO_FAMILIES[id]) return CAPUB_STAR_COMBO_FAMILIES[id];
 
   const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
   const options = Array.isArray(mcchordOptions) && mcchordOptions.length
@@ -7946,13 +7947,38 @@ function ensureRibbonObj(id){
   from the ribbon keeps the run inside its own ribbon at any rack scale:
   four devices span 4 x 4.6 = 18.4px of the 23px width.
 */
-const DEVICE_WIDTH_RATIO  = 20 / 100; // of ribbon width
-const DEVICE_HEIGHT_RATIO = 20 / 30;  // of ribbon height
-function getDeviceLayout(ribbonW, ribbonH, count){
+/*
+  Two profiles, because the baked sets differ slightly. Measured by diffing each
+  variant against its no-device base:
+
+    compact - award-count families (AA, distin, encamp, ...): a 20x20 device on
+              a 100x30 ribbon, laid contiguously. Bands run 20/40/60/80.
+    wide    - star-combo families (ncc, leader, cac, ...): a 20x23 device with
+              about 2px of air between them. Bands run 20/42/66/86.
+*/
+const DEVICE_GEOMETRY = {
+  compact: { widthRatio: 20/100, heightRatio: 20/30, gapRatio: 0/100 },
+  wide:    { widthRatio: 20/100, heightRatio: 23/30, gapRatio: 2/100 }
+};
+const DEFAULT_DEVICE_GEOMETRY = 'compact';
+
+function getDeviceLayout(ribbonW, ribbonH, count, profile = DEFAULT_DEVICE_GEOMETRY){
+  const g = DEVICE_GEOMETRY[profile] || DEVICE_GEOMETRY[DEFAULT_DEVICE_GEOMETRY];
   // Devices are square in the source art, so take whichever axis binds first.
-  const size = Math.min(ribbonW * DEVICE_WIDTH_RATIO, ribbonH * DEVICE_HEIGHT_RATIO);
-  const totalW = size * count;
-  return { size, totalW, step: size };
+  const size = Math.min(ribbonW * g.widthRatio, ribbonH * g.heightRatio);
+  const gap  = ribbonW * g.gapRatio;
+  const step = size + gap;
+  const totalW = count > 0 ? size * count + gap * (count - 1) : 0;
+  return { size, totalW, step };
+}
+
+// Families whose baked device art uses the 'wide' profile.
+const CAPUB_WIDE_DEVICE_FAMILIES = new Set([
+  'cadet_advisory_council_ribbon','cap_gill_robb_wilson_ribbon','cap_paul_e_garber_ribbon',
+  'cap_leadership_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon'
+]);
+function getDeviceGeometryProfile(ribbonId){
+  return CAPUB_WIDE_DEVICE_FAMILIES.has(normalizeRibbonId(ribbonId)) ? 'wide' : DEFAULT_DEVICE_GEOMETRY;
 }
 
 function drawDevicesOnRibbon(ribbonObj,leftPx,topPx,w,h){
@@ -7975,7 +8001,7 @@ function drawDevicesOnRibbon(ribbonObj,leftPx,topPx,w,h){
   if(!flat.length) return;
 
   flat.sort((a,b)=>(b.weight-a.weight)|| (a.label||a.id).localeCompare(b.label||b.id));
-  const layout=getDeviceLayout(w, h, flat.length);
+  const layout=getDeviceLayout(w, h, flat.length, getDeviceGeometryProfile(rid));
   let x=leftPx+(w-layout.totalW)/2;
   const y=topPx+(h-layout.size)/2;
 
@@ -8058,7 +8084,7 @@ function syncDevicesToRibbon(ribbonTileEl){
   }
   flat.sort((a,b)=>(b.weight-a.weight)|| (a.label||a.id).localeCompare(b.label||b.id));
 
-  const layout=getDeviceLayout(w, h, flat.length);
+  const layout=getDeviceLayout(w, h, flat.length, getDeviceGeometryProfile(rid));
   let x=baseLeft+(w-layout.totalW)/2;
   const y=baseTop+(h-layout.size)/2;
 
@@ -8601,6 +8627,82 @@ function capubCompositeAwardOptions(id, options){
 }
 
 /*
+  Star-combo families. Their level labels spell the device set out directly -
+  "Basic Award", "Bronze Star", "S-S-B Stars" - so the devices are parsed from
+  the label rather than derived from an award count. Each keeps one image.
+
+  Order within a run comes from deviceMeta weight (gold > silver > bronze),
+  which reproduces the label order the artwork uses.
+*/
+const CAPUB_STAR_COMBO_FAMILIES = {
+  'cadet_advisory_council_ribbon':           'cac.png',
+  'cap_gill_robb_wilson_ribbon':             'wilson.png',
+  'cap_paul_e_garber_ribbon':                'garber.png',
+  'cap_leadership_ribbon':                   'leader.png',
+  'national_cadet_competition_ribbon':       'ncc.png',
+  'national_color_guard_competition_ribbon': 'ncgc01.png'
+};
+
+function capubDevicesFromStarLabel(label){
+  const text = String(label || '').trim();
+  if(/^Basic Award$/i.test(text)) return {};
+
+  const single = /^(Bronze|Silver|Gold)\s+Star$/i.exec(text);
+  if(single){
+    const key = { bronze:'1_Bronze_Star_Device', silver:'1_Silver_Star_Device', gold:'1_Gold_Star_Device' }[single[1].toLowerCase()];
+    return { [key]: 1 };
+  }
+
+  // "S-S-B Stars" and friends.
+  const combo = /^([BSG](?:-[BSG])*)\s+Stars?$/i.exec(text);
+  if(combo){
+    const devices = {};
+    const keyFor = { b:'1_Bronze_Star_Device', s:'1_Silver_Star_Device', g:'1_Gold_Star_Device' };
+    combo[1].toLowerCase().split('-').forEach(letter => {
+      const key = keyFor[letter];
+      if(key) devices[key] = (devices[key] || 0) + 1;
+    });
+    return devices;
+  }
+  return null; // unrecognised - caller keeps the baked artwork
+}
+
+/*
+  RIBBON_SPECIAL_IMAGE_OPTIONS labels these same levels descriptively
+  ("Region Winner / Bronze Star", "2 Silver Stars + Bronze Star"), so the label
+  parser above does not match. Their values are self-describing though, e.g.
+  two_silver_stars_bronze_star, so read the devices from the value. Leading
+  context words (wing_, region_, national_, sos_, acsc_, awc_, senior_,
+  master_) are not counts and are skipped by requiring a number word.
+*/
+function capubDevicesFromStarValue(value){
+  const text = String(value || '').toLowerCase();
+  if(!text || text === 'earned' || text === 'group') return {};
+  const counts = { one:1, two:2, three:3, four:4 };
+  const keyFor = { bronze:'1_Bronze_Star_Device', silver:'1_Silver_Star_Device', gold:'1_Gold_Star_Device' };
+  const devices = {};
+  let found = false;
+  const re = /(?:^|_)(?:(one|two|three|four)_)?(bronze|silver|gold)_stars?(?=_|$)/g;
+  let m;
+  while((m = re.exec(text)) !== null){
+    const key = keyFor[m[2]];
+    devices[key] = (devices[key] || 0) + (counts[m[1]] || 1);
+    found = true;
+  }
+  return found ? devices : null;
+}
+
+function capubCompositeStarComboOptions(id, options){
+  const base = CAPUB_STAR_COMBO_FAMILIES[id];
+  if(!base) return options;
+  return options.map(opt => {
+    const devices = capubDevicesFromStarLabel(opt.label) ?? capubDevicesFromStarValue(opt.value);
+    if(devices === null || devices === undefined) return opt;
+    return { ...opt, image: base, medalImage: opt.image, devices };
+  });
+}
+
+/*
   RIBBON_SPECIAL_IMAGE_OPTIONS carries a second, semantically-keyed option list
   for these same families (bronze_clasp_1, silver_clasp_2, ...). The member
   report importer resolves to those values, so it has to composite too -
@@ -8611,6 +8713,12 @@ for(const familyId of Object.keys(CAPUB_COMPOSITED_AWARD_FAMILIES)){
   const special = RIBBON_SPECIAL_IMAGE_OPTIONS[familyId];
   if(Array.isArray(special) && special.length){
     RIBBON_SPECIAL_IMAGE_OPTIONS[familyId] = capubCompositeAwardOptions(familyId, special);
+  }
+}
+for(const familyId of Object.keys(CAPUB_STAR_COMBO_FAMILIES)){
+  const special = RIBBON_SPECIAL_IMAGE_OPTIONS[familyId];
+  if(Array.isArray(special) && special.length){
+    RIBBON_SPECIAL_IMAGE_OPTIONS[familyId] = capubCompositeStarComboOptions(familyId, special);
   }
 }
 
@@ -8783,7 +8891,7 @@ function getRibbonAwardOptions(id){
     const expanded = capubExtendMcchordOptionsTo84(id, mcchordOptions);
     return [
       { label:'- Select -', value:'', image:null, devices:{} },
-      ...capubCompositeAwardOptions(id, expanded)
+      ...capubCompositeStarComboOptions(id, capubCompositeAwardOptions(id, expanded))
     ];
   }
   const specialImageOptions = ribbonImageOptionList(id);
