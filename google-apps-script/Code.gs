@@ -1,111 +1,56 @@
-const PATCH_SUBMISSION_RECIPIENTS = [
-  'guiseppe.s.doran@gmail.com',
-  '658773@tncap.us'
-];
+/*
+  CAP Uniform Builder - submission endpoint (Google Apps Script web app).
+
+  Two features, both optional:
+    - Patch submissions: a visitor uploads a patch image; it is emailed to the
+      administrators.
+    - Calibration submissions: an administrator sends reviewed placement changes;
+      they become a GitHub issue plus a backup email. Requires the admin key.
+
+  Nothing identifying belongs in this file. Recipients, the admin key hash and the
+  GitHub token are Script Properties (Project Settings > Script properties):
+
+    CAPUB_PATCH_RECIPIENTS        comma-separated email addresses
+    CAPUB_ADMIN_PASSWORD_SHA256   SHA-256 hex of the admin key (see ADMIN KEY below)
+    CAPUB_ADMIN_SALT              optional; if set, the hash is SHA-256(salt + ":" + key)
+    CAPUB_GITHUB_TOKEN            fine-grained token limited to Issues: Read and write
+    CAPUB_GITHUB_REPOSITORY       owner/repository (optional if the default below is right)
+
+  ADMIN KEY: use a long random passphrase (20+ characters) and store only its hash
+  here. The hash is never sent to or stored in the web page.
+*/
 
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
-const ALLOWED_MIME = new Set([
-  'image/png',
-  'image/jpeg',
-  'image/webp',
-  'image/svg+xml'
-]);
+const ALLOWED_MIME = new Set(['image/png', 'image/jpeg', 'image/webp']);
 
-const HISTORY_PASSWORD_HASH_PROPERTY = 'CAPUB_ADMIN_PASSWORD_SHA256';
-const HISTORY_SPREADSHEET_ID_PROPERTY = 'CAPUB_HISTORY_SPREADSHEET_ID';
-const HISTORY_SHEET_NAME = 'Uniform History';
-const HISTORY_RETENTION_MS = 24 * 60 * 60 * 1000;
-const HISTORY_MAX_RECORDS = 500;
-const HISTORY_MAX_PROFILE_CHARS = 45000;
+const PATCH_RECIPIENTS_PROPERTY = 'CAPUB_PATCH_RECIPIENTS';
+const ADMIN_HASH_PROPERTY = 'CAPUB_ADMIN_PASSWORD_SHA256';
+const ADMIN_SALT_PROPERTY = 'CAPUB_ADMIN_SALT';
 const CALIBRATION_GITHUB_TOKEN_PROPERTY = 'CAPUB_GITHUB_TOKEN';
 const CALIBRATION_GITHUB_REPOSITORY_PROPERTY = 'CAPUB_GITHUB_REPOSITORY';
 const CALIBRATION_DEFAULT_GITHUB_REPOSITORY = 'guiseppesdoran-lang/CAP-Uniform-Builder';
 const CALIBRATION_MAX_PACKAGE_CHARS = 50000;
 const CALIBRATION_STATUS_CACHE_SECONDS = 300;
 
+// Abuse limits (counted per hour across all callers; Apps Script exposes no client address).
+const PATCH_SUBMISSIONS_PER_HOUR = 20;
+const ADMIN_FAILURES_PER_HOUR = 10;
+
 function doPost(e) {
   let requestId = '';
   try {
     const rawForm = e && e.parameter && e.parameter.payload ? e.parameter.payload : '';
     const rawBody = e && e.postData && e.postData.contents ? e.postData.contents : '';
-    const raw = rawForm || rawBody;
-    const data = JSON.parse(raw || '{}');
+    const data = JSON.parse(rawForm || rawBody || '{}');
     requestId = sanitize_(data.requestId, 120);
 
-    if (/^history_/.test(String(data.action || ''))) {
-      return handleHistoryRequest_(data, requestId);
-    }
-    if (String(data.action || '') === 'calibration_submission') {
-      return handleCalibrationSubmission_(data, requestId);
-    }
-
-    if (String(data.honeypot || '').trim()) {
-      return responsePage_({ ok: true, requestId: requestId, ignored: true });
-    }
-
-    const patchName = sanitize_(data.patchName, 120);
-    const unitName = sanitize_(data.unitName, 120);
-    const submitterName = sanitize_(data.submitterName, 100);
-    const submitterEmail = sanitize_(data.submitterEmail, 160);
-    const notes = sanitize_(data.notes, 1000);
-    const fileName = sanitize_(data.fileName, 180) || 'patch-image';
-    const mimeType = String(data.mimeType || '').trim().toLowerCase();
-    const fileData = String(data.fileData || '').replace(/\s/g, '');
-    const declaredSize = Number(data.fileSize || 0);
-
-    if (!patchName && !unitName) throw new Error('Patch name or unit/activity is required.');
-    if (!fileData) throw new Error('Image data is required.');
-    if (!ALLOWED_MIME.has(mimeType)) throw new Error('Unsupported image type: ' + mimeType);
-    if (declaredSize && declaredSize > MAX_FILE_BYTES) throw new Error('Image is too large.');
-
-    const bytes = Utilities.base64Decode(fileData);
-    if (bytes.length > MAX_FILE_BYTES) throw new Error('Image is too large after decoding.');
-
-    const blob = Utilities.newBlob(bytes, mimeType, fileName);
-    const subjectParts = ['CAP Uniform Builder Patch Submission'];
-    if (patchName) subjectParts.push(patchName);
-    else if (unitName) subjectParts.push(unitName);
-    const subject = subjectParts.join(' — ');
-
-    const body = [
-      'A patch image was submitted through the CAP Uniform Builder.',
-      '',
-      'Patch name: ' + (patchName || '(not provided)'),
-      'Unit / activity: ' + (unitName || '(not provided)'),
-      'Submitted by: ' + (submitterName || '(not provided)'),
-      'Submitter email: ' + (submitterEmail || '(not provided)'),
-      'Submitted at: ' + sanitize_(data.submittedAt, 80),
-      'Builder page: ' + sanitize_(data.pageUrl, 500),
-      '',
-      'Notes:',
-      notes || '(none)',
-      '',
-      'Image file: ' + fileName,
-      'Request ID: ' + (requestId || '(none)')
-    ].join('\n');
-
-    const sendResults = sendPatchEmails_(subject, body, blob, submitterEmail);
-
-    console.log(JSON.stringify({
-      event: 'patch_submission_sent',
-      requestId: requestId,
-      patchName: patchName,
-      unitName: unitName,
-      results: sendResults
-    }));
-
-    return responsePage_({
-      ok: true,
-      requestId: requestId,
-      sendResults: sendResults
-    });
+    const action = String(data.action || '');
+    if (action === 'calibration_submission') return handleCalibrationSubmission_(data, requestId);
+    if (action) throw new Error('Unsupported action.');
+    return handlePatchSubmission_(data, requestId);
   } catch (err) {
-    console.error('Patch submission error: ' + (err && err.stack ? err.stack : err));
-    return responsePage_({
-      ok: false,
-      requestId: requestId,
-      error: String(err && err.message ? err.message : err)
-    });
+    console.error('Request error: ' + (err && err.stack ? err.stack : err));
+    return responsePage_({ ok: false, requestId: requestId, error: publicError_(err) });
   }
 }
 
@@ -124,59 +69,90 @@ function doGet(e) {
       source: 'CAPUB_CALIBRATION_SUBMISSION', ok: false, pending: true, requestId: requestId
     });
   }
-  if (mode === 'history_list') {
-    const requestId = sanitize_(e.parameter.requestId, 120);
-    const callback = String(e.parameter.callback || '');
-    try {
-      if (!/^[A-Za-z_$][A-Za-z0-9_$]{0,100}$/.test(callback)) throw new Error('Invalid history callback.');
-      verifyHistoryProof_(
-        mode,
-        requestId,
-        String(e.parameter.timestamp || ''),
-        sanitize_(e.parameter.nonce, 160),
-        String(e.parameter.signature || '')
-      );
-      const lock = LockService.getScriptLock();
-      lock.waitLock(10000);
-      let records;
-      try {
-        cleanupHistorySheet_();
-        records = readHistoryRecords_().slice(0, HISTORY_MAX_RECORDS);
-      } finally {
-        lock.releaseLock();
-      }
-      return historyJsonpResponse_(callback, { ok: true, requestId: requestId, data: { records: records } });
-    } catch (err) {
-      return historyJsonpResponse_(callback, { ok: false, requestId: requestId, error: String(err && err.message ? err.message : err) });
-    }
-  }
-  if (mode === 'status') {
-    let account = '';
-    const properties = PropertiesService.getScriptProperties();
-    try { account = Session.getEffectiveUser().getEmail(); } catch (_) {}
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        ok: true,
-        service: 'CAP Uniform Builder Patch Submission',
-        effectiveUser: account,
-        gmailAliases: safeAliases_(),
-        sharedHistoryConfigured: !!properties.getProperty(HISTORY_PASSWORD_HASH_PROPERTY),
-        calibrationGitHubConfigured: !!properties.getProperty(CALIBRATION_GITHUB_TOKEN_PROPERTY),
-        calibrationRepository: configuredCalibrationRepository_()
-      }, null, 2))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-
+  // Deliberately reveals nothing about the account, aliases or configuration.
   return HtmlService
-    .createHtmlOutput('<!doctype html><html><body style="font-family:Arial,sans-serif;padding:20px">CAP Uniform Builder patch submission endpoint is running.</body></html>')
-    .setTitle('CAP Uniform Builder Patch Submission');
+    .createHtmlOutput('<!doctype html><html><body style="font-family:Arial,sans-serif;padding:20px">CAP Uniform Builder submission endpoint.</body></html>')
+    .setTitle('CAP Uniform Builder');
 }
+
+/* ---------------------------------------------------------------- patch images */
+
+function handlePatchSubmission_(data, requestId) {
+  if (String(data.honeypot || '').trim()) {
+    return responsePage_({ ok: true, requestId: requestId });
+  }
+  takeRateLimitSlot_('patch', PATCH_SUBMISSIONS_PER_HOUR);
+
+  const patchName = sanitize_(data.patchName, 120);
+  const unitName = sanitize_(data.unitName, 120);
+  const submitterName = sanitize_(data.submitterName, 100);
+  const submitterEmail = sanitize_(data.submitterEmail, 160);
+  const notes = sanitize_(data.notes, 1000);
+  const fileName = safeFileName_(data.fileName) || 'patch-image';
+  const mimeType = String(data.mimeType || '').trim().toLowerCase();
+  const fileData = String(data.fileData || '').replace(/\s/g, '');
+  const declaredSize = Number(data.fileSize || 0);
+
+  if (!patchName && !unitName) throw new Error('Patch name or unit/activity is required.');
+  if (!fileData) throw new Error('Image data is required.');
+  if (!ALLOWED_MIME.has(mimeType)) throw new Error('Unsupported image type.');
+  if (declaredSize && declaredSize > MAX_FILE_BYTES) throw new Error('Image is too large.');
+
+  const bytes = Utilities.base64Decode(fileData);
+  if (bytes.length > MAX_FILE_BYTES) throw new Error('Image is too large after decoding.');
+  if (!matchesImageSignature_(bytes, mimeType)) throw new Error('The file is not a valid image of the declared type.');
+
+  const blob = Utilities.newBlob(bytes, mimeType, fileName);
+  const subject = ['CAP Uniform Builder Patch Submission', patchName || unitName].filter(Boolean).join(' - ');
+  const body = [
+    'A patch image was submitted through the CAP Uniform Builder.',
+    '',
+    'Patch name: ' + (patchName || '(not provided)'),
+    'Unit / activity: ' + (unitName || '(not provided)'),
+    'Submitted by: ' + (submitterName || '(not provided)'),
+    'Submitter email: ' + (submitterEmail || '(not provided)'),
+    'Submitted at: ' + sanitize_(data.submittedAt, 80),
+    'Builder page: ' + sanitize_(data.pageUrl, 500),
+    '',
+    'Notes:',
+    notes || '(none)',
+    '',
+    'Image file: ' + fileName,
+    'Request ID: ' + (requestId || '(none)')
+  ].join('\n');
+
+  const sent = sendEmails_(subject, body, [blob], submitterEmail, 'CAP Uniform Builder Patch Submission');
+  console.log(JSON.stringify({ event: 'patch_submission_sent', requestId: requestId, delivered: sent.delivered, failed: sent.failed }));
+  // Report counts only: never echo the administrators' addresses back to the visitor.
+  return responsePage_({ ok: true, requestId: requestId, data: { delivered: sent.delivered } });
+}
+
+/* Magic-number check, so a renamed file or script cannot ride in as an image. */
+function matchesImageSignature_(bytes, mimeType) {
+  const b = bytes.map(function(v) { return (v + 256) % 256; });
+  if (mimeType === 'image/png') {
+    return b.length > 8 && b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47 &&
+           b[4] === 0x0D && b[5] === 0x0A && b[6] === 0x1A && b[7] === 0x0A;
+  }
+  if (mimeType === 'image/jpeg') return b.length > 3 && b[0] === 0xFF && b[1] === 0xD8 && b[2] === 0xFF;
+  if (mimeType === 'image/webp') {
+    return b.length > 12 && b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 &&
+           b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50;
+  }
+  return false;
+}
+
+function safeFileName_(value) {
+  return sanitize_(value, 120).replace(/[^A-Za-z0-9._ -]/g, '_').replace(/^\.+/, '');
+}
+
+/* ---------------------------------------------------------- calibration updates */
 
 function handleCalibrationSubmission_(data, requestId) {
   const source = 'CAPUB_CALIBRATION_SUBMISSION';
   let result;
   try {
-    verifyHistoryAdmin_(data.adminPassword);
+    verifyAdmin_(data.adminPassword);
     if (!requestId) throw new Error('A calibration request ID is required.');
     const existingResult = getCalibrationSubmissionResult_(requestId);
     if (existingResult) return responsePage_(existingResult);
@@ -208,22 +184,21 @@ function handleCalibrationSubmission_(data, requestId) {
       console.error('Calibration GitHub issue creation failed: ' + issueError);
     }
 
-    let sendResults = [];
+    let delivered = 0;
     let emailError = '';
     try {
-      sendResults = sendCalibrationEmails_(calibrationPackage, packageJson, previewBlob, requestId, issue, issueError);
+      delivered = sendCalibrationEmails_(calibrationPackage, packageJson, previewBlob, requestId, issue, issueError).delivered;
     } catch (err) {
       emailError = String(err && err.message ? err.message : err);
       console.error('Calibration backup email failed: ' + emailError);
     }
 
-    const emailFallback = !issue && sendResults.length > 0;
+    const emailFallback = !issue && delivered > 0;
     result = {
       source: source,
       ok: !!issue,
       requestId: requestId,
       error: issue ? '' : ('GitHub issue creation failed: ' + (issueError || 'unknown error')),
-      sendResults: sendResults,
       data: {
         issueNumber: issue ? issue.number : null,
         issueUrl: issue ? issue.html_url : '',
@@ -237,7 +212,7 @@ function handleCalibrationSubmission_(data, requestId) {
       source: source,
       ok: false,
       requestId: requestId,
-      error: String(err && err.message ? err.message : err),
+      error: publicError_(err),
       data: { emailFallback: false }
     };
   }
@@ -286,7 +261,7 @@ function createCalibrationGitHubIssue_(calibrationPackage, packageJson, requestI
     '### Requested correction',
     notes,
     '',
-    '### Codex instructions',
+    '### Applying this correction',
     'Apply the machine-readable calibration package below to the matching gender-specific uniform bucket. Preserve unrelated coordinates, verify proportions and layer behavior, run the repository checks, and open or update a pull request.',
     '',
     '<details><summary>Machine-readable calibration package</summary>',
@@ -335,7 +310,7 @@ function sendCalibrationEmails_(calibrationPackage, packageJson, previewBlob, re
   const context = calibrationPackage.context || {};
   const submitter = calibrationPackage.submitter || {};
   const title = sanitize_(calibrationPackage.title, 140) || 'Calibration update';
-  const subject = 'CAP Uniform Builder Calibration Submission — ' + title;
+  const subject = 'CAP Uniform Builder Calibration Submission - ' + title;
   const body = [
     'A calibration update was submitted through the CAP Uniform Builder.',
     '',
@@ -357,22 +332,8 @@ function sendCalibrationEmails_(calibrationPackage, packageJson, previewBlob, re
   ].join('\n');
   const attachments = [Utilities.newBlob(packageJson, 'application/json', 'CAPUB_calibration_' + requestId + '.json')];
   if (previewBlob) attachments.push(previewBlob);
-
-  const results = [];
-  PATCH_SUBMISSION_RECIPIENTS.forEach(function(recipient) {
-    try {
-      const options = { attachments: attachments.map(function(blob) { return blob.copyBlob(); }), name: 'CAP Uniform Builder Calibration Submission' };
-      const replyTo = sanitize_(submitter.email, 160);
-      if (replyTo && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(replyTo)) options.replyTo = replyTo;
-      GmailApp.sendEmail(recipient, subject, body, options);
-      results.push({ recipient: recipient, ok: true });
-    } catch (err) {
-      results.push({ recipient: recipient, ok: false, error: String(err && err.message ? err.message : err) });
-    }
-  });
-  const failed = results.filter(function(item) { return !item.ok; });
-  if (failed.length) throw new Error('Calibration email failed for: ' + failed.map(function(item) { return item.recipient; }).join(', '));
-  return results;
+  const sent = sendEmails_(subject, body, attachments, sanitize_(submitter.email, 160), 'CAP Uniform Builder Calibration Submission');
+  return sent;
 }
 
 function cacheCalibrationSubmissionResult_(requestId, result) {
@@ -399,6 +360,106 @@ function calibrationJsonpResponse_(callback, result) {
   const json = JSON.stringify(result || {}).replace(/</g, '\\u003c');
   return ContentService.createTextOutput(safeCallback + '(' + json + ');')
     .setMimeType(ContentService.MimeType.JAVASCRIPT);
+}
+
+/* ------------------------------------------------------------------- admin key */
+
+/* Constant-time comparison, so response timing does not reveal how much matched. */
+function safeEqual_(a, b) {
+  const x = String(a);
+  const y = String(b);
+  let diff = x.length ^ y.length;
+  const length = Math.max(x.length, y.length);
+  for (let i = 0; i < length; i++) {
+    diff |= (x.charCodeAt(i) || 0) ^ (y.charCodeAt(i) || 0);
+  }
+  return diff === 0;
+}
+
+function adminHash_(password) {
+  const salt = String(PropertiesService.getScriptProperties().getProperty(ADMIN_SALT_PROPERTY) || '');
+  return sha256Hex_(salt ? salt + ':' + String(password || '') : String(password || ''));
+}
+
+function verifyAdmin_(password) {
+  const properties = PropertiesService.getScriptProperties();
+  const expected = String(properties.getProperty(ADMIN_HASH_PROPERTY) || '').toLowerCase();
+  if (!/^[a-f0-9]{64}$/.test(expected)) {
+    throw new Error('Calibration submissions are not configured on this endpoint.');
+  }
+  // Stop guessing: after repeated failures, refuse everyone until the window passes.
+  if (rateLimitCount_('admin-failures') >= ADMIN_FAILURES_PER_HOUR) {
+    throw new Error('Too many failed attempts. Try again later.');
+  }
+  if (!safeEqual_(adminHash_(password), expected)) {
+    recordRateLimitHit_('admin-failures');
+    throw new Error('Incorrect admin key.');
+  }
+}
+
+/* ----------------------------------------------------------------- rate limits */
+
+function rateLimitKey_(name) {
+  return 'rl_' + name + '_' + Math.floor(Date.now() / 3600000);
+}
+
+function rateLimitCount_(name) {
+  const value = CacheService.getScriptCache().get(rateLimitKey_(name));
+  return value ? Number(value) || 0 : 0;
+}
+
+function recordRateLimitHit_(name) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(5000);
+  try {
+    CacheService.getScriptCache().put(rateLimitKey_(name), String(rateLimitCount_(name) + 1), 3700);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function takeRateLimitSlot_(name, perHour) {
+  if (rateLimitCount_(name) >= perHour) throw new Error('Too many submissions right now. Try again later.');
+  recordRateLimitHit_(name);
+}
+
+/* ----------------------------------------------------------------------- email */
+
+function recipients_() {
+  const raw = String(PropertiesService.getScriptProperties().getProperty(PATCH_RECIPIENTS_PROPERTY) || '');
+  const list = raw.split(',').map(function(item) { return item.trim(); })
+    .filter(function(item) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(item); });
+  if (!list.length) throw new Error('Submissions are not configured on this endpoint.');
+  return list;
+}
+
+function sendEmails_(subject, body, blobs, replyTo, senderName) {
+  let delivered = 0;
+  let failed = 0;
+  recipients_().forEach(function(recipient) {
+    try {
+      const options = {
+        attachments: blobs.map(function(blob) { return blob.copyBlob(); }),
+        name: senderName
+      };
+      if (replyTo && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(replyTo)) options.replyTo = replyTo;
+      GmailApp.sendEmail(recipient, subject, body, options);
+      delivered++;
+    } catch (err) {
+      failed++;
+      console.error('Email failed: ' + (err && err.message ? err.message : err));
+    }
+  });
+  if (!delivered) throw new Error('The submission could not be delivered. Try again later.');
+  return { delivered: delivered, failed: failed };
+}
+
+/* Run once from the Apps Script editor to authorise Gmail and prove outbound mail works. */
+function testPatchEmail() {
+  const blob = Utilities.newBlob('CAP Uniform Builder test attachment', 'text/plain', 'capub_test.txt');
+  const sent = sendEmails_('CAP Uniform Builder - direct test', 'Direct Apps Script mail test sent at ' + new Date().toISOString(), [blob], '', 'CAP Uniform Builder');
+  console.log(JSON.stringify(sent));
+  return sent;
 }
 
 /* Run once after adding CAPUB_GITHUB_TOKEN. This is read-only: it verifies the
@@ -429,336 +490,7 @@ function testCalibrationGitHubConfiguration() {
   return result;
 }
 
-function handleHistoryRequest_(data, requestId) {
-  const source = 'CAPUB_ADMIN_HISTORY';
-  try {
-    const action = String(data.action || '');
-    if (action === 'history_record') {
-      if (String(data.honeypot || '').trim()) {
-        return responsePage_({ source: source, ok: true, requestId: requestId, data: { ignored: true } });
-      }
-      const record = normalizeHistoryRecord_(data.record, false);
-      const lock = LockService.getScriptLock();
-      lock.waitLock(10000);
-      try {
-        cleanupHistorySheet_();
-        upsertHistoryRecord_(record);
-      } finally {
-        lock.releaseLock();
-      }
-      return responsePage_({ source: source, ok: true, requestId: requestId, data: { id: record.id } });
-    }
-
-    verifyHistoryAdmin_(data.adminPassword);
-    const lock = LockService.getScriptLock();
-    lock.waitLock(10000);
-    try {
-      cleanupHistorySheet_();
-      if (action === 'history_list') {
-        return responsePage_({
-          source: source,
-          ok: true,
-          requestId: requestId,
-          data: { records: readHistoryRecords_().slice(0, HISTORY_MAX_RECORDS) }
-        });
-      }
-      if (action === 'history_save') {
-        setHistorySaved_(sanitize_(data.id, 120), !!data.saved);
-        return responsePage_({ source: source, ok: true, requestId: requestId, data: { id: sanitize_(data.id, 120), saved: !!data.saved } });
-      }
-      if (action === 'history_delete') {
-        deleteHistoryRecord_(sanitize_(data.id, 120));
-        return responsePage_({ source: source, ok: true, requestId: requestId, data: { id: sanitize_(data.id, 120) } });
-      }
-      if (action === 'history_cleanup') {
-        return responsePage_({ source: source, ok: true, requestId: requestId, data: { records: readHistoryRecords_().slice(0, HISTORY_MAX_RECORDS) } });
-      }
-      if (action === 'history_import') {
-        const records = Array.isArray(data.records) ? data.records.slice(0, HISTORY_MAX_RECORDS) : [];
-        records.forEach(function(raw) { upsertHistoryRecord_(normalizeHistoryRecord_(raw, true)); });
-        return responsePage_({ source: source, ok: true, requestId: requestId, data: { imported: records.length } });
-      }
-      throw new Error('Unsupported shared-history action.');
-    } finally {
-      lock.releaseLock();
-    }
-  } catch (err) {
-    console.error('Shared history error: ' + (err && err.stack ? err.stack : err));
-    return responsePage_({
-      source: source,
-      ok: false,
-      requestId: requestId,
-      error: String(err && err.message ? err.message : err)
-    });
-  }
-}
-
-function getHistorySheet_() {
-  const properties = PropertiesService.getScriptProperties();
-  let spreadsheetId = properties.getProperty(HISTORY_SPREADSHEET_ID_PROPERTY);
-  let spreadsheet = null;
-  if (spreadsheetId) {
-    try { spreadsheet = SpreadsheetApp.openById(spreadsheetId); }
-    catch (_) { spreadsheet = null; }
-  }
-  if (!spreadsheet) {
-    spreadsheet = SpreadsheetApp.create('CAP Uniform Builder Shared History');
-    spreadsheetId = spreadsheet.getId();
-    properties.setProperty(HISTORY_SPREADSHEET_ID_PROPERTY, spreadsheetId);
-  }
-  let sheet = spreadsheet.getSheetByName(HISTORY_SHEET_NAME);
-  if (!sheet) {
-    sheet = spreadsheet.getSheets()[0];
-    sheet.setName(HISTORY_SHEET_NAME);
-  }
-  const headers = ['id', 'createdAt', 'expiresAt', 'saved', 'summaryJson', 'profileJson'];
-  if (sheet.getLastRow() === 0 || sheet.getRange(1, 1).getValue() !== 'id') {
-    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-    sheet.setFrozenRows(1);
-  }
-  return sheet;
-}
-
-function normalizeHistoryRecord_(raw, allowSaved) {
-  if (!raw || typeof raw !== 'object' || !raw.profile || typeof raw.profile !== 'object') {
-    throw new Error('A valid uniform profile is required.');
-  }
-  const profile = JSON.parse(JSON.stringify(raw.profile));
-  delete profile.calib;
-  delete profile.coordinatesByUniform;
-  delete profile.calibration;
-  const profileJson = JSON.stringify(profile);
-  if (profileJson.length > HISTORY_MAX_PROFILE_CHARS) {
-    throw new Error('The uniform profile is too large for shared history.');
-  }
-  const now = new Date();
-  const created = new Date(raw.createdAt || now.toISOString());
-  const createdAt = isNaN(created.getTime()) ? now.toISOString() : created.toISOString();
-  const saved = !!allowSaved && !!raw.saved;
-  const expiry = new Date(raw.expiresAt || (created.getTime() + HISTORY_RETENTION_MS));
-  const expiresAt = saved ? '' : (isNaN(expiry.getTime()) ? new Date(now.getTime() + HISTORY_RETENTION_MS).toISOString() : expiry.toISOString());
-  const summaryRaw = raw.summary && typeof raw.summary === 'object' ? raw.summary : {};
-  const summary = {
-    membership: sanitize_(summaryRaw.membership || profile.membership, 40),
-    gender: sanitize_(summaryRaw.gender || profile.gender, 20),
-    uniform: sanitize_(summaryRaw.uniform || profile.uniform, 60),
-    rank: sanitize_(summaryRaw.rank || profile.rank, 60),
-    ribbons: Math.max(0, Number(summaryRaw.ribbons || (Array.isArray(profile.ribbons) ? profile.ribbons.length : 0)) || 0),
-    badges: Math.max(0, Number(summaryRaw.badges || (Array.isArray(profile.badges) ? profile.badges.length : 0)) || 0),
-    patches: Math.max(0, Number(summaryRaw.patches || (Array.isArray(profile.patches) ? profile.patches.length : 0)) || 0),
-    shoulderCord: sanitize_(summaryRaw.shoulderCord || profile.shoulderCord, 80)
-  };
-  return {
-    id: sanitize_(raw.id, 120) || Utilities.getUuid(),
-    createdAt: createdAt,
-    expiresAt: expiresAt,
-    saved: saved,
-    summary: summary,
-    profile: profile,
-    profileJson: profileJson
-  };
-}
-
-function historyRowValues_(record) {
-  return [
-    record.id,
-    record.createdAt,
-    record.expiresAt || '',
-    !!record.saved,
-    JSON.stringify(record.summary || {}),
-    record.profileJson || JSON.stringify(record.profile || {})
-  ];
-}
-
-function upsertHistoryRecord_(record) {
-  const sheet = getHistorySheet_();
-  const lastRow = sheet.getLastRow();
-  let row = null;
-  if (lastRow > 1) {
-    row = sheet.getRange(2, 1, lastRow - 1, 1).createTextFinder(record.id).matchEntireCell(true).findNext();
-  }
-  if (row) sheet.getRange(row.getRow(), 1, 1, 6).setValues([historyRowValues_(record)]);
-  else sheet.appendRow(historyRowValues_(record));
-}
-
-function readHistoryRecords_() {
-  const sheet = getHistorySheet_();
-  if (sheet.getLastRow() < 2) return [];
-  const values = sheet.getRange(2, 1, sheet.getLastRow() - 1, 6).getValues();
-  return values.map(function(row) {
-    try {
-      return {
-        id: String(row[0] || ''),
-        createdAt: String(row[1] || ''),
-        expiresAt: row[2] ? String(row[2]) : null,
-        saved: row[3] === true || String(row[3]).toLowerCase() === 'true',
-        summary: JSON.parse(String(row[4] || '{}')),
-        profile: JSON.parse(String(row[5] || '{}'))
-      };
-    } catch (err) {
-      console.warn('Skipping malformed history row: ' + err);
-      return null;
-    }
-  }).filter(function(record) { return record && record.id && record.profile; })
-    .sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
-}
-
-function cleanupHistorySheet_() {
-  const sheet = getHistorySheet_();
-  if (sheet.getLastRow() < 2) return;
-  const rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, 4).getValues();
-  const now = Date.now();
-  for (let index = rows.length - 1; index >= 0; index--) {
-    const saved = rows[index][3] === true || String(rows[index][3]).toLowerCase() === 'true';
-    const expiresAt = new Date(rows[index][2]).getTime();
-    if (!saved && (!expiresAt || expiresAt <= now)) sheet.deleteRow(index + 2);
-  }
-}
-
-function findHistoryRow_(id) {
-  const sheet = getHistorySheet_();
-  if (!id || sheet.getLastRow() < 2) return null;
-  return sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).createTextFinder(id).matchEntireCell(true).findNext();
-}
-
-function setHistorySaved_(id, saved) {
-  const sheet = getHistorySheet_();
-  const match = findHistoryRow_(id);
-  if (!match) throw new Error('The shared history record was not found.');
-  sheet.getRange(match.getRow(), 4).setValue(!!saved);
-  sheet.getRange(match.getRow(), 3).setValue(saved ? '' : new Date(Date.now() + HISTORY_RETENTION_MS).toISOString());
-}
-
-function deleteHistoryRecord_(id) {
-  const sheet = getHistorySheet_();
-  const match = findHistoryRow_(id);
-  if (match) sheet.deleteRow(match.getRow());
-}
-
-function verifyHistoryAdmin_(password) {
-  const expected = String(PropertiesService.getScriptProperties().getProperty(HISTORY_PASSWORD_HASH_PROPERTY) || '').toLowerCase();
-  if (!/^[a-f0-9]{64}$/.test(expected)) {
-    throw new Error('Shared history is not configured. Add the CAPUB_ADMIN_PASSWORD_SHA256 script property.');
-  }
-  if (sha256Hex_(String(password || '')) !== expected) throw new Error('Incorrect admin password for shared history.');
-}
-
-function sha256Hex_(text) {
-  return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, text, Utilities.Charset.UTF_8)
-    .map(function(byte) { return ((byte + 256) % 256).toString(16).padStart(2, '0'); })
-    .join('');
-}
-
-function verifyHistoryProof_(action, requestId, timestamp, nonce, signature) {
-  const expectedHash = String(PropertiesService.getScriptProperties().getProperty(HISTORY_PASSWORD_HASH_PROPERTY) || '').toLowerCase();
-  if (!/^[a-f0-9]{64}$/.test(expectedHash)) {
-    throw new Error('Shared history is not configured. Add the CAPUB_ADMIN_PASSWORD_SHA256 script property.');
-  }
-  const timestampNumber = Number(timestamp);
-  if (!Number.isFinite(timestampNumber) || Math.abs(Date.now() - timestampNumber) > 5 * 60 * 1000) {
-    throw new Error('The admin history request expired. Refresh and try again.');
-  }
-  if (!requestId || !nonce || !/^[a-f0-9]{64}$/i.test(signature)) throw new Error('Invalid admin history proof.');
-  const message = [action, requestId, timestamp, nonce].join(':');
-  const keyBytes = [];
-  for (let index = 0; index < expectedHash.length; index += 2) keyBytes.push(parseInt(expectedHash.slice(index, index + 2), 16));
-  const actual = Utilities.computeHmacSha256Signature(Utilities.newBlob(message).getBytes(), keyBytes)
-    .map(function(byte) { return ((byte + 256) % 256).toString(16).padStart(2, '0'); })
-    .join('');
-  if (actual !== String(signature).toLowerCase()) throw new Error('Incorrect admin password for shared history.');
-}
-
-function historyJsonpResponse_(callback, result) {
-  const safeCallback = /^[A-Za-z_$][A-Za-z0-9_$]{0,100}$/.test(callback) ? callback : 'capubHistoryInvalidCallback';
-  const json = JSON.stringify({
-    source: 'CAPUB_ADMIN_HISTORY',
-    ok: !!result.ok,
-    requestId: String(result.requestId || ''),
-    error: result.error ? String(result.error) : '',
-    data: result.data || null
-  }).replace(/</g, '\\u003c');
-  return ContentService.createTextOutput(safeCallback + '(' + json + ');')
-    .setMimeType(ContentService.MimeType.JAVASCRIPT);
-}
-
-function sendPatchEmails_(subject, body, blob, replyTo) {
-  const results = [];
-  PATCH_SUBMISSION_RECIPIENTS.forEach(function(recipient) {
-    try {
-      const options = {
-        attachments: [blob.copyBlob()],
-        name: 'CAP Uniform Builder Patch Submission'
-      };
-      if (replyTo && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(replyTo)) {
-        options.replyTo = replyTo;
-      }
-
-      GmailApp.sendEmail(recipient, subject, body, options);
-      results.push({ recipient: recipient, ok: true });
-      console.log('Patch email sent to ' + recipient);
-    } catch (err) {
-      results.push({ recipient: recipient, ok: false, error: String(err && err.message ? err.message : err) });
-      console.error('Patch email failed for ' + recipient + ': ' + (err && err.stack ? err.stack : err));
-    }
-  });
-
-  const failed = results.filter(function(r) { return !r.ok; });
-  if (failed.length) {
-    throw new Error('Email failed for: ' + failed.map(function(r) {
-      return r.recipient + ' (' + r.error + ')';
-    }).join('; '));
-  }
-  return results;
-}
-
-/*
-  Run this ONCE manually from the Apps Script editor after pasting this version.
-  It forces Google to request the Gmail authorization scope and proves that the
-  script account itself can send mail before the web-app upload path is tested.
-*/
-function testPatchEmail() {
-  const subject = 'CAP Uniform Builder Patch Submission — Direct Test';
-  const body = [
-    'This is a direct Apps Script mail test.',
-    '',
-    'If you received this message, Gmail authorization and outbound mail are working.',
-    'Effective user: ' + Session.getEffectiveUser().getEmail(),
-    'Time: ' + new Date().toISOString()
-  ].join('\n');
-
-  const testBlob = Utilities.newBlob(
-    'CAP Uniform Builder patch submission test attachment',
-    'text/plain',
-    'capub_patch_test.txt'
-  );
-
-  const results = sendPatchEmails_(subject, body, testBlob, '');
-  console.log(JSON.stringify(results));
-  return results;
-}
-
-/* Run once after configuring CAPUB_ADMIN_PASSWORD_SHA256. This creates the
-   shared-history spreadsheet and requests the required Sheets authorization. */
-function testSharedHistoryStorage() {
-  const expected = String(PropertiesService.getScriptProperties().getProperty(HISTORY_PASSWORD_HASH_PROPERTY) || '').toLowerCase();
-  if (!/^[a-f0-9]{64}$/.test(expected)) {
-    throw new Error('Add a valid CAPUB_ADMIN_PASSWORD_SHA256 script property first.');
-  }
-  const sheet = getHistorySheet_();
-  const result = {
-    ok: true,
-    spreadsheetId: sheet.getParent().getId(),
-    spreadsheetUrl: sheet.getParent().getUrl(),
-    sheetName: sheet.getName()
-  };
-  console.log(JSON.stringify(result));
-  return result;
-}
-
-function safeAliases_() {
-  try { return GmailApp.getAliases(); }
-  catch (err) { return ['ERROR: ' + String(err && err.message ? err.message : err)]; }
-}
+/* --------------------------------------------------------------------- helpers */
 
 function sanitize_(value, maxLen) {
   return String(value == null ? '' : value)
@@ -767,13 +499,24 @@ function sanitize_(value, maxLen) {
     .slice(0, maxLen || 500);
 }
 
+function sha256Hex_(text) {
+  return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, text, Utilities.Charset.UTF_8)
+    .map(function(byte) { return ((byte + 256) % 256).toString(16).padStart(2, '0'); })
+    .join('');
+}
+
+/* Error text for the web page: configuration problems are described generically. */
+function publicError_(err) {
+  const message = String(err && err.message ? err.message : err);
+  return message.slice(0, 200);
+}
+
 function responsePage_(result) {
   const json = JSON.stringify({
     source: result.source || 'CAPUB_PATCH_SUBMISSION',
     ok: !!result.ok,
     requestId: String(result.requestId || ''),
     error: result.error ? String(result.error) : '',
-    sendResults: result.sendResults || null,
     data: result.data || null
   }).replace(/</g, '\\u003c');
 
