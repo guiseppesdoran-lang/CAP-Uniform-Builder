@@ -12398,24 +12398,88 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(!scroll || safeBy('capubProgress')) return;
     const box=document.createElement('div'); box.id='capubProgress'; box.className='capubProgress';
     box.innerHTML=`
-      <div class="capubStep" data-step="profile"><strong>1. Profile</strong><span>Member + rank</span></div>
-      <div class="capubStep" data-step="uniform"><strong>2. Uniform</strong><span>Style + cut</span></div>
-      <div class="capubStep" data-step="items"><strong>3. Items</strong><span>Ribbons/badges</span></div>
-      <div class="capubStep" data-step="export"><strong>4. Export</strong><span>Validate + PNG</span></div>`;
+      <button type="button" class="capubStep" data-step="profile"><strong>1. Profile</strong><span>Member + rank</span></button>
+      <button type="button" class="capubStep" data-step="uniform"><strong>2. Uniform</strong><span>Style + cut</span></button>
+      <button type="button" class="capubStep" data-step="items"><strong>3. Items</strong><span>Ribbons &amp; badges</span></button>
+      <button type="button" class="capubStep" data-step="export"><strong>4. Export</strong><span>Validate + PNG</span></button>`;
     scroll.prepend(box);
+    box.addEventListener('click',e=>{
+      const step=e.target.closest('.capubStep'); if(step) goToStep(step.dataset.step);
+    });
     const help=document.createElement('div'); help.className='capubSectionHint';
     help.innerHTML='<span>★</span><div><b>Fast workflow:</b> start at the top, then use the floating buttons at the bottom for the item galleries and download.</div>';
     scroll.insertBefore(help, box.nextSibling);
   }
-  function updateProgress(){
-    const steps=[...document.querySelectorAll('.capubStep')]; if(!steps.length || typeof State==='undefined') return;
+  // Where each step lives in the sidebar, in the order a member works through them.
+  const STEP_ORDER=['profile','uniform','items','export'];
+  const STEP_TARGETS={profile:'capMembershipPanel',uniform:'uniformBlock',items:'groupRibbons',export:'capubV2StatusPanel'};
+  // Awards are optional, so Export only waits on profile and uniform.
+  const STEP_PREREQS={profile:[],uniform:['profile'],items:['profile','uniform'],export:['profile','uniform']};
+  function getStepStatuses(){
     const hasProfile=!!(State.membership && State.rank);
     const hasUniform=!!(State.gender && State.uniform);
     const hasItems=!!((State.ribbons&&State.ribbons.length)||(State.badges&&State.badges.length)||(State.patches&&State.patches.length));
     const warnings=parseInt((safeBy('capubV2WarningCount')||{}).textContent||'0',10)||0;
-    const statuses={profile:hasProfile,uniform:hasUniform,items:hasItems,export:hasProfile&&hasUniform&&warnings===0};
-    let current='profile'; if(hasProfile) current='uniform'; if(hasProfile&&hasUniform) current='items'; if(hasProfile&&hasUniform&&hasItems) current='export';
-    steps.forEach(st=>{ const k=st.dataset.step; st.classList.toggle('done',!!statuses[k]); st.classList.toggle('current',k===current && !statuses[k]); });
+    const done={profile:hasProfile,uniform:hasProfile&&hasUniform,items:hasProfile&&hasUniform&&hasItems,export:hasProfile&&hasUniform&&hasItems&&warnings===0};
+    const current=STEP_ORDER.find(k=>!done[k]) || 'export';
+    return {done,current};
+  }
+  // A step is reachable once its prerequisites are done; clicking a blocked step
+  // takes the member to the first unfinished one instead of an inert panel.
+  function goToStep(step){
+    const {done,current}=getStepStatuses();
+    const reachable=STEP_PREREQS[step].every(k=>done[k]);
+    const target=safeBy(STEP_TARGETS[reachable?step:current]);
+    if(!target) return;
+    if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
+    target.scrollIntoView({behavior:'smooth',block:'start'});
+    const focusable=target.querySelector('select:not(:disabled),input:not(:disabled):not([type=hidden])');
+    if(focusable) setTimeout(()=>focusable.focus({preventScroll:true}),250);
+  }
+  function updateProgress(){
+    const steps=[...document.querySelectorAll('.capubStep')]; if(!steps.length || typeof State==='undefined') return;
+    const {done,current}=getStepStatuses();
+    steps.forEach(st=>{
+      const k=st.dataset.step;
+      const reachable=STEP_PREREQS[k].every(p=>done[p]);
+      st.classList.toggle('done',!!done[k]);
+      st.classList.toggle('current',k===current && !done[k]);
+      st.classList.toggle('blocked',!reachable);
+      if(k===current && !done[k]) st.setAttribute('aria-current','step'); else st.removeAttribute('aria-current');
+      st.title = reachable ? '' : 'Finish the earlier steps first';
+    });
+  }
+  // The preview stays blank until membership, rank and cut are all chosen, which
+  // read as a broken page. Say what is missing and offer the next action instead.
+  function getProfileGaps(){
+    return [
+      {label:'Membership type',target:'membershipType',ok:!!State.membership},
+      {label:'Rank',target:'rankSetupSelect',ok:!!State.rank},
+      {label:'Cut (male or female)',target:'jacketSelect',ok:!!State.gender}
+    ];
+  }
+  function ensureEmptyState(){
+    const area=safeBy('previewArea'); if(!area || safeBy('previewEmptyState')) return;
+    const box=document.createElement('div'); box.id='previewEmptyState'; box.className='previewEmptyState';
+    box.innerHTML='<div class="emptyTitle">Start your uniform</div><ul class="emptyChecklist" id="previewEmptyChecklist"></ul><button type="button" id="previewEmptyAction"></button>';
+    area.appendChild(box);
+    safeBy('previewEmptyAction').onclick=()=>{
+      const next=getProfileGaps().find(g=>!g.ok); if(!next) return;
+      if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
+      const el=safeBy(next.target); if(!el) return;
+      el.scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(()=>el.focus({preventScroll:true}),250);
+    };
+  }
+  function updateEmptyState(){
+    const box=safeBy('previewEmptyState'); if(!box || typeof State==='undefined') return;
+    const gaps=getProfileGaps();
+    const next=gaps.find(g=>!g.ok);
+    const show=!!next && (State.organization||'CAP')==='CAP';
+    box.hidden=!show;
+    if(!show) return;
+    safeBy('previewEmptyChecklist').innerHTML=gaps.map(g=>`<li class="${g.ok?'ok':''}">${g.label}</li>`).join('');
+    safeBy('previewEmptyAction').textContent='Choose '+next.label.replace(/ \(.*\)$/,'').toLowerCase();
   }
   function ensurePreviewToolbar(){
     const wrap=safeBy('previewWrapper'); if(!wrap || safeBy('previewToolbar')) return;
@@ -12478,7 +12542,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(typeof State==='undefined') return;
     document.querySelectorAll('.uniformOption').forEach(btn=>btn.classList.toggle('activeUniform',btn.dataset.uniformId===State.uniform));
   }
-  function refreshAll(){ ensureProgress(); ensurePreviewToolbar(); ensureCommandBar(); polishPanels(); updateProgress(); updateTopBar(); markActiveUniform(); }
+  function refreshAll(){ ensureProgress(); ensureEmptyState(); updateEmptyState(); ensurePreviewToolbar(); ensureCommandBar(); polishPanels(); updateProgress(); updateTopBar(); markActiveUniform(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
     fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); scheduleRefresh(); return result; };
