@@ -903,12 +903,12 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
-          <img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${title}">
+          <img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">
           <div style="flex:1;min-width:0;">
-            <div class="title">${title}</div>
-            <div class="sub">(${id})</div>
+            <div class="title">${escapeHtml(title)}</div>
+            <div class="sub">(${escapeHtml(id)})</div>
             <div class="miniRow"><label><input type="checkbox" class="ptChk"> Add</label></div>
-            <div class="sub">Slot hint: <b>${meta.slotHint}</b> • Size: ${meta.w}×${meta.h} px • Path: images/${meta.img}</div>
+            <div class="sub">Slot hint: <b>${escapeHtml(meta.slotHint)}</b> • Size: ${meta.w}×${meta.h} px • Path: images/${meta.img}</div>
           </div>`;
 
         const chk = tile.querySelector('.ptChk');
@@ -918,7 +918,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
           tile.classList.add('disabledBlock');
           const sub = tile.querySelector('.sub:last-child');
           const reason = getPatchAuthorizationReason(id);
-          if(sub) sub.innerHTML += ` • <b>${reason || 'Not authorized on current uniform'}</b>`;
+          if(sub) sub.innerHTML += ` • <b>${escapeHtml(reason || 'Not authorized on current uniform')}</b>`;
         }
         chk.onchange = () => {
           if(!authorized){ chk.checked = false; sel.checked = false; return; }
@@ -984,10 +984,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
-          <img loading="lazy" decoding="async" src="${utilityMode ? capubUtilityBadgePreviewUrl(id) : ASSET(previewPath)}" alt="${title}"${utilityMode ? ' class="utilityBadgePreview"' : ''}>
+          <img loading="lazy" decoding="async" src="${utilityMode ? capubUtilityBadgePreviewUrl(id) : ASSET(previewPath)}" alt="${escapeHtml(title)}"${utilityMode ? ' class="utilityBadgePreview"' : ''}>
           <div style="flex:1;min-width:0;">
-            <div class="title">${title}${rareCadetTag}</div>
-            <div class="sub">(${id})${utilityMode ? ' • Silver-on-blue utility badge' : ''}</div>
+            <div class="title">${escapeHtml(title)}${rareCadetTag}</div>
+            <div class="sub">(${escapeHtml(id)})${utilityMode ? ' • Silver-on-blue utility badge' : ''}</div>
             <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
             ${id==='squadron_commander_badge' && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
             <div class="sub">Slot: <b>${utilityMode ? 'Utility uniform calibrated field slot' : getBadgeSlotLabel(id)}</b> • Regulation scale: ${Math.round(getBadgeRenderSize(id).width)}×${Math.round(getBadgeRenderSize(id).height)} px</div>

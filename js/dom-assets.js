@@ -52,6 +52,11 @@ function normalizeAssetSubpath(p){
     .replace(/^\//, '')
     .replace(/^images\//i, '');
 }
+// Escape text before it goes into an HTML template string. Use it for every value that is not
+// a compile-time constant (ids, labels, anything that came from saved or imported data).
+function escapeHtml(value){
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
 function ASSET(p){
   const b=(State.assetBase||'images').replace(/\\/g,'/').replace(/\/$/,'');
   const sub = normalizeAssetSubpath(p);

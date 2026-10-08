@@ -60,9 +60,9 @@ document.addEventListener('mouseover', e => {
     const why  =t.dataset.tooltipWhy||'';
 
     tooltipEl.innerHTML = `
-      <strong>${title}</strong>
-      ${reg ? `<div>${reg}</div>`:''}
-      ${why ? `<div><em>${why}</em></div>`:''}
+      <strong>${escapeHtml(title)}</strong>
+      ${reg ? `<div>${escapeHtml(reg)}</div>`:''}
+      ${why ? `<div><em>${escapeHtml(why)}</em></div>`:''}
     `;
     tooltipEl.style.display='block';
   }

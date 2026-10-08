@@ -872,30 +872,30 @@ function buildRibbonGallery(){
     const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
     const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
     const miniPreview = miniPath
-      ? `<div class="miniMedalPreview"><span>Mini medal</span><img loading="lazy" decoding="async" alt="${title} mini medal"></div>`
+      ? `<div class="miniMedalPreview"><span>Mini medal</span><img loading="lazy" decoding="async" alt="${escapeHtml(title)} mini medal"></div>`
       : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
     const options = getRibbonAwardOptions(id).map(opt => {
       const selected = (sel.awardValue || '') === opt.value ? 'selected' : '';
-      return `<option value="${opt.value}" ${selected}>${opt.label}</option>`;
+      return `<option value="${escapeHtml(opt.value)}" ${selected}>${escapeHtml(opt.label)}</option>`;
     }).join('');
     const deviceSummary = Object.entries(sel.devices || {})
       .filter(([,qty]) => Number(qty) > 0)
-      .map(([devId,qty]) => `${deviceMeta[devId]?.label || devId}: ${qty}`)
+      .map(([devId,qty]) => `${escapeHtml(deviceMeta[devId]?.label || devId)}: ${Number(qty)}`)
       .join(' • ');
     tile.innerHTML = `
-      <img loading="lazy" decoding="async" alt="${title}">
+      <img loading="lazy" decoding="async" alt="${escapeHtml(title)}">
       <div style="flex:1;min-width:0;">
-        <div class="title">${title}</div>
-        <div class="sub">(${id})</div>
+        <div class="title">${escapeHtml(title)}</div>
+        <div class="sub">(${escapeHtml(id)})</div>
         ${miniPreview}
         <label class="ribbonAwardLabel">
           Award count / earned level
-          <select class="rbAwardSelect" data-ribbon-id="${id}">
+          <select class="rbAwardSelect" data-ribbon-id="${escapeHtml(id)}">
             ${options}
           </select>
         </label>
         <div class="sub ribbonDeviceSummary">
-          ${sel.checked ? `Selected: <b>${sel.awardLabel || 'Earned'}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` • ${sel.deviceWarnings.join(' ')}` : ''}` : 'Not selected'}
+          ${sel.checked ? `Selected: <b>${escapeHtml(sel.awardLabel || 'Earned')}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` • ${escapeHtml(sel.deviceWarnings.join(' '))}` : ''}` : 'Not selected'}
         </div>
       </div>
     `;
@@ -1016,10 +1016,10 @@ function buildBadgeGallery(){
     const title = getBadgeDisplayName(id);
     const rareCadetTag = (State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
     tile.innerHTML = `
-      <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
+      <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
       <div style="flex:1;min-width:0;">
-        <div class="title">${title}${rareCadetTag}</div>
-        <div class="sub">(${id})</div>
+        <div class="title">${escapeHtml(title)}${rareCadetTag}</div>
+        <div class="sub">(${escapeHtml(id)})</div>
         <div class="miniRow">
           <label><input type="checkbox" class="bdChk"> Add</label>
         </div>
@@ -1121,14 +1121,14 @@ function buildPatchGallery(){
 
     const title = meta.label || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
     tile.innerHTML=`
-      <img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${title}">
+      <img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">
       <div style="flex:1;min-width:0;">
-        <div class="title">${title}</div>
-        <div class="sub">(${id})</div>
+        <div class="title">${escapeHtml(title)}</div>
+        <div class="sub">(${escapeHtml(id)})</div>
         <div class="miniRow">
           <label><input type="checkbox" class="ptChk"> Add</label>
         </div>
-        <div class="sub">Slot hint: <b>${meta.slotHint}</b> • Size: ${meta.w}×${meta.h} px</div>
+        <div class="sub">Slot hint: <b>${escapeHtml(meta.slotHint)}</b> • Size: ${meta.w}×${meta.h} px</div>
       </div>
     `;
 
@@ -1140,7 +1140,7 @@ function buildPatchGallery(){
       tile.classList.add('disabledBlock');
       const sub = tile.querySelector('.sub:last-child');
       const reason = getPatchAuthorizationReason(id);
-      if(sub) sub.innerHTML += ` • <b>${reason || 'Not authorized on current uniform'}</b>`;
+      if(sub) sub.innerHTML += ` • <b>${escapeHtml(reason || 'Not authorized on current uniform')}</b>`;
     }
 
     chk.onchange=()=>{

@@ -907,10 +907,10 @@ function openGalleryModal(kind){
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
-          <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
+          <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
           <div style="flex:1;min-width:0;">
-            <div class="title">${title}${rareCadetTag || ''}</div>
-            <div class="sub">(${id})</div>
+            <div class="title">${escapeHtml(title)}${rareCadetTag || ''}</div>
+            <div class="sub">(${escapeHtml(id)})</div>
             <div class="miniRow">
               <label><input type="checkbox" class="bdChk"> Add</label>
             </div>

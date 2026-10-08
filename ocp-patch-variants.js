@@ -84,12 +84,12 @@
       const tile = document.createElement('div');
       tile.className = `galleryTile${authorized ? '' : ' disabledBlock'}`;
       tile.innerHTML = `
-        <img src="${ASSET(meta.img)}" alt="${meta.label}">
+        <img src="${ASSET(meta.img)}" alt="${escapeHtml(meta.label)}">
         <div style="flex:1;min-width:0;">
-          <div class="title">${meta.label}</div>
-          <div class="sub">(${id})</div>
+          <div class="title">${escapeHtml(meta.label)}</div>
+          <div class="sub">(${escapeHtml(id)})</div>
           <div class="miniRow"><label><input type="checkbox" class="ptChk"> Add</label></div>
-          <div class="sub">Slot hint: <b>${meta.slotHint}</b> &bull; Size: ${meta.w}&times;${meta.h} px</div>
+          <div class="sub">Slot hint: <b>${escapeHtml(meta.slotHint)}</b> &bull; Size: ${meta.w}&times;${meta.h} px</div>
         </div>`;
       const checkbox = tile.querySelector('.ptChk');
       checkbox.checked = !!sel.checked && authorized;
