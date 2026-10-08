@@ -4517,17 +4517,17 @@ function getCanvasRenderSize(){
 }
 
 const UNIFORMS = {
-  blues_a:{male:'base/jacket_male.png',                female:'base/jacket_female.png',           ribbons:true,  mini:false},
-  blues_b:{male:'base/blues_class_b_male.png',         female:'base/blues_class_b_female.png',    ribbons:true,  mini:false},
-  mess_dress:{male:'base/mess_dress_male.png',         female:'base/mess_dress_female.png',       ribbons:false, mini:true},
-  semi_formal:{male:'base/male_semi_formal.png',        female:'base/mess_dress_female.png',       ribbons:false, mini:true},
-  aviator:{male:'base/aviator_shirt_male.png',         female:'base/aviator_shirt_female_clean.webp', ribbons:true, mini:false},
-  aviator_blazer:{male:'base/aviator_shirt_male.png',  female:'base/aviator_shirt_female_clean.webp', ribbons:true, mini:false},
-  corporate_field:{male:'base/aviator_shirt_male.png', female:'base/aviator_shirt_female.png',    ribbons:true,  mini:false},
-  abu:{male:'base/ABU_male.png',                       female:'base/ABU_female.png',               ribbons:false, mini:false},
-  ocp:{male:'base/OCP_Blouse.png',                     female:'base/OCP_Blouse.png',               ribbons:false, mini:false},
-  flight_suit:{male:'base/aviator_shirt_male.png',     female:'base/aviator_shirt_female.png',    ribbons:false, mini:false},
-  polo:{male:'base/aviator_shirt_male.png',            female:'base/aviator_shirt_female.png',    ribbons:false, mini:false}
+  blues_a:{male:'base/jacket_male.webp',                female:'base/jacket_female.webp',           ribbons:true,  mini:false},
+  blues_b:{male:'base/blues_class_b_male.webp',         female:'base/blues_class_b_female.webp',    ribbons:true,  mini:false},
+  mess_dress:{male:'base/mess_dress_male.webp',         female:'base/mess_dress_female.webp',       ribbons:false, mini:true},
+  semi_formal:{male:'base/male_semi_formal.webp',        female:'base/mess_dress_female.webp',       ribbons:false, mini:true},
+  aviator:{male:'base/aviator_shirt_male.webp',         female:'base/aviator_shirt_female_clean.webp', ribbons:true, mini:false},
+  aviator_blazer:{male:'base/aviator_shirt_male.webp',  female:'base/aviator_shirt_female_clean.webp', ribbons:true, mini:false},
+  corporate_field:{male:'base/aviator_shirt_male.webp', female:'base/aviator_shirt_female.webp',    ribbons:true,  mini:false},
+  abu:{male:'base/ABU_male.webp',                       female:'base/ABU_female.webp',               ribbons:false, mini:false},
+  ocp:{male:'base/OCP_Blouse.webp',                     female:'base/OCP_Blouse.webp',               ribbons:false, mini:false},
+  flight_suit:{male:'base/aviator_shirt_male.webp',     female:'base/aviator_shirt_female.webp',    ribbons:false, mini:false},
+  polo:{male:'base/aviator_shirt_male.webp',            female:'base/aviator_shirt_female.webp',    ribbons:false, mini:false}
 };
 
 /* Collar/lapel foreground masks. Each entry clips a duplicate of the active
@@ -4598,7 +4598,7 @@ function getGarmentForegroundClips(uniformId, loadedPath=''){
     case 'ocp':
       // This clips the currently loaded utility base. For SM officers that is
       // the selected rank-specific OCP blouse, never a separate generic image.
-      return usingSeniorOfficerOcpBase() && path !== 'base/ocp_blouse.png'
+      return usingSeniorOfficerOcpBase() && path !== 'base/ocp_blouse.webp'
         ? GARMENT_FOREGROUND_CLIPS.seniorOfficerOcpCollar
         : GARMENT_FOREGROUND_CLIPS.utilityCollar;
     default:
@@ -4996,11 +4996,11 @@ const SENIOR_NCO_BASE = {
   //   images/base/{rank}_blues_class_b_{gender}.png
   blues_b: {
     male: {
-      "SSgt": "base/ssgt_blues_class_b_male.png",
-      "TSgt": "base/tsgt_blues_class_b_male.png",
-      "MSgt": "base/msgt_blues_class_b_male.png",
-      "SMSgt":"base/smsgt_blues_class_b_male.png",
-      "CMSgt":"base/cmsgt_blues_class_b_male.png"
+      "SSgt": "base/ssgt_blues_class_b_male.webp",
+      "TSgt": "base/tsgt_blues_class_b_male.webp",
+      "MSgt": "base/msgt_blues_class_b_male.webp",
+      "SMSgt":"base/smsgt_blues_class_b_male.webp",
+      "CMSgt":"base/cmsgt_blues_class_b_male.webp"
     },
     female: {
       "SSgt": "base/ssgt_blues_class_b_female.png",
@@ -5940,44 +5940,44 @@ function getRibbonDuplicateCountForSelection(id, awardValue){
 
 const miniMedalImages = {};
 Object.assign(miniMedalImages, {
-  'air_force_aerial_achievement_medal':'mini_medals/mcchord/m_usaf_aam01.png',
-  'silver_medal_of_valor':          'mini_medals/mcchord/m_silver.png',
-  'bronze_medal_of_valor':          'mini_medals/mcchord/m_bronze01.png',
-  'distinguished_service_award':    'mini_medals/mcchord/m_distin01.png',
-  'exceptional_service_award':      'mini_medals/mcchord/m_except01.png',
-  'meritorious_service_award':      'mini_medals/mcchord/m_meriti01.png',
-  'commander_commendation_award':   'mini_medals/mcchord/m_cmdrco01.png',
-  'cap_achievment_award':           'mini_medals/mcchord/m_AA01.png',
-  'lifesaving_award':               'mini_medals/mcchord/m_lifesa01.png',
-  'national_commander_unit_citation_award':'mini_medals/mcchord/m_unitci-nat01.png',
-  'unit_citation_award':            'mini_medals/mcchord/m_unitci01.png',
-  'national_commanders_citation':   'mini_medals/mcchord/m_natcmdrcom.png',
-  'cadet_certificate_of_proficiency':'mini_medals/mcchord/m_cadet_cop.png',
-  'frank_borman_falcon_award':      'mini_medals/mcchord/m_falcon.png',
-  'cap_gill_robb_wilson_ribbon':    'mini_medals/mcchord/m_wilson.png',
-  'cap_paul_e_garber_ribbon':       'mini_medals/mcchord/m_garber.png',
-  'cap_grover_loening_aerospace_ribbon':'mini_medals/mcchord/m_loening.png',
-  'cap_leadership_ribbon':          'mini_medals/mcchord/m_leader.png',
-  'cap_membership_ribbon':          'mini_medals/mcchord/m_member.png',
-  'cap_command_service_ribbon':     'mini_medals/mcchord/m_cmdser.png',
-  'cap_world_war_2_service_ribbon': 'mini_medals/mcchord/m_wartime.png',
-  'cap_senior_recruiter_ribbon':    'mini_medals/mcchord/m_senrec01.png',
-  'cap_bridgadier_general_charles_yaeger_ribbon':'mini_medals/mcchord/m_yeager.png',
-  'cap_a_scott_crossfield_ribbon':  'mini_medals/mcchord/m_crossf.png',
-  'crisis_ribbon':                  'mini_medals/mcchord/m_crisis.png',
-  'red_service_ribbon':             'mini_medals/mcchord/m_redser-02yr.png',
-  'search_find_ribbon':             'mini_medals/mcchord/m_find01.png',
-  'air_search_and_rescue_ribbon':   'mini_medals/mcchord/m_sar01.png',
-  'disaster_relief_ribbon':         'mini_medals/mcchord/m_disast01.png',
-  'iace_ribbon':                    'mini_medals/mcchord/m_iace01.png',
-  'spaatz_award':                   'mini_medals/mcchord/m_spaatz.png',
-  'eaker_award':                    'mini_medals/mcchord/m_eaker.png',
-  'earhart_award':                  'mini_medals/mcchord/m_earhar.png',
-  'mitchell_award':                 'mini_medals/mcchord/m_mitchel.png',
-  'national_cadet_competition_ribbon':'mini_medals/mcchord/m_ncc.png',
-  'national_color_guard_competition_ribbon':'mini_medals/mcchord/m_ncgc.png',
-  'encampment_ribbon':              'mini_medals/mcchord/m_encamp01.png',
-  'air_medal':                      'mini_medals/mcchord/m_airmedal.png'
+  'air_force_aerial_achievement_medal':'mini_medals/mcchord/m_usaf_aam01.webp',
+  'silver_medal_of_valor':          'mini_medals/mcchord/m_silver.webp',
+  'bronze_medal_of_valor':          'mini_medals/mcchord/m_bronze01.webp',
+  'distinguished_service_award':    'mini_medals/mcchord/m_distin01.webp',
+  'exceptional_service_award':      'mini_medals/mcchord/m_except01.webp',
+  'meritorious_service_award':      'mini_medals/mcchord/m_meriti01.webp',
+  'commander_commendation_award':   'mini_medals/mcchord/m_cmdrco01.webp',
+  'cap_achievment_award':           'mini_medals/mcchord/m_AA01.webp',
+  'lifesaving_award':               'mini_medals/mcchord/m_lifesa01.webp',
+  'national_commander_unit_citation_award':'mini_medals/mcchord/m_unitci-nat01.webp',
+  'unit_citation_award':            'mini_medals/mcchord/m_unitci01.webp',
+  'national_commanders_citation':   'mini_medals/mcchord/m_natcmdrcom.webp',
+  'cadet_certificate_of_proficiency':'mini_medals/mcchord/m_cadet_cop.webp',
+  'frank_borman_falcon_award':      'mini_medals/mcchord/m_falcon.webp',
+  'cap_gill_robb_wilson_ribbon':    'mini_medals/mcchord/m_wilson.webp',
+  'cap_paul_e_garber_ribbon':       'mini_medals/mcchord/m_garber.webp',
+  'cap_grover_loening_aerospace_ribbon':'mini_medals/mcchord/m_loening.webp',
+  'cap_leadership_ribbon':          'mini_medals/mcchord/m_leader.webp',
+  'cap_membership_ribbon':          'mini_medals/mcchord/m_member.webp',
+  'cap_command_service_ribbon':     'mini_medals/mcchord/m_cmdser.webp',
+  'cap_world_war_2_service_ribbon': 'mini_medals/mcchord/m_wartime.webp',
+  'cap_senior_recruiter_ribbon':    'mini_medals/mcchord/m_senrec01.webp',
+  'cap_bridgadier_general_charles_yaeger_ribbon':'mini_medals/mcchord/m_yeager.webp',
+  'cap_a_scott_crossfield_ribbon':  'mini_medals/mcchord/m_crossf.webp',
+  'crisis_ribbon':                  'mini_medals/mcchord/m_crisis.webp',
+  'red_service_ribbon':             'mini_medals/mcchord/m_redser-02yr.webp',
+  'search_find_ribbon':             'mini_medals/mcchord/m_find01.webp',
+  'air_search_and_rescue_ribbon':   'mini_medals/mcchord/m_sar01.webp',
+  'disaster_relief_ribbon':         'mini_medals/mcchord/m_disast01.webp',
+  'iace_ribbon':                    'mini_medals/mcchord/m_iace01.webp',
+  'spaatz_award':                   'mini_medals/mcchord/m_spaatz.webp',
+  'eaker_award':                    'mini_medals/mcchord/m_eaker.webp',
+  'earhart_award':                  'mini_medals/mcchord/m_earhar.webp',
+  'mitchell_award':                 'mini_medals/mcchord/m_mitchel.webp',
+  'national_cadet_competition_ribbon':'mini_medals/mcchord/m_ncc.webp',
+  'national_color_guard_competition_ribbon':'mini_medals/mcchord/m_ncgc.webp',
+  'encampment_ribbon':              'mini_medals/mcchord/m_encamp01.webp',
+  'air_medal':                      'mini_medals/mcchord/m_airmedal.webp'
 });
 
 function getMiniMedalImagePath(ribbonOrId){
@@ -6056,13 +6056,13 @@ const badgeList = [
 // Robust badge asset resolver. This lets the program render badges even when the
 // physical image files use human-friendly names instead of the internal badge ID.
 const BADGE_IMAGE_OVERRIDES = {
-  'master_emergency_services_badge': 'badges/Master_ES_Badge.png',
-  'senior_emergency_services_badge': 'badges/Senior_ES_Badge.png',
-  'volunteer_university_instructor_badge': 'badges/Vol_U_Badge.png',
+  'master_emergency_services_badge': 'badges/Master_ES_Badge.webp',
+  'senior_emergency_services_badge': 'badges/Senior_ES_Badge.webp',
+  'volunteer_university_instructor_badge': 'badges/Vol_U_Badge.webp',
   'basic_incident_commander_badge': 'badges/Basic_Incident_Commander_Badge.webp',
   'incident_commander_2_badge': 'badges/incident_commander_2_badge.webp',
   'incident_commander_1_badge': 'badges/incident_commander_1_badge.webp',
-  'cadet_programs_badge': 'badges/cadet programs badge.png',
+  'cadet_programs_badge': 'badges/cadet programs badge.webp',
   'administration_technician_badge': 'badges/administration_technician_badge.png',
   'aerospace_education_technician_badge': 'badges/aerospace_education_technician_badge.webp',
   'aerospace_education_senior_badge': 'badges/aerospace_senior_badge.webp',
@@ -6105,11 +6105,11 @@ Object.assign(BADGE_IMAGE_OVERRIDES, {
   'squadron_commander_badge': 'badges/Squadron Commander badge.webp',
 
   // New command/governance badges
-  'group_commander_badge': 'badges/Group_commander_badge.png',
-  'senior_advisory_group_badge': 'badges/Senior_advisory_group_badge.png',
-  'national_executive_committee_badge': 'badges/National_Executive_Committee_Badge.png',
-  'command_council_badge': 'badges/Command_Council.png',
-  'cap_national_command_board_badge': 'badges/CAP_National_Command_Board.png',
+  'group_commander_badge': 'badges/Group_commander_badge.webp',
+  'senior_advisory_group_badge': 'badges/Senior_advisory_group_badge.webp',
+  'national_executive_committee_badge': 'badges/National_Executive_Committee_Badge.webp',
+  'command_council_badge': 'badges/Command_Council.webp',
+  'cap_national_command_board_badge': 'badges/CAP_National_Command_Board.webp',
   'national_staff_badge': 'badges/national_staff_badge.webp',
 
   // Standardization / Evaluation
@@ -6259,13 +6259,13 @@ function getBadgeAssetCandidates(id){
       'badges/finance_technician.png','badges/finance_technician_badge.webp','badges/Finance Technician Badge.png'
     ],
     squadron_commander_badge: [
-      'badges/Squadron Commander badge.webp','badges/Squadron_Commander_badge.png','badges/squadron_commander_badge.png','badges/squadron commander badge.png'
+      'badges/Squadron Commander badge.webp','badges/Squadron_Commander_badge.png','badges/squadron_commander_badge.png','badges/squadron commander badge.webp'
     ],
     volunteer_university_instructor_badge: [
       'badges/Vol_U_Badge.webp','badges/volunteer_university_instructor_badge.png','badges/volunteer_university_badge.png'
     ],
     basic_incident_commander_badge: [
-      'badges/Basic_Incident_Commander_Badge.webp','badges/basic_incident_commander_badge.png'
+      'badges/Basic_Incident_Commander_Badge.webp','badges/basic_incident_commander_badge.webp'
     ],
     master_emergency_services_badge: [
       'badges/Master_ES_Badge.webp','badges/master_emergency_services_badge.png'
