@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CAP Uniform Builder</title>
 
-<link rel="stylesheet" href="styles/app.css?v=76b4d71c2f">
+<link rel="stylesheet" href="styles/app.css?v=166259e824">
 </head>
 <body>
 
@@ -96,9 +96,9 @@
       <button id="calibSubmitUpdate" type="button">Submit Calibration Update</button>
     </div>
 
-    <div id="calibReadout" style="margin-top:10px;">
+    <div class="mt-10" id="calibReadout">
       <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow = 0.1px, Alt+Arrow = 0.01px, Ctrl+Arrow = 1px, and Shift+Arrow = 10px.</div>
-      <div style="margin-top:6px;">JSON:</div>
+      <div class="mt-6">JSON:</div>
       <code id="calibJson" style="display:block;white-space:pre-wrap;"></code>
     </div>
   </div>
@@ -129,7 +129,7 @@
           <option value="SPACE_FORCE">U.S. Space Force</option>
           <option value="COAST_GUARD">U.S. Coast Guard</option>
         </select>
-        <label class="fieldLabel" style="margin-top:8px">Component</label>
+        <label class="fieldLabel mt-8">Component</label>
         <select id="componentSelect">
           <option value="ACTIVE">Active</option>
           <option value="RESERVE">Reserve</option>
@@ -177,10 +177,10 @@
           <button id="militarySelectAllMax" type="button" class="ghost">Select max devices</button>
         </div>
         <div class="hintText">Bulk selection applies only to awards with local artwork for the selected ribbon, miniature-medal, or full-size-medal view.</div>
-        <div id="militaryAwardSummary" class="hintText" style="margin-top:5px"></div>
+        <div id="militaryAwardSummary" class="hintText mt-5"></div>
         <div id="militarySelectedAwards" class="militarySelectedAwards"></div>
-        <div id="militaryAwardResults" class="militaryAwardResults" style="margin-top:6px"></div>
-        <details id="militaryBadgeSection" data-military-section="military-badges" style="margin-top:8px">
+        <div id="militaryAwardResults" class="militaryAwardResults mt-6"></div>
+        <details class="mt-8" id="militaryBadgeSection" data-military-section="military-badges">
           <summary>Military badges</summary>
           <div class="hintText" style="margin:5px 0">Badge authorization, precedence, placement, and artwork are audited independently from awards.</div>
           <div id="militaryBadgeResults" class="militaryAwardResults"></div>
@@ -193,12 +193,12 @@
           Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
           The builder will read rank, gender, ribbons, achievements, qualifications, and badges it can match.
         </div>
-        <div class="row two" style="margin-top:6px">
+        <div class="row two mt-6">
           <div class="col"><button id="importMemberReportBtn" type="button">Import Member Report</button></div>
           <div class="col"><button id="clearImportedReportBtn" class="ghost" type="button">Clear Import Notes</button></div>
         </div>
         <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" style="display:none"/>
-        <div id="memberReportImportStatus" class="hintText" style="margin-top:8px;">
+        <div id="memberReportImportStatus" class="hintText mt-8">
           No report imported yet.
         </div>
       </section>
@@ -212,14 +212,14 @@
         </select>
         <div class="hintText">This controls which ranks are available and how the base uniform renders.</div>
 
-        <label class="fieldLabel" style="margin-top:10px;">Rank</label>
+        <label class="fieldLabel mt-10">Rank</label>
         <select id="rankSetupSelect" disabled>
           <option value="">Select Rank</option>
         </select>
         <div class="hintText">For Senior Member NCO (SSgt–CMSgt), your NCO base images will be used as the jacket template (if present).</div>
 
-        <div id="cadetFirstSergeantBlock" class="hidden" style="margin-top:10px;">
-          <label style="font-size:12px;color:var(--muted);display:block;">
+        <div id="cadetFirstSergeantBlock" class="hidden mt-10">
+          <label class="fieldNote">
             <input type="checkbox" id="cadetFirstSergeantCheckbox">
             Cadet First Sergeant diamond
           </label>
@@ -313,7 +313,7 @@
           <option value="off">Off</option>
         </select>
         <div class="hintText">Uses the collar or lapels from the exact active base image and places them above ribbons, medals, badges, and utility patches.</div>
-        <label class="fieldLabel" for="garmentMaskSide" style="margin-top:10px">Mask piece to edit</label>
+        <label class="fieldLabel mt-10" for="garmentMaskSide">Mask piece to edit</label>
         <select id="garmentMaskSide">
           <option value="0">Left piece (preview left)</option>
           <option value="1" selected>Right piece / award side</option>
@@ -364,16 +364,16 @@
           Use “Choose Ribbons…” to pick ribbons and set award count or earned level in the popup.
         </div>
 
-        <div class="row two" style="margin-top:6px">
+        <div class="row two mt-6">
           <div class="col"><button id="clearRibbons" class="ghost" type="button">Clear Ribbons</button></div>
           <div class="col"><button id="expandRibbons" type="button">Choose Ribbons…</button></div>
         </div>
-        <div class="row two" style="margin-top:6px">
+        <div class="row two mt-6">
           <div class="col"><button id="capSelectAllBasic" class="ghost" type="button">Select all (basic)</button></div>
           <div class="col"><button id="capSelectAllMax" class="ghost" type="button">Select max devices</button></div>
         </div>
 
-        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+        <label class="fieldNote mt-8">
           Ribbon rack layout
           <select id="ribbonRackColumns" style="display:block;width:100%;margin-top:4px;">
             <option value="3">3 across — centered</option>
@@ -381,51 +381,51 @@
             <option value="4-center">4 across — centered above welt/pocket (Class A)</option>
           </select>
         </label>
-        <div id="ribbonRackColumnsHint" class="hintText" style="margin-top:4px;">
+        <div id="ribbonRackColumnsHint" class="hintText mt-4">
           CAPR 39-1 permits four-across racks only on the USAF-style Service Dress (Class A).
         </div>
 
-        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+        <label class="fieldNote mt-8">
           Upper-row arrangement
           <select id="ribbonRackArrangement" style="display:block;width:100%;margin-top:4px;">
             <option value="standard">Standard — centered partial top row</option>
             <option value="lapel">Automatic — 3 across, switch to 4 above 51% overlap</option>
           </select>
         </label>
-        <div id="ribbonRackArrangementHint" class="hintText" style="margin-top:4px;">
+        <div id="ribbonRackArrangementHint" class="hintText mt-4">
           Lapel avoidance follows the stepped Class A arrangements in CAPR 39-1 Figure 11-1.
         </div>
 
         <div id="ribbonRowOverridePanel">
-          <label style="font-size:12px;color:var(--muted);display:block;">
+          <label class="fieldNote">
             <input type="checkbox" id="ribbonRowOverrideEnabled">
             Custom Class A row grid override
           </label>
           <div id="ribbonRowOverrideControls" class="hidden">
-            <div class="hintText" style="margin-top:5px;">Top row is listed first. Select 1–4 ribbons for each row.</div>
+            <div class="hintText mt-5">Top row is listed first. Select 1–4 ribbons for each row.</div>
             <div id="ribbonRowOverrideGrid"></div>
-            <div class="row two" style="margin-top:7px;">
+            <div class="row two mt-7">
               <div class="col"><button id="addRibbonOverrideRow" class="ghost" type="button">Add Top Row</button></div>
               <div class="col"><button id="removeRibbonOverrideRow" class="ghost" type="button">Remove Top Row</button></div>
             </div>
-            <div id="ribbonRowOverrideStatus" class="hintText" style="margin-top:5px;"></div>
+            <div id="ribbonRowOverrideStatus" class="hintText mt-5"></div>
           </div>
         </div>
 
         <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="ribbonGallery" class="galleryGrid"></div>
 
-        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+        <label class="fieldNote mt-8">
           <input type="checkbox" id="toggleMini">
           Show Mini Medals (override)
         </label>
 
-        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+        <label class="fieldNote mt-8">
           <input type="checkbox" id="autoMini" checked>
           Auto-convert ribbons → mini-medals on Mess/Semi-formal
         </label>
 
-        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+        <label class="fieldNote mt-8">
           Mini-medal mounting method
           <select id="miniMountStyle" style="display:block;width:100%;margin-top:4px;">
             <option value="mounting">Mounting bars — four per row (maximum 24)</option>
@@ -436,7 +436,7 @@
         <div id="deviceTool">
           <strong style="font-size:12px;">Ribbon Devices — Multi-Apply</strong>
           <div id="devicePicker"></div>
-          <div class="row" style="margin-top:8px">
+          <div class="row mt-8">
             <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
             <button id="deviceRemoveModeBtn" type="button" class="ghost">Enable Remove Mode</button>
             <button id="deviceClearSelectionBtn" type="button" class="ghost">Clear Selection</button>
@@ -447,7 +447,7 @@
           </small>
         </div>
 
-        <div class="row two" style="margin-top:10px">
+        <div class="row two mt-10">
           <div class="col"><button id="toggleRibbonDrag" class="ghost" type="button">Enable Drag Mode</button></div>
           <div class="col"><button id="logRibbonCoords" class="ghost" type="button">Log Ribbon Coords</button></div>
         </div>
@@ -461,7 +461,7 @@
           Use “Choose Badges…” to pick badges in the popup (grouped by category).
         </div>
 
-        <div class="row two" style="margin-top:6px">
+        <div class="row two mt-6">
           <div class="col"><button id="clearBadges" class="ghost" type="button">Clear Badges</button></div>
           <div class="col"><button id="expandBadges" type="button">Choose Badges…</button></div>
         </div>
@@ -482,7 +482,7 @@
           Use “Choose Patches…” to pick patches in the popup.
         </div>
 
-        <div class="row two" style="margin-top:6px">
+        <div class="row two mt-6">
           <div class="col"><button id="clearPatches" class="ghost" type="button">Clear Patches</button></div>
           <div class="col"><button id="expandPatches" type="button">Choose Patches…</button></div>
         </div>
@@ -521,7 +521,7 @@
 
       <section class="panelBlock">
         <label class="fieldLabel">Output</label>
-        <div class="row two" style="margin-top:6px">
+        <div class="row two mt-6">
           <div class="col"></div>
           <div class="col"><button id="downloadImage" type="button">Download PNG</button></div>
         </div>
@@ -534,16 +534,16 @@
 
       <section id="capubV2QuickPanel" class="panelBlock">
         <label class="fieldLabel">Quick Builder Tools <span class="validationBadge">V2</span></label>
-        <div class="row two" style="margin-top:6px">
+        <div class="row two mt-6">
           <div class="col"><button id="capubV2SaveLocal" class="ghost" type="button">Save to Browser</button></div>
           <div class="col"><button id="capubV2LoadLocal" class="ghost" type="button">Load Saved</button></div>
         </div>
-        <div class="row two" style="margin-top:6px">
+        <div class="row two mt-6">
           <div class="col"><button id="capubV2ExportJson" class="ghost" type="button">Export Setup JSON</button></div>
           <div class="col"><button id="capubV2ImportBtn" class="ghost" type="button">Import Setup JSON</button></div>
         </div>
         <input id="capubV2ImportFile" type="file" accept="application/json,.json" style="display:none"/>
-        <div class="row two" style="margin-top:6px">
+        <div class="row two mt-6">
           <div class="col"><button id="capubV2MissingBtn" class="ghost" type="button">Download Missing Asset List</button></div>
           <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset Builder</button></div>
         </div>
@@ -552,7 +552,7 @@
 
       <section id="measurementOverlayPanel" class="panelBlock">
         <label class="fieldLabel">Measurement Overlay</label>
-        <label style="font-size:12px;color:var(--muted);display:block;margin-top:4px;">
+        <label class="fieldNote mt-4">
           <input type="checkbox" id="toggleMeasurementOverlay"> Show red distance arrows and labels
         </label>
         <div class="hintText">
@@ -562,11 +562,11 @@
 
       <section id="capubV2TextPanel" class="panelBlock">
         <label class="fieldLabel">Text Labels / Field Uniform Tapes</label>
-        <label class="fieldLabel" style="margin-top:8px;">Last Name / Name Tape</label>
+        <label class="fieldLabel mt-8">Last Name / Name Tape</label>
         <input id="capubV2LastName" maxlength="18" placeholder="YOUR NAME"/>
-        <label class="fieldLabel" style="margin-top:8px;">CAP Tape Text</label>
+        <label class="fieldLabel mt-8">CAP Tape Text</label>
         <input id="capubV2CapTape" maxlength="20" value="CIVIL AIR PATROL"/>
-        <label style="font-size:12px;color:var(--muted);display:block;margin-top:8px;">
+        <label class="fieldNote mt-8">
           <input type="checkbox" id="capubV2ShowText" checked> Show generated text tapes / placeholders when image assets are missing
         </label>
         <div class="hintText">This makes OCP/ABU previews useful even before every tape, rank, and patch image is available.</div>
