@@ -13569,7 +13569,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   }
   ['change','click','input'].forEach(evt=>document.addEventListener(evt,()=>setTimeout(refreshAll,0),true));
   window.addEventListener('resize',()=>{ if(V3.zoom<=1) fitZoom(); });
-  setTimeout(()=>{ refreshAll(); fitZoom(); toast('UI polish loaded. Use the bottom quick bar to build faster.'); },80);
+  setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
 
 
