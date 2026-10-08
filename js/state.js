@@ -1,3 +1,7 @@
+// Developer tools (the calibrator) exist only when the page is opened with ?dev=1.
+const CAPUB_DEV = new URLSearchParams(location.search).has('dev');
+if(CAPUB_DEV) document.documentElement.dataset.dev = '1';
+
 // Extracted verbatim from index.html: global state, membership/rank data and the base placement
 // constants. Must load first among the app scripts.
 
@@ -63,7 +67,6 @@ const State = {
   // UNIVERSAL calibration (per-layer key)
   calib:{
     enabled:false,
-    adminUnlocked:false,
     selectedKey:null,
     selectedKeys:[], // multi-select layer keys for admin calibration
     map:{}, // legacy/global fallback: key -> {x,y,w,h,r}

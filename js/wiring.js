@@ -550,18 +550,10 @@ function initCalibratorUI(){
   const btnMasterClear = by('calibMasterClear');
 
   let open=false;
-  function requireAdminUnlock(){
-    if(State.calib.adminUnlocked) return true;
-    const entered = prompt('Admin calibrate menu password:');
-    if(entered === '658773'){
-      State.calib.adminUnlocked = true;
-      return true;
-    }
-    if(entered !== null) alert('Incorrect admin password.');
-    return false;
-  }
+  // The calibrator is a development tool: it is only reachable when the page is opened with ?dev=1.
+  function requireDevMode(){ return CAPUB_DEV; }
   tab.addEventListener('click', ()=>{
-    if(!requireAdminUnlock()) return;
+    if(!requireDevMode()) return;
     open=!open;
     panel.style.display=open?'block':'none';
     arrow.textContent=open?'‹':'›';
@@ -719,7 +711,7 @@ function initCalibratorUI(){
   bindPair(calR, calRn);
 
   btnMode.addEventListener('click', ()=>{
-    if(!requireAdminUnlock()) return;
+    if(!requireDevMode()) return;
     State.calib.enabled = !State.calib.enabled;
     btnMode.textContent = State.calib.enabled ? 'Calibrate Mode: ON' : 'Calibrate Mode: OFF';
     btnMode.classList.toggle('ghost', !State.calib.enabled);
@@ -733,7 +725,7 @@ function initCalibratorUI(){
   });
 
   btnMasterSession?.addEventListener('click',()=>{
-    if(!requireAdminUnlock()) return;
+    if(!requireDevMode()) return;
     const session=ensureMasterCalibrationSession();
     session.active=!session.active;
     if(session.active && !session.startedAt) session.startedAt=new Date().toISOString();
@@ -741,7 +733,7 @@ function initCalibratorUI(){
   });
 
   btnMasterClear?.addEventListener('click',()=>{
-    if(!requireAdminUnlock()) return;
+    if(!requireDevMode()) return;
     const session=ensureMasterCalibrationSession();
     session.changesByUniform={};
     session.contextByUniform={};
@@ -788,7 +780,7 @@ function initCalibratorUI(){
   });
 
   btnCopy.addEventListener('click', async ()=>{
-    if(!requireAdminUnlock()) return;
+    if(!requireDevMode()) return;
     const keys = getSelectedCalibKeys();
     if(!keys.length) return;
     const txt = keys.length === 1 ? buildCalibJson(keys[0]) : buildSelectedCalibJson();
@@ -811,7 +803,7 @@ function initCalibratorUI(){
 
   if(btnSaveUniform){
     btnSaveUniform.addEventListener('click', ()=>{
-      if(!requireAdminUnlock()) return;
+      if(!requireDevMode()) return;
       saveCalibrationToBrowser();
       btnSaveUniform.textContent = 'Saved!';
       setTimeout(()=>btnSaveUniform.textContent='Save Uniform Coords', 900);
@@ -821,7 +813,7 @@ function initCalibratorUI(){
 
   if(btnExportAll){
     btnExportAll.addEventListener('click', ()=>{
-      if(!requireAdminUnlock()) return;
+      if(!requireDevMode()) return;
       saveCalibrationToBrowser();
       downloadCalibrationJson();
     });

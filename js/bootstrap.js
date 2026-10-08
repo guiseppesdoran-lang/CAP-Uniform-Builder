@@ -99,15 +99,6 @@ function capubRepairCriticalButtons(){
     if(typeof renderAllBadges === 'function') renderAllBadges();
   });
 
-  capubSafeWire('calibratorTab','click', () => {
-    const panel = by('calibratorPanel');
-    const arrow = by('calibratorArrow');
-    if(!panel) return;
-    const isOpen = panel.style.display === 'block';
-    panel.style.display = isOpen ? 'none' : 'block';
-    if(arrow) arrow.textContent = isOpen ? '›' : '‹';
-  });
-
   // Make sure arrows never block normal UI/preview interaction unless calibrate mode is on.
   const styleId = 'capubDynamicArrowPointerMode';
   if(!by(styleId)){

@@ -1073,3 +1073,7 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 /* Spacing and note utilities that replace repeated inline styles in index.html. */
 .mt-4{margin-top:4px}.mt-5{margin-top:5px}.mt-6{margin-top:6px}.mt-7{margin-top:7px}.mt-8{margin-top:8px}.mt-10{margin-top:10px}.mt-12{margin-top:12px}
 .fieldNote{font-size:12px;color:var(--muted);display:block}
+
+/* Developer-only UI: shown when the page is opened with ?dev=1. */
+html:not([data-dev]) .devOnly{display:none !important}
+[hidden]{display:none !important}
