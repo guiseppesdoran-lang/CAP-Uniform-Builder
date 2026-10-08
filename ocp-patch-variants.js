@@ -27,7 +27,7 @@
         ...base,
         label:`${base.label} — OCP sleeve`,
         w:200, h:100,
-        img:`patches/ocp/${variantId}.png`,
+        img:`patches/ocp/${variantId}.webp`,
         authorizedUniforms:['ocp'],
         ocpVariant:true,
         basePatchId:baseId
