@@ -72,7 +72,6 @@ CODE_FILES = [
     "ocp-patch-variants.js",
     "purchase-catalog.js",
     "purchase-feature-core.js",
-    "admin-history.js",
 ]
 
 # Paths built at runtime as `dir/${expr}.png`. Rewriting the literal extension

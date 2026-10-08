@@ -16,7 +16,5 @@
     document.body.appendChild(s);
   }
 
-  load('purchase-feature-core.js',()=>{
-    load('admin-history.js?v=2');
-  });
+  load('purchase-feature-core.js');
 })();
