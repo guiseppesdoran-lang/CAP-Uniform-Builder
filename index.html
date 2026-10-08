@@ -12478,9 +12478,22 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   function refreshAll(){ ensureProgress(); ensurePreviewToolbar(); ensureCommandBar(); polishPanels(); updateProgress(); updateTopBar(); markActiveUniform(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
-    fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); setTimeout(refreshAll,0); return result; };
+    fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); scheduleRefresh(); return result; };
   }
-  ['change','click','input'].forEach(evt=>document.addEventListener(evt,()=>setTimeout(refreshAll,0),true));
+  // Every click, input and change used to schedule its own full refresh; a drag or
+  // a burst of typing queued dozens per frame. Coalesce them to one per frame.
+  let refreshQueued=false;
+  function scheduleRefresh(){
+    if(refreshQueued) return;
+    refreshQueued=true;
+    // rAF keeps it to one refresh per painted frame; the timer is the fallback for
+    // hidden or occluded tabs, where the browser pauses rAF and the UI would go stale.
+    let ran=false;
+    const run=()=>{ if(ran) return; ran=true; refreshQueued=false; refreshAll(); };
+    requestAnimationFrame(run);
+    setTimeout(run,100);
+  }
+  ['change','click','input'].forEach(evt=>document.addEventListener(evt,scheduleRefresh,true));
   window.addEventListener('resize',()=>{ if(V3.zoom<=1) fitZoom(); });
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
