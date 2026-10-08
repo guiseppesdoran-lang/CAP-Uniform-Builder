@@ -12495,7 +12495,15 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   }
   function setZoom(z){
     V3.zoom=Math.round(z*100)/100;
-    const area=safeBy('previewArea'); if(area) area.style.transform=`scale(${V3.zoom})`;
+    const area=safeBy('previewArea');
+    if(area){
+      area.style.transform=`scale(${V3.zoom})`;
+      // transform scales what is painted but not the layout box, so a zoomed-out
+      // preview kept reserving its full 450x600 and forced sideways scrolling in
+      // a narrow workspace. Pull the box in by the amount it shrank (or grow it).
+      area.style.marginRight=((V3.zoom-1)*area.offsetWidth)+'px';
+      area.style.marginBottom=((V3.zoom-1)*area.offsetHeight)+'px';
+    }
     const ro=safeBy('zoomReadout'); if(ro) ro.textContent=Math.round(V3.zoom*100)+'%';
   }
   function fitZoom(){
