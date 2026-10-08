@@ -4322,7 +4322,12 @@ function ASSET(p){
    ribbons, ranks, patches, devices, medals, and gallery thumbnails failed
    after one exact path returned 404.
 */
-const CAPUB_IMAGE_EXTENSIONS = ['png','webp','jpg','jpeg','svg'];
+// Extensions the asset resolver will probe, in order. Every miss costs a real
+// 404, so this list only contains formats actually present under images/:
+// png dominates, then webp, with a handful of jpg/jpeg. There are no svg
+// assets in the repo, and probing for them generated a 404 for every rank and
+// utility badge that fell through the chain.
+const CAPUB_IMAGE_EXTENSIONS = ['png','webp','jpg','jpeg'];
 const CAPUB_ASSET_SPELLING_ALIASES = Object.freeze({
   'achievment':'achievement',
   'comendation':'commendation',
@@ -7120,8 +7125,13 @@ function memberReportHasCommunicationsTechnicianSpecialty(text){
 
 const rankListAll = [...RANKS.senior, ...RANKS.cadet];
 
+// Membership test for badge placement. Replaces the old "does a preloaded
+// <img id=badges-{id}> exist" probe, so placement no longer depends on every
+// badge image having been fetched up front.
+const KNOWN_BADGE_IDS = new Set(badgeList);
+
 /* ===========================
-   POPULATE SELECTS & PRELOAD
+   POPULATE SELECTS
    =========================== */
 function optionize(sel,list, pretty=false){
   sel.innerHTML='';
@@ -7133,47 +7143,24 @@ function optionize(sel,list, pretty=false){
   });
 }
 
-function preloadSimple(prefix,list,folder,ext=".png"){
-  list.forEach(id=>{
-    const img=document.createElement('img');
-    img.id = `${prefix}-${id}`;
-    img.src = ASSET(`${folder}/${id}${ext}`);
-    img.style.display='none';
-    img.loading='eager';
-    img.decoding='sync';
-    img.onerror=()=>{};
-    assetsContainer.appendChild(img);
-  });
-}
-function preloadWithResolver(prefix,list,resolver){
-  list.forEach(id=>{
-    const src = resolver(id);
-    const img=document.createElement('img');
-    img.id = `${prefix}-${id}`;
-    img.src = ASSET(src);
-    img.style.display='none';
-    img.loading='eager';
-    img.decoding='sync';
-    img.onerror=()=>{};
-    assetsContainer.appendChild(img);
-  });
-}
+/*
+  Eager asset preloading was removed here.
 
+  It built a hidden <img> for every ribbon, rank, badge and patch at parse
+  time with loading='eager' and decoding='sync', which pulled 27.7 MB over
+  250 requests before the user had chosen anything - 26.3 MB of that was
+  badge art alone, and decoding='sync' forced it onto the main thread.
 
-preloadSimple('ribbons', ribbonList, 'ribbons', '.png');
-preloadWithResolver('devices', deviceList, id => deviceMeta[id].src);
-preloadSimple('ranks', rankListAll, 'ranks', '.png');
-preloadWithResolver('badges', badgeList, id => getBadgeAssetPath(id));
-Object.entries(PATCH_META).forEach(([id,m])=>{
-  const img=document.createElement('img');
-  img.id=`patch-${id}`;
-  img.src=ASSET(m.img);
-  img.style.display='none';
-  img.loading='eager';
-  img.decoding='sync';
-  img.onerror=()=>{};
-  assetsContainer.appendChild(img);
-});
+  Nothing needed it. Every renderer builds its own <img> and resolves the
+  source through capubInstallImageFallback(); renderPatches() already had a
+  new Image() fallback, and placeBadgeSlotAnchored() only used the preloaded
+  node as an existence check, now KNOWN_BADGE_IDS.
+
+  The rank preload was pure waste on top of that: renderRankOverlay() has
+  been retired because rank is baked into the base uniform art, and only 9 of
+  the ~29 rank ids have files, so most requests 404 and then dragged the
+  whole filename-variant fallback chain along behind them.
+*/
 
 /* ===========================
    SIDEBAR TOGGLE (HAMBURGER)
@@ -9150,7 +9137,7 @@ function buildRibbonGallery(options={}){
     const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
     const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
     const miniPreview = miniPath
-      ? `<div class="miniMedalPreview"><span>Mini medal</span><img alt="${title} mini medal"></div>`
+      ? `<div class="miniMedalPreview"><span>Mini medal</span><img loading="lazy" decoding="async" alt="${title} mini medal"></div>`
       : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
     const options = getRibbonAwardOptions(id).map(opt => {
       const selected = (sel.awardValue || '') === opt.value ? 'selected' : '';
@@ -9174,7 +9161,7 @@ function buildRibbonGallery(options={}){
       `<label><input type="checkbox" class="militarySpecialDevice" data-ribbon-id="${id}" data-device-id="${deviceId}" ${(sel.specialAuthorizations || []).includes(deviceId)?'checked':''}>${deviceMeta[deviceId]?.label || deviceId.replaceAll('_',' ')}</label>`
     ).join('') + (advanced ? `<label>Numeral <input type="number" class="militaryNumeralDevice" data-ribbon-id="${id}" min="0" max="99" value="${Number(sel.manualNumeral)||0}" style="width:62px" title="0 means no numeral"></label>` : '') : '';
     tile.innerHTML = `
-      ${military ? `<span class="militaryRibbonArt"><img alt="${title}"></span>` : `<img alt="${title}">`}
+      ${military ? `<span class="militaryRibbonArt"><img loading="lazy" decoding="async" alt="${title}"></span>` : `<img loading="lazy" decoding="async" alt="${title}">`}
       <div style="flex:1;min-width:0;">
         <div class="title">${title}</div>
         <div class="sub">${military ? `${(award?.authorizedServices || []).map(service=>MILITARY_BRANCH_LABELS[service] || service).join(' / ') || 'U.S. MILITARY'} • ` : ''}(${id})</div>
@@ -9448,7 +9435,7 @@ function buildBadgeGallery(){
     const title = getBadgeDisplayName(id);
     const rareCadetTag = (State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
     tile.innerHTML = `
-      <img src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
+      <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
       <div style="flex:1;min-width:0;">
         <div class="title">${title}${rareCadetTag}</div>
         <div class="sub">(${id})</div>
@@ -9553,7 +9540,7 @@ function buildPatchGallery(){
 
     const title = meta.label || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
     tile.innerHTML=`
-      <img src="${ASSET(meta.img)}" alt="${title}">
+      <img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${title}">
       <div style="flex:1;min-width:0;">
         <div class="title">${title}</div>
         <div class="sub">(${id})</div>
@@ -10186,8 +10173,11 @@ function badgeWouldPhysicallyOverlap(el){
 }
 
 function placeBadgeSlotAnchored(id){
-  const img = by(`badges-${id}`);
-  if(!img) return false;
+  // This used to probe for a hidden preloaded <img id="badges-{id}">, but the
+  // node was only ever an existence check - the rendered element is the fresh
+  // clone below, with its src resolved by applyBadgeAssetWithFallback(). Ask
+  // the id list directly so badge placement does not depend on eager preload.
+  if(!KNOWN_BADGE_IDS.has(id)) return false;
 
   let slotSpec = getBadgeSlotSpec(id);
   if(id === 'nra_marksman_badge') slotSpec = 'OLPF';
@@ -12489,7 +12479,7 @@ function openGalleryModal(kind){
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
-          <img src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
+          <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${title}">
           <div style="flex:1;min-width:0;">
             <div class="title">${title}${rareCadetTag || ''}</div>
             <div class="sub">(${id})</div>
@@ -16078,7 +16068,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
-          <img src="${ASSET(meta.img)}" alt="${title}">
+          <img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${title}">
           <div style="flex:1;min-width:0;">
             <div class="title">${title}</div>
             <div class="sub">(${id})</div>
@@ -16159,7 +16149,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
-          <img src="${utilityMode ? capubUtilityBadgePreviewUrl(id) : ASSET(previewPath)}" alt="${title}"${utilityMode ? ' class="utilityBadgePreview"' : ''}>
+          <img loading="lazy" decoding="async" src="${utilityMode ? capubUtilityBadgePreviewUrl(id) : ASSET(previewPath)}" alt="${title}"${utilityMode ? ' class="utilityBadgePreview"' : ''}>
           <div style="flex:1;min-width:0;">
             <div class="title">${title}${rareCadetTag}</div>
             <div class="sub">(${id})${utilityMode ? ' • Silver-on-blue utility badge' : ''}</div>
