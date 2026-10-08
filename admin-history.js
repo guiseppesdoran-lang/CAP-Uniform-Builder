@@ -244,7 +244,7 @@
     const s=document.createElement('style');
     s.id='capubAdminHistoryStyles';
     s.textContent=`
-      #capubAdminHistoryButton{position:fixed;right:12px;bottom:34px;z-index:9000;width:auto;min-width:64px;padding:6px 10px;font-size:11px;opacity:.62;background:#172033;color:#fff;border:1px solid #44506a;border-radius:8px}#capubAdminHistoryButton:hover{opacity:1}
+      #capubAdminHistoryButton{position:fixed;right:12px;bottom:3px;z-index:9000;width:auto;min-width:64px;padding:4px 10px;font-size:11px;opacity:.62;background:#172033;color:#fff;border:1px solid #44506a;border-radius:8px}#capubAdminHistoryButton:hover{opacity:1}
       .capub-admin-overlay{position:fixed;inset:0;z-index:120000;background:rgba(0,0,0,.68);display:none;align-items:center;justify-content:center;padding:20px}.capub-admin-overlay.open{display:flex}
       .capub-admin-modal{width:min(1180px,97vw);max-height:94vh;display:flex;flex-direction:column;background:#fff;color:#172033;border-radius:14px;overflow:hidden;box-shadow:0 28px 90px rgba(0,0,0,.45)}
       .capub-admin-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;padding:16px 18px;border-bottom:1px solid #d9dee8;background:#f7f9fc}.capub-admin-head h2{margin:0 0 3px;font-size:20px}.capub-admin-sub{font-size:11px;color:#667085;line-height:1.35}.capub-admin-head button{width:auto;margin:0;padding:7px 10px}
