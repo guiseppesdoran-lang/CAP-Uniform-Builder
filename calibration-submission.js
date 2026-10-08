@@ -53,7 +53,7 @@
             <div class="capub-cal-submit-field"><label for="capubCalibrationNotes">What should this fix?</label><textarea id="capubCalibrationNotes" name="notes" maxlength="2000" required placeholder="Example: Align the National Staff badge with the wearer's right pocket and reduce it to the measured physical scale."></textarea></div>
             <div class="capub-cal-submit-field"><label for="capubCalibrationName">Your name <span style="font-weight:400">(optional)</span></label><input id="capubCalibrationName" name="submitterName" maxlength="100" autocomplete="name"></div>
             <div class="capub-cal-submit-field"><label for="capubCalibrationEmail">Your email <span style="font-weight:400">(optional)</span></label><input id="capubCalibrationEmail" name="submitterEmail" type="email" maxlength="160" autocomplete="email"></div>
-            <div class="capub-cal-submit-field"><label for="capubCalibrationPassword">Admin password</label><input id="capubCalibrationPassword" name="adminPassword" type="password" required autocomplete="current-password"><div class="capub-cal-submit-help">Verified by the server. The password is not included in the GitHub issue or email attachments.</div></div>
+            <div class="capub-cal-submit-field"><label for="capubCalibrationPassword">Admin key</label><input id="capubCalibrationPassword" name="adminPassword" type="password" required autocomplete="current-password"><div class="capub-cal-submit-help">Verified by the server. The password is not included in the GitHub issue or email attachments.</div></div>
             <div id="capubCalibrationSubmitStatus" class="capub-cal-submit-status" role="status" aria-live="polite"></div>
             <div class="capub-cal-submit-actions"><button class="ghost" type="button" id="capubCalibrationSubmitCancel">Cancel</button><button type="submit" id="capubCalibrationSubmitSend">Submit Update</button></div>
           </form>
@@ -273,7 +273,7 @@
     const submitterEmail=form.elements.namedItem('submitterEmail').value.trim();
     const adminPassword=form.elements.namedItem('adminPassword').value;
     if(!title || !notes){ setStatus('Enter a title and explain what the calibration should fix.','err'); return; }
-    if(!adminPassword){ setStatus('Enter the admin password.','err'); return; }
+    if(!adminPassword){ setStatus("Enter the admin key.","err"); return; }
     if(submitterEmail && !form.elements.namedItem('submitterEmail').checkValidity()){ setStatus('Enter a valid email address or leave it blank.','err'); return; }
     if(!endpoint() || /PASTE_|YOUR_|EXAMPLE/i.test(endpoint())){ setStatus('The submission backend has not been configured.','err'); return; }
 
