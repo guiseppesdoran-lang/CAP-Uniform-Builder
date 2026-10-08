@@ -9,7 +9,7 @@
   const MAX_SELECTED_KEYS = 100;
   const STATUS_TIMEOUT_MS = 60000;
 
-  const endpoint = () => String(window.CAPUB_PATCH_SUBMISSION_ENDPOINT || '').trim();
+  const endpoint = () => String(window.CAPUB_CONFIG?.submissionEndpoint || '').trim();
   const byId = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
@@ -315,11 +315,13 @@
     }
   }
 
+  // Developer-only, and only when a deployment has configured an endpoint.
   function init(){
+    if(!endpoint() || typeof CAPUB_DEV === 'undefined' || !CAPUB_DEV) return;
     injectStyles();
     ensureModal();
     const button=byId('calibSubmitUpdate');
-    if(button) button.addEventListener('click',openModal);
+    if(button){ button.hidden=false; button.addEventListener('click',openModal); }
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});

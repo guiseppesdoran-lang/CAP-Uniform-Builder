@@ -2,7 +2,6 @@
 (function(){
   'use strict';
 
-  window.CAPUB_PATCH_SUBMISSION_ENDPOINT = window.CAPUB_PATCH_SUBMISSION_ENDPOINT || 'https://script.google.com/macros/s/AKfycbwH_AxRVmX58qRHPxauJsLfjfYNCYPbGO1AG6tBYPpl5_BmrKoW90hTj73lqmlmzZZJ6A/exec';
 
   function load(src,next){
     // index.html now loads these directly (with content-hash URLs); only chain them
