@@ -12502,7 +12502,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     // They used to be two separate floating cards that overlapped each other and,
     // beside the sidebar at ~1024px, pushed the zoom card off the right edge.
     const toolbar=document.createElement('div'); toolbar.id='previewToolbar'; toolbar.className='previewToolbar';
-    toolbar.innerHTML=`<div id="capubTopBar" class="capubTopBar"><span class="capubPill">Status: <strong id="topStatusText">Ready</strong></span><span class="capubPill">Uniform: <strong id="topUniformText">None</strong></span><span class="capubPill">Items: <strong id="topItemsText">0</strong></span></div><div id="previewTools" class="previewTools"><div class="previewToolCard" role="group" aria-label="Preview zoom"><button type="button" class="ghost" id="zoomOutBtn" aria-label="Zoom out">−</button><span class="zoomReadout" id="zoomReadout" aria-live="polite">100%</span><button type="button" class="ghost" id="zoomInBtn" aria-label="Zoom in">+</button><button type="button" class="ghost" id="zoomFitBtn">Fit</button></div></div>`;
+    toolbar.innerHTML=`<div id="capubTopBar" class="capubTopBar"><span class="capubPill">Status: <strong id="topStatusText">Ready</strong></span><span class="capubPill"><span id="topUniformLabel">Uniform</span>: <strong id="topUniformText">None</strong></span><span class="capubPill">Items: <strong id="topItemsText">0</strong></span></div><div id="previewTools" class="previewTools"><div class="previewToolCard" role="group" aria-label="Preview zoom"><button type="button" class="ghost" id="zoomOutBtn" aria-label="Zoom out">−</button><span class="zoomReadout" id="zoomReadout" aria-live="polite">100%</span><button type="button" class="ghost" id="zoomInBtn" aria-label="Zoom in">+</button><button type="button" class="ghost" id="zoomFitBtn">Fit</button></div></div>`;
     wrap.insertBefore(toolbar, wrap.firstChild);
     safeBy('zoomOutBtn').onclick=()=>setZoom(Math.max(.55,V3.zoom-.1));
     safeBy('zoomInBtn').onclick=()=>setZoom(Math.min(1.65,V3.zoom+.1));
@@ -12541,7 +12541,17 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     // selection ("BLUES A", "3 warnings") over an empty preview.
     const setupNeeded = (State.organization||'CAP')==='CAP' && !(State.membership && State.rank && State.gender);
     if(status) status.textContent = setupNeeded ? 'Setup needed' : (warnings ? `${warnings} warning${warnings===1?'':'s'}` : 'Good');
-    if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? State.uniform.replace(/_/g,' ').toUpperCase() : '—';
+    const isCap = (State.organization||'CAP')==='CAP';
+    const label = safeBy('topUniformLabel'); if(label) label.textContent = isCap ? 'Uniform' : 'Service';
+    if(uniform){
+      if(!isCap){
+        const branch = (typeof MILITARY_BRANCH_LABELS!=='undefined' && MILITARY_BRANCH_LABELS[State.organization]) || String(State.organization).replace(/_/g,' ');
+        uniform.textContent = branch + (State.component ? ' · '+String(State.component).replace(/_/g,' ').toLowerCase().replace(/\b\w/g,c=>c.toUpperCase()) : '');
+      }else uniform.textContent = (State.uniform && !setupNeeded) ? State.uniform.replace(/_/g,' ').toUpperCase() : '—';
+    }
+    // The four CAP steps (profile, uniform, items, export) do not describe the
+    // military builder, so hide them rather than show them stuck on step 1.
+    document.querySelectorAll('#capubProgress,.capubSectionHint').forEach(el=>{ el.hidden = !isCap; });
     if(items) items.textContent = ((State.ribbons||[]).length + (State.badges||[]).length + (State.patches||[]).length).toString();
     const auth = (typeof UI_AUTHZ !== 'undefined' && UI_AUTHZ[State.uniform]) || {showBadges:true,showPatches:true};
     safeBy('cmdBadges')?.classList.toggle('hidden', !auth.showBadges);

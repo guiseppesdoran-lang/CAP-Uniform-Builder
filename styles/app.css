@@ -1103,3 +1103,4 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 .toolsGroup{margin:18px 0 6px;border:1px dashed #cbd5e1;border-radius:16px;padding:0 12px}
 .toolsGroup>summary{cursor:pointer;padding:12px 2px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#475569}
 .toolsGroup[open]>summary{border-bottom:1px solid #e2e8f0;margin-bottom:12px}
+.capubProgress[hidden],.capubSectionHint[hidden]{display:none}
