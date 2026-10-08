@@ -10,14 +10,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/AirCrew1_DB3F0FCC3650F.png",
+          "asset": "images/badges/AirCrew1_DB3F0FCC3650F.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/AirCrew1_DB3F0FCC3650F.png",
+          "asset": "images/badges/utility/AirCrew1_DB3F0FCC3650F.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -33,14 +33,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/Basic_Incident_Commander_Badge.png",
+          "asset": "images/badges/Basic_Incident_Commander_Badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/basic_incident_commander_badge.png",
+          "asset": "images/badges/utility/basic_incident_commander_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -56,14 +56,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/buddist_chaplin.png",
+          "asset": "images/badges/buddist_chaplin.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/buddist_chaplin.png",
+          "asset": "images/badges/utility/buddist_chaplin.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -79,14 +79,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/christian_chaplin.png",
+          "asset": "images/badges/christian_chaplin.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/christian_chaplin.png",
+          "asset": "images/badges/utility/christian_chaplin.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -102,14 +102,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/emt_basic_badge.png",
+          "asset": "images/badges/emt_basic_badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/emt_basic_badge.png",
+          "asset": "images/badges/utility/emt_basic_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -125,14 +125,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/emt_intermediate.png",
+          "asset": "images/badges/emt_intermediate.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/emt_intermediate.png",
+          "asset": "images/badges/utility/emt_intermediate.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -148,14 +148,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/emt_paramedic.png",
+          "asset": "images/badges/emt_paramedic.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/emt_paramedic.png",
+          "asset": "images/badges/utility/emt_paramedic.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -171,14 +171,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/ground_team_basic_badge.png",
+          "asset": "images/badges/ground_team_basic_badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/ground_team_basic_badge.png",
+          "asset": "images/badges/utility/ground_team_basic_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -194,14 +194,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/Group_commander_badge.png",
+          "asset": "images/badges/Group_commander_badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/group_commander_badge.png",
+          "asset": "images/badges/utility/group_commander_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -217,14 +217,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/incident_commander_1_badge.png",
+          "asset": "images/badges/incident_commander_1_badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/incident_commander_1_badge.png",
+          "asset": "images/badges/utility/incident_commander_1_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -240,14 +240,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/incident_commander_2_badge.png",
+          "asset": "images/badges/incident_commander_2_badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/incident_commander_2_badge.png",
+          "asset": "images/badges/utility/incident_commander_2_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -263,14 +263,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/jewish_chaplin.png",
+          "asset": "images/badges/jewish_chaplin.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/jewish_chaplin.png",
+          "asset": "images/badges/utility/jewish_chaplin.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -286,14 +286,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/Legal_officer.png",
+          "asset": "images/badges/Legal_officer.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/legal_officer.png",
+          "asset": "images/badges/utility/legal_officer.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -309,14 +309,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/master_ground_team_badge.png",
+          "asset": "images/badges/master_ground_team_badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/master_ground_team_badge.png",
+          "asset": "images/badges/utility/master_ground_team_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -332,14 +332,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/MasterAirCrew1_72AC4CAE7A310.png",
+          "asset": "images/badges/MasterAirCrew1_72AC4CAE7A310.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/MasterAirCrew1_72AC4CAE7A310.png",
+          "asset": "images/badges/utility/MasterAirCrew1_72AC4CAE7A310.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -355,14 +355,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/MasterObserver1_1B88D5071FD5C.png",
+          "asset": "images/badges/MasterObserver1_1B88D5071FD5C.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/MasterObserver1_1B88D5071FD5C.png",
+          "asset": "images/badges/utility/MasterObserver1_1B88D5071FD5C.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -378,14 +378,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/Medical_officer.png",
+          "asset": "images/badges/Medical_officer.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/medical_officer.png",
+          "asset": "images/badges/utility/medical_officer.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -401,14 +401,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/muslim_chaplin.png",
+          "asset": "images/badges/muslim_chaplin.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/muslim_chaplin.png",
+          "asset": "images/badges/utility/muslim_chaplin.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -424,14 +424,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/national_staff_badge.png",
+          "asset": "images/badges/national_staff_badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/national_staff_badge.png",
+          "asset": "images/badges/utility/national_staff_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -447,14 +447,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/Nurse.png",
+          "asset": "images/badges/Nurse.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/nurse_officer.png",
+          "asset": "images/badges/utility/nurse_officer.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -470,14 +470,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/observer_badge.png",
+          "asset": "images/badges/observer_badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/observer_badge.png",
+          "asset": "images/badges/utility/observer_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -493,14 +493,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/senior_ground_team_badge.png",
+          "asset": "images/badges/senior_ground_team_badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/senior_ground_team_badge.png",
+          "asset": "images/badges/utility/senior_ground_team_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -516,14 +516,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/SeniorAirCrew1_B289BAE6E515C.png",
+          "asset": "images/badges/SeniorAirCrew1_B289BAE6E515C.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/SeniorAirCrew1_B289BAE6E515C.png",
+          "asset": "images/badges/utility/SeniorAirCrew1_B289BAE6E515C.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -539,14 +539,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/SeniorObserver1_0E35802A29801.png",
+          "asset": "images/badges/SeniorObserver1_0E35802A29801.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/SeniorObserver1_0E35802A29801.png",
+          "asset": "images/badges/utility/SeniorObserver1_0E35802A29801.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
@@ -562,14 +562,14 @@
         "metal": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/Squadron Commander badge.png",
+          "asset": "images/badges/Squadron Commander badge.webp",
           "style": "REGULATION_METAL",
           "verificationStatus": "LOCAL_REVIEWED_ASSET"
         },
         "embroidered": {
           "status": "AVAILABLE",
           "available": true,
-          "asset": "images/badges/utility/squadron_commander_badge.png",
+          "asset": "images/badges/utility/squadron_commander_badge.webp",
           "style": "REGULATION_EMBROIDERED",
           "backingProfile": "CAP_DARK_BLUE",
           "borderInches": 0.125,
