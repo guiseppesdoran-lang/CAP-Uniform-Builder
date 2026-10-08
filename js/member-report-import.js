@@ -42,7 +42,8 @@ function setMemberReportImportStatus(lines, type='info'){
 
 // PDF.js is only needed when a member imports a PDF report, so it is fetched on
 // first use instead of blocking every page load.
-const PDFJS_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+// Vendored (pdfjs-dist 3.11.174, Apache-2.0; see vendor/pdfjs/LICENSE) so no third-party code loads at runtime.
+const PDFJS_URL = 'vendor/pdfjs/pdf.min.js';
 let pdfJsLoading = null;
 function loadPdfJs(){
   if(window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
@@ -69,7 +70,7 @@ async function extractMemberReportText(file){
 
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     pdfjsLib.GlobalWorkerOptions.workerSrc ||
-    'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+    'vendor/pdfjs/pdf.worker.min.js';
 
   const data = new Uint8Array(await file.arrayBuffer());
   const pdf = await pdfjsLib.getDocument({ data }).promise;
