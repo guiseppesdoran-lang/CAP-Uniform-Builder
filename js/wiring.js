@@ -1197,42 +1197,112 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     };
   }
 
-  function applyProfile(p){
-    if(!p || typeof p !== 'object') return;
-    State.membership = p.membership || '';
-    State.gender = p.gender || '';
-    State.uniform = p.uniform || 'blues_a';
-    State.rank = p.rank || null;
-    State.cadetFirstSergeant = !!p.cadetFirstSergeant;
-    if(!isCadetFirstSergeantEligible(State.rank)) State.cadetFirstSergeant = false;
-    State.shoulderCord = p.shoulderCord || null;
-    State.unitPatchCharter = p.unitPatchCharter || '';
-    State.assetBase = p.assetBase || 'images';
-    State.ribbons = Array.isArray(p.ribbons) ? p.ribbons : [];
-    State.badges = Array.isArray(p.badges) ? p.badges : [];
-    State.patches = Array.isArray(p.patches) ? p.patches : [];
-    State.ribbonSelections = p.ribbonSelections || {};
-    State.badgeSelections = p.badgeSelections || {};
-    State.patchSelections = p.patchSelections || {};
-    State.forceMini = !!p.forceMini;
-    State.miniMountStyle = p.miniMountStyle === 'holding' ? 'holding' : 'mounting';
-    State.ribbonRackLayout = ['3','4-left','4-center'].includes(String(p.ribbonRackLayout))
+  /*
+    A saved or imported setup is untrusted input: it can come from a file someone else
+    sent. sanitizeProfile() keeps only values the builder itself could have produced
+    (known uniforms, ranks, ribbon/badge/patch ids, device ids and bounded counts) and
+    drops everything else, so nothing outside those lists ever reaches State or the page.
+  */
+  const SAFE_TOKEN = /^[A-Za-z0-9_.:#-]{0,80}$/;
+  const has = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
+  function safeToken(value){ return typeof value === 'string' && SAFE_TOKEN.test(value) ? value : ''; }
+  function sanitizeProfile(p){
+    const out = {};
+    out.membership = ['senior','cadet'].includes(p.membership) ? p.membership : '';
+    out.gender = ['male','female'].includes(p.gender) ? p.gender : '';
+    out.uniform = typeof p.uniform === 'string' && has(UNIFORMS, p.uniform) ? p.uniform : 'blues_a';
+    out.rank = out.membership && RANKS[out.membership].includes(p.rank) ? p.rank : null;
+    out.cadetFirstSergeant = !!p.cadetFirstSergeant;
+    out.shoulderCord = typeof p.shoulderCord === 'string' && has(SHOULDER_CORD_META, p.shoulderCord) ? p.shoulderCord : null;
+    out.unitPatchCharter = typeof p.unitPatchCharter === 'string' && /^[A-Za-z0-9-]{0,24}$/.test(p.unitPatchCharter) ? p.unitPatchCharter : '';
+
+    const ribbons = p.ribbonSelections && typeof p.ribbonSelections === 'object' ? p.ribbonSelections : {};
+    out.ribbonSelections = {};
+    for(const id of ribbonList){
+      const sel = ribbons[id];
+      if(!sel || typeof sel !== 'object') continue;
+      const devices = {};
+      if(sel.devices && typeof sel.devices === 'object'){
+        for(const [deviceId, count] of Object.entries(sel.devices)){
+          const n = Math.trunc(Number(count));
+          if(has(deviceMeta, deviceId) && Number.isFinite(n) && n > 0 && n <= 99) devices[deviceId] = n;
+        }
+      }
+      // awardLabel and imageOverride are left out on purpose: normalizeRibbonSelections()
+      // recomputes both from the catalog instead of trusting the file.
+      out.ribbonSelections[id] = {
+        checked: !!sel.checked,
+        devices,
+        awardValue: safeToken(sel.awardValue),
+        honorCredit: !!sel.honorCredit,
+        rocketryCredit: !!sel.rocketryCredit
+      };
+    }
+
+    const pick = (list, selections) => {
+      const source = selections && typeof selections === 'object' ? selections : {};
+      const kept = {};
+      for(const id of list) if(source[id] && typeof source[id] === 'object') kept[id] = { checked: !!source[id].checked };
+      return kept;
+    };
+    out.badges = (Array.isArray(p.badges) ? p.badges : []).filter(id => typeof id === 'string' && badgeList.includes(id));
+    out.patches = (Array.isArray(p.patches) ? p.patches : []).filter(id => typeof id === 'string' && patchList.includes(id));
+    out.badgeSelections = pick(badgeList, p.badgeSelections);
+    out.patchSelections = pick(patchList, p.patchSelections);
+
+    out.forceMini = !!p.forceMini;
+    out.miniMountStyle = p.miniMountStyle === 'holding' ? 'holding' : 'mounting';
+    out.ribbonRackLayout = ['3','4-left','4-center'].includes(String(p.ribbonRackLayout))
       ? String(p.ribbonRackLayout)
       : (Number(p.ribbonRackColumns) === 3 ? '3' : '4-left');
-    State.ribbonRackArrangement = p.ribbonRackArrangement === 'standard' ? 'standard' : 'lapel';
-    State.ribbonRowOverrideEnabled = !!p.ribbonRowOverrideEnabled;
-    State.ribbonRowOverride = Array.isArray(p.ribbonRowOverride)
-      ? p.ribbonRowOverride.map(Number).filter(Number.isInteger)
+    out.ribbonRackArrangement = p.ribbonRackArrangement === 'standard' ? 'standard' : 'lapel';
+    out.ribbonRowOverrideEnabled = !!p.ribbonRowOverrideEnabled;
+    out.ribbonRowOverride = Array.isArray(p.ribbonRowOverride)
+      ? p.ribbonRowOverride.map(Number).filter(n => Number.isInteger(n) && n >= 0 && n <= 20).slice(0, 12)
       : [];
-    State.garmentOverlayMode = ['both','left','right','off'].includes(p.garmentOverlayMode)
-      ? p.garmentOverlayMode
-      : 'both';
-    State.garmentMasks = p.garmentMasks && typeof p.garmentMasks === 'object'
-      ? p.garmentMasks
-      : State.garmentMasks || {};
+    out.garmentOverlayMode = ['both','left','right','off'].includes(p.garmentOverlayMode) ? p.garmentOverlayMode : 'both';
+    out.garmentMasks = p.garmentMasks && typeof p.garmentMasks === 'object' ? p.garmentMasks : null;
+    const text = p.text && typeof p.text === 'object' ? p.text : {};
+    out.text = {
+      lastName: String(text.lastName || '').slice(0, 40),
+      capTape: String(text.capTape || 'CIVIL AIR PATROL').slice(0, 40),
+      show: text.show !== false
+    };
+    out.commandInsignia = { graduatedCommander: !!(p.commandInsignia && p.commandInsignia.graduatedCommander) };
+    // Calibration data is a developer tool; ignore it unless the page was opened with ?dev=1.
+    out.calib = CAPUB_DEV && p.calib && typeof p.calib === 'object' ? p.calib : null;
+    return out;
+  }
+
+  function applyProfile(raw){
+    if(!raw || typeof raw !== 'object' || Array.isArray(raw)) return;
+    const p = sanitizeProfile(raw);
+    State.membership = p.membership;
+    State.gender = p.gender;
+    State.uniform = p.uniform;
+    State.rank = p.rank;
+    State.cadetFirstSergeant = p.cadetFirstSergeant;
+    if(!isCadetFirstSergeantEligible(State.rank)) State.cadetFirstSergeant = false;
+    State.shoulderCord = p.shoulderCord;
+    State.unitPatchCharter = p.unitPatchCharter;
+    State.assetBase = 'images';
+    State.ribbons = [];
+    State.badges = p.badges;
+    State.patches = p.patches;
+    State.ribbonSelections = p.ribbonSelections;
+    State.badgeSelections = p.badgeSelections;
+    State.patchSelections = p.patchSelections;
+    State.forceMini = p.forceMini;
+    State.miniMountStyle = p.miniMountStyle;
+    State.ribbonRackLayout = p.ribbonRackLayout;
+    State.ribbonRackArrangement = p.ribbonRackArrangement;
+    State.ribbonRowOverrideEnabled = p.ribbonRowOverrideEnabled;
+    State.ribbonRowOverride = p.ribbonRowOverride;
+    State.garmentOverlayMode = p.garmentOverlayMode;
+    State.garmentMasks = p.garmentMasks || State.garmentMasks || {};
     persistGarmentMasks();
-    State.text = p.text || State.text || {lastName:'',capTape:'CIVIL AIR PATROL',show:true};
-    State.commandInsignia = p.commandInsignia || State.commandInsignia || {graduatedCommander:false};
+    State.text = p.text;
+    State.commandInsignia = p.commandInsignia;
     State.calib = p.calib || State.calib || {enabled:false, selectedKey:null, selectedKeys:[], map:{}, byUniform:{}};
     if(!Array.isArray(State.calib.selectedKeys)) State.calib.selectedKeys = State.calib.selectedKey ? [State.calib.selectedKey] : [];
     if(!State.calib.byUniform) State.calib.byUniform = {};
@@ -1242,6 +1312,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     syncCadetFirstSergeantControl();
     if(typeof syncShoulderCordControl === 'function') syncShoulderCordControl();
     refreshUI();
+    rebuildRibbonsFromGallery();
     syncTextControls();
     buildRibbonGallery(); buildBadgeGallery(); buildPatchGallery();
     if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(by('unitPatchSearch')?.value || '');
