@@ -2,7 +2,7 @@
 
 ## Existing CAP path
 
-`index.html` remains the CAP application and source of truth for CAP uniforms. Its existing state, member-report parser, CAP ribbon precedence, CAP device expansion, badge/patch placement, calibration, PNG export, and male/female base selection are preserved. Selecting `CAP` routes rendering through that unchanged path.
+`index.html` and the scripts under `js/` remain the CAP application and source of truth for CAP uniforms (see `APP_STRUCTURE.md` for how they are laid out). Its existing state, member-report parser, CAP ribbon precedence, CAP device expansion, badge/patch placement, calibration, PNG export, and male/female base selection are preserved. Selecting `CAP` routes rendering through that unchanged path.
 
 ## Military modules
 
