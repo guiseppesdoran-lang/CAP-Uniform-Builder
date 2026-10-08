@@ -235,6 +235,8 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
     try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_fix2'); }catch(err){}
     try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_fix1'); }catch(err){}
     try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_a_shift_down26_left6_rightbadges_left15'); }catch(err){}
+    // Older builds kept a copy of each generated setup in this browser; it is no longer used.
+    try{ localStorage.removeItem('CAPUB_ADMIN_HISTORY_V1'); localStorage.removeItem('CAPUB_ADMIN_HISTORY_CLOUD_MIGRATED_V1'); sessionStorage.removeItem('CAPUB_ADMIN_AUTH_V1'); }catch(err){}
   }catch(err){ console.warn('Could not load saved calibration coordinates', err); }
 
   
