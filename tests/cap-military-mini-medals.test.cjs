@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const indexSource = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const styleSource = fs.readFileSync(path.join(__dirname, '..', 'styles', 'app.css'), 'utf8');
 
 test('CAP miniature medal resolver uses canonical military representations', () => {
   assert.match(indexSource, /getAwardRepresentation\?\.\(award,'MINIATURE_MEDAL'\)/);
@@ -66,9 +67,9 @@ test('legacy standalone military medal calibration remains readable', () => {
 });
 
 test('calibrator stays within the visible viewport', () => {
-  assert.match(indexSource, /width:min\(360px,calc\(100vw - 42px\)\)/);
-  assert.match(indexSource, /grid-template-columns:minmax\(0,1fr\) 68px/);
-  assert.match(indexSource, /#calibKeyPill\{[\s\S]*?overflow-wrap:anywhere/);
+  assert.match(styleSource, /width:min\(360px,calc\(100vw - 42px\)\)/);
+  assert.match(styleSource, /grid-template-columns:minmax\(0,1fr\) 68px/);
+  assert.match(styleSource, /#calibKeyPill\{[\s\S]*?overflow-wrap:anywhere/);
 });
 
 test('military award bulk controls select basic and maximum verified quantities', () => {
