@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CAP Uniform Builder</title>
-<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 
 <style>
   :root{
@@ -13610,6 +13609,24 @@ function setMemberReportImportStatus(lines, type='info'){
   el.innerHTML = arr.map(line => `<div>${String(line).replace(/[<>&]/g, ch => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]))}</div>`).join('');
 }
 
+// PDF.js is only needed when a member imports a PDF report, so it is fetched on
+// first use instead of blocking every page load.
+const PDFJS_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+let pdfJsLoading = null;
+function loadPdfJs(){
+  if(window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  if(!pdfJsLoading){
+    pdfJsLoading = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = PDFJS_URL;
+      script.onload = () => window.pdfjsLib ? resolve(window.pdfjsLib) : reject(new Error('PDF.js loaded but is unavailable.'));
+      script.onerror = () => { pdfJsLoading = null; script.remove(); reject(new Error('PDF.js did not load. Check your internet connection or upload a .txt export instead.')); };
+      document.head.appendChild(script);
+    });
+  }
+  return pdfJsLoading;
+}
+
 async function extractMemberReportText(file){
   const name = (file?.name || '').toLowerCase();
 
@@ -13617,9 +13634,7 @@ async function extractMemberReportText(file){
     return await file.text();
   }
 
-  if(!window.pdfjsLib){
-    throw new Error('PDF.js did not load. Check your internet connection or upload a .txt export instead.');
-  }
+  await loadPdfJs();
 
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     pdfjsLib.GlobalWorkerOptions.workerSrc ||
