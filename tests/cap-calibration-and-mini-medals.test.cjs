@@ -7,17 +7,7 @@ const path = require('node:path');
 const indexSource = readAppSource();
 const styleSource = fs.readFileSync(path.join(__dirname, '..', 'styles', 'app.css'), 'utf8');
 
-test('CAP miniature medal resolver uses canonical military representations', () => {
-  assert.match(indexSource, /getAwardRepresentation\?\.\(award,'MINIATURE_MEDAL'\)/);
-  assert.match(indexSource, /representation\?\.available && representation\.asset/);
-});
-
-test('CAP miniature medal rack applies military award devices', () => {
-  assert.match(indexSource, /militaryDevices:isMilitaryRibbonId\(r\.id\)/);
-  assert.match(indexSource, /applyMilitaryMedalVariant\(mimg,entry\.path,entry\.militaryDevices,'MINIATURE_MEDAL'\)/);
-});
-
-test('military miniature medal size calibration survives while rack positions stay dynamic', () => {
+test('CAP miniature medal size calibration survives while rack positions stay dynamic', () => {
   assert.match(indexSource, /if\(String\(key \|\| ''\)\.startsWith\('ribbon:'\) && over\)/);
   assert.doesNotMatch(indexSource, /startsWith\('ribbon:'\) \|\| String\(key \|\| ''\)\.startsWith\('mini:'\)/);
   assert.match(indexSource, /function applyMiniRackCalibToElement\(el, key, base\)/);
@@ -47,7 +37,6 @@ test('CAP uniform ribbon and medal UI exposes working basic and maximum bulk con
   assert.match(indexSource, /id="capSelectAllMax"/);
   assert.match(indexSource, /function selectAllCapUniformAwards\(\{maximum=false\}=\{\}\)/);
   assert.match(indexSource, /getEligibleRibbonIds\(\)/);
-  assert.match(indexSource, /maximumRenderableMilitaryAwardCount\(award,'RIBBON'\)/);
 });
 
 test('calibration issue 137 applies only to the male Class A bucket', () => {

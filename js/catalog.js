@@ -932,11 +932,6 @@ const RIBBON_DISPLAY_NAMES = {
   forest_patrol_ribbon: 'Forest Patrol Ribbon',
   missing_aircraft_ribbon: 'Missing Aircraft Ribbon'
 };
-const MILITARY_RIBBON_PREFIX = 'military:';
-let militaryRibbonCatalogCache={dataRef:null,awards:[],byId:new Map(),ids:[]};
-function isMilitaryRibbonId(id){
-  return String(id || '').startsWith(MILITARY_RIBBON_PREFIX);
-}
 
 function applyMiniRackCalibToElement(el, key, base){
   // Miniature-medal rack placement is calculated from the medals that are
@@ -958,55 +953,7 @@ function applyMiniRackCalibToElement(el, key, base){
   el.style.transform = `rotate(${v.r !== undefined ? v.r : 0}deg)`;
   el.style.transformOrigin = 'center center';
 }
-function militaryRibbonCatalogId(id){
-  return isMilitaryRibbonId(id) ? String(id).slice(MILITARY_RIBBON_PREFIX.length) : String(id || '');
-}
-function getAllMilitaryRibbonAwards(){
-  const dataRef=window.CAPUBMilitaryData?.awards || null;
-  if(militaryRibbonCatalogCache.dataRef===dataRef) return militaryRibbonCatalogCache.awards;
-  const raw=(window.CAPUBMilitaryData?.awards || []).filter(award =>
-    award.type === 'RIBBON' && !window.CAPUBMilitary?.isCapAward(award)
-  );
-  const awards=window.CAPUBMilitary?.canonicalizeAwards?.(raw) || raw;
-  const sorted=[...awards].sort(window.CAPUBMilitary?.compareAwardsUniversal || ((a,b)=>String(a.name).localeCompare(String(b.name))));
-  const byId=new Map();
-  for(const award of awards){
-    byId.set(award.id,award);
-    for(const sourceId of award.sourceIds || []) byId.set(sourceId,award);
-  }
-  militaryRibbonCatalogCache={
-    dataRef,
-    awards,
-    byId,
-    ids:sorted.map(award=>`${MILITARY_RIBBON_PREFIX}${award.id}`)
-  };
-  return awards;
-}
-function getMilitaryRibbonAward(id){
-  getAllMilitaryRibbonAwards();
-  const catalogId = militaryRibbonCatalogId(id);
-  return militaryRibbonCatalogCache.byId.get(catalogId) || null;
-}
-function getMilitaryRibbonIds(){
-  getAllMilitaryRibbonAwards();
-  return [...militaryRibbonCatalogCache.ids];
-}
-const MILITARY_BRANCH_ORDER=['JOINT','ARMY','MARINE_CORPS','NAVY','AIR_FORCE','SPACE_FORCE','COAST_GUARD'];
-const MILITARY_BRANCH_LABELS={JOINT:'Joint / Multi-Service',ARMY:'Army',MARINE_CORPS:'Marine Corps',NAVY:'Navy',AIR_FORCE:'Air Force',SPACE_FORCE:'Space Force',COAST_GUARD:'Coast Guard'};
-function getMilitaryAwardBranch(award){
-  const services=[...new Set((award?.authorizedServices || []).filter(service=>MILITARY_BRANCH_ORDER.includes(service)))];
-  return services.length === 1 ? services[0] : 'JOINT';
-}
-function getMilitarySelectionService(id,selection=State.ribbonSelections?.[id]){
-  const award=getMilitaryRibbonAward(id);
-  const services=award?.authorizedServices || [];
-  return services.includes(selection?.militaryService) ? selection.militaryService : (services[0] || 'AIR_FORCE');
-}
 function getRibbonDisplayName(id){
-  if(isMilitaryRibbonId(id)){
-    const award = getMilitaryRibbonAward(id);
-    return award?.officialName || award?.name || militaryRibbonCatalogId(id).replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-  }
   return RIBBON_DISPLAY_NAMES[id] || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 }
 const RIBBON_PRECEDENCE_INDEX = new Map(ribbonList.map((id, idx) => [id, idx]));
@@ -1014,7 +961,6 @@ function normalizeRibbonId(id){
   return RIBBON_ID_ALIASES[id] || id;
 }
 function precedence(id){
-  if(isMilitaryRibbonId(id)) return -1;
   const normalized = normalizeRibbonId(id);
   return RIBBON_PRECEDENCE_INDEX.has(normalized)
     ? RIBBON_PRECEDENCE_INDEX.get(normalized)
@@ -1098,22 +1044,7 @@ const deviceMeta = {
   '1_Silver_Star_Device':      { label:'Silver Star',      src:'devices/glyph/1_Silver_Star_Device.webp',      w:10, h:10, weight:2 },
   '1_Gold_Star_Device':        { label:'Gold Star',        src:'devices/glyph/1_Gold_Star_Device.webp',        w:10, h:10, weight:3 },
   'V_Device':                  { label:'V Device',         src:'devices/glyph/V_Device.webp',                  w:10, h:10, weight:4 },
-  '1_Bronze_Propeller_Device': { label:'Bronze Propeller', src:'devices/glyph/1_Bronze_Propeller_Device.webp', w:10, h:10, weight:1 },
-  'BRONZE_OLC': { label:'Bronze Oak Leaf Cluster', src:'devices/military/bronze_olc.png', w:12, h:7, weight:3 },
-  'SILVER_OLC': { label:'Silver Oak Leaf Cluster', src:'devices/military/silver_olc.png', w:12, h:7, weight:4 },
-  'BRONZE_SERVICE_STAR': { label:'Bronze Service Star', src:'devices/military/bronze_star.png', w:8, h:8, weight:3 },
-  'SILVER_SERVICE_STAR': { label:'Silver Service Star', src:'devices/military/silver_star.png', w:8, h:8, weight:4 },
-  'GOLD_AWARD_STAR': { label:'Gold Award Star', src:'devices/military/gold_star.png', w:8, h:8, weight:3 },
-  'SILVER_AWARD_STAR': { label:'Silver Award Star', src:'devices/military/silver_star.png', w:8, h:8, weight:4 },
-  'V_DEVICE': { label:'V Device', src:'devices/military/v_device.png', w:8, h:9, weight:8 },
-  'C_DEVICE': { label:'C Device', src:'devices/military/c_device.png', w:8, h:9, weight:7 },
-  'R_DEVICE': { label:'R Device', src:'devices/military/r_device.png', w:8, h:9, weight:7 },
-  'M_DEVICE': { label:'M Device', src:'devices/military/m_device.png', w:9, h:9, weight:7 },
-  'N_DEVICE': { label:'N Device', src:'devices/military/n_device.png', w:9, h:9, weight:7 },
-  'BRONZE_HOURGLASS': { label:'Bronze Hourglass', src:'devices/military/bronze_hourglass.png', w:8, h:9, weight:6 },
-  'SILVER_HOURGLASS': { label:'Silver Hourglass', src:'devices/military/silver_hourglass.png', w:8, h:9, weight:6 },
-  'GOLD_HOURGLASS': { label:'Gold Hourglass', src:'devices/military/gold_hourglass.png', w:8, h:9, weight:6 },
-  'ARROWHEAD_DEVICE': { label:'Arrowhead Device', src:'devices/military/arrowhead.png', w:7, h:9, weight:9 }
+  '1_Bronze_Propeller_Device': { label:'Bronze Propeller', src:'devices/glyph/1_Bronze_Propeller_Device.webp', w:10, h:10, weight:1 }
 };
 
 // device cap per ribbon (overflow creates additional ribbon instances)
@@ -1485,7 +1416,6 @@ function normalizeRibbonImageFileName(name){
 
 function getRibbonImagePath(ribbonOrId){
   const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
-  if(isMilitaryRibbonId(id)) return getMilitaryRibbonAward(id)?.images?.ribbon || '';
   if(typeof ribbonOrId !== 'string' && ribbonOrId?.imageOverride){
     return `ribbons/${normalizeRibbonImageFileName(ribbonOrId.imageOverride)}`;
   }
@@ -1546,11 +1476,6 @@ Object.assign(miniMedalImages, {
 
 function getMiniMedalImagePath(ribbonOrId){
   const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
-  if(isMilitaryRibbonId(id)){
-    const award = getMilitaryRibbonAward(id);
-    const representation = window.CAPUBMilitary?.getAwardRepresentation?.(award,'MINIATURE_MEDAL');
-    return representation?.available && representation.asset ? representation.asset : '';
-  }
   const normalized = normalizeRibbonId(id);
   const base = miniMedalImages[normalized] || miniMedalImages[id] || '';
   if(!base) return '';
@@ -2041,159 +1966,6 @@ function getBadgeRenderSize(id, uniformId=State.uniform){
   return { width:target, height:target / aspectRatio };
 }
 
-const militaryRibbonVariantCache=new Map();
-function capubLoadCompositeImage(src){
-  return new Promise((resolve,reject)=>{
-    const image=new Image();
-    image.onload=()=>resolve(image);
-    image.onerror=()=>reject(new Error(`Unable to load ${src}`));
-    image.src=src;
-  });
-}
-function militaryDeviceSequence(ribbonObj){
-  if(Array.isArray(ribbonObj?.militaryDevices)) return [...ribbonObj.militaryDevices];
-  const sequence=[];
-  for(const [deviceId,count] of Object.entries(ribbonObj?.devices || {})){
-    for(let index=0;index<Number(count || 0);index++) sequence.push(deviceId);
-  }
-  return sequence.sort((a,b)=>(deviceMeta[b]?.weight || 0)-(deviceMeta[a]?.weight || 0));
-}
-async function buildMilitaryRibbonVariant(ribbonObj){
-  const basePath=getRibbonImagePath(ribbonObj);
-  const devices=militaryDeviceSequence(ribbonObj);
-  const key=`${basePath}|${devices.join(',')}`;
-  if(militaryRibbonVariantCache.has(key)) return militaryRibbonVariantCache.get(key);
-  const promise=(async()=>{
-    const canvas=document.createElement('canvas');
-    canvas.width=100; canvas.height=30;
-    const context=canvas.getContext('2d');
-    const base=await capubLoadCompositeImage(ASSET(basePath));
-    context.drawImage(base,0,0,100,30);
-
-    // Match the woven, shaded finish of the existing McChord 100x30 variants.
-    context.save();
-    context.globalCompositeOperation='soft-light';
-    for(let x=0;x<100;x+=2){
-      context.fillStyle=x%4===0?'rgba(255,255,255,.12)':'rgba(0,0,0,.08)';
-      context.fillRect(x,0,1,30);
-    }
-    context.fillStyle='rgba(255,255,255,.09)'; context.fillRect(0,0,100,1);
-    context.fillStyle='rgba(0,0,0,.16)'; context.fillRect(0,29,100,1);
-    context.restore();
-
-    const rendered=[];
-    for(const deviceId of devices){
-      const numeral=String(deviceId).match(/^NUMERAL_(\d{1,2})$/);
-      const meta=deviceMeta[deviceId] || (numeral ? {
-        label:`Numeral ${numeral[1]}`,
-        src:`devices/military/numeral_${numeral[1]}.png`,w:9,h:9,weight:6
-      } : null);
-      if(!meta) continue;
-      try{
-        const image=await capubLoadCompositeImage(ASSET(meta.src));
-        const isCluster=deviceId.endsWith('_OLC');
-        // Device source canvases are square. Preserve that aspect ratio here;
-        // the oak-leaf glyph's own transparent padding provides its wide shape.
-        rendered.push({deviceId,meta,image,width:isCluster?21:18,height:isCluster?21:18});
-      }catch(error){ console.warn('[MILITARY RIBBON DEVICE]',error); }
-    }
-    const sizes=Object.fromEntries(rendered.map(item=>[item.deviceId,{width:item.width,height:item.height}]));
-    const placements=window.CAPUBMilitaryDeviceLayout?.layoutDevices(
-      rendered.map(item=>item.deviceId),{context:'ribbon',deviceSizes:sizes}
-    ) || [];
-    for(let index=0;index<rendered.length;index++){
-      const item=rendered[index];
-      const placement=placements[index] || {x:42,y:7,width:item.width,height:item.height};
-      context.drawImage(item.image,placement.x,placement.y,placement.width,placement.height);
-    }
-    return canvas.toDataURL('image/png');
-  })();
-  militaryRibbonVariantCache.set(key,promise);
-  return promise;
-}
-function getMilitaryPrecomposedRibbonAsset(ribbonObj){
-  const awardId=militaryRibbonCatalogId(ribbonObj?.id);
-  const service=String(ribbonObj?.militaryService || '').toUpperCase();
-  const devices=militaryDeviceSequence(ribbonObj);
-  if(!awardId || !service) return null;
-  const signature=devices.length ? devices.join('+') : 'NONE';
-  const key=`${awardId}::${service}::${signature}`;
-  return (window.CAPUBMilitaryData?.deviceVariants?.ribbonAssets || [])
-    .find(record=>record.key===key && record.asset) || null;
-}
-function applyMilitaryRibbonVariant(image,ribbonObj){
-  if(!image || !isMilitaryRibbonId(ribbonObj?.id)) return;
-  const token=`${ribbonObj.id}|${militaryDeviceSequence(ribbonObj).join(',')}`;
-  image.dataset.militaryVariantToken=token;
-  const precomposed=getMilitaryPrecomposedRibbonAsset(ribbonObj);
-  if(precomposed?.asset){
-    image.dataset.militaryVariantStrategy=precomposed.strategy || 'PRECOMPOSED_PNG';
-    image.onerror=()=>{
-      image.onerror=null;
-      buildMilitaryRibbonVariant(ribbonObj).then(src=>{
-        if(image.isConnected && image.dataset.militaryVariantToken===token) image.src=src;
-      }).catch(error=>console.warn('[MILITARY RIBBON VARIANT]',error));
-    };
-    image.src=ASSET(precomposed.asset);
-    return;
-  }
-  image.dataset.militaryVariantStrategy='DETERMINISTIC_RUNTIME_FALLBACK';
-  buildMilitaryRibbonVariant(ribbonObj).then(src=>{
-    if(image.isConnected && image.dataset.militaryVariantToken===token){
-      image.onerror=null;
-      image.src=src;
-    }
-  }).catch(error=>console.warn('[MILITARY RIBBON VARIANT]',error));
-}
-
-const militaryMedalVariantCache=new Map();
-function getMilitaryDeviceMeta(deviceId){
-  const numeral=String(deviceId).match(/^NUMERAL_(\d{1,2})$/);
-  return deviceMeta[deviceId] || (numeral ? {
-    label:`Numeral ${numeral[1]}`,src:`devices/military/numeral_${numeral[1]}.png`,w:9,h:9,weight:6
-  } : null);
-}
-async function buildMilitaryMedalVariant(asset,devices=[],representation='MINIATURE_MEDAL'){
-  const contextName=representation==='FULL_SIZE_MEDAL'?'fullSizeMedal':'miniatureMedal';
-  const contextConfig=window.CAPUBMilitaryDeviceLayout?.DEFAULT_CONTEXTS?.[contextName] || {width:100,height:176};
-  const key=`${asset}|${contextName}|${devices.join(',')}`;
-  if(militaryMedalVariantCache.has(key)) return militaryMedalVariantCache.get(key);
-  const promise=(async()=>{
-    const canvas=document.createElement('canvas');
-    canvas.width=contextConfig.width; canvas.height=contextConfig.height;
-    const drawing=canvas.getContext('2d');
-    const base=await capubLoadCompositeImage(ASSET(asset));
-    drawing.drawImage(base,0,0,canvas.width,canvas.height);
-    const rendered=[];
-    for(const deviceId of devices){
-      const meta=getMilitaryDeviceMeta(deviceId); if(!meta?.src) continue;
-      try{
-        const image=await capubLoadCompositeImage(ASSET(meta.src));
-        const isCluster=deviceId.endsWith('_OLC');
-        // Never stretch the square source canvas into a forced rectangle.
-        rendered.push({deviceId,image,width:isCluster?16:13,height:isCluster?16:13});
-      }catch(error){ console.warn('[MILITARY MEDAL DEVICE]',error); }
-    }
-    const sizes=Object.fromEntries(rendered.map(item=>[item.deviceId,{width:item.width,height:item.height}]));
-    const placements=window.CAPUBMilitaryDeviceLayout?.layoutDevices(
-      rendered.map(item=>item.deviceId),{context:contextName,deviceSizes:sizes}
-    ) || [];
-    rendered.forEach((item,index)=>{
-      const placement=placements[index];
-      if(placement) drawing.drawImage(item.image,placement.x,placement.y,placement.width,placement.height);
-    });
-    return canvas.toDataURL('image/png');
-  })();
-  militaryMedalVariantCache.set(key,promise);
-  return promise;
-}
-function applyMilitaryMedalVariant(image,asset,devices,representation){
-  const token=`${asset}|${representation}|${(devices || []).join(',')}`;
-  image.dataset.militaryMedalVariantToken=token;
-  buildMilitaryMedalVariant(asset,devices,representation).then(src=>{
-    if(image.isConnected && image.dataset.militaryMedalVariantToken===token) image.src=src;
-  }).catch(error=>console.warn('[MILITARY MEDAL VARIANT]',error));
-}
 
 function isCorporateForegroundLapelPin(id, uniformId=State.uniform){
   return (uniformId === 'aviator_blazer' || uniformId === 'semi_formal') &&

@@ -181,17 +181,6 @@ function applyJacket(){
    =========================== */
 function sortRibbons(arr){
   return [...arr].sort((a,b)=>{
-    const aMilitary = isMilitaryRibbonId(a.id);
-    const bMilitary = isMilitaryRibbonId(b.id);
-    if(aMilitary && bMilitary){
-      const aa = getMilitaryRibbonAward(a.id);
-      const ba = getMilitaryRibbonAward(b.id);
-      if(aa && ba && window.CAPUBMilitary?.compareAwardsUniversal){
-        return window.CAPUBMilitary.compareAwardsUniversal(aa,ba);
-      }
-    }
-    // U.S. military decorations precede CAP awards on the CAP rack.
-    if(aMilitary !== bMilitary) return aMilitary ? -1 : 1;
     const ap = precedence(a.id);
     const bp = precedence(b.id);
     if(ap !== bp) return ap - bp;
@@ -598,7 +587,7 @@ function drawDevicesOnRibbon(ribbonObj,leftPx,topPx,w,h){
   const y=topPx+(h-layout.size)/2;
 
   flat.forEach((d,i)=>{
-    const im=document.createElement(d.text ? 'span' : 'img');
+    const im=document.createElement('img');
     im.className='layer ribbonDevice';
     im.dataset.parentRid = rid;
     // Include the instance index: overflow awards draw the same ribbon id more
@@ -606,14 +595,9 @@ function drawDevicesOnRibbon(ribbonObj,leftPx,topPx,w,h){
     im.dataset.calibKey = instanceIndex > 0
       ? `device:${rid}#${instanceIndex}:${d.id}:${i}`
       : `device:${rid}:${d.id}:${i}`;
-    if(d.text){
-      im.textContent=d.text;
-      im.style.cssText+='display:flex;align-items:center;justify-content:center;color:#d7dce3;font:900 8px/1 Arial;text-shadow:0 1px #374151;';
-    }else{
-      im.src=ASSET(d.src);
-      im.alt=d.label||d.id;
-      im.onerror=()=>{ im.remove(); };
-    }
+    im.src=ASSET(d.src);
+    im.alt=d.label||d.id;
+    im.onerror=()=>{ im.remove(); };
     im.style.display='block';
 
     applyCalibToElement(im, im.dataset.calibKey, { x, y, w:layout.size, h:layout.size, r:0 });
@@ -834,7 +818,6 @@ function renderRack(){
 
         const tile=document.createElement('img');
         tile.className='layer ribbonTile';
-        if(isMilitaryRibbonId(ribbonObj.id)) tile.classList.add('militaryRibbonTile');
         tile.style.display='block';
         capubInstallImageFallback(tile, [
           getRibbonImagePath(ribbonObj),
@@ -862,13 +845,12 @@ function renderRack(){
 
         initRibbonDragHandlers(tile);
         uniformCanvas.appendChild(tile);
-        if(isMilitaryRibbonId(ribbonObj.id)) applyMilitaryRibbonVariant(tile,ribbonObj);
 
         const renderedLeft = parseFloat(tile.style.left) || leftPx;
         const renderedTop  = parseFloat(tile.style.top) || topPx;
         const renderedW    = parseFloat(tile.style.width) || RW;
         const renderedH    = parseFloat(tile.style.height) || RH;
-        if(!isMilitaryRibbonId(ribbonObj.id)) drawDevicesOnRibbon(ribbonObj, renderedLeft, renderedTop, renderedW, renderedH);
+        drawDevicesOnRibbon(ribbonObj, renderedLeft, renderedTop, renderedW, renderedH);
       });
     });
 
@@ -895,8 +877,7 @@ function renderRack(){
       medalItems.push({
         id:r.id,
         path:medalPath,
-        awardValue:r.awardValue || '',
-        militaryDevices:isMilitaryRibbonId(r.id) ? [...(r.militaryDevices || [])] : []
+        awardValue:r.awardValue || ''
       });
     }
   }
@@ -917,7 +898,7 @@ function renderRack(){
     });
   });
 
-  // Work upward from the calibrated bottom row. Mixed CAP/military rows now
+  // Work upward from the calibrated bottom row. Mixed rows now
   // derive vertical overlap from their actual calibrated heights rather than
   // assuming every image retained the original McChord dimensions.
   const medalRowTops=Array(totalMedalRows).fill(BOTTOM_ROW_Y_MEDALS);
@@ -965,9 +946,6 @@ function renderRack(){
         : "CAPR 39-1 Table 11-1 mounting bars: four per row, maximum 24 medals.";
 
       uniformCanvas.appendChild(mimg);
-      if(isMilitaryRibbonId(entry.id)){
-        applyMilitaryMedalVariant(mimg,entry.path,entry.militaryDevices,'MINIATURE_MEDAL');
-      }
     });
   });
 }

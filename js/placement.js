@@ -79,47 +79,9 @@ function renderAllBadges(){
     placeBadgeSlotAnchored(id);
   }
 
-  renderSelectedMilitaryBadgesOnCap();
-
   renderMeasurementOverlay();
 }
 
-function renderSelectedMilitaryBadgesOnCap(){
-  if(State.organization!=='CAP') return;
-  const remaining=Math.max(0,4-getRenderableCountedBadgeIds().length);
-  if(!remaining) return;
-  const selected=getAllSelectableMilitaryBadges()
-    .filter(badge=>State.militaryBadges?.[badge.id])
-    .slice(0,remaining)
-    .map(badge=>({badge,representation:getMilitaryBadgeRepresentation(badge)}))
-    .filter(entry=>entry.representation?.status==='AVAILABLE' && entry.representation.asset);
-  if(!selected.length) return;
-
-  const renderSize=getCanvasRenderSize();
-  const rack=getRenderedAwardRackElements();
-  const rackTop=rack.length ? Math.min(...rack.map(el=>parseFloat(el.style.top)||0)) : renderSize.h*.38;
-  const rackCenter=getTopRibbonRowCenterX() ?? renderSize.w*.65;
-  const existing=[...uniformCanvas.querySelectorAll('.layer.badge:not(.capMilitaryBadge)')]
-    .map(el=>({top:parseFloat(el.style.top)||0,bottom:(parseFloat(el.style.top)||0)+(parseFloat(el.style.height)||0)}))
-    .filter(box=>box.bottom<=rackTop+1 && Math.abs(rackCenter-renderSize.w*.65)<renderSize.w);
-  const stackBottom=existing.length ? Math.min(rackTop-4,...existing.map(box=>box.top-4)) : rackTop-4;
-  const width=Math.max(46,Math.min(62,renderSize.w*.067));
-  const height=width*.625;
-  selected.forEach((entry,index)=>{
-    const image=document.createElement('img');
-    image.className='layer badge militaryBadgeTile capMilitaryBadge';
-    image.dataset.militaryBadgeId=entry.badge.id;
-    image.src=entry.representation.asset;
-    image.alt=entry.badge.officialName || entry.badge.id;
-    image.title=`U.S. military badge: ${entry.badge.officialName || entry.badge.id}`;
-    const top=stackBottom-(selected.length-index)*height;
-    Object.assign(image.style,{
-      left:`${rackCenter-width/2}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`,
-      objectFit:'contain',zIndex:String(176+index)
-    });
-    uniformCanvas.appendChild(image);
-  });
-}
 
 function getRenderedAwardRackElements() {
   // Service uniforms use ribbonTile; Mess Dress and Semi-Formal use ribbonMini.
@@ -1320,80 +1282,6 @@ function renderMeasurementOverlay(){
 }
 
 
-function militaryEscapeHtml(value){
-  return String(value || '').replace(/[&<>"']/g,character=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  })[character]);
-}
-
-
-function getAvailableMilitaryBadgeVariants(badge,representationName='metal',service=State.organization){
-  const configured=badge?.representations?.[representationName] || {};
-  const representation=configured.byService?.[service] || configured;
-  const variants=representation.variants || {};
-  const available=Object.entries(variants)
-    .filter(([,record])=>record?.status==='AVAILABLE' && record.asset)
-    .map(([id,record])=>({id,record}));
-  if(!available.length && representation.status==='AVAILABLE' && representation.asset){
-    available.push({id:representation.defaultVariant || 'default',record:representation});
-  }
-  return available;
-}
-
-function getAllSelectableMilitaryBadges(){
-  return (window.CAPUBMilitaryData?.badges || [])
-    .filter(badge=>getAvailableMilitaryBadgeVariants(badge).length)
-    .sort((a,b)=>String(a.officialName || a.id).localeCompare(String(b.officialName || b.id)));
-}
-
-function getMilitaryBadgeRepresentation(badge,preferred='metal',uniformFamily='SERVICE_DRESS'){
-  const representationName=preferred==='auto'
-    ? (/OCP|ABU|ODU|NWU|MCCUU|UTILITY/i.test(uniformFamily) ? 'embroidered' : 'metal')
-    : preferred;
-  const configured=badge?.representations?.[representationName] || {status:'MISSING_ASSET',available:false,asset:null};
-  const base=configured.byService?.[State.organization] || configured;
-  const available=getAvailableMilitaryBadgeVariants(badge,representationName,State.organization);
-  const requested=State.militaryBadges?.[badge?.id]?.variant;
-  const selectedVariant=requested || base.defaultVariant || available[0]?.id || badge?.variants?.[0] || 'default';
-  const resolved=window.CAPUBMilitary?.resolveBadgeRepresentation?.(badge,{
-    service:State.organization,uniformFamily,preferred:representationName,
-    assetProfiles:window.CAPUBMilitaryData?.assetProfiles,variant:selectedVariant
-  });
-  if(resolved?.status==='AVAILABLE' && resolved.asset) return resolved;
-  return available[0]?.record || base;
-}
-
-
-function militaryAwardFilterType(award){
-  const category=String(award?.category || window.CAPUBMilitary?.inferredCategory?.(award) || 'UNKNOWN').toUpperCase();
-  if(['MEDAL_OF_HONOR','SERVICE_CROSS','DISTINGUISHED_SERVICE','VALOR','SUPERIOR_SERVICE','LEGION_OF_MERIT','DISTINGUISHED_FLYING_CROSS','HEROISM','BRONZE_STAR','PURPLE_HEART','MERITORIOUS_SERVICE','AIR_MEDAL','COMMENDATION','ACHIEVEMENT','PRISONER_OF_WAR'].includes(category)) return 'DECORATIONS';
-  if(category==='UNIT_AWARD' || category==='FOREIGN_UNIT_AWARD') return 'UNIT_AWARD';
-  if(['CAMPAIGN','EXPEDITIONARY'].includes(category)) return 'CAMPAIGN_EXPEDITIONARY';
-  if(['SERVICE','RESERVE','GOOD_CONDUCT'].includes(category)) return 'SERVICE';
-  if(category==='TRAINING') return 'TRAINING';
-  if(category.startsWith('FOREIGN')) return 'FOREIGN';
-  return 'OTHER';
-}
-
-
-function maximumRenderableMilitaryAwardCount(award,representationOverride=null){
-  const representation=representationOverride || State.militaryRepresentation || 'RIBBON';
-  const service=State.organization;
-  const deviceCatalog=window.CAPUBMilitaryData?.devices || [];
-  let maximum=1;
-  // The generated device matrix currently contains verified repeat-award
-  // combinations through the twentieth award. Stop at the highest count the
-  // configured service rule can represent without inventing a device.
-  for(let count=2;count<=20;count+=1){
-    const result=window.CAPUBMilitary?.calculateDevices?.({
-      award,service,awardCount:count,representation,deviceCatalog
-    });
-    if(result?.valid) maximum=count;
-  }
-  return maximum;
-}
-
-
 function buildVariableMedalRowGeometry(entries,{holding=false,overlapPixels=0,suspensionRatio=(116/176)}={}){
   const widths=entries.map(item=>Math.max(.01,Number(item.size.w) || 1));
   const heights=entries.map(item=>Math.max(.01,Number(item.size.h) || 1));
@@ -1431,20 +1319,6 @@ function getCalibratedLayerGeometry(key,base){
     h:saved.h!==undefined ? Math.max(.01,normalizeCalibNumber(saved.h,base.h || 1)) : base.h,
     r:saved.r!==undefined ? normalizeCalibNumber(saved.r,base.r || 0) : (base.r || 0)
   };
-}
-
-
-function militaryBadgeDressPlacementRole(badge){
-  const family=String(badge?.family || '').toUpperCase();
-  const notes=JSON.stringify(badge?.placement?.serviceDress || '').toLowerCase();
-  const id=String(badge?.id || '').toLowerCase();
-  if(/right pocket|above the nametag|above the name tag/.test(notes)) return 'RIGHT_POCKET';
-  if(/wearer's left|left pocket|below the bottom row|below the ribbons|below the medals/.test(notes)) return 'LEFT_POCKET';
-  if(/marksmanship|rifle_qualification|pistol_qualification/.test(id)) return 'LEFT_POCKET';
-  // Identification and command badges use dedicated pocket/duty-badge zones;
-  // they must not be mixed into the occupational stack over the awards.
-  if(family==='IDENTIFICATION' || family==='COMMAND') return 'RIGHT_POCKET';
-  return 'ABOVE_AWARDS';
 }
 
 
