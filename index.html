@@ -113,6 +113,9 @@
 
     <div class="controlsScrollArea">
 
+      <div class="stepGroup" id="stepGroup-profile">
+<h3 class="stepGroupTitle">1 · Profile</h3>
+
       
 
       <section id="organizationPanel" class="panelBlock">
@@ -223,6 +226,10 @@
           <div class="hintText">Available only for C/MSgt, C/SMSgt, and C/CMSgt. Uses the rank-specific Class A or Class B base image ending in <code>_1st_sgt</code> when a matching file is available. If a member report shows a current First Sergeant duty assignment, this can auto-select when the cadet rank is eligible.</div>
         </div>
       </section>
+</div>
+
+<div class="stepGroup" id="stepGroup-uniform">
+<h3 class="stepGroupTitle">2 · Uniform</h3>
 
       <section id="genderBlock" class="panelBlock disabledBlock">
         <label class="fieldLabel">Gender / Cut</label>
@@ -342,6 +349,10 @@
           Color Guard and Honor Guard cords are manual selections. Each cord has its own saved coordinates for cadet Class A/Class B male and female uniforms.
         </div>
       </section>
+</div>
+
+<div class="stepGroup" id="stepGroup-items">
+<h3 class="stepGroupTitle">3 · Items</h3>
 
       <!-- Asset base path control removed from the general UI. The builder now uses the default images folder internally. -->
 
@@ -492,6 +503,34 @@
         <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="patchGallery" class="galleryGrid"></div>
       </section>
+</div>
+
+<div class="stepGroup" id="stepGroup-export">
+<h3 class="stepGroupTitle">4 · Validate &amp; export</h3>
+
+      <section id="capubV2StatusPanel" class="panelBlock">
+        <label class="fieldLabel">Validation / Build Status</label>
+        <div class="statusGrid">
+          <div class="statusCard"><strong>Ribbons</strong><span id="capubV2RibbonCount">0</span></div>
+          <div class="statusCard"><strong>Badges</strong><span id="capubV2BadgeCount">0</span></div>
+          <div class="statusCard"><strong>Patches</strong><span id="capubV2PatchCount">0</span></div>
+          <div class="statusCard"><strong>Warnings</strong><span id="capubV2WarningCount">0</span></div>
+        </div>
+        <ul id="capubV2Notices" class="noticeList"></ul>
+      </section>
+
+      <section class="panelBlock">
+        <label class="fieldLabel">Output</label>
+        <div class="row two" style="margin-top:6px">
+          <div class="col"></div>
+          <div class="col"><button id="downloadImage" type="button">Download PNG</button></div>
+        </div>
+        <div class="hintText">Download will export a high-res PNG of the uniform preview.</div>
+      </section>
+</div>
+
+<details class="toolsGroup" id="stepGroup-tools">
+<summary>Builder tools</summary>
 
       <section id="capubV2QuickPanel" class="panelBlock">
         <label class="fieldLabel">Quick Builder Tools <span class="validationBadge">V2</span></label>
@@ -532,33 +571,7 @@
         </label>
         <div class="hintText">This makes OCP/ABU previews useful even before every tape, rank, and patch image is available.</div>
       </section>
-
-      <section id="capubV2StatusPanel" class="panelBlock">
-        <label class="fieldLabel">Validation / Build Status</label>
-        <div class="statusGrid">
-          <div class="statusCard"><strong>Ribbons</strong><span id="capubV2RibbonCount">0</span></div>
-          <div class="statusCard"><strong>Badges</strong><span id="capubV2BadgeCount">0</span></div>
-          <div class="statusCard"><strong>Patches</strong><span id="capubV2PatchCount">0</span></div>
-          <div class="statusCard"><strong>Warnings</strong><span id="capubV2WarningCount">0</span></div>
-        </div>
-        <ul id="capubV2Notices" class="noticeList"></ul>
-      </section>
-
-      <section class="panelBlock">
-        <label class="fieldLabel">Output</label>
-        <div class="row two" style="margin-top:6px">
-          <div class="col"></div>
-          <div class="col"><button id="downloadImage" type="button">Download PNG</button></div>
-        </div>
-        <div class="hintText">Download will export a high-res PNG of the uniform preview.</div>
-      </section>
-
-      <section class="panelBlock" style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3;">
-        <div id="sidebarCopyrightLine">
-          © <span id="sidebarYear"></span> Civil Air Patrol Uniform Builder<br/>
-          Developed by C/Col. Guiseppe Doran
-        </div>
-      </section>
+</details>
     </div>
   </aside>
 
