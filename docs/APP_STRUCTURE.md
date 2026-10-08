@@ -10,7 +10,7 @@ The builder is a static site: no bundler and no build step to run the app. Open
 | `index.html` | Markup only (~640 lines): header, sidebar panels grouped by step, preview, modals. No inline scripts. |
 | `styles/app.css` | The one stylesheet. Layers run base -> polish overrides -> utilities; later rules win. |
 | `js/*.js` | The application script, split along the section banners it always had. |
-| `military/*.js`, `data/*.js` | Military modules and generated data loaded before the app scripts. |
+| `data/*.js` | Calibration corrections and the CAP unit list, loaded before the app scripts. |
 | `purchase-feature*.js`, `calibration-submission.js`, `patch-submission.js`, `admin-history.js`, `ocp-patch-variants.js` | Feature scripts loaded after the app. |
 | `google-apps-script/Code.gs` | Backend for submissions and admin history (deployed separately). |
 | `scripts/` | Import/audit/build tooling (Node and Python). Not part of the page. |
@@ -55,8 +55,7 @@ file cannot ship under an old URL.
 
 Artwork is WebP, sized to how large it is actually drawn. Source PNGs are not
 kept. `scripts/optimize-images.py` re-encodes new artwork (`--dry-run`, `--apply`,
-`--rewrite-code`; needs Pillow). `images/devices/military/` stays PNG because the
-military device tests require it. Path literals in code may name `.png`; the
+`--rewrite-code`; needs Pillow). Path literals in code may name `.png`; the
 loader probes `.webp` first and falls back, but a literal that names a file which
 no longer exists costs a 404 per image, so rewrite it to `.webp`.
 
@@ -71,7 +70,7 @@ break them.
 `scripts/visual-harness.html` drives the real builder in an iframe and records a
 structural manifest of every ribbon family and award level (which image, where,
 how large, in what order). `scripts/baseline.tsv` is the manifest from
-2026-08-23 and **predates later layout and military-catalog changes on `main`**,
+2026-08-23 and **predates later layout changes on `main`**,
 so `compareToBaseline()` reports every row as different. Use it as a before/after
 check on the same origin instead:
 

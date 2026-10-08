@@ -46,6 +46,13 @@ that now live in `js/patches.js` are that history: each was added on top of the
 previous one rather than editing it, which is why several functions are wrapped
 more than once.
 
+## Scope note
+
+The Aug 2026 military work (PRs #116-#149) is **not** part of this branch: the
+multi-service builder, the 176-award U.S. military ribbon catalog, the military
+badge catalog and their artwork, data, scripts and reports were removed so the
+project is the CAP uniform builder only. They remain in `main`'s history.
+
 ## Since then (this branch)
 
 Image re-encode to WebP (123 MB -> ~54 MB), runtime ribbon-device compositing,

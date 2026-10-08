@@ -1,6 +1,6 @@
 # McChord Asset Standard
 
-Generated from the unmodified local McChord master assets by `scripts/analyze_mcchord_assets.py`.
+Measured on 2026-08 from the unmodified local McChord master assets. The measuring script and its per-file report were removed with the military builder, so the figures below are a snapshot.
 
 ## Scope and provenance
 
@@ -35,8 +35,4 @@ Miniature medals are not ribbon bars with generic pendants. Every reviewed mappi
 
 1. Asset dimensions and content bounds must fall within the measured family or carry a documented exception.
 2. Transparent padding and pendant/suspension bounds must be reviewed visually on the contact sheet.
-3. A military medal is unavailable until a canonical award has a reviewed local mapping in `data/rules/verified/representation-overrides.json`.
-4. Inferred device rules remain hidden from normal mode; only official-source overrides may enable a combination there.
-5. Preview and PNG export must consume the same flattened representation.
-
-The complete per-file measurements are in `reports/mcchord-asset-analysis.json`.
+3. Preview and PNG export must consume the same flattened representation.
