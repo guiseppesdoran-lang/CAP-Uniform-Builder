@@ -250,7 +250,6 @@ mergeCalibDefaults();
   buildBadgeGallery();
   wireMemberReportImporter();
   buildPatchGallery();
-  wireOrganizationSelector();
 
   fullRender();
   initCalibratorUI();

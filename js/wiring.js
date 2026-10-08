@@ -1434,11 +1434,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
 
   function validateBuild(){
     CAPUB_V2.notices = [];
-    // These are CAP profile steps; the military builder has no membership, rank or cut.
-    const capProfile=(State.organization||'CAP')==='CAP';
-    if(capProfile && !State.membership) addNotice('warn','Select membership type first.');
-    if(capProfile && !State.rank) addNotice('warn','Select rank before building the uniform.');
-    if(capProfile && !State.gender) addNotice('warn','Select male/female cut before final placement tuning.');
+    if(!State.membership) addNotice('warn','Select membership type first.');
+    if(!State.rank) addNotice('warn','Select rank before building the uniform.');
+    if(!State.gender) addNotice('warn','Select male/female cut before final placement tuning.');
     if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)) addNotice('err','Selected uniform is not authorized for the selected membership type.');
     if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && !getSelectedUnitPatchId()) addNotice('warn',`Unit patch selected for ${getUnitPatchSelectionLabel(State.unitPatchCharter)}, but no patch image asset is available yet.`);
     if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && !isUnitPatchAuthorizedForCurrentUniform()) addNotice('warn',`Unit patch ${getUnitPatchSelectionLabel(State.unitPatchCharter)} is not authorized on the current uniform.`);

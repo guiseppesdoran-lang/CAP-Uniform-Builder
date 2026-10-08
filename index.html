@@ -118,75 +118,6 @@
 
       
 
-      <section id="organizationPanel" class="panelBlock">
-        <label class="fieldLabel">Organization</label>
-        <select id="organizationSelect">
-          <option value="CAP">Civil Air Patrol</option>
-          <option value="ARMY">U.S. Army</option>
-          <option value="MARINE_CORPS">U.S. Marine Corps</option>
-          <option value="NAVY">U.S. Navy</option>
-          <option value="AIR_FORCE">U.S. Air Force</option>
-          <option value="SPACE_FORCE">U.S. Space Force</option>
-          <option value="COAST_GUARD">U.S. Coast Guard</option>
-        </select>
-        <label class="fieldLabel mt-8">Component</label>
-        <select id="componentSelect">
-          <option value="ACTIVE">Active</option>
-          <option value="RESERVE">Reserve</option>
-          <option value="NATIONAL_GUARD">National Guard</option>
-        </select>
-        <div class="hintText">Catalog rules stay visibly marked unverified until matched to a current official publication.</div>
-      </section>
-
-      <section id="militaryRibbonPanel" class="panelBlock hidden">
-        <label class="fieldLabel">Military Ribbons</label>
-        <select id="militaryRepresentationMode" aria-label="Military award representation" style="margin-bottom:6px">
-          <option value="RIBBON">Ribbon rack</option>
-          <option value="MINIATURE_MEDAL">Miniature medal rack</option>
-          <option value="FULL_SIZE_MEDAL">Full-size medal rack</option>
-        </select>
-        <input id="militaryAwardSearch" type="search" placeholder="Search name or abbreviation..." />
-        <div class="militaryAwardFilters">
-          <select id="militaryAwardServiceFilter" aria-label="Filter military awards by service">
-            <option value="ALL">All services</option>
-            <option value="JOINT">Joint / DoD</option>
-            <option value="ARMY">Army</option>
-            <option value="MARINE_CORPS">Marine Corps</option>
-            <option value="NAVY">Navy</option>
-            <option value="AIR_FORCE">Air Force</option>
-            <option value="SPACE_FORCE">Space Force</option>
-            <option value="COAST_GUARD">Coast Guard</option>
-            <option value="FOREIGN">Foreign</option>
-          </select>
-          <select id="militaryAwardTypeFilter" aria-label="Filter military awards by type">
-            <option value="ALL">All award types</option>
-            <option value="DECORATIONS">Decorations</option>
-            <option value="UNIT_AWARD">Unit awards</option>
-            <option value="CAMPAIGN_EXPEDITIONARY">Campaign / Expeditionary</option>
-            <option value="SERVICE">Service awards</option>
-            <option value="TRAINING">Training</option>
-            <option value="FOREIGN">Foreign</option>
-            <option value="OTHER">Other</option>
-          </select>
-        </div>
-        <label class="hintText" style="display:flex;align-items:center;gap:6px;margin-top:6px">
-          <input id="militaryRenderableOnly" type="checkbox" /> Show only awards renderable in the selected representation
-        </label>
-        <div class="militaryBulkActions" role="group" aria-label="Bulk military award selection">
-          <button id="militarySelectAllBasic" type="button" class="ghost">Select all (basic)</button>
-          <button id="militarySelectAllMax" type="button" class="ghost">Select max devices</button>
-        </div>
-        <div class="hintText">Bulk selection applies only to awards with local artwork for the selected ribbon, miniature-medal, or full-size-medal view.</div>
-        <div id="militaryAwardSummary" class="hintText mt-5"></div>
-        <div id="militarySelectedAwards" class="militarySelectedAwards"></div>
-        <div id="militaryAwardResults" class="militaryAwardResults mt-6"></div>
-        <details class="mt-8" id="militaryBadgeSection" data-military-section="military-badges">
-          <summary>Military badges</summary>
-          <div class="hintText" style="margin:5px 0">Badge authorization, precedence, placement, and artwork are audited independently from awards.</div>
-          <div id="militaryBadgeResults" class="militaryAwardResults"></div>
-        </details>
-      </section>
-
       <section id="memberReportImportPanel" class="panelBlock">
         <label class="fieldLabel">Import CAP Member Report</label>
         <div class="hintText">
@@ -623,17 +554,17 @@
 <script src="data/calibration-corrections.js?v=33c7a70ef6"></script>
 <script src="data/unit-options.js?v=1b4f04c159"></script>
 <script src="js/state.js?v=8e165a1276"></script>
-<script src="js/calibration.js?v=6c73ea7cc8"></script>
+<script src="js/calibration.js?v=51f1f61ee1"></script>
 <script src="js/dom-assets.js?v=042bf745d8"></script>
 <script src="js/catalog.js?v=e63b78a2f6"></script>
 <script src="js/setup.js?v=77c19ddd9f"></script>
 <script src="js/render-core.js?v=2612ec7f1e"></script>
 <script src="js/galleries.js?v=31b9288973"></script>
-<script src="js/placement.js?v=feac6ffaf7"></script>
-<script src="js/wiring.js?v=1c0466a9aa"></script>
-<script src="js/workspace-ui.js?v=257d2ee2f3"></script>
+<script src="js/placement.js?v=afe13839c7"></script>
+<script src="js/wiring.js?v=b46f2b37bb"></script>
+<script src="js/workspace-ui.js?v=d07fa45cc1"></script>
 <script src="js/member-report-import.js?v=c326b5092b"></script>
-<script src="js/bootstrap.js?v=2ca67ce9fd"></script>
+<script src="js/bootstrap.js?v=93cf6540f6"></script>
 <script src="js/patches.js?v=27686164dc"></script>
 <script src="purchase-feature-core.js?v=25f92d72df"></script>
 <script src="admin-history.js?v=2eafc920c2"></script>

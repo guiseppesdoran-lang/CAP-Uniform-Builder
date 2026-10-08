@@ -25,7 +25,3 @@ test('runtime fallback does not warp square device source canvases',()=>{
   assert.match(indexSource,/width:isCluster\?16:13,height:isCluster\?16:13/);
 });
 
-test('CAP and standalone military racks carry the wearer service into asset lookup',()=>{
-  assert.match(indexSource,/inst\.militaryService=getMilitarySelectionService\(id,sel\)/);
-  assert.match(indexSource,/militaryService:State\.organization/);
-});

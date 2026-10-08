@@ -46,16 +46,6 @@ function calibKeyFor(el){
   return el?.dataset?.calibKey || null;
 }
 function getCurrentCalibUniform(){
-  // The standalone military builder is not displaying the CAP uniform kept in
-  // State.uniform.  Store each service/component/representation in its own
-  // bucket so resizing a military medal is not written into (or later masked
-  // by) a CAP Blues bucket.
-  if(State.organization && State.organization !== 'CAP'){
-    const service=String(State.organization || 'military').toLowerCase();
-    const component=String(State.component || 'active').toLowerCase();
-    const representation=String(State.militaryRepresentation || 'ribbon').toLowerCase();
-    return `military_${service}_${component}_${representation}`;
-  }
   return genderBucketFor(State.uniform || 'global', State.gender || '');
 }
 function getBaseUniformFromCalibId(uniformId){
@@ -94,16 +84,12 @@ function getCalibrationContextSnapshot(){
     gender:State.gender || null,
     membership:State.membership || null,
     rank:State.rank || null,
-    organization:State.organization || 'CAP',
-    militaryRepresentation:State.militaryRepresentation || null,
     baseCandidates:typeof getBaseCandidates === 'function' ? getBaseCandidates() : [],
     canvas:typeof getCanvasRenderSize === 'function' ? getCanvasRenderSize() : null,
     selectedUniformItems:{
       ribbons:(State.ribbons || []).map(item=>({id:item.id,awardValue:item.awardValue || ''})),
       badges:[...(State.badges || [])],
-      patches:[...(State.patches || [])],
-      militaryAwards:Object.keys(State.militaryAwards || {}),
-      militaryBadges:Object.keys(State.militaryBadges || {})
+      patches:[...(State.patches || [])]
     }
   };
 }
@@ -1991,46 +1977,16 @@ function getLegacyPatchCalibKey(key){
   const m = String(key || '').match(/^patch:([^:]+):/);
   return m ? `patch:${m[1]}` : null;
 }
-function getLegacyMilitaryMedalCalibKeys(key){
-  const match=String(key || '').match(/^(mini|medal):military:(.+)$/);
-  if(!match) return [];
-  const context=match[1]==='mini' ? 'MINIATURE_MEDAL' : 'FULL_SIZE_MEDAL';
-  const awardId=match[2];
-  const organizations=['ARMY','MARINE_CORPS','NAVY','AIR_FORCE','SPACE_FORCE','COAST_GUARD'];
-  if(State.organization && State.organization!=='CAP'){
-    const currentIndex=organizations.indexOf(State.organization);
-    if(currentIndex>=0) organizations.splice(currentIndex,1);
-    organizations.unshift(State.organization);
-  }
-  return organizations.map(service=>`militaryMedal:${service}:${context}:${awardId}`);
-}
-
 function getCalib(key){
   if(!key) return null;
   const legacyPatchKey = getLegacyPatchCalibKey(key);
-  const legacyMilitaryMedalKeys=getLegacyMilitaryMedalCalibKeys(key);
   for(const uniformId of getCalibFallbackUniforms()){
     const bucket = State.calib.byUniform?.[uniformId] || {};
     if(bucket[key]) return bucket[key];
     if(legacyPatchKey && bucket[legacyPatchKey]) return bucket[legacyPatchKey];
-    for(const legacyKey of legacyMilitaryMedalKeys){
-      if(bucket[legacyKey]) return bucket[legacyKey];
-    }
     const defaults = DEFAULT_CALIBRATION_BY_UNIFORM[uniformId] || {};
     if(defaults[key]) return defaults[key];
     if(legacyPatchKey && defaults[legacyPatchKey]) return defaults[legacyPatchKey];
-    for(const legacyKey of legacyMilitaryMedalKeys){
-      if(defaults[legacyKey]) return defaults[legacyKey];
-    }
-  }
-  // The previous military preview stored its calibration under whichever CAP
-  // uniform happened to be remembered.  Recover that exact legacy key once so
-  // existing admin work is not lost when the new military-specific bucket is
-  // introduced.
-  for(const bucket of Object.values(State.calib.byUniform || {})){
-    for(const legacyKey of legacyMilitaryMedalKeys){
-      if(bucket?.[legacyKey]) return bucket[legacyKey];
-    }
   }
   return State.calib.map[key] || (legacyPatchKey ? State.calib.map[legacyPatchKey] : null);
 }
@@ -2076,7 +2032,6 @@ function getLayerTypeFromKey(key, className=''){
   if(k.startsWith('ribbon:')) return 'ribbon';
   if(k.startsWith('mini:')) return 'mini-medal';
   if(k.startsWith('medal:')) return 'full-size-medal';
-  if(k.startsWith('militaryMedal:')) return k.includes(':MINIATURE_MEDAL:') ? 'mini-medal' : 'full-size-medal';
   if(k.startsWith('badge:')) return 'badge';
   if(k.startsWith('patch:')) return 'patch';
   if(k.startsWith('device:')) return 'ribbon-device';
