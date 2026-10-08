@@ -12417,11 +12417,14 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     let current='profile'; if(hasProfile) current='uniform'; if(hasProfile&&hasUniform) current='items'; if(hasProfile&&hasUniform&&hasItems) current='export';
     steps.forEach(st=>{ const k=st.dataset.step; st.classList.toggle('done',!!statuses[k]); st.classList.toggle('current',k===current && !statuses[k]); });
   }
-  function ensurePreviewTools(){
-    const wrap=safeBy('previewWrapper'); if(!wrap || safeBy('previewTools')) return;
-    const tools=document.createElement('div'); tools.id='previewTools'; tools.className='previewTools';
-    tools.innerHTML=`<div class="previewToolCard"><div class="toolTitle">Preview</div><div class="smallRow"><button type="button" class="ghost" id="zoomOutBtn">−</button><button type="button" class="ghost" id="zoomFitBtn">Fit</button><button type="button" class="ghost" id="zoomInBtn">+</button></div><span class="zoomReadout" id="zoomReadout">100%</span></div>`;
-    wrap.appendChild(tools);
+  function ensurePreviewToolbar(){
+    const wrap=safeBy('previewWrapper'); if(!wrap || safeBy('previewToolbar')) return;
+    // One row above the uniform: status chips on the left, zoom on the right.
+    // They used to be two separate floating cards that overlapped each other and,
+    // beside the sidebar at ~1024px, pushed the zoom card off the right edge.
+    const toolbar=document.createElement('div'); toolbar.id='previewToolbar'; toolbar.className='previewToolbar';
+    toolbar.innerHTML=`<div id="capubTopBar" class="capubTopBar"><span class="capubPill">Status: <strong id="topStatusText">Ready</strong></span><span class="capubPill">Uniform: <strong id="topUniformText">None</strong></span><span class="capubPill">Items: <strong id="topItemsText">0</strong></span></div><div id="previewTools" class="previewTools"><div class="previewToolCard" role="group" aria-label="Preview zoom"><button type="button" class="ghost" id="zoomOutBtn" aria-label="Zoom out">−</button><span class="zoomReadout" id="zoomReadout" aria-live="polite">100%</span><button type="button" class="ghost" id="zoomInBtn" aria-label="Zoom in">+</button><button type="button" class="ghost" id="zoomFitBtn">Fit</button></div></div>`;
+    wrap.insertBefore(toolbar, wrap.firstChild);
     safeBy('zoomOutBtn').onclick=()=>setZoom(Math.max(.55,V3.zoom-.1));
     safeBy('zoomInBtn').onclick=()=>setZoom(Math.min(1.65,V3.zoom+.1));
     safeBy('zoomFitBtn').onclick=()=>fitZoom();
@@ -12435,17 +12438,13 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const wrap=safeBy('previewWrapper'), area=safeBy('previewArea');
     if(!wrap || !area) return setZoom(1);
     const mobile=window.matchMedia('(max-width:768px)').matches;
-    const reserve=mobile ? 24 : 230;
+    // Only the wrapper's side padding: the zoom controls now live in a toolbar row
+    // above the uniform instead of beside it.
+    const reserve=mobile ? 24 : 44;
     const available=Math.max(240,wrap.clientWidth-reserve);
     const previewWidth=area.offsetWidth || 450;
     const z=Math.min(1, Math.max(.5, available/previewWidth));
     setZoom(z);
-  }
-  function ensureTopBar(){
-    const wrap=safeBy('previewWrapper'); if(!wrap || safeBy('capubTopBar')) return;
-    const bar=document.createElement('div'); bar.id='capubTopBar'; bar.className='capubTopBar';
-    bar.innerHTML='<span class="capubPill">Status: <strong id="topStatusText">Ready</strong></span><span class="capubPill">Uniform: <strong id="topUniformText">None</strong></span><span class="capubPill">Items: <strong id="topItemsText">0</strong></span>';
-    wrap.appendChild(bar);
   }
   function updateTopBar(){
     if(typeof State==='undefined') return;
@@ -12476,7 +12475,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(typeof State==='undefined') return;
     document.querySelectorAll('.uniformOption').forEach(btn=>btn.classList.toggle('activeUniform',btn.dataset.uniformId===State.uniform));
   }
-  function refreshAll(){ ensureProgress(); ensurePreviewTools(); ensureTopBar(); ensureCommandBar(); polishPanels(); updateProgress(); updateTopBar(); markActiveUniform(); }
+  function refreshAll(){ ensureProgress(); ensurePreviewToolbar(); ensureCommandBar(); polishPanels(); updateProgress(); updateTopBar(); markActiveUniform(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
     fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); setTimeout(refreshAll,0); return result; };
