@@ -65,3 +65,22 @@ no longer exists costs a 404 per image, so rewrite it to `.webp`.
 Several tests assert on source text. They read the page plus every `js/` file
 through `tests/helpers/app-source.cjs`, so moving code between files does not
 break them.
+
+## Ribbon rack regression harness
+
+`scripts/visual-harness.html` drives the real builder in an iframe and records a
+structural manifest of every ribbon family and award level (which image, where,
+how large, in what order). `scripts/baseline.tsv` is the manifest from
+2026-08-23 and **predates later layout and military-catalog changes on `main`**,
+so `compareToBaseline()` reports every row as different. Use it as a before/after
+check on the same origin instead:
+
+1. Serve two checkouts (the commit before your change and your change) under one
+   static server, e.g. `/old/` and `/new/`.
+2. Open `/old/scripts/visual-harness.html`, run `runHarness()`, `toRows()` it and
+   keep the rows in `localStorage`.
+3. Open `/new/scripts/visual-harness.html`, do the same, and diff the two maps.
+
+On 2026-10-08 this compared 5,408 entries before and after the stylesheet,
+script-splitting and UI work: 0 changed, 0 added or removed, 0 broken assets.
+The default structural pass needs no visible pane; the optional pixel pass does.
