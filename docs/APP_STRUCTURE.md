@@ -68,18 +68,22 @@ break them.
 ## Ribbon rack regression harness
 
 `scripts/visual-harness.html` drives the real builder in an iframe and records a
-structural manifest of every ribbon family and award level (which image, where,
-how large, in what order). `scripts/baseline.tsv` is the manifest from
-2026-08-23 and **predates later layout changes on `main`**,
-so `compareToBaseline()` reports every row as different. Use it as a before/after
-check on the same origin instead:
+structural manifest of every CAP ribbon family and award level (which image,
+where, how large, in what order). `scripts/baseline.tsv` is that manifest for
+the current code (68 families, 1,712 entries, regenerated 2026-10-08 after the
+military catalog was removed).
 
-1. Serve two checkouts (the commit before your change and your change) under one
-   static server, e.g. `/old/` and `/new/`.
-2. Open `/old/scripts/visual-harness.html`, run `runHarness()`, `toRows()` it and
-   keep the rows in `localStorage`.
-3. Open `/new/scripts/visual-harness.html`, do the same, and diff the two maps.
+To check a change, serve the repo, open `scripts/visual-harness.html` and run
+`compareToBaseline()` in the console. `clean: true` means every rack entry is
+structurally identical. If a layout change is intentional, review the reported
+differences, then regenerate the baseline: run `runHarness()`, serialise it with
+`toRows()` in the same TSV shape as the existing file, and replace
+`scripts/baseline.tsv`.
 
-On 2026-10-08 this compared 5,408 entries before and after the stylesheet,
-script-splitting and UI work: 0 changed, 0 added or removed, 0 broken assets.
+For a before/after comparison of two commits, serve both checkouts under one
+origin (for example `/old/` and `/new/`), capture each, keep the rows in
+`localStorage`, and diff the two maps. On 2026-10-08 this showed the stylesheet,
+script split and UI work left all 5,408 entries (CAP and military) unchanged, and
+that removing the military builder left all 1,712 CAP entries unchanged.
+
 The default structural pass needs no visible pane; the optional pixel pass does.
