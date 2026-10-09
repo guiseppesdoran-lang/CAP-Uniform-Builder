@@ -732,7 +732,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
   try{
     const FIELD_BADGE_UNIFORMS = new Set(['ocp','abu','corporate_field','cfu','cfdu','flight_suit','fdu']);
     const FIELD_CALIBRATION_BUCKETS = ['ocp','abu','corporate_field','cfdu','flight_suit'];
-    const FIELD_BADGE_SLOTS = ['OLP','OLPA','OLPU','ON','UN','ORP','URBP','LP','RP','OLPF','FON'];
 
     function capubFieldUniformKey(uniformId = State.uniform){
       if(typeof normalizeFieldUniformRenderKey === 'function') return normalizeFieldUniformRenderKey(uniformId);
@@ -1329,10 +1328,11 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return capubPreviousGetBadgeSlotSpec(id);
     };
 
+    // Fills in one default patch box per field uniform from the slot tables. Field-uniform badges
+    // need no stored boxes: capubLayoutUtilityBadges() places them by rule.
     function capubEnsureFieldCalibrationDefaults(){
       if(!State.calib.byUniform) State.calib.byUniform = {};
       const patchIds = Object.keys(PATCH_META || {}).filter(id => !FIELD_BASE_BUILT_IN_PATCH_IDS.has(id));
-      const allBadgeIds = [...new Set([...(badgeList || [])])];
 
       FIELD_CALIBRATION_BUCKETS.forEach(bucketId => {
         if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
@@ -1354,26 +1354,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
               r: Number(anchor.r) || 0
             };
           }
-        });
-
-        const badgeLayout = FIELD_UNIFORM_BADGE_LAYOUTS?.[bucketId] || FIELD_UNIFORM_BADGE_LAYOUTS?.ocp || {};
-        allBadgeIds.forEach(badgeId => {
-          const sz = customBadgeSizes?.[badgeId] || { width:60, height:25 };
-          const bw = Number(sz.width) || 60;
-          const bh = Number(sz.height) || 25;
-          FIELD_BADGE_SLOTS.forEach(slot => {
-            const anchor = badgeLayout[slot] || badgeLayout.UN || {x:250,y:360,dy:45};
-            const key = `badge:${badgeId}:${slot}:0`;
-            if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key]){
-              DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = {
-                x: Math.round(Number(anchor.x || 0) - bw/2),
-                y: Math.round(Number(anchor.y || 0) - bh/2),
-                w: bw,
-                h: bh,
-                r: Number(anchor.r) || 0
-              };
-            }
-          });
         });
       });
       if(typeof mergeCalibDefaults === 'function') mergeCalibDefaults();
