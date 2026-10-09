@@ -20,6 +20,11 @@ if (typeof CSS.escape !== "function") {
 }
 
 const State = {
+  organization:'CAP',
+  component:'ACTIVE',
+  militaryAwards:{},
+  militaryBadges:{},
+  militaryRepresentation:'RIBBON',
   membership:'',
   gender:'',
   uniform:'blues_a',
@@ -50,6 +55,17 @@ const State = {
 
   ribbonSelections:{}, 
   ribbonGalleryExpanded:false,
+  militaryUIState:{
+    selectorOpen:true,
+    expandedSections:[],
+    sidebarScrollTop:0,
+    modalScrollTop:0,
+    catalogScrollTop:0,
+    searchValue:'',
+    serviceFilter:'ALL',
+    awardTypeFilter:'ALL',
+    focusedControl:null
+  },
 
   badgeSelections:{},
   badgeGalleryExpanded:false,

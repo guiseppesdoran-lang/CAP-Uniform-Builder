@@ -302,6 +302,25 @@
     position:absolute;
     image-rendering:auto;
   }
+  .militaryBuilderPanel{display:grid;gap:8px;}
+  .militaryAwardResults{max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:6px;}
+  .militaryBulkActions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:7px;}
+  .militaryBulkActions button{min-width:0;padding:7px 8px;white-space:normal;line-height:1.15;}
+  .militaryAwardFilters{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;}
+  .militaryAwardOption:focus-within{outline:2px solid color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:1px;}
+  .militaryAwardOption{display:grid;grid-template-columns:auto 1fr auto;gap:7px;align-items:center;padding:5px;border-bottom:1px solid var(--line);font-size:12px;}
+  .militaryAwardOption:last-child{border-bottom:0;}
+  .militaryAwardOption input[type="number"]{width:56px;padding:4px;}
+  .militarySourceOnly{color:#9a3412;font-size:10px;}
+  .militarySelectedAwards{display:grid;gap:5px;margin-top:7px;}
+  .militarySelectedAward{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;padding:6px;border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-radius:7px;background:color-mix(in srgb,var(--accent) 5%,#fff);font-size:11px;}
+  .militarySelectedAward input{width:52px;padding:3px;}
+  .militarySelectedAward button{padding:3px 7px;}
+  .militaryRepresentationStatus{display:inline-block;margin-top:2px;font-size:10px;font-weight:700;letter-spacing:.02em;}
+  .militaryPreviewTitle{position:absolute;left:24px;right:24px;top:24px;text-align:center;font-weight:800;color:#e5e7eb;letter-spacing:.08em;}
+  .militaryPreviewNote{position:absolute;left:24px;right:24px;bottom:24px;text-align:center;color:#cbd5e1;font-size:11px;line-height:1.4;}
+  .militaryRackTile,.ribbonTile.militaryRibbonTile{position:absolute;object-fit:fill;filter:saturate(.92) contrast(1.02);box-shadow:inset 0 1px rgba(255,255,255,.22),inset 0 -1px rgba(15,23,42,.28);}
+  .militaryRackPending{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;padding:2px;background:repeating-linear-gradient(45deg,#334155,#334155 5px,#475569 5px,#475569 10px);color:#fff;font-size:7px;line-height:1.05;overflow:hidden;border:1px dashed #f59e0b;}
   .garmentForegroundOverlay{
     pointer-events:none;
     user-select:none;
@@ -989,6 +1008,22 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
   border-color:#8bb8e5;
   background:#f0f7ff;
 }
+.militaryRibbonArt{position:relative;display:block;flex:0 0 auto;width:72px;height:19.64px;overflow:hidden;border-radius:1px;box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(15,23,42,.2);}
+.militaryRibbonArt>img{
+  width:72px;
+  height:19.64px;
+  object-fit:fill;
+  border-radius:1px;
+  filter:saturate(.9) contrast(.97);
+}
+.militaryRibbonArt::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0,rgba(255,255,255,.16) .45px,rgba(0,0,0,.09) .8px,transparent 1.25px),repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0,transparent .7px,rgba(0,0,0,.08) 1.1px);mix-blend-mode:soft-light;opacity:.72;}
+.militaryRibbonMenu,.militaryBranchMenu{grid-column:1/-1;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:8px 10px;margin-top:10px;}
+.militaryRibbonMenu>summary,.militaryBranchMenu>summary{cursor:pointer;font-weight:850;color:var(--ink);padding:5px 2px;}
+.militaryBranchMenu{margin:8px 0 0;background:#f8fafc;}
+.militaryBranchGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin:10px 0 4px;}
+.militaryRibbonSelectorTile{position:relative;}
+.militaryServiceSelect,.militarySpecialDevices{width:100%;margin-top:4px;padding:7px 8px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12px;}
+.militarySpecialDeviceRow{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;font-size:11px;color:var(--muted);}
 
 
 
