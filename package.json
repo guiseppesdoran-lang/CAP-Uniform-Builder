@@ -8,6 +8,7 @@
     "stamp:assets": "node scripts/stamp-assets.cjs",
     "check:assets": "node scripts/stamp-assets.cjs --check",
     "build": "node scripts/build-site.cjs",
-    "serve:dist": "node scripts/serve-dist.cjs"
+    "serve:dist": "node scripts/serve-dist.cjs",
+    "check:base-art": "python3 scripts/check-base-art.py"
   }
 }
