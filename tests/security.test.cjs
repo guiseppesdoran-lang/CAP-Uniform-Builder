@@ -33,7 +33,10 @@ test('no email addresses are committed (test addresses on example.test are allow
 test('no 64-character hex constants (password hashes, keys) are committed', () => {
   const found = [];
   for (const rel of trackedTextFiles()) {
-    if (/\b[0-9a-fA-F]{64}\b/.test(read(rel))) found.push(rel);
+    let text = read(rel);
+    // military-data.js lists a checksum for each artwork file; only those fields are exempt.
+    if (rel === 'military/military-data.js') text = text.replace(/"(?:source)?[Ss]ha256":"[0-9a-fA-F]{64}"/g, '');
+    if (/\b[0-9a-fA-F]{64}\b/.test(text)) found.push(rel);
   }
   assert.deepEqual(found, []);
 });
@@ -59,8 +62,9 @@ test('index.html has no inline script, inline event handlers or third-party scri
 
 test('application code requests nothing from other origins at load time', () => {
   const sources = trackedTextFiles().filter(rel => /\.js$/.test(rel) && !rel.startsWith('scripts/') && !rel.startsWith('tests/') && !rel.startsWith('google-apps-script/'));
-  // purchase-catalog.js only holds vendor links shown to the user; namespaces are not requests.
-  const allowed = [/w3\.org\/2000\/svg/, /^purchase-catalog\.js$/];
+  // purchase-catalog.js only holds vendor links shown to the user and military-data.js cites where
+  // each award came from; neither is requested. Namespaces are not requests.
+  const allowed = [/w3\.org\/2000\/svg/, /^purchase-catalog\.js$/, /^military\/military-data\.js$/];
   for (const rel of sources) {
     for (const match of read(rel).matchAll(/https?:\/\/[A-Za-z0-9./_-]+/g)) {
       const ok = allowed.some(rule => rule.test(rel) || rule.test(match[0]));
