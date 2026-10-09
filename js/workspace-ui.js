@@ -8,12 +8,17 @@
 (function capubV3PolishedUI(){
   const V3 = window.CAPUB_V3 = { zoom: 1, compact:false };
   const safeBy = id => document.getElementById(id);
-  function toast(msg){
+  function toast(msg, ms){
     let t=safeBy('capubToast');
-    if(!t){ t=document.createElement('div'); t.id='capubToast'; t.className='capubToast'; document.body.appendChild(t); }
+    if(!t){
+      t=document.createElement('div'); t.id='capubToast'; t.className='capubToast';
+      t.setAttribute('role','status'); t.setAttribute('aria-live','polite');
+      document.body.appendChild(t);
+    }
     t.textContent=msg; t.classList.add('show');
-    clearTimeout(t._timer); t._timer=setTimeout(()=>t.classList.remove('show'),2200);
+    clearTimeout(t._timer); t._timer=setTimeout(()=>t.classList.remove('show'),ms||2200);
   }
+  window.capubToastShow = toast;
   function ensureProgress(){
     const scroll=document.querySelector('.controlsScrollArea');
     if(!scroll || safeBy('capubProgress')) return;
