@@ -1,7 +1,8 @@
 # App structure
 
-The builder is a static site: no bundler and no build step to run the app. Open
-`index.html` over any static server. GitHub Pages serves `main` as-is.
+The builder is a static site: no bundler and no server-side code. Open `index.html` over any
+static server to run it from the repository. To publish it, `npm run build` produces `dist/`,
+the only directory that should be web-served (see `deploy/README.md`).
 
 ## What lives where
 
@@ -10,18 +11,47 @@ The builder is a static site: no bundler and no build step to run the app. Open
 | `index.html` | Markup only (~640 lines): header, sidebar panels grouped by step, preview, modals. No inline scripts. |
 | `styles/app.css` | The one stylesheet. Layers run base -> polish overrides -> utilities; later rules win. |
 | `js/*.js` | The application script, split along the section banners it always had. |
+| `config.js` | Per-deployment settings, loaded first. Only `submissionEndpoint` (empty = submissions off). Never put secrets here. |
 | `data/*.js` | Calibration corrections and the CAP unit list, loaded before the app scripts. |
-| `purchase-feature*.js`, `calibration-submission.js`, `patch-submission.js`, `admin-history.js`, `ocp-patch-variants.js` | Feature scripts loaded after the app. |
-| `google-apps-script/Code.gs` | Backend for submissions and admin history (deployed separately). |
-| `scripts/` | Import/audit/build tooling (Node and Python). Not part of the page. |
+| `vendor/pdfjs/` | pdf.js 3.11.174 (Apache-2.0), loaded on first member-report PDF import. |
+| `purchase-feature*.js`, `calibration-submission.js`, `patch-submission.js`, `ocp-patch-variants.js` | Feature scripts loaded after the app. The two submission scripts do nothing unless `config.js` sets an endpoint. |
+| `google-apps-script/Code.gs` | Optional submission endpoint (patch images, calibration updates), deployed separately; see `PATCH_SUBMISSION_SETUP.md`. |
+| `deploy/` | nginx and Caddy examples with the security headers, and a short deployment guide. |
+| `scripts/` | Build, asset-stamping, image and test tooling (Node and Python). Not part of the page. |
 | `tests/` | `npm test` (Node's built-in runner). |
+
+## Developer mode
+
+The calibrator (the CAL tab) is a development tool. It is hidden unless the page is opened
+with `?dev=1`; there is no password in the page. Calibration data itself (`js/calibration.js`)
+is part of normal rendering and is not affected. If a deployment sets a submission endpoint,
+dev mode also shows "Submit Calibration Update", which asks for an admin key that the server
+checks.
+
+## Privacy and data
+
+The page keeps everything in the browser. Saved setups live in localStorage (Save to Browser)
+and nothing is uploaded when a PNG is downloaded. The only outbound traffic is the optional
+submission endpoint, and only when someone sends a patch image or an administrator submits a
+calibration. Saved or imported setups are validated by `sanitizeProfile()` in `js/wiring.js`
+before they touch the page state; values that go into HTML pass through `escapeHtml()`.
+
+## Building and serving
+
+```bash
+npm run build        # dist/ = runtime files only, with a Content-Security-Policy <meta> fallback
+npm run serve:dist   # preview dist/ at http://127.0.0.1:8780 with the real security headers
+```
+
+The policy lives in `scripts/csp.cjs` and is the single source for the build, the preview
+server, the deploy examples and `tests/security.test.cjs`.
 
 ## Load order (it matters)
 
 All `js/` files are classic scripts that share one global scope, exactly as the
 old single inline script did. They must stay in this order:
 
-1. `js/state.js` - global state, rank data, placement constants
+1. `config.js` (root) - deployment settings; then `js/state.js` - global state, the ?dev switch, rank data, placement constants
 2. `js/calibration.js` - default and master calibration data
 3. `js/dom-assets.js` - DOM shortcuts, asset path helpers
 4. `js/catalog.js` - uniforms, ribbons, devices, badges, patches
