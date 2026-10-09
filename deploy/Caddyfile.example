@@ -1,0 +1,34 @@
+# Caddy site for ebhq.dev, serving the output of `npm run build` (dist/).
+# Caddy gets and renews HTTPS certificates by itself and redirects HTTP to HTTPS.
+#
+# The Content-Security-Policy below is the one in scripts/csp.cjs
+# (buildCsp({ forHeader: true })); tests/security.test.cjs fails if they differ.
+
+ebhq.dev {
+	root * /var/www/ebhq/dist
+	encode zstd gzip
+	file_server {
+		# Directory listings stay off (the default); no browse directive.
+	}
+
+	header {
+		Strict-Transport-Security "max-age=63072000; includeSubDomains"
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		-Server
+	}
+
+	# Only GET and HEAD make sense for a static site.
+	@badmethod not method GET HEAD
+	respond @badmethod 405
+
+	# Never serve dotfiles (.git, .env ...).
+	@dotfiles path */.*
+	respond @dotfiles 404
+
+	@page path /index.html /
+	header @page Cache-Control "no-cache"
+}

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>CAP Uniform Builder — Ribbon Visual Regression Harness</title>
+<style>
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:#eef1f5;color:#0d1b2a}
+  header{background:#002855;color:#fff;padding:12px 16px}
+  header h1{margin:0;font-size:16px}
+  header p{margin:4px 0 0;font-size:12px;opacity:.8}
+  .bar{padding:12px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#fff;border-bottom:1px solid #cfd6df}
+  button{padding:8px 14px;border-radius:8px;border:1px solid #002855;background:#002855;color:#fff;cursor:pointer;font-size:13px}
+  button.secondary{background:#fff;color:#002855}
+  button:disabled{opacity:.5;cursor:default}
+  #status{font-size:13px;color:#516079}
+  #log{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;white-space:pre;padding:12px 16px;max-height:40vh;overflow:auto;background:#0d1b2a;color:#c8d6e5}
+  iframe{width:1000px;height:760px;border:1px solid #cfd6df;background:#fff}
+  .wrap{padding:16px;display:flex;gap:16px;align-items:flex-start}
+  .hide{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>Ribbon Visual Regression Harness</h1>
+  <p>Drives the real builder in an iframe via setRibbonSelectionFromDropdown() and captures a structural manifest of the rendered rack. Pixel hashing is opt-in (<code>runHarness({pixels:true})</code>) and needs a visible pane.</p>
+</header>
+
+<div class="bar">
+  <button id="run">Run capture</button>
+  <button id="download" class="secondary" disabled>Download manifest JSON</button>
+  <label><input type="checkbox" id="showFrame" /> show iframe</label>
+  <span id="status">idle</span>
+</div>
+
+<div id="log"></div>
+
+<div class="wrap">
+  <iframe id="app" src="../index.html" class="hide"></iframe>
+</div>
+
+<script>
+/*
+  Phase 0 safety net for the backend efficiency work.
+
+  Two signals are available per (family, award level):
+
+    structural - the exact set of rendered rack layers: source file, geometry,
+                 rotation and DOM order. Catches wrong image, wrong position,
+                 wrong ribbon count, lost overflow instances. This is the
+                 default and the gate: it needs no image decoding, so it is
+                 deterministic and fast even in a hidden tab.
+
+    pixel      - SHA-256 of the composited rack bitmap, via {pixels:true}.
+                 Catches the visual delta structural comparison cannot see,
+                 which is the whole risk of swapping baked device art for
+                 runtime compositing in Phase 4. Requires a VISIBLE pane:
+                 a hidden document defers image decoding, so drawImage
+                 silently paints nothing and every hash becomes a lie.
+
+  Everything is same-origin over the static server, so the canvas is not
+  tainted and getImageData works.
+*/
+
+const logEl = document.getElementById('log');
+const statusEl = document.getElementById('status');
+const frame = document.getElementById('app');
+
+let manifest = null;
+
+function log(msg){
+  logEl.textContent += msg + '\n';
+  logEl.scrollTop = logEl.scrollHeight;
+}
+function setStatus(s){ statusEl.textContent = s; }
+
+document.getElementById('showFrame').addEventListener('change', e => {
+  frame.classList.toggle('hide', !e.target.checked);
+});
+
+function appWindow(){
+  const w = frame.contentWindow;
+  if(!w || typeof w.setRibbonSelectionFromDropdown !== 'function'){
+    throw new Error('builder not ready in iframe');
+  }
+  return w;
+}
+
+const RACK_SELECTOR = '.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice';
+
+/*
+  Wait for the rack to stop changing.
+
+  Timing notes, all learned the hard way while driving this headlessly:
+    - requestAnimationFrame is paused in a hidden tab.
+    - setTimeout is throttled to ~1s in a hidden tab.
+    - img.decode() does not resolve promptly in a hidden tab either, because
+      the renderer defers image decoding for hidden documents.
+
+  So the default path touches none of them. It settles on the microtask queue
+  and only inspects `complete` / `naturalWidth` / `src`, which are populated
+  from the network response and do not require a decode. That is enough to
+  know the fallback chain has stopped swapping src underneath us.
+
+  needsDecode is only set for the optional pixel pass, which genuinely cannot
+  draw an undecoded bitmap and therefore requires a visible pane.
+*/
+// Wait for composite builds started since the last call. The cache only grows, so a size check
+// avoids walking thousands of finished entries on every pass.
+const seenBuilds = new WeakSet();
+let lastBuildCount = -1;
+let lastBuildCache = null;
+async function awaitMilitaryBuilds(win){
+  const cache = win.eval('typeof militaryRibbonVariantCache === "undefined" ? null : militaryRibbonVariantCache');
+  if(!cache) return;
+  if(cache !== lastBuildCache){ lastBuildCache = cache; lastBuildCount = -1; }
+  if(cache.size === lastBuildCount) return;
+  const fresh = [...cache.values()].filter(p => !seenBuilds.has(p));
+  await Promise.allSettled(fresh);
+  fresh.forEach(p => seenBuilds.add(p));
+  lastBuildCount = cache.size;
+  // The page applies a finished build in a later turn; let that turn run before anyone reads layers.
+  await new Promise(resolve => { const c = new MessageChannel(); c.port1.onmessage = () => resolve(); c.port2.postMessage(0); });
+}
+
+async function imagesSettled(win, { maxPasses = 8, needsDecode = false } = {}){
+  let lastKey = null;
+
+  for(let pass = 0; pass < maxPasses; pass++){
+    const imgs = [...win.document.querySelectorAll(RACK_SELECTOR)];
+
+    if(needsDecode){
+      await Promise.all(imgs.map(async img => {
+        try{ if(typeof img.decode === 'function') await img.decode(); }
+        catch(e){ /* missing asset - captureLayers records it via `broken` */ }
+      }));
+    }else{
+      // Military ribbons are composited off-screen by promises that load their artwork outside
+      // the DOM, so the layers above look settled while a build is still running. On a cold
+      // page that changes the layer sizes after the first read; wait for the builds.
+      await awaitMilitaryBuilds(win);
+      // Yield a microtask turn so in-flight load/error handlers can run.
+      await Promise.resolve();
+    }
+
+    const key = imgs.map(i => `${i.getAttribute('src')||''}#${i.naturalWidth}x${i.naturalHeight}`).join('|');
+    if(imgs.every(i => i.complete) && key === lastKey) return;
+    lastKey = key;
+  }
+}
+
+function num(v, fallback = 0){
+  const n = parseFloat(v);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function relSrc(win, src){
+  try{
+    const u = new URL(src, win.location.href);
+    return decodeURIComponent(u.pathname.replace(/^.*\/images\//, 'images/'));
+  }catch(e){ return String(src||''); }
+}
+
+function rotationOf(el){
+  const t = el.style.transform || '';
+  const m = t.match(/rotate\((-?[\d.]+)deg\)/);
+  return m ? parseFloat(m[1]) : 0;
+}
+
+// Structural snapshot of every rack layer, in DOM (paint) order. Returns the
+// elements alongside the records so the pixel pass draws exactly what was
+// measured rather than re-querying and pairing by index.
+function captureLayers(win){
+  const els = [...win.document.querySelectorAll(RACK_SELECTOR)];
+  const layers = els.map(el => ({
+      cls: el.classList.contains('ribbonDevice') ? 'device'
+         : el.classList.contains('ribbonMini') ? 'mini' : 'tile',
+      rid: el.dataset.rid || null,
+      src: relSrc(win, el.getAttribute('src') || el.src),
+      broken: !!(el.complete && el.naturalWidth === 0),
+      x: +num(el.style.left).toFixed(2),
+      y: +num(el.style.top).toFixed(2),
+      w: +num(el.style.width).toFixed(2),
+      h: +num(el.style.height).toFixed(2),
+      r: rotationOf(el),
+      z: el.style.zIndex || ''
+    }));
+  return { els, layers };
+}
+
+// Composite the rack onto an offscreen canvas at 4x so sub-pixel device
+// placement differences actually show up in the hash.
+const SCALE = 4;
+const PAD = 4;
+
+// Structural-only stand-in for the pixel pass: same bounding box, no bitmap.
+function boundingBoxOnly(layers){
+  const drawable = layers.filter(l => !l.broken && l.w > 0 && l.h > 0);
+  if(!drawable.length) return { hash:'nopixels', w:0, h:0 };
+  const minX = Math.min(...drawable.map(l => l.x));
+  const minY = Math.min(...drawable.map(l => l.y));
+  const maxX = Math.max(...drawable.map(l => l.x + l.w));
+  const maxY = Math.max(...drawable.map(l => l.y + l.h));
+  return {
+    hash: 'nopixels',
+    w: Math.ceil((maxX - minX) + PAD*2),
+    h: Math.ceil((maxY - minY) + PAD*2)
+  };
+}
+
+async function capturePixels(win, layers, els){
+  const drawable = layers.filter(l => !l.broken && l.w > 0 && l.h > 0);
+  if(!drawable.length) return { hash:'empty', w:0, h:0 };
+
+  const minX = Math.min(...drawable.map(l => l.x));
+  const minY = Math.min(...drawable.map(l => l.y));
+  const maxX = Math.max(...drawable.map(l => l.x + l.w));
+  const maxY = Math.max(...drawable.map(l => l.y + l.h));
+
+  const cw = Math.ceil((maxX - minX) + PAD*2);
+  const ch = Math.ceil((maxY - minY) + PAD*2);
+  const canvas = document.createElement('canvas');
+  canvas.width  = Math.max(1, cw * SCALE);
+  canvas.height = Math.max(1, ch * SCALE);
+  const ctx = canvas.getContext('2d', { willReadFrequently:true });
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.scale(SCALE, SCALE);
+
+  for(let i = 0; i < els.length; i++){
+    const el = els[i], l = layers[i];
+    if(!l || l.broken || l.w <= 0 || l.h <= 0) continue;
+    const dx = l.x - minX + PAD;
+    const dy = l.y - minY + PAD;
+    ctx.save();
+    if(l.r){
+      ctx.translate(dx + l.w/2, dy + l.h/2);
+      ctx.rotate(l.r * Math.PI/180);
+      ctx.translate(-l.w/2, -l.h/2);
+      ctx.drawImage(el, 0, 0, l.w, l.h);
+    }else{
+      ctx.drawImage(el, dx, dy, l.w, l.h);
+    }
+    ctx.restore();
+  }
+
+  const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  const hash = [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2,'0')).join('').slice(0, 32);
+  return { hash, w: cw, h: ch };
+}
+
+function clearAllSelections(win){
+  const S = win.State;
+  S.ribbons = [];
+  S.ribbonSelections = {};
+  win.normalizeRibbonSelections();
+}
+
+// ribbonList is a top-level `const`, so it never lands on the iframe's window.
+// normalizeRibbonSelections() seeds State.ribbonSelections from it, which gives
+// us the same ordered id list without reaching into module scope.
+function familyIds(win){
+  clearAllSelections(win);
+  return Object.keys(win.State.ribbonSelections);
+}
+
+// Every award option the builder offers for a family, including the synthesized
+// extensions beyond the baked artwork.
+function optionsFor(win, id){
+  const opts = win.getRibbonAwardOptions(id) || [];
+  return opts.filter(o => o && o.value);
+}
+
+async function runHarness(opts = {}){
+  const win = appWindow();
+  const limitFamilies = opts.families || null;
+  // Pixel hashing needs decoded bitmaps, which only happens in a visible pane.
+  // Structural capture is the default gate: deterministic, decode-free, and
+  // sufficient to catch a wrong image, a shifted position or a lost instance.
+  const withPixels = opts.pixels === true;
+
+  clearAllSelections(win);
+
+  const families = limitFamilies || familyIds(win);
+  const results = [];
+  let captured = 0;
+
+  const noArt = [];
+
+  for(const id of families){
+    const options = optionsFor(win, id);
+    if(!options.length){
+      log(`  ${id}: no award options, skipped`);
+      continue;
+    }
+    // An award with no artwork has no rack image to measure: the page requests a path that does
+    // not exist and the layer settles at an arbitrary point in its fallback chain. List it
+    // instead, so the gap is visible and the rest of the run stays deterministic.
+    if(/^military:/.test(id) && !win.eval(`getRibbonImagePath({id:${JSON.stringify(id)},awardValue:'military_award_1'})`)){
+      noArt.push(id);
+      log(`  ${id}: no artwork, skipped`);
+      continue;
+    }
+    for(const opt of options){
+      clearAllSelections(win);
+      win.setRibbonSelectionFromDropdown(id, opt.value);
+      await imagesSettled(win, { needsDecode: withPixels });
+      const { els, layers } = captureLayers(win);
+      const px = withPixels
+        ? await capturePixels(win, layers, els)
+        : boundingBoxOnly(layers);
+      results.push({
+        family: id,
+        value: opt.value,
+        label: opt.label || '',
+        instances: layers.filter(l => l.cls !== 'device').length,
+        devices: layers.filter(l => l.cls === 'device').length,
+        broken: layers.filter(l => l.broken).map(l => l.src),
+        pixel: px.hash,
+        box: `${px.w}x${px.h}`,
+        layers
+      });
+      captured++;
+      if(captured % 25 === 0) setStatus(`captured ${captured}...`);
+    }
+    log(`  ${id}: ${options.length} levels`);
+  }
+
+  clearAllSelections(win);
+  win.rebuildRibbonsFromGallery();
+
+  manifest = {
+    generated: new Date().toISOString(),
+    scale: SCALE,
+    families: families.length,
+    entries: results.length,
+    brokenAssets: [...new Set(results.flatMap(r => r.broken))].sort(),
+    noArt,
+    results
+  };
+  return manifest;
+}
+
+// Compare two manifests. Structural diffs are reported separately from pixel
+// diffs so a Phase 4 cutover can accept the second while still gating on the first.
+function diffManifests(base, next){
+  const key = r => `${r.family}::${r.value}`;
+  const b = new Map(base.results.map(r => [key(r), r]));
+  const n = new Map(next.results.map(r => [key(r), r]));
+  const out = { missing:[], added:[], structural:[], pixelOnly:[] };
+
+  for(const k of b.keys()) if(!n.has(k)) out.missing.push(k);
+  for(const k of n.keys()) if(!b.has(k)) out.added.push(k);
+
+  for(const [k, bv] of b){
+    const nv = n.get(k);
+    if(!nv) continue;
+    const bs = JSON.stringify(bv.layers);
+    const ns = JSON.stringify(nv.layers);
+    if(bs !== ns){
+      out.structural.push({
+        key: k,
+        before: { instances: bv.instances, devices: bv.devices, srcs: bv.layers.map(l=>l.src) },
+        after:  { instances: nv.instances, devices: nv.devices, srcs: nv.layers.map(l=>l.src) }
+      });
+    }else if(bv.pixel !== nv.pixel){
+      out.pixelOnly.push(k);
+    }
+  }
+  out.clean = !out.missing.length && !out.added.length && !out.structural.length && !out.pixelOnly.length;
+  return out;
+}
+
+// Serialize a manifest to the same TSV shape as scripts/baseline.tsv.
+async function toRows(m){
+  const enc = new TextEncoder();
+  async function sha(str){
+    const d = await crypto.subtle.digest('SHA-256', enc.encode(str));
+    return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,16);
+  }
+  const rows = new Map();
+  for(const r of m.results){
+    const structural = r.layers.map(x=>`${x.cls}:${x.src}@${x.x},${x.y},${x.w}x${x.h},r${x.r}`).join('|');
+    rows.set(`${r.family}\t${r.value}`, {
+      family:r.family, value:r.value, label:r.label,
+      instances:r.instances, devices:r.devices,
+      struct: await sha(structural), pixel: r.pixel.slice(0,16), box: r.box
+    });
+  }
+  return rows;
+}
+
+function parseBaseline(text){
+  const rows = new Map();
+  for(const line of text.split('\n')){
+    if(!line || line.startsWith('#')) continue;
+    // columns: family, value, label, instances, devices, structHash, box
+    const c = line.split('\t');
+    if(c.length !== 7) continue;
+    rows.set(`${c[0]}\t${c[1]}`, {
+      family:c[0], value:c[1], label:c[2],
+      instances:+c[3], devices:+c[4], struct:c[5], pixel:'nopixels', box:c[6]
+    });
+  }
+  return rows;
+}
+
+/*
+  Capture the current build and diff it against scripts/baseline.tsv in the
+  page, returning only what changed. Keeps verification to a single call
+  regardless of how large the manifest gets.
+*/
+async function compareToBaseline(opts = {}){
+  const res = await fetch('baseline.tsv', {cache:'no-store'});
+  if(!res.ok) throw new Error('baseline.tsv not found (' + res.status + ')');
+  const base = parseBaseline(await res.text());
+  const m = await runHarness(opts);
+  const next = await toRows(m);
+
+  const diff = { baseRows:base.size, newRows:next.size, missing:[], added:[], structural:[], pixelOnly:[] };
+  for(const k of base.keys()) if(!next.has(k)) diff.missing.push(k.replace('\t',' / '));
+  for(const k of next.keys()) if(!base.has(k)) diff.added.push(k.replace('\t',' / '));
+  for(const [k, b] of base){
+    const n = next.get(k);
+    if(!n) continue;
+    if(b.struct !== n.struct){
+      diff.structural.push({
+        entry: `${b.family} / ${b.label}`,
+        instances: b.instances === n.instances ? b.instances : `${b.instances}->${n.instances}`,
+        devices: b.devices === n.devices ? b.devices : `${b.devices}->${n.devices}`,
+        box: b.box === n.box ? b.box : `${b.box}->${n.box}`
+      });
+    }else if(b.pixel !== n.pixel){
+      diff.pixelOnly.push(`${b.family} / ${b.label}`);
+    }
+  }
+  diff.clean = !diff.missing.length && !diff.added.length && !diff.structural.length && !diff.pixelOnly.length;
+  diff.counts = {
+    missing:diff.missing.length, added:diff.added.length,
+    structural:diff.structural.length, pixelOnly:diff.pixelOnly.length
+  };
+  // Keep the payload small - full lists stay on the page for drill-down.
+  window.__lastDiff = diff;
+  return {
+    clean: diff.clean, counts: diff.counts,
+    baseRows: diff.baseRows, newRows: diff.newRows,
+    missing: diff.missing.slice(0, 15),
+    added: diff.added.slice(0, 15),
+    structural: diff.structural.slice(0, 15),
+    pixelOnly: diff.pixelOnly.slice(0, 15)
+  };
+}
+
+window.runHarness = runHarness;
+window.diffManifests = diffManifests;
+window.compareToBaseline = compareToBaseline;
+window.getManifest = () => manifest;
+// Exposed for profiling the capture pipeline stage by stage.
+window.__settleProbe = imagesSettled;
+window.__captureProbe = captureLayers;
+window.__pixelProbe = capturePixels;
+
+document.getElementById('run').addEventListener('click', async () => {
+  const btn = document.getElementById('run');
+  btn.disabled = true;
+  logEl.textContent = '';
+  setStatus('running...');
+  log('capturing ribbon families...');
+  try{
+    const m = await runHarness();
+    setStatus(`done - ${m.entries} entries across ${m.families} families`);
+    log(`\nentries: ${m.entries}`);
+    log(`broken assets: ${m.brokenAssets.length}`);
+    m.brokenAssets.slice(0, 20).forEach(s => log('  MISSING ' + s));
+    document.getElementById('download').disabled = false;
+  }catch(err){
+    setStatus('failed');
+    log('ERROR: ' + (err && err.message || err));
+  }
+  btn.disabled = false;
+});
+
+document.getElementById('download').addEventListener('click', () => {
+  if(!manifest) return;
+  const blob = new Blob([JSON.stringify(manifest, null, 1)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'baseline.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+</script>
+</body>
+</html>

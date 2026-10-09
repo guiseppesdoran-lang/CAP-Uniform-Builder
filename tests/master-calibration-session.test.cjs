@@ -1,10 +1,11 @@
 const test = require('node:test');
+const { readAppSource } = require('./helpers/app-source.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
-const indexSource = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const indexSource = readAppSource();
 const submissionSource = fs.readFileSync(path.join(root, 'calibration-submission.js'), 'utf8');
 
 test('admin master calibration records only changed keys grouped by uniform', () => {

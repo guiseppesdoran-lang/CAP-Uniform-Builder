@@ -11,7 +11,7 @@
   const ALLOWED_TYPES = new Set(['image/png','image/jpeg','image/webp','image/svg+xml']);
   const ALLOWED_EXTENSIONS = new Set(['png','jpg','jpeg','webp','svg']);
 
-  function endpoint(){ return String(window.CAPUB_PATCH_SUBMISSION_ENDPOINT || '').trim(); }
+  function endpoint(){ return String(window.CAPUB_CONFIG?.submissionEndpoint || '').trim(); }
   function field(form,name){ return form.elements.namedItem(name); }
   function isAllowedFile(file){
     if(!file) return false;
@@ -271,7 +271,8 @@
     }
   }
 
-  function init(){ injectStyles(); ensureButton(); ensureModal(); }
+  // No endpoint configured: this feature stays off and adds nothing to the page.
+  function init(){ if(!endpoint()) return; injectStyles(); ensureButton(); ensureModal(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
 
   window.CAPUB_PATCH_SUBMISSION={open:openModal,endpointConfigured:!!endpoint(),version:5};

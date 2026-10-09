@@ -1,9 +1,10 @@
 const test = require('node:test');
+const { readAppSource } = require('./helpers/app-source.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const source = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const source = readAppSource();
 
 test('PNG export preserves the CSS border-box around every layer', () => {
   assert.match(source, /const contentBox = style\.boxSizing !== 'border-box'/);

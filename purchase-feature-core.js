@@ -444,7 +444,7 @@
   function copyList(){
     const t=calcTotals();
     const lines=[
-      `CAP Uniform Builder Purchase List`,
+      `Uniform Builder Purchase List`,
       `${uniformNames[State.uniform] || titleCase(State.uniform)} | ${titleCase(State.membership)} | ${titleCase(State.gender)} | ${State.rank || 'No rank selected'}`,
       `Prices checked: ${C.priceChecked}`,
       '',

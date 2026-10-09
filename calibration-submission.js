@@ -9,7 +9,7 @@
   const MAX_SELECTED_KEYS = 100;
   const STATUS_TIMEOUT_MS = 60000;
 
-  const endpoint = () => String(window.CAPUB_PATCH_SUBMISSION_ENDPOINT || '').trim();
+  const endpoint = () => String(window.CAPUB_CONFIG?.submissionEndpoint || '').trim();
   const byId = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
@@ -53,7 +53,7 @@
             <div class="capub-cal-submit-field"><label for="capubCalibrationNotes">What should this fix?</label><textarea id="capubCalibrationNotes" name="notes" maxlength="2000" required placeholder="Example: Align the National Staff badge with the wearer's right pocket and reduce it to the measured physical scale."></textarea></div>
             <div class="capub-cal-submit-field"><label for="capubCalibrationName">Your name <span style="font-weight:400">(optional)</span></label><input id="capubCalibrationName" name="submitterName" maxlength="100" autocomplete="name"></div>
             <div class="capub-cal-submit-field"><label for="capubCalibrationEmail">Your email <span style="font-weight:400">(optional)</span></label><input id="capubCalibrationEmail" name="submitterEmail" type="email" maxlength="160" autocomplete="email"></div>
-            <div class="capub-cal-submit-field"><label for="capubCalibrationPassword">Admin password</label><input id="capubCalibrationPassword" name="adminPassword" type="password" required autocomplete="current-password"><div class="capub-cal-submit-help">Verified by the server. The password is not included in the GitHub issue or email attachments.</div></div>
+            <div class="capub-cal-submit-field"><label for="capubCalibrationPassword">Admin key</label><input id="capubCalibrationPassword" name="adminPassword" type="password" required autocomplete="current-password"><div class="capub-cal-submit-help">Verified by the server. The password is not included in the GitHub issue or email attachments.</div></div>
             <div id="capubCalibrationSubmitStatus" class="capub-cal-submit-status" role="status" aria-live="polite"></div>
             <div class="capub-cal-submit-actions"><button class="ghost" type="button" id="capubCalibrationSubmitCancel">Cancel</button><button type="submit" id="capubCalibrationSubmitSend">Submit Update</button></div>
           </form>
@@ -273,7 +273,7 @@
     const submitterEmail=form.elements.namedItem('submitterEmail').value.trim();
     const adminPassword=form.elements.namedItem('adminPassword').value;
     if(!title || !notes){ setStatus('Enter a title and explain what the calibration should fix.','err'); return; }
-    if(!adminPassword){ setStatus('Enter the admin password.','err'); return; }
+    if(!adminPassword){ setStatus("Enter the admin key.","err"); return; }
     if(submitterEmail && !form.elements.namedItem('submitterEmail').checkValidity()){ setStatus('Enter a valid email address or leave it blank.','err'); return; }
     if(!endpoint() || /PASTE_|YOUR_|EXAMPLE/i.test(endpoint())){ setStatus('The submission backend has not been configured.','err'); return; }
 
@@ -315,11 +315,13 @@
     }
   }
 
+  // Developer-only, and only when a deployment has configured an endpoint.
   function init(){
+    if(!endpoint() || typeof CAPUB_DEV === 'undefined' || !CAPUB_DEV) return;
     injectStyles();
     ensureModal();
     const button=byId('calibSubmitUpdate');
-    if(button) button.addEventListener('click',openModal);
+    if(button){ button.hidden=false; button.addEventListener('click',openModal); }
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});

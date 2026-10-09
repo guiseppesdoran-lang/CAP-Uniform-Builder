@@ -1,4 +1,4 @@
-CAP Uniform Builder — Purchase List & Cost Feature
+Uniform Builder — Purchase List & Cost Feature
 Catalog version: 2026.08.07.1
 
 FILES
