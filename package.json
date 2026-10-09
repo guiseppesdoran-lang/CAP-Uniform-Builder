@@ -1,5 +1,5 @@
 {
-  "name": "cap-uniform-builder",
+  "name": "uniform-builder",
   "private": true,
   "type": "commonjs",
   "scripts": {

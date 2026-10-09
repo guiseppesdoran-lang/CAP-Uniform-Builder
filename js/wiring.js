@@ -1591,7 +1591,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   function downloadMissingAssetList(){
     const expected = buildExpectedAssetList();
     const lines = [];
-    lines.push('CAP Uniform Builder — Missing/Needed Image Asset List');
+    lines.push('Uniform Builder - Missing/Needed Image Asset List');
     lines.push('Generated: '+new Date().toLocaleString());
     lines.push('');
     lines.push('Recommended rank filename rule: replace / with _, spaces with _, e.g., C/2d Lt -> images/ranks/C_2d_Lt.png');
