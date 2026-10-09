@@ -44,6 +44,29 @@ take their top edge from a reference badge or from the rack.
 `js/catalog.js` also pins three badge sizes for the male Class A coat from
 `CAPUB_APPROVED_CALIBRATION_OVERRIDES` in `js/calibration.js`, whatever a stored box says.
 
+## Calibrating and saving
+
+Open the builder with `?dev=1`, open the CAL tab on the left, switch Calibrate Mode on and drag or
+nudge items. **Save to repo folder** writes the result into `data/calibration-defaults.js`:
+
+- In Chrome or Edge it asks once for the repository folder, checks that it holds `index.html` and
+  `data/`, and writes the file there. Later saves reuse the folder.
+- In other browsers it downloads `calibration-defaults.js`; put it in `data/` yourself.
+
+It writes only what differs from the rules, one box per line, keys sorted, fields in the order x,
+y, w, h, r, so a save is a small diff: a moved badge is one changed line. Reset Selected puts a box
+back to the shipped value and the next save leaves it as it was. Then review with `git diff`, run
+`comparePlacement()`, and commit. Nothing is sent anywhere, and the old export, paste and push step
+is gone. `js/calibration-save.js` is the code and `tests/calibration-save.test.cjs` covers it.
+
+## Adding new base art
+
+Rank-specific jackets in one family are the same garment with different insignia: across every
+family in `images/base/`, rank variants line up with their siblings at zero shift (correlation
+0.997 to 1.000 over the body below the shoulders). Calibration therefore belongs to the family,
+not to each rank image, and a new rank image needs no calibration if it keeps the family's canvas
+size and body.
+
 ## Checking a change
 
 Two harnesses record what is drawn and compare it with a baseline stored in the repository.
