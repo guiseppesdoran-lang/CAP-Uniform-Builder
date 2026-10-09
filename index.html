@@ -11,7 +11,7 @@
 <meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Everything stays in your browser.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
-<link rel="stylesheet" href="styles/app.css?v=a4f54063d7">
+<link rel="stylesheet" href="styles/app.css?v=4bb7fab5d7">
 </head>
 <body>
 
@@ -146,7 +146,7 @@
       </section>
 
 <section id="capMembershipPanel" class="panelBlock">
-        <label class="fieldLabel">Membership Type</label>
+        <label class="fieldLabel" for="membershipType">Membership Type</label>
         <select id="membershipType">
           <option value="">Select Membership</option>
           <option value="senior">Senior Member</option>
@@ -154,7 +154,7 @@
         </select>
         <div class="hintText">This controls which ranks are available and how the base uniform renders.</div>
 
-        <label class="fieldLabel mt-10">Rank</label>
+        <label class="fieldLabel mt-10" for="rankSetupSelect">Rank</label>
         <select id="rankSetupSelect" disabled>
           <option value="">Select Rank</option>
         </select>
@@ -174,7 +174,7 @@
 <h3 class="stepGroupTitle">2 · Uniform</h3>
 
       <section id="genderBlock" class="panelBlock disabledBlock">
-        <label class="fieldLabel">Gender / Cut</label>
+        <label class="fieldLabel" for="jacketSelect">Gender / Cut</label>
         <select id="jacketSelect">
           <option value="">Select Gender</option>
           <option value="male">Male Cut</option>
@@ -276,13 +276,13 @@
       </section>
 
       <section id="shoulderCordPanel" class="panelBlock">
-        <label class="fieldLabel">Shoulder Cord</label>
+        <label class="fieldLabel" for="shoulderCordSelect">Shoulder Cord</label>
         <select id="shoulderCordSelect">
           <option value="">No shoulder cord</option>
-          <option value="group">Group CAC shoulder cord — green</option>
-          <option value="wing">Wing CAC shoulder cord — red</option>
-          <option value="region">Region CAC shoulder cord — blue</option>
-          <option value="national">National CAC shoulder cord — gold</option>
+          <option value="group">Group CAC shoulder cord - green</option>
+          <option value="wing">Wing CAC shoulder cord - red</option>
+          <option value="region">Region CAC shoulder cord - blue</option>
+          <option value="national">National CAC shoulder cord - gold</option>
           <option value="color_guard">Color Guard shoulder cord</option>
           <option value="honor_guard">Honor Guard shoulder cord</option>
         </select>
@@ -318,9 +318,9 @@
         <label class="fieldNote mt-8">
           Ribbon rack layout
           <select id="ribbonRackColumns">
-            <option value="3">3 across — centered</option>
-            <option value="4-left">4 across — left edge aligned with welt/pocket (Class A)</option>
-            <option value="4-center">4 across — centered above welt/pocket (Class A)</option>
+            <option value="3">3 across - centered</option>
+            <option value="4-left">4 across - left edge aligned with welt/pocket (Class A)</option>
+            <option value="4-center">4 across - centered above welt/pocket (Class A)</option>
           </select>
         </label>
         <div id="ribbonRackColumnsHint" class="hintText mt-4">
@@ -330,8 +330,8 @@
         <label class="fieldNote mt-8">
           Upper-row arrangement
           <select id="ribbonRackArrangement">
-            <option value="standard">Standard — centered partial top row</option>
-            <option value="lapel">Automatic — 3 across, switch to 4 above 51% overlap</option>
+            <option value="standard">Standard - centered partial top row</option>
+            <option value="lapel">Automatic - 3 across, switch to 4 above 51% overlap</option>
           </select>
         </label>
         <div id="ribbonRackArrangementHint" class="hintText mt-4">
@@ -370,8 +370,8 @@
         <label class="fieldNote mt-8">
           Mini-medal mounting method
           <select id="miniMountStyle">
-            <option value="mounting">Mounting bars — four per row (maximum 24)</option>
-            <option value="holding">Holding bars — custom overlap (maximum 28)</option>
+            <option value="mounting">Mounting bars - four per row (maximum 24)</option>
+            <option value="holding">Holding bars - custom overlap (maximum 28)</option>
           </select>
         </label>
 
@@ -430,12 +430,12 @@
         </div>
 
         <div class="panelDivider">
-          <label class="fieldLabel">Unit Patch</label>
+          <label class="fieldLabel" for="unitPatchSelect">Unit Patch</label>
           <div class="hintText">
             Separate from the general patch picker. Scroll the charter dropdown or type in the search box to filter by charter number or unit name.
             SER-TN-185 and SER-TN-330 currently have image assets in this program.
           </div>
-          <input id="unitPatchSearch" type="search" placeholder="Search charter number or unit name..." autocomplete="off"/>
+          <input id="unitPatchSearch" type="search" aria-label="Search unit patches" placeholder="Search charter number or unit name..." autocomplete="off"/>
           <select id="unitPatchSelect">
             <option value="">No unit patch</option>
           </select>
@@ -580,15 +580,15 @@
 <script src="js/catalog.js?v=864842614e"></script>
 <script src="js/setup.js?v=4082fdb6dd"></script>
 <script src="js/render-core.js?v=0b13d429c7"></script>
-<script src="js/galleries.js?v=aa28ed7c1c"></script>
+<script src="js/galleries.js?v=e322f46397"></script>
 <script src="js/placement.js?v=afe13839c7"></script>
 <script src="js/wiring.js?v=af33e1f725"></script>
 <script src="js/workspace-ui.js?v=65d36926db"></script>
 <script src="js/member-report-import.js?v=3373103425"></script>
 <script src="js/bootstrap.js?v=1af06934d3"></script>
-<script src="js/patches.js?v=2b197c4f77"></script>
+<script src="js/patches.js?v=c8dc94816c"></script>
 <script src="js/calibration-save.js?v=2aa8ca7086"></script>
-<script src="purchase-feature-core.js?v=b7d895846c"></script>
+<script src="purchase-feature-core.js?v=4b1e554afa"></script>
 <script src="purchase-feature.js?v=ef7c40a072"></script>
 <script src="calibration-submission.js?v=a4f383d1ff"></script>
 <!-- Loaded directly so patch submission cannot be blocked by stale chained feature loaders. -->

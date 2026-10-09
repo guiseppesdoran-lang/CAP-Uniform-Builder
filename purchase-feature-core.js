@@ -323,34 +323,6 @@
     return ({verified:'Verified price',estimated:'Estimated price'})[status] || 'Estimated price';
   }
 
-  function injectStyles(){
-    if(document.getElementById('capubPurchaseStyles')) return;
-    const style=document.createElement('style');
-    style.id='capubPurchaseStyles';
-    style.textContent=`
-      #purchaseListButton{width:100%;font-weight:700}
-      .capub-purchase-overlay{position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:100000;display:none;align-items:center;justify-content:center;padding:24px}
-      .capub-purchase-overlay.open{display:flex}
-      .capub-purchase-modal{width:min(1120px,96vw);max-height:92vh;overflow:hidden;background:#fff;color:#172033;border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,.35);display:flex;flex-direction:column}
-      .capub-purchase-head{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;padding:18px 20px;border-bottom:1px solid #d9dee8;background:#f7f9fc}
-      .capub-purchase-head h2{font-size:20px;margin:0 0 4px}.capub-purchase-sub{font-size:12px;color:#5b6578}
-      .capub-purchase-close{border:0;background:#e8ecf3;border-radius:8px;padding:7px 11px;cursor:pointer;font-size:18px;line-height:1}
-      .capub-purchase-body{padding:16px 20px 20px;overflow:auto}
-      .capub-purchase-rule{border:1px solid #d8b671;background:#fff9e9;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;line-height:1.45}
-      .capub-purchase-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 14px}
-      .capub-purchase-card{border:1px solid #dce1ea;border-radius:9px;padding:10px;background:#fafbfd}.capub-purchase-card b{display:block;font-size:16px;margin-top:2px}.capub-purchase-card span{font-size:10px;color:#657086;text-transform:uppercase;letter-spacing:.04em}
-      .capub-purchase-table{width:100%;border-collapse:collapse;font-size:12px}.capub-purchase-table th{position:sticky;top:0;background:#eef2f7;text-align:left;padding:8px;border-bottom:1px solid #ccd3df;z-index:1}.capub-purchase-table td{padding:9px 8px;border-bottom:1px solid #e2e6ed;vertical-align:top}
-      .capub-purchase-item-name{font-weight:700;margin-bottom:3px}.capub-purchase-note{font-size:10px;line-height:1.35;color:#667085;max-width:440px;margin-top:4px}
-      .capub-purchase-chip{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:999px;background:#e9edf3;margin:2px 4px 0 0}.capub-purchase-chip.cap{background:#fee9e7}.capub-purchase-chip.ok{background:#e7f3ed}.capub-purchase-chip.est{background:#fff2d7}
-      .capub-purchase-links{display:flex;flex-wrap:wrap;gap:5px}.capub-purchase-links a{display:inline-block;padding:4px 7px;border:1px solid #c7d0de;border-radius:6px;text-decoration:none;color:#184f9c;background:#fff;font-size:10px}.capub-purchase-links a:hover{background:#eef5ff}
-      .capub-purchase-price{font-weight:700;white-space:nowrap}.capub-purchase-price small{display:block;font-size:9px;font-weight:500;color:#6a7486;margin-top:2px}
-      .capub-purchase-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}.capub-purchase-actions button{padding:8px 12px;border-radius:7px;border:1px solid #bcc5d3;background:#fff;cursor:pointer}.capub-purchase-actions .primary{background:#173f73;color:#fff;border-color:#173f73}
-      .capub-purchase-empty{padding:25px;text-align:center;color:#667085}
-      @media(max-width:760px){.capub-purchase-summary{grid-template-columns:1fr 1fr}.capub-purchase-modal{width:98vw}.capub-purchase-table{font-size:11px}.capub-purchase-table th:nth-child(3),.capub-purchase-table td:nth-child(3){display:none}}
-    `;
-    document.head.appendChild(style);
-  }
-
   function ensureButton(){
     if(document.getElementById('purchaseListButton')) return;
     const download=document.getElementById('downloadImage');
@@ -475,7 +447,7 @@
   }
   function closeModal(){ document.getElementById('capubPurchaseOverlay')?.classList.remove('open'); }
 
-  function init(){ injectStyles(); ensureButton(); ensureModal(); }
+  function init(){ ensureButton(); ensureModal(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
 
   window.CAPUB_PURCHASE_FEATURE={open:openModal,buildItems:buildPurchaseItems,catalog:C};

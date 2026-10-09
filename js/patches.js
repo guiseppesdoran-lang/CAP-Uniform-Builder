@@ -192,16 +192,16 @@ const CAC_RIBBON_VALUE_BY_LEVEL = {
   national: 'national_gold_star'
 };
 const CAC_CORD_LABEL_BY_LEVEL = {
-  group: 'Group CAC shoulder cord — green',
-  wing: 'Wing CAC shoulder cord — red',
-  region: 'Region CAC shoulder cord — blue',
-  national: 'National CAC shoulder cord — gold'
+  group: 'Group CAC shoulder cord - green',
+  wing: 'Wing CAC shoulder cord - red',
+  region: 'Region CAC shoulder cord - blue',
+  national: 'National CAC shoulder cord - gold'
 };
 const SHOULDER_CORD_META = {
-  group:       { label:'Group CAC shoulder cord — green',    srcBase:'cords/group',       imported:true  },
-  wing:        { label:'Wing CAC shoulder cord — red',       srcBase:'cords/wing',        imported:true  },
-  region:      { label:'Region CAC shoulder cord — blue',    srcBase:'cords/region',      imported:true  },
-  national:    { label:'National CAC shoulder cord — gold',  srcBase:'cords/national',    imported:true  },
+  group:       { label:'Group CAC shoulder cord - green',    srcBase:'cords/group',       imported:true  },
+  wing:        { label:'Wing CAC shoulder cord - red',       srcBase:'cords/wing',        imported:true  },
+  region:      { label:'Region CAC shoulder cord - blue',    srcBase:'cords/region',      imported:true  },
+  national:    { label:'National CAC shoulder cord - gold',  srcBase:'cords/national',    imported:true  },
   color_guard: { label:'Color Guard shoulder cord',          srcBase:'cords/color_guard', imported:false },
   honor_guard: { label:'Honor Guard shoulder cord',          srcBase:'cords/honor_guard', imported:false }
 };
