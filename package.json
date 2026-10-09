@@ -6,6 +6,8 @@
     "test": "node --test tests/*.test.cjs",
     "check:inline-syntax": "node scripts/check-inline-syntax.cjs",
     "stamp:assets": "node scripts/stamp-assets.cjs",
-    "check:assets": "node scripts/stamp-assets.cjs --check"
+    "check:assets": "node scripts/stamp-assets.cjs --check",
+    "build": "node scripts/build-site.cjs",
+    "serve:dist": "node scripts/serve-dist.cjs"
   }
 }

@@ -6,3 +6,6 @@ scripts/optimize-images.manifest.json
 .claude/
 
 .DS_Store
+
+# Output of npm run build.
+dist/

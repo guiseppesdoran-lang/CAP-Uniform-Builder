@@ -7,11 +7,13 @@
 //
 //   node scripts/stamp-assets.cjs          rewrite index.html
 //   node scripts/stamp-assets.cjs --check  exit 1 if any stamp is stale (used by tests)
+//   node scripts/stamp-assets.cjs --root=dist   operate on another directory (the site build)
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 
-const ROOT = path.join(__dirname, '..');
+const rootArg = process.argv.find(arg => arg.startsWith('--root='));
+const ROOT = rootArg ? path.resolve(rootArg.slice('--root='.length)) : path.join(__dirname, '..');
 const PAGE = path.join(ROOT, 'index.html');
 const check = process.argv.includes('--check');
 
