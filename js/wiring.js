@@ -1335,7 +1335,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
 
     const ribbons = p.ribbonSelections && typeof p.ribbonSelections === 'object' ? p.ribbonSelections : {};
     out.ribbonSelections = {};
-    for(const id of ribbonList){
+    for(const id of [...ribbonList, ...getMilitaryRibbonIds()]){
       const sel = ribbons[id];
       if(!sel || typeof sel !== 'object') continue;
       const devices = {};
@@ -1354,6 +1354,14 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
         honorCredit: !!sel.honorCredit,
         rocketryCredit: !!sel.rocketryCredit
       };
+      if(isMilitaryRibbonId(id)){
+        // getMilitarySelectionService() still checks the service against the award's own list.
+        out.ribbonSelections[id].militaryService = safeToken(sel.militaryService);
+        out.ribbonSelections[id].specialAuthorizations = (Array.isArray(sel.specialAuthorizations) ? sel.specialAuthorizations : [])
+          .filter(deviceId => typeof deviceId === 'string' && has(deviceMeta, deviceId)).slice(0, 12);
+        const numeral = Math.trunc(Number(sel.manualNumeral));
+        out.ribbonSelections[id].manualNumeral = Number.isFinite(numeral) ? Math.min(99, Math.max(0, numeral)) : 0;
+      }
     }
 
     const pick = (list, selections) => {
