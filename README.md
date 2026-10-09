@@ -1,4 +1,4 @@
-# CAP Uniform Builder
+# Uniform Builder for CAP members
 
 A static web app for planning how rank, ribbons, badges and patches go on each Civil Air Patrol uniform. Pick a membership type, rank and cut, add items, and see them placed on the uniform. It can read a CAP member report to fill in a setup, and it exports a PNG and a purchase list.
 
@@ -42,10 +42,8 @@ Open the page with `?dev=1` to get the CAL tab. `docs/CALIBRATION.md` covers how
 
 Other notes in `docs/`: `HISTORY.md` (where the code came from), `MISSING_BASE_ART.md` (rank images that do not exist yet) and `MCCHORD_ASSET_STANDARD.md`.
 
-## Licence and credits
+## License and credits
 
-No licence has been chosen yet, so all rights are reserved by the authors by default. Please do not reuse the code or artwork until one is added.
+The code and documentation are under the MIT license (`LICENSE`). That covers what the authors wrote, and nothing else. `NOTICE.md` lists what it does not cover: CAP and U.S. Air Force names and insignia, the artwork in `images/`, compiled catalog data, and pdf.js (Apache-2.0, in `vendor/pdfjs/`). Confirm that you may redistribute an image before publishing it elsewhere.
 
-pdf.js (Apache-2.0, in `vendor/pdfjs/`) is the only third-party code. The artwork depicts insignia and designs owned by others, and the military award images record their sources in `military/military-data.js`. Confirm that you may redistribute an image before publishing it elsewhere.
-
-Created by C/Col. Guiseppe Doran. Maintained with Ethan Hillard.
+Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard.
