@@ -22,10 +22,11 @@ stored badge data is a handful of `utilityBadgeRegV5:` overrides in `js/calibrat
 
 **Dress and service uniforms** (blues A and B, aviator, mess dress, semi-formal). Badges start at
 the slot anchors in `js/placement.js` (`getBadgeBaseAnchor`, slots such as OLP, LP, ON, UN). A
-stored box for the same key then replaces that start position. The stored boxes live in
-`data/calibration-corrections.js` and in `DEFAULT_CALIBRATION_BY_UNIFORM`, with dated override
-blocks later in `js/calibration.js`. If no box exists, `buildDerivedBadgeCalib()` derives one from
-related keys.
+stored box for the same key then replaces that start position. All stored boxes live in one file,
+`data/calibration-defaults.js`, one box per line. If no box exists, `buildDerivedBadgeCalib()`
+derives one from a reference badge for the same slot: observer wings for OLP, ground team for
+OLPU, emergency services for LP, and so on, so about a dozen reference boxes per uniform and cut
+carry most of the layout.
 
 **Ribbons.** The rack planner (`ribbon-layout.js` and `js/placement.js`) computes every row.
 `applyCalibToElement()` drops the stored x, y, width and height for any `ribbon:` key, so the
@@ -34,10 +35,14 @@ related keys.
 ## Order of precedence for a stored box
 
 `applyCalibToElement()` in `js/calibration.js` takes the computed start position and then applies,
-in this order: a box saved in this browser, a default or imported box for the uniform and cut, the
-same keys under the base uniform name, and finally the derived box. Fixed-size badges are then
-re-centred at their regulation size, and a few slots take their top edge from a reference badge or
-from the rack.
+in this order: a box saved in this browser (a developer's scratch copy, never shipped), the box
+for the uniform and cut from `data/calibration-defaults.js` or the rules that fill gaps (shoulder
+cords, field-uniform jackets and patches), the same key under the base uniform name, and finally
+the derived box. Fixed-size badges are then re-centred at their regulation size, and a few slots
+take their top edge from a reference badge or from the rack.
+
+`js/catalog.js` also pins three badge sizes for the male Class A coat from
+`CAPUB_APPROVED_CALIBRATION_OVERRIDES` in `js/calibration.js`, whatever a stored box says.
 
 ## Checking a change
 
@@ -65,14 +70,30 @@ A startup generator also rebuilt the badge boxes in memory on every page load. B
 
 | | Before | After |
 | --- | --- | --- |
-| `data/calibration-corrections.js` | 487 KB, 6,246 boxes | 21 KB, 269 boxes |
+| `data/calibration-corrections.js` (now `calibration-defaults.js`) | 487 KB, 6,246 boxes | 24 KB, 295 boxes |
 | Default boxes held in memory | 6,643 | 483 |
 | "Export All Coords" file | 517 KB | 35 KB |
 
 The placement harness reported no change in any of its 7,548 scenarios.
 
+## One file instead of eleven layers (2026-10-09)
+
+Calibration values used to be written by eleven separate blocks in `js/calibration.js`: three
+inline literals, a compact patch, an imported export, a dated update, an approved-issues block,
+issue #143 and its family extrapolation, and two female updates. Later blocks silently overrode
+earlier ones, so a box written to the data file could lose to a block further down. Three of the
+blocks also re-applied themselves once per browser, from `localStorage`, which meant a visitor's
+first load differed from every later load for five badges (the female cadet FON badge sat 13 px
+away, and four others arrived without width, height and rotation).
+
+The final values are now `data/calibration-defaults.js`, 295 boxes in 24 KB. `js/calibration.js`
+went from 2,296 to about 1,030 lines. The map the page builds is byte-for-byte the same as before
+(483 boxes), the placement harness reports no change, and a new visitor's first load matches every
+later one. `tests/calibration-defaults.test.cjs` pins the approved values.
+
 ## What is left to calibrate by hand
 
-The 269 boxes that remain belong to the dress and service uniforms, plus the slot anchors and
-derived rules in code. That is where a landmark-and-inches model, like the one the field
-uniforms already use, would replace stored coordinates.
+The 295 boxes in `data/calibration-defaults.js` belong to the dress and service uniforms and a few
+OCP patches, plus the slot anchors and reference-badge rules in code. That is where a
+landmark-and-inches model, like the one the field uniforms already use, would replace stored
+coordinates.
