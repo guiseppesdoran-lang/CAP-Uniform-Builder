@@ -119,3 +119,10 @@ script split and UI work left all 5,408 entries (CAP and military) unchanged, an
 that removing the military builder left all 1,712 CAP entries unchanged.
 
 The default structural pass needs no visible pane; the optional pixel pass does.
+
+## Placement regression harness
+
+`scripts/placement-harness.html` does the same for badges, patches, shoulder cords and base
+jackets: 7,548 scenarios across every uniform, cut and membership type, compared with
+`scripts/placement-baseline.tsv` by `comparePlacement()`. See `docs/CALIBRATION.md` for how
+placement is decided and how to read a difference.
