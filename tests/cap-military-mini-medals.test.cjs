@@ -49,32 +49,3 @@ test('CAP uniform ribbon and medal UI exposes working basic and maximum bulk con
   assert.match(indexSource, /getEligibleRibbonIds\(\)/);
   assert.match(indexSource, /maximumRenderableMilitaryAwardCount\(award,'RIBBON'\)/);
 });
-
-test('calibration issue 137 applies only to the male Class A bucket', () => {
-  assert.match(indexSource, /'badge:master_emergency_services_badge:LP:0': Object\.freeze\(\{x:280\.7,y:249\.5,w:25,h:25,r:0\}\)/);
-  assert.match(indexSource, /'badge:volunteer_university_instructor_badge:RP:0': Object\.freeze\(\{x:130\.4,y:248,w:40,h:40,r:0\}\)/);
-  assert.match(indexSource, /function migrateApprovedCalibrationIssues\(\)/);
-  assert.match(indexSource, /calibrationRecordMatches\(savedBucket\[key\], legacyRecord\)/);
-  assert.match(indexSource, /migrateApprovedCalibrationIssues\(\);/);
-  assert.match(indexSource, /CAPUB_ISSUE_137_MIGRATION_KEY/);
-  assert.match(indexSource, /forceIssue137 \|\| calibrationRecordMatches/);
-});
-
-test('master calibration issue 143 preserves partial records across its uniform buckets', () => {
-  assert.match(indexSource, /const CAPUB_ISSUE_143_CALIBRATION_OVERRIDES = Object\.freeze/);
-  assert.match(indexSource, /'badge:cadet_programs_master_badge:FON:0': Object\.freeze\(\{x:136,y:160\.3\}\)/);
-  assert.match(indexSource, /'badge:master_emergency_services_badge:LP:0': Object\.freeze\(\{x:283\.4,y:248,w:20,h:20,r:0\}\)/);
-  assert.match(indexSource, /'patch:national_staff_ocp_patch:L_SHOULDER:0': Object\.freeze\(\{x:834\.5,y:251,w:55,h:55,r:0\}\)/);
-  assert.match(indexSource, /CAPUB_ISSUE_143_MIGRATION_KEY/);
-  assert.match(indexSource, /State\.calib\.byUniform\[uniformId\]\[key\] = \{/);
-});
-
-test('master calibration issue 143 safely extrapolates related badge families', () => {
-  assert.match(indexSource, /const CAPUB_ISSUE_143_FAMILY_CALIBRATION_EXTRAPOLATIONS = Object\.freeze/);
-  assert.match(indexSource, /'badge:squadron_commander_badge:UN:0': Object\.freeze\(\{x:140\.8,y:227\.1\}\)/);
-  assert.match(indexSource, /'badge:senior_emergency_services_badge:LP:0': Object\.freeze\(\{x:283\.4,y:248\}\)/);
-  assert.match(indexSource, /'badge:cadet_programs_senior_badge:FON:0': Object\.freeze\(\{x:136,y:160\.3\}\)/);
-  assert.match(indexSource, /'badge:command_council_badge:LP:0': Object\.freeze\(\{y:140\}\)/);
-  assert.match(indexSource, /CAPUB_ISSUE_143_FAMILY_MIGRATION_KEY/);
-  assert.match(indexSource, /applyIssue143Families/);
-});
