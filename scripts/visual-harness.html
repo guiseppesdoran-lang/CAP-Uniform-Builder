@@ -104,6 +104,24 @@ const RACK_SELECTOR = '.layer.ribbonTile,.layer.ribbonMini,.layer.ribbonDevice';
   needsDecode is only set for the optional pixel pass, which genuinely cannot
   draw an undecoded bitmap and therefore requires a visible pane.
 */
+// Wait for composite builds started since the last call. The cache only grows, so a size check
+// avoids walking thousands of finished entries on every pass.
+const seenBuilds = new WeakSet();
+let lastBuildCount = -1;
+let lastBuildCache = null;
+async function awaitMilitaryBuilds(win){
+  const cache = win.eval('typeof militaryRibbonVariantCache === "undefined" ? null : militaryRibbonVariantCache');
+  if(!cache) return;
+  if(cache !== lastBuildCache){ lastBuildCache = cache; lastBuildCount = -1; }
+  if(cache.size === lastBuildCount) return;
+  const fresh = [...cache.values()].filter(p => !seenBuilds.has(p));
+  await Promise.allSettled(fresh);
+  fresh.forEach(p => seenBuilds.add(p));
+  lastBuildCount = cache.size;
+  // The page applies a finished build in a later turn; let that turn run before anyone reads layers.
+  await new Promise(resolve => { const c = new MessageChannel(); c.port1.onmessage = () => resolve(); c.port2.postMessage(0); });
+}
+
 async function imagesSettled(win, { maxPasses = 8, needsDecode = false } = {}){
   let lastKey = null;
 
@@ -116,6 +134,10 @@ async function imagesSettled(win, { maxPasses = 8, needsDecode = false } = {}){
         catch(e){ /* missing asset - captureLayers records it via `broken` */ }
       }));
     }else{
+      // Military ribbons are composited off-screen by promises that load their artwork outside
+      // the DOM, so the layers above look settled while a build is still running. On a cold
+      // page that changes the layer sizes after the first read; wait for the builds.
+      await awaitMilitaryBuilds(win);
       // Yield a microtask turn so in-flight load/error handlers can run.
       await Promise.resolve();
     }
@@ -263,10 +285,20 @@ async function runHarness(opts = {}){
   const results = [];
   let captured = 0;
 
+  const noArt = [];
+
   for(const id of families){
     const options = optionsFor(win, id);
     if(!options.length){
       log(`  ${id}: no award options, skipped`);
+      continue;
+    }
+    // An award with no artwork has no rack image to measure: the page requests a path that does
+    // not exist and the layer settles at an arbitrary point in its fallback chain. List it
+    // instead, so the gap is visible and the rest of the run stays deterministic.
+    if(/^military:/.test(id) && !win.eval(`getRibbonImagePath({id:${JSON.stringify(id)},awardValue:'military_award_1'})`)){
+      noArt.push(id);
+      log(`  ${id}: no artwork, skipped`);
       continue;
     }
     for(const opt of options){
@@ -303,6 +335,7 @@ async function runHarness(opts = {}){
     families: families.length,
     entries: results.length,
     brokenAssets: [...new Set(results.flatMap(r => r.broken))].sort(),
+    noArt,
     results
   };
   return manifest;

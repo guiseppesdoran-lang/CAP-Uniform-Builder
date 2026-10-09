@@ -50,7 +50,9 @@ Two harnesses record what is drawn and compare it with a baseline stored in the 
   seconds). Run `comparePlacement()`. `clean: true` means nothing moved.
 
 Serve the repository (`python3 -m http.server 8811`), open the harness page and run the function
-in the console. Both ignore calibration saved in the browser, so results do not depend on who runs
+in the console. A rack run on a freshly loaded page has to fetch and composite every military
+ribbon, so the first run is slow in a hidden pane; later runs use the browser cache and take under
+a minute. Both ignore calibration saved in the browser, so results do not depend on who runs
 them. If a change is meant to move things, read the reported differences first, then regenerate
 the baseline: run `runPlacement()`, serialise with `toTsv()` and replace the file.
 

@@ -1,5 +1,5 @@
 # CAP Uniform Builder ribbon rack baseline (structural)
-# generated=2026-10-09T02:02:23.739Z families=244 entries=5408
+# generated=2026-10-09T02:02:23.739Z families=243 entries=5387
 # capture=structural-only; pixel hashing requires a visible pane, see runHarness({pixels:true})
 # columns: family	value	label	instances	devices	structHash	box
 air_force_aerial_achievement_medal	mcchord_50601	Basic Award	1	0	db57119ad1714ff1	31x15
@@ -1798,27 +1798,6 @@ military:navy_cross	military_award_18	18th Award	1	0	cc7fbf7134dd2143	31x15
 military:navy_cross	military_award_19	19th Award	1	0	cc7fbf7134dd2143	31x15
 military:navy_cross	military_award_20	20th Award	1	0	cc7fbf7134dd2143	31x15
 military:navy_cross	military_award_21	21st Award	1	0	cc7fbf7134dd2143	31x15
-military:coast_guard_cross	military_award_1	1st Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_2	2nd Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_3	3rd Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_4	4th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_5	5th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_6	6th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_7	7th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_8	8th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_9	9th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_10	10th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_11	11th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_12	12th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_13	13th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_14	14th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_15	15th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_16	16th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_17	17th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_18	18th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_19	19th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_20	20th Award	1	0	8fd0522c1042127d	31x15
-military:coast_guard_cross	military_award_21	21st Award	1	0	8fd0522c1042127d	31x15
 military:transportation_distinguished_service_medal	military_award_1	1st Award	1	0	d6919e98d8acf12f	31x15
 military:transportation_distinguished_service_medal	military_award_2	2nd Award	1	0	d6919e98d8acf12f	31x15
 military:transportation_distinguished_service_medal	military_award_3	3rd Award	1	0	d6919e98d8acf12f	31x15
