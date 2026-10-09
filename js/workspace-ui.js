@@ -115,9 +115,9 @@
     const toolbar=document.createElement('div'); toolbar.id='previewToolbar'; toolbar.className='previewToolbar';
     toolbar.innerHTML=`<div id="capubTopBar" class="capubTopBar"><span class="capubPill">Status: <strong id="topStatusText">Ready</strong></span><span class="capubPill">Uniform: <strong id="topUniformText">None</strong></span><span class="capubPill">Items: <strong id="topItemsText">0</strong></span></div><div id="previewTools" class="previewTools"><div class="previewToolCard" role="group" aria-label="Preview zoom"><button type="button" class="ghost" id="zoomOutBtn" aria-label="Zoom out">−</button><span class="zoomReadout" id="zoomReadout" aria-live="polite">100%</span><button type="button" class="ghost" id="zoomInBtn" aria-label="Zoom in">+</button><button type="button" class="ghost" id="zoomFitBtn">Fit</button></div></div>`;
     wrap.insertBefore(toolbar, wrap.firstChild);
-    safeBy('zoomOutBtn').onclick=()=>setZoom(Math.max(.55,V3.zoom-.1));
-    safeBy('zoomInBtn').onclick=()=>setZoom(Math.min(1.65,V3.zoom+.1));
-    safeBy('zoomFitBtn').onclick=()=>fitZoom();
+    safeBy('zoomOutBtn').onclick=()=>{ V3.userZoomed=true; setZoom(Math.max(.55,V3.zoom-.1)); };
+    safeBy('zoomInBtn').onclick=()=>{ V3.userZoomed=true; setZoom(Math.min(1.65,V3.zoom+.1)); };
+    safeBy('zoomFitBtn').onclick=()=>{ V3.userZoomed=false; fitZoom(); };
   }
   function setZoom(z){
     V3.zoom=Math.round(z*100)/100;
@@ -141,7 +141,9 @@
     const reserve=mobile ? 24 : 44;
     const available=Math.max(240,wrap.clientWidth-reserve);
     const previewWidth=area.offsetWidth || 450;
-    const z=Math.min(1, Math.max(.5, available/previewWidth));
+    // The wide field-uniform stage needs a lower floor to fit a phone without sideways scrolling.
+    const z=Math.min(1, Math.max(.3, available/previewWidth));
+    V3.fitWidth=previewWidth;
     setZoom(z);
   }
   function updateTopBar(){
@@ -176,7 +178,12 @@
     if(typeof State==='undefined') return;
     document.querySelectorAll('.uniformOption').forEach(btn=>btn.classList.toggle('activeUniform',btn.dataset.uniformId===State.uniform));
   }
-  function refreshAll(){ ensureProgress(); ensureEmptyState(); updateEmptyState(); ensurePreviewToolbar(); ensureCommandBar(); polishPanels(); updateProgress(); updateTopBar(); markActiveUniform(); }
+  // Field uniforms use a wider stage; refit when the stage size changes unless the member set their own zoom.
+  function refitIfStageChanged(){
+    const area=safeBy('previewArea');
+    if(area && !V3.userZoomed && V3.fitWidth && area.offsetWidth && area.offsetWidth!==V3.fitWidth) fitZoom();
+  }
+  function refreshAll(){ ensureProgress(); ensureEmptyState(); updateEmptyState(); ensurePreviewToolbar(); ensureCommandBar(); polishPanels(); updateProgress(); updateTopBar(); markActiveUniform(); refitIfStageChanged(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
     fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); scheduleRefresh(); return result; };
