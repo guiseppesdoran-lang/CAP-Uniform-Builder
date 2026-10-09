@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>CAP Uniform Builder - Placement Regression Harness</title>
+<style>
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:#eef1f5;color:#0d1b2a}
+  header{background:#002855;color:#fff;padding:12px 16px}
+  header h1{margin:0;font-size:16px}
+  header p{margin:4px 0 0;font-size:12px;opacity:.8}
+  .bar{padding:12px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#fff;border-bottom:1px solid #cfd6df}
+  button{padding:8px 14px;border-radius:8px;border:1px solid #002855;background:#002855;color:#fff;cursor:pointer;font-size:13px}
+  button.secondary{background:#fff;color:#002855}
+  button:disabled{opacity:.5;cursor:default}
+  #status{font-size:13px;color:#516079}
+  #log{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;white-space:pre;padding:12px 16px;max-height:40vh;overflow:auto;background:#0d1b2a;color:#c8d6e5}
+  iframe{width:1000px;height:760px;border:1px solid #cfd6df;background:#fff}
+  .wrap{padding:16px;display:flex;gap:16px;align-items:flex-start}
+  .hide{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>Placement Regression Harness</h1>
+  <p>Drives the real builder in an iframe and records where every badge, patch, shoulder cord and base jacket is drawn, for each uniform, cut and membership type. Compare against <code>placement-baseline.tsv</code> before and after any change to calibration data or placement code.</p>
+</header>
+
+<div class="bar">
+  <button id="run">Run capture</button>
+  <button id="download" class="secondary" disabled>Download baseline TSV</button>
+  <label><input type="checkbox" id="showFrame" /> show iframe</label>
+  <span id="status">idle</span>
+</div>
+
+<div id="log"></div>
+
+<div class="wrap">
+  <iframe id="app" src="../index.html" class="hide"></iframe>
+</div>
+
+<script>
+/*
+  What this records
+
+  One row per scenario: "<uniform>|<cut>|<membership>|<kind>:<id>" and the final
+  box of every layer that scenario draws, as "key@left,top,width,height,rotation".
+  Kinds:
+    base    the jacket layers, with the image file that actually rendered
+    badge   one badge selected on its own
+    combo   a fixed set of badges selected together, with and without a ribbon rack
+    mil     one U.S. military badge on a CAP uniform
+    patch   one patch selected on its own
+    cord    one shoulder cord (cadet Class A and B only, the only place it renders)
+
+  Placement is decided by several layers (default tables, stored boxes, rules in
+  patches.js) and some depend on image dimensions, so each scenario waits for its
+  images to load before the boxes are read.
+
+  The run starts from the shipped defaults: any calibration saved in the browser
+  is ignored, so the result does not depend on who runs it.
+
+  Same origin, no network beyond the static server, no secrets.
+*/
+
+const logEl = document.getElementById('log');
+const statusEl = document.getElementById('status');
+const frame = document.getElementById('app');
+let lastRows = null;
+
+function log(msg){
+  logEl.textContent += msg + '\n';
+  logEl.scrollTop = logEl.scrollHeight;
+}
+function setStatus(s){ statusEl.textContent = s; }
+
+document.getElementById('showFrame').addEventListener('change', e => {
+  frame.classList.toggle('hide', !e.target.checked);
+});
+
+function appWindow(){
+  const w = frame.contentWindow;
+  if(!w || typeof w.fullRender !== 'function' || typeof w.eval !== 'function'){
+    throw new Error('builder not ready in iframe');
+  }
+  return w;
+}
+
+/*
+  Runs inside the iframe through win.eval so it can see the builder's top-level
+  const/let bindings (State, UNIFORMS, badgeList, uniformCanvas, ...), which are
+  not properties of window. It must stay self-contained: it is serialised with
+  toString() and nothing from this page is in scope there.
+*/
+async function captureInFrame(spec){
+  const rows = [];
+  const q = sel => [...uniformCanvas.querySelectorAll(sel)];
+  // A MessageChannel turn is a real macrotask that background-tab throttling leaves alone.
+  const tick = () => new Promise(resolve => { const c = new MessageChannel(); c.port1.onmessage = () => resolve(); c.port2.postMessage(0); });
+  async function settle(){
+    for(let pass = 0; pass < 30; pass++){
+      const pending = q('img.layer').filter(img => !img.complete);
+      if(!pending.length){ await tick(); if(!q('img.layer').some(img => !img.complete)) return; continue; }
+      await Promise.race([
+        Promise.all(pending.map(img => new Promise(resolve => { img.addEventListener('load', resolve, {once:true}); img.addEventListener('error', resolve, {once:true}); }))),
+        new Promise(resolve => setTimeout(resolve, 1500))
+      ]);
+      await tick();
+    }
+  }
+  const num = value => { const n = parseFloat(value); return Number.isFinite(n) ? +n.toFixed(2) : 0; };
+  const rotation = el => { const m = (el.style.transform || '').match(/rotate\((-?[\d.]+)deg\)/); return m ? +parseFloat(m[1]).toFixed(2) : 0; };
+  const fileOf = el => {
+    const src = String(el.getAttribute('src') || '');
+    return src.startsWith('data:') ? 'data' : src.split('/').pop().split('?')[0];
+  };
+  const describe = (el, withFile) => {
+    const key = el.dataset.calibKey || el.dataset.badgeId || el.title || el.className.replace(/\blayer\b/, '').trim();
+    const z = el.style.zIndex ? `z${el.style.zIndex}` : '';
+    return `${key}${withFile ? '=' + fileOf(el) : ''}@${num(el.style.left)},${num(el.style.top)},${num(el.style.width)},${num(el.style.height)},${rotation(el)}${z ? ',' + z : ''}`;
+  };
+  const record = (id, selector, withFile) => {
+    const text = q(selector).map(el => describe(el, withFile)).join(' ; ');
+    rows.push([id, text || '-']);
+  };
+  const isBase = el => !/\b(badge|patch|ribbonTile|ribbonMini|ribbonDevice|shoulderCord)\b/.test(el.className);
+
+  function reset(u, g, m){
+    State.uniform = u; State.gender = g; State.membership = m;
+    State.rank = m === 'senior' ? 'Maj' : 'C/Maj';
+    State.badges = []; State.badgeSelections = {};
+    State.patches = []; State.patchSelections = {};
+    State.shoulderCord = null; State.militaryBadges = {};
+    State.unitPatchCharter = '';
+    State.ribbons = []; State.ribbonSelections = {};
+    normalizeRibbonSelections();
+  }
+  function addRack(m){
+    const families = m === 'cadet'
+      ? ['curry_achievement', 'wright_brothers_award', 'mitchell_award']
+      : ['air_force_aerial_achievement_medal', 'silver_medal_of_valor', 'distinguished_service_award'];
+    for(const id of families){
+      const option = (getRibbonAwardOptions(id) || []).find(o => o && o.value);
+      if(option) setRibbonSelectionFromDropdown(id, option.value);
+    }
+  }
+  const select = ids => { State.badges = [...ids]; State.badgeSelections = Object.fromEntries(ids.map(id => [id, {checked:true}])); };
+
+  // Start from the shipped defaults, not whatever this browser has saved.
+  State.calib.byUniform = {}; State.calib.map = {};
+  mergeCalibDefaults();
+
+  const combos = spec.combos.map(([name, ids]) => [name, ids.filter(id => badgeList.includes(id))]).filter(([, ids]) => ids.length);
+  const militaryIds = (typeof getAllSelectableMilitaryBadges === 'function' ? getAllSelectableMilitaryBadges() : []).slice(0, spec.militaryCount).map(b => b.id);
+  const patchIds = Object.keys(PATCH_META || {});
+  const cordIds = Object.keys(SHOULDER_CORD_META || {});
+
+  for(const u of spec.uniforms) for(const g of spec.genders) for(const m of spec.memberships){
+    const at = kind => `${u}|${g}|${m}|${kind}`;
+
+    reset(u, g, m);
+    fullRender(); await settle();
+    rows.push([at('base'), q('.layer').filter(isBase).map(el => describe(el, true)).join(' ; ') || '-']);
+
+    for(const id of badgeList){
+      reset(u, g, m); select([id]);
+      renderAllBadges(); await settle();
+      record(at(`badge:${id}`), '.layer.badge');
+    }
+    for(const [name, ids] of combos){
+      reset(u, g, m); select(ids);
+      fullRender(); await settle();
+      record(at(`combo:${name}`), '.layer.badge');
+      reset(u, g, m); addRack(m); select(ids);
+      fullRender(); await settle();
+      record(at(`combo:${name}+rack`), '.layer.badge');
+    }
+    for(const id of militaryIds){
+      reset(u, g, m); State.militaryBadges = {[id]: {selected:true, variant:'basic'}};
+      renderAllBadges(); await settle();
+      record(at(`mil:${id}`), '.layer.badge');
+    }
+    for(const id of patchIds){
+      reset(u, g, m); State.patches = [id];
+      renderPatches(); await settle();
+      record(at(`patch:${id}`), '.layer.patch');
+    }
+    if(m === 'cadet' && (u === 'blues_a' || u === 'blues_b')){
+      for(const id of cordIds){
+        reset(u, g, m); State.shoulderCord = id;
+        renderCACShoulderCord(); await settle();
+        record(at(`cord:${id}`), '.layer.shoulderCord');
+      }
+    }
+  }
+  return rows;
+}
+
+const SPEC = {
+  genders: ['male', 'female'],
+  memberships: ['senior', 'cadet'],
+  militaryCount: 3,
+  // Fixed badge sets chosen to cover aviation, pocket, command and specialty slots,
+  // and to put more than one badge in the same slot.
+  combos: [
+    ['aviation+ground', ['AirCrew1_DB3F0FCC3650F', 'master_ground_team_badge']],
+    ['three', ['AirCrew1_DB3F0FCC3650F', 'basic_incident_commander_badge', 'master_ground_team_badge']],
+    ['four', ['emergency_services_badge', 'communications_technician_badge', 'master_ground_team_badge', 'AirCrew1_DB3F0FCC3650F']],
+    ['command', ['squadron_commander_badge', 'AirCrew1_DB3F0FCC3650F']],
+    ['chaplain', ['christian_chaplin', 'AirCrew1_DB3F0FCC3650F']],
+    ['specialty', ['cyber_badges', 'stem_badges', 'model_rocketry_badge']]
+  ]
+};
+
+async function runPlacement(opts = {}){
+  const win = appWindow();
+  const uniforms = opts.uniforms || win.eval('Object.keys(UNIFORMS)');
+  const fn = win.eval('(' + captureInFrame.toString() + ')');
+  const rows = await fn({ ...SPEC, ...opts, uniforms });
+  const map = new Map(rows);
+  if(map.size !== rows.length) throw new Error('duplicate scenario ids in capture');
+  lastRows = map;
+  return map;
+}
+
+// Scenarios that draw nothing are left out of the file; a missing row means "nothing drawn".
+function toTsv(map, uniformsCount){
+  const drawn = [...map].filter(([, v]) => v !== '-');
+  const head = [
+    '# CAP Uniform Builder placement baseline',
+    `# generated=${new Date().toISOString()} scenarios=${map.size} drawn=${drawn.length} uniforms=${uniformsCount}`,
+    '# columns: scenario<TAB>layers (key@left,top,width,height,rotation[,z]) joined by " ; ". Scenarios that draw nothing are omitted.'
+  ];
+  return head.concat(drawn.map(([k, v]) => `${k}\t${v}`)).join('\n') + '\n';
+}
+
+function parseTsv(text){
+  const map = new Map();
+  for(const line of text.split('\n')){
+    if(!line || line.startsWith('#')) continue;
+    const i = line.indexOf('\t');
+    if(i > 0) map.set(line.slice(0, i), line.slice(i + 1));
+  }
+  return map;
+}
+
+/*
+  Capture the current build and diff it against scripts/placement-baseline.tsv.
+  Returns counts and the first few differences; the full lists stay on
+  window.__lastPlacementDiff.
+*/
+async function comparePlacement(opts = {}){
+  const res = await fetch('placement-baseline.tsv', {cache:'no-store'});
+  if(!res.ok) throw new Error('placement-baseline.tsv not found (' + res.status + ')');
+  const base = parseTsv(await res.text());
+  const next = await runPlacement(opts);
+  const drawnNow = new Map([...next].filter(([, v]) => v !== '-'));
+  const diff = { baseRows:base.size, newRows:drawnNow.size, noLongerDrawn:[], nowDrawn:[], changed:[] };
+  for(const k of base.keys()) if(!drawnNow.has(k)) diff.noLongerDrawn.push(k);
+  for(const k of drawnNow.keys()) if(!base.has(k)) diff.nowDrawn.push(k);
+  for(const [k, v] of base){
+    if(drawnNow.has(k) && drawnNow.get(k) !== v) diff.changed.push({ scenario:k, was:v, now:drawnNow.get(k) });
+  }
+  diff.clean = !diff.noLongerDrawn.length && !diff.nowDrawn.length && !diff.changed.length;
+  window.__lastPlacementDiff = diff;
+  return {
+    clean: diff.clean,
+    counts: { noLongerDrawn:diff.noLongerDrawn.length, nowDrawn:diff.nowDrawn.length, changed:diff.changed.length },
+    baseRows: diff.baseRows, newRows: diff.newRows,
+    noLongerDrawn: diff.noLongerDrawn.slice(0, 10), nowDrawn: diff.nowDrawn.slice(0, 10), changed: diff.changed.slice(0, 10)
+  };
+}
+
+window.runPlacement = runPlacement;
+window.toTsv = toTsv;
+window.comparePlacement = comparePlacement;
+window.getPlacementRows = () => lastRows;
+
+document.getElementById('run').addEventListener('click', async () => {
+  const btn = document.getElementById('run');
+  btn.disabled = true;
+  logEl.textContent = '';
+  setStatus('running...');
+  try{
+    const map = await runPlacement();
+    setStatus(`done - ${map.size} scenarios`);
+    log(`scenarios: ${map.size}`);
+    document.getElementById('download').disabled = false;
+  }catch(err){
+    setStatus('failed');
+    log('ERROR: ' + (err && err.message || err));
+  }
+  btn.disabled = false;
+});
+
+document.getElementById('download').addEventListener('click', () => {
+  if(!lastRows) return;
+  const blob = new Blob([toTsv(lastRows, new Set([...lastRows.keys()].map(k => k.split('|')[0])).size)], {type:'text/tab-separated-values'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'placement-baseline.tsv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+</script>
+</body>
+</html>
