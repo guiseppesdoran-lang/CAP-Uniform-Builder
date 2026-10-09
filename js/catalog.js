@@ -967,7 +967,8 @@ function getAllMilitaryRibbonAwards(){
   const raw=(window.CAPUBMilitaryData?.awards || []).filter(award =>
     award.type === 'RIBBON' && !window.CAPUBMilitary?.isCapAward(award)
   );
-  const awards=window.CAPUBMilitary?.canonicalizeAwards?.(raw) || raw;
+  // An award with no ribbon artwork would show as a broken image, so it is not offered until it has some.
+  const awards=(window.CAPUBMilitary?.canonicalizeAwards?.(raw) || raw).filter(award => award?.images?.ribbon);
   const sorted=[...awards].sort(window.CAPUBMilitary?.compareAwardsUniversal || ((a,b)=>String(a.name).localeCompare(String(b.name))));
   const byId=new Map();
   for(const award of awards){

@@ -46,3 +46,12 @@ test('the page loads the catalog before the application scripts', () => {
   assert.ok(order.every(index => index >= 0), 'all four scripts are referenced');
   assert.deepEqual([...order].sort((a, b) => a - b), order);
 });
+
+test('the Coast Guard Cross is the only ribbon award without artwork, and the catalog does not offer awards like it', () => {
+  const noArt = loadCatalog().awards.filter(award => award.type === 'RIBBON' && !award.images?.ribbon).map(award => award.id);
+  // When ribbon art for it is added, delete this entry and the award appears in the gallery by itself.
+  // The catalog was built in another realm; compare plain values.
+  assert.deepEqual(JSON.parse(JSON.stringify(noArt)), ['coast_guard_cross']);
+  const catalogSource = fs.readFileSync(path.join(ROOT, 'js', 'catalog.js'), 'utf8');
+  assert.match(catalogSource, /\.filter\(award => award\?\.images\?\.ribbon\)/);
+});
