@@ -11,7 +11,7 @@
 <meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Everything stays in your browser.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
-<link rel="stylesheet" href="styles/app.css?v=6e5d1d0d6c">
+<link rel="stylesheet" href="styles/app.css?v=c2c311e27c">
 </head>
 <body>
 
@@ -19,7 +19,7 @@
   <h1>Uniform Builder</h1>
 </header>
 
-<button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu">
+<button id="hamburgerBtn" class="hamburgerBtn" type="button" aria-label="Menu" aria-controls="controls" aria-expanded="true">
   <span></span><span></span><span></span>
 </button>
 
@@ -33,24 +33,24 @@
   <div id="calibratorPanel">
     <h3>Calibrator</h3>
 
-    <div style="font-size:11px;color:var(--muted);line-height:1.35;margin-bottom:8px;">
+    <div class="hintText">
       Turn on Calibrate Mode, then click an item to edit it. Ctrl/Shift-click adds or removes multiple selected assets so you can move or resize them together.
     </div>
 
     <div class="calib-row">
       <label>Mode</label>
-      <div class="row" style="gap:8px;">
-        <button id="calibToggleMode" type="button" class="ghost" style="width:100%;">Calibrate Mode: OFF</button>
+      <div class="row">
+        <button id="calibToggleMode" type="button" class="ghost">Calibrate Mode: OFF</button>
       </div>
     </div>
 
     <div class="calib-row">
       <label>Admin master session</label>
-      <div class="row" style="gap:8px;">
-        <button id="calibMasterSession" type="button" class="ghost" style="flex:1;">Master Session: OFF</button>
-        <button id="calibMasterClear" type="button" class="ghost" style="width:auto;">Clear</button>
+      <div class="row">
+        <button id="calibMasterSession" type="button" class="ghost growBtn">Master Session: OFF</button>
+        <button id="calibMasterClear" type="button" class="ghost autoBtn">Clear</button>
       </div>
-      <div id="calibMasterStatus" style="margin-top:5px;font-size:10px;color:var(--muted);line-height:1.35;">One-uniform submission mode.</div>
+      <div id="calibMasterStatus" class="hintText">One-uniform submission mode.</div>
     </div>
 
     <div class="calib-row">
@@ -101,7 +101,7 @@
     <div class="btnRow">
       <button id="calibSaveRepo" type="button">Save to repo folder</button>
     </div>
-    <div id="calibSaveStatus" style="margin-top:5px;font-size:10px;color:var(--muted);line-height:1.35;" role="status"></div>
+    <div id="calibSaveStatus" class="hintText" role="status"></div>
 
     <div class="btnRow">
       <button id="calibSubmitUpdate" type="button" hidden>Submit Calibration Update</button>
@@ -110,7 +110,7 @@
     <div class="mt-10" id="calibReadout">
       <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow = 0.1px, Alt+Arrow = 0.01px, Ctrl+Arrow = 1px, and Shift+Arrow = 10px.</div>
       <div class="mt-6">JSON:</div>
-      <code id="calibJson" style="display:block;white-space:pre-wrap;"></code>
+      <code id="calibJson"></code>
     </div>
   </div>
 </div>
@@ -139,7 +139,7 @@
           <div class="col"><button id="importMemberReportBtn" type="button">Import Member Report</button></div>
           <div class="col"><button id="clearImportedReportBtn" class="ghost" type="button">Clear Import Notes</button></div>
         </div>
-        <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" style="display:none"/>
+        <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" hidden/>
         <div id="memberReportImportStatus" class="hintText mt-8">
           No report imported yet.
         </div>
@@ -317,7 +317,7 @@
 
         <label class="fieldNote mt-8">
           Ribbon rack layout
-          <select id="ribbonRackColumns" style="display:block;width:100%;margin-top:4px;">
+          <select id="ribbonRackColumns">
             <option value="3">3 across — centered</option>
             <option value="4-left">4 across — left edge aligned with welt/pocket (Class A)</option>
             <option value="4-center">4 across — centered above welt/pocket (Class A)</option>
@@ -329,7 +329,7 @@
 
         <label class="fieldNote mt-8">
           Upper-row arrangement
-          <select id="ribbonRackArrangement" style="display:block;width:100%;margin-top:4px;">
+          <select id="ribbonRackArrangement">
             <option value="standard">Standard — centered partial top row</option>
             <option value="lapel">Automatic — 3 across, switch to 4 above 51% overlap</option>
           </select>
@@ -369,27 +369,27 @@
 
         <label class="fieldNote mt-8">
           Mini-medal mounting method
-          <select id="miniMountStyle" style="display:block;width:100%;margin-top:4px;">
+          <select id="miniMountStyle">
             <option value="mounting">Mounting bars — four per row (maximum 24)</option>
             <option value="holding">Holding bars — custom overlap (maximum 28)</option>
           </select>
         </label>
 
         <div id="deviceTool">
-          <strong style="font-size:12px;">Ribbon Devices — Multi-Apply</strong>
+          <strong class="subHead">Ribbon Devices: Multi-Apply</strong>
           <div id="devicePicker"></div>
           <div class="row mt-8">
             <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
             <button id="deviceRemoveModeBtn" type="button" class="ghost">Enable Remove Mode</button>
             <button id="deviceClearSelectionBtn" type="button" class="ghost">Clear Selection</button>
           </div>
-          <small style="color:#516079;display:block;margin-top:6px;font-size:11px;line-height:1.3;">
+          <small class="hintText">
             Choose devices + quantities → Enable Apply Mode → click a ribbon to add them.
             Use Remove Mode to clear devices from a ribbon.
           </small>
         </div>
 
-        <div class="row two mt-10">
+        <div class="row two mt-10 devOnly">
           <div class="col"><button id="toggleRibbonDrag" class="ghost" type="button">Enable Drag Mode</button></div>
           <div class="col"><button id="logRibbonCoords" class="ghost" type="button">Log Ribbon Coords</button></div>
         </div>
@@ -429,7 +429,7 @@
           <div class="col"><button id="expandPatches" type="button">Choose Patches…</button></div>
         </div>
 
-        <div style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px;">
+        <div class="panelDivider">
           <label class="fieldLabel">Unit Patch</label>
           <div class="hintText">
             Separate from the general patch picker. Scroll the charter dropdown or type in the search box to filter by charter number or unit name.
@@ -484,7 +484,7 @@
           <div class="col"><button id="capubV2ExportJson" class="ghost" type="button">Export Setup JSON</button></div>
           <div class="col"><button id="capubV2ImportBtn" class="ghost" type="button">Import Setup JSON</button></div>
         </div>
-        <input id="capubV2ImportFile" type="file" accept="application/json,.json" style="display:none"/>
+        <input id="capubV2ImportFile" type="file" accept="application/json,.json" hidden/>
         <div class="row two mt-6">
           <div class="col"><button id="capubV2MissingBtn" class="ghost" type="button">Download Missing Asset List</button></div>
           <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset Builder</button></div>
@@ -578,13 +578,13 @@
 <script src="js/calibration.js?v=c51e2a3100"></script>
 <script src="js/dom-assets.js?v=108a38e620"></script>
 <script src="js/catalog.js?v=864842614e"></script>
-<script src="js/setup.js?v=a3299b97f3"></script>
-<script src="js/render-core.js?v=2612ec7f1e"></script>
+<script src="js/setup.js?v=4082fdb6dd"></script>
+<script src="js/render-core.js?v=0b13d429c7"></script>
 <script src="js/galleries.js?v=aa28ed7c1c"></script>
 <script src="js/placement.js?v=afe13839c7"></script>
 <script src="js/wiring.js?v=457e522617"></script>
 <script src="js/workspace-ui.js?v=2bab107cef"></script>
-<script src="js/member-report-import.js?v=c7a4590f32"></script>
+<script src="js/member-report-import.js?v=3373103425"></script>
 <script src="js/bootstrap.js?v=e488fc90d3"></script>
 <script src="js/patches.js?v=2b197c4f77"></script>
 <script src="js/calibration-save.js?v=2aa8ca7086"></script>

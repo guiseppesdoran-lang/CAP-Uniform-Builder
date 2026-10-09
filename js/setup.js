@@ -225,21 +225,13 @@ function applyMemberTypeToUniformOptions(){
       opt.removeAttribute('data-locked-reason');
     }else{
       opt.classList.add('locked');
-      opt.setAttribute('data-locked-reason', 'This Uniform Is Not Authorized For This Membership Type');
+      opt.setAttribute('data-locked-reason', 'This uniform is not authorized for this membership type.');
     }
   });
 }
 function highlightActiveUniformButton(){
   const opts=uniformListEl.querySelectorAll('.uniformOption');
   opts.forEach(opt=>{
-    if(opt.dataset.uniformId===State.uniform){
-      opt.style.outline=`2px solid var(--brand)`;
-      opt.style.boxShadow=`0 0 0 3px rgba(0,40,85,.15)`;
-      opt.style.background=`rgba(0,40,85,.05)`;
-    }else{
-      opt.style.outline='';
-      opt.style.boxShadow='';
-      opt.style.background='';
-    }
+    opt.classList.toggle('activeUniform', opt.dataset.uniformId===State.uniform);
   });
 }

@@ -863,3 +863,12 @@ header h1::after{
 #aboutDialog p{margin:0 0 var(--s3);font-size:var(--t-md);line-height:1.5}
 #aboutDialog .aboutActions{margin-top:var(--s4);text-align:right}
 #aboutDialog .aboutActions button{width:auto;margin:0;padding:0 var(--s5)}
+
+/* ---- Small utilities (replace inline styles in index.html) ---- */
+.subHead{font-size:var(--t-sm);font-weight:700}
+.panelDivider{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line)}
+.growBtn{flex:1;width:auto}
+.autoBtn{width:auto}
+small.hintText{display:block}
+#calibJson{display:block;white-space:pre-wrap}
+.jacketError{max-width:420px;padding:var(--s3);background:var(--danger-bg);border:1px solid var(--danger);border-radius:var(--r);color:var(--ink);font-size:var(--t-sm)}

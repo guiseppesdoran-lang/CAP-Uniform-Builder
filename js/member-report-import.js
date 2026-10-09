@@ -35,7 +35,7 @@ function setMemberReportImportStatus(lines, type='info'){
   const el = by('memberReportImportStatus');
   if(!el) return;
   const arr = Array.isArray(lines) ? lines : [lines];
-  const color = type === 'error' ? '#991b1b' : type === 'ok' ? '#166534' : 'var(--muted)';
+  const color = type === 'error' ? 'var(--danger)' : type === 'ok' ? 'var(--ok)' : 'var(--muted)';
   el.style.color = color;
   el.innerHTML = arr.map(line => `<div>${String(line).replace(/[<>&]/g, ch => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]))}</div>`).join('');
 }
