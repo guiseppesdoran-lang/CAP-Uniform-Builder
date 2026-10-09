@@ -43,6 +43,9 @@ for (const match of html.matchAll(/(?:src|href)="([^"#?]+)/g)) {
   referenced.add(value);
 }
 referenced.add('index.html');
+// The MIT license asks for its notice to travel with copies, so the published site carries both.
+referenced.add('LICENSE');
+referenced.add('NOTICE.md');
 
 const runtimeFiles = new Set();
 for (const rel of referenced) {

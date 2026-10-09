@@ -112,7 +112,7 @@ test('the site build publishes only runtime files and carries the policy', () =>
   for (const name of ['.git', 'tests', 'scripts', 'docs', 'deploy', 'google-apps-script', 'package.json', 'PATCH_SUBMISSION_SETUP.md', 'admin-history.js']) {
     assert.equal(fs.existsSync(path.join(dist, name)), false, `dist/${name} must not be published`);
   }
-  for (const name of ['index.html', 'config.js', 'js/state.js', 'styles/app.css', 'vendor/pdfjs/pdf.min.js', 'images']) {
+  for (const name of ['index.html', 'config.js', 'LICENSE', 'NOTICE.md', 'favicon.svg', 'js/state.js', 'styles/app.css', 'vendor/pdfjs/pdf.min.js', 'images']) {
     assert.ok(fs.existsSync(path.join(dist, name)), `dist/${name} is missing`);
   }
   const html = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
