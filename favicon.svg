@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ribbon rack">
+  <rect width="64" height="64" rx="12" fill="#002855"/>
+  <rect x="10" y="14" width="44" height="9" rx="1.5" fill="#f4f6fa"/>
+  <rect x="10" y="14" width="44" height="9" rx="1.5" fill="none" stroke="#9fb4d4" stroke-width="1"/>
+  <rect x="10" y="27" width="44" height="9" rx="1.5" fill="#c8102e"/>
+  <rect x="26" y="27" width="12" height="9" fill="#f4f6fa"/>
+  <rect x="10" y="40" width="44" height="9" rx="1.5" fill="#d9a521"/>
+  <rect x="10" y="40" width="14" height="9" rx="1.5" fill="#1f5fae"/>
+  <rect x="40" y="40" width="14" height="9" rx="1.5" fill="#1f5fae"/>
+</svg>

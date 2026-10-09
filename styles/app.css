@@ -1112,3 +1112,14 @@ button.ghost:hover{border-color:#7ea6d2;background:#f7fbff;}
 /* Developer-only UI: shown when the page is opened with ?dev=1. */
 html:not([data-dev]) .devOnly{display:none !important}
 [hidden]{display:none !important}
+
+/* Footer "About" link and its dialog (unofficial-site and privacy notice). */
+#pageFooter{padding-left:12px;padding-right:12px}
+.footerLink{display:inline;width:auto;margin:0;padding:0;border:0;background:none;box-shadow:none;color:var(--brand);font:inherit;font-weight:600;text-decoration:underline}
+.footerLink:hover{background:none;box-shadow:none;transform:none}
+#aboutDialog{width:min(520px,calc(100vw - 32px));padding:20px 22px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink)}
+#aboutDialog::backdrop{background:rgba(0,16,40,.45)}
+#aboutDialog h2{margin:0 0 10px;font-size:18px}
+#aboutDialog p{margin:0 0 10px;font-size:13px;line-height:1.5}
+#aboutDialog .aboutActions{margin-top:14px;text-align:right}
+#aboutDialog .aboutActions button{width:auto}

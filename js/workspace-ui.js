@@ -193,3 +193,16 @@
   window.addEventListener('resize',()=>{ if(V3.zoom<=1) fitZoom(); });
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
+
+// About dialog: the unofficial-site and privacy notice, opened from the footer.
+(function capubAboutDialog(){
+  const dialog = document.getElementById('aboutDialog');
+  const open = document.getElementById('aboutOpen');
+  if(!dialog || !open) return;
+  open.addEventListener('click', () => {
+    if(typeof dialog.showModal === 'function') dialog.showModal(); else dialog.setAttribute('open','');
+  });
+  document.getElementById('aboutClose')?.addEventListener('click', () => dialog.close());
+  // A click on the dimmed area outside the box closes it.
+  dialog.addEventListener('click', event => { if(event.target === dialog) dialog.close(); });
+})();

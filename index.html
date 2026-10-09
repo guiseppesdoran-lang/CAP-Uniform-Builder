@@ -4,8 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CAP Uniform Builder</title>
+<meta name="description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items: rank, ribbons, badges and patches on each uniform. Everything stays in your browser.">
+<meta name="theme-color" content="#002855">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CAP Uniform Builder">
+<meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Everything stays in your browser.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 
-<link rel="stylesheet" href="styles/app.css?v=8f46dbb42b">
+<link rel="stylesheet" href="styles/app.css?v=68de41c2f0">
 </head>
 <body>
 
@@ -528,7 +534,16 @@
 
 <footer id="pageFooter">
   © <span id="footerYear"></span> Civil Air Patrol Uniform Builder – Developed by C/Col. Guiseppe Doran
+  · <button type="button" id="aboutOpen" class="footerLink">About</button>
 </footer>
+
+<dialog id="aboutDialog" aria-labelledby="aboutTitle">
+  <h2 id="aboutTitle">About this tool</h2>
+  <p>An unofficial planning tool for arranging Civil Air Patrol uniform items. It is not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force, and it does not replace CAPR 39-1 or your unit's guidance. Check the regulation before you buy or wear anything.</p>
+  <p><b>Privacy.</b> Nothing you build is uploaded. Saved setups stay in this browser, and a member report you import is read on your device only.</p>
+  <p>Civil Air Patrol, the U.S. Air Force and other names, insignia and uniform designs shown here belong to their owners.</p>
+  <div class="aboutActions"><button type="button" id="aboutClose" class="ghost">Close</button></div>
+</dialog>
 
 <!-- ===========================
      GALLERY MODAL
@@ -568,7 +583,7 @@
 <script src="js/galleries.js?v=aa28ed7c1c"></script>
 <script src="js/placement.js?v=afe13839c7"></script>
 <script src="js/wiring.js?v=2cfa2b05fe"></script>
-<script src="js/workspace-ui.js?v=d07fa45cc1"></script>
+<script src="js/workspace-ui.js?v=2bab107cef"></script>
 <script src="js/member-report-import.js?v=c7a4590f32"></script>
 <script src="js/bootstrap.js?v=e488fc90d3"></script>
 <script src="js/patches.js?v=2b197c4f77"></script>
