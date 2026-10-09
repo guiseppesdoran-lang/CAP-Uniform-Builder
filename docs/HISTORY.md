@@ -48,10 +48,13 @@ more than once.
 
 ## Scope note
 
-The Aug 2026 military work (PRs #116-#149) is **not** part of this branch: the
-multi-service builder, the 176-award U.S. military ribbon catalog, the military
-badge catalog and their artwork, data, scripts and reports were removed so the
-project is the CAP uniform builder only. They remain in `main`'s history.
+This branch is the CAP uniform builder only. The multi-service builder from the
+Aug 2026 military work (PRs #116-#149), meaning the Army, Navy and other
+organization picker with its own panels and preview, was removed. The U.S.
+military ribbon and badge menus inside the CAP galleries stay, because CAP
+members who earned those awards wear them on the CAP uniform. The source JSON,
+import tooling and reports that the generated `military/military-data.js` was
+built from are not in the working tree; they remain in `main`'s history.
 
 ## Since then (this branch)
 
