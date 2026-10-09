@@ -861,12 +861,26 @@ function openGalleryModal(kind){
 
   function syncFromSidebar(){
     if(kind==='ribbons'){
+      const hadMilitaryUI=!!grid.querySelector('details[data-military-section]');
+      if(hadMilitaryUI) captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
+      const ui=getMilitaryUIState();
+      const modalSnapshot=hadMilitaryUI ? {
+        expandedSections:[...(ui.expandedSections || [])],
+        modalScrollTop:ui.modalScrollTop,
+        focusedControl:ui.focusedControl ? {...ui.focusedControl} : null
+      } : null;
       State.ribbonGalleryExpanded = true;
-      buildRibbonGallery();
+      buildRibbonGallery({capture:false});
+      if(modalSnapshot){
+        ui.expandedSections=modalSnapshot.expandedSections;
+        ui.modalScrollTop=modalSnapshot.modalScrollTop;
+        ui.focusedControl=modalSnapshot.focusedControl;
+      }
       modalTitle.textContent = "Ribbons / Mini Medals";
       const sidebar = by('ribbonGallery');
       grid.innerHTML = sidebar ? sidebar.innerHTML : '';
       wireModalInteractions('ribbons');
+      restoreMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
       queueMicrotask(()=>window.CAPUB_refreshModalGallerySearch?.('ribbons'));
     }
 
@@ -1006,14 +1020,117 @@ function openGalleryModal(kind){
     }else{
       appendCategorizedBadges(modalHost, eligibleIds);
     }
+
+    const militaryBadges=getAllSelectableMilitaryBadges();
+    if(militaryBadges.length){
+      const militaryRoot=document.createElement('details');
+      militaryRoot.dataset.militaryBadgeCatalog='true';
+      militaryRoot.style.cssText='margin:14px 0 12px;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--panel);';
+      const militarySummary=document.createElement('summary');
+      militarySummary.style.cssText='cursor:pointer;font-weight:850;color:var(--ink);padding:4px 0;';
+      militarySummary.textContent=`U.S. Military Badges (${militaryBadges.length} with reviewed artwork)`;
+      militaryRoot.appendChild(militarySummary);
+      const note=document.createElement('div');
+      note.className='sub'; note.style.margin='6px 0 8px';
+      note.textContent='Only badge variants with reviewed local artwork are selectable. Missing artwork is never substituted.';
+      militaryRoot.appendChild(note);
+
+      for(const branch of MILITARY_BRANCH_ORDER){
+        const records=militaryBadges.filter(badge=>{
+          const services=(badge.authorizedServices || []).filter(service=>MILITARY_BRANCH_ORDER.includes(service));
+          return (services.length===1 ? services[0] : 'JOINT')===branch;
+        });
+        if(!records.length) continue;
+        const details=document.createElement('details');
+        details.className='militaryBadgeBranchMenu';
+        const summary=document.createElement('summary');
+        summary.textContent=`${MILITARY_BRANCH_LABELS[branch]} (${records.length})`;
+        details.appendChild(summary);
+        const branchGrid=document.createElement('div');
+        branchGrid.className='galleryGrid';
+        for(const badge of records){
+          const variants=getAvailableMilitaryBadgeVariants(badge);
+          const selected=State.militaryBadges?.[badge.id];
+          const activeVariant=selected?.variant || badge.representations?.metal?.defaultVariant || variants[0].id;
+          const representation=variants.find(item=>item.id===activeVariant)?.record || variants[0].record;
+          const tile=document.createElement('div');
+          tile.className='galleryTile militaryBadgeGalleryTile';
+          tile.dataset.militaryBadgeId=badge.id;
+          const preview=document.createElement('img');
+          preview.src=representation.asset; preview.alt=badge.officialName || badge.id;
+          const body=document.createElement('div'); body.style.cssText='flex:1;min-width:0;';
+          const title=document.createElement('div'); title.className='title'; title.textContent=badge.officialName || badge.id;
+          const sub=document.createElement('div'); sub.className='sub'; sub.textContent=`${badge.family || 'OTHER'} • ${(badge.authorizedServices || []).map(service=>MILITARY_BRANCH_LABELS[service] || service).join(' / ')}`;
+          const controls=document.createElement('div'); controls.className='miniRow';
+          const label=document.createElement('label');
+          const checkbox=document.createElement('input'); checkbox.type='checkbox'; checkbox.className='militaryBadgeCatalogCheck'; checkbox.checked=!!selected;
+          label.append(checkbox,document.createTextNode(' Add'));
+          controls.appendChild(label);
+          let variantSelect=null;
+          if(variants.length>1){
+            variantSelect=document.createElement('select'); variantSelect.className='militaryBadgeVariant'; variantSelect.title='Badge level or variant';
+            for(const variant of variants){
+              const option=document.createElement('option'); option.value=variant.id;
+              option.textContent=variant.id.replaceAll('_',' ').replace(/\b\w/g,letter=>letter.toUpperCase());
+              variantSelect.appendChild(option);
+            }
+            variantSelect.value=activeVariant;
+            controls.appendChild(variantSelect);
+          }
+          checkbox.onchange=()=>{
+            if(!State.militaryBadges) State.militaryBadges={};
+            if(checkbox.checked) State.militaryBadges[badge.id]={selected:true,variant:variantSelect?.value || activeVariant};
+            else delete State.militaryBadges[badge.id];
+            fullRender();
+          };
+          if(variantSelect) variantSelect.onchange=()=>{
+            if(!State.militaryBadges) State.militaryBadges={};
+            checkbox.checked=true;
+            State.militaryBadges[badge.id]={selected:true,variant:variantSelect.value};
+            preview.src=getMilitaryBadgeRepresentation(badge).asset;
+            fullRender();
+          };
+          body.append(title,sub,controls); tile.append(preview,body); branchGrid.appendChild(tile);
+        }
+        details.appendChild(branchGrid); militaryRoot.appendChild(details);
+      }
+      modalHost.appendChild(militaryRoot);
+    }
   }
 
   function wireModalInteractions(k){
     if(k==='ribbons'){
       wireRibbonTileControls(grid);
-      grid.querySelectorAll('.rbAwardSelect').forEach(control=>{
+      grid.querySelectorAll('.militaryRibbonCatalogSearch').forEach(input=>{
+        input.oninput=()=>{
+          const ui=getMilitaryUIState();
+          ui.gallerySearchValue=input.value;
+          ui.focusedControl={ribbonId:'',deviceId:'',className:'militaryRibbonCatalogSearch',selectionStart:input.selectionStart};
+          clearTimeout(wireModalInteractions.searchTimer);
+          wireModalInteractions.searchTimer=setTimeout(()=>syncFromSidebar(),100);
+        };
+      });
+      grid.querySelectorAll('.militaryRibbonCatalogService,.militaryRibbonCatalogType').forEach(select=>{
+        select.onchange=()=>{
+          const ui=getMilitaryUIState();
+          if(select.classList.contains('militaryRibbonCatalogService')) ui.galleryServiceFilter=select.value || 'ALL';
+          else ui.galleryAwardTypeFilter=select.value || 'ALL';
+          captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
+          syncFromSidebar();
+        };
+      });
+      grid.querySelectorAll('details[data-military-section]').forEach(details=>{
+        details.addEventListener('toggle',()=>{
+          if(details.open && details.querySelector(':scope > [data-military-lazy="true"]')){
+            captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
+            syncFromSidebar();
+          }
+        });
+      });
+      grid.querySelectorAll('.rbAwardSelect,.militaryServiceSelect,.militarySpecialDevice,.militaryNumeralDevice,.militaryAdvancedMode').forEach(control=>{
         const original=control.onchange;
         control.onchange=(event)=>{
+          captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
           original?.call(control,event);
           syncFromSidebar();
         };
