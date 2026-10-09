@@ -64,8 +64,22 @@ is gone. `js/calibration-save.js` is the code and `tests/calibration-save.test.c
 Rank-specific jackets in one family are the same garment with different insignia: across every
 family in `images/base/`, rank variants line up with their siblings at zero shift (correlation
 0.997 to 1.000 over the body below the shoulders). Calibration therefore belongs to the family,
-not to each rank image, and a new rank image needs no calibration if it keeps the family's canvas
-size and body.
+not to each rank image, and a new rank image needs none if it keeps the family's canvas size and
+body.
+
+`npm run check:base-art` (needs Pillow and numpy) checks that for every image. It groups the files
+into families, picks the image that agrees best with its siblings as the reference, and lists any
+image whose canvas size differs or whose body does not line up. For a mismatch it also searches for
+a shift of up to 12 px, which separates a slightly offset copy of the same garment from a different
+drawing. `python3 scripts/check-base-art.py --check` exits 1 if anything needs attention. Run it
+before committing new base images.
+
+On 2026-10-09 it listed five images to review. The generic OCP blouse renders correctly (checked
+on screen); the other four have not been looked at. `blues_class_b_female_c_a1c` and `_amn` are
+612x753 in a family of 581x719,
+`blues_class_b_female_c_cmsgt_1st_sgt` is a slightly different drawing (correlation 0.979),
+`lt_col_blues_class_b_male` is a different drawing (0.418), and the generic `OCP_Blouse` is
+581x719 in a family of 968x707.
 
 ## Checking a change
 
