@@ -13,7 +13,7 @@ the only directory that should be web-served (see `deploy/README.md`).
 | `js/*.js` | The application script, split along the section banners it always had. |
 | `config.js` | Per-deployment settings, loaded first. Only `submissionEndpoint` (empty = submissions off). Never put secrets here. |
 | `data/*.js` | Calibration corrections and the CAP unit list, loaded before the app scripts. |
-| `military/*.js` | U.S. military award and badge catalog (`military-data.js`, generated, 189 awards and 127 badges), its rules (`military-core.js`) and device layout. CAP members who earned U.S. military awards can add them in the ribbon and badge galleries. There is no separate service builder. |
+| `military/*.js` | U.S. military award and badge catalog (`military-data.js`, generated, 189 awards and 127 badges), its rules (`military-core.js`) and device layout. CAP members who earned U.S. military awards can add them in the ribbon and badge galleries. There is no separate service builder. A ribbon award with no artwork is not offered (the Coast Guard Cross today; it appears on its own once `images.ribbon` exists for it). Military badges show on dress uniforms only, until there is artwork for field uniforms. |
 | `images/military-*`, `images/devices/military/` | Artwork for those awards and badges. |
 | `vendor/pdfjs/` | pdf.js 3.11.174 (Apache-2.0), loaded on first member-report PDF import. |
 | `purchase-feature*.js`, `calibration-submission.js`, `patch-submission.js`, `ocp-patch-variants.js` | Feature scripts loaded after the app. The two submission scripts do nothing unless `config.js` sets an endpoint. |
