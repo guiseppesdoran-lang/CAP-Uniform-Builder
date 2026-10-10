@@ -2,6 +2,12 @@
 const CAPUB_DEV = new URLSearchParams(location.search).has('dev');
 if(CAPUB_DEV) document.documentElement.dataset.dev = '1';
 
+// Short messages go to the page's toast; the browser alert is only the fallback before it exists.
+function capubNotify(message, ms){
+  if(typeof window.capubToastShow === 'function') window.capubToastShow(message, ms);
+  else alert(message);
+}
+
 // Extracted verbatim from index.html: global state, membership/rank data and the base placement
 // constants. Must load first among the app scripts.
 

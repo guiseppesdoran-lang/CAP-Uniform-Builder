@@ -11,15 +11,16 @@
 <meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Everything stays in your browser.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
-<link rel="stylesheet" href="styles/app.css?v=be6ce3be1a">
+<link rel="stylesheet" href="styles/app.css?v=0b6e82e265">
 </head>
 <body>
 
 <header>
   <h1>Uniform Builder</h1>
+  <span class="unofficialTag" title="Not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force">Unofficial</span>
 </header>
 
-<button id="hamburgerBtn" class="hamburgerBtn" aria-label="Menu">
+<button id="hamburgerBtn" class="hamburgerBtn" type="button" aria-label="Menu" aria-controls="controls" aria-expanded="true">
   <span></span><span></span><span></span>
 </button>
 
@@ -33,24 +34,24 @@
   <div id="calibratorPanel">
     <h3>Calibrator</h3>
 
-    <div style="font-size:11px;color:var(--muted);line-height:1.35;margin-bottom:8px;">
+    <div class="hintText">
       Turn on Calibrate Mode, then click an item to edit it. Ctrl/Shift-click adds or removes multiple selected assets so you can move or resize them together.
     </div>
 
     <div class="calib-row">
       <label>Mode</label>
-      <div class="row" style="gap:8px;">
-        <button id="calibToggleMode" type="button" class="ghost" style="width:100%;">Calibrate Mode: OFF</button>
+      <div class="row">
+        <button id="calibToggleMode" type="button" class="ghost">Calibrate Mode: OFF</button>
       </div>
     </div>
 
     <div class="calib-row">
       <label>Admin master session</label>
-      <div class="row" style="gap:8px;">
-        <button id="calibMasterSession" type="button" class="ghost" style="flex:1;">Master Session: OFF</button>
-        <button id="calibMasterClear" type="button" class="ghost" style="width:auto;">Clear</button>
+      <div class="row">
+        <button id="calibMasterSession" type="button" class="ghost growBtn">Master Session: OFF</button>
+        <button id="calibMasterClear" type="button" class="ghost autoBtn">Clear</button>
       </div>
-      <div id="calibMasterStatus" style="margin-top:5px;font-size:10px;color:var(--muted);line-height:1.35;">One-uniform submission mode.</div>
+      <div id="calibMasterStatus" class="hintText">One-uniform submission mode.</div>
     </div>
 
     <div class="calib-row">
@@ -101,7 +102,7 @@
     <div class="btnRow">
       <button id="calibSaveRepo" type="button">Save to repo folder</button>
     </div>
-    <div id="calibSaveStatus" style="margin-top:5px;font-size:10px;color:var(--muted);line-height:1.35;" role="status"></div>
+    <div id="calibSaveStatus" class="hintText" role="status"></div>
 
     <div class="btnRow">
       <button id="calibSubmitUpdate" type="button" hidden>Submit Calibration Update</button>
@@ -110,7 +111,7 @@
     <div class="mt-10" id="calibReadout">
       <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow = 0.1px, Alt+Arrow = 0.01px, Ctrl+Arrow = 1px, and Shift+Arrow = 10px.</div>
       <div class="mt-6">JSON:</div>
-      <code id="calibJson" style="display:block;white-space:pre-wrap;"></code>
+      <code id="calibJson"></code>
     </div>
   </div>
 </div>
@@ -139,14 +140,14 @@
           <div class="col"><button id="importMemberReportBtn" type="button">Import Member Report</button></div>
           <div class="col"><button id="clearImportedReportBtn" class="ghost" type="button">Clear Import Notes</button></div>
         </div>
-        <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" style="display:none"/>
+        <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" hidden/>
         <div id="memberReportImportStatus" class="hintText mt-8">
           No report imported yet.
         </div>
       </section>
 
 <section id="capMembershipPanel" class="panelBlock">
-        <label class="fieldLabel">Membership Type</label>
+        <label class="fieldLabel" for="membershipType">Membership Type</label>
         <select id="membershipType">
           <option value="">Select Membership</option>
           <option value="senior">Senior Member</option>
@@ -154,7 +155,7 @@
         </select>
         <div class="hintText">This controls which ranks are available and how the base uniform renders.</div>
 
-        <label class="fieldLabel mt-10">Rank</label>
+        <label class="fieldLabel mt-10" for="rankSetupSelect">Rank</label>
         <select id="rankSetupSelect" disabled>
           <option value="">Select Rank</option>
         </select>
@@ -174,7 +175,7 @@
 <h3 class="stepGroupTitle">2 · Uniform</h3>
 
       <section id="genderBlock" class="panelBlock disabledBlock">
-        <label class="fieldLabel">Gender / Cut</label>
+        <label class="fieldLabel" for="jacketSelect">Gender / Cut</label>
         <select id="jacketSelect">
           <option value="">Select Gender</option>
           <option value="male">Male Cut</option>
@@ -276,13 +277,13 @@
       </section>
 
       <section id="shoulderCordPanel" class="panelBlock">
-        <label class="fieldLabel">Shoulder Cord</label>
+        <label class="fieldLabel" for="shoulderCordSelect">Shoulder Cord</label>
         <select id="shoulderCordSelect">
           <option value="">No shoulder cord</option>
-          <option value="group">Group CAC shoulder cord — green</option>
-          <option value="wing">Wing CAC shoulder cord — red</option>
-          <option value="region">Region CAC shoulder cord — blue</option>
-          <option value="national">National CAC shoulder cord — gold</option>
+          <option value="group">Group CAC shoulder cord - green</option>
+          <option value="wing">Wing CAC shoulder cord - red</option>
+          <option value="region">Region CAC shoulder cord - blue</option>
+          <option value="national">National CAC shoulder cord - gold</option>
           <option value="color_guard">Color Guard shoulder cord</option>
           <option value="honor_guard">Honor Guard shoulder cord</option>
         </select>
@@ -317,10 +318,10 @@
 
         <label class="fieldNote mt-8">
           Ribbon rack layout
-          <select id="ribbonRackColumns" style="display:block;width:100%;margin-top:4px;">
-            <option value="3">3 across — centered</option>
-            <option value="4-left">4 across — left edge aligned with welt/pocket (Class A)</option>
-            <option value="4-center">4 across — centered above welt/pocket (Class A)</option>
+          <select id="ribbonRackColumns">
+            <option value="3">3 across - centered</option>
+            <option value="4-left">4 across - left edge aligned with welt/pocket (Class A)</option>
+            <option value="4-center">4 across - centered above welt/pocket (Class A)</option>
           </select>
         </label>
         <div id="ribbonRackColumnsHint" class="hintText mt-4">
@@ -329,9 +330,9 @@
 
         <label class="fieldNote mt-8">
           Upper-row arrangement
-          <select id="ribbonRackArrangement" style="display:block;width:100%;margin-top:4px;">
-            <option value="standard">Standard — centered partial top row</option>
-            <option value="lapel">Automatic — 3 across, switch to 4 above 51% overlap</option>
+          <select id="ribbonRackArrangement">
+            <option value="standard">Standard - centered partial top row</option>
+            <option value="lapel">Automatic - 3 across, switch to 4 above 51% overlap</option>
           </select>
         </label>
         <div id="ribbonRackArrangementHint" class="hintText mt-4">
@@ -369,27 +370,27 @@
 
         <label class="fieldNote mt-8">
           Mini-medal mounting method
-          <select id="miniMountStyle" style="display:block;width:100%;margin-top:4px;">
-            <option value="mounting">Mounting bars — four per row (maximum 24)</option>
-            <option value="holding">Holding bars — custom overlap (maximum 28)</option>
+          <select id="miniMountStyle">
+            <option value="mounting">Mounting bars - four per row (maximum 24)</option>
+            <option value="holding">Holding bars - custom overlap (maximum 28)</option>
           </select>
         </label>
 
         <div id="deviceTool">
-          <strong style="font-size:12px;">Ribbon Devices — Multi-Apply</strong>
+          <strong class="subHead">Ribbon Devices: Multi-Apply</strong>
           <div id="devicePicker"></div>
           <div class="row mt-8">
             <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
             <button id="deviceRemoveModeBtn" type="button" class="ghost">Enable Remove Mode</button>
             <button id="deviceClearSelectionBtn" type="button" class="ghost">Clear Selection</button>
           </div>
-          <small style="color:#516079;display:block;margin-top:6px;font-size:11px;line-height:1.3;">
+          <small class="hintText">
             Choose devices + quantities → Enable Apply Mode → click a ribbon to add them.
             Use Remove Mode to clear devices from a ribbon.
           </small>
         </div>
 
-        <div class="row two mt-10">
+        <div class="row two mt-10 devOnly">
           <div class="col"><button id="toggleRibbonDrag" class="ghost" type="button">Enable Drag Mode</button></div>
           <div class="col"><button id="logRibbonCoords" class="ghost" type="button">Log Ribbon Coords</button></div>
         </div>
@@ -429,13 +430,13 @@
           <div class="col"><button id="expandPatches" type="button">Choose Patches…</button></div>
         </div>
 
-        <div style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px;">
-          <label class="fieldLabel">Unit Patch</label>
+        <div class="panelDivider">
+          <label class="fieldLabel" for="unitPatchSelect">Unit Patch</label>
           <div class="hintText">
             Separate from the general patch picker. Scroll the charter dropdown or type in the search box to filter by charter number or unit name.
             SER-TN-185 and SER-TN-330 currently have image assets in this program.
           </div>
-          <input id="unitPatchSearch" type="search" placeholder="Search charter number or unit name..." autocomplete="off"/>
+          <input id="unitPatchSearch" type="search" aria-label="Search unit patches" placeholder="Search charter number or unit name..." autocomplete="off"/>
           <select id="unitPatchSelect">
             <option value="">No unit patch</option>
           </select>
@@ -484,7 +485,7 @@
           <div class="col"><button id="capubV2ExportJson" class="ghost" type="button">Export Setup JSON</button></div>
           <div class="col"><button id="capubV2ImportBtn" class="ghost" type="button">Import Setup JSON</button></div>
         </div>
-        <input id="capubV2ImportFile" type="file" accept="application/json,.json" style="display:none"/>
+        <input id="capubV2ImportFile" type="file" accept="application/json,.json" hidden/>
         <div class="row two mt-6">
           <div class="col"><button id="capubV2MissingBtn" class="ghost" type="button">Download Missing Asset List</button></div>
           <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset Builder</button></div>
@@ -533,7 +534,7 @@
 <div class="layer" id="assets" style="display:none"></div>
 
 <footer id="pageFooter">
-  Unofficial planning tool · Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard
+  Unofficial tool, not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force. Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard
   · <button type="button" id="aboutOpen" class="footerLink">About</button>
 </footer>
 
@@ -541,7 +542,7 @@
   <h2 id="aboutTitle">About this tool</h2>
   <p>An unofficial planning tool for arranging Civil Air Patrol uniform items. It is not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force, and it does not replace CAPR 39-1 or your unit's guidance. Check the regulation before you buy or wear anything.</p>
   <p><b>Privacy.</b> Nothing you build is uploaded. Saved setups stay in this browser, and a member report you import is read on your device only.</p>
-  <p>Civil Air Patrol, the U.S. Air Force and other names, insignia and uniform designs shown here belong to their owners.</p>
+  <p>Civil Air Patrol, the U.S. Air Force and other names, insignia and uniform designs shown here belong to their owners. The colors and typefaces follow the public CAP Brand Guide. That does not make this an official CAP product.</p>
   <div class="aboutActions"><button type="button" id="aboutClose" class="ghost">Close</button></div>
 </dialog>
 
@@ -574,21 +575,21 @@
 <script src="military/military-data.js?v=6968c27aad"></script>
 <script src="data/calibration-defaults.js?v=a90622d352"></script>
 <script src="data/unit-options.js?v=1b4f04c159"></script>
-<script src="js/state.js?v=08bc7f0cce"></script>
+<script src="js/state.js?v=62012c3ea6"></script>
 <script src="js/calibration.js?v=c51e2a3100"></script>
 <script src="js/dom-assets.js?v=108a38e620"></script>
 <script src="js/catalog.js?v=864842614e"></script>
-<script src="js/setup.js?v=a3299b97f3"></script>
-<script src="js/render-core.js?v=2612ec7f1e"></script>
-<script src="js/galleries.js?v=aa28ed7c1c"></script>
+<script src="js/setup.js?v=4082fdb6dd"></script>
+<script src="js/render-core.js?v=0b13d429c7"></script>
+<script src="js/galleries.js?v=e322f46397"></script>
 <script src="js/placement.js?v=afe13839c7"></script>
-<script src="js/wiring.js?v=457e522617"></script>
-<script src="js/workspace-ui.js?v=2bab107cef"></script>
-<script src="js/member-report-import.js?v=c7a4590f32"></script>
-<script src="js/bootstrap.js?v=e488fc90d3"></script>
-<script src="js/patches.js?v=2b197c4f77"></script>
+<script src="js/wiring.js?v=c73079d8c7"></script>
+<script src="js/workspace-ui.js?v=ce0d28d304"></script>
+<script src="js/member-report-import.js?v=3373103425"></script>
+<script src="js/bootstrap.js?v=1af06934d3"></script>
+<script src="js/patches.js?v=c8dc94816c"></script>
 <script src="js/calibration-save.js?v=2aa8ca7086"></script>
-<script src="purchase-feature-core.js?v=b7d895846c"></script>
+<script src="purchase-feature-core.js?v=4b1e554afa"></script>
 <script src="purchase-feature.js?v=ef7c40a072"></script>
 <script src="calibration-submission.js?v=a4f383d1ff"></script>
 <!-- Loaded directly so patch submission cannot be blocked by stale chained feature loaders. -->

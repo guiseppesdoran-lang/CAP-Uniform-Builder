@@ -40,6 +40,8 @@ Open the page with `?dev=1` to get the CAL tab. `docs/CALIBRATION.md` covers how
 
 `index.html` holds markup only. Styles are in `styles/app.css`. The application is a set of classic scripts in `js/` that share one global scope and load in a fixed order. Calibration boxes are in `data/calibration-defaults.js`, the U.S. military award catalog is in `military/`, artwork is in `images/`, and pdf.js is vendored in `vendor/pdfjs/`. `docs/APP_STRUCTURE.md` has the details and the load order.
 
+The visual system is one token block at the top of `styles/app.css`: the colors and typefaces from the CAP Brand Guide (Symbol Blue, Silver Gray, Scarlet Red and Air Force Yellow; Rajdhani for headings, Ubuntu for body, self-hosted in `vendor/fonts/`). A dark theme follows the system setting. The app uses none of CAP's logos, seal or wordmark. Change colors and sizes in the tokens, not in individual rules. `docs/style-guide.html` documents the palette, type, components, contrast and the rules for changing them (open it through a local server so it can load the stylesheet).
+
 Other notes in `docs/`: `HISTORY.md` (where the code came from), `MISSING_BASE_ART.md` (rank images that do not exist yet) and `MCCHORD_ASSET_STANDARD.md`.
 
 ## License and credits

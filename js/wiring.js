@@ -308,7 +308,7 @@ if(ribbonRackColumnsSelect){
       ? e.target.value
       : '4-left';
     if(State.ribbonRackLayout === '4-center'){
-      alert('The 4 across — centered above welt/pocket option is more realistic for the preview, but it is not in accordance with CAPR 39-1.');
+      capubNotify('The 4 across, centered above welt/pocket option is more realistic for the preview, but it is not in accordance with CAPR 39-1.', 9000);
     }
     syncRibbonRackColumnsControl();
     renderRack();
@@ -522,7 +522,7 @@ logRibbonCoordsBtn.addEventListener('click', ()=>{
     });
   });
   console.log('RIBBON_COORD_REPORT', data);
-  alert('Ribbon coordinates logged to console.');
+  capubNotify('Ribbon coordinates logged to console.');
 });
 
 /* ===========================
@@ -807,7 +807,7 @@ function initCalibratorUI(){
       saveCalibrationToBrowser();
       btnSaveUniform.textContent = 'Saved!';
       setTimeout(()=>btnSaveUniform.textContent='Save Uniform Coords', 900);
-      alert(`Coordinates saved in this browser for ${State.uniform || 'the current uniform'}.`);
+      capubNotify(`Coordinates saved in this browser for ${State.uniform || 'the current uniform'}.`);
     });
   }
 
@@ -843,7 +843,7 @@ function openGalleryModal(kind){
   header.style.cssText = "display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px;";
   header.innerHTML = `
     <div style="font-size:12px;color:var(--muted);line-height:1.3;">
-      Tip: Drag the bottom-right corner to resize this window.
+      
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
       ${kind==='ribbons' ? '<button id="modalSelectAllBasic" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Select all (basic)</button><button id="modalSelectAllMax" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Select max devices</button>' : ''}
@@ -1183,15 +1183,21 @@ function openGalleryModal(kind){
 
   syncFromSidebar();
 
+  // openGalleryModal is called twice (a later patch re-wraps it); only the first call knows the opener.
+  if(!modalOverlay.classList.contains('open')) modalOpener = document.activeElement;
   modalOverlay.classList.add('open');
   modalOverlay.setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
+  modalClose.focus();
 }
 
+let modalOpener = null;
 function closeGalleryModal(){
   modalOverlay.classList.remove('open');
   modalOverlay.setAttribute('aria-hidden','true');
   document.body.style.overflow = '';
+  if(modalOpener && typeof modalOpener.focus === 'function' && document.contains(modalOpener)) modalOpener.focus();
+  modalOpener = null;
 
   buildRibbonGallery();
   buildBadgeGallery();
@@ -1203,7 +1209,17 @@ modalOverlay.addEventListener('click', (e)=>{
   if(e.target === modalOverlay) closeGalleryModal();
 });
 document.addEventListener('keydown', (e)=>{
-  if(e.key === 'Escape' && modalOverlay.classList.contains('open')) closeGalleryModal();
+  if(!modalOverlay.classList.contains('open')) return;
+  if(e.key === 'Escape'){ closeGalleryModal(); return; }
+  if(e.key !== 'Tab') return;
+  // Keep Tab inside the dialog while it is open.
+  const focusable = [...modalEl.querySelectorAll('button,select,input,a[href],summary,[tabindex]:not([tabindex="-1"])')]
+    .filter(el => !el.disabled && el.offsetParent !== null);
+  if(!focusable.length) return;
+  const first = focusable[0], last = focusable[focusable.length - 1];
+  if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  else if(!modalEl.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
 });
 
 modalMaxBtn.addEventListener('click', ()=>{
@@ -1669,13 +1685,65 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   const clearPatchesBtn = by('clearPatches');
   if(clearPatchesBtn) clearPatchesBtn.addEventListener('click', ()=>setTimeout(updateStatusPanel,0));
 
+  /*
+    Undo and redo. A snapshot is the same profile a saved setup uses, minus the calibration
+    and mask data, so going back is applyProfile() on an earlier snapshot. A render that
+    changes the snapshot records the one before it.
+  */
+  const HISTORY_LIMIT = 50;
+  const undoStack = [];
+  let redoStack = [];
+  let lastSnap = null;
+  let replaying = false;
+  function snapshotNow(){
+    const p = collectProfile();
+    p.calib = undefined;
+    p.garmentMasks = undefined;
+    return JSON.stringify(p);
+  }
+  function captureHistory(){
+    if(replaying) return;
+    const now = snapshotNow();
+    if(lastSnap === null){ lastSnap = now; return; }
+    if(now === lastSnap) return;
+    undoStack.push(lastSnap);
+    if(undoStack.length > HISTORY_LIMIT) undoStack.shift();
+    redoStack = [];
+    lastSnap = now;
+    document.dispatchEvent(new CustomEvent('capub:history'));
+  }
+  function replay(from, to){
+    if(!from.length) return;
+    const target = from.pop();
+    to.push(snapshotNow());
+    replaying = true;
+    try{ applyProfile(JSON.parse(target)); }
+    finally{ replaying = false; }
+    lastSnap = snapshotNow();
+    document.dispatchEvent(new CustomEvent('capub:history'));
+  }
+  window.CAPUB_HISTORY = {
+    undo(){ replay(undoStack, redoStack); },
+    redo(){ replay(redoStack, undoStack); },
+    canUndo(){ return undoStack.length > 0; },
+    canRedo(){ return redoStack.length > 0; }
+  };
+  (function wrapFullRenderForHistory(){
+    const previous = fullRender;
+    fullRender = function capubHistoryFullRender(){
+      const result = previous.apply(this, arguments);
+      setTimeout(captureHistory, 0);
+      return result;
+    };
+  })();
+
   function wireV2Controls(){
     syncTextControls();
     const save = by('capubV2SaveLocal'), load = by('capubV2LoadLocal'), exp = by('capubV2ExportJson'), impBtn = by('capubV2ImportBtn'), impFile = by('capubV2ImportFile');
     const missing = by('capubV2MissingBtn'), reset = by('capubV2Reset');
     const ln = by('capubV2LastName'), ct = by('capubV2CapTape'), sh = by('capubV2ShowText');
-    if(save) save.onclick = ()=>{ localStorage.setItem(CAPUB_V2.storageKey, JSON.stringify(collectProfile())); updateStatusPanel(); alert('Uniform setup saved in this browser.'); };
-    if(load) load.onclick = ()=>{ const raw = localStorage.getItem(CAPUB_V2.storageKey); if(!raw){ alert('No saved setup found in this browser.'); return; } applyProfile(JSON.parse(raw)); };
+    if(save) save.onclick = ()=>{ localStorage.setItem(CAPUB_V2.storageKey, JSON.stringify(collectProfile())); updateStatusPanel(); capubNotify('Uniform setup saved in this browser.'); };
+    if(load) load.onclick = ()=>{ const raw = localStorage.getItem(CAPUB_V2.storageKey); if(!raw){ capubNotify('No saved setup found in this browser.'); return; } applyProfile(JSON.parse(raw)); };
     if(exp) exp.onclick = ()=>downloadText('cap_uniform_builder_setup.json', JSON.stringify(collectProfile(), null, 2));
     if(impBtn && impFile) impBtn.onclick = ()=>impFile.click();
     if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; };

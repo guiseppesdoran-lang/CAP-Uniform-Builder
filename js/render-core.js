@@ -83,16 +83,9 @@ function applyJacket(){
 
   function showJacketError(text){
     const msg = document.createElement('div');
-    msg.className = 'layer jacket';
+    msg.className = 'layer jacket jacketError';
     msg.style.left = '12px';
     msg.style.top = '12px';
-    msg.style.padding = '10px 12px';
-    msg.style.borderRadius = '10px';
-    msg.style.background = 'rgba(220, 38, 38, .10)';
-    msg.style.border = '1px solid rgba(220, 38, 38, .35)';
-    msg.style.color = '#991b1b';
-    msg.style.fontSize = '12px';
-    msg.style.maxWidth = '420px';
     msg.textContent = text;
     uniformCanvas.appendChild(msg);
   }

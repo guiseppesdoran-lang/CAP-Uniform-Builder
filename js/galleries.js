@@ -433,7 +433,7 @@ function getRibbonAwardOptions(id){
     for(let count=1;count<=21;count++){
       const calculated=window.CAPUBMilitary?.calculateDevices?.({award,service,awardCount:count,allowUnverifiedRules:!!getMilitaryUIState().advancedMode}) || {devices:[]};
       const deviceText=calculated.devices?.length
-        ? ` — ${calculated.devices.map(deviceId=>deviceMeta[deviceId]?.label || deviceId).join(' + ')}`
+        ? ` - ${calculated.devices.map(deviceId=>deviceMeta[deviceId]?.label || deviceId).join(' + ')}`
         : '';
       options.push({label:count===1 ? '1st Award' : `${ordinalLabel(count)} Award${deviceText}`,value:`military_award_${count}`,devices:{}});
     }

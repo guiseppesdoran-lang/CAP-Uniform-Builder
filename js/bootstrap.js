@@ -74,7 +74,7 @@ function capubRepairCriticalButtons(){
       link.remove();
     }catch(err){
       console.error('PNG EXPORT ERROR:', err);
-      alert(`PNG export failed: ${err?.message || err}`);
+      capubNotify(`PNG export failed: ${err?.message || err}`, 8000);
     }finally{
       if(downloadButton) delete downloadButton.dataset.exportBusy;
     }
