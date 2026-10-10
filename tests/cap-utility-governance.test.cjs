@@ -19,7 +19,7 @@ test('utility uniforms expose both fabric badge and patch selection', () => {
   assert.match(source, /badgeCommand\.classList\.toggle\('hidden', !auth\.showBadges\)/);
   assert.match(source, /patchCommand\.classList\.toggle\('hidden', !auth\.showPatches\)/);
   for(const id of ['corporate_field','abu','ocp','flight_suit']){
-    assert.match(source, new RegExp(`${id}:\\{ showRibbons:(?:true|false), showBadges:true, showPatches:true \\}`));
+    assert.match(source, new RegExp(`${id}:\\{ showBadges:true, showPatches:true \\}`));
   }
 });
 

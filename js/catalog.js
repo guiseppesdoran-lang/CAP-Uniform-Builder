@@ -93,6 +93,13 @@ const UNIFORMS = {
   flight_suit:{male:'base/aviator_shirt_male.webp',     female:'base/aviator_shirt_female.webp',    ribbons:false, mini:false},
   polo:{male:'base/aviator_shirt_male.webp',            female:'base/aviator_shirt_female.webp',    ribbons:false, mini:false}
 };
+// Whether a uniform takes ribbons or miniature medals is a CAPR 39-1 rule (11.1.2-11.1.4), so
+// it comes from data/uniform-rules.js rather than from the flags above.
+Object.keys(UNIFORMS).forEach(id=>{
+  if(!CAPUBUniformRules.getUniformRule(id)) return;
+  UNIFORMS[id].ribbons = CAPUBUniformRules.allowsRibbons(id);
+  UNIFORMS[id].mini = CAPUBUniformRules.allowsMiniMedals(id);
+});
 
 /* Collar/lapel foreground masks. Each entry clips a duplicate of the active
    base uniform image, so rank-specific and gender-specific artwork is reused
@@ -520,18 +527,22 @@ function resetCurrentGarmentMask(){
 }
 
 const UI_AUTHZ = {
-  blues_a:{ showRibbons:true, showBadges:true,  showPatches:false },
-  blues_b:{ showRibbons:true, showBadges:true,  showPatches:false },
-  aviator:{ showRibbons:true, showBadges:true,  showPatches:false },
-  aviator_blazer:{ showRibbons:true, showBadges:true, showPatches:false },
-  corporate_field:{ showRibbons:true, showBadges:true, showPatches:true },
-  mess_dress:{ showRibbons:false, showBadges:true,  showPatches:false },
-  semi_formal:{ showRibbons:false, showBadges:true, showPatches:false },
-  abu:{ showRibbons:false, showBadges:true, showPatches:true },
-  ocp:{ showRibbons:false, showBadges:true, showPatches:true },
-  flight_suit:{ showRibbons:false, showBadges:true, showPatches:true },
-  polo:{ showRibbons:false, showBadges:false, showPatches:false }
+  blues_a:{ showBadges:true,  showPatches:false },
+  blues_b:{ showBadges:true,  showPatches:false },
+  aviator:{ showBadges:true,  showPatches:false },
+  aviator_blazer:{ showBadges:true, showPatches:false },
+  corporate_field:{ showBadges:true, showPatches:true },
+  mess_dress:{ showBadges:true,  showPatches:false },
+  semi_formal:{ showBadges:true, showPatches:false },
+  abu:{ showBadges:true, showPatches:true },
+  ocp:{ showBadges:true, showPatches:true },
+  flight_suit:{ showBadges:true, showPatches:true },
+  polo:{ showBadges:false, showPatches:false }
 };
+// Ribbon wear is a CAPR 39-1 rule; see data/uniform-rules.js.
+Object.keys(UI_AUTHZ).forEach(id=>{
+  UI_AUTHZ[id].showRibbons = CAPUBUniformRules.allowsRibbons(id);
+});
 
 /* ===========================
    SENIOR MEMBER NCO BASE IMAGES
