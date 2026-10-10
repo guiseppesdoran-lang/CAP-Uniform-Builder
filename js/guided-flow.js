@@ -169,7 +169,7 @@
       if(want && img.getAttribute('src')!==want) img.setAttribute('src',want);
     });
     list.querySelectorAll('.guidedWhy').forEach(box=>{
-      const reason=rules().lockedReason(box.dataset.why,State.membership);
+      const reason=rules().lockedReason(box.dataset.why,State.membership,{adultCadet:!!State.adultCadet});
       box.textContent=reason;
       box.hidden=!reason;
     });

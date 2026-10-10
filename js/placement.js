@@ -1487,6 +1487,7 @@ function refreshUI(){
   if(overlayToggle) overlayToggle.checked = !!State.showMeasurementOverlay;
   const miniStyleControl = by('miniMountStyle');
   if(miniStyleControl) miniStyleControl.value = State.miniMountStyle === 'holding' ? 'holding' : 'mounting';
+  if(typeof syncAdultCadetControl === 'function') syncAdultCadetControl();
   // Cadets only: the option to wear just the highest Cadet Program achievement ribbon.
   const highestOnly = by('cadetHighestOnly');
   if(highestOnly){

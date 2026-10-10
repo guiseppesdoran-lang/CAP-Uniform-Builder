@@ -1367,6 +1367,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       patchSelections: State.patchSelections,
       forceMini: State.forceMini,
       cadetHighestOnly: State.cadetHighestOnly,
+      adultCadet: State.adultCadet,
       miniMountStyle: State.miniMountStyle,
       ribbonRackLayout: State.ribbonRackLayout,
       ribbonRackArrangement: State.ribbonRackArrangement,
@@ -1443,6 +1444,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
 
     out.forceMini = !!p.forceMini;
     out.cadetHighestOnly = !!p.cadetHighestOnly;
+    out.adultCadet = out.membership === 'cadet' && !!p.adultCadet;
     out.miniMountStyle = p.miniMountStyle === 'holding' ? 'holding' : 'mounting';
     out.ribbonRackLayout = ['3','4-left','4-center'].includes(String(p.ribbonRackLayout))
       ? String(p.ribbonRackLayout)
@@ -1486,6 +1488,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.patchSelections = p.patchSelections;
     State.forceMini = p.forceMini;
     State.cadetHighestOnly = p.cadetHighestOnly;
+    State.adultCadet = p.adultCadet;
     State.miniMountStyle = p.miniMountStyle;
     State.ribbonRackLayout = p.ribbonRackLayout;
     State.ribbonRackArrangement = p.ribbonRackArrangement;
@@ -1588,9 +1591,13 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       if(bad.length) addNotice('err','Senior profile includes cadet-only badge(s): '+bad.map(pretty).join(', '),{id:'expandBadges',label:'Review badges'});
     }
     // Badge limits and award wear come from data/uniform-rules.js (CAPR 39-1).
-    const badgeCap = CAPUBUniformRules.getUniformRule(State.uniform)?.badgeCap;
-    if(badgeCap && countBadgesForLimit() > badgeCap){
-      addNotice('err',`This uniform allows ${badgeCap} counted badges and ${countBadgesForLimit()} are selected. Command insignia does not count against this limit.`,{id:'expandBadges',label:'Review badges'});
+    // Some uniforms count patches against the same limit as badges (ABU, Corporate Field).
+    const patchTotal = (State.patches || []).length
+      + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0);
+    const limit = CAPUBUniformRules.badgeLimit(State.uniform, {badges:countBadgesForLimit(), patches:patchTotal});
+    if(limit.over){
+      const what = limit.shared ? 'badges and patches together' : 'counted badges';
+      addNotice('err',`This uniform allows ${limit.cap} ${what} and ${limit.counted} are selected. Command insignia does not count against this limit.`,{id:'expandBadges',label:'Review badges'});
     }
     // Corporate Service Dress and Corporate Semi-Formal authorize only the chaplain badge (39-1
     // 4.2.3.1.1.3). Nothing is hidden or moved; the member is told which badges do not belong.

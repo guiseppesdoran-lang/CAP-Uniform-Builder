@@ -54,6 +54,7 @@ const State = {
   ribbonDragMode:false,
   forceMini:false,
   cadetHighestOnly:false,
+  adultCadet:false,
   miniMountStyle:'mounting',
   ribbonRackLayout:'4-left',
   ribbonRackArrangement:'lapel',

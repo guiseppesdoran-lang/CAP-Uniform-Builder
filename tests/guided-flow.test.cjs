@@ -46,7 +46,8 @@ test('uniforms are grouped by the regulation occasion groups and show why one is
 
 test('locked reasons name the paragraph and are empty when the member may wear it',()=>{
   assert.equal(rules.lockedReason('mess_dress','cadet'),'For senior members (CAPR 39-1, 4.1.1)');
-  assert.equal(rules.lockedReason('corporate_field','cadet'),'For senior members (CAPR 39-1, 5.2.1)');
+  assert.equal(rules.lockedReason('corporate_field','cadet'),'For cadets 18 and older who do not meet the USAF weight standard (CAPR 39-1, 1.2.5.2)');
+  assert.equal(rules.lockedReason('polo','cadet'),'Not authorized with grade insignia, so not for cadets (CAPR 39-1, 1.2.5.2)');
   assert.equal(rules.lockedReason('blues_a','cadet'),'');
   assert.equal(rules.lockedReason('mess_dress','senior'),'');
   assert.equal(rules.lockedReason('mess_dress',''),'');
