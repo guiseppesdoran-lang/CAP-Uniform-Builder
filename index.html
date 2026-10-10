@@ -11,7 +11,7 @@
 <meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Everything stays in your browser.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
-<link rel="stylesheet" href="styles/app.css?v=0b6e82e265">
+<link rel="stylesheet" href="styles/app.css?v=742f196fe4">
 </head>
 <body>
 
@@ -449,10 +449,10 @@
 </div>
 
 <div class="stepGroup" id="stepGroup-export">
-<h3 class="stepGroupTitle">4 · Validate &amp; export</h3>
+<h3 class="stepGroupTitle">4 · Check &amp; finish</h3>
 
       <section id="capubV2StatusPanel" class="panelBlock">
-        <label class="fieldLabel">Validation / Build Status</label>
+        <label class="fieldLabel">Check your uniform</label>
         <div class="statusGrid">
           <div class="statusCard"><strong>Ribbons</strong><span id="capubV2RibbonCount">0</span></div>
           <div class="statusCard"><strong>Badges</strong><span id="capubV2BadgeCount">0</span></div>
@@ -462,13 +462,23 @@
         <ul id="capubV2Notices" class="noticeList"></ul>
       </section>
 
-      <section class="panelBlock">
-        <label class="fieldLabel">Output</label>
-        <div class="row two mt-6">
-          <div class="col"></div>
-          <div class="col"><button id="downloadImage" type="button">Download PNG</button></div>
+      <section id="finishPanel" class="panelBlock">
+        <label class="fieldLabel">Finish</label>
+        <div class="finishAction">
+          <button id="downloadImage" type="button">Download picture (PNG)</button>
+          <div class="hintText">A high-resolution image of the uniform as shown.</div>
         </div>
-        <div class="hintText">Download will export a high-res PNG of the uniform preview.</div>
+        <div class="finishAction" id="purchaseListSlot">
+          <div class="hintText">Where to buy each item, with an estimated cost.</div>
+        </div>
+        <div class="finishAction">
+          <div class="row two">
+            <div class="col"><button id="capubV2ExportJson" class="ghost" type="button">Save to a file</button></div>
+            <div class="col"><button id="capubV2ImportBtn" class="ghost" type="button">Open a saved file</button></div>
+          </div>
+          <input id="capubV2ImportFile" type="file" accept="application/json,.json" hidden/>
+          <div class="hintText">Keep a copy or move your setup to another device. It is also saved in this browser as you work.</div>
+        </div>
       </section>
 </div>
 
@@ -481,11 +491,6 @@
           <div class="col"><button id="capubV2SaveLocal" class="ghost" type="button">Save to Browser</button></div>
           <div class="col"><button id="capubV2LoadLocal" class="ghost" type="button">Load Saved</button></div>
         </div>
-        <div class="row two mt-6">
-          <div class="col"><button id="capubV2ExportJson" class="ghost" type="button">Export Setup JSON</button></div>
-          <div class="col"><button id="capubV2ImportBtn" class="ghost" type="button">Import Setup JSON</button></div>
-        </div>
-        <input id="capubV2ImportFile" type="file" accept="application/json,.json" hidden/>
         <div class="row two mt-6">
           <div class="col"><button id="capubV2MissingBtn" class="ghost" type="button">Download Missing Asset List</button></div>
           <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset Builder</button></div>
@@ -575,6 +580,7 @@
 <script src="military/military-data.js?v=6968c27aad"></script>
 <script src="data/calibration-defaults.js?v=a90622d352"></script>
 <script src="data/unit-options.js?v=1b4f04c159"></script>
+<script src="export-names.js?v=88358fb111"></script>
 <script src="js/state.js?v=62012c3ea6"></script>
 <script src="js/calibration.js?v=c51e2a3100"></script>
 <script src="js/dom-assets.js?v=108a38e620"></script>
@@ -583,13 +589,13 @@
 <script src="js/render-core.js?v=0b13d429c7"></script>
 <script src="js/galleries.js?v=e322f46397"></script>
 <script src="js/placement.js?v=afe13839c7"></script>
-<script src="js/wiring.js?v=c73079d8c7"></script>
-<script src="js/workspace-ui.js?v=ce0d28d304"></script>
+<script src="js/wiring.js?v=5db05cd9f6"></script>
+<script src="js/workspace-ui.js?v=557249b7fb"></script>
 <script src="js/member-report-import.js?v=3373103425"></script>
-<script src="js/bootstrap.js?v=1af06934d3"></script>
+<script src="js/bootstrap.js?v=ac1508ad45"></script>
 <script src="js/patches.js?v=c8dc94816c"></script>
 <script src="js/calibration-save.js?v=2aa8ca7086"></script>
-<script src="purchase-feature-core.js?v=4b1e554afa"></script>
+<script src="purchase-feature-core.js?v=8a7e1cef7a"></script>
 <script src="purchase-feature.js?v=ef7c40a072"></script>
 <script src="calibration-submission.js?v=a4f383d1ff"></script>
 <!-- Loaded directly so patch submission cannot be blocked by stale chained feature loaders. -->

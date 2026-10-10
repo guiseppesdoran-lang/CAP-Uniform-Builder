@@ -1744,7 +1744,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const ln = by('capubV2LastName'), ct = by('capubV2CapTape'), sh = by('capubV2ShowText');
     if(save) save.onclick = ()=>{ localStorage.setItem(CAPUB_V2.storageKey, JSON.stringify(collectProfile())); updateStatusPanel(); capubNotify('Uniform setup saved in this browser.'); };
     if(load) load.onclick = ()=>{ const raw = localStorage.getItem(CAPUB_V2.storageKey); if(!raw){ capubNotify('No saved setup found in this browser.'); return; } applyProfile(JSON.parse(raw)); };
-    if(exp) exp.onclick = ()=>downloadText('cap_uniform_builder_setup.json', JSON.stringify(collectProfile(), null, 2));
+    if(exp) exp.onclick = ()=>downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'json'), JSON.stringify(collectProfile(), null, 2));
     if(impBtn && impFile) impBtn.onclick = ()=>impFile.click();
     if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; };
     if(missing) missing.onclick = downloadMissingAssetList;

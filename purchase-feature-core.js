@@ -328,9 +328,12 @@
     const download=document.getElementById('downloadImage');
     if(!download) return;
     const btn=document.createElement('button');
-    btn.id='purchaseListButton'; btn.type='button'; btn.textContent='Purchase List & Cost';
+    btn.id='purchaseListButton'; btn.type='button'; btn.className='ghost'; btn.textContent='Shopping list & cost';
     btn.title='Build a vendor-linked shopping list and estimated uniform cost from the current configuration.';
-    download.parentElement?.appendChild(btn);
+    // The Finish section reserves a slot for it; older markup falls back to beside Download.
+    const slot=document.getElementById('purchaseListSlot');
+    if(slot) slot.insertBefore(btn,slot.firstChild);
+    else download.parentElement?.appendChild(btn);
     btn.addEventListener('click',openModal);
   }
 
@@ -339,7 +342,7 @@
     const overlay=document.createElement('div');
     overlay.id='capubPurchaseOverlay'; overlay.className='capub-purchase-overlay';
     overlay.innerHTML=`<div class="capub-purchase-modal" role="dialog" aria-modal="true" aria-labelledby="capubPurchaseTitle">
-      <div class="capub-purchase-head"><div><h2 id="capubPurchaseTitle">Purchase List & Cost</h2><div class="capub-purchase-sub" id="capubPurchaseSubtitle"></div></div><button class="capub-purchase-close" id="capubPurchaseClose" aria-label="Close">×</button></div>
+      <div class="capub-purchase-head"><div><h2 id="capubPurchaseTitle">Shopping list & cost</h2><div class="capub-purchase-sub" id="capubPurchaseSubtitle"></div></div><button class="capub-purchase-close" id="capubPurchaseClose" aria-label="Close">×</button></div>
       <div class="capub-purchase-body" id="capubPurchaseBody"></div>
     </div>`;
     document.body.appendChild(overlay);
