@@ -1193,3 +1193,16 @@ small.hintText{display:block}
   .capub-purchase-table td[data-label="Include"] input,.capub-purchase-table td[data-label="Own it"] input{width:24px;height:24px;margin:0}
 }
 .capub-purchase-rule>summary{cursor:pointer}
+
+/* ---- Pickers on a phone ---- */
+.militaryRibbonCatalogFilters{
+  display:grid;
+  grid-template-columns:minmax(180px,1fr) minmax(130px,.55fr) minmax(150px,.65fr);
+  gap:var(--s2);
+  margin:var(--s2) 0;
+}
+@media (max-width:600px){
+  .militaryRibbonCatalogFilters{grid-template-columns:minmax(0,1fr)}
+}
+/* A folded section is a control, so its heading is a 44px target. */
+.modal details>summary{min-height:44px;box-sizing:border-box;padding-top:var(--s3);padding-bottom:var(--s3)}

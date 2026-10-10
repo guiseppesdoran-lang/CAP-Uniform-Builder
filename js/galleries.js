@@ -1102,7 +1102,6 @@ function buildRibbonGallery(options={}){
     militaryMenu.appendChild(intro);
     const filters=document.createElement('div');
     filters.className='militaryRibbonCatalogFilters';
-    filters.style.cssText='display:grid;grid-template-columns:minmax(180px,1fr) minmax(130px,.55fr) minmax(150px,.65fr);gap:7px;margin:8px 0;';
     filters.innerHTML=`
       <input class="militaryRibbonCatalogSearch" type="search" placeholder="Search military ribbons…" value="${militaryEscapeHtml(ui.gallerySearchValue)}" aria-label="Search military ribbons">
       <select class="militaryRibbonCatalogService" aria-label="Filter military ribbons by service">
