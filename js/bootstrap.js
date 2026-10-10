@@ -67,7 +67,7 @@ function capubRepairCriticalButtons(){
       const canvas = await composeUniformPngCanvas(original, 2);
 
       const link = document.createElement('a');
-      link.download = `CAP_Uniform_${State.uniform || 'preview'}_${Date.now()}.png`;
+      link.download = CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'png');
       link.href = canvas.toDataURL('image/png');
       document.body.appendChild(link);
       link.click();

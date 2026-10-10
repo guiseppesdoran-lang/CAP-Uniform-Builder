@@ -27,7 +27,7 @@
       <button type="button" class="capubStep" data-step="profile"><strong>1. Profile</strong><span>Member + rank</span></button>
       <button type="button" class="capubStep" data-step="uniform"><strong>2. Uniform</strong><span>Style + cut</span></button>
       <button type="button" class="capubStep" data-step="items"><strong>3. Items</strong><span>Ribbons &amp; badges</span></button>
-      <button type="button" class="capubStep" data-step="export"><strong>4. Export</strong><span>Validate + PNG</span></button>`;
+      <button type="button" class="capubStep" data-step="export"><strong>4. Finish</strong><span>Check + save</span></button>`;
     scroll.prepend(box);
     box.addEventListener('click',e=>{
       const step=e.target.closest('.capubStep'); if(step) goToStep(step.dataset.step);
@@ -62,6 +62,8 @@
     const focusable=target.querySelector('select:not(:disabled),input:not(:disabled):not([type=hidden])');
     if(focusable) setTimeout(()=>focusable.focus({preventScroll:true}),250);
   }
+  V3.getStepStatuses=getStepStatuses;
+  V3.stepOrder=STEP_ORDER;
   function updateProgress(){
     const steps=[...document.querySelectorAll('.capubStep')]; if(!steps.length || typeof State==='undefined') return;
     const {done,current}=getStepStatuses();
@@ -149,6 +151,17 @@
       // a narrow workspace. Pull the box in by the amount it shrank (or grow it).
       area.style.marginRight=((V3.zoom-1)*area.offsetWidth)+'px';
       area.style.marginBottom=((V3.zoom-1)*area.offsetHeight)+'px';
+      // On a phone, centre the scaled uniform in the room beside it instead of hugging the left.
+      const wrap=safeBy('previewWrapper');
+      const mobile=window.matchMedia('(max-width:768px)').matches;
+      if(wrap && mobile){
+        const style=getComputedStyle(wrap);
+        const inner=wrap.clientWidth - parseFloat(style.paddingLeft||0) - parseFloat(style.paddingRight||0);
+        const free=inner - area.offsetWidth*V3.zoom;
+        area.style.marginLeft=free>0 ? Math.round(free/2)+'px' : '';
+      }else{
+        area.style.marginLeft='';
+      }
     }
     const ro=safeBy('zoomReadout'); if(ro) ro.textContent=Math.round(V3.zoom*100)+'%';
   }
@@ -162,7 +175,19 @@
     const available=Math.max(240,wrap.clientWidth-reserve);
     const previewWidth=area.offsetWidth || 450;
     // The wide field-uniform stage needs a lower floor to fit a phone without sideways scrolling.
-    const z=Math.min(1, Math.max(.3, available/previewWidth));
+    let z=Math.min(1, Math.max(.3, available/previewWidth));
+    // On a phone with the controls sheet up, also fit the height to what is left above it.
+    const shell=safeBy('layoutShell'), sheet=safeBy('controls');
+    if(mobile && shell && sheet && shell.classList.contains('sidebar-open')){
+      const toolbar=safeBy('previewToolbar');
+      const top=(toolbar ? toolbar.getBoundingClientRect().bottom : 0) + 12;
+      // The sheet's resting position, not where its slide animation happens to be.
+      const footer=safeBy('pageFooter');
+      const sheetTop=window.innerHeight - (footer ? footer.offsetHeight : 0) - sheet.offsetHeight;
+      const room=sheetTop - top;
+      const previewHeight=area.offsetHeight || 600;
+      if(room>120) z=Math.min(z, Math.max(.3, room/previewHeight));
+    }
     V3.fitWidth=previewWidth;
     setZoom(z);
   }
@@ -176,6 +201,14 @@
     if(status) status.textContent = setupNeeded ? 'Setup needed' : (warnings ? `${warnings} warning${warnings===1?'':'s'}` : 'Good');
     if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? State.uniform.replace(/_/g,' ').toUpperCase() : '—';
     if(items) items.textContent = ((State.ribbons||[]).length + (State.badges||[]).length + (State.patches||[]).length).toString();
+    // The preview is a picture, so say what it shows for anyone who cannot see it.
+    const area=safeBy('previewArea');
+    if(area){
+      area.setAttribute('role','group');
+      area.setAttribute('aria-label', setupNeeded
+        ? 'Uniform preview. Choose a membership type, rank and cut to begin.'
+        : `Uniform preview: ${State.rank || ''} ${State.uniform ? State.uniform.replace(/_/g,' ') : ''} with ${(State.ribbons||[]).length} ribbons, ${(State.badges||[]).length} badges and ${(State.patches||[]).length} patches. Select an item to remove it.`.replace(/\s+/g,' '));
+    }
     const auth = (typeof UI_AUTHZ !== 'undefined' && UI_AUTHZ[State.uniform]) || {showBadges:true,showPatches:true};
     safeBy('cmdBadges')?.classList.toggle('hidden', !auth.showBadges);
     safeBy('cmdPatches')?.classList.toggle('hidden', !auth.showPatches);
@@ -183,7 +216,7 @@
   function ensureCommandBar(){
     if(safeBy('capubCommandBar')) return;
     const bar=document.createElement('div'); bar.id='capubCommandBar'; bar.className='capubCommandBar';
-    bar.innerHTML=`<button type="button" id="cmdRibbons">Ribbons</button><button type="button" id="cmdBadges">Badges</button><button type="button" id="cmdPatches">Patches</button><button type="button" class="ghost" id="cmdValidate">Validate</button><button type="button" id="cmdDownload">Download PNG</button>`;
+    bar.innerHTML=`<button type="button" id="cmdRibbons">Ribbons</button><button type="button" id="cmdBadges">Badges</button><button type="button" id="cmdPatches">Patches</button><button type="button" class="ghost" id="cmdValidate">Check</button><button type="button" id="cmdDownload">Download PNG</button>`;
     document.body.appendChild(bar);
     safeBy('cmdRibbons').onclick=()=>safeBy('expandRibbons')?.click();
     safeBy('cmdBadges').onclick=()=>safeBy('expandBadges')?.click();
@@ -248,7 +281,257 @@
   }
   ['change','click','input'].forEach(evt=>document.addEventListener(evt,scheduleRefresh,true));
   window.addEventListener('resize',()=>{ if(V3.zoom<=1) fitZoom(); });
+  // Opening or closing the controls sheet changes the room the uniform has.
+  document.addEventListener('capub:sidebar',()=>{ if(!V3.userZoomed) setTimeout(fitZoom,230); });
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
+})();
+
+// A short confirmation when ribbons, badges or patches are added or removed, so a change made
+// in a picker that covers the preview is still acknowledged. It compares item counts, so it only
+// speaks when something really was added or removed (including by undo and redo).
+(function capubItemToasts(){
+  const kinds=[
+    ['ribbon',()=>new Set((State.ribbons||[]).map(r=>r.id)).size],
+    ['badge',()=>(State.badges||[]).length],
+    ['patch',()=>(State.patches||[]).length]
+  ];
+  let last=null;
+  const counts=()=>kinds.map(([,count])=>{ try{ return count(); }catch(_){ return 0; } });
+  function words(delta,name){
+    return `${Math.abs(delta)} ${name}${Math.abs(delta)===1?'':'s'}`;
+  }
+  function onChange(){
+    const now=counts();
+    if(last===null){ last=now; return; }
+    const parts=[];
+    kinds.forEach(([name],i)=>{
+      const delta=now[i]-last[i];
+      if(delta>0) parts.push(`Added ${words(delta,name)}`);
+      else if(delta<0) parts.push(`Removed ${words(delta,name)}`);
+    });
+    last=now;
+    if(parts.length && typeof window.capubToastShow==='function') window.capubToastShow(parts.join(', '));
+  }
+  // Pickers re-render without a full render, so the history event alone misses them. Any change
+  // or click schedules a check; onChange compares counts, so repeated checks say nothing twice.
+  let timer=null;
+  function check(){ clearTimeout(timer); timer=setTimeout(onChange,200); }
+  document.addEventListener('capub:history',check);
+  ['change','click'].forEach(evt=>document.addEventListener(evt,check,true));
+  // Take the starting counts once the page has drawn, so the first change reports a difference.
+  setTimeout(()=>{ if(last===null && typeof State!=='undefined') last=counts(); },400);
+})();
+
+// Click an item on the uniform to take it off. A small prompt names the item and asks before it
+// goes, because a stray click on a crowded rack should not delete anything. The selection is
+// unchecked, exactly as unticking it in the picker would, so Undo brings it back.
+(function capubRemoveFromPreview(){
+  const safeBy=id=>document.getElementById(id);
+  const canvas=safeBy('uniformCanvas');
+  if(!canvas) return;
+  let pop=null;
+
+  function describe(layer){
+    const key=String(layer.dataset.calibKey || '');
+    const m=/^(ribbon|mini|badge|patch|patchRegV2):([^:]+)/.exec(key);
+    if(!m) return null;
+    const [,kind,id]=m;
+    if(kind==='ribbon' || kind==='mini'){
+      if(typeof getRibbonDisplayName!=='function') return null;
+      return {type:'ribbon',id,name:getRibbonDisplayName(id)};
+    }
+    if(kind==='badge'){
+      return {type:'badge',id,name:typeof getBadgeDisplayName==='function' ? getBadgeDisplayName(id) : id};
+    }
+    return {type:'patch',id,name:(typeof PATCH_META!=='undefined' && PATCH_META[id] && PATCH_META[id].label) || id.replace(/_/g,' ')};
+  }
+  function close(){
+    if(pop){ pop.remove(); pop=null; }
+    document.removeEventListener('keydown',onKey,true);
+    document.removeEventListener('mousedown',onOutside,true);
+  }
+  function onKey(e){ if(e.key==='Escape') close(); }
+  function onOutside(e){ if(pop && !pop.contains(e.target)) close(); }
+
+  function remove(item){
+    try{
+      if(item.type==='ribbon'){
+        const sel=State.ribbonSelections && State.ribbonSelections[item.id];
+        if(sel) sel.checked=false;
+        rebuildRibbonsFromGallery();
+      }else if(item.type==='badge'){
+        const sel=State.badgeSelections && State.badgeSelections[item.id];
+        if(sel) sel.checked=false;
+        rebuildBadgesFromGallery();
+      }else{
+        const sel=State.patchSelections && State.patchSelections[item.id];
+        if(sel) sel.checked=false;
+        rebuildPatchesFromGallery();
+      }
+      if(typeof fullRender==='function') fullRender();
+    }catch(err){
+      console.error('Remove from preview failed:',err);
+    }
+  }
+
+  function show(item,x,y){
+    close();
+    pop=document.createElement('div');
+    pop.className='itemPopover'; pop.setAttribute('role','dialog'); pop.setAttribute('aria-label','Remove item');
+    const label=document.createElement('div'); label.className='itemPopoverName'; label.textContent=item.name;
+    const row=document.createElement('div'); row.className='itemPopoverActions';
+    const del=document.createElement('button'); del.type='button'; del.textContent='Remove';
+    const keep=document.createElement('button'); keep.type='button'; keep.className='ghost'; keep.textContent='Keep';
+    del.addEventListener('click',()=>{ remove(item); close(); });
+    keep.addEventListener('click',close);
+    row.append(del,keep);
+    pop.append(label,row);
+    document.body.appendChild(pop);
+    // Keep it on screen.
+    const w=pop.offsetWidth, h=pop.offsetHeight;
+    pop.style.left=Math.max(8,Math.min(x+8,window.innerWidth-w-8))+'px';
+    pop.style.top=Math.max(8,Math.min(y+8,window.innerHeight-h-8))+'px';
+    document.addEventListener('keydown',onKey,true);
+    // Next tick, so the click that opened it is not treated as an outside click.
+    setTimeout(()=>document.addEventListener('mousedown',onOutside,true),0);
+    del.focus();
+  }
+
+  canvas.addEventListener('click',e=>{
+    // The calibrator uses clicks on items to select them; leave those alone.
+    if(typeof State!=='undefined' && State.calib && State.calib.enabled) return;
+    const layer=e.target.closest && e.target.closest('.layer');
+    if(!layer || !canvas.contains(layer)) return;
+    const item=describe(layer);
+    if(!item) return;
+    show(item,e.clientX,e.clientY);
+  });
+})();
+
+// Autosave and resume. The setup is written to this browser a moment after every change, so
+// a refresh or a closed tab no longer loses it. On the next visit the member is asked whether
+// to resume; nothing is loaded silently. It is separate from "Save to Browser", which stays a
+// deliberate named save. Everything stays in localStorage on this device.
+(function capubAutosave(){
+  const KEY='cap_uniform_builder_autosave_v1';
+  const SAVE_DELAY_MS=600;
+  const safeBy=id=>document.getElementById(id);
+  let saveTimer=null;
+
+  function read(){
+    try{
+      const raw=localStorage.getItem(KEY);
+      if(!raw) return null;
+      const parsed=JSON.parse(raw);
+      if(!parsed || typeof parsed!=='object' || !parsed.profile || typeof parsed.profile!=='object') return null;
+      return parsed;
+    }catch(_){ return null; }
+  }
+  function write(profile){
+    try{ localStorage.setItem(KEY,JSON.stringify({savedAt:Date.now(),profile})); }catch(_){}
+  }
+  function clear(){
+    try{ localStorage.removeItem(KEY); }catch(_){}
+  }
+  // A setup with no membership type yet is the empty page, not something worth resuming.
+  function worthSaving(profile){
+    return !!(profile && profile.membership);
+  }
+  function currentProfile(){
+    const v2=window.CAPUB_V2;
+    if(!v2 || typeof v2.collectProfile!=='function') return null;
+    const p=v2.collectProfile();
+    // Calibration and garment masks have their own storage; the setup is what the member built.
+    delete p.calib; delete p.garmentMasks;
+    return p;
+  }
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(()=>{
+      const p=currentProfile();
+      // A member who keeps building while the banner is up has started a new setup. The banner
+      // still holds the earlier one in memory, so Resume works until the page is reloaded.
+      if(worthSaving(p)) write(p);
+    },SAVE_DELAY_MS);
+  }
+
+  function describe(profile){
+    const bits=[];
+    if(profile.rank) bits.push(profile.rank);
+    if(profile.uniform) bits.push(String(profile.uniform).replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()));
+    const items=(Array.isArray(profile.ribbons)?profile.ribbons.length:0)
+      +(Array.isArray(profile.badges)?profile.badges.length:0)
+      +(Array.isArray(profile.patches)?profile.patches.length:0);
+    bits.push(items+(items===1?' item':' items'));
+    return bits.join(' · ');
+  }
+  function when(ts){
+    const mins=Math.max(0,Math.round((Date.now()-Number(ts||0))/60000));
+    if(!ts || mins<1) return 'just now';
+    if(mins<60) return mins+(mins===1?' minute ago':' minutes ago');
+    const hours=Math.round(mins/60);
+    if(hours<48) return hours+(hours===1?' hour ago':' hours ago');
+    return Math.round(hours/24)+' days ago';
+  }
+
+  function removeBanner(){
+    const b=safeBy('capubResume');
+    if(b) b.remove();
+  }
+  function showBanner(saved){
+    removeBanner();
+    const wrap=safeBy('previewWrapper');
+    if(!wrap) return;
+    const box=document.createElement('div');
+    box.id='capubResume'; box.className='resumeBanner';
+    box.setAttribute('role','region'); box.setAttribute('aria-label','Resume your last uniform');
+    const text=document.createElement('div'); text.className='resumeText';
+    const title=document.createElement('b'); title.textContent='Resume your last uniform?';
+    const detail=document.createElement('span');
+    detail.textContent=describe(saved.profile)+' · saved '+when(saved.savedAt);
+    text.append(title,detail);
+    const actions=document.createElement('div'); actions.className='resumeActions';
+    const resume=document.createElement('button'); resume.type='button'; resume.id='capubResumeYes'; resume.textContent='Resume';
+    const fresh=document.createElement('button'); fresh.type='button'; fresh.id='capubResumeNo'; fresh.className='ghost'; fresh.textContent='Start over';
+    actions.append(resume,fresh);
+    box.append(text,actions);
+    const toolbar=safeBy('previewToolbar');
+    if(toolbar && toolbar.parentNode===wrap) wrap.insertBefore(box,toolbar.nextSibling);
+    else wrap.insertBefore(box,wrap.firstChild);
+
+    resume.addEventListener('click',()=>{
+      const v2=window.CAPUB_V2;
+      try{
+        if(v2 && typeof v2.applyProfile==='function') v2.applyProfile(saved.profile);
+      }catch(_){
+        if(typeof window.capubToastShow==='function') window.capubToastShow('That saved setup could not be loaded.');
+        clear(); removeBanner(); return;
+      }
+      removeBanner();
+      if(typeof window.capubToastShow==='function') window.capubToastShow('Resumed your last uniform.');
+    });
+    fresh.addEventListener('click',()=>{
+      clear(); removeBanner();
+    });
+  }
+
+  function init(){
+    const saved=read();
+    if(saved && worthSaving(saved.profile)){
+      showBanner(saved);
+    }
+    // History events fire only when the setup actually changed (and after undo or redo).
+    document.addEventListener('capub:history',scheduleSave);
+    // Also save when the tab is hidden or closed, in case the timer has not fired yet.
+    document.addEventListener('visibilitychange',()=>{
+      if(document.visibilityState!=='hidden') return;
+      clearTimeout(saveTimer);
+      const p=currentProfile();
+      if(worthSaving(p)) write(p);
+    });
+  }
+  // The toolbar is added by the polish module a moment after load; wait for it.
+  setTimeout(init,350);
 })();
 
 // About dialog: the unofficial-site and privacy notice, opened from the footer.

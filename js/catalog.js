@@ -93,6 +93,13 @@ const UNIFORMS = {
   flight_suit:{male:'base/aviator_shirt_male.webp',     female:'base/aviator_shirt_female.webp',    ribbons:false, mini:false},
   polo:{male:'base/aviator_shirt_male.webp',            female:'base/aviator_shirt_female.webp',    ribbons:false, mini:false}
 };
+// Whether a uniform takes ribbons or miniature medals is a CAPR 39-1 rule (11.1.2-11.1.4), so
+// it comes from data/uniform-rules.js rather than from the flags above.
+Object.keys(UNIFORMS).forEach(id=>{
+  if(!CAPUBUniformRules.getUniformRule(id)) return;
+  UNIFORMS[id].ribbons = CAPUBUniformRules.allowsRibbons(id);
+  UNIFORMS[id].mini = CAPUBUniformRules.allowsMiniMedals(id);
+});
 
 /* Collar/lapel foreground masks. Each entry clips a duplicate of the active
    base uniform image, so rank-specific and gender-specific artwork is reused
@@ -520,18 +527,22 @@ function resetCurrentGarmentMask(){
 }
 
 const UI_AUTHZ = {
-  blues_a:{ showRibbons:true, showBadges:true,  showPatches:false },
-  blues_b:{ showRibbons:true, showBadges:true,  showPatches:false },
-  aviator:{ showRibbons:true, showBadges:true,  showPatches:false },
-  aviator_blazer:{ showRibbons:true, showBadges:true, showPatches:false },
-  corporate_field:{ showRibbons:true, showBadges:true, showPatches:true },
-  mess_dress:{ showRibbons:false, showBadges:true,  showPatches:false },
-  semi_formal:{ showRibbons:false, showBadges:true, showPatches:false },
-  abu:{ showRibbons:false, showBadges:true, showPatches:true },
-  ocp:{ showRibbons:false, showBadges:true, showPatches:true },
-  flight_suit:{ showRibbons:false, showBadges:true, showPatches:true },
-  polo:{ showRibbons:false, showBadges:false, showPatches:false }
+  blues_a:{ showBadges:true,  showPatches:false },
+  blues_b:{ showBadges:true,  showPatches:false },
+  aviator:{ showBadges:true,  showPatches:false },
+  aviator_blazer:{ showBadges:true, showPatches:false },
+  corporate_field:{ showBadges:true, showPatches:true },
+  mess_dress:{ showBadges:true,  showPatches:false },
+  semi_formal:{ showBadges:true, showPatches:false },
+  abu:{ showBadges:true, showPatches:true },
+  ocp:{ showBadges:true, showPatches:true },
+  flight_suit:{ showBadges:true, showPatches:true },
+  polo:{ showBadges:false, showPatches:false }
 };
+// Ribbon wear is a CAPR 39-1 rule; see data/uniform-rules.js.
+Object.keys(UI_AUTHZ).forEach(id=>{
+  UI_AUTHZ[id].showRibbons = CAPUBUniformRules.allowsRibbons(id);
+});
 
 /* ===========================
    SENIOR MEMBER NCO BASE IMAGES
@@ -917,6 +928,44 @@ const RIBBON_ID_ALIASES = {
   yeager_award: 'cap_bridgadier_general_charles_yaeger_ribbon'
 };
 const RIBBON_DISPLAY_NAMES = {
+  // Names as CAPR 39-3 Attachment 2 prints them. Ids keep their old spellings; only the label changes.
+  silver_medal_of_valor: 'Silver Medal of Valor',
+  bronze_medal_of_valor: 'Bronze Medal of Valor',
+  commander_commendation_award: "Commander's Commendation Award",
+  cap_achievment_award: 'CAP Achievement Award',
+  national_commander_unit_citation_award: "National Commander's Unit Citation Award",
+  cap_gill_robb_wilson_ribbon: 'Gill Robb Wilson Award',
+  cap_paul_e_garber_ribbon: 'Paul E. Garber Award',
+  cap_grover_loening_aerospace_ribbon: 'Grover Loening Aerospace Award',
+  cap_leadership_ribbon: 'Leadership Award',
+  cap_membership_ribbon: 'Membership Award',
+  cap_a_scott_crossfield_ribbon: 'A. Scott Crossfield Award',
+  cap_bridgadier_general_charles_yaeger_ribbon: 'Brig Gen Charles E. \u201cChuck\u201d Yeager Award',
+  spaatz_award: 'Gen Carl A. Spaatz Award',
+  eaker_award: 'Ira C. Eaker Award',
+  earhart_award: 'Amelia Earhart Award',
+  mitchell_award: 'Gen Billy Mitchell Award',
+  armstrong_achievement: 'Neil Armstrong Achievement',
+  goddard_achievement: 'Dr. Robert H. Goddard Achievement',
+  doolittle_achievement: 'Gen Jimmy F. Doolittle Achievement',
+  lindbergh_achievement: 'Charles A. Lindbergh Achievement',
+  rickenbacker_achievement: 'Capt Eddie Rickenbacker Achievement',
+  mary_feik_achievement: 'Mary Feik Achievement',
+  hap_arnold_achievement: 'Gen Hap Arnold Achievement',
+  curry_achievement: 'Gen J.F. Curry Achievement',
+  afa_award: 'AFA Award to Unit Cadet of the Year',
+  afsa_award: 'AFSA Award to Unit Cadet NCO of the Year',
+  vfw_officer_award: 'VFW Outstanding Cadet Officer of the Year Award',
+  vfw_nco_award: 'VFW Outstanding Cadet NCO of the Year Award',
+  crisis_ribbon: 'CAP Crisis Service Ribbon',
+  cap_command_service_ribbon: 'Command Service Ribbon',
+  search_find_ribbon: 'Search \u201cFind\u201d Ribbon',
+  air_search_and_rescue_ribbon: 'Air Search and Rescue Ribbon',
+  cap_counterdrug_ribbon: 'Counterdrug Ribbon',
+  iace_ribbon: 'IACE Ribbon',
+  cap_cadet_orientation_pilot_ribbon: 'Cadet Orientation Pilot Ribbon',
+  cap_senior_recruiter_ribbon: 'Senior Recruiter Ribbon',
+  cap_world_war_2_service_ribbon: 'World War II Service Ribbon',
   air_force_aerial_achievement_medal: 'Air Force Aerial Achievement Medal',
   national_commanders_citation: "National Commander's Citation",
   cadet_certificate_of_proficiency: 'Cadet Certificate of Proficiency',
@@ -936,6 +985,15 @@ const MILITARY_RIBBON_PREFIX = 'military:';
 let militaryRibbonCatalogCache={dataRef:null,awards:[],byId:new Map(),ids:[]};
 function isMilitaryRibbonId(id){
   return String(id || '').startsWith(MILITARY_RIBBON_PREFIX);
+}
+// U.S. military awards and the Air Force Organizational Excellence Award are not worn on
+// Corporate-style uniforms (CAPR 39-1 11.1.6, 11.2.3). Selections are kept, so switching back
+// to a USAF-style uniform brings them back.
+function isAwardWornOnUniform(id, uniformId = State.uniform){
+  return CAPUBUniformRules.isAwardAllowedOnUniform(id, uniformId, {isMilitary:isMilitaryRibbonId(id)});
+}
+function isMilitaryAwardWornOnUniform(uniformId = State.uniform){
+  return CAPUBUniformRules.isAwardAllowedOnUniform('', uniformId, {isMilitary:true});
 }
 
 function applyMiniRackCalibToElement(el, key, base){
@@ -1010,6 +1068,31 @@ function getRibbonDisplayName(id){
   }
   return RIBBON_DISPLAY_NAMES[id] || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 }
+// Where a ribbon sits in CAPR 39-3 Attachment 2, so the picker reads the way the regulation does.
+// Order within a group is the precedence order of ribbonList.
+const RIBBON_GROUPS = [
+  {key:'usaf', label:'Air Force awards', ids:['air_force_aerial_achievement_medal','Air_Force_Organizational_Excellence_Award']},
+  {key:'decorations', label:'Decorations', ids:['silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award']},
+  {key:'profdev', label:'Professional development', ids:['national_commanders_citation','cap_gill_robb_wilson_ribbon','cap_paul_e_garber_ribbon','cap_grover_loening_aerospace_ribbon','cap_leadership_ribbon','cap_membership_ribbon']},
+  {key:'aeroed', label:'Aerospace education', ids:['cap_a_scott_crossfield_ribbon','cap_bridgadier_general_charles_yaeger_ribbon']},
+  {key:'cadet', label:'Cadet program awards', seniorLabel:'Cadet awards (only the highest is worn)', ids:['spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','cadet_certificate_of_proficiency','historic_cadet_blue_achievement','historic_cadet_white_achievement','historic_cadet_red_achievement','frank_borman_falcon_award']},
+  {key:'service', label:'Service', ids:['cap_command_service_ribbon','crisis_ribbon','red_service_ribbon','afa_award','afsa_award','vfw_officer_award','vfw_nco_award']},
+  {key:'activity', label:'Activity', ids:['search_find_ribbon','air_search_and_rescue_ribbon','cap_counterdrug_ribbon','disaster_relief_ribbon','homeland_security_ribbon','cap_cadet_orientation_pilot_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon','cap_senior_recruiter_ribbon']},
+  {key:'wartime', label:'Wartime service (1942\u20131945)', ids:['air_medal','cap_world_war_2_service_ribbon','anti_submarine_coastal_patrol_ribbon','southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon','forest_patrol_ribbon','missing_aircraft_ribbon']}
+];
+// Groups for one list of ids, in regulation order. Anything not placed lands in "Other".
+function groupRibbonIds(ids, membership = State.membership){
+  const placed = new Set();
+  const groups = [];
+  for(const group of RIBBON_GROUPS){
+    const members = group.ids.filter(id => ids.includes(id));
+    members.forEach(id => placed.add(id));
+    if(members.length) groups.push({key:group.key, label:(membership === 'senior' && group.seniorLabel) || group.label, ids:members});
+  }
+  const rest = ids.filter(id => !placed.has(id));
+  if(rest.length) groups.push({key:'other', label:'Other', ids:rest});
+  return groups;
+}
 const RIBBON_PRECEDENCE_INDEX = new Map(ribbonList.map((id, idx) => [id, idx]));
 function normalizeRibbonId(id){
   return RIBBON_ID_ALIASES[id] || id;
@@ -1047,7 +1130,6 @@ const HISTORICAL_RIBBONS = new Set([
   'missing_aircraft_ribbon'
 ]);
 const COMMON_ELIGIBLE_RIBBONS = new Set([
-  'Air_Force_Organizational_Excellence_Award',
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
   'crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon'
 ]);
@@ -1056,6 +1138,7 @@ const CADET_ONLY_RIBBONS = new Set([
   'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','cadet_recruiter_ribbon'
 ]);
 const SENIOR_ONLY_RIBBONS = new Set([
+  'Air_Force_Organizational_Excellence_Award',
   'air_force_aerial_achievement_medal',
   'national_commanders_citation',
   'cap_gill_robb_wilson_ribbon','cap_paul_e_garber_ribbon','cap_grover_loening_aerospace_ribbon','cap_leadership_ribbon','cap_membership_ribbon','cap_a_scott_crossfield_ribbon','cap_bridgadier_general_charles_yaeger_ribbon',
@@ -2368,6 +2451,39 @@ function getEligibleBadgeIdsForMembership(membership = State.membership){
 }
 
 const BADGE_DISPLAY_NAMES = Object.freeze({
+  // Names for ids that read badly when title-cased: image hashes, abbreviations, old spellings.
+  AirCrew1_DB3F0FCC3650F: 'Air Crew Badge',
+  SeniorAirCrew1_B289BAE6E515C: 'Senior Air Crew Badge',
+  MasterAirCrew1_72AC4CAE7A310: 'Master Air Crew Badge',
+  CAPPilot1_FA9D33EA587D8: 'Pilot Badge',
+  CAPSeniorPilot1_D9725AE959752: 'Senior Pilot Badge',
+  CAPMasterPilot1_621A0E2ED15DA: 'Command Pilot Badge',
+  SeniorObserver1_0E35802A29801: 'Senior Observer Badge',
+  MasterObserver1_1B88D5071FD5C: 'Master Observer Badge',
+  GliderPilot1_7BFB287379918: 'Glider Pilot Badge',
+  BalloonPilot1_442D89C94185B: 'Balloon Pilot Badge',
+  pre_solo_badge: 'Pre-Solo Badge',
+  emt_basic_badge: 'EMT Basic Badge',
+  emt_intermediate: 'EMT Intermediate Badge',
+  emt_paramedic: 'EMT Paramedic Badge',
+  nra_marksman_badge: 'NRA Marksman Badge',
+  stem_badges: 'Cadet STEM Badge',
+  cyber_badges: 'Cadet Cyber Badge',
+  historian_technicianIbadge: 'Historian Technician Badge',
+  buddist_chaplin: 'Buddhist Chaplain Badge',
+  christian_chaplin: 'Christian Chaplain Badge',
+  jewish_chaplin: 'Jewish Chaplain Badge',
+  muslim_chaplin: 'Muslim Chaplain Badge',
+  stan_eval_tech_badge: 'Standardization/Evaluation Technician Badge',
+  stan_eval_senior_badge: 'Standardization/Evaluation Senior Badge',
+  stan_eval_master_badge: 'Standardization/Evaluation Master Badge',
+  cdi_technician_badge: 'Character Development Instructor Technician Badge',
+  cdi_senior_badge: 'Character Development Instructor Senior Badge',
+  cdi_master_badge: 'Character Development Instructor Master Badge',
+  cap_national_command_board_badge: 'CAP National Command Board Badge',
+  nurse_officer: 'Nurse Officer Badge',
+  medical_officer: 'Medical Officer Badge',
+  legal_officer: 'Legal Officer Badge',
   uas_pilot_basic_badge: 'sUAS Pilot Badge',
   uas_pilot_senior_badge: 'Senior sUAS Pilot Badge',
   uas_pilot_master_badge: 'Command sUAS Pilot Badge',

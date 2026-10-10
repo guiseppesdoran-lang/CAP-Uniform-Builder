@@ -350,6 +350,26 @@ header h1::after{
 }
 .capubSectionHint b{color:var(--ink)}
 .capubProgress[hidden],.capubSectionHint[hidden]{display:none}
+/* Resume banner: shown once, above the preview, when a saved setup is waiting. */
+.resumeBanner{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--s2) var(--s4);
+  margin:0 0 var(--s3);
+  padding:var(--s3) var(--s4);
+  border:1px solid var(--line);
+  border-left:4px solid var(--cap-yellow);
+  border-radius:var(--r);
+  background:var(--panel);
+  color:var(--muted);
+  font-size:var(--t-sm);
+}
+.resumeText{display:flex;flex-direction:column;gap:2px;min-width:0}
+.resumeText b{color:var(--ink);font-family:var(--font-head);font-size:var(--t-lg);line-height:1.1}
+.resumeActions{display:flex;gap:var(--s2)}
+.resumeActions button{white-space:nowrap}
 
 /* ---- Panels ---- */
 .stepGroup{margin-bottom:var(--s2)}
@@ -514,7 +534,9 @@ header h1::after{
 #previewArea[data-field-uniform="true"] img.layer.jacket{object-fit:contain;max-width:none;max-height:none}
 
 .previewToolbar{
-  flex:0 0 100%;
+  /* The negative side margins below pull the bar out to the wrapper's edges, so the basis has
+     to grow by the same amount or the bar stops short of the right edge. */
+  flex:0 0 calc(100% + 2 * var(--s5));
   order:-1;
   position:sticky;
   top:calc(-1 * var(--s5));
@@ -636,11 +658,13 @@ header h1::after{
   border-top:1px solid var(--line);
 }
 .footerLink{
-  display:inline;
+  /* A text link in a line, with a 44px target: the padding is cancelled by the margin. */
+  display:inline-block;
   width:auto;
-  min-height:0;
-  margin:0;
-  padding:0;
+  min-width:44px;
+  min-height:44px;
+  margin:calc(-1 * var(--s3)) calc(-1 * var(--s2));
+  padding:var(--s3) var(--s2);
   border:0;
   background:none;
   color:var(--ink);
@@ -664,7 +688,7 @@ header h1::after{
   border-radius:var(--r-lg);
 }
 .galleryTile:hover{border-color:var(--line-strong)}
-.galleryTile.isFilteredOut{display:none !important}
+.galleryTile.isFilteredOut,#galleryModalHost div.isFilteredOut{display:none !important}
 .galleryTile img{width:72px;height:auto;border-radius:var(--r);border:1px solid var(--line);background:var(--paper)}
 .galleryTile .title{font-size:var(--t-sm);font-weight:700;line-height:1.25}
 .galleryTile .sub{margin-top:2px;font-size:var(--t-xs);line-height:1.3;color:var(--muted)}
@@ -729,7 +753,21 @@ header h1::after{
 .modalHeader .actions{display:flex;gap:var(--s2);align-items:center}
 .modalHeader .actions button{width:auto;margin:0;padding:0 var(--s3);background:transparent;border:1px solid rgba(255,255,255,.7);color:#fff;font-size:var(--t-md)}
 .modalHeader .actions button:hover{background:rgba(255,255,255,.18)}
-.modalBody{height:calc(100% - 60px);overflow:auto;padding:var(--s4);background:var(--bg)}
+.modal{display:flex;flex-direction:column}
+.modalHeader{flex:0 0 auto}
+.modalBody{flex:1 1 auto;min-height:0;overflow:auto;padding:var(--s4);background:var(--bg)}
+.modalFooter{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--s3);
+  padding:var(--s2) var(--s4);
+  border-top:1px solid var(--line);
+  background:var(--panel);
+}
+.modalCount{font-size:var(--t-md);font-weight:700;color:var(--ink)}
+.modalFooter button{width:auto;margin:0;padding:0 var(--s5)}
 .modal .galleryGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 
 /* ---- Military award builder ---- */
@@ -873,35 +911,223 @@ header h1::after{
   header h1::after{display:block;margin-left:0;font-size:var(--t-md)}
   .controlsHeader .controlsTitle::after{display:none}
   #layoutShell{height:calc(100vh - var(--capub-header-h));flex-direction:column;min-height:calc(100vh - var(--capub-header-h))}
+  /* Controls are a bottom sheet on a phone: the uniform stays visible above them. */
   #controls,#layoutShell.sidebar-open #controls,#layoutShell.sidebar-collapsed #controls{
     position:fixed;
     left:0;
-    top:var(--capub-header-h);
-    bottom:0;
-    width:min(92vw,var(--sidebar-w));
-    min-width:min(92vw,var(--sidebar-w));
-    max-width:min(92vw,var(--sidebar-w));
-    height:auto;
+    right:0;
+    top:auto;
+    bottom:var(--capub-footer-h);
+    width:100%;
+    min-width:0;
+    max-width:none;
+    height:var(--sheet-h);
     z-index:9000;
+    border-radius:var(--r-lg) var(--r-lg) 0 0;
     box-shadow:var(--shadow);
-    border-right:1px solid var(--line);
+    border-top:1px solid var(--line-strong);
+    border-right:0;
     transition:transform .2s ease,visibility .2s ease;
     will-change:transform;
   }
   #layoutShell.sidebar-open #controls{transform:translate3d(0,0,0);visibility:visible;pointer-events:auto}
-  #layoutShell.sidebar-collapsed #controls{transform:translate3d(-105%,0,0);visibility:hidden;pointer-events:none}
+  #layoutShell.sidebar-collapsed #controls{transform:translate3d(0,110%,0);visibility:hidden;pointer-events:none}
   #previewWrapper{order:2;flex:1;width:100%;min-width:0;padding:var(--s4) var(--s3) 200px}
-  .previewToolbar{margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) 0;padding:var(--s2) var(--s3);top:calc(-1 * var(--s4))}
+  /* With the sheet up, leave room under the uniform so it can scroll clear of it. */
+  body:has(#layoutShell.sidebar-open) #previewWrapper{padding-bottom:calc(var(--sheet-h) + var(--capub-footer-h) + var(--s4))}
+  .sheetClose{display:inline-flex}
+  /* While the sheet is up the toolbar keeps only undo and redo, so the uniform has room. */
+  body:has(#layoutShell.sidebar-open) .capubTopBar,
+  body:has(#layoutShell.sidebar-open) .previewToolCard[aria-label="Preview zoom"]{display:none}
+  .previewToolbar{flex-basis:calc(100% + 2 * var(--s3));margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) 0;padding:var(--s2) var(--s3);top:calc(-1 * var(--s4))}
   .controlsScrollArea{padding-bottom:96px}
   .statusGrid{grid-template-columns:1fr}
   .modal{height:90vh}
   .modal .galleryGrid{grid-template-columns:repeat(1,minmax(0,1fr))}
   body:has(#layoutShell.sidebar-open) .capubCommandBar{display:none}
-  :root{--capub-footer-h:64px}
+  :root{--capub-footer-h:64px;--sheet-h:min(46vh,420px)}
   #pageFooter{font-size:var(--t-xs);line-height:1.35;padding-top:var(--s1);padding-bottom:var(--s1)}
   .capubCommandBar{left:var(--s3);right:var(--s3);transform:none;width:auto;flex-wrap:wrap;justify-content:center}
   .capubCommandBar button{flex:1 1 auto;padding:0 var(--s3);font-size:var(--t-md)}
 }
+
+.sheetClose{position:absolute;top:var(--s2);right:var(--s3);width:auto;min-height:44px;margin:0;padding:0 var(--s3)}
+@media (min-width:769px){.sheetClose{display:none}}
+/* ---- Phones: keep the header inside the screen and the toolbar to two short rows ----
+   At 375px the header was 14px too wide, which made the whole page scroll sideways and pushed
+   the fixed footer (and its About link) off the right edge. */
+@media (max-width:480px){
+  header{padding-right:var(--s3)}
+  header h1{font-size:var(--t-md)}
+  header h1::after{font-size:var(--t-sm)}
+  .unofficialTag{margin-left:var(--s2);padding:2px var(--s2);font-size:var(--t-xs)}
+  .themeToggle{flex:0 0 auto;max-width:64px;padding:0 var(--s2);font-size:var(--t-sm);line-height:1.1}
+  /* Status and item count stay; the chosen uniform is already highlighted in the sidebar. */
+  #capubTopBar .capubPill:nth-child(2){display:none}
+  .previewTools{width:100%;margin-left:0;gap:var(--s2);justify-content:space-between}
+  .previewToolCard{gap:var(--s1)}
+  .previewToolCard button{padding:0 var(--s2);font-size:var(--t-md)}
+  .previewToolCard .zoomReadout{min-width:40px}
+}
+
+.footerShort{display:none}
+.footerCredit{margin-left:var(--s1)}
+@media (max-width:480px){
+  .footerFull,.footerCredit{display:none}
+  .footerShort{display:inline}
+  /* Two short lines, so the footer (and the sheet that sits on it) can be shorter. */
+  :root{--capub-footer-h:52px}
+}
+
+html[data-ux="2"] .controlsHeader .controlsTitle::after{display:none}
+
+/* Very narrow phones (320px): the Unofficial notice moves into the subtitle instead of a tag. */
+@media (max-width:360px){
+  .unofficialTag{display:none}
+  header h1::after{content:"Unofficial tool"}
+}
+
+.noticeList li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2)}
+.noticeList li>span{flex:1 1 12rem;min-width:0}
+.noticeFix{flex:0 0 auto;width:auto;min-height:44px;margin:0;padding:0 var(--s3);font-size:var(--t-sm)}
+
+.itemPopover{
+  position:fixed;
+  z-index:13000;
+  min-width:200px;
+  max-width:min(300px,calc(100vw - 16px));
+  padding:var(--s3);
+  border:1px solid var(--line-strong);
+  border-radius:var(--r-lg);
+  background:var(--panel);
+  color:var(--ink);
+  box-shadow:var(--shadow);
+}
+.itemPopoverName{margin-bottom:var(--s2);font-weight:700;font-size:var(--t-md)}
+.itemPopoverActions{display:flex;gap:var(--s2)}
+.itemPopoverActions button{width:auto;flex:1 1 auto;margin:0;min-height:44px}
+#uniformCanvas .layer.ribbonTile,#uniformCanvas .layer.ribbonMini,#uniformCanvas .layer.badge{cursor:pointer}
+
+/* ---- Authorized, not drawn yet ---- */
+.plannedUniforms{margin-top:var(--s4)}
+.plannedUniforms[hidden]{display:none}
+.plannedTitle{font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
+.plannedCard{margin-top:var(--s2);border:1px dashed var(--line-strong);border-radius:var(--r);background:var(--panel-2)}
+.plannedSummary{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--s2);
+  min-height:44px;
+  box-sizing:border-box;
+  padding:var(--s2) var(--s3);
+  cursor:pointer;
+  color:var(--ink);
+}
+.plannedName{font-weight:700}
+.plannedTag{padding:1px var(--s2);border-radius:var(--r);border:1px solid var(--line-strong);font-size:var(--t-xs);color:var(--muted)}
+.plannedFacts{margin:0;padding:0 var(--s3) var(--s3) calc(var(--s3) + var(--s4));font-size:var(--t-sm);color:var(--muted)}
+.plannedFacts li+li{margin-top:var(--s1)}
+
+/* ---- Guided flow (?ux=2): one step at a time ---- */
+.guidedSummary,.guidedNav{display:none}
+html[data-ux="2"] .capubSectionHint{display:none}
+html[data-ux="2"] .stepGroup{
+  margin-bottom:var(--s3);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  background:var(--panel);
+}
+html[data-ux="2"] .stepGroup.isActive{border:2px solid var(--select-line)}
+html[data-ux="2"] .stepGroup>.stepGroupTitle{margin:0;padding:var(--s3) var(--s4)}
+html[data-ux="2"] .stepGroup:not(.isActive)>*:not(.stepGroupTitle):not(.guidedSummary){display:none}
+html[data-ux="2"] .stepGroup:not(.isActive)>.guidedSummary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--s3);
+  padding:0 var(--s4) var(--s3);
+  color:var(--muted);
+  font-size:var(--t-sm);
+}
+html[data-ux="2"] .stepGroup.isDone{border-color:var(--ok)}
+html[data-ux="2"] .stepGroup.isDone>.stepGroupTitle{color:var(--ok)}
+html[data-ux="2"] .guidedEdit{width:auto;min-height:44px;margin:0;padding:0 var(--s3)}
+html[data-ux="2"] .stepGroup.isActive>*:not(.stepGroupTitle):not(.guidedSummary){margin-left:var(--s4);margin-right:var(--s4)}
+html[data-ux="2"] .stepGroup.isActive>.guidedNav{
+  display:flex;
+  gap:var(--s2);
+  justify-content:space-between;
+  margin-top:var(--s4);
+  margin-bottom:var(--s4);
+}
+html[data-ux="2"] .guidedNav button{width:auto;flex:1 1 auto;margin:0}
+html[data-ux="2"] .guidedNav .guidedBack{flex:0 0 auto}
+.guidedHint{margin:0 0 var(--s3);font-size:var(--t-sm);color:var(--muted)}
+.guidedAdvanced{margin-top:var(--s4);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
+.guidedAdvanced>summary{cursor:pointer;padding:var(--s3) 2px;font-weight:700;color:var(--ink)}
+.guidedAdvanced[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
+
+/* Uniforms by occasion */
+html[data-ux="2"] .uniformList{display:block}
+.guidedUniformGroup+.guidedUniformGroup{margin-top:var(--s4)}
+.guidedGroupTitle{margin-bottom:var(--s2);font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
+.guidedUniformGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s2)}
+html[data-ux="2"] .uniformOption{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  gap:var(--s3);
+  width:100%;
+  min-height:0;
+  margin:0;
+  padding:var(--s2) var(--s3);
+  text-align:left;
+}
+.guidedThumb{
+  flex:0 0 52px;
+  width:52px;
+  height:64px;
+  object-fit:cover;
+  object-position:top center;
+  border-radius:var(--r);
+  background:var(--panel-2);
+}
+.guidedText{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
+.guidedTag{
+  padding:1px var(--s2);
+  border-radius:var(--r);
+  background:var(--cap-yellow);
+  color:#10131A;
+  font-size:var(--t-xs);
+  font-weight:700;
+}
+.guidedWhy{font-size:var(--t-xs);color:var(--muted)}
+.guidedLocked{margin-top:var(--s4);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
+.guidedLocked[hidden]{display:none}
+.guidedLocked>summary{cursor:pointer;padding:var(--s3) 2px;font-weight:700;color:var(--ink)}
+.guidedLocked[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
+.guidedLocked .guidedUniformGrid{padding-bottom:var(--s3)}
+html[data-ux="2"] .uniformOption.locked{opacity:.75}
+html[data-ux="2"] .uniformOption.locked::after{content:none}
+/* A locked uniform needs its name and the reason, not the picture or the description. */
+html[data-ux="2"] .uniformOption.locked .guidedThumb,
+html[data-ux="2"] .uniformOption.locked .uDesc{display:none}
+
+/* Item cards */
+.guidedItemCards{display:grid;gap:var(--s2)}
+.guidedCard{
+  padding:var(--s3);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  background:var(--panel-2);
+}
+.guidedCard.unavailable{opacity:.75}
+.guidedCardTitle{font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
+.guidedCardCount{font-size:var(--t-md);font-weight:700;color:var(--ink)}
+.guidedCardRule{margin:var(--s1) 0 var(--s2);font-size:var(--t-sm);color:var(--muted)}
+.guidedCard button{width:100%;margin:0}
 
 /* ---- About dialog (unofficial-site and privacy notice) ---- */
 #aboutDialog{
@@ -929,6 +1155,8 @@ small.hintText{display:block}
 
 /* ---- Purchase list and cost dialog ---- */
 #purchaseListButton{width:100%}
+.finishAction+.finishAction{margin-top:var(--s4);padding-top:var(--s4);border-top:1px solid var(--line)}
+.finishAction .hintText{margin-top:var(--s2)}
 .capub-purchase-overlay{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:var(--s5);background:var(--scrim)}
 .capub-purchase-overlay.open{display:flex}
 .capub-purchase-modal{width:min(1120px,96vw);max-height:92vh;overflow:hidden;display:flex;flex-direction:column;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
@@ -966,5 +1194,40 @@ small.hintText{display:block}
 @media (max-width:760px){
   .capub-purchase-summary{grid-template-columns:1fr 1fr}
   .capub-purchase-modal{width:98vw}
-  .capub-purchase-table th:nth-child(3),.capub-purchase-table td:nth-child(3){display:none}
+  /* One card per item instead of a table that scrolls sideways (this used to hide the name). */
+  .capub-purchase-table,.capub-purchase-table tbody,.capub-purchase-table tr,.capub-purchase-table td{display:block;width:100%}
+  .capub-purchase-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .capub-purchase-table tr{display:flex;flex-direction:column;margin-bottom:var(--s3);padding:var(--s3);border:1px solid var(--line);border-radius:var(--r)}
+  .capub-purchase-table td[data-label="Item"]{order:-1;padding-bottom:var(--s2)}
+  .capub-purchase-table td{padding:var(--s1) 0;border:0}
+  .capub-purchase-table td[data-label]::before{
+    content:attr(data-label);
+    display:inline-block;
+    min-width:6.5rem;
+    margin-right:var(--s2);
+    font-size:var(--t-xs);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--muted);
+  }
+  .capub-purchase-table td[data-label="Item"]::before{display:none}
+  .capub-purchase-table td[data-label="Include"],.capub-purchase-table td[data-label="Own it"]{display:flex;align-items:center;min-height:44px}
+  .capub-purchase-table td[data-label="Include"] input,.capub-purchase-table td[data-label="Own it"] input{width:24px;height:24px;margin:0}
 }
+.capub-purchase-rule>summary{cursor:pointer}
+
+/* ---- Pickers on a phone ---- */
+.militaryRibbonCatalogFilters{
+  display:grid;
+  grid-template-columns:minmax(180px,1fr) minmax(130px,.55fr) minmax(150px,.65fr);
+  gap:var(--s2);
+  margin:var(--s2) 0;
+}
+@media (max-width:600px){
+  .militaryRibbonCatalogFilters{grid-template-columns:minmax(0,1fr)}
+}
+/* A checkbox with its words is one control: the whole row is the target. */
+label.fieldNote:has(>input[type=checkbox]){display:flex;align-items:center;gap:var(--s2);min-height:44px}
+/* A folded section is a control, so its heading is a 44px target. */
+.modal details>summary{min-height:44px;box-sizing:border-box;padding-top:var(--s3);padding-bottom:var(--s3)}

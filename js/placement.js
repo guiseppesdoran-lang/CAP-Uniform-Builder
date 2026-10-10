@@ -86,6 +86,8 @@ function renderAllBadges(){
 
 function renderSelectedMilitaryBadgesOnCap(){
   if(State.organization!=='CAP') return;
+  // Not worn on Corporate-style uniforms (CAPR 39-1 4.2.5.1.3); the selection is kept.
+  if(!isMilitaryAwardWornOnUniform()) return;
   const remaining=Math.max(0,4-getRenderableCountedBadgeIds().length);
   if(!remaining) return;
   const selected=getAllSelectableMilitaryBadges()
@@ -910,8 +912,24 @@ function renderPatches(){
 function updateAvailabilityUI(prevUniform){
   const auth = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
   by('groupRibbons').classList.toggle('hidden', !auth.showRibbons && !UNIFORMS[State.uniform].mini);
-  by('groupBadges').classList.toggle('hidden', !auth.showBadges);
+  // A uniform that allows a badge but has no placement here (the polo) keeps its Badges panel
+  // with a note, instead of the panel vanishing as if no badge were allowed.
+  const planned = !auth.showBadges ? CAPUBUniformRules.plannedBadge(State.uniform) : null;
+  by('groupBadges').classList.toggle('hidden', !auth.showBadges && !planned);
+  const plannedNote = by('badgesPlannedNote');
+  if(plannedNote){
+    plannedNote.classList.toggle('hidden', !planned);
+    plannedNote.textContent = planned
+      ? `${planned.text.replace(/\.$/,'')} (CAPR 39-1, ${planned.ref}). Choosing it is not available yet.`
+      : '';
+  }
+  ['expandBadges','clearBadges'].forEach(id => { const b = by(id); if(b) b.disabled = !!planned; });
   by('groupPatches').classList.toggle('hidden', !auth.showPatches);
+  // Miniature medals are worn only on Mess Dress and Corporate Semi-Formal (CAPR 39-1 11.1.4).
+  const miniWorn = CAPUBUniformRules.allowsMiniMedals(State.uniform);
+  ['toggleMini','autoMini','miniMountStyle'].forEach(id=>{
+    by(id)?.closest('label')?.classList.toggle('hidden', !miniWorn);
+  });
   const badgeCommand = by('cmdBadges');
   const patchCommand = by('cmdPatches');
   if(badgeCommand) badgeCommand.classList.toggle('hidden', !auth.showBadges);
@@ -925,6 +943,8 @@ function updateAvailabilityUI(prevUniform){
   }
 
   clearUnauthorizedPatchesForCurrentUniform();
+  // Which awards are worn depends on the uniform (CAPR 39-1 11.1.6), so the rack follows it.
+  if(prevUniform && prevUniform!==State.uniform) rebuildRibbonsFromGallery();
   buildPatchGallery();
   if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(by('unitPatchSearch')?.value || '');
 }
@@ -1478,6 +1498,13 @@ function refreshUI(){
   if(overlayToggle) overlayToggle.checked = !!State.showMeasurementOverlay;
   const miniStyleControl = by('miniMountStyle');
   if(miniStyleControl) miniStyleControl.value = State.miniMountStyle === 'holding' ? 'holding' : 'mounting';
+  if(typeof syncAdultCadetControl === 'function') syncAdultCadetControl();
+  // Cadets only: the option to wear just the highest Cadet Program achievement ribbon.
+  const highestOnly = by('cadetHighestOnly');
+  if(highestOnly){
+    highestOnly.checked = !!State.cadetHighestOnly;
+    by('cadetHighestOnlyRow')?.classList.toggle('hidden', State.membership !== 'cadet');
+  }
   syncRibbonRackColumnsControl();
   syncCadetFirstSergeantControl();
 

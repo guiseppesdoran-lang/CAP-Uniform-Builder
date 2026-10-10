@@ -12,7 +12,8 @@ the only directory that should be web-served (see `deploy/README.md`).
 | `styles/app.css` | The one stylesheet. Layers run base -> polish overrides -> utilities; later rules win. |
 | `js/*.js` | The application script, split along the section banners it always had. |
 | `config.js` | Per-deployment settings, loaded first. Only `submissionEndpoint` (empty = submissions off). Never put secrets here. |
-| `data/*.js` | Calibration corrections and the CAP unit list, loaded before the app scripts. |
+| `data/*.js` | Calibration corrections, the CAP unit list and `uniform-rules.js`, loaded before the app scripts. |
+| `data/uniform-rules.js` | One table of what each uniform allows (who may wear it, ribbons required/optional/none, miniature medals, rack columns, badge limit, U.S. military awards), each rule with its CAPR 39-1 paragraph. The sidebar, the renderer and the validator read from it; `tests/uniform-rules.test.cjs` states every value against its paragraph of CAPR 39-1 (and the ICL 25-06 OCP instructions) and pins it to the buttons in `index.html`. A cadet aged 18 or older who does not meet the USAF weight standard reaches the Corporate-style uniforms through the `adultCadet` rule (1.2.5.2); uniforms the regulation allows but the builder does not draw are listed in `NOT_MODELLED`. |
 | `military/*.js` | U.S. military award and badge catalog (`military-data.js`, generated, 189 awards and 127 badges), its rules (`military-core.js`) and device layout. CAP members who earned U.S. military awards can add them in the ribbon and badge galleries. There is no separate service builder. A ribbon award with no artwork is not offered (the Coast Guard Cross today; it appears on its own once `images.ribbon` exists for it). Military badges show on dress uniforms only, until there is artwork for field uniforms. |
 | `images/military-*`, `images/devices/military/` | Artwork for those awards and badges. |
 | `vendor/pdfjs/` | pdf.js 3.11.174 (Apache-2.0), loaded on first member-report PDF import. |
@@ -32,8 +33,10 @@ checks.
 
 ## Privacy and data
 
-The page keeps everything in the browser. Saved setups live in localStorage (Save to Browser)
-and nothing is uploaded when a PNG is downloaded. The only outbound traffic is the optional
+The page keeps everything in the browser. The setup is autosaved to localStorage a moment after
+every change (`cap_uniform_builder_autosave_v1`, in `js/workspace-ui.js`) and offered back with a
+Resume prompt on the next visit; it is never loaded silently. Named saves live in localStorage
+too (Save to Browser), and nothing is uploaded when a PNG is downloaded. The only outbound traffic is the optional
 submission endpoint, and only when someone sends a patch image or an administrator submits a
 calibration. Saved or imported setups are validated by `sanitizeProfile()` in `js/wiring.js`
 before they touch the page state; values that go into HTML pass through `escapeHtml()`.
@@ -53,7 +56,7 @@ server, the deploy examples and `tests/security.test.cjs`.
 All `js/` files are classic scripts that share one global scope, exactly as the
 old single inline script did. They must stay in this order:
 
-1. `config.js` (root) - deployment settings; the `military/*.js` catalog scripts; then `js/state.js` - global state, the ?dev switch, rank data, placement constants
+1. `config.js` (root) - deployment settings; the `military/*.js` catalog scripts; `data/uniform-rules.js` - the uniform rule table; then `js/state.js` - global state, the ?dev switch, rank data, placement constants
 2. `js/calibration.js` - default and master calibration data
 3. `js/dom-assets.js` - DOM shortcuts, asset path helpers
 4. `js/catalog.js` - uniforms, ribbons, devices, badges, patches
@@ -63,6 +66,7 @@ old single inline script did. They must stay in this order:
 8. `js/placement.js` - badge/patch placement and the render pipeline
 9. `js/wiring.js` - event wiring, calibrator UI, modal gallery, PNG export
 10. `js/workspace-ui.js` - step guide, preview toolbar/zoom, empty state, command bar
+10a. `js/guided-flow.js` - the one-step-at-a-time sidebar, only when the page is opened with `?ux=2`
 11. `js/member-report-import.js` - CAP member report parser and importer
 12. `js/bootstrap.js` - first render
 13. `js/patches.js` - dated patches that deliberately re-wrap earlier functions

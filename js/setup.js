@@ -40,6 +40,8 @@ function capubSetSidebarOpen(open){
   layoutShell.classList.toggle('sidebar-open', open);
   layoutShell.classList.toggle('sidebar-collapsed', !open);
   hamburgerBtn.setAttribute('aria-expanded', String(open));
+  // The preview refits: on a phone the controls are a sheet over the lower part of the screen.
+  document.dispatchEvent(new CustomEvent('capub:sidebar',{detail:{open}}));
 }
 function capubToggleSidebar(){
   capubSetSidebarOpen(!layoutShell.classList.contains('sidebar-open'));
@@ -47,6 +49,8 @@ function capubToggleSidebar(){
 capubSetSidebarOpen(!window.matchMedia('(max-width:768px)').matches);
 hamburgerBtn.dataset.sidebarToggleWired='1';
 hamburgerBtn.addEventListener('click', capubToggleSidebar);
+const sheetCloseBtn = by('sheetClose');
+if(sheetCloseBtn) sheetCloseBtn.addEventListener('click', ()=>capubSetSidebarOpen(false));
 
 /* ===========================
    TOOLTIP HOVER
@@ -100,6 +104,27 @@ function updateSetupGates(){
     refreshUI();
   }
 }
+function syncAdultCadetControl(){
+  const row = by('adultCadetRow');
+  const box = by('adultCadetCheckbox');
+  if(row) row.classList.toggle('hidden', State.membership !== 'cadet');
+  if(box) box.checked = !!State.adultCadet;
+}
+const adultCadetBox = by('adultCadetCheckbox');
+if(adultCadetBox){
+  adultCadetBox.addEventListener('change', ()=>{
+    State.adultCadet = adultCadetBox.checked;
+    // Turning it off while on a Corporate uniform moves the member to one they may wear.
+    if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)){
+      State.uniform = findFirstAllowedUniform(State.membership) || 'blues_a';
+    }
+    updateSetupGates();
+    applyMemberTypeToUniformOptions();
+    highlightActiveUniformButton();
+    fullRender();
+    buildBadgeGallery();
+  });
+}
 function populateRankSetup(){
   rankSetupSelect.innerHTML = `<option value="">Select Rank</option>`;
   if(!State.membership) return;
@@ -115,6 +140,9 @@ membershipTypeEl.addEventListener('change', ()=>{
   const previousRank = State.rank;
   const previousGender = State.gender;
   State.membership = membershipTypeEl.value || '';
+  // The adult-cadet option only exists for cadets (CAPR 39-1, 1.2.5.2).
+  if(State.membership !== 'cadet') State.adultCadet = false;
+  syncAdultCadetControl();
 
   populateRankSetup();
 
@@ -198,17 +226,18 @@ undoGarmentMaskBtn?.addEventListener('click', ()=>{
 /* ===========================
    MEMBER TYPE / UNIFORM AUTHZ
    =========================== */
+// Who may wear a uniform is decided by data/uniform-rules.js (CAPR 39-1). A cadet aged 18 or
+// older who does not meet the USAF weight standard also reaches the Corporate-style uniforms
+// (1.2.5.2); State.adultCadet records that.
 function isUniformAllowedFor(uniformId, membership){
   const btn = uniformListEl.querySelector(`.uniformOption[data-uniform-id="${uniformId}"]`);
   if(!btn) return false;
-  const allowed=(btn.dataset.allowedFor||'').split(',').map(s=>s.trim());
-  return membership ? allowed.includes(membership) : true;
+  return CAPUBUniformRules.isUniformAllowedFor(uniformId, membership, {adultCadet:!!State.adultCadet});
 }
 function findFirstAllowedUniform(membership){
   const opts=[...uniformListEl.querySelectorAll('.uniformOption')];
   for(const opt of opts){
-    const allowed=(opt.dataset.allowedFor||'').split(',').map(s=>s.trim());
-    if(allowed.includes(membership)){
+    if(CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, membership, {adultCadet:!!State.adultCadet})){
       return opt.dataset.uniformId;
     }
   }
@@ -217,8 +246,9 @@ function findFirstAllowedUniform(membership){
 function applyMemberTypeToUniformOptions(){
   const opts=uniformListEl.querySelectorAll('.uniformOption');
   opts.forEach(opt=>{
-    const allowed=(opt.dataset.allowedFor||'').split(',').map(s=>s.trim());
-    const isAllowed = State.membership ? allowed.includes(State.membership) : true;
+    const isAllowed = State.membership
+      ? CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet})
+      : true;
 
     if(isAllowed){
       opt.classList.remove('locked');

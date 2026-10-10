@@ -836,9 +836,19 @@ function rebuildRibbonsFromGallery(){
   normalizeBadgeSelections();
   syncCommandBadgeAndRibbonSelections();
 
+  // A cadet may shorten the rack to the highest Cadet Program achievement ribbon (CAPR 39-1
+  // 11.1.2.2). The other selections are kept; they come back when the option is turned off.
+  const highestCadetAward = (State.membership === 'cadet' && State.cadetHighestOnly)
+    ? [...CADET_ACHIEVEMENT_RIBBONS]
+        .filter(id => State.ribbonSelections[id]?.checked)
+        .sort((a,b) => precedence(a) - precedence(b))[0] || null
+    : null;
+
   for(const id of [...getEligibleRibbonIds(), ...getMilitaryRibbonIds()]){
     const sel = State.ribbonSelections[id];
     if(!sel || !sel.checked) continue;
+    if(!isAwardWornOnUniform(id)) continue;
+    if(highestCadetAward && CADET_ACHIEVEMENT_RIBBONS.has(id) && id !== highestCadetAward) continue;
 
     // compute stacks needed due to caps or special rules.
     // Silver Medal of Valor has no device for multiple awards in this builder;
@@ -972,15 +982,11 @@ function buildRibbonGallery(options={}){
   if(options.capture!==false) captureMilitaryGalleryUI(wrap,wrap,'sidebarScrollTop');
   normalizeRibbonSelections();
   wrap.innerHTML = '';
-  const eligible = getEligibleRibbonIds();
+  const eligible = getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id));
   const visible = State.ribbonGalleryExpanded ? eligible : eligible.slice(0, 12);
-  const currentRibbons = visible.filter(id => !HISTORICAL_RIBBONS.has(id));
-  const historicalRibbons = visible.filter(id => HISTORICAL_RIBBONS.has(id));
+  // Grouped the way CAPR 39-3 Attachment 2 lists them, in precedence order within each group.
   const sections = State.ribbonGalleryExpanded
-    ? [
-        { title:'Current Ribbons', description:'Currently issued awards and achievements.', ids:currentRibbons },
-        { title:'Historical Ribbons', description:'Legacy cadet awards and wartime service ribbons.', ids:historicalRibbons }
-      ]
+    ? groupRibbonIds(visible).map(group => ({ title:group.label, description:'', ids:group.ids }))
     : [{ title:'', description:'', ids:visible }];
 
   const buildTile=(id,military=false)=>{
@@ -992,7 +998,9 @@ function buildRibbonGallery(options={}){
     const title = getRibbonDisplayName(id);
     const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
     const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
-    const miniPreview = miniPath
+    // A miniature medal only matters on the uniforms that wear them (CAPR 39-1 11.1.4).
+    const showMini = CAPUBUniformRules.allowsMiniMedals(State.uniform);
+    const miniPreview = !showMini ? '' : miniPath
       ? `<div class="miniMedalPreview"><span>Mini medal</span><img loading="lazy" decoding="async" alt="${escapeHtml(title)} mini medal"></div>`
       : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
     const options = getRibbonAwardOptions(id).map(opt => {
@@ -1020,7 +1028,7 @@ function buildRibbonGallery(options={}){
       ${military ? `<span class="militaryRibbonArt"><img loading="lazy" decoding="async" alt="${escapeHtml(title)}"></span>` : `<img loading="lazy" decoding="async" alt="${escapeHtml(title)}">`}
       <div style="flex:1;min-width:0;">
         <div class="title">${escapeHtml(title)}</div>
-        <div class="sub">${military ? `${(award?.authorizedServices || []).map(service=>escapeHtml(MILITARY_BRANCH_LABELS[service] || service)).join(' / ') || 'U.S. MILITARY'} • ` : ''}(${escapeHtml(id)})</div>
+        <div class="sub">${military ? `${(award?.authorizedServices || []).map(service=>escapeHtml(MILITARY_BRANCH_LABELS[service] || service)).join(' / ') || 'U.S. MILITARY'}` : (CAPUB_DEV ? escapeHtml(id) : '')}</div>
         ${miniPreview}
         ${military ? `<label class="ribbonAwardLabel">Awarding / wearer service<select class="militaryServiceSelect" data-ribbon-id="${escapeHtml(id)}">${serviceOptions}</select></label>` : ''}
         <label class="ribbonAwardLabel">
@@ -1031,7 +1039,7 @@ function buildRibbonGallery(options={}){
         </label>
         ${military ? `<div class="militarySpecialDeviceRow" title="Select only devices authorized on your award orders.">${specialControls}</div>` : ''}
         <div class="sub ribbonDeviceSummary">
-          ${sel.checked ? `Selected: <b>${escapeHtml(sel.awardLabel || 'Earned')}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` • ${escapeHtml(sel.deviceWarnings.join(' '))}` : ''}` : 'Not selected'}
+          ${sel.checked ? `Selected: <b>${escapeHtml(sel.awardLabel || 'Earned')}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` • ${escapeHtml(sel.deviceWarnings.join(' '))}` : ''}` : ''}
         </div>
       </div>
     `;
@@ -1060,7 +1068,13 @@ function buildRibbonGallery(options={}){
     section.ids.forEach(id=>wrap.appendChild(buildTile(id,false)));
   }
 
-  if(State.ribbonGalleryExpanded){
+  if(State.ribbonGalleryExpanded && !isMilitaryAwardWornOnUniform()){ // Corporate-style only: USAF-style uniforms allow them
+    const note=document.createElement('div');
+    note.className='hintText';
+    note.textContent='U.S. military awards are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6).';
+    wrap.appendChild(note);
+  }
+  if(State.ribbonGalleryExpanded && isMilitaryAwardWornOnUniform()){
     const ui=getMilitaryUIState();
     const galleryQuery=ui.gallerySearchValue.trim().toLowerCase();
     const allMilitaryIds=getMilitaryRibbonIds();
@@ -1088,7 +1102,6 @@ function buildRibbonGallery(options={}){
     militaryMenu.appendChild(intro);
     const filters=document.createElement('div');
     filters.className='militaryRibbonCatalogFilters';
-    filters.style.cssText='display:grid;grid-template-columns:minmax(180px,1fr) minmax(130px,.55fr) minmax(150px,.65fr);gap:7px;margin:8px 0;';
     filters.innerHTML=`
       <input class="militaryRibbonCatalogSearch" type="search" placeholder="Search military ribbons…" value="${militaryEscapeHtml(ui.gallerySearchValue)}" aria-label="Search military ribbons">
       <select class="militaryRibbonCatalogService" aria-label="Filter military ribbons by service">
@@ -1294,12 +1307,11 @@ function buildBadgeGallery(){
       <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
       <div style="flex:1;min-width:0;">
         <div class="title">${escapeHtml(title)}${rareCadetTag}</div>
-        <div class="sub">(${escapeHtml(id)})</div>
         <div class="miniRow">
           <label><input type="checkbox" class="bdChk"> Add</label>
         </div>
         ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-        <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Regulation scale: ${Math.round(getBadgeRenderSize(id).width)}×${Math.round(getBadgeRenderSize(id).height)} px</div>
+        ${getBadgeTileMetaHtml(id)}
       </div>
     `;
 
