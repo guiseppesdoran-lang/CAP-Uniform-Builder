@@ -303,6 +303,92 @@
   setTimeout(()=>{ if(last===null && typeof State!=='undefined') last=counts(); },400);
 })();
 
+// Click an item on the uniform to take it off. A small prompt names the item and asks before it
+// goes, because a stray click on a crowded rack should not delete anything. The selection is
+// unchecked, exactly as unticking it in the picker would, so Undo brings it back.
+(function capubRemoveFromPreview(){
+  const safeBy=id=>document.getElementById(id);
+  const canvas=safeBy('uniformCanvas');
+  if(!canvas) return;
+  let pop=null;
+
+  function describe(layer){
+    const key=String(layer.dataset.calibKey || '');
+    const m=/^(ribbon|mini|badge|patch|patchRegV2):([^:]+)/.exec(key);
+    if(!m) return null;
+    const [,kind,id]=m;
+    if(kind==='ribbon' || kind==='mini'){
+      if(typeof getRibbonDisplayName!=='function') return null;
+      return {type:'ribbon',id,name:getRibbonDisplayName(id)};
+    }
+    if(kind==='badge'){
+      return {type:'badge',id,name:typeof getBadgeDisplayName==='function' ? getBadgeDisplayName(id) : id};
+    }
+    return {type:'patch',id,name:(typeof PATCH_META!=='undefined' && PATCH_META[id] && PATCH_META[id].label) || id.replace(/_/g,' ')};
+  }
+  function close(){
+    if(pop){ pop.remove(); pop=null; }
+    document.removeEventListener('keydown',onKey,true);
+    document.removeEventListener('mousedown',onOutside,true);
+  }
+  function onKey(e){ if(e.key==='Escape') close(); }
+  function onOutside(e){ if(pop && !pop.contains(e.target)) close(); }
+
+  function remove(item){
+    try{
+      if(item.type==='ribbon'){
+        const sel=State.ribbonSelections && State.ribbonSelections[item.id];
+        if(sel) sel.checked=false;
+        rebuildRibbonsFromGallery();
+      }else if(item.type==='badge'){
+        const sel=State.badgeSelections && State.badgeSelections[item.id];
+        if(sel) sel.checked=false;
+        rebuildBadgesFromGallery();
+      }else{
+        const sel=State.patchSelections && State.patchSelections[item.id];
+        if(sel) sel.checked=false;
+        rebuildPatchesFromGallery();
+      }
+      if(typeof fullRender==='function') fullRender();
+    }catch(err){
+      console.error('Remove from preview failed:',err);
+    }
+  }
+
+  function show(item,x,y){
+    close();
+    pop=document.createElement('div');
+    pop.className='itemPopover'; pop.setAttribute('role','dialog'); pop.setAttribute('aria-label','Remove item');
+    const label=document.createElement('div'); label.className='itemPopoverName'; label.textContent=item.name;
+    const row=document.createElement('div'); row.className='itemPopoverActions';
+    const del=document.createElement('button'); del.type='button'; del.textContent='Remove';
+    const keep=document.createElement('button'); keep.type='button'; keep.className='ghost'; keep.textContent='Keep';
+    del.addEventListener('click',()=>{ remove(item); close(); });
+    keep.addEventListener('click',close);
+    row.append(del,keep);
+    pop.append(label,row);
+    document.body.appendChild(pop);
+    // Keep it on screen.
+    const w=pop.offsetWidth, h=pop.offsetHeight;
+    pop.style.left=Math.max(8,Math.min(x+8,window.innerWidth-w-8))+'px';
+    pop.style.top=Math.max(8,Math.min(y+8,window.innerHeight-h-8))+'px';
+    document.addEventListener('keydown',onKey,true);
+    // Next tick, so the click that opened it is not treated as an outside click.
+    setTimeout(()=>document.addEventListener('mousedown',onOutside,true),0);
+    del.focus();
+  }
+
+  canvas.addEventListener('click',e=>{
+    // The calibrator uses clicks on items to select them; leave those alone.
+    if(typeof State!=='undefined' && State.calib && State.calib.enabled) return;
+    const layer=e.target.closest && e.target.closest('.layer');
+    if(!layer || !canvas.contains(layer)) return;
+    const item=describe(layer);
+    if(!item) return;
+    show(item,e.clientX,e.clientY);
+  });
+})();
+
 // Autosave and resume. The setup is written to this browser a moment after every change, so
 // a refresh or a closed tab no longer loses it. On the next visit the member is asked whether
 // to resume; nothing is loaded silently. It is separate from "Save to Browser", which stays a

@@ -34,3 +34,12 @@ test('adding or removing items is acknowledged with a toast',()=>{
   assert.match(ui,/Removed \$\{words\(delta,name\)\}/);
   assert.match(ui,/\['change','click'\]\.forEach\(evt=>document\.addEventListener\(evt,check,true\)\)/);
 });
+
+test('clicking an item on the uniform asks before removing it, and undo brings it back',()=>{
+  assert.match(ui,/function capubRemoveFromPreview/);
+  assert.match(ui,/label\.textContent=item\.name/);
+  assert.match(ui,/if\(typeof State!=='undefined' && State\.calib && State\.calib\.enabled\) return;/);
+  // Unticks the selection the way the picker does; nothing is deleted from the catalog.
+  assert.match(ui,/sel\.checked=false;\s*rebuildRibbonsFromGallery\(\)/);
+  assert.match(ui,/sel\.checked=false;\s*rebuildBadgesFromGallery\(\)/);
+});
