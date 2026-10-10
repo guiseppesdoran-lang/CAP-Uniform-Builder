@@ -251,6 +251,132 @@
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
 
+// Autosave and resume. The setup is written to this browser a moment after every change, so
+// a refresh or a closed tab no longer loses it. On the next visit the member is asked whether
+// to resume; nothing is loaded silently. It is separate from "Save to Browser", which stays a
+// deliberate named save. Everything stays in localStorage on this device.
+(function capubAutosave(){
+  const KEY='cap_uniform_builder_autosave_v1';
+  const SAVE_DELAY_MS=600;
+  const safeBy=id=>document.getElementById(id);
+  let saveTimer=null;
+
+  function read(){
+    try{
+      const raw=localStorage.getItem(KEY);
+      if(!raw) return null;
+      const parsed=JSON.parse(raw);
+      if(!parsed || typeof parsed!=='object' || !parsed.profile || typeof parsed.profile!=='object') return null;
+      return parsed;
+    }catch(_){ return null; }
+  }
+  function write(profile){
+    try{ localStorage.setItem(KEY,JSON.stringify({savedAt:Date.now(),profile})); }catch(_){}
+  }
+  function clear(){
+    try{ localStorage.removeItem(KEY); }catch(_){}
+  }
+  // A setup with no membership type yet is the empty page, not something worth resuming.
+  function worthSaving(profile){
+    return !!(profile && profile.membership);
+  }
+  function currentProfile(){
+    const v2=window.CAPUB_V2;
+    if(!v2 || typeof v2.collectProfile!=='function') return null;
+    const p=v2.collectProfile();
+    // Calibration and garment masks have their own storage; the setup is what the member built.
+    delete p.calib; delete p.garmentMasks;
+    return p;
+  }
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(()=>{
+      const p=currentProfile();
+      // A member who keeps building while the banner is up has started a new setup. The banner
+      // still holds the earlier one in memory, so Resume works until the page is reloaded.
+      if(worthSaving(p)) write(p);
+    },SAVE_DELAY_MS);
+  }
+
+  function describe(profile){
+    const bits=[];
+    if(profile.rank) bits.push(profile.rank);
+    if(profile.uniform) bits.push(String(profile.uniform).replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()));
+    const items=(Array.isArray(profile.ribbons)?profile.ribbons.length:0)
+      +(Array.isArray(profile.badges)?profile.badges.length:0)
+      +(Array.isArray(profile.patches)?profile.patches.length:0);
+    bits.push(items+(items===1?' item':' items'));
+    return bits.join(' · ');
+  }
+  function when(ts){
+    const mins=Math.max(0,Math.round((Date.now()-Number(ts||0))/60000));
+    if(!ts || mins<1) return 'just now';
+    if(mins<60) return mins+(mins===1?' minute ago':' minutes ago');
+    const hours=Math.round(mins/60);
+    if(hours<48) return hours+(hours===1?' hour ago':' hours ago');
+    return Math.round(hours/24)+' days ago';
+  }
+
+  function removeBanner(){
+    const b=safeBy('capubResume');
+    if(b) b.remove();
+  }
+  function showBanner(saved){
+    removeBanner();
+    const wrap=safeBy('previewWrapper');
+    if(!wrap) return;
+    const box=document.createElement('div');
+    box.id='capubResume'; box.className='resumeBanner';
+    box.setAttribute('role','region'); box.setAttribute('aria-label','Resume your last uniform');
+    const text=document.createElement('div'); text.className='resumeText';
+    const title=document.createElement('b'); title.textContent='Resume your last uniform?';
+    const detail=document.createElement('span');
+    detail.textContent=describe(saved.profile)+' · saved '+when(saved.savedAt);
+    text.append(title,detail);
+    const actions=document.createElement('div'); actions.className='resumeActions';
+    const resume=document.createElement('button'); resume.type='button'; resume.id='capubResumeYes'; resume.textContent='Resume';
+    const fresh=document.createElement('button'); fresh.type='button'; fresh.id='capubResumeNo'; fresh.className='ghost'; fresh.textContent='Start over';
+    actions.append(resume,fresh);
+    box.append(text,actions);
+    const toolbar=safeBy('previewToolbar');
+    if(toolbar && toolbar.parentNode===wrap) wrap.insertBefore(box,toolbar.nextSibling);
+    else wrap.insertBefore(box,wrap.firstChild);
+
+    resume.addEventListener('click',()=>{
+      const v2=window.CAPUB_V2;
+      try{
+        if(v2 && typeof v2.applyProfile==='function') v2.applyProfile(saved.profile);
+      }catch(_){
+        if(typeof window.capubToastShow==='function') window.capubToastShow('That saved setup could not be loaded.');
+        clear(); removeBanner(); return;
+      }
+      removeBanner();
+      if(typeof window.capubToastShow==='function') window.capubToastShow('Resumed your last uniform.');
+    });
+    fresh.addEventListener('click',()=>{
+      clear(); removeBanner();
+    });
+  }
+
+  function init(){
+    const saved=read();
+    if(saved && worthSaving(saved.profile)){
+      showBanner(saved);
+    }
+    // History events fire only when the setup actually changed (and after undo or redo).
+    document.addEventListener('capub:history',scheduleSave);
+    // Also save when the tab is hidden or closed, in case the timer has not fired yet.
+    document.addEventListener('visibilitychange',()=>{
+      if(document.visibilityState!=='hidden') return;
+      clearTimeout(saveTimer);
+      const p=currentProfile();
+      if(worthSaving(p)) write(p);
+    });
+  }
+  // The toolbar is added by the polish module a moment after load; wait for it.
+  setTimeout(init,350);
+})();
+
 // About dialog: the unofficial-site and privacy notice, opened from the footer.
 (function capubAboutDialog(){
   const dialog = document.getElementById('aboutDialog');

@@ -350,6 +350,26 @@ header h1::after{
 }
 .capubSectionHint b{color:var(--ink)}
 .capubProgress[hidden],.capubSectionHint[hidden]{display:none}
+/* Resume banner: shown once, above the preview, when a saved setup is waiting. */
+.resumeBanner{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--s2) var(--s4);
+  margin:0 0 var(--s3);
+  padding:var(--s3) var(--s4);
+  border:1px solid var(--line);
+  border-left:4px solid var(--cap-yellow);
+  border-radius:var(--r);
+  background:var(--panel);
+  color:var(--muted);
+  font-size:var(--t-sm);
+}
+.resumeText{display:flex;flex-direction:column;gap:2px;min-width:0}
+.resumeText b{color:var(--ink);font-family:var(--font-head);font-size:var(--t-lg);line-height:1.1}
+.resumeActions{display:flex;gap:var(--s2)}
+.resumeActions button{white-space:nowrap}
 
 /* ---- Panels ---- */
 .stepGroup{margin-bottom:var(--s2)}
