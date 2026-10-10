@@ -1294,12 +1294,11 @@ function buildBadgeGallery(){
       <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
       <div style="flex:1;min-width:0;">
         <div class="title">${escapeHtml(title)}${rareCadetTag}</div>
-        <div class="sub">(${escapeHtml(id)})</div>
         <div class="miniRow">
           <label><input type="checkbox" class="bdChk"> Add</label>
         </div>
         ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-        <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Regulation scale: ${Math.round(getBadgeRenderSize(id).width)}×${Math.round(getBadgeRenderSize(id).height)} px</div>
+        ${getBadgeTileMetaHtml(id)}
       </div>
     `;
 

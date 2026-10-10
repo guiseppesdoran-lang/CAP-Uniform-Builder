@@ -973,8 +973,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       for(let idx=0; idx<showCount; idx++){
         const id = eligible[idx];
         const sel = State.badgeSelections[id] || (State.badgeSelections[id] = { checked:false });
-        const title = CAPUB_UTILITY_BADGE_LABELS[id]
-          || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+        const title = CAPUB_UTILITY_BADGE_LABELS[id] || getBadgeDisplayName(id);
         const rareCadetTag = (!utilityMode && State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
         const utilityCandidates = utilityMode ? getBadgeAssetCandidates(id) : [];
         const previewPath = utilityMode ? (utilityCandidates[0] || `badges/utility/${id}.png`) : getBadgeAssetPath(id);
@@ -986,10 +985,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
           <img loading="lazy" decoding="async" src="${utilityMode ? capubUtilityBadgePreviewUrl(id) : ASSET(previewPath)}" alt="${escapeHtml(title)}"${utilityMode ? ' class="utilityBadgePreview"' : ''}>
           <div style="flex:1;min-width:0;">
             <div class="title">${escapeHtml(title)}${rareCadetTag}</div>
-            <div class="sub">(${escapeHtml(id)})${utilityMode ? ' • Silver-on-blue utility badge' : ''}</div>
+            ${utilityMode ? '<div class="sub">Silver-on-blue utility badge</div>' : ''}
             <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
             ${id==='squadron_commander_badge' && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            <div class="sub">Slot: <b>${utilityMode ? 'Utility uniform calibrated field slot' : getBadgeSlotLabel(id)}</b> • Regulation scale: ${Math.round(getBadgeRenderSize(id).width)}×${Math.round(getBadgeRenderSize(id).height)} px</div>
+            ${getBadgeTileMetaHtml(id, utilityMode ? 'In its set position on the field uniform' : '')}
           </div>`;
 
         const chk = tile.querySelector('.bdChk');
