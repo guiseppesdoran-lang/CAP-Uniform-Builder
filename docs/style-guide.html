@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uniform Builder style guide</title>
+<meta name="robots" content="noindex">
+<!-- Uses the app's own stylesheet, so the guide cannot drift from the tokens it documents. -->
+<link rel="stylesheet" href="../styles/app.css">
+<style>
+  body{margin:0}
+  .g{max-width:1040px;margin:0 auto;padding:var(--s5) var(--s4) 96px}
+  .g h1{font-size:2.5rem;line-height:1.05;margin:0 0 var(--s2)}
+  .g h2{font-size:var(--t-xl);margin:var(--s6) 0 var(--s3);padding-top:var(--s4);border-top:1px solid var(--line)}
+  .g h3{font-size:var(--t-lg);margin:var(--s4) 0 var(--s2)}
+  .g p,.g li{max-width:70ch}
+  .g code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.875em;background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+  .bar{display:flex;align-items:center;gap:var(--s3);justify-content:space-between;padding:var(--s3) var(--s4);background:var(--brand);color:var(--on-brand)}
+  .bar strong{font-family:var(--font-head);font-size:var(--t-lg)}
+  .bar button{width:auto;margin:0;min-height:44px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.7);font-size:var(--t-md)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s3)}
+  .sw{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:var(--panel)}
+  .sw i{display:block;height:64px}
+  .sw div{padding:var(--s2) var(--s3);font-size:var(--t-sm)}
+  .sw b{display:block;font-family:var(--font-head);font-size:var(--t-lg)}
+  table{width:100%;border-collapse:collapse;font-size:var(--t-sm);background:var(--panel)}
+  th,td{padding:var(--s2) var(--s3);text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel-2)}
+  .demo{padding:var(--s4);border:1px solid var(--line);border-radius:var(--r-lg);background:var(--bg)}
+  .demo .row button{width:auto}
+  .rule{padding:var(--s3) var(--s4);border-left:4px solid var(--cap-yellow);background:var(--panel-2);border-radius:var(--r)}
+  .spec{display:flex;gap:var(--s4);align-items:baseline;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="bar">
+  <strong>Uniform Builder style guide</strong>
+  <button type="button" id="gt">Dark mode</button>
+</div>
+<main class="g">
+  <h1>Uniform Builder style guide</h1>
+  <p>How the app looks, why, and the rules for changing it. The values below come straight from <code>styles/app.css</code>: change a token there and this page updates with the app.</p>
+  <p class="rule"><b>This is an unofficial tool.</b> It follows the public CAP Brand Guide for color and type only. It uses no CAP logo, seal, wordmark or emblem, and it must keep saying it is not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force.</p>
+
+  <h2>Premise and source boundary</h2>
+  <p>The look is the Civil Air Patrol Brand Guide's own palette and typefaces (Colors and Typography pages of the CAP Brand Portal), applied to a working tool. Nothing else is borrowed: no templates, UI kits or third-party icon sets. The goal is a calm, legible interface for cadets and staff on a phone or a desktop, where the uniform preview is the focus and the controls stay out of its way.</p>
+  <p><b>Out of bounds:</b> the CAP logo, symbol, wordmark, command emblem, official seal and legacy graphics; the limited-use colors CAP Navy <code>#111728</code> and Sky Blue <code>#99B9CA</code> (they need approval from CAP/MC); any wording or layout that makes the app look like an official CAP product.</p>
+
+  <h2>Color</h2>
+  <h3>Brand palette</h3>
+  <div class="grid">
+    <div class="sw"><i style="background:var(--cap-blue)"></i><div><b>Symbol Blue</b><code>#001871</code> Header, primary actions, selection (light theme)</div></div>
+    <div class="sw"><i style="background:var(--cap-silver)"></i><div><b>Silver Gray</b><code>#9EA2A2</code> Borders and fills only. Never text: 2.6:1 on white</div></div>
+    <div class="sw"><i style="background:var(--cap-red)"></i><div><b>Scarlet Red</b><code>#BA0C2F</code> Destructive actions and errors only</div></div>
+    <div class="sw"><i style="background:var(--cap-yellow)"></i><div><b>Air Force Yellow</b><code>#FFCD00</code> Unofficial tag, notes, primary action in dark theme, focus ring in dark theme</div></div>
+    <div class="sw"><i style="background:var(--cap-blue-20)"></i><div><b>Symbol Blue 20%</b><code>#CCD1E3</code> Selected state background</div></div>
+    <div class="sw"><i style="background:var(--cap-red-20)"></i><div><b>Scarlet Red 20%</b><code>#F1CED5</code> Error background</div></div>
+    <div class="sw"><i style="background:var(--cap-yellow-20)"></i><div><b>Air Force Yellow 20%</b><code>#FFF5CC</code> Warning background</div></div>
+    <div class="sw"><i style="background:var(--cap-silver-20)"></i><div><b>Silver Gray 20%</b><code>#ECECEC</code> Page background (light)</div></div>
+  </div>
+  <h3>Roles</h3>
+  <p>Components use roles, never raw brand values. The page, panels, text, borders, actions, selection and status each have a token, and each has a light and a dark value.</p>
+  <table>
+    <tr><th>Token</th><th>Use</th><th>Light</th><th>Dark</th></tr>
+    <tr><td><code>--bg</code></td><td>Page background</td><td>#ECECEC</td><td>#070B22</td></tr>
+    <tr><td><code>--panel</code>, <code>--panel-2</code></td><td>Surfaces, secondary surfaces</td><td>#FFFFFF, #F6F7FA</td><td>#0F1739, #141E48</td></tr>
+    <tr><td><code>--ink</code>, <code>--muted</code></td><td>Text, secondary text</td><td>#10131A, #464B53</td><td>#F2F4FA, #B9BED0</td></tr>
+    <tr><td><code>--line</code>, <code>--line-strong</code></td><td>Dividers, control borders</td><td>#C9CCD3, #6B7078</td><td>#2C3769, #7C86B4</td></tr>
+    <tr><td><code>--action</code></td><td>Primary button</td><td>#001871</td><td>#FFCD00</td></tr>
+    <tr><td><code>--select-bg</code>, <code>--select-line</code></td><td>Selected option</td><td>#CCD1E3, #001871</td><td>#1B2860, #FFCD00</td></tr>
+    <tr><td><code>--danger</code>, <code>--ok</code>, <code>--warn</code></td><td>Status text</td><td>#BA0C2F, #1F6B3A, #7A5C00</td><td>#FF8FA3, #8FD7A8, #FFCD00</td></tr>
+    <tr><td><code>--focus</code></td><td>Focus ring</td><td>#001871</td><td>#FFCD00</td></tr>
+  </table>
+  <h3>Contrast (WCAG 2.2 AA needs 4.5:1 for text, 3:1 for large text and controls)</h3>
+  <table>
+    <tr><th>Pair</th><th>Ratio</th></tr>
+    <tr><td>Ink on panel, light / dark</td><td>18.6:1 / 15.9:1</td></tr>
+    <tr><td>Muted on panel, light / dark</td><td>8.8:1 / 9.4:1</td></tr>
+    <tr><td>White on Symbol Blue (header, primary button)</td><td>15.3:1</td></tr>
+    <tr><td>Ink on Air Force Yellow (dark primary button)</td><td>12.4:1</td></tr>
+    <tr><td>White on Scarlet Red (destructive button)</td><td>6.6:1</td></tr>
+    <tr><td>Danger, ok and warn text on their surfaces, light</td><td>6.6:1, 6.5:1, 5.7:1</td></tr>
+    <tr><td>Focus ring on page, light / dark</td><td>13.0:1 / 12.9:1</td></tr>
+  </table>
+  <p>Color never carries meaning alone: a locked uniform has a dashed border and spells out its reason, a selected one has a thicker border, and messages lead with a word (Saved, Check this, Could not export).</p>
+
+  <h2>Typography</h2>
+  <div class="spec"><span style="font-family:var(--font-head);font-weight:700;font-size:2.5rem">Rajdhani Bold</span><span>Headings, step titles, button labels, large numbers. Always weight 700.</span></div>
+  <div class="spec"><span style="font-size:1.5rem">Ubuntu Regular</span><span>Body, field labels (bold), hints, tables.</span></div>
+  <table style="margin-top:var(--s3)">
+    <tr><th>Token</th><th>Size</th><th>Use</th></tr>
+    <tr><td><code>--t-xl</code></td><td>28px</td><td>Page and step group headings</td></tr>
+    <tr><td><code>--t-lg</code></td><td>20px</td><td>Panel headings, buttons, uniform names</td></tr>
+    <tr><td><code>--t-md</code></td><td>15px</td><td>Body and control text</td></tr>
+    <tr><td><code>--t-sm</code></td><td>14px</td><td>Field labels, table text</td></tr>
+    <tr><td><code>--t-xs</code></td><td>13px</td><td>Hints and captions. Nothing is smaller in the interface</td></tr>
+  </table>
+  <p>Fonts are self-hosted from <code>vendor/fonts/</code> as subset WOFF2 (Latin). Licenses: Rajdhani under the SIL Open Font License 1.1, Ubuntu under the Ubuntu Font Licence 1.0; the texts sit beside the files. Do not load fonts from another origin: the page policy forbids it.</p>
+
+  <h2>Shape and space</h2>
+  <ul>
+    <li><b>Radius:</b> 6px for controls (<code>--r</code>), 8px for containers (<code>--r-lg</code>). Nothing else.</li>
+    <li><b>Spacing:</b> 4, 8, 12, 16, 24, 32px (<code>--s1</code> to <code>--s6</code>).</li>
+    <li><b>Targets:</b> at least 44px tall for anything tapped or clicked.</li>
+    <li><b>Elevation:</b> one shadow (<code>--shadow</code>), used for the command bar, toast and dialogs. Cards use a border, not a shadow.</li>
+    <li><b>Layout:</b> a 380px sidebar and the preview. Below 768px the sidebar is a drawer and the command bar wraps.</li>
+  </ul>
+
+  <h2>Components</h2>
+  <h3>Buttons</h3>
+  <div class="demo">
+    <div class="row">
+      <button type="button">Download PNG</button>
+      <button type="button" class="ghost">Validate</button>
+      <button type="button" disabled>Choose rank</button>
+    </div>
+    <p class="hintText">One primary button per area. The rest are <code>ghost</code>. Scarlet is for destructive actions only.</p>
+  </div>
+  <h3>Uniform options</h3>
+  <div class="demo">
+    <div class="uniformList" style="max-width:340px">
+      <button type="button" class="uniformOption activeUniform"><div class="uName">Blues: Class A</div><div class="uDesc">Service coat, ribbons</div></button>
+      <button type="button" class="uniformOption"><div class="uName">Blues: Class B</div><div class="uDesc">Shirt, ribbons</div></button>
+      <button type="button" class="uniformOption locked" data-locked-reason="This uniform is not authorized for this membership type."><div class="uName">Mess Dress</div><div class="uDesc">Mini medals / formal</div></button>
+    </div>
+  </div>
+  <h3>Form field</h3>
+  <div class="demo" style="max-width:380px">
+    <label class="fieldLabel" for="sg-select">Membership Type</label>
+    <select id="sg-select"><option>Cadet Member</option><option>Senior Member</option></select>
+    <div class="hintText">This controls which ranks are available and how the base uniform renders.</div>
+  </div>
+  <h3>Panel and status</h3>
+  <div class="demo" style="max-width:380px">
+    <div class="panelBlock">
+      <div class="fieldLabel">Validation / Build Status</div>
+      <div class="statusGrid">
+        <div class="statusCard"><strong>Ribbons</strong><span>4</span></div>
+        <div class="statusCard"><strong>Warnings</strong><span>0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Behavior</h2>
+  <ul>
+    <li><b>Focus:</b> every interactive element shows a 3px ring on <code>:focus-visible</code>. Never remove it.</li>
+    <li><b>Motion:</b> 120 to 200ms state changes only. Everything stops under <code>prefers-reduced-motion</code>.</li>
+    <li><b>Messages:</b> short messages use the toast (<code>capubNotify()</code>); errors stay longer. Do not use <code>alert()</code>.</li>
+    <li><b>Dialogs:</b> Escape closes, Tab stays inside, focus returns to the opener.</li>
+    <li><b>Undo:</b> setup changes can be undone and redone (Cmd or Ctrl+Z), up to 50 steps.</li>
+    <li><b>Theme:</b> follows the system; the header button overrides it and the choice is kept in this browser.</li>
+    <li><b>Preview:</b> the stage is white paper in both themes, and its geometry belongs to the placement harnesses. Do not resize or move it with styling.</li>
+  </ul>
+
+  <h2>Invariants and reopening</h2>
+  <ul>
+    <li><b>Keep:</b> brand palette and the two typefaces; 44px targets; visible focus; one primary action per area; the unofficial notice in the header tag, footer and About.</li>
+    <li><b>May vary:</b> layout of new panels, copy, new status states built from the existing tokens.</li>
+    <li><b>Needs a decision first:</b> any new color, any new font, anything that draws a CAP mark, changes to the preview stage.</li>
+  </ul>
+
+  <h2>Checking a change</h2>
+  <ul>
+    <li><code>npm test</code>, <code>npm run check:assets</code> (run <code>npm run stamp:assets</code> after editing a script or the stylesheet).</li>
+    <li>Both harnesses in <code>scripts/</code>: <code>compareToBaseline()</code> and <code>comparePlacement()</code> report <code>clean: true</code>.</li>
+    <li>Look at it at 375px, 768px and 1280px, in light and dark, and tab through it.</li>
+  </ul>
+</main>
+<script>
+(function(){
+  var root=document.documentElement,b=document.getElementById('gt');
+  function cur(){return root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');}
+  try{var s=localStorage.getItem('capubTheme'); if(s==='light'||s==='dark') root.setAttribute('data-theme',s);}catch(e){}
+  function label(){b.textContent=cur()==='dark'?'Light mode':'Dark mode';}
+  b.addEventListener('click',function(){var n=cur()==='dark'?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('capubTheme',n);}catch(e){}label();});
+  label();
+})();
+</script>
+</body>
+</html>
