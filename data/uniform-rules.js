@@ -18,7 +18,7 @@
 
   // ribbons: 'required' | 'optional' | 'none'
   //   mini:            miniature medals instead of ribbons (39-1 11.1.4)
-  //   usafAwards:      U.S. military awards and the Air Force Organizational Excellence
+  //   usafAwards:      U.S. military awards, U.S. military badges and the Air Force Organizational Excellence
   //                    Award may be worn (39-1 11.1.6, 11.2.3). This follows the style: true
   //                    for every USAF-style uniform, even one that wears no ribbons at all.
   //   rackColumns:     ribbons per row the uniform allows (39-1 11.2.7)

@@ -86,6 +86,8 @@ function renderAllBadges(){
 
 function renderSelectedMilitaryBadgesOnCap(){
   if(State.organization!=='CAP') return;
+  // Not worn on Corporate-style uniforms (CAPR 39-1 4.2.5.1.3); the selection is kept.
+  if(!isMilitaryAwardWornOnUniform()) return;
   const remaining=Math.max(0,4-getRenderableCountedBadgeIds().length);
   if(!remaining) return;
   const selected=getAllSelectableMilitaryBadges()

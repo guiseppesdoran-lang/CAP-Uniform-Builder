@@ -90,3 +90,10 @@ test('the Air Force Organizational Excellence Award is a senior award (39-3 Atta
   assert.doesNotMatch(common,/Air_Force_Organizational_Excellence_Award/);
   assert.match(senior,/Air_Force_Organizational_Excellence_Award/);
 });
+
+test('U.S. military badges are kept off Corporate-style uniforms in both the gallery and the render (39-1 4.2.5.1.3)',()=>{
+  const placement=fs.readFileSync(path.join(__dirname,'..','js','placement.js'),'utf8');
+  const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
+  assert.match(placement,/function renderSelectedMilitaryBadgesOnCap\(\)\{[\s\S]{0,260}isMilitaryAwardWornOnUniform\(\)/);
+  assert.match(wiring,/isMilitaryAwardWornOnUniform\(\) \? getAllSelectableMilitaryBadges\(\) : \[\]/);
+});

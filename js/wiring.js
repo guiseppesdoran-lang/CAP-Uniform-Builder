@@ -1021,7 +1021,8 @@ function openGalleryModal(kind){
       appendCategorizedBadges(modalHost, eligibleIds);
     }
 
-    const militaryBadges=getAllSelectableMilitaryBadges();
+    // U.S. military badges are not worn on Corporate-style uniforms (CAPR 39-1 4.2.5.1.3).
+    const militaryBadges=isMilitaryAwardWornOnUniform() ? getAllSelectableMilitaryBadges() : [];
     if(militaryBadges.length){
       const militaryRoot=document.createElement('details');
       militaryRoot.dataset.militaryBadgeCatalog='true';
