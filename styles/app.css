@@ -514,7 +514,9 @@ header h1::after{
 #previewArea[data-field-uniform="true"] img.layer.jacket{object-fit:contain;max-width:none;max-height:none}
 
 .previewToolbar{
-  flex:0 0 100%;
+  /* The negative side margins below pull the bar out to the wrapper's edges, so the basis has
+     to grow by the same amount or the bar stops short of the right edge. */
+  flex:0 0 calc(100% + 2 * var(--s5));
   order:-1;
   position:sticky;
   top:calc(-1 * var(--s5));
@@ -891,7 +893,7 @@ header h1::after{
   #layoutShell.sidebar-open #controls{transform:translate3d(0,0,0);visibility:visible;pointer-events:auto}
   #layoutShell.sidebar-collapsed #controls{transform:translate3d(-105%,0,0);visibility:hidden;pointer-events:none}
   #previewWrapper{order:2;flex:1;width:100%;min-width:0;padding:var(--s4) var(--s3) 200px}
-  .previewToolbar{margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) 0;padding:var(--s2) var(--s3);top:calc(-1 * var(--s4))}
+  .previewToolbar{flex-basis:calc(100% + 2 * var(--s3));margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) 0;padding:var(--s2) var(--s3);top:calc(-1 * var(--s4))}
   .controlsScrollArea{padding-bottom:96px}
   .statusGrid{grid-template-columns:1fr}
   .modal{height:90vh}

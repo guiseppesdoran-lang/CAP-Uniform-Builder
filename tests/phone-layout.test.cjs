@@ -32,6 +32,11 @@ test('on a 320px phone the Unofficial notice moves into the subtitle rather than
   assert.match(narrow,/header h1::after\{content:"Unofficial tool"\}/);
 });
 
+test('the preview toolbar is as wide as the wrapper it sits in',()=>{
+  assert.match(css,/\.previewToolbar\{[^}]*flex:0 0 calc\(100% \+ 2 \* var\(--s5\)\)/);
+  assert.match(block('max-width:768px'),/\.previewToolbar\{flex-basis:calc\(100% \+ 2 \* var\(--s3\)\)/);
+});
+
 test('the phone toolbar keeps status and items and drops the uniform pill',()=>{
   assert.match(block('max-width:480px'),/#capubTopBar \.capubPill:nth-child\(2\)\{display:none\}/);
 });
