@@ -153,20 +153,20 @@
           <option value="senior">Senior Member</option>
           <option value="cadet">Cadet Member</option>
         </select>
-        <div class="hintText">This controls which ranks are available and how the base uniform renders.</div>
+        <div class="hintText">Cadet or senior member.</div>
 
         <label class="fieldLabel mt-10" for="rankSetupSelect">Rank</label>
         <select id="rankSetupSelect" disabled>
           <option value="">Select Rank</option>
         </select>
-        <div class="hintText">For Senior Member NCO (SSgt–CMSgt), your NCO base images will be used as the jacket template (if present).</div>
+        <div class="hintText">Your current grade.</div>
 
         <div id="cadetFirstSergeantBlock" class="hidden mt-10">
           <label class="fieldNote">
             <input type="checkbox" id="cadetFirstSergeantCheckbox">
             Cadet First Sergeant diamond
           </label>
-          <div class="hintText">Available only for C/MSgt, C/SMSgt, and C/CMSgt. Uses the rank-specific Class A or Class B base image ending in <code>_1st_sgt</code> when a matching file is available. If a member report shows a current First Sergeant duty assignment, this can auto-select when the cadet rank is eligible.</div>
+          <div class="hintText">For C/MSgt, C/SMSgt and C/CMSgt appointed first sergeant (CAPR 39-1, 10.10.4).</div>
         </div>
       </section>
 </div>
@@ -175,13 +175,13 @@
 <h3 class="stepGroupTitle">2 · Uniform</h3>
 
       <section id="genderBlock" class="panelBlock disabledBlock">
-        <label class="fieldLabel" for="jacketSelect">Gender / Cut</label>
+        <label class="fieldLabel" for="jacketSelect">Cut</label>
         <select id="jacketSelect">
-          <option value="">Select Gender</option>
+          <option value="">Select cut</option>
           <option value="male">Male Cut</option>
           <option value="female">Female Cut</option>
         </select>
-        <div class="hintText">This swaps which base jacket image we render.</div>
+        <div class="hintText">The male or female cut of the uniform.</div>
       </section>
 
       <section id="uniformBlock" class="panelBlock disabledBlock">
@@ -255,7 +255,7 @@
           <option value="right">Right piece only (preview right)</option>
           <option value="off">Off</option>
         </select>
-        <div class="hintText">Uses the collar or lapels from the exact active base image and places them above ribbons, medals, badges, and utility patches.</div>
+        <div class="hintText">Draws the collar or lapels over your ribbons and badges.</div>
         <label class="fieldLabel mt-10" for="garmentMaskSide">Mask piece to edit</label>
         <select id="garmentMaskSide">
           <option value="0">Left piece (preview left)</option>
@@ -287,10 +287,7 @@
           <option value="color_guard">Color Guard shoulder cord</option>
           <option value="honor_guard">Honor Guard shoulder cord</option>
         </select>
-        <div class="hintText">
-          CAC cords are imported from current CAC primary representative duty assignments only.
-          Color Guard and Honor Guard cords are manual selections. Each cord has its own saved coordinates for cadet Class A/Class B male and female uniforms.
-        </div>
+        <div class="hintText">Cadet Advisory Council cords come from a member report. Color Guard and Honor Guard cords are your choice.</div>
       </section>
 </div>
 
@@ -303,9 +300,7 @@
       <section id="groupRibbons" class="panelBlock">
         <label class="fieldLabel">Ribbons / Mini Medals</label>
 
-        <div class="hintText">
-          Use “Choose Ribbons…” to pick ribbons and set award count or earned level in the popup.
-        </div>
+        <div class="hintText">Choose the ribbons you have earned.</div>
 
         <div class="row two mt-6">
           <div class="col"><button id="clearRibbons" class="ghost" type="button">Clear Ribbons</button></div>
@@ -368,12 +363,12 @@
 
         <label class="fieldNote mt-8">
           <input type="checkbox" id="toggleMini">
-          Show Mini Medals (override)
+          Show miniature medals
         </label>
 
         <label class="fieldNote mt-8">
           <input type="checkbox" id="autoMini" checked>
-          Auto-convert ribbons → mini-medals on Mess/Semi-formal
+          Switch to miniature medals on Mess Dress and Semi-formal
         </label>
 
         <label class="fieldNote mt-8">
@@ -385,7 +380,7 @@
         </label>
 
         <div id="deviceTool">
-          <strong class="subHead">Ribbon Devices: Multi-Apply</strong>
+          <strong class="subHead">Ribbon devices: add several at once</strong>
           <div id="devicePicker"></div>
           <div class="row mt-8">
             <button id="deviceApplyModeBtn" type="button">Enable Apply Mode</button>
@@ -408,9 +403,7 @@
       <section id="groupBadges" class="panelBlock">
         <label class="fieldLabel">Badges</label>
 
-        <div class="hintText">
-          Use “Choose Badges…” to pick badges in the popup (grouped by category).
-        </div>
+        <div class="hintText">Choose the badges you wear.</div>
 
         <div class="row two mt-6">
           <div class="col"><button id="clearBadges" class="ghost" type="button">Clear Badges</button></div>
@@ -420,18 +413,14 @@
         <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
         <div id="badgeGallery" class="galleryGrid"></div>
 
-        <div class="hintText">
-          Placement follows your CAPR 39-1 slot rules (ORP/OLP/UN/ON/URBP/OLPA/OLPU/LP/RP/OLPF).
-        </div>
+        <div class="hintText">Each badge is placed where CAPR 39-1 puts it.</div>
       </section>
 
       <!-- PATCHES: PICKER BUTTON (NO SIDEBAR THUMBS) -->
       <section id="groupPatches" class="panelBlock">
         <label class="fieldLabel">Patches</label>
 
-        <div class="hintText">
-          Use “Choose Patches…” to pick patches in the popup.
-        </div>
+        <div class="hintText">Choose the patches you wear.</div>
 
         <div class="row two mt-6">
           <div class="col"><button id="clearPatches" class="ghost" type="button">Clear Patches</button></div>
@@ -440,10 +429,7 @@
 
         <div class="panelDivider">
           <label class="fieldLabel" for="unitPatchSelect">Unit Patch</label>
-          <div class="hintText">
-            Separate from the general patch picker. Scroll the charter dropdown or type in the search box to filter by charter number or unit name.
-            SER-TN-185 and SER-TN-330 currently have image assets in this program.
-          </div>
+          <div class="hintText">Search by charter number or unit name.</div>
           <input id="unitPatchSearch" type="search" aria-label="Search unit patches" placeholder="Search charter number or unit name..." autocomplete="off"/>
           <select id="unitPatchSelect">
             <option value="">No unit patch</option>
@@ -491,29 +477,27 @@
 </div>
 
 <details class="toolsGroup" id="stepGroup-tools">
-<summary>Builder tools</summary>
+<summary>More tools: save, reset, text labels</summary>
 
       <section id="capubV2QuickPanel" class="panelBlock">
-        <label class="fieldLabel">Quick Builder Tools <span class="validationBadge">V2</span></label>
+        <label class="fieldLabel">Saved setups</label>
         <div class="row two mt-6">
           <div class="col"><button id="capubV2SaveLocal" class="ghost" type="button">Save to Browser</button></div>
           <div class="col"><button id="capubV2LoadLocal" class="ghost" type="button">Load Saved</button></div>
         </div>
         <div class="row two mt-6">
-          <div class="col"><button id="capubV2MissingBtn" class="ghost" type="button">Download Missing Asset List</button></div>
+          <div class="col"><button id="capubV2MissingBtn" class="ghost" type="button">Missing artwork list (for maintainers)</button></div>
           <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset Builder</button></div>
         </div>
-        <div class="hintText">Saves selected uniform, rank, ribbons, badges, patches, devices, text labels, and calibration.</div>
+        <div class="hintText">Keeps your whole setup in this browser. It is also saved automatically as you work.</div>
       </section>
 
       <section id="measurementOverlayPanel" class="panelBlock">
         <label class="fieldLabel">Measurement Overlay</label>
         <label class="fieldNote mt-4">
-          <input type="checkbox" id="toggleMeasurementOverlay"> Show red distance arrows and labels
+          <input type="checkbox" id="toggleMeasurementOverlay"> Show distance arrows
         </label>
-        <div class="hintText">
-          Defaults off. When enabled, displays red double-ended arrows between adjacent rendered items. The ribbon rack is measured as one rack, not as individual ribbons.
-        </div>
+        <div class="hintText">Shows red distance arrows between items on the uniform.</div>
       </section>
 
       <section id="capubV2TextPanel" class="panelBlock">
@@ -523,9 +507,9 @@
         <label class="fieldLabel mt-8">CAP Tape Text</label>
         <input id="capubV2CapTape" maxlength="20" value="CIVIL AIR PATROL"/>
         <label class="fieldNote mt-8">
-          <input type="checkbox" id="capubV2ShowText" checked> Show generated text tapes / placeholders when image assets are missing
+          <input type="checkbox" id="capubV2ShowText" checked> Show text where artwork is missing
         </label>
-        <div class="hintText">This makes OCP/ABU previews useful even before every tape, rank, and patch image is available.</div>
+        <div class="hintText">Draws name and tape text where artwork is missing.</div>
       </section>
 </details>
     </div>
