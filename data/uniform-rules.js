@@ -23,6 +23,9 @@
   //                    for every USAF-style uniform, even one that wears no ribbons at all.
   //   rackColumns:     ribbons per row the uniform allows (39-1 11.2.7)
   //   badgeCap:        counted badges, or null where the builder does not enforce one
+  //   chaplainBadgeOnly: the only occupational badge the uniform authorizes is the chaplain
+  //                    badge (39-1 4.2.3.1.1.3; Corporate Semi-Formal is worn as for Corporate
+  //                    Service Dress, 4.2.1)
   const RULES=Object.freeze({
     blues_a:{group:'everyday',style:'usaf',membership:['cadet','senior'],
       ribbons:'required',mini:false,usafAwards:true,rackColumns:[3,4],badgeCap:4,
@@ -34,14 +37,14 @@
       ribbons:'none',mini:true,usafAwards:true,rackColumns:[],badgeCap:null,
       refs:{who:'4.1.1',mini:'11.1.4'}},
     semi_formal:{group:'formal',style:'corporate',membership:['senior'],
-      ribbons:'none',mini:true,usafAwards:false,rackColumns:[],badgeCap:null,
-      refs:{who:'4.2.1',mini:'11.1.4',awards:'11.1.6'}},
+      ribbons:'none',mini:true,usafAwards:false,rackColumns:[],badgeCap:null,chaplainBadgeOnly:true,
+      refs:{who:'4.2.1',mini:'11.1.4',awards:'11.1.6',occupational:'4.2.3.1.1.3'}},
     aviator:{group:'everyday',style:'corporate',membership:['senior'],minimum:true,
       ribbons:'optional',mini:false,usafAwards:false,rackColumns:[3],badgeCap:4,
       refs:{ribbons:'4.2.5.1.2.2',rack:'11.2.7',minimum:'1.2.3',badges:'4.2.5.1.3',awards:'11.1.6'}},
     aviator_blazer:{group:'everyday',style:'corporate',membership:['senior'],
-      ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:4,
-      refs:{ribbons:'11.1.3',who:'4.2.3',awards:'11.1.6'}},
+      ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:4,chaplainBadgeOnly:true,
+      refs:{ribbons:'11.1.3',who:'4.2.3',awards:'11.1.6',occupational:'4.2.3.1.1.3'}},
     corporate_field:{group:'field',style:'corporate',membership:['senior'],
       ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:null,
       refs:{who:'5.2.1',ribbons:'11.1.3',awards:'11.1.6'}},
@@ -108,6 +111,10 @@
     if(!rule.membership.includes('cadet')) return `For senior members${where}`;
     return `Not available to ${membership} members${where}`;
   }
+  function allowsOnlyChaplainBadge(uniformId){
+    const rule=getUniformRule(uniformId);
+    return !!(rule && rule.chaplainBadgeOnly);
+  }
   function uniformIdsInGroup(group){
     return Object.keys(RULES).filter(id=>RULES[id].group===group);
   }
@@ -115,6 +122,6 @@
   return {
     GROUPS,RULES,USAF_ONLY_AWARD_IDS,
     getUniformRule,ribbonPolicy,allowsRibbons,allowsMiniMedals,allowsRackColumns,
-    allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,uniformIdsInGroup,lockedReason
+    allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,uniformIdsInGroup,lockedReason,allowsOnlyChaplainBadge
   };
 });

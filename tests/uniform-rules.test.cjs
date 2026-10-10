@@ -97,3 +97,13 @@ test('U.S. military badges are kept off Corporate-style uniforms in both the gal
   assert.match(placement,/function renderSelectedMilitaryBadgesOnCap\(\)\{[\s\S]{0,260}isMilitaryAwardWornOnUniform\(\)/);
   assert.match(wiring,/isMilitaryAwardWornOnUniform\(\) \? getAllSelectableMilitaryBadges\(\) : \[\]/);
 });
+
+test('Corporate Service Dress and Corporate Semi-Formal authorize only the chaplain badge (39-1 4.2.3.1.1.3, 4.2.1)',()=>{
+  const only=Object.keys(rules.RULES).filter(id=>rules.allowsOnlyChaplainBadge(id)).sort();
+  assert.deepEqual(only,['aviator_blazer','semi_formal']);
+  assert.equal(rules.allowsOnlyChaplainBadge('aviator'),false,'the Aviator Shirt allows more');
+  assert.equal(rules.allowsOnlyChaplainBadge('blues_a'),false);
+  const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
+  assert.match(wiring,/allowsOnlyChaplainBadge\(State\.uniform\)/);
+  assert.match(wiring,/Not authorized here:/);
+});

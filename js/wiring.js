@@ -1592,6 +1592,19 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(badgeCap && countBadgesForLimit() > badgeCap){
       addNotice('err',`This uniform allows ${badgeCap} counted badges and ${countBadgesForLimit()} are selected. Command insignia does not count against this limit.`,{id:'expandBadges',label:'Review badges'});
     }
+    // Corporate Service Dress and Corporate Semi-Formal authorize only the chaplain badge (39-1
+    // 4.2.3.1.1.3). Nothing is hidden or moved; the member is told which badges do not belong.
+    if(CAPUBUniformRules.allowsOnlyChaplainBadge(State.uniform)){
+      const chaplain = new Set(['christian_chaplin','buddist_chaplin','jewish_chaplin','muslim_chaplin']);
+      const notAuthorized = (State.badges || []).filter(id => {
+        if(chaplain.has(id) || isCommandInsigniaBadge(id)) return false;
+        const slot = String(badgeLocations[id] || '');
+        return slot.includes('OLP') || slot === 'LP,RP';
+      });
+      if(notAuthorized.length){
+        addNotice('warn',`This uniform authorizes only the chaplain badge (CAPR 39-1, 4.2.3.1.1.3). Not authorized here: ${notAuthorized.map(getBadgeDisplayName).join(', ')}.`,{id:'expandBadges',label:'Review badges'});
+      }
+    }
     const unwornAwards = Object.entries(State.ribbonSelections || {})
       .filter(([id,sel])=>sel && sel.checked && !isAwardWornOnUniform(id)).length;
     if(unwornAwards){
