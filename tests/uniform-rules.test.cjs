@@ -50,8 +50,8 @@ test('four-across ribbon rows are only authorized on Class A (39-1 11.2.7)',()=>
 test('U.S. military awards and the AF Organizational Excellence Award stay off Corporate-style uniforms (39-1 11.1.6, 11.2.3)',()=>{
   for(const id of Object.keys(rules.RULES)){
     const corporate=rules.getUniformRule(id).style==='corporate';
-    assert.equal(rules.isAwardAllowedOnUniform('x',id,{isMilitary:true}),!corporate && rules.getUniformRule(id).usafAwards,id);
-    assert.equal(rules.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award',id),!corporate && rules.getUniformRule(id).usafAwards,id);
+    assert.equal(rules.isAwardAllowedOnUniform('x',id,{isMilitary:true}),!corporate,id);
+    assert.equal(rules.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award',id),!corporate,id);
   }
   assert.equal(rules.isAwardAllowedOnUniform('silver_medal_of_valor','aviator'),true,'CAP awards are not restricted');
   assert.equal(rules.isAwardAllowedOnUniform('x','blues_a',{isMilitary:true}),true);

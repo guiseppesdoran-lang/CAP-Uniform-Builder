@@ -19,7 +19,8 @@
   // ribbons: 'required' | 'optional' | 'none'
   //   mini:            miniature medals instead of ribbons (39-1 11.1.4)
   //   usafAwards:      U.S. military awards and the Air Force Organizational Excellence
-  //                    Award may be worn (39-1 11.1.6, 11.2.3)
+  //                    Award may be worn (39-1 11.1.6, 11.2.3). This follows the style: true
+  //                    for every USAF-style uniform, even one that wears no ribbons at all.
   //   rackColumns:     ribbons per row the uniform allows (39-1 11.2.7)
   //   badgeCap:        counted badges, or null where the builder does not enforce one
   const RULES=Object.freeze({
@@ -45,13 +46,13 @@
       ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:null,
       refs:{ribbons:'11.1.3',awards:'11.1.6'}},
     abu:{group:'field',style:'usaf',membership:['cadet','senior'],
-      ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:null,
+      ribbons:'none',mini:false,usafAwards:true,rackColumns:[],badgeCap:null,
       refs:{ribbons:'11.1.3'}},
     ocp:{group:'field',style:'usaf',membership:['cadet','senior'],
-      ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:4,
+      ribbons:'none',mini:false,usafAwards:true,rackColumns:[],badgeCap:4,
       refs:{ribbons:'11.1.3'}},
     flight_suit:{group:'field',style:'usaf',membership:['cadet','senior'],
-      ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:null,
+      ribbons:'none',mini:false,usafAwards:true,rackColumns:[],badgeCap:null,
       refs:{ribbons:'11.1.3'}},
     polo:{group:'field',style:'corporate',membership:['senior'],
       ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:null,

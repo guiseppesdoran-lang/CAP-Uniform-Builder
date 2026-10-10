@@ -1535,13 +1535,21 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       const bad = State.badges.filter(id=>!isSeniorAuthorized(id));
       if(bad.length) addNotice('err','Senior profile includes cadet-only badge(s): '+bad.map(pretty).join(', '));
     }
+    // Badge limits and award wear come from data/uniform-rules.js (CAPR 39-1).
+    const badgeCap = CAPUBUniformRules.getUniformRule(State.uniform)?.badgeCap;
+    if(badgeCap && countBadgesForLimit() > badgeCap){
+      addNotice('err',`This uniform allows ${badgeCap} counted badges and ${countBadgesForLimit()} are selected. Command insignia does not count against this limit.`);
+    }
+    const unwornAwards = Object.entries(State.ribbonSelections || {})
+      .filter(([id,sel])=>sel && sel.checked && !isAwardWornOnUniform(id)).length;
+    if(unwornAwards){
+      addNotice('warn',`${unwornAwards} selected award${unwornAwards===1?' is':'s are'} not shown: U.S. military awards and the Air Force Organizational Excellence Award are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6 and 11.2.3). ${unwornAwards===1?'It comes':'They come'} back on a USAF-style uniform.`);
+    }
     if(State.uniform === 'ocp'){
       // U.S. flag and AUX duty identifier are mandatory but are now baked into the OCP base image.
       // They are not selectable render layers and should not create validation warnings.
-      if(countBadgesForLimit() > 4) addNotice('err','OCP chest badges exceed the maximum of four counted badges. Command insignia does not count against this limit.');
     }
     if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
-      if(countBadgesForLimit() > 4) addNotice('err','Service/aviator uniform badge count exceeds four counted badges. Command insignia does not count against this limit.');
       if(State.gender === 'female' && State.uniform === 'blues_a'){
         const femaleSpecialtyCount = getFemaleClassASpecialtyBadgeIds().length;
         if(femaleSpecialtyCount > 2) addNotice('err','Female Class A specialty-track badges above the nameplate are limited to two. Additional specialty badges will not render in that row.');

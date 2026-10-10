@@ -1061,7 +1061,7 @@ function buildRibbonGallery(options={}){
     section.ids.forEach(id=>wrap.appendChild(buildTile(id,false)));
   }
 
-  if(State.ribbonGalleryExpanded && !isMilitaryAwardWornOnUniform()){
+  if(State.ribbonGalleryExpanded && !isMilitaryAwardWornOnUniform()){ // Corporate-style only: USAF-style uniforms allow them
     const note=document.createElement('div');
     note.className='hintText';
     note.textContent='U.S. military awards are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6).';
