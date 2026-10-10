@@ -751,7 +751,21 @@ header h1::after{
 .modalHeader .actions{display:flex;gap:var(--s2);align-items:center}
 .modalHeader .actions button{width:auto;margin:0;padding:0 var(--s3);background:transparent;border:1px solid rgba(255,255,255,.7);color:#fff;font-size:var(--t-md)}
 .modalHeader .actions button:hover{background:rgba(255,255,255,.18)}
-.modalBody{height:calc(100% - 60px);overflow:auto;padding:var(--s4);background:var(--bg)}
+.modal{display:flex;flex-direction:column}
+.modalHeader{flex:0 0 auto}
+.modalBody{flex:1 1 auto;min-height:0;overflow:auto;padding:var(--s4);background:var(--bg)}
+.modalFooter{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--s3);
+  padding:var(--s2) var(--s4);
+  border-top:1px solid var(--line);
+  background:var(--panel);
+}
+.modalCount{font-size:var(--t-md);font-weight:700;color:var(--ink)}
+.modalFooter button{width:auto;margin:0;padding:0 var(--s5)}
 .modal .galleryGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 
 /* ---- Military award builder ---- */

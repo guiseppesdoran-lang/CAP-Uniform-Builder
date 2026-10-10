@@ -842,7 +842,30 @@ const modalRestore = by('galleryModalRestoreBtn');
 
 let modalLast = null;
 
+// What the footer of the picker says is selected right now.
+let capubModalKind = null;
+function capubModalCountText(kind){
+  if(kind === 'ribbons'){
+    const count = new Set((State.ribbons || []).map(r => r.id)).size;
+    return `${count} ribbon${count === 1 ? '' : 's'} selected`;
+  }
+  if(kind === 'badges'){
+    const counted = typeof countBadgesForLimit === 'function' ? countBadgesForLimit() : (State.badges || []).length;
+    const cap = (CAPUBUniformRules.getUniformRule(State.uniform) || {}).badgeCap;
+    return cap ? `${counted} of ${cap} badges selected` : `${counted} badge${counted === 1 ? '' : 's'} selected`;
+  }
+  if(kind === 'patches'){
+    const count = (State.patches || []).length;
+    return `${count} patch${count === 1 ? '' : 'es'} selected`;
+  }
+  return '';
+}
+function capubRefreshModalCount(){
+  const out = by('galleryModalCount');
+  if(out) out.textContent = capubModalCountText(capubModalKind);
+}
 function openGalleryModal(kind){
+  capubModalKind = kind;
   modalHost.innerHTML = '';
 
   const host = document.createElement('div');
@@ -1213,6 +1236,10 @@ function closeGalleryModal(){
 }
 
 modalClose.addEventListener('click', closeGalleryModal);
+const modalDone = by('galleryModalDoneBtn');
+if(modalDone) modalDone.addEventListener('click', closeGalleryModal);
+// Picks re-render a moment after the click, so read the counts a beat later.
+['change','click'].forEach(evt => modalHost.addEventListener(evt, () => setTimeout(capubRefreshModalCount, 150)));
 modalOverlay.addEventListener('click', (e)=>{
   if(e.target === modalOverlay) closeGalleryModal();
 });
@@ -1732,6 +1759,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(kind === 'patches') State.patchGalleryExpanded = true;
     originalOpenGalleryModal(kind);
     injectModalSearch(kind);
+    capubRefreshModalCount();
   };
 
   // Safer clear actions: keep UI selections in sync.
