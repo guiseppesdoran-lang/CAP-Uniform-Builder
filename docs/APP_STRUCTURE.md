@@ -32,8 +32,10 @@ checks.
 
 ## Privacy and data
 
-The page keeps everything in the browser. Saved setups live in localStorage (Save to Browser)
-and nothing is uploaded when a PNG is downloaded. The only outbound traffic is the optional
+The page keeps everything in the browser. The setup is autosaved to localStorage a moment after
+every change (`cap_uniform_builder_autosave_v1`, in `js/workspace-ui.js`) and offered back with a
+Resume prompt on the next visit; it is never loaded silently. Named saves live in localStorage
+too (Save to Browser), and nothing is uploaded when a PNG is downloaded. The only outbound traffic is the optional
 submission endpoint, and only when someone sends a patch image or an administrator submits a
 calibration. Saved or imported setups are validated by `sanitizeProfile()` in `js/wiring.js`
 before they touch the page state; values that go into HTML pass through `escapeHtml()`.
