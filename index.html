@@ -11,7 +11,7 @@
 <meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Everything stays in your browser.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
-<link rel="stylesheet" href="styles/app.css?v=ff1eafecd4">
+<link rel="stylesheet" href="styles/app.css?v=7cf328da99">
 </head>
 <body>
 
@@ -118,7 +118,7 @@
 
 <main id="layoutShell" class="sidebar-open">
 
-  <aside id="controls">
+  <aside id="controls" aria-label="Uniform controls">
     <div class="controlsHeader">
       <button type="button" id="sheetClose" class="ghost sheetClose" aria-label="Close controls">Done</button>
       <h2 class="controlsTitle">Uniform Builder Controls</h2>
@@ -516,7 +516,7 @@
     </div>
   </aside>
 
-  <section id="previewWrapper">
+  <section id="previewWrapper" aria-label="Uniform preview">
     <div id="previewArea">
       <div id="uniformCanvas"></div>
     </div>
@@ -532,7 +532,8 @@
 <div class="layer" id="assets" style="display:none"></div>
 
 <footer id="pageFooter">
-  Unofficial tool, not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force. Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard
+  <span class="footerFull">Unofficial tool, not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force.</span><span class="footerShort">Unofficial tool, not affiliated with CAP or the U.S. Air Force.</span>
+  <span class="footerCredit">Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard</span>
   · <button type="button" id="aboutOpen" class="footerLink">About</button>
 </footer>
 
@@ -541,6 +542,7 @@
   <p>An unofficial planning tool for arranging Civil Air Patrol uniform items. It is not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force, and it does not replace CAPR 39-1 or your unit's guidance. Check the regulation before you buy or wear anything.</p>
   <p><b>Privacy.</b> Nothing you build is uploaded. Your setup is saved in this browser as you work, so you can pick it up later, and it never leaves this device. A member report you import is read on your device only.</p>
   <p>Civil Air Patrol, the U.S. Air Force and other names, insignia and uniform designs shown here belong to their owners. The colors and typefaces follow the public CAP Brand Guide. That does not make this an official CAP product.</p>
+  <p>Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard.</p>
   <div class="aboutActions"><button type="button" id="aboutClose" class="ghost">Close</button></div>
 </dialog>
 
@@ -589,8 +591,8 @@
 <script src="js/galleries.js?v=be571e7da2"></script>
 <script src="js/placement.js?v=d98aaadc59"></script>
 <script src="js/wiring.js?v=408e5cb45c"></script>
-<script src="js/workspace-ui.js?v=2012b8c17c"></script>
-<script src="js/guided-flow.js?v=29bff49f3a"></script>
+<script src="js/workspace-ui.js?v=1abd9808aa"></script>
+<script src="js/guided-flow.js?v=601f0ddbd3"></script>
 <script src="js/member-report-import.js?v=3373103425"></script>
 <script src="js/bootstrap.js?v=ac1508ad45"></script>
 <script src="js/patches.js?v=7476812c72"></script>

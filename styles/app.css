@@ -970,6 +970,16 @@ header h1::after{
   .previewToolCard .zoomReadout{min-width:40px}
 }
 
+.footerShort{display:none}
+@media (max-width:480px){
+  .footerFull,.footerCredit{display:none}
+  .footerShort{display:inline}
+  /* Two short lines, so the footer (and the sheet that sits on it) can be shorter. */
+  :root{--capub-footer-h:52px}
+}
+
+html[data-ux="2"] .controlsHeader .controlsTitle::after{display:none}
+
 /* Very narrow phones (320px): the Unofficial notice moves into the subtitle instead of a tag. */
 @media (max-width:360px){
   .unofficialTag{display:none}

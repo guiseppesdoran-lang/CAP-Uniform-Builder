@@ -151,6 +151,17 @@
       // a narrow workspace. Pull the box in by the amount it shrank (or grow it).
       area.style.marginRight=((V3.zoom-1)*area.offsetWidth)+'px';
       area.style.marginBottom=((V3.zoom-1)*area.offsetHeight)+'px';
+      // On a phone, centre the scaled uniform in the room beside it instead of hugging the left.
+      const wrap=safeBy('previewWrapper');
+      const mobile=window.matchMedia('(max-width:768px)').matches;
+      if(wrap && mobile){
+        const style=getComputedStyle(wrap);
+        const inner=wrap.clientWidth - parseFloat(style.paddingLeft||0) - parseFloat(style.paddingRight||0);
+        const free=inner - area.offsetWidth*V3.zoom;
+        area.style.marginLeft=free>0 ? Math.round(free/2)+'px' : '';
+      }else{
+        area.style.marginLeft='';
+      }
     }
     const ro=safeBy('zoomReadout'); if(ro) ro.textContent=Math.round(V3.zoom*100)+'%';
   }
@@ -190,6 +201,14 @@
     if(status) status.textContent = setupNeeded ? 'Setup needed' : (warnings ? `${warnings} warning${warnings===1?'':'s'}` : 'Good');
     if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? State.uniform.replace(/_/g,' ').toUpperCase() : '—';
     if(items) items.textContent = ((State.ribbons||[]).length + (State.badges||[]).length + (State.patches||[]).length).toString();
+    // The preview is a picture, so say what it shows for anyone who cannot see it.
+    const area=safeBy('previewArea');
+    if(area){
+      area.setAttribute('role','group');
+      area.setAttribute('aria-label', setupNeeded
+        ? 'Uniform preview. Choose a membership type, rank and cut to begin.'
+        : `Uniform preview: ${State.rank || ''} ${State.uniform ? State.uniform.replace(/_/g,' ') : ''} with ${(State.ribbons||[]).length} ribbons, ${(State.badges||[]).length} badges and ${(State.patches||[]).length} patches. Select an item to remove it.`.replace(/\s+/g,' '));
+    }
     const auth = (typeof UI_AUTHZ !== 'undefined' && UI_AUTHZ[State.uniform]) || {showBadges:true,showPatches:true};
     safeBy('cmdBadges')?.classList.toggle('hidden', !auth.showBadges);
     safeBy('cmdPatches')?.classList.toggle('hidden', !auth.showPatches);

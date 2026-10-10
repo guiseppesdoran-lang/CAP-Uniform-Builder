@@ -75,6 +75,24 @@
     });
   }
 
+  /* ---------- the member-report importer is a shortcut, not the first thing you meet ---------- */
+  function foldImporter(){
+    const panel=by('memberReportImportPanel');
+    const g=group('profile');
+    if(!panel || !g || g.querySelector('.guidedImport')) return;
+    const more=el('details','guidedAdvanced guidedImport');
+    more.append(el('summary','','Have a CAP member report? Import it to fill this in'));
+    panel.before(more);
+    more.append(panel);
+    // Show the result of an import instead of leaving it behind a closed fold.
+    const status=by('memberReportImportStatus');
+    if(status && typeof MutationObserver!=='undefined'){
+      const first=status.textContent;
+      new MutationObserver(()=>{ if(status.textContent!==first) more.open=true; })
+        .observe(status,{childList:true,characterData:true,subtree:true});
+    }
+  }
+
   /* ---------- uniforms by occasion, with thumbnails and reasons ---------- */
   function buildUniformGroups(){
     const list=by('uniformList');
@@ -305,6 +323,7 @@
     if(built) return;
     if(!group('profile') || !by('uniformList') || !window.CAPUB_V3) return setTimeout(init,150);
     buildStepChrome();
+    foldImporter();
     buildUniformGroups();
     buildItemCards();
     tuckAwayOverlay();
