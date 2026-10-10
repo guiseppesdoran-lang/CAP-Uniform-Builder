@@ -253,6 +253,42 @@
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
 
+// A short confirmation when ribbons, badges or patches are added or removed, so a change made
+// in a picker that covers the preview is still acknowledged. It compares item counts, so it only
+// speaks when something really was added or removed (including by undo and redo).
+(function capubItemToasts(){
+  const kinds=[
+    ['ribbon',()=>new Set((State.ribbons||[]).map(r=>r.id)).size],
+    ['badge',()=>(State.badges||[]).length],
+    ['patch',()=>(State.patches||[]).length]
+  ];
+  let last=null;
+  const counts=()=>kinds.map(([,count])=>{ try{ return count(); }catch(_){ return 0; } });
+  function words(delta,name){
+    return `${Math.abs(delta)} ${name}${Math.abs(delta)===1?'':'s'}`;
+  }
+  function onChange(){
+    const now=counts();
+    if(last===null){ last=now; return; }
+    const parts=[];
+    kinds.forEach(([name],i)=>{
+      const delta=now[i]-last[i];
+      if(delta>0) parts.push(`Added ${words(delta,name)}`);
+      else if(delta<0) parts.push(`Removed ${words(delta,name)}`);
+    });
+    last=now;
+    if(parts.length && typeof window.capubToastShow==='function') window.capubToastShow(parts.join(', '));
+  }
+  // Pickers re-render without a full render, so the history event alone misses them. Any change
+  // or click schedules a check; onChange compares counts, so repeated checks say nothing twice.
+  let timer=null;
+  function check(){ clearTimeout(timer); timer=setTimeout(onChange,200); }
+  document.addEventListener('capub:history',check);
+  ['change','click'].forEach(evt=>document.addEventListener(evt,check,true));
+  // Take the starting counts once the page has drawn, so the first change reports a difference.
+  setTimeout(()=>{ if(last===null && typeof State!=='undefined') last=counts(); },400);
+})();
+
 // Autosave and resume. The setup is written to this browser a moment after every change, so
 // a refresh or a closed tab no longer loses it. On the next visit the member is asked whether
 // to resume; nothing is loaded silently. It is separate from "Save to Browser", which stays a

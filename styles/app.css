@@ -948,6 +948,10 @@ header h1::after{
   header h1::after{content:"Unofficial tool"}
 }
 
+.noticeList li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2)}
+.noticeList li>span{flex:1 1 12rem;min-width:0}
+.noticeFix{flex:0 0 auto;width:auto;min-height:36px;margin:0;padding:0 var(--s3);font-size:var(--t-sm)}
+
 /* ---- Guided flow (?ux=2): one step at a time ---- */
 .guidedSummary,.guidedNav{display:none}
 html[data-ux="2"] .capubSectionHint{display:none}

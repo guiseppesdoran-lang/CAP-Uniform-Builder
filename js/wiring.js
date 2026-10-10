@@ -1298,7 +1298,21 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
 
   function pretty(id){ return String(id||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); }
   function safeRankFile(rank){ return String(rank||'').replace(/\//g,'_').replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_\-]/g,''); }
-  function addNotice(type,msg){ CAPUB_V2.notices.push({type,msg}); }
+  // fix names the control that resolves the notice: {id, label}. A button is pressed; anything
+  // else is scrolled to and focused. Notices without one just explain.
+  function addNotice(type,msg,fix){ CAPUB_V2.notices.push({type,msg,fix:fix || null}); }
+  function runNoticeFix(fix){
+    const target = fix && by(fix.id);
+    if(!target) return;
+    // Under the guided flow the control may sit in a step that is folded away.
+    const stepGroup = target.closest('.stepGroup');
+    if(stepGroup && !stepGroup.classList.contains('isActive')) stepGroup.querySelector('.guidedEdit')?.click();
+    if(target.tagName === 'BUTTON'){ target.click(); return; }
+    setTimeout(()=>{
+      target.scrollIntoView({behavior:'smooth', block:'center'});
+      target.focus({preventScroll:true});
+    }, 60);
+  }
   function downloadText(filename,text){
     const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
@@ -1532,29 +1546,29 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
 
   function validateBuild(){
     CAPUB_V2.notices = [];
-    if(!State.membership) addNotice('warn','Select membership type first.');
-    if(!State.rank) addNotice('warn','Select rank before building the uniform.');
-    if(!State.gender) addNotice('warn','Select male/female cut before final placement tuning.');
+    if(!State.membership) addNotice('warn','Select membership type first.',{id:'membershipType',label:'Choose'});
+    if(!State.rank) addNotice('warn','Select rank before building the uniform.',{id:'rankSetupSelect',label:'Choose'});
+    if(!State.gender) addNotice('warn','Select male/female cut before final placement tuning.',{id:'jacketSelect',label:'Choose'});
     if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)) addNotice('err','Selected uniform is not authorized for the selected membership type.');
     if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && !getSelectedUnitPatchId()) addNotice('warn',`Unit patch selected for ${getUnitPatchSelectionLabel(State.unitPatchCharter)}, but no patch image asset is available yet.`);
     if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && !isUnitPatchAuthorizedForCurrentUniform()) addNotice('warn',`Unit patch ${getUnitPatchSelectionLabel(State.unitPatchCharter)} is not authorized on the current uniform.`);
     if(State.membership === 'cadet'){
       const bad = State.badges.filter(id=>!isCadetAuthorized(id));
-      if(bad.length) addNotice('err','Cadet profile includes non-cadet badge(s): '+bad.map(pretty).join(', '));
+      if(bad.length) addNotice('err','Cadet profile includes non-cadet badge(s): '+bad.map(pretty).join(', '),{id:'expandBadges',label:'Review badges'});
     }
     if(State.membership === 'senior'){
       const bad = State.badges.filter(id=>!isSeniorAuthorized(id));
-      if(bad.length) addNotice('err','Senior profile includes cadet-only badge(s): '+bad.map(pretty).join(', '));
+      if(bad.length) addNotice('err','Senior profile includes cadet-only badge(s): '+bad.map(pretty).join(', '),{id:'expandBadges',label:'Review badges'});
     }
     // Badge limits and award wear come from data/uniform-rules.js (CAPR 39-1).
     const badgeCap = CAPUBUniformRules.getUniformRule(State.uniform)?.badgeCap;
     if(badgeCap && countBadgesForLimit() > badgeCap){
-      addNotice('err',`This uniform allows ${badgeCap} counted badges and ${countBadgesForLimit()} are selected. Command insignia does not count against this limit.`);
+      addNotice('err',`This uniform allows ${badgeCap} counted badges and ${countBadgesForLimit()} are selected. Command insignia does not count against this limit.`,{id:'expandBadges',label:'Review badges'});
     }
     const unwornAwards = Object.entries(State.ribbonSelections || {})
       .filter(([id,sel])=>sel && sel.checked && !isAwardWornOnUniform(id)).length;
     if(unwornAwards){
-      addNotice('warn',`${unwornAwards} selected award${unwornAwards===1?' is':'s are'} not shown: U.S. military awards and the Air Force Organizational Excellence Award are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6 and 11.2.3). ${unwornAwards===1?'It comes':'They come'} back on a USAF-style uniform.`);
+      addNotice('warn',`${unwornAwards} selected award${unwornAwards===1?' is':'s are'} not shown: U.S. military awards and the Air Force Organizational Excellence Award are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6 and 11.2.3). ${unwornAwards===1?'It comes':'They come'} back on a USAF-style uniform.`,{id:'expandRibbons',label:'Review ribbons'});
     }
     if(State.uniform === 'ocp'){
       // U.S. flag and AUX duty identifier are mandatory but are now baked into the OCP base image.
@@ -1571,7 +1585,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       if(State.badges.includes('squadron_commander_badge') && State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Graduated Commander and will render under the nameplate (UN); command insignia remains outside the normal four-badge count.');
       if(State.badges.includes('squadron_commander_badge') && !State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Current Commander and will render over the nameplate (ON); command insignia remains outside the normal four-badge count.');
       const aviation = State.badges.filter(id => ['OLP','OLPA','OLPU'].some(s => String(badgeLocations[id]||'').includes(s)));
-      if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.');
+      if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.',{id:'expandBadges',label:'Review badges'});
     }
     if(State.uniform === 'mess_dress' && State.membership === 'cadet') addNotice('err','Mess Dress is not available to cadets in this builder.');
     if(!CAPUB_V2.notices.length) addNotice('ok','No automatic validation issues found. Final approval still requires CAPR 39-1 review and any applicable supplement.');
@@ -1588,7 +1602,17 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const ul = by('capubV2Notices');
     if(ul){
       ul.innerHTML = '';
-      notices.forEach(n=>{ const li=document.createElement('li'); li.className=n.type; li.textContent=n.msg; ul.appendChild(li); });
+      notices.forEach(n=>{
+        const li=document.createElement('li'); li.className=n.type;
+        const text=document.createElement('span'); text.textContent=n.msg; li.appendChild(text);
+        if(n.fix){
+          const fix=document.createElement('button');
+          fix.type='button'; fix.className='ghost noticeFix'; fix.textContent=n.fix.label || 'Fix';
+          fix.addEventListener('click',()=>runNoticeFix(n.fix));
+          li.appendChild(fix);
+        }
+        ul.appendChild(li);
+      });
     }
   }
 
