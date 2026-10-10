@@ -912,6 +912,11 @@ function updateAvailabilityUI(prevUniform){
   by('groupRibbons').classList.toggle('hidden', !auth.showRibbons && !UNIFORMS[State.uniform].mini);
   by('groupBadges').classList.toggle('hidden', !auth.showBadges);
   by('groupPatches').classList.toggle('hidden', !auth.showPatches);
+  // Miniature medals are worn only on Mess Dress and Corporate Semi-Formal (CAPR 39-1 11.1.4).
+  const miniWorn = CAPUBUniformRules.allowsMiniMedals(State.uniform);
+  ['toggleMini','autoMini','miniMountStyle'].forEach(id=>{
+    by(id)?.closest('label')?.classList.toggle('hidden', !miniWorn);
+  });
   const badgeCommand = by('cmdBadges');
   const patchCommand = by('cmdPatches');
   if(badgeCommand) badgeCommand.classList.toggle('hidden', !auth.showBadges);
@@ -925,6 +930,8 @@ function updateAvailabilityUI(prevUniform){
   }
 
   clearUnauthorizedPatchesForCurrentUniform();
+  // Which awards are worn depends on the uniform (CAPR 39-1 11.1.6), so the rack follows it.
+  if(prevUniform && prevUniform!==State.uniform) rebuildRibbonsFromGallery();
   buildPatchGallery();
   if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(by('unitPatchSearch')?.value || '');
 }

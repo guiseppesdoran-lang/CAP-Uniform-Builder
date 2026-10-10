@@ -74,3 +74,19 @@ test('every uniform belongs to a defined group',()=>{
     assert.ok(['usaf','corporate'].includes(rule.style),`${id} style`);
   }
 });
+
+test('the app reads ribbon and award wear from the rule table, not from its own copies',()=>{
+  const catalog=fs.readFileSync(path.join(__dirname,'..','js','catalog.js'),'utf8');
+  const galleries=fs.readFileSync(path.join(__dirname,'..','js','galleries.js'),'utf8');
+  assert.match(catalog,/UNIFORMS\[id\]\.ribbons = CAPUBUniformRules\.allowsRibbons\(id\)/);
+  assert.match(catalog,/UI_AUTHZ\[id\]\.showRibbons = CAPUBUniformRules\.allowsRibbons\(id\)/);
+  assert.match(galleries,/if\(!isAwardWornOnUniform\(id\)\) continue;/);
+});
+
+test('the Air Force Organizational Excellence Award is a senior award (39-3 Attachment 2)',()=>{
+  const catalog=fs.readFileSync(path.join(__dirname,'..','js','catalog.js'),'utf8');
+  const common=catalog.slice(catalog.indexOf('const COMMON_ELIGIBLE_RIBBONS'),catalog.indexOf('const COMMON_ELIGIBLE_RIBBONS')+400);
+  const senior=catalog.slice(catalog.indexOf('const SENIOR_ONLY_RIBBONS'),catalog.indexOf('const SENIOR_ONLY_RIBBONS')+200);
+  assert.doesNotMatch(common,/Air_Force_Organizational_Excellence_Award/);
+  assert.match(senior,/Air_Force_Organizational_Excellence_Award/);
+});

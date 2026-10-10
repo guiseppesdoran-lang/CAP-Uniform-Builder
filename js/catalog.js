@@ -948,6 +948,15 @@ let militaryRibbonCatalogCache={dataRef:null,awards:[],byId:new Map(),ids:[]};
 function isMilitaryRibbonId(id){
   return String(id || '').startsWith(MILITARY_RIBBON_PREFIX);
 }
+// U.S. military awards and the Air Force Organizational Excellence Award are not worn on
+// Corporate-style uniforms (CAPR 39-1 11.1.6, 11.2.3). Selections are kept, so switching back
+// to a USAF-style uniform brings them back.
+function isAwardWornOnUniform(id, uniformId = State.uniform){
+  return CAPUBUniformRules.isAwardAllowedOnUniform(id, uniformId, {isMilitary:isMilitaryRibbonId(id)});
+}
+function isMilitaryAwardWornOnUniform(uniformId = State.uniform){
+  return CAPUBUniformRules.isAwardAllowedOnUniform('', uniformId, {isMilitary:true});
+}
 
 function applyMiniRackCalibToElement(el, key, base){
   // Miniature-medal rack placement is calculated from the medals that are
@@ -1058,7 +1067,6 @@ const HISTORICAL_RIBBONS = new Set([
   'missing_aircraft_ribbon'
 ]);
 const COMMON_ELIGIBLE_RIBBONS = new Set([
-  'Air_Force_Organizational_Excellence_Award',
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
   'crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon'
 ]);
@@ -1067,6 +1075,7 @@ const CADET_ONLY_RIBBONS = new Set([
   'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','cadet_recruiter_ribbon'
 ]);
 const SENIOR_ONLY_RIBBONS = new Set([
+  'Air_Force_Organizational_Excellence_Award',
   'air_force_aerial_achievement_medal',
   'national_commanders_citation',
   'cap_gill_robb_wilson_ribbon','cap_paul_e_garber_ribbon','cap_grover_loening_aerospace_ribbon','cap_leadership_ribbon','cap_membership_ribbon','cap_a_scott_crossfield_ribbon','cap_bridgadier_general_charles_yaeger_ribbon',

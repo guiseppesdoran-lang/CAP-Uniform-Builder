@@ -839,6 +839,7 @@ function rebuildRibbonsFromGallery(){
   for(const id of [...getEligibleRibbonIds(), ...getMilitaryRibbonIds()]){
     const sel = State.ribbonSelections[id];
     if(!sel || !sel.checked) continue;
+    if(!isAwardWornOnUniform(id)) continue;
 
     // compute stacks needed due to caps or special rules.
     // Silver Medal of Valor has no device for multiple awards in this builder;
@@ -972,7 +973,7 @@ function buildRibbonGallery(options={}){
   if(options.capture!==false) captureMilitaryGalleryUI(wrap,wrap,'sidebarScrollTop');
   normalizeRibbonSelections();
   wrap.innerHTML = '';
-  const eligible = getEligibleRibbonIds();
+  const eligible = getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id));
   const visible = State.ribbonGalleryExpanded ? eligible : eligible.slice(0, 12);
   const currentRibbons = visible.filter(id => !HISTORICAL_RIBBONS.has(id));
   const historicalRibbons = visible.filter(id => HISTORICAL_RIBBONS.has(id));
@@ -1060,7 +1061,13 @@ function buildRibbonGallery(options={}){
     section.ids.forEach(id=>wrap.appendChild(buildTile(id,false)));
   }
 
-  if(State.ribbonGalleryExpanded){
+  if(State.ribbonGalleryExpanded && !isMilitaryAwardWornOnUniform()){
+    const note=document.createElement('div');
+    note.className='hintText';
+    note.textContent='U.S. military awards are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6).';
+    wrap.appendChild(note);
+  }
+  if(State.ribbonGalleryExpanded && isMilitaryAwardWornOnUniform()){
     const ui=getMilitaryUIState();
     const galleryQuery=ui.gallerySearchValue.trim().toLowerCase();
     const allMilitaryIds=getMilitaryRibbonIds();
