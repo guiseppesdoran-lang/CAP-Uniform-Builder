@@ -903,6 +903,29 @@ header h1::after{
   .capubCommandBar button{flex:1 1 auto;padding:0 var(--s3);font-size:var(--t-md)}
 }
 
+/* ---- Phones: keep the header inside the screen and the toolbar to two short rows ----
+   At 375px the header was 14px too wide, which made the whole page scroll sideways and pushed
+   the fixed footer (and its About link) off the right edge. */
+@media (max-width:480px){
+  header{padding-right:var(--s3)}
+  header h1{font-size:var(--t-md)}
+  header h1::after{font-size:var(--t-sm)}
+  .unofficialTag{margin-left:var(--s2);padding:2px var(--s2);font-size:var(--t-xs)}
+  .themeToggle{flex:0 0 auto;max-width:64px;padding:0 var(--s2);font-size:var(--t-sm);line-height:1.1}
+  /* Status and item count stay; the chosen uniform is already highlighted in the sidebar. */
+  #capubTopBar .capubPill:nth-child(2){display:none}
+  .previewTools{width:100%;margin-left:0;gap:var(--s2);justify-content:space-between}
+  .previewToolCard{gap:var(--s1)}
+  .previewToolCard button{padding:0 var(--s2);font-size:var(--t-md)}
+  .previewToolCard .zoomReadout{min-width:40px}
+}
+
+/* Very narrow phones (320px): the Unofficial notice moves into the subtitle instead of a tag. */
+@media (max-width:360px){
+  .unofficialTag{display:none}
+  header h1::after{content:"Unofficial tool"}
+}
+
 /* ---- About dialog (unofficial-site and privacy notice) ---- */
 #aboutDialog{
   width:min(520px,calc(100vw - 32px));
