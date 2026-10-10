@@ -1171,5 +1171,25 @@ small.hintText{display:block}
 @media (max-width:760px){
   .capub-purchase-summary{grid-template-columns:1fr 1fr}
   .capub-purchase-modal{width:98vw}
-  .capub-purchase-table th:nth-child(3),.capub-purchase-table td:nth-child(3){display:none}
+  /* One card per item instead of a table that scrolls sideways (this used to hide the name). */
+  .capub-purchase-table,.capub-purchase-table tbody,.capub-purchase-table tr,.capub-purchase-table td{display:block;width:100%}
+  .capub-purchase-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .capub-purchase-table tr{display:flex;flex-direction:column;margin-bottom:var(--s3);padding:var(--s3);border:1px solid var(--line);border-radius:var(--r)}
+  .capub-purchase-table td[data-label="Item"]{order:-1;padding-bottom:var(--s2)}
+  .capub-purchase-table td{padding:var(--s1) 0;border:0}
+  .capub-purchase-table td[data-label]::before{
+    content:attr(data-label);
+    display:inline-block;
+    min-width:6.5rem;
+    margin-right:var(--s2);
+    font-size:var(--t-xs);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--muted);
+  }
+  .capub-purchase-table td[data-label="Item"]::before{display:none}
+  .capub-purchase-table td[data-label="Include"],.capub-purchase-table td[data-label="Own it"]{display:flex;align-items:center;min-height:44px}
+  .capub-purchase-table td[data-label="Include"] input,.capub-purchase-table td[data-label="Own it"] input{width:24px;height:24px;margin:0}
 }
+.capub-purchase-rule>summary{cursor:pointer}

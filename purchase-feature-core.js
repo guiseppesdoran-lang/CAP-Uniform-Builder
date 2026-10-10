@@ -375,17 +375,17 @@
       const priceClass=item.priceStatus==='estimated'?'est':'';
       const links=(item.links||[]).map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label || C.vendors[l.vendor]?.name || 'Vendor')}${Number.isFinite(Number(l.price))?` · ${money(l.price)}`:''}</a>`).join('');
       return `<tr data-key="${esc(item.key)}">
-        <td><input type="checkbox" class="capub-include" ${included?'checked':''} aria-label="Include ${esc(item.name)}"></td>
-        <td><input type="checkbox" class="capub-owned" ${owned?'checked':''} aria-label="Already own ${esc(item.name)}"></td>
-        <td><div class="capub-purchase-item-name">${esc(item.name)}</div><span class="capub-purchase-chip ${ruleClass}">${esc(sourceRuleLabel(item.sourceRule))}</span><span class="capub-purchase-chip ${priceClass}">${esc(statusLabel(item.priceStatus))}</span>${item.note?`<div class="capub-purchase-note">${esc(item.note)}</div>`:''}</td>
-        <td class="capub-purchase-qty">${Number(item.quantity)||1}</td>
-        <td>${links?`<div class="capub-purchase-links">${links}</div>`:'—'}</td>
-        <td class="capub-purchase-price">${money((Number(item.price)||0)*(Number(item.quantity)||1))}<small>${Number(item.quantity)>1?`${money(item.price)} each/package · `:''}${item.priceStatus==='verified'?'last observed':item.priceStatus==='estimated'?'budget estimate':'not priced'}</small></td>
+        <td data-label="Include"><input type="checkbox" class="capub-include" ${included?'checked':''} aria-label="Include ${esc(item.name)}"></td>
+        <td data-label="Own it"><input type="checkbox" class="capub-owned" ${owned?'checked':''} aria-label="Already own ${esc(item.name)}"></td>
+        <td data-label="Item"><div class="capub-purchase-item-name">${esc(item.name)}</div><span class="capub-purchase-chip ${ruleClass}">${esc(sourceRuleLabel(item.sourceRule))}</span><span class="capub-purchase-chip ${priceClass}">${esc(statusLabel(item.priceStatus))}</span>${item.note?`<div class="capub-purchase-note">${esc(item.note)}</div>`:''}</td>
+        <td class="capub-purchase-qty" data-label="Quantity">${Number(item.quantity)||1}</td>
+        <td data-label="Where to buy">${links?`<div class="capub-purchase-links">${links}</div>`:'—'}</td>
+        <td class="capub-purchase-price" data-label="Price">${money((Number(item.price)||0)*(Number(item.quantity)||1))}<small>${Number(item.quantity)>1?`${money(item.price)} each/package · `:''}${item.priceStatus==='verified'?'last observed':item.priceStatus==='estimated'?'budget estimate':'not priced'}</small></td>
       </tr>`;
     }).join('');
 
     body.innerHTML=`
-      <div class="capub-purchase-rule"><b>Sourcing rule:</b> CAP-specific rank/grade insignia, ribbons, miniature medals, badges, patches, nameplates and other CAP-only items are intentionally separated from ordinary military components. A visually similar USAF or other military item is not treated as a substitute. Standard garments/components are shown as military-spec alternatives only where the catalog marks them <b>Milspec OK</b>. Always verify the current CAPR 39-1 requirement before ordering.</div>
+      <details class="capub-purchase-rule"><summary><b>How items are sourced</b></summary> CAP-specific rank/grade insignia, ribbons, miniature medals, badges, patches, nameplates and other CAP-only items are intentionally separated from ordinary military components. A visually similar USAF or other military item is not treated as a substitute. Standard garments/components are shown as military-spec alternatives only where the catalog marks them <b>Milspec OK</b>. Always verify the current CAPR 39-1 requirement before ordering.</details>
       <div class="capub-purchase-summary">
         <div class="capub-purchase-card"><span>Complete selected cost</span><b id="capubTotalComplete">$0.00</b></div>
         <div class="capub-purchase-card"><span>Still need to buy</span><b id="capubTotalRemaining">$0.00</b></div>
