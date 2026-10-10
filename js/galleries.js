@@ -836,10 +836,19 @@ function rebuildRibbonsFromGallery(){
   normalizeBadgeSelections();
   syncCommandBadgeAndRibbonSelections();
 
+  // A cadet may shorten the rack to the highest Cadet Program achievement ribbon (CAPR 39-1
+  // 11.1.2.2). The other selections are kept; they come back when the option is turned off.
+  const highestCadetAward = (State.membership === 'cadet' && State.cadetHighestOnly)
+    ? [...CADET_ACHIEVEMENT_RIBBONS]
+        .filter(id => State.ribbonSelections[id]?.checked)
+        .sort((a,b) => precedence(a) - precedence(b))[0] || null
+    : null;
+
   for(const id of [...getEligibleRibbonIds(), ...getMilitaryRibbonIds()]){
     const sel = State.ribbonSelections[id];
     if(!sel || !sel.checked) continue;
     if(!isAwardWornOnUniform(id)) continue;
+    if(highestCadetAward && CADET_ACHIEVEMENT_RIBBONS.has(id) && id !== highestCadetAward) continue;
 
     // compute stacks needed due to caps or special rules.
     // Silver Medal of Valor has no device for multiple awards in this builder;

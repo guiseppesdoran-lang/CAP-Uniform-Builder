@@ -47,6 +47,14 @@ by('toggleMini').addEventListener('change', e=>{
   renderAllBadges();
 });
 
+const cadetHighestOnlyToggle = by('cadetHighestOnly');
+if(cadetHighestOnlyToggle){
+  cadetHighestOnlyToggle.addEventListener('change', e=>{
+    State.cadetHighestOnly = e.target.checked;
+    rebuildRibbonsFromGallery();
+  });
+}
+
 const miniMountStyleSelect = by('miniMountStyle');
 if(miniMountStyleSelect){
   miniMountStyleSelect.value = State.miniMountStyle;
@@ -1317,6 +1325,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       badgeSelections: State.badgeSelections,
       patchSelections: State.patchSelections,
       forceMini: State.forceMini,
+      cadetHighestOnly: State.cadetHighestOnly,
       miniMountStyle: State.miniMountStyle,
       ribbonRackLayout: State.ribbonRackLayout,
       ribbonRackArrangement: State.ribbonRackArrangement,
@@ -1392,6 +1401,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     out.patchSelections = pick(patchList, p.patchSelections);
 
     out.forceMini = !!p.forceMini;
+    out.cadetHighestOnly = !!p.cadetHighestOnly;
     out.miniMountStyle = p.miniMountStyle === 'holding' ? 'holding' : 'mounting';
     out.ribbonRackLayout = ['3','4-left','4-center'].includes(String(p.ribbonRackLayout))
       ? String(p.ribbonRackLayout)
@@ -1434,6 +1444,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.badgeSelections = p.badgeSelections;
     State.patchSelections = p.patchSelections;
     State.forceMini = p.forceMini;
+    State.cadetHighestOnly = p.cadetHighestOnly;
     State.miniMountStyle = p.miniMountStyle;
     State.ribbonRackLayout = p.ribbonRackLayout;
     State.ribbonRackArrangement = p.ribbonRackArrangement;

@@ -50,6 +50,7 @@ const State = {
   selectedDevices:{},
   ribbonDragMode:false,
   forceMini:false,
+  cadetHighestOnly:false,
   miniMountStyle:'mounting',
   ribbonRackLayout:'4-left',
   ribbonRackArrangement:'lapel',

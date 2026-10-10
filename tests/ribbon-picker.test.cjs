@@ -50,3 +50,25 @@ test('the picker is grouped, drops raw ids, and shows mini medals only where the
   assert.doesNotMatch(builder,/'Not selected'/);
   assert.doesNotMatch(builder,/\(\$\{escapeHtml\(id\)\}\)<\/div>/);
 });
+
+const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
+const state=fs.readFileSync(path.join(__dirname,'..','js','state.js'),'utf8');
+const html=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
+
+test('cadets can wear only their highest achievement ribbon (39-1 11.1.2.2), and it is saved with the setup',()=>{
+  assert.match(state,/cadetHighestOnly:false/);
+  assert.match(galleries,/State\.membership === 'cadet' && State\.cadetHighestOnly/);
+  assert.match(galleries,/CADET_ACHIEVEMENT_RIBBONS\.has\(id\) && id !== highestCadetAward/);
+  assert.match(wiring,/cadetHighestOnly: State\.cadetHighestOnly/);
+  assert.match(wiring,/out\.cadetHighestOnly = !!p\.cadetHighestOnly/);
+  assert.match(wiring,/State\.cadetHighestOnly = p\.cadetHighestOnly/);
+  assert.match(html,/id="cadetHighestOnlyRow" class="hidden"/);
+});
+
+test('the option is cadet-only and does not delete selections',()=>{
+  const placement=fs.readFileSync(path.join(__dirname,'..','js','placement.js'),'utf8');
+  assert.match(placement,/cadetHighestOnlyRow'\)\?\.classList\.toggle\('hidden', State\.membership !== 'cadet'\)/);
+  // The filter skips the ribbon while building the rack; it never edits ribbonSelections.
+  const block=galleries.slice(galleries.indexOf('const highestCadetAward'),galleries.indexOf('const highestCadetAward')+700);
+  assert.doesNotMatch(block,/ribbonSelections\[[^\]]+\]\.checked\s*=/);
+});
