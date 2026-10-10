@@ -52,3 +52,11 @@ test('all three badge tile builders use the plain-language line',()=>{
     assert.doesNotMatch(text,/Regulation scale: \$\{Math\.round\(getBadgeRenderSize/,`${file} no longer prints the abbreviation line`);
   }
 });
+
+test('the top pilot badge is named Command Pilot, and a member report may say Command or Master',()=>{
+  const names=fs.readFileSync(path.join(__dirname,'..','js','catalog.js'),'utf8');
+  assert.match(names,/CAPMasterPilot1_621A0E2ED15DA: 'Command Pilot Badge'/);
+  const importer=fs.readFileSync(path.join(__dirname,'..','js','member-report-import.js'),'utf8');
+  assert.match(importer,/\(\?:Master\|Command\)\\s\+Pilot\\s\+Badge/);
+  assert.match(names,/cdi_senior_badge: 'Character Development Instructor Senior Badge'/);
+});

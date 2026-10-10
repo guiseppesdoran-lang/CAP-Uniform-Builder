@@ -1201,7 +1201,8 @@ function parseCapMemberReport(textRaw){
   if(/\bNational\s+Executive\s+Committee\s+Badge\b|\bNEC\s+Badge\b/i.test(text)) result.badges.push('national_executive_committee_badge');
   if(/\b(?:CAP\s+)?National\s+Command\s+Board\s+Badge\b/i.test(text)) result.badges.push('cap_national_command_board_badge');
 
-  if(/CAP\s+Master\s+Pilot\s+Rating|Master\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPMasterPilot1_621A0E2ED15DA');
+  // CAPR 39-1 Attachment 7 calls the top pilot rating Command Pilot; older text says Master.
+  if(/CAP\s+(?:Master|Command)\s+Pilot\s+Rating|(?:Master|Command)\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPMasterPilot1_621A0E2ED15DA');
   else if(/CAP\s+Senior\s+Pilot\s+Rating|Senior\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPSeniorPilot1_D9725AE959752');
   else if(/CAP\s+Pilot\s+Rating|Basic\s+Pilot\s+Badge|Pilot\s+Badge/i.test(text)) result.badges.push('CAPPilot1_FA9D33EA587D8');
 
