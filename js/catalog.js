@@ -928,6 +928,44 @@ const RIBBON_ID_ALIASES = {
   yeager_award: 'cap_bridgadier_general_charles_yaeger_ribbon'
 };
 const RIBBON_DISPLAY_NAMES = {
+  // Names as CAPR 39-3 Attachment 2 prints them. Ids keep their old spellings; only the label changes.
+  silver_medal_of_valor: 'Silver Medal of Valor',
+  bronze_medal_of_valor: 'Bronze Medal of Valor',
+  commander_commendation_award: "Commander's Commendation Award",
+  cap_achievment_award: 'CAP Achievement Award',
+  national_commander_unit_citation_award: "National Commander's Unit Citation Award",
+  cap_gill_robb_wilson_ribbon: 'Gill Robb Wilson Award',
+  cap_paul_e_garber_ribbon: 'Paul E. Garber Award',
+  cap_grover_loening_aerospace_ribbon: 'Grover Loening Aerospace Award',
+  cap_leadership_ribbon: 'Leadership Award',
+  cap_membership_ribbon: 'Membership Award',
+  cap_a_scott_crossfield_ribbon: 'A. Scott Crossfield Award',
+  cap_bridgadier_general_charles_yaeger_ribbon: 'Brig Gen Charles E. \u201cChuck\u201d Yeager Award',
+  spaatz_award: 'Gen Carl A. Spaatz Award',
+  eaker_award: 'Ira C. Eaker Award',
+  earhart_award: 'Amelia Earhart Award',
+  mitchell_award: 'Gen Billy Mitchell Award',
+  armstrong_achievement: 'Neil Armstrong Achievement',
+  goddard_achievement: 'Dr. Robert H. Goddard Achievement',
+  doolittle_achievement: 'Gen Jimmy F. Doolittle Achievement',
+  lindbergh_achievement: 'Charles A. Lindbergh Achievement',
+  rickenbacker_achievement: 'Capt Eddie Rickenbacker Achievement',
+  mary_feik_achievement: 'Mary Feik Achievement',
+  hap_arnold_achievement: 'Gen Hap Arnold Achievement',
+  curry_achievement: 'Gen J.F. Curry Achievement',
+  afa_award: 'AFA Award to Unit Cadet of the Year',
+  afsa_award: 'AFSA Award to Unit Cadet NCO of the Year',
+  vfw_officer_award: 'VFW Outstanding Cadet Officer of the Year Award',
+  vfw_nco_award: 'VFW Outstanding Cadet NCO of the Year Award',
+  crisis_ribbon: 'CAP Crisis Service Ribbon',
+  cap_command_service_ribbon: 'Command Service Ribbon',
+  search_find_ribbon: 'Search \u201cFind\u201d Ribbon',
+  air_search_and_rescue_ribbon: 'Air Search and Rescue Ribbon',
+  cap_counterdrug_ribbon: 'Counterdrug Ribbon',
+  iace_ribbon: 'IACE Ribbon',
+  cap_cadet_orientation_pilot_ribbon: 'Cadet Orientation Pilot Ribbon',
+  cap_senior_recruiter_ribbon: 'Senior Recruiter Ribbon',
+  cap_world_war_2_service_ribbon: 'World War II Service Ribbon',
   air_force_aerial_achievement_medal: 'Air Force Aerial Achievement Medal',
   national_commanders_citation: "National Commander's Citation",
   cadet_certificate_of_proficiency: 'Cadet Certificate of Proficiency',
@@ -1029,6 +1067,31 @@ function getRibbonDisplayName(id){
     return award?.officialName || award?.name || militaryRibbonCatalogId(id).replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
   }
   return RIBBON_DISPLAY_NAMES[id] || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+}
+// Where a ribbon sits in CAPR 39-3 Attachment 2, so the picker reads the way the regulation does.
+// Order within a group is the precedence order of ribbonList.
+const RIBBON_GROUPS = [
+  {key:'usaf', label:'Air Force awards', ids:['air_force_aerial_achievement_medal','Air_Force_Organizational_Excellence_Award']},
+  {key:'decorations', label:'Decorations', ids:['silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award']},
+  {key:'profdev', label:'Professional development', ids:['national_commanders_citation','cap_gill_robb_wilson_ribbon','cap_paul_e_garber_ribbon','cap_grover_loening_aerospace_ribbon','cap_leadership_ribbon','cap_membership_ribbon']},
+  {key:'aeroed', label:'Aerospace education', ids:['cap_a_scott_crossfield_ribbon','cap_bridgadier_general_charles_yaeger_ribbon']},
+  {key:'cadet', label:'Cadet program awards', seniorLabel:'Cadet awards (only the highest is worn)', ids:['spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','cadet_certificate_of_proficiency','historic_cadet_blue_achievement','historic_cadet_white_achievement','historic_cadet_red_achievement','frank_borman_falcon_award']},
+  {key:'service', label:'Service', ids:['cap_command_service_ribbon','crisis_ribbon','red_service_ribbon','afa_award','afsa_award','vfw_officer_award','vfw_nco_award']},
+  {key:'activity', label:'Activity', ids:['search_find_ribbon','air_search_and_rescue_ribbon','cap_counterdrug_ribbon','disaster_relief_ribbon','homeland_security_ribbon','cap_cadet_orientation_pilot_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon','cap_senior_recruiter_ribbon']},
+  {key:'wartime', label:'Wartime service (1942\u20131945)', ids:['air_medal','cap_world_war_2_service_ribbon','anti_submarine_coastal_patrol_ribbon','southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon','forest_patrol_ribbon','missing_aircraft_ribbon']}
+];
+// Groups for one list of ids, in regulation order. Anything not placed lands in "Other".
+function groupRibbonIds(ids, membership = State.membership){
+  const placed = new Set();
+  const groups = [];
+  for(const group of RIBBON_GROUPS){
+    const members = group.ids.filter(id => ids.includes(id));
+    members.forEach(id => placed.add(id));
+    if(members.length) groups.push({key:group.key, label:(membership === 'senior' && group.seniorLabel) || group.label, ids:members});
+  }
+  const rest = ids.filter(id => !placed.has(id));
+  if(rest.length) groups.push({key:'other', label:'Other', ids:rest});
+  return groups;
 }
 const RIBBON_PRECEDENCE_INDEX = new Map(ribbonList.map((id, idx) => [id, idx]));
 function normalizeRibbonId(id){

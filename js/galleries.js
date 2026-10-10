@@ -975,13 +975,9 @@ function buildRibbonGallery(options={}){
   wrap.innerHTML = '';
   const eligible = getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id));
   const visible = State.ribbonGalleryExpanded ? eligible : eligible.slice(0, 12);
-  const currentRibbons = visible.filter(id => !HISTORICAL_RIBBONS.has(id));
-  const historicalRibbons = visible.filter(id => HISTORICAL_RIBBONS.has(id));
+  // Grouped the way CAPR 39-3 Attachment 2 lists them, in precedence order within each group.
   const sections = State.ribbonGalleryExpanded
-    ? [
-        { title:'Current Ribbons', description:'Currently issued awards and achievements.', ids:currentRibbons },
-        { title:'Historical Ribbons', description:'Legacy cadet awards and wartime service ribbons.', ids:historicalRibbons }
-      ]
+    ? groupRibbonIds(visible).map(group => ({ title:group.label, description:'', ids:group.ids }))
     : [{ title:'', description:'', ids:visible }];
 
   const buildTile=(id,military=false)=>{
@@ -993,7 +989,9 @@ function buildRibbonGallery(options={}){
     const title = getRibbonDisplayName(id);
     const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
     const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
-    const miniPreview = miniPath
+    // A miniature medal only matters on the uniforms that wear them (CAPR 39-1 11.1.4).
+    const showMini = CAPUBUniformRules.allowsMiniMedals(State.uniform);
+    const miniPreview = !showMini ? '' : miniPath
       ? `<div class="miniMedalPreview"><span>Mini medal</span><img loading="lazy" decoding="async" alt="${escapeHtml(title)} mini medal"></div>`
       : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
     const options = getRibbonAwardOptions(id).map(opt => {
@@ -1021,7 +1019,7 @@ function buildRibbonGallery(options={}){
       ${military ? `<span class="militaryRibbonArt"><img loading="lazy" decoding="async" alt="${escapeHtml(title)}"></span>` : `<img loading="lazy" decoding="async" alt="${escapeHtml(title)}">`}
       <div style="flex:1;min-width:0;">
         <div class="title">${escapeHtml(title)}</div>
-        <div class="sub">${military ? `${(award?.authorizedServices || []).map(service=>escapeHtml(MILITARY_BRANCH_LABELS[service] || service)).join(' / ') || 'U.S. MILITARY'} • ` : ''}(${escapeHtml(id)})</div>
+        <div class="sub">${military ? `${(award?.authorizedServices || []).map(service=>escapeHtml(MILITARY_BRANCH_LABELS[service] || service)).join(' / ') || 'U.S. MILITARY'}` : (CAPUB_DEV ? escapeHtml(id) : '')}</div>
         ${miniPreview}
         ${military ? `<label class="ribbonAwardLabel">Awarding / wearer service<select class="militaryServiceSelect" data-ribbon-id="${escapeHtml(id)}">${serviceOptions}</select></label>` : ''}
         <label class="ribbonAwardLabel">
@@ -1032,7 +1030,7 @@ function buildRibbonGallery(options={}){
         </label>
         ${military ? `<div class="militarySpecialDeviceRow" title="Select only devices authorized on your award orders.">${specialControls}</div>` : ''}
         <div class="sub ribbonDeviceSummary">
-          ${sel.checked ? `Selected: <b>${escapeHtml(sel.awardLabel || 'Earned')}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` • ${escapeHtml(sel.deviceWarnings.join(' '))}` : ''}` : 'Not selected'}
+          ${sel.checked ? `Selected: <b>${escapeHtml(sel.awardLabel || 'Earned')}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` • ${escapeHtml(sel.deviceWarnings.join(' '))}` : ''}` : ''}
         </div>
       </div>
     `;
