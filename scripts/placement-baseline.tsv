@@ -1,5 +1,5 @@
 # CAP Uniform Builder placement baseline
-# generated=2026-10-09T16:16:49.582Z scenarios=7548 drawn=2830 uniforms=11
+# generated=2026-10-09T16:16:49.582Z scenarios=7548 drawn=2794 uniforms=11
 # columns: scenario<TAB>layers (key@left,top,width,height,rotation[,z]) joined by " ; ". Scenarios that draw nothing are omitted.
 blues_a|male|senior|base	base:jacket=CAP_male_Maj.webp@0,0,450,600,0 ; jacket garmentForegroundOverlay=data@0,0,450,600,0,z9000 ; jacket garmentForegroundOverlay=data@0,0,450,600,0,z9000
 blues_a|male|senior|badge:AirCrew1_DB3F0FCC3650F	badge:AirCrew1_DB3F0FCC3650F:OLP:0@256.91,115.48,50.18,14.04,0
@@ -991,13 +991,7 @@ semi_formal|male|senior|badge:cap_national_command_board_badge	badge:cap_nationa
 semi_formal|male|senior|badge:national_staff_badge	badge:national_staff_badge:RP:0@288,140,13,13,0,z9010
 semi_formal|male|senior|combo:chaplain	badge:christian_chaplin:OLPA:0@284.09,99,18.82,18.82,0
 semi_formal|male|senior|combo:chaplain+rack	badge:christian_chaplin:OLPA:0@308.59,171,18.82,18.82,0
-semi_formal|male|senior|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@295,165.25,46,28.75,0,z176
-semi_formal|male|senior|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@295,165.25,46,28.75,0,z176
-semi_formal|male|senior|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@295,165.25,46,28.75,0,z176
 semi_formal|male|cadet|base	base:jacket=male_semi_formal.webp@0,0,450,600,0 ; jacket garmentForegroundOverlay=data@0,0,450,600,0,z9000 ; jacket garmentForegroundOverlay=data@0,0,450,600,0,z9000
-semi_formal|male|cadet|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@295,165.25,46,28.75,0,z176
-semi_formal|male|cadet|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@295,165.25,46,28.75,0,z176
-semi_formal|male|cadet|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@295,165.25,46,28.75,0,z176
 semi_formal|female|senior|base	base:jacket=mess_dress_female.webp@0,0,450,600,0 ; jacket garmentForegroundOverlay=data@0,0,450,600,0,z9000 ; jacket garmentForegroundOverlay=data@0,0,450,600,0,z9000
 semi_formal|female|senior|badge:buddist_chaplin	badge:buddist_chaplin:OLPA:0@284.09,99,18.82,18.82,0
 semi_formal|female|senior|badge:christian_chaplin	badge:christian_chaplin:OLPA:0@284.09,99,18.82,18.82,0
@@ -1010,13 +1004,7 @@ semi_formal|female|senior|badge:cap_national_command_board_badge	badge:cap_natio
 semi_formal|female|senior|badge:national_staff_badge	badge:national_staff_badge:RP:0@138,270,13,13,0,z9010
 semi_formal|female|senior|combo:chaplain	badge:christian_chaplin:OLPA:0@284.09,99,18.82,18.82,0
 semi_formal|female|senior|combo:chaplain+rack	badge:christian_chaplin:OLPA:0@307.59,169,18.82,18.82,0
-semi_formal|female|senior|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@294,163.25,46,28.75,0,z176
-semi_formal|female|senior|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@294,163.25,46,28.75,0,z176
-semi_formal|female|senior|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@294,163.25,46,28.75,0,z176
 semi_formal|female|cadet|base	base:jacket=mess_dress_female.webp@0,0,450,600,0 ; jacket garmentForegroundOverlay=data@0,0,450,600,0,z9000 ; jacket garmentForegroundOverlay=data@0,0,450,600,0,z9000
-semi_formal|female|cadet|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@294,163.25,46,28.75,0,z176
-semi_formal|female|cadet|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@294,163.25,46,28.75,0,z176
-semi_formal|female|cadet|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@294,163.25,46,28.75,0,z176
 aviator|male|senior|base	base:jacket=aviator_shirt_male.webp@55.3,38.9,353.25,471,0 ; jacket garmentForegroundOverlay=data@55.3,38.9,353.25,471,0,z9000 ; jacket garmentForegroundOverlay=data@55.3,38.9,353.25,471,0,z9000
 aviator|male|senior|badge:AirCrew1_DB3F0FCC3650F	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
 aviator|male|senior|badge:BalloonPilot1_442D89C94185B	badge:BalloonPilot1_442D89C94185B:OLP:0@268.41,122,50.18,20.91,0
@@ -1130,9 +1118,6 @@ aviator|male|senior|combo:command	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,
 aviator|male|senior|combo:command+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0 ; badge:squadron_commander_badge:ON:0@137,173,15,15,0,z30
 aviator|male|senior|combo:chaplain	badge:christian_chaplin:OLPA:0@284.09,99,18.82,18.82,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
 aviator|male|senior|combo:chaplain+rack	badge:christian_chaplin:OLPA:0@284.09,157,18.82,18.82,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0
-aviator|male|senior|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@270.5,173.25,46,28.75,0,z176
-aviator|male|senior|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@270.5,173.25,46,28.75,0,z176
-aviator|male|senior|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@270.5,173.25,46,28.75,0,z176
 aviator|male|cadet|base	base:jacket=aviator_shirt_male.webp@55.3,38.9,353.25,471,0 ; jacket garmentForegroundOverlay=data@55.3,38.9,353.25,471,0,z9000 ; jacket garmentForegroundOverlay=data@55.3,38.9,353.25,471,0,z9000
 aviator|male|cadet|badge:AirCrew1_DB3F0FCC3650F	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
 aviator|male|cadet|badge:CAPPilot1_FA9D33EA587D8	badge:CAPPilot1_FA9D33EA587D8:OLP:0@268.41,122,50.18,20.91,0
@@ -1173,9 +1158,6 @@ aviator|male|cadet|combo:chaplain	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,
 aviator|male|cadet|combo:chaplain+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0
 aviator|male|cadet|combo:specialty	badge:cyber_badges:LP:0@281,256,72,30,0 ; badge:model_rocketry_badge:ON:0@138,155,12.49,50.18,0
 aviator|male|cadet|combo:specialty+rack	badge:cyber_badges:LP:0@281,256,72,30,0 ; badge:model_rocketry_badge:ON:0@138,155,12.49,50.18,0
-aviator|male|cadet|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@270.5,173.25,46,28.75,0,z176
-aviator|male|cadet|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@270.5,173.25,46,28.75,0,z176
-aviator|male|cadet|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@270.5,173.25,46,28.75,0,z176
 aviator|female|senior|base	base:jacket=aviator_shirt_female_clean.webp@73.5,51.5,326.25,435,0 ; jacket garmentForegroundOverlay=data@73.5,51.5,326.25,435,0,z9000 ; jacket garmentForegroundOverlay=data@73.5,51.5,326.25,435,0,z9000
 aviator|female|senior|badge:AirCrew1_DB3F0FCC3650F	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
 aviator|female|senior|badge:BalloonPilot1_442D89C94185B	badge:BalloonPilot1_442D89C94185B:OLP:0@268.41,122,50.18,20.91,0
@@ -1289,9 +1271,6 @@ aviator|female|senior|combo:command	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,12
 aviator|female|senior|combo:command+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0 ; badge:squadron_commander_badge:ON:0@137,173,15,15,0,z30
 aviator|female|senior|combo:chaplain	badge:christian_chaplin:OLPA:0@284.09,99,18.82,18.82,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
 aviator|female|senior|combo:chaplain+rack	badge:christian_chaplin:OLPA:0@284.09,157,18.82,18.82,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0
-aviator|female|senior|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@270.5,173.25,46,28.75,0,z176
-aviator|female|senior|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@270.5,173.25,46,28.75,0,z176
-aviator|female|senior|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@270.5,173.25,46,28.75,0,z176
 aviator|female|cadet|base	base:jacket=aviator_shirt_female_clean.webp@73.5,51.5,326.25,435,0 ; jacket garmentForegroundOverlay=data@73.5,51.5,326.25,435,0,z9000 ; jacket garmentForegroundOverlay=data@73.5,51.5,326.25,435,0,z9000
 aviator|female|cadet|badge:AirCrew1_DB3F0FCC3650F	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
 aviator|female|cadet|badge:CAPPilot1_FA9D33EA587D8	badge:CAPPilot1_FA9D33EA587D8:OLP:0@268.41,122,50.18,20.91,0
@@ -1332,9 +1311,6 @@ aviator|female|cadet|combo:chaplain	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,12
 aviator|female|cadet|combo:chaplain+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0
 aviator|female|cadet|combo:specialty	badge:cyber_badges:LP:0@258,256,72,30,0 ; badge:model_rocketry_badge:ON:0@138,155,12.49,50.18,0
 aviator|female|cadet|combo:specialty+rack	badge:cyber_badges:LP:0@258,256,72,30,0 ; badge:model_rocketry_badge:ON:0@138,155,12.49,50.18,0
-aviator|female|cadet|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@270.5,173.25,46,28.75,0,z176
-aviator|female|cadet|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@270.5,173.25,46,28.75,0,z176
-aviator|female|cadet|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@270.5,173.25,46,28.75,0,z176
 aviator_blazer|male|senior|base	base:jacket=aviator_shirt_male.webp@55.3,38.9,353.25,471,0 ; jacket garmentForegroundOverlay=data@55.3,38.9,353.25,471,0,z9000 ; jacket garmentForegroundOverlay=data@55.3,38.9,353.25,471,0,z9000
 aviator_blazer|male|senior|badge:AirCrew1_DB3F0FCC3650F	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
 aviator_blazer|male|senior|badge:BalloonPilot1_442D89C94185B	badge:BalloonPilot1_442D89C94185B:OLP:0@268.41,122,50.18,20.91,0
@@ -1439,18 +1415,15 @@ aviator_blazer|male|senior|badge:command_council_badge	badge:command_council_bad
 aviator_blazer|male|senior|badge:cap_national_command_board_badge	badge:cap_national_command_board_badge:LP:0@287,270,13,13,0,z9010
 aviator_blazer|male|senior|badge:national_staff_badge	badge:national_staff_badge:RP:0@138,270,13,13,0,z9010
 aviator_blazer|male|senior|combo:aviation+ground	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,154,18.82,15.05,0
-aviator_blazer|male|senior|combo:aviation+ground+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,161,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,183,18.82,15.05,0
+aviator_blazer|male|senior|combo:aviation+ground+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,181,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,203,18.82,15.05,0
 aviator_blazer|male|senior|combo:three	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0 ; badge:basic_incident_commander_badge:OLPU:0@279.91,156,27.18,12.4,0
-aviator_blazer|male|senior|combo:three+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,163,50.18,14.04,0 ; badge:basic_incident_commander_badge:OLPU:0@279.91,185,27.18,12.4,0
+aviator_blazer|male|senior|combo:three+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,183,50.18,14.04,0 ; badge:basic_incident_commander_badge:OLPU:0@279.91,205,27.18,12.4,0
 aviator_blazer|male|senior|combo:four	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,154,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
-aviator_blazer|male|senior|combo:four+rack	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,183,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,161,50.18,14.04,0
+aviator_blazer|male|senior|combo:four+rack	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,203,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,181,50.18,14.04,0
 aviator_blazer|male|senior|combo:command	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0 ; badge:squadron_commander_badge:ON:0@137,173,15,15,0,z30
-aviator_blazer|male|senior|combo:command+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0 ; badge:squadron_commander_badge:ON:0@137,173,15,15,0,z30
+aviator_blazer|male|senior|combo:command+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,204,50.18,14.04,0 ; badge:squadron_commander_badge:ON:0@137,173,15,15,0,z30
 aviator_blazer|male|senior|combo:chaplain	badge:christian_chaplin:OLPA:0@284.09,99,18.82,18.82,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
-aviator_blazer|male|senior|combo:chaplain+rack	badge:christian_chaplin:OLPA:0@284.09,157,18.82,18.82,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0
-aviator_blazer|male|senior|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@270.5,173.25,46,28.75,0,z176
-aviator_blazer|male|senior|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@270.5,173.25,46,28.75,0,z176
-aviator_blazer|male|senior|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@270.5,173.25,46,28.75,0,z176
+aviator_blazer|male|senior|combo:chaplain+rack	badge:christian_chaplin:OLPA:0@284.09,177,18.82,18.82,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,204,50.18,14.04,0
 aviator_blazer|male|cadet|base	base:jacket=aviator_shirt_male.webp@55.3,38.9,353.25,471,0 ; jacket garmentForegroundOverlay=data@55.3,38.9,353.25,471,0,z9000 ; jacket garmentForegroundOverlay=data@55.3,38.9,353.25,471,0,z9000
 aviator_blazer|male|cadet|badge:AirCrew1_DB3F0FCC3650F	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
 aviator_blazer|male|cadet|badge:CAPPilot1_FA9D33EA587D8	badge:CAPPilot1_FA9D33EA587D8:OLP:0@268.41,122,50.18,20.91,0
@@ -1480,20 +1453,17 @@ aviator_blazer|male|cadet|badge:uas_pilot_basic_badge	badge:uas_pilot_basic_badg
 aviator_blazer|male|cadet|badge:uas_pilot_senior_badge	badge:uas_pilot_senior_badge:OLP:0@268.41,123,50.18,17.93,0
 aviator_blazer|male|cadet|badge:uas_pilot_master_badge	badge:uas_pilot_master_badge:OLP:0@268.41,123,50.18,18.95,0
 aviator_blazer|male|cadet|combo:aviation+ground	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,154,18.82,15.05,0
-aviator_blazer|male|cadet|combo:aviation+ground+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,161,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,183,18.82,15.05,0
+aviator_blazer|male|cadet|combo:aviation+ground+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,181,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,203,18.82,15.05,0
 aviator_blazer|male|cadet|combo:three	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,154,18.82,15.05,0
-aviator_blazer|male|cadet|combo:three+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,161,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,183,18.82,15.05,0
+aviator_blazer|male|cadet|combo:three+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,181,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,203,18.82,15.05,0
 aviator_blazer|male|cadet|combo:four	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,154,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
-aviator_blazer|male|cadet|combo:four+rack	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,183,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,161,50.18,14.04,0
+aviator_blazer|male|cadet|combo:four+rack	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,203,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,181,50.18,14.04,0
 aviator_blazer|male|cadet|combo:command	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
-aviator_blazer|male|cadet|combo:command+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0
+aviator_blazer|male|cadet|combo:command+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,204,50.18,14.04,0
 aviator_blazer|male|cadet|combo:chaplain	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
-aviator_blazer|male|cadet|combo:chaplain+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0
+aviator_blazer|male|cadet|combo:chaplain+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,204,50.18,14.04,0
 aviator_blazer|male|cadet|combo:specialty	badge:cyber_badges:LP:0@258,261,72,30,0 ; badge:model_rocketry_badge:ON:0@138,155,12.49,50.18,0
 aviator_blazer|male|cadet|combo:specialty+rack	badge:cyber_badges:LP:0@258,261,72,30,0 ; badge:model_rocketry_badge:ON:0@138,155,12.49,50.18,0
-aviator_blazer|male|cadet|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@270.5,173.25,46,28.75,0,z176
-aviator_blazer|male|cadet|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@270.5,173.25,46,28.75,0,z176
-aviator_blazer|male|cadet|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@270.5,173.25,46,28.75,0,z176
 aviator_blazer|female|senior|base	base:jacket=aviator_shirt_female_clean.webp@73.5,51.5,326.25,435,0 ; jacket garmentForegroundOverlay=data@73.5,51.5,326.25,435,0,z9000 ; jacket garmentForegroundOverlay=data@73.5,51.5,326.25,435,0,z9000
 aviator_blazer|female|senior|badge:AirCrew1_DB3F0FCC3650F	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
 aviator_blazer|female|senior|badge:BalloonPilot1_442D89C94185B	badge:BalloonPilot1_442D89C94185B:OLP:0@268.41,122,50.18,20.91,0
@@ -1598,18 +1568,15 @@ aviator_blazer|female|senior|badge:command_council_badge	badge:command_council_b
 aviator_blazer|female|senior|badge:cap_national_command_board_badge	badge:cap_national_command_board_badge:LP:0@287,270,13,13,0,z9010
 aviator_blazer|female|senior|badge:national_staff_badge	badge:national_staff_badge:RP:0@138,270,13,13,0,z9010
 aviator_blazer|female|senior|combo:aviation+ground	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,154,18.82,15.05,0
-aviator_blazer|female|senior|combo:aviation+ground+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,161,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,183,18.82,15.05,0
+aviator_blazer|female|senior|combo:aviation+ground+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,181,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,203,18.82,15.05,0
 aviator_blazer|female|senior|combo:three	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0 ; badge:basic_incident_commander_badge:OLPU:0@279.91,156,27.18,12.4,0
-aviator_blazer|female|senior|combo:three+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,163,50.18,14.04,0 ; badge:basic_incident_commander_badge:OLPU:0@279.91,185,27.18,12.4,0
+aviator_blazer|female|senior|combo:three+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,183,50.18,14.04,0 ; badge:basic_incident_commander_badge:OLPU:0@279.91,205,27.18,12.4,0
 aviator_blazer|female|senior|combo:four	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,154,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
-aviator_blazer|female|senior|combo:four+rack	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,183,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,161,50.18,14.04,0
+aviator_blazer|female|senior|combo:four+rack	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,203,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,181,50.18,14.04,0
 aviator_blazer|female|senior|combo:command	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0 ; badge:squadron_commander_badge:ON:0@137,173,15,15,0,z30
-aviator_blazer|female|senior|combo:command+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0 ; badge:squadron_commander_badge:ON:0@137,173,15,15,0,z30
+aviator_blazer|female|senior|combo:command+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,204,50.18,14.04,0 ; badge:squadron_commander_badge:ON:0@137,173,15,15,0,z30
 aviator_blazer|female|senior|combo:chaplain	badge:christian_chaplin:OLPA:0@284.09,99,18.82,18.82,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
-aviator_blazer|female|senior|combo:chaplain+rack	badge:christian_chaplin:OLPA:0@284.09,157,18.82,18.82,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0
-aviator_blazer|female|senior|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@270.5,173.25,46,28.75,0,z176
-aviator_blazer|female|senior|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@270.5,173.25,46,28.75,0,z176
-aviator_blazer|female|senior|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@270.5,173.25,46,28.75,0,z176
+aviator_blazer|female|senior|combo:chaplain+rack	badge:christian_chaplin:OLPA:0@284.09,177,18.82,18.82,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,204,50.18,14.04,0
 aviator_blazer|female|cadet|base	base:jacket=aviator_shirt_female_clean.webp@73.5,51.5,326.25,435,0 ; jacket garmentForegroundOverlay=data@73.5,51.5,326.25,435,0,z9000 ; jacket garmentForegroundOverlay=data@73.5,51.5,326.25,435,0,z9000
 aviator_blazer|female|cadet|badge:AirCrew1_DB3F0FCC3650F	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
 aviator_blazer|female|cadet|badge:CAPPilot1_FA9D33EA587D8	badge:CAPPilot1_FA9D33EA587D8:OLP:0@268.41,122,50.18,20.91,0
@@ -1639,20 +1606,17 @@ aviator_blazer|female|cadet|badge:uas_pilot_basic_badge	badge:uas_pilot_basic_ba
 aviator_blazer|female|cadet|badge:uas_pilot_senior_badge	badge:uas_pilot_senior_badge:OLP:0@268.41,123,50.18,17.93,0
 aviator_blazer|female|cadet|badge:uas_pilot_master_badge	badge:uas_pilot_master_badge:OLP:0@268.41,123,50.18,18.95,0
 aviator_blazer|female|cadet|combo:aviation+ground	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,154,18.82,15.05,0
-aviator_blazer|female|cadet|combo:aviation+ground+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,161,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,183,18.82,15.05,0
+aviator_blazer|female|cadet|combo:aviation+ground+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,181,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,203,18.82,15.05,0
 aviator_blazer|female|cadet|combo:three	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,154,18.82,15.05,0
-aviator_blazer|female|cadet|combo:three+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,161,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,183,18.82,15.05,0
+aviator_blazer|female|cadet|combo:three+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,181,50.18,14.04,0 ; badge:master_ground_team_badge:OLPU:0@284.09,203,18.82,15.05,0
 aviator_blazer|female|cadet|combo:four	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,154,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
-aviator_blazer|female|cadet|combo:four+rack	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,183,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,161,50.18,14.04,0
+aviator_blazer|female|cadet|combo:four+rack	badge:emergency_services_badge:LP:0@279,261,30,30,0 ; badge:communications_technician_badge:RP:0@129,261,30,30,0 ; badge:master_ground_team_badge:OLPU:0@284.09,203,18.82,15.05,0 ; badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,181,50.18,14.04,0
 aviator_blazer|female|cadet|combo:command	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
-aviator_blazer|female|cadet|combo:command+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0
+aviator_blazer|female|cadet|combo:command+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,204,50.18,14.04,0
 aviator_blazer|female|cadet|combo:chaplain	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,125,50.18,14.04,0
-aviator_blazer|female|cadet|combo:chaplain+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,184,50.18,14.04,0
+aviator_blazer|female|cadet|combo:chaplain+rack	badge:AirCrew1_DB3F0FCC3650F:OLP:0@268.41,204,50.18,14.04,0
 aviator_blazer|female|cadet|combo:specialty	badge:cyber_badges:LP:0@258,261,72,30,0 ; badge:model_rocketry_badge:ON:0@138,155,12.49,50.18,0
 aviator_blazer|female|cadet|combo:specialty+rack	badge:cyber_badges:LP:0@258,261,72,30,0 ; badge:model_rocketry_badge:ON:0@138,155,12.49,50.18,0
-aviator_blazer|female|cadet|mil:air_force_acquisition_financial_management_badge	U.S. military badge: Acquisition and Financial Management Badge@270.5,173.25,46,28.75,0,z176
-aviator_blazer|female|cadet|mil:army_air_assault_badge	U.S. military badge: Air Assault Badge@270.5,173.25,46,28.75,0,z176
-aviator_blazer|female|cadet|mil:air_force_air_battle_manager_badge	U.S. military badge: Air Battle Manager Badge@270.5,173.25,46,28.75,0,z176
 corporate_field|male|senior|base	base:jacket=aviator_shirt_male.webp@0,0,969.6,707.52,0 ; jacket garmentForegroundOverlay=data@0,0,969.6,707.52,0,z9000 ; jacket garmentForegroundOverlay=data@0,0,969.6,707.52,0,z9000
 corporate_field|male|senior|badge:AirCrew1_DB3F0FCC3650F	utilityBadgeRegV5:AirCrew1_DB3F0FCC3650F:0@327,145,66,24,0,z28
 corporate_field|male|senior|badge:MasterAirCrew1_72AC4CAE7A310	utilityBadgeRegV5:MasterAirCrew1_72AC4CAE7A310:0@327,144,66,25,0,z28
