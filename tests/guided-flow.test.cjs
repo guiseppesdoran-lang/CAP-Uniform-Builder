@@ -77,3 +77,8 @@ test('controls added by the flow meet the 44px touch target',()=>{
   }
   assert.match(css,/\.footerLink\{[^}]*min-height:44px/);
 });
+
+test('a step change moves focus to the new heading and Edit buttons say which step',()=>{
+  assert.match(flow,/heading\.tabIndex=-1;\s*heading\.focus\(\{preventScroll:true\}\)/);
+  assert.match(flow,/edit\.setAttribute\('aria-label',`Edit \$\{SHORT\[step\]\.toLowerCase\(\)\}`\)/);
+});

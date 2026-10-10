@@ -50,6 +50,7 @@
       text.dataset.summary=step;
       const edit=el('button','ghost guidedEdit','Edit');
       edit.type='button';
+      edit.setAttribute('aria-label',`Edit ${SHORT[step].toLowerCase()}`);
       edit.addEventListener('click',()=>setActive(step));
       summary.append(text,edit);
       (title ? title.after(summary) : g.prepend(summary));
@@ -260,6 +261,12 @@
     render();
     const g=group(step);
     if(g) g.scrollIntoView({behavior:'smooth',block:'start'});
+    // Move focus to the step's heading so a keyboard or screen-reader user lands on the new step.
+    const heading=g && g.querySelector('.stepGroupTitle');
+    if(heading){
+      heading.tabIndex=-1;
+      heading.focus({preventScroll:true});
+    }
   }
   function render(){
     if(!built) return;
