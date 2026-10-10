@@ -66,6 +66,7 @@ old single inline script did. They must stay in this order:
 8. `js/placement.js` - badge/patch placement and the render pipeline
 9. `js/wiring.js` - event wiring, calibrator UI, modal gallery, PNG export
 10. `js/workspace-ui.js` - step guide, preview toolbar/zoom, empty state, command bar
+10a. `js/guided-flow.js` - the one-step-at-a-time sidebar, only when the page is opened with `?ux=2`
 11. `js/member-report-import.js` - CAP member report parser and importer
 12. `js/bootstrap.js` - first render
 13. `js/patches.js` - dated patches that deliberately re-wrap earlier functions

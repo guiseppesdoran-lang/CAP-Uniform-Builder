@@ -1,6 +1,9 @@
 // Developer tools (the calibrator) exist only when the page is opened with ?dev=1.
 const CAPUB_DEV = new URLSearchParams(location.search).has('dev');
 if(CAPUB_DEV) document.documentElement.dataset.dev = '1';
+// ?ux=2 turns on the guided flow (one step at a time). Without it the page is unchanged.
+const CAPUB_GUIDED = new URLSearchParams(location.search).get('ux') === '2';
+if(CAPUB_GUIDED) document.documentElement.dataset.ux = '2';
 
 // Short messages go to the page's toast; the browser alert is only the fallback before it exists.
 function capubNotify(message, ms){

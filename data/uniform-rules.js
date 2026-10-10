@@ -44,7 +44,7 @@
       refs:{ribbons:'11.1.3',who:'4.2.3',awards:'11.1.6'}},
     corporate_field:{group:'field',style:'corporate',membership:['senior'],
       ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:null,
-      refs:{ribbons:'11.1.3',awards:'11.1.6'}},
+      refs:{who:'5.2.1',ribbons:'11.1.3',awards:'11.1.6'}},
     abu:{group:'field',style:'usaf',membership:['cadet','senior'],
       ribbons:'none',mini:false,usafAwards:true,rackColumns:[],badgeCap:null,
       refs:{ribbons:'11.1.3'}},
@@ -99,6 +99,15 @@
     const rule=getUniformRule(uniformId);
     return !!(rule && rule.usafAwards);
   }
+  // Why a uniform is not offered to this member, with the paragraph. Empty when it is.
+  function lockedReason(uniformId,membership){
+    const rule=getUniformRule(uniformId);
+    if(!rule || !membership || rule.membership.includes(membership)) return '';
+    const ref=rule.refs && (rule.refs.who || rule.refs.minimum);
+    const where=ref ? ` (CAPR 39-1, ${ref})` : '';
+    if(!rule.membership.includes('cadet')) return `For senior members${where}`;
+    return `Not available to ${membership} members${where}`;
+  }
   function uniformIdsInGroup(group){
     return Object.keys(RULES).filter(id=>RULES[id].group===group);
   }
@@ -106,6 +115,6 @@
   return {
     GROUPS,RULES,USAF_ONLY_AWARD_IDS,
     getUniformRule,ribbonPolicy,allowsRibbons,allowsMiniMedals,allowsRackColumns,
-    allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,uniformIdsInGroup
+    allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,uniformIdsInGroup,lockedReason
   };
 });

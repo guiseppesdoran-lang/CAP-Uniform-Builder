@@ -62,6 +62,8 @@
     const focusable=target.querySelector('select:not(:disabled),input:not(:disabled):not([type=hidden])');
     if(focusable) setTimeout(()=>focusable.focus({preventScroll:true}),250);
   }
+  V3.getStepStatuses=getStepStatuses;
+  V3.stepOrder=STEP_ORDER;
   function updateProgress(){
     const steps=[...document.querySelectorAll('.capubStep')]; if(!steps.length || typeof State==='undefined') return;
     const {done,current}=getStepStatuses();
