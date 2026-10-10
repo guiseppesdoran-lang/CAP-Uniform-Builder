@@ -61,8 +61,9 @@
   --capub-footer-h:36px;
   --sidebar-w:380px;
 }
+/* Dark theme: follows the system unless the member picked one (data-theme on <html>). */
 @media (prefers-color-scheme:dark){
-  :root{
+  :root:not([data-theme="light"]){
     --bg:#070B22;
     --panel:#0F1739;
     --panel-2:#141E48;
@@ -87,6 +88,31 @@
     --scrim:rgba(0,0,0,.65);
     --shadow:0 1px 2px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
   }
+}
+:root[data-theme="dark"]{
+    --bg:#070B22;
+    --panel:#0F1739;
+    --panel-2:#141E48;
+    --ink:#F2F4FA;
+    --muted:#B9BED0;
+    --line:#2C3769;
+    --line-strong:#7C86B4;
+    --brand:#0F1739;
+    --action:#FFCD00;
+    --on-action:#10131A;
+    --action-hover:#FFDD55;
+    --accent:#FFCD00;
+    --select-bg:#1B2860;
+    --select-line:#FFCD00;
+    --danger:#FF8FA3;
+    --danger-bg:#3A1220;
+    --warn:#FFCD00;
+    --warn-bg:#3A3108;
+    --ok:#8FD7A8;
+    --ok-bg:#12301E;
+    --focus:#FFCD00;
+    --scrim:rgba(0,0,0,.65);
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
 }
 
 /* ---- Base ---- */
@@ -177,6 +203,17 @@ header h1{
   letter-spacing:.01em;
 }
 header h1{flex:0 0 auto}
+.themeToggle{
+  width:auto;
+  min-height:44px;
+  margin:0 0 0 auto;
+  padding:0 var(--s4);
+  background:transparent;
+  border:1px solid rgba(255,255,255,.7);
+  color:#fff;
+  font-size:var(--t-md);
+}
+.themeToggle:hover{background:rgba(255,255,255,.18);border-color:#fff}
 .unofficialTag{
   margin-left:var(--s3);
   padding:2px var(--s3);
@@ -495,7 +532,7 @@ header h1::after{
 .capubTopBar{display:flex;gap:var(--s2);align-items:center;flex-wrap:wrap;min-width:0}
 .capubPill{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:var(--s1) var(--s3);font-size:var(--t-sm);color:var(--ink)}
 .capubPill strong{color:var(--ink)}
-.previewTools{display:flex;margin-left:auto}
+.previewTools{display:flex;flex-wrap:wrap;gap:var(--s3);margin-left:auto}
 .previewToolCard{display:flex;align-items:center;gap:var(--s2)}
 .previewToolCard button{width:auto;min-width:44px;margin:0;padding:0 var(--s3);font-size:var(--t-lg)}
 .previewToolCard .zoomReadout{min-width:48px;text-align:center;font-size:var(--t-sm);font-weight:700;color:var(--ink)}

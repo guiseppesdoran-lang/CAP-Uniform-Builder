@@ -1685,6 +1685,58 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   const clearPatchesBtn = by('clearPatches');
   if(clearPatchesBtn) clearPatchesBtn.addEventListener('click', ()=>setTimeout(updateStatusPanel,0));
 
+  /*
+    Undo and redo. A snapshot is the same profile a saved setup uses, minus the calibration
+    and mask data, so going back is applyProfile() on an earlier snapshot. A render that
+    changes the snapshot records the one before it.
+  */
+  const HISTORY_LIMIT = 50;
+  const undoStack = [];
+  let redoStack = [];
+  let lastSnap = null;
+  let replaying = false;
+  function snapshotNow(){
+    const p = collectProfile();
+    p.calib = undefined;
+    p.garmentMasks = undefined;
+    return JSON.stringify(p);
+  }
+  function captureHistory(){
+    if(replaying) return;
+    const now = snapshotNow();
+    if(lastSnap === null){ lastSnap = now; return; }
+    if(now === lastSnap) return;
+    undoStack.push(lastSnap);
+    if(undoStack.length > HISTORY_LIMIT) undoStack.shift();
+    redoStack = [];
+    lastSnap = now;
+    document.dispatchEvent(new CustomEvent('capub:history'));
+  }
+  function replay(from, to){
+    if(!from.length) return;
+    const target = from.pop();
+    to.push(snapshotNow());
+    replaying = true;
+    try{ applyProfile(JSON.parse(target)); }
+    finally{ replaying = false; }
+    lastSnap = snapshotNow();
+    document.dispatchEvent(new CustomEvent('capub:history'));
+  }
+  window.CAPUB_HISTORY = {
+    undo(){ replay(undoStack, redoStack); },
+    redo(){ replay(redoStack, undoStack); },
+    canUndo(){ return undoStack.length > 0; },
+    canRedo(){ return redoStack.length > 0; }
+  };
+  (function wrapFullRenderForHistory(){
+    const previous = fullRender;
+    fullRender = function capubHistoryFullRender(){
+      const result = previous.apply(this, arguments);
+      setTimeout(captureHistory, 0);
+      return result;
+    };
+  })();
+
   function wireV2Controls(){
     syncTextControls();
     const save = by('capubV2SaveLocal'), load = by('capubV2LoadLocal'), exp = by('capubV2ExportJson'), impBtn = by('capubV2ImportBtn'), impFile = by('capubV2ImportFile');

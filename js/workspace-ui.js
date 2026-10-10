@@ -115,6 +115,26 @@
     const toolbar=document.createElement('div'); toolbar.id='previewToolbar'; toolbar.className='previewToolbar';
     toolbar.innerHTML=`<div id="capubTopBar" class="capubTopBar"><span class="capubPill">Status: <strong id="topStatusText">Ready</strong></span><span class="capubPill">Uniform: <strong id="topUniformText">None</strong></span><span class="capubPill">Items: <strong id="topItemsText">0</strong></span></div><div id="previewTools" class="previewTools"><div class="previewToolCard" role="group" aria-label="Preview zoom"><button type="button" class="ghost" id="zoomOutBtn" aria-label="Zoom out">−</button><span class="zoomReadout" id="zoomReadout" aria-live="polite">100%</span><button type="button" class="ghost" id="zoomInBtn" aria-label="Zoom in">+</button><button type="button" class="ghost" id="zoomFitBtn">Fit</button></div></div>`;
     wrap.insertBefore(toolbar, wrap.firstChild);
+    // Undo and redo sit in front of the zoom controls.
+    const history=document.createElement('div');
+    history.className='previewToolCard'; history.setAttribute('role','group'); history.setAttribute('aria-label','Undo and redo');
+    history.innerHTML='<button type="button" class="ghost" id="undoBtn">Undo</button><button type="button" class="ghost" id="redoBtn">Redo</button>';
+    safeBy('previewTools').insertBefore(history, safeBy('previewTools').firstChild);
+    const syncHistory=()=>{
+      const h=window.CAPUB_HISTORY;
+      safeBy('undoBtn').disabled=!(h&&h.canUndo()); safeBy('redoBtn').disabled=!(h&&h.canRedo());
+    };
+    safeBy('undoBtn').onclick=()=>{ window.CAPUB_HISTORY&&window.CAPUB_HISTORY.undo(); };
+    safeBy('redoBtn').onclick=()=>{ window.CAPUB_HISTORY&&window.CAPUB_HISTORY.redo(); };
+    document.addEventListener('capub:history',syncHistory);
+    document.addEventListener('keydown',e=>{
+      if(!(e.metaKey||e.ctrlKey) || e.key.toLowerCase()!=='z') return;
+      const t=e.target; if(t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      e.preventDefault();
+      const h=window.CAPUB_HISTORY; if(!h) return;
+      if(e.shiftKey) h.redo(); else h.undo();
+    });
+    syncHistory();
     safeBy('zoomOutBtn').onclick=()=>{ V3.userZoomed=true; setZoom(Math.max(.55,V3.zoom-.1)); };
     safeBy('zoomInBtn').onclick=()=>{ V3.userZoomed=true; setZoom(Math.min(1.65,V3.zoom+.1)); };
     safeBy('zoomFitBtn').onclick=()=>{ V3.userZoomed=false; fitZoom(); };
@@ -183,7 +203,32 @@
     const area=safeBy('previewArea');
     if(area && !V3.userZoomed && V3.fitWidth && area.offsetWidth && area.offsetWidth!==V3.fitWidth) fitZoom();
   }
-  function refreshAll(){ ensureProgress(); ensureEmptyState(); updateEmptyState(); ensurePreviewToolbar(); ensureCommandBar(); polishPanels(); updateProgress(); updateTopBar(); markActiveUniform(); refitIfStageChanged(); }
+  // Light/dark: the system setting by default, a member's choice kept in this browser.
+  function currentTheme(){
+    const set=document.documentElement.getAttribute('data-theme');
+    if(set) return set;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function ensureThemeToggle(){
+    const header=document.querySelector('header');
+    if(!header || safeBy('themeToggle')) return;
+    try{
+      const saved=localStorage.getItem('capubTheme');
+      if(saved==='light' || saved==='dark') document.documentElement.setAttribute('data-theme',saved);
+    }catch(_){}
+    const btn=document.createElement('button');
+    btn.type='button'; btn.id='themeToggle'; btn.className='themeToggle';
+    const label=()=>{ const dark=currentTheme()==='dark'; btn.textContent=dark?'Light mode':'Dark mode'; btn.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode'); };
+    btn.addEventListener('click',()=>{
+      const next=currentTheme()==='dark'?'light':'dark';
+      document.documentElement.setAttribute('data-theme',next);
+      try{ localStorage.setItem('capubTheme',next); }catch(_){}
+      label();
+    });
+    label();
+    header.appendChild(btn);
+  }
+  function refreshAll(){ ensureThemeToggle(); ensureProgress(); ensureEmptyState(); updateEmptyState(); ensurePreviewToolbar(); ensureCommandBar(); polishPanels(); updateProgress(); updateTopBar(); markActiveUniform(); refitIfStageChanged(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
     fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); scheduleRefresh(); return result; };
