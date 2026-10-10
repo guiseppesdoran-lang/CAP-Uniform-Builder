@@ -17,3 +17,7 @@ test('the military ribbon filter row stacks on a phone instead of overflowing',(
 test('folded sections inside the pickers are 44px targets',()=>{
   assert.match(css,/\.modal details>summary\{min-height:44px/);
 });
+
+test('a checkbox with its label is a 44px row',()=>{
+  assert.match(css,/label\.fieldNote:has\(>input\[type=checkbox\]\)\{display:flex;align-items:center;gap:var\(--s2\);min-height:44px\}/);
+});

@@ -1204,5 +1204,7 @@ small.hintText{display:block}
 @media (max-width:600px){
   .militaryRibbonCatalogFilters{grid-template-columns:minmax(0,1fr)}
 }
+/* A checkbox with its words is one control: the whole row is the target. */
+label.fieldNote:has(>input[type=checkbox]){display:flex;align-items:center;gap:var(--s2);min-height:44px}
 /* A folded section is a control, so its heading is a 44px target. */
 .modal details>summary{min-height:44px;box-sizing:border-box;padding-top:var(--s3);padding-bottom:var(--s3)}
