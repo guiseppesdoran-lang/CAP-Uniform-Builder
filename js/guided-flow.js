@@ -236,9 +236,12 @@
       `${ribbonIds.size} selected`,
       ribbonRule(uniform),
       wearsRibbons);
+    const plannedBadge=!auth.showBadges ? rules().plannedBadge(uniform) : null;
     set('badges',
-      cap ? `${badgeCount} of ${cap} badges` : `${badgeCount} selected`,
-      auth.showBadges ? (cap ? `At most ${cap} on this uniform.` : 'Placed where the regulation puts them.') : 'Not worn on this uniform.',
+      plannedBadge ? `Up to ${plannedBadge.count}` : (cap ? `${badgeCount} of ${cap} badges` : `${badgeCount} selected`),
+      plannedBadge
+        ? `${plannedBadge.text} Choosing it is not available yet.`
+        : (auth.showBadges ? (cap ? `At most ${cap} on this uniform.` : 'Placed where the regulation puts them.') : 'Not worn on this uniform.'),
       !!auth.showBadges);
     set('patches',
       `${patches} selected`,

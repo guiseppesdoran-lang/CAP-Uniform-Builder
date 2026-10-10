@@ -971,6 +971,7 @@ header h1::after{
 }
 
 .footerShort{display:none}
+.footerCredit{margin-left:var(--s1)}
 @media (max-width:480px){
   .footerFull,.footerCredit{display:none}
   .footerShort{display:inline}
@@ -1006,6 +1007,28 @@ html[data-ux="2"] .controlsHeader .controlsTitle::after{display:none}
 .itemPopoverActions{display:flex;gap:var(--s2)}
 .itemPopoverActions button{width:auto;flex:1 1 auto;margin:0;min-height:44px}
 #uniformCanvas .layer.ribbonTile,#uniformCanvas .layer.ribbonMini,#uniformCanvas .layer.badge{cursor:pointer}
+
+/* ---- Authorized, not drawn yet ---- */
+.plannedUniforms{margin-top:var(--s4)}
+.plannedUniforms[hidden]{display:none}
+.plannedTitle{font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
+.plannedCard{margin-top:var(--s2);border:1px dashed var(--line-strong);border-radius:var(--r);background:var(--panel-2)}
+.plannedSummary{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--s2);
+  min-height:44px;
+  box-sizing:border-box;
+  padding:var(--s2) var(--s3);
+  cursor:pointer;
+  color:var(--ink);
+}
+.plannedName{font-weight:700}
+.plannedTag{padding:1px var(--s2);border-radius:var(--r);border:1px solid var(--line-strong);font-size:var(--t-xs);color:var(--muted)}
+.plannedFacts{margin:0;padding:0 var(--s3) var(--s3) calc(var(--s3) + var(--s4));font-size:var(--t-sm);color:var(--muted)}
+.plannedFacts li+li{margin-top:var(--s1)}
 
 /* ---- Guided flow (?ux=2): one step at a time ---- */
 .guidedSummary,.guidedNav{display:none}

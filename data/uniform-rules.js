@@ -75,12 +75,28 @@
   // Uniforms the regulation authorizes that the builder does not draw yet. They are listed so
   // the table states the whole regulation; none is offered to a member.
   const NOT_MODELLED=Object.freeze({
-    semi_formal_usaf_cadet:{style:'usaf',membership:['cadet'],ribbons:'required',
+    semi_formal_usaf_cadet:{label:'Semi-Formal Dress (cadet)',group:'formal',style:'usaf',
+      membership:['cadet'],ribbons:'required',
       refs:{who:'4.1.3, 4.1.4',ribbons:'11.1.2'},
+      facts:[
+        'Worn by cadets only, for semi-formal social functions (CAPR 39-1, 4.1.3 and 4.1.4).',
+        'Ribbons are required with it (11.1.2).',
+        'Saluting is not required while wearing it.'
+      ],
       why:'Cadet-only USAF Semi-Formal. Needs ribbon-rack calibration data that does not exist.'},
-    corporate_flight_duty:{style:'corporate',membership:['cadet','senior'],ribbons:'none',
+    corporate_flight_duty:{label:'Corporate Flight Duty Uniform',group:'field',style:'corporate',
+      membership:['cadet','senior'],ribbons:'none',
       refs:{who:'8.3.1',ribbons:'11.1.3'},
+      facts:[
+        'For flight duty, by people with an aeronautical rating or an aircrew mission qualification (CAPR 39-1, 8.1.1.1).',
+        'Navy blue, worn by active members (8.3.1, 8.3.2).',
+        'No ribbons or medals (11.1.3), and no morale patches (8.1.2.2).'
+      ],
       why:'Corporate Flight Duty Uniform. No base artwork.'}
+  });
+  // Optional badges the regulation allows on a uniform the builder offers no badge placement for.
+  const BADGES_NOT_PLACED=Object.freeze({
+    polo:{count:1,ref:'5.3.2.1.1',text:'One optional badge (aviation, occupational, specialty track or duty title) may be embroidered above the name.'}
   });
 
   // Awards that are USAF-style only, other than the U.S. military catalog (which the caller
@@ -156,14 +172,26 @@
     const counted=badges+(shared ? patches : 0);
     return {cap:rule.badgeCap,counted,shared,over:counted>rule.badgeCap};
   }
+  // Authorized uniforms the builder cannot draw yet, for the member to read about. Each is shown
+  // to the members the regulation names, never offered to select.
+  function plannedUniformsFor(membership,{adultCadet=false}={}){
+    if(!membership) return [];
+    return Object.entries(NOT_MODELLED)
+      .filter(([,u])=>u.membership.includes(membership))
+      .map(([id,u])=>({id,label:u.label,group:u.group,facts:[...u.facts],why:u.why,refs:{...u.refs}}));
+  }
+  // A uniform that allows badges but has no badge placement here: say so rather than hide them.
+  function plannedBadge(uniformId){
+    return BADGES_NOT_PLACED[String(uniformId||'')] || null;
+  }
   function uniformIdsInGroup(group){
     return Object.keys(RULES).filter(id=>RULES[id].group===group);
   }
 
   return {
-    GROUPS,RULES,NOT_MODELLED,USAF_ONLY_AWARD_IDS,
+    GROUPS,RULES,NOT_MODELLED,BADGES_NOT_PLACED,USAF_ONLY_AWARD_IDS,
     getUniformRule,ribbonPolicy,allowsRibbons,allowsMiniMedals,allowsRackColumns,
     allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,uniformIdsInGroup,
-    lockedReason,allowsOnlyChaplainBadge,badgeLimit
+    lockedReason,allowsOnlyChaplainBadge,badgeLimit,plannedUniformsFor,plannedBadge
   };
 });

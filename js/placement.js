@@ -912,7 +912,18 @@ function renderPatches(){
 function updateAvailabilityUI(prevUniform){
   const auth = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
   by('groupRibbons').classList.toggle('hidden', !auth.showRibbons && !UNIFORMS[State.uniform].mini);
-  by('groupBadges').classList.toggle('hidden', !auth.showBadges);
+  // A uniform that allows a badge but has no placement here (the polo) keeps its Badges panel
+  // with a note, instead of the panel vanishing as if no badge were allowed.
+  const planned = !auth.showBadges ? CAPUBUniformRules.plannedBadge(State.uniform) : null;
+  by('groupBadges').classList.toggle('hidden', !auth.showBadges && !planned);
+  const plannedNote = by('badgesPlannedNote');
+  if(plannedNote){
+    plannedNote.classList.toggle('hidden', !planned);
+    plannedNote.textContent = planned
+      ? `${planned.text.replace(/\.$/,'')} (CAPR 39-1, ${planned.ref}). Choosing it is not available yet.`
+      : '';
+  }
+  ['expandBadges','clearBadges'].forEach(id => { const b = by(id); if(b) b.disabled = !!planned; });
   by('groupPatches').classList.toggle('hidden', !auth.showPatches);
   // Miniature medals are worn only on Mess Dress and Corporate Semi-Formal (CAPR 39-1 11.1.4).
   const miniWorn = CAPUBUniformRules.allowsMiniMedals(State.uniform);
