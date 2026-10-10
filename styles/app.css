@@ -684,7 +684,7 @@ header h1::after{
   border-radius:var(--r-lg);
 }
 .galleryTile:hover{border-color:var(--line-strong)}
-.galleryTile.isFilteredOut{display:none !important}
+.galleryTile.isFilteredOut,#galleryModalHost div.isFilteredOut{display:none !important}
 .galleryTile img{width:72px;height:auto;border-radius:var(--r);border:1px solid var(--line);background:var(--paper)}
 .galleryTile .title{font-size:var(--t-sm);font-weight:700;line-height:1.25}
 .galleryTile .sub{margin-top:2px;font-size:var(--t-xs);line-height:1.3;color:var(--muted)}

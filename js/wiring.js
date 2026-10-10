@@ -915,7 +915,7 @@ function openGalleryModal(kind){
 
     const buildTile = id => {
         const sel = State.badgeSelections[id] || {checked:false};
-        const title = id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+        const title = getBadgeDisplayName(id);
         const rareCadetTag = (State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
 
         const tile = document.createElement('div');
@@ -924,12 +924,11 @@ function openGalleryModal(kind){
           <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
           <div style="flex:1;min-width:0;">
             <div class="title">${escapeHtml(title)}${rareCadetTag || ''}</div>
-            <div class="sub">(${escapeHtml(id)})</div>
             <div class="miniRow">
               <label><input type="checkbox" class="bdChk"> Add</label>
             </div>
             ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            <div class="sub">Slot: <b>${getBadgeSlotLabel(id)}</b> • Regulation scale: ${Math.round(getBadgeRenderSize(id).width)}×${Math.round(getBadgeRenderSize(id).height)} px</div>
+            ${getBadgeTileMetaHtml(id)}
           </div>
         `;
 
@@ -1639,7 +1638,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
     const wrap = document.createElement('div');
     wrap.className = 'capubV2Search';
-    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name, id, slot, or category..."/><div class="sub"><span id="capubV2ModalCount"></span> visible. Tip: use this popup for fast selection; selected items stay checked.</div>`;
+    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category..."/><div class="sub"><span id="capubV2ModalCount"></span> visible. Tip: use this popup for fast selection; selected items stay checked.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div>`;
     body.insertBefore(wrap, body.firstChild);
     const input = wrap.querySelector('input');
     const count = wrap.querySelector('#capubV2ModalCount');
@@ -1654,6 +1653,20 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
         if(show) visible++;
       });
       if(count) count.textContent = visible;
+      // A category heading with every tile filtered out would sit there on its own.
+      if(kind === 'badges'){
+        body.querySelectorAll('.galleryGrid').forEach(grid=>{
+          const heading = grid.previousElementSibling;
+          if(!heading || heading.tagName !== 'DIV' || heading.style.fontWeight !== '800') return;
+          const any = [...grid.children].some(t=>!t.classList.contains('isFilteredOut'));
+          heading.classList.toggle('isFilteredOut', !any);
+        });
+      }
+      const empty = wrap.querySelector('#capubV2ModalEmpty');
+      if(empty){
+        empty.hidden = !(q && visible === 0);
+        empty.textContent = q && visible === 0 ? `Nothing in ${kind} matches \u201c${input.value.trim()}\u201d.` : '';
+      }
     }
     input.addEventListener('input', filter);
     window.CAPUB_refreshModalGallerySearch = requestedKind=>{
