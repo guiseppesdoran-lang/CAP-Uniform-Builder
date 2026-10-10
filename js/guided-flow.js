@@ -89,6 +89,7 @@
       const grid=el('div','guidedUniformGrid');
       ids.forEach(id=>{
         const btn=buttons.get(id);
+        btn.dataset.group=key;
         const thumb=el('img','guidedThumb');
         thumb.alt=''; thumb.loading='lazy'; thumb.decoding='async';
         thumb.dataset.uniform=id;
@@ -108,10 +109,38 @@
       frag.append(section);
     });
     list.append(frag);
+    // Uniforms this member may not wear live in one folded list, each with its reason.
+    const locked=el('details','guidedLocked');
+    locked.hidden=true;
+    locked.append(el('summary','guidedLockedTitle'));
+    locked.append(el('div','guidedUniformGrid'));
+    list.append(locked);
+  }
+  // Put each uniform where it belongs for this member: allowed ones in their group, the rest
+  // in the folded list. Only moves a card when it is in the wrong place.
+  function sortUniforms(){
+    const list=by('uniformList');
+    const locked=list && list.querySelector('.guidedLocked');
+    if(!locked) return;
+    const lockedGrid=locked.querySelector('.guidedUniformGrid');
+    list.querySelectorAll('.uniformOption').forEach(btn=>{
+      const wantLocked=btn.classList.contains('locked');
+      const home=wantLocked
+        ? lockedGrid
+        : list.querySelector(`.guidedUniformGroup[data-group="${btn.dataset.group}"] .guidedUniformGrid`);
+      if(home && btn.parentElement!==home) home.append(btn);
+    });
+    const count=lockedGrid.children.length;
+    locked.hidden=count===0;
+    locked.querySelector('.guidedLockedTitle').textContent=`Not available to you (${count})`;
+    list.querySelectorAll('.guidedUniformGroup').forEach(g=>{
+      g.hidden=g.querySelector('.guidedUniformGrid').children.length===0;
+    });
   }
   function refreshUniformGroups(){
     const list=by('uniformList');
     if(!list || !rules()) return;
+    sortUniforms();
     const gender=State.gender==='female' ? 'female' : 'male';
     list.querySelectorAll('img.guidedThumb').forEach(img=>{
       const id=img.dataset.uniform;
@@ -281,6 +310,10 @@
       const target=stepBtn.dataset.step;
       const prereqs={profile:[],uniform:['profile'],items:['profile','uniform'],export:['profile','uniform']}[target]||[];
       setActive(prereqs.every(p=>done[p]) ? target : status().current);
+    },true);
+    // After "Resume", go to the first unfinished step instead of staying on step one.
+    document.addEventListener('click',e=>{
+      if(e.target && e.target.id==='capubResumeYes') setTimeout(()=>{ active=null; render(); },500);
     },true);
     ['change','click','input'].forEach(evt=>document.addEventListener(evt,schedule,true));
     document.addEventListener('capub:history',schedule);

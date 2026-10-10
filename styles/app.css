@@ -658,11 +658,13 @@ header h1::after{
   border-top:1px solid var(--line);
 }
 .footerLink{
-  display:inline;
+  /* A text link in a line, with a 44px target: the padding is cancelled by the margin. */
+  display:inline-block;
   width:auto;
-  min-height:0;
-  margin:0;
-  padding:0;
+  min-width:44px;
+  min-height:44px;
+  margin:calc(-1 * var(--s3)) calc(-1 * var(--s2));
+  padding:var(--s3) var(--s2);
   border:0;
   background:none;
   color:var(--ink);
@@ -949,7 +951,7 @@ header h1::after{
   .capubCommandBar button{flex:1 1 auto;padding:0 var(--s3);font-size:var(--t-md)}
 }
 
-.sheetClose{position:absolute;top:var(--s2);right:var(--s3);width:auto;min-height:36px;margin:0;padding:0 var(--s3)}
+.sheetClose{position:absolute;top:var(--s2);right:var(--s3);width:auto;min-height:44px;margin:0;padding:0 var(--s3)}
 @media (min-width:769px){.sheetClose{display:none}}
 /* ---- Phones: keep the header inside the screen and the toolbar to two short rows ----
    At 375px the header was 14px too wide, which made the whole page scroll sideways and pushed
@@ -976,7 +978,7 @@ header h1::after{
 
 .noticeList li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2)}
 .noticeList li>span{flex:1 1 12rem;min-width:0}
-.noticeFix{flex:0 0 auto;width:auto;min-height:36px;margin:0;padding:0 var(--s3);font-size:var(--t-sm)}
+.noticeFix{flex:0 0 auto;width:auto;min-height:44px;margin:0;padding:0 var(--s3);font-size:var(--t-sm)}
 
 .itemPopover{
   position:fixed;
@@ -992,7 +994,7 @@ header h1::after{
 }
 .itemPopoverName{margin-bottom:var(--s2);font-weight:700;font-size:var(--t-md)}
 .itemPopoverActions{display:flex;gap:var(--s2)}
-.itemPopoverActions button{width:auto;flex:1 1 auto;margin:0;min-height:40px}
+.itemPopoverActions button{width:auto;flex:1 1 auto;margin:0;min-height:44px}
 #uniformCanvas .layer.ribbonTile,#uniformCanvas .layer.ribbonMini,#uniformCanvas .layer.badge{cursor:pointer}
 
 /* ---- Guided flow (?ux=2): one step at a time ---- */
@@ -1018,7 +1020,7 @@ html[data-ux="2"] .stepGroup:not(.isActive)>.guidedSummary{
 }
 html[data-ux="2"] .stepGroup.isDone{border-color:var(--ok)}
 html[data-ux="2"] .stepGroup.isDone>.stepGroupTitle{color:var(--ok)}
-html[data-ux="2"] .guidedEdit{width:auto;min-height:36px;margin:0;padding:0 var(--s3)}
+html[data-ux="2"] .guidedEdit{width:auto;min-height:44px;margin:0;padding:0 var(--s3)}
 html[data-ux="2"] .stepGroup.isActive>*:not(.stepGroupTitle):not(.guidedSummary){margin-left:var(--s4);margin-right:var(--s4)}
 html[data-ux="2"] .stepGroup.isActive>.guidedNav{
   display:flex;
@@ -1069,6 +1071,11 @@ html[data-ux="2"] .uniformOption{
   font-weight:700;
 }
 .guidedWhy{font-size:var(--t-xs);color:var(--muted)}
+.guidedLocked{margin-top:var(--s4);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
+.guidedLocked[hidden]{display:none}
+.guidedLocked>summary{cursor:pointer;padding:var(--s3) 2px;font-weight:700;color:var(--ink)}
+.guidedLocked[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
+.guidedLocked .guidedUniformGrid{padding-bottom:var(--s3)}
 html[data-ux="2"] .uniformOption.locked{opacity:.75}
 html[data-ux="2"] .uniformOption.locked::after{content:none}
 /* A locked uniform needs its name and the reason, not the picture or the description. */

@@ -59,3 +59,21 @@ test('Items never blocks Next, Profile and Uniform do',()=>{
 test('rendering has a timer fallback for hidden tabs',()=>{
   assert.match(flow,/requestAnimationFrame\(run\);\s*setTimeout\(run,100\);/);
 });
+
+test('uniforms the member may not wear sit in one folded list with their reasons',()=>{
+  assert.match(flow,/Not available to you \(\$\{count\}\)/);
+  assert.match(flow,/btn\.classList\.contains\('locked'\)/);
+  assert.match(css,/\.guidedLocked\{/);
+});
+
+test('after Resume the flow goes to the first unfinished step',()=>{
+  assert.match(flow,/capubResumeYes[\s\S]{0,120}active=null; render\(\)/);
+});
+
+test('controls added by the flow meet the 44px touch target',()=>{
+  for(const sel of ['\\.sheetClose','\\.noticeFix','\\.itemPopoverActions button','html\\[data-ux="2"\\] \\.guidedEdit']){
+    const m=new RegExp(`${sel}\\{[^}]*min-height:44px`).exec(css);
+    assert.ok(m,`${sel} is 44px`);
+  }
+  assert.match(css,/\.footerLink\{[^}]*min-height:44px/);
+});
