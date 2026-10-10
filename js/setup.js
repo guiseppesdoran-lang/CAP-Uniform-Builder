@@ -40,6 +40,8 @@ function capubSetSidebarOpen(open){
   layoutShell.classList.toggle('sidebar-open', open);
   layoutShell.classList.toggle('sidebar-collapsed', !open);
   hamburgerBtn.setAttribute('aria-expanded', String(open));
+  // The preview refits: on a phone the controls are a sheet over the lower part of the screen.
+  document.dispatchEvent(new CustomEvent('capub:sidebar',{detail:{open}}));
 }
 function capubToggleSidebar(){
   capubSetSidebarOpen(!layoutShell.classList.contains('sidebar-open'));
@@ -47,6 +49,8 @@ function capubToggleSidebar(){
 capubSetSidebarOpen(!window.matchMedia('(max-width:768px)').matches);
 hamburgerBtn.dataset.sidebarToggleWired='1';
 hamburgerBtn.addEventListener('click', capubToggleSidebar);
+const sheetCloseBtn = by('sheetClose');
+if(sheetCloseBtn) sheetCloseBtn.addEventListener('click', ()=>capubSetSidebarOpen(false));
 
 /* ===========================
    TOOLTIP HOVER

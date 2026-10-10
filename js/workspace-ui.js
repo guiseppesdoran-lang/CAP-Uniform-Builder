@@ -164,7 +164,19 @@
     const available=Math.max(240,wrap.clientWidth-reserve);
     const previewWidth=area.offsetWidth || 450;
     // The wide field-uniform stage needs a lower floor to fit a phone without sideways scrolling.
-    const z=Math.min(1, Math.max(.3, available/previewWidth));
+    let z=Math.min(1, Math.max(.3, available/previewWidth));
+    // On a phone with the controls sheet up, also fit the height to what is left above it.
+    const shell=safeBy('layoutShell'), sheet=safeBy('controls');
+    if(mobile && shell && sheet && shell.classList.contains('sidebar-open')){
+      const toolbar=safeBy('previewToolbar');
+      const top=(toolbar ? toolbar.getBoundingClientRect().bottom : 0) + 12;
+      // The sheet's resting position, not where its slide animation happens to be.
+      const footer=safeBy('pageFooter');
+      const sheetTop=window.innerHeight - (footer ? footer.offsetHeight : 0) - sheet.offsetHeight;
+      const room=sheetTop - top;
+      const previewHeight=area.offsetHeight || 600;
+      if(room>120) z=Math.min(z, Math.max(.3, room/previewHeight));
+    }
     V3.fitWidth=previewWidth;
     setZoom(z);
   }
@@ -250,6 +262,8 @@
   }
   ['change','click','input'].forEach(evt=>document.addEventListener(evt,scheduleRefresh,true));
   window.addEventListener('resize',()=>{ if(V3.zoom<=1) fitZoom(); });
+  // Opening or closing the controls sheet changes the room the uniform has.
+  document.addEventListener('capub:sidebar',()=>{ if(!V3.userZoomed) setTimeout(fitZoom,230); });
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
 

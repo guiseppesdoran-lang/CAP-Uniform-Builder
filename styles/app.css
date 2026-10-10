@@ -895,36 +895,48 @@ header h1::after{
   header h1::after{display:block;margin-left:0;font-size:var(--t-md)}
   .controlsHeader .controlsTitle::after{display:none}
   #layoutShell{height:calc(100vh - var(--capub-header-h));flex-direction:column;min-height:calc(100vh - var(--capub-header-h))}
+  /* Controls are a bottom sheet on a phone: the uniform stays visible above them. */
   #controls,#layoutShell.sidebar-open #controls,#layoutShell.sidebar-collapsed #controls{
     position:fixed;
     left:0;
-    top:var(--capub-header-h);
-    bottom:0;
-    width:min(92vw,var(--sidebar-w));
-    min-width:min(92vw,var(--sidebar-w));
-    max-width:min(92vw,var(--sidebar-w));
-    height:auto;
+    right:0;
+    top:auto;
+    bottom:var(--capub-footer-h);
+    width:100%;
+    min-width:0;
+    max-width:none;
+    height:var(--sheet-h);
     z-index:9000;
+    border-radius:var(--r-lg) var(--r-lg) 0 0;
     box-shadow:var(--shadow);
-    border-right:1px solid var(--line);
+    border-top:1px solid var(--line-strong);
+    border-right:0;
     transition:transform .2s ease,visibility .2s ease;
     will-change:transform;
   }
   #layoutShell.sidebar-open #controls{transform:translate3d(0,0,0);visibility:visible;pointer-events:auto}
-  #layoutShell.sidebar-collapsed #controls{transform:translate3d(-105%,0,0);visibility:hidden;pointer-events:none}
+  #layoutShell.sidebar-collapsed #controls{transform:translate3d(0,110%,0);visibility:hidden;pointer-events:none}
   #previewWrapper{order:2;flex:1;width:100%;min-width:0;padding:var(--s4) var(--s3) 200px}
+  /* With the sheet up, leave room under the uniform so it can scroll clear of it. */
+  body:has(#layoutShell.sidebar-open) #previewWrapper{padding-bottom:calc(var(--sheet-h) + var(--capub-footer-h) + var(--s4))}
+  .sheetClose{display:inline-flex}
+  /* While the sheet is up the toolbar keeps only undo and redo, so the uniform has room. */
+  body:has(#layoutShell.sidebar-open) .capubTopBar,
+  body:has(#layoutShell.sidebar-open) .previewToolCard[aria-label="Preview zoom"]{display:none}
   .previewToolbar{flex-basis:calc(100% + 2 * var(--s3));margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) 0;padding:var(--s2) var(--s3);top:calc(-1 * var(--s4))}
   .controlsScrollArea{padding-bottom:96px}
   .statusGrid{grid-template-columns:1fr}
   .modal{height:90vh}
   .modal .galleryGrid{grid-template-columns:repeat(1,minmax(0,1fr))}
   body:has(#layoutShell.sidebar-open) .capubCommandBar{display:none}
-  :root{--capub-footer-h:64px}
+  :root{--capub-footer-h:64px;--sheet-h:min(46vh,420px)}
   #pageFooter{font-size:var(--t-xs);line-height:1.35;padding-top:var(--s1);padding-bottom:var(--s1)}
   .capubCommandBar{left:var(--s3);right:var(--s3);transform:none;width:auto;flex-wrap:wrap;justify-content:center}
   .capubCommandBar button{flex:1 1 auto;padding:0 var(--s3);font-size:var(--t-md)}
 }
 
+.sheetClose{position:absolute;top:var(--s2);right:var(--s3);width:auto;min-height:36px;margin:0;padding:0 var(--s3)}
+@media (min-width:769px){.sheetClose{display:none}}
 /* ---- Phones: keep the header inside the screen and the toolbar to two short rows ----
    At 375px the header was 14px too wide, which made the whole page scroll sideways and pushed
    the fixed footer (and its About link) off the right edge. */
