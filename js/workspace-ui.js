@@ -27,7 +27,7 @@
       <button type="button" class="capubStep" data-step="profile"><strong>1. Profile</strong><span>Member + rank</span></button>
       <button type="button" class="capubStep" data-step="uniform"><strong>2. Uniform</strong><span>Style + cut</span></button>
       <button type="button" class="capubStep" data-step="items"><strong>3. Items</strong><span>Ribbons &amp; badges</span></button>
-      <button type="button" class="capubStep" data-step="export"><strong>4. Export</strong><span>Validate + PNG</span></button>`;
+      <button type="button" class="capubStep" data-step="export"><strong>4. Finish</strong><span>Check + save</span></button>`;
     scroll.prepend(box);
     box.addEventListener('click',e=>{
       const step=e.target.closest('.capubStep'); if(step) goToStep(step.dataset.step);
@@ -183,7 +183,7 @@
   function ensureCommandBar(){
     if(safeBy('capubCommandBar')) return;
     const bar=document.createElement('div'); bar.id='capubCommandBar'; bar.className='capubCommandBar';
-    bar.innerHTML=`<button type="button" id="cmdRibbons">Ribbons</button><button type="button" id="cmdBadges">Badges</button><button type="button" id="cmdPatches">Patches</button><button type="button" class="ghost" id="cmdValidate">Validate</button><button type="button" id="cmdDownload">Download PNG</button>`;
+    bar.innerHTML=`<button type="button" id="cmdRibbons">Ribbons</button><button type="button" id="cmdBadges">Badges</button><button type="button" id="cmdPatches">Patches</button><button type="button" class="ghost" id="cmdValidate">Check</button><button type="button" id="cmdDownload">Download PNG</button>`;
     document.body.appendChild(bar);
     safeBy('cmdRibbons').onclick=()=>safeBy('expandRibbons')?.click();
     safeBy('cmdBadges').onclick=()=>safeBy('expandBadges')?.click();

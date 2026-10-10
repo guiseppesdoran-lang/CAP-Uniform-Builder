@@ -974,6 +974,8 @@ small.hintText{display:block}
 
 /* ---- Purchase list and cost dialog ---- */
 #purchaseListButton{width:100%}
+.finishAction+.finishAction{margin-top:var(--s4);padding-top:var(--s4);border-top:1px solid var(--line)}
+.finishAction .hintText{margin-top:var(--s2)}
 .capub-purchase-overlay{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:var(--s5);background:var(--scrim)}
 .capub-purchase-overlay.open{display:flex}
 .capub-purchase-modal{width:min(1120px,96vw);max-height:92vh;overflow:hidden;display:flex;flex-direction:column;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
