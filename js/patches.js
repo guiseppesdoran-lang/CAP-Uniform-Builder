@@ -167,10 +167,11 @@ function syncShoulderCordControl(){
   const sel = by('shoulderCordSelect');
   if(!sel) return;
   sel.value = State.shoulderCord || '';
-  const usable = State.membership === 'cadet' && ['blues_a','blues_b'].includes(State.uniform);
+  // Cadets only, on Class A and Class B (CAPR 39-1, 9.3 and 9.4.1). Anyone else is not shown it.
+  const usable = CAPUBUniformRules.allowsShoulderCord(State.uniform, State.membership);
   sel.disabled = false;
   const panel = by('shoulderCordPanel');
-  if(panel) panel.classList.toggle('disabledBlock', !usable);
+  if(panel) panel.classList.toggle('hidden', !usable);
 }
 
 function wireShoulderCordControl(){
@@ -396,8 +397,7 @@ function renderCACShoulderCord(){
   const cordId = State.shoulderCord;
   const cordMeta = SHOULDER_CORD_META[cordId] || null;
   if(!cordId || !cordMeta) return;
-  if(!['blues_a','blues_b'].includes(State.uniform)) return;
-  if(State.membership !== 'cadet') return;
+  if(!CAPUBUniformRules.allowsShoulderCord(State.uniform, State.membership)) return;
 
   const img = document.createElement('img');
   img.className = 'layer shoulderCord cacShoulderCord';
@@ -974,7 +974,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const id = eligible[idx];
         const sel = State.badgeSelections[id] || (State.badgeSelections[id] = { checked:false });
         const title = CAPUB_UTILITY_BADGE_LABELS[id] || getBadgeDisplayName(id);
-        const rareCadetTag = (!utilityMode && State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
         const utilityCandidates = utilityMode ? getBadgeAssetCandidates(id) : [];
         const previewPath = utilityMode ? (utilityCandidates[0] || `badges/utility/${id}.png`) : getBadgeAssetPath(id);
         const fallbackPath = utilityMode ? '' : `badges/${id}.webp`;
@@ -984,7 +983,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         tile.innerHTML = `
           <img loading="lazy" decoding="async" src="${utilityMode ? capubUtilityBadgePreviewUrl(id) : ASSET(previewPath)}" alt="${escapeHtml(title)}"${utilityMode ? ' class="utilityBadgePreview"' : ''}>
           <div style="flex:1;min-width:0;">
-            <div class="title">${escapeHtml(title)}${rareCadetTag}</div>
+            <div class="title">${escapeHtml(title)}</div>
             ${utilityMode ? '<div class="sub">Silver-on-blue utility badge</div>' : ''}
             <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
             ${id==='squadron_commander_badge' && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
