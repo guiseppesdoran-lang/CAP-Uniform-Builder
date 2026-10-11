@@ -28,6 +28,13 @@ only, and sensible caching (`index.html` is always revalidated; assets carry con
 their URLs). The policy comes from `scripts/csp.cjs`; the security test fails if the examples
 drift from it.
 
+## Access code
+
+The page asks for an access code before it shows the builder (`js/access-gate.js`). It keeps the
+site from being a public, searchable CAP-looking page; it is not security, and the code is in the
+source on purpose. Change it by editing `ACCESS_CODE` in that file. Responses also carry
+`X-Robots-Tag: noindex`, and the page has a `noindex` meta tag.
+
 ## Publishing
 
 Copy `dist/` to the web root (for example `rsync -a --delete dist/ server:/var/www/ebhq/dist/`).

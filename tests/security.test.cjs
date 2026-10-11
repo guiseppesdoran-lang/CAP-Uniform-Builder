@@ -95,6 +95,17 @@ test('the deploy examples carry the exact policy and headers the page is tested 
   }
 });
 
+test('the page asks for an access code and stays out of search', () => {
+  const page = read('index.html');
+  assert.match(page, /<meta name="robots" content="noindex/);
+  assert.match(page, /<script src="js\/access-gate\.js/);
+  assert.match(page, /<label for="accessGateInput">Access Code<\/label>/);
+  assert.match(read('styles/app.css'), /html\[data-access="ok"\] #accessGate\{display:none\}/);
+  for (const file of ['deploy/nginx.conf.example', 'deploy/Caddyfile.example']) {
+    assert.match(read(file), /X-Robots-Tag "noindex/, `${file} does not send noindex`);
+  }
+});
+
 test('the policy allows no inline script, no framing and no outside origin by default', () => {
   const csp = buildCsp({ forHeader: true });
   assert.match(csp, /script-src 'self'(;|$)/);
