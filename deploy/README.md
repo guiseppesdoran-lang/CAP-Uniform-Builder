@@ -28,6 +28,22 @@ only, and sensible caching (`index.html` is always revalidated; assets carry con
 their URLs). The policy comes from `scripts/csp.cjs`; the security test fails if the examples
 drift from it.
 
+## Sign-in
+
+The site sits behind one shared username and password, set in the server config (see the
+`auth_basic` lines in `nginx.conf.example` or `basic_auth` in `Caddyfile.example`). It keeps the
+builder out of search results and away from people who are not looking for it. It is a courtesy
+gate, not strong security, so use a password you do not use anywhere else and change it when it
+spreads further than intended. Responses also carry `X-Robots-Tag: noindex`.
+
+```bash
+sudo htpasswd -c /etc/nginx/ebhq.htpasswd members   # nginx; prompts for the password
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+To change the password, run `htpasswd` again without `-c`. Nothing in the repository holds the
+password or its hash.
+
 ## Publishing
 
 Copy `dist/` to the web root (for example `rsync -a --delete dist/ server:/var/www/ebhq/dist/`).
@@ -40,6 +56,6 @@ server's own account read-only.
   address out of public DNS and removes the need to open ports at all.
 - Keep the OS, the web server and the certificate renewal job updated; check that renewal works
   before the first certificate expires.
-- The site holds no user data and has no server-side code, so there is nothing to back up except
+- The site holds no user data and has no server-side code (the sign-in is the web server's own), so there is nothing to back up except
   the repository and the server configuration.
 - Check headers after any change: `curl -sI https://ebhq.dev/ | grep -iE 'content-security|strict-transport|nosniff|referrer'`.

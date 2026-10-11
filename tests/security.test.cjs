@@ -95,6 +95,15 @@ test('the deploy examples carry the exact policy and headers the page is tested 
   }
 });
 
+test('the deploy examples put the site behind the shared sign-in and keep it out of search', () => {
+  for (const file of ['deploy/nginx.conf.example', 'deploy/Caddyfile.example']) {
+    const text = read(file);
+    assert.match(text, /auth_basic "[^"]*not affiliated[^"]*"|basic_auth \{/, `${file} has no sign-in`);
+    assert.match(text, /X-Robots-Tag "noindex/, `${file} does not send noindex`);
+  }
+  assert.match(read('index.html'), /<meta name="robots" content="noindex/);
+});
+
 test('the policy allows no inline script, no framing and no outside origin by default', () => {
   const csp = buildCsp({ forHeader: true });
   assert.match(csp, /script-src 'self'(;|$)/);
