@@ -12,9 +12,21 @@
 <meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Everything stays in your browser.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
-<link rel="stylesheet" href="styles/app.css?v=f0d62fd8bd">
+<link rel="stylesheet" href="styles/app.css?v=798c32ae89">
+<script src="js/access-gate.js?v=cf7e7b5bf5"></script>
 </head>
 <body>
+
+<div id="accessGate" role="dialog" aria-modal="true" aria-labelledby="accessGateTitle">
+  <form id="accessGateForm" autocomplete="off">
+    <h1 id="accessGateTitle">Uniform Builder</h1>
+    <label for="accessGateInput">Access Code</label>
+    <input id="accessGateInput" type="text" inputmode="numeric" autocomplete="off" required>
+    <button type="submit">Enter</button>
+    <p id="accessGateError" role="alert"></p>
+    <p class="accessGateNote">Unofficial member resource. Not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force.</p>
+  </form>
+</div>
 
 <header>
   <h1>Uniform Builder</h1>

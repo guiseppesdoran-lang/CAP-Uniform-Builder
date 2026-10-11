@@ -95,13 +95,15 @@ test('the deploy examples carry the exact policy and headers the page is tested 
   }
 });
 
-test('the deploy examples put the site behind the shared sign-in and keep it out of search', () => {
+test('the page asks for an access code and stays out of search', () => {
+  const page = read('index.html');
+  assert.match(page, /<meta name="robots" content="noindex/);
+  assert.match(page, /<script src="js\/access-gate\.js/);
+  assert.match(page, /<label for="accessGateInput">Access Code<\/label>/);
+  assert.match(read('styles/app.css'), /html\[data-access="ok"\] #accessGate\{display:none\}/);
   for (const file of ['deploy/nginx.conf.example', 'deploy/Caddyfile.example']) {
-    const text = read(file);
-    assert.match(text, /auth_basic "[^"]*not affiliated[^"]*"|basic_auth \{/, `${file} has no sign-in`);
-    assert.match(text, /X-Robots-Tag "noindex/, `${file} does not send noindex`);
+    assert.match(read(file), /X-Robots-Tag "noindex/, `${file} does not send noindex`);
   }
-  assert.match(read('index.html'), /<meta name="robots" content="noindex/);
 });
 
 test('the policy allows no inline script, no framing and no outside origin by default', () => {

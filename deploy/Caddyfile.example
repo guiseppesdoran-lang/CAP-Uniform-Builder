@@ -11,13 +11,6 @@ ebhq.dev {
 		# Directory listings stay off (the default); no browse directive.
 	}
 
-	# One shared login, posted wherever the members are. It keeps the site out of search results and
-	# away from people who are not looking for it; it is not strong security.
-	# Make the hash with:  caddy hash-password
-	basic_auth {
-		members REPLACE_WITH_OUTPUT_OF_caddy_hash-password
-	}
-
 	header {
 		X-Robots-Tag "noindex, nofollow, noarchive"
 		Strict-Transport-Security "max-age=63072000; includeSubDomains"

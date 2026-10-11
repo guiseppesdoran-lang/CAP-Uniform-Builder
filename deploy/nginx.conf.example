@@ -24,13 +24,6 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/ebhq.dev/privkey.pem;
     ssl_protocols TLSv1.2 TLSv1.3;
 
-    # One shared login, posted wherever the members are. This keeps the site out of search results
-    # and away from people who are not looking for it; it is not strong security. The realm is the
-    # text the browser shows in the sign-in box, so it also says what the site is.
-    # Create the file with:  htpasswd -c /etc/nginx/ebhq.htpasswd members
-    auth_basic "Unofficial CAP member resource - not affiliated with or endorsed by CAP";
-    auth_basic_user_file /etc/nginx/ebhq.htpasswd;
-
     root /var/www/ebhq/dist;
     index index.html;
     autoindex off;

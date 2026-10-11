@@ -1253,3 +1253,13 @@ small.hintText{display:block}
 label.fieldNote:has(>input[type=checkbox]){display:flex;align-items:center;gap:var(--s2);min-height:44px}
 /* A folded section is a control, so its heading is a 44px target. */
 .modal details>summary{min-height:44px;box-sizing:border-box;padding-top:var(--s3);padding-bottom:var(--s3)}
+
+/* Access code box: covers the page until the code is entered (js/access-gate.js). */
+#accessGate{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:16px;background:var(--bg)}
+html[data-access="ok"] #accessGate{display:none}
+#accessGateForm{width:100%;max-width:320px;display:flex;flex-direction:column;gap:12px;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+#accessGateForm h1{margin:0;font-size:1.4rem}
+#accessGateForm input{min-height:44px;font-size:16px}
+#accessGateForm button{min-height:44px}
+#accessGateError{min-height:1.2em;margin:0;color:var(--danger,#b3261e);font-size:.9rem}
+.accessGateNote{margin:0;color:var(--muted);font-size:.8rem}
