@@ -1263,3 +1263,6 @@ html[data-access="ok"] #accessGate{display:none}
 #accessGateForm button{min-height:44px}
 #accessGateError{min-height:1.2em;margin:0;color:var(--danger,#b3261e);font-size:.9rem}
 .accessGateNote{margin:0;color:var(--muted);font-size:.8rem}
+.accessGateHint{font-size:.9rem}
+.accessGateHint summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:var(--ink)}
+.accessGateHint p{margin:0 0 8px;color:var(--muted)}
