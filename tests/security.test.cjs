@@ -100,6 +100,7 @@ test('the page asks for an access code and stays out of search', () => {
   assert.match(page, /<meta name="robots" content="noindex/);
   assert.match(page, /<script src="js\/access-gate\.js/);
   assert.match(page, /<label for="accessGateInput">Access Code<\/label>/);
+  assert.match(page, /<details class="accessGateHint"><summary>Need a hint\?<\/summary>/);
   assert.match(read('styles/app.css'), /html\[data-access="ok"\] #accessGate\{display:none\}/);
   for (const file of ['deploy/nginx.conf.example', 'deploy/Caddyfile.example']) {
     assert.match(read(file), /X-Robots-Tag "noindex/, `${file} does not send noindex`);
