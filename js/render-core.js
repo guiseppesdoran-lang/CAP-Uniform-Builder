@@ -970,7 +970,7 @@ function renderRack(){
    =========================== */
 function buildDevicePicker(){
   const wrap=by('devicePicker');
-  wrap.innerHTML='';
+  if(!wrap) return; // the multi-apply tool was removed; devices are set in the ribbon picker
   deviceList.forEach(id=>{
     const row=document.createElement('label');
     row.style.cssText="display:flex;align-items:center;gap:8px;font-size:12px;";
@@ -998,6 +998,7 @@ function wireDeviceUI(){
   const applyBtn = by('deviceApplyModeBtn');
   const removeBtn= by('deviceRemoveModeBtn');
   const clearBtn = by('deviceClearSelectionBtn');
+  if(!applyBtn || !removeBtn || !clearBtn) return;
 
   applyBtn.addEventListener('click', ()=>{
     State.selectedDevices = readDevicePicker();

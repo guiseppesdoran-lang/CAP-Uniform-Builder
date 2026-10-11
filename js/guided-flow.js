@@ -116,11 +116,9 @@
         const tag=el('span','guidedTag','Your minimum uniform');
         tag.hidden=!rules().getUniformRule(id).minimum;
         tag.dataset.tag='minimum';
-        const why=el('div','guidedWhy');
-        why.dataset.why=id;
         // Name and description move into one column beside the thumbnail.
         const text=el('div','guidedText');
-        text.append(...[...btn.children].filter(c=>c!==thumb),tag,why);
+        text.append(...[...btn.children].filter(c=>c!==thumb),tag);
         btn.append(text);
         grid.append(btn);
       });
@@ -128,38 +126,20 @@
       frag.append(section);
     });
     list.append(frag);
-    // Uniforms this member may not wear live in one folded list, each with its reason.
-    const locked=el('details','guidedLocked');
-    locked.hidden=true;
-    locked.append(el('summary','guidedLockedTitle'));
-    locked.append(el('div','guidedUniformGrid'));
-    list.append(locked);
   }
-  // Put each uniform where it belongs for this member: allowed ones in their group, the rest
-  // in the folded list. Only moves a card when it is in the wrong place.
-  function sortUniforms(){
+  // Uniforms the member may not wear are not listed at all (CSS hides a locked card); a group
+  // with nothing left to choose is hidden with them.
+  function hideEmptyGroups(){
     const list=by('uniformList');
-    const locked=list && list.querySelector('.guidedLocked');
-    if(!locked) return;
-    const lockedGrid=locked.querySelector('.guidedUniformGrid');
-    list.querySelectorAll('.uniformOption').forEach(btn=>{
-      const wantLocked=btn.classList.contains('locked');
-      const home=wantLocked
-        ? lockedGrid
-        : list.querySelector(`.guidedUniformGroup[data-group="${btn.dataset.group}"] .guidedUniformGrid`);
-      if(home && btn.parentElement!==home) home.append(btn);
-    });
-    const count=lockedGrid.children.length;
-    locked.hidden=count===0;
-    locked.querySelector('.guidedLockedTitle').textContent=`Not available to you (${count})`;
+    if(!list) return;
     list.querySelectorAll('.guidedUniformGroup').forEach(g=>{
-      g.hidden=g.querySelector('.guidedUniformGrid').children.length===0;
+      g.hidden=![...g.querySelectorAll('.uniformOption')].some(b=>!b.classList.contains('locked'));
     });
   }
   function refreshUniformGroups(){
     const list=by('uniformList');
     if(!list || !rules()) return;
-    sortUniforms();
+    hideEmptyGroups();
     const gender=State.gender==='female' ? 'female' : 'male';
     list.querySelectorAll('img.guidedThumb').forEach(img=>{
       const id=img.dataset.uniform;
@@ -167,11 +147,6 @@
       const src=cfg && (cfg[gender] || cfg.male);
       const want=src && typeof ASSET==='function' ? ASSET(src) : '';
       if(want && img.getAttribute('src')!==want) img.setAttribute('src',want);
-    });
-    list.querySelectorAll('.guidedWhy').forEach(box=>{
-      const reason=rules().lockedReason(box.dataset.why,State.membership,{adultCadet:!!State.adultCadet});
-      box.textContent=reason;
-      box.hidden=!reason;
     });
   }
 
@@ -249,18 +224,6 @@
       !!auth.showPatches);
   }
 
-  /* ---------- advanced: the collar and lapel overlay editor ---------- */
-  function tuckAwayOverlay(){
-    const panel=by('garmentOverlayPanel');
-    const g=group('uniform');
-    if(!panel || !g || g.querySelector('.guidedAdvanced')) return;
-    const more=el('details','guidedAdvanced');
-    more.append(el('summary','','Advanced: collar and lapel overlay'));
-    more.append(panel);
-    const nav=g.querySelector('.guidedNav');
-    g.insertBefore(more,nav);
-  }
-
   /* ---------- state -> screen ---------- */
   function summaryText(step){
     const m=State.membership==='cadet' ? 'Cadet' : State.membership==='senior' ? 'Senior member' : '';
@@ -329,7 +292,6 @@
     foldImporter();
     buildUniformGroups();
     buildItemCards();
-    tuckAwayOverlay();
     built=true;
     // The step bar at the top moves between steps here instead of scrolling.
     document.addEventListener('click',e=>{

@@ -37,10 +37,13 @@ test('it is loaded after the polish module it reads step status from',()=>{
   assert.ok(html.indexOf('js/guided-flow.js')>html.indexOf('js/workspace-ui.js'));
 });
 
-test('uniforms are grouped by the regulation occasion groups and show why one is locked',()=>{
+test('uniforms are grouped by the regulation occasion groups, and ones the member may not wear are not listed',()=>{
   assert.match(flow,/rules\(\)\.GROUPS/);
-  assert.match(flow,/rules\(\)\.lockedReason\(/);
   assert.match(flow,/Your minimum uniform/);
+  assert.doesNotMatch(flow,/guidedLocked|Not available to you/,'no list of unavailable uniforms');
+  assert.match(flow,/g\.hidden=!\[\.\.\.g\.querySelectorAll\('\.uniformOption'\)\]\.some\(b=>!b\.classList\.contains\('locked'\)\)/);
+  assert.match(css,/\.uniformOption\.locked\{display:none\}/);
+  assert.match(css,/html\[data-ux="2"\] \.uniformOption\.locked\{display:none\}/,'also where the guided card style applies');
   assert.deepEqual(Object.keys(rules.GROUPS),['formal','everyday','field']);
 });
 
@@ -59,12 +62,6 @@ test('Items never blocks Next, Profile and Uniform do',()=>{
 
 test('rendering has a timer fallback for hidden tabs',()=>{
   assert.match(flow,/requestAnimationFrame\(run\);\s*setTimeout\(run,100\);/);
-});
-
-test('uniforms the member may not wear sit in one folded list with their reasons',()=>{
-  assert.match(flow,/Not available to you \(\$\{count\}\)/);
-  assert.match(flow,/btn\.classList\.contains\('locked'\)/);
-  assert.match(css,/\.guidedLocked\{/);
 });
 
 test('after Resume the flow goes to the first unfinished step',()=>{

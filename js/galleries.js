@@ -1302,11 +1302,10 @@ function buildBadgeGallery(){
     tile.className = 'galleryTile';
 
     const title = getBadgeDisplayName(id);
-    const rareCadetTag = (State.membership === 'cadet' && rareCadetBadges.has(id)) ? ' <span class="validationBadge">Rare Cadet Eligibility</span>' : '';
     tile.innerHTML = `
       <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
       <div style="flex:1;min-width:0;">
-        <div class="title">${escapeHtml(title)}${rareCadetTag}</div>
+        <div class="title">${escapeHtml(title)}</div>
         <div class="miniRow">
           <label><input type="checkbox" class="bdChk"> Add</label>
         </div>
