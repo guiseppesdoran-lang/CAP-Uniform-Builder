@@ -615,6 +615,9 @@ header h1::after{
   color:var(--ink);
 }
 .previewEmptyState[hidden]{display:none}
+/* While the Start your uniform card is up there is nothing to show; the collar overlay used to
+   float on its own over it once membership and cut were chosen but rank was not. */
+#previewArea:has(> #previewEmptyState:not([hidden])) #uniformCanvas{visibility:hidden}
 .previewEmptyState .emptyTitle{font-family:var(--font-head);font-size:var(--t-xl);font-weight:700;line-height:1.1}
 .previewEmptyState .emptyChecklist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s2);text-align:left;font-size:var(--t-md);color:var(--muted)}
 .previewEmptyState .emptyChecklist li::before{content:"\25CB";display:inline-block;width:24px;color:var(--muted)}
@@ -1008,6 +1011,35 @@ html[data-ux="2"] .controlsHeader .controlsTitle::after{display:none}
 .itemPopoverActions button{width:auto;flex:1 1 auto;margin:0;min-height:44px}
 #uniformCanvas .layer.ribbonTile,#uniformCanvas .layer.ribbonMini,#uniformCanvas .layer.badge{cursor:pointer}
 
+/* ---- Membership and cut: two buttons side by side ---- */
+.segmented{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
+.segmented button{
+  width:100%;
+  margin:0;
+  min-height:44px;
+  background:var(--panel);
+  color:var(--ink);
+  border:1px solid var(--line-strong);
+  font-size:var(--t-md);
+}
+.segmented button:hover{background:var(--panel-2);border-color:var(--ink)}
+.segmented button.isOn,.segmented button[aria-checked="true"]{
+  background:var(--select-bg);
+  border:2px solid var(--select-line);
+  font-weight:700;
+}
+/* The select behind the buttons stays in the page as the source of truth. */
+.segmentedSource{position:absolute;width:1px;height:1px;margin:-1px;opacity:0;pointer-events:none;overflow:hidden}
+
+/* ---- A uniform the member may not wear is not listed ---- */
+.uniformOption.locked{display:none}
+
+/* ---- Name on the uniform: optional, near the start ---- */
+.optionalName{margin-top:var(--s3);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
+.optionalName>summary{cursor:pointer;min-height:44px;box-sizing:border-box;padding:var(--s3) 2px;font-weight:700;color:var(--ink)}
+.optionalName[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
+.optionalName .plainPanel{border:0;padding:0;background:transparent;box-shadow:none}
+
 /* ---- Authorized, not drawn yet ---- */
 .plannedUniforms{margin-top:var(--s4)}
 .plannedUniforms[hidden]{display:none}
@@ -1074,6 +1106,7 @@ html[data-ux="2"] .uniformList{display:block}
 .guidedUniformGroup+.guidedUniformGroup{margin-top:var(--s4)}
 .guidedGroupTitle{margin-bottom:var(--s2);font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
 .guidedUniformGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s2)}
+html[data-ux="2"] .uniformOption.locked{display:none}
 html[data-ux="2"] .uniformOption{
   display:flex;
   flex-direction:row;
@@ -1103,17 +1136,6 @@ html[data-ux="2"] .uniformOption{
   font-size:var(--t-xs);
   font-weight:700;
 }
-.guidedWhy{font-size:var(--t-xs);color:var(--muted)}
-.guidedLocked{margin-top:var(--s4);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
-.guidedLocked[hidden]{display:none}
-.guidedLocked>summary{cursor:pointer;padding:var(--s3) 2px;font-weight:700;color:var(--ink)}
-.guidedLocked[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
-.guidedLocked .guidedUniformGrid{padding-bottom:var(--s3)}
-html[data-ux="2"] .uniformOption.locked{opacity:.75}
-html[data-ux="2"] .uniformOption.locked::after{content:none}
-/* A locked uniform needs its name and the reason, not the picture or the description. */
-html[data-ux="2"] .uniformOption.locked .guidedThumb,
-html[data-ux="2"] .uniformOption.locked .uDesc{display:none}
 
 /* Item cards */
 .guidedItemCards{display:grid;gap:var(--s2)}

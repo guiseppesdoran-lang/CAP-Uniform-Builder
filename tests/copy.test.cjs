@@ -28,7 +28,7 @@ test('hint text is a line, not a paragraph',()=>{
 });
 
 test('controls name the thing, not the implementation',()=>{
-  assert.match(visible,/<label class="fieldLabel" for="jacketSelect">Cut<\/label>/);
+  assert.match(visible,/<label class="fieldLabel" id="cutLabel" for="jacketSelect">Cut<\/label>/);
   assert.match(visible,/Show miniature medals/);
   assert.match(visible,/Saved setups/);
 });

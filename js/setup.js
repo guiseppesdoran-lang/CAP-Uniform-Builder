@@ -104,6 +104,34 @@ function updateSetupGates(){
     refreshUI();
   }
 }
+/* Membership and cut are side-by-side buttons. The select behind each one is still the source
+   of truth (and what saved setups, the importer and undo write to); the buttons only mirror it
+   and set it. */
+function capubSyncSegments(){
+  document.querySelectorAll('.segmented[data-segments-for]').forEach(group=>{
+    const source = by(group.dataset.segmentsFor);
+    if(!source) return;
+    group.querySelectorAll('button[data-value]').forEach(btn=>{
+      const on = btn.dataset.value === source.value;
+      btn.setAttribute('aria-checked', String(on));
+      btn.classList.toggle('isOn', on);
+    });
+  });
+}
+document.querySelectorAll('.segmented[data-segments-for]').forEach(group=>{
+  group.addEventListener('click', e=>{
+    const btn = e.target.closest('button[data-value]');
+    const source = by(group.dataset.segmentsFor);
+    if(!btn || !source || source.disabled || source.value === btn.dataset.value) return;
+    source.value = btn.dataset.value;
+    source.dispatchEvent(new Event('change', {bubbles:true}));
+    capubSyncSegments();
+  });
+});
+['change','click'].forEach(evt=>document.addEventListener(evt, ()=>setTimeout(capubSyncSegments,0), true));
+document.addEventListener('capub:history', capubSyncSegments);
+setTimeout(capubSyncSegments,0);
+
 function syncAdultCadetControl(){
   const row = by('adultCadetRow');
   const box = by('adultCadetCheckbox');

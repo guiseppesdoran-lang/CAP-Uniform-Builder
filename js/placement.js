@@ -1499,6 +1499,7 @@ function refreshUI(){
   const miniStyleControl = by('miniMountStyle');
   if(miniStyleControl) miniStyleControl.value = State.miniMountStyle === 'holding' ? 'holding' : 'mounting';
   if(typeof syncAdultCadetControl === 'function') syncAdultCadetControl();
+  if(typeof capubSyncSegments === 'function') capubSyncSegments();
   // Cadets only: the option to wear just the highest Cadet Program achievement ribbon.
   const highestOnly = by('cadetHighestOnly');
   if(highestOnly){
