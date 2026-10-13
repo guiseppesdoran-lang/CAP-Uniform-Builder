@@ -224,7 +224,8 @@
 
   // Miniature medals: medal body under a vertical ribbon drape (5/8 in wide, devices turned
   // vertical with precedence at the top, CAPR 39-1 11.4.2).
-  const MINI_DRAPE = { w: 0.625, h: 1.125 };
+  // Miniature ribbons are 11/16 in wide (11.3).
+  const MINI_DRAPE = { w: 0.6875, h: 1.125 };
   async function drawMiniMedals(ctx, medals, slot, opts){
     if(!medals.length) return null;
     const o = opts || {};
@@ -254,13 +255,17 @@
         const at = { x: p.x + MINI_DRAPE.w / 2, y: p.y + MINI_DRAPE.h };
         ctx.layers.push(Object.assign(core.placeAsset(s, { pieceAnchor: attach, at, z: zBase + 0.0005, role: 'mini-medal', key: m.key + ':medal', title: m.title }), { className: 'ribbonMini' }));
       }
-      // Devices on the drape, vertical, precedence at the top (11.4.2).
-      const devs = awards.sortRun((m.devices || []).filter(d => sizes[d]));
+      // Devices on the drape, vertical, precedence at the top (11.4.2). A device worn centred on
+      // the ribbon (propeller, longevity numeral) is centred vertically, the others above and below.
+      const own = (m.devices || []).filter(d => sizes[d]);
+      const devs = m.centered ? own : awards.sortRun(own);
       const step = 0.24;
-      const y0 = p.y + MINI_DRAPE.h / 2 - (devs.length - 1) * step / 2;
+      const midY = p.y + MINI_DRAPE.h / 2;
+      const y0 = midY - (devs.length - 1) * step / 2;
       devs.forEach((d, i) => {
         const sz = sizes[d];
-        const cx = p.x + MINI_DRAPE.w / 2, cy = y0 + i * step;
+        const cx = p.x + MINI_DRAPE.w / 2;
+        const cy = m.centered ? midY + (i === 0 ? 0 : (i % 2 ? -1 : 1) * Math.ceil(i / 2) * step) : y0 + i * step;
         ctx.layers.push({ type: 'asset', id: d, x: cx - sz.w / 2, y: cy - sz.h / 2, w: sz.w, h: sz.h, rotate: 90, origin: { x: cx, y: cy }, z: zBase + 0.0007, role: 'device', key: `${m.key}:device:${i}` });
       });
     }

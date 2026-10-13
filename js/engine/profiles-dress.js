@@ -742,7 +742,7 @@
     if(semi && !female && !under) await ctx.place('tie-bow-black', { pieceAnchor: 'knot_center', at: V.bowTie, z: Z.garmentLayer, role: 'tie', key: 'tie:bow' });
 
     // The CSAG, Command Council, National Board or NEC badge is worn in place of the crest.
-    if(crestBadge) await ctx.place(crestBadge.art, { pieceAnchor: 'center', at: ctx.point('crest_center'), z: Z.badge, role: 'badge', key: 'badge:' + crestBadge.id, title: crestBadge.title, className: 'badge' });
+    const crestLayer = crestBadge ? await ctx.place(crestBadge.art, { pieceAnchor: 'center', at: ctx.point('crest_center'), z: Z.badge, role: 'badge', key: 'badge:' + crestBadge.id, title: crestBadge.title, className: 'badge' }) : null;
     const chaplain = set.chaplain[0] || null;
     const dropped = set.all.filter(x => x !== crestBadge && x !== chaplain);
     if(dropped.length) ctx.note('Only the chaplain badge and the CSAG, Command Council, National Board or NEC badge are worn on this uniform; the other badges are not shown');
@@ -778,8 +778,12 @@
 
     // Semi-formal: miniature medals on the wearer's left, lowest row 1/2 in above the crest
     // (4.2.1.4, 4.2.2.4 with ICL 25-02: CAP and military miniatures).
+    // The lowest row's medals end 1/2 in above the crest, or the service badge worn in its place.
     const ms = ctx.rect('medal_slot');
-    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: ms.x + ms.w / 2, bottomY: ms.y + ms.h }, { style: b.opt.miniStyle });
+    const crestTop = crestLayer ? crestLayer.y : (ctx.point('crest_top_center') || { y: ms.y + ms.h + 0.5 }).y;
+    const medalX = ms.x + ms.w / 2;
+    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY: crestTop - 0.5 }, { style: b.opt.miniStyle });
+    if(box) ctx.measure({ x: medalX + 1.6, y: crestTop }, { x: medalX + 1.6, y: crestTop - 0.5 });
     if(chaplain){
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
       await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: ms.x + ms.w / 2, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });

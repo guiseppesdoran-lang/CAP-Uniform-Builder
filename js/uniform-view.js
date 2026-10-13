@@ -86,7 +86,15 @@
     return out;
   }
 
-  function buildMedals(ribbons){
+  // One miniature medal per award: the devices a second ribbon would carry stay on the one medal,
+  // since more than four devices is allowed when it avoids a second medal (11.4.2).
+  function buildMedals(allRibbons){
+    const ribbons = [];
+    for(const r of allRibbons){
+      const prev = !r.military && r.id && ribbons.find(x => x.id === r.id && !x.military);
+      if(prev){ prev.devices = [...prev.devices, ...(r.devices || [])]; continue; }
+      ribbons.push(Object.assign({}, r, { devices: [...(r.devices || [])] }));
+    }
     return ribbons.map(r => {
       if(r.military){
         const award = getMilitaryRibbonAward(r.key.replace(/^ribbon:|#\d+$/g, ''));
@@ -94,7 +102,7 @@
         return { key: r.key.replace(/^ribbon:/, 'mini:'), title: r.title, raster: rep?.available && rep.asset ? ASSET(rep.asset) : null, devices: [] };
       }
       const base = r.asset.replace(/^ribbon-/, '');
-      return { key: r.key.replace(/^ribbon:/, 'mini:'), title: r.title, ribbonAsset: r.asset, medal: `medal-${base}-miniature`, devices: r.devices };
+      return { key: r.key.replace(/^ribbon:/, 'mini:'), title: r.title, ribbonAsset: r.asset, medal: `medal-${base}-miniature`, devices: r.devices, centered: r.centered };
     });
   }
 
