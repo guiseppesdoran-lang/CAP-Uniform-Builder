@@ -292,8 +292,56 @@
     return E.renderSvg.svgToCanvas(lastSvg, vb[2] * (ppi || 60));
   }
 
+  // ---- Ribbon picker: what a selection puts on the ribbon -------------------------------------
+
+  // "device-clasp-bronze" -> "bronze clasp"; "device-years-25" -> "25-year numeral".
+  function deviceWords(id){
+    let m;
+    if((m = /^device-years-(\d+)$/.exec(id))) return `${m[1]}-year numeral`;
+    if((m = /^device-(clasp|star|propeller)-(bronze|silver|gold)$/.exec(id))) return m[1] === 'propeller' ? 'propeller' : `${m[2]} ${m[1]}`;
+    if(id === 'device-v') return 'silver V';
+    if((m = /^mil-device-(.+)$/.exec(id))) return m[1].replace(/-/g, ' ');
+    return id.replace(/^device-/, '').replace(/-/g, ' ');
+  }
+  function countWords(ids){
+    const counts = new Map();
+    ids.forEach(id => counts.set(deviceWords(id), (counts.get(deviceWords(id)) || 0) + 1));
+    return [...counts].map(([w, n]) => n > 1 ? `${n} ${w.replace(/([^s])$/, '$1s')}` : `1 ${w}`).join(', ');
+  }
+  // One line for the ribbon picker, from the same rule the uniform uses (data/ribbon-awards.js).
+  function describeRibbon(id, sel){
+    const parts = CAPUBRibbonAwards.resolve(id, sel || {});
+    const say = p => p.devices.length ? countWords(p.devices) : 'no devices';
+    if(parts.length === 1) return parts[0].devices.length ? `Devices: ${say(parts[0])}` : 'Basic ribbon, no devices';
+    return parts.map((p, i) => `Ribbon ${i + 1}: ${say(p)}`).join('; ');
+  }
+  // The ribbon (and any extra ribbons the devices need) drawn by the engine with its devices.
+  async function ribbonPreview(id, sel){
+    const s = await getStore();
+    const parts = CAPUBRibbonAwards.resolve(id, sel || {});
+    const items = parts.map((p, i) => ({ key: `ribbon:${id}#${i}`, title: id, asset: ribbonAssetId(id), devices: p.devices, centered: p.centered }));
+    const ctx = E.compose.createContext({}, s);
+    await E.compose.drawRack(ctx, items, { centerX: 0, bottomY: 0 }, { perRow: Math.min(3, items.length) });
+    const scene = E.compose.finish(ctx, id);
+    if(!scene.layers.length) return null;
+    const svg = await E.renderSvg.buildSvg(scene, aid => s.entry(aid).path, { pad: 0.02 });
+    svg.removeAttribute('width'); svg.removeAttribute('height');
+    svg.classList.add('ribbonPreviewSvg');
+    return svg;
+  }
+  // Swap a picker tile's <img> for the drawn ribbon; the plain image stays if anything fails.
+  function fillRibbonPreview(img, id, sel){
+    if(!img) return;
+    ribbonPreview(id, sel).then(svg => {
+      if(!svg || !img.isConnected) return;
+      svg.setAttribute('role', 'img');
+      svg.setAttribute('aria-label', img.getAttribute('alt') || id);
+      img.replaceWith(svg);
+    }).catch(() => {});
+  }
+
   window.CAPUBUniformView = {
-    render, scheduleRender, exportCanvas, buildFromState, rackRowCounts,
+    render, scheduleRender, exportCanvas, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview,
     get scene(){ return lastScene; },
     get svg(){ return lastSvg; },
     GARMENT_DEFAULTS

@@ -975,6 +975,18 @@ function restoreMilitaryGalleryUI(root,scrollHost,scrollKey='sidebarScrollTop'){
   }
 }
 
+// Draw each selected CAP ribbon in a picker with the devices it will wear (the sidebar and the
+// picker window both hold tiles).
+function fillRibbonTilePreviews(root){
+  if(!root || !window.CAPUBUniformView) return;
+  root.querySelectorAll('.ribbonSelectorTile:not(.militaryRibbonSelectorTile)').forEach(tile=>{
+    const id = tile.dataset.ribbonId;
+    const sel = State.ribbonSelections?.[id];
+    if(!id || !sel?.checked) return;
+    CAPUBUniformView.fillRibbonPreview(tile.querySelector(':scope > img'), id, sel);
+  });
+}
+
 function buildRibbonGallery(options={}){
   const wrap = by('ribbonGallery');
   if(!wrap) return;
@@ -1006,10 +1018,13 @@ function buildRibbonGallery(options={}){
       const selected = (sel.awardValue || '') === opt.value ? 'selected' : '';
       return `<option value="${escapeHtml(opt.value)}" ${selected}>${escapeHtml(opt.label)}</option>`;
     }).join('');
-    const deviceSummary = Object.entries(sel.devices || {})
-      .filter(([,qty]) => Number(qty) > 0)
-      .map(([devId,qty]) => `${escapeHtml(deviceMeta[devId]?.label || devId)}: ${Number(qty)}`)
-      .join(' • ');
+    // CAP ribbons: the devices come from the same rule that draws the uniform.
+    const deviceSummary = military
+      ? Object.entries(sel.devices || {})
+        .filter(([,qty]) => Number(qty) > 0)
+        .map(([devId,qty]) => `${escapeHtml(deviceMeta[devId]?.label || devId)}: ${Number(qty)}`)
+        .join(' • ')
+      : (window.CAPUBUniformView && window.CAPUBRibbonAwards ? escapeHtml(CAPUBUniformView.describeRibbon(id, sel)) : '');
     const award=military ? getMilitaryRibbonAward(id) : null;
     const service=military ? getMilitarySelectionService(id,sel) : null;
     const militaryRules=military ? window.CAPUBMilitary?.inferDeviceRules?.(award,service,{allowUnverified:!!getMilitaryUIState().advancedMode}) : null;
@@ -1152,6 +1167,7 @@ function buildRibbonGallery(options={}){
     wrap.appendChild(militaryMenu);
   }
   restoreMilitaryGalleryUI(wrap,wrap,'sidebarScrollTop');
+  fillRibbonTilePreviews(wrap);
 }
 
 function wireRibbonTileControls(root){

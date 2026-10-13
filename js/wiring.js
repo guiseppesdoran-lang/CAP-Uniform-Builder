@@ -314,6 +314,7 @@ function openGalleryModal(kind){
       const sidebar = by('ribbonGallery');
       grid.innerHTML = sidebar ? sidebar.innerHTML : '';
       wireModalInteractions('ribbons');
+      fillRibbonTilePreviews(grid);
       restoreMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
       queueMicrotask(()=>window.CAPUB_refreshModalGallerySearch?.('ribbons'));
     }
