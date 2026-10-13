@@ -48,12 +48,17 @@
     mess_dress:{group:'formal',style:'usaf',membership:['senior'],adultCadet:false,
       ribbons:'none',mini:true,usafAwards:true,rackColumns:[],badgeCap:4,
       refs:{who:'4.1.1',ribbons:'11.1.4',mini:'11.1.4',badges:'4.1.1.1.3'}},
+    // ICL 25-02 corrected 4.2.2.4 to allow CAP and military miniature medals.
     semi_formal:{group:'formal',style:'corporate',membership:['senior'],adultCadet:true,
-      ribbons:'none',mini:true,usafAwards:false,rackColumns:[],badgeCap:null,chaplainBadgeOnly:true,
-      refs:{who:'4.2.1',ribbons:'11.1.4',mini:'11.1.4',awards:'11.1.6',occupational:'4.2.3.1.1.3',adultCadet:'1.2.5.2'}},
+      ribbons:'none',mini:true,usafAwards:true,rackColumns:[],badgeCap:null,chaplainBadgeOnly:true,
+      refs:{who:'4.2.1',ribbons:'11.1.4',mini:'11.1.4',awards:'ICL 25-02 (4.2.2.4)',occupational:'4.2.3.1.1.3',adultCadet:'1.2.5.2'}},
+    semi_formal_usaf:{group:'formal',style:'usaf',membership:['cadet'],adultCadet:false,
+      ribbons:'required',mini:false,usafAwards:true,rackColumns:[3,4],badgeCap:4,
+      refs:{who:'4.1.3, 4.1.4',ribbons:'11.1.2',rack:'11.2.7',badges:'4.1.3.2.2, 4.1.4.2'}},
+    // ICL 25-02 rewrote 4.2.5.1.2.2 and 4.2.6.2.6.2: military and CAP ribbons on the aviator shirt.
     aviator:{group:'everyday',style:'corporate',membership:['senior'],adultCadet:true,minimum:true,
-      ribbons:'optional',mini:false,usafAwards:false,rackColumns:[3],badgeCap:4,
-      refs:{who:'1.2.3',ribbons:'4.2.5.1.2.2',rack:'11.2.7',minimum:'1.2.3',badges:'4.2.5.1.3',awards:'11.1.6',adultCadet:'1.2.5.2'}},
+      ribbons:'optional',mini:false,usafAwards:true,rackColumns:[3],badgeCap:4,
+      refs:{who:'1.2.3',ribbons:'4.2.5.1.2.2',rack:'11.2.7',minimum:'1.2.3',badges:'4.2.5.1.3',awards:'ICL 25-02 (4.2.5.1.2.2, 4.2.6.2.6.2)',adultCadet:'1.2.5.2'}},
     aviator_blazer:{group:'everyday',style:'corporate',membership:['senior'],adultCadet:true,
       ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:null,chaplainBadgeOnly:true,
       refs:{ribbons:'11.1.3',who:'4.2.3',awards:'11.1.6',occupational:'4.2.3.1.1.3',adultCadet:'1.2.5.2'}},
@@ -69,32 +74,23 @@
     flight_suit:{group:'field',style:'usaf',membership:['cadet','senior'],adultCadet:false,
       ribbons:'none',mini:false,usafAwards:true,rackColumns:[],badgeCap:2,
       refs:{who:'8.2.1',ribbons:'11.1.3',badges:'8.2.4.1'}},
-    polo:{group:'field',style:'corporate',membership:['senior'],adultCadet:false,
-      ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:1,
-      refs:{who:'5.3',ribbons:'11.1.3',badges:'5.3.2.1.1',adultCadet:'1.2.5.2'}}
+    corporate_flight_suit:{group:'field',style:'corporate',membership:['cadet','senior'],adultCadet:false,
+      ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:2,
+      refs:{who:'8.3.1',ribbons:'11.1.3',badges:'8.3.4.1'}}
   });
 
   // Uniforms the regulation authorizes that the builder does not draw yet. They are listed so
   // the table states the whole regulation; none is offered to a member.
   const NOT_MODELLED=Object.freeze({
-    semi_formal_usaf_cadet:{label:'Semi-Formal Dress (cadet)',group:'formal',style:'usaf',
-      membership:['cadet'],ribbons:'required',
-      refs:{who:'4.1.3, 4.1.4',ribbons:'11.1.2'},
+    polo:{label:'Corporate Working Uniform (polo)',group:'field',style:'corporate',
+      membership:['senior'],ribbons:'none',
+      refs:{who:'5.3',ribbons:'11.1.3',badges:'5.3.2.1.1'},
       facts:[
-        'Worn by cadets only, for semi-formal social functions (CAPR 39-1, 4.1.3 and 4.1.4).',
-        'Ribbons are required with it (11.1.2).',
-        'Saluting is not required while wearing it.'
+        'A CAP polo shirt with gray slacks, for senior members (CAPR 39-1, 5.3).',
+        'No grade insignia; cadets do not wear it (1.2.5.2).',
+        'One optional badge may be embroidered above the name (5.3.2.1.1).'
       ],
-      why:'Cadet-only USAF Semi-Formal. Needs ribbon-rack calibration data that does not exist.'},
-    corporate_flight_duty:{label:'Corporate Flight Duty Uniform',group:'field',style:'corporate',
-      membership:['cadet','senior'],ribbons:'none',
-      refs:{who:'8.3.1',ribbons:'11.1.3'},
-      facts:[
-        'For flight duty, by people with an aeronautical rating or an aircrew mission qualification (CAPR 39-1, 8.1.1.1).',
-        'Navy blue, worn by active members (8.3.1, 8.3.2).',
-        'No ribbons or medals (11.1.3), and no morale patches (8.1.2.2).'
-      ],
-      why:'Corporate Flight Duty Uniform. No base artwork.'}
+      why:'Corporate polo. No polo artwork yet.'}
   });
   // Optional badges the regulation allows on a uniform the builder offers no badge placement for.
   const BADGES_NOT_PLACED=Object.freeze({

@@ -20,8 +20,3 @@ test('runtime composite remains an explicit missing-asset fallback',()=>{
   assert.match(indexSource,/buildMilitaryRibbonVariant\(ribbonObj\)/);
 });
 
-test('runtime fallback does not warp square device source canvases',()=>{
-  assert.match(indexSource,/width:isCluster\?21:18,height:isCluster\?21:18/);
-  assert.match(indexSource,/width:isCluster\?16:13,height:isCluster\?16:13/);
-});
-

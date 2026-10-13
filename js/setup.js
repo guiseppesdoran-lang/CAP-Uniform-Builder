@@ -14,25 +14,6 @@ function optionize(sel,list, pretty=false){
   });
 }
 
-/*
-  Eager asset preloading was removed here.
-
-  It built a hidden <img> for every ribbon, rank, badge and patch at parse
-  time with loading='eager' and decoding='sync', which pulled 27.7 MB over
-  250 requests before the user had chosen anything - 26.3 MB of that was
-  badge art alone, and decoding='sync' forced it onto the main thread.
-
-  Nothing needed it. Every renderer builds its own <img> and resolves the
-  source through capubInstallImageFallback(); renderPatches() already had a
-  new Image() fallback, and placeBadgeSlotAnchored() only used the preloaded
-  node as an existence check, now KNOWN_BADGE_IDS.
-
-  The rank preload was pure waste on top of that: renderRankOverlay() has
-  been retired because rank is baked into the base uniform art, and only 9 of
-  the ~29 rank ids have files, so most requests 404 and then dragged the
-  whole filename-variant fallback chain along behind them.
-*/
-
 /* ===========================
    SIDEBAR TOGGLE (HAMBURGER)
    =========================== */
@@ -232,24 +213,6 @@ jacketSelect.addEventListener('change', ()=>{
   fullRender();
 });
 
-garmentOverlaySelect?.addEventListener('change', ()=>{
-  State.garmentOverlayMode = ['both','left','right','off'].includes(garmentOverlaySelect.value)
-    ? garmentOverlaySelect.value
-    : 'both';
-  fullRender();
-});
-garmentMaskSide?.addEventListener('change', syncGarmentMaskStatus);
-editGarmentMaskBtn?.addEventListener('click', beginGarmentMaskEdit);
-resetGarmentMaskBtn?.addEventListener('click', resetCurrentGarmentMask);
-saveGarmentMaskBtn?.addEventListener('click', ()=>closeGarmentMaskEditor(true));
-cancelGarmentMaskBtn?.addEventListener('click', ()=>closeGarmentMaskEditor(false));
-undoGarmentMaskBtn?.addEventListener('click', ()=>{
-  const previous=garmentMaskEditor.history.pop();
-  if(!previous) return;
-  garmentMaskEditor.points=previous.map(point=>({...point}));
-  renderGarmentMaskEditor();
-  if(undoGarmentMaskBtn) undoGarmentMaskBtn.disabled=!garmentMaskEditor.history.length;
-});
 
 /* ===========================
    MEMBER TYPE / UNIFORM AUTHZ

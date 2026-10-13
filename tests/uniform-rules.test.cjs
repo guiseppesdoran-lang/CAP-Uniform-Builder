@@ -22,7 +22,7 @@ test('ribbons: required on Class A, optional on Class B and Aviator, none elsewh
   assert.equal(rules.ribbonPolicy('blues_a'),'required');
   assert.equal(rules.ribbonPolicy('blues_b'),'optional');
   assert.equal(rules.ribbonPolicy('aviator'),'optional');
-  for(const id of ['aviator_blazer','corporate_field','abu','ocp','flight_suit','polo','mess_dress','semi_formal']){
+  for(const id of ['aviator_blazer','corporate_field','abu','ocp','flight_suit','corporate_flight_suit','mess_dress','semi_formal']){
     assert.equal(rules.ribbonPolicy(id),'none',id);
     assert.equal(rules.allowsRibbons(id),false,id);
   }
@@ -40,22 +40,27 @@ test('miniature medals only on Mess Dress and Corporate Semi-Formal (39-1 11.1.4
   assert.deepEqual(withMini,['mess_dress','semi_formal']);
 });
 
-test('four-across ribbon rows are only authorized on Class A (39-1 11.2.7)',()=>{
+test('four-across ribbon rows are only authorized on the Class A coat (39-1 11.2.7)',()=>{
   const four=Object.keys(rules.RULES).filter(id=>rules.allowsRackColumns(id,4));
-  assert.deepEqual(four,['blues_a']);
+  // The cadet semi-formal is the Class A coat worn with the changes of 4.1.3.2 and 4.1.4.
+  assert.deepEqual(four,['blues_a','semi_formal_usaf']);
   assert.equal(rules.allowsRackColumns('blues_b',3),true);
   assert.equal(rules.allowsRackColumns('aviator',3),true);
 });
 
-test('U.S. military awards and the AF Organizational Excellence Award stay off Corporate-style uniforms (39-1 11.1.6, 11.2.3)',()=>{
+test('U.S. military awards stay off Corporate-style uniforms except where ICL 25-02 allows them (39-1 11.1.6, 11.2.3)',()=>{
+  // ICL 25-02 allows military ribbons on the aviator shirt (4.2.5.1.2.2, 4.2.6.2.6.2) and
+  // military miniature medals on the Corporate Semi-Formal (4.2.2.4).
+  const iclCorporate=['aviator','semi_formal'];
   for(const id of Object.keys(rules.RULES)){
-    const corporate=rules.getUniformRule(id).style==='corporate';
-    assert.equal(rules.isAwardAllowedOnUniform('x',id,{isMilitary:true}),!corporate,id);
-    assert.equal(rules.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award',id),!corporate,id);
+    const allowed=rules.getUniformRule(id).style==='usaf' || iclCorporate.includes(id);
+    assert.equal(rules.isAwardAllowedOnUniform('x',id,{isMilitary:true}),allowed,id);
+    assert.equal(rules.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award',id),allowed,id);
   }
-  assert.equal(rules.isAwardAllowedOnUniform('silver_medal_of_valor','aviator'),true,'CAP awards are not restricted');
+  assert.equal(rules.isAwardAllowedOnUniform('silver_medal_of_valor','aviator_blazer'),true,'CAP awards are not restricted');
   assert.equal(rules.isAwardAllowedOnUniform('x','blues_a',{isMilitary:true}),true);
-  assert.equal(rules.isAwardAllowedOnUniform('x','aviator',{isMilitary:true}),false);
+  assert.equal(rules.isAwardAllowedOnUniform('x','aviator',{isMilitary:true}),true);
+  assert.equal(rules.isAwardAllowedOnUniform('x','aviator_blazer',{isMilitary:true}),false);
 });
 
 test('minimum uniforms are Class B and the Aviator Shirt (39-1 1.2.2, 1.2.3)',()=>{
@@ -91,10 +96,10 @@ test('the Air Force Organizational Excellence Award is a senior award (39-3 Atta
   assert.match(senior,/Air_Force_Organizational_Excellence_Award/);
 });
 
-test('U.S. military badges are kept off Corporate-style uniforms in both the gallery and the render (39-1 4.2.5.1.3)',()=>{
-  const placement=fs.readFileSync(path.join(__dirname,'..','js','placement.js'),'utf8');
+test('U.S. military badges follow the uniform\'s award rule in both the gallery and the render (39-1 4.2.5.1.3, ICL 25-02)',()=>{
+  const view=fs.readFileSync(path.join(__dirname,'..','js','uniform-view.js'),'utf8');
   const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
-  assert.match(placement,/function renderSelectedMilitaryBadgesOnCap\(\)\{[\s\S]{0,260}isMilitaryAwardWornOnUniform\(\)/);
+  assert.match(view,/function buildMilitaryBadges\(\)\{[\s\S]{0,200}isAwardAllowedOnUniform\('', State\.uniform, \{ isMilitary: true \}\)/);
   assert.match(wiring,/isMilitaryAwardWornOnUniform\(\) \? getAllSelectableMilitaryBadges\(\) : \[\]/);
 });
 
@@ -118,10 +123,12 @@ const REG={
     para:'1.2.2 (minimum uniform), 4.1.11.1.1.2.2 (ribbons optional), 11.2.7 (rows of three), 4.1.11.1.1.2.3 (four badges)'},
   mess_dress:{style:'usaf',who:['senior'],adultCadet:false,ribbons:'none',mini:true,usafAwards:true,rack:[],badges:4,shared:false,
     para:'4.1.1 and 4.1.2 (officers and NCOs only), 11.1.4 (miniature medals), 4.1.1.1.3 and 4.1.2.1.2.4 (four badges)'},
-  semi_formal:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:true,usafAwards:false,rack:[],badges:null,shared:false,chaplainOnly:true,
-    para:'4.2.1 and 4.2.2 (Corporate Semi-Formal, 18 and older, only CAP miniature medals), 4.2.3.1.1.3 via "worn as for Corporate Service Dress"'},
-  aviator:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'optional',mini:false,usafAwards:false,rack:[3],badges:4,shared:false,minimum:true,
-    para:'1.2.3 (minimum Corporate uniform), 4.2.5.1.2.2 (CAP ribbons optional, military not authorized), 11.2.7, 4.2.5.1.3 (four badges, no military)'},
+  semi_formal:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:true,usafAwards:true,rack:[],badges:null,shared:false,chaplainOnly:true,
+    para:'4.2.1 and 4.2.2 (Corporate Semi-Formal, 18 and older), ICL 25-02 (4.2.2.4: CAP and military miniature medals), 4.2.3.1.1.3 via "worn as for Corporate Service Dress"'},
+  semi_formal_usaf:{style:'usaf',who:['cadet'],adultCadet:false,ribbons:'required',mini:false,usafAwards:true,rack:[3,4],badges:4,shared:false,
+    para:'4.1.3 and 4.1.4 (cadets only, worn as the Class A coat), 11.1.2 (ribbons mandatory), 11.2.7'},
+  aviator:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'optional',mini:false,usafAwards:true,rack:[3],badges:4,shared:false,minimum:true,
+    para:'1.2.3 (minimum Corporate uniform), ICL 25-02 (4.2.5.1.2.2: military and CAP ribbons optional), 11.2.7, 4.2.5.1.3 (four badges)'},
   aviator_blazer:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:null,shared:false,chaplainOnly:true,
     para:'11.1.3 (no ribbons), 4.2.3.1.1.3 (chaplain badge is the only occupational badge); the regulation states no badge total'},
   corporate_field:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:8,shared:true,
@@ -132,8 +139,8 @@ const REG={
     para:'ICL 25-06 7.1.1.3.1 (four badges above the CAP tape; military badges per DAFI 36-2903)'},
   flight_suit:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:2,shared:false,
     para:'8.2.1 (active members), 11.1.3 (no ribbons), 8.2.4.1 (up to two badges on the nametag, military aviation badges allowed)'},
-  polo:{style:'corporate',who:['senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:1,shared:false,
-    para:'5.3.2 (no grade insignia), 1.2.5.2 (cadets excluded from the Working Uniform), 5.3.2.1.1 (one badge)'}
+  corporate_flight_suit:{style:'corporate',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:2,shared:false,
+    para:'8.3.1 (active members), 11.1.3 (no ribbons), 8.3.4.1 (up to two badges on the nametag)'}
 };
 
 test('every value in the table is the one the regulation states',()=>{
@@ -188,8 +195,7 @@ test('badge limits: patches count with badges on the ABU and Corporate Field onl
 });
 
 test('uniforms the regulation allows but the builder does not draw are listed, not offered',()=>{
-  assert.ok(rules.NOT_MODELLED.semi_formal_usaf_cadet);
-  assert.ok(rules.NOT_MODELLED.corporate_flight_duty);
+  assert.ok(rules.NOT_MODELLED.polo);
   for(const id of Object.keys(rules.NOT_MODELLED)){
     assert.equal(rules.getUniformRule(id),null,`${id} is not an offered uniform`);
     assert.ok(rules.NOT_MODELLED[id].why);

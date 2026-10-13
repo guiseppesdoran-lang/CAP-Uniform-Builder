@@ -25,10 +25,11 @@ test('utility uniforms expose both fabric badge and patch selection', () => {
 
 test('utility badge picker previews and renders fabric-only badge assets', () => {
   assert.match(source, /function capubUtilityBadgePreviewUrl\(id\)/);
-  assert.match(source, /badges\/utility\/\$\{id\}\.png/);
+  // Previews use the badge's field artwork from the badge catalog.
+  assert.match(source, /CAPUBBadgeCatalog\.art\(id, 'field'\)/);
   assert.match(source, /class="utilityBadgePreview"/);
   assert.match(source, /Never fall back to metal\/non-fabric artwork on a utility uniform/);
-  assert.match(source, /return \[`badges\/utility\/\$\{id\}\.png`\]/);
+  assert.match(source, /return \[capubFieldBadgePath\(id\)\]/);
   assert.match(source, /const selected = \[\.\.\.new Set\(State\.badges \|\| \[\]\)\]/);
   assert.doesNotMatch(source, /utilityBadgePatch:true/);
 });

@@ -494,7 +494,7 @@ header h1::after{
   box-shadow:var(--shadow);
   overflow:visible;
   transform-origin:top left;
-  transition:width .18s ease,height .18s ease,transform .18s ease;
+  transition:transform .18s ease;
 }
 #previewArea::before{
   content:"Uniform Preview";
@@ -509,29 +509,13 @@ header h1::after{
   font-size:var(--t-xs);
   font-weight:700;
 }
-#uniformCanvas{position:relative;width:100%;height:100%;overflow:visible;border-radius:var(--r-lg);transition:width .18s ease,height .18s ease}
+#uniformCanvas{position:relative;width:100%;height:100%;overflow:visible;border-radius:var(--r-lg)}
 .layer{position:absolute;image-rendering:auto}
 .layer[data-missing="true"]{outline:2px dashed var(--warn);outline-offset:2px}
 #sideDisplay{display:flex;flex-direction:column;gap:var(--s3);min-width:140px}
 
-/* Field uniforms use a larger calibrated stage; keep it scrollable instead of cropping. */
-#previewArea[data-field-uniform="true"]{
-  width:969.6px;
-  height:707.52px;
-  min-width:969.6px;
-  min-height:707.52px;
-  max-width:none;
-  max-height:none;
-  overflow:visible;
-}
-#previewArea[data-field-uniform="true"] #uniformCanvas{
-  width:969.6px;
-  height:707.52px;
-  min-width:969.6px;
-  min-height:707.52px;
-  overflow:visible;
-}
-#previewArea[data-field-uniform="true"] img.layer.jacket{object-fit:contain;max-width:none;max-height:none}
+/* The uniform is one SVG that fills the stage; js/uniform-view.js sizes the stage to its proportions. */
+#uniformCanvas svg.uniformSvg{display:block;width:100%;height:100%}
 
 .previewToolbar{
   /* The negative side margins below pull the bar out to the wrapper's edges, so the basis has

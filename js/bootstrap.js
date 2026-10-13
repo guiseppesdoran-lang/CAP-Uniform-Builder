@@ -62,9 +62,9 @@ function capubRepairCriticalButtons(){
     if(downloadButton) downloadButton.dataset.exportBusy = '1';
 
     try{
-      const original = by('uniformCanvas');
-      if(!original) throw new Error('No uniform preview was found.');
-      const canvas = await composeUniformPngCanvas(original, 2);
+      // The same SVG as the preview, rasterized at 60 pixels per inch.
+      const canvas = await CAPUBUniformView.exportCanvas(60);
+      if(!canvas) throw new Error('No uniform preview was found.');
 
       const link = document.createElement('a');
       link.download = CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'png');
@@ -80,33 +80,6 @@ function capubRepairCriticalButtons(){
     }
   });
 
-  const measurementToggle=by('toggleMeasurementOverlay');
-  if(measurementToggle && measurementToggle.dataset.measurementToggleWired !== '1'){
-    measurementToggle.dataset.measurementToggleWired='1';
-    measurementToggle.addEventListener('change', evt => {
-      State.showMeasurementOverlay = !!evt.target.checked;
-      if(State.showMeasurementOverlay){
-        if(typeof renderMeasurementOverlay === 'function') renderMeasurementOverlay();
-      }else if(typeof clearMeasurementOverlay === 'function'){
-        clearMeasurementOverlay();
-      }
-    });
-  }
-
-  capubSafeWire('toggleMini','change', evt => {
-    State.forceMini = !!evt.target.checked;
-    if(typeof renderRack === 'function') renderRack();
-    if(typeof renderAllBadges === 'function') renderAllBadges();
-  });
-
-  // Make sure arrows never block normal UI/preview interaction unless calibrate mode is on.
-  const styleId = 'capubDynamicArrowPointerMode';
-  if(!by(styleId)){
-    const st = document.createElement('style');
-    st.id = styleId;
-    st.textContent = `.measurementArrowLayer{pointer-events:none!important}.calib-selectable .measurementArrowLayer{pointer-events:auto!important}`;
-    document.head.appendChild(st);
-  }
 }
 
 // Run once immediately and again after bootstrap/dynamic UI creation.
@@ -120,9 +93,6 @@ window.addEventListener('load', () => { try{ capubRepairCriticalButtons(); }catc
    Added 2026-05-12
    =========================== */
 const CAPUB_COUNTED_BADGE_LIMIT = 5;
-
-
-
 
 
 function getRenderableCountedBadgeIds(){
@@ -212,27 +182,16 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
    BOOTSTRAP
    =========================== */
 (function init(){
+  // Older builds kept hand-calibrated coordinates in this browser; the engine places everything
+  // from the artwork's anchors now, so they are cleared.
   try{
-    // Use a versioned storage key. Older builds used a shared key that may contain
-    // female coordinates in the base blues_a bucket, which causes placement drift.
-    const savedCal = localStorage.getItem(CAPUB_CALIBRATION_STORAGE_KEY);
-    if(savedCal){
-      const parsed = JSON.parse(savedCal);
-      State.calib.byUniform = normalizeCalibrationBucketsFromPayload(parsed);
-      if(parsed.legacyCoordinates) State.calib.map = parsed.legacyCoordinates;
+    for(const key of Object.keys(localStorage)){
+      if(/^capub_admin_calibration_by_uniform/.test(key)) localStorage.removeItem(key);
     }
-    // Clear stale calibration from previous generated files that changed Class A placement.
-    try{ localStorage.removeItem(CAPUB_LEGACY_CALIBRATION_STORAGE_KEY); }catch(err){}
-    try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_fix2'); }catch(err){}
-    try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_fix1'); }catch(err){}
-    try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_a_shift_down26_left6_rightbadges_left15'); }catch(err){}
-    // Older builds kept a copy of each generated setup in this browser; it is no longer used.
-    try{ localStorage.removeItem('CAPUB_ADMIN_HISTORY_V1'); localStorage.removeItem('CAPUB_ADMIN_HISTORY_CLOUD_MIGRATED_V1'); sessionStorage.removeItem('CAPUB_ADMIN_AUTH_V1'); }catch(err){}
-  }catch(err){ console.warn('Could not load saved calibration coordinates', err); }
+    localStorage.removeItem('capub_garment_alpha_masks_v1');
+    localStorage.removeItem('CAPUB_ADMIN_HISTORY_V1'); localStorage.removeItem('CAPUB_ADMIN_HISTORY_CLOUD_MIGRATED_V1'); sessionStorage.removeItem('CAPUB_ADMIN_AUTH_V1');
+  }catch(err){}
 
-  
-
-mergeCalibDefaults();
 
   applyMemberTypeToUniformOptions();
   populateRankSetup();
@@ -245,5 +204,4 @@ mergeCalibDefaults();
   buildPatchGallery();
 
   fullRender();
-  initCalibratorUI();
 })();

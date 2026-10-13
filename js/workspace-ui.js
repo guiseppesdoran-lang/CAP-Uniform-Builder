@@ -283,6 +283,8 @@
   window.addEventListener('resize',()=>{ if(V3.zoom<=1) fitZoom(); });
   // Opening or closing the controls sheet changes the room the uniform has.
   document.addEventListener('capub:sidebar',()=>{ if(!V3.userZoomed) setTimeout(fitZoom,230); });
+  // A new drawing can change the stage's width (a wide field uniform sheet, a tall coat).
+  document.addEventListener('capub:rendered',()=>{ if(!V3.userZoomed) fitZoom(); });
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
 
@@ -333,7 +335,7 @@
 
   function describe(layer){
     const key=String(layer.dataset.calibKey || '');
-    const m=/^(ribbon|mini|badge|patch|patchRegV2):([^:]+)/.exec(key);
+    const m=/^(ribbon|mini|badge|patch|patchRegV2):([^:#]+)/.exec(key);
     if(!m) return null;
     const [,kind,id]=m;
     if(kind==='ribbon' || kind==='mini'){
@@ -398,8 +400,6 @@
   }
 
   canvas.addEventListener('click',e=>{
-    // The calibrator uses clicks on items to select them; leave those alone.
-    if(typeof State!=='undefined' && State.calib && State.calib.enabled) return;
     const layer=e.target.closest && e.target.closest('.layer');
     if(!layer || !canvas.contains(layer)) return;
     const item=describe(layer);

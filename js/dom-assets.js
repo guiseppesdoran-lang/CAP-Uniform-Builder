@@ -17,15 +17,6 @@ const rankSetupSelect  = by('rankSetupSelect');
 const cadetFirstSergeantBlock = by('cadetFirstSergeantBlock');
 const cadetFirstSergeantCheckbox = by('cadetFirstSergeantCheckbox');
 const jacketSelect     = by('jacketSelect');
-const garmentOverlaySelect = by('garmentOverlaySelect');
-const garmentMaskSide = by('garmentMaskSide');
-const editGarmentMaskBtn = by('editGarmentMaskBtn');
-const resetGarmentMaskBtn = by('resetGarmentMaskBtn');
-const garmentMaskEditorControls = by('garmentMaskEditorControls');
-const undoGarmentMaskBtn = by('undoGarmentMaskBtn');
-const saveGarmentMaskBtn = by('saveGarmentMaskBtn');
-const cancelGarmentMaskBtn = by('cancelGarmentMaskBtn');
-const garmentMaskStatus = by('garmentMaskStatus');
 const assetBaseInput   = by('assetBase'); // removed from general UI; may be null
 
 const genderBlock      = by('genderBlock');

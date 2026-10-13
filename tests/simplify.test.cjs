@@ -41,10 +41,9 @@ test('shoulder cords are for cadets on Class A and Class B only (CAPR 39-1 9.3, 
   assert.match(patches,/CAPUBUniformRules\.allowsShoulderCord\(State\.uniform, State\.membership\)/);
 });
 
-test('the collar and lapel overlay is under More tools, not in the Uniform step',()=>{
-  assert.ok(tools.includes('id="garmentOverlayPanel"'));
-  const uniformStep=html.slice(html.indexOf('id="stepGroup-uniform"'),html.indexOf('id="stepGroup-items"'));
-  assert.ok(!uniformStep.includes('garmentOverlayPanel'));
+test('the collar and lapel mask editor is gone: the engine redraws the lapel from the artwork',()=>{
+  assert.ok(!html.includes('id="garmentOverlayPanel"'));
+  assert.ok(!html.includes('id="editGarmentMaskBtn"'));
 });
 
 test('the name is an optional, folded block in the Profile step',()=>{
@@ -67,8 +66,7 @@ test('ribbon devices are set in the ribbon picker, so the add-several tool is go
     assert.ok(!html.includes(`id="${id}"`),`${id} removed`);
   }
   const core=read('js/render-core.js');
-  assert.match(core,/if\(!wrap\) return; \/\/ the multi-apply tool was removed/);
-  assert.match(core,/if\(!applyBtn \|\| !removeBtn \|\| !clearBtn\) return;/);
+  assert.doesNotMatch(core,/function wireDeviceUI|function buildDevicePicker/);
 });
 
 test('no badge tile carries a Rare Cadet Eligibility tag',()=>{

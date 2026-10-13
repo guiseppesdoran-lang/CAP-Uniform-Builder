@@ -7,6 +7,7 @@
    =========================== */
 function normalizeFieldUniformRenderKey(uniformId = State.uniform){
   const u = String(uniformId || '').toLowerCase();
+  if(u === 'corporate_flight_suit') return 'cfdu';
   if(u === 'ocp' || u.includes('ocp')) return 'ocp';
   if(u === 'abu' || u.includes('abu')) return 'abu';
   if(u === 'cfu' || u === 'corporate_field' || u.includes('corporate') || u.includes('field')) return 'corporate_field';
@@ -20,78 +21,22 @@ function isFieldUniform(u){
     ['abu','ocp','corporate_field','cfdu','flight_suit'].includes(normalizeFieldUniformRenderKey(u));
 }
 
-const DEFAULT_RENDER_AREA = Object.freeze({ w:450, h:600 });
-const FIELD_RENDER_AREA = Object.freeze({ w:969.6, h:707.52 });
 
-function getActiveRenderArea(uniformId = State.uniform){
-  return isFieldUniform(uniformId) ? FIELD_RENDER_AREA : DEFAULT_RENDER_AREA;
-}
-
-function applyPreviewRenderArea(){
-  const area = getActiveRenderArea();
-  const preview = by('previewArea');
-  const canvas = by('uniformCanvas');
-  const field = isFieldUniform(State.uniform);
-
-  if(preview){
-    preview.style.width = `${area.w}px`;
-    preview.style.height = `${area.h}px`;
-    preview.style.minWidth = `${area.w}px`;
-    preview.style.minHeight = `${area.h}px`;
-    preview.style.maxWidth = 'none';
-    preview.style.maxHeight = 'none';
-    preview.style.overflow = 'visible';
-    preview.dataset.renderWidth = String(area.w);
-    preview.dataset.renderHeight = String(area.h);
-    preview.dataset.fieldUniform = field ? 'true' : 'false';
-    preview.classList.toggle('fieldUniformPreview', field);
-  }
-  if(canvas){
-    canvas.style.width = `${area.w}px`;
-    canvas.style.height = `${area.h}px`;
-    canvas.style.minWidth = `${area.w}px`;
-    canvas.style.minHeight = `${area.h}px`;
-    canvas.style.overflow = 'visible';
-    canvas.dataset.renderWidth = String(area.w);
-    canvas.dataset.renderHeight = String(area.h);
-    canvas.dataset.fieldUniform = field ? 'true' : 'false';
-  }
-}
-
-function getCanvasRenderSize(){
-  const area = getActiveRenderArea();
-  const computed = uniformCanvas ? getComputedStyle(uniformCanvas) : null;
-  // CSS preview zoom changes getBoundingClientRect(), but it must never change
-  // the coordinate system used to place uniform items. Always use the fixed,
-  // untransformed render dimensions here.
-  const width =
-    parseFloat(uniformCanvas?.dataset?.renderWidth) ||
-    parseFloat(computed?.width) ||
-    uniformCanvas?.offsetWidth ||
-    area.w;
-  const height =
-    parseFloat(uniformCanvas?.dataset?.renderHeight) ||
-    parseFloat(computed?.height) ||
-    uniformCanvas?.offsetHeight ||
-    area.h;
-  return {
-    w: Math.round(width * 100) / 100,
-    h: Math.round(height * 100) / 100
-  };
-}
-
+// Each uniform's base garment artwork (images/garments), used for the picker thumbnails. The
+// preview itself is composed by js/engine from the same sheets.
 const UNIFORMS = {
-  blues_a:{male:'base/jacket_male.webp',                female:'base/jacket_female.webp',           ribbons:true,  mini:false},
-  blues_b:{male:'base/blues_class_b_male.webp',         female:'base/blues_class_b_female.webp',    ribbons:true,  mini:false},
-  mess_dress:{male:'base/mess_dress_male.webp',         female:'base/mess_dress_female.webp',       ribbons:false, mini:true},
-  semi_formal:{male:'base/male_semi_formal.webp',        female:'base/mess_dress_female.webp',       ribbons:false, mini:true},
-  aviator:{male:'base/aviator_shirt_male.webp',         female:'base/aviator_shirt_female_clean.webp', ribbons:true, mini:false},
-  aviator_blazer:{male:'base/aviator_shirt_male.webp',  female:'base/aviator_shirt_female_clean.webp', ribbons:true, mini:false},
-  corporate_field:{male:'base/aviator_shirt_male.webp', female:'base/aviator_shirt_female.webp',    ribbons:true,  mini:false},
-  abu:{male:'base/ABU_male.webp',                       female:'base/ABU_female.webp',               ribbons:false, mini:false},
-  ocp:{male:'base/OCP_Blouse.webp',                     female:'base/OCP_Blouse.webp',               ribbons:false, mini:false},
-  flight_suit:{male:'base/aviator_shirt_male.webp',     female:'base/aviator_shirt_female.webp',    ribbons:false, mini:false},
-  polo:{male:'base/aviator_shirt_male.webp',            female:'base/aviator_shirt_female.webp',    ribbons:false, mini:false}
+  blues_a:{male:'garments/garment-blues-class-a-coat.svg',               female:'garments/garment-blues-class-a-coat-female.svg',            ribbons:true,  mini:false},
+  blues_b:{male:'garments/garment-blues-class-b-shirt-male.svg',         female:'garments/garment-blues-class-b-blouse-female.svg',          ribbons:true,  mini:false},
+  mess_dress:{male:'garments/garment-mess-dress-male.svg',               female:'garments/garment-mess-dress-female.svg',                    ribbons:false, mini:true},
+  semi_formal:{male:'garments/garment-corporate-service-dress-blazer-male.svg', female:'garments/garment-corporate-service-dress-blazer-female.svg', ribbons:false, mini:true},
+  semi_formal_usaf:{male:'garments/garment-semiformal-class-a-coat-male.svg', female:'garments/garment-semiformal-class-a-coat-female.svg', ribbons:true, mini:false},
+  aviator:{male:'garments/garment-aviator-shirt-male.svg',               female:'garments/garment-aviator-shirt-female.svg',                 ribbons:true,  mini:false},
+  aviator_blazer:{male:'garments/garment-corporate-service-dress-blazer-male.svg', female:'garments/garment-corporate-service-dress-blazer-female.svg', ribbons:false, mini:false},
+  corporate_field:{male:'garments/garment-cfu-coat.svg',                 female:'garments/garment-cfu-coat.svg',                             ribbons:false, mini:false},
+  abu:{male:'garments/garment-abu-coat.svg',                             female:'garments/garment-abu-coat.svg',                             ribbons:false, mini:false},
+  ocp:{male:'garments/garment-ocp-coat-abu-cut.svg',                     female:'garments/garment-ocp-coat-abu-cut.svg',                     ribbons:false, mini:false},
+  flight_suit:{male:'garments/garment-fdu-flight-suit.svg',              female:'garments/garment-fdu-flight-suit.svg',                      ribbons:false, mini:false},
+  corporate_flight_suit:{male:'garments/garment-cfdu-flight-suit.svg',   female:'garments/garment-cfdu-flight-suit.svg',                     ribbons:false, mini:false}
 };
 // Whether a uniform takes ribbons or miniature medals is a CAPR 39-1 rule (11.1.2-11.1.4), so
 // it comes from data/uniform-rules.js rather than from the flags above.
@@ -104,427 +49,6 @@ Object.keys(UNIFORMS).forEach(id=>{
 /* Collar/lapel foreground masks. Each entry clips a duplicate of the active
    base uniform image, so rank-specific and gender-specific artwork is reused
    exactly. The duplicate renders above ribbons, badges, and patches. */
-const GARMENT_FOREGROUND_CLIPS = {
-  serviceCoat: [
-    'polygon(35% 9%, 29% 20%, 48% 40%, 41% 9%)',
-    // Award-side lapel traced as the complete filled red area from the supplied
-    // reference. Both the award-side edge and inner coat edge are represented,
-    // so the foreground clone covers only the actual lapel surface.
-    'polygon(56.8% 10%, 60.5% 13.1%, 63.2% 17.5%, 64.3% 20.4%, 62.6% 21.1%, 67.4% 23%, 64% 26.2%, 60.7% 29.1%, 57.4% 32%, 53.3% 34.9%, 49.4% 37.8%, 46.9% 39.7%, 47.5% 37.8%, 48.8% 34.9%, 50.2% 32%, 51.6% 29.1%, 52.9% 26.2%, 54.3% 23.3%, 55.6% 20.4%, 56.2% 17.5%, 56.8% 13.1%)'
-  ],
-  // Male Class A award-side mask promoted from the user's latest saved
-  // alpha-mask edit in cap_uniform_builder_setup (10).json. Consecutive
-  // duplicate points were removed, but the precise sub-pixel outline and
-  // closing inner edge are preserved.
-  serviceCoatMale: [
-    'polygon(35% 9%, 29% 20%, 48% 40%, 41% 9%)',
-    'polygon(56.535% 6.305%, 60.956% 10.317%, 62.572% 12.711%, 64.22222222222223% 16.42255892255892%, 64.44444444444444% 17.14085297418631%, 64.55555555555556% 17.18574635241302%, 62.61111111111111% 18.39786756453423%, 62.44444444444445% 18.39786756453423%, 61.764% 19.241%, 65.064% 19.622%, 68.229% 19.894%, 64.828% 23.921%, 62.168% 26.424%, 58.88888888888889% 29.35185185185185%, 54.761% 32.41%, 50.855% 35.893%, 46.9% 39.7%, 47.5% 37.8%, 48.8% 34.9%, 50.2% 32%, 51.6% 29.1%, 52.9% 26.2%, 54.3% 23.3%, 55.6% 20.4%, 55.618% 17.447%, 56.8% 13.1%)'
-  ],
-  shirtCollar: [
-    'polygon(38% 7%, 31% 26%, 48% 34%, 40% 8%)',
-    'polygon(61% 7%, 69% 26%, 51% 34%, 60% 8%)'
-  ],
-  aviatorCollar: [
-    'polygon(38% 8%, 30% 25%, 48% 33%, 40% 9%)',
-    'polygon(61% 8%, 70% 25%, 51% 33%, 60% 9%)'
-  ],
-  messDressLapel: [
-    'polygon(37% 3%, 45% 7%, 49% 61%, 42% 52%, 35% 18%)',
-    'polygon(63% 3%, 55% 7%, 51% 61%, 58% 52%, 65% 18%)'
-  ],
-  semiFormalLapel: [
-    'polygon(37% 4%, 30% 20%, 49% 53%, 46% 47%, 36% 18%)',
-    'polygon(63% 4%, 70% 20%, 51% 53%, 54% 47%, 64% 18%)'
-  ],
-  utilityCollar: [
-    'polygon(42% 5%, 36% 14%, 50% 23%, 45% 8%)',
-    'polygon(58% 5%, 64% 14%, 50% 23%, 55% 8%)'
-  ],
-  seniorOfficerOcpCollar: [
-    'polygon(44% 3%, 43% 16%, 50% 19%, 47% 14%)',
-    'polygon(56% 3%, 58% 16%, 50% 19%, 54% 14%)'
-  ]
-};
-
-function getGarmentForegroundClips(uniformId, loadedPath=''){
-  const path = String(loadedPath || '').toLowerCase();
-  switch(uniformId){
-    case 'blues_a': return State.gender === 'male'
-      ? GARMENT_FOREGROUND_CLIPS.serviceCoatMale
-      : GARMENT_FOREGROUND_CLIPS.serviceCoat;
-    case 'blues_b': return GARMENT_FOREGROUND_CLIPS.shirtCollar;
-    case 'mess_dress': return GARMENT_FOREGROUND_CLIPS.messDressLapel;
-    case 'semi_formal':
-      return path.includes('mess_dress')
-        ? GARMENT_FOREGROUND_CLIPS.messDressLapel
-        : GARMENT_FOREGROUND_CLIPS.semiFormalLapel;
-    case 'aviator':
-    case 'aviator_blazer':
-    case 'corporate_field':
-    case 'flight_suit':
-    case 'polo':
-      return GARMENT_FOREGROUND_CLIPS.aviatorCollar;
-    case 'abu':
-      return GARMENT_FOREGROUND_CLIPS.utilityCollar;
-    case 'ocp':
-      // This clips the currently loaded utility base. For SM officers that is
-      // the selected rank-specific OCP blouse, never a separate generic image.
-      return usingSeniorOfficerOcpBase() && path !== 'base/ocp_blouse.webp'
-        ? GARMENT_FOREGROUND_CLIPS.seniorOfficerOcpCollar
-        : GARMENT_FOREGROUND_CLIPS.utilityCollar;
-    default:
-      return [];
-  }
-}
-
-function parseGarmentPolygonPoints(clipPath){
-  const match = /^polygon\((.*)\)$/i.exec(String(clipPath || '').trim());
-  if(!match) return [];
-  return match[1].split(',').map(pair => {
-    const [xToken,yToken] = pair.trim().split(/\s+/);
-    const x = parseFloat(xToken);
-    const y = parseFloat(yToken);
-    return Number.isFinite(x) && Number.isFinite(y) ? {x,y} : null;
-  }).filter(Boolean);
-}
-
-function sanitizeGarmentMaskPoints(points){
-  if(!Array.isArray(points)) return [];
-  return points.map(point => ({
-    x:Math.max(0, Math.min(100, Number(point?.x))),
-    y:Math.max(0, Math.min(100, Number(point?.y)))
-  })).filter(point => Number.isFinite(point.x) && Number.isFinite(point.y));
-}
-
-function getGarmentMaskKey(uniformId=State.uniform, gender=State.gender, pieceIndex=1){
-  return `${uniformId || 'uniform'}:${gender || 'unisex'}:${Number(pieceIndex) || 0}`;
-}
-
-function getGarmentMaskPoints(uniformId, loadedPath, pieceIndex){
-  const saved = sanitizeGarmentMaskPoints(State.garmentMasks?.[getGarmentMaskKey(uniformId, State.gender, pieceIndex)]);
-  if(saved.length >= 3) return saved;
-  const defaults = getGarmentForegroundClips(uniformId, loadedPath);
-  return parseGarmentPolygonPoints(defaults[pieceIndex]);
-}
-
-function persistGarmentMasks(){
-  try{
-    localStorage.setItem(CAPUB_GARMENT_MASK_STORAGE_KEY, JSON.stringify(State.garmentMasks || {}));
-  }catch(err){
-    console.warn('Unable to save garment masks in this browser.', err);
-  }
-}
-
-function garmentPointsToClipPath(points){
-  return `polygon(${points.map(point => `${point.x}% ${point.y}%`).join(', ')})`;
-}
-
-function buildGarmentAlphaOverlayDataUrl(baseImg, points){
-  const width = baseImg?.naturalWidth || 0;
-  const height = baseImg?.naturalHeight || 0;
-  if(!width || !height || points.length < 3) return '';
-
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-  if(!ctx) return '';
-
-  ctx.drawImage(baseImg, 0, 0, width, height);
-  ctx.globalCompositeOperation = 'destination-in';
-  ctx.beginPath();
-  points.forEach((point,index) => {
-    const x = point.x * width / 100;
-    const y = point.y * height / 100;
-    if(index) ctx.lineTo(x,y); else ctx.moveTo(x,y);
-  });
-  ctx.closePath();
-  ctx.fillStyle = '#fff';
-  ctx.fill();
-  ctx.globalCompositeOperation = 'source-over';
-  return canvas.toDataURL('image/png');
-}
-
-function projectGarmentClipToRenderedImage(clipPath, baseImg){
-  const match = /^polygon\((.*)\)$/i.exec(String(clipPath || '').trim());
-  const naturalW = baseImg?.naturalWidth || 0;
-  const naturalH = baseImg?.naturalHeight || 0;
-  const elementW = parseFloat(baseImg?.style?.width) || baseImg?.offsetWidth || 0;
-  const elementH = parseFloat(baseImg?.style?.height) || baseImg?.offsetHeight || 0;
-  if(!match || !naturalW || !naturalH || !elementW || !elementH) return clipPath;
-
-  const ratio = Math.min(elementW / naturalW, elementH / naturalH);
-  const drawnW = naturalW * ratio;
-  const drawnH = naturalH * ratio;
-  const offsetX = (elementW - drawnW) / 2;
-  const offsetY = (elementH - drawnH) / 2;
-  const points = match[1].split(',').map(pair => {
-    const [xToken, yToken] = pair.trim().split(/\s+/);
-    if(!xToken?.endsWith('%') || !yToken?.endsWith('%')) return pair.trim();
-    const x = offsetX + (parseFloat(xToken) / 100) * drawnW;
-    const y = offsetY + (parseFloat(yToken) / 100) * drawnH;
-    return `${x.toFixed(2)}px ${y.toFixed(2)}px`;
-  });
-  return `polygon(${points.join(', ')})`;
-}
-
-function renderGarmentForegroundOverlays(baseImg, loadedPath){
-  uniformCanvas.querySelectorAll('.layer.garmentForegroundOverlay').forEach(el => el.remove());
-  if(!baseImg?.isConnected) return;
-
-  const mode = ['both','left','right','off'].includes(State.garmentOverlayMode)
-    ? State.garmentOverlayMode
-    : 'both';
-  if(mode === 'off') return;
-
-  getGarmentForegroundClips(State.uniform, loadedPath).forEach((clipPath, index) => {
-    if(mode === 'left' && index !== 0) return;
-    if(mode === 'right' && index !== 1) return;
-    const points = getGarmentMaskPoints(State.uniform, loadedPath, index);
-    if(points.length < 3) return;
-    const overlay = baseImg.cloneNode(false);
-    overlay.className = 'layer jacket garmentForegroundOverlay';
-    overlay.removeAttribute('id');
-    overlay.dataset.calibIgnore = 'true';
-    overlay.dataset.garmentPiece = String(index + 1);
-    overlay.removeAttribute('data-calib-key');
-    overlay.removeAttribute('data-tooltip-title');
-    overlay.removeAttribute('data-tooltip-reg');
-    overlay.removeAttribute('data-tooltip-why');
-    try{
-      const alphaOverlay = buildGarmentAlphaOverlayDataUrl(baseImg, points);
-      if(!alphaOverlay) throw new Error('Mask rasterization returned no image.');
-      overlay.src = alphaOverlay;
-      overlay.style.clipPath = 'none';
-      overlay.style.webkitClipPath = 'none';
-      overlay.dataset.garmentMaskType = 'alpha';
-    }catch(err){
-      // Local file security settings can occasionally block canvas export.
-      // Preserve a clip-path fallback so the overlay remains usable.
-      const customClipPath = garmentPointsToClipPath(points);
-      const projectedClipPath = projectGarmentClipToRenderedImage(customClipPath, baseImg);
-      overlay.style.clipPath = projectedClipPath;
-      overlay.style.webkitClipPath = projectedClipPath;
-      overlay.dataset.garmentMaskType = 'polygon-fallback';
-      console.warn('Falling back to polygon garment overlay.', err);
-    }
-    overlay.style.zIndex = '9000';
-    overlay.style.pointerEvents = 'none';
-    overlay.setAttribute('aria-hidden', 'true');
-    uniformCanvas.appendChild(overlay);
-  });
-}
-
-const garmentMaskEditor = {
-  active:false,
-  pieceIndex:1,
-  points:[],
-  history:[],
-  draggingIndex:-1,
-  loadedPath:''
-};
-
-function getGarmentEditorBaseImage(){
-  return [...uniformCanvas.querySelectorAll('img.layer.jacket')]
-    .find(img => !img.classList.contains('garmentForegroundOverlay')) || null;
-}
-
-function setGarmentMaskStatus(message){
-  if(garmentMaskStatus) garmentMaskStatus.textContent = message;
-}
-
-function syncGarmentMaskStatus(){
-  if(garmentMaskEditor.active){
-    setGarmentMaskStatus(`Editing ${garmentMaskEditor.points.length} mask points. Save when the red area matches the garment.`);
-    return;
-  }
-  const pieceIndex = Number(garmentMaskSide?.value) || 0;
-  const key = getGarmentMaskKey(State.uniform, State.gender, pieceIndex);
-  const saved = sanitizeGarmentMaskPoints(State.garmentMasks?.[key]);
-  setGarmentMaskStatus(saved.length >= 3
-    ? `Using a saved ${State.uniform.replace(/_/g,' ')} ${State.gender || ''} mask.`
-    : 'Using the built-in mask.');
-}
-
-function getGarmentEditorDrawBounds(baseImg){
-  const naturalW = baseImg?.naturalWidth || 0;
-  const naturalH = baseImg?.naturalHeight || 0;
-  const elementW = parseFloat(baseImg?.style?.width) || baseImg?.offsetWidth || 0;
-  const elementH = parseFloat(baseImg?.style?.height) || baseImg?.offsetHeight || 0;
-  const elementX = parseFloat(baseImg?.style?.left) || 0;
-  const elementY = parseFloat(baseImg?.style?.top) || 0;
-  if(!naturalW || !naturalH || !elementW || !elementH){
-    return {x:elementX,y:elementY,w:elementW,h:elementH};
-  }
-  const ratio = Math.min(elementW / naturalW, elementH / naturalH);
-  const w = naturalW * ratio;
-  const h = naturalH * ratio;
-  return {x:elementX + (elementW-w)/2, y:elementY + (elementH-h)/2, w, h};
-}
-
-function pushGarmentMaskHistory(){
-  garmentMaskEditor.history.push(garmentMaskEditor.points.map(point => ({...point})));
-  if(garmentMaskEditor.history.length > 50) garmentMaskEditor.history.shift();
-  if(undoGarmentMaskBtn) undoGarmentMaskBtn.disabled = !garmentMaskEditor.history.length;
-}
-
-function pointToSegmentDistance(point, a, b, scaleX=1, scaleY=1){
-  const px=point.x*scaleX, py=point.y*scaleY;
-  const ax=a.x*scaleX, ay=a.y*scaleY;
-  const bx=b.x*scaleX, by=b.y*scaleY;
-  const dx=bx-ax, dy=by-ay;
-  const len2=dx*dx+dy*dy;
-  const t=len2 ? Math.max(0,Math.min(1,((px-ax)*dx+(py-ay)*dy)/len2)) : 0;
-  return Math.hypot(px-(ax+t*dx),py-(ay+t*dy));
-}
-
-function insertGarmentMaskPoint(point, bounds){
-  const points = garmentMaskEditor.points;
-  if(points.length < 2){ points.push(point); return; }
-  let bestIndex=points.length;
-  let bestDistance=Infinity;
-  for(let index=0; index<points.length; index++){
-    const next=(index+1)%points.length;
-    const distance=pointToSegmentDistance(point,points[index],points[next],bounds.w/100,bounds.h/100);
-    if(distance<bestDistance){ bestDistance=distance; bestIndex=next; }
-  }
-  points.splice(bestIndex,0,point);
-}
-
-function renderGarmentMaskEditor(){
-  uniformCanvas.querySelectorAll('.garmentMaskEditorLayer').forEach(el => el.remove());
-  if(!garmentMaskEditor.active) return;
-  const baseImg=getGarmentEditorBaseImage();
-  if(!baseImg?.naturalWidth){
-    setGarmentMaskStatus('The base image is still loading. Try Edit mask again in a moment.');
-    return;
-  }
-
-  const bounds=getGarmentEditorDrawBounds(baseImg);
-  const ns='http://www.w3.org/2000/svg';
-  const svg=document.createElementNS(ns,'svg');
-  svg.classList.add('garmentMaskEditorLayer');
-  svg.setAttribute('viewBox','0 0 100 100');
-  svg.setAttribute('preserveAspectRatio','none');
-  svg.style.left=`${bounds.x}px`;
-  svg.style.top=`${bounds.y}px`;
-  svg.style.width=`${bounds.w}px`;
-  svg.style.height=`${bounds.h}px`;
-
-  const polygon=document.createElementNS(ns,'polygon');
-  polygon.setAttribute('points',garmentMaskEditor.points.map(point=>`${point.x},${point.y}`).join(' '));
-  svg.appendChild(polygon);
-
-  const clientToPoint = event => {
-    const rect=svg.getBoundingClientRect();
-    return {
-      x:Math.max(0,Math.min(100,(event.clientX-rect.left)/rect.width*100)),
-      y:Math.max(0,Math.min(100,(event.clientY-rect.top)/rect.height*100))
-    };
-  };
-  const updateGeometry = () => {
-    polygon.setAttribute('points',garmentMaskEditor.points.map(point=>`${point.x},${point.y}`).join(' '));
-    [...svg.querySelectorAll('circle')].forEach((circle,index)=>{
-      const point=garmentMaskEditor.points[index];
-      if(point){ circle.setAttribute('cx',point.x); circle.setAttribute('cy',point.y); }
-    });
-    syncGarmentMaskStatus();
-  };
-
-  garmentMaskEditor.points.forEach((point,index)=>{
-    const handle=document.createElementNS(ns,'circle');
-    handle.setAttribute('cx',point.x);
-    handle.setAttribute('cy',point.y);
-    handle.setAttribute('r','1.25');
-    handle.dataset.pointIndex=String(index);
-    handle.addEventListener('pointerdown',event=>{
-      if(event.button!==0) return;
-      event.stopPropagation();
-      pushGarmentMaskHistory();
-      garmentMaskEditor.draggingIndex=index;
-      svg.classList.add('is-dragging');
-      svg.setPointerCapture?.(event.pointerId);
-    });
-    handle.addEventListener('contextmenu',event=>{
-      event.preventDefault();
-      event.stopPropagation();
-      if(garmentMaskEditor.points.length<=3) return;
-      pushGarmentMaskHistory();
-      garmentMaskEditor.points.splice(index,1);
-      renderGarmentMaskEditor();
-    });
-    svg.appendChild(handle);
-  });
-
-  svg.addEventListener('pointermove',event=>{
-    const index=garmentMaskEditor.draggingIndex;
-    if(index<0 || !garmentMaskEditor.points[index]) return;
-    garmentMaskEditor.points[index]=clientToPoint(event);
-    updateGeometry();
-  });
-  const stopDragging=()=>{
-    garmentMaskEditor.draggingIndex=-1;
-    svg.classList.remove('is-dragging');
-  };
-  svg.addEventListener('pointerup',stopDragging);
-  svg.addEventListener('pointercancel',stopDragging);
-  svg.addEventListener('click',event=>{
-    if(event.target?.tagName?.toLowerCase()==='circle') return;
-    pushGarmentMaskHistory();
-    insertGarmentMaskPoint(clientToPoint(event),bounds);
-    renderGarmentMaskEditor();
-  });
-
-  uniformCanvas.appendChild(svg);
-}
-
-function beginGarmentMaskEdit(){
-  const baseImg=getGarmentEditorBaseImage();
-  if(!baseImg?.naturalWidth){
-    setGarmentMaskStatus('Wait for the uniform artwork to finish loading, then try again.');
-    return;
-  }
-  garmentMaskEditor.active=true;
-  garmentMaskEditor.pieceIndex=Number(garmentMaskSide?.value) || 0;
-  garmentMaskEditor.loadedPath=String(baseImg.dataset?.tooltipWhy || '').replace(/^Loaded:\s*/,'');
-  garmentMaskEditor.points=getGarmentMaskPoints(State.uniform,garmentMaskEditor.loadedPath,garmentMaskEditor.pieceIndex).map(point=>({...point}));
-  garmentMaskEditor.history=[];
-  garmentMaskEditor.draggingIndex=-1;
-  garmentMaskEditorControls?.classList.remove('hidden');
-  if(garmentMaskSide) garmentMaskSide.disabled=true;
-  if(editGarmentMaskBtn) editGarmentMaskBtn.disabled=true;
-  if(resetGarmentMaskBtn) resetGarmentMaskBtn.disabled=true;
-  if(undoGarmentMaskBtn) undoGarmentMaskBtn.disabled=true;
-  renderGarmentMaskEditor();
-}
-
-function closeGarmentMaskEditor(save=false,rerender=true){
-  if(save && garmentMaskEditor.points.length>=3){
-    const key=getGarmentMaskKey(State.uniform,State.gender,garmentMaskEditor.pieceIndex);
-    State.garmentMasks[key]=sanitizeGarmentMaskPoints(garmentMaskEditor.points);
-    persistGarmentMasks();
-  }
-  garmentMaskEditor.active=false;
-  garmentMaskEditor.draggingIndex=-1;
-  garmentMaskEditor.history=[];
-  uniformCanvas.querySelectorAll('.garmentMaskEditorLayer').forEach(el=>el.remove());
-  garmentMaskEditorControls?.classList.add('hidden');
-  if(garmentMaskSide) garmentMaskSide.disabled=false;
-  if(editGarmentMaskBtn) editGarmentMaskBtn.disabled=false;
-  if(resetGarmentMaskBtn) resetGarmentMaskBtn.disabled=false;
-  syncGarmentMaskStatus();
-  if(rerender) fullRender();
-}
-
-function resetCurrentGarmentMask(){
-  const pieceIndex=Number(garmentMaskSide?.value) || 0;
-  const key=getGarmentMaskKey(State.uniform,State.gender,pieceIndex);
-  delete State.garmentMasks[key];
-  persistGarmentMasks();
-  if(garmentMaskEditor.active) closeGarmentMaskEditor(false,false);
-  fullRender();
-  syncGarmentMaskStatus();
-}
 
 const UI_AUTHZ = {
   blues_a:{ showBadges:true,  showPatches:false },
@@ -537,7 +61,8 @@ const UI_AUTHZ = {
   abu:{ showBadges:true, showPatches:true },
   ocp:{ showBadges:true, showPatches:true },
   flight_suit:{ showBadges:true, showPatches:true },
-  polo:{ showBadges:false, showPatches:false }
+  corporate_flight_suit:{ showBadges:true, showPatches:true },
+  semi_formal_usaf:{ showBadges:true, showPatches:false }
 };
 // Ribbon wear is a CAPR 39-1 rule; see data/uniform-rules.js.
 Object.keys(UI_AUTHZ).forEach(id=>{
@@ -547,45 +72,6 @@ Object.keys(UI_AUTHZ).forEach(id=>{
 /* ===========================
    SENIOR MEMBER NCO BASE IMAGES
    =========================== */
-const SENIOR_NCO_BASE = {
-  blues_a: {
-    male: {
-      "SSgt": "base/CAP_SM_SSgt_Class_A_Jacket.webp",
-      "TSgt": "base/CAP_SM_TSgt_Class_A_Jacket.webp",
-      "MSgt": "base/CAP_SM_MSgt_Class_A_Jacket.webp",
-      "SMSgt":"base/CAP_SM_SMSgt_Class_A_Jacket.webp",
-      "CMSgt":"base/CAP_SM_CMSgt_Class_A_Jacket.webp"
-    },
-    female: {
-      "SSgt": "base/CAP_SM_SSgt_Class_A_Jacket.webp",
-      "TSgt": "base/CAP_SM_TSgt_Class_A_Jacket.webp",
-      "MSgt": "base/CAP_SM_MSgt_Class_A_Jacket.webp",
-      "SMSgt":"base/CAP_SM_SMSgt_Class_A_Jacket.webp",
-      "CMSgt":"base/CAP_SM_CMSgt_Class_A_Jacket.webp"
-    }
-  },
-
-  // Senior Member NCO Class B Blues base images.
-  // These are full base images with the NCO grade already built into the shirt.
-  // Naming convention:
-  //   images/base/{rank}_blues_class_b_{gender}.png
-  blues_b: {
-    male: {
-      "SSgt": "base/ssgt_blues_class_b_male.webp",
-      "TSgt": "base/tsgt_blues_class_b_male.webp",
-      "MSgt": "base/msgt_blues_class_b_male.webp",
-      "SMSgt":"base/smsgt_blues_class_b_male.webp",
-      "CMSgt":"base/cmsgt_blues_class_b_male.webp"
-    },
-    female: {
-      "SSgt": "base/ssgt_blues_class_b_female.png",
-      "TSgt": "base/tsgt_blues_class_b_female.png",
-      "MSgt": "base/msgt_blues_class_b_female.png",
-      "SMSgt":"base/smsgt_blues_class_b_female.png",
-      "CMSgt":"base/cmsgt_blues_class_b_female.png"
-    }
-  }
-};
 
 /* ===========================
    CADET COMBINED CLASS A BASE IMAGES
@@ -593,41 +79,11 @@ const SENIOR_NCO_BASE = {
 // Male cadet officer Class A images already include the jacket, shoulder boards,
 // and officer grade. Enlisted/airman male Class A still falls back to the normal
 // generic male jacket unless rank-specific male Class A files are added later.
-const CADET_OFFICER_COMBINED_CLASSA_MALE = {
-  "C/2d Lt":  "base/c_2d_lt_jacket_male.webp",
-  "C/1st Lt": "base/c_1st_lt_jacket_male.webp",
-  "C/Capt":   "base/c_capt_jacket_male.webp",
-  "C/Maj":    "base/c_maj_jacket_male.webp",
-  "C/Lt Col": "base/c_lt_col_jacket_male.webp",
-  "C/Col":    "base/c_col_jacket_male.webp"
-};
 
 // Female cadet Class A images are full base images with the cadet grade already
 // built into the coat. File convention:
 //   images/base/blues_class_a_female_c_<rank>.png
-const CADET_COMBINED_CLASSA_FEMALE = {
-  "C/AB":     "base/blues_class_a_female_c_ab.png",
-  "C/Amn":    "base/blues_class_a_female_c_amn.webp",
-  "C/A1C":    "base/blues_class_a_female_c_a1c.webp",
-  "C/SrA":    "base/blues_class_a_female_c_sra.webp",
-  "C/SSgt":   "base/blues_class_a_female_c_ssgt.webp",
-  "C/TSgt":   "base/blues_class_a_female_c_tsgt.webp",
-  "C/MSgt":   "base/blues_class_a_female_c_msgt.webp",
-  "C/SMSgt":  "base/blues_class_a_female_c_smsgt.webp",
-  "C/CMSgt":  "base/blues_class_a_female_c_cmsgt.webp",
-  "C/2d Lt":  "base/blues_class_a_female_c_2d_lt.png",
-  "C/1st Lt": "base/blues_class_a_female_c_1st_lt.png",
-  "C/Capt":   "base/blues_class_a_female_c_capt.png",
-  "C/Maj":    "base/blues_class_a_female_c_maj.png",
-  "C/Lt Col": "base/blues_class_a_female_c_lt_col.png",
-  "C/Col":    "base/blues_class_a_female_c_col.png"
-};
 
-const CADET_FIRST_SERGEANT_COMBINED_CLASSA_FEMALE = {
-  "C/MSgt":  "base/blues_class_a_female_c_msgt_1st_sgt.webp",
-  "C/SMSgt": "base/blues_class_a_female_c_smsgt_1st_sgt.webp",
-  "C/CMSgt": "base/blues_class_a_female_c_cmsgt_1st_sgt.webp"
-};
 
 // Senior Member officer combined Class A base images.
 // This intentionally operates the SAME WAY as the cadet officer jacket selection:
@@ -640,110 +96,19 @@ const CADET_FIRST_SERGEANT_COMBINED_CLASSA_FEMALE = {
 //   images/base/CAP_male_Maj.webp
 // Add the remaining senior officer jacket images using the filenames below
 // or update only this map if your actual filenames differ.
-const SENIOR_OFFICER_COMBINED_CLASSA = {
-  male: {
-    "2d Lt":   "base/CAP_male_2d_lt.webp",
-    "1st Lt":  "base/CAP_male_1st_lt.webp",
-    "Capt":    "base/CAP_male_Capt.webp",
-    "Maj":     "base/CAP_male_Maj.webp",
-    "Lt Col":  "base/CAP_male_lt_col.webp",
-    "Col":     "base/CAP_male_col.webp",
-    "Brig Gen":"base/CAP_male_brig_gen.webp",
-    "Maj Gen": "base/CAP_male_maj_gen.webp"
-  },
-  female: {
-    "2d Lt":   "base/CAP_female_2d_lt.png",
-    "1st Lt":  "base/CAP_female_1st_lt.webp",
-    "Capt":    "base/CAP_female_Capt.webp",
-    "Maj":     "base/CAP_female_Maj.webp",
-    "Lt Col":  "base/CAP_female_lt_col.png",
-    "Col":     "base/CAP_female_col.webp",
-    "Brig Gen":"base/CAP_female_brig_gen.png",
-    "Maj Gen": "base/CAP_female_maj_gen.png"
-  }
-};
 
-function getSeniorOfficerCombinedClassAPath(rank, gender){
-  return SENIOR_OFFICER_COMBINED_CLASSA?.[gender]?.[rank] || null;
-}
 
 // Senior Member officer combined Class B base images.
 // These are full base images with officer grade already built into the shirt.
 // Naming convention:
 //   images/base/{rank}_blues_class_b_{gender}.png
-const SENIOR_OFFICER_COMBINED_CLASSB = {
-  male: {
-    "2d Lt":   "base/2d_lt_blues_class_b_male.png",
-    "1st Lt":  "base/1st_lt_blues_class_b_male.png",
-    "Capt":    "base/capt_blues_class_b_male.png",
-    "Maj":     "base/maj_blues_class_b_male.png",
-    "Lt Col":  "base/lt_col_blues_class_b_male.webp",
-    "Col":     "base/col_blues_class_b_male.png",
-    "Brig Gen":"base/brig_gen_blues_class_b_male.png",
-    "Maj Gen": "base/maj_gen_blues_class_b_male.png"
-  },
-  female: {
-    "2d Lt":   "base/2d_lt_blues_class_b_female.png",
-    "1st Lt":  "base/1st_lt_blues_class_b_female.png",
-    "Capt":    "base/capt_blues_class_b_female.png",
-    "Maj":     "base/maj_blues_class_b_female.png",
-    "Lt Col":  "base/lt_col_blues_class_b_female.png",
-    "Col":     "base/col_blues_class_b_female.png",
-    "Brig Gen":"base/brig_gen_blues_class_b_female.png",
-    "Maj Gen": "base/maj_gen_blues_class_b_female.png"
-  }
-};
 
-function getSeniorOfficerCombinedClassBPath(rank, gender){
-  return SENIOR_OFFICER_COMBINED_CLASSB?.[gender]?.[rank] || null;
-}
 
 // Senior Member officer OCP blouse base images.
 // Male and female senior officer OCP variants use the same rank-specific image.
 // File convention:
 //   images/base/{rank}_OCP_Blouse.png
-const SENIOR_OFFICER_OCP_BASES = {
-  "2d Lt":  "base/2d_lt_OCP_Blouse.webp",
-  "1st Lt": "base/1st_lt_OCP_Blouse.webp",
-  "Capt":   "base/capt_OCP_Blouse.webp",
-  "Maj":    "base/maj_OCP_Blouse.webp",
-  "Lt Col": "base/lt_col_OCP_Blouse.webp",
-  "Col":    "base/col_OCP_Blouse.webp"
-};
 
-function getSeniorOfficerOcpBasePath(rank){
-  return SENIOR_OFFICER_OCP_BASES?.[rank] || null;
-}
-
-function usingSeniorOfficerOcpBase(){
-  return (
-    State.uniform === 'ocp' &&
-    State.membership === 'senior' &&
-    !!State.rank &&
-    !!getSeniorOfficerOcpBasePath(State.rank)
-  );
-}
-
-function getCadetFirstSergeantCombinedClassAPath(rank, gender){
-  if(gender !== 'female') return null;
-  return CADET_FIRST_SERGEANT_COMBINED_CLASSA_FEMALE?.[rank] || null;
-}
-
-function getCadetCombinedClassAPath(rank, gender){
-  if(gender === 'female'){
-    if(State.cadetFirstSergeant && isCadetFirstSergeantEligible(rank)){
-      return getCadetFirstSergeantCombinedClassAPath(rank, gender) || CADET_COMBINED_CLASSA_FEMALE?.[rank] || null;
-    }
-    return CADET_COMBINED_CLASSA_FEMALE?.[rank] || null;
-  }
-
-  // Preserve the existing male cadet officer Class A behavior.
-  if(gender === 'male'){
-    return CADET_OFFICER_COMBINED_CLASSA_MALE?.[rank] || null;
-  }
-
-  return null;
-}
 
 // Cadet combined Class B base images.
 // These are full base images with cadet grade already built into the shirt.
@@ -751,59 +116,11 @@ function getCadetCombinedClassAPath(rank, gender){
 //   images/base/blues_class_b_{gender}_{cadet_rank}.png
 // Senior member Class B pathing is intentionally unchanged and remains in
 // SENIOR_NCO_BASE.blues_b and SENIOR_OFFICER_COMBINED_CLASSB.
-const CADET_COMBINED_CLASSB = {
-  male: {
-    "C/AB":     "base/blues_class_b_male_c_ab.png",
-    "C/Amn":    "base/blues_class_b_male_c_amn.webp",
-    "C/A1C":    "base/blues_class_b_male_c_a1c.webp",
-    "C/SrA":    "base/blues_class_b_male_c_sra.webp",
-    "C/SSgt":   "base/blues_class_b_male_c_ssgt.webp",
-    "C/TSgt":   "base/blues_class_b_male_c_tsgt.webp",
-    "C/MSgt":   "base/blues_class_b_male_c_msgt.webp",
-    "C/SMSgt":  "base/blues_class_b_male_c_smsgt.webp",
-    "C/CMSgt":  "base/blues_class_b_male_c_cmsgt.webp",
-    "C/2d Lt":  "base/blues_class_b_male_c_2d_lt.webp",
-    "C/1st Lt": "base/blues_class_b_male_c_1st_lt.png",
-    "C/Capt":   "base/blues_class_b_male_c_capt.png",
-    "C/Maj":    "base/blues_class_b_male_c_maj.png",
-    "C/Lt Col": "base/blues_class_b_male_c_lt_col.png",
-    "C/Col":    "base/blues_class_b_male_c_col.png"
-  },
-  female: {
-    "C/AB":     "base/blues_class_b_female_c_ab.png",
-    "C/Amn":    "base/blues_class_b_female_c_amn.webp",
-    "C/A1C":    "base/blues_class_b_female_c_a1c.webp",
-    "C/SrA":    "base/blues_class_b_female_c_sra.png",
-    "C/SSgt":   "base/blues_class_b_female_c_ssgt.png",
-    "C/TSgt":   "base/blues_class_b_female_c_tsgt.png",
-    "C/MSgt":   "base/blues_class_b_female_c_msgt.webp",
-    "C/SMSgt":  "base/blues_class_b_female_c_smsgt.webp",
-    "C/CMSgt":  "base/blues_class_b_female_c_cmsgt.webp",
-    "C/2d Lt":  "base/blues_class_b_female_c_2d_lt.png",
-    "C/1st Lt": "base/blues_class_b_female_c_1st_lt.png",
-    "C/Capt":   "base/blues_class_b_female_c_capt.png",
-    "C/Maj":    "base/blues_class_b_female_c_maj.png",
-    "C/Lt Col": "base/blues_class_b_female_c_lt_col.png",
-    "C/Col":    "base/blues_class_b_female_c_col.png"
-  }
-};
 
 const CADET_FIRST_SERGEANT_CLASSB_RANKS = new Set([
   "C/MSgt", "C/SMSgt", "C/CMSgt"
 ]);
 
-const CADET_FIRST_SERGEANT_COMBINED_CLASSB = {
-  male: {
-    "C/MSgt":  "base/blues_class_b_male_c_msgt_1st_sgt.webp",
-    "C/SMSgt": "base/blues_class_b_male_c_smsgt_1st_sgt.webp",
-    "C/CMSgt": "base/blues_class_b_male_c_cmsgt_1st_sgt.webp"
-  },
-  female: {
-    "C/MSgt":  "base/blues_class_b_female_c_msgt_1st_sgt.webp",
-    "C/SMSgt": "base/blues_class_b_female_c_smsgt_1st_sgt.webp",
-    "C/CMSgt": "base/blues_class_b_female_c_cmsgt_1st_sgt.webp"
-  }
-};
 
 function isCadetFirstSergeantEligible(rank = State.rank){
   return State.membership === 'cadet' && CADET_FIRST_SERGEANT_CLASSB_RANKS.has(rank);
@@ -823,61 +140,6 @@ function syncCadetFirstSergeantControl(){
   }
 }
 
-function getCadetFirstSergeantCombinedClassBPath(rank, gender){
-  return CADET_FIRST_SERGEANT_COMBINED_CLASSB?.[gender]?.[rank] || null;
-}
-
-function getCadetCombinedClassBPath(rank, gender){
-  if(State.cadetFirstSergeant && isCadetFirstSergeantEligible(rank)){
-    return getCadetFirstSergeantCombinedClassBPath(rank, gender) || CADET_COMBINED_CLASSB?.[gender]?.[rank] || null;
-  }
-  return CADET_COMBINED_CLASSB?.[gender]?.[rank] || null;
-}
-
-function usingCombinedCadetClassBJacket(){
-  return (
-    State.uniform === 'blues_b' &&
-    State.membership === 'cadet' &&
-    !!State.gender &&
-    !!State.rank &&
-    !!getCadetCombinedClassBPath(State.rank, State.gender)
-  );
-}
-
-function usingCombinedSeniorOfficerClassBJacket(){
-  return (
-    State.uniform === 'blues_b' &&
-    State.membership === 'senior' &&
-    !!State.gender &&
-    !!State.rank &&
-    !!getSeniorOfficerCombinedClassBPath(State.rank, State.gender)
-  );
-}
-
-function usingCombinedCadetClassAJacket(){
-  return (
-    State.uniform === 'blues_a' &&
-    State.membership === 'cadet' &&
-    !!State.gender &&
-    !!State.rank &&
-    !!getCadetCombinedClassAPath(State.rank, State.gender)
-  );
-}
-
-// Backward-compatible name used by older parts of the builder.
-function usingCombinedCadetOfficerJacket(){
-  return usingCombinedCadetClassAJacket();
-}
-
-function usingCombinedSeniorOfficerJacket(){
-  return (
-    State.uniform === 'blues_a' &&
-    State.membership === 'senior' &&
-    !!State.gender &&
-    !!State.rank &&
-    !!getSeniorOfficerCombinedClassAPath(State.rank, State.gender)
-  );
-}
 
 /* ===========================
    RIBBONS / DEVICES / MINI MEDALS
@@ -996,26 +258,6 @@ function isMilitaryAwardWornOnUniform(uniformId = State.uniform){
   return CAPUBUniformRules.isAwardAllowedOnUniform('', uniformId, {isMilitary:true});
 }
 
-function applyMiniRackCalibToElement(el, key, base){
-  // Miniature-medal rack placement is calculated from the medals that are
-  // currently selected.  Old per-medal x/y values describe a previous rack
-  // composition and must not move an item out of its newly calculated row.
-  // Administrators can still calibrate every medal's width, height, and
-  // rotation; the rack planner immediately incorporates those dimensions.
-  const over = getCalib(key) || {};
-  const v = {
-    ...base,
-    ...(over.w !== undefined ? {w:over.w} : {}),
-    ...(over.h !== undefined ? {h:over.h} : {}),
-    ...(over.r !== undefined ? {r:over.r} : {})
-  };
-  if(v.x !== undefined) el.style.left = `${v.x}px`;
-  if(v.y !== undefined) el.style.top = `${v.y}px`;
-  if(v.w !== undefined) el.style.width = `${v.w}px`;
-  if(v.h !== undefined) el.style.height = `${v.h}px`;
-  el.style.transform = `rotate(${v.r !== undefined ? v.r : 0}deg)`;
-  el.style.transformOrigin = 'center center';
-}
 function militaryRibbonCatalogId(id){
   return isMilitaryRibbonId(id) ? String(id).slice(MILITARY_RIBBON_PREFIX.length) : String(id || '');
 }
@@ -1166,38 +408,36 @@ const deviceList = [
   '1_Silver_Star_Device'
 ];
 /*
-  Device catalogue. src points at images/devices/glyph/, produced by
-  scripts/extract-device-glyphs.py - the files directly under images/devices/
-  are catalogue photographs on an opaque white background showing two copies of
-  the item, which cannot be composited onto a ribbon.
+  Device catalogue. src is the device's artwork in images/devices (used for the picker
+  thumbnails; the uniform engine places devices from the same files).
 
-  w/h are no longer used for layout; getDeviceLayout() derives the drawn size
+  w/h are no longer used for layout; the engine sizes devices from their artwork
   from the ribbon it sits on. They are kept as nominal aspect hints.
 
   weight orders devices within a run, highest first, so silver precedes bronze
   and gold precedes silver (CAPR 39-3 precedence, worn to the wearer's right).
 */
 const deviceMeta = {
-  '1_Bronze_Star_Device':      { label:'Bronze Star',      src:'devices/glyph/1_Bronze_Star_Device.webp',      w:10, h:10, weight:1 },
-  '1_Silver_Star_Device':      { label:'Silver Star',      src:'devices/glyph/1_Silver_Star_Device.webp',      w:10, h:10, weight:2 },
-  '1_Gold_Star_Device':        { label:'Gold Star',        src:'devices/glyph/1_Gold_Star_Device.webp',        w:10, h:10, weight:3 },
-  'V_Device':                  { label:'V Device',         src:'devices/glyph/V_Device.webp',                  w:10, h:10, weight:4 },
-  '1_Bronze_Propeller_Device': { label:'Bronze Propeller', src:'devices/glyph/1_Bronze_Propeller_Device.webp', w:10, h:10, weight:1 },
-  'BRONZE_OLC': { label:'Bronze Oak Leaf Cluster', src:'devices/military/bronze_olc.png', w:12, h:7, weight:3 },
-  'SILVER_OLC': { label:'Silver Oak Leaf Cluster', src:'devices/military/silver_olc.png', w:12, h:7, weight:4 },
-  'BRONZE_SERVICE_STAR': { label:'Bronze Service Star', src:'devices/military/bronze_star.png', w:8, h:8, weight:3 },
-  'SILVER_SERVICE_STAR': { label:'Silver Service Star', src:'devices/military/silver_star.png', w:8, h:8, weight:4 },
-  'GOLD_AWARD_STAR': { label:'Gold Award Star', src:'devices/military/gold_star.png', w:8, h:8, weight:3 },
-  'SILVER_AWARD_STAR': { label:'Silver Award Star', src:'devices/military/silver_star.png', w:8, h:8, weight:4 },
-  'V_DEVICE': { label:'V Device', src:'devices/military/v_device.png', w:8, h:9, weight:8 },
-  'C_DEVICE': { label:'C Device', src:'devices/military/c_device.png', w:8, h:9, weight:7 },
-  'R_DEVICE': { label:'R Device', src:'devices/military/r_device.png', w:8, h:9, weight:7 },
-  'M_DEVICE': { label:'M Device', src:'devices/military/m_device.png', w:9, h:9, weight:7 },
-  'N_DEVICE': { label:'N Device', src:'devices/military/n_device.png', w:9, h:9, weight:7 },
-  'BRONZE_HOURGLASS': { label:'Bronze Hourglass', src:'devices/military/bronze_hourglass.png', w:8, h:9, weight:6 },
-  'SILVER_HOURGLASS': { label:'Silver Hourglass', src:'devices/military/silver_hourglass.png', w:8, h:9, weight:6 },
-  'GOLD_HOURGLASS': { label:'Gold Hourglass', src:'devices/military/gold_hourglass.png', w:8, h:9, weight:6 },
-  'ARROWHEAD_DEVICE': { label:'Arrowhead Device', src:'devices/military/arrowhead.png', w:7, h:9, weight:9 }
+  '1_Bronze_Star_Device':      { label:'Bronze Star',      src:'devices/device-star-bronze.svg',      w:10, h:10, weight:1 },
+  '1_Silver_Star_Device':      { label:'Silver Star',      src:'devices/device-star-silver.svg',      w:10, h:10, weight:2 },
+  '1_Gold_Star_Device':        { label:'Gold Star',        src:'devices/device-star-gold.svg',        w:10, h:10, weight:3 },
+  'V_Device':                  { label:'V Device',         src:'devices/device-v.svg',                  w:10, h:10, weight:4 },
+  '1_Bronze_Propeller_Device': { label:'Bronze Propeller', src:'devices/device-propeller-bronze.svg', w:10, h:10, weight:1 },
+  'BRONZE_OLC': { label:'Bronze Oak Leaf Cluster', src:'devices/mil-device-olc-bronze.svg', w:12, h:7, weight:3 },
+  'SILVER_OLC': { label:'Silver Oak Leaf Cluster', src:'devices/mil-device-olc-silver.svg', w:12, h:7, weight:4 },
+  'BRONZE_SERVICE_STAR': { label:'Bronze Service Star', src:'devices/device-star-bronze.svg', w:8, h:8, weight:3 },
+  'SILVER_SERVICE_STAR': { label:'Silver Service Star', src:'devices/device-star-silver.svg', w:8, h:8, weight:4 },
+  'GOLD_AWARD_STAR': { label:'Gold Award Star', src:'devices/device-star-gold.svg', w:8, h:8, weight:3 },
+  'SILVER_AWARD_STAR': { label:'Silver Award Star', src:'devices/device-star-silver.svg', w:8, h:8, weight:4 },
+  'V_DEVICE': { label:'V Device', src:'devices/device-v.svg', w:8, h:9, weight:8 },
+  'C_DEVICE': { label:'C Device', src:'devices/mil-device-letter-c.svg', w:8, h:9, weight:7 },
+  'R_DEVICE': { label:'R Device', src:'devices/mil-device-letter-r.svg', w:8, h:9, weight:7 },
+  'M_DEVICE': { label:'M Device', src:'devices/mil-device-letter-m.svg', w:9, h:9, weight:7 },
+  'N_DEVICE': { label:'N Device', src:'devices/mil-device-letter-n.svg', w:9, h:9, weight:7 },
+  'BRONZE_HOURGLASS': { label:'Bronze Hourglass', src:'devices/mil-device-hourglass-bronze.svg', w:8, h:9, weight:6 },
+  'SILVER_HOURGLASS': { label:'Silver Hourglass', src:'devices/mil-device-hourglass-silver.svg', w:8, h:9, weight:6 },
+  'GOLD_HOURGLASS': { label:'Gold Hourglass', src:'devices/mil-device-hourglass-gold.svg', w:8, h:9, weight:6 },
+  'ARROWHEAD_DEVICE': { label:'Arrowhead Device', src:'devices/mil-device-arrowhead.svg', w:7, h:9, weight:9 }
 };
 
 // device cap per ribbon (overflow creates additional ribbon instances)
@@ -1570,6 +810,9 @@ function normalizeRibbonImageFileName(name){
 function getRibbonImagePath(ribbonOrId){
   const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
   if(isMilitaryRibbonId(id)) return getMilitaryRibbonAward(id)?.images?.ribbon || '';
+  // The measured ribbon artwork (images/ribbons); devices are drawn on it by the engine.
+  const art = window.CAPUBAssetIndex && CAPUBAssetIndex['ribbon-' + String(normalizeRibbonId(id)).replace(/_/g, '-')];
+  if(art) return art;
   if(typeof ribbonOrId !== 'string' && ribbonOrId?.imageOverride){
     return `ribbons/${normalizeRibbonImageFileName(ribbonOrId.imageOverride)}`;
   }
@@ -1635,6 +878,8 @@ function getMiniMedalImagePath(ribbonOrId){
     const representation = window.CAPUBMilitary?.getAwardRepresentation?.(award,'MINIATURE_MEDAL');
     return representation?.available && representation.asset ? representation.asset : '';
   }
+  const medalArt = window.CAPUBAssetIndex && CAPUBAssetIndex['medal-' + String(normalizeRibbonId(id)).replace(/_/g, '-') + '-miniature'];
+  if(medalArt) return medalArt;
   const normalized = normalizeRibbonId(id);
   const base = miniMedalImages[normalized] || miniMedalImages[id] || '';
   if(!base) return '';
@@ -1834,6 +1079,10 @@ Object.assign(BADGE_IMAGE_OVERRIDES, {
 });
 
 function getBadgeAssetPath(id){
+  // The badge's dress artwork (or its field or cloth form when there is no dress form).
+  const cat = window.CAPUBBadgeCatalog;
+  const art = cat && (cat.art(id, 'dress') || cat.art(id, 'field') || cat.art(id, 'cloth'));
+  if(art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) return CAPUBAssetIndex[art];
   return BADGE_IMAGE_OVERRIDES[id] || `badges/${id}.webp`;
 }
 function titleCaseWords(str){
@@ -2003,127 +1252,7 @@ const badgeLocations = {
   'nra_marksman_badge':'OLPF'
 };
 
-const customBadgeSizes = {
-  'AirCrew1_DB3F0FCC3650F':{width:60,height:25},'BalloonPilot1_442D89C94185B':{width:60,height:25},'CAPMasterPilot1_621A0E2ED15DA':{width:60,height:25},'CAPPilot1_FA9D33EA587D8':{width:60,height:25},'CAPSeniorPilot1_D9725AE959752':{width:60,height:25},'GliderPilot1_7BFB287379918':{width:60,height:25},'MasterAirCrew1_72AC4CAE7A310':{width:60,height:25},'MasterObserver1_1B88D5071FD5C':{width:60,height:25},'SeniorAirCrew1_B289BAE6E515C':{width:60,height:25},'SeniorObserver1_0E35802A29801':{width:60,height:25},
-  'buddist_chaplin':{width:60,height:60},'christian_chaplin':{width:60,height:60},'communications_technician_badge':{width:25,height:25},'communications_senior_badge':{width:25,height:25},'communications_master_badge':{width:25,height:25},
-  'cyber_badges':{width:60,height:25},'emergency_services_badge':{width:28,height:28},'senior_emergency_services_badge':{width:28,height:28},'master_emergency_services_badge':{width:28,height:28},'volunteer_university_instructor_badge':{width:45,height:45},'basic_incident_commander_badge':{width:25,height:12},'cadet_programs_badge':{width:25,height:25},'administration_technician_badge':{width:25,height:25},'aerospace_education_technician_badge':{width:25,height:25},'finance_technician_badge':{width:25,height:25},'squadron_commander_badge':{width:15,height:15},'emt_basic_badge':{width:60,height:60},
-  'emt_intermediate':{width:60,height:60},'emt_paramedic':{width:60,height:60},'ground_team_basic_badge':{width:25,height:20},
-  'historian_technicianIbadge':{width:25,height:25},'information_technology_technician_badge':{width:25,height:25},
-  'jewish_chaplin':{width:60,height:60},'legal_officer':{width:60,height:25},'master_ground_team_badge':{width:25,height:20},
-  'medical_officer':{width:60,height:60},'model_rocketry_badge':{width:7,height:28.125},'muslim_chaplin':{width:60,height:60},
-  'nra_marksman_badge':{width:40,height:60},'nurse_officer':{width:60,height:60},'observer_badge':{width:60,height:25},
-  'pre_solo_badge':{width:60,height:25},'senior_ground_team_badge':{width:25,height:20},'solo_badge':{width:60,height:25},'stem_badges':{width:60,height:25},'uas_pilot_basic_badge':{width:60,height:25},'uas_pilot_senior_badge':{width:60,height:25},'uas_pilot_master_badge':{width:60,height:25},
-  'uas_technician_basic_badge':{width:60,height:25},'uas_technician_senior_badge':{width:60,height:25},'uas_technician_master_badge':{width:60,height:25},'incident_commander_2_badge':{width:25,height:12},'incident_commander_1_badge':{width:25,height:12}
-};
 
-// CAPR 39-1 Attachment 7 dimensions, converted with the same scale as the
-// builder's 1 3/8-inch service ribbon (23 px). Width-only or height-only rules
-// retain each asset's existing aspect ratio. Mess Dress/Corporate Semi-Formal
-// use the listed miniature badge dimension when one is provided.
-const CAPUB_PIXELS_PER_INCH = RIBBON_WIDTH / 1.375;
-// These Aircrew assets have different intrinsic silhouettes. Preserve each
-// image's true proportions instead of stretching it into the legacy 60x25 box.
-const CAPUB_BADGE_ASPECT_RATIOS = Object.freeze({
-  observer_badge: 196 / 56,
-  AirCrew1_DB3F0FCC3650F: 193 / 54,
-  SeniorAirCrew1_B289BAE6E515C: 190 / 71,
-  MasterAirCrew1_72AC4CAE7A310: 190 / 68,
-  uas_pilot_basic_badge: 2000 / 649,
-  uas_pilot_senior_badge: 375 / 134,
-  uas_pilot_master_badge: 368 / 139,
-  uas_technician_basic_badge: 374 / 100,
-  uas_technician_senior_badge: 374 / 135,
-  uas_technician_master_badge: 362 / 133,
-  basic_incident_commander_badge: 307 / 140,
-  incident_commander_2_badge: 308 / 185,
-  incident_commander_1_badge: 307 / 188,
-  cadet_programs_technician_badge: 25 / 30,
-  cadet_programs_senior_badge: 25 / 30,
-  cadet_programs_master_badge: 25 / 30,
-  national_staff_badge: 1178 / 1154
-});
-const CAPUB_BADGE_DIMENSIONS_INCHES = Object.freeze({
-  aviation: { axis:'width', regular:3, miniature:2 },
-  solo: { axis:'width', regular:2 },
-  modelRocketry: { axis:'height', regular:3 },
-  chaplain: { axis:'height', regular:1.125 },
-  health: { axis:'height', regular:1.125 },
-  legal: { axis:'width', regular:1.25 },
-  emt: { axis:'width', regular:1.125, miniature:0.875 },
-  incidentCommander: { axis:'width', regular:1.625, miniature:1.125 },
-  groundTeam: { axis:'width', regular:1.125, miniature:0.875 },
-  governanceService: { axis:'height', regular:3 }
-});
-function getBadgeDimensionRule(id){
-  if(id === 'solo_badge' || id === 'pre_solo_badge') return CAPUB_BADGE_DIMENSIONS_INCHES.solo;
-  if(id === 'model_rocketry_badge') return CAPUB_BADGE_DIMENSIONS_INCHES.modelRocketry;
-  if(AIRCREW_BADGE_IDS.has(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.aviation;
-  if(CHAPLAIN_BADGE_IDS.has(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.chaplain;
-  if(id === 'medical_officer' || id === 'nurse_officer') return CAPUB_BADGE_DIMENSIONS_INCHES.health;
-  if(id === 'legal_officer') return CAPUB_BADGE_DIMENSIONS_INCHES.legal;
-  if(['emt_basic_badge','emt_intermediate','emt_paramedic'].includes(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.emt;
-  if(INCIDENT_COMMAND_SPECIALTY_BADGE_IDS.has(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.incidentCommander;
-  if(['ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'].includes(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.groundTeam;
-  if(GOVERNANCE_SERVICE_BADGE_IDS.has(id)) return CAPUB_BADGE_DIMENSIONS_INCHES.governanceService;
-  return null;
-}
-function getBadgeRenderSize(id, uniformId=State.uniform){
-  // The supplied physical references distinguish three different National Staff
-  // insignia: the full-size metal badge, a larger embroidered utility patch, and
-  // the small lapel pin worn with Corporate Dress/Semi-Formal. Utility sizing is
-  // handled by capubUtilityBadgeSize because it uses a separate canvas scale.
-  if(id === 'national_staff_badge'){
-    if(uniformId === 'semi_formal' || uniformId === 'aviator_blazer'){
-      return { width:13, height:13 };
-    }
-    return { width:40, height:40 };
-  }
-
-  // An approved calibration submission may intentionally refine one badge on
-  // one gender-specific uniform without changing the whole visual family.
-  const approvedBucketId = `${uniformId}_${State.gender}`;
-  const approvedBadgeKey = `badge:${id}:LP:0`;
-  const approvedBadgeSize = CAPUB_APPROVED_CALIBRATION_OVERRIDES?.[approvedBucketId]?.[approvedBadgeKey];
-  if(Number.isFinite(Number(approvedBadgeSize?.w)) && Number.isFinite(Number(approvedBadgeSize?.h))){
-    return { width:Number(approvedBadgeSize.w), height:Number(approvedBadgeSize.h) };
-  }
-
-  // Keep all three Cadet Programs ratings at the user-specified 25 x 30 px
-  // unless an approved uniform-specific calibration above overrides it. This
-  // branch also keeps stale square calibration exports from changing the
-  // badge's proportions.
-  if(CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS.has(id)){
-    return { width:25, height:30 };
-  }
-
-  // Specialty-track/service badges share the National Staff badge's 30 px
-  // vertical scale on service uniforms. Preserve each asset's proportions so
-  // rectangular or oval insignia are not stretched into a square.
-  if(SPECIALTY_TRACK_BADGE_IDS.has(id)){
-    const base = customBadgeSizes[id] || { width:30, height:30 };
-    const aspectRatio = CAPUB_BADGE_ASPECT_RATIOS[id] ||
-      ((Number(base.width) || 30) / (Number(base.height) || 30));
-    const targetHeight = (uniformId === 'semi_formal' || uniformId === 'aviator_blazer') && GOVERNANCE_SERVICE_BADGE_IDS.has(id)
-      ? 13
-      : 30;
-    return { width:targetHeight * aspectRatio, height:targetHeight };
-  }
-
-  const base = customBadgeSizes[id] || { width:60, height:25 };
-  const width = Number(base.width) || 60;
-  const height = Number(base.height) || 25;
-  const aspectRatio = CAPUB_BADGE_ASPECT_RATIOS[id] || (width / height);
-  const rule = getBadgeDimensionRule(id);
-  if(!rule) return { width, height };
-
-  const formal = uniformId === 'mess_dress' || uniformId === 'semi_formal';
-  const inches = formal && rule.miniature ? rule.miniature : rule.regular;
-  const target = inches * CAPUB_PIXELS_PER_INCH;
-  if(rule.axis === 'height'){
-    return { width:target * aspectRatio, height:target };
-  }
-  return { width:target, height:target / aspectRatio };
-}
 
 const militaryRibbonVariantCache=new Map();
 function capubLoadCompositeImage(src){
@@ -2170,7 +1299,7 @@ async function buildMilitaryRibbonVariant(ribbonObj){
       const numeral=String(deviceId).match(/^NUMERAL_(\d{1,2})$/);
       const meta=deviceMeta[deviceId] || (numeral ? {
         label:`Numeral ${numeral[1]}`,
-        src:`devices/military/numeral_${numeral[1]}.png`,w:9,h:9,weight:6
+        src:`devices/mil-device-numeral-${Number(numeral[1])}.svg`,w:9,h:9,weight:6
       } : null);
       if(!meta) continue;
       try{
@@ -2231,65 +1360,7 @@ function applyMilitaryRibbonVariant(image,ribbonObj){
 }
 
 const militaryMedalVariantCache=new Map();
-function getMilitaryDeviceMeta(deviceId){
-  const numeral=String(deviceId).match(/^NUMERAL_(\d{1,2})$/);
-  return deviceMeta[deviceId] || (numeral ? {
-    label:`Numeral ${numeral[1]}`,src:`devices/military/numeral_${numeral[1]}.png`,w:9,h:9,weight:6
-  } : null);
-}
-async function buildMilitaryMedalVariant(asset,devices=[],representation='MINIATURE_MEDAL'){
-  const contextName=representation==='FULL_SIZE_MEDAL'?'fullSizeMedal':'miniatureMedal';
-  const contextConfig=window.CAPUBMilitaryDeviceLayout?.DEFAULT_CONTEXTS?.[contextName] || {width:100,height:176};
-  const key=`${asset}|${contextName}|${devices.join(',')}`;
-  if(militaryMedalVariantCache.has(key)) return militaryMedalVariantCache.get(key);
-  const promise=(async()=>{
-    const canvas=document.createElement('canvas');
-    canvas.width=contextConfig.width; canvas.height=contextConfig.height;
-    const drawing=canvas.getContext('2d');
-    const base=await capubLoadCompositeImage(ASSET(asset));
-    drawing.drawImage(base,0,0,canvas.width,canvas.height);
-    const rendered=[];
-    for(const deviceId of devices){
-      const meta=getMilitaryDeviceMeta(deviceId); if(!meta?.src) continue;
-      try{
-        const image=await capubLoadCompositeImage(ASSET(meta.src));
-        const isCluster=deviceId.endsWith('_OLC');
-        // Never stretch the square source canvas into a forced rectangle.
-        rendered.push({deviceId,image,width:isCluster?16:13,height:isCluster?16:13});
-      }catch(error){ console.warn('[MILITARY MEDAL DEVICE]',error); }
-    }
-    const sizes=Object.fromEntries(rendered.map(item=>[item.deviceId,{width:item.width,height:item.height}]));
-    const placements=window.CAPUBMilitaryDeviceLayout?.layoutDevices(
-      rendered.map(item=>item.deviceId),{context:contextName,deviceSizes:sizes}
-    ) || [];
-    rendered.forEach((item,index)=>{
-      const placement=placements[index];
-      if(placement) drawing.drawImage(item.image,placement.x,placement.y,placement.width,placement.height);
-    });
-    return canvas.toDataURL('image/png');
-  })();
-  militaryMedalVariantCache.set(key,promise);
-  return promise;
-}
-function applyMilitaryMedalVariant(image,asset,devices,representation){
-  const token=`${asset}|${representation}|${(devices || []).join(',')}`;
-  image.dataset.militaryMedalVariantToken=token;
-  buildMilitaryMedalVariant(asset,devices,representation).then(src=>{
-    if(image.isConnected && image.dataset.militaryMedalVariantToken===token) image.src=src;
-  }).catch(error=>console.warn('[MILITARY MEDAL VARIANT]',error));
-}
 
-function isCorporateForegroundLapelPin(id, uniformId=State.uniform){
-  return (uniformId === 'aviator_blazer' || uniformId === 'semi_formal') &&
-    GOVERNANCE_SERVICE_BADGE_IDS.has(id);
-}
-
-function hasFixedBadgeRenderSize(id){
-  return id === 'national_staff_badge' ||
-    CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS.has(id) ||
-    SPECIALTY_TRACK_BADGE_IDS.has(id) ||
-    !!getBadgeDimensionRule(id);
-}
 
 const CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS = [
   'administration_senior_badge','administration_master_badge',
@@ -2313,18 +1384,10 @@ CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS.forEach(id => {
   SPECIALTY_TRACK_BADGE_IDS.add(id);
   POCKET_SERVICE_BADGE_IDS.add(id);
   SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.add(id);
-  if(!customBadgeSizes[id]) customBadgeSizes[id] = { width:25, height:25 };
   if(!badgeLocations[id]) badgeLocations[id] = 'LP,RP';
   FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS.add(id);
 });
 
-// The Cadet Programs badge is taller than it is wide. The old square render box
-// stretched the oval and exaggerated the low-resolution edge artifacts.
-[
-  'cadet_programs_technician_badge',
-  'cadet_programs_senior_badge',
-  'cadet_programs_master_badge'
-].forEach(id => { customBadgeSizes[id] = { width:25, height:30 }; });
 
 
 // === CAPUB PATCH 2026-05-13: Register newly supplied badges ===
@@ -2340,7 +1403,6 @@ CAPUB_NEW_SPECIALTY_BADGE_IDS.forEach(id => {
   POCKET_SERVICE_BADGE_IDS.add(id);
   SMALL_RIGHT_POCKET_SPECIALTY_BADGE_IDS.add(id);
   FEMALE_OVER_NAMEPLATE_SPECIALTY_BADGE_IDS.add(id);
-  if(!customBadgeSizes[id]) customBadgeSizes[id] = { width:25, height:25 };
   if(!badgeLocations[id]) badgeLocations[id] = 'LP,RP';
 });
 
@@ -2359,7 +1421,6 @@ const CAPUB_NEW_GOVERNANCE_SERVICE_BADGE_IDS = [
 CAPUB_NEW_COMMAND_BADGE_IDS.forEach(id => {
   if(!badgeList.includes(id)) badgeList.push(id);
   COMMAND_INSIGNIA_BADGE_IDS.add(id);
-  if(!customBadgeSizes[id]) customBadgeSizes[id] = { width:15, height:15 };
   if(!badgeLocations[id]) badgeLocations[id] = 'ON';
 });
 
@@ -2367,7 +1428,6 @@ CAPUB_NEW_GOVERNANCE_SERVICE_BADGE_IDS.forEach(id => {
   if(!badgeList.includes(id)) badgeList.push(id);
   SPECIALTY_TRACK_BADGE_IDS.add(id);
   POCKET_SERVICE_BADGE_IDS.add(id);
-  customBadgeSizes[id] = { width:50, height:50 };
   badgeLocations[id] = 'LP';
 });
 

@@ -12,7 +12,7 @@
 <meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Everything stays in your browser.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
-<link rel="stylesheet" href="styles/app.css?v=e817253a5e">
+<link rel="stylesheet" href="styles/app.css?v=8bb54be835">
 <script src="js/access-gate.js?v=cf7e7b5bf5"></script>
 </head>
 <body>
@@ -38,98 +38,6 @@
 <button id="hamburgerBtn" class="hamburgerBtn" type="button" aria-label="Menu" aria-controls="controls" aria-expanded="true">
   <span></span><span></span><span></span>
 </button>
-
-<!-- UNIVERSAL CALIBRATOR -->
-<div id="calibratorWrapper" class="devOnly">
-  <div id="calibratorTab">
-    <span>CAL</span>
-    <span class="arrow" id="calibratorArrow">›</span>
-  </div>
-
-  <div id="calibratorPanel">
-    <h3>Calibrator</h3>
-
-    <div class="hintText">
-      Turn on Calibrate Mode, then click an item to edit it. Ctrl/Shift-click adds or removes multiple selected assets so you can move or resize them together.
-    </div>
-
-    <div class="calib-row">
-      <label>Mode</label>
-      <div class="row">
-        <button id="calibToggleMode" type="button" class="ghost">Calibrate Mode: OFF</button>
-      </div>
-    </div>
-
-    <div class="calib-row">
-      <label>Admin master session</label>
-      <div class="row">
-        <button id="calibMasterSession" type="button" class="ghost growBtn">Master Session: OFF</button>
-        <button id="calibMasterClear" type="button" class="ghost autoBtn">Clear</button>
-      </div>
-      <div id="calibMasterStatus" class="hintText">One-uniform submission mode.</div>
-    </div>
-
-    <div class="calib-row">
-      <label>Selected Asset(s)</label>
-      <div id="calibKeyPill">none</div>
-    </div>
-
-    <div class="calib-row">
-      <label for="calX">X (left px)</label>
-      <input type="range" id="calX" min="-200" max="900" step="0.1">
-      <input type="number" id="calXn" class="numField" step="0.01">
-    </div>
-
-    <div class="calib-row">
-      <label for="calY">Y (top px)</label>
-      <input type="range" id="calY" min="-200" max="1100" step="0.1">
-      <input type="number" id="calYn" class="numField" step="0.01">
-    </div>
-
-    <div class="calib-row">
-      <label for="calW">W (px)</label>
-      <input type="range" id="calW" min="0.1" max="800" step="0.1">
-      <input type="number" id="calWn" class="numField" min="0.01" step="0.01">
-    </div>
-
-    <div class="calib-row">
-      <label for="calH">H (px)</label>
-      <input type="range" id="calH" min="0.1" max="800" step="0.1">
-      <input type="number" id="calHn" class="numField" min="0.01" step="0.01">
-    </div>
-
-    <div class="calib-row">
-      <label for="calR">Rotation (deg)</label>
-      <input type="range" id="calR" min="-180" max="180" step="0.1">
-      <input type="number" id="calRn" class="numField" step="0.01">
-    </div>
-
-    <div class="btnRow">
-      <button id="calibReset" class="ghost" type="button">Reset Selected</button>
-      <button id="calibCopy" type="button">Copy Selected</button>
-    </div>
-
-    <div class="btnRow">
-      <button id="calibSaveUniform" class="ghost" type="button">Save Uniform Coords</button>
-      <button id="calibExportAll" type="button">Export All Coords</button>
-    </div>
-
-    <div class="btnRow">
-      <button id="calibSaveRepo" type="button">Save to repo folder</button>
-    </div>
-    <div id="calibSaveStatus" class="hintText" role="status"></div>
-
-    <div class="btnRow">
-      <button id="calibSubmitUpdate" type="button" hidden>Submit Calibration Update</button>
-    </div>
-
-    <div class="mt-10" id="calibReadout">
-      <div><b>Tip:</b> Ctrl/Shift-click to multi-select. Arrow = 0.1px, Alt+Arrow = 0.01px, Ctrl+Arrow = 1px, and Shift+Arrow = 10px.</div>
-      <div class="mt-6">JSON:</div>
-      <code id="calibJson"></code>
-    </div>
-  </div>
-</div>
 
 <main id="layoutShell" class="sidebar-open">
 
@@ -199,14 +107,17 @@
       <details class="optionalName" id="optionalName">
         <summary>Add your name (optional)</summary>
       <section id="capubV2TextPanel" class="panelBlock plainPanel">
-        <label class="fieldLabel" for="capubV2LastName">Last name</label>
-        <input id="capubV2LastName" maxlength="18" placeholder="YOUR NAME"/>
-        <label class="fieldLabel mt-8" for="capubV2CapTape">CAP tape text (field uniforms)</label>
-        <input id="capubV2CapTape" maxlength="20" value="CIVIL AIR PATROL"/>
+        <label class="fieldLabel" for="capubV2FirstName">First name</label>
+        <input id="capubV2FirstName" maxlength="18" placeholder="First name" autocomplete="given-name"/>
+        <label class="fieldLabel mt-8" for="capubV2LastName">Last name</label>
+        <input id="capubV2LastName" maxlength="18" placeholder="Last name" autocomplete="family-name"/>
+        <label class="fieldLabel mt-8" for="capubV2PlateLine">Blazer nameplate second line</label>
+        <input id="capubV2PlateLine" maxlength="24" placeholder="e.g. PENNSYLVANIA WING"/>
+        <input type="hidden" id="capubV2CapTape" value="CIVIL AIR PATROL"/>
         <label class="fieldNote mt-8">
-          <input type="checkbox" id="capubV2ShowText" checked> Show text where artwork is missing
+          <input type="checkbox" id="capubV2ShowText" checked> Show my name on the uniform
         </label>
-        <div class="hintText">Draws name and tape text where artwork is missing.</div>
+        <div class="hintText">Name tapes and nametags show the last name; flight suit tags and the blazer nameplate show the full name.</div>
       </section>
       </details>
 
@@ -248,8 +159,13 @@
           </button>
 
           <button class="uniformOption" data-uniform-id="semi_formal" data-allowed-for="senior">
-            <div class="uName">Semi-formal</div>
-            <div class="uDesc smallText">Mini medals</div>
+            <div class="uName">Corporate Semi-formal</div>
+            <div class="uDesc smallText">Blazer, mini medals</div>
+          </button>
+
+          <button class="uniformOption" data-uniform-id="semi_formal_usaf" data-allowed-for="cadet">
+            <div class="uName">Cadet Semi-formal</div>
+            <div class="uDesc smallText">Class A coat, ribbons</div>
           </button>
 
           <button class="uniformOption" data-uniform-id="aviator" data-allowed-for="senior">
@@ -282,12 +198,17 @@
             <div class="uDesc smallText">Flight / utility</div>
           </button>
 
-          <button class="uniformOption" data-uniform-id="polo" data-allowed-for="senior">
-            <div class="uName">Polo</div>
-            <div class="uDesc smallText">Corporate polo / gray slacks</div>
+          <button class="uniformOption" data-uniform-id="corporate_flight_suit" data-allowed-for="cadet,senior">
+            <div class="uName">Corporate Flight Suit</div>
+            <div class="uDesc smallText">Navy blue flight duty</div>
           </button>
         </div>
 
+      </section>
+
+      <section id="garmentOptionsPanel" class="panelBlock" hidden>
+        <label class="fieldLabel">Uniform options</label>
+        <div id="garmentOptions" class="garmentOptions"></div>
       </section>
 
       <section id="shoulderCordPanel" class="panelBlock">
@@ -337,16 +258,6 @@
         <div id="ribbonGallery" class="galleryGrid"></div>
 
         <label class="fieldNote mt-8">
-          <input type="checkbox" id="toggleMini">
-          Show miniature medals
-        </label>
-
-        <label class="fieldNote mt-8">
-          <input type="checkbox" id="autoMini" checked>
-          Switch to miniature medals on Mess Dress and Semi-formal
-        </label>
-
-        <label class="fieldNote mt-8">
           Mini-medal mounting method
           <select id="miniMountStyle">
             <option value="mounting">Mounting bars - four per row (maximum 24)</option>
@@ -354,10 +265,6 @@
           </select>
         </label>
 
-        <div class="row two mt-10 devOnly">
-          <div class="col"><button id="toggleRibbonDrag" class="ghost" type="button">Enable Drag Mode</button></div>
-          <div class="col"><button id="logRibbonCoords" class="ghost" type="button">Log Ribbon Coords</button></div>
-        </div>
       </section>
 
       <!-- BADGES: PICKER BUTTON (NO SIDEBAR THUMBS) -->
@@ -483,34 +390,6 @@
         </div>
       </section>
 
-      <section id="garmentOverlayPanel" class="panelBlock">
-        <label class="fieldLabel" for="garmentOverlaySelect">Collar / Lapel Overlay</label>
-        <select id="garmentOverlaySelect">
-          <option value="both">Both pieces</option>
-          <option value="left">Left piece only (preview left)</option>
-          <option value="right">Right piece only (preview right)</option>
-          <option value="off">Off</option>
-        </select>
-        <div class="hintText">Draws the collar or lapels over your ribbons and badges.</div>
-        <label class="fieldLabel mt-10" for="garmentMaskSide">Mask piece to edit</label>
-        <select id="garmentMaskSide">
-          <option value="0">Left piece (preview left)</option>
-          <option value="1" selected>Right piece / award side</option>
-        </select>
-        <div class="maskButtonRow">
-          <button id="editGarmentMaskBtn" type="button">Edit mask</button>
-          <button id="resetGarmentMaskBtn" class="ghost" type="button">Reset</button>
-        </div>
-        <div id="garmentMaskEditorControls" class="hidden">
-          <div class="maskButtonRow">
-            <button id="undoGarmentMaskBtn" class="ghost" type="button">Undo</button>
-            <button id="saveGarmentMaskBtn" type="button">Save mask</button>
-            <button id="cancelGarmentMaskBtn" class="ghost" type="button">Cancel</button>
-          </div>
-          <div class="hintText">Drag white points. Click the red area to add a point. Right-click a point to remove it.</div>
-        </div>
-        <div id="garmentMaskStatus" class="hintText">Using the built-in mask.</div>
-      </section>
 
 
       <section id="capubV2QuickPanel" class="panelBlock">
@@ -520,19 +399,11 @@
           <div class="col"><button id="capubV2LoadLocal" class="ghost" type="button">Load Saved</button></div>
         </div>
         <div class="row two mt-6">
-          <div class="col"><button id="capubV2MissingBtn" class="ghost" type="button">Missing artwork list (for maintainers)</button></div>
           <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset Builder</button></div>
         </div>
         <div class="hintText">Keeps your whole setup in this browser. It is also saved automatically as you work.</div>
       </section>
 
-      <section id="measurementOverlayPanel" class="panelBlock">
-        <label class="fieldLabel">Measurement Overlay</label>
-        <label class="fieldNote mt-4">
-          <input type="checkbox" id="toggleMeasurementOverlay"> Show distance arrows
-        </label>
-        <div class="hintText">Shows red distance arrows between items on the uniform.</div>
-      </section>
 
 </details>
     </div>
@@ -598,33 +469,43 @@
 <script src="ribbon-layout.js?v=b13332b5ad"></script>
 <script src="military/military-core.js?v=786e424eb5"></script>
 <script src="military/military-device-layout.js?v=38353d5d57"></script>
-<script src="military/military-data.js?v=6968c27aad"></script>
-<script src="data/calibration-defaults.js?v=a90622d352"></script>
+<script src="military/military-data.js?v=e4adff30d8"></script>
 <script src="data/unit-options.js?v=1b4f04c159"></script>
-<script src="data/uniform-rules.js?v=21fa478875"></script>
+<script src="data/uniform-rules.js?v=e8ec665d8e"></script>
+<script src="data/asset-index.js?v=0d83134af7"></script>
+<script src="data/ribbon-awards.js?v=a9dbe5e423"></script>
+<script src="data/badge-catalog.js?v=1092d82c43"></script>
+<script src="js/engine/core.js?v=392ae760fd"></script>
+<script src="js/engine/awards.js?v=ce37c9ad63"></script>
+<script src="js/engine/grades.js?v=94eb2afaf5"></script>
+<script src="js/engine/compose.js?v=2330fecb95"></script>
+<script src="js/engine/profiles.js?v=7956f30789"></script>
+<script src="js/engine/profiles-field.js?v=83c5c995f7"></script>
+<script src="js/engine/profiles-dress.js?v=f828ab1513"></script>
+<script src="js/engine/render-svg.js?v=923365f73e"></script>
 <script src="badge-captions.js?v=1db6f784fa"></script>
 <script src="export-names.js?v=88358fb111"></script>
-<script src="js/state.js?v=54bd69003a"></script>
-<script src="js/calibration.js?v=24dac2a184"></script>
-<script src="js/dom-assets.js?v=108a38e620"></script>
-<script src="js/catalog.js?v=4baa0d43fd"></script>
-<script src="js/setup.js?v=4da17597bd"></script>
-<script src="js/render-core.js?v=61c80fa19c"></script>
+<script src="js/state.js?v=72ed965b00"></script>
+<script src="js/badge-rules.js?v=f1a38d3552"></script>
+<script src="js/dom-assets.js?v=20bff48b72"></script>
+<script src="js/catalog.js?v=091c38b6b9"></script>
+<script src="js/setup.js?v=61f52ebd78"></script>
+<script src="js/render-core.js?v=f00a56f657"></script>
 <script src="js/galleries.js?v=997ce6e96e"></script>
-<script src="js/placement.js?v=c8985694ee"></script>
-<script src="js/wiring.js?v=01c724584f"></script>
-<script src="js/workspace-ui.js?v=1abd9808aa"></script>
+<script src="js/placement.js?v=12a135f675"></script>
+<script src="js/uniform-view.js?v=8d5837448b"></script>
+<script src="js/garment-options.js?v=21994d7059"></script>
+<script src="js/wiring.js?v=7c3e858334"></script>
+<script src="js/workspace-ui.js?v=a1d8efcf44"></script>
 <script src="js/planned-uniforms.js?v=645b98dd2f"></script>
 <script src="js/guided-flow.js?v=7def638381"></script>
 <script src="js/member-report-import.js?v=4e5bc08573"></script>
-<script src="js/bootstrap.js?v=ac1508ad45"></script>
-<script src="js/patches.js?v=cf2fddbced"></script>
-<script src="js/calibration-save.js?v=2aa8ca7086"></script>
+<script src="js/bootstrap.js?v=3bdcea24f7"></script>
+<script src="js/patches.js?v=1e05435590"></script>
 <script src="purchase-feature-core.js?v=87f19e8ab8"></script>
 <script src="purchase-feature.js?v=ef7c40a072"></script>
-<script src="calibration-submission.js?v=a4f383d1ff"></script>
 <!-- Loaded directly so patch submission cannot be blocked by stale chained feature loaders. -->
 <script src="patch-submission.js?v=ee6e784e95"></script>
-<script src="ocp-patch-variants.js?v=ca7fbaead7"></script>
+<script src="ocp-patch-variants.js?v=5db665858f"></script>
 </body>
 </html>

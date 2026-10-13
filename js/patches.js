@@ -21,34 +21,6 @@ const CAPUB_STRICT_COMMAND_DUTY_TITLES = new Set([
   'NATIONAL COMMANDER'
 ]);
 
-function capubNormalizeDutyTitle(title){
-  return String(title || '')
-    .replace(/[“”]/g, '"')
-    .replace(/[’']/g, '')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .toUpperCase();
-}
-
-function capubIsExactCommanderDutyTitle(title){
-  return CAPUB_STRICT_COMMAND_DUTY_TITLES.has(capubNormalizeDutyTitle(title));
-}
-
-function capubHasDisqualifyingCommanderPrefix(source, index){
-  const before = String(source || '').slice(Math.max(0, index - 45), index).replace(/\s+/g, ' ').trim();
-  // Reject rows where the regex started at the word "Commander" inside a longer
-  // non-authorizing title, especially "Deputy Commander CA-473 ...".
-  return /(?:^|\s)(Deputy|Assistant|Asst\.?|Vice|Cadet|Incident|Mission|Deputy\s+Commander|Assistant\s+Deputy)\s*$/i.test(before);
-}
-
-function capubIsCommanderDutyTitleSegment(segment){
-  const s = String(segment || '').replace(/\s+/g, ' ').trim();
-  if(!/\bCommander\b/i.test(s)) return false;
-  if(/\b(?:Deputy|Vice|Assistant|Asst\.?|Cadet|Incident|Mission)\s+Commander\b/i.test(s)) return false;
-  if(/\bCommander(?:'s|s)?\s+Commendation\b/i.test(s)) return false;
-  if(/\bCommand\s+Council\b/i.test(s)) return false;
-  return capubIsExactCommanderDutyTitle(s);
-}
 
 function capubExtractCommanderDutyWindows(section){
   const source = String(section || '').replace(/\s+/g, ' ').trim();
@@ -222,7 +194,6 @@ function capubLooksLikeCACDutySegment(segment){
 }
 
 
-
 function capubCACLevelFromText(segment, rowEchelon=''){
   const s = capubNormalizeCACSource(segment);
   const echelon = String(rowEchelon || '').toUpperCase();
@@ -350,78 +321,11 @@ function capubIsCompletedCACRibbonTerm(row){
 }
 
 
-
-function capubShoulderCordAssetCandidates(cordId){
-  const meta = SHOULDER_CORD_META[cordId] || null;
-  const base = meta?.srcBase || `cords/${cordId}`;
-  return [`${base}.png`, `${base}.webp`, `${base}.jpg`, `${base}.jpeg`, base];
-}
-
-// Backward-compatible helper name used by older CAC-specific code.
-function capubCACCordAssetCandidates(level){
-  return capubShoulderCordAssetCandidates(level);
-}
-
-function capubSetImageWithFallback(img, candidates){
-  const list = (candidates || []).filter(Boolean);
-  let idx = 0;
-  function tryNext(){
-    if(idx >= list.length){ img.remove(); return; }
-    img.src = ASSET(list[idx++]);
-  }
-  img.onerror = tryNext;
-  tryNext();
-}
-
-function getShoulderCordCalibrationKey(cordId){
-  return `shoulderCord:${cordId}`;
-}
-
-function getShoulderCordDefaultPlacement(
-  uniform = State.uniform,
-  gender = State.gender,
-  cordId = State.shoulderCord
-){
-  const bucket = `${uniform}_${gender || 'male'}`;
-  const cordDefaults = SHOULDER_CORD_DEFAULTS[bucket] || {};
-  return {
-    ...(cordDefaults[cordId] || { x:96, y:86, w:52, h:160, r:0 })
-  };
-}
-
+// The cord itself is drawn by the uniform engine (js/engine/profiles-dress.js); this keeps the
+// selector in step with the member's selection.
 function renderCACShoulderCord(){
   wireShoulderCordControl();
   syncShoulderCordControl();
-  [...uniformCanvas.querySelectorAll('.layer.cacShoulderCord,.layer.shoulderCord')].forEach(n => n.remove());
-
-  const cordId = State.shoulderCord;
-  const cordMeta = SHOULDER_CORD_META[cordId] || null;
-  if(!cordId || !cordMeta) return;
-  if(!CAPUBUniformRules.allowsShoulderCord(State.uniform, State.membership)) return;
-
-  const img = document.createElement('img');
-  img.className = 'layer shoulderCord cacShoulderCord';
-  img.dataset.calibKey = getShoulderCordCalibrationKey(cordId);
-  img.alt = cordMeta.label || `${cordId} shoulder cord`;
-  img.style.display = 'block';
-
-  // Each cord ID has its own key inside each uniform/gender calibration bucket:
-  //   blues_a_male.shoulderCord:group
-  //   blues_a_female.shoulderCord:color_guard
-  //   blues_b_male.shoulderCord:honor_guard
-  //   blues_b_female.shoulderCord:wing
-  // Use the calibrator to fine tune each one independently.
-  const base = getShoulderCordDefaultPlacement(State.uniform, State.gender, cordId);
-  applyCalibToElement(img, img.dataset.calibKey, base);
-
-  img.dataset.tooltipTitle = cordMeta.label || `${cordId.toUpperCase()} shoulder cord`;
-  img.dataset.tooltipReg = cordMeta.imported ? 'CAPR 60-1 CAC shoulder cord' : 'Manual shoulder cord selection';
-  img.dataset.tooltipWhy = cordMeta.imported
-    ? 'Rendered only from a current CAC primary representative duty assignment. The CAC ribbon is imported only from past CAC duty assignments.'
-    : 'Manual cord selection. Coordinates are stored separately for each cadet Class A/Class B male/female uniform bucket.';
-
-  capubSetImageWithFallback(img, capubShoulderCordAssetCandidates(cordId));
-  uniformCanvas.appendChild(img);
 }
 
 // Wrap member report parsing so old broad CAC text matching cannot auto-award the CAC ribbon.
@@ -480,24 +384,6 @@ fullRender = function capubFullRenderCACPatch(){
   renderCACShoulderCord();
   return out;
 };
-
-// Add the CAC cord images to the downloadable asset-needed list when that helper is available.
-if(window.CAPUB_V2 && typeof window.CAPUB_V2.buildExpectedAssetList === 'function'){
-  const capubOriginalExpectedAssets_CACPatch = window.CAPUB_V2.buildExpectedAssetList;
-  window.CAPUB_V2.buildExpectedAssetList = function capubExpectedAssetsCACPatch(){
-    const expected = capubOriginalExpectedAssets_CACPatch();
-    ['group','wing','region','national'].forEach(level => {
-      expected.push({
-        category:'CAC shoulder cord',
-        item:CAC_CORD_LABEL_BY_LEVEL[level],
-        id:`cac_cord_${level}`,
-        path:`images/cords/${level}.png`,
-        status:'required when current CAC duty imports shoulder cord'
-      });
-    });
-    return expected;
-  };
-}
 
 // Refresh once after installing the patch so a saved/current state can show its cord.
 try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(err){ console.warn('CAC shoulder cord patch refresh failed', err); }
@@ -770,8 +656,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     ]);
     const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'capr-fabric-20260826-v6';
 
+    // The badge's field (silver on blue) artwork from images/field, via the badge catalog.
+    function capubFieldBadgePath(id){
+      const art = window.CAPUBBadgeCatalog && CAPUBBadgeCatalog.art(id, 'field');
+      return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || `badges/utility/${id}.webp`;
+    }
     function capubUtilityBadgePreviewUrl(id){
-      return `${ASSET(`badges/utility/${id}.png`)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`;
+      return ASSET(capubFieldBadgePath(id));
     }
 
     function capubPatchIsUnitPatchId(patchId){
@@ -829,7 +720,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
     const capubPreviousGetBadgeAssetPath = getBadgeAssetPath;
     getBadgeAssetPath = function capubGetBadgeAssetPathUtilityAware(id){
-      if(capubIsUtilityUniform()) return `badges/${id}.webp`;
+      if(capubIsUtilityUniform()) return capubFieldBadgePath(id);
       return capubPreviousGetBadgeAssetPath(id);
     };
 
@@ -838,7 +729,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       if(capubIsUtilityUniform()){
         // Never fall back to metal/non-fabric artwork on a utility uniform.
         if(!CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id)) return [];
-        return [`badges/utility/${id}.png`];
+        return [capubFieldBadgePath(id)];
       }
       const current = [];
       (capubPreviousGetBadgeAssetCandidates(id) || []).forEach(path => addAssetCandidate(current, path));
@@ -1069,44 +960,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return capubUtilityBadgeIds().filter(id => isCommandInsigniaBadge(id));
     };
 
-    /*
-      CAPR 39-1, OCP occupational/qualification badge layout.
-
-      The utility-uniform artwork is rendered at roughly 44 px per inch (the
-      five-inch CAP tape is about 220 px wide), so six pixels represents the
-      required 1/8-inch exposed dark-blue fabric margin.  Badge artwork keeps
-      its natural aspect ratio; only its longest dimension is normalized.
-    */
-    // The OCP artwork's five-inch CAP tape is about 110 canvas pixels wide.
-    // That makes the actual garment scale approximately 22 px/in, not 44.
-    const CAPUB_UTILITY_PX_PER_INCH = 22;
-    const CAPUB_UTILITY_BLUE_MARGIN = Math.round(CAPUB_UTILITY_PX_PER_INCH / 8);
-    const CAPUB_UTILITY_CAP_TAPE = {
-      ocp: { centerX:580, topY:180 },
-      abu: { centerX:360, topY:180 },
-      corporate_field: { centerX:360, topY:180 },
-      cfdu: { centerX:360, topY:180 },
-      flight_suit: { centerX:360, topY:180 }
-    };
-    const CAPUB_UTILITY_NAME_TAPE = {
-      ocp: { centerX:380, topY:180 },
-      abu: { centerX:360, topY:180 },
-      corporate_field: { centerX:360, topY:180 },
-      cfdu: { centerX:360, topY:180 },
-      flight_suit: { centerX:360, topY:180 }
-    };
-    // Imported from the user's OCP positioning example. Placement is keyed by
-    // badge identity, not click order, so precedence cannot move these badges.
-    const CAPUB_UTILITY_THREE_BADGE_TEMPLATE = {
-      // Imported from CAPUB setup (14): aviation wings centered on the upper
-      // row, with the two occupational badges aligned beneath them.
-      ocp: [
-        { centerX:580, topY:99 },
-        { centerX:562, topY:128 },
-        { centerX:596, topY:131 }
-      ]
-    };
-
     const CAPUB_UTILITY_BADGE_PRECEDENCE = [
       'MasterObserver1_1B88D5071FD5C','SeniorObserver1_0E35802A29801','observer_badge',
       'MasterAirCrew1_72AC4CAE7A310','SeniorAirCrew1_B289BAE6E515C','AirCrew1_DB3F0FCC3650F',
@@ -1134,185 +987,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         .filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id))
         .filter(id => !isCommandInsigniaBadge(id) || isCommandInsigniaGradeEligible(State.rank))
         .sort((a, b) => capubUtilityBadgePriority(a) - capubUtilityBadgePriority(b));
-      // Qualification badges form the one-to-four-badge arrangement over the
-      // CIVIL AIR PATROL tape. A single cloth command insignia is a separate
-      // item centered over the wearer's name tape and must not consume a slot
-      // or participate in the qualification grid.
-      // OCP supports three selected embroidered aviation/occupational badges.
-      // The renderer already provides the required one-over-two arrangement.
-      const qualifications = selected.filter(id => !isCommandInsigniaBadge(id)).slice(0, 3);
+      // Qualification badges form the one-to-four-badge arrangement over the CIVIL AIR PATROL
+      // tape (ICL 25-06 7.1.1.3.1). A cloth command insignia is a separate item over the name
+      // tape and does not take a badge position.
+      const qualifications = selected.filter(id => !isCommandInsigniaBadge(id)).slice(0, 4);
       const command = selected.filter(id => isCommandInsigniaBadge(id)).slice(0, 1);
       return [...qualifications, ...command];
     }
-
-    function capubUtilityBadgeSize(img){
-      const naturalW = Number(img.naturalWidth) || 1;
-      const naturalH = Number(img.naturalHeight) || 1;
-      const id = img.dataset.badgeId;
-      let targetW;
-      let targetH;
-      if(isCommandInsigniaBadge(id)){
-        targetH = CAPUB_UTILITY_PX_PER_INCH * (id === 'squadron_commander_badge' ? 0.875 : 1.125);
-      }else if(AIRCREW_BADGE_IDS?.has?.(id)){
-        // Figure A7-1: regular aviation insignia is three inches wide.
-        targetW = CAPUB_UTILITY_PX_PER_INCH * 3;
-      }else if(CAPUB_INCIDENT_COMMANDER_BADGE_IDS.has(id)){
-        // Figure A7-3: regular Incident Commander insignia is 1 5/8 inches wide.
-        targetW = CAPUB_UTILITY_PX_PER_INCH * 1.625;
-      }else if(GROUND_EMT_BADGE_IDS?.has?.(id)){
-        // Figures A7-3/A7-4: regular Ground Team and EMT insignia is 1 1/8 inches wide.
-        targetW = CAPUB_UTILITY_PX_PER_INCH * 1.125;
-      }else if(id === 'national_staff_badge'){
-        // IMG_1098 shows the embroidered emblem about 14% wider than the
-        // corresponding full-size metal badge (34 px versus 30 px here).
-        targetW = 34;
-      }else{
-        targetW = CAPUB_UTILITY_PX_PER_INCH * 1.125;
-      }
-      const scale = targetW
-        ? targetW / naturalW
-        : targetH / naturalH;
-      return {
-        w: Math.max(1, Math.round(naturalW * scale)),
-        h: Math.max(1, Math.round(naturalH * scale))
-      };
-    }
-
-    function capubLayoutUtilityBadges(){
-      const allBadges = [...uniformCanvas.querySelectorAll('.capubUtilityBadge')];
-      if(!allBadges.length) return;
-
-      const fieldKey = capubFieldUniformKey();
-      const tape = CAPUB_UTILITY_CAP_TAPE[fieldKey] || CAPUB_UTILITY_CAP_TAPE.ocp;
-      const nameTape = CAPUB_UTILITY_NAME_TAPE[fieldKey] || CAPUB_UTILITY_NAME_TAPE.ocp;
-      const halfInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 2);
-      const quarterInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 4);
-      const eighthInch = CAPUB_UTILITY_BLUE_MARGIN;
-      const commandBadges = allBadges.filter(img => isCommandInsigniaBadge(img.dataset.badgeId));
-      const badges = allBadges.filter(img => !isCommandInsigniaBadge(img.dataset.badgeId));
-
-      // Cloth command insignia is centered above the wearer's name tape. It is
-      // intentionally outside the occupational/qualification badge array.
-      commandBadges.forEach(img => {
-        const size = capubUtilityBadgeSize(img);
-        const saved = typeof getCalib === 'function' ? getCalib(img.dataset.calibKey) : null;
-        const x = Number.isFinite(Number(saved?.x)) ? Number(saved.x) : nameTape.centerX - size.w / 2;
-        const y = Number.isFinite(Number(saved?.y)) ? Number(saved.y) : nameTape.topY - halfInch - size.h;
-        const w = Math.min(Number(saved?.w) || size.w, size.w);
-        const h = Math.min(Number(saved?.h) || size.h, size.h);
-        img.style.left = `${x}px`;
-        img.style.top = `${y}px`;
-        img.style.width = `${w}px`;
-        img.style.height = `${h}px`;
-        img.style.transform = `rotate(${Number(saved?.r || 0)}deg)`;
-      });
-
-      if(!badges.length) return;
-      const sizes = badges.map(img => capubUtilityBadgeSize(img));
-      const threeBadgeTemplate = CAPUB_UTILITY_THREE_BADGE_TEMPLATE[fieldKey];
-
-      // One/two badges use the 1/2-inch tape clearance. Three/four use 1/8 inch.
-      const lowerBottom = tape.topY - (badges.length <= 2 ? halfInch : eighthInch);
-      const positions = [];
-
-      if(badges.length === 1){
-        const size = sizes[0];
-        positions.push({ x:tape.centerX - size.w/2, y:lowerBottom - size.h });
-      }else if(badges.length === 2){
-        // The array is in wear precedence. Put the first (aviation wings when
-        // present) in the upper position and the second nearest the CAP tape.
-        const upper = sizes[0];
-        const lower = sizes[1];
-        positions.push({
-          x:tape.centerX - upper.w/2,
-          y:lowerBottom - lower.h - halfInch - upper.h
-        });
-        positions.push({ x:tape.centerX - lower.w/2, y:lowerBottom - lower.h });
-      }else if(badges.length === 3 && threeBadgeTemplate){
-        threeBadgeTemplate.forEach((template, index) => {
-          positions.push({
-            x:template.centerX - sizes[index].w / 2,
-            y:template.topY
-          });
-        });
-      }else if(badges.length === 3){
-        // Highest-precedence badge is centered on the upper row. The next two
-        // are placed left-to-right on the lower row, matching the supplied OCP example.
-        const lowerGap = Math.max(3, eighthInch / 2);
-        const lowerWidth = sizes[1].w + lowerGap + sizes[2].w;
-        const lowerLeft = tape.centerX - lowerWidth / 2;
-        positions.push({ x:tape.centerX - sizes[0].w/2, y:lowerBottom - Math.max(sizes[1].h, sizes[2].h) - quarterInch - sizes[0].h });
-        positions.push({ x:lowerLeft, y:lowerBottom - sizes[1].h });
-        positions.push({ x:lowerLeft + sizes[1].w + lowerGap, y:lowerBottom - sizes[2].h });
-      }else{
-        // Four-badge approved option: two side-by-side vertical stacks of two.
-        const horizontalGap = halfInch;
-        const leftColumnW = Math.max(sizes[0].w, sizes[2].w);
-        const rightColumnW = Math.max(sizes[1].w, sizes[3].w);
-        const totalW = leftColumnW + horizontalGap + rightColumnW;
-        const leftCenter = tape.centerX - totalW/2 + leftColumnW/2;
-        const rightCenter = tape.centerX + totalW/2 - rightColumnW/2;
-        const centers = [leftCenter, rightCenter, leftCenter, rightCenter];
-        for(let i=0; i<4; i++){
-          const size = sizes[i];
-          const rowBottom = i < 2
-            ? lowerBottom
-            : lowerBottom - Math.max(sizes[0].h, sizes[1].h) - quarterInch;
-          positions.push({ x:centers[i] - size.w/2, y:rowBottom - size.h });
-        }
-      }
-
-      badges.forEach((img, i) => {
-        const size = sizes[i];
-        const saved = typeof getCalib === 'function' ? getCalib(img.dataset.calibKey) : null;
-        const placement = saved;
-        img.style.left = `${Number(placement?.x ?? positions[i].x)}px`;
-        img.style.top = `${Number(placement?.y ?? positions[i].y)}px`;
-        // Preserve calibrated position, but cap stale saved dimensions at the
-        // current regulation-scaled size so old 44-px/in data cannot double badges.
-        img.style.width = `${Math.min(Number(placement?.w) || size.w, size.w)}px`;
-        img.style.height = `${Math.min(Number(placement?.h) || size.h, size.h)}px`;
-        img.style.transform = `rotate(${Number(placement?.r || 0)}deg)`;
-      });
-    }
-
-    function capubRenderUtilityBadges(){
-      capubUtilityBadgeIds().forEach((id, index) => {
-        const img = new Image();
-        img.className = 'layer badge capubUtilityBadge';
-        img.dataset.badgeId = id;
-        // New key prevents legacy 44-px/in and mixed command-grid coordinates
-        // from overriding the regulation-based automatic layout.
-        img.dataset.calibKey = `utilityBadgeRegV5:${id}:${index}`;
-        img.dataset.tooltipTitle = (CAPUB_UTILITY_BADGE_LABELS[id] || id.replace(/_/g,' ')).toUpperCase();
-        img.dataset.tooltipReg = 'CAPR 39-1, paragraph 5.1.2.3.6';
-        img.dataset.tooltipWhy = 'One of no more than three embroidered aviation/occupational badges centered above the CAP tape.';
-        img.style.display = 'block';
-        img.style.objectFit = 'contain';
-        // CAPR cloth insignia is worn on a dark-blue rectangular background
-        // with 1/8 inch of blue showing around the embroidered device. Keep
-        // that field explicit and uniform instead of depending on the varying
-        // transparent/blue margins baked into the source PNG files.
-        img.style.backgroundColor = '#132140';
-        img.style.border = `${CAPUB_UTILITY_BLUE_MARGIN}px solid #132140`;
-        img.style.boxSizing = 'content-box';
-        img.style.zIndex = '28';
-        img.onload = capubLayoutUtilityBadges;
-        applyBadgeAssetWithFallback(img, id);
-        uniformCanvas.appendChild(img);
-      });
-      capubLayoutUtilityBadges();
-    }
-
-    const capubPreviousRenderAllBadges = renderAllBadges;
-    renderAllBadges = function capubRenderAllBadgesUtilityAware(){
-      if(!capubIsUtilityUniform()) return capubPreviousRenderAllBadges();
-      clearMeasurementOverlay();
-      [...uniformCanvas.querySelectorAll('.layer.badge')].forEach(node => node.remove());
-      resetBadgeSlots();
-      if(UI_AUTHZ[State.uniform]?.showBadges) capubRenderUtilityBadges();
-      renderMeasurementOverlay();
-    };
 
     const capubPreviousGetBadgeSlotSpec = getBadgeSlotSpec;
     getBadgeSlotSpec = function capubGetBadgeSlotSpecUtilityAware(id){
@@ -1325,37 +1006,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       }
       return capubPreviousGetBadgeSlotSpec(id);
     };
-
-    // Fills in one default patch box per field uniform from the slot tables. Field-uniform badges
-    // need no stored boxes: capubLayoutUtilityBadges() places them by rule.
-    function capubEnsureFieldCalibrationDefaults(){
-      if(!State.calib.byUniform) State.calib.byUniform = {};
-      const patchIds = Object.keys(PATCH_META || {}).filter(id => !FIELD_BASE_BUILT_IN_PATCH_IDS.has(id));
-
-      FIELD_CALIBRATION_BUCKETS.forEach(bucketId => {
-        if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
-        if(!State.calib.byUniform[bucketId]) State.calib.byUniform[bucketId] = {};
-
-        const patchLayout = FIELD_UNIFORM_PATCH_LAYOUTS?.[bucketId] || FIELD_UNIFORM_PATCH_LAYOUTS?.ocp || {};
-        patchIds.forEach(patchId => {
-          const meta = PATCH_META[patchId];
-          const slot = meta?.slotHint || 'L_SHOULDER';
-          const anchor = patchLayout[slot] || patchLayout.L_SHOULDER || {x:120,y:210,dy:76};
-          const w = Number(meta?.w) || 70;
-          const h = Number(meta?.h) || 70;
-          const key = `patch:${patchId}:${slot}:0`;
-          if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key]){
-            DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = {
-              x: Math.round(Number(anchor.x || 0) - w/2),
-              y: Math.round(Number(anchor.y || 0) - h/2),
-              w, h,
-              r: Number(anchor.r) || 0
-            };
-          }
-        });
-      });
-      if(typeof mergeCalibDefaults === 'function') mergeCalibDefaults();
-    }
 
     const NCSA_PATCH_MATCHERS = [
       { id:'pjoc_ocp_patch', fallbackId:'pjoc_patch', terms:[/\bPJOC\b/i,/Pararescue\s+Orientation\s+Course/i] },
@@ -1470,7 +1120,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       });
     });
 
-    capubEnsureFieldCalibrationDefaults();
     if(typeof buildBadgeGallery === 'function') buildBadgeGallery();
     if(typeof buildPatchGallery === 'function') buildPatchGallery();
     if(typeof fullRender === 'function') fullRender();
@@ -1513,13 +1162,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       h:100,
       img:'patches/ocp/TN-330_ocp_patch.webp',
       authorizedUniforms:['abu','ocp','corporate_field','cfdu','flight_suit']
-    };
-
-    // Imported from CAPUB_coordinates_1786941245605.json. This positions the
-    // complete/adjusted OCP sprite on the male right-sleeve reference view.
-    DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male ||= {};
-    DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male['patch:tn330_ocp_patch:R_SHOULDER:0'] = {
-      x:170, y:229, w:120, h:60, r:-16
     };
 
     // Keep the TN-185 metadata normalized and available for the same resolver.
@@ -1643,46 +1285,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     // Variant-aware render planning. This is the piece that prevents a selected
     // generic PJOC patch from being dropped on OCP; it resolves to pjoc_ocp_patch
     // before authorization/filtering.
-    planPatches = function capubPlanPatchesVariantAware(ids){
-      resetPatchSlots();
-      const capsPerUniform = {
-        blues_a:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1},
-        blues_b:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1},
-        aviator:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1},
-        aviator_blazer:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:0,CHEST_RIGHT:0},
-        corporate_field:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:1,CHEST_RIGHT:1},
-        abu:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:1,CHEST_RIGHT:1},
-        ocp:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:1,CHEST_RIGHT:1},
-        flight_suit:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:2,CHEST_RIGHT:2},
-        semi_formal:{L_SHOULDER:0,R_SHOULDER:0,CHEST_LEFT:0,CHEST_RIGHT:0},
-        mess_dress:{L_SHOULDER:0,R_SHOULDER:0,CHEST_LEFT:0,CHEST_RIGHT:0},
-        polo:{L_SHOULDER:0,R_SHOULDER:0,CHEST_LEFT:0,CHEST_RIGHT:0}
-      }[State.uniform] || {L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1};
-
-      const plannedIds = [];
-      const selectedUnitPatchId = (typeof getSelectedUnitPatchId === 'function') ? getSelectedUnitPatchId() : null;
-      if(selectedUnitPatchId && isPatchAuthorizedForUniform(selectedUnitPatchId)){
-        plannedIds.push(selectedUnitPatchId);
-      }
-
-      (ids || []).forEach(rawId => {
-        const id = window.capubResolvePatchIdForUniform(rawId);
-        if(id && id !== selectedUnitPatchId && !plannedIds.includes(id)) plannedIds.push(id);
-      });
-
-      for(const id of plannedIds){
-        if(FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) continue;
-        const meta = PATCH_META[id];
-        if(!meta) continue;
-        if(!isPatchAuthorizedForUniform(id)) continue;
-
-        const hint = meta.slotHint || 'L_SHOULDER';
-        const cap = capsPerUniform[hint] ?? 0;
-        if(cap === 0) continue;
-        if(patchSlots[hint].length >= cap) continue;
-        patchSlots[hint].push(id);
-      }
-    };
 
     // Rebuild UI/render once the hotfix is loaded.
     capubSyncPatchVariantSelectionsForUniform();
@@ -1695,7 +1297,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     console.error('CAPUB hotfix failed', err);
   }
 })();
-
 
 
 /* ==========================================================
