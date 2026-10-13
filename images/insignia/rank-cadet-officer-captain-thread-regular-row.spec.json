@@ -1,0 +1,70 @@
+{
+ "asset_id": "rank-cadet-officer-captain-thread-regular-row",
+ "name": "Cadet Captain insignia, embroidered regular, row",
+ "size_in": {
+  "w": 2.25,
+  "h": 0.75
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  225,
+  75
+ ],
+ "size_source": "regulation",
+ "size_citation": "CAPR 39-1 (3 March 2020) Figure A5-6, dimension drawing (inches read from the figure) (same shapes as the metal piece; thread version is plain light silver)",
+ "anchors": {
+  "top_center": [
+   112.5,
+   0
+  ],
+  "bottom_center": [
+   112.5,
+   75
+  ],
+  "center": [
+   112.5,
+   37.5
+  ],
+  "left_edge": [
+   0,
+   37.5
+  ],
+  "right_edge": [
+   225,
+   37.5
+  ],
+  "element_0_center": [
+   37.5,
+   37.5
+  ],
+  "element_1_center": [
+   112.5,
+   37.5
+  ],
+  "element_2_center": [
+   187.5,
+   37.5
+  ]
+ },
+ "dimensions": {
+  "form": "embroidered thread",
+  "size": "regular",
+  "arrangement": "row",
+  "count": 3,
+  "shape": "circle",
+  "overall_w_in": 2.25,
+  "overall_h_in": 0.75
+ },
+ "rank": {
+  "grade": "Cadet Captain",
+  "abbrev": "C/Capt",
+  "membership": "cadet"
+ },
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

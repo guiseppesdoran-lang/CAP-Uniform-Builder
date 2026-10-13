@@ -1,0 +1,56 @@
+{
+ "asset_id": "mil-device-numeral-27",
+ "name": "Numeral 27",
+ "size_in": {
+  "w": 0.3151,
+  "h": 0.1875
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  31.51,
+  18.75
+ ],
+ "size_source": "estimated",
+ "size_basis": "numeral height 3/16 in estimated (same height as the measured service star); no numeral appears in the precomposed variants",
+ "anchors": {
+  "top_center": [
+   15.75,
+   0
+  ],
+  "bottom_center": [
+   15.75,
+   18.75
+  ],
+  "center": [
+   15.75,
+   9.38
+  ],
+  "left_edge": [
+   0,
+   9.38
+  ],
+  "right_edge": [
+   31.51,
+   9.38
+  ],
+  "baseline_center": [
+   15.75,
+   18.26
+  ]
+ },
+ "dimensions": {
+  "width_in": 0.3151,
+  "height_in": 0.1875,
+  "numeral": 27,
+  "font_outline_source": "Arial Black, converted to paths"
+ },
+ "metal": "silver",
+ "grade": "device",
+ "catalog_device": "NUMERAL",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}

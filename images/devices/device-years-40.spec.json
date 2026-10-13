@@ -1,0 +1,55 @@
+{
+ "asset_id": "device-years-40",
+ "name": "40 Year Device",
+ "size_in": {
+  "w": 0.3624,
+  "h": 0.228
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  36.24,
+  22.8
+ ],
+ "size_source": "estimated",
+ "size_basis": "0.20 in numeral height estimated; no regulation size located",
+ "anchors": {
+  "top_center": [
+   18.12,
+   0
+  ],
+  "bottom_center": [
+   18.12,
+   22.8
+  ],
+  "center": [
+   18.12,
+   11.4
+  ],
+  "left_edge": [
+   0,
+   11.4
+  ],
+  "right_edge": [
+   36.24,
+   11.4
+  ],
+  "baseline_center": [
+   18.4,
+   21.07
+  ]
+ },
+ "dimensions": {
+  "numeral": 40,
+  "font_outline_source": "Arial Black, converted to paths",
+  "numeral_height_in": 0.2,
+  "drawing_scale_units_per_local_px": 0.46584
+ },
+ "metal": "silver",
+ "grade": "device",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}

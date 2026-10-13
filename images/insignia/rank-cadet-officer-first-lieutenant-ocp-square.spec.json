@@ -1,0 +1,75 @@
+{
+ "asset_id": "rank-cadet-officer-first-lieutenant-ocp-square",
+ "name": "Cadet First Lieutenant insignia on the 2 in OCP square",
+ "size_in": {
+  "w": 2,
+  "h": 2
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  200,
+  200
+ ],
+ "size_source": "estimated",
+ "size_basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size geometry scaled by 0.7778 so the largest cadet officer stack leaves 1/8 in of blue; the regulation gives no insignia size for the square.",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   200
+  ],
+  "center": [
+   100,
+   100
+  ],
+  "left_edge": [
+   0,
+   100
+  ],
+  "right_edge": [
+   200,
+   100
+  ],
+  "insignia_center": [
+   100,
+   100
+  ]
+ },
+ "dimensions": {
+  "form": "embroidered on 2x2 square",
+  "square_in": 2,
+  "scale_vs_regular": 0.7778,
+  "insignia_w_in": 0.5833,
+  "insignia_h_in": 1.1667,
+  "clear_blue_each_side_in": {
+   "x": 0.7083,
+   "y": 0.4167
+  }
+ },
+ "layout": "centered vertically; field-grade diamonds with the long points horizontal; company-grade circles added vertically (7.1.1.2.2)",
+ "mounts": [
+  {
+   "uniform": "OCP coat",
+   "rule": "center of chest (7.1.1.2.1); garment landmark rank_square"
+  },
+  {
+   "uniform": "coyote brown fleece",
+   "rule": "2 in squared Velcro cloth rank, flush and centered above the nametape (7.1.1.11.2); same orientation as the OCP (long points horizontal, circles stacked vertically, 7.1.1.2.2)"
+  }
+ ],
+ "rank": {
+  "grade": "Cadet First Lieutenant",
+  "abbrev": "C/1st Lt",
+  "membership": "cadet"
+ },
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

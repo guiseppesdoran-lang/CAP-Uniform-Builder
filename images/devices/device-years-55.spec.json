@@ -1,0 +1,55 @@
+{
+ "asset_id": "device-years-55",
+ "name": "55 Year Device",
+ "size_in": {
+  "w": 0.3657,
+  "h": 0.2284
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  36.57,
+  22.84
+ ],
+ "size_source": "estimated",
+ "size_basis": "0.20 in numeral height estimated; no regulation size located",
+ "anchors": {
+  "top_center": [
+   18.28,
+   0
+  ],
+  "bottom_center": [
+   18.28,
+   22.84
+  ],
+  "center": [
+   18.28,
+   11.42
+  ],
+  "left_edge": [
+   0,
+   11.42
+  ],
+  "right_edge": [
+   36.57,
+   11.42
+  ],
+  "baseline_center": [
+   18.37,
+   21.09
+  ]
+ },
+ "dimensions": {
+  "numeral": 55,
+  "font_outline_source": "Arial Black, converted to paths",
+  "numeral_height_in": 0.2,
+  "drawing_scale_units_per_local_px": 0.47365
+ },
+ "metal": "silver",
+ "grade": "device",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}

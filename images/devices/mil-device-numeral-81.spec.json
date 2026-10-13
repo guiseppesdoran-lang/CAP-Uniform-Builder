@@ -1,0 +1,56 @@
+{
+ "asset_id": "mil-device-numeral-81",
+ "name": "Numeral 81",
+ "size_in": {
+  "w": 0.2746,
+  "h": 0.1875
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  27.46,
+  18.75
+ ],
+ "size_source": "estimated",
+ "size_basis": "numeral height 3/16 in estimated (same height as the measured service star); no numeral appears in the precomposed variants",
+ "anchors": {
+  "top_center": [
+   13.73,
+   0
+  ],
+  "bottom_center": [
+   13.73,
+   18.75
+  ],
+  "center": [
+   13.73,
+   9.38
+  ],
+  "left_edge": [
+   0,
+   9.38
+  ],
+  "right_edge": [
+   27.46,
+   9.38
+  ],
+  "baseline_center": [
+   13.73,
+   18.27
+  ]
+ },
+ "dimensions": {
+  "width_in": 0.2746,
+  "height_in": 0.1875,
+  "numeral": 81,
+  "font_outline_source": "Arial Black, converted to paths"
+ },
+ "metal": "silver",
+ "grade": "device",
+ "catalog_device": "NUMERAL",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}

@@ -1,0 +1,70 @@
+{
+ "asset_id": "collar-insignia-us-metal",
+ "name": "U.S. collar / lapel insignia, metal (officers; adults without grade who will become officers)",
+ "size_in": {
+  "w": 1.13,
+  "h": 0.5965
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  113,
+  59.65
+ ],
+ "size_source": "estimated",
+ "size_basis": "No dimension in CAPR 39-1; DAFI 36-2903 shows the same 5/8-1 in US lapel insignia. Letter height 0.40 in, width 1.05 in, proportioned like the CAP letters of Fig A6-5",
+ "provenance": "in-house block letters U . S . (CAPR 39-1 Fig A6-5)",
+ "colours": {
+  "metal": "#d3d7dc",
+  "edge": "#8f969e"
+ },
+ "anchors": {
+  "top_center": [
+   56.50000000000001,
+   0
+  ],
+  "bottom_center": [
+   56.50000000000001,
+   59.64634146341463
+  ],
+  "center": [
+   56.50000000000001,
+   29.823170731707314
+  ],
+  "left_edge": [
+   0,
+   29.823170731707314
+  ],
+  "right_edge": [
+   113.00000000000001,
+   29.823170731707314
+  ],
+  "mount_center": [
+   56.50000000000001,
+   29.823170731707314
+  ]
+ },
+ "mounts": [
+  {
+   "uniform": "Class A / service coat, officers and adults without grade who will become officers",
+   "rule": "on each lapel halfway up the seam, resting on but not over it; letters parallel with the ground; no circle for officers (4.1.5.2.2.1.1, 4.1.9.4.1.1)"
+  }
+ ],
+ "pair": {
+  "count": 2,
+  "mirrored": false
+ },
+ "documented": [
+  "US lapel insignia, officers (Fig A6-5)"
+ ],
+ "assumed": [
+  "size",
+  "letter shapes"
+ ],
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

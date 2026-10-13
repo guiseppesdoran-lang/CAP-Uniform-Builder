@@ -1,0 +1,55 @@
+{
+ "asset_id": "mil-device-arrowhead",
+ "name": "Arrowhead Device",
+ "size_in": {
+  "w": 0.2,
+  "h": 0.2263
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  20,
+  22.63
+ ],
+ "size_source": "estimated",
+ "size_basis": "not present in any precomposed variant; 0.20 in wide estimated from the other attachments in the same measured set",
+ "anchors": {
+  "top_center": [
+   10,
+   0
+  ],
+  "bottom_center": [
+   10,
+   22.63
+  ],
+  "center": [
+   10,
+   11.32
+  ],
+  "left_edge": [
+   0,
+   11.32
+  ],
+  "right_edge": [
+   20,
+   11.32
+  ],
+  "tip": [
+   10,
+   0
+  ]
+ },
+ "dimensions": {
+  "width_in": 0.2,
+  "height_in": 0.2263,
+  "shape": "arrowhead pointing up, notched base"
+ },
+ "metal": "bronze",
+ "grade": "device",
+ "catalog_device": "ARROWHEAD_DEVICE",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}
