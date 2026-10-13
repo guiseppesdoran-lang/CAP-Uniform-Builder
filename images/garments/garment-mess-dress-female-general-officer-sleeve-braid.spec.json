@@ -1,0 +1,91 @@
+{
+ "asset_id": "garment-mess-dress-female-general-officer-sleeve-braid",
+ "name": "Women's USAF-style mess dress: general officer sleeve braid overlay (1 1/2 in, 3 in from the sleeve end)",
+ "size_in": {
+  "w": 25.528,
+  "h": 33.26
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2552.8,
+  3326
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-female. Braid 1.5 in wide per CAPR 39-1 4.1.2.1 (the sleeve end is 2.5 in below its lower edge).",
+ "anchors": {
+  "top_center": [
+   1276.3999999999999,
+   0
+  ],
+  "bottom_center": [
+   1276.3999999999999,
+   3326
+  ],
+  "center": [
+   1276.3999999999999,
+   1663
+  ],
+  "left_edge": [
+   0,
+   1663
+  ],
+  "right_edge": [
+   2552.7999999999997,
+   1663
+  ]
+ },
+ "landmarks": {
+  "sleeve_braid_right": [
+   [
+    36.9,
+    2837.1
+   ],
+   [
+    454,
+    2891.9
+   ],
+   [
+    454,
+    3041.9
+   ],
+   [
+    36.9,
+    2987.1
+   ]
+  ],
+  "sleeve_braid_left": [
+   [
+    2136.7,
+    2820.2
+   ],
+   [
+    2515.9,
+    2848.8
+   ],
+   [
+    2515.9,
+    2998.8
+   ],
+   [
+    2136.7,
+    2970.2
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-mess-dress-female",
+ "documented": [
+  "1 1/2 in blue sleeve braid for general officers (4.1.1.1 / 4.1.2.1)"
+ ],
+ "assumed": [
+  "braid colour",
+  "1 1/2 in braid edge nearest the sleeve end set at the same distance as the 1/2 in braid"
+ ],
+ "fit": {
+  "method": "measured",
+  "score": null
+ },
+ "grade": "accessory"
+}

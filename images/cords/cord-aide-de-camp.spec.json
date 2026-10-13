@@ -1,0 +1,149 @@
+{
+ "asset_id": "cord-aide-de-camp",
+ "name": "USAF aide de camp aiguillette cord (silver, single loop, chrome tip)",
+ "size_in": {
+  "w": 5,
+  "h": 8.9
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  500,
+  890
+ ],
+ "size_source": "estimated",
+ "size_basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. Shoulder run 4.2 in matches the garment shoulder seam; loop length ~7.4 in and tip ~1.15 in are estimates of a ceremonial single-loop aiguillette",
+ "provenance": "in-house construction from DAFI 36-2903 10.7.7.1 (\"silver, single loop, chrome tip with raised wing and star emblem\"); same braid as the shoulder cords",
+ "colours": {
+  "main": "#cdd2d7",
+  "groove": "#7f8790",
+  "tip": "#e6e9ec"
+ },
+ "anchors": {
+  "top_center": [
+   250,
+   0
+  ],
+  "bottom_center": [
+   250,
+   890
+  ],
+  "center": [
+   250,
+   445
+  ],
+  "left_edge": [
+   0,
+   445
+  ],
+  "right_edge": [
+   500,
+   445
+  ],
+  "shoulder_seam_attach": [
+   450,
+   20
+  ],
+  "shoulder_seam_attach_neck_end": [
+   80,
+   20
+  ],
+  "shoulder_seam_attach_arm_end": [
+   450,
+   20
+  ],
+  "loop_bottom": [
+   57.99999999999999,
+   738
+  ],
+  "tip_end": [
+   57.99999999999999,
+   875
+  ]
+ },
+ "dimensions": {
+  "form": "aiguillette, single loop with chrome tip",
+  "shoulder_run_in": 4.2,
+  "loop_length_in": 7.4,
+  "thickness_in": 0.3,
+  "orientation": "top run lies along the left shoulder seam (arm end at the right of the asset, neck end at the left); the loop then hangs down the chest"
+ },
+ "garment_fit": {
+  "note": "strap axis = line from the neck end to the arm end of the garment's left epaulet strap / shoulder strip (garment user units, 0.01 in; wearer's left shoulder is on the viewer's right). Place: centre the cord on the axis with shoulder_seam_attach_neck_end at the neck end, rotate so the neck->arm anchors follow the axis, shift the chord 0.125 in toward the neck side so the 0.25 in bow is centred on the strap; draw order garment, layers, cord, then the epaulet sleeve/strip over it",
+  "class_a_coat": {
+   "asset": "garment-blues-class-a-coat",
+   "left_shoulder_seam_in": 5.04,
+   "strap_axis": [
+    [
+     1652,
+     244
+    ],
+    [
+     2022,
+     341
+    ]
+   ],
+   "strap_len_in": 3.82,
+   "note": "strap from the garment-blues-class-a-cadet-officer-insignia shoulder-strip-left"
+  },
+  "class_a_coat_female": {
+   "asset": "garment-blues-class-a-coat-female",
+   "strap_axis": [
+    [
+     1656.5,
+     191
+    ],
+    [
+     2008.5,
+     265
+    ]
+   ],
+   "strap_len_in": 3.6,
+   "note": "strap from garment-blues-class-a-cadet-officer-insignia-female shoulder-strip-left"
+  },
+  "class_b_shirt": {
+   "asset": "garment-blues-class-b-shirt-male",
+   "left_shoulder_seam_in": 4.1,
+   "strap_axis": [
+    [
+     1368.2,
+     193.3
+    ],
+    [
+     1775.4,
+     345
+    ]
+   ],
+   "strap_len_in": 4.35,
+   "note": "epaulet_left landmark: pointed neck end to the mid of the arm end"
+  },
+  "class_b_blouse_female": {
+   "asset": "garment-blues-class-b-blouse-female",
+   "strap_axis": [
+    [
+     1332.6,
+     203.8
+    ],
+    [
+     1777.9,
+     305.9
+    ]
+   ],
+   "strap_len_in": 4.57,
+   "note": "epaulet_left landmark: pointed neck end to the mid of the arm end"
+  }
+ },
+ "mounts": [
+  {
+   "uniform": "USAF-style service and service dress (Class A / Class B) - aides de camp to general officers (senior and cadet)",
+   "rule": "worn on the left sleeve/shoulder only while acting as an aide de camp; open end grounded under the epaulet at the left shoulder seam (CAPR 39-1 9.3.4; DAFI 36-2903 10.7.7.1)"
+  }
+ ],
+ "regulation": "CAPR 39-1 9.3.4; DAFI 36-2903 10.7.7.1",
+ "grade": "cord",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

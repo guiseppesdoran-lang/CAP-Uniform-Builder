@@ -1,0 +1,91 @@
+{
+ "asset_id": "medal-spaatz-award-miniature",
+ "name": "Gen Carl A. Spaatz Award (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.7946
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  79.46
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/medals/carl_a_spaatz.webp is 0.625 in wide (ribbon measured 59 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 60 x 65 source px = 0.636 x 0.689 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7946 in (was 0.6886).",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   79.46
+  ],
+  "center": [
+   31.25,
+   39.73
+  ],
+  "left_edge": [
+   0,
+   39.73
+  ],
+  "right_edge": [
+   62.5,
+   39.73
+  ],
+  "ribbon_attach": [
+   31.32,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-spaatz-award",
+  "spec": "../ribbons/ribbon-spaatz-award.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-carl-a-spaatz-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9874,
+  "threshold": 0.95,
+  "colour_mae_0_255": 22.7,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#2e2927",
+  "#493e3c",
+  "#746f6c",
+  "#d6d2cf"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [],
+  "different_body": [
+   "spaatz_s"
+  ]
+ },
+ "size_in_previous": {
+  "w": 0.6356,
+  "h": 0.6886
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-carl-a-spaatz-miniature-medal",
+  "local_photo": "medals-work/ref-hires/carl-a-spaatz.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 180,
+   "h": 228
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 4.5
+}

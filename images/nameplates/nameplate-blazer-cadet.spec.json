@@ -1,0 +1,91 @@
+{
+ "asset_id": "nameplate-blazer-cadet",
+ "name": "Corporate blazer nameplate, cadet (black; CAP Crest; blank name/state; no grade insignia)",
+ "size_in": {
+  "w": 3.375,
+  "h": 0.9
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  337.5,
+  90
+ ],
+ "size_source": "estimated",
+ "size_basis": "Width reused from the CAP cadet nameplate (Vanguard CAP0599M, 3 3/8 in); 3.75:1 proportion read from CAPR 39-1 Fig A6-3. The regulation gives no dimension for the blazer nameplate.",
+ "anchors": {
+  "top_center": [
+   168.75,
+   0
+  ],
+  "bottom_center": [
+   168.75,
+   90
+  ],
+  "center": [
+   168.75,
+   45
+  ],
+  "left_edge": [
+   0,
+   45
+  ],
+  "right_edge": [
+   337.5,
+   45
+  ],
+  "crest_center": [
+   37,
+   45
+  ],
+  "name_center": [
+   202.75,
+   35
+  ],
+  "state_center": [
+   202.75,
+   71
+  ],
+  "top_edge_center": [
+   168.75,
+   0
+  ]
+ },
+ "landmarks": {
+  "plate": {
+   "x": 0,
+   "y": 0,
+   "w": 337.5,
+   "h": 90
+  },
+  "name": {
+   "x": 90,
+   "y": 10,
+   "w": 225.5,
+   "h": 50
+  },
+  "state": {
+   "x": 90,
+   "y": 62,
+   "w": 225.5,
+   "h": 18
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; all in user units (0.01 in), origin top-left",
+ "documented": [
+  "black nameplate with CAP Crest, last name and state/region/national by unit of assignment (CAPR 39-1 4.2.3.1.1.2, Fig A6-3)",
+  "grade insignia not allowed for cadets",
+  "worn with the top edge aligned with the top edge of the left breast pocket"
+ ],
+ "assumed": [
+  "plate size",
+  "name / state / grade slot sizes",
+  "CAP Crest is a redraw (assets: see ASSET_NOTES)"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "insignia-plate"
+}

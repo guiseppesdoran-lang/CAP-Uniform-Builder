@@ -1,0 +1,45 @@
+{
+ "asset_id": "cloth-jewish-chaplain",
+ "width_in": 1.125,
+ "height_in": 1.125,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "embroidered art height 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular size), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   56.25,
+   0
+  ],
+  "bottom_center": [
+   56.25,
+   112.5
+  ],
+  "center": [
+   56.25,
+   56.25
+  ],
+  "left_edge": [
+   0,
+   56.25
+  ],
+  "right_edge": [
+   112.5,
+   56.25
+  ]
+ },
+ "dimensions": {
+  "family": "cloth-ocp-blue-backing"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/cloth (g*/make-*.js) + civil-air-patrol-cloth-insignia-jewish-chaplain-new-insignia",
+ "reference": "refs-png/civil-air-patrol-cloth-insignia-jewish-chaplain-new-insignia.png",
+ "source_bbox_user_units": [
+  104,
+  88,
+  509,
+  493
+ ],
+ "fit_score": null,
+ "notes": "Embroidered thread art on blue cloth backing (OCP). Drawn from the supplier product photo; thread texture not reproduced."
+}

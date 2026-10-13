@@ -1,0 +1,53 @@
+{
+ "asset_id": "model-rocketry",
+ "width_in": 0.6904,
+ "height_in": 3,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: height 3 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   34.52,
+   0
+  ],
+  "bottom_center": [
+   34.52,
+   300.01
+  ],
+  "center": [
+   34.52,
+   150.005
+  ],
+  "left_edge": [
+   0,
+   150.005
+  ],
+  "right_edge": [
+   69.04,
+   150.005
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 56,
+  "reference_px_height": 240,
+  "in_per_reference_px": 0.00982,
+  "size_class": "rocket",
+  "family": null,
+  "variant": null
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + model_rocketry_badge",
+ "reference": "ALL/ref/model_rocketry_badge.png",
+ "source_bbox_user_units": [
+  0.5,
+  0.5,
+  55.5,
+  239.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.98,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

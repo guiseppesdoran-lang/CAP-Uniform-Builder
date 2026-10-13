@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-vol-u",
+ "width_in": 2,
+ "height_in": 1.999,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "supplier listing: width 2 in",
+ "citation": "Vanguard (vanguardmil.com) product listing: Civil Air Patrol Badge: Volunteer University Instructor 2 in (regular size; 1.5 in miniature)",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   199.851
+  ],
+  "center": [
+   100,
+   99.925
+  ],
+  "left_edge": [
+   0,
+   99.925
+  ],
+  "right_edge": [
+   200,
+   99.925
+  ]
+ },
+ "dimensions": {
+  "size_class": "medal",
+  "level": "none"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + Vol_U_Badge",
+ "reference": "../batch/ref/Vol_U_Badge.png",
+ "source_bbox_user_units": [
+  8.5,
+  8.833,
+  232.5,
+  232.667
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.987,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

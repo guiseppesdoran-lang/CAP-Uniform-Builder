@@ -1,0 +1,107 @@
+{
+ "asset_id": "medal-exceptional-service-award-miniature",
+ "name": "Exceptional Service Award (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.8395
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  83.95
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_except01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 54 source px = 0.625 x 0.675 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8395 in (was 0.675).",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   83.95
+  ],
+  "center": [
+   31.25,
+   41.97
+  ],
+  "left_edge": [
+   0,
+   41.97
+  ],
+  "right_edge": [
+   62.5,
+   41.97
+  ],
+  "ribbon_attach": [
+   29.06,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-exceptional-service-award",
+  "spec": "../ribbons/ribbon-exceptional-service-award.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-exceptional-service-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9875,
+  "threshold": 0.95,
+  "colour_mae_0_255": 31.9,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#3e3836",
+  "#6e6865",
+  "#9d9895",
+  "#cec9c6"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "except02",
+   "except03",
+   "except04",
+   "except05",
+   "except06",
+   "except07",
+   "except08",
+   "except09",
+   "except10",
+   "except11",
+   "except12",
+   "except13",
+   "except14",
+   "except16",
+   "except17",
+   "except18",
+   "except21"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 0.625,
+  "h": 0.675
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-exceptional-service-miniature-medal",
+  "local_photo": "medals-work/ref-hires/exceptional-service.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 183,
+   "h": 244
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 4.5
+}

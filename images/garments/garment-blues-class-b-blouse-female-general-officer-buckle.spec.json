@@ -1,0 +1,65 @@
+{
+ "asset_id": "garment-blues-class-b-blouse-female-general-officer-buckle",
+ "name": "Women's Class B blue short-sleeve blouse and skirt (nametag position only) general officer belt buckle: Wing and Star (overlay, registered to garment-blues-class-b-blouse-female)",
+ "size_in": {
+  "w": 20.766,
+  "h": 27.11
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2076.6,
+  2711
+ ],
+ "size_source": "estimated",
+ "size_basis": "Drawn on the buckle body of garment-blues-class-b-blouse-female (same box and origin); emblem about 0.75 x the smaller buckle dimension. The regulation gives no emblem dimension.",
+ "anchors": {
+  "top_center": [
+   1038.3,
+   0
+  ],
+  "bottom_center": [
+   1038.3,
+   2711
+  ],
+  "center": [
+   1038.3,
+   1355.5
+  ],
+  "left_edge": [
+   0,
+   1355.5
+  ],
+  "right_edge": [
+   2076.6,
+   1355.5
+  ],
+  "buckle_center": [
+   1013.48,
+   1837.8
+  ]
+ },
+ "landmarks": {
+  "buckle_plate": {
+   "x": 934.75,
+   "y": 1773.3,
+   "w": 157.45,
+   "h": 129
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-blouse-female",
+ "documented": [
+  "general officers wear the Wing and Star on the belt buckle (CAPR 39-1 4.1.12.7); tip toward the wearer's right"
+ ],
+ "assumed": [
+  "emblem size",
+  "emblem is the wing-and-star of the coat button redrawn flat"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

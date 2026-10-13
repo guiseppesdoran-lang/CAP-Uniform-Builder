@@ -1,0 +1,59 @@
+{
+ "asset_id": "rank-ocp-square-blank",
+ "name": "Blank 2 in OCP dark blue square (no grade)",
+ "size_in": {
+  "w": 2,
+  "h": 2
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  200,
+  200
+ ],
+ "size_source": "regulation",
+ "size_citation": "CAPR 39-1 (3 March 2020) 7.1.1.2.1: \"Senior members without grade wear a blank 2 in x 2 in dark blue square on the front of the OCP\"",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   200
+  ],
+  "center": [
+   100,
+   100
+  ],
+  "left_edge": [
+   0,
+   100
+  ],
+  "right_edge": [
+   200,
+   100
+  ],
+  "insignia_center": [
+   100,
+   100
+  ]
+ },
+ "dimensions": {
+  "square_in": 2
+ },
+ "backing_for": [
+  "cadet NCO and Airman metal device (7.1.1.2.2)",
+  "officer / NCO embroidered grade (7.1.1.2.1)"
+ ],
+ "cloth_color": {
+  "hex": "#142347",
+  "basis": "sampled from CAPR 39-1 p.136 cloth figure"
+ },
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

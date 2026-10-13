@@ -1,0 +1,85 @@
+{
+ "asset_id": "rank-cadet-nco-chief-master-sergeant-metal",
+ "name": "Cadet Chief Master Sergeant metal chevron",
+ "size_in": {
+  "w": 1.0887,
+  "h": 1.75
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  108.87,
+  175
+ ],
+ "size_source": "estimated",
+ "size_basis": "Scale 350.0 photo px per inch: the Vanguard Cadet CMSgt photo (612 px tall) is set to 1.75 in, from the requester's statement (2026-10-12) that it nearly fills the 2 in OCP square leaving about 1/8 in top and bottom; CAPR 39-1 Fig A5-5 gives no inch size. Every grade uses the same scale (the photos share one scale: 381 px chevron width).",
+ "colours": {
+  "navy": "#010066",
+  "silver": "#d3d6d7",
+  "red": "#d03638",
+  "cloth": "#142347"
+ },
+ "provenance": "traced from the Vanguard cadet chevron photos (images/ranks/C) at the requester's direction; chrome shading flattened by chroma classification",
+ "mounts": [
+  {
+   "uniform": "Class A / old-style / mess-less service coat lapels",
+   "rule": "metal chevrons on both coat lapels, halfway up the seam, resting on but not over it, parallel with the ground; Airman Basic wears none (4.1.5.2.1.4, 4.1.7.2.1.2, 4.1.9.3.5, 4.1.10.1.1.2)"
+  },
+  {
+   "uniform": "Class B / blue shirt, blouse, aviator-style shirt, sweaters, jackets, topcoat: collar",
+   "rule": "both sides of the collar, 1 in from and parallel to the front of the collar, centered; Fig A5-5; Airman Basic wears none (4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5, 6.1.1.4, 6.1.3.4). Not worn on the blue shirt under the service coat (4.1.6.1.5). Removed for the Corporate Service Uniform (4.2.5.1.1.5 note)."
+  },
+  {
+   "uniform": "ABU / BDU / blue field uniform coat collar",
+   "rule": "metal chevrons on both sides of the collar, 1 in from and parallel to the front of the collar, centered (5.1.1.1.1.4, 5.1.2.2.6, 5.2.1.1.1.6)"
+  },
+  {
+   "uniform": "OCP coat / fleeces",
+   "rule": "metal device on the 2 in dark blue square (7.1.1.2.2, 6.1.10.2.2, 6.1.14.4.2); Airman Basic wears no device and no blue material"
+  },
+  {
+   "uniform": "OCP / ABU / tactical / patrol caps",
+   "rule": "NONE: cadet NCOs and Airmen wear no insignia on these caps (7.1.1.8, 6.2.11.1)"
+  }
+ ],
+ "rank": {
+  "grade": "Cadet Chief Master Sergeant",
+  "abbrev": "C/CMSgt",
+  "membership": "cadet",
+  "first_sergeant": false
+ },
+ "grade": "rank-insignia",
+ "anchors": {
+  "top_center": [
+   54.435,
+   0
+  ],
+  "bottom_center": [
+   54.435,
+   175
+  ],
+  "center": [
+   54.435,
+   87.5
+  ],
+  "left_edge": [
+   0,
+   87.5
+  ],
+  "right_edge": [
+   108.87,
+   87.5
+  ]
+ },
+ "dimensions": {
+  "form": "metal chevron (cadet NCO / Airman), flat colour",
+  "nominal_width_in": 1.0887,
+  "height_in": 1.75,
+  "aspect_h_over_w": 1.6074
+ },
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

@@ -1,0 +1,57 @@
+{
+ "asset_id": "mil-device-olc-silver",
+ "name": "Silver Oak Leaf Cluster",
+ "size_in": {
+  "w": 0.3125,
+  "h": 0.2328
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  31.25,
+  23.28
+ ],
+ "size_source": "estimated",
+ "size_basis": "5/16 in long (0.3125 in): figure reported by the coordination chat from AR 670-1 (Army, secondary; DoDM 1348.33 not located) for service, unit-award and miniature suspension ribbons. The two mirror pages fetched during this build (ar670.com/?p=1328, 2ndbde.org device_appurtenances.php) do not themselves state device sizes, so it is not recorded as regulation. Composite in the repo variants measures undefined in",
+ "anchors": {
+  "top_center": [
+   15.63,
+   0
+  ],
+  "bottom_center": [
+   15.63,
+   23.28
+  ],
+  "center": [
+   15.63,
+   11.64
+  ],
+  "left_edge": [
+   0,
+   11.64
+  ],
+  "right_edge": [
+   31.25,
+   11.64
+  ],
+  "stem_base": [
+   15.32,
+   23.28
+  ]
+ },
+ "dimensions": {
+  "width_in": 0.3125,
+  "height_in": 0.2328,
+  "leaves": 3,
+  "acorns": 2,
+  "shape": "cluster of three oak leaves and two acorns, horizontal"
+ },
+ "metal": "silver",
+ "grade": "device",
+ "catalog_device": "SILVER_OLC",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}

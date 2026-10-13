@@ -1,0 +1,106 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-long-epaulet-sleeve-officer",
+ "name": "Men's Class B blue long-sleeve shirt adult officer epaulet sleeves (overlay, registered to garment-blues-class-b-shirt-male-long; blank grade)",
+ "size_in": {
+  "w": 21.32,
+  "h": 27.075
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2132,
+  2707.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Cut from the garment epaulet strap landmark (covers the outer 82%); the regulation gives no dimension.",
+ "anchors": {
+  "top_center": [
+   1066,
+   0
+  ],
+  "bottom_center": [
+   1066,
+   2707.5
+  ],
+  "center": [
+   1066,
+   1353.75
+  ],
+  "left_edge": [
+   0,
+   1353.75
+  ],
+  "right_edge": [
+   2132,
+   1353.75
+  ],
+  "rank_slot_right_center": [
+   454.6,
+   322.05
+  ],
+  "rank_slot_left_center": [
+   1677.4,
+   322.05
+  ],
+  "rank_rule_point_right": [
+   395.61,
+   342.82
+  ],
+  "rank_rule_point_left": [
+   1736.39,
+   342.82
+  ]
+ },
+ "landmarks": {
+  "epaulet_sleeve_right": {
+   "x": 307.6,
+   "y": 177.2,
+   "w": 353.5,
+   "h": 268.9
+  },
+  "rank_slot_right": {
+   "x": 320.4,
+   "y": 210.8,
+   "w": 268.4,
+   "h": 222.5
+  },
+  "rank_slot_right_frame": {
+   "deg": -19.4,
+   "along": 2.3,
+   "across": 1.55
+  },
+  "epaulet_sleeve_left": {
+   "x": 1470.9,
+   "y": 177.2,
+   "w": 353.5,
+   "h": 268.9
+  },
+  "rank_slot_left": {
+   "x": 1543.2,
+   "y": 210.8,
+   "w": 268.4,
+   "h": 222.5
+  },
+  "rank_slot_left_frame": {
+   "deg": -160.6,
+   "along": 2.3,
+   "across": 1.55
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-shirt-male-long",
+ "documented": [
+  "gray epaulet sleeves, embroidered grade (4.1.11.1.1.1.1 / 4.1.12.2.3.1)",
+  "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "sleeve length (covers the outer 82% of the strap)",
+  "grade insignia not drawn: placed by the rank insignia assets at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

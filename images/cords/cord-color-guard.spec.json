@@ -1,0 +1,146 @@
+{
+ "asset_id": "cord-color-guard",
+ "name": "Color Guard / Drill team shoulder cord (white)",
+ "size_in": {
+  "w": 0.77,
+  "h": 4.22
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  77,
+  422
+ ],
+ "size_source": "estimated",
+ "size_basis": "No cord dimensions in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette (composed against garment-blues-class-a-coat, -female, class-b shirt/blouse in a throwaway preview 2026-10-13; was 4.5 in); thickness 0.40 in from the cord/length ratio of the app's cord images; colours and braid read from images/cords/*.webp",
+ "provenance": "in-house vector: braid pattern and colours measured from the app's existing cord images",
+ "colours": {
+  "main": "#f1f2f4",
+  "groove": "#aeb4bc"
+ },
+ "anchors": {
+  "top_center": [
+   38.5,
+   0
+  ],
+  "bottom_center": [
+   38.5,
+   422
+  ],
+  "center": [
+   38.5,
+   211
+  ],
+  "left_edge": [
+   0,
+   211
+  ],
+  "right_edge": [
+   77,
+   211
+  ],
+  "shoulder_seam_attach": [
+   51,
+   6
+  ],
+  "shoulder_seam_attach_neck_end": [
+   51,
+   6
+  ],
+  "shoulder_seam_attach_arm_end": [
+   51,
+   415.99999999999994
+  ],
+  "cord_mid": [
+   26,
+   211
+  ]
+ },
+ "dimensions": {
+  "form": "braided shoulder cord",
+  "length_in": 4.1,
+  "thickness_in": 0.4,
+  "sagitta_in": 0.25,
+  "weave_pitch_in": 0.15,
+  "orientation": "drawn vertically: top = neck end of the shoulder seam, bottom = sleeve (arm) end; the bow (0.25 in) falls toward the body, i.e. down the garment front when the cord lies on the shoulder",
+  "attach": "align cord_start (neck end) with the neck end of the wearer's LEFT shoulder seam and run it down the seam toward the shoulder point; rotate to the seam angle"
+ },
+ "garment_fit": {
+  "note": "strap axis = line from the neck end to the arm end of the garment's left epaulet strap / shoulder strip (garment user units, 0.01 in; wearer's left shoulder is on the viewer's right). Place: centre the cord on the axis with shoulder_seam_attach_neck_end at the neck end, rotate so the neck->arm anchors follow the axis, shift the chord 0.125 in toward the neck side so the 0.25 in bow is centred on the strap; draw order garment, layers, cord, then the epaulet sleeve/strip over it",
+  "class_a_coat": {
+   "asset": "garment-blues-class-a-coat",
+   "left_shoulder_seam_in": 5.04,
+   "strap_axis": [
+    [
+     1652,
+     244
+    ],
+    [
+     2022,
+     341
+    ]
+   ],
+   "strap_len_in": 3.82,
+   "note": "strap from the garment-blues-class-a-cadet-officer-insignia shoulder-strip-left"
+  },
+  "class_a_coat_female": {
+   "asset": "garment-blues-class-a-coat-female",
+   "strap_axis": [
+    [
+     1656.5,
+     191
+    ],
+    [
+     2008.5,
+     265
+    ]
+   ],
+   "strap_len_in": 3.6,
+   "note": "strap from garment-blues-class-a-cadet-officer-insignia-female shoulder-strip-left"
+  },
+  "class_b_shirt": {
+   "asset": "garment-blues-class-b-shirt-male",
+   "left_shoulder_seam_in": 4.1,
+   "strap_axis": [
+    [
+     1368.2,
+     193.3
+    ],
+    [
+     1775.4,
+     345
+    ]
+   ],
+   "strap_len_in": 4.35,
+   "note": "epaulet_left landmark: pointed neck end to the mid of the arm end"
+  },
+  "class_b_blouse_female": {
+   "asset": "garment-blues-class-b-blouse-female",
+   "strap_axis": [
+    [
+     1332.6,
+     203.8
+    ],
+    [
+     1777.9,
+     305.9
+    ]
+   ],
+   "strap_len_in": 4.57,
+   "note": "epaulet_left landmark: pointed neck end to the mid of the arm end"
+  }
+ },
+ "mounts": [
+  {
+   "uniform": "Class A (service dress) and Class B (blue service), cadets only",
+   "rule": "worn on the left shoulder, aligned along the shoulder seam, underneath the epaulet if present; one cord at a time; not worn on working uniforms (CAPR 39-1 9.3, 9.4.1)"
+  }
+ ],
+ "regulation": "CAPR 39-1 9.3.2",
+ "grade": "cord",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

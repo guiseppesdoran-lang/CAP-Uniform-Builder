@@ -1,0 +1,72 @@
+{
+ "asset_id": "nameplate-3line-cadet",
+ "name": "CAP 3-line nameplate, cadet (blue, blank name line)",
+ "size_in": {
+  "w": 3.375,
+  "h": 0.75
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  337.5,
+  75
+ ],
+ "size_source": "estimated",
+ "size_basis": "Width and height of the Vanguard CAP cadet name plate (CAP0599M, 3 3/8 x 3/4 in); the regulation gives no dimension. Adult plate assumed the same size.",
+ "anchors": {
+  "top_center": [
+   168.75,
+   0
+  ],
+  "bottom_center": [
+   168.75,
+   75
+  ],
+  "center": [
+   168.75,
+   37.5
+  ],
+  "left_edge": [
+   0,
+   37.5
+  ],
+  "right_edge": [
+   337.5,
+   37.5
+  ],
+  "name_center": [
+   168.75,
+   52
+  ]
+ },
+ "landmarks": {
+  "plate": {
+   "x": 0,
+   "y": 0,
+   "w": 337.5,
+   "h": 75
+  },
+  "name": {
+   "x": 35,
+   "y": 36,
+   "w": 267.5,
+   "h": 32
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; user units (0.01 in)",
+ "documented": [
+  "blue for cadets, three-line, last name engraved in white (CAPR 39-1 4.2.5.1.2.1, 4.1.11.1.1.2.1)",
+  "centred on, resting on (not over) the edge of the pocket on the wearer's right (aviator shirt, Class B shirt)"
+ ],
+ "assumed": [
+  "plate size",
+  "lettering proportions read from Fig A6-3",
+  "blue/gray tones sampled from Fig A6-3"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "insignia-plate"
+}

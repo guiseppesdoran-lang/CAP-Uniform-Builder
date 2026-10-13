@@ -1,0 +1,65 @@
+{
+ "asset_id": "garment-blues-class-b-blouse-female-nametag-cadet",
+ "name": "Women's Class B blue short-sleeve blouse and skirt (nametag position only) nametag, cadet (overlay, registered to garment-blues-class-b-blouse-female; name left blank)",
+ "size_in": {
+  "w": 20.766,
+  "h": 27.11
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2076.6,
+  2711
+ ],
+ "size_source": "estimated",
+ "size_basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
+ "anchors": {
+  "top_center": [
+   1038.3,
+   0
+  ],
+  "bottom_center": [
+   1038.3,
+   2711
+  ],
+  "center": [
+   1038.3,
+   1355.5
+  ],
+  "left_edge": [
+   0,
+   1355.5
+  ],
+  "right_edge": [
+   2076.6,
+   1355.5
+  ],
+  "nametag_center": [
+   733.35,
+   697.1
+  ]
+ },
+ "landmarks": {
+  "nametag": {
+   "x": 564.6,
+   "y": 659.6,
+   "w": 337.5,
+   "h": 75
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-blouse-female",
+ "documented": [
+  "nametag is blue, three-line, white lettering (CAPR 39-1 4.1.12.2.4.1.1)"
+ ],
+ "assumed": [
+  "plate size",
+  "name line blank"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

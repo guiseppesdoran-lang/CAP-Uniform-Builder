@@ -1,0 +1,106 @@
+{
+ "asset_id": "garment-blues-class-b-blouse-female-epaulet-sleeve-officer",
+ "name": "Women's Class B blue short-sleeve blouse and skirt (nametag position only) adult officer epaulet sleeves (overlay, registered to garment-blues-class-b-blouse-female; blank grade)",
+ "size_in": {
+  "w": 20.766,
+  "h": 27.11
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2076.6,
+  2711
+ ],
+ "size_source": "estimated",
+ "size_basis": "Cut from the garment epaulet strap landmark (covers the outer 82%); the regulation gives no dimension.",
+ "anchors": {
+  "top_center": [
+   1038.3,
+   0
+  ],
+  "bottom_center": [
+   1038.3,
+   2711
+  ],
+  "center": [
+   1038.3,
+   1355.5
+  ],
+  "left_edge": [
+   0,
+   1355.5
+  ],
+  "right_edge": [
+   2076.6,
+   1355.5
+  ],
+  "rank_slot_right_center": [
+   428.95,
+   314.6
+  ],
+  "rank_slot_left_center": [
+   1647.65,
+   314.6
+  ],
+  "rank_rule_point_right": [
+   368.02,
+   328.52
+  ],
+  "rank_rule_point_left": [
+   1708.58,
+   328.52
+  ]
+ },
+ "landmarks": {
+  "epaulet_sleeve_right": {
+   "x": 287.5,
+   "y": 182.6,
+   "w": 364.3,
+   "h": 245.2
+  },
+  "rank_slot_right": {
+   "x": 299.5,
+   "y": 213.3,
+   "w": 258.9,
+   "h": 202.6
+  },
+  "rank_slot_right_frame": {
+   "deg": -12.9,
+   "along": 2.3,
+   "across": 1.55
+  },
+  "epaulet_sleeve_left": {
+   "x": 1424.8,
+   "y": 182.6,
+   "w": 364.3,
+   "h": 245.2
+  },
+  "rank_slot_left": {
+   "x": 1518.2,
+   "y": 213.3,
+   "w": 258.9,
+   "h": 202.6
+  },
+  "rank_slot_left_frame": {
+   "deg": -167.1,
+   "along": 2.3,
+   "across": 1.55
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-blouse-female",
+ "documented": [
+  "gray epaulet sleeves, embroidered grade (4.1.11.1.1.1.1 / 4.1.12.2.3.1)",
+  "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "sleeve length (covers the outer 82% of the strap)",
+  "grade insignia not drawn: placed by the rank insignia assets at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

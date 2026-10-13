@@ -1,0 +1,90 @@
+{
+ "asset_id": "hat-flight-cap-general",
+ "name": "Flight cap, general officer (solid silver braid)",
+ "size_in": {
+  "w": 12.24,
+  "h": 5.03
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  1224,
+  503
+ ],
+ "size_source": "measured",
+ "size_basis": "Measured from CAPR 39-1 Fig A5-9 \"FLIGHT CAPS\" (3 March 2020, p.140) at 157 px/in from the figure's own 1 1/2 in marks. Cap body 12.00 x 4.79 in plus 0.12 in margin. The regulation gives no cap dimensions; real caps vary by size. (Earlier build used the flatter p.139 side silhouette, 11.6 x 3.65 in.)",
+ "anchors": {
+  "top_center": [
+   612,
+   0
+  ],
+  "bottom_center": [
+   612,
+   503
+  ],
+  "center": [
+   612,
+   251.5
+  ],
+  "left_edge": [
+   0,
+   251.5
+  ],
+  "right_edge": [
+   1224,
+   251.5
+  ],
+  "front_edge_center": [
+   12,
+   366.5
+  ],
+  "device_slot_center": [
+   162,
+   263.6
+  ],
+  "braid_front": [
+   12,
+   152.7
+  ],
+  "garment_attach_center": [
+   612,
+   503
+  ]
+ },
+ "landmarks": {
+  "device_slot": {
+   "x": 112,
+   "y": 213.6,
+   "w": 100,
+   "h": 100
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); device_slot is a nominal 1 in box centred on the device position (the device itself is 1.15-1.36 in, see the cap-device-* assets)",
+ "orientation": "side view, front of cap at left (wearer facing left), wearer's left flap shown; sloped crown: tall at the front, lower at the rear (Fig A5-9)",
+ "documented": [
+  "flight cap device on the front left flap, centred halfway between top and bottom of the flap, 1 1/2 in from the front of the cap (6.2.2.2.1-3)",
+  "Major General and Brigadier General (CAPR 39-1 6.2.2.2.4)",
+  "general officers silver braid; other officers silver and blue braid; NCOs and cadets plain blue (6.2.2.2.4-6)",
+  "worn slightly to the wearer's right, about one inch above the eyebrows (6.2.2.1)"
+ ],
+ "assumed": [
+  "braid band width and position (about 0.33 of cap height below the top edge, read off the figure)",
+  "navy colour sampled from the figure",
+  "shading",
+  "figure caps differ slightly in height, each variant keeps its own measured outline"
+ ],
+ "fit": {
+  "method": "per-column profile of the regulation figure",
+  "score": null
+ },
+ "grade": "accessory",
+ "provenance": "outline per column from Fig A5-9 (sloped crown, fold line, curtain); braid line traced from the figure; navy and braid colours sampled",
+ "colours": {
+  "navy": "#0b1f5e",
+  "navyD": "#06143f",
+  "braid_silver": "#d4d8de",
+  "braid_blue": "#2c4fb0"
+ },
+ "braid": "general officers: solid silver braid (6.2.2.2.4)"
+}

@@ -1,0 +1,46 @@
+{
+ "asset_id": "master-observer-mini",
+ "width_in": 2,
+ "height_in": 0.76,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: miniature width 2 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read (miniature)",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   75.956
+  ],
+  "center": [
+   100,
+   37.978
+  ],
+  "left_edge": [
+   0,
+   37.978
+  ],
+  "right_edge": [
+   200,
+   37.978
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver + MasterObserver1_1B88D5071FD5C (miniature = same art at miniature size)",
+ "reference": "ALL/ref/MasterObserver1_1B88D5071FD5C.png",
+ "source_bbox_user_units": [
+  4.667,
+  -2.333,
+  187.667,
+  67.167
+ ],
+ "fit_score": null,
+ "notes": ""
+}

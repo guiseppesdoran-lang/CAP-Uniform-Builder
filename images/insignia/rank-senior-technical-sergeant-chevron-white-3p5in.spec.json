@@ -1,0 +1,76 @@
+{
+ "asset_id": "rank-senior-technical-sergeant-chevron-white-3p5in",
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  350,
+  371.92
+ ],
+ "name": "Technical Sergeant white chevron (mess dress), 3.5 in",
+ "size_source": "regulation",
+ "size_citation": "DAFI 36-2903 4.1.1.3 / 4.1.2.3 and CAPR 39-1 4.1.1.1.1.4 (men 4 in white chevron) / 4.1.2.1.1.4 (women 3 1/2 or 4 in white chevron); outline and proportions from Fig A5-4",
+ "provenance": "rank-senior-technical-sergeant-chevron-3p5in with the dark blue field removed and the stripes, letters and emblem in white: the mess dress sleeve is dark blue, so the chevron is white only (no regulation figure of the white chevron; colour is the regulation word \"white\")",
+ "colours": {
+  "stripe_hex": "#f4f5f6",
+  "field": "none (the sleeve is the field)"
+ },
+ "anchors": {
+  "top_center": [
+   175,
+   0
+  ],
+  "bottom_center": [
+   175,
+   371.92
+  ],
+  "center": [
+   175,
+   185.96
+  ],
+  "left_edge": [
+   0,
+   185.96
+  ],
+  "right_edge": [
+   350,
+   185.96
+  ],
+  "visual_center": [
+   175,
+   185.96
+  ]
+ },
+ "dimensions": {
+  "form": "white embroidered chevron (mess dress only), no field",
+  "nominal_width_in": 3.5,
+  "height_in": 3.7192,
+  "aspect_h_over_w": 1.0626,
+  "navy_hex": "#292540",
+  "stripe_hex": "#f4f5f6",
+  "letters": "CAP",
+  "emblem": "3-blade propeller",
+  "field_hex": null
+ },
+ "mounts": [
+  {
+   "uniform": "Mess dress, women (3 1/2 or 4 in)",
+   "rule": "centred on the outer arm halfway between the shoulder seam and the elbow bent at 90 degrees (4.1.1.1.1.4, 4.1.2.1.1.4); mess dress only"
+  }
+ ],
+ "first_sergeant_note": "the first sergeant diamond applies to cadet first sergeants (CAPR 39-1 10.10.4), who wear metal chevrons and no mess dress chevron; not built for the senior chevrons",
+ "rank": {
+  "grade": "Technical Sergeant",
+  "abbrev": "TSgt",
+  "membership": "senior"
+ },
+ "grade": "rank-insignia",
+ "size_in": {
+  "w": 3.5,
+  "h": 3.7192
+ },
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-jewish-chaplin",
+ "width_in": 0.6342,
+ "height_in": 1.125,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: height 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   31.71,
+   0
+  ],
+  "bottom_center": [
+   31.71,
+   112.509
+  ],
+  "center": [
+   31.71,
+   56.255
+  ],
+  "left_edge": [
+   0,
+   56.255
+  ],
+  "right_edge": [
+   63.42,
+   56.255
+  ]
+ },
+ "dimensions": {
+  "size_class": "chap",
+  "level": "none"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + jewish_chaplin",
+ "reference": "../batch/ref/jewish_chaplin.png",
+ "source_bbox_user_units": [
+  2.167,
+  0,
+  66.333,
+  113.833
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.951,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

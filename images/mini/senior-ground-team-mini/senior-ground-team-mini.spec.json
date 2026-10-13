@@ -1,0 +1,46 @@
+{
+ "asset_id": "senior-ground-team-mini",
+ "width_in": 0.875,
+ "height_in": 0.751,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: miniature width 0.875 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read (miniature)",
+ "anchors": {
+  "top_center": [
+   43.75,
+   0
+  ],
+  "bottom_center": [
+   43.75,
+   75.128
+  ],
+  "center": [
+   43.75,
+   37.564
+  ],
+  "left_edge": [
+   0,
+   37.564
+  ],
+  "right_edge": [
+   87.5,
+   37.564
+  ]
+ },
+ "dimensions": {
+  "size_class": "gt",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver + senior_ground_team_badge (miniature = same art at miniature size)",
+ "reference": "ALL/ref/senior_ground_team_badge.png",
+ "source_bbox_user_units": [
+  5.667,
+  2.5,
+  234.333,
+  198.833
+ ],
+ "fit_score": null,
+ "notes": ""
+}

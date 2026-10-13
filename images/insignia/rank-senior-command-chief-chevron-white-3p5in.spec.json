@@ -1,0 +1,76 @@
+{
+ "asset_id": "rank-senior-command-chief-chevron-white-3p5in",
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  350,
+  592.02
+ ],
+ "name": "CAP Command Chief Master Sergeant white chevron (mess dress), 3.5 in",
+ "size_source": "regulation",
+ "size_citation": "DAFI 36-2903 4.1.1.3 / 4.1.2.3 and CAPR 39-1 4.1.1.1.1.4 (men 4 in white chevron) / 4.1.2.1.1.4 (women 3 1/2 or 4 in white chevron); outline and proportions from Fig A5-4",
+ "provenance": "rank-senior-command-chief-chevron-3p5in with the dark blue field removed and the stripes, letters and emblem in white: the mess dress sleeve is dark blue, so the chevron is white only (no regulation figure of the white chevron; colour is the regulation word \"white\")",
+ "colours": {
+  "stripe_hex": "#f4f5f6",
+  "field": "none (the sleeve is the field)"
+ },
+ "anchors": {
+  "top_center": [
+   175,
+   0
+  ],
+  "bottom_center": [
+   175,
+   592.02
+  ],
+  "center": [
+   175,
+   296.01
+  ],
+  "left_edge": [
+   0,
+   296.01
+  ],
+  "right_edge": [
+   350,
+   296.01
+  ],
+  "visual_center": [
+   175,
+   296.01
+  ]
+ },
+ "dimensions": {
+  "form": "white embroidered chevron (mess dress only), no field",
+  "nominal_width_in": 3.5,
+  "height_in": 5.9202,
+  "aspect_h_over_w": 1.6915,
+  "navy_hex": "#292540",
+  "stripe_hex": "#f4f5f6",
+  "letters": "none (star in place of CAP)",
+  "emblem": "3-blade propeller",
+  "field_hex": null
+ },
+ "mounts": [
+  {
+   "uniform": "Mess dress, women (3 1/2 or 4 in)",
+   "rule": "centred on the outer arm halfway between the shoulder seam and the elbow bent at 90 degrees (4.1.1.1.1.4, 4.1.2.1.1.4); mess dress only"
+  }
+ ],
+ "first_sergeant_note": "the first sergeant diamond applies to cadet first sergeants (CAPR 39-1 10.10.4), who wear metal chevrons and no mess dress chevron; not built for the senior chevrons",
+ "rank": {
+  "grade": "CAP Command Chief Master Sergeant",
+  "abbrev": "CCM",
+  "membership": "senior"
+ },
+ "grade": "rank-insignia",
+ "size_in": {
+  "w": 3.5,
+  "h": 5.9202
+ },
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

@@ -1,0 +1,57 @@
+{
+ "asset_id": "mil-device-letter-n",
+ "name": "\"N\" Device",
+ "size_in": {
+  "w": 0.1592,
+  "h": 0.198
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  15.92,
+  19.8
+ ],
+ "size_source": "measured",
+ "size_basis": "letter height measured in composites: 15 px of 30 = 0.1875 in; width follows the Arial Bold capital",
+ "anchors": {
+  "top_center": [
+   7.96,
+   0
+  ],
+  "bottom_center": [
+   7.96,
+   19.8
+  ],
+  "center": [
+   7.96,
+   9.9
+  ],
+  "left_edge": [
+   0,
+   9.9
+  ],
+  "right_edge": [
+   15.92,
+   9.9
+  ],
+  "baseline_center": [
+   7.96,
+   19.27
+  ]
+ },
+ "dimensions": {
+  "width_in": 0.1592,
+  "height_in": 0.198,
+  "letter": "N",
+  "cap_height_in": 0.1875,
+  "font_outline_source": "Arial Bold, converted to paths"
+ },
+ "metal": "silver",
+ "grade": "device",
+ "catalog_device": "N_DEVICE",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}

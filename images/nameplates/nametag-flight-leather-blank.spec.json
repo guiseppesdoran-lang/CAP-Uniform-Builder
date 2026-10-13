@@ -1,0 +1,130 @@
+{
+ "asset_id": "nametag-flight-leather-blank",
+ "name": "Blank black leather flight suit name tag (FDU / CFDU)",
+ "size_in": {
+  "w": 4,
+  "h": 2
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  400,
+  200
+ ],
+ "size_source": "regulation",
+ "size_basis": "CAPR 39-1 8.2.4.1 and 8.3.4.1: black leather nametags will be 2 x 4 inches, worn over the left breast pocket",
+ "size_citation": "CAPR 39-1 8.2.4.1 and 8.3.4.1: black leather nametags will be 2 x 4 inches, worn over the left breast pocket",
+ "provenance": "in-house construction from Fig A6-3 (flight suit name tags): shape, border, stitch only, no lettering",
+ "colours": {
+  "body": "#17171a",
+  "edge": "#050506",
+  "stitch": "#4a4a52"
+ },
+ "anchors": {
+  "top_center": [
+   200,
+   0
+  ],
+  "bottom_center": [
+   200,
+   200
+  ],
+  "center": [
+   200,
+   100
+  ],
+  "left_edge": [
+   0,
+   100
+  ],
+  "right_edge": [
+   400,
+   100
+  ],
+  "name_center": [
+   200,
+   107
+  ],
+  "grade_left": [
+   20,
+   162.5
+  ],
+  "cap_right": [
+   380,
+   162.5
+  ],
+  "badge_center": [
+   200,
+   46
+  ]
+ },
+ "landmarks": {
+  "tag": {
+   "x": 0,
+   "y": 0,
+   "w": 400,
+   "h": 200
+  },
+  "name_zone": {
+   "x": 45,
+   "y": 82,
+   "w": 310,
+   "h": 50
+  },
+  "grade_zone": {
+   "x": 20,
+   "y": 145,
+   "w": 100,
+   "h": 35
+  },
+  "cap_zone": {
+   "x": 280,
+   "y": 145,
+   "w": 100,
+   "h": 35
+  },
+  "badge_zone": {
+   "x": 45,
+   "y": 15,
+   "w": 310,
+   "h": 62
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in): name line (first and last name), grade lower left (\"Cadet\" for all cadets), \"CAP\" lower right, up to two badges (CAP aeronautical rating / occupational / mission qualification) above the name (8.2.4.1)",
+ "text": {
+  "lines": [
+   {
+    "zone": "name_zone",
+    "content": "first and last name",
+    "align": "center"
+   },
+   {
+    "zone": "grade_zone",
+    "content": "grade (\"Cadet\" for cadets; NCO grade for NCOs; none printed on the officer cloth tag)",
+    "align": "left"
+   },
+   {
+    "zone": "cap_zone",
+    "content": "CAP",
+    "align": "right"
+   }
+  ]
+ },
+ "documented": [
+  "black leather name tag 2 x 4 in over the left breast pocket (8.2.4.1, 8.3.4.1)",
+  "to be phased out 1 August 2021"
+ ],
+ "assumed": [
+  "stitch line inset",
+  "corner radius",
+  "zone positions read from Fig A6-3"
+ ],
+ "grade": "insignia-plate",
+ "fastener": "hook and loop: sewn 2 x 4 in loop tape on the suit (8.2.4.2)",
+ "phase_out": "1 August 2021",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

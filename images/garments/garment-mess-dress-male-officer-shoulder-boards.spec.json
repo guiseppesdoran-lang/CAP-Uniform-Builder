@@ -1,0 +1,99 @@
+{
+ "asset_id": "garment-mess-dress-male-officer-shoulder-boards",
+ "name": "Men's USAF-style mess dress: officer shoulder boards (overlay, blank grade)",
+ "size_in": {
+  "w": 26.522,
+  "h": 33.68
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2652.2,
+  3368
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-male. Board 4.1 in long x 2.2 in wide (silver centre 1.2 in between the 1/2 in braids, enough for a 1 in regular-size form) estimated from DAFI 36-2903 Figs 4.2-4.3; the regulation gives no dimension.",
+ "anchors": {
+  "top_center": [
+   1326.1,
+   0
+  ],
+  "bottom_center": [
+   1326.1,
+   3368
+  ],
+  "center": [
+   1326.1,
+   1684
+  ],
+  "left_edge": [
+   0,
+   1684
+  ],
+  "right_edge": [
+   2652.2,
+   1684
+  ],
+  "rank_slot_right_center": [
+   503.34,
+   426.4
+  ],
+  "rank_slot_left_center": [
+   2129.76,
+   417.68
+  ]
+ },
+ "landmarks": {
+  "shoulder_board_right": {
+   "x": 280.38,
+   "y": 267.15,
+   "w": 448.46,
+   "h": 331.15
+  },
+  "rank_slot_right": {
+   "x": 388.67,
+   "y": 335.22,
+   "w": 229.33,
+   "h": 182.35
+  },
+  "rank_slot_right_frame": {
+   "deg": -20.5,
+   "along": 2,
+   "across": 1.2
+  },
+  "shoulder_board_left": {
+   "x": 1904.26,
+   "y": 258.24,
+   "w": 448.6,
+   "h": 331.59
+  },
+  "rank_slot_left": {
+   "x": 2015.06,
+   "y": 326.4,
+   "w": 229.39,
+   "h": 182.56
+  },
+  "rank_slot_left_frame": {
+   "deg": -159.5,
+   "along": 2,
+   "across": 1.2
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-mess-dress-male",
+ "documented": [
+  "officers wear shoulder boards with bullion grade insignia and 1/2 in dark blue braid down each side, with a button at the peak (CAPR 39-1 4.1.1.1.1.1)",
+  "placed as close to the shoulder seam as possible"
+ ],
+ "assumed": [
+  "board size",
+  "silver board colour; braid shade 1095 approximated",
+  "grade insignia not drawn: placed at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

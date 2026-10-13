@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-ig-senior-gold",
+ "width_in": 1.25,
+ "height_in": 1.718,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   62.5,
+   0
+  ],
+  "bottom_center": [
+   62.5,
+   171.843
+  ],
+  "center": [
+   62.5,
+   85.921
+  ],
+  "left_edge": [
+   0,
+   85.921
+  ],
+  "right_edge": [
+   125,
+   85.921
+  ]
+ },
+ "dimensions": {
+  "size_class": "shield",
+  "level": "senior"
+ },
+ "data_source": "original",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + IG_senior_gold",
+ "reference": null,
+ "source_bbox_user_units": [
+  37,
+  6.5,
+  202,
+  233.333
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": null,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

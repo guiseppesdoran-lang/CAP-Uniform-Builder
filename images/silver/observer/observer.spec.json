@@ -1,0 +1,81 @@
+{
+ "asset_id": "observer",
+ "width_in": 3,
+ "height_in": 0.801,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 3 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   80.123
+  ],
+  "center": [
+   150,
+   40.062
+  ],
+  "left_edge": [
+   0,
+   40.062
+  ],
+  "right_edge": [
+   300,
+   40.062
+  ],
+  "roundel_center": [
+   149.475,
+   48.725
+  ],
+  "roundel_bottom": [
+   149.475,
+   79.508
+  ],
+  "roundel_top": [
+   149.475,
+   17.942
+  ],
+  "wing_tip_left": [
+   0.415,
+   5.569
+  ],
+  "wing_tip_right": [
+   298.534,
+   5.569
+  ],
+  "centerline_bottom": [
+   149.475,
+   79.508
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 189,
+  "reference_px_height": 52,
+  "in_per_reference_px": 0.01587,
+  "size_class": "wings",
+  "family": "wings",
+  "variant": "none",
+  "feathers_per_wing": 7,
+  "roundel_rx_in": 0.2917,
+  "roundel_ry_in": 0.3078,
+  "wing_semi_span_in": 1.4905
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + observer_badge",
+ "reference": "ALL/ref/observer_badge.png",
+ "source_bbox_user_units": [
+  4.667,
+  5.167,
+  195,
+  56
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.938,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

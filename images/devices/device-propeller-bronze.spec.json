@@ -1,0 +1,59 @@
+{
+ "asset_id": "device-propeller-bronze",
+ "name": "Bronze Propeller",
+ "size_in": {
+  "w": 0.3063,
+  "h": 0.2562
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  30.63,
+  25.62
+ ],
+ "size_source": "estimated",
+ "size_basis": "0.30 in base estimated from the ribbon-device scale used in the app; no regulation size located",
+ "anchors": {
+  "top_center": [
+   15.31,
+   0
+  ],
+  "bottom_center": [
+   15.31,
+   25.63
+  ],
+  "center": [
+   15.31,
+   12.81
+  ],
+  "left_edge": [
+   0,
+   12.81
+  ],
+  "right_edge": [
+   30.63,
+   12.81
+  ],
+  "apex": [
+   15.31,
+   0.31
+  ],
+  "base_center": [
+   15.31,
+   25.31
+  ]
+ },
+ "dimensions": {
+  "shape": "triangle with 3-blade propeller",
+  "base_to_height_ratio": 1.2,
+  "base_width_in": 0.3,
+  "drawing_scale_units_per_local_px": 0.3125
+ },
+ "metal": "bronze",
+ "grade": "device",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}

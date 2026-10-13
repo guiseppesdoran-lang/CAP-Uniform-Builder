@@ -1,0 +1,143 @@
+{
+ "asset_id": "rank-senior-technical-flight-officer-ocp-square",
+ "name": "Technical Flight Officer insignia, on the 2 in OCP square",
+ "size_in": {
+  "w": 2,
+  "h": 2
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  200,
+  200
+ ],
+ "size_source": "estimated",
+ "size_basis": "1 in long per DAFI 36-2903 7.1.5.1 (\"1-inch metal rank insignia\"); width/gap read off CAPR 39-1 Fig A5-2 at that length (not dimensioned in either document)",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   200
+  ],
+  "center": [
+   100,
+   100
+  ],
+  "left_edge": [
+   0,
+   100
+  ],
+  "right_edge": [
+   200,
+   100
+  ],
+  "insignia_center": [
+   100,
+   100
+  ]
+ },
+ "dimensions": {
+  "form": "on the 2 in OCP square",
+  "insignia_w_in": 0.32,
+  "insignia_h_in": 1,
+  "square_in": 2,
+  "fits_inside_square": true,
+  "bar_count": 1,
+  "bar_length_in": 1,
+  "bar_width_in": 0.32,
+  "gap_in": 0,
+  "long_end": "vertical (OCP)",
+  "thread": "navy with silver stripes"
+ },
+ "estimated": "Sizes other than the star diameter are not stated in inches by CAPR 39-1 or DAFI 36-2903; proportions come from CAPR 39-1 Fig A5-2.",
+ "mounts": [
+  {
+   "uniform": "OCP coat",
+   "rule": "2 in x 2 in dark blue square, center of chest. Generals: stars 1 in (3/4 in if unable), stacked vertically, one point up each; Colonel eagle centered horizontally, beak toward the wearer's right shoulder (viewer's left); Major / Lt Col stem toward the ground; Flight Officer / Lt / Capt bars with the long end vertical (7.1.1.2.1). Asset baseline = this orientation, rotation 0.",
+   "placement": {
+    "rotate_deg": 0
+   }
+  },
+  {
+   "uniform": "green / black fleece (front)",
+   "rule": "dark blue material on the front: generals positioned HORIZONTALLY with one point of each star up (use the -horizontal form); Colonel centered horizontally, beak toward the wearer's right shoulder; Major / Lt Col stem toward the ground; bars long end vertical (6.1.10.2.1, 6.1.14.4.1)",
+   "placement": {
+    "rotate_deg": 0
+   }
+  },
+  {
+   "uniform": "ABU / BDU / blue field coat collar",
+   "rule": "light silver on dark blue cloth (2d Lt and Major gold), 1/8 in of blue showing past the widest and tallest point, centered 1 in from the bottom of the collar. Generals: stars centered, perpendicular to the collar (use the -horizontal form); Colonel centered, perpendicular to the collar, eagle facing forward; Lt Col / Major: stem parallel to the ground pointing AWAY from the wearer's neck = rotate the asset 90 degrees (+90 cw on the wearer's right collar so the stem points to the viewer's left, -90 on the left collar); Flight Officer / Lt / Capt: long end centered (5.1.1.1.1.1, 5.1.2.2.1, 5.2.1.1.1.1)",
+   "placement": {
+    "rotate_deg_by_grade": {
+     "major": 90,
+     "lieutenant-colonel": 90
+    },
+    "note": "+90 = clockwise on the wearer's right collar; mirror the rotation (-90) on the left collar; other grades 0"
+   }
+  },
+  {
+   "uniform": "OCP / ABU / BDU / blue field / navy tactical cap (front)",
+   "rule": "officers only (NCOs wear none, 7.1.1.8, 6.2.11.1): rank sewn or Velcro, centered 1/2 in from the visor (patrol/tactical OCP 7.1.1.8; ABU 5.1.1.2; blue field cap 5.2.1.1.1.2), only 1/8 in of blue showing past the widest and tallest point; silver on dark blue, 2d Lt and Major gold (6.2.11.1)",
+   "placement": {
+    "rotate_deg": 0
+   }
+  },
+  {
+   "uniform": "USAF-style flight duty uniform (FDU) / green flight jacket",
+   "rule": "cloth-bordered form: dark blue cloth with silver or gold embroidery replaces the plastic-encased grade. Officers: centered on top of each shoulder, bottom edge of the insignia 1/2 in from the shoulder seam (8.2.3.2). Generals: 1 in stars (3/4 in optional) centered on the shoulder halfway between neck and shoulder seam (8.2.3.1). NCOs and cadets wear none (8.2.3.3).",
+   "placement": {
+    "rotate_deg": 0
+   }
+  },
+  {
+   "uniform": "Corporate flight duty uniform (CFDU)",
+   "rule": "plastic-encased or full-color grade embroidered on dark blue background, same placement as the FDU (8.3.3.2); NCOs and cadets: none (8.3.3.3)",
+   "placement": {
+    "rotate_deg": 0
+   }
+  },
+  {
+   "uniform": "Class A service coat (with epaulets), Class B blue shirt / blouse, corporate aviator shirt, jackets",
+   "rule": "officers: embroidered grade on the slip-on gray epaulet sleeve, see rank-epaulet-sleeve-gray-*; Colonel eagle beak facing forward; Lt Col / Major stem points away from the collar; bars lie across the sleeve (4.1.5.2.1.1, 4.1.6.1.1-2, 4.1.1.1.1.3, 4.2.5.1.1.1-2)",
+   "placement": {
+    "via": "rank-epaulet-sleeve-gray-*",
+    "anchor": {
+     "single_forms": "garment anchor rank_rule_point_left/right (Class B, mess) or rank_rule_point_left_center/right_center (Class A coat): 5/8 in from the outer end of the epaulet (DAFI 4.5.1.1.1); the slot container is 2.3 in along the strap and its centre sits about 0.6 in inboard of that point",
+     "multi_star_generals": "garment rank_slot_*_center (Brig Gen single star at the rule point; Maj Gen pair stacked along the strap at the slot centre)"
+    },
+    "when_placing_a_loose_piece_in_a_garment_rank_slot": "rotate so the Major / Lt Col stem points along the strap toward the arm end: rotate_deg = strap_angle_deg - 90 (strap angle measured from +x toward +y, about 14 deg on the Class A coat, 21 deg on the Class B shirt); bars lie across the strap: rotate_deg = strap_angle_deg; Colonel: regulation says only \"beak facing forward\" (4.1.6.1.2); the asset is drawn beak toward the viewer's left, keep it unrotated"
+   }
+  },
+  {
+   "uniform": "Mess dress shoulder boards",
+   "rule": "bullion grade on the board with 1/2 in dark blue braid down each side, as close to the shoulder seam as possible; Colonel beak forward; Lt Col / Major stem away from the collar (4.1.1.1.1.1-3, 4.1.2.1.1.1-3). Use rank-senior-<grade>-bullion (build-mess-dress-grade.js).",
+   "placement": {
+    "rotate_deg": 0,
+    "via": "rank-senior-<grade>-bullion"
+   }
+  },
+  {
+   "uniform": "Corporate blazer",
+   "rule": "no epaulet sleeve; optional grade on the blazer nameplate for officers and NCOs, not for cadets (4.2.3.1.1.2, 4.2.4.1.1.2)"
+  }
+ ],
+ "cloth_color": {
+  "hex": "#142347",
+  "basis": "sampled from CAPR 39-1 p.136 cloth figure"
+ },
+ "rank": {
+  "grade": "Technical Flight Officer",
+  "abbrev": "TFO",
+  "membership": "senior"
+ },
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

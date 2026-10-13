@@ -1,0 +1,95 @@
+{
+ "asset_id": "ground-team-basic",
+ "width_in": 1.125,
+ "height_in": 0.655,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   56.25,
+   0
+  ],
+  "bottom_center": [
+   56.25,
+   65.473
+  ],
+  "center": [
+   56.25,
+   32.736
+  ],
+  "left_edge": [
+   0,
+   32.736
+  ],
+  "right_edge": [
+   112.5,
+   32.736
+  ],
+  "disc_center": [
+   55.861,
+   25.858
+  ],
+  "disc_top": [
+   55.861,
+   1.928
+  ],
+  "triangle_apex": [
+   55.396,
+   5.648
+  ],
+  "triangle_base_center": [
+   55.396,
+   38.594
+  ],
+  "ribbon_tail_left": [
+   48.587,
+   63.348
+  ],
+  "ribbon_tail_right": [
+   63.135,
+   63.348
+  ],
+  "wreath_bottom": [
+   55.861,
+   56.731
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 122,
+  "reference_px_height": 68,
+  "in_per_reference_px": 0.01639,
+  "size_class": "gt",
+  "family": "ground-team",
+  "variant": "basic",
+  "wreath_nodes_per_branch": 17,
+  "wreath_leaf_rows": 2,
+  "disc_radius_in": 0.2393,
+  "disc_rim_radius_in": 0.2139,
+  "triangle_height_in": 0.3295,
+  "triangle_base_width_in": 0.3209,
+  "wreath_band_width_in": 0.0257,
+  "wreath_leaf_length_in": 0.1421,
+  "wreath_leaf_width_in": 0.0911,
+  "ribbon_width_in": 0.0385,
+  "ribbon_length_in": 0.2133,
+  "wreath_semi_axis_x_in": 0.4903,
+  "wreath_semi_axis_up_in": 0.1599,
+  "wreath_semi_axis_low_in": 0.2514
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + ground_team_basic_badge",
+ "reference": "ALL/ref/ground_team_basic_badge.png",
+ "source_bbox_user_units": [
+  -11.47,
+  47.8,
+  251.46,
+  200.82
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.808,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

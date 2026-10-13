@@ -1,0 +1,106 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-epaulet-sleeve-cadet-officer",
+ "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only) cadet officer epaulet sleeves (overlay, registered to garment-blues-class-b-shirt-male; blank grade)",
+ "size_in": {
+  "w": 20.688,
+  "h": 24.28
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2068.8,
+  2428
+ ],
+ "size_source": "estimated",
+ "size_basis": "Cut from the garment epaulet strap landmark (covers the outer 82%); the regulation gives no dimension.",
+ "anchors": {
+  "top_center": [
+   1034.3999999999999,
+   0
+  ],
+  "bottom_center": [
+   1034.3999999999999,
+   2427.9999999999995
+  ],
+  "center": [
+   1034.3999999999999,
+   1213.9999999999998
+  ],
+  "left_edge": [
+   0,
+   1213.9999999999998
+  ],
+  "right_edge": [
+   2068.7999999999997,
+   1213.9999999999998
+  ],
+  "rank_slot_right_center": [
+   423.7,
+   336.5
+  ],
+  "rank_slot_left_center": [
+   1645.1,
+   336.5
+  ],
+  "rank_rule_point_right": [
+   365.12,
+   358.28
+  ],
+  "rank_rule_point_left": [
+   1703.68,
+   358.28
+  ]
+ },
+ "landmarks": {
+  "epaulet_sleeve_right": {
+   "x": 276,
+   "y": 188.1,
+   "w": 356.5,
+   "h": 274
+  },
+  "rank_slot_right": {
+   "x": 288.9,
+   "y": 223.7,
+   "w": 269.6,
+   "h": 225.6
+  },
+  "rank_slot_right_frame": {
+   "deg": -20.4,
+   "along": 2.3,
+   "across": 1.55
+  },
+  "epaulet_sleeve_left": {
+   "x": 1436.3,
+   "y": 188.1,
+   "w": 356.5,
+   "h": 274
+  },
+  "rank_slot_left": {
+   "x": 1510.3,
+   "y": 223.7,
+   "w": 269.6,
+   "h": 225.6
+  },
+  "rank_slot_left_frame": {
+   "deg": -159.6,
+   "along": 2.3,
+   "across": 1.55
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-shirt-male",
+ "documented": [
+  "blue epaulet sleeves, miniature grade (4.1.11.1.1.1.4 / 4.1.12.2.3.4)",
+  "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "sleeve length (covers the outer 82% of the strap)",
+  "grade insignia not drawn: placed by the rank insignia assets at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

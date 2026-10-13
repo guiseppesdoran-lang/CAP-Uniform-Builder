@@ -1,0 +1,56 @@
+{
+ "asset_id": "mil-device-numeral-2",
+ "name": "Numeral 2",
+ "size_in": {
+  "w": 0.1554,
+  "h": 0.1875
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  15.54,
+  18.75
+ ],
+ "size_source": "estimated",
+ "size_basis": "numeral height 3/16 in estimated (same height as the measured service star); no numeral appears in the precomposed variants",
+ "anchors": {
+  "top_center": [
+   7.77,
+   0
+  ],
+  "bottom_center": [
+   7.77,
+   18.75
+  ],
+  "center": [
+   7.77,
+   9.38
+  ],
+  "left_edge": [
+   0,
+   9.38
+  ],
+  "right_edge": [
+   15.54,
+   9.38
+  ],
+  "baseline_center": [
+   7.77,
+   18.26
+  ]
+ },
+ "dimensions": {
+  "width_in": 0.1554,
+  "height_in": 0.1875,
+  "numeral": 2,
+  "font_outline_source": "Arial Black, converted to paths"
+ },
+ "metal": "silver",
+ "grade": "device",
+ "catalog_device": "NUMERAL",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}

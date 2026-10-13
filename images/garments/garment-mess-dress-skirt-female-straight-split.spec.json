@@ -1,0 +1,98 @@
+{
+ "asset_id": "garment-mess-dress-skirt-female-straight-split",
+ "name": "Women's mess dress skirt, straight hanging with side split to the top of the knee (optional type)",
+ "size_in": {
+  "w": 25.528,
+  "h": 55.6
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2552.8,
+  5560
+ ],
+ "size_source": "estimated",
+ "size_basis": "Registered to garment-mess-dress-female (same x origin and centreline, same y origin; box extended downward to the hem). Waist 19.2 in below the top of the box, 36 in waist-to-hem (ankle length, 4.1.2.3: no higher than the ankle, no longer than the bottom of the heel); widths are a plain pattern estimate, no figure shows the lower skirt.",
+ "anchors": {
+  "top_center": [
+   1276.3999999999999,
+   0
+  ],
+  "bottom_center": [
+   1276.3999999999999,
+   5560
+  ],
+  "center": [
+   1276.3999999999999,
+   2780
+  ],
+  "left_edge": [
+   0,
+   2780
+  ],
+  "right_edge": [
+   2552.8,
+   2780
+  ],
+  "waist_center": [
+   1276.3999999999999,
+   1920
+  ],
+  "hip_center": [
+   1276.3999999999999,
+   2720
+  ],
+  "hem_center": [
+   1276.3999999999999,
+   5520
+  ],
+  "hem_right": [
+   426.4,
+   5520
+  ],
+  "hem_left": [
+   2126.4,
+   5520
+  ],
+  "split_top_right": [
+   401.33,
+   3920
+  ],
+  "split_top_left": [
+   2151.47,
+   3920
+  ]
+ },
+ "landmarks": {
+  "side_split_right": {
+   "x": 401.33,
+   "y": 3920,
+   "w": 25.07,
+   "h": 1600
+  },
+  "side_split_left": {
+   "x": 2056.4,
+   "y": 3920,
+   "w": 25.07,
+   "h": 1600
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left of the artwork box",
+ "overlay_of": "garment-mess-dress-female",
+ "documented": [
+  "optional straight hanging skirt with the side split to the top of the knee, available through AAFES or MCSS as a special order (CAPR 39-1 4.1.2.3)",
+  "ankle length: no higher than the ankle, no longer than the bottom of the heel (4.1.2.3)"
+ ],
+ "assumed": [
+  "waist-to-hem length 36 in (ankle length, estimated for an adult woman)",
+  "waist half-width 7.4 in; half-width equals the jacket hem (8.84 in) at the jacket hem line y 32.93 in",
+  "hem half-width 8.9 in and split opening 0.7 in; split top 20 in below the waist (top of the knee)",
+  "fabric colour matches the jacket body"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "base"
+}

@@ -1,0 +1,107 @@
+{
+ "asset_id": "medal-meritorious-service-award-miniature",
+ "name": "Meritorious Service Award (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.8317
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  83.17
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_meriti01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8317 in (was 0.6625).",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   83.17
+  ],
+  "center": [
+   31.25,
+   41.58
+  ],
+  "left_edge": [
+   0,
+   41.58
+  ],
+  "right_edge": [
+   62.5,
+   41.58
+  ],
+  "ribbon_attach": [
+   30.26,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-meritorious-service-award",
+  "spec": "../ribbons/ribbon-meritorious-service-award.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-meritorious-service-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9929,
+  "threshold": 0.95,
+  "colour_mae_0_255": 32.7,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#2a261a",
+  "#534b35",
+  "#7d6f4e",
+  "#dbd2b8"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "meriti02",
+   "meriti03",
+   "meriti04",
+   "meriti05",
+   "meriti06",
+   "meriti07",
+   "meriti08",
+   "meriti09",
+   "meriti10",
+   "meriti11",
+   "meriti12",
+   "meriti13",
+   "meriti14",
+   "meriti16",
+   "meriti17",
+   "meriti18",
+   "meriti21"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 0.625,
+  "h": 0.6625
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-meritorious-service-miniature-medal",
+  "local_photo": "medals-work/ref-hires/meritorious-service.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 158,
+   "h": 210
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 2.2
+}

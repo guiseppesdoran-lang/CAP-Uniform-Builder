@@ -1,0 +1,45 @@
+{
+ "asset_id": "cloth-ground-team-master",
+ "width_in": 1.125,
+ "height_in": 0.739,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "embroidered art width 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular size), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   56.25,
+   0
+  ],
+  "bottom_center": [
+   56.25,
+   73.923
+  ],
+  "center": [
+   56.25,
+   36.962
+  ],
+  "left_edge": [
+   0,
+   36.962
+  ],
+  "right_edge": [
+   112.5,
+   36.962
+  ]
+ },
+ "dimensions": {
+  "family": "cloth-ocp-blue-backing"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/cloth (g*/make-*.js) + civil-air-patrol-cloth-insignia-ground-team-master-new-insignia",
+ "reference": "refs-png/civil-air-patrol-cloth-insignia-ground-team-master-new-insignia.png",
+ "source_bbox_user_units": [
+  23,
+  126,
+  580,
+  492
+ ],
+ "fit_score": null,
+ "notes": "Embroidered thread art on blue cloth backing (OCP). Drawn from the supplier product photo; thread texture not reproduced."
+}

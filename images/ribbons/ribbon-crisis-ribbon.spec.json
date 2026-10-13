@@ -1,0 +1,131 @@
+{
+ "asset_id": "ribbon-crisis-ribbon",
+ "name": "CAP Crisis Service Ribbon",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3), as carried in cap-ribbons/specs.json physicalSize from CAPR 39-3 (28 Dec 2012). Paragraph number to be confirmed.",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "673d86",
+    "fraction": 0.10476,
+    "x0_in": 0,
+    "x1_in": 0.144
+   },
+   {
+    "index": 1,
+    "hex": "c4c0c7",
+    "fraction": 0.04762,
+    "x0_in": 0.144,
+    "x1_in": 0.2095
+   },
+   {
+    "index": 2,
+    "hex": "9e261f",
+    "fraction": 0.15238,
+    "x0_in": 0.2095,
+    "x1_in": 0.419
+   },
+   {
+    "index": 3,
+    "hex": "f4f45d",
+    "fraction": 0.0381,
+    "x0_in": 0.419,
+    "x1_in": 0.4714
+   },
+   {
+    "index": 4,
+    "hex": "ecede9",
+    "fraction": 0.11429,
+    "x0_in": 0.4714,
+    "x1_in": 0.6286
+   },
+   {
+    "index": 5,
+    "hex": "172953",
+    "fraction": 0.08571,
+    "x0_in": 0.6286,
+    "x1_in": 0.7464
+   },
+   {
+    "index": 6,
+    "hex": "fbfcf8",
+    "fraction": 0.10476,
+    "x0_in": 0.7464,
+    "x1_in": 0.8905
+   },
+   {
+    "index": 7,
+    "hex": "e5d84a",
+    "fraction": 0.04762,
+    "x0_in": 0.8905,
+    "x1_in": 0.956
+   },
+   {
+    "index": 8,
+    "hex": "921514",
+    "fraction": 0.14286,
+    "x0_in": 0.956,
+    "x1_in": 1.1524
+   },
+   {
+    "index": 9,
+    "hex": "b1a7ad",
+    "fraction": 0.04762,
+    "x0_in": 1.1524,
+    "x1_in": 1.2179
+   },
+   {
+    "index": 10,
+    "hex": "5f347f",
+    "fraction": 0.11429,
+    "x0_in": 1.2179,
+    "x1_in": 1.375
+   }
+  ],
+  "device_count": 0
+ },
+ "color_source": "repo art images/ribbons/crisis_ribbon.png (not depicted in CAPR 39-3 Att.3; unverified)",
+ "color_verified_against_regulation": false,
+ "grade": "ribbon",
+ "fit": {
+  "method": "n/a (stripe fractions from regulation image)",
+  "score": null
+ }
+}

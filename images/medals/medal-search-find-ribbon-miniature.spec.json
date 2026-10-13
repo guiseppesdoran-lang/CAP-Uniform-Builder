@@ -1,0 +1,122 @@
+{
+ "asset_id": "medal-search-find-ribbon-miniature",
+ "name": "Search and Find Ribbon (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.844
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  84.4
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_find01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.844 in (was 0.6625).",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   84.4
+  ],
+  "center": [
+   31.25,
+   42.2
+  ],
+  "left_edge": [
+   0,
+   42.2
+  ],
+  "right_edge": [
+   62.5,
+   42.2
+  ],
+  "ribbon_attach": [
+   25.81,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-search-find-ribbon",
+  "spec": "../ribbons/ribbon-search-find-ribbon.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-rescue-find-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9826,
+  "threshold": 0.95,
+  "colour_mae_0_255": 29.3,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#2c3230",
+  "#525857",
+  "#8b9398",
+  "#e9eae8"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "find02",
+   "find03",
+   "find04",
+   "find05",
+   "find06",
+   "find07",
+   "find08",
+   "find09",
+   "find10",
+   "find11",
+   "find12",
+   "find13",
+   "find14",
+   "find16",
+   "find17",
+   "find18",
+   "find21",
+   "findP01",
+   "findP02",
+   "findP03",
+   "findP04",
+   "findP05",
+   "findP06",
+   "findP07",
+   "findP08",
+   "findP09",
+   "findP11",
+   "findP12",
+   "findP13",
+   "findP16",
+   "findP17",
+   "findP21"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 0.625,
+  "h": 0.6625
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-rescue-find-miniature-medal",
+  "local_photo": "medals-work/ref-hires/rescue-find.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 173,
+   "h": 233
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 4.5
+}
