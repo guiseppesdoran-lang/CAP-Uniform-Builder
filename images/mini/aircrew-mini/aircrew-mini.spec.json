@@ -1,0 +1,46 @@
+{
+ "asset_id": "aircrew-mini",
+ "width_in": 2,
+ "height_in": 0.534,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: miniature width 2 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read (miniature)",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   53.415
+  ],
+  "center": [
+   100,
+   26.707
+  ],
+  "left_edge": [
+   0,
+   26.707
+  ],
+  "right_edge": [
+   200,
+   26.707
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver + AirCrew1_DB3F0FCC3650F (miniature = same art at miniature size)",
+ "reference": "ALL/ref/AirCrew1_DB3F0FCC3650F.png",
+ "source_bbox_user_units": [
+  1.667,
+  3.167,
+  192,
+  54
+ ],
+ "fit_score": null,
+ "notes": ""
+}

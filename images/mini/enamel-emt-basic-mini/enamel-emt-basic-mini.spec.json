@@ -1,0 +1,46 @@
+{
+ "asset_id": "enamel-emt-basic-mini",
+ "width_in": 0.875,
+ "height_in": 0.63,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "miniature width 0.875 in",
+ "citation": "CAPR 39-1 Attachment 7 miniature column, as encoded in js/catalog.js",
+ "anchors": {
+  "top_center": [
+   43.75,
+   0
+  ],
+  "bottom_center": [
+   43.75,
+   63
+  ],
+  "center": [
+   43.75,
+   31.5
+  ],
+  "left_edge": [
+   0,
+   31.5
+  ],
+  "right_edge": [
+   87.5,
+   31.5
+  ]
+ },
+ "dimensions": {
+  "size_class": "emt",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel + emt_basic_badge (miniature = same art at miniature size)",
+ "reference": "../batch/ref/emt_basic_badge.png",
+ "source_bbox_user_units": [
+  0,
+  0,
+  600,
+  432
+ ],
+ "fit_score": null,
+ "notes": ""
+}

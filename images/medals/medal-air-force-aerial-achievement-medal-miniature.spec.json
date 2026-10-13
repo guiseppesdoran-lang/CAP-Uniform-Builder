@@ -1,0 +1,107 @@
+{
+ "asset_id": "medal-air-force-aerial-achievement-medal-miniature",
+ "name": "Air Force Aerial Achievement Medal (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.7583
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  75.83
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_usaf_aam01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7583 in (was 0.6625).",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   75.83
+  ],
+  "center": [
+   31.25,
+   37.91
+  ],
+  "left_edge": [
+   0,
+   37.91
+  ],
+  "right_edge": [
+   62.5,
+   37.91
+  ],
+  "ribbon_attach": [
+   31.41,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-air-force-aerial-achievement-medal",
+  "spec": "../ribbons/ribbon-air-force-aerial-achievement-medal.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/usaf-aerial-achievement-full-size-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9883,
+  "threshold": 0.95,
+  "colour_mae_0_255": 40.9,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#6b5445",
+  "#569bcc",
+  "#b79a7d",
+  "#e8d2b0"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "usaf_aam02",
+   "usaf_aam03",
+   "usaf_aam04",
+   "usaf_aam05",
+   "usaf_aam06",
+   "usaf_aam07",
+   "usaf_aam08",
+   "usaf_aam09",
+   "usaf_aam10",
+   "usaf_aam11",
+   "usaf_aam12",
+   "usaf_aam13",
+   "usaf_aam14",
+   "usaf_aam16",
+   "usaf_aam17",
+   "usaf_aam18",
+   "usaf_aam21"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 0.625,
+  "h": 0.6625
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/usaf-aerial-achievement-full-size-medal",
+  "local_photo": "medals-work/ref-hires/usaf-aerial-achievement-full-size-medal.*",
+  "photo_px": {
+   "w": 1200,
+   "h": 1200
+  },
+  "body_px": {
+   "w": 547,
+   "h": 664
+  },
+  "work_scale_1_over": 2,
+  "photo_shows": "full-size medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 4.5
+}

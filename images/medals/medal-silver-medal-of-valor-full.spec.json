@@ -1,0 +1,81 @@
+{
+ "asset_id": "medal-silver-medal-of-valor-full",
+ "name": "Silver Medal of Valor (full-size medal body)",
+ "size_in": {
+  "w": 1.375,
+  "h": 1.4575
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  145.75
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_silver.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Absolute size is an estimate.",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   145.75
+  ],
+  "center": [
+   68.75,
+   72.88
+  ],
+  "left_edge": [
+   0,
+   72.88
+  ],
+  "right_edge": [
+   137.5,
+   72.88
+  ],
+  "ribbon_attach": [
+   68.75,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-silver-medal-of-valor",
+  "spec": "../ribbons/ribbon-silver-medal-of-valor.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": {
+  "raster": "images/mini_medals/mcchord/m_silver.webp",
+  "body_top_row": 123,
+  "px_to_in": 0.0275,
+  "bbox_px": [
+   0,
+   0,
+   50,
+   53
+  ]
+ },
+ "fidelity": "silhouette_and_tone",
+ "fit": {
+  "metric": "silhouette IoU vs source alpha at source resolution",
+  "score": 0.9141,
+  "threshold": 0.9,
+  "colour_mae_0_255": 23.8,
+  "outline": "circle",
+  "inner_ring_radius_px": 16.3,
+  "note": "Source medal is ~35-50 px across; engraving and lettering are not resolved. Vector = smoothed silhouette (true circle/ellipse where the outline is one) + mid tone + at most dark and light tone layers (sampled k-means colours) + rim."
+ },
+ "palette": {
+  "mid": "#848384",
+  "dark": "#565656",
+  "light": "#b2b1b2",
+  "emblem": null
+ },
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [],
+  "different_body": []
+ }
+}

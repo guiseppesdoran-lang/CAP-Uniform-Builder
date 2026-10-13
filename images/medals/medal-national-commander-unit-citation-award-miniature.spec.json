@@ -1,0 +1,107 @@
+{
+ "asset_id": "medal-national-commander-unit-citation-award-miniature",
+ "name": "National Commander's Unit Citation Award (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.8558
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  85.58
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_unitci-nat01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8558 in (was 0.6625).",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   85.58
+  ],
+  "center": [
+   31.25,
+   42.79
+  ],
+  "left_edge": [
+   0,
+   42.79
+  ],
+  "right_edge": [
+   62.5,
+   42.79
+  ],
+  "ribbon_attach": [
+   25.87,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-national-commander-unit-citation-award",
+  "spec": "../ribbons/ribbon-national-commander-unit-citation-award.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-national-commander-unit-citation-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9799,
+  "threshold": 0.95,
+  "colour_mae_0_255": 37,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#202520",
+  "#484f49",
+  "#7d837e",
+  "#c7cac1"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "unitci-nat02",
+   "unitci-nat03",
+   "unitci-nat04",
+   "unitci-nat05",
+   "unitci-nat06",
+   "unitci-nat07",
+   "unitci-nat08",
+   "unitci-nat09",
+   "unitci-nat10",
+   "unitci-nat11",
+   "unitci-nat12",
+   "unitci-nat13",
+   "unitci-nat14",
+   "unitci-nat16",
+   "unitci-nat17",
+   "unitci-nat18",
+   "unitci-nat21"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 0.625,
+  "h": 0.6625
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-national-commander-unit-citation-medal",
+  "local_photo": "medals-work/ref-hires/national-commander-unit-citation.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 181,
+   "h": 248
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "full-size medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 6.5
+}

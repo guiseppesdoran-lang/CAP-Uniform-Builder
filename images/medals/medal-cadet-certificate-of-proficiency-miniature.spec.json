@@ -1,0 +1,89 @@
+{
+ "asset_id": "medal-cadet-certificate-of-proficiency-miniature",
+ "name": "Cadet Certificate of Proficiency (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.9459
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  94.59
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/medals/proficency.webp is 0.625 in wide (ribbon measured 49 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 58 source px = 0.638 x 0.740 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.9459 in (was 0.7398).",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   94.59
+  ],
+  "center": [
+   31.25,
+   47.29
+  ],
+  "left_edge": [
+   0,
+   47.29
+  ],
+  "right_edge": [
+   62.5,
+   47.29
+  ],
+  "ribbon_attach": [
+   28.79,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-cadet-certificate-of-proficiency",
+  "spec": "../ribbons/ribbon-cadet-certificate-of-proficiency.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-certificate-of-proficiency-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9837,
+  "threshold": 0.95,
+  "colour_mae_0_255": 29.7,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#1b1e1d",
+  "#3a3e38",
+  "#7e817c",
+  "#d1d1cd"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 0.6378,
+  "h": 0.7398
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-certificate-of-proficiency-miniature-medal",
+  "local_photo": "medals-work/ref-hires/certificate-of-proficiency.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 151,
+   "h": 226
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 4.5
+}

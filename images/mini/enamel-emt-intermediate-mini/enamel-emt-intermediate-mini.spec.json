@@ -1,0 +1,46 @@
+{
+ "asset_id": "enamel-emt-intermediate-mini",
+ "width_in": 0.875,
+ "height_in": 0.856,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "miniature width 0.875 in",
+ "citation": "CAPR 39-1 Attachment 7 miniature column, as encoded in js/catalog.js",
+ "anchors": {
+  "top_center": [
+   43.75,
+   0
+  ],
+  "bottom_center": [
+   43.75,
+   85.576
+  ],
+  "center": [
+   43.75,
+   42.788
+  ],
+  "left_edge": [
+   0,
+   42.788
+  ],
+  "right_edge": [
+   87.5,
+   42.788
+  ]
+ },
+ "dimensions": {
+  "size_class": "emt",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel + emt_intermediate (miniature = same art at miniature size)",
+ "reference": "../batch/ref/emt_intermediate.png",
+ "source_bbox_user_units": [
+  0,
+  0.585,
+  527,
+  516
+ ],
+ "fit_score": null,
+ "notes": ""
+}

@@ -1,0 +1,99 @@
+{
+ "asset_id": "medal-distinguished-service-award-miniature",
+ "name": "Distinguished Service Award (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.6875
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  68.75
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_distin01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 55 source px = 0.625 x 0.688 in at that scale. Absolute size is an estimate.",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   68.75
+  ],
+  "center": [
+   31.25,
+   34.38
+  ],
+  "left_edge": [
+   0,
+   34.38
+  ],
+  "right_edge": [
+   62.5,
+   34.38
+  ],
+  "ribbon_attach": [
+   31.25,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-distinguished-service-award",
+  "spec": "../ribbons/ribbon-distinguished-service-award.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": {
+  "raster": "images/mini_medals/mcchord/m_distin01.webp",
+  "body_top_row": 121,
+  "px_to_in": 0.0125,
+  "bbox_px": [
+   0,
+   0,
+   50,
+   55
+  ]
+ },
+ "fidelity": "silhouette_and_tone",
+ "fit": {
+  "metric": "silhouette IoU vs source alpha at source resolution",
+  "score": 0.9867,
+  "threshold": 0.9,
+  "colour_mae_0_255": 43.1,
+  "outline": "polygon",
+  "inner_ring_radius_px": null,
+  "note": "Source medal is ~35-50 px across; engraving and lettering are not resolved. Vector = smoothed silhouette (true circle/ellipse where the outline is one) + mid tone + at most dark and light tone layers (sampled k-means colours) + rim."
+ },
+ "palette": {
+  "mid": "#7f6c40",
+  "dark": "#31240d",
+  "light": "#ccbc97",
+  "emblem": null
+ },
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "distin02",
+   "distin03",
+   "distin04",
+   "distin05",
+   "distin06",
+   "distin07",
+   "distin08",
+   "distin09",
+   "distin10",
+   "distin11",
+   "distin12",
+   "distin13",
+   "distin14",
+   "distin16",
+   "distin17",
+   "distin18",
+   "distin21"
+  ],
+  "different_body": []
+ }
+}

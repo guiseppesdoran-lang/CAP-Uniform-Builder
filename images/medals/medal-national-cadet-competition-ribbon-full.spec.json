@@ -1,0 +1,104 @@
+{
+ "asset_id": "medal-national-cadet-competition-ribbon-full",
+ "name": "National Cadet Competition Ribbon (full-size medal body)",
+ "size_in": {
+  "w": 1.375,
+  "h": 1.7899
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  178.99
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_ncc.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7899 in (was 1.4575).",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   178.99
+  ],
+  "center": [
+   68.75,
+   89.5
+  ],
+  "left_edge": [
+   0,
+   89.5
+  ],
+  "right_edge": [
+   137.5,
+   89.5
+  ],
+  "ribbon_attach": [
+   71.25,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-national-cadet-competition-ribbon",
+  "spec": "../ribbons/ribbon-national-cadet-competition-ribbon.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-national-cadet-competition-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9924,
+  "threshold": 0.95,
+  "colour_mae_0_255": 19.3,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#1f1b18",
+  "#504d4d",
+  "#6d6967",
+  "#b5b4b4"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "ncc_b",
+   "ncc_bb",
+   "ncc_bbb",
+   "ncc_bbbb",
+   "ncc_s",
+   "ncc_sb",
+   "ncc_sbb",
+   "ncc_sbbb",
+   "ncc_ss",
+   "ncc_ssb",
+   "ncc_ssbb",
+   "ncc_sss",
+   "ncc_sssb",
+   "ncc_ssss"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 1.375,
+  "h": 1.4575
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-national-cadet-competition-miniature-medal",
+  "local_photo": "medals-work/ref-hires/national-cadet-competition.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 181,
+   "h": 235
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 2.2
+}

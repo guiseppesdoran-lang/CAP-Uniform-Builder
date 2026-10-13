@@ -1,0 +1,122 @@
+{
+ "asset_id": "medal-air-search-and-rescue-ribbon-full",
+ "name": "Air Search and Rescue Ribbon (full-size medal body)",
+ "size_in": {
+  "w": 1.375,
+  "h": 1.7387
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  173.87
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_sar01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7387 in (was 1.4575).",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   173.87
+  ],
+  "center": [
+   68.75,
+   86.94
+  ],
+  "left_edge": [
+   0,
+   86.94
+  ],
+  "right_edge": [
+   137.5,
+   86.94
+  ],
+  "ribbon_attach": [
+   72.88,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-air-search-and-rescue-ribbon",
+  "spec": "../ribbons/ribbon-air-search-and-rescue-ribbon.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-search-and-rescue-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9902,
+  "threshold": 0.95,
+  "colour_mae_0_255": 21.2,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#242122",
+  "#413d3e",
+  "#7e7b77",
+  "#a8a5a2"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "sar02",
+   "sar03",
+   "sar04",
+   "sar05",
+   "sar06",
+   "sar07",
+   "sar08",
+   "sar09",
+   "sar10",
+   "sar11",
+   "sar12",
+   "sar13",
+   "sar14",
+   "sar16",
+   "sar17",
+   "sar18",
+   "sar21",
+   "sarP01",
+   "sarP02",
+   "sarP03",
+   "sarP04",
+   "sarP05",
+   "sarP06",
+   "sarP07",
+   "sarP08",
+   "sarP09",
+   "sarP11",
+   "sarP12",
+   "sarP13",
+   "sarP16",
+   "sarP17",
+   "sarP21"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 1.375,
+  "h": 1.4575
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-search-and-rescue-miniature-medal",
+  "local_photo": "medals-work/ref-hires/search-and-rescue.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 183,
+   "h": 231
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 3.2
+}

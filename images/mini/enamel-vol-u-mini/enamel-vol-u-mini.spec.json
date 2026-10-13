@@ -1,0 +1,46 @@
+{
+ "asset_id": "enamel-vol-u-mini",
+ "width_in": 1.5,
+ "height_in": 1.499,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "miniature width 1.5 in",
+ "citation": "Vanguard listing: Volunteer University Instructor 1.5 in miniature",
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   149.888
+  ],
+  "center": [
+   75,
+   74.944
+  ],
+  "left_edge": [
+   0,
+   74.944
+  ],
+  "right_edge": [
+   150,
+   74.944
+  ]
+ },
+ "dimensions": {
+  "size_class": "medal",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel + Vol_U_Badge (miniature = same art at miniature size)",
+ "reference": "../batch/ref/Vol_U_Badge.png",
+ "source_bbox_user_units": [
+  8.5,
+  8.833,
+  232.5,
+  232.667
+ ],
+ "fit_score": null,
+ "notes": ""
+}
