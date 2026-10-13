@@ -1,0 +1,86 @@
+{
+ "asset_id": "master-pilot",
+ "width_in": 3,
+ "height_in": 1.131,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 3 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   113.132
+  ],
+  "center": [
+   150,
+   56.566
+  ],
+  "left_edge": [
+   0,
+   56.566
+  ],
+  "right_edge": [
+   300,
+   56.566
+  ],
+  "roundel_center": [
+   149.068,
+   81.812
+  ],
+  "roundel_bottom": [
+   149.068,
+   112.509
+  ],
+  "roundel_top": [
+   149.068,
+   51.114
+  ],
+  "star_center": [
+   149.068,
+   34.903
+  ],
+  "wing_tip_left": [
+   0.421,
+   38.784
+  ],
+  "wing_tip_right": [
+   297.716,
+   38.784
+  ],
+  "centerline_bottom": [
+   149.068,
+   112.509
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 186,
+  "reference_px_height": 69,
+  "in_per_reference_px": 0.01613,
+  "size_class": "wings",
+  "family": "wings",
+  "variant": "wreath",
+  "feathers_per_wing": 7,
+  "roundel_rx_in": 0.2909,
+  "roundel_ry_in": 0.307,
+  "star_radius_in": 0.2847,
+  "wing_semi_span_in": 1.4864
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + CAPMasterPilot1_621A0E2ED15DA",
+ "reference": "ALL/ref/CAPMasterPilot1_621A0E2ED15DA.png",
+ "source_bbox_user_units": [
+  2.667,
+  -1.833,
+  190.5,
+  69
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.895,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

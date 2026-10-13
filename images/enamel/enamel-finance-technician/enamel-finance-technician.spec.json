@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-finance-technician",
+ "width_in": 1.25,
+ "height_in": 1.358,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   62.5,
+   0
+  ],
+  "bottom_center": [
+   62.5,
+   135.793
+  ],
+  "center": [
+   62.5,
+   67.897
+  ],
+  "left_edge": [
+   0,
+   67.897
+  ],
+  "right_edge": [
+   125,
+   67.897
+  ]
+ },
+ "dimensions": {
+  "size_class": "shield",
+  "level": "technician"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + finance_technician_badge",
+ "reference": "../batch/ref/finance_technician_badge.png",
+ "source_bbox_user_units": [
+  12.333,
+  6.167,
+  224.667,
+  236.833
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.97,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

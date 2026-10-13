@@ -1,0 +1,130 @@
+{
+ "asset_id": "master-ground-team-field",
+ "width_in": 1.375,
+ "height_in": 1.21723,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 1.125 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
+ "citation": "OCP: CAPR 39-1 ICL 25-06 para 7.1.1.3.1 (max 4 badges, light silver embroidery on dark blue, 1/8 in of blue exposed at widest/tallest part). ABU: CAPR 39-1 (3 Mar 2020) para 5.1.1.1.2.4 (two aviation/occupational badges, embroidered silver on dark blue, 1/8 in of blue showing) and 5.1.1.1.2.5 (command insignia). Eligible list: Attachment 7 aviation + occupational badges",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   121.723
+  ],
+  "center": [
+   68.75,
+   60.8615
+  ],
+  "left_edge": [
+   0,
+   60.8615
+  ],
+  "right_edge": [
+   137.5,
+   60.8615
+  ],
+  "disc_center": [
+   68.312,
+   65.219
+  ],
+  "disc_top": [
+   68.312,
+   37.728
+  ],
+  "triangle_apex": [
+   67.779,
+   42.002
+  ],
+  "triangle_base_center": [
+   67.779,
+   79.849
+  ],
+  "ribbon_tail_left": [
+   59.956,
+   108.286
+  ],
+  "ribbon_tail_right": [
+   76.668,
+   108.286
+  ],
+  "wreath_bottom": [
+   68.312,
+   100.685
+  ],
+  "device_center": [
+   69.074,
+   26.461
+  ],
+  "device_base": [
+   69.074,
+   41.156
+  ],
+  "art_top_center": [
+   68.75,
+   12.5
+  ],
+  "art_bottom_center": [
+   68.75,
+   109.223
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 112,
+  "reference_px_height": 95,
+  "in_per_reference_px": 0.01786,
+  "size_class": "gt",
+  "family": "ground-team",
+  "variant": "master",
+  "wreath_nodes_per_branch": 12,
+  "wreath_leaf_rows": 2,
+  "disc_radius_in": 0.2749,
+  "disc_rim_radius_in": 0.2458,
+  "triangle_height_in": 0.3785,
+  "triangle_base_width_in": 0.3686,
+  "wreath_band_width_in": 0.0295,
+  "wreath_leaf_length_in": 0.1633,
+  "wreath_leaf_width_in": 0.1047,
+  "ribbon_width_in": 0.0442,
+  "ribbon_length_in": 0.2451,
+  "wreath_semi_axis_x_in": 0.4748,
+  "wreath_semi_axis_up_in": 0.1837,
+  "wreath_semi_axis_low_in": 0.2888,
+  "device_wreath_outer_radius_in": 0.1469
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + master_ground_team_badge",
+ "reference": "ALL/ref/master_ground_team_badge.png",
+ "source_bbox_user_units": [
+  5.537,
+  0.98,
+  234.415,
+  197.76
+ ],
+ "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from master-ground-team.",
+ "field_uniform": {
+  "worn_on": [
+   "abu",
+   "ocp"
+  ],
+  "max_badges": {
+   "abu": 2,
+   "ocp": 4
+  },
+  "backing": "dark blue rectangle (square corners)",
+  "backing_color": "#1b2547",
+  "thread_color": "#d3d8de",
+  "margin_in": 0.125,
+  "corner_radius_in": 0,
+  "backing_minus_art_in": 0.25,
+  "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
+  "art_width_in": 1.125,
+  "art_height_in": 0.96723,
+  "source_asset": "master-ground-team",
+  "kind": "chest-badge"
+ },
+ "derived_from": "assets/silver/master-ground-team"
+}

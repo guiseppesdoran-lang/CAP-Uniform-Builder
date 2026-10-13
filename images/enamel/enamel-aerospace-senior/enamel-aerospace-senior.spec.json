@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-aerospace-senior",
+ "width_in": 1,
+ "height_in": 1.468,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: aero class badge about 1 in wide; not from a regulation; verify against the supplier spec",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   50,
+   0
+  ],
+  "bottom_center": [
+   50,
+   146.83
+  ],
+  "center": [
+   50,
+   73.415
+  ],
+  "left_edge": [
+   0,
+   73.415
+  ],
+  "right_edge": [
+   100,
+   73.415
+  ]
+ },
+ "dimensions": {
+  "size_class": "aero",
+  "level": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + aerospace_senior_badge",
+ "reference": "../batch/ref/aerospace_senior_badge.png",
+ "source_bbox_user_units": [
+  37.5,
+  0,
+  200.5,
+  239.333
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.959,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

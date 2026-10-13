@@ -1,0 +1,45 @@
+{
+ "asset_id": "cloth-pilot-wings",
+ "width_in": 3,
+ "height_in": 1.474,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "embroidered art width 3 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular size), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   147.359
+  ],
+  "center": [
+   150,
+   73.68
+  ],
+  "left_edge": [
+   0,
+   73.68
+  ],
+  "right_edge": [
+   300,
+   73.68
+  ]
+ },
+ "dimensions": {
+  "family": "cloth-ocp-blue-backing"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/cloth (g*/make-*.js) + civil-air-patrol-cloth-insignia-pilot-wings-new-insignia",
+ "reference": "refs-png/civil-air-patrol-cloth-insignia-pilot-wings-new-insignia.png",
+ "source_bbox_user_units": [
+  0,
+  0,
+  568,
+  279
+ ],
+ "fit_score": null,
+ "notes": "Embroidered thread art on blue cloth backing (OCP). Drawn from the supplier product photo; thread texture not reproduced."
+}

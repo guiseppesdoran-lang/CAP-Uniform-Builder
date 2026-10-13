@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-nra-distinguished-expert",
+ "width_in": 1.1,
+ "height_in": 2.756,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: nra class badge about 1.1 in wide; not from a regulation; verify against the supplier spec",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   55,
+   0
+  ],
+  "bottom_center": [
+   55,
+   275.643
+  ],
+  "center": [
+   55,
+   137.821
+  ],
+  "left_edge": [
+   0,
+   137.821
+  ],
+  "right_edge": [
+   110,
+   137.821
+  ]
+ },
+ "dimensions": {
+  "size_class": "nra",
+  "level": "none"
+ },
+ "data_source": "original",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + nra_distinguished_expert_badge",
+ "reference": null,
+ "source_bbox_user_units": [
+  14.497,
+  11.674,
+  126.303,
+  291.844
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": null,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

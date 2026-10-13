@@ -1,0 +1,53 @@
+{
+ "asset_id": "national-staff",
+ "width_in": 3.0738,
+ "height_in": 2.999,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: height 3 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   153.69,
+   0
+  ],
+  "bottom_center": [
+   153.69,
+   299.904
+  ],
+  "center": [
+   153.69,
+   149.952
+  ],
+  "left_edge": [
+   0,
+   149.952
+  ],
+  "right_edge": [
+   307.38,
+   149.952
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 240,
+  "reference_px_height": 234,
+  "in_per_reference_px": 0.00625,
+  "size_class": "staff",
+  "family": null,
+  "variant": null
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + national_staff_badge",
+ "reference": "ALL/ref/national_staff_badge.png",
+ "source_bbox_user_units": [
+  0,
+  0.167,
+  239.833,
+  234.167
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.847,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

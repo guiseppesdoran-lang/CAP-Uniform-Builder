@@ -1,0 +1,117 @@
+{
+ "asset_id": "uas-technician-basic-field",
+ "width_in": 3.25,
+ "height_in": 1.03333,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 3 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
+ "citation": "OCP: CAPR 39-1 ICL 25-06 para 7.1.1.3.1 (max 4 badges, light silver embroidery on dark blue, 1/8 in of blue exposed at widest/tallest part). ABU: CAPR 39-1 (3 Mar 2020) para 5.1.1.1.2.4 (two aviation/occupational badges, embroidered silver on dark blue, 1/8 in of blue showing) and 5.1.1.1.2.5 (command insignia). Eligible list: Attachment 7 aviation + occupational badges",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   103.333
+  ],
+  "center": [
+   162.5,
+   51.6665
+  ],
+  "left_edge": [
+   0,
+   51.6665
+  ],
+  "right_edge": [
+   325,
+   51.6665
+  ],
+  "hexagon_center": [
+   162.5,
+   61.25
+  ],
+  "hexagon_top": [
+   162.5,
+   32.5
+  ],
+  "hexagon_bottom": [
+   162.5,
+   90
+  ],
+  "hexagon_vertex_left": [
+   129.063,
+   61.25
+  ],
+  "hexagon_vertex_right": [
+   195.938,
+   61.25
+  ],
+  "wing_tip_left": [
+   12.5,
+   18.25
+  ],
+  "wing_tip_right": [
+   312.5,
+   18.25
+  ],
+  "centerline_bottom": [
+   162.5,
+   90
+  ],
+  "art_top_center": [
+   162.5,
+   12.5
+  ],
+  "art_bottom_center": [
+   162.5,
+   90.833
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 240,
+  "reference_px_height": 64,
+  "in_per_reference_px": 0.0125,
+  "size_class": "wings",
+  "family": "wings-suas",
+  "variant": "basic",
+  "feathers_per_wing": 7,
+  "hexagon_width_in": 0.6687,
+  "hexagon_height_in": 0.575,
+  "hexagon_top_edge_in": 0.3478,
+  "wing_semi_span_in": 1.5,
+  "feather_count_in": 0.0875
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + uas_technician_basic_badge",
+ "reference": "ALL/ref/uas_technician_basic_badge.png",
+ "source_bbox_user_units": [
+  0,
+  21.5,
+  240,
+  84.167
+ ],
+ "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from uas-technician-basic.",
+ "field_uniform": {
+  "worn_on": [
+   "abu",
+   "ocp"
+  ],
+  "max_badges": {
+   "abu": 2,
+   "ocp": 4
+  },
+  "backing": "dark blue rectangle (square corners)",
+  "backing_color": "#1b2547",
+  "thread_color": "#d3d8de",
+  "margin_in": 0.125,
+  "corner_radius_in": 0,
+  "backing_minus_art_in": 0.25,
+  "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
+  "art_width_in": 3,
+  "art_height_in": 0.78333,
+  "source_asset": "uas-technician-basic",
+  "kind": "chest-badge"
+ },
+ "derived_from": "assets/silver/uas-technician-basic"
+}

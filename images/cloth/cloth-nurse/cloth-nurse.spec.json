@@ -1,0 +1,45 @@
+{
+ "asset_id": "cloth-nurse",
+ "width_in": 0.854,
+ "height_in": 1.125,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "embroidered art height 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular size), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   42.7,
+   0
+  ],
+  "bottom_center": [
+   42.7,
+   112.525
+  ],
+  "center": [
+   42.7,
+   56.263
+  ],
+  "left_edge": [
+   0,
+   56.263
+  ],
+  "right_edge": [
+   85.4,
+   56.263
+  ]
+ },
+ "dimensions": {
+  "family": "cloth-ocp-blue-backing"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/cloth (g*/make-*.js) + civil-air-patrol-cloth-badge-nurse-new-insignia",
+ "reference": "refs-png/civil-air-patrol-cloth-badge-nurse-new-insignia.png",
+ "source_bbox_user_units": [
+  96,
+  38,
+  499,
+  569
+ ],
+ "fit_score": null,
+ "notes": "Embroidered thread art on blue cloth backing (OCP). Drawn from the supplier product photo; thread texture not reproduced."
+}

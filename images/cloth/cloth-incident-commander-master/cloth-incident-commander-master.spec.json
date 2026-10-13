@@ -1,0 +1,45 @@
+{
+ "asset_id": "cloth-incident-commander-master",
+ "width_in": 1.625,
+ "height_in": 1.155,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "embroidered art width 1.625 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular size), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   81.25,
+   0
+  ],
+  "bottom_center": [
+   81.25,
+   115.536
+  ],
+  "center": [
+   81.25,
+   57.768
+  ],
+  "left_edge": [
+   0,
+   57.768
+  ],
+  "right_edge": [
+   162.5,
+   57.768
+  ]
+ },
+ "dimensions": {
+  "family": "cloth-ocp-blue-backing"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/cloth (g*/make-*.js) + civil-air-patrol-cloth-insignia-master-incident-commander-new-insignia",
+ "reference": "refs-png/civil-air-patrol-cloth-insignia-master-incident-commander-new-insignia.png",
+ "source_bbox_user_units": [
+  20,
+  89,
+  584,
+  490
+ ],
+ "fit_score": null,
+ "notes": "Embroidered thread art on blue cloth backing (OCP). Drawn from the supplier product photo; thread texture not reproduced."
+}

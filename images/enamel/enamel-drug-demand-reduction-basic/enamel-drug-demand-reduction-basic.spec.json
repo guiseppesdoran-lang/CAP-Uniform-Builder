@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-drug-demand-reduction-basic",
+ "width_in": 1.25,
+ "height_in": 1.777,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: ddr class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   62.5,
+   0
+  ],
+  "bottom_center": [
+   62.5,
+   177.734
+  ],
+  "center": [
+   62.5,
+   88.867
+  ],
+  "left_edge": [
+   0,
+   88.867
+  ],
+  "right_edge": [
+   125,
+   88.867
+  ]
+ },
+ "dimensions": {
+  "size_class": "ddr",
+  "level": "none"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + Drug_Demand_Reduction_Basic_Badge",
+ "reference": "../batch/ref/Drug_Demand_Reduction_Basic_Badge.png",
+ "source_bbox_user_units": [
+  0,
+  -2.167,
+  170.667,
+  240.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.986,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

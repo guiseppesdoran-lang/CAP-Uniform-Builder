@@ -1,0 +1,53 @@
+{
+ "asset_id": "legal-officer",
+ "width_in": 1.6,
+ "height_in": 1.195,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: command/legal wreath badge about 1.6 in wide; not from a regulation; verify",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   80,
+   0
+  ],
+  "bottom_center": [
+   80,
+   119.499
+  ],
+  "center": [
+   80,
+   59.749
+  ],
+  "left_edge": [
+   0,
+   59.749
+  ],
+  "right_edge": [
+   160,
+   59.749
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 120,
+  "reference_px_height": 89,
+  "in_per_reference_px": 0.01333,
+  "size_class": "cmd",
+  "family": null,
+  "variant": null
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + Legal_officer",
+ "reference": "ALL/ref/Legal_officer.png",
+ "source_bbox_user_units": [
+  60,
+  76,
+  179.833,
+  165.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.813,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

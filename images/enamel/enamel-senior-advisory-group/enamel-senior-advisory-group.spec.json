@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-senior-advisory-group",
+ "width_in": 2.0877,
+ "height_in": 3,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: height 3 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   104.385,
+   0
+  ],
+  "bottom_center": [
+   104.385,
+   300.029
+  ],
+  "center": [
+   104.385,
+   150.014
+  ],
+  "left_edge": [
+   0,
+   150.014
+  ],
+  "right_edge": [
+   208.77,
+   150.014
+  ]
+ },
+ "dimensions": {
+  "size_class": "cmd",
+  "level": "none"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + Senior_advisory_group_badge",
+ "reference": "../batch/ref/Senior_advisory_group_badge.png",
+ "source_bbox_user_units": [
+  37,
+  0,
+  204,
+  240
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.975,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

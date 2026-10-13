@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-muslim-chaplin",
+ "width_in": 0.7612,
+ "height_in": 1.125,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: height 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   38.06,
+   0
+  ],
+  "bottom_center": [
+   38.06,
+   112.509
+  ],
+  "center": [
+   38.06,
+   56.255
+  ],
+  "left_edge": [
+   0,
+   56.255
+  ],
+  "right_edge": [
+   76.12,
+   56.255
+  ]
+ },
+ "dimensions": {
+  "size_class": "chap",
+  "level": "none"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + muslim_chaplin",
+ "reference": "../batch/ref/muslim_chaplin.png",
+ "source_bbox_user_units": [
+  7,
+  2,
+  75.333,
+  103
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.844,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

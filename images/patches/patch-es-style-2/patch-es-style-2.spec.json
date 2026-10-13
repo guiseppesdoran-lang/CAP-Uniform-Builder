@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-es-style-2",
+ "width_in": 3.5,
+ "height_in": 3.5,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   175,
+   0
+  ],
+  "bottom_center": [
+   175,
+   350
+  ],
+  "center": [
+   175,
+   175
+  ],
+  "left_edge": [
+   0,
+   175
+  ],
+  "right_edge": [
+   350,
+   175
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches (out) + es-style-2",
+ "reference": "refs-png/es-style-2.png",
+ "source_bbox_user_units": [
+  9,
+  9,
+  591,
+  591
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch redrawn as clean flat vector art (hand-constructed shapes, measured from the reference photo; lettering as paths); thread texture not reproduced; size estimated."
+}

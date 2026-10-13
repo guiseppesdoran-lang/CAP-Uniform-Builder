@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-aerospace-education-master",
+ "width_in": 1,
+ "height_in": 1.362,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: aero class badge about 1 in wide; not from a regulation; verify against the supplier spec",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   50,
+   0
+  ],
+  "bottom_center": [
+   50,
+   136.174
+  ],
+  "center": [
+   50,
+   68.087
+  ],
+  "left_edge": [
+   0,
+   68.087
+  ],
+  "right_edge": [
+   100,
+   68.087
+  ]
+ },
+ "dimensions": {
+  "size_class": "aero",
+  "level": "master"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + aerospace_education_master_badge",
+ "reference": "../batch/ref/aerospace_education_master_badge.png",
+ "source_bbox_user_units": [
+  1.667,
+  1.833,
+  89.667,
+  121.667
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.979,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

@@ -1,0 +1,96 @@
+{
+ "asset_id": "uas-pilot-master",
+ "width_in": 3,
+ "height_in": 1.023,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 3 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   102.292
+  ],
+  "center": [
+   150,
+   51.146
+  ],
+  "left_edge": [
+   0,
+   51.146
+  ],
+  "right_edge": [
+   300,
+   51.146
+  ],
+  "hexagon_center": [
+   150,
+   72.708
+  ],
+  "hexagon_top": [
+   150,
+   43.958
+  ],
+  "hexagon_bottom": [
+   150,
+   101.458
+  ],
+  "hexagon_vertex_left": [
+   116.563,
+   72.708
+  ],
+  "hexagon_vertex_right": [
+   183.438,
+   72.708
+  ],
+  "wing_tip_left": [
+   0,
+   29.708
+  ],
+  "wing_tip_right": [
+   300,
+   29.708
+  ],
+  "centerline_bottom": [
+   150,
+   101.458
+  ],
+  "device_center": [
+   150,
+   22.108
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 240,
+  "reference_px_height": 91,
+  "in_per_reference_px": 0.0125,
+  "size_class": "wings",
+  "family": "wings-suas",
+  "variant": "wreath",
+  "feathers_per_wing": 7,
+  "hexagon_width_in": 0.6687,
+  "hexagon_height_in": 0.575,
+  "hexagon_top_edge_in": 0.3478,
+  "wing_semi_span_in": 1.5,
+  "feather_count_in": 0.0875,
+  "device_radius_in": 0.2185
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + uas_pilot_master_badge",
+ "reference": "ALL/ref/uas_pilot_master_badge.png",
+ "source_bbox_user_units": [
+  0,
+  2.333,
+  240,
+  84.167
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.826,
+  "note": "bbox-normalised mask IoU vs the OLD round-roundel product webp; expected to be lower, judged against the regulation figure (silver/uas-compare.png)"
+ },
+ "notes": "Hexagon-centre sUAS badge built from CAPR 39-1 Attachment 7 figure A7-1 (regulation figure wins over the round-roundel product photos). Parameter table: silver/suas-spec.json (written by make-suas.js)."
+}

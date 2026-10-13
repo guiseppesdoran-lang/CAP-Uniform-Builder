@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-emt-basic",
+ "width_in": 1.125,
+ "height_in": 0.81,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   56.25,
+   0
+  ],
+  "bottom_center": [
+   56.25,
+   81
+  ],
+  "center": [
+   56.25,
+   40.5
+  ],
+  "left_edge": [
+   0,
+   40.5
+  ],
+  "right_edge": [
+   112.5,
+   40.5
+  ]
+ },
+ "dimensions": {
+  "size_class": "emt",
+  "level": "none"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + emt_basic_badge",
+ "reference": "../batch/ref/emt_basic_badge.png",
+ "source_bbox_user_units": [
+  0,
+  0,
+  600,
+  432
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.782,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

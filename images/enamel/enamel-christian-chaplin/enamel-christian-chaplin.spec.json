@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-christian-chaplin",
+ "width_in": 0.7009,
+ "height_in": 1.125,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: height 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   35.045,
+   0
+  ],
+  "bottom_center": [
+   35.045,
+   112.508
+  ],
+  "center": [
+   35.045,
+   56.254
+  ],
+  "left_edge": [
+   0,
+   56.254
+  ],
+  "right_edge": [
+   70.09,
+   56.254
+  ]
+ },
+ "dimensions": {
+  "size_class": "chap",
+  "level": "none"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + christian_chaplin",
+ "reference": "../batch/ref/christian_chaplin.png",
+ "source_bbox_user_units": [
+  2.167,
+  2.833,
+  60,
+  95.667
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.917,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

@@ -1,0 +1,45 @@
+{
+ "asset_id": "cloth-group-commander-with-hook",
+ "width_in": 1,
+ "height_in": 1.197,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "backing width 1 in",
+ "citation": "Vanguard listing: Group Commander cloth badge 1 in wide x 1 1/8 in tall",
+ "anchors": {
+  "top_center": [
+   50,
+   0
+  ],
+  "bottom_center": [
+   50,
+   119.701
+  ],
+  "center": [
+   50,
+   59.85
+  ],
+  "left_edge": [
+   0,
+   59.85
+  ],
+  "right_edge": [
+   100,
+   59.85
+  ]
+ },
+ "dimensions": {
+  "family": "cloth-ocp-blue-backing"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/cloth (g*/make-*.js) + civil-air-patrol-cloth-badge-group-commander-with-hook-new-insignia",
+ "reference": "refs-png/civil-air-patrol-cloth-badge-group-commander-with-hook-new-insignia.png",
+ "source_bbox_user_units": [
+  18.503,
+  26.433,
+  1315.499,
+  1578.951
+ ],
+ "fit_score": null,
+ "notes": "Embroidered thread art on blue cloth backing (OCP). Drawn from the supplier product photo; thread texture not reproduced."
+}

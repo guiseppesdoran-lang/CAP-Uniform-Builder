@@ -1,0 +1,53 @@
+{
+ "asset_id": "nurse",
+ "width_in": 1.0436,
+ "height_in": 1.125,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: height 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   52.18,
+   0
+  ],
+  "bottom_center": [
+   52.18,
+   112.493
+  ],
+  "center": [
+   52.18,
+   56.246
+  ],
+  "left_edge": [
+   0,
+   56.246
+  ],
+  "right_edge": [
+   104.36,
+   56.246
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 165,
+  "reference_px_height": 177,
+  "in_per_reference_px": 0.00909,
+  "size_class": "med",
+  "family": null,
+  "variant": null
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + Nurse",
+ "reference": "ALL/ref/Nurse.png",
+ "source_bbox_user_units": [
+  38.833,
+  33,
+  203.5,
+  210.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.864,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}
