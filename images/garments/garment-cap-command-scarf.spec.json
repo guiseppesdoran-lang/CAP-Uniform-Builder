@@ -3,14 +3,14 @@
  "name": "CAP command scarf (optional; worn with the FDU and CFDU)",
  "size_in": {
   "w": 7.9892,
-  "h": 7.5656
+  "h": 6.8998
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   798.92,
-  756.56
+  689.98
  ],
  "size_source": "estimated",
  "size_basis": "Two bands lying along the FDU collar V and crossing where they are tucked in; sized to the suit's collar opening. CAPR 39-1 8.2.6 / Figure 8.2 give no dimensions. Motif is an original simplified three-pronged mark, not traced.",
@@ -21,30 +21,30 @@
   ],
   "bottom_center": [
    399.46,
-   756.56
+   689.98
   ],
   "center": [
    399.46,
-   378.28
+   344.99
   ],
   "left_edge": [
    0,
-   378.28
+   344.99
   ],
   "right_edge": [
    798.92,
-   378.28
+   344.99
   ],
   "suit_apex": [
    399.46,
-   732.35
+   665.77
   ]
  },
  "landmarks": {},
  "landmarks_note": "Optional accessory. Place so anchors.suit_apex coincides with the suit's anchors.collar_apex (both in the same inch scale).",
  "dimensions": {
   "width_in": 7.99,
-  "height_in": 7.57
+  "height_in": 6.9
  },
  "documented": [
   "yellow and red CAP command scarf is authorized with the FDU (8.2.6) and CFDU (8.3.6), worn around the neck and tucked into the flight suit"
