@@ -153,7 +153,7 @@ function wireShoulderCordControl(){
   sel.addEventListener('change', () => {
     State.shoulderCord = sel.value || null;
     renderCACShoulderCord();
-    if(typeof updateStatusPanel === 'function') updateStatusPanel();
+    fullRender();
   });
 }
 
