@@ -1,0 +1,152 @@
+{
+ "asset_id": "garment-blues-class-a-coat-female-senior-officer",
+ "name": "Women's Class A coat senior member officer layer: epaulets with gray epaulet sleeves, US lapel insignia, 1/2 in blue sleeve braid (overlay, blank grade)",
+ "size_in": {
+  "w": 24.3883,
+  "h": 29.4756
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2438.83,
+  2947.56
+ ],
+ "size_source": "estimated",
+ "size_basis": "Sleeve braid width 0.5 in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
+ "anchors": {
+  "top_center": [
+   1219.415,
+   0
+  ],
+  "bottom_center": [
+   1219.415,
+   2947.56
+  ],
+  "center": [
+   1219.415,
+   1473.78
+  ],
+  "left_edge": [
+   0,
+   1473.78
+  ],
+  "right_edge": [
+   2438.83,
+   1473.78
+  ],
+  "epaulet_sleeve_right_center": [
+   570.46,
+   306.24
+  ],
+  "rank_slot_right_center": [
+   565.89,
+   302.11
+  ],
+  "rank_rule_point_right_center": [
+   504.68,
+   314.95
+  ],
+  "lapel_us_right_center": [
+   892.98,
+   319
+  ],
+  "epaulet_sleeve_left_center": [
+   1868.37,
+   306.24
+  ],
+  "rank_slot_left_center": [
+   1873.04,
+   302.11
+  ],
+  "rank_rule_point_left_center": [
+   1934.15,
+   314.95
+  ],
+  "lapel_us_left_center": [
+   1538.02,
+   319
+  ]
+ },
+ "landmarks": {
+  "epaulet_right": {
+   "x": 427.42,
+   "y": 177.23,
+   "w": 380.07,
+   "h": 237.6
+  },
+  "epaulet_sleeve_right": {
+   "x": 425.13,
+   "y": 193.86,
+   "w": 290.66,
+   "h": 224.75
+  },
+  "rank_slot_right": {
+   "x": 439.3,
+   "y": 211.64,
+   "w": 253.18,
+   "h": 180.93
+  },
+  "rank_rule_point_right": {
+   "x": 503.8,
+   "y": 314.07,
+   "w": 1.76,
+   "h": 1.76
+  },
+  "lapel_us_right": {
+   "x": 847.97,
+   "y": 288.99,
+   "w": 90.02,
+   "h": 60.02
+  },
+  "epaulet_left": {
+   "x": 1631.34,
+   "y": 177.23,
+   "w": 380.07,
+   "h": 237.6
+  },
+  "epaulet_sleeve_left": {
+   "x": 1723.04,
+   "y": 193.86,
+   "w": 290.66,
+   "h": 224.75
+  },
+  "rank_slot_left": {
+   "x": 1746.45,
+   "y": 211.64,
+   "w": 253.18,
+   "h": 180.93
+  },
+  "rank_rule_point_left": {
+   "x": 1933.27,
+   "y": 314.07,
+   "w": 1.76,
+   "h": 1.76
+  },
+  "lapel_us_left": {
+   "x": 1493.01,
+   "y": 288.99,
+   "w": 90.02,
+   "h": 60.02
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left of the artwork box",
+ "overlay_of": "garment-blues-class-a-coat-female",
+ "documented": [
+  "officers wear the coat with epaulets and embroidered grade on gray epaulet sleeves (CAPR 39-1 4.1.5.2, 4.1.5.2.1.1 / 4.1.9.2, 4.1.9.3.1)",
+  "US lapel insignia halfway up the seam, resting on but not over it, no circle (4.1.5.2.2.1.1 / 4.1.9.4.1.1)",
+  "1/2 in blue sleeve braid 3 in from the end of the sleeve (4.1.5.2 / 4.1.9.2)",
+  "grade insignia 5/8 in from the end of the epaulet, parallel with the sleeve seam (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "epaulet and epaulet sleeve size",
+  "US insignia size",
+  "braid colour (blue, not specified as a shade for the Class A coat)",
+  "rank insignia not drawn: placed by the rank insignia assets at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

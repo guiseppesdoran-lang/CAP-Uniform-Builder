@@ -1,0 +1,115 @@
+{
+ "asset_id": "garment-blues-class-a-cadet-officer-insignia-female",
+ "name": "Women's Class A coat cadet officer insignia: shoulder boards + CAP lapel letters (overlay, registered to garment-blues-class-a-coat-female; blank rank)",
+ "size_in": {
+  "w": 24.3883,
+  "h": 29.4756
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2438.83,
+  2947.56
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same artwork box and px-to-inch scale as garment-blues-class-a-coat-female so it drops on at 0,0. Board length 4.55 in (builder reference); width from the Vanguard CAP0647V product photo proportions (252 x 622 px).",
+ "anchors": {
+  "top_center": [
+   1219.42,
+   0
+  ],
+  "bottom_center": [
+   1219.42,
+   2947.56
+  ],
+  "center": [
+   1219.42,
+   1473.78
+  ],
+  "left_edge": [
+   0,
+   1473.78
+  ],
+  "right_edge": [
+   2438.83,
+   1473.78
+  ],
+  "epaulet_right_center": [
+   612.22,
+   93.41
+  ],
+  "epaulet_left_center": [
+   1826.62,
+   93.41
+  ],
+  "rank_slot_right_center": [
+   612.22,
+   93.42
+  ],
+  "rank_slot_left_center": [
+   1826.62,
+   93.42
+  ]
+ },
+ "landmarks": {
+  "epaulet_right": {
+   "x": 384.74,
+   "y": 1.23,
+   "w": 454.96,
+   "h": 184.36
+  },
+  "rank_slot_right": {
+   "x": 497.22,
+   "y": 28.42,
+   "w": 230,
+   "h": 130
+  },
+  "lapel_cap_right": {
+   "x": 822.71,
+   "y": 294.36,
+   "w": 140.01,
+   "h": 49.98
+  },
+  "epaulet_left": {
+   "x": 1599.14,
+   "y": 1.23,
+   "w": 454.96,
+   "h": 184.36
+  },
+  "rank_slot_left": {
+   "x": 1711.62,
+   "y": 28.42,
+   "w": 230,
+   "h": 130
+  },
+  "lapel_cap_left": {
+   "x": 1467.93,
+   "y": 294.36,
+   "w": 140.01,
+   "h": 49.98
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-a-coat-female",
+ "dimensions": {
+  "epaulet_in": [
+   4.55,
+   1.8434083601286173
+  ]
+ },
+ "documented": [
+  "cadet officers wear regular-size grade insignia on Cadet Officer shoulder boards (4.1.9.3.4)",
+  "CAP lapel insignia halfway up the lapel seam, cadet officers only; grade insignia replaces it for cadet NCOs/airmen, none for Airman Basic (4.1.9.4.1.2-3)"
+ ],
+ "assumed": [
+  "board size",
+  "board placement above the shoulder strips",
+  "rank diamonds omitted (sold separately)"
+ ],
+ "fit": {
+  "method": "measured from product photo",
+  "score": null
+ },
+ "grade": "garment"
+}

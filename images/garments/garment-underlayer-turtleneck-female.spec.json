@@ -1,0 +1,62 @@
+{
+ "asset_id": "garment-underlayer-turtleneck-female",
+ "name": "White turtleneck sweater, V insert (female, worn under the blue blazer)",
+ "size_in": {
+  "w": 9,
+  "h": 17.9
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  900,
+  1790
+ ],
+ "size_source": "estimated",
+ "size_basis": "Original flat art. The regulation names the garment (white cotton-polyester or wool-blend turtleneck sweater) but gives no figure or dimensions; 3.9 in neck width and 2.9 in neck height are estimates for the blazer base's V.",
+ "anchors": {
+  "top_center": [
+   450,
+   0
+  ],
+  "bottom_center": [
+   450,
+   1790
+  ],
+  "center": [
+   450,
+   895
+  ],
+  "left_edge": [
+   0,
+   895
+  ],
+  "right_edge": [
+   900,
+   895
+  ],
+  "neck_top_center": [
+   450,
+   35
+  ],
+  "neck_base_center": [
+   450,
+   290
+  ]
+ },
+ "landmarks": {},
+ "landmarks_note": "rects are {x,y,w,h}; all in user units (0.01 in), origin top-left",
+ "documented": [
+  "regular white cotton-polyester or wool blend turtleneck sweater may be worn instead of the shirt; the blazer must be worn; no tie or tie tab with it (CAPR 39-1 4.2.3.2.2, 4.2.4.2.2, 4.2.4.3)"
+ ],
+ "assumed": [
+  "neck width and height",
+  "rib spacing",
+  "V depth 15 in"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

@@ -1,0 +1,65 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-long-general-officer-buckle",
+ "name": "Men's Class B blue long-sleeve shirt general officer belt buckle: Wing and Star (overlay, registered to garment-blues-class-b-shirt-male-long)",
+ "size_in": {
+  "w": 21.32,
+  "h": 27.075
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2132,
+  2707.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Drawn on the buckle body of garment-blues-class-b-shirt-male-long (same box and origin); emblem about 0.75 x the smaller buckle dimension. The regulation gives no emblem dimension.",
+ "anchors": {
+  "top_center": [
+   1066,
+   0
+  ],
+  "bottom_center": [
+   1066,
+   2707.5
+  ],
+  "center": [
+   1066,
+   1353.75
+  ],
+  "left_edge": [
+   0,
+   1353.75
+  ],
+  "right_edge": [
+   2132,
+   1353.75
+  ],
+  "buckle_center": [
+   1114.15,
+   1990.15
+  ]
+ },
+ "landmarks": {
+  "buckle_plate": {
+   "x": 1030.5,
+   "y": 1922.6,
+   "w": 167.31,
+   "h": 135.1
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-shirt-male-long",
+ "documented": [
+  "general officers wear the Wing and Star on the belt buckle (CAPR 39-1 4.1.11.1.1.5); tip toward the wearer's left"
+ ],
+ "assumed": [
+  "emblem size",
+  "emblem is the wing-and-star of the coat button redrawn flat"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

@@ -1,0 +1,259 @@
+{
+ "asset_id": "garment-semiformal-class-a-coat-female",
+ "name": "Women's cadet semi-formal dress: Class A coat (new style) over the white blouse, no nametag",
+ "size_in": {
+  "w": 24.3883,
+  "h": 29.4756
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2438.83,
+  2947.56
+ ],
+ "size_source": "estimated",
+ "size_basis": "Silhouette traced from images/base/jacket_female.webp (612x753 px) at 0.047 in/px, then scaled by 0.88 so the coat is as wide as the men's coat plus the women's cut (CAPR 39-1 Figures 4.6 and 4.7a show the two coats at about the same width); before this factor the box was 27.71 x 33.49 in. No real garment was measured. Coat 29.00 in long. Buttons, nametag and other hardware keep their true size.",
+ "anchors": {
+  "top_center": [
+   1219.42,
+   0
+  ],
+  "bottom_center": [
+   1219.42,
+   2947.56
+  ],
+  "center": [
+   1219.42,
+   1473.78
+  ],
+  "left_edge": [
+   0,
+   1473.78
+  ],
+  "right_edge": [
+   2438.83,
+   1473.78
+  ],
+  "centerline_top": [
+   1219.42,
+   21.56
+  ],
+  "hem_center": [
+   1219.42,
+   2921.16
+  ],
+  "welt_top_center": [
+   1619.29,
+   1034.88
+  ],
+  "ribbon_row_bottom_center": [
+   1619.29,
+   1034.88
+  ],
+  "lapel_insignia_right": [
+   892.94,
+   319
+  ],
+  "lapel_insignia_left": [
+   1537.98,
+   319
+  ],
+  "button_1_center": [
+   1169.78,
+   1320.26
+  ],
+  "button_2_center": [
+   1169.78,
+   1659.41
+  ],
+  "button_3_center": [
+   1165.65,
+   2006.84
+  ]
+ },
+ "landmarks": {
+  "welt_pocket": {
+   "x": 1434.49,
+   "y": 1034.88,
+   "w": 369.6,
+   "h": 52.8
+  },
+  "button_1": {
+   "x": 1126.03,
+   "y": 1276.51,
+   "w": 87.5,
+   "h": 87.5
+  },
+  "button_2": {
+   "x": 1126.03,
+   "y": 1615.66,
+   "w": 87.5,
+   "h": 87.5
+  },
+  "button_3": {
+   "x": 1121.89,
+   "y": 1963.09,
+   "w": 87.5,
+   "h": 87.5
+  },
+  "lapel_right": [
+   [
+    1029.16,
+    439.3
+   ],
+   [
+    905.08,
+    484.79
+   ],
+   [
+    770.7,
+    517.88
+   ],
+   [
+    801.68,
+    617.14
+   ],
+   [
+    936.06,
+    813.65
+   ],
+   [
+    1070.52,
+    1030.74
+   ],
+   [
+    1215.28,
+    1144.53
+   ]
+  ],
+  "lapel_left": [
+   [
+    1409.67,
+    439.3
+   ],
+   [
+    1533.75,
+    484.79
+   ],
+   [
+    1668.13,
+    517.88
+   ],
+   [
+    1637.15,
+    617.14
+   ],
+   [
+    1502.78,
+    813.65
+   ],
+   [
+    1368.31,
+    1030.74
+   ],
+   [
+    1223.55,
+    1144.53
+   ]
+  ],
+  "shirt": [
+   [
+    981.55,
+    31.86
+   ],
+   [
+    1211.14,
+    418.62
+   ],
+   [
+    1448.92,
+    33.97
+   ],
+   [
+    1411.78,
+    451.7
+   ],
+   [
+    1380.72,
+    534.42
+   ],
+   [
+    1215.28,
+    1134.14
+   ],
+   [
+    1044.65,
+    534.42
+   ],
+   [
+    1018.78,
+    451.7
+   ]
+  ],
+  "tie_tab": [
+   [
+    1212.2,
+    244.9
+   ],
+   [
+    1405.54,
+    447.57
+   ],
+   [
+    1380.72,
+    534.42
+   ],
+   [
+    1215.28,
+    344.17
+   ],
+   [
+    1044.65,
+    534.42
+   ],
+   [
+    1023.97,
+    443.43
+   ]
+  ],
+  "ribbon_slot": {
+   "x": 1413.03,
+   "y": 884.88,
+   "w": 412.5,
+   "h": 150
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "dimensions": {
+  "coat_length_in": 29,
+  "max_width_in": 23.95,
+  "welt_in": [
+   3.7,
+   0.53
+  ],
+  "buttons": 3,
+  "button_dia_in": 0.875
+ },
+ "documented": [
+  "single breasted, three buttons (Wing and Star or CAP Crest), one welt pocket upper left, two lower pocket flaps (CAPR 39-1 4.1.9.2)",
+  "right panel laps over the left on the women's coat (as in the base image)",
+  "blouse collar shows above the coat collar; inverted-V tie tab mandatory (4.1.9.5, 4.1.4.4)",
+  "semi-formal: worn as service dress with a white blouse, nametag not worn (CAPR 39-1 4.1.4, 4.1.4.1, 4.1.4.3)",
+  "blue satin inverted-V tie tab (4.1.4.4)"
+ ],
+ "assumed": [
+  "px-to-inch scale",
+  "welt size",
+  "button diameter 7/8 in",
+  "lapel, blouse and tie-tab geometry read off the base image",
+  "lower pocket flaps are not drawn (barely visible in the base image)",
+  "colours sampled from the base image",
+  "white blouse tone"
+ ],
+ "fit": {
+  "method": "traced from the raster",
+  "score": null
+ },
+ "grade": "garment"
+}

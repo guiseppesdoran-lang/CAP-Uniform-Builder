@@ -1,0 +1,66 @@
+{
+ "asset_id": "garment-blues-class-a-coat-female-nametag-cadet",
+ "name": "Women's Class A coat nametag, cadet (overlay, registered to garment-blues-class-a-coat-female; name left blank)",
+ "size_in": {
+  "w": 24.3883,
+  "h": 29.4756
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2438.83,
+  2947.56
+ ],
+ "size_source": "estimated",
+ "size_basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension.",
+ "anchors": {
+  "top_center": [
+   1219.42,
+   0
+  ],
+  "bottom_center": [
+   1219.42,
+   2947.56
+  ],
+  "center": [
+   1219.42,
+   1473.78
+  ],
+  "left_edge": [
+   0,
+   1473.78
+  ],
+  "right_edge": [
+   2438.83,
+   1473.78
+  ],
+  "nametag_center": [
+   805.77,
+   997.39
+  ]
+ },
+ "landmarks": {
+  "nametag": {
+   "x": 637.02,
+   "y": 959.9,
+   "w": 337.5,
+   "h": 75
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-a-coat-female",
+ "documented": [
+  "Cadet nametag (CAPR 39-1 4.1.9.4.2.2: blue, three-line, white lettering)",
+  "centred on the wearer's right between the sleeve seam and lapel, bottom even with the bottom of the ribbons"
+ ],
+ "assumed": [
+  "plate size",
+  "name line blank"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

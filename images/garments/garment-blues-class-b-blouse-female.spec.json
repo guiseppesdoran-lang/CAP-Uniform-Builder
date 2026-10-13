@@ -1,0 +1,238 @@
+{
+ "asset_id": "garment-blues-class-b-blouse-female",
+ "name": "Women's Class B blue short-sleeve blouse and skirt (nametag position only)",
+ "size_in": {
+  "w": 20.766,
+  "h": 27.11
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2076.6,
+  2711
+ ],
+ "size_source": "estimated",
+ "size_basis": "Silhouette traced from images/base/blues_class_b_female.webp (581x719 px) at 0.0385 in/px. Scaled so the blouse is the same sleeve-to-sleeve width as the men's shirt (20.7 in), as in CAPR 39-1 Figs 4.9/4.10 where the same nametag is the same fraction of both garments. No real garment was measured.",
+ "anchors": {
+  "top_center": [
+   1038.3,
+   0
+  ],
+  "bottom_center": [
+   1038.3,
+   2711
+  ],
+  "center": [
+   1038.3,
+   1355.5
+  ],
+  "left_edge": [
+   0,
+   1355.5
+  ],
+  "right_edge": [
+   2076.6,
+   1355.5
+  ],
+  "hem_center": [
+   1038.3,
+   2701
+  ],
+  "nameplate_center": [
+   733.35,
+   697.1
+  ],
+  "epaulet_right_center": [
+   519.95,
+   297
+  ],
+  "epaulet_left_center": [
+   1556.65,
+   297
+  ],
+  "belt_buckle_center": [
+   991.15,
+   1837.8
+  ],
+  "collar_insignia_right": [
+   1306.09,
+   237.75
+  ],
+  "collar_insignia_left": [
+   770.51,
+   237.75
+  ],
+  "button_1_center": [
+   1038.3,
+   547.07
+  ],
+  "button_2_center": [
+   1038.3,
+   916.68
+  ],
+  "button_3_center": [
+   1038.3,
+   1251.63
+  ],
+  "button_4_center": [
+   1038.3,
+   1615.45
+  ],
+  "ribbon_row_bottom_center": [
+   1343.25,
+   734.6
+  ]
+ },
+ "landmarks": {
+  "nameplate": {
+   "x": 564.6,
+   "y": 659.6,
+   "w": 337.5,
+   "h": 75
+  },
+  "belt_buckle": {
+   "x": 890.1,
+   "y": 1773.3,
+   "w": 202.1,
+   "h": 129
+  },
+  "epaulet_right": [
+   [
+    287.5,
+    257.2
+   ],
+   [
+    684.1,
+    166.2
+   ],
+   [
+    752.4,
+    240.3
+   ],
+   [
+    723.2,
+    336.8
+   ],
+   [
+    326.7,
+    427.8
+   ]
+  ],
+  "collar_right": [
+   [
+    1278.9,
+    8.1
+   ],
+   [
+    1502.2,
+    360.3
+   ],
+   [
+    1255.8,
+    344.9
+   ],
+   [
+    1246.2,
+    406.6
+   ],
+   [
+    1153.8,
+    464.3
+   ],
+   [
+    1038.3,
+    495.1
+   ]
+  ],
+  "epaulet_left": [
+   [
+    1789.1,
+    257.2
+   ],
+   [
+    1392.5,
+    166.2
+   ],
+   [
+    1324.2,
+    240.3
+   ],
+   [
+    1353.4,
+    336.8
+   ],
+   [
+    1749.9,
+    427.8
+   ]
+  ],
+  "collar_left": [
+   [
+    797.7,
+    8.1
+   ],
+   [
+    574.4,
+    360.3
+   ],
+   [
+    820.8,
+    344.9
+   ],
+   [
+    830.4,
+    406.6
+   ],
+   [
+    922.8,
+    464.3
+   ],
+   [
+    1038.3,
+    495.1
+   ]
+  ],
+  "collar_insignia_angle_deg": {
+   "right": 57.6,
+   "left": 122.4
+  },
+  "ribbon_slot": {
+   "x": 1137,
+   "y": 584.6,
+   "w": 412.5,
+   "h": 150
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "dimensions": {
+  "length_in": 26.91,
+  "max_width_in": 20.37,
+  "nameplate_in": [
+   3.375,
+   0.75
+  ],
+  "buttons": 4
+ },
+ "documented": [
+  "blouse with epaulets, no military creases (4.1.12.2)",
+  "nameplate centred on the wearer's right, even with to 1.5 in above/below the first exposed button (4.1.12.2.4.1)",
+  "ribbons centred on the wearer's left, bottom aligned with the bottom of the nametag (4.1.12.2.4.2)",
+  "cadet officers: miniature grade on blue epaulet sleeves; cadet NCOs/airmen: metal chevrons on both sides of the collar (4.1.12.2.3)",
+  "blue belt with plain silver tip and buckle, tip toward the wearer's right (4.1.12.7)",
+  "tie tab optional with short sleeves (4.1.12.4)"
+ ],
+ "assumed": [
+  "px-to-inch scale (women's base image drawn larger on its canvas; rescaled to match the men's shirt width)",
+  "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate (blue plastic, 3 3/8 x 3/4 in); no dimension in CAPR 39-1 or DAFI 36-2903; no dimension in CAPR 39-1 or DAFI 36-2903)",
+  "epaulet strap size and shape (not drawn in the base image)",
+  "collar leaf, pocket and seam geometry read off the base image",
+  "colours sampled from the base image",
+  "skirt cut off at the base image's crop line"
+ ],
+ "fit": {
+  "method": "traced from the raster",
+  "score": null
+ },
+ "grade": "garment"
+}

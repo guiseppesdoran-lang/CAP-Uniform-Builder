@@ -1,0 +1,53 @@
+{
+ "asset_id": "tie-clasp-gold",
+ "name": "Tie clasp, plain gold tone",
+ "size_in": {
+  "w": 2,
+  "h": 0.3
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  200,
+  30
+ ],
+ "size_source": "estimated",
+ "size_basis": "Typical commercial tie bar, 2.0 x 0.3 in; not dimensioned in the regulation.",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   30
+  ],
+  "center": [
+   100,
+   15
+  ],
+  "left_edge": [
+   0,
+   15
+  ],
+  "right_edge": [
+   200,
+   15
+  ]
+ },
+ "landmarks": {},
+ "landmarks_note": "rects are {x,y,w,h}; all in user units (0.01 in), origin top-left",
+ "documented": [
+  "tie tack or clasp may be worn; if worn it carries the CAP coat of arms, Wing and Star, AF symbol or grade insignia and is centred between the bottom of the knot and the tip of the tie (CAPR 39-1 4.2.3.4)"
+ ],
+ "assumed": [
+  "2.0 x 0.3 in",
+  "plain (no emblem) variant only"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

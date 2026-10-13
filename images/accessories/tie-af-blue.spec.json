@@ -1,0 +1,66 @@
+{
+ "asset_id": "tie-af-blue",
+ "name": "AF blue tie, four-in-hand (plain blue herringbone twill)",
+ "size_in": {
+  "w": 3.2388,
+  "h": 12.7032
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  323.88,
+  1270.32
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same visible shape as the blazer base tie; plain blue (the regulation: blue polyester or silk, herringbone twill; no pattern). Blue shade is an estimate. The tip must cover part of the belt buckle but not extend below it (4.2.5.1.4); the tie is shown cropped like the blazer base.",
+ "anchors": {
+  "top_center": [
+   161.94,
+   0
+  ],
+  "bottom_center": [
+   161.94,
+   1270.32
+  ],
+  "center": [
+   161.94,
+   635.16
+  ],
+  "left_edge": [
+   0,
+   635.16
+  ],
+  "right_edge": [
+   323.88,
+   635.16
+  ],
+  "knot_top_center": [
+   161.94,
+   0
+  ],
+  "tip_visible_center": [
+   161.94,
+   1270.32
+  ],
+  "tie_tack_center": [
+   161.94,
+   670.16
+  ]
+ },
+ "landmarks": {},
+ "landmarks_note": "rects are {x,y,w,h}; all in user units (0.01 in), origin top-left",
+ "documented": [
+  "AF blue tie authorized with the corporate service dress (4.2.3.4); the aviator shirt uniform requires a blue tie (the CAP regimental tie is not authorized there, 4.2.5.1.4)",
+  "tie tack or clasp centred between the bottom of the knot and the tip (4.2.3.4, 4.2.5.1.4): `tie_tack_center`"
+ ],
+ "assumed": [
+  "blue shade",
+  "knot bottom at 0.7 in"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

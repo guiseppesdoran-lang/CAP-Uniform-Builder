@@ -1,0 +1,69 @@
+{
+ "asset_id": "cap-device-officer-service",
+ "name": "CAP service cap insignia, officers (men's and women's service caps)",
+ "size_in": {
+  "w": 2.24,
+  "h": 2.11
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  224,
+  211
+ ],
+ "colours": {
+  "silver": "#d3d7dc",
+  "silverL": "#e3e6ea",
+  "silverD": "#8f969e",
+  "shade": "#b4bac2"
+ },
+ "grade": "accessory",
+ "anchors": {
+  "top_center": [
+   112.00000000000001,
+   0
+  ],
+  "bottom_center": [
+   112.00000000000001,
+   211
+  ],
+  "center": [
+   112.00000000000001,
+   105.5
+  ],
+  "left_edge": [
+   0,
+   105.5
+  ],
+  "right_edge": [
+   224.00000000000003,
+   105.5
+  ],
+  "mount_center": [
+   112.00000000000001,
+   105.5
+  ]
+ },
+ "size_source": "estimated",
+ "size_basis": "Scaled from Fig A5-8: the device is ~90 px wide against the 7.4 in cap band (300 px) drawn on the same page, ~2.2 in; height from the device figure aspect (about 1.04 wide : 1 tall). The regulation gives no dimension.",
+ "provenance": "CAPR 39-1 3 Mar 2020 Fig A5-8 (p.138, CAP DEVICES row; A5-9 shows the same devices on the women's caps); source figure is ~190 px of faint grey embossing: outline and large shading traced, no feather or leaf detail; CAP disc / shield and triangle are parametric",
+ "mounts": [
+  {
+   "uniform": "Men's service cap (Fig A5-8) and women's service cap (Fig A5-9)",
+   "rule": "centred on the front of the cap, in device_slot_center of the hat asset, with the clouds and darts for grade on the visor (6.2.1.1.1, 6.2.1.2.1)"
+  }
+ ],
+ "documented": [
+  "officers (and NCOs per ICL 25-02, who wear the NCO device) wear the CAP service cap insignia centred on the front of the cap (6.2.1.1.1, 6.2.1.2.1)"
+ ],
+ "assumed": [
+  "overall size",
+  "CAP disc position and size",
+  "shading detail"
+ ],
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

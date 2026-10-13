@@ -1,0 +1,99 @@
+{
+ "asset_id": "garment-mess-dress-female-officer-shoulder-boards",
+ "name": "Women's USAF-style mess dress: officer shoulder boards (overlay, blank grade)",
+ "size_in": {
+  "w": 25.528,
+  "h": 33.26
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2552.8,
+  3326
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.1 in long x 2.2 in wide (silver centre 1.2 in between the 1/2 in braids, enough for a 1 in regular-size form) estimated from DAFI 36-2903 Figs 4.2-4.3; the regulation gives no dimension.",
+ "anchors": {
+  "top_center": [
+   1276.3999999999999,
+   0
+  ],
+  "bottom_center": [
+   1276.3999999999999,
+   3326
+  ],
+  "center": [
+   1276.3999999999999,
+   1663
+  ],
+  "left_edge": [
+   0,
+   1663
+  ],
+  "right_edge": [
+   2552.7999999999997,
+   1663
+  ],
+  "rank_slot_right_center": [
+   503.25,
+   384.82
+  ],
+  "rank_slot_left_center": [
+   2040.38,
+   382.54
+  ]
+ },
+ "landmarks": {
+  "shoulder_board_right": {
+   "x": 299.41,
+   "y": 250.32,
+   "w": 429.34,
+   "h": 275.74
+  },
+  "rank_slot_right": {
+   "x": 394.26,
+   "y": 308.17,
+   "w": 217.98,
+   "h": 153.3
+  },
+  "rank_slot_right_frame": {
+   "deg": -10.1,
+   "along": 2,
+   "across": 1.2
+  },
+  "shoulder_board_left": {
+   "x": 1814.88,
+   "y": 248.44,
+   "w": 429.03,
+   "h": 274.85
+  },
+  "rank_slot_left": {
+   "x": 1931.51,
+   "y": 306.15,
+   "w": 217.74,
+   "h": 152.79
+  },
+  "rank_slot_left_frame": {
+   "deg": -170,
+   "along": 2,
+   "across": 1.2
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-mess-dress-female",
+ "documented": [
+  "officers wear shoulder boards with bullion grade insignia and 1/2 in dark blue braid down each side; women's boards have no button (CAPR 39-1 4.1.2.1.1.1)",
+  "placed as close to the shoulder seam as possible"
+ ],
+ "assumed": [
+  "board size",
+  "silver board colour; braid shade 1095 approximated",
+  "grade insignia not drawn: placed at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

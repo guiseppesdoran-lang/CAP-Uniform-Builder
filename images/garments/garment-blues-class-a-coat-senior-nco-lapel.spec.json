@@ -1,0 +1,78 @@
+{
+ "asset_id": "garment-blues-class-a-coat-senior-nco-lapel",
+ "name": "Men's Class A coat NCO US lapel insignia with circle (overlay; chevrons are separate assets)",
+ "size_in": {
+  "w": 23.726,
+  "h": 29.955
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2372.6,
+  2995.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Sleeve braid width - in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
+ "anchors": {
+  "top_center": [
+   1186.3,
+   0
+  ],
+  "bottom_center": [
+   1186.3,
+   2995.5
+  ],
+  "center": [
+   1186.3,
+   1497.75
+  ],
+  "left_edge": [
+   0,
+   1497.75
+  ],
+  "right_edge": [
+   2372.6,
+   1497.75
+  ],
+  "lapel_us_right_center": [
+   908.3,
+   420.5
+  ],
+  "lapel_us_left_center": [
+   1491.3,
+   420.5
+  ]
+ },
+ "landmarks": {
+  "lapel_us_right": {
+   "x": 846.3,
+   "y": 358.5,
+   "w": 124,
+   "h": 124
+  },
+  "lapel_us_left": {
+   "x": 1429.3,
+   "y": 358.5,
+   "w": 124,
+   "h": 124
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left of the artwork box",
+ "overlay_of": "garment-blues-class-a-coat",
+ "documented": [
+  "US lapel insignia with a circle for NCOs, halfway up the lapel seam (CAPR 39-1 4.1.5.2.2.1.1 / 4.1.9.4.1.1)",
+  "NCOs wear the coat without epaulets (4.1.5.2)"
+ ],
+ "assumed": [
+  "epaulet and epaulet sleeve size",
+  "US insignia size",
+  "braid colour (blue, not specified as a shade for the Class A coat)",
+  "rank insignia not drawn: placed by the rank insignia assets at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

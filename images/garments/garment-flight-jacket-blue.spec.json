@@ -1,0 +1,388 @@
+{
+ "asset_id": "garment-flight-jacket-blue",
+ "name": "CAP blue flight jacket (worn with the CFDU) with blank nametag",
+ "size_in": {
+  "w": 55.8,
+  "h": 32.975
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  5580,
+  3297.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "CAPR 39-1 6.1.7 says the blue flight jacket is \"similar to the MA-1 or CWU-45/P or -36/P flight jackets in design and construction\" (Figure 6.6 shows it: navy, orange lining, gold zipper, knit collar/waist/cuffs, left sleeve pocket). The MIL-J-8279G size Medium dimensions of the MA-1 are carried over: an ASSUMPTION that the blue jacket is cut to the same finished measurements.",
+ "dimension_sources": {
+  "back_length_in": "assumed (MA-1 Medium)",
+  "half_chest_in": "assumed (MA-1 Medium)",
+  "half_bottom_in": "assumed (MA-1 Medium)",
+  "sleeve_inseam_in": "assumed (MA-1 Medium)",
+  "flap_in": "assumed",
+  "sleeve_pocket_in": "assumed",
+  "nametag_in": "regulation CAPR 39-1 8.2.4.1",
+  "flag_in": "regulation CAPR 39-1 8.2.4.4",
+  "loop_square_in": "regulation CAPR 39-1 8.2.5.5",
+  "knit_heights_collar_armhole_shoulder_sleeve_girth": "estimated",
+  "command_patch_width": "estimated"
+ },
+ "flag": {
+  "side": "wearer's left sleeve (image right)",
+  "drawn": "in the garment image (flat sleeve view and, clipped to the arm, the front view)",
+  "size_in": [
+   3.5,
+   2
+  ],
+  "border": "gold",
+  "position": "1/2 in below the shoulder seam",
+  "orientation": "normal: canton (union) toward the wearer's front / the viewer's left on the outer face of the left sleeve; the reversed flag is for the right sleeve, which this reg does not give a flag",
+  "basis": "CAPR 39-1 8.2.4.4 / 8.3.4.4 (left sleeve only); orientation convention per DAFI 36-2903 (flag worn so the union leads forward; reversed on the right shoulder)",
+  "loop_tape_left": "not drawn: the 3 1/2 in loop tape on the left is the same colour as the garment and invisible",
+  "loop_square_right": "drawn as the right-sleeve patch slot (8.2.5.5 / 8.3.5.5)"
+ },
+ "anchors": {
+  "top_center": [
+   2790,
+   0
+  ],
+  "bottom_center": [
+   2790,
+   3297.5
+  ],
+  "center": [
+   2790,
+   1648.75
+  ],
+  "left_edge": [
+   0,
+   1648.75
+  ],
+  "right_edge": [
+   5580,
+   1648.75
+  ],
+  "zipper_min_closed": [
+   2790,
+   1645
+  ],
+  "centerline_top": [
+   2790,
+   90
+  ],
+  "zip_top": [
+   2790,
+   550
+  ],
+  "hem_center": [
+   2790,
+   2740
+  ],
+  "name_tape_center": [
+   3440,
+   970
+  ],
+  "command_patch_center": [
+   2140,
+   970
+  ],
+  "es_patch_center": [
+   2140,
+   1304.5
+  ],
+  "flag_left_center": [
+   5140,
+   300
+  ],
+  "loop_square_right_center": [
+   440,
+   375
+  ]
+ },
+ "landmarks": {
+  "name_tape": {
+   "x": 3240,
+   "y": 870,
+   "w": 400,
+   "h": 200
+  },
+  "patch_command_right_breast": {
+   "x": 1990,
+   "y": 825.5,
+   "w": 300,
+   "h": 289
+  },
+  "es_patch_zone": {
+   "x": 1990,
+   "y": 1154.5,
+   "w": 300,
+   "h": 300
+  },
+  "grade_zone_left": {
+   "x": 3530,
+   "y": 422,
+   "w": 160,
+   "h": 125
+  },
+  "grade_zone_right": {
+   "x": 1890,
+   "y": 422,
+   "w": 160,
+   "h": 125
+  },
+  "grade_zone_go_left": {
+   "x": 3342.5,
+   "y": 388.7,
+   "w": 220,
+   "h": 120
+  },
+  "grade_zone_go_right": {
+   "x": 2017.5,
+   "y": 388.7,
+   "w": 220,
+   "h": 120
+  },
+  "patch_flag_left": {
+   "x": 4965,
+   "y": 200,
+   "w": 350,
+   "h": 200
+  },
+  "patch_loop_square_right": {
+   "x": 265,
+   "y": 200,
+   "w": 350,
+   "h": 350
+  },
+  "sleeve_pocket_left": {
+   "x": 4977.5,
+   "y": 780,
+   "w": 325,
+   "h": 575
+  },
+  "pen_pocket_left": {
+   "x": 5187.5,
+   "y": 820,
+   "w": 87.5,
+   "h": 465
+  },
+  "flap_pocket_right": [
+   [
+    2277.6,
+    1800.2
+   ],
+   [
+    2062.4,
+    1699.8
+   ],
+   [
+    1796.1,
+    2270.8
+   ],
+   [
+    1853,
+    2429.7
+   ],
+   [
+    2011.4,
+    2371.2
+   ]
+  ],
+  "cuff_right": [
+   [
+    1570,
+    2977.5
+   ],
+   [
+    1100,
+    2977.5
+   ],
+   [
+    1130,
+    3197.5
+   ],
+   [
+    1580,
+    3197.5
+   ]
+  ],
+  "flap_pocket_left": [
+   [
+    3302.4,
+    1800.2
+   ],
+   [
+    3517.6,
+    1699.8
+   ],
+   [
+    3783.9,
+    2270.8
+   ],
+   [
+    3727,
+    2429.7
+   ],
+   [
+    3568.6,
+    2371.2
+   ]
+  ],
+  "cuff_left": [
+   [
+    4010,
+    2977.5
+   ],
+   [
+    4480,
+    2977.5
+   ],
+   [
+    4450,
+    3197.5
+   ],
+   [
+    4000,
+    3197.5
+   ]
+  ],
+  "front_zipper": [
+   [
+    2777,
+    550
+   ],
+   [
+    2803,
+    550
+   ],
+   [
+    2803,
+    2740
+   ],
+   [
+    2777,
+    2740
+   ]
+  ],
+  "waistband": [
+   [
+    1615,
+    2500
+   ],
+   [
+    3965,
+    2500
+   ],
+   [
+    3890,
+    2740
+   ],
+   [
+    1690,
+    2740
+   ]
+  ],
+  "collar": [
+   [
+    2504,
+    110
+   ],
+   [
+    2650,
+    90
+   ],
+   [
+    2930,
+    90
+   ],
+   [
+    3076,
+    110
+   ],
+   [
+    3123,
+    220
+   ],
+   [
+    3180,
+    280
+   ],
+   [
+    2890,
+    550
+   ],
+   [
+    2690,
+    550
+   ],
+   [
+    2400,
+    280
+   ],
+   [
+    2457,
+    220
+   ]
+  ]
+ },
+ "optional_landmarks": {
+  "pen_pocket_left": "cigarette/pencil pocket on the left sleeve (MA-1 spec)",
+  "es_patch_zone": "optional patch; the jacket is configured like the FDU/CFDU (8.2.7.1 / 6.1.7)",
+  "grade_zone_go_left": "general officers only (8.2.3.1 / 8.3.3.1)",
+  "grade_zone_go_right": "general officers only",
+  "grade_zone_left": "officers only (8.2.3.2 / 8.3.3.2 / 6.1.7); NCOs and cadets wear no grade",
+  "grade_zone_right": "officers only"
+ },
+ "zipper_note": "8.2.7.1: flight jackets are required to be zipped at least halfway; anchors.zipper_min_closed is that height. The artwork shows it fully closed.",
+ "views_note": "Front view plus a flat view of each sleeve (flag and pocket on the left, loop-tape slot on the right), as for the FDU; a presentation decision, not a regulation requirement.",
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's. Zones with no artwork are invisible placement landmarks.",
+ "dimensions": {
+  "collar_to_waistband_in": 26.5,
+  "collar_to_cuff_in": 31.075,
+  "max_width_in": 37.2,
+  "size_nominal": "Medium",
+  "half_chest_in": 13,
+  "half_bottom_in": 11.75,
+  "back_length_in": 22.5,
+  "sleeve_inseam_in": 16.375,
+  "flap_in": [
+   7.5,
+   2.375
+  ],
+  "sleeve_pocket_in": [
+   5.75,
+   3.25
+  ],
+  "nametag_in": [
+   4,
+   2
+  ],
+  "flag_in": [
+   3.5,
+   2
+  ],
+  "loop_square_in": [
+   3.5,
+   3.5
+  ]
+ },
+ "documented": [
+  "blue flight jacket is an authorized outer garment with the CFDU (8.3.7) and is similar to the MA-1 / CWU-45/P / CWU-36/P in design and construction (6.1.7, Figure 6.6)",
+  "nametag (black leather or blue cloth) on the left breast, CAP Command Patch on the right breast, other CFDU patches optional (6.1.7)",
+  "accoutrements follow the CFDU: Command Patch right breast opposite the nametag, US flag 2 x 3 1/2 in on the left sleeve 1/2 in below the seam, authorized patch on a 3 1/2 x 3 1/2 in square of black loop tape on the right sleeve (8.3.4, 8.3.5.5)",
+  "grade for officers on top of each shoulder, bottom edge 1/2 in from the seam; general officer stars centred on the shoulder halfway between neck and seam (8.3.3.1, 8.3.3.2)"
+ ],
+ "assumed": [
+  "finished measurements of the blue jacket are not given: the green MA-1 Medium measurements are used (6.1.7 only says similar design and construction)",
+  "navy shade sampled from the Figure 6.6 illustration",
+  "knit band heights",
+  "collar and knit band heights, armhole depth, shoulder width, sleeve girth",
+  "ES patch zone position (jacket has no breast pocket)",
+  "command patch width"
+ ],
+ "fit": {
+  "method": "n/a",
+  "score": null
+ },
+ "grade": "garment"
+}
