@@ -19,14 +19,16 @@
   const COLLAR = { frontRight: -36.9, frontLeft: 35.9, bottomRight: 12.7, bottomLeft: -14.6 };
 
   // Last name on the coat's name tape and on any cap back tape the sheet draws: light silver block
-  // capitals, as tall as the drawn CAP tape lettering (7.1.1.2.3, 5.1.1.1.2.1, 5.2.1.1.2.1, 7.1.1.8).
+  // capitals in the same lettering as the drawn CAP tape (7.1.1.2.3, 5.1.1.1.2.1, 5.2.1.1.2.1,
+  // 7.1.1.8). The sheets draw it as Arial Bold condensed to 0.546 of its width, capitals 0.655 of
+  // the tape's height (an em of 0.915 of the tape).
   function nameTapes(ctx, b){
     if(!b.name.show || !b.name.last) return;
     for(const lm of ['name_tape', 'patrol_cap_back_name_tape', 'baseball_cap_back_name_tape']){
       const r = ctx.rect(lm);
       if(!r) continue;
-      const inset = 0.33 * r.h;
-      C.nameText(ctx, b.name.last, { x: r.x + inset, y: r.y, w: r.w - 2 * inset, h: r.h }, { color: TAPE_TEXT, maxH: 0.58 * r.h, advance: 0.62, key: 'text:' + lm });
+      const inset = 0.25 * r.h;
+      C.nameText(ctx, b.name.last, { x: r.x + inset, y: r.y, w: r.w - 2 * inset, h: r.h }, { color: TAPE_TEXT, size: 0.915 * r.h, condense: 0.546, advance: 0.72, font: 'Arial, Helvetica, sans-serif', key: 'text:' + lm });
     }
   }
 

@@ -19,7 +19,7 @@
 
   function loadSymbol(id, path){
     if(symbolCache.has(id)) return symbolCache.get(id);
-    const p = fetch(assetUrl(path))
+    const p = fetch(assetUrl(path), { cache: 'no-cache' }) // artwork is updated in place
       .then(r => { if(!r.ok) throw new Error(`${r.status} ${path}`); return r.text(); })
       .then(text => {
         const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
@@ -166,7 +166,9 @@
         node.textContent = layer.text;
       }
       if(!node) continue;
-      const t = transformFor(layer);
+      let t = transformFor(layer);
+      // Condensed lettering (the tapes): squeeze horizontally about the text's centre.
+      if(layer.type === 'text' && layer.condense) t = [t, `translate(${fmt(layer.x)} 0) scale(${fmt(layer.condense)} 1) translate(${fmt(-layer.x)} 0)`].filter(Boolean).join(' ');
       if(t) node.setAttribute('transform', t);
       if(layer.clip){
         // A clip polygon in scene inches (used to tuck a cord under an epaulet, etc.).

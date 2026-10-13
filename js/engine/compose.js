@@ -132,9 +132,10 @@
     const str = String(text || '').trim();
     if(!str) return null;
     const value = o.upper === false ? str : str.toUpperCase();
-    const size = Math.min(o.maxH || zone.h * 0.8, zone.h * 0.9);
-    // Approximate advance of bold sans capitals: 0.68 em; shrink to fit.
-    const natural = value.length * size * (o.advance || 0.68);
+    const size = o.size || Math.min(o.maxH || zone.h * 0.8, zone.h * 0.9);
+    // Approximate advance of bold sans capitals: 0.68 em, times any horizontal condensing (the
+    // tape lettering is condensed); shrink to fit.
+    const natural = value.length * size * (o.advance || 0.68) * (o.condense || 1);
     const fitWidth = natural > zone.w ? zone.w : null;
     return ctx.text({
       text: value,
@@ -146,7 +147,8 @@
       color: o.color || '#d8dbe0',
       weight: o.weight || 700,
       font: o.font,
-      fitWidth,
+      fitWidth: fitWidth && o.condense ? fitWidth / o.condense : fitWidth,
+      condense: o.condense || null,
       key: o.key || 'text:name',
       role: 'text',
       className: 'nameText'
