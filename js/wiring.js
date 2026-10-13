@@ -240,10 +240,7 @@ const modalEl      = by('galleryModal');
 const modalTitle   = by('galleryModalTitle');
 const modalHost    = by('galleryModalHost');
 const modalClose   = by('galleryModalCloseBtn');
-const modalMaxBtn  = by('galleryModalMaxBtn');
-const modalRestore = by('galleryModalRestoreBtn');
 
-let modalLast = null;
 
 // What the footer of the picker says is selected right now.
 let capubModalKind = null;
@@ -656,32 +653,6 @@ document.addEventListener('keydown', (e)=>{
   if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
   else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
   else if(!modalEl.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
-});
-
-modalMaxBtn.addEventListener('click', ()=>{
-  modalLast = {
-    w: modalEl.style.width,
-    h: modalEl.style.height,
-    resize: modalEl.style.resize
-  };
-  modalEl.style.width = '96vw';
-  modalEl.style.height = '90vh';
-  modalEl.style.resize = 'none';
-  modalMaxBtn.classList.add('hidden');
-  modalRestore.classList.remove('hidden');
-});
-modalRestore.addEventListener('click', ()=>{
-  if(modalLast){
-    modalEl.style.width = modalLast.w || '';
-    modalEl.style.height = modalLast.h || '';
-    modalEl.style.resize = modalLast.resize || 'both';
-  }else{
-    modalEl.style.width = '';
-    modalEl.style.height = '';
-    modalEl.style.resize = 'both';
-  }
-  modalRestore.classList.add('hidden');
-  modalMaxBtn.classList.remove('hidden');
 });
 
 /* IMPORTANT: Picker buttons open the popup */
