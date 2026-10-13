@@ -1,62 +1,64 @@
 {
  "asset_id": "garment-underlayer-turtleneck-male",
- "name": "White turtleneck sweater, V insert (male, worn under the blue blazer)",
+ "name": "White turtleneck sweater, men's corporate blazer V insert (registered to the blazer)",
  "size_in": {
-  "w": 9,
-  "h": 16.2
+  "w": 25.522,
+  "h": 38.45
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  900,
-  1620
+  2552.2,
+  3845
  ],
  "size_source": "estimated",
- "size_basis": "Original flat art. The regulation names the garment (white cotton-polyester or wool-blend turtleneck sweater) but gives no figure or dimensions; 4.6 in neck width and 3.2 in neck height are estimates for the blazer base's V.",
+ "size_basis": "Original flat art fitted to the blazer V (same box/origin as the blazer). The regulation names the garment but gives no figure or dimension: 4.2 in neck width and 3.4 in neck height are estimates.",
  "anchors": {
   "top_center": [
-   450,
+   1276.1,
    0
   ],
   "bottom_center": [
-   450,
-   1620
+   1276.1,
+   3845.0000000000005
   ],
   "center": [
-   450,
-   810
+   1276.1,
+   1922.5000000000002
   ],
   "left_edge": [
    0,
-   810
+   1922.5000000000002
   ],
   "right_edge": [
-   900,
-   810
+   2552.2,
+   1922.5000000000002
   ],
   "neck_top_center": [
-   450,
-   35
+   1276.1,
+   34.22
   ],
   "neck_base_center": [
-   450,
-   320
+   1276.1,
+   374.22
   ]
  },
  "landmarks": {},
- "landmarks_note": "rects are {x,y,w,h}; all in user units (0.01 in), origin top-left",
+ "landmarks_note": "registered to the blazer box (same origin and size); clipped to the blazer V",
+ "overlay_of": "garment-underlayer-turtleneck-male",
  "documented": [
-  "regular white cotton-polyester or wool blend turtleneck sweater may be worn instead of the shirt; the blazer must be worn; no tie or tie tab with it (CAPR 39-1 4.2.3.2.2, 4.2.4.2.2, 4.2.4.3)"
+  "regular white cotton-polyester or wool-blend turtleneck sweater or white shell top may be worn instead of the shirt; the blue blazer must be worn; no tie or tie tab with a turtleneck/shell (CAPR 39-1 4.2.3.2.2, 4.2.4.2.2, 4.2.4.3)"
  ],
  "assumed": [
-  "neck width and height",
+  "neck width / height",
+  "scoop size",
   "rib spacing",
-  "V depth 13 in"
+  "no figure or base image exists for these garments"
  ],
  "fit": {
   "method": "original",
   "score": null
  },
- "grade": "accessory"
+ "grade": "garment"
 }

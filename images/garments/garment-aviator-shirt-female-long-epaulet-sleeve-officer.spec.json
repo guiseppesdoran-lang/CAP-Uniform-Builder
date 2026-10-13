@@ -1,0 +1,96 @@
+{
+ "asset_id": "garment-aviator-shirt-female-long-epaulet-sleeve-officer",
+ "name": "Women's Aviator Shirt Uniform adult officer epaulet sleeves (overlay, registered to garment-aviator-shirt-female-long; blank grade)",
+ "size_in": {
+  "w": 21.048,
+  "h": 27.9
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2104.8,
+  2790
+ ],
+ "size_source": "estimated",
+ "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
+ "anchors": {
+  "top_center": [
+   1052.3999999999999,
+   0
+  ],
+  "bottom_center": [
+   1052.3999999999999,
+   2790
+  ],
+  "center": [
+   1052.3999999999999,
+   1395
+  ],
+  "left_edge": [
+   0,
+   1395
+  ],
+  "right_edge": [
+   2104.7999999999997,
+   1395
+  ],
+  "rank_slot_right_center": [
+   394.03,
+   277.36
+  ],
+  "rank_slot_left_center": [
+   1712.56,
+   289.49
+  ],
+  "rank_rule_point_right": [
+   336.43,
+   343.49
+  ],
+  "rank_rule_point_left": [
+   1776.87,
+   352.91
+  ]
+ },
+ "landmarks": {
+  "epaulet_sleeve_right": {
+   "x": 247.14,
+   "y": 223.04,
+   "w": 293.79,
+   "h": 108.64
+  },
+  "rank_slot_right": {
+   "x": 247.14,
+   "y": 223.04,
+   "w": 293.79,
+   "h": 108.64
+  },
+  "epaulet_sleeve_left": {
+   "x": 1551.98,
+   "y": 232.67,
+   "w": 321.15,
+   "h": 113.63
+  },
+  "rank_slot_left": {
+   "x": 1551.98,
+   "y": 232.67,
+   "w": 321.15,
+   "h": 113.63
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-aviator-shirt-female-long",
+ "documented": [
+  "gray epaulet sleeves, embroidered grade (CAPR 39-1 4.2.5.1.1.1 / 4.2.6.2.1)",
+  "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "sleeve length (covers the outer 82% of the strap)",
+  "grade not drawn: placed by the rank insignia assets at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

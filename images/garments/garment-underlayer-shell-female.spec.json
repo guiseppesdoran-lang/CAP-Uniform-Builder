@@ -1,57 +1,68 @@
 {
  "asset_id": "garment-underlayer-shell-female",
- "name": "White shell top, V insert (female, worn under the blue blazer)",
+ "name": "White shell top, women's corporate blazer V insert (registered to the blazer)",
  "size_in": {
-  "w": 9,
-  "h": 17.9
+  "w": 19.1183,
+  "h": 35.4347
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  900,
-  1790
+  1911.83,
+  3543.47
  ],
  "size_source": "estimated",
- "size_basis": "Original flat art. The regulation names a white shell top (4.2.4.2.2) but gives no figure or dimensions; scoop depth and width are estimates for the women's blazer base V.",
+ "size_basis": "Original flat art fitted to the blazer V (same box/origin as the blazer). The regulation names a white shell top but gives no figure or dimension: scoop 3.4 in wide, 3.0 in below the neck line, are estimates.",
  "anchors": {
   "top_center": [
-   450,
+   955.9127185519158,
    0
   ],
   "bottom_center": [
-   450,
-   1790
+   955.9127185519158,
+   3543.471205603774
   ],
   "center": [
-   450,
-   895
+   955.9127185519158,
+   1771.735602801887
   ],
   "left_edge": [
    0,
-   895
+   1771.735602801887
   ],
   "right_edge": [
-   900,
-   895
+   1911.8254371038315,
+   1771.735602801887
+  ],
+  "neck_top_center": [
+   955.91,
+   15
+  ],
+  "neck_base_center": [
+   955.91,
+   15
   ],
   "neckline_center": [
-   450,
-   620
+   955.91,
+   395
   ]
  },
  "landmarks": {},
- "landmarks_note": "rects are {x,y,w,h}; all in user units (0.01 in), origin top-left",
+ "landmarks_note": "registered to the blazer box (same origin and size); clipped to the blazer V",
+ "overlay_of": "garment-underlayer-shell-female",
  "documented": [
-  "a white shell top may be worn instead of the shirt; the blazer must be worn; no tie tab with it (CAPR 39-1 4.2.4.2.2, 4.2.4.3)"
+  "regular white cotton-polyester or wool-blend turtleneck sweater or white shell top may be worn instead of the shirt; the blue blazer must be worn; no tie or tie tab with a turtleneck/shell (CAPR 39-1 4.2.3.2.2, 4.2.4.2.2, 4.2.4.3)"
  ],
  "assumed": [
-  "scoop width 4.6 in, depth about 1.3 in",
-  "V depth 15 in"
+  "neck width / height",
+  "scoop size",
+  "rib spacing",
+  "no figure or base image exists for these garments"
  ],
  "fit": {
   "method": "original",
   "score": null
  },
- "grade": "accessory"
+ "grade": "garment"
 }

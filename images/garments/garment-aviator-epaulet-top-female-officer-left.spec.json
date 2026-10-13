@@ -1,0 +1,90 @@
+{
+ "asset_id": "garment-aviator-epaulet-top-female-officer-left",
+ "name": "Women's Aviator Shirt Uniform adult officer epaulet sleeve, left shoulder, top-down (blank grade)",
+ "size_in": {
+  "w": 3.301,
+  "h": 1.53
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  330.1,
+  153
+ ],
+ "size_source": "estimated",
+ "size_basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
+ "anchors": {
+  "top_center": [
+   165.05,
+   0
+  ],
+  "bottom_center": [
+   165.05,
+   153
+  ],
+  "center": [
+   165.05,
+   76.5
+  ],
+  "left_edge": [
+   0,
+   76.5
+  ],
+  "right_edge": [
+   330.1,
+   76.5
+  ],
+  "rank_slot_center": [
+   195.1,
+   76.5
+  ],
+  "rank_rule_point": [
+   257.6,
+   76.5
+  ],
+  "outer_end_center": [
+   320.1,
+   76.5
+  ]
+ },
+ "landmarks": {
+  "sleeve": {
+   "x": 10,
+   "y": 10,
+   "w": 310.1,
+   "h": 133
+  },
+  "rank_slot": {
+   "x": 80.1,
+   "y": 20,
+   "w": 230,
+   "h": 113
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form; rank_rule_point is the 5/8 in from the outer end point for single forms",
+ "dimensions": {
+  "sleeve_in": [
+   3.101,
+   1.33
+  ],
+  "rank_slot_in": [
+   2.3,
+   1.13
+  ]
+ },
+ "documented": [
+  "gray epaulet sleeves, embroidered grade (CAPR 39-1 4.2.5.1.1.1 / 4.2.6.2.1)",
+  "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "sleeve size",
+  "CAP lettering size and position",
+  "grade not drawn"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

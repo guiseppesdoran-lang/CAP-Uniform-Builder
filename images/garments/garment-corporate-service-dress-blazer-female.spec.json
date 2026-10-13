@@ -40,16 +40,20 @@
    2760
   ],
   "nameplate_slot_center": [
-   469.46,
+   1402.66,
    1042
   ],
   "nameplate_slot_top_left": [
-   300.71,
+   1233.91,
    997
   ],
   "crest_center": [
    1402.65,
-   972.19
+   1235.01
+  ],
+  "crest_top_center": [
+   1402.65,
+   1095.01
   ],
   "button_1_center": [
    950.95,
@@ -60,7 +64,7 @@
    2059.25
   ],
   "chaplain_badge_above_nametag": [
-   469.46,
+   1402.66,
    947
   ],
   "tie_tab_center": [
@@ -77,16 +81,16 @@
   ],
   "medal_slot_center": [
    1402.61,
-   727.2
+   995
   ],
   "chaplain_badge_semiformal": [
    1402.61,
-   627.2
+   895
   ]
  },
  "landmarks": {
   "nameplate_slot": {
-   "x": 300.71,
+   "x": 1233.91,
    "y": 997,
    "w": 337.5,
    "h": 90
@@ -105,7 +109,7 @@
   },
   "medal_slot": {
    "x": 1232.61,
-   "y": 677.2,
+   "y": 945,
    "w": 340,
    "h": 100
   }

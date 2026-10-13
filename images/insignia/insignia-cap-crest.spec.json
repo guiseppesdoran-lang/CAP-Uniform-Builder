@@ -2,38 +2,38 @@
  "asset_id": "insignia-cap-crest",
  "name": "CAP Crest (embroidered eagle over shield with triangle and prop, scroll)",
  "size_in": {
-  "w": 2.4105,
-  "h": 2.9
+  "w": 2.3274,
+  "h": 2.8
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  241.05,
-  290
+  232.74,
+  280
  ],
  "size_source": "estimated",
- "size_basis": "Proportions measured from the CAP Crest and CAP Command Patch illustrations in CAPR 39-1 Fig A6-4 (the figure is undimensioned); height 2.9 in matches the crest drawn on the blazer base at the base image scale.",
+ "size_basis": "Proportions measured from the CAP Crest and CAP Command Patch illustrations in CAPR 39-1 Fig A6-4 (the figure is undimensioned); height 2.8 in = the crest measured in CAPR 39-1 Figs 4.14/4.15 against the 3 3/8 in nametag plate (about 2.6 in in Fig 4.14, 3.0 in in Fig 4.15); the figures carry no scale of their own.",
  "anchors": {
   "top_center": [
-   120.53,
+   116.37,
    0
   ],
   "bottom_center": [
-   120.53,
-   290
+   116.37,
+   280
   ],
   "center": [
-   120.53,
-   145
+   116.37,
+   140
   ],
   "left_edge": [
    0,
-   145
+   140
   ],
   "right_edge": [
-   241.05,
-   145
+   232.74,
+   140
   ]
  },
  "landmarks": {},
@@ -42,7 +42,7 @@
   "CAP Crest attached or sewn to the centre of the left breast pocket (CAPR 39-1 4.2.3.1.1.1)"
  ],
  "assumed": [
-  "2.9 in height",
+  "2.8 in height",
   "hand-redrawn eagle, traced triangle and prop from the Command Patch"
  ],
  "fit": {
