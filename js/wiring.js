@@ -733,6 +733,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       patches: State.patches,
       ribbonSelections: State.ribbonSelections,
       badgeSelections: State.badgeSelections,
+      militaryBadges: State.militaryBadges || {},
       patchSelections: State.patchSelections,
       cadetHighestOnly: State.cadetHighestOnly,
       adultCadet: State.adultCadet,
@@ -811,6 +812,15 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     out.badges = (Array.isArray(p.badges) ? p.badges : []).filter(id => typeof id === 'string' && badgeList.includes(id));
     out.patches = (Array.isArray(p.patches) ? p.patches : []).filter(id => typeof id === 'string' && patchList.includes(id));
     out.badgeSelections = pick(badgeList, p.badgeSelections);
+    // U.S. military badges: known ids only, with a token-safe variant.
+    out.militaryBadges = {};
+    const milBadgeIds = new Set((window.CAPUBMilitaryData?.badges || []).map(b => b.id));
+    const milIn = p.militaryBadges && typeof p.militaryBadges === 'object' ? p.militaryBadges : {};
+    for(const id of Object.keys(milIn)){
+      const sel = milIn[id];
+      if(!milBadgeIds.has(id) || !sel || typeof sel !== 'object' || !sel.selected) continue;
+      out.militaryBadges[id] = { selected: true, variant: safeToken(sel.variant) || undefined };
+    }
     out.patchSelections = pick(patchList, p.patchSelections);
 
     out.cadetHighestOnly = !!p.cadetHighestOnly;
@@ -854,6 +864,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.patches = p.patches;
     State.ribbonSelections = p.ribbonSelections;
     State.badgeSelections = p.badgeSelections;
+    State.militaryBadges = p.militaryBadges || {};
     State.patchSelections = p.patchSelections;
     State.cadetHighestOnly = p.cadetHighestOnly;
     State.adultCadet = p.adultCadet;
