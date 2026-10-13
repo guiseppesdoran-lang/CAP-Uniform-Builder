@@ -98,7 +98,7 @@ function syncRibbonRackColumnsControl(){
   }
   if(arrangementHint){
     arrangementHint.textContent = classA
-      ? 'Automatic mode uses the standard three-ribbon layout while every ribbon has 51% or less lapel coverage. It switches to four across only if a ribbon exceeds 51%; the rack-width selection controls that four-column fallback alignment.'
+      ? 'Automatic mode uses rows of three. Where the lapel would cover more than half of a ribbon, the upper rows hold fewer ribbons, aligned with the wearer\'s left edge (CAPR 39-1, 11.1.8).'
       : 'Lapel-avoidance ribbon arrangements apply only to the Class A service coat.';
   }
   syncRibbonRowOverrideControl();
@@ -894,7 +894,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     CAPUB_V2.notices = [];
     if(!State.membership) addNotice('warn','Select membership type first.',{id:'membershipType',label:'Choose'});
     if(!State.rank) addNotice('warn','Select rank before building the uniform.',{id:'rankSetupSelect',label:'Choose'});
-    if(!State.gender) addNotice('warn','Select male/female cut before final placement tuning.',{id:'jacketSelect',label:'Choose'});
+    if(!State.gender) addNotice('warn','Select the male or female cut so the uniform can be drawn.',{id:'jacketSelect',label:'Choose'});
     if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)) addNotice('err','Selected uniform is not authorized for the selected membership type.');
     if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && !getSelectedUnitPatchId()) addNotice('warn',`Unit patch selected for ${getUnitPatchSelectionLabel(State.unitPatchCharter)}, but no patch image asset is available yet.`);
     if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && !isUnitPatchAuthorizedForCurrentUniform()) addNotice('warn',`Unit patch ${getUnitPatchSelectionLabel(State.unitPatchCharter)} is not authorized on the current uniform.`);
@@ -1116,7 +1116,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(exp) exp.onclick = ()=>downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'json'), JSON.stringify(collectProfile(), null, 2));
     if(impBtn && impFile) impBtn.onclick = ()=>impFile.click();
     if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; };
-    if(reset) reset.onclick = ()=>{ if(!confirm('Reset the entire builder setup?')) return; localStorage.removeItem(CAPUB_V2.storageKey); location.reload(); };
+    if(reset) reset.onclick = ()=>{ if(!confirm('Reset the entire builder setup?')) return; try{ localStorage.removeItem(CAPUB_V2.storageKey); localStorage.removeItem('cap_uniform_builder_autosave_v1'); }catch(_){} location.reload(); };
     const readText = ()=>{
       State.text.firstName = fn?.value || '';
       State.text.lastName = ln?.value || '';

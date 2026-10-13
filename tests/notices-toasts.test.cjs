@@ -11,7 +11,7 @@ const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8'
 test('the setup notices point at the control that fixes them',()=>{
   assert.match(wiring,/Select membership type first\.',\{id:'membershipType'/);
   assert.match(wiring,/Select rank before building the uniform\.',\{id:'rankSetupSelect'/);
-  assert.match(wiring,/Select male\/female cut[^']*',\{id:'jacketSelect'/);
+  assert.match(wiring,/Select the male or female cut[^']*',\{id:'jacketSelect'/);
   assert.match(wiring,/are selected\. Command insignia does not count against this limit\.`,\{id:'expandBadges'/);
 });
 

@@ -803,11 +803,6 @@ function selectAllCapUniformAwards(){
     if(selected) setRibbonSelectionFromDropdown(id,selected.value,{deferRender:true});
   }
 
-  for(const id of getMilitaryRibbonIds()){
-    const award=getMilitaryRibbonAward(id);
-    setRibbonSelectionFromDropdown(id,'military_award_1',{deferRender:true});
-  }
-
   rebuildRibbonsFromGallery();
   buildRibbonGallery();
 }
