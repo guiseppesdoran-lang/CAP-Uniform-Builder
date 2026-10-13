@@ -86,5 +86,7 @@
   "braid_silver": "#d4d8de",
   "braid_blue": "#2c4fb0"
  },
- "braid": "NCOs and cadets: plain blue with blue braid (6.2.2.2.6)"
+ "braid": "NCOs and cadets: plain blue with blue braid (6.2.2.2.6)",
+ "alias_of": "hat-flight-cap-women-cadet",
+ "name_note": "legacy id: women's flight cap (Fig A5-9, p.140); use hat-flight-cap-women-* / hat-flight-cap-men-*"
 }
