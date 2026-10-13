@@ -92,7 +92,8 @@ window.addEventListener('load', () => { try{ capubRepairCriticalButtons(); }catc
    CAPUB PATCH — COMMAND DATES + ES/VU BADGE SLOT FIX
    Added 2026-05-12
    =========================== */
-const CAPUB_COUNTED_BADGE_LIMIT = 5;
+// At most four badges, command insignia not counted (4.1.5.2.2.4, ICL 25-02 4.2.5.1.3).
+const CAPUB_COUNTED_BADGE_LIMIT = 4;
 
 
 function getRenderableCountedBadgeIds(){

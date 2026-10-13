@@ -722,7 +722,8 @@
     const female = b.gender === 'female';
     const V = BLAZER[female ? 'female' : 'male'];
     const set = H.badgeSet(ctx, b, 'dress');
-    const crestBadge = set.service[0] || null;
+    // Only the CSAG, Command Council, National Board or NEC badge takes the crest's place (4.2.3.1.1.1).
+    const crestBadge = set.service.find(x => SERVICE_IDS.has(x.id)) || null;
     const hide = [];
     let under = V.underlayer[b.opt.underlayer] || null;
     if(semi && b.opt.underlayer === 'turtleneck'){ under = null; ctx.note('A turtleneck is not worn with the semi-formal uniform (CAPR 39-1, 4.2.1.1, 4.2.2.1)'); }

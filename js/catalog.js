@@ -1208,10 +1208,11 @@ const rareCadetBadges = new Set([
 ]);
 
 
+// Badges of the same kind at different levels: only the highest is worn (10.1.2). EMT and ground
+// team badges are separate occupational badges and may be worn together. Only one command pin is
+// worn (10.2.5).
 const exclusiveBadges = [
-  ['emt_basic_badge','ground_team_basic_badge'],
-  ['emt_intermediate','senior_ground_team_badge'],
-  ['emt_paramedic','master_ground_team_badge'],
+  ['squadron_commander_badge','group_commander_badge'],
   ['basic_incident_commander_badge','incident_commander_2_badge'],
   ['basic_incident_commander_badge','incident_commander_1_badge'],
   ['incident_commander_2_badge','incident_commander_1_badge']
@@ -1430,7 +1431,8 @@ CAPUB_NEW_GOVERNANCE_SERVICE_BADGE_IDS.forEach(id => {
   if(!badgeList.includes(id)) badgeList.push(id);
   SPECIALTY_TRACK_BADGE_IDS.add(id);
   POCKET_SERVICE_BADGE_IDS.add(id);
-  badgeLocations[id] = 'LP';
+  // The National Commander's Staff badge is always worn on the wearer's right (4.1.5.2.2.4.2).
+  badgeLocations[id] = id === 'national_staff_badge' ? 'RP' : 'LP';
 });
 
 /* NEW: badge grouping for modal */

@@ -5,7 +5,8 @@
 //   chaplain      OLPA  over the left pocket, above the aviation badge (always highest)
 //   occupational  OLPU  over the left pocket, under the aviation badge
 //   specialty     LP/RP specialty track badges: first on the left pocket, second on the right
-//   service       LP    CAP Senior Advisory Group, Command Council, NEC, National Board (always left)
+//   service       LP    CAP Senior Advisory Group, Command Council, NEC, National Board, Volunteer
+//                       University (10.2.4; always left, only one worn)
 //   national-staff RP   National Commander's Staff badge (always right)
 //   command       ON/UN command insignia pin: over the nametag (current), under it (graduated)
 //   rocketry, marksmanship, cadet-specialty: cadet-only badges (4.1.5.2.2.4.2)
@@ -81,7 +82,7 @@
     "finance_technician_badge": { family: "specialty", name: "Finance Technician Badge", dress: "enamel-finance-technician", field: null, cloth: null, mini: null },
     "finance_senior_badge": { family: "specialty", name: "Finance Senior Badge", dress: "enamel-finance-senior", field: null, cloth: null, mini: null },
     "finance_master_badge": { family: "specialty", name: "Finance Master Badge", dress: "enamel-finance-master", field: null, cloth: null, mini: null },
-    "volunteer_university_instructor_badge": { family: "specialty", name: "Volunteer University Instructor Badge", dress: "enamel-vol-u", field: null, cloth: "cloth-volunteer-university-instructor", mini: "enamel-vol-u-mini" },
+    "volunteer_university_instructor_badge": { family: "service", name: "Volunteer University Instructor Badge", dress: "enamel-vol-u", field: null, cloth: "cloth-volunteer-university-instructor", mini: "enamel-vol-u-mini" },
     "cadet_programs_technician_badge": { family: "specialty", name: "Cadet Programs Technician Badge", dress: "enamel-cadet-programs-technician-badge-v2", field: null, cloth: null, mini: null },
     "cadet_programs_senior_badge": { family: "specialty", name: "Cadet Programs Senior Badge", dress: "enamel-cadet-programs-senior-badge-v2", field: null, cloth: null, mini: null },
     "cadet_programs_master_badge": { family: "specialty", name: "Cadet Programs Master Badge", dress: "enamel-cadet-programs-master-badge-v2", field: null, cloth: null, mini: null },
