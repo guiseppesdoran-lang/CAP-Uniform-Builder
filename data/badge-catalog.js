@@ -120,21 +120,36 @@
     "drug_demand_reduction_technician_badge": { family: "specialty", name: "Drug Demand Reduction Technician Badge", dress: "enamel-drug-demand-reduction-technician", field: null, cloth: null, mini: null },
     "drug_demand_reduction_senior_badge": { family: "specialty", name: "Drug Demand Reduction Senior Badge", dress: "enamel-drug-demand-reduction-senior", field: null, cloth: null, mini: null },
     "drug_demand_reduction_master_badge": { family: "specialty", name: "Drug Demand Reduction Master Badge", dress: "enamel-drug-demand-reduction-master", field: null, cloth: null, mini: null },
-    "stem_badges": { family: "cadet-specialty", name: "Cadet STEM Badge", dress: "enamel-stem-basic", field: null, cloth: null, mini: null },
-    "cyber_badges": { family: "cadet-specialty", name: "Cadet Cyber Badge", dress: "enamel-cyber-basic", field: null, cloth: null, mini: null },
+    "stem_badges": { family: "cadet-specialty", name: "Cadet STEM Badge", dress: "enamel-stem-basic", field: null, cloth: null, mini: null,
+      levels: [["basic", "Basic", "enamel-stem-basic"], ["advanced", "Advanced", "enamel-stem-advanced"], ["master", "Master", "enamel-stem-master"]] },
+    "cyber_badges": { family: "cadet-specialty", name: "Cadet Cyber Badge", dress: "enamel-cyber-basic", field: null, cloth: null, mini: null,
+      levels: [["basic", "Basic", "enamel-cyber-basic"], ["advanced", "Advanced", "enamel-cyber-advanced"], ["master", "Master", "enamel-cyber-master"]] },
     "model_rocketry_badge": { family: "rocketry", name: "Model Rocketry Badge", dress: "model-rocketry", field: null, cloth: null, mini: null },
-    "nra_marksman_badge": { family: "marksmanship", name: "NRA Marksman Badge", dress: "enamel-nra-marksman", field: null, cloth: null, mini: null }
+    "nra_marksman_badge": { family: "marksmanship", name: "NRA Marksmanship Badge", dress: "enamel-nra-pro-marksman", field: null, cloth: null, mini: null,
+      levels: [["pro-marksman", "Pro-Marksman", "enamel-nra-pro-marksman"], ["marksman", "Marksman", "enamel-nra-marksman"],
+        ["marksman-first-class", "Marksman First Class", "enamel-nra-marksman-first-class"], ["sharpshooter", "Sharpshooter", "enamel-nra-sharpshooter"],
+        ["expert", "Expert", "enamel-nra-expert"], ["distinguished-expert", "Distinguished Expert", "enamel-nra-distinguished-expert"]] }
   };
   // Precedence of the families on the wearer's left (4.1.5.2.2.4.1): chaplain highest, then CAP
   // aviation, then occupational.
   const LEFT_STACK_ORDER = ['chaplain', 'aviation', 'occupational'];
   function get(id){ return BADGES[id] || null; }
   function family(id){ const b = BADGES[id]; return b ? b.family : null; }
-  // The artwork for a badge on a kind of uniform; null when none exists in that form.
-  function art(id, form){
+  // A badge earned in levels (STEM, Cyber, NRA): [key, label, dress art], lowest first.
+  function levels(id){ const b = BADGES[id]; return (b && b.levels) || null; }
+  function level(id, key){
+    const list = levels(id);
+    if(!list) return null;
+    return list.find(l => l[0] === key) || list[0];
+  }
+  // The artwork for a badge on a kind of uniform; null when none exists in that form. A level picks
+  // its own dress art.
+  function art(id, form, levelKey){
     const b = BADGES[id];
     if(!b) return null;
+    const lv = level(id, levelKey);
+    if(lv && (form === 'dress' || (form === 'mini' && !b.mini))) return form === 'dress' ? lv[2] : null;
     return b[form] || null;
   }
-  return { BADGES, LEFT_STACK_ORDER, get, family, art };
+  return { BADGES, LEFT_STACK_ORDER, get, family, art, levels, level };
 });

@@ -877,9 +877,11 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
             <div class="title">${escapeHtml(title)}</div>
             ${utilityMode ? '<div class="sub">Silver-on-blue utility badge</div>' : ''}
             <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
+            ${utilityMode ? '' : badgeLevelSelectHtml(id)}
             ${id==='squadron_commander_badge' && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
             ${getBadgeTileMetaHtml(id, utilityMode ? 'In its set position on the field uniform' : '')}
           </div>`;
+        wireBadgeLevelSelect(tile, id);
 
         const chk = tile.querySelector('.bdChk');
         const gradChk = tile.querySelector('.cmdGradChk');

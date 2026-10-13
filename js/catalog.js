@@ -1079,9 +1079,11 @@ Object.assign(BADGE_IMAGE_OVERRIDES, {
 });
 
 function getBadgeAssetPath(id){
-  // The badge's dress artwork (or its field or cloth form when there is no dress form).
+  // The badge's dress artwork (or its field or cloth form when there is no dress form), at the
+  // level the member chose for badges earned in levels.
   const cat = window.CAPUBBadgeCatalog;
-  const art = cat && (cat.art(id, 'dress') || cat.art(id, 'field') || cat.art(id, 'cloth'));
+  const level = State.badgeSelections?.[id]?.level;
+  const art = cat && (cat.art(id, 'dress', level) || cat.art(id, 'field') || cat.art(id, 'cloth'));
   if(art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) return CAPUBAssetIndex[art];
   return BADGE_IMAGE_OVERRIDES[id] || `badges/${id}.webp`;
 }
@@ -1526,7 +1528,7 @@ const BADGE_DISPLAY_NAMES = Object.freeze({
   emt_basic_badge: 'EMT Basic Badge',
   emt_intermediate: 'EMT Intermediate Badge',
   emt_paramedic: 'EMT Paramedic Badge',
-  nra_marksman_badge: 'NRA Marksman Badge',
+  nra_marksman_badge: 'NRA Marksmanship Badge',
   stem_badges: 'Cadet STEM Badge',
   cyber_badges: 'Cadet Cyber Badge',
   historian_technicianIbadge: 'Historian Technician Badge',
@@ -1565,6 +1567,11 @@ const BADGE_DISPLAY_NAMES = Object.freeze({
 function getBadgeDisplayName(id){
   return BADGE_DISPLAY_NAMES[id]
     || String(id || '').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+}
+// The name with the chosen level, for badges earned in levels ("Cadet STEM Badge (Master)").
+function getBadgeWornName(id){
+  const lv = window.CAPUBBadgeCatalog?.levels(id) ? CAPUBBadgeCatalog.level(id, State.badgeSelections?.[id]?.level) : null;
+  return lv ? `${getBadgeDisplayName(id)} (${lv[1]})` : getBadgeDisplayName(id);
 }
 
 const SENIOR_SPECIALTY_TRACK_GROUP_IDS = [

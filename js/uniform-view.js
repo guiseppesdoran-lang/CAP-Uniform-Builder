@@ -102,12 +102,12 @@
     const badges = [];
     let command = null;
     for(const id of ids){
-      const title = typeof getBadgeDisplayName === 'function' ? getBadgeDisplayName(id) : id;
+      const title = typeof getBadgeWornName === 'function' ? getBadgeWornName(id) : id;
       if(typeof isCommandInsigniaBadge === 'function' ? isCommandInsigniaBadge(id) : /commander_badge$/.test(id)){
         if(!command) command = { id, title, graduated: !!State.commandInsignia?.graduatedCommander };
         continue;
       }
-      badges.push({ id, title });
+      badges.push({ id, title, level: State.badgeSelections?.[id]?.level || null });
     }
     return { badges, command };
   }

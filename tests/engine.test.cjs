@@ -139,3 +139,12 @@ test('the semi-formal blazer swaps the necktie for a bow tie and shows no nameta
   assert.ok(scene.layers.some(l => l.id === 'tie-bow-black'));
   assert.ok(!scene.layers.some(l => l.key === 'nametag'));
 });
+
+test('badges earned in levels draw the chosen level (STEM, Cyber, NRA)', async () => {
+  const B = require('../data/badge-catalog.js');
+  assert.equal(B.art('stem_badges', 'dress', 'master'), 'enamel-stem-master');
+  assert.equal(B.art('cyber_badges', 'dress'), 'enamel-cyber-basic');
+  assert.equal(B.art('nra_marksman_badge', 'dress', 'expert'), 'enamel-nra-expert');
+  const scene = await P.composeUniform(build('blues_a', 'cadet', 'C/Capt', { badges: [{ id: 'stem_badges', level: 'advanced' }] }), store());
+  assert.ok(scene.layers.some(l => l.id === 'enamel-stem-advanced'));
+});

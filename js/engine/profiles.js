@@ -56,7 +56,7 @@
     for(const sel of b.badges || []){
       const fam = B.family(sel.id);
       if(!fam || fam === 'command') continue;
-      const art = B.art(sel.id, form) || (form === 'mini' ? B.art(sel.id, 'dress') : null);
+      const art = B.art(sel.id, form, sel.level) || (form === 'mini' ? B.art(sel.id, 'dress', sel.level) : null);
       if(!art){ ctx.note(`${sel.title || sel.id} has no ${form} artwork, so it is not shown on this uniform`); continue; }
       const item = { id: sel.id, art, family: fam, title: sel.title || sel.id };
       const key = { 'national-staff': 'nationalStaff', 'cadet-specialty': 'cadetSpecialty' }[fam] || fam;

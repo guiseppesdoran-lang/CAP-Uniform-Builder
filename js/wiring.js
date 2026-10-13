@@ -360,10 +360,12 @@ function openGalleryModal(kind){
             <div class="miniRow">
               <label><input type="checkbox" class="bdChk"> Add</label>
             </div>
+            ${badgeLevelSelectHtml(id)}
             ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
             ${getBadgeTileMetaHtml(id)}
           </div>
         `;
+        wireBadgeLevelSelect(tile, id);
 
         const chk = tile.querySelector('.bdChk');
         const gradChk = tile.querySelector('.cmdGradChk');
@@ -826,7 +828,12 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const pick = (list, selections) => {
       const source = selections && typeof selections === 'object' ? selections : {};
       const kept = {};
-      for(const id of list) if(source[id] && typeof source[id] === 'object') kept[id] = { checked: !!source[id].checked };
+      for(const id of list){
+        if(!source[id] || typeof source[id] !== 'object') continue;
+        kept[id] = { checked: !!source[id].checked };
+        const levels = window.CAPUBBadgeCatalog?.levels(id);
+        if(levels && levels.some(l => l[0] === source[id].level)) kept[id].level = source[id].level;
+      }
       return kept;
     };
     out.badges = (Array.isArray(p.badges) ? p.badges : []).filter(id => typeof id === 'string' && badgeList.includes(id));

@@ -1282,6 +1282,31 @@ function rebuildBadgesFromGallery(){
   rebuildRibbonsFromGallery();
 }
 
+// A level picker on the tile of a badge earned in levels (STEM, Cyber, NRA).
+function badgeLevelSelectHtml(id){
+  const list = window.CAPUBBadgeCatalog?.levels(id);
+  if(!list) return '';
+  return `<div class="miniRow"><label>Level <select class="bdLevel">${list.map(([k,label])=>`<option value="${escapeHtml(k)}">${escapeHtml(label)}</option>`).join('')}</select></label></div>`;
+}
+function wireBadgeLevelSelect(tile, id){
+  const select = tile.querySelector('.bdLevel');
+  if(!select) return;
+  const sel = State.badgeSelections[id] || (State.badgeSelections[id] = {checked:false});
+  select.value = CAPUBBadgeCatalog.level(id, sel.level)[0];
+  select.onchange = ()=>{
+    sel.level = select.value;
+    State.badgeSelections[id] = sel;
+    const img = tile.querySelector('img');
+    if(img) img.src = ASSET(getBadgeAssetPath(id));
+    if(!sel.checked){
+      sel.checked = true;
+      const chk = tile.querySelector('.bdChk');
+      if(chk) chk.checked = true;
+    }
+    rebuildBadgesFromGallery();
+  };
+}
+
 function buildBadgeGallery(){
   const wrap = by('badgeGallery');
   if(!wrap) return;
@@ -1308,10 +1333,12 @@ function buildBadgeGallery(){
         <div class="miniRow">
           <label><input type="checkbox" class="bdChk"> Add</label>
         </div>
+        ${badgeLevelSelectHtml(id)}
         ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
         ${getBadgeTileMetaHtml(id)}
       </div>
     `;
+    wireBadgeLevelSelect(tile, id);
 
     const chk = tile.querySelector('.bdChk');
     const gradChk = tile.querySelector('.cmdGradChk');
