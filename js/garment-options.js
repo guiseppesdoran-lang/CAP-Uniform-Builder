@@ -86,8 +86,19 @@
     return { u: State.uniform, female: State.gender === 'female', g: gradeOf() };
   }
 
+  // Name fields that only some uniforms use: the first name on the flight suit tags (8.2.4.1), the
+  // state line on the Corporate Service Dress nameplate (4.2.3.1.1.2).
+  function syncNameFields(){
+    const u = State.uniform;
+    const first = document.getElementById('firstNameRow');
+    const plate = document.getElementById('plateLineRow');
+    if(first) first.hidden = !FLIGHT.includes(u);
+    if(plate) plate.hidden = u !== 'aviator_blazer';
+  }
+
   let lastSignature = null;
   function render(force){
+    syncNameFields();
     const host = document.getElementById('garmentOptions');
     const panel = document.getElementById('garmentOptionsPanel');
     if(!host || !panel || typeof CAPUBEngine === 'undefined') return;

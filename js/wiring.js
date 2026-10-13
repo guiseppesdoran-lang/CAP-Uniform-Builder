@@ -1123,9 +1123,13 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       State.text.plateLine = pl?.value || '';
       State.text.capTape = ct?.value || 'CIVIL AIR PATROL';
       State.text.show = sh?.checked !== false;
-      fullRender();
     };
-    [fn,ln,pl,ct,sh].forEach(el=>{ if(!el) return; el.addEventListener('input', readText); el.addEventListener('change', readText); });
+    // Typing redraws the uniform only; leaving the field (change) runs the full update and saves.
+    [fn,ln,pl,ct,sh].forEach(el=>{
+      if(!el) return;
+      el.addEventListener('input', ()=>{ readText(); CAPUBUniformView.scheduleRender(); });
+      el.addEventListener('change', ()=>{ readText(); fullRender(); });
+    });
   }
 
   // Make functions available for console debugging.

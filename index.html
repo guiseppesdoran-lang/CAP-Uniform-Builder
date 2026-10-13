@@ -107,17 +107,21 @@
       <details class="optionalName" id="optionalName">
         <summary>Add your name (optional)</summary>
       <section id="capubV2TextPanel" class="panelBlock plainPanel">
-        <label class="fieldLabel" for="capubV2FirstName">First name</label>
-        <input id="capubV2FirstName" maxlength="18" placeholder="First name" autocomplete="given-name"/>
+        <div id="firstNameRow">
+          <label class="fieldLabel" for="capubV2FirstName">First name</label>
+          <input id="capubV2FirstName" maxlength="18" placeholder="First name" autocomplete="given-name"/>
+        </div>
         <label class="fieldLabel mt-8" for="capubV2LastName">Last name</label>
         <input id="capubV2LastName" maxlength="18" placeholder="Last name" autocomplete="family-name"/>
-        <label class="fieldLabel mt-8" for="capubV2PlateLine">Blazer nameplate second line</label>
-        <input id="capubV2PlateLine" maxlength="24" placeholder="e.g. PENNSYLVANIA WING"/>
+        <div id="plateLineRow">
+          <label class="fieldLabel mt-8" for="capubV2PlateLine">Nameplate state, region or national</label>
+          <input id="capubV2PlateLine" maxlength="24" placeholder="e.g. PENNSYLVANIA"/>
+        </div>
         <input type="hidden" id="capubV2CapTape" value="CIVIL AIR PATROL"/>
         <label class="fieldNote mt-8">
           <input type="checkbox" id="capubV2ShowText" checked> Show my name on the uniform
         </label>
-        <div class="hintText">Name tapes and nametags show the last name; flight suit tags and the blazer nameplate show the full name.</div>
+        <div class="hintText">Name tapes and nametags show the last name; flight suit name tags show the full name.</div>
       </section>
       </details>
 
@@ -491,8 +495,8 @@
 <script src="js/galleries.js?v=718739eee8"></script>
 <script src="js/placement.js?v=03c7aff43a"></script>
 <script src="js/uniform-view.js?v=db209ea30b"></script>
-<script src="js/garment-options.js?v=ad9d513382"></script>
-<script src="js/wiring.js?v=c4264b0c44"></script>
+<script src="js/garment-options.js?v=7192e5221e"></script>
+<script src="js/wiring.js?v=75e4e5d75d"></script>
 <script src="js/workspace-ui.js?v=f1f7b33d5c"></script>
 <script src="js/planned-uniforms.js?v=645b98dd2f"></script>
 <script src="js/guided-flow.js?v=7def638381"></script>
