@@ -1,0 +1,1183 @@
+{
+ "badges": {
+  "CAPPilot1_FA9D33EA587D8": {
+   "name": "Pilot Badge",
+   "dress": "pilot",
+   "field": "pilot-field",
+   "cloth": "cloth-pilot-wings",
+   "mini": "pilot-mini",
+   "notes": ""
+  },
+  "CAPSeniorPilot1_D9725AE959752": {
+   "name": "Senior Pilot Badge",
+   "dress": "senior-pilot",
+   "field": "senior-pilot-field",
+   "cloth": "cloth-pilot-wings-senior",
+   "mini": "senior-pilot-mini",
+   "notes": ""
+  },
+  "CAPMasterPilot1_621A0E2ED15DA": {
+   "name": "Command Pilot Badge",
+   "dress": "master-pilot",
+   "field": "master-pilot-field",
+   "cloth": "cloth-command-pilot-wings",
+   "mini": "master-pilot-mini",
+   "notes": "Old id says Master but the builder labels it Command Pilot; new silver/field/mini ids keep \"master-pilot\", cloth uses \"command-pilot\"."
+  },
+  "AirCrew1_DB3F0FCC3650F": {
+   "name": "Air Crew Badge",
+   "dress": "aircrew",
+   "field": "aircrew-field",
+   "cloth": "cloth-aircrew-basic",
+   "mini": "aircrew-mini",
+   "notes": ""
+  },
+  "SeniorAirCrew1_B289BAE6E515C": {
+   "name": "Senior Air Crew Badge",
+   "dress": "senior-aircrew",
+   "field": "senior-aircrew-field",
+   "cloth": "cloth-aircrew-senior",
+   "mini": "senior-aircrew-mini",
+   "notes": ""
+  },
+  "MasterAirCrew1_72AC4CAE7A310": {
+   "name": "Master Air Crew Badge",
+   "dress": "master-aircrew",
+   "field": "master-aircrew-field",
+   "cloth": "cloth-aircrew-master",
+   "mini": "master-aircrew-mini",
+   "notes": ""
+  },
+  "observer_badge": {
+   "name": "Observer Badge",
+   "dress": "observer",
+   "field": "observer-field",
+   "cloth": "cloth-observer-wings",
+   "mini": "observer-mini",
+   "notes": ""
+  },
+  "SeniorObserver1_0E35802A29801": {
+   "name": "Senior Observer Badge",
+   "dress": "senior-observer",
+   "field": "senior-observer-field",
+   "cloth": "cloth-observer-wings-senior",
+   "mini": "senior-observer-mini",
+   "notes": ""
+  },
+  "MasterObserver1_1B88D5071FD5C": {
+   "name": "Master Observer Badge",
+   "dress": "master-observer",
+   "field": "master-observer-field",
+   "cloth": "cloth-observer-wings-master",
+   "mini": "master-observer-mini",
+   "notes": ""
+  },
+  "GliderPilot1_7BFB287379918": {
+   "name": "Glider Pilot Badge",
+   "dress": "glider-pilot",
+   "field": "glider-pilot-field",
+   "cloth": "cloth-glider-wings",
+   "mini": "glider-pilot-mini",
+   "notes": ""
+  },
+  "BalloonPilot1_442D89C94185B": {
+   "name": "Balloon Pilot Badge",
+   "dress": "balloon-pilot",
+   "field": "balloon-pilot-field",
+   "cloth": "cloth-balloon-wings",
+   "mini": "balloon-pilot-mini",
+   "notes": ""
+  },
+  "solo_badge": {
+   "name": "Solo Badge",
+   "dress": "solo",
+   "field": "solo-field",
+   "cloth": "cloth-solo-wings",
+   "mini": null,
+   "notes": "No miniature solo badge in the new set."
+  },
+  "pre_solo_badge": {
+   "name": "Pre-Solo Badge",
+   "dress": "pre-solo",
+   "field": "pre-solo-field",
+   "cloth": "cloth-pre-solo-wings",
+   "mini": null,
+   "notes": "No miniature pre-solo badge in the new set."
+  },
+  "uas_pilot_basic_badge": {
+   "name": "sUAS Pilot Badge",
+   "dress": "cap-suas-pilot",
+   "field": "cap-suas-pilot-field",
+   "cloth": "cloth-suas-basic-pilot",
+   "mini": "cap-suas-pilot-mini",
+   "notes": "Old art was cap_suas_pilot_badge (the cap-suas-pilot reference). CHECK: silver \"cadet-suas\" (2 in, no reference) and \"cadet-suas-field\" may be the cadet version of this badge; cloth-suas-pre-solo has no old id."
+  },
+  "uas_pilot_senior_badge": {
+   "name": "Senior sUAS Pilot Badge",
+   "dress": "uas-pilot-senior",
+   "field": "uas-pilot-senior-field",
+   "cloth": "cloth-suas-senior-pilot",
+   "mini": "uas-pilot-senior-mini",
+   "notes": ""
+  },
+  "uas_pilot_master_badge": {
+   "name": "Command sUAS Pilot Badge",
+   "dress": "uas-pilot-master",
+   "field": "uas-pilot-master-field",
+   "cloth": "cloth-suas-command-pilot",
+   "mini": "uas-pilot-master-mini",
+   "notes": "Old id \"master\", display name \"Command\"; cloth uses \"command-pilot\"."
+  },
+  "uas_technician_basic_badge": {
+   "name": "sUAS Technician Badge",
+   "dress": "uas-technician-basic",
+   "field": "uas-technician-basic-field",
+   "cloth": "cloth-suas-basic-technician",
+   "mini": "uas-technician-basic-mini",
+   "notes": ""
+  },
+  "uas_technician_senior_badge": {
+   "name": "Senior sUAS Technician Badge",
+   "dress": "uas-technician-senior",
+   "field": "uas-technician-senior-field",
+   "cloth": "cloth-suas-senior-technician",
+   "mini": "uas-technician-senior-mini",
+   "notes": ""
+  },
+  "uas_technician_master_badge": {
+   "name": "Master sUAS Technician Badge",
+   "dress": "uas-technician-master",
+   "field": "uas-technician-master-field",
+   "cloth": "cloth-suas-master-technician",
+   "mini": "uas-technician-master-mini",
+   "notes": ""
+  },
+  "emergency_services_badge": {
+   "name": "Emergency Services Badge",
+   "dress": "enamel-emergency-services",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "senior_emergency_services_badge": {
+   "name": "Senior Emergency Services Badge",
+   "dress": "enamel-senior-es",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "New id abbreviates ES."
+  },
+  "master_emergency_services_badge": {
+   "name": "Master Emergency Services Badge",
+   "dress": "enamel-master-es",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "New id abbreviates ES."
+  },
+  "ground_team_basic_badge": {
+   "name": "Ground Team Badge",
+   "dress": "ground-team-basic",
+   "field": "ground-team-basic-field",
+   "cloth": "cloth-ground-team-basic",
+   "mini": "ground-team-basic-mini",
+   "notes": ""
+  },
+  "senior_ground_team_badge": {
+   "name": "Senior Ground Team Badge",
+   "dress": "senior-ground-team",
+   "field": "senior-ground-team-field",
+   "cloth": "cloth-ground-team-senior",
+   "mini": "senior-ground-team-mini",
+   "notes": "CHECK: a second dress candidate exists, badges/\"badge-senior-ground-team\" (1.75 in, estimated size, separate in-house redraw with anchors). silver \"senior-ground-team\" (1.125 in) chosen to match the basic/master family."
+  },
+  "master_ground_team_badge": {
+   "name": "Master Ground Team Badge",
+   "dress": "master-ground-team",
+   "field": "master-ground-team-field",
+   "cloth": "cloth-ground-team-master",
+   "mini": "master-ground-team-mini",
+   "notes": ""
+  },
+  "basic_incident_commander_badge": {
+   "name": "Basic Incident Commander Badge (IC3)",
+   "dress": "basic-incident-commander",
+   "field": "basic-incident-commander-field",
+   "cloth": "cloth-incident-commander-basic",
+   "mini": "basic-incident-commander-mini",
+   "notes": ""
+  },
+  "incident_commander_2_badge": {
+   "name": "Senior Incident Commander Badge (IC2)",
+   "dress": "incident-commander-2",
+   "field": "incident-commander-2-field",
+   "cloth": "cloth-incident-commander-senior",
+   "mini": "incident-commander-2-mini",
+   "notes": "IC2 = Senior; cloth id uses the word \"senior\"."
+  },
+  "incident_commander_1_badge": {
+   "name": "Master Incident Commander Badge (IC1)",
+   "dress": "incident-commander-1",
+   "field": "incident-commander-1-field",
+   "cloth": "cloth-incident-commander-master",
+   "mini": "incident-commander-1-mini",
+   "notes": "IC1 = Master; cloth id uses the word \"master\"."
+  },
+  "emt_basic_badge": {
+   "name": "EMT Basic Badge",
+   "dress": "enamel-emt-basic",
+   "field": "enamel-emt-basic-field",
+   "cloth": "cloth-emt-basic",
+   "mini": "enamel-emt-basic-mini",
+   "notes": "CHECK: cloth-emt-basic was traced from a supplier file named \"...cloth-badge-paramedic-emergency-medical-technician...\"; confirm it is the basic level and not paramedic. No cloth intermediate/paramedic exists."
+  },
+  "emt_intermediate": {
+   "name": "EMT Intermediate Badge",
+   "dress": "enamel-emt-intermediate",
+   "field": "enamel-emt-intermediate-field",
+   "cloth": null,
+   "mini": "enamel-emt-intermediate-mini",
+   "notes": "No cloth version. Field/mini ids keep the enamel- prefix."
+  },
+  "emt_paramedic": {
+   "name": "EMT Paramedic Badge",
+   "dress": "enamel-emt-paramedic",
+   "field": "enamel-emt-paramedic-field",
+   "cloth": null,
+   "mini": "enamel-emt-paramedic-mini",
+   "notes": "No cloth version (see CHECK on emt_basic_badge cloth). Field/mini ids keep the enamel- prefix."
+  },
+  "medical_officer": {
+   "name": "Medical Officer Badge",
+   "dress": "medical-officer",
+   "field": "medical-officer-field",
+   "cloth": "cloth-medical-officer",
+   "mini": null,
+   "notes": "Dress art is in the silver category."
+  },
+  "nurse_officer": {
+   "name": "Nurse Officer Badge",
+   "dress": "nurse",
+   "field": "nurse-field",
+   "cloth": "cloth-nurse",
+   "mini": null,
+   "notes": "Dress art is in the silver category."
+  },
+  "christian_chaplin": {
+   "name": "Christian Chaplain Badge",
+   "dress": "enamel-christian-chaplin",
+   "field": "enamel-christian-chaplin-field",
+   "cloth": "cloth-christian-chaplain",
+   "mini": null,
+   "notes": "Enamel/field ids keep the \"chaplin\" misspelling; cloth id spells \"chaplain\"."
+  },
+  "jewish_chaplin": {
+   "name": "Jewish Chaplain Badge",
+   "dress": "enamel-jewish-chaplin",
+   "field": "enamel-jewish-chaplin-field",
+   "cloth": "cloth-jewish-chaplain",
+   "mini": null,
+   "notes": "Enamel/field ids keep the \"chaplin\" misspelling; cloth id spells \"chaplain\"."
+  },
+  "muslim_chaplin": {
+   "name": "Muslim Chaplain Badge",
+   "dress": "enamel-muslim-chaplin",
+   "field": "enamel-muslim-chaplin-field",
+   "cloth": null,
+   "mini": null,
+   "notes": "Real ids keep the \"chaplin\" misspelling. No cloth version."
+  },
+  "buddist_chaplin": {
+   "name": "Buddhist Chaplain Badge",
+   "dress": "enamel-buddist-chaplin",
+   "field": "enamel-buddist-chaplin-field",
+   "cloth": null,
+   "mini": null,
+   "notes": "Real ids keep the \"buddist-chaplin\" misspellings. No cloth version."
+  },
+  "legal_officer": {
+   "name": "Legal Officer Badge",
+   "dress": "legal-officer",
+   "field": "legal-officer-field",
+   "cloth": "cloth-legal-officer-badge",
+   "mini": null,
+   "notes": "Dress art is in the silver category."
+  },
+  "squadron_commander_badge": {
+   "name": "Squadron Commander Badge",
+   "dress": "squadron-commander",
+   "field": "squadron-commander-field",
+   "cloth": "cloth-squadron-commander",
+   "mini": null,
+   "notes": "CHECK: cloth-squadron-commander-with-hook-insignia is the alternate cloth version (with hook); the old builder had no separate hook option."
+  },
+  "group_commander_badge": {
+   "name": "Group Commander Badge",
+   "dress": "group-commander",
+   "field": "group-commander-field",
+   "cloth": "cloth-group-commander",
+   "mini": null,
+   "notes": "CHECK: cloth-group-commander-with-hook is the alternate cloth version (with hook)."
+  },
+  "senior_advisory_group_badge": {
+   "name": "Senior Advisory Group Badge",
+   "dress": "enamel-senior-advisory-group",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "national_executive_committee_badge": {
+   "name": "National Executive Committee Badge",
+   "dress": "enamel-national-executive-committee",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "command_council_badge": {
+   "name": "Command Council Badge",
+   "dress": "enamel-command-council",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "cap_national_command_board_badge": {
+   "name": "CAP National Command Board Badge",
+   "dress": "enamel-cap-national-command-board",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "national_staff_badge": {
+   "name": "National Staff Badge",
+   "dress": "national-staff",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "Dress art is in the silver category. The old utility patch (badges/utility/national_staff_badge, via patch national_staff_ocp_patch) and the small lapel pin for semi-formal/blazer have no new art; the builder used one image scaled down for the pin."
+  },
+  "communications_technician_badge": {
+   "name": "Communications Technician Badge",
+   "dress": "enamel-comms-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "CHECK: two candidates. enamel-comms-tech was traced from Comms_tech (the override the builder used last); enamel-communications-technician was traced from the older communications_technician_badge file."
+  },
+  "communications_senior_badge": {
+   "name": "Communications Senior Badge",
+   "dress": "enamel-comms-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "communications_master_badge": {
+   "name": "Communications Master Badge",
+   "dress": "enamel-comms-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "information_technology_technician_badge": {
+   "name": "Information Technology Technician Badge",
+   "dress": "enamel-it-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "CHECK: two candidates. enamel-it-tech was traced from IT_tech (the override the builder used last); enamel-information-technology-technician was traced from the older information_technology_technician_badge file."
+  },
+  "information_technology_senior_badge": {
+   "name": "Information Technology Senior Badge",
+   "dress": "enamel-it-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "information_technology_master_badge": {
+   "name": "Information Technology Master Badge",
+   "dress": "enamel-it-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "historian_technicianIbadge": {
+   "name": "Historian Technician Badge",
+   "dress": "enamel-historian-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "Old id has the \"technicianIbadge\" typo."
+  },
+  "historian_senior_badge": {
+   "name": "Historian Senior Badge",
+   "dress": "enamel-historian-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "historian_master_badge": {
+   "name": "Historian Master Badge",
+   "dress": "enamel-historian-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "administration_technician_badge": {
+   "name": "Administration Technician Badge",
+   "dress": "enamel-admin-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "administration_senior_badge": {
+   "name": "Administration Senior Badge",
+   "dress": "enamel-admin-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "administration_master_badge": {
+   "name": "Administration Master Badge",
+   "dress": "enamel-admin-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "aerospace_education_technician_badge": {
+   "name": "Aerospace Education Technician Badge",
+   "dress": "enamel-aerospace-education-technician",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "aerospace_education_senior_badge": {
+   "name": "Aerospace Education Senior Badge",
+   "dress": "enamel-aerospace-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "New id drops \"education\" (traced from aerospace_senior_badge)."
+  },
+  "aerospace_education_master_badge": {
+   "name": "Aerospace Education Master Badge",
+   "dress": "enamel-aerospace-education-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "finance_technician_badge": {
+   "name": "Finance Technician Badge",
+   "dress": "enamel-finance-technician",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "finance_senior_badge": {
+   "name": "Finance Senior Badge",
+   "dress": "enamel-finance-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "finance_master_badge": {
+   "name": "Finance Master Badge",
+   "dress": "enamel-finance-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "volunteer_university_instructor_badge": {
+   "name": "Volunteer University Instructor Badge",
+   "dress": "enamel-vol-u",
+   "field": null,
+   "cloth": "cloth-volunteer-university-instructor",
+   "mini": "enamel-vol-u-mini",
+   "notes": ""
+  },
+  "cadet_programs_technician_badge": {
+   "name": "Cadet Programs Technician Badge",
+   "dress": "enamel-cadet-programs-technician-badge-v2",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "CHECK: two candidates. The builder used the _v2 file, so enamel-cadet-programs-technician-badge-v2 is mapped; enamel-cadet-programs-technician was traced from the older non-v2 file."
+  },
+  "cadet_programs_senior_badge": {
+   "name": "Cadet Programs Senior Badge",
+   "dress": "enamel-cadet-programs-senior-badge-v2",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "CHECK: two candidates. The builder used the _v2 file, so enamel-cadet-programs-senior-badge-v2 is mapped; enamel-cadet-programs-senior was traced from the older non-v2 file."
+  },
+  "cadet_programs_master_badge": {
+   "name": "Cadet Programs Master Badge",
+   "dress": "enamel-cadet-programs-master-badge-v2",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "CHECK: two candidates. The builder used the _v2 file, so enamel-cadet-programs-master-badge-v2 is mapped; enamel-cadet-programs-master was traced from the older non-v2 file."
+  },
+  "cadet_programs_badge": {
+   "name": "Cadet Programs Badge",
+   "dress": "enamel-cadet-programs",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "Legacy alias; hidden from the gallery by getEligibleBadgeIdsForMembership but still in badgeList and BADGE_IMAGE_OVERRIDES."
+  },
+  "logistics_technician_badge": {
+   "name": "Logistics Technician Badge",
+   "dress": "enamel-logistics-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "logistics_senior_badge": {
+   "name": "Logistics Senior Badge",
+   "dress": "enamel-logistics-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "logistics_master_badge": {
+   "name": "Logistics Master Badge",
+   "dress": "enamel-logistics-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "operations_technician_badge": {
+   "name": "Operations Technician Badge",
+   "dress": "enamel-ops-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "operations_senior_badge": {
+   "name": "Operations Senior Badge",
+   "dress": "enamel-ops-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "operations_master_badge": {
+   "name": "Operations Master Badge",
+   "dress": "enamel-ops-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "personnel_technician_badge": {
+   "name": "Personnel Technician Badge",
+   "dress": "enamel-personnel-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "personnel_senior_badge": {
+   "name": "Personnel Senior Badge",
+   "dress": "enamel-personnel-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "personnel_master_badge": {
+   "name": "Personnel Master Badge",
+   "dress": "enamel-personnel-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "professional_development_technician_badge": {
+   "name": "Professional Development Technician Badge",
+   "dress": "enamel-professional-development-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "professional_development_senior_badge": {
+   "name": "Professional Development Senior Badge",
+   "dress": "enamel-professional-development-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "professional_development_master_badge": {
+   "name": "Professional Development Master Badge",
+   "dress": "enamel-professional-development-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "public_affairs_technician_badge": {
+   "name": "Public Affairs Technician Badge",
+   "dress": "enamel-public-affairs-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "public_affairs_senior_badge": {
+   "name": "Public Affairs Senior Badge",
+   "dress": "enamel-public-affairs-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "public_affairs_master_badge": {
+   "name": "Public Affairs Master Badge",
+   "dress": "enamel-public-affairs-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "recruiting_retention_technician_badge": {
+   "name": "Recruiting and Retention Technician Badge",
+   "dress": "enamel-recruiter-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "New ids use \"recruiter\"."
+  },
+  "recruiting_retention_senior_badge": {
+   "name": "Recruiting and Retention Senior Badge",
+   "dress": "enamel-recruiter-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "New ids use \"recruiter\"."
+  },
+  "recruiting_retention_master_badge": {
+   "name": "Recruiting and Retention Master Badge",
+   "dress": "enamel-recruiter-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "New ids use \"recruiter\"."
+  },
+  "safety_technician_badge": {
+   "name": "Safety Technician Badge",
+   "dress": "enamel-safety-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "safety_senior_badge": {
+   "name": "Safety Senior Badge",
+   "dress": "enamel-safety-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "safety_master_badge": {
+   "name": "Safety Master Badge",
+   "dress": "enamel-safety-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "inspector_general_technician_badge": {
+   "name": "Inspector General Technician Badge",
+   "dress": "enamel-ig-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "inspector_general_senior_badge": {
+   "name": "Inspector General Senior Badge",
+   "dress": "enamel-ig-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "CHECK: enamel-ig-senior-gold also exists (no reference file); mapped the plain version traced from IG_senior."
+  },
+  "inspector_general_master_badge": {
+   "name": "Inspector General Master Badge",
+   "dress": "enamel-ig-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "CHECK: enamel-ig-master-gold also exists (no reference file); mapped the plain version traced from IG_master."
+  },
+  "stan_eval_tech_badge": {
+   "name": "Standardization/Evaluation Technician Badge",
+   "dress": "enamel-stan-eval-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "stan_eval_senior_badge": {
+   "name": "Standardization/Evaluation Senior Badge",
+   "dress": "enamel-stan-eval-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "stan_eval_master_badge": {
+   "name": "Standardization/Evaluation Master Badge",
+   "dress": "enamel-stan-eval-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "cdi_technician_badge": {
+   "name": "Character Development Instructor Technician Badge",
+   "dress": "enamel-cdi-tech",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "cdi_senior_badge": {
+   "name": "Character Development Instructor Senior Badge",
+   "dress": "enamel-cdi-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "cdi_master_badge": {
+   "name": "Character Development Instructor Master Badge",
+   "dress": "enamel-cdi-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "drug_demand_reduction_basic_badge": {
+   "name": "Drug Demand Reduction Basic Badge",
+   "dress": "enamel-drug-demand-reduction-basic",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "Legacy alias; hidden from the gallery by getEligibleBadgeIdsForMembership."
+  },
+  "drug_demand_reduction_technician_badge": {
+   "name": "Drug Demand Reduction Technician Badge",
+   "dress": "enamel-drug-demand-reduction-technician",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "drug_demand_reduction_senior_badge": {
+   "name": "Drug Demand Reduction Senior Badge",
+   "dress": "enamel-drug-demand-reduction-senior",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "drug_demand_reduction_master_badge": {
+   "name": "Drug Demand Reduction Master Badge",
+   "dress": "enamel-drug-demand-reduction-master",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": ""
+  },
+  "stem_badges": {
+   "name": "Cadet STEM Badge",
+   "dress": "enamel-stem-basic",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "enamel-stem-advanced and enamel-stem-master have no old id (old builder had one STEM badge)."
+  },
+  "cyber_badges": {
+   "name": "Cadet Cyber Badge",
+   "dress": "enamel-cyber-basic",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "enamel-cyber-advanced and enamel-cyber-master have no old id (old builder had one Cyber badge)."
+  },
+  "model_rocketry_badge": {
+   "name": "Model Rocketry Badge",
+   "dress": "model-rocketry",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "Dress art is in the silver category."
+  },
+  "nra_marksman_badge": {
+   "name": "NRA Marksman Badge",
+   "dress": "enamel-nra-marksman",
+   "field": null,
+   "cloth": null,
+   "mini": null,
+   "notes": "Other NRA levels (marksman-first-class, sharpshooter, expert, distinguished-expert, pro-marksman) have no old id."
+  }
+ },
+ "patches": {
+  "national_staff_ocp_patch": {
+   "name": "National Staff OCP Sleeve Patch",
+   "asset": null,
+   "notes": "No new art. Was the embroidered National Staff sleeve patch (badges/utility/national_staff_badge); silver national-staff is the metal badge, not this patch."
+  },
+  "ner_patch": {
+   "name": "Northeast Region Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "nywg_patch": {
+   "name": "New York Wing Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "comms_patch": {
+   "name": "Communications Patch",
+   "asset": null,
+   "notes": "No new art (no cloth communications badge in the new set either)."
+  },
+  "check_pilot_patch": {
+   "name": "Check Pilot Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "pjoc_ocp_patch": {
+   "name": "PJOC OCP Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "pjoc_patch": {
+   "name": "PJOC Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "nesa_patch": {
+   "name": "NESA Patch",
+   "asset": null,
+   "notes": "No new art. CHECK: NESA (National ES Academy) is not the generic ES patch; patch-es-style-1/-2 are not mapped to it."
+  },
+  "civil_engineering_academy_patch": {
+   "name": "Civil Engineering Academy Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "cos_patch": {
+   "name": "Cadet Officer School Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "honor_guard_patch": {
+   "name": "Honor Guard Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "engineering_academy_patch": {
+   "name": "Engineering Academy Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "nfa_patch": {
+   "name": "National Flight Academy Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "cla_patch": {
+   "name": "Civic Leadership Academy Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "proficient_pilot_patch": {
+   "name": "Proficient Pilot Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "model_rocketry_patch": {
+   "name": "Model Rocketry Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "safety_patch": {
+   "name": "Safety Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "undergrad_pilot_training_patch": {
+   "name": "Undergraduate Pilot Training Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "nbb_patch": {
+   "name": "National Blue Beret Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "honor_guard_academy_patch": {
+   "name": "Honor Guard Academy Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "af_space_command_patch": {
+   "name": "Air Force Space Command Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "dog_patch": {
+   "name": "DOG Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "archer_patch": {
+   "name": "ARCHER Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "orientation_pilot_patch": {
+   "name": "Orientation Pilot Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "cism_patch": {
+   "name": "CISM Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "plane_patch": {
+   "name": "Plane Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "aerospace_education_patch": {
+   "name": "Aerospace Education Patch",
+   "asset": null,
+   "notes": "No new art."
+  },
+  "communications_patch": {
+   "name": "Legacy Communications Patch",
+   "asset": null,
+   "notes": "No new art (no cloth communications badge in the new set either)."
+  },
+  "ner_ocp_patch": {
+   "name": "Northeast Region Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of ner_patch (ocp-patch-variants.js). No new art."
+  },
+  "nywg_ocp_patch": {
+   "name": "New York Wing Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of nywg_patch (ocp-patch-variants.js). No new art."
+  },
+  "check_pilot_ocp_patch": {
+   "name": "Check Pilot Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of check_pilot_patch (ocp-patch-variants.js). No new art."
+  },
+  "nesa_ocp_patch": {
+   "name": "NESA Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of nesa_patch (ocp-patch-variants.js). No new art."
+  },
+  "civil_engineering_academy_ocp_patch": {
+   "name": "Civil Engineering Academy Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of civil_engineering_academy_patch (ocp-patch-variants.js). No new art."
+  },
+  "cos_ocp_patch": {
+   "name": "Cadet Officer School Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of cos_patch (ocp-patch-variants.js). No new art."
+  },
+  "engineering_academy_ocp_patch": {
+   "name": "Engineering Academy Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of engineering_academy_patch (ocp-patch-variants.js). No new art."
+  },
+  "nfa_ocp_patch": {
+   "name": "National Flight Academy Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of nfa_patch (ocp-patch-variants.js). No new art."
+  },
+  "cla_ocp_patch": {
+   "name": "Civic Leadership Academy Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of cla_patch (ocp-patch-variants.js). No new art."
+  },
+  "proficient_pilot_ocp_patch": {
+   "name": "Proficient Pilot Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of proficient_pilot_patch (ocp-patch-variants.js). No new art."
+  },
+  "undergrad_pilot_training_ocp_patch": {
+   "name": "Undergraduate Pilot Training Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of undergrad_pilot_training_patch (ocp-patch-variants.js). No new art."
+  },
+  "nbb_ocp_patch": {
+   "name": "National Blue Beret Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of nbb_patch (ocp-patch-variants.js). No new art."
+  },
+  "honor_guard_academy_ocp_patch": {
+   "name": "Honor Guard Academy Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of honor_guard_academy_patch (ocp-patch-variants.js). No new art."
+  },
+  "af_space_command_ocp_patch": {
+   "name": "Air Force Space Command Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of af_space_command_patch (ocp-patch-variants.js). No new art."
+  },
+  "dog_ocp_patch": {
+   "name": "DOG Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of dog_patch (ocp-patch-variants.js). No new art."
+  },
+  "archer_ocp_patch": {
+   "name": "ARCHER Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of archer_patch (ocp-patch-variants.js). No new art."
+  },
+  "orientation_pilot_ocp_patch": {
+   "name": "Orientation Pilot Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of orientation_pilot_patch (ocp-patch-variants.js). No new art."
+  },
+  "cism_ocp_patch": {
+   "name": "CISM Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of cism_patch (ocp-patch-variants.js). No new art."
+  },
+  "plane_ocp_patch": {
+   "name": "Plane Patch — OCP sleeve",
+   "asset": null,
+   "notes": "OCP sleeve variant of plane_patch (ocp-patch-variants.js). No new art."
+  },
+  "tn185_ocp_patch": {
+   "name": "SER-TN-185 Music City Composite Squadron Unit Patch",
+   "asset": null,
+   "notes": "Unit patch via the Unit Patch selector (UNIT_PATCH_IMAGE_BY_CHARTER). No new art."
+  },
+  "tn330_ocp_patch": {
+   "name": "SER-TN-330 Sequoyah Cadet Squadron Unit Patch",
+   "asset": null,
+   "notes": "Unit patch added in js/patches.js. No new art."
+  }
+ },
+ "unmapped_new_assets": [
+  "badge-senior-ground-team",
+  "cloth-group-commander-with-hook",
+  "cloth-squadron-commander-with-hook-insignia",
+  "cloth-suas-pre-solo",
+  "enamel-cadet-programs-master",
+  "enamel-cadet-programs-senior",
+  "enamel-cadet-programs-technician",
+  "enamel-communications-technician",
+  "enamel-cyber-advanced",
+  "enamel-cyber-master",
+  "enamel-ig-master-gold",
+  "enamel-ig-senior-gold",
+  "enamel-information-technology-technician",
+  "enamel-nra-distinguished-expert",
+  "enamel-nra-expert",
+  "enamel-nra-marksman-first-class",
+  "enamel-nra-pro-marksman",
+  "enamel-nra-sharpshooter",
+  "enamel-stem-advanced",
+  "enamel-stem-master",
+  "cadet-suas-field",
+  "collar-insignia-cap-cloth",
+  "collar-insignia-cap-metal",
+  "collar-insignia-us-circle-metal",
+  "collar-insignia-us-metal",
+  "insignia-cap-crest",
+  "insignia-cap-seal",
+  "patch-cap-command-patch",
+  "patch-es-style-1",
+  "patch-es-style-2",
+  "cadet-suas"
+ ],
+ "unmapped_old_ids": [
+  "aerospace_education_patch",
+  "af_space_command_ocp_patch",
+  "af_space_command_patch",
+  "archer_ocp_patch",
+  "archer_patch",
+  "check_pilot_ocp_patch",
+  "check_pilot_patch",
+  "cism_ocp_patch",
+  "cism_patch",
+  "civil_engineering_academy_ocp_patch",
+  "civil_engineering_academy_patch",
+  "cla_ocp_patch",
+  "cla_patch",
+  "comms_patch",
+  "communications_patch",
+  "cos_ocp_patch",
+  "cos_patch",
+  "dog_ocp_patch",
+  "dog_patch",
+  "engineering_academy_ocp_patch",
+  "engineering_academy_patch",
+  "honor_guard_academy_ocp_patch",
+  "honor_guard_academy_patch",
+  "honor_guard_patch",
+  "model_rocketry_patch",
+  "national_staff_ocp_patch",
+  "nbb_ocp_patch",
+  "nbb_patch",
+  "ner_ocp_patch",
+  "ner_patch",
+  "nesa_ocp_patch",
+  "nesa_patch",
+  "nfa_ocp_patch",
+  "nfa_patch",
+  "nywg_ocp_patch",
+  "nywg_patch",
+  "orientation_pilot_ocp_patch",
+  "orientation_pilot_patch",
+  "pjoc_ocp_patch",
+  "pjoc_patch",
+  "plane_ocp_patch",
+  "plane_patch",
+  "proficient_pilot_ocp_patch",
+  "proficient_pilot_patch",
+  "safety_patch",
+  "tn185_ocp_patch",
+  "tn330_ocp_patch",
+  "undergrad_pilot_training_ocp_patch",
+  "undergrad_pilot_training_patch"
+ ]
+}
