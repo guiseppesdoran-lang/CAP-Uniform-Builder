@@ -52,8 +52,8 @@
         (c.u === 'blues_b' && (State.garment || {}).sleeve !== 'long') ||
         (c.female && ['blues_a', 'mess_dress'].includes(c.u)) ||
         ['abu', 'corporate_field'].includes(c.u)) },
-    { key: 'jacket', label: 'Flight jacket over the suit', type: 'check', when: c => FLIGHT.includes(c.u) },
-    { key: 'scarf', label: 'Command scarf', type: 'check', when: c => FLIGHT.includes(c.u) && !(State.garment || {}).jacket },
+    { key: 'jacket', label: 'Show the flight jacket too', type: 'check', defaultValue: true, when: c => FLIGHT.includes(c.u) },
+    { key: 'scarf', label: 'Command scarf', type: 'check', when: c => FLIGHT.includes(c.u) },
     { key: 'esPatch', label: 'Emergency Services patch', type: 'select',
       choices: [['none', 'None'], ['style-1', 'ES patch'], ['style-2', 'ES patch (second style)']],
       when: c => FLIGHT.includes(c.u) || c.u === 'corporate_field' },

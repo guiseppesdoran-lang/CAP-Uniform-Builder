@@ -66,6 +66,34 @@
     return parts.join(' ') || null;
   }
 
+  // A measurement: the line with end ticks, and its length beside the middle. Amber on a dark
+  // halo so it reads on light and dark cloth alike.
+  const MEASURE = { color: '#ffb000', halo: '#111', line: 0.035, tick: 0.12, text: 0.3 };
+  function measureNode(m, k){
+    const M = { color: MEASURE.color, halo: MEASURE.halo, line: MEASURE.line * k, tick: MEASURE.tick * k, text: MEASURE.text * k };
+    const g = el('g', { class: 'measure', 'pointer-events': 'none' });
+    const dx = m.to.x - m.from.x, dy = m.to.y - m.from.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const nx = -dy / len, ny = dx / len; // perpendicular
+    const segs = [[m.from, m.to]];
+    for(const p of [m.from, m.to]) segs.push([{ x: p.x - nx * M.tick, y: p.y - ny * M.tick }, { x: p.x + nx * M.tick, y: p.y + ny * M.tick }]);
+    for(const [stroke, width] of [[M.halo, M.line * 3], [M.color, M.line]]){
+      for(const [a, b] of segs) g.appendChild(el('line', { x1: fmt(a.x), y1: fmt(a.y), x2: fmt(b.x), y2: fmt(b.y), stroke, 'stroke-width': fmt(width), 'stroke-linecap': 'round' }));
+    }
+    // Label to the right of a vertical line, above a horizontal one.
+    const vertical = Math.abs(dy) >= Math.abs(dx);
+    const mx = (m.from.x + m.to.x) / 2, my = (m.from.y + m.to.y) / 2;
+    const text = el('text', {
+      x: fmt(vertical ? mx + M.tick + 0.06 : mx), y: fmt(vertical ? my : my - M.tick - 0.06),
+      'text-anchor': vertical ? 'start' : 'middle', 'dominant-baseline': vertical ? 'central' : 'auto',
+      'font-family': 'Arial, Helvetica, sans-serif', 'font-weight': 700, 'font-size': fmt(M.text),
+      fill: M.color, stroke: M.halo, 'stroke-width': fmt(M.line * 2.5), 'paint-order': 'stroke', 'stroke-linejoin': 'round'
+    });
+    text.textContent = m.label;
+    g.appendChild(text);
+    return g;
+  }
+
   // Build the <svg> for a scene. `manifestPath(id)` resolves an asset id to its path.
   async function buildSvg(scene, manifestPath, opts){
     const options = opts || {};
@@ -150,6 +178,10 @@
         node.setAttributeNS(XLINK_NS, 'xlink:href', data);
       }else if(layer.type === 'rect'){
         node = el('rect', { x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h), rx: layer.rx ? fmt(layer.rx) : null, fill: layer.fill || 'none', stroke: layer.stroke || null, 'stroke-width': layer.strokeWidth ? fmt(layer.strokeWidth) : null });
+      }else if(layer.type === 'measure'){
+        if(!options.measure) continue;
+        // Labels scale with the drawing so they read at the preview's fitted size.
+        node = measureNode(layer, Math.max(1, b.h / 18));
       }else if(layer.type === 'text'){
         node = el('text', {
           x: fmt(layer.x), y: fmt(layer.y),

@@ -31,7 +31,7 @@
   // Options for the garment itself (sleeve length, skirt, headgear...). Defaults per uniform.
   const GARMENT_DEFAULTS = {
     sleeve: 'short', femaleTop: 'shirt', underlayer: 'shirt', skirt: 'a-line', headgear: 'auto',
-    chevron: '', scarf: false, jacket: false, esPatch: 'none', noGradeTrack: 'officer', plateGrade: true
+    chevron: '', scarf: false, jacket: true, esPatch: 'none', noGradeTrack: 'officer', plateGrade: true
   };
   function garmentOptions(){
     const g = Object.assign({}, GARMENT_DEFAULTS, State.garment || {});
@@ -240,7 +240,7 @@
       const scene = await E.profiles.composeUniform(build, s);
       patchNotes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
       if(seq !== renderSeq) return null; // a newer render started
-      const svg = await E.renderSvg.buildSvg(scene, id => s.entry(id).path, { pad: 0.4 });
+      const svg = await E.renderSvg.buildSvg(scene, id => s.entry(id).path, { pad: 0.4, measure: !!State.showMeasurements });
       if(seq !== renderSeq) return null;
       host.querySelectorAll('svg.uniformSvg, .layer').forEach(n => n.remove());
       sizeStage(svg);

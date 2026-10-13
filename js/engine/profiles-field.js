@@ -112,7 +112,12 @@
   async function fieldBadges(ctx, b){
     const form = 'field';
     const set = H.badgeSet(ctx, b, form);
-    const ordered = [...set.chaplain, ...set.aviation, ...set.occupational, ...set.specialty, ...set.service, ...set.nationalStaff];
+    // ABU and CFU: aviation and occupational badges only (5.1.1.1.2.4, 5.2.1.1.2.6).
+    const ordered = b.uniform === 'ocp'
+      ? [...set.chaplain, ...set.aviation, ...set.occupational, ...set.specialty, ...set.service, ...set.nationalStaff]
+      : [...set.chaplain, ...set.aviation, ...set.occupational];
+    const skipped = set.all.length - ordered.length;
+    if(skipped > 0) ctx.note('Only aviation and occupational badges are worn above the CAP tape on this uniform; the others are not shown');
     const max = MAX_BADGES[b.uniform];
     const list = ordered.slice(0, max);
     if(ordered.length > max) ctx.note(`At most ${max} badges are worn above the CAP tape on this uniform; the rest are not shown`);
@@ -127,15 +132,18 @@
       // silver 1/2 in (7.1.1.3.1.1-2, 5.1.1.1.2.4, 5.2.1.1.2.6). The highest badge is on top.
       const lower = list.length === 2 ? 1 : 0;
       const l1 = await ctx.place(list[lower].art, Object.assign({ pieceAnchor: artBottom(specs[lower]), at: { x: T.x, y: T.y - 0.5 } }, opts(lower)));
+      ctx.measure({ x: T.x, y: T.y }, { x: T.x, y: T.y - 0.5 });
       if(list.length === 2){
         const silverTop = l1.y + artTopOffset(specs[1]);
         await ctx.place(list[0].art, Object.assign({ pieceAnchor: artBottom(specs[0]), at: { x: T.x, y: silverTop - 0.5 } }, opts(0)));
+        ctx.measure({ x: T.x, y: silverTop }, { x: T.x, y: silverTop - 0.5 });
       }
       return;
     }
     // Three or four: measured from the blue edges, the bottom row 1/8 in above the tape, 1/2 in
     // between badges side by side, 1/4 in between rows (7.1.1.3.1.3-4).
     const gapX = 0.5, rowGap = 0.25, base = T.y - 0.125;
+    ctx.measure({ x: T.x, y: T.y }, { x: T.x, y: base }, '⅛ in');
     if(list.length === 3){
       const w2 = specs[1].w, w3 = specs[2].w, W = w2 + gapX + w3;
       const a = await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x - W / 2 + w2 / 2, y: base } }, opts(1)));
@@ -150,6 +158,8 @@
     const b3 = await ctx.place(list[2].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xL, y: base } }, opts(2)));
     const b4 = await ctx.place(list[3].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xR, y: base } }, opts(3)));
     const topY = Math.min(b3.y, b4.y) - rowGap;
+    ctx.measure({ x: xL + colL / 2, y: base - 0.3 }, { x: xL + colL / 2 + gapX, y: base - 0.3 });
+    ctx.measure({ x: xL, y: Math.min(b3.y, b4.y) }, { x: xL, y: topY });
     await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xL, y: topY } }, opts(0)));
     await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xR, y: topY } }, opts(1)));
   }

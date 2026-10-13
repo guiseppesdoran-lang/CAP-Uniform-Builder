@@ -140,6 +140,16 @@
     safeBy('zoomOutBtn').onclick=()=>{ V3.userZoomed=true; setZoom(Math.max(.55,V3.zoom-.1)); };
     safeBy('zoomInBtn').onclick=()=>{ V3.userZoomed=true; setZoom(Math.min(1.65,V3.zoom+.1)); };
     safeBy('zoomFitBtn').onclick=()=>{ V3.userZoomed=false; fitZoom(); };
+    // Measurements: the regulation distances drawn on the uniform, for copying onto a real one.
+    const measure=document.createElement('div');
+    measure.className='previewToolCard'; measure.setAttribute('role','group'); measure.setAttribute('aria-label','Measurements');
+    measure.innerHTML='<button type="button" class="ghost" id="measureBtn" aria-pressed="false" title="Show the regulation distances on the uniform">Measurements</button>';
+    safeBy('previewTools').appendChild(measure);
+    safeBy('measureBtn').onclick=()=>{
+      State.showMeasurements=!State.showMeasurements;
+      safeBy('measureBtn').setAttribute('aria-pressed', String(!!State.showMeasurements));
+      window.CAPUBUniformView&&CAPUBUniformView.scheduleRender();
+    };
   }
   function setZoom(z){
     V3.zoom=Math.round(z*100)/100;

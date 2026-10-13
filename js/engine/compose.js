@@ -84,9 +84,32 @@
         ctx.layers.push(layer);
         return layer;
       },
-      note(message){ if(!ctx.notes.includes(message)) ctx.notes.push(message); }
+      note(message){ if(!ctx.notes.includes(message)) ctx.notes.push(message); },
+      // A regulation distance shown on the measurement overlay: a line from `from` to `to` (scene
+      // inches) labelled with its length, or with `label` when given.
+      measure(from, to, label){
+        if(!from || !to) return null;
+        const len = Math.hypot(to.x - from.x, to.y - from.y);
+        if(len < 0.05) return null;
+        const layer = { type: 'measure', from: { x: from.x, y: from.y }, to: { x: to.x, y: to.y }, label: label || inchesLabel(len),
+          x: Math.min(from.x, to.x), y: Math.min(from.y, to.y), w: Math.abs(to.x - from.x), h: Math.abs(to.y - from.y),
+          origin: { x: from.x, y: from.y }, rotate: 0, z: 100, role: 'measure', key: 'measure:' + ctx.layers.length, noBounds: true };
+        ctx.layers.push(layer);
+        return layer;
+      }
     };
     return ctx;
+  }
+
+  // 0.5 -> "½ in", 1.5 -> "1½ in"; eighths as fractions, anything else to two decimals.
+  const EIGHTHS = ['', '⅛', '¼', '⅜', '½', '⅝', '¾', '⅞'];
+  function inchesLabel(len){
+    const eighths = Math.round(len * 8);
+    if(Math.abs(eighths / 8 - len) < 0.01){
+      const whole = Math.floor(eighths / 8), part = EIGHTHS[eighths % 8];
+      return `${whole || !part ? whole : ''}${part} in`;
+    }
+    return `${len.toFixed(2)} in`;
   }
 
   // ---- Placement rules shared by every uniform ----------------------------------------------
@@ -251,5 +274,5 @@
     return { title, layers: ctx.layers, bounds, notes: ctx.notes, garment: ctx.base && ctx.base.id };
   }
 
-  return { Z, createContext, stackUp, centerOn, fitIn, fitRaster, nameText, drawRack, drawMiniMedals, finish, MINI_DRAPE };
+  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, drawRack, drawMiniMedals, finish, MINI_DRAPE };
 });

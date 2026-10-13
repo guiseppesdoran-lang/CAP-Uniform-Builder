@@ -541,6 +541,7 @@ header h1::after{
 .previewTools{display:flex;flex-wrap:wrap;gap:var(--s3);margin-left:auto}
 .previewToolCard{display:flex;align-items:center;gap:var(--s2)}
 .previewToolCard button{width:auto;min-width:44px;margin:0;padding:0 var(--s3);font-size:var(--t-lg)}
+.previewToolCard button[aria-pressed="true"]{background:var(--select-bg);border-color:var(--select-line)}
 .previewToolCard .zoomReadout{min-width:48px;text-align:center;font-size:var(--t-sm);font-weight:700;color:var(--ink)}
 
 .capubCommandBar{
