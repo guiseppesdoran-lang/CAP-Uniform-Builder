@@ -695,7 +695,8 @@
       geo.onStyle = 'men';
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.715 };
     }else{
-      geo.onStyle = 'women';
+      // Women: the command pin goes 1/2 in above a badge worn over the nametag (4.2.6.2.7.3).
+      geo.onStyle = 'women-a';
       if(!V.overblouse) geo.rp = null;
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
     }
