@@ -78,7 +78,7 @@
     let top = bottomY;
     for(const it of items){
       const p = await putBadge(ctx, it, { x, y: y - gap }, 'bottom_center');
-      if(p){ y = p.y; top = p.y; }
+      if(p){ ctx.measure({ x, y }, { x, y: y - gap }); y = p.y; top = p.y; }
     }
     return top;
   }
@@ -94,6 +94,7 @@
     for(let i = 0; i < items.length; i++){
       const p = await putBadge(ctx, items[i], { x: x + widths[i] / 2, y: bottomY }, anchor || 'bottom_center');
       if(p) top = Math.min(top, p.y);
+      if(i && gap) ctx.measure({ x: x - gap, y: bottomY - 0.2 }, { x, y: bottomY - 0.2 });
       x += widths[i] + gap;
     }
     return top;
@@ -124,9 +125,15 @@
     const pinCurrent = plan.pin && !plan.pin.graduated ? plan.pin : null;
     const pinGrad = plan.pin && plan.pin.graduated ? plan.pin : null;
     if(pinGrad){
-      if(geo.un) await putBadge(ctx, { id: pinGrad.id, art: pinGrad.art, title: pinGrad.title }, geo.un, geo.un.anchor || 'center', `badge:${pinGrad.id}:UN:0`);
-      else ctx.note('The graduated commander insignia has no place on this uniform');
+      if(geo.un){
+        await putBadge(ctx, { id: pinGrad.id, art: pinGrad.art, title: pinGrad.title }, geo.un, geo.un.anchor || 'center', `badge:${pinGrad.id}:UN:0`);
+        if(tag && geo.un.anchor === 'top_center') ctx.measure({ x: geo.un.x, y: tag.y + tag.h }, { x: geo.un.x, y: geo.un.y });
+      }else ctx.note('The graduated commander insignia has no place on this uniform');
     }
+    // Pocket badges measured from their reference line (welt or nametag) to their centre.
+    const pocketMeasure = spot => { if(spot && spot.from != null) ctx.measure({ x: spot.x, y: spot.from }, { x: spot.x, y: spot.y }, C.inchesLabel(spot.y - spot.from) + ' to centre'); };
+    // The over-nametag line, 1/2 in above the nametag.
+    const onMeasure = () => { if(tag && geo.onBottom == null && tag.h) ctx.measure({ x: onX, y: tag.y }, { x: onX, y: onBottom }); };
     const pinItem = pinCurrent ? { id: pinCurrent.id, art: pinCurrent.art, title: pinCurrent.title } : null;
     const pinKey = pinCurrent ? `badge:${pinCurrent.id}:ON:0` : null;
 
@@ -137,16 +144,18 @@
       const lpItem = geo.lp ? queue.shift() : null;
       let rpItem = plan.nationalStaff[0] || null;
       if(!rpItem && geo.rp) rpItem = queue.shift() || null;
-      if(lpItem) await putBadge(ctx, lpItem, geo.lp, geo.lp.anchor || 'center');
-      if(rpItem && geo.rp) await putBadge(ctx, rpItem, geo.rp, geo.rp.anchor || 'center');
+      if(lpItem){ await putBadge(ctx, lpItem, geo.lp, geo.lp.anchor || 'center'); pocketMeasure(geo.lp); }
+      if(rpItem && geo.rp){ await putBadge(ctx, rpItem, geo.rp, geo.rp.anchor || 'center'); pocketMeasure(geo.rp); }
       else if(rpItem) queue.unshift(rpItem);
       let y = onBottom;
       if(pinItem && onX != null){
         const p = await putBadge(ctx, pinItem, { x: onX, y }, 'bottom_center', pinKey);
-        if(p) y = p.y; // the next badge stacks 1/2 in above the pin
+        if(p){ onMeasure(); y = p.y; } // the next badge stacks 1/2 in above the pin
       }
       if(queue.length && onX != null){
         await putBadge(ctx, queue.shift(), { x: onX, y: pinItem ? y - 0.5 : y }, 'bottom_center');
+        if(pinItem) ctx.measure({ x: onX, y }, { x: onX, y: y - 0.5 });
+        else onMeasure();
       }
       if(queue.length) ctx.note('Some badges have no place left on this uniform and are not shown');
       return;
@@ -163,10 +172,12 @@
       if(pair.length) ctx.note('Some badges have no place left on this uniform and are not shown');
       return;
     }
+    if(pinItem || pair.length) onMeasure();
     if(geo.onStyle === 'women-a' && pinItem && pair.length){
       // Women's Class A: the pin sits 1/2 in above the badge(s) (4.1.9.4.4.3).
       const top = await rowOfBadges(ctx, pair, onX, onBottom, 0.5);
       await putBadge(ctx, pinItem, { x: onX, y: top - 0.5 }, 'bottom_center', pinKey);
+      ctx.measure({ x: onX, y: top }, { x: onX, y: top - 0.5 });
     }else if(pinItem && pair.length === 1){
       // One badge: the badge 1/2 in above the pin.
       const p = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey);
@@ -219,6 +230,30 @@
       if(!p) continue;
       await ctx.place(id, { pieceAnchor: 'visual_center', at: { x: p[0], y: p[1] }, rotate: p[2] || 0, scaleX: o.scaleX, z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side });
     }
+  }
+
+  // The epaulet sleeves seen from above, drawn above the uniform at its outer corners (the front
+  // view shows them edge-on). The sleeves are traced from Figure A5-1 with their grade, braid bands
+  // and "CAP" in place, upright with the button (neck) end at the top; each is turned flat with its
+  // arm end toward its own side.
+  async function epauletTopViews(ctx, g, opts){
+    const o = opts || {};
+    const sleeveId = epauletSleeveId(g);
+    if(!sleeveId || !ctx.has(sleeveId)) return;
+    const s = await ctx.spec(sleeveId);
+    for(const side of ['right', 'left']){
+      const cx = side === 'right' ? 0.25 + s.h / 2 : ctx.base.w - 0.25 - s.h / 2;
+      const cy = -(o.gap == null ? 0.75 : o.gap) - s.w / 2;
+      await ctx.place(sleeveId, { pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: side === 'right' ? 90 : -90, z: Z.hat - 1, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} ${o.label || 'epaulet'}, seen from above` });
+    }
+  }
+
+  // The epaulet sleeve a member wears on the aviator shirt, the Class A coat or the Class B (gray
+  // for officers and officer-track members without grade, blue for cadet officers).
+  function epauletSleeveId(g){
+    if(g.category === 'cadet-officer') return g.key ? `rank-epaulet-sleeve-blue-cadet-${g.key}` : 'rank-epaulet-sleeve-blue-cadet-blank';
+    if((g.officer && !g.cadet) || (g.category === 'senior-none' && g.track === 'officer')) return g.key ? `rank-epaulet-sleeve-gray-${g.key}` : 'rank-epaulet-sleeve-gray-blank';
+    return null;
   }
 
   // Shoulder cord on the wearer's left shoulder (9.3): the cord's neck end on the strap axis, the
@@ -383,10 +418,9 @@
       const size = sex === 'male' ? '4' : (b.opt.chevron === '3.5' ? '3.5' : '4');
       // The front view shows about 3.7 in of the coat sleeve: narrow a wider chevron to it.
       await sleeveChevrons(ctx, G.seniorChevron(g, { size }), A.ncoChevron, { scaleX: Math.min(1, 3.7 / Number(size)) });
-    }else if(!semi && g.key && (g.officer && !g.cadet)){
-      const id = G.seniorOfficerInsignia(g, 'thread', { horizontal: false });
-      if(g.key === 'major-general') await epauletGrade(ctx, id, { point: 'rank_slot_', theta: A.theta });
-      else await epauletGrade(ctx, id, { point: 'rank_rule_point_', theta: A.theta });
+    }else if(!semi && isOfficerLike(g)){
+      // The coat's epaulets are edge-on in the front view; the grade shows on the top views.
+      await epauletTopViews(ctx, g);
     }else if(!semi && g.category === 'senior-none' && g.track === 'nco'){
       // Adults without grade on the NCO track wear CAP collar insignia (1.4.2.1).
       for(const side of ['right', 'left']){
@@ -404,16 +438,18 @@
     const geo = {
       olp: { x: rest.x, baseY: rack ? rack.y : rest.y },
       nametag: tagRect,
-      lp: sex === 'male' ? { x: rest.x, y: rest.y + 1.5 } : null,
-      rp: sex === 'male' ? { x: tagRect.x + tagRect.w / 2, y: tagRect.y + tagRect.h + 1.5 } : null,
+      lp: sex === 'male' ? { x: rest.x, y: rest.y + 1.5, from: rest.y } : null,
+      rp: sex === 'male' ? { x: tagRect.x + tagRect.w / 2, y: tagRect.y + tagRect.h + 1.5, from: tagRect.y + tagRect.h } : null,
       onStyle: sex === 'male' ? 'men' : 'women-a',
       un: { x: tagRect.x + tagRect.w / 2, y: tagRect.y + tagRect.h + 0.5, anchor: 'top_center' }
     };
     if(semi){
-      // The badge that would go over the nametag sits even with the bottom of the ribbons.
+      // Only the badge that would go over the nametag moves: it sits even with the bottom of the
+      // ribbons. The others keep their service dress places (4.1.3.2.2), so the wearer's right
+      // pocket badge stays level with the left one, where the nametag's bottom would be.
       geo.onBottom = rest.y;
       geo.nametag = { x: A.nametagX - 1.6875, y: rest.y, w: 3.375, h: 0 };
-      geo.rp = null;
+      geo.rp = sex === 'male' ? { x: A.nametagX, y: rest.y + 1.5, from: rest.y } : null;
       geo.un = null;
       if(sex === 'male') geo.onStyle = 'men';
     }
@@ -458,18 +494,15 @@
       const wr = ctx.point('collar_insignia_left'), wl = ctx.point('collar_insignia_right');
       if(wr) await ctx.place(id, { pieceAnchor: 'center', at: wr, rotate: rot, z: Z.insignia, role: 'grade', key: 'grade:right' });
       if(wl) await ctx.place(id, { pieceAnchor: 'center', at: wl, rotate: -rot, z: Z.insignia, role: 'grade', key: 'grade:left' });
-    }else if(g.category === 'cadet-officer'){
-      await epauletGrade(ctx, G.cadetOfficerInsignia(g, 'metal-miniature'), { point: 'rank_rule_point_' });
     }else if(g.category === 'senior-nco'){
       const size = b.opt.chevron === '4' && !long ? '4' : '3.5';
       const id = G.seniorChevron(g, { size });
       const w = size === '4' ? 4 : 3.5;
       // The front view shows less sleeve than the chevron's width on the short sleeve: narrow it.
       await sleeveChevrons(ctx, id, V.chev, { scaleX: V.sleeveW ? Math.min(1, V.sleeveW / w) : 1 });
-    }else if(g.key && g.officer && !g.cadet){
-      const id = G.seniorOfficerInsignia(g, 'thread', { horizontal: false });
-      await epauletGrade(ctx, id, { point: g.key === 'major-general' ? 'rank_slot_' : 'rank_rule_point_' });
     }
+    // The epaulet sleeves are edge-on in the front view; their grade shows on the top views.
+    await epauletTopViews(ctx, g);
 
     // Ribbons (optional): men on the left pocket top, women with the bottom even with the nametag.
     const rest = ctx.point('ribbon_row_bottom_center');
@@ -609,9 +642,13 @@
     await ctx.garment(garment);
     if(g.cadet) ctx.note('Cadets wear corporate uniforms only when 18 or older and not eligible for the USAF-style uniform (CAPR 39-1, 1.2.5.2)');
 
-    // Grade.
+    // Grade. The shirts draw the epaulet sleeve edge-on; its top view (with the grade) goes above.
+    const epCat = g.category === 'cadet-officer' ? 'cadet-officer' : (isOfficerLike(g) ? 'officer' : null);
     const ep = aviatorEpaulet(g);
-    if(ep){
+    if(epCat && !V.overblouse && ctx.has(`${garment}-epaulet-sleeve-${epCat}`)){
+      await ctx.overlay(`${garment}-epaulet-sleeve-${epCat}`, Z.epauletLayer);
+      await epauletTopViews(ctx, g);
+    }else if(ep){
       const s = await ctx.spec(ep);
       const scaleX = Math.min(1, V.strapW / s.w);
       for(const [i, side] of [[0, 'right'], [1, 'left']]){
@@ -662,15 +699,19 @@
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
     }
     await dressBadges(ctx, b, geo);
-    if(long) ctx.note('The long-sleeve aviator shirt is worn with a tie; this artwork shows the open collar without one');
+    // The long-sleeve shirt is worn with a tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3).
+    if(long && !V.overblouse){
+      const tie = `${garment}-${female ? 'tie-tab' : 'tie'}`;
+      if(ctx.has(tie)) await ctx.overlay(tie, Z.garmentLayer + 0.5);
+    }
   }
 
   // ---- Corporate Service Dress (blazer, 4.2.3 / 4.2.4) and Corporate Semi-Formal (4.2.1 / 4.2.2) ---------
 
-  // The male blazer sheet puts its nameplate slot on the wearer's left welt, over the crest; the
-  // regulation (and the women's sheet, traced from Figure 4.15) puts it on the wearer's right.
+  // Nametag top even with the top of the left breast pocket, the crest centred on the pocket below
+  // it (4.2.3.1.1.1-2, Figures 4.14 and 4.15); the sheets carry both slots.
   const BLAZER = {
-    male: { garment: 'garment-corporate-service-dress-blazer-male', plate: { x: 7.2745, y: 12.827 }, bowTie: { x: 12.761, y: 3.655 }, underlayer: { turtleneck: 'garment-underlayer-turtleneck-male' }, cover: ['shirt', 'tie'] },
+    male: { garment: 'garment-corporate-service-dress-blazer-male', bowTie: { x: 12.761, y: 3.655 }, underlayer: { turtleneck: 'garment-underlayer-turtleneck-male' }, cover: ['shirt', 'tie'] },
     female: { garment: 'garment-corporate-service-dress-blazer-female', plate: null, underlayer: { turtleneck: 'garment-underlayer-turtleneck-female', shell: 'garment-underlayer-shell-female' }, cover: ['shirt', 'tie-tab'] }
   };
 
@@ -689,9 +730,9 @@
     if(crestBadge) hide.push('cap-crest');
     const base = await ctx.spec(V.garment);
     if(under){
+      // The underlayers are drawn to the blazer's own box.
       const us = await ctx.spec(under);
-      const top = core.anchor(base, 'top_center');
-      await ctx.place(under, { pieceAnchor: core.anchor(us, 'top_center'), at: top, z: Z.under, role: 'underlayer', key: 'layer:' + under });
+      ctx.layers.push(Object.assign(core.registerAtOrigin(us, Z.under, 'underlayer'), { key: 'layer:' + under }));
     }
     await ctx.garment(V.garment, hide.length ? { hideGroups: [...new Set(hide)] } : null);
     if(g.cadet) ctx.note('Cadets wear corporate uniforms only when 18 or older and not eligible for the USAF-style uniform (CAPR 39-1, 1.2.5.2)');
@@ -709,12 +750,11 @@
       // Nameplate: name and state lines, with optional grade for adults (4.2.3.1.1.2).
       const plateId = g.cadet ? 'nameplate-blazer-cadet' : 'nameplate-blazer-adult';
       const ps = await ctx.spec(plateId);
-      const at = V.plate || ctx.point('nameplate_slot_center');
-      const plate = await ctx.place(plateId, { pieceAnchor: 'center', at, z: Z.tape, role: 'nametag', key: 'nametag' });
+      const plate = await ctx.place(plateId, { pieceAnchor: 'center', at: ctx.point('nameplate_slot_center'), z: Z.tape, role: 'nametag', key: 'nametag' });
       if(b.name.show){
-        const full = [b.name.first, b.name.last].filter(Boolean).join(' ');
+        // Last name and state (4.2.3.1.1.2).
         const nameZone = H.pieceRect(plate, ps, 'name');
-        if(nameZone && full) C.nameText(ctx, full, nameZone, { color: PLATE_WHITE, maxH: 0.2, key: 'text:name' });
+        if(nameZone && b.name.last) C.nameText(ctx, b.name.last, nameZone, { color: PLATE_WHITE, maxH: 0.2, key: 'text:name' });
         const stateZone = H.pieceRect(plate, ps, 'state');
         if(stateZone && b.name.state) C.nameText(ctx, b.name.state, stateZone, { color: PLATE_WHITE, maxH: 0.13, key: 'text:state' });
       }
@@ -726,7 +766,11 @@
         else if(g.officer) gid = G.seniorOfficerInsignia(g, 'thread');
         if(gid) await C.fitIn(ctx, gid, gz, { z: Z.insignia + 5, role: 'grade', key: 'grade:plate' });
       }
-      if(chaplain) await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: plate.x + plate.w / 2, y: plate.y - 0.5 }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
+      if(chaplain){
+        await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: plate.x + plate.w / 2, y: plate.y - 0.5 }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
+        ctx.measure({ x: plate.x + plate.w / 2, y: plate.y }, { x: plate.x + plate.w / 2, y: plate.y - 0.5 });
+      }
+      ctx.foreground(['lapel-foreground'], Z.text + 1);
       return;
     }
 
@@ -738,6 +782,7 @@
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
       await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: ms.x + ms.w / 2, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
     }
+    ctx.foreground(['lapel-foreground'], Z.text + 1);
   }
 
   P.register('blues_a', { title: 'Service Dress (Class A)', compose: composeClassA });
@@ -745,6 +790,10 @@
   P.register('blues_b', { title: 'Blue Service (Class B)', compose: composeClassB });
   P.register('mess_dress', { title: 'Mess Dress', compose: composeMess });
   P.register('aviator', { title: 'Aviator Shirt Uniform', compose: composeAviator });
-  P.register('aviator_blazer', { title: 'Corporate Service Dress', compose: composeBlazer });
+  // The blazer is worn over the long-sleeve aviator shirt and tie (4.2.3.1, 4.2.4.1); the shirt is
+  // drawn beside it.
+  P.register('aviator_blazer', { title: 'Corporate Service Dress', compose: composeBlazer,
+    companion: b => b.opt.underlayer === 'turtleneck' || b.opt.underlayer === 'shell' ? null
+      : Object.assign({}, b, { uniform: 'aviator', opt: Object.assign({}, b.opt, { sleeve: 'long', femaleTop: 'shirt', headgear: 'none' }) }) });
   P.register('semi_formal', { title: 'Corporate Semi-Formal', compose: composeBlazer });
 });

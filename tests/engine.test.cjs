@@ -117,17 +117,19 @@ test('hats are drawn on top of the uniform, with the right device', async () => 
   const nco = await P.composeUniform(build('blues_b', 'senior', 'MSgt'), store());
   const hat = layersBy(nco, l => l.role === 'hat')[0];
   const device = layersBy(nco, l => l.role === 'hat-device')[0];
-  assert.equal(hat.id, 'hat-flight-cap-cadet');
+  assert.equal(hat.id, 'hat-flight-cap-men-cadet', 'the men\'s flight cap for a man');
   assert.equal(device.id, 'cap-device-nco-flight', 'ICL 25-02: NCO device on the flight cap');
   assert.ok(hat.z > Math.max(...nco.layers.filter(l => l.role !== 'hat' && l.role !== 'hat-device').map(l => l.z)));
   const mess = await P.composeUniform(build('mess_dress', 'senior', 'Col'), store());
   assert.equal(layersBy(mess, l => l.role === 'hat').length, 0, 'no headgear with mess dress');
 });
 
-test('the corporate blazer puts the nameplate on the wearer\'s right with the chaplain badge above it', async () => {
+test('the corporate blazer nameplate tops the left breast pocket, last name only, chaplain badge above (4.2.3.1.1.2-3)', async () => {
   const scene = await P.composeUniform(build('aviator_blazer', 'senior', 'Col', { badges: [{ id: 'christian_chaplin' }] }), store());
   const plate = layersBy(scene, l => l.key === 'nametag')[0];
-  assert.ok(plate.x + plate.w / 2 < 12.761, 'viewer\'s left of the centre line');
+  assert.ok(plate.x + plate.w / 2 > 12.761, 'wearer\'s left (viewer\'s right) of the centre line');
+  assert.ok(Math.abs(plate.y - 12.377) < 0.01, 'top even with the pocket top');
+  assert.equal(layersBy(scene, l => l.key === 'text:name')[0].text, 'DOE');
   const chaplain = layersBy(scene, l => l.key === 'badge:christian_chaplin')[0];
   assert.ok(Math.abs(plate.y - (chaplain.y + chaplain.h) - 0.5) < 0.001);
 });
@@ -160,4 +162,28 @@ test('cadet ribbon stars follow CAPR 39-3 (14h, 14j, 21j)', () => {
   assert.deepEqual(dev('cadet_advisory_council_ribbon', 'cac_wing', 'Wing level (bronze star)'), ['device-star-bronze']);
   assert.deepEqual(dev('cadet_advisory_council_ribbon', 'cac_region', 'Region level (silver star)'), ['device-star-silver']);
   assert.deepEqual(dev('cadet_advisory_council_ribbon', 'cac_national', 'National level (gold star)'), ['device-star-gold']);
+});
+
+test('cadet semi-formal: the right pocket badge stays level with the left one (4.1.3.2.2)', async () => {
+  const badges = ['ground_team_basic_badge', 'AirCrew1_DB3F0FCC3650F', 'emergency_services_badge', 'communications_technician_badge'].map(id => ({ id }));
+  const scene = await P.composeUniform(build('semi_formal_usaf', 'cadet', 'C/Capt', { badges, ribbons: ribbon('cap_achievment_award') }), store());
+  const es = layersBy(scene, l => l.key === 'badge:emergency_services_badge')[0];
+  const comms = layersBy(scene, l => l.key === 'badge:communications_technician_badge')[0];
+  assert.ok(es && comms);
+  assert.ok(Math.abs((es.y + es.h / 2) - (comms.y + comms.h / 2)) < 0.001, 'centres level');
+  assert.ok(es.x > comms.x, 'ES on the wearer\'s left, comms on the right');
+});
+
+test('the flight jacket is drawn beside the flight suit, and the shirt beside the blazer', async () => {
+  const fs = await P.composeUniform(build('flight_suit', 'senior', 'Capt'), store());
+  const garments = fs.layers.filter(l => l.role === 'garment').map(l => l.id);
+  assert.deepEqual(garments, ['garment-fdu-flight-suit', 'garment-flight-jacket-green']);
+  const jacket = fs.layers.find(l => l.id === 'garment-flight-jacket-green');
+  const suit = fs.layers.find(l => l.id === 'garment-fdu-flight-suit');
+  assert.ok(jacket.x > suit.x + suit.w, 'to the right of the suit');
+  const hidden = await P.composeUniform(build('flight_suit', 'senior', 'Capt', { opt: { jacket: false } }), store());
+  assert.equal(hidden.layers.filter(l => l.role === 'garment').length, 1);
+  const blazer = await P.composeUniform(build('aviator_blazer', 'senior', 'Capt'), store());
+  assert.ok(blazer.layers.some(l => l.id === 'garment-aviator-shirt-male-long'));
+  assert.ok(blazer.layers.some(l => l.id === 'garment-aviator-shirt-male-long-tie'));
 });

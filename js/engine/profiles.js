@@ -84,6 +84,10 @@
   // Hats sit on the uniform: the hat's garment_attach_center goes on the garment's top_center; the
   // device's mount_center goes on the hat's device_slot_center (MANIFEST conventions).
   async function hat(ctx, hatId, device){
+    // Flight caps are drawn per cut: the men's caps from the men's figure, the plain ids are the
+    // women's (Figure A5-9).
+    const men = hatId && hatId.replace(/^hat-flight-cap-/, 'hat-flight-cap-men-');
+    if(ctx.build.gender !== 'female' && men !== hatId && ctx.has(men)) hatId = men;
     if(!hatId || !ctx.has(hatId)) return null;
     const top = ctx.point('top_center');
     const hs = await ctx.spec(hatId);
@@ -186,7 +190,7 @@
 
   async function composeFlight(ctx, b){
     const corporate = b.uniform === 'corporate_flight_suit';
-    const jacket = !!b.opt.jacket;
+    const jacket = !!b.opt.asJacket;
     const garment = jacket
       ? (corporate ? 'garment-flight-jacket-blue' : 'garment-flight-jacket-green')
       : (corporate ? 'garment-cfdu-flight-suit' : 'garment-fdu-flight-suit');
@@ -202,19 +206,51 @@
     if(h) await hat(ctx, h.hat, h.device);
   }
 
+  // The flight jacket is drawn beside the suit (8.2.7, 8.3.7) unless the member hides it.
+  function flightJacket(b){
+    if(b.opt.jacket === false) return null;
+    return Object.assign({}, b, { opt: Object.assign({}, b.opt, { asJacket: true, scarf: false, headgear: 'none' }) });
+  }
+
   const PROFILES = {
-    flight_suit: { title: 'Flight Duty Uniform', compose: composeFlight },
-    corporate_flight_suit: { title: 'Corporate Flight Duty Uniform', compose: composeFlight }
+    flight_suit: { title: 'Flight Duty Uniform', compose: composeFlight, companion: flightJacket },
+    corporate_flight_suit: { title: 'Corporate Flight Duty Uniform', compose: composeFlight, companion: flightJacket }
   };
 
   function register(id, profile){ PROFILES[id] = profile; }
 
+  // Move a layer by (dx, dy) inches.
+  function shiftLayer(l, dx, dy){
+    l.x += dx; l.y += dy;
+    if(l.origin) l.origin = { x: l.origin.x + dx, y: l.origin.y + dy };
+    if(l.clip) l.clip = l.clip.map(p => ({ x: p.x + dx, y: p.y + dy }));
+    if(l.from) l.from = { x: l.from.x + dx, y: l.from.y + dy };
+    if(l.to) l.to = { x: l.to.x + dx, y: l.to.y + dy };
+    return l;
+  }
+
+  // A uniform, plus the second figure its profile names (the flight jacket beside the suit, the
+  // shirt worn under the blazer), drawn to its right with the garment tops level.
   async function composeUniform(build, store){
     const ctx = C.createContext(build, store);
     const p = PROFILES[build.uniform];
     if(!p) throw new Error('No profile for uniform ' + build.uniform);
     await p.compose(ctx, build);
-    return C.finish(ctx, p.title);
+    const scene = C.finish(ctx, p.title);
+    const second = p.companion ? p.companion(build) : null;
+    if(!second) return scene;
+    const q = PROFILES[second.uniform];
+    const ctx2 = C.createContext(second, store);
+    await q.compose(ctx2, second);
+    const other = C.finish(ctx2, q.title);
+    if(!other.layers.length) return scene;
+    const gap = 2;
+    const dx = scene.bounds.x + scene.bounds.w + gap - other.bounds.x;
+    other.layers.forEach(l => { shiftLayer(l, dx, 0); l.figure = 2; });
+    scene.layers.push(...other.layers);
+    other.notes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
+    scene.bounds = core.unionBounds([scene.bounds, { x: other.bounds.x + dx, y: other.bounds.y, w: other.bounds.w, h: other.bounds.h }]);
+    return scene;
   }
 
   return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, SILVER_TEXT } };
