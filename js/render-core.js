@@ -4,8 +4,17 @@
 /* ===========================
    RIBBON ORDER AND RACK CONTROLS
    =========================== */
+// The groups of 39-1 11.2.1: U.S. federal awards, then CAP awards, then foreign awards. The Army
+// Air Forces Air Medal and the Air Force Aerial Achievement Medal in the CAP list are federal.
+const CAPUB_FEDERAL_IN_CAP_LIST = new Set(['air_medal','air_force_aerial_achievement_medal','Air_Force_Organizational_Excellence_Award']);
+function ribbonPrecedenceGroup(id){
+  if(isMilitaryRibbonId(id)) return militaryAwardFilterType(getMilitaryRibbonAward(id)) === 'FOREIGN' ? 3 : 0;
+  return CAPUB_FEDERAL_IN_CAP_LIST.has(id) ? 0 : 1;
+}
 function sortRibbons(arr){
   return [...arr].sort((a,b)=>{
+    const ag = ribbonPrecedenceGroup(a.id), bg = ribbonPrecedenceGroup(b.id);
+    if(ag !== bg) return ag - bg;
     const aMilitary = isMilitaryRibbonId(a.id);
     const bMilitary = isMilitaryRibbonId(b.id);
     if(aMilitary && bMilitary){
@@ -15,7 +24,6 @@ function sortRibbons(arr){
         return window.CAPUBMilitary.compareAwardsUniversal(aa,ba);
       }
     }
-    // U.S. military decorations precede CAP awards on the CAP rack.
     if(aMilitary !== bMilitary) return aMilitary ? -1 : 1;
     const ap = precedence(a.id);
     const bp = precedence(b.id);

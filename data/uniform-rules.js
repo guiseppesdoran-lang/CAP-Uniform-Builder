@@ -140,9 +140,13 @@
   // `isMilitary` is passed by the caller because the military catalog's id prefix lives with
   // the catalog, not here.
   function isAwardAllowedOnUniform(awardId,uniformId,{isMilitary=false}={}){
-    const usafOnly=isMilitary || USAF_ONLY_AWARD_IDS.includes(String(awardId || ''));
-    if(!usafOnly) return true;
     const rule=getUniformRule(uniformId);
+    // The AFOEA is not worn on Corporate-style uniforms (11.2.3) or the mess dress (ICL 18-02, 4b);
+    // ICL 25-02 opened the corporate uniforms to military awards only.
+    if(USAF_ONLY_AWARD_IDS.includes(String(awardId || ''))){
+      return !!(rule && rule.style==='usaf' && uniformId!=='mess_dress');
+    }
+    if(!isMilitary) return true;
     return !!(rule && rule.usafAwards);
   }
   // Why a uniform is not offered to this member, with the paragraph. Empty when it is.

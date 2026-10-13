@@ -55,7 +55,8 @@ test('U.S. military awards stay off Corporate-style uniforms except where ICL 25
   for(const id of Object.keys(rules.RULES)){
     const allowed=rules.getUniformRule(id).style==='usaf' || iclCorporate.includes(id);
     assert.equal(rules.isAwardAllowedOnUniform('x',id,{isMilitary:true}),allowed,id);
-    assert.equal(rules.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award',id),allowed,id);
+    // The AFOEA: USAF-style uniforms only, not the mess dress (11.2.3, ICL 18-02 4b).
+    assert.equal(rules.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award',id),rules.getUniformRule(id).style==='usaf' && id!=='mess_dress',id);
   }
   assert.equal(rules.isAwardAllowedOnUniform('silver_medal_of_valor','aviator_blazer'),true,'CAP awards are not restricted');
   assert.equal(rules.isAwardAllowedOnUniform('x','blues_a',{isMilitary:true}),true);
@@ -200,4 +201,11 @@ test('uniforms the regulation allows but the builder does not draw are listed, n
     assert.equal(rules.getUniformRule(id),null,`${id} is not an offered uniform`);
     assert.ok(rules.NOT_MODELLED[id].why);
   }
+});
+
+test('the AFOEA stays off Corporate-style uniforms and the mess dress (11.2.3, ICL 18-02)', () => {
+  const R = require('../data/uniform-rules.js');
+  for(const u of ['aviator', 'semi_formal', 'mess_dress']) assert.equal(R.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award', u), false, u);
+  for(const u of ['blues_a', 'blues_b']) assert.equal(R.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award', u), true, u);
+  assert.equal(R.isAwardAllowedOnUniform('x', 'aviator', { isMilitary: true }), true, 'ICL 25-02');
 });
