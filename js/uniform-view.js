@@ -15,10 +15,11 @@
   function getStore(){
     if(store) return Promise.resolve(store);
     if(!manifestPromise){
-      manifestPromise = fetch(ASSET('MANIFEST.json'))
+      // Artwork is updated in place, so the manifest and specs are revalidated (a 304 when unchanged).
+      manifestPromise = fetch(ASSET('MANIFEST.json'), { cache: 'no-cache' })
         .then(r => { if(!r.ok) throw new Error('MANIFEST.json ' + r.status); return r.json(); })
         .then(manifest => {
-          store = E.core.createSpecStore(manifest, path => fetch(ASSET(path)).then(r => r.ok ? r.json() : null));
+          store = E.core.createSpecStore(manifest, path => fetch(ASSET(path), { cache: 'no-cache' }).then(r => r.ok ? r.json() : null));
           return store;
         });
     }
