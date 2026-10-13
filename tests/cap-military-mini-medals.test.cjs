@@ -18,10 +18,9 @@ test('calibrator stays within the visible viewport', () => {
   assert.match(styleSource, /#calibKeyPill\{[\s\S]*?overflow-wrap:anywhere/);
 });
 
-test('CAP uniform ribbon and medal UI exposes working basic and maximum bulk controls', () => {
+test('CAP uniform ribbon UI offers select all (basic) and no select max control', () => {
   assert.match(indexSource, /id="capSelectAllBasic"/);
-  assert.match(indexSource, /id="capSelectAllMax"/);
-  assert.match(indexSource, /function selectAllCapUniformAwards\(\{maximum=false\}=\{\}\)/);
+  assert.doesNotMatch(indexSource, /SelectAllMax|Select max devices/);
+  assert.match(indexSource, /function selectAllCapUniformAwards\(\)/);
   assert.match(indexSource, /getEligibleRibbonIds\(\)/);
-  assert.match(indexSource, /maximumRenderableMilitaryAwardCount\(award,'RIBBON'\)/);
 });

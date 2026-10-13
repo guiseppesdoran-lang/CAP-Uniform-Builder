@@ -46,8 +46,7 @@ by('clearRibbons').addEventListener('click', ()=>{
   renderRack();
   renderAllBadges();
 });
-by('capSelectAllBasic')?.addEventListener('click',()=>selectAllCapUniformAwards({maximum:false}));
-by('capSelectAllMax')?.addEventListener('click',()=>selectAllCapUniformAwards({maximum:true}));
+by('capSelectAllBasic')?.addEventListener('click',()=>selectAllCapUniformAwards());
 
 /* Badge gallery buttons */
 by('clearBadges').addEventListener('click', ()=>{
@@ -281,7 +280,7 @@ function openGalleryModal(kind){
       
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
-      ${kind==='ribbons' ? '<button id="modalSelectAllBasic" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Select all (basic)</button><button id="modalSelectAllMax" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Select max devices</button>' : ''}
+      ${kind==='ribbons' ? '<button id="modalSelectAllBasic" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Select all (basic)</button>' : ''}
       <button id="modalShowLess" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show Less</button>
       <button id="modalShowAll" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show All</button>
     </div>
@@ -607,11 +606,7 @@ function openGalleryModal(kind){
     syncFromSidebar();
   };
   host.querySelector('#modalSelectAllBasic')?.addEventListener('click',()=>{
-    selectAllCapUniformAwards({maximum:false});
-    syncFromSidebar();
-  });
-  host.querySelector('#modalSelectAllMax')?.addEventListener('click',()=>{
-    selectAllCapUniformAwards({maximum:true});
+    selectAllCapUniformAwards();
     syncFromSidebar();
   });
 

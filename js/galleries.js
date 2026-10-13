@@ -759,20 +759,19 @@ function setRibbonSelectionFromDropdown(id, value,{deferRender=false}={}){
   if(!deferRender) rebuildRibbonsFromGallery();
 }
 
-function selectAllCapUniformAwards({maximum=false}={}){
+function selectAllCapUniformAwards(){
   State.ribbonSelections={};
   normalizeRibbonSelections();
 
   for(const id of getEligibleRibbonIds()){
     const usable=getRibbonAwardOptions(id).filter(option=>option.value);
-    const selected=maximum ? usable[usable.length-1] : usable[0];
+    const selected=usable[0];
     if(selected) setRibbonSelectionFromDropdown(id,selected.value,{deferRender:true});
   }
 
   for(const id of getMilitaryRibbonIds()){
     const award=getMilitaryRibbonAward(id);
-    const count=maximum ? maximumRenderableMilitaryAwardCount(award,'RIBBON') : 1;
-    setRibbonSelectionFromDropdown(id,`military_award_${count}`,{deferRender:true});
+    setRibbonSelectionFromDropdown(id,'military_award_1',{deferRender:true});
   }
 
   rebuildRibbonsFromGallery();

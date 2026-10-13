@@ -191,25 +191,6 @@ function militaryAwardFilterType(award){
   return 'OTHER';
 }
 
-
-function maximumRenderableMilitaryAwardCount(award,representationOverride=null){
-  const representation=representationOverride || State.militaryRepresentation || 'RIBBON';
-  const service=State.organization;
-  const deviceCatalog=window.CAPUBMilitaryData?.devices || [];
-  let maximum=1;
-  // The generated device matrix currently contains verified repeat-award
-  // combinations through the twentieth award. Stop at the highest count the
-  // configured service rule can represent without inventing a device.
-  for(let count=2;count<=20;count+=1){
-    const result=window.CAPUBMilitary?.calculateDevices?.({
-      award,service,awardCount:count,representation,deviceCatalog
-    });
-    if(result?.valid) maximum=count;
-  }
-  return maximum;
-}
-
-
 function militaryBadgeDressPlacementRole(badge){
   const family=String(badge?.family || '').toUpperCase();
   const notes=JSON.stringify(badge?.placement?.serviceDress || '').toLowerCase();
