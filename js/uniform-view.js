@@ -70,7 +70,7 @@
       }
       if(seen.has(id)) continue; // the engine makes the extra ribbons itself
       seen.add(id);
-      const sel = Object.assign({}, State.ribbonSelections?.[id] || {}, { awardValue: inst.awardValue, awardLabel: inst.awardLabel });
+      const sel = Object.assign({}, State.ribbonSelections?.[id] || {}, { awardValue: inst.awardValue, awardLabel: inst.awardLabel, membership: State.membership });
       if(sel.awardValue && /_duplicate_/.test(sel.awardValue)) continue;
       const parts = CAPUBRibbonAwards.resolve(id, sel);
       parts.forEach((p, i) => out.push({
@@ -310,7 +310,7 @@
   }
   // One line for the ribbon picker, from the same rule the uniform uses (data/ribbon-awards.js).
   function describeRibbon(id, sel){
-    const parts = CAPUBRibbonAwards.resolve(id, sel || {});
+    const parts = CAPUBRibbonAwards.resolve(id, Object.assign({ membership: State.membership }, sel));
     const say = p => p.devices.length ? countWords(p.devices) : 'no devices';
     if(parts.length === 1) return parts[0].devices.length ? `Devices: ${say(parts[0])}` : 'Basic ribbon, no devices';
     return parts.map((p, i) => `Ribbon ${i + 1}: ${say(p)}`).join('; ');
@@ -318,7 +318,7 @@
   // The ribbon (and any extra ribbons the devices need) drawn by the engine with its devices.
   async function ribbonPreview(id, sel){
     const s = await getStore();
-    const parts = CAPUBRibbonAwards.resolve(id, sel || {});
+    const parts = CAPUBRibbonAwards.resolve(id, Object.assign({ membership: State.membership }, sel));
     const items = parts.map((p, i) => ({ key: `ribbon:${id}#${i}`, title: id, asset: ribbonAssetId(id), devices: p.devices, centered: p.centered }));
     const ctx = E.compose.createContext({}, s);
     await E.compose.drawRack(ctx, items, { centerX: 0, bottomY: 0 }, { perRow: Math.min(3, items.length) });

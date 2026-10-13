@@ -425,6 +425,38 @@ function capubExtendMcchordOptionsTo84(id, sourceOptions){
   return extended;
 }
 
+// Ribbons whose choices CAPR 39-3 sets directly. These come before the older option lists, which
+// carried devices the regulation does not have (honor credit stars, a COS star on the Eaker for
+// cadets) and named the Cadet Advisory Council choices by star instead of by level.
+const CAPUB_COS_STAR_RIBBONS = new Set(['eaker_award','earhart_award','spaatz_award','cadet_certificate_of_proficiency','frank_borman_falcon_award']);
+const CAPUB_PLAIN_ACHIEVEMENT_RIBBONS = new Set(['curry_achievement','hap_arnold_achievement','mary_feik_achievement','wright_brothers_award','rickenbacker_achievement','lindbergh_achievement','doolittle_achievement','armstrong_achievement']);
+function capubRibbonOptionOverride(id){
+  const pick = { label:'- Select -', value:'', devices:{} };
+  if(id === 'cadet_advisory_council_ribbon'){
+    // 39-3 21j: the highest level served, shown by the star.
+    return [pick,
+      { label:'Group level (no device)', value:'cac_group', devices:{} },
+      { label:'Wing level (bronze star)', value:'cac_wing', devices:{} },
+      { label:'Region level (silver star)', value:'cac_region', devices:{} },
+      { label:'National level (gold star)', value:'cac_national', devices:{} }];
+  }
+  if(id === 'mitchell_award'){
+    return [pick, { label:'Earned', value:'earned', devices:{} },
+      { label:'Earned + COS graduate (silver star)', value:'earned_cos_star', devices:{} }];
+  }
+  if(id === 'goddard_achievement'){
+    return [pick, { label:'Earned', value:'earned', devices:{} },
+      { label:'Earned + Model Rocketry Badge (silver star, Mitchell required)', value:'rocketry_star', devices:{} }];
+  }
+  if(CAPUB_COS_STAR_RIBBONS.has(id)){
+    if(State.membership === 'cadet') return ribbonSelectOnlyOptions();
+    return [pick, { label:'Earned', value:'earned', devices:{} },
+      { label:'Earned + COS star moved from the Mitchell (silver star)', value:'earned_cos_star', devices:{} }];
+  }
+  if(CAPUB_PLAIN_ACHIEVEMENT_RIBBONS.has(id)) return ribbonSelectOnlyOptions();
+  return null;
+}
+
 function getRibbonAwardOptions(id){
   if(isMilitaryRibbonId(id)){
     const award=getMilitaryRibbonAward(id);
@@ -439,6 +471,8 @@ function getRibbonAwardOptions(id){
     }
     return options;
   }
+  const override = capubRibbonOptionOverride(id);
+  if(override) return override;
   if(CAPUB_SINGLE_AWARD_RIBBON_IDS.has(id)) return ribbonSelectOnlyOptions();
   const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
   if(Array.isArray(mcchordOptions) && mcchordOptions.length){

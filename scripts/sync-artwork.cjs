@@ -45,4 +45,5 @@ for(const id of ids){
   console.log(`${id}: ${rel} (${s.size_in.w} x ${s.size_in.h} in)`);
 }
 fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 1) + '\n');
+require('node:child_process').execFileSync(process.execPath, [path.join(__dirname, 'build-asset-index.cjs')], { stdio: 'inherit' });
 process.exit(failed ? 1 : 0);

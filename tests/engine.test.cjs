@@ -148,3 +148,16 @@ test('badges earned in levels draw the chosen level (STEM, Cyber, NRA)', async (
   const scene = await P.composeUniform(build('blues_a', 'cadet', 'C/Capt', { badges: [{ id: 'stem_badges', level: 'advanced' }] }), store());
   assert.ok(scene.layers.some(l => l.id === 'enamel-stem-advanced'));
 });
+
+test('cadet ribbon stars follow CAPR 39-3 (14h, 14j, 21j)', () => {
+  const dev = (id, awardValue, awardLabel, membership) => RA.resolve(id, { awardValue, awardLabel, membership }).flatMap(r => r.devices);
+  assert.deepEqual(dev('curry_achievement', 'honor_credit', 'Earned with Honor Credit', 'cadet'), [], 'no honor credit device');
+  assert.deepEqual(dev('mitchell_award', 'earned_cos_star', '', 'cadet'), ['device-star-silver']);
+  assert.deepEqual(dev('eaker_award', 'earned_cos_star', '', 'cadet'), [], 'cadets keep the COS star on the Mitchell');
+  assert.deepEqual(dev('eaker_award', 'earned_cos_star', '', 'senior'), ['device-star-silver']);
+  assert.deepEqual(dev('goddard_achievement', 'rocketry_star', '', 'cadet'), ['device-star-silver']);
+  assert.deepEqual(dev('cadet_advisory_council_ribbon', 'cac_group', 'Group level (no device)'), []);
+  assert.deepEqual(dev('cadet_advisory_council_ribbon', 'cac_wing', 'Wing level (bronze star)'), ['device-star-bronze']);
+  assert.deepEqual(dev('cadet_advisory_council_ribbon', 'cac_region', 'Region level (silver star)'), ['device-star-silver']);
+  assert.deepEqual(dev('cadet_advisory_council_ribbon', 'cac_national', 'National level (gold star)'), ['device-star-gold']);
+});

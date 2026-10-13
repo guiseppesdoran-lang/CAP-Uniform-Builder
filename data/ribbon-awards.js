@@ -62,8 +62,13 @@
     curry_achievement: { devices: 'cadet' }, hap_arnold_achievement: { devices: 'cadet' },
     mary_feik_achievement: { devices: 'cadet' }, rickenbacker_achievement: { devices: 'cadet' },
     lindbergh_achievement: { devices: 'cadet' }, doolittle_achievement: { devices: 'cadet' },
-    armstrong_achievement: { devices: 'cadet' }
+    armstrong_achievement: { devices: 'cadet' },
+    earhart_award: { devices: 'cadet' }, spaatz_award: { devices: 'cadet' },
+    cadet_certificate_of_proficiency: { devices: 'cadet' }, frank_borman_falcon_award: { devices: 'cadet' }
   };
+  // 14j: a senior member who removes the Mitchell ribbon may move the COS star to the highest
+  // cadet program ribbon earned.
+  const COS_MOVES_TO = new Set(['eaker_award', 'earhart_award', 'spaatz_award', 'cadet_certificate_of_proficiency', 'frank_borman_falcon_award']);
 
   const ORD = /(\d+)(?:st|nd|rd|th)\b/i;
 
@@ -210,16 +215,15 @@
         return one(s.sort(byMetal).slice(0, MAX));
       }
       case 'cadet': {
-        // 14h/14j: Goddard model rocketry and Mitchell COS are silver stars; honor credit is a
-        // silver star as well (the builder's artwork convention).
+        // 14h: the Goddard ribbon takes a silver star for the Model Rocketry Badge. 14j: the Mitchell
+        // takes a silver star for COS; only senior members may move it to a higher cadet ribbon.
+        // No other cadet achievement ribbon wears a device (there is no honor credit device).
         const devices = [];
-        const honor = /honor/i.test(text) || sel.honorCredit;
-        const rocketry = /rocketry/i.test(text) || sel.rocketryCredit || /earned_both_devices/.test(value);
-        const cos = /cos/i.test(text);
-        if(honor) devices.push(D.starS);
+        const rocketry = id === 'goddard_achievement' &&
+          (/rocketry/i.test(text) || sel.rocketryCredit || /earned_(both_)?devices?$/.test(value));
+        const cosAllowed = id === 'mitchell_award' || (sel.membership !== 'cadet' && COS_MOVES_TO.has(id));
         if(rocketry) devices.push(D.starS);
-        if(cos) devices.push(D.starS);
-        if(/earned_device$/.test(value) && !devices.length) devices.push(D.starS);
+        if(cosAllowed && /cos/i.test(text)) devices.push(D.starS);
         return one(devices);
       }
       case 'recruiter': {
