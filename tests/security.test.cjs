@@ -64,7 +64,7 @@ test('application code requests nothing from other origins at load time', () => 
   const sources = trackedTextFiles().filter(rel => /\.js$/.test(rel) && !rel.startsWith('scripts/') && !rel.startsWith('tests/') && !rel.startsWith('google-apps-script/'));
   // purchase-catalog.js only holds vendor links shown to the user and military-data.js cites where
   // each award came from; neither is requested. Namespaces are not requests.
-  const allowed = [/w3\.org\/2000\/svg/, /^purchase-catalog\.js$/, /^military\/military-data\.js$/];
+  const allowed = [/w3\.org\/2000\/svg/, /w3\.org\/1999\/xlink/, /^purchase-catalog\.js$/, /^military\/military-data\.js$/];
   for (const rel of sources) {
     for (const match of read(rel).matchAll(/https?:\/\/[A-Za-z0-9./_-]+/g)) {
       const ok = allowed.some(rule => rule.test(rel) || rule.test(match[0]));
