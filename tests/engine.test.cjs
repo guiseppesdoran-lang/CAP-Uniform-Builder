@@ -187,3 +187,14 @@ test('the flight jacket is drawn beside the flight suit, and the shirt beside th
   assert.ok(blazer.layers.some(l => l.id === 'garment-aviator-shirt-male-long'));
   assert.ok(blazer.layers.some(l => l.id === 'garment-aviator-shirt-male-long-tie'));
 });
+
+test('grade rules: mess dress needs a grade, men\'s Class B chevrons are 3 1/2 in, C/AB has no OCP square', async () => {
+  assert.equal(rules.isUniformAllowedFor('mess_dress', 'senior', { rank: 'SM' }), false);
+  assert.equal(rules.isUniformAllowedFor('mess_dress', 'senior', { rank: 'MSgt' }), true);
+  const men = await P.composeUniform(build('blues_b', 'senior', 'MSgt', { opt: { chevron: '4' } }), store());
+  assert.ok(men.layers.filter(l => l.role === 'grade').every(l => /3p5in/.test(l.id)));
+  const women = await P.composeUniform(build('blues_b', 'senior', 'MSgt', { gender: 'female', opt: { chevron: '4', sleeve: 'long' } }), store());
+  assert.ok(women.layers.filter(l => l.role === 'grade').every(l => /-4in/.test(l.id)));
+  const cab = await P.composeUniform(build('ocp', 'cadet', 'C/AB'), store());
+  assert.deepEqual(cab.layers.find(l => l.role === 'garment').hideGroups, ['rank-square']);
+});

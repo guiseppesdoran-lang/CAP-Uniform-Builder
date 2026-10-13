@@ -255,7 +255,9 @@
   }
 
   async function composeFieldUniform(ctx, b){
-    await ctx.garment(GARMENT[b.uniform]);
+    // Cadet Airman Basic wears no device and no blue material on the OCP (7.1.1.2.2).
+    const bare = b.uniform === 'ocp' && b.grade.category === 'cadet-basic';
+    await ctx.garment(GARMENT[b.uniform], bare ? { hideGroups: ['rank-square'] } : null);
     nameTapes(ctx, b);
     if(b.uniform === 'ocp') await ocpGrade(ctx, b);
     else await collarGrade(ctx, b);

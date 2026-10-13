@@ -223,12 +223,12 @@ jacketSelect.addEventListener('change', ()=>{
 function isUniformAllowedFor(uniformId, membership){
   const btn = uniformListEl.querySelector(`.uniformOption[data-uniform-id="${uniformId}"]`);
   if(!btn) return false;
-  return CAPUBUniformRules.isUniformAllowedFor(uniformId, membership, {adultCadet:!!State.adultCadet});
+  return CAPUBUniformRules.isUniformAllowedFor(uniformId, membership, {adultCadet:!!State.adultCadet,rank:State.rank});
 }
 function findFirstAllowedUniform(membership){
   const opts=[...uniformListEl.querySelectorAll('.uniformOption')];
   for(const opt of opts){
-    if(CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, membership, {adultCadet:!!State.adultCadet})){
+    if(CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, membership, {adultCadet:!!State.adultCadet,rank:State.rank})){
       return opt.dataset.uniformId;
     }
   }
@@ -238,7 +238,7 @@ function applyMemberTypeToUniformOptions(){
   const opts=uniformListEl.querySelectorAll('.uniformOption');
   opts.forEach(opt=>{
     const isAllowed = State.membership
-      ? CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet})
+      ? CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet,rank:State.rank})
       : true;
 
     if(isAllowed){
@@ -246,7 +246,7 @@ function applyMemberTypeToUniformOptions(){
       opt.removeAttribute('data-locked-reason');
     }else{
       opt.classList.add('locked');
-      opt.setAttribute('data-locked-reason', 'This uniform is not authorized for this membership type.');
+      opt.setAttribute('data-locked-reason', CAPUBUniformRules.lockedReason(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet,rank:State.rank}) || 'This uniform is not authorized for this membership type.');
     }
   });
 }

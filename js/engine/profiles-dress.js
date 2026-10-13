@@ -495,7 +495,8 @@
       if(wr) await ctx.place(id, { pieceAnchor: 'center', at: wr, rotate: rot, z: Z.insignia, role: 'grade', key: 'grade:right' });
       if(wl) await ctx.place(id, { pieceAnchor: 'center', at: wl, rotate: -rot, z: Z.insignia, role: 'grade', key: 'grade:left' });
     }else if(g.category === 'senior-nco'){
-      const size = b.opt.chevron === '4' && !long ? '4' : '3.5';
+      // Men: 3 1/2 in (4.1.11.1.1.1.3). Women: 3 1/2 or 4 in on either sleeve (4.1.12.2.3.3).
+      const size = female && b.opt.chevron === '4' ? '4' : '3.5';
       const id = G.seniorChevron(g, { size });
       const w = size === '4' ? 4 : 3.5;
       // The front view shows less sleeve than the chevron's width on the short sleeve: narrow it.

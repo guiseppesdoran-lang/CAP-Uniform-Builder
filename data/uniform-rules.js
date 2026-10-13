@@ -45,7 +45,8 @@
     blues_b:{group:'everyday',style:'usaf',membership:['cadet','senior'],adultCadet:false,minimum:true,
       ribbons:'optional',mini:false,usafAwards:true,rackColumns:[3],badgeCap:4,shoulderCord:true,
       refs:{ribbons:'11.1.2',rack:'11.2.7',minimum:'1.2.2',badges:'4.1.11.1.1.2.3',cords:'9.3, 9.4.1'}},
-    mess_dress:{group:'formal',style:'usaf',membership:['senior'],adultCadet:false,
+    // 4.1.1, 4.1.2, 1.4.1.1: not worn by members without grade.
+    mess_dress:{group:'formal',style:'usaf',membership:['senior'],adultCadet:false,gradeRequired:true,
       ribbons:'none',mini:true,usafAwards:true,rackColumns:[],badgeCap:4,
       refs:{who:'4.1.1',ribbons:'11.1.4',mini:'11.1.4',badges:'4.1.1.1.3'}},
     // ICL 25-02 corrected 4.2.2.4 to allow CAP and military miniature medals.
@@ -127,10 +128,12 @@
   // adultCadet: the member is a cadet aged 18 or older who does not meet the USAF-style weight
   // standard (39-1 1.2.5.2). It only ever widens what a cadet may wear, and only to uniforms
   // whose rule says adultCadet.
-  function isUniformAllowedFor(uniformId,membership,{adultCadet=false}={}){
+  // rank: the member's grade ('SM' is a senior member without grade), for uniforms that need one.
+  function isUniformAllowedFor(uniformId,membership,{adultCadet=false,rank=null}={}){
     const rule=getUniformRule(uniformId);
     if(!rule) return false;
     if(!membership) return true;
+    if(rule.gradeRequired && membership==='senior' && rank==='SM') return false;
     if(rule.membership.includes(membership)) return true;
     return membership==='cadet' && !!adultCadet && rule.adultCadet===true;
   }
@@ -143,9 +146,12 @@
     return !!(rule && rule.usafAwards);
   }
   // Why a uniform is not offered to this member, with the paragraph. Empty when it is.
-  function lockedReason(uniformId,membership,{adultCadet=false}={}){
+  function lockedReason(uniformId,membership,{adultCadet=false,rank=null}={}){
     const rule=getUniformRule(uniformId);
-    if(!rule || !membership || isUniformAllowedFor(uniformId,membership,{adultCadet})) return '';
+    if(!rule || !membership || isUniformAllowedFor(uniformId,membership,{adultCadet,rank})) return '';
+    if(rule.gradeRequired && membership==='senior' && rank==='SM'){
+      return `Worn by officers and NCOs, not by members without grade (CAPR 39-1, ${rule.refs.who})`;
+    }
     if(membership==='cadet' && rule.adultCadet){
       return `For cadets 18 and older who do not meet the USAF weight standard (CAPR 39-1, ${rule.refs.adultCadet})`;
     }

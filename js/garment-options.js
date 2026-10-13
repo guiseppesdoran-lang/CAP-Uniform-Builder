@@ -48,9 +48,10 @@
         const four = ['4', '4 inch'], three = ['3.5', '3 1/2 inch'];
         return ['blues_b'].includes(c.u) ? [['', '3 1/2 inch'], four] : [['', '4 inch'], three];
       },
+      // Men's Class B: 3 1/2 in only (4.1.11.1.1.1.3). Women's Class B, Class A and mess dress:
+      // 3 1/2 or 4 in (4.1.12.2.3.3, 4.1.9.3.3).
       when: c => c.g.category === 'senior-nco' && (
-        (c.u === 'blues_b' && (State.garment || {}).sleeve !== 'long') ||
-        (c.female && ['blues_a', 'mess_dress'].includes(c.u)) ||
+        (c.female && ['blues_a', 'blues_b', 'mess_dress'].includes(c.u)) ||
         ['abu', 'corporate_field'].includes(c.u)) },
     { key: 'jacket', label: 'Show the flight jacket too', type: 'check', defaultValue: true, when: c => FLIGHT.includes(c.u) },
     { key: 'scarf', label: 'Command scarf', type: 'check', when: c => FLIGHT.includes(c.u) },
