@@ -36,60 +36,68 @@
    1497.75
   ],
   "epaulet_sleeve_right_center": [
-   501.45,
-   382.3
+   487.3,
+   309.25
   ],
   "rank_slot_right_center": [
-   489.9,
-   380.2
+   487.3,
+   309.3
   ],
   "rank_rule_point_right_center": [
-   429.4,
-   396.1
+   411.8,
+   329.1
   ],
   "lapel_us_right_center": [
    908.3,
    420.5
   ],
+  "sleeve_braid_right_center": [
+   251.4,
+   2353.9
+  ],
   "epaulet_sleeve_left_center": [
-   1871.15,
-   382.3
+   1885.3,
+   309.25
   ],
   "rank_slot_left_center": [
-   1882.7,
-   380.2
+   1885.3,
+   309.3
   ],
   "rank_rule_point_left_center": [
-   1943.2,
-   396.1
+   1960.8,
+   329.1
   ],
   "lapel_us_left_center": [
    1491.3,
    420.5
+  ],
+  "sleeve_braid_left_center": [
+   2122.45,
+   2354.05
   ]
  },
  "landmarks": {
   "epaulet_right": {
    "x": 346.3,
    "y": 228.4,
-   "w": 409.4,
-   "h": 281
+   "w": 380.2,
+   "h": 135.9
   },
   "epaulet_sleeve_right": {
    "x": 343.6,
    "y": 250.8,
-   "w": 315.7,
-   "h": 263
+   "w": 287.4,
+   "h": 116.9
   },
   "rank_slot_right": {
-   "x": 358.5,
-   "y": 274.3,
-   "w": 262.8,
-   "h": 211.8
+   "x": 343.6,
+   "y": 250.8,
+   "w": 287.4,
+   "h": 117
   },
   "rank_rule_point_right": {
-   "x": 428.4,
-   "y": 395.1,
+   "x": 410.8,
+   "y": 328.1,
    "w": 2,
    "h": 2
   },
@@ -99,27 +107,33 @@
    "w": 90,
    "h": 60
   },
+  "sleeve_braid_right": {
+   "x": 61,
+   "y": 2258,
+   "w": 380.8,
+   "h": 191.8
+  },
   "epaulet_left": {
-   "x": 1616.9,
+   "x": 1646.1,
    "y": 228.4,
-   "w": 409.4,
-   "h": 281
+   "w": 380.2,
+   "h": 135.9
   },
   "epaulet_sleeve_left": {
-   "x": 1713.3,
+   "x": 1741.6,
    "y": 250.8,
-   "w": 315.7,
-   "h": 263
+   "w": 287.4,
+   "h": 116.9
   },
   "rank_slot_left": {
-   "x": 1751.3,
-   "y": 274.3,
-   "w": 262.8,
-   "h": 211.8
+   "x": 1741.6,
+   "y": 250.8,
+   "w": 287.4,
+   "h": 117
   },
   "rank_rule_point_left": {
-   "x": 1942.2,
-   "y": 395.1,
+   "x": 1959.8,
+   "y": 328.1,
    "w": 2,
    "h": 2
   },
@@ -128,6 +142,12 @@
    "y": 390.5,
    "w": 90,
    "h": 60
+  },
+  "sleeve_braid_left": {
+   "x": 1930.9,
+   "y": 2257.3,
+   "w": 383.1,
+   "h": 193.5
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left of the artwork box",

@@ -35,6 +35,38 @@
    2132,
    1353.75
   ],
+  "shoulder_seam_right": [
+   274.4,
+   330
+  ],
+  "sleeve_bottom_right": [
+   291.3,
+   2594.5
+  ],
+  "elbow_right": [
+   209.6,
+   1575.5
+  ],
+  "chevron_halfway_right": [
+   210.9,
+   952.7
+  ],
+  "shoulder_seam_left": [
+   1857.6,
+   330
+  ],
+  "sleeve_bottom_left": [
+   1840.7,
+   2594.5
+  ],
+  "elbow_left": [
+   1922.4,
+   1575.5
+  ],
+  "chevron_halfway_left": [
+   1921.1,
+   952.7
+  ],
   "hem_center": [
    1066,
    2697.5

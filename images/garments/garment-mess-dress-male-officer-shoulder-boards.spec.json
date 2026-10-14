@@ -1,6 +1,6 @@
 {
  "asset_id": "garment-mess-dress-male-officer-shoulder-boards",
- "name": "Men's USAF-style mess dress: officer shoulder boards (overlay, blank grade)",
+ "name": "Men's USAF-style mess dress: officer shoulder boards (Air Force blue, overlay, blank grade)",
  "size_in": {
   "w": 26.522,
   "h": 33.68
@@ -13,7 +13,7 @@
   3368
  ],
  "size_source": "estimated",
- "size_basis": "Same artwork box and scale as garment-mess-dress-male. Board 4.1 in long x 2.2 in wide (silver centre 1.2 in between the 1/2 in braids, enough for a 1 in regular-size form) estimated from DAFI 36-2903 Figs 4.2-4.3; the regulation gives no dimension.",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-male. Board 5.5 x 2.25 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.5 in blue lace each side.",
  "anchors": {
   "top_center": [
    1326.1,
@@ -36,48 +36,48 @@
    1684
   ],
   "rank_slot_right_center": [
-   503.34,
-   426.4
+   562.18,
+   409.53
   ],
   "rank_slot_left_center": [
-   2129.76,
-   417.68
+   2071.92,
+   403.05
   ]
  },
  "landmarks": {
   "shoulder_board_right": {
    "x": 280.38,
-   "y": 267.15,
-   "w": 448.46,
-   "h": 331.15
+   "y": 217.89,
+   "w": 575.22,
+   "h": 392.55
   },
   "rank_slot_right": {
-   "x": 388.67,
-   "y": 335.22,
-   "w": 229.33,
-   "h": 182.35
+   "x": 442,
+   "y": 311.82,
+   "w": 240.36,
+   "h": 195.42
   },
   "rank_slot_right_frame": {
-   "deg": -20.5,
+   "deg": -20.9,
    "along": 2,
-   "across": 1.2
+   "across": 1.25
   },
   "shoulder_board_left": {
-   "x": 1904.26,
-   "y": 258.24,
-   "w": 448.6,
-   "h": 331.59
+   "x": 1778.5,
+   "y": 213.1,
+   "w": 574.36,
+   "h": 388.97
   },
   "rank_slot_left": {
-   "x": 2015.06,
-   "y": 326.4,
-   "w": 229.39,
-   "h": 182.56
+   "x": 1952.22,
+   "y": 306.1,
+   "w": 239.4,
+   "h": 193.9
   },
   "rank_slot_left_frame": {
    "deg": -159.5,
    "along": 2,
-   "across": 1.2
+   "across": 1.25
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
@@ -87,8 +87,9 @@
   "placed as close to the shoulder seam as possible"
  ],
  "assumed": [
-  "board size",
-  "silver board colour; braid shade 1095 approximated",
+  "Air Force blue / silver lace colours sampled, not specified as RGB",
+  "braid shade 1095 approximated",
+  "peak taper 0.8 in",
   "grade insignia not drawn: placed at rank_slot"
  ],
  "fit": {

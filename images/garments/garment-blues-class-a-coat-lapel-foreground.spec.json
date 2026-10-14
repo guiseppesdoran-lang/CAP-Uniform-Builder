@@ -1,0 +1,122 @@
+{
+ "asset_id": "garment-blues-class-a-coat-lapel-foreground",
+ "name": "Men's Class A service dress coat collar and lapels (foreground overlay, registered to garment-blues-class-a-coat; also fits the semi-formal coat)",
+ "size_in": {
+  "w": 23.726,
+  "h": 29.955
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2372.6,
+  2995.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same artwork box as garment-blues-class-a-coat; the collar and lapel faces of the coat redrawn opaque so they cover the shirt collar and any badge or device that slides under them.",
+ "anchors": {
+  "top_center": [
+   1186.3,
+   0
+  ],
+  "bottom_center": [
+   1186.3,
+   2995.5
+  ],
+  "center": [
+   1186.3,
+   1497.75
+  ],
+  "left_edge": [
+   0,
+   1497.75
+  ],
+  "right_edge": [
+   2372.6,
+   1497.75
+  ]
+ },
+ "landmarks": {
+  "lapel_face_right": [
+   [
+    973.9,
+    97.8
+   ],
+   [
+    831.7,
+    200.7
+   ],
+   [
+    791.9,
+    500.7
+   ],
+   [
+    649.7,
+    548.1
+   ],
+   [
+    1163.5,
+    1116.9
+   ],
+   [
+    1082.3,
+    702.2
+   ],
+   [
+    1018.3,
+    461.4
+   ],
+   [
+    973.9,
+    97.8
+   ]
+  ],
+  "lapel_face_left": [
+   [
+    1398.7,
+    97.8
+   ],
+   [
+    1540.9,
+    200.7
+   ],
+   [
+    1580.7,
+    500.7
+   ],
+   [
+    1722.9,
+    548.1
+   ],
+   [
+    1209.1,
+    1116.9
+   ],
+   [
+    1290.3,
+    702.2
+   ],
+   [
+    1354.3,
+    461.4
+   ],
+   [
+    1398.7,
+    97.8
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-a-coat",
+ "documented": [
+  "badges and devices worn under the coat collar/lapel tuck beneath it (builder layering)"
+ ],
+ "assumed": [
+  "layer order: above badges, below nothing"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

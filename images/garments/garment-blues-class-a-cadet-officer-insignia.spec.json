@@ -36,34 +36,34 @@
    1497.75
   ],
   "epaulet_right_center": [
-   579.3,
-   94.15
+   535.35,
+   292.5
   ],
   "epaulet_left_center": [
-   1793.3,
-   94.15
+   1837.25,
+   292.5
   ],
   "rank_slot_right_center": [
-   579.3,
-   94.15
+   535.35,
+   292.5
   ],
   "rank_slot_left_center": [
-   1793.3,
-   94.15
+   1837.25,
+   292.5
   ]
  },
  "landmarks": {
   "epaulet_right": {
-   "x": 351.8,
-   "y": 2,
-   "w": 455,
-   "h": 184.3
+   "x": 346.3,
+   "y": 228.4,
+   "w": 378.1,
+   "h": 128.2
   },
   "rank_slot_right": {
-   "x": 464.3,
-   "y": 29.15,
-   "w": 230,
-   "h": 130
+   "x": 346.3,
+   "y": 228.4,
+   "w": 378.1,
+   "h": 128.2
   },
   "lapel_cap_right": {
    "x": 838.1,
@@ -72,16 +72,16 @@
    "h": 53
   },
   "epaulet_left": {
-   "x": 1565.8,
-   "y": 2,
-   "w": 455,
-   "h": 184.3
+   "x": 1648.2,
+   "y": 228.4,
+   "w": 378.1,
+   "h": 128.2
   },
   "rank_slot_left": {
-   "x": 1678.3,
-   "y": 29.15,
-   "w": 230,
-   "h": 130
+   "x": 1648.2,
+   "y": 228.4,
+   "w": 378.1,
+   "h": 128.2
   },
   "lapel_cap_left": {
    "x": 1422,
@@ -93,18 +93,15 @@
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
  "overlay_of": "garment-blues-class-a-coat",
  "dimensions": {
-  "epaulet_in": [
-   4.55,
-   1.8434083601286173
-  ]
+  "strip_thickness_in": 0.32
  },
  "documented": [
+  "boards drawn flattened as an edge-on strip on each shoulder; the top-down boards are separate assets",
   "cadet officers wear gray epaulet sleeves with shoulder boards; cadet NCOs/airmen wear none (CAPR 39-1 4.1.5.2)",
   "CAP lapel insignia halfway up the lapel seam, cadet officers only; metal chevrons replace it for NCOs/airmen, none for Airman Basic (4.1.5.2.2.1.2-3)"
  ],
  "assumed": [
-  "board size",
-  "board placement above the shoulder strips",
+  "strip thickness 0.32 in",
   "rank diamonds omitted (sold separately)"
  ],
  "fit": {

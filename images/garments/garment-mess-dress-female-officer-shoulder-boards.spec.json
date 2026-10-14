@@ -1,6 +1,6 @@
 {
  "asset_id": "garment-mess-dress-female-officer-shoulder-boards",
- "name": "Women's USAF-style mess dress: officer shoulder boards (overlay, blank grade)",
+ "name": "Women's USAF-style mess dress: officer shoulder boards (Air Force blue, overlay, blank grade)",
  "size_in": {
   "w": 25.528,
   "h": 33.26
@@ -13,7 +13,7 @@
   3326
  ],
  "size_source": "estimated",
- "size_basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.1 in long x 2.2 in wide (silver centre 1.2 in between the 1/2 in braids, enough for a 1 in regular-size form) estimated from DAFI 36-2903 Figs 4.2-4.3; the regulation gives no dimension.",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.25 in blue lace each side.",
  "anchors": {
   "top_center": [
    1276.3999999999999,
@@ -36,59 +36,60 @@
    1663
   ],
   "rank_slot_right_center": [
-   503.25,
-   384.82
+   513.13,
+   371.46
   ],
   "rank_slot_left_center": [
-   2040.38,
-   382.54
+   2030.46,
+   369.13
   ]
  },
  "landmarks": {
   "shoulder_board_right": {
    "x": 299.41,
-   "y": 250.32,
-   "w": 429.34,
-   "h": 275.74
+   "y": 245.48,
+   "w": 453.8,
+   "h": 258
   },
   "rank_slot_right": {
-   "x": 394.26,
-   "y": 308.17,
-   "w": 217.98,
-   "h": 153.3
+   "x": 403.16,
+   "y": 281.41,
+   "w": 219.95,
+   "h": 180.09
   },
   "rank_slot_right_frame": {
    "deg": -10.1,
    "along": 2,
-   "across": 1.2
+   "across": 1.5
   },
   "shoulder_board_left": {
-   "x": 1814.88,
-   "y": 248.44,
-   "w": 429.03,
-   "h": 274.85
+   "x": 1790.38,
+   "y": 243.61,
+   "w": 453.53,
+   "h": 257
   },
   "rank_slot_left": {
-   "x": 1931.51,
-   "y": 306.15,
-   "w": 217.74,
-   "h": 152.79
+   "x": 1920.69,
+   "y": 279.36,
+   "w": 219.54,
+   "h": 179.55
   },
   "rank_slot_left_frame": {
    "deg": -170,
    "along": 2,
-   "across": 1.2
+   "across": 1.5
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
  "overlay_of": "garment-mess-dress-female",
  "documented": [
-  "officers wear shoulder boards with bullion grade insignia and 1/2 in dark blue braid down each side; women's boards have no button (CAPR 39-1 4.1.2.1.1.1)",
+  "officers wear shoulder boards with bullion grade insignia and 1/4 (Fig A5-3; the paragraph text says 1/2) in dark blue braid down each side; women's boards have no button (CAPR 39-1 4.1.2.1.1.1)",
   "placed as close to the shoulder seam as possible"
  ],
  "assumed": [
-  "board size",
-  "silver board colour; braid shade 1095 approximated",
+  "Air Force blue / silver lace colours sampled, not specified as RGB",
+  "braid shade 1095 approximated",
+  "peak taper 0.8 in",
   "grade insignia not drawn: placed at rank_slot"
  ],
  "fit": {

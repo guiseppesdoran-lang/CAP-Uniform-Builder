@@ -36,34 +36,34 @@
    1473.78
   ],
   "epaulet_right_center": [
-   612.22,
-   93.41
+   606.32,
+   228.01
   ],
   "epaulet_left_center": [
-   1826.62,
-   93.41
+   1832.51,
+   228.01
   ],
   "rank_slot_right_center": [
-   612.22,
-   93.42
+   606.32,
+   228.01
   ],
   "rank_slot_left_center": [
-   1826.62,
-   93.42
+   1832.51,
+   228.01
   ]
  },
  "landmarks": {
   "epaulet_right": {
-   "x": 384.74,
-   "y": 1.23,
-   "w": 454.96,
-   "h": 184.36
+   "x": 427.42,
+   "y": 177.23,
+   "w": 357.81,
+   "h": 101.55
   },
   "rank_slot_right": {
-   "x": 497.22,
-   "y": 28.42,
-   "w": 230,
-   "h": 130
+   "x": 427.42,
+   "y": 177.23,
+   "w": 357.81,
+   "h": 101.55
   },
   "lapel_cap_right": {
    "x": 822.71,
@@ -72,16 +72,16 @@
    "h": 49.98
   },
   "epaulet_left": {
-   "x": 1599.14,
-   "y": 1.23,
-   "w": 454.96,
-   "h": 184.36
+   "x": 1653.61,
+   "y": 177.23,
+   "w": 357.81,
+   "h": 101.55
   },
   "rank_slot_left": {
-   "x": 1711.62,
-   "y": 28.42,
-   "w": 230,
-   "h": 130
+   "x": 1653.61,
+   "y": 177.23,
+   "w": 357.81,
+   "h": 101.55
   },
   "lapel_cap_left": {
    "x": 1467.93,
@@ -93,18 +93,14 @@
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
  "overlay_of": "garment-blues-class-a-coat-female",
  "dimensions": {
-  "epaulet_in": [
-   4.55,
-   1.8434083601286173
-  ]
+  "strip_thickness_in": 0.32
  },
  "documented": [
   "cadet officers wear regular-size grade insignia on Cadet Officer shoulder boards (4.1.9.3.4)",
   "CAP lapel insignia halfway up the lapel seam, cadet officers only; grade insignia replaces it for cadet NCOs/airmen, none for Airman Basic (4.1.9.4.1.2-3)"
  ],
  "assumed": [
-  "board size",
-  "board placement above the shoulder strips",
+  "strip thickness 0.32 in",
   "rank diamonds omitted (sold separately)"
  ],
  "fit": {

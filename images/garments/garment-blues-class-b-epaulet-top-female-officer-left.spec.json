@@ -1,0 +1,90 @@
+{
+ "asset_id": "garment-blues-class-b-epaulet-top-female-officer-left",
+ "name": "Women's Class B blue short-sleeve blouse and skirt (nametag position only) adult officer epaulet sleeve, left shoulder, top-down (blank grade)",
+ "size_in": {
+  "w": 3.537,
+  "h": 1.95
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  353.7,
+  195
+ ],
+ "size_source": "estimated",
+ "size_basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+ "anchors": {
+  "top_center": [
+   176.85000000000002,
+   0
+  ],
+  "bottom_center": [
+   176.85000000000002,
+   195
+  ],
+  "center": [
+   176.85000000000002,
+   97.5
+  ],
+  "left_edge": [
+   0,
+   97.5
+  ],
+  "right_edge": [
+   353.70000000000005,
+   97.5
+  ],
+  "rank_slot_center": [
+   218.7,
+   97.5
+  ],
+  "rank_rule_point": [
+   281.2,
+   97.5
+  ],
+  "outer_end_center": [
+   343.7,
+   97.5
+  ]
+ },
+ "landmarks": {
+  "sleeve": {
+   "x": 10,
+   "y": 10,
+   "w": 333.70000000000005,
+   "h": 175
+  },
+  "rank_slot": {
+   "x": 103.7,
+   "y": 20,
+   "w": 230,
+   "h": 155
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form (Major General star pair 2.2 x 1.2 in); rank_rule_point is the 5/8 in from the outer end point for single forms",
+ "dimensions": {
+  "sleeve_in": [
+   3.337,
+   1.75
+  ],
+  "rank_slot_in": [
+   2.3,
+   1.55
+  ]
+ },
+ "documented": [
+  "gray epaulet sleeves, embroidered grade (4.1.11.1.1.1.1 / 4.1.12.2.3.1)",
+  "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "sleeve size",
+  "CAP lettering size and position",
+  "grade not drawn"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

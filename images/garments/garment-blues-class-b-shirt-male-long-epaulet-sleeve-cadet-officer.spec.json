@@ -13,7 +13,7 @@
   2707.5
  ],
  "size_source": "estimated",
- "size_basis": "Cut from the garment epaulet strap landmark (covers the outer 82%); the regulation gives no dimension.",
+ "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours sampled from the reference photos (gray #6e6a69, cadet navy #072157); the regulation gives no dimension.",
  "anchors": {
   "top_center": [
    1066,
@@ -36,12 +36,12 @@
    1353.75
   ],
   "rank_slot_right_center": [
-   454.6,
-   322.05
+   461.9,
+   247.95
   ],
   "rank_slot_left_center": [
-   1677.4,
-   322.05
+   1670.1,
+   247.95
   ],
   "rank_rule_point_right": [
    395.61,
@@ -56,36 +56,26 @@
   "epaulet_sleeve_right": {
    "x": 307.6,
    "y": 177.2,
-   "w": 353.5,
-   "h": 268.9
+   "w": 308.6,
+   "h": 141.5
   },
   "rank_slot_right": {
-   "x": 320.4,
-   "y": 210.8,
-   "w": 268.4,
-   "h": 222.5
-  },
-  "rank_slot_right_frame": {
-   "deg": -19.4,
-   "along": 2.3,
-   "across": 1.55
+   "x": 307.6,
+   "y": 177.2,
+   "w": 308.6,
+   "h": 141.5
   },
   "epaulet_sleeve_left": {
-   "x": 1470.9,
+   "x": 1515.8,
    "y": 177.2,
-   "w": 353.5,
-   "h": 268.9
+   "w": 308.6,
+   "h": 141.5
   },
   "rank_slot_left": {
-   "x": 1543.2,
-   "y": 210.8,
-   "w": 268.4,
-   "h": 222.5
-  },
-  "rank_slot_left_frame": {
-   "deg": -160.6,
-   "along": 2.3,
-   "across": 1.55
+   "x": 1515.8,
+   "y": 177.2,
+   "w": 308.6,
+   "h": 141.5
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
