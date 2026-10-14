@@ -312,7 +312,8 @@
       ctx.note('The custom ribbon rows do not add up to the ribbons worn, so the regular rows are shown');
       counts = null;
     }
-    const box = await C.drawRack(ctx, b.ribbons, { centerX: rest.x, bottomY: rest.y, outboardX: rest.x + perRow * 1.375 / 2, outboardSign: 1 }, {
+    // Rows aligned to the wearer's left are aligned with the left edge of the welt or pocket (11.2.7).
+    const box = await C.drawRack(ctx, b.ribbons, { centerX: rest.x, bottomY: rest.y, outboardX: o.outboardX != null ? o.outboardX : rest.x + perRow * 1.375 / 2, outboardSign: 1 }, {
       perRow,
       align: o.align,
       lapel: lapel && lapel.points ? lapel.points : null,
@@ -460,7 +461,8 @@
     // Ribbons resting on the welt pocket; rows of 3 or 4 (11.2.7). Mandatory (11.1.2).
     const rest = ctx.point('welt_top_center');
     const perRow = Number(b.opt.rackColumns) === 4 ? 4 : 3;
-    const rack = await ribbonRack(ctx, b, rest, { perRow, align: b.opt.rackAlign, lapel: 'lapel_left', lapelGroup: 'lapel-left', customRows: !semi && !!b.opt.rackCounts });
+    const welt = ctx.rect('welt_pocket');
+    const rack = await ribbonRack(ctx, b, rest, { perRow, align: b.opt.rackAlign, outboardX: welt ? welt.x + welt.w : null, lapel: 'lapel_left', lapelGroup: 'lapel-left', customRows: !semi && !!b.opt.rackCounts });
     if(!rack) ctx.note('Ribbons are required with this uniform (CAPR 39-1, 11.1.2)');
 
     const geo = {

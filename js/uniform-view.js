@@ -181,7 +181,8 @@
     const automatic = State.ribbonRackArrangement !== 'standard';
     const custom = State.uniform === 'blues_a' && State.ribbonRowOverrideEnabled && Array.isArray(State.ribbonRowOverride) && State.ribbonRowOverride.length;
     if(custom) return { rackColumns: 4, rackArrangement: 'standard', rackCounts: [...State.ribbonRowOverride].reverse() };
-    if(automatic) return { rackColumns: 3, rackArrangement: 'lapel', rackCounts: null };
+    // Automatic still honours the chosen width; it only shortens rows the lapel would cover.
+    if(automatic) return { rackColumns: layout === '3' ? 3 : 4, rackAlign: layout === '4-left' ? 'outboard' : undefined, rackArrangement: 'lapel', rackCounts: null };
     return {
       rackColumns: layout === '3' ? 3 : 4,
       rackAlign: layout === '4-left' ? 'outboard' : undefined,
