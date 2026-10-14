@@ -1,0 +1,89 @@
+{
+ "asset_id": "garment-semiformal-class-a-coat-male-cord-region",
+ "name": "Men's cadet semi-formal coat: Region CAC shoulder cord (blue) (overlay, registered to garment-semiformal-class-a-coat-male)",
+ "size_in": {
+  "w": 23.726,
+  "h": 29.955
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2372.6,
+  2995.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+ "anchors": {
+  "top_center": [
+   1186.3,
+   0
+  ],
+  "bottom_center": [
+   1186.3,
+   2995.5
+  ],
+  "center": [
+   1186.3,
+   1497.75
+  ],
+  "left_edge": [
+   0,
+   1497.75
+  ],
+  "right_edge": [
+   2372.6,
+   1497.75
+  ],
+  "cord_start": [
+   1926.2999999999997,
+   310.5
+  ],
+  "cord_end": [
+   1866.3,
+   1412.5
+  ]
+ },
+ "landmarks": {
+  "cord": [
+   [
+    1926.3,
+    310.5
+   ],
+   [
+    2001.3,
+    326.5
+   ],
+   [
+    2016.3,
+    332.5
+   ],
+   [
+    1996.3,
+    612.5
+   ],
+   [
+    1936.3,
+    1012.5
+   ],
+   [
+    1866.3,
+    1412.5
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-semiformal-class-a-coat-male",
+ "documented": [
+  "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)"
+ ],
+ "assumed": [
+  "cord thickness 0.36 in",
+  "path along the armhole seam"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

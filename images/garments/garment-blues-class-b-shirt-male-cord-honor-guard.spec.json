@@ -1,0 +1,93 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-cord-honor-guard",
+ "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only): Honor Guard shoulder cord (metallic silver) (overlay, registered to garment-blues-class-b-shirt-male)",
+ "size_in": {
+  "w": 20.688,
+  "h": 24.28
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2068.8,
+  2428
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+ "anchors": {
+  "top_center": [
+   1034.3999999999999,
+   0
+  ],
+  "bottom_center": [
+   1034.3999999999999,
+   2427.9999999999995
+  ],
+  "center": [
+   1034.3999999999999,
+   1213.9999999999998
+  ],
+  "left_edge": [
+   0,
+   1213.9999999999998
+  ],
+  "right_edge": [
+   2068.7999999999997,
+   1213.9999999999998
+  ],
+  "cord_start": [
+   1715.98,
+   307.95
+  ],
+  "cord_end": [
+   1640.08,
+   1301.65
+  ]
+ },
+ "landmarks": {
+  "cord": [
+   [
+    1716,
+    307.9
+   ],
+   [
+    1791,
+    323.9
+   ],
+   [
+    1806,
+    330
+   ],
+   [
+    1758.6,
+    555.1
+   ],
+   [
+    1699.3,
+    815.8
+   ],
+   [
+    1663.8,
+    1052.8
+   ],
+   [
+    1640.1,
+    1301.6
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-shirt-male",
+ "documented": [
+  "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)"
+ ],
+ "assumed": [
+  "cord thickness 0.36 in",
+  "path along the armhole seam"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

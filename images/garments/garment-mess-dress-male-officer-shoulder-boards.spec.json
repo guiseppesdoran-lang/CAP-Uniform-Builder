@@ -83,7 +83,7 @@
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
  "overlay_of": "garment-mess-dress-male",
  "documented": [
-  "officers wear shoulder boards with bullion grade insignia and 1/2 in dark blue braid down each side, with a button at the peak (CAPR 39-1 4.1.1.1.1.1)",
+  "officers wear shoulder boards with bullion grade insignia and 1/2 in dark blue braid (paragraph text 4.1.2.1.1.1, per Ethan; the Fig A5-3 caption says 1/4 in for women) down each side, with a button at the peak (CAPR 39-1 4.1.1.1.1.1)",
   "placed as close to the shoulder seam as possible"
  ],
  "assumed": [

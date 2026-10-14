@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 854,
+ "count": 910,
  "by_category": {
   "accessories": 30,
   "badges": 1,
@@ -13554,8 +13554,8 @@
      257.93
     ],
     "lapel_us_right_center": [
-     892.98,
-     319
+     896.85,
+     395.65
     ],
     "sleeve_braid_right_center": [
      229.72,
@@ -13574,8 +13574,8 @@
      257.93
     ],
     "lapel_us_left_center": [
-     1538.02,
-     319
+     1542.07,
+     395.65
     ],
     "sleeve_braid_left_center": [
      2214.13,
@@ -13709,12 +13709,12 @@
      1473.78
     ],
     "lapel_us_right_center": [
-     892.89,
-     318.95
+     896.76,
+     358.64
     ],
     "lapel_us_left_center": [
-     1537.93,
-     318.95
+     1541.97,
+     358.64
     ]
    },
    "landmarks": [
@@ -13766,8 +13766,8 @@
      257.93
     ],
     "lapel_us_right_center": [
-     892.98,
-     319
+     896.85,
+     395.65
     ],
     "sleeve_braid_right_center": [
      224.97,
@@ -13786,8 +13786,8 @@
      257.93
     ],
     "lapel_us_left_center": [
-     1538.02,
-     319
+     1542.07,
+     395.65
     ],
     "sleeve_braid_left_center": [
      2211.39,
@@ -13888,13 +13888,45 @@
      1619.29,
      1034.88
     ],
+    "gorge_seam_right_p1": [
+     764.46,
+     402.07
+    ],
+    "gorge_seam_right_p2": [
+     1029.16,
+     439.3
+    ],
+    "gorge_seam_right_mid": [
+     896.81,
+     420.68
+    ],
+    "lapel_insignia_rest_right": [
+     896.81,
+     420.68
+    ],
     "lapel_insignia_right": [
-     892.94,
-     319
+     896.81,
+     395.68
+    ],
+    "gorge_seam_left_p1": [
+     1674.38,
+     402.07
+    ],
+    "gorge_seam_left_p2": [
+     1409.67,
+     439.3
+    ],
+    "gorge_seam_left_mid": [
+     1542.02,
+     420.68
+    ],
+    "lapel_insignia_rest_left": [
+     1542.02,
+     420.68
     ],
     "lapel_insignia_left": [
-     1537.98,
-     319
+     1542.02,
+     395.68
     ],
     "button_1_center": [
      1169.78,
@@ -13970,8 +14002,8 @@
      329.1
     ],
     "lapel_us_right_center": [
-     908.3,
-     420.5
+     905.1,
+     456.1
     ],
     "sleeve_braid_right_center": [
      251.4,
@@ -13990,8 +14022,8 @@
      329.1
     ],
     "lapel_us_left_center": [
-     1491.3,
-     420.5
+     1467.5,
+     456.1
     ],
     "sleeve_braid_left_center": [
      2122.45,
@@ -14125,12 +14157,12 @@
      1497.75
     ],
     "lapel_us_right_center": [
-     908.3,
-     420.5
+     905.1,
+     419.1
     ],
     "lapel_us_left_center": [
-     1491.3,
-     420.5
+     1467.5,
+     419.1
     ]
    },
    "landmarks": [
@@ -14182,8 +14214,8 @@
      329.1
     ],
     "lapel_us_right_center": [
-     908.3,
-     420.5
+     905.1,
+     456.1
     ],
     "sleeve_braid_right_center": [
      256.05,
@@ -14202,8 +14234,8 @@
      329.1
     ],
     "lapel_us_left_center": [
-     1491.3,
-     420.5
+     1467.5,
+     456.1
     ],
     "sleeve_braid_left_center": [
      2117.4,
@@ -14308,13 +14340,45 @@
      1657.9,
      1079
     ],
+    "gorge_seam_right_p1": [
+     791.93,
+     500.72
+    ],
+    "gorge_seam_right_p2": [
+     1018.3,
+     461.38
+    ],
+    "gorge_seam_right_mid": [
+     905.12,
+     481.05
+    ],
+    "lapel_insignia_rest_right": [
+     905.12,
+     481.05
+    ],
     "lapel_insignia_right": [
-     908.3,
-     420.5
+     905.12,
+     456.05
+    ],
+    "gorge_seam_left_p1": [
+     1580.67,
+     500.72
+    ],
+    "gorge_seam_left_p2": [
+     1354.3,
+     461.38
+    ],
+    "gorge_seam_left_mid": [
+     1467.48,
+     481.05
+    ],
+    "lapel_insignia_rest_left": [
+     1467.48,
+     481.05
     ],
     "lapel_insignia_left": [
-     1491.3,
-     420.5
+     1467.48,
+     456.05
     ],
     "button_1_center": [
      1186.25,
@@ -17325,13 +17389,45 @@
      1619.29,
      1034.88
     ],
+    "gorge_seam_right_p1": [
+     764.46,
+     402.07
+    ],
+    "gorge_seam_right_p2": [
+     1029.16,
+     439.3
+    ],
+    "gorge_seam_right_mid": [
+     896.81,
+     420.68
+    ],
+    "lapel_insignia_rest_right": [
+     896.81,
+     420.68
+    ],
     "lapel_insignia_right": [
-     892.94,
-     319
+     896.81,
+     395.68
+    ],
+    "gorge_seam_left_p1": [
+     1674.38,
+     402.07
+    ],
+    "gorge_seam_left_p2": [
+     1409.67,
+     439.3
+    ],
+    "gorge_seam_left_mid": [
+     1542.02,
+     420.68
+    ],
+    "lapel_insignia_rest_left": [
+     1542.02,
+     420.68
     ],
     "lapel_insignia_left": [
-     1537.98,
-     319
+     1542.02,
+     395.68
     ],
     "button_1_center": [
      1169.78,
@@ -17437,13 +17533,45 @@
      1657.9,
      1079
     ],
+    "gorge_seam_right_p1": [
+     791.93,
+     500.72
+    ],
+    "gorge_seam_right_p2": [
+     1018.3,
+     461.38
+    ],
+    "gorge_seam_right_mid": [
+     905.12,
+     481.05
+    ],
+    "lapel_insignia_rest_right": [
+     905.12,
+     481.05
+    ],
     "lapel_insignia_right": [
-     908.3,
-     420.5
+     905.12,
+     456.05
+    ],
+    "gorge_seam_left_p1": [
+     1580.67,
+     500.72
+    ],
+    "gorge_seam_left_p2": [
+     1354.3,
+     461.38
+    ],
+    "gorge_seam_left_mid": [
+     1467.48,
+     481.05
+    ],
+    "lapel_insignia_rest_left": [
+     1467.48,
+     481.05
     ],
     "lapel_insignia_left": [
-     1491.3,
-     420.5
+     1467.48,
+     456.05
     ],
     "button_1_center": [
      1186.25,
@@ -33375,9 +33503,9 @@
    "path": "garments/garment-blues-class-a-cadet-officer-board-left.svg",
    "category": "garments",
    "w_in": 4.75,
-   "h_in": 2.0434,
+   "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Board geometry measured from the commercial board photo (images/ranks/C/shoulder_board.png, Vanguard CAP0647V); length 4.55 in (builder reference), width from the photo proportions 252 x 622 px.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
    "anchors": {
     "top_center": [
      237.5,
@@ -33385,39 +33513,39 @@
     ],
     "bottom_center": [
      237.5,
-     204.34083601286176
+     250
     ],
     "center": [
      237.5,
-     102.17041800643088
+     125
     ],
     "left_edge": [
      0,
-     102.17041800643088
+     125
     ],
     "right_edge": [
      475,
-     102.17041800643088
+     125
     ],
     "board_center": [
      237.5,
-     102.15
+     125
     ],
     "rank_slot_center": [
-     371.5,
-     102.15
+     369.5,
+     125
     ],
     "board_outer_end": [
      465,
-     102.15
+     125
     ],
     "outer_end_center": [
      465,
-     102.15
+     125
     ],
     "button_end_center": [
      10,
-     102.15
+     125
     ],
     "board_top_left": [
      10,
@@ -33437,9 +33565,9 @@
    "path": "garments/garment-blues-class-a-cadet-officer-board-right.svg",
    "category": "garments",
    "w_in": 4.75,
-   "h_in": 2.0434,
+   "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Board geometry measured from the commercial board photo (images/ranks/C/shoulder_board.png, Vanguard CAP0647V); length 4.55 in (builder reference), width from the photo proportions 252 x 622 px.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
    "anchors": {
     "top_center": [
      237.5,
@@ -33447,39 +33575,39 @@
     ],
     "bottom_center": [
      237.5,
-     204.34083601286176
+     250
     ],
     "center": [
      237.5,
-     102.17041800643088
+     125
     ],
     "left_edge": [
      0,
-     102.17041800643088
+     125
     ],
     "right_edge": [
      475,
-     102.17041800643088
+     125
     ],
     "board_center": [
      237.5,
-     102.15
+     125
     ],
     "rank_slot_center": [
-     103.5,
-     102.15
+     105.5,
+     125
     ],
     "board_outer_end": [
      10,
-     102.15
+     125
     ],
     "outer_end_center": [
      10,
-     102.15
+     125
     ],
     "button_end_center": [
      465,
-     102.15
+     125
     ],
     "board_top_left": [
      10,
@@ -35489,9 +35617,9 @@
    "path": "garments/garment-blues-shoulder-board-top-female-left.svg",
    "category": "garments",
    "w_in": 4.75,
-   "h_in": 2.0434,
+   "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Board geometry measured from the commercial board photo (images/ranks/C/shoulder_board.png, Vanguard CAP0647V); length 4.55 in (builder reference), width from the photo proportions 252 x 622 px.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
    "anchors": {
     "top_center": [
      237.5,
@@ -35499,39 +35627,39 @@
     ],
     "bottom_center": [
      237.5,
-     204.34083601286176
+     250
     ],
     "center": [
      237.5,
-     102.17041800643088
+     125
     ],
     "left_edge": [
      0,
-     102.17041800643088
+     125
     ],
     "right_edge": [
      475,
-     102.17041800643088
+     125
     ],
     "board_center": [
      237.5,
-     102.15
+     125
     ],
     "rank_slot_center": [
-     371.5,
-     102.15
+     369.5,
+     125
     ],
     "board_outer_end": [
      465,
-     102.15
+     125
     ],
     "outer_end_center": [
      465,
-     102.15
+     125
     ],
     "button_end_center": [
      10,
-     102.15
+     125
     ],
     "board_top_left": [
      10,
@@ -35551,9 +35679,9 @@
    "path": "garments/garment-blues-shoulder-board-top-female-right.svg",
    "category": "garments",
    "w_in": 4.75,
-   "h_in": 2.0434,
+   "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Board geometry measured from the commercial board photo (images/ranks/C/shoulder_board.png, Vanguard CAP0647V); length 4.55 in (builder reference), width from the photo proportions 252 x 622 px.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
    "anchors": {
     "top_center": [
      237.5,
@@ -35561,39 +35689,39 @@
     ],
     "bottom_center": [
      237.5,
-     204.34083601286176
+     250
     ],
     "center": [
      237.5,
-     102.17041800643088
+     125
     ],
     "left_edge": [
      0,
-     102.17041800643088
+     125
     ],
     "right_edge": [
      475,
-     102.17041800643088
+     125
     ],
     "board_center": [
      237.5,
-     102.15
+     125
     ],
     "rank_slot_center": [
-     103.5,
-     102.15
+     105.5,
+     125
     ],
     "board_outer_end": [
      10,
-     102.15
+     125
     ],
     "outer_end_center": [
      10,
-     102.15
+     125
     ],
     "button_end_center": [
      465,
-     102.15
+     125
     ],
     "board_top_left": [
      10,
@@ -35613,9 +35741,9 @@
    "path": "garments/garment-blues-shoulder-board-top-male-left.svg",
    "category": "garments",
    "w_in": 4.75,
-   "h_in": 2.0434,
+   "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Board geometry measured from the commercial board photo (images/ranks/C/shoulder_board.png, Vanguard CAP0647V); length 4.55 in (builder reference), width from the photo proportions 252 x 622 px.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
    "anchors": {
     "top_center": [
      237.5,
@@ -35623,39 +35751,39 @@
     ],
     "bottom_center": [
      237.5,
-     204.34083601286176
+     250
     ],
     "center": [
      237.5,
-     102.17041800643088
+     125
     ],
     "left_edge": [
      0,
-     102.17041800643088
+     125
     ],
     "right_edge": [
      475,
-     102.17041800643088
+     125
     ],
     "board_center": [
      237.5,
-     102.15
+     125
     ],
     "rank_slot_center": [
-     371.5,
-     102.15
+     369.5,
+     125
     ],
     "board_outer_end": [
      465,
-     102.15
+     125
     ],
     "outer_end_center": [
      465,
-     102.15
+     125
     ],
     "button_end_center": [
      10,
-     102.15
+     125
     ],
     "board_top_left": [
      10,
@@ -35675,9 +35803,9 @@
    "path": "garments/garment-blues-shoulder-board-top-male-right.svg",
    "category": "garments",
    "w_in": 4.75,
-   "h_in": 2.0434,
+   "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Board geometry measured from the commercial board photo (images/ranks/C/shoulder_board.png, Vanguard CAP0647V); length 4.55 in (builder reference), width from the photo proportions 252 x 622 px.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
    "anchors": {
     "top_center": [
      237.5,
@@ -35685,39 +35813,39 @@
     ],
     "bottom_center": [
      237.5,
-     204.34083601286176
+     250
     ],
     "center": [
      237.5,
-     102.17041800643088
+     125
     ],
     "left_edge": [
      0,
-     102.17041800643088
+     125
     ],
     "right_edge": [
      475,
-     102.17041800643088
+     125
     ],
     "board_center": [
      237.5,
-     102.15
+     125
     ],
     "rank_slot_center": [
-     103.5,
-     102.15
+     105.5,
+     125
     ],
     "board_outer_end": [
      10,
-     102.15
+     125
     ],
     "outer_end_center": [
      10,
-     102.15
+     125
     ],
     "button_end_center": [
      465,
-     102.15
+     125
     ],
     "board_top_left": [
      10,
@@ -35762,12 +35890,12 @@
      1473.78
     ],
     "lapel_cap_right_center": [
-     892.72,
-     319.35
+     896.85,
+     395.65
     ],
     "lapel_cap_left_center": [
-     1537.93,
-     319.35
+     1542.07,
+     395.65
     ]
    },
    "landmarks": [
@@ -35807,12 +35935,12 @@
      1473.78
     ],
     "lapel_us_right_center": [
-     892.89,
-     318.95
+     896.76,
+     358.64
     ],
     "lapel_us_left_center": [
-     1537.93,
-     318.95
+     1541.97,
+     358.64
     ]
    },
    "landmarks": [
@@ -35852,12 +35980,12 @@
      1473.78
     ],
     "lapel_us_right_center": [
-     892.98,
-     319
+     896.85,
+     395.65
     ],
     "lapel_us_left_center": [
-     1538.02,
-     319
+     1542.07,
+     395.65
     ]
    },
    "landmarks": [
@@ -35897,12 +36025,12 @@
      1497.75
     ],
     "lapel_cap_right_center": [
-     908.1,
-     420.1
+     905.1,
+     454.5
     ],
     "lapel_cap_left_center": [
-     1492,
-     420.1
+     1467.5,
+     454.5
     ]
    },
    "landmarks": [
@@ -35942,12 +36070,12 @@
      1497.75
     ],
     "lapel_us_right_center": [
-     908.3,
-     420.5
+     905.1,
+     419.1
     ],
     "lapel_us_left_center": [
-     1491.3,
-     420.5
+     1467.5,
+     419.1
     ]
    },
    "landmarks": [
@@ -35987,12 +36115,12 @@
      1497.75
     ],
     "lapel_us_right_center": [
-     908.3,
-     420.5
+     905.1,
+     456.1
     ],
     "lapel_us_left_center": [
-     1491.3,
-     420.5
+     1467.5,
+     456.1
     ]
    },
    "landmarks": [
@@ -36321,6 +36449,2470 @@
     ]
    },
    "landmarks": []
+  },
+  {
+   "id": "garment-blues-class-a-coat-cord-aide-de-camp",
+   "path": "garments/garment-blues-class-a-coat-cord-aide-de-camp.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-cord-color-guard",
+   "path": "garments/garment-blues-class-a-coat-cord-color-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-cord-group",
+   "path": "garments/garment-blues-class-a-coat-cord-group.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-cord-honor-guard",
+   "path": "garments/garment-blues-class-a-coat-cord-honor-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-cord-national",
+   "path": "garments/garment-blues-class-a-coat-cord-national.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-cord-region",
+   "path": "garments/garment-blues-class-a-coat-cord-region.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-cord-wing",
+   "path": "garments/garment-blues-class-a-coat-cord-wing.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-cord-aide-de-camp",
+   "path": "garments/garment-blues-class-a-coat-female-cord-aide-de-camp.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-cord-color-guard",
+   "path": "garments/garment-blues-class-a-coat-female-cord-color-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-cord-group",
+   "path": "garments/garment-blues-class-a-coat-female-cord-group.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-cord-honor-guard",
+   "path": "garments/garment-blues-class-a-coat-female-cord-honor-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-cord-national",
+   "path": "garments/garment-blues-class-a-coat-female-cord-national.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-cord-region",
+   "path": "garments/garment-blues-class-a-coat-female-cord-region.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-cord-wing",
+   "path": "garments/garment-blues-class-a-coat-female-cord-wing.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-cord-aide-de-camp",
+   "path": "garments/garment-blues-class-b-blouse-female-cord-aide-de-camp.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.766,
+   "h_in": 27.11,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1038.3,
+     0
+    ],
+    "bottom_center": [
+     1038.3,
+     2711
+    ],
+    "center": [
+     1038.3,
+     1355.5
+    ],
+    "left_edge": [
+     0,
+     1355.5
+    ],
+    "right_edge": [
+     2076.6,
+     1355.5
+    ],
+    "cord_start": [
+     1694.45,
+     245.95
+    ],
+    "cord_end": [
+     1607.35,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-cord-color-guard",
+   "path": "garments/garment-blues-class-b-blouse-female-cord-color-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.766,
+   "h_in": 27.11,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1038.3,
+     0
+    ],
+    "bottom_center": [
+     1038.3,
+     2711
+    ],
+    "center": [
+     1038.3,
+     1355.5
+    ],
+    "left_edge": [
+     0,
+     1355.5
+    ],
+    "right_edge": [
+     2076.6,
+     1355.5
+    ],
+    "cord_start": [
+     1694.45,
+     245.95
+    ],
+    "cord_end": [
+     1607.35,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-cord-group",
+   "path": "garments/garment-blues-class-b-blouse-female-cord-group.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.766,
+   "h_in": 27.11,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1038.3,
+     0
+    ],
+    "bottom_center": [
+     1038.3,
+     2711
+    ],
+    "center": [
+     1038.3,
+     1355.5
+    ],
+    "left_edge": [
+     0,
+     1355.5
+    ],
+    "right_edge": [
+     2076.6,
+     1355.5
+    ],
+    "cord_start": [
+     1694.45,
+     245.95
+    ],
+    "cord_end": [
+     1607.35,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-cord-honor-guard",
+   "path": "garments/garment-blues-class-b-blouse-female-cord-honor-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.766,
+   "h_in": 27.11,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1038.3,
+     0
+    ],
+    "bottom_center": [
+     1038.3,
+     2711
+    ],
+    "center": [
+     1038.3,
+     1355.5
+    ],
+    "left_edge": [
+     0,
+     1355.5
+    ],
+    "right_edge": [
+     2076.6,
+     1355.5
+    ],
+    "cord_start": [
+     1694.45,
+     245.95
+    ],
+    "cord_end": [
+     1607.35,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-cord-national",
+   "path": "garments/garment-blues-class-b-blouse-female-cord-national.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.766,
+   "h_in": 27.11,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1038.3,
+     0
+    ],
+    "bottom_center": [
+     1038.3,
+     2711
+    ],
+    "center": [
+     1038.3,
+     1355.5
+    ],
+    "left_edge": [
+     0,
+     1355.5
+    ],
+    "right_edge": [
+     2076.6,
+     1355.5
+    ],
+    "cord_start": [
+     1694.45,
+     245.95
+    ],
+    "cord_end": [
+     1607.35,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-cord-region",
+   "path": "garments/garment-blues-class-b-blouse-female-cord-region.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.766,
+   "h_in": 27.11,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1038.3,
+     0
+    ],
+    "bottom_center": [
+     1038.3,
+     2711
+    ],
+    "center": [
+     1038.3,
+     1355.5
+    ],
+    "left_edge": [
+     0,
+     1355.5
+    ],
+    "right_edge": [
+     2076.6,
+     1355.5
+    ],
+    "cord_start": [
+     1694.45,
+     245.95
+    ],
+    "cord_end": [
+     1607.35,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-cord-wing",
+   "path": "garments/garment-blues-class-b-blouse-female-cord-wing.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.766,
+   "h_in": 27.11,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1038.3,
+     0
+    ],
+    "bottom_center": [
+     1038.3,
+     2711
+    ],
+    "center": [
+     1038.3,
+     1355.5
+    ],
+    "left_edge": [
+     0,
+     1355.5
+    ],
+    "right_edge": [
+     2076.6,
+     1355.5
+    ],
+    "cord_start": [
+     1694.45,
+     245.95
+    ],
+    "cord_end": [
+     1607.35,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-cord-aide-de-camp",
+   "path": "garments/garment-blues-class-b-blouse-female-long-cord-aide-de-camp.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 19.51,
+   "h_in": 29.896,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     975.4999999999999,
+     0
+    ],
+    "bottom_center": [
+     975.4999999999999,
+     2989.6
+    ],
+    "center": [
+     975.4999999999999,
+     1494.8
+    ],
+    "left_edge": [
+     0,
+     1494.8
+    ],
+    "right_edge": [
+     1950.9999999999998,
+     1494.8
+    ],
+    "cord_start": [
+     1631.65,
+     245.95
+    ],
+    "cord_end": [
+     1544.55,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-cord-color-guard",
+   "path": "garments/garment-blues-class-b-blouse-female-long-cord-color-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 19.51,
+   "h_in": 29.896,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     975.4999999999999,
+     0
+    ],
+    "bottom_center": [
+     975.4999999999999,
+     2989.6
+    ],
+    "center": [
+     975.4999999999999,
+     1494.8
+    ],
+    "left_edge": [
+     0,
+     1494.8
+    ],
+    "right_edge": [
+     1950.9999999999998,
+     1494.8
+    ],
+    "cord_start": [
+     1631.65,
+     245.95
+    ],
+    "cord_end": [
+     1544.55,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-cord-group",
+   "path": "garments/garment-blues-class-b-blouse-female-long-cord-group.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 19.51,
+   "h_in": 29.896,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     975.4999999999999,
+     0
+    ],
+    "bottom_center": [
+     975.4999999999999,
+     2989.6
+    ],
+    "center": [
+     975.4999999999999,
+     1494.8
+    ],
+    "left_edge": [
+     0,
+     1494.8
+    ],
+    "right_edge": [
+     1950.9999999999998,
+     1494.8
+    ],
+    "cord_start": [
+     1631.65,
+     245.95
+    ],
+    "cord_end": [
+     1544.55,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-cord-honor-guard",
+   "path": "garments/garment-blues-class-b-blouse-female-long-cord-honor-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 19.51,
+   "h_in": 29.896,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     975.4999999999999,
+     0
+    ],
+    "bottom_center": [
+     975.4999999999999,
+     2989.6
+    ],
+    "center": [
+     975.4999999999999,
+     1494.8
+    ],
+    "left_edge": [
+     0,
+     1494.8
+    ],
+    "right_edge": [
+     1950.9999999999998,
+     1494.8
+    ],
+    "cord_start": [
+     1631.65,
+     245.95
+    ],
+    "cord_end": [
+     1544.55,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-cord-national",
+   "path": "garments/garment-blues-class-b-blouse-female-long-cord-national.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 19.51,
+   "h_in": 29.896,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     975.4999999999999,
+     0
+    ],
+    "bottom_center": [
+     975.4999999999999,
+     2989.6
+    ],
+    "center": [
+     975.4999999999999,
+     1494.8
+    ],
+    "left_edge": [
+     0,
+     1494.8
+    ],
+    "right_edge": [
+     1950.9999999999998,
+     1494.8
+    ],
+    "cord_start": [
+     1631.65,
+     245.95
+    ],
+    "cord_end": [
+     1544.55,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-cord-region",
+   "path": "garments/garment-blues-class-b-blouse-female-long-cord-region.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 19.51,
+   "h_in": 29.896,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     975.4999999999999,
+     0
+    ],
+    "bottom_center": [
+     975.4999999999999,
+     2989.6
+    ],
+    "center": [
+     975.4999999999999,
+     1494.8
+    ],
+    "left_edge": [
+     0,
+     1494.8
+    ],
+    "right_edge": [
+     1950.9999999999998,
+     1494.8
+    ],
+    "cord_start": [
+     1631.65,
+     245.95
+    ],
+    "cord_end": [
+     1544.55,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-cord-wing",
+   "path": "garments/garment-blues-class-b-blouse-female-long-cord-wing.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 19.51,
+   "h_in": 29.896,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     975.4999999999999,
+     0
+    ],
+    "bottom_center": [
+     975.4999999999999,
+     2989.6
+    ],
+    "center": [
+     975.4999999999999,
+     1494.8
+    ],
+    "left_edge": [
+     0,
+     1494.8
+    ],
+    "right_edge": [
+     1950.9999999999998,
+     1494.8
+    ],
+    "cord_start": [
+     1631.65,
+     245.95
+    ],
+    "cord_end": [
+     1544.55,
+     1357.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-cord-aide-de-camp",
+   "path": "garments/garment-blues-class-b-shirt-male-cord-aide-de-camp.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.688,
+   "h_in": 24.28,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1034.3999999999999,
+     0
+    ],
+    "bottom_center": [
+     1034.3999999999999,
+     2427.9999999999995
+    ],
+    "center": [
+     1034.3999999999999,
+     1213.9999999999998
+    ],
+    "left_edge": [
+     0,
+     1213.9999999999998
+    ],
+    "right_edge": [
+     2068.7999999999997,
+     1213.9999999999998
+    ],
+    "cord_start": [
+     1715.98,
+     307.95
+    ],
+    "cord_end": [
+     1640.08,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-cord-color-guard",
+   "path": "garments/garment-blues-class-b-shirt-male-cord-color-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.688,
+   "h_in": 24.28,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1034.3999999999999,
+     0
+    ],
+    "bottom_center": [
+     1034.3999999999999,
+     2427.9999999999995
+    ],
+    "center": [
+     1034.3999999999999,
+     1213.9999999999998
+    ],
+    "left_edge": [
+     0,
+     1213.9999999999998
+    ],
+    "right_edge": [
+     2068.7999999999997,
+     1213.9999999999998
+    ],
+    "cord_start": [
+     1715.98,
+     307.95
+    ],
+    "cord_end": [
+     1640.08,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-cord-group",
+   "path": "garments/garment-blues-class-b-shirt-male-cord-group.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.688,
+   "h_in": 24.28,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1034.3999999999999,
+     0
+    ],
+    "bottom_center": [
+     1034.3999999999999,
+     2427.9999999999995
+    ],
+    "center": [
+     1034.3999999999999,
+     1213.9999999999998
+    ],
+    "left_edge": [
+     0,
+     1213.9999999999998
+    ],
+    "right_edge": [
+     2068.7999999999997,
+     1213.9999999999998
+    ],
+    "cord_start": [
+     1715.98,
+     307.95
+    ],
+    "cord_end": [
+     1640.08,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-cord-honor-guard",
+   "path": "garments/garment-blues-class-b-shirt-male-cord-honor-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.688,
+   "h_in": 24.28,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1034.3999999999999,
+     0
+    ],
+    "bottom_center": [
+     1034.3999999999999,
+     2427.9999999999995
+    ],
+    "center": [
+     1034.3999999999999,
+     1213.9999999999998
+    ],
+    "left_edge": [
+     0,
+     1213.9999999999998
+    ],
+    "right_edge": [
+     2068.7999999999997,
+     1213.9999999999998
+    ],
+    "cord_start": [
+     1715.98,
+     307.95
+    ],
+    "cord_end": [
+     1640.08,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-cord-national",
+   "path": "garments/garment-blues-class-b-shirt-male-cord-national.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.688,
+   "h_in": 24.28,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1034.3999999999999,
+     0
+    ],
+    "bottom_center": [
+     1034.3999999999999,
+     2427.9999999999995
+    ],
+    "center": [
+     1034.3999999999999,
+     1213.9999999999998
+    ],
+    "left_edge": [
+     0,
+     1213.9999999999998
+    ],
+    "right_edge": [
+     2068.7999999999997,
+     1213.9999999999998
+    ],
+    "cord_start": [
+     1715.98,
+     307.95
+    ],
+    "cord_end": [
+     1640.08,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-cord-region",
+   "path": "garments/garment-blues-class-b-shirt-male-cord-region.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.688,
+   "h_in": 24.28,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1034.3999999999999,
+     0
+    ],
+    "bottom_center": [
+     1034.3999999999999,
+     2427.9999999999995
+    ],
+    "center": [
+     1034.3999999999999,
+     1213.9999999999998
+    ],
+    "left_edge": [
+     0,
+     1213.9999999999998
+    ],
+    "right_edge": [
+     2068.7999999999997,
+     1213.9999999999998
+    ],
+    "cord_start": [
+     1715.98,
+     307.95
+    ],
+    "cord_end": [
+     1640.08,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-cord-wing",
+   "path": "garments/garment-blues-class-b-shirt-male-cord-wing.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 20.688,
+   "h_in": 24.28,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1034.3999999999999,
+     0
+    ],
+    "bottom_center": [
+     1034.3999999999999,
+     2427.9999999999995
+    ],
+    "center": [
+     1034.3999999999999,
+     1213.9999999999998
+    ],
+    "left_edge": [
+     0,
+     1213.9999999999998
+    ],
+    "right_edge": [
+     2068.7999999999997,
+     1213.9999999999998
+    ],
+    "cord_start": [
+     1715.98,
+     307.95
+    ],
+    "cord_end": [
+     1640.08,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-cord-aide-de-camp",
+   "path": "garments/garment-blues-class-b-shirt-male-long-cord-aide-de-camp.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.32,
+   "h_in": 27.075,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1066,
+     0
+    ],
+    "bottom_center": [
+     1066,
+     2707.5
+    ],
+    "center": [
+     1066,
+     1353.75
+    ],
+    "left_edge": [
+     0,
+     1353.75
+    ],
+    "right_edge": [
+     2132,
+     1353.75
+    ],
+    "cord_start": [
+     1747.58,
+     307.95
+    ],
+    "cord_end": [
+     1671.68,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-cord-color-guard",
+   "path": "garments/garment-blues-class-b-shirt-male-long-cord-color-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.32,
+   "h_in": 27.075,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1066,
+     0
+    ],
+    "bottom_center": [
+     1066,
+     2707.5
+    ],
+    "center": [
+     1066,
+     1353.75
+    ],
+    "left_edge": [
+     0,
+     1353.75
+    ],
+    "right_edge": [
+     2132,
+     1353.75
+    ],
+    "cord_start": [
+     1747.58,
+     307.95
+    ],
+    "cord_end": [
+     1671.68,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-cord-group",
+   "path": "garments/garment-blues-class-b-shirt-male-long-cord-group.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.32,
+   "h_in": 27.075,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1066,
+     0
+    ],
+    "bottom_center": [
+     1066,
+     2707.5
+    ],
+    "center": [
+     1066,
+     1353.75
+    ],
+    "left_edge": [
+     0,
+     1353.75
+    ],
+    "right_edge": [
+     2132,
+     1353.75
+    ],
+    "cord_start": [
+     1747.58,
+     307.95
+    ],
+    "cord_end": [
+     1671.68,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-cord-honor-guard",
+   "path": "garments/garment-blues-class-b-shirt-male-long-cord-honor-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.32,
+   "h_in": 27.075,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1066,
+     0
+    ],
+    "bottom_center": [
+     1066,
+     2707.5
+    ],
+    "center": [
+     1066,
+     1353.75
+    ],
+    "left_edge": [
+     0,
+     1353.75
+    ],
+    "right_edge": [
+     2132,
+     1353.75
+    ],
+    "cord_start": [
+     1747.58,
+     307.95
+    ],
+    "cord_end": [
+     1671.68,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-cord-national",
+   "path": "garments/garment-blues-class-b-shirt-male-long-cord-national.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.32,
+   "h_in": 27.075,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1066,
+     0
+    ],
+    "bottom_center": [
+     1066,
+     2707.5
+    ],
+    "center": [
+     1066,
+     1353.75
+    ],
+    "left_edge": [
+     0,
+     1353.75
+    ],
+    "right_edge": [
+     2132,
+     1353.75
+    ],
+    "cord_start": [
+     1747.58,
+     307.95
+    ],
+    "cord_end": [
+     1671.68,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-cord-region",
+   "path": "garments/garment-blues-class-b-shirt-male-long-cord-region.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.32,
+   "h_in": 27.075,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1066,
+     0
+    ],
+    "bottom_center": [
+     1066,
+     2707.5
+    ],
+    "center": [
+     1066,
+     1353.75
+    ],
+    "left_edge": [
+     0,
+     1353.75
+    ],
+    "right_edge": [
+     2132,
+     1353.75
+    ],
+    "cord_start": [
+     1747.58,
+     307.95
+    ],
+    "cord_end": [
+     1671.68,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-cord-wing",
+   "path": "garments/garment-blues-class-b-shirt-male-long-cord-wing.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.32,
+   "h_in": 27.075,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1066,
+     0
+    ],
+    "bottom_center": [
+     1066,
+     2707.5
+    ],
+    "center": [
+     1066,
+     1353.75
+    ],
+    "left_edge": [
+     0,
+     1353.75
+    ],
+    "right_edge": [
+     2132,
+     1353.75
+    ],
+    "cord_start": [
+     1747.58,
+     307.95
+    ],
+    "cord_end": [
+     1671.68,
+     1301.65
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-female-cord-aide-de-camp",
+   "path": "garments/garment-semiformal-class-a-coat-female-cord-aide-de-camp.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-female-cord-color-guard",
+   "path": "garments/garment-semiformal-class-a-coat-female-cord-color-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-female-cord-group",
+   "path": "garments/garment-semiformal-class-a-coat-female-cord-group.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-female-cord-honor-guard",
+   "path": "garments/garment-semiformal-class-a-coat-female-cord-honor-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-female-cord-national",
+   "path": "garments/garment-semiformal-class-a-coat-female-cord-national.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-female-cord-region",
+   "path": "garments/garment-semiformal-class-a-coat-female-cord-region.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-female-cord-wing",
+   "path": "garments/garment-semiformal-class-a-coat-female-cord-wing.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cord_start": [
+     1987.04,
+     266.9
+    ],
+    "cord_end": [
+     1921.48,
+     1287.18
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-male-cord-aide-de-camp",
+   "path": "garments/garment-semiformal-class-a-coat-male-cord-aide-de-camp.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-male-cord-color-guard",
+   "path": "garments/garment-semiformal-class-a-coat-male-cord-color-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-male-cord-group",
+   "path": "garments/garment-semiformal-class-a-coat-male-cord-group.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-male-cord-honor-guard",
+   "path": "garments/garment-semiformal-class-a-coat-male-cord-honor-guard.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-male-cord-national",
+   "path": "garments/garment-semiformal-class-a-coat-male-cord-national.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-male-cord-region",
+   "path": "garments/garment-semiformal-class-a-coat-male-cord-region.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-male-cord-wing",
+   "path": "garments/garment-semiformal-class-a-coat-male-cord-wing.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "cord_start": [
+     1926.2999999999997,
+     310.5
+    ],
+    "cord_end": [
+     1866.3,
+     1412.5
+    ]
+   },
+   "landmarks": [
+    "cord"
+   ]
   }
  ],
  "scope": "Non-military set only. Military ribbons, medals, badges and ROTC/JROTC ribbons are imported later."

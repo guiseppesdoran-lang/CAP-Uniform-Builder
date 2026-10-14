@@ -87,13 +87,45 @@
    1657.9,
    1079
   ],
+  "gorge_seam_right_p1": [
+   791.93,
+   500.72
+  ],
+  "gorge_seam_right_p2": [
+   1018.3,
+   461.38
+  ],
+  "gorge_seam_right_mid": [
+   905.12,
+   481.05
+  ],
+  "lapel_insignia_rest_right": [
+   905.12,
+   481.05
+  ],
   "lapel_insignia_right": [
-   908.3,
-   420.5
+   905.12,
+   456.05
+  ],
+  "gorge_seam_left_p1": [
+   1580.67,
+   500.72
+  ],
+  "gorge_seam_left_p2": [
+   1354.3,
+   461.38
+  ],
+  "gorge_seam_left_mid": [
+   1467.48,
+   481.05
+  ],
+  "lapel_insignia_rest_left": [
+   1467.48,
+   481.05
   ],
   "lapel_insignia_left": [
-   1491.3,
-   420.5
+   1467.48,
+   456.05
   ],
   "button_1_center": [
    1186.25,

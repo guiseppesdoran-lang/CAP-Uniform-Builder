@@ -3,17 +3,17 @@
  "name": "Cadet officer shoulder board, right shoulder, top-down view (blank grade; rank_slot is the grade area)",
  "size_in": {
   "w": 4.75,
-  "h": 2.0434
+  "h": 2.5
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   475,
-  204.34
+  250
  ],
  "size_source": "measured",
- "size_basis": "Board geometry measured from the commercial board photo (images/ranks/C/shoulder_board.png, Vanguard CAP0647V); length 4.55 in (builder reference), width from the photo proportions 252 x 622 px.",
+ "size_basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
  "anchors": {
   "top_center": [
    237.5,
@@ -21,39 +21,39 @@
   ],
   "bottom_center": [
    237.5,
-   204.34083601286176
+   250
   ],
   "center": [
    237.5,
-   102.17041800643088
+   125
   ],
   "left_edge": [
    0,
-   102.17041800643088
+   125
   ],
   "right_edge": [
    475,
-   102.17041800643088
+   125
   ],
   "board_center": [
    237.5,
-   102.15
+   125
   ],
   "rank_slot_center": [
-   103.5,
-   102.15
+   105.5,
+   125
   ],
   "board_outer_end": [
    10,
-   102.15
+   125
   ],
   "outer_end_center": [
    10,
-   102.15
+   125
   ],
   "button_end_center": [
    465,
-   102.15
+   125
   ],
   "board_top_left": [
    10,
@@ -65,19 +65,19 @@
    "x": 10,
    "y": 10,
    "w": 455,
-   "h": 184.3
+   "h": 230
   },
   "rank_slot": {
-   "x": 41,
+   "x": 38,
    "y": 10,
-   "w": 125,
-   "h": 184.3
+   "w": 135,
+   "h": 230
   },
   "rank_slot_frame": {
-   "along_in": 1.25,
-   "across_in": 2.25,
+   "along_in": 1.35,
+   "across_in": 2.3,
    "runs": "across the board (perpendicular to its length)",
-   "note": "grade sits on the blue stripe band (CAPR 39-1 Fig A5-6); Cadet Colonel 3 diamonds are 2 1/4 in wide and overflow this 1.84 in board by about 0.2 in each side as in the figure"
+   "note": "the row of grade forms (Cadet Colonel: 3 diamonds 2 1/4 x 1 1/4 in) is centred on the blue band, CAPR 39-1 Fig A5-6; the board is 2.3 in wide so every grade fits at true size"
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot is the stripe band at the outer end, below the emblem",
@@ -88,8 +88,8 @@
    1.843
   ],
   "rank_slot_in": [
-   1.25,
-   1.84
+   1.35,
+   2.3
   ],
   "grade_form_max_in": [
    2.25,
