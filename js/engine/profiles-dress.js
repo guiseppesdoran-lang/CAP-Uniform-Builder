@@ -708,6 +708,11 @@
       if(!V.overblouse) geo.rp = null;
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
     }
+    // On the aviator shirt the command insignia is worn only by officers (4.2.5.1.3.3, 4.2.6.2.7.3).
+    if(b.command && !(g.officer && !g.cadet)){
+      ctx.note('On the aviator shirt the command insignia is worn only by officers (CAPR 39-1, 4.2.5.1.3.3)');
+      b = Object.assign({}, b, { command: null });
+    }
     await dressBadges(ctx, b, geo);
     // The long-sleeve shirt is worn with a tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3).
     if(long && !V.overblouse){

@@ -804,7 +804,11 @@ function isCommandInsigniaGradeEligible(rank){
   // only in the grade of lieutenant colonel and below. Colonels and above do not wear it.
   // Use an explicit allow-list so a missing, malformed, or not-yet-parsed rank
   // can never cause the pin to render during a personnel-report import.
-  return ['2D LT','SECOND LIEUTENANT','1ST LT','FIRST LIEUTENANT','CAPT','CAPTAIN','MAJ','MAJOR','LT COL','LIEUTENANT COLONEL'].includes(r);
+  // ICL 25-06 (7.1.1.3.1.7) names officers and NCOs who are graduated commanders, so flight officers
+  // and NCOs are included. The aviator shirt alone limits the pin to officers (4.2.5.1.3.3).
+  return ['2D LT','SECOND LIEUTENANT','1ST LT','FIRST LIEUTENANT','CAPT','CAPTAIN','MAJ','MAJOR','LT COL','LIEUTENANT COLONEL',
+    'FO','FLIGHT OFFICER','TFO','TECHNICAL FLIGHT OFFICER','SFO','SENIOR FLIGHT OFFICER',
+    'SSGT','STAFF SERGEANT','TSGT','TECHNICAL SERGEANT','MSGT','MASTER SERGEANT','SMSGT','SENIOR MASTER SERGEANT','CMSGT','CHIEF MASTER SERGEANT'].includes(r);
 }
 
 function getCommandServiceRibbonValueForCommanderEchelon(echelon){
