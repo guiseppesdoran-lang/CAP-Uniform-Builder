@@ -14,6 +14,7 @@
   const H = P.helpers;
   const PLATE_WHITE = '#f4f6f8';
   const ENGRAVED_BLUE = '#1f2f5c';
+  const LAPEL_Z = Z.badge + 0.6;
   const SERVICE_IDS = new Set(['senior_advisory_group_badge', 'national_executive_committee_badge', 'command_council_badge', 'cap_national_command_board_badge']);
 
   // ---- who wears what ---------------------------------------------------------------------
@@ -247,13 +248,35 @@
     }
   }
 
-  async function sleeveChevrons(ctx, id, pts, opts){
-    const o = opts || {};
+  // Chevrons keep their true size and shape, even where the front view shows less sleeve.
+  async function sleeveChevrons(ctx, id, pts){
     for(const side of ['right', 'left']){
       const p = pts[side];
       if(!p) continue;
-      await ctx.place(id, { pieceAnchor: 'visual_center', at: { x: p[0], y: p[1] }, rotate: p[2] || 0, scaleX: o.scaleX, z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side });
+      await ctx.place(id, { pieceAnchor: 'visual_center', at: { x: p[0], y: p[1] }, rotate: p[2] || 0, z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side });
     }
+  }
+
+  // Sleeve chevron points from the sheet: centred halfway between the shoulder seam and the elbow,
+  // turned to the line from the seam to the elbow. Null when the sheet has no such anchors.
+  function chevronAnchors(ctx){
+    const out = {};
+    for(const side of ['right', 'left']){
+      const c = ctx.point('chevron_halfway_' + side), s = ctx.point('shoulder_seam_' + side), e = ctx.point('elbow_' + side);
+      if(!c || !s || !e) return null;
+      out[side] = [c.x, c.y, Math.atan2(s.x - e.x, e.y - s.y) * 180 / Math.PI];
+    }
+    return out;
+  }
+
+  // The lapels drawn again over the badges and ribbons they cover (the collar lies on top of them),
+  // with the lapel insignia above that.
+  async function lapelForeground(ctx, A, g){
+    const fg = `${A.layer}-lapel-foreground`;
+    if(!ctx.has(fg)) return;
+    await ctx.overlay(fg, Z.badge + 0.5);
+    const ins = g.category === 'cadet-officer' ? 'lapel-cap' : g.category === 'senior-nco' ? 'lapel-us-nco' : isOfficerLike(g) ? 'lapel-us' : null;
+    if(ins) await ctx.overlay(`${A.layer}-${ins}`, LAPEL_Z);
   }
 
   // The epaulet sleeves seen from above, drawn above the uniform at its outer corners (the front
@@ -391,8 +414,8 @@
       const view = await ctx.place(id, { pieceAnchor: 'bottom_center', at: { x, y: -0.75 }, z: Z.hat - 1, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above` });
       const at = view && H.piecePoint(view, s, 'rank_slot_center');
       if(!at || !grade || !ctx.has(grade)) continue;
-      // The cadet grade's row (discs, diamonds) runs along the board.
-      await ctx.place(grade, { pieceAnchor: 'center', at, z: Z.hat - 0.5, role: 'grade', key: 'grade:top-' + side });
+      // The grade's discs or diamonds sit side by side across the board (Figure A5-6).
+      await ctx.place(grade, { pieceAnchor: 'center', at, rotate: 90, z: Z.hat - 0.5, role: 'grade', key: 'grade:top-' + side });
     }
   }
 
@@ -441,12 +464,11 @@
     if(g.category === 'cadet-nco'){
       for(const side of ['right', 'left']){
         const at = ctx.point('lapel_insignia_' + side);
-        if(at) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: 'center', at, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+        if(at) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: 'center', at, z: semi ? Z.insignia : LAPEL_Z, role: 'grade', key: 'grade:' + side });
       }
     }else if(!semi && g.category === 'senior-nco'){
       const size = sex === 'male' ? '4' : (b.opt.chevron === '3.5' ? '3.5' : '4');
-      // The front view shows about 3.7 in of the coat sleeve: narrow a wider chevron to it.
-      await sleeveChevrons(ctx, G.seniorChevron(g, { size }), A.ncoChevron, { scaleX: Math.min(1, 3.7 / Number(size)) });
+      await sleeveChevrons(ctx, G.seniorChevron(g, { size }), chevronAnchors(ctx) || A.ncoChevron);
     }else if(!semi && isOfficerLike(g)){
       // The coat's epaulets are edge-on in the front view; the grade shows on the top views.
       await epauletTopViews(ctx, g);
@@ -454,7 +476,7 @@
       // Adults without grade on the NCO track wear CAP collar insignia (1.4.2.1).
       for(const side of ['right', 'left']){
         const at = ctx.point('lapel_insignia_' + side);
-        if(at) await ctx.place('collar-insignia-cap-metal', { pieceAnchor: 'center', at, z: Z.insignia, role: 'grade', key: 'collar:' + side });
+        if(at) await ctx.place('collar-insignia-cap-metal', { pieceAnchor: 'center', at, z: LAPEL_Z, role: 'grade', key: 'collar:' + side });
       }
     }
 
@@ -490,6 +512,7 @@
     await dressBadges(ctx, b, geo);
 
     if(!semi){
+      await lapelForeground(ctx, A, g);
       if(g.cadet) await shoulderCord(ctx, b, A.cord);
       await blueHat(ctx, b);
     }
@@ -531,9 +554,7 @@
       // Men: 3 1/2 in (4.1.11.1.1.1.3). Women: 3 1/2 or 4 in on either sleeve (4.1.12.2.3.3).
       const size = female && b.opt.chevron === '4' ? '4' : '3.5';
       const id = G.seniorChevron(g, { size });
-      const w = size === '4' ? 4 : 3.5;
-      // The front view shows less sleeve than the chevron's width on the short sleeve: narrow it.
-      await sleeveChevrons(ctx, id, V.chev, { scaleX: V.sleeveW ? Math.min(1, V.sleeveW / w) : 1 });
+      await sleeveChevrons(ctx, id, chevronAnchors(ctx) || V.chev);
     }
     // The epaulet sleeves are edge-on in the front view; their grade shows on the top views.
     await epauletTopViews(ctx, g);
@@ -583,12 +604,13 @@
     if(!officer && g.category !== 'senior-nco') ctx.note('The mess dress is worn by officers and NCOs only (CAPR 39-1, 4.1.1 and 4.1.2)');
 
     if(officer){
-      await ctx.overlay(`${M.garment}-officer-shoulder-boards`);
+      // Generals' boards are covered in silver lace, the others' in Air Force blue (Figure A5-3).
+      await ctx.overlay(g.general && ctx.has(`${M.garment}-general-officer-shoulder-boards`) ? `${M.garment}-general-officer-shoulder-boards` : `${M.garment}-officer-shoulder-boards`);
       await ctx.overlay(g.general ? `${M.garment}-general-officer-sleeve-braid` : `${M.garment}-officer-sleeve-braid`);
       if(g.key) await epauletGrade(ctx, G.seniorOfficerInsignia(g, 'bullion'), { point: 'rank_slot_' });
     }else if(g.category === 'senior-nco'){
       const size = female && b.opt.chevron === '3.5' ? '3.5' : '4';
-      await sleeveChevrons(ctx, G.seniorChevron(g, { white: true, size }), M.chev);
+      await sleeveChevrons(ctx, G.seniorChevron(g, { white: true, size }), chevronAnchors(ctx) || M.chev);
     }
 
     // Miniature medals centred between the lapel and the arm seam (4.1.1.1.2.2, 11.2.8).
@@ -705,7 +727,7 @@
         const r = ctx.point('nco_chevron_right_center'), l = ctx.point('nco_chevron_left_center');
         pts = { right: [r.x, r.y, V.chevAnchors], left: [l.x, l.y, -V.chevAnchors] };
       }
-      await sleeveChevrons(ctx, id, pts, { scaleX: Math.min(1, V.sleeveW / 3.5) });
+      await sleeveChevrons(ctx, id, pts);
     }
 
     // Nametag over the right pocket (4.2.5.1.2.1, 4.2.6.2.6.1).
