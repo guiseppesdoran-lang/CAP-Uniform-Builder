@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 840,
+ "count": 854,
  "by_category": {
   "accessories": 30,
   "badges": 1,
@@ -12905,21 +12905,21 @@
    "id": "garment-abu-coat",
    "path": "garments/garment-abu-coat.svg",
    "category": "garments",
-   "w_in": 34.6,
+   "w_in": 39.3,
    "h_in": 38.86,
    "size_source": "estimated",
    "basis": "Outline traced from images/base/ABU_male.webp (581x719 px) at 0.0474 in/px, chosen so the coat is 29.96 in long. No real garment was measured. Body basis only: MIL-DTL-44048H (BDU-style combat coat) gives the same body (Medium Regular half chest 24-1/4 in, back length about 29-3/8 to 29-1/2 in, Large about 30 in), so the 29.96 in length is consistent with a Large Regular; that spec has no pocket sizes in its text, so pocket, tape and button sizes remain estimates. Sleeve cap/width widened by script (same as the OCP coat).",
    "anchors": {
     "top_center": [
-     1730,
+     1965,
      0
     ],
     "bottom_center": [
-     1730,
+     1965,
      3886
     ],
     "center": [
-     1730,
+     1965,
      1943
     ],
     "left_edge": [
@@ -12927,39 +12927,39 @@
      1943
     ],
     "right_edge": [
-     3460,
+     3930,
      1943
     ],
     "collar_apex": [
-     1375,
+     1965,
      1340
     ],
     "hem_center": [
-     1375,
+     1965,
      3846
     ],
     "name_tape_top_center": [
-     990,
+     1580,
      1605
     ],
     "cap_tape_top_center": [
-     1760,
+     2350,
      1605
     ],
     "chest_pocket_right_center": [
-     990,
+     1580,
      2020
     ],
     "chest_pocket_left_center": [
-     1760,
+     2350,
      2020
     ],
     "chest_flap_left_bottom_center": [
-     1760,
+     2350,
      1930
     ],
     "chest_flap_right_bottom_center": [
-     990,
+     1580,
      1930
     ]
    },
@@ -12984,6 +12984,7 @@
     "collar_cadet_officer_zone_left",
     "collar_cadet_nco_zone_left",
     "wing_patch_zone_left",
+    "chevron_zone_right",
     "chevron_zone_left",
     "button_1",
     "button_2",
@@ -13556,6 +13557,10 @@
      892.98,
      319
     ],
+    "sleeve_braid_right_center": [
+     229.72,
+     1840.65
+    ],
     "epaulet_sleeve_left_center": [
      1877.93,
      243.58
@@ -13571,6 +13576,10 @@
     "lapel_us_left_center": [
      1538.02,
      319
+    ],
+    "sleeve_braid_left_center": [
+     2214.13,
+     2006.49
     ]
    },
    "landmarks": [
@@ -13579,11 +13588,13 @@
     "rank_slot_right",
     "rank_rule_point_right",
     "lapel_us_right",
+    "sleeve_braid_right",
     "epaulet_left",
     "epaulet_sleeve_left",
     "rank_slot_left",
     "rank_rule_point_left",
-    "lapel_us_left"
+    "lapel_us_left",
+    "sleeve_braid_left"
    ],
    "has_spec": true,
    "issues": []
@@ -13758,6 +13769,10 @@
      892.98,
      319
     ],
+    "sleeve_braid_right_center": [
+     224.97,
+     1890.63
+    ],
     "epaulet_sleeve_left_center": [
      1877.93,
      243.58
@@ -13773,6 +13788,10 @@
     "lapel_us_left_center": [
      1538.02,
      319
+    ],
+    "sleeve_braid_left_center": [
+     2211.39,
+     2056.52
     ]
    },
    "landmarks": [
@@ -13781,11 +13800,13 @@
     "rank_slot_right",
     "rank_rule_point_right",
     "lapel_us_right",
+    "sleeve_braid_right",
     "epaulet_left",
     "epaulet_sleeve_left",
     "rank_slot_left",
     "rank_rule_point_left",
-    "lapel_us_left"
+    "lapel_us_left",
+    "sleeve_braid_left"
    ],
    "has_spec": true,
    "issues": []
@@ -13824,11 +13845,11 @@
      265.58
     ],
     "sleeve_bottom_right": [
-     252.91,
+     230.3,
      2215.66
     ],
     "elbow_right": [
-     296.65,
+     284.24,
      1338.13
     ],
     "chevron_halfway_right": [
@@ -13840,11 +13861,11 @@
      265.58
     ],
     "sleeve_bottom_left": [
-     2188.3,
+     2195.34,
      2381.19
     ],
     "elbow_left": [
-     2138.31,
+     2171.58,
      1429.21
     ],
     "chevron_halfway_left": [
@@ -13952,6 +13973,10 @@
      908.3,
      420.5
     ],
+    "sleeve_braid_right_center": [
+     251.4,
+     2353.9
+    ],
     "epaulet_sleeve_left_center": [
      1885.3,
      309.25
@@ -13967,6 +13992,10 @@
     "lapel_us_left_center": [
      1491.3,
      420.5
+    ],
+    "sleeve_braid_left_center": [
+     2122.45,
+     2354.05
     ]
    },
    "landmarks": [
@@ -13975,11 +14004,13 @@
     "rank_slot_right",
     "rank_rule_point_right",
     "lapel_us_right",
+    "sleeve_braid_right",
     "epaulet_left",
     "epaulet_sleeve_left",
     "rank_slot_left",
     "rank_rule_point_left",
-    "lapel_us_left"
+    "lapel_us_left",
+    "sleeve_braid_left"
    ],
    "has_spec": true,
    "issues": []
@@ -14154,6 +14185,10 @@
      908.3,
      420.5
     ],
+    "sleeve_braid_right_center": [
+     256.05,
+     2403.65
+    ],
     "epaulet_sleeve_left_center": [
      1885.3,
      309.25
@@ -14169,6 +14204,10 @@
     "lapel_us_left_center": [
      1491.3,
      420.5
+    ],
+    "sleeve_braid_left_center": [
+     2117.4,
+     2403.8
     ]
    },
    "landmarks": [
@@ -14177,11 +14216,13 @@
     "rank_slot_right",
     "rank_rule_point_right",
     "lapel_us_right",
+    "sleeve_braid_right",
     "epaulet_left",
     "epaulet_sleeve_left",
     "rank_slot_left",
     "rank_rule_point_left",
-    "lapel_us_left"
+    "lapel_us_left",
+    "sleeve_braid_left"
    ],
    "has_spec": true,
    "issues": []
@@ -14224,7 +14265,7 @@
      2726.1
     ],
     "elbow_right": [
-     277.8,
+     230.4,
      1649
     ],
     "chevron_halfway_right": [
@@ -14240,7 +14281,7 @@
      2726.1
     ],
     "elbow_left": [
-     2095.3,
+     2142.7,
      1649
     ],
     "chevron_halfway_left": [
@@ -14721,7 +14762,7 @@
      2401.4
     ],
     "elbow_right": [
-     237.8,
+     203.5,
      1441.3
     ],
     "chevron_halfway_right": [
@@ -14737,7 +14778,7 @@
      2401.4
     ],
     "elbow_left": [
-     1713.2,
+     1747.5,
      1441.3
     ],
     "chevron_halfway_left": [
@@ -15411,7 +15452,7 @@
      2594.5
     ],
     "elbow_right": [
-     224.7,
+     209.6,
      1575.5
     ],
     "chevron_halfway_right": [
@@ -15427,7 +15468,7 @@
      2594.5
     ],
     "elbow_left": [
-     1907.3,
+     1922.4,
      1575.5
     ],
     "chevron_halfway_left": [
@@ -16433,7 +16474,7 @@
    "w_in": 25.528,
    "h_in": 33.26,
    "size_source": "estimated",
-   "basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.1 in long x 2.2 in wide (silver centre 1.2 in between the 1/2 in braids, enough for a 1 in regular-size form) estimated from DAFI 36-2903 Figs 4.2-4.3; the regulation gives no dimension.",
+   "basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.25 in blue lace each side.",
    "anchors": {
     "top_center": [
      1276.3999999999999,
@@ -16456,12 +16497,12 @@
      1663
     ],
     "rank_slot_right_center": [
-     503.25,
-     384.82
+     513.13,
+     371.46
     ],
     "rank_slot_left_center": [
-     2040.38,
-     382.54
+     2030.46,
+     369.13
     ]
    },
    "landmarks": [
@@ -16626,7 +16667,7 @@
    "w_in": 26.522,
    "h_in": 33.68,
    "size_source": "estimated",
-   "basis": "Same artwork box and scale as garment-mess-dress-male. Board 4.1 in long x 2.2 in wide (silver centre 1.2 in between the 1/2 in braids, enough for a 1 in regular-size form) estimated from DAFI 36-2903 Figs 4.2-4.3; the regulation gives no dimension.",
+   "basis": "Same artwork box and scale as garment-mess-dress-male. Board 5.5 x 2.25 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.5 in blue lace each side.",
    "anchors": {
     "top_center": [
      1326.1,
@@ -16649,12 +16690,12 @@
      1684
     ],
     "rank_slot_right_center": [
-     503.34,
-     426.4
+     562.18,
+     409.53
     ],
     "rank_slot_left_center": [
-     2129.76,
-     417.68
+     2071.92,
+     403.05
     ]
    },
    "landmarks": [
@@ -16936,16 +16977,16 @@
      3846
     ],
     "name_tape_top_center": [
-     1584.86,
-     1375.4
+     1614.86,
+     1537.8
     ],
     "cap_tape_top_center": [
-     2644.86,
-     1375.4
+     2614.86,
+     1537.8
     ],
     "rank_square_center": [
      2114.86,
-     1780
+     1930
     ],
     "unit_patch_right_center": [
      349.96,
@@ -16956,24 +16997,24 @@
      1818.13
     ],
     "chest_pocket_right_center": [
-     1584.86,
-     1850
+     1614.86,
+     2000
     ],
     "chest_pocket_right_top": [
-     1812.26,
-     1487.9
+     1860.86,
+     1650.3
     ],
     "sleeve_velcro_right_top_center": [
      349.96,
      1390
     ],
     "chest_pocket_left_center": [
-     2644.86,
-     1850
+     2614.86,
+     2000
     ],
     "chest_pocket_left_top": [
-     2417.46,
-     1487.9
+     2368.86,
+     1650.3
     ],
     "sleeve_velcro_left_top_center": [
      3879.76,
@@ -16984,6 +17025,12 @@
     "name_tape",
     "cap_tape",
     "rank_square",
+    "collar_officer_zone_right",
+    "collar_cadet_officer_zone_right",
+    "collar_cadet_nco_zone_right",
+    "collar_officer_zone_left",
+    "collar_cadet_officer_zone_left",
+    "collar_cadet_nco_zone_left",
     "chest_pocket_right",
     "chest_flap_right",
     "sleeve_flap_velcro_right",
@@ -17235,11 +17282,11 @@
      265.58
     ],
     "sleeve_bottom_right": [
-     252.91,
+     230.3,
      2215.66
     ],
     "elbow_right": [
-     296.65,
+     284.24,
      1338.13
     ],
     "chevron_halfway_right": [
@@ -17251,11 +17298,11 @@
      265.58
     ],
     "sleeve_bottom_left": [
-     2188.3,
+     2195.34,
      2381.19
     ],
     "elbow_left": [
-     2138.31,
+     2171.58,
      1429.21
     ],
     "chevron_halfway_left": [
@@ -17351,7 +17398,7 @@
      2726.1
     ],
     "elbow_right": [
-     277.8,
+     230.4,
      1649
     ],
     "chevron_halfway_right": [
@@ -17367,7 +17414,7 @@
      2726.1
     ],
     "elbow_left": [
-     2095.3,
+     2142.7,
      1649
     ],
     "chevron_halfway_left": [
@@ -33357,7 +33404,7 @@
      102.15
     ],
     "rank_slot_center": [
-     237.5,
+     371.5,
      102.15
     ],
     "board_outer_end": [
@@ -33379,7 +33426,8 @@
    },
    "landmarks": [
     "board",
-    "rank_slot"
+    "rank_slot",
+    "rank_slot_frame"
    ],
    "has_spec": true,
    "issues": []
@@ -33418,7 +33466,7 @@
      102.15
     ],
     "rank_slot_center": [
-     237.5,
+     103.5,
      102.15
     ],
     "board_outer_end": [
@@ -33440,7 +33488,8 @@
    },
    "landmarks": [
     "board",
-    "rank_slot"
+    "rank_slot",
+    "rank_slot_frame"
    ],
    "has_spec": true,
    "issues": []
@@ -35469,7 +35518,7 @@
      102.15
     ],
     "rank_slot_center": [
-     237.5,
+     371.5,
      102.15
     ],
     "board_outer_end": [
@@ -35491,7 +35540,8 @@
    },
    "landmarks": [
     "board",
-    "rank_slot"
+    "rank_slot",
+    "rank_slot_frame"
    ],
    "has_spec": true,
    "issues": []
@@ -35530,7 +35580,7 @@
      102.15
     ],
     "rank_slot_center": [
-     237.5,
+     103.5,
      102.15
     ],
     "board_outer_end": [
@@ -35552,7 +35602,8 @@
    },
    "landmarks": [
     "board",
-    "rank_slot"
+    "rank_slot",
+    "rank_slot_frame"
    ],
    "has_spec": true,
    "issues": []
@@ -35591,7 +35642,7 @@
      102.15
     ],
     "rank_slot_center": [
-     237.5,
+     371.5,
      102.15
     ],
     "board_outer_end": [
@@ -35613,7 +35664,8 @@
    },
    "landmarks": [
     "board",
-    "rank_slot"
+    "rank_slot",
+    "rank_slot_frame"
    ],
    "has_spec": true,
    "issues": []
@@ -35652,7 +35704,7 @@
      102.15
     ],
     "rank_slot_center": [
-     237.5,
+     103.5,
      102.15
     ],
     "board_outer_end": [
@@ -35674,10 +35726,601 @@
    },
    "landmarks": [
     "board",
-    "rank_slot"
+    "rank_slot",
+    "rank_slot_frame"
    ],
    "has_spec": true,
    "issues": []
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-lapel-cap",
+   "path": "garments/garment-blues-class-a-coat-female-lapel-cap.svg",
+   "category": "garments",
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; CAP letters 0.5 in tall x 1.4 in wide, true size (CAPR 39-1 4.1.9.4.1.2).",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "lapel_cap_right_center": [
+     892.72,
+     319.35
+    ],
+    "lapel_cap_left_center": [
+     1537.93,
+     319.35
+    ]
+   },
+   "landmarks": [
+    "lapel_cap_right",
+    "lapel_cap_left"
+   ],
+   "has_spec": true,
+   "issues": []
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-lapel-us-nco",
+   "path": "garments/garment-blues-class-a-coat-female-lapel-us-nco.svg",
+   "category": "garments",
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Sleeve braid width - in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
+   "anchors": {
+    "top_center": [
+     1219.415,
+     0
+    ],
+    "bottom_center": [
+     1219.415,
+     2947.56
+    ],
+    "center": [
+     1219.415,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "lapel_us_right_center": [
+     892.89,
+     318.95
+    ],
+    "lapel_us_left_center": [
+     1537.93,
+     318.95
+    ]
+   },
+   "landmarks": [
+    "lapel_us_right",
+    "lapel_us_left"
+   ],
+   "has_spec": true,
+   "issues": []
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-lapel-us",
+   "path": "garments/garment-blues-class-a-coat-female-lapel-us.svg",
+   "category": "garments",
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "estimated",
+   "basis": "Sleeve braid width - in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
+   "anchors": {
+    "top_center": [
+     1219.415,
+     0
+    ],
+    "bottom_center": [
+     1219.415,
+     2947.56
+    ],
+    "center": [
+     1219.415,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "lapel_us_right_center": [
+     892.98,
+     319
+    ],
+    "lapel_us_left_center": [
+     1538.02,
+     319
+    ]
+   },
+   "landmarks": [
+    "lapel_us_right",
+    "lapel_us_left"
+   ],
+   "has_spec": true,
+   "issues": []
+  },
+  {
+   "id": "garment-blues-class-a-coat-lapel-cap",
+   "path": "garments/garment-blues-class-a-coat-lapel-cap.svg",
+   "category": "garments",
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Same box as garment-blues-class-a-coat; CAP letters 0.53 in tall, 1.4 in wide, centred on each lapel (CAPR 39-1 4.1.5.2.2.1.2).",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "lapel_cap_right_center": [
+     908.1,
+     420.1
+    ],
+    "lapel_cap_left_center": [
+     1492,
+     420.1
+    ]
+   },
+   "landmarks": [
+    "lapel_cap_right",
+    "lapel_cap_left"
+   ],
+   "has_spec": true,
+   "issues": []
+  },
+  {
+   "id": "garment-blues-class-a-coat-lapel-us-nco",
+   "path": "garments/garment-blues-class-a-coat-lapel-us-nco.svg",
+   "category": "garments",
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Sleeve braid width - in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "lapel_us_right_center": [
+     908.3,
+     420.5
+    ],
+    "lapel_us_left_center": [
+     1491.3,
+     420.5
+    ]
+   },
+   "landmarks": [
+    "lapel_us_right",
+    "lapel_us_left"
+   ],
+   "has_spec": true,
+   "issues": []
+  },
+  {
+   "id": "garment-blues-class-a-coat-lapel-us",
+   "path": "garments/garment-blues-class-a-coat-lapel-us.svg",
+   "category": "garments",
+   "w_in": 23.726,
+   "h_in": 29.955,
+   "size_source": "estimated",
+   "basis": "Sleeve braid width - in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
+   "anchors": {
+    "top_center": [
+     1186.3,
+     0
+    ],
+    "bottom_center": [
+     1186.3,
+     2995.5
+    ],
+    "center": [
+     1186.3,
+     1497.75
+    ],
+    "left_edge": [
+     0,
+     1497.75
+    ],
+    "right_edge": [
+     2372.6,
+     1497.75
+    ],
+    "lapel_us_right_center": [
+     908.3,
+     420.5
+    ],
+    "lapel_us_left_center": [
+     1491.3,
+     420.5
+    ]
+   },
+   "landmarks": [
+    "lapel_us_right",
+    "lapel_us_left"
+   ],
+   "has_spec": true,
+   "issues": []
+  },
+  {
+   "id": "garment-mess-dress-female-general-officer-shoulder-boards",
+   "path": "garments/garment-mess-dress-female-general-officer-shoulder-boards.svg",
+   "category": "garments",
+   "w_in": 25.528,
+   "h_in": 33.26,
+   "size_source": "estimated",
+   "basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); general officer boards are covered in silver lace, 0.25 in blue lace each side.",
+   "anchors": {
+    "top_center": [
+     1276.3999999999999,
+     0
+    ],
+    "bottom_center": [
+     1276.3999999999999,
+     3326
+    ],
+    "center": [
+     1276.3999999999999,
+     1663
+    ],
+    "left_edge": [
+     0,
+     1663
+    ],
+    "right_edge": [
+     2552.7999999999997,
+     1663
+    ],
+    "rank_slot_right_center": [
+     513.13,
+     371.46
+    ],
+    "rank_slot_left_center": [
+     2030.46,
+     369.13
+    ]
+   },
+   "landmarks": [
+    "shoulder_board_right",
+    "rank_slot_right",
+    "rank_slot_right_frame",
+    "shoulder_board_left",
+    "rank_slot_left",
+    "rank_slot_left_frame"
+   ],
+   "has_spec": true,
+   "issues": []
+  },
+  {
+   "id": "garment-mess-dress-male-general-officer-shoulder-boards",
+   "path": "garments/garment-mess-dress-male-general-officer-shoulder-boards.svg",
+   "category": "garments",
+   "w_in": 26.522,
+   "h_in": 33.68,
+   "size_source": "estimated",
+   "basis": "Same artwork box and scale as garment-mess-dress-male. Board 5.5 x 2.25 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); general officer boards are covered in silver lace, 0.5 in blue lace each side.",
+   "anchors": {
+    "top_center": [
+     1326.1,
+     0
+    ],
+    "bottom_center": [
+     1326.1,
+     3368
+    ],
+    "center": [
+     1326.1,
+     1684
+    ],
+    "left_edge": [
+     0,
+     1684
+    ],
+    "right_edge": [
+     2652.2,
+     1684
+    ],
+    "rank_slot_right_center": [
+     562.18,
+     409.53
+    ],
+    "rank_slot_left_center": [
+     2071.92,
+     403.05
+    ]
+   },
+   "landmarks": [
+    "shoulder_board_right",
+    "rank_slot_right",
+    "rank_slot_right_frame",
+    "shoulder_board_left",
+    "rank_slot_left",
+    "rank_slot_left_frame"
+   ],
+   "has_spec": true,
+   "issues": []
+  },
+  {
+   "id": "rank-senior-staff-sergeant-ocp-square",
+   "path": "insignia/rank-senior-staff-sergeant-ocp-square.svg",
+   "category": "insignia",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 2,
+   "h_in": 2,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     100,
+     0
+    ],
+    "bottom_center": [
+     100,
+     200
+    ],
+    "center": [
+     100,
+     100
+    ],
+    "left_edge": [
+     0,
+     100
+    ],
+    "right_edge": [
+     200,
+     100
+    ],
+    "insignia_center": [
+     100,
+     100
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "rank-senior-technical-sergeant-ocp-square",
+   "path": "insignia/rank-senior-technical-sergeant-ocp-square.svg",
+   "category": "insignia",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 2,
+   "h_in": 2,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     100,
+     0
+    ],
+    "bottom_center": [
+     100,
+     200
+    ],
+    "center": [
+     100,
+     100
+    ],
+    "left_edge": [
+     0,
+     100
+    ],
+    "right_edge": [
+     200,
+     100
+    ],
+    "insignia_center": [
+     100,
+     100
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "rank-senior-master-sergeant-ocp-square",
+   "path": "insignia/rank-senior-master-sergeant-ocp-square.svg",
+   "category": "insignia",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 2,
+   "h_in": 2,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     100,
+     0
+    ],
+    "bottom_center": [
+     100,
+     200
+    ],
+    "center": [
+     100,
+     100
+    ],
+    "left_edge": [
+     0,
+     100
+    ],
+    "right_edge": [
+     200,
+     100
+    ],
+    "insignia_center": [
+     100,
+     100
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "rank-senior-senior-master-sergeant-ocp-square",
+   "path": "insignia/rank-senior-senior-master-sergeant-ocp-square.svg",
+   "category": "insignia",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 2,
+   "h_in": 2,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     100,
+     0
+    ],
+    "bottom_center": [
+     100,
+     200
+    ],
+    "center": [
+     100,
+     100
+    ],
+    "left_edge": [
+     0,
+     100
+    ],
+    "right_edge": [
+     200,
+     100
+    ],
+    "insignia_center": [
+     100,
+     100
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "rank-senior-chief-master-sergeant-ocp-square",
+   "path": "insignia/rank-senior-chief-master-sergeant-ocp-square.svg",
+   "category": "insignia",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 2,
+   "h_in": 2,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     100,
+     0
+    ],
+    "bottom_center": [
+     100,
+     200
+    ],
+    "center": [
+     100,
+     100
+    ],
+    "left_edge": [
+     0,
+     100
+    ],
+    "right_edge": [
+     200,
+     100
+    ],
+    "insignia_center": [
+     100,
+     100
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "rank-senior-command-chief-ocp-square",
+   "path": "insignia/rank-senior-command-chief-ocp-square.svg",
+   "category": "insignia",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 2,
+   "h_in": 2,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     100,
+     0
+    ],
+    "bottom_center": [
+     100,
+     200
+    ],
+    "center": [
+     100,
+     100
+    ],
+    "left_edge": [
+     0,
+     100
+    ],
+    "right_edge": [
+     200,
+     100
+    ],
+    "insignia_center": [
+     100,
+     100
+    ]
+   },
+   "landmarks": []
   }
  ],
  "scope": "Non-military set only. Military ribbons, medals, badges and ROTC/JROTC ribbons are imported later."

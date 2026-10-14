@@ -89,16 +89,16 @@
    3846
   ],
   "name_tape_top_center": [
-   1584.86,
-   1375.4
+   1614.86,
+   1537.8
   ],
   "cap_tape_top_center": [
-   2644.86,
-   1375.4
+   2614.86,
+   1537.8
   ],
   "rank_square_center": [
    2114.86,
-   1780
+   1930
   ],
   "unit_patch_right_center": [
    349.96,
@@ -109,83 +109,306 @@
    1818.13
   ],
   "chest_pocket_right_center": [
-   1584.86,
-   1850
+   1614.86,
+   2000
   ],
   "chest_pocket_right_top": [
-   1812.26,
-   1487.9
+   1860.86,
+   1650.3
   ],
   "sleeve_velcro_right_top_center": [
    349.96,
    1390
   ],
   "chest_pocket_left_center": [
-   2644.86,
-   1850
+   2614.86,
+   2000
   ],
   "chest_pocket_left_top": [
-   2417.46,
-   1487.9
+   2368.86,
+   1650.3
   ],
   "sleeve_velcro_left_top_center": [
    3879.76,
    1390
   ]
  },
+ "collar_slots": {
+  "left": {
+   "cadet_officer": {
+    "center": [
+     2369.5,
+     1087.7
+    ],
+    "angle_deg": 27.5,
+    "size_in": {
+     "along": 2.5,
+     "across": 1.5
+    },
+    "bbox": {
+     "x": 2224,
+     "y": 963.4,
+     "w": 291,
+     "h": 248.5
+    }
+   },
+   "cadet_nco": {
+    "center": [
+     2369.5,
+     1087.7
+    ],
+    "angle_deg": 27.5,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.1
+    },
+    "bbox": {
+     "x": 2280.3,
+     "y": 984.7,
+     "w": 178.4,
+     "h": 206
+    }
+   },
+   "officer": {
+    "center": [
+     2354,
+     1153.1
+    ],
+    "angle_deg": -30.3,
+    "size_in": {
+     "along": 1.3,
+     "across": 1.6
+    },
+    "bbox": {
+     "x": 2252.2,
+     "y": 1056.6,
+     "w": 203.7,
+     "h": 192.9
+    }
+   },
+   "front_edge": {
+    "p1": [
+     2373.9,
+     863
+    ],
+    "p2": [
+     2187.9,
+     1220
+    ],
+    "dir_down": [
+     -0.4621,
+     0.8869
+    ],
+    "angle_deg": 27.5
+   },
+   "bottom_edge": {
+    "p1": [
+     2564.9,
+     1120
+    ],
+    "p2": [
+     2224.9,
+     1328
+    ],
+    "mid": [
+     2404.4,
+     1239.4
+    ]
+   },
+   "cadet_axis": [
+    [
+     2392.7,
+     1043.4
+    ],
+    [
+     2346.5,
+     1132
+    ]
+   ]
+  },
+  "right": {
+   "cadet_officer": {
+    "center": [
+     1860.2,
+     1087.7
+    ],
+    "angle_deg": -27.5,
+    "size_in": {
+     "along": 2.5,
+     "across": 1.5
+    },
+    "bbox": {
+     "x": 1714.7,
+     "y": 963.4,
+     "w": 291,
+     "h": 248.5
+    }
+   },
+   "cadet_nco": {
+    "center": [
+     1860.2,
+     1087.7
+    ],
+    "angle_deg": -27.5,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.1
+    },
+    "bbox": {
+     "x": 1771,
+     "y": 984.7,
+     "w": 178.4,
+     "h": 206
+    }
+   },
+   "officer": {
+    "center": [
+     1875.7,
+     1153.1
+    ],
+    "angle_deg": 30.3,
+    "size_in": {
+     "along": 1.3,
+     "across": 1.6
+    },
+    "bbox": {
+     "x": 1773.8,
+     "y": 1056.6,
+     "w": 203.7,
+     "h": 192.9
+    }
+   },
+   "front_edge": {
+    "p1": [
+     1855.9,
+     863
+    ],
+    "p2": [
+     2041.9,
+     1220
+    ],
+    "dir_down": [
+     0.4621,
+     0.8869
+    ],
+    "angle_deg": -27.5
+   },
+   "bottom_edge": {
+    "p1": [
+     1664.9,
+     1120
+    ],
+    "p2": [
+     2004.9,
+     1328
+    ],
+    "mid": [
+     1825.4,
+     1239.4
+    ]
+   },
+   "cadet_axis": [
+    [
+     1837.1,
+     1043.4
+    ],
+    [
+     1883.3,
+     1132
+    ]
+   ]
+  },
+  "note": "angle_deg: SVG rotate() convention (clockwise positive) to apply to an insignia whose long axis is vertical. cadet_* slots: cadet officer grade / cadet NCO metal chevron, centred 1 in from the collar FRONT edge, long axis parallel to it (cadet_axis = two points along that axis). officer_*: officer grade, centred 1 in from the collar BOTTOM edge, long axis perpendicular to it. size_in.along is measured along the long axis. bbox is the axis-aligned box of the rotated slot, also exposed as landmarks collar_*_zone_*. Right/left = wearer's."
+ },
  "landmarks": {
   "name_tape": {
-   "x": 1322.36,
-   "y": 1375.4,
+   "x": 1352.36,
+   "y": 1537.8,
    "w": 525,
    "h": 100
   },
   "cap_tape": {
-   "x": 2382.36,
-   "y": 1375.4,
+   "x": 2352.36,
+   "y": 1537.8,
    "w": 525,
    "h": 100
   },
   "rank_square": {
    "x": 2014.86,
-   "y": 1680,
+   "y": 1830,
    "w": 200,
    "h": 200
   },
+  "collar_officer_zone_right": {
+   "x": 1773.86,
+   "y": 1056.6,
+   "w": 203.7,
+   "h": 192.9
+  },
+  "collar_cadet_officer_zone_right": {
+   "x": 1714.66,
+   "y": 963.4,
+   "w": 291,
+   "h": 248.5
+  },
+  "collar_cadet_nco_zone_right": {
+   "x": 1770.96,
+   "y": 984.7,
+   "w": 178.4,
+   "h": 206
+  },
+  "collar_officer_zone_left": {
+   "x": 2252.16,
+   "y": 1056.6,
+   "w": 203.7,
+   "h": 192.9
+  },
+  "collar_cadet_officer_zone_left": {
+   "x": 2224.06,
+   "y": 963.4,
+   "w": 291,
+   "h": 248.5
+  },
+  "collar_cadet_nco_zone_left": {
+   "x": 2280.36,
+   "y": 984.7,
+   "w": 178.4,
+   "h": 206
+  },
   "chest_pocket_right": [
    [
-    1177.96,
-    1718.8
+    1215.36,
+    1847.6
    ],
    [
-    1812.26,
-    1487.9
+    1860.86,
+    1650.3
    ],
    [
-    1991.76,
-    1981.2
+    2014.36,
+    2152.4
    ],
    [
-    1357.46,
-    2212.1
+    1368.86,
+    2349.7
    ]
   ],
   "chest_flap_right": [
    [
-    1671.26,
-    1539.2
+    1717.46,
+    1694.2
    ],
    [
-    1812.26,
-    1487.9
+    1860.86,
+    1650.3
    ],
    [
-    1991.76,
-    1981.2
+    2014.36,
+    2152.4
    ],
    [
-    1850.86,
-    2032.5
+    1870.96,
+    2196.2
    ]
   ],
   "sleeve_flap_velcro_right": {
@@ -226,38 +449,38 @@
   ],
   "chest_pocket_left": [
    [
-    2417.46,
-    1487.9
+    2368.86,
+    1650.3
    ],
    [
-    3051.76,
-    1718.8
+    3014.36,
+    1847.6
    ],
    [
-    2872.26,
-    2212.1
+    2860.86,
+    2349.7
    ],
    [
-    2237.96,
-    1981.2
+    2215.36,
+    2152.4
    ]
   ],
   "chest_flap_left": [
    [
-    2558.46,
-    1539.2
+    2512.26,
+    1694.2
    ],
    [
-    2417.46,
-    1487.9
+    2368.86,
+    1650.3
    ],
    [
-    2237.96,
-    1981.2
+    2215.36,
+    2152.4
    ],
    [
-    2378.86,
-    2032.5
+    2358.76,
+    2196.2
    ]
   ],
   "sleeve_flap_velcro_left": {
@@ -384,7 +607,7 @@
     6.75,
     5.25
    ],
-   "tilt_deg": 20,
+   "tilt_deg": 17,
    "note": "top edge rises toward the zipper; mirrored"
   },
   "tape": {
