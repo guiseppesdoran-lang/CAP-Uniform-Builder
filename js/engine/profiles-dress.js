@@ -797,7 +797,16 @@
       // Nameplate: name and state lines, with optional grade for adults (4.2.3.1.1.2).
       const plateId = g.cadet ? 'nameplate-blazer-cadet' : 'nameplate-blazer-adult';
       const ps = await ctx.spec(plateId);
-      const plate = await ctx.place(plateId, { pieceAnchor: 'center', at: ctx.point('nameplate_slot_center'), z: Z.tape, role: 'nametag', key: 'nametag' });
+      // Men: top even with the pocket top (the sheet's slot). Women's blazer has no pocket: the
+      // nametag sits 1/2 in above the crest or the service badge in its place (4.2.4.1.1.2).
+      let plateAt = ctx.point('nameplate_slot_center');
+      const crestTopPt = ctx.point('crest_top_center');
+      if(female && crestTopPt){
+        const top = crestLayer ? crestLayer.y : crestTopPt.y;
+        plateAt = { x: crestTopPt.x, y: top - 0.5 - ps.h / 2 };
+      }
+      const plate = await ctx.place(plateId, { pieceAnchor: 'center', at: plateAt, z: Z.tape, role: 'nametag', key: 'nametag' });
+      if(female && crestTopPt) ctx.measure({ x: plate.x + plate.w + 0.3, y: plate.y + plate.h }, { x: plate.x + plate.w + 0.3, y: plate.y + plate.h + 0.5 });
       if(b.name.show){
         // Last name and state (4.2.3.1.1.2).
         const nameZone = H.pieceRect(plate, ps, 'name');
