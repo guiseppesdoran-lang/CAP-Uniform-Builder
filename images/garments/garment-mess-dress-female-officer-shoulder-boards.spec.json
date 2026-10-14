@@ -13,7 +13,7 @@
   3326
  ],
  "size_source": "estimated",
- "size_basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.25 in blue lace each side.",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.5 in blue lace each side.",
  "anchors": {
   "top_center": [
    1276.3999999999999,
@@ -40,7 +40,7 @@
    371.46
   ],
   "rank_slot_left_center": [
-   2030.46,
+   2030.47,
    369.13
   ]
  },
@@ -52,15 +52,15 @@
    "h": 258
   },
   "rank_slot_right": {
-   "x": 403.16,
-   "y": 281.41,
-   "w": 219.95,
-   "h": 180.09
+   "x": 407.48,
+   "y": 305.66,
+   "w": 211.3,
+   "h": 131.59
   },
   "rank_slot_right_frame": {
    "deg": -10.1,
    "along": 2,
-   "across": 1.5
+   "across": 1
   },
   "shoulder_board_left": {
    "x": 1790.38,
@@ -69,21 +69,21 @@
    "h": 257
   },
   "rank_slot_left": {
-   "x": 1920.69,
-   "y": 279.36,
-   "w": 219.54,
-   "h": 179.55
+   "x": 1924.95,
+   "y": 303.61,
+   "w": 211.03,
+   "h": 131.05
   },
   "rank_slot_left_frame": {
    "deg": -170,
    "along": 2,
-   "across": 1.5
+   "across": 1
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
  "overlay_of": "garment-mess-dress-female",
  "documented": [
-  "officers wear shoulder boards with bullion grade insignia and 1/4 (Fig A5-3; the paragraph text says 1/2) in dark blue braid down each side; women's boards have no button (CAPR 39-1 4.1.2.1.1.1)",
+  "officers wear shoulder boards with bullion grade insignia and 1/2 in dark blue braid (paragraph text 4.1.2.1.1.1, per Ethan; the Fig A5-3 caption says 1/4 in for women) down each side; women's boards have no button (CAPR 39-1 4.1.2.1.1.1)",
   "placed as close to the shoulder seam as possible"
  ],
  "assumed": [

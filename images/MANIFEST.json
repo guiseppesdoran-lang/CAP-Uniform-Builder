@@ -16474,7 +16474,7 @@
    "w_in": 25.528,
    "h_in": 33.26,
    "size_source": "estimated",
-   "basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.25 in blue lace each side.",
+   "basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.5 in blue lace each side.",
    "anchors": {
     "top_center": [
      1276.3999999999999,
@@ -16501,7 +16501,7 @@
      371.46
     ],
     "rank_slot_left_center": [
-     2030.46,
+     2030.47,
      369.13
     ]
    },
@@ -36009,7 +36009,7 @@
    "w_in": 25.528,
    "h_in": 33.26,
    "size_source": "estimated",
-   "basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); general officer boards are covered in silver lace, 0.25 in blue lace each side.",
+   "basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); general officer boards are covered in silver lace, 0.5 in blue lace each side.",
    "anchors": {
     "top_center": [
      1276.3999999999999,
@@ -36036,7 +36036,7 @@
      371.46
     ],
     "rank_slot_left_center": [
-     2030.46,
+     2030.47,
      369.13
     ]
    },
