@@ -145,20 +145,30 @@
     }
     // Badges embossed above the name: a CAP aviation badge, then an occupational badge or the current
     // command insignia, in silver (8.2.4.1, 8.3.4.1). Up to two, wings on the wearer's right.
+    // Up to two badges: a CAP aeronautical rating and an occupational badge, or the current command
+    // insignia on the wearer's right in place of the occupational badge; the wings to its left. The
+    // cloth tag for officers carries one badge (8.2.4.1, 8.3.4.1).
     const set = badgeSet(ctx, b, 'dress');
     const pin = commandPin(ctx, b, 'dress');
-    const chosen = [...set.chaplain, ...set.aviation, ...set.occupational].slice(0, 2);
-    if(pin && !pin.graduated && chosen.length < 2) chosen.push({ id: pin.id, art: pin.art, title: pin.title, command: true });
+    const officerTag = (g.officer && !g.cadet) || (g.category === 'senior-none' && g.track === 'officer');
+    const limit = officerTag ? 1 : 2;
+    const wings = [...set.chaplain, ...set.aviation][0] || null;
+    let other = (pin && !pin.graduated) ? { id: pin.id, art: pin.art, title: pin.title, command: true } : (set.occupational[0] || null);
+    let chosen = [wings, other].filter(Boolean).slice(0, limit);
     const zone = pieceRect(tag, spec, 'badge_zone');
+    const opts = it => ({ z: Z.badge, role: 'badge', key: 'badge:' + it.id, title: it.title });
     if(chosen.length === 1){
-      await placeFitted(ctx, chosen[0].art, core.rectCenter(zone), 2.2, zone.h, { z: Z.badge, role: 'badge', key: 'badge:' + chosen[0].id, title: chosen[0].title });
+      await placeFitted(ctx, chosen[0].art, core.rectCenter(zone), 2.2, zone.h, opts(chosen[0]));
     }else if(chosen.length === 2){
       const s = tag.w / spec.w;
-      await placeFitted(ctx, chosen[0].art, { x: tag.x + 1.475 * s, y: zone.y + zone.h / 2 }, 1.4, zone.h, { z: Z.badge, role: 'badge', key: 'badge:' + chosen[0].id, title: chosen[0].title });
-      await placeFitted(ctx, chosen[1].art, { x: tag.x + 2.875 * s, y: zone.y + zone.h / 2 }, 0.7, zone.h, { z: Z.badge, role: 'badge', key: 'badge:' + chosen[1].id, title: chosen[1].title });
+      // Wearer's right is the viewer's left of the tag.
+      await placeFitted(ctx, other.art, { x: tag.x + 1.125 * s, y: zone.y + zone.h / 2 }, 0.7, zone.h, opts(other));
+      await placeFitted(ctx, wings.art, { x: tag.x + 2.525 * s, y: zone.y + zone.h / 2 }, 1.4, zone.h, opts(wings));
     }
-    const dropped = set.all.length - chosen.filter(c => !c.command).length;
-    if(dropped > 0) ctx.note('Flight suit name tags carry at most two badges (CAPR 39-1, 8.2.4.1); the rest are not shown');
+    const worn = chosen.filter(c => !c.command).length;
+    if(set.all.length > worn) ctx.note(officerTag
+      ? 'The officer cloth name tag carries one badge (CAPR 39-1, 8.2.4.1); the rest are not shown'
+      : 'Flight suit name tags carry at most two badges (CAPR 39-1, 8.2.4.1); the rest are not shown');
   }
 
   async function flightPatches(ctx, b){
