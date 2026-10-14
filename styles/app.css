@@ -261,8 +261,12 @@ header h1::after{
 
 #layoutShell{
   display:flex;
-  height:calc(100vh - var(--capub-header-h) - var(--capub-footer-h));
-  position:relative;
+  /* Fill what is left between the header and footer as they actually are, not 100vh sums. */
+  position:fixed;
+  top:var(--chrome-header-h,var(--capub-header-h));
+  bottom:var(--chrome-footer-h,var(--capub-footer-h));
+  left:0;
+  right:0;
   background:var(--bg);
   color:var(--ink);
   overflow:hidden;
@@ -547,7 +551,7 @@ header h1::after{
 .capubCommandBar{
   position:fixed;
   left:50%;
-  bottom:calc(var(--capub-footer-h) + var(--s3));
+  bottom:calc(var(--chrome-footer-h,var(--capub-footer-h)) + var(--s3));
   transform:translateX(-50%);
   z-index:12000;
   width:max-content;
@@ -567,7 +571,7 @@ header h1::after{
 .capubToast{
   position:fixed;
   right:var(--s5);
-  bottom:calc(var(--capub-footer-h) + 84px);
+  bottom:calc(var(--chrome-footer-h,var(--capub-footer-h)) + 84px);
   z-index:25000;
   max-width:min(360px,calc(100vw - 32px));
   background:var(--brand);
@@ -899,14 +903,14 @@ header h1::after{
   header h1{font-size:var(--t-lg)}
   header h1::after{display:block;margin-left:0;font-size:var(--t-md)}
   .controlsHeader .controlsTitle::after{display:none}
-  #layoutShell{height:calc(100vh - var(--capub-header-h));flex-direction:column;min-height:calc(100vh - var(--capub-header-h))}
+  #layoutShell{bottom:0;flex-direction:column}
   /* Controls are a bottom sheet on a phone: the uniform stays visible above them. */
   #controls,#layoutShell.sidebar-open #controls,#layoutShell.sidebar-collapsed #controls{
     position:fixed;
     left:0;
     right:0;
     top:auto;
-    bottom:var(--capub-footer-h);
+    bottom:var(--chrome-footer-h,var(--capub-footer-h));
     width:100%;
     min-width:0;
     max-width:none;
@@ -923,7 +927,7 @@ header h1::after{
   #layoutShell.sidebar-collapsed #controls{transform:translate3d(0,110%,0);visibility:hidden;pointer-events:none}
   #previewWrapper{order:2;flex:1;width:100%;min-width:0;padding:var(--s4) var(--s3) 200px}
   /* With the sheet up, leave room under the uniform so it can scroll clear of it. */
-  body:has(#layoutShell.sidebar-open) #previewWrapper{padding-bottom:calc(var(--sheet-h) + var(--capub-footer-h) + var(--s4))}
+  body:has(#layoutShell.sidebar-open) #previewWrapper{padding-bottom:calc(var(--sheet-h) + var(--chrome-footer-h,var(--capub-footer-h)) + var(--s4))}
   .sheetClose{display:inline-flex}
   /* While the sheet is up the toolbar keeps only undo and redo, so the uniform has room. */
   body:has(#layoutShell.sidebar-open) .capubTopBar,
@@ -935,6 +939,7 @@ header h1::after{
   .modal .galleryGrid{grid-template-columns:repeat(1,minmax(0,1fr))}
   body:has(#layoutShell.sidebar-open) .capubCommandBar{display:none}
   :root{--capub-footer-h:64px;--sheet-h:min(46vh,420px)}
+  @supports (height:100dvh){:root{--sheet-h:min(46dvh,420px)}}
   #pageFooter{font-size:var(--t-xs);line-height:1.35;padding-top:var(--s1);padding-bottom:var(--s1)}
   .capubCommandBar{left:var(--s3);right:var(--s3);transform:none;width:auto;flex-wrap:wrap;justify-content:center}
   .capubCommandBar button{flex:1 1 auto;padding:0 var(--s3);font-size:var(--t-md)}

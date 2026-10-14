@@ -175,6 +175,31 @@
     }
     const ro=safeBy('zoomReadout'); if(ro) ro.textContent=Math.round(V3.zoom*100)+'%';
   }
+  // The header can wrap and the footer is two lines on a phone, so the shell is sized from what
+  // they measure, not from a fixed number: the sidebar always reaches exactly from one to the other.
+  function syncChromeHeights(){
+    const root=document.documentElement;
+    const header=document.querySelector('body > header'), footer=safeBy('pageFooter');
+    if(header) root.style.setProperty('--chrome-header-h', header.offsetHeight + 'px');
+    if(footer) root.style.setProperty('--chrome-footer-h', footer.offsetHeight + 'px');
+  }
+  function watchChromeHeights(){
+    syncChromeHeights();
+    window.addEventListener('resize', syncChromeHeights);
+    window.addEventListener('orientationchange', syncChromeHeights);
+    if(window.visualViewport) window.visualViewport.addEventListener('resize', syncChromeHeights);
+    // The footer changes size at these widths; do not wait for the observer.
+    for(const q of ['(max-width:768px)','(max-width:480px)','(max-width:360px)']){
+      const mq=window.matchMedia(q);
+      if(mq.addEventListener) mq.addEventListener('change', syncChromeHeights);
+    }
+    if(typeof ResizeObserver==='function'){
+      const ro=new ResizeObserver(syncChromeHeights);
+      for(const el of [document.querySelector('body > header'), safeBy('pageFooter')]) if(el) ro.observe(el);
+    }
+    // Web fonts change the wrapping once they load.
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(syncChromeHeights);
+  }
   function fitZoom(){
     const wrap=safeBy('previewWrapper'), area=safeBy('previewArea');
     if(!wrap || !area) return setZoom(1);
@@ -295,6 +320,7 @@
   document.addEventListener('capub:sidebar',()=>{ if(!V3.userZoomed) setTimeout(fitZoom,230); });
   // A new drawing can change the stage's width (a wide field uniform sheet, a tall coat).
   document.addEventListener('capub:rendered',()=>{ if(!V3.userZoomed) fitZoom(); });
+  watchChromeHeights();
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
 

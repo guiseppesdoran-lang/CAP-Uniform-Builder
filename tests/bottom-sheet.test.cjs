@@ -21,7 +21,7 @@ function phoneBlock(){
 
 test('on a phone the controls are a bottom sheet over the footer, not a side drawer',()=>{
   const phone=phoneBlock();
-  assert.match(phone,/#controls[^{]*\{[^}]*bottom:var\(--capub-footer-h\)/);
+  assert.match(phone,/#controls[^{]*\{[^}]*bottom:var\(--chrome-footer-h,var\(--capub-footer-h\)\)/);
   assert.match(phone,/height:var\(--sheet-h\)/);
   assert.match(phone,/sidebar-collapsed #controls\{transform:translate3d\(0,110%,0\)/);
   assert.doesNotMatch(phone,/translate3d\(-105%/);
