@@ -137,11 +137,24 @@
     const pinItem = pinCurrent ? { id: pinCurrent.id, art: pinCurrent.art, title: pinCurrent.title } : null;
     const pinKey = pinCurrent ? `badge:${pinCurrent.id}:ON:0` : null;
 
+    // Model rocketry and NRA marksmanship (cadets) have places of their own (4.1.5.2.2.4.2,
+    // 4.1.9.4.4.2, 4.1.10.1.2.4.2, 4.1.11.1.1.2.4, 4.2.6.2.7.2).
+    const isSpecial = x => x.family === 'rocketry' || x.family === 'marksmanship';
+    const rocketry = plan.rest.find(x => x.family === 'rocketry') || null;
+    const marks = plan.rest.find(x => x.family === 'marksmanship') || null;
+    const regular = plan.rest.filter(x => !isSpecial(x));
+
     if(geo.onStyle === 'men'){
       // Men: first badge on the left pocket, second on the right pocket, third over the nametag;
       // with a current command pin over the nametag the third badge sits 1/2 in above the pin.
-      const queue = [...plan.rest];
-      const lpItem = geo.lp ? queue.shift() : null;
+      // Model rocketry is worn only on the left pocket; marksmanship on the welt or pocket flap.
+      const queue = [...regular];
+      if(marks){
+        if(geo.marks) await putBadge(ctx, marks, geo.marks, geo.marks.anchor || 'top_center');
+        else queue.push(marks);
+      }
+      const lpItem = geo.lp ? (rocketry || queue.shift()) : null;
+      if(rocketry && !geo.lp) ctx.note('The model rocketry badge is worn only on the left pocket, which this uniform does not have');
       let rpItem = plan.nationalStaff[0] || null;
       if(!rpItem && geo.rp) rpItem = queue.shift() || null;
       if(lpItem){ await putBadge(ctx, lpItem, geo.lp, geo.lp.anchor || 'center'); pocketMeasure(geo.lp); }
@@ -161,12 +174,16 @@
       return;
     }
 
-    // Women (and the mess dress): the badges sit over the nametag side by side.
-    const queue = [...plan.nationalStaff, ...plan.rest];
+    // Women (and the mess dress): the badges sit over the nametag side by side. Model rocketry and
+    // marksmanship go there only when nothing else does; otherwise to their own places.
+    const ordinary = [...plan.nationalStaff, ...regular];
+    const specials = [rocketry, marks].filter(Boolean);
+    const queue = ordinary.length ? ordinary : specials;
     // CAP service badge closest to the lapel (viewer's right of the pair), National Staff to the
     // wearer's right (viewer's left) of a second badge.
     const pair = queue.slice(0, 2);
-    const left = queue.slice(2);
+    const left = ordinary.length ? queue.slice(2) : [];
+    const moved = ordinary.length ? specials : specials.slice(2);
     if(pair.length === 2 && SERVICE_IDS.has(pair[0].id)) pair.reverse();
     if(onX == null){
       if(pair.length) ctx.note('Some badges have no place left on this uniform and are not shown');
@@ -190,10 +207,16 @@
     }else if(pair.length){
       await rowOfBadges(ctx, pair, onX, onBottom, 0.5);
     }
-    if(left.length){
-      if(geo.lp){ await putBadge(ctx, left.shift(), geo.lp, geo.lp.anchor || 'center'); }
-      if(left.length) ctx.note('Some badges have no place left on this uniform and are not shown');
+    // Rocketry and marksmanship moved off the nametag: women's aviator shirt to the left pocket and
+    // flap; the Class A and B to the wearer's left, 1 1/2 in below the ribbons (one badge there).
+    let belowUsed = false;
+    for(const it of moved){
+      const spot = it.family === 'rocketry' ? (geo.rocketAlt || geo.belowRibbons) : (geo.marksAlt || geo.belowRibbons);
+      if(!spot || (spot === geo.belowRibbons && belowUsed)){ left.push(it); continue; }
+      if(spot === geo.belowRibbons){ belowUsed = true; ctx.measure({ x: spot.x, y: spot.y - 1.5 }, { x: spot.x, y: spot.y }); }
+      await putBadge(ctx, it, spot, spot.anchor || 'top_center');
     }
+    if(left.length) ctx.note('Some badges have no place left on this uniform and are not shown');
   }
 
   // ---- shared pieces ------------------------------------------------------------------------
@@ -461,7 +484,10 @@
       geo.un = null;
       if(sex === 'male') geo.onStyle = 'men';
     }
-    if(!semi && sex === 'female' && !b.badges.some(x => B.family(x.id) === 'service')) geo.lp = { x: rest.x, y: (rack ? rack.y + rack.h : rest.y) + 1.5, anchor: 'top_center' };
+    // Men's marksmanship badge: centred on the welt pocket (4.1.5.2.2.4.2). Women's moved rocketry
+    // or marksmanship badge: wearer's left, 1 1/2 in below the ribbons (4.1.9.4.4.2).
+    if(sex === 'male') geo.marks = { x: rest.x, y: rest.y, anchor: 'top_center' };
+    else geo.belowRibbons = { x: rest.x, y: (rack ? rack.y + rack.h : rest.y) + 1.5, anchor: 'top_center' };
     await dressBadges(ctx, b, geo);
 
     if(!semi){
@@ -525,9 +551,11 @@
       geo.rp = { x: pocketR.x + pocketR.w / 2, y: midY };
       geo.onStyle = 'men';
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.63 };
+      geo.marks = { x: pocketL.x + pocketL.w / 2, y: pocketL.y, anchor: 'top_center' }; // top edge of the flap
     }else{
       if(!rack) geo.olpCenter = { x: rest.x, y: tag.y + tag.h / 2 };
       geo.onStyle = 'women';
+      geo.belowRibbons = { x: rest.x, y: (rack ? rack.y + rack.h : rest.y) + 1.5, anchor: 'top_center' };
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
     }
     await dressBadges(ctx, b, geo);
@@ -699,10 +727,16 @@
       geo.lp = lp ? { x: lp.x, y: lp.y } : null;
       geo.rp = rp ? { x: rp.x, y: rp.y } : null;
     }
+    // Marksmanship: centred on the top edge of the left pocket flap, where the ribbons rest.
+    const flapTop = { x: rest.x, y: rest.y, anchor: 'top_center' };
     if(!female){
       geo.onStyle = 'men';
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.715 };
+      geo.marks = flapTop;
     }else{
+      const lpc = ctx.point('badge_left_pocket_center');
+      geo.rocketAlt = lpc ? { x: lpc.x, y: lpc.y, anchor: 'center' } : null;
+      geo.marksAlt = flapTop;
       // Women: the command pin goes 1/2 in above a badge worn over the nametag (4.2.6.2.7.3).
       geo.onStyle = 'women-a';
       if(!V.overblouse) geo.rp = null;

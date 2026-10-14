@@ -207,3 +207,18 @@ test('an appointed Command Chief wears the Command Chief chevron on every unifor
     assert.deepEqual(scene.notes.filter(n => /^No artwork/.test(n)), [], u);
   }
 });
+
+test('model rocketry and marksmanship badges take their own places (4.1.5.2.2.4.2, 4.1.9.4.4.2)', async () => {
+  const ribbons = ribbon('cap_achievment_award');
+  const men = await P.composeUniform(build('blues_a', 'cadet', 'C/SSgt', { ribbons, badges: [{ id: 'emergency_services_badge' }, { id: 'model_rocketry_badge' }, { id: 'nra_marksman_badge' }] }), store());
+  const rocket = layersBy(men, l => l.key === 'badge:model_rocketry_badge')[0];
+  const es = layersBy(men, l => l.key === 'badge:emergency_services_badge')[0];
+  const nra = layersBy(men, l => l.key === 'badge:nra_marksman_badge')[0];
+  assert.ok(rocket.x > 11.86, 'rocketry on the wearer\'s left pocket');
+  assert.ok(es.x < 11.86, 'the ES badge moves to the right pocket');
+  assert.ok(Math.abs(nra.y - 10.79) < 0.001, 'marksmanship hangs from the welt');
+  const women = await P.composeUniform(build('blues_a', 'cadet', 'C/SSgt', { gender: 'female', ribbons, badges: [{ id: 'emergency_services_badge' }, { id: 'model_rocketry_badge' }] }), store());
+  const wr = layersBy(women, l => l.key === 'badge:model_rocketry_badge')[0];
+  const rack = layersBy(women, l => l.role === 'ribbon')[0];
+  assert.ok(Math.abs(wr.y - (rack.y + rack.h + 1.5)) < 0.001, 'women: 1 1/2 in below the ribbons when a badge is over the nametag');
+});
