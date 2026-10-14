@@ -198,3 +198,12 @@ test('grade rules: mess dress needs a grade, men\'s Class B chevrons are 3 1/2 i
   const cab = await P.composeUniform(build('ocp', 'cadet', 'C/AB'), store());
   assert.deepEqual(cab.layers.find(l => l.role === 'garment').hideGroups, ['rank-square']);
 });
+
+test('an appointed Command Chief wears the Command Chief chevron on every uniform (ICL 25-02)', async () => {
+  for(const u of ['blues_a', 'blues_b', 'mess_dress', 'aviator', 'abu', 'corporate_field', 'ocp']){
+    const scene = await P.composeUniform(build(u, 'senior', 'CMSgt', { grade: G.gradeInfo('senior', 'CMSgt', { commandChief: true }) }), store());
+    const chev = scene.layers.filter(l => l.role === 'grade');
+    assert.ok(chev.length && chev.every(l => /command-chief/.test(l.id)), u);
+    assert.deepEqual(scene.notes.filter(n => /^No artwork/.test(n)), [], u);
+  }
+});

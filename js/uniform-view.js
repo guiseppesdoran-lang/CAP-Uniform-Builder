@@ -204,7 +204,7 @@
 
   function buildFromState(){
     const opt = garmentOptions();
-    const g = E.grades.gradeInfo(State.membership, State.rank, { firstSergeant: !!State.cadetFirstSergeant, track: opt.noGradeTrack });
+    const g = E.grades.gradeInfo(State.membership, State.rank, { firstSergeant: !!State.cadetFirstSergeant, track: opt.noGradeTrack, commandChief: !!opt.commandChief });
     const ribbons = CAPUBUniformRules.allowsRibbons(State.uniform) ? buildRibbons() : [];
     const mini = CAPUBUniformRules.allowsMiniMedals(State.uniform);
     const allRibbons = mini ? buildRibbons() : ribbons;

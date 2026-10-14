@@ -12,6 +12,8 @@
 
   // { key, label, type: 'select' | 'check', choices: [[value, label]] | fn, when(ctx) }
   const OPTIONS = [
+    { key: 'commandChief', label: 'Appointed Command Chief (ICL 25-02)', type: 'check',
+      when: c => !c.g.cadet && State.rank === 'CMSgt' },
     { key: 'noGradeTrack', label: 'Working toward', type: 'select',
       choices: [['officer', 'Officer grade (1.4.1)'], ['nco', 'NCO grade (1.4.2)']],
       when: c => c.g.category === 'senior-none' },

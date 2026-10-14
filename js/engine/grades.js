@@ -52,10 +52,13 @@
     const table = isCadet ? CADET : SENIOR;
     const hit = table[rank] || { key: null, category: isCadet ? 'cadet-basic' : 'senior-none' };
     const category = hit.category;
+    // A chief master sergeant appointed Command Chief wears the Command Chief insignia (ICL 25-02,
+    // 5.2.1.1.3).
+    const commandChief = !!o.commandChief && !isCadet && hit.key === 'chief-master-sergeant';
     return {
       cadet: isCadet,
       rank: rank || '',
-      key: hit.key,
+      key: commandChief ? 'command-chief' : hit.key,
       category,
       officer: category === 'cadet-officer' || category === 'senior-officer' || category === 'general' || category === 'flight-officer',
       nco: category === 'cadet-nco' || category === 'senior-nco',
