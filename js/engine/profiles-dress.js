@@ -414,8 +414,12 @@
       const view = await ctx.place(id, { pieceAnchor: 'bottom_center', at: { x, y: -0.75 }, z: Z.hat - 1, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above` });
       const at = view && H.piecePoint(view, s, 'rank_slot_center');
       if(!at || !grade || !ctx.has(grade)) continue;
-      // The grade's discs or diamonds sit side by side across the board (Figure A5-6).
-      await ctx.place(grade, { pieceAnchor: 'center', at, rotate: 90, z: Z.hat - 0.5, role: 'grade', key: 'grade:top-' + side });
+      // The grade's discs or diamonds sit side by side across the board (Figure A5-6). The figure's
+      // board is wider than this one: a grade wider than the band (the Colonel's three diamonds) is
+      // drawn just small enough to sit on it.
+      const gs = await ctx.spec(grade), band = core.landmarkBounds(s, 'rank_slot');
+      const scale = band ? Math.min(1, (band.h - 0.12) / gs.w, (band.w - 0.12) / gs.h) : 1;
+      await ctx.place(grade, { pieceAnchor: 'center', at, rotate: 90, scale, z: Z.hat - 0.5, role: 'grade', key: 'grade:top-' + side });
     }
   }
 
