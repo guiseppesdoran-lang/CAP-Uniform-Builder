@@ -15,8 +15,6 @@
   const GARMENT = { ocp: 'garment-ocp-coat-abu-cut', abu: 'garment-abu-coat', corporate_field: 'garment-cfu-coat' };
   // Most chest badges above the CAP tape: OCP 4 (7.1.1.3.1), ABU 2 (5.1.1.1.2.4), CFU 2 (5.2.1.1.2.6).
   const MAX_BADGES = { ocp: 4, abu: 2, corporate_field: 2 };
-  // Collar edge angles measured from the ABU/CFU leaf paths (the two coats share the collar).
-  const COLLAR = { frontRight: -36.9, frontLeft: 35.9, bottomRight: 12.7, bottomLeft: -14.6 };
 
   // Last name on the coat's name tape and on any cap back tape the sheet draws: light silver block
   // capitals in the same lettering as the drawn CAP tape (7.1.1.2.3, 5.1.1.1.2.1, 5.2.1.1.2.1,
@@ -58,11 +56,13 @@
   async function ocpGrade(ctx, b){
     const g = b.grade;
     const at = ctx.point('rank_square_center');
-    if(g.category === 'senior-nco'){
-      // No senior NCO square artwork exists: the sleeve chevron, scaled into 1 3/4 in on the square.
+    const nco = g.category === 'senior-nco' ? `rank-senior-${g.key}-ocp-square` : null;
+    if(nco && ctx.has(nco)){
+      await ctx.place(nco, { pieceAnchor: 'center', at, z: Z.insignia, role: 'grade', key: 'grade:chest' });
+    }else if(g.category === 'senior-nco'){
+      // No square artwork for this grade: the sleeve chevron, scaled into 1 3/4 in on the square.
       const id = G.seniorChevron(g, { size: '3.5' });
       await H.placeFitted(ctx, id, at, 1.75, 1.75, { z: Z.insignia, role: 'grade', key: 'grade:chest' });
-      ctx.note('Senior NCO grade on the OCP square is drawn from the sleeve chevron (no square artwork yet)');
     }else{
       const id = ocpSquareId(g);
       if(id) await ctx.place(id, { pieceAnchor: 'center', at, z: Z.insignia, role: 'grade', key: 'grade:chest' });
@@ -71,26 +71,34 @@
   }
 
   // ABU and CFU: grade on both collars (5.1.1.1.1, 5.2.1.1.1); NCO chevrons on the sleeves.
+  // The sheets give a slot per side and kind: its centre (0.01 in) and the turn, clockwise, for an
+  // insignia whose long axis is upright. Cadet grade runs 1 in from and parallel to the front of the
+  // collar; officers' grade sits 1 in from the bottom of the collar, square to its edge.
   async function collarGrade(ctx, b){
     const g = b.grade;
+    const slots = ctx.base && ctx.base.raw && ctx.base.raw.collar_slots;
     for(const side of ['right', 'left']){
       const R = side === 'right';
+      const slot = kind => {
+        const s = slots && slots[side] && slots[side][kind];
+        return s ? { at: { x: s.center[0] / 100, y: s.center[1] / 100 }, deg: s.angle_deg } : null;
+      };
       if(g.category === 'cadet-nco'){
-        const z = ctx.rect('collar_cadet_nco_zone_' + side);
-        // 1 in from and parallel to the front of the collar: the chevron's axis follows the front edge.
-        if(z) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: 'center', at: core.rectCenter(z), rotate: R ? COLLAR.frontRight : COLLAR.frontLeft, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+        const s = slot('cadet_nco');
+        if(s) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: 'center', at: s.at, rotate: s.deg, z: Z.insignia, role: 'grade', key: 'grade:' + side });
       }else if(g.category === 'cadet-officer'){
-        const z = ctx.rect('collar_cadet_officer_zone_' + side);
-        if(z) await ctx.place(G.cadetOfficerInsignia(g, 'cloth-bordered-regular'), { pieceAnchor: 'center', at: core.rectCenter(z), rotate: R ? COLLAR.frontRight : COLLAR.frontLeft, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+        // The grade's row is drawn across; turned a quarter more so it runs along the front edge.
+        const s = slot('cadet_officer');
+        if(s) await ctx.place(G.cadetOfficerInsignia(g, 'cloth-bordered-regular'), { pieceAnchor: 'center', at: s.at, rotate: s.deg + (s.deg < 0 ? 90 : -90), z: Z.insignia, role: 'grade', key: 'grade:' + side });
       }else if(g.officer && !g.cadet){
-        const z = ctx.rect('collar_officer_zone_' + side);
-        if(!z) continue;
+        const s = slot('officer');
+        if(!s) continue;
         const id = G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: false });
-        // 1 in from the bottom of the collar, square to its edge. Major and Lt Col: stem parallel to
-        // the ground, pointing away from the neck. Colonel: beak facing forward on both collars.
-        let rotate = R ? COLLAR.bottomRight : COLLAR.bottomLeft;
+        // Major and Lt Col: stem parallel to the ground, pointing away from the neck. Colonel: beak
+        // facing forward on both collars.
+        let rotate = s.deg;
         if(g.key === 'major' || g.key === 'lieutenant-colonel') rotate = R ? 90 : -90;
-        await ctx.place(id, { pieceAnchor: 'center', at: core.rectCenter(z), rotate, flipX: g.key === 'colonel' && R, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+        await ctx.place(id, { pieceAnchor: 'center', at: s.at, rotate, flipX: g.key === 'colonel' && R, z: Z.insignia, role: 'grade', key: 'grade:' + side });
       }
     }
     if(g.category === 'senior-nco'){
