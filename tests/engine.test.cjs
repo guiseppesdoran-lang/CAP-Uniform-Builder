@@ -100,17 +100,14 @@ test('upper rows of miniature medals hang over the drapes below them (11.2.8)', 
   assert.ok(Math.min(...top.map(d => d.z)) > Math.max(...low.map(d => d.z)), 'the upper row draws last');
 });
 
-test('cadet officer shoulder boards lie along the shoulder straps of the Class A coat', async () => {
+test('cadet officer shoulder boards: edge-on on the coat, seen from above with the grade (4.1.5.2.1.3)', async () => {
   const scene = await P.composeUniform(build('blues_a', 'cadet', 'C/Capt'), store());
-  const boards = layersBy(scene, l => /:board-(right|left)$/.test(l.key));
-  assert.equal(boards.length, 2);
-  for(const b of boards){
-    assert.ok(Math.abs(Math.abs(b.rotate) - 14.7) < 0.2, `${b.key} turned with the strap`);
-    assert.ok(b.origin.y > 2.5 && b.origin.y < 3.5, `${b.key} on the shoulder`);
-  }
+  const tops = layersBy(scene, l => l.role === 'epaulet-top');
+  assert.equal(tops.length, 2);
+  assert.ok(tops.every(t => t.y + t.h <= 0), 'above the coat');
   const grade = layersBy(scene, l => l.role === 'grade');
   assert.equal(grade.length, 2);
-  assert.ok(grade.every(g => /metal-regular$/.test(g.id)));
+  assert.ok(grade.every(g => /metal-regular$/.test(g.id) && /^grade:top-/.test(g.key)));
 });
 
 test('hats are drawn on top of the uniform, with the right device', async () => {

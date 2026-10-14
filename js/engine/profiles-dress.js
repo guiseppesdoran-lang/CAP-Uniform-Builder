@@ -377,19 +377,21 @@
     return { left: { mid, deg }, right: { mid: { x: width - mid.x, y: mid.y }, deg: -deg } };
   }
 
-  // Cadet officer shoulder boards (4.1.5.2.1.3). The overlay sheet draws the boards flat above the
-  // shoulders; each board is turned onto its shoulder strap here, centred on the strap.
-  async function cadetBoards(ctx, A){
-    const id = A.cadetOfficer;
-    if(!ctx.has(id)) return;
-    const s = await ctx.spec(id);
-    ctx.layers.push(Object.assign(core.registerAtOrigin(s, Z.epauletLayer, 'garment-layer'), { key: 'layer:' + id, hideGroups: ['epaulet-right', 'epaulet-left'] }));
-    ctx.overlays = ctx.overlays || [];
-    ctx.overlays.push(s);
+  // Cadet officer shoulder boards (4.1.5.2.1.3): edge-on on the coat sheet, and seen from above at
+  // the outer corners with the regular-size grade on each board's rank slot.
+  async function cadetBoards(ctx, A, g, sex){
+    await ctx.overlay(A.cadetOfficer, Z.epauletLayer);
+    const grade = G.cadetOfficerInsignia(g, 'metal-regular');
     for(const side of ['right', 'left']){
-      const st = A.strap[side];
-      const layer = await ctx.place(id, { pieceAnchor: `epaulet_${side}_center`, at: st.mid, rotate: st.deg, z: Z.epauletLayer + 0.1, role: 'garment-layer', key: `layer:${id}:board-${side}`, onlyGroups: [`epaulet-${side}`] });
-      if(layer) layer.noBounds = true;
+      const id = `garment-blues-shoulder-board-top-${sex}-${side}`;
+      if(!ctx.has(id)) continue;
+      const s = await ctx.spec(id);
+      const x = side === 'right' ? 0.25 + s.w / 2 : ctx.base.w - 0.25 - s.w / 2;
+      const view = await ctx.place(id, { pieceAnchor: 'bottom_center', at: { x, y: -0.75 }, z: Z.hat - 1, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above` });
+      const at = view && H.piecePoint(view, s, 'rank_slot_center');
+      if(!at || !grade || !ctx.has(grade)) continue;
+      // The cadet grade's row (discs, diamonds) runs along the board.
+      await ctx.place(grade, { pieceAnchor: 'center', at, z: Z.hat - 0.5, role: 'grade', key: 'grade:top-' + side });
     }
   }
 
@@ -417,7 +419,7 @@
     if(semi && !g.cadet) ctx.note('The USAF-style semi-formal uniform is worn by cadets only (CAPR 39-1, 4.1.3 and 4.1.4)');
 
     // Layers: boards, epaulets and lapel insignia drawn to the coat (4.1.5.2.1, 4.1.5.2.2.1).
-    if(g.category === 'cadet-officer') await cadetBoards(ctx, A);
+    if(g.category === 'cadet-officer') await cadetBoards(ctx, A, g, sex);
     else if(!semi && g.general) await ctx.overlay(`${A.layer}-general-officer`);
     else if(!semi && isOfficerLike(g)) await ctx.overlay(`${A.layer}-senior-officer`);
     else if(!semi && g.category === 'senior-nco') await ctx.overlay(`${A.layer}-senior-nco-lapel`);
@@ -439,11 +441,6 @@
       for(const side of ['right', 'left']){
         const at = ctx.point('lapel_insignia_' + side);
         if(at) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: 'center', at, z: Z.insignia, role: 'grade', key: 'grade:' + side });
-      }
-    }else if(g.category === 'cadet-officer'){
-      for(const side of ['right', 'left']){
-        const s = A.strap[side];
-        await ctx.place(G.cadetOfficerInsignia(g, 'metal-regular'), { pieceAnchor: 'center', at: s.mid, rotate: s.deg, z: Z.insignia + 0.5, role: 'grade', key: 'grade:' + side });
       }
     }else if(!semi && g.category === 'senior-nco'){
       const size = sex === 'male' ? '4' : (b.opt.chevron === '3.5' ? '3.5' : '4');
