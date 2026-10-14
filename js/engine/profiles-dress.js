@@ -277,6 +277,15 @@
     await ctx.overlay(fg, Z.badge + 0.5);
     const ins = g.category === 'cadet-officer' ? 'lapel-cap' : g.category === 'senior-nco' ? 'lapel-us-nco' : isOfficerLike(g) ? 'lapel-us' : null;
     if(ins) await ctx.overlay(`${A.layer}-${ins}`, LAPEL_Z);
+    // Lapel insignia and cadet NCO chevrons sit halfway up the seam, resting on it (4.1.5.2.2.1).
+    for(const side of ['right', 'left']){
+      const p1 = ctx.point(`gorge_seam_${side}_p1`), mid = ctx.point(`gorge_seam_${side}_mid`), p2 = ctx.point(`gorge_seam_${side}_p2`);
+      if(!p1 || !mid || !p2) continue;
+      // Drawn just below the seam so the insignia resting on it stays visible.
+      const dn = pt => ({ x: pt.x, y: pt.y + 0.6 });
+      ctx.measure(dn(p1), dn(mid), '½');
+      ctx.measure(dn(mid), dn(p2), '½');
+    }
   }
 
   // The epaulet sleeves seen from above, drawn above the uniform at its outer corners (the front
@@ -313,8 +322,12 @@
   // Shoulder cord on the wearer's left shoulder (9.3): the cord's neck end on the strap axis, the
   // cord turned to follow it and moved 1/8 in toward the neck.
   async function shoulderCord(ctx, b, axis){
-    if(!b.cord || !axis) return;
+    if(!b.cord) return;
     const id = String(b.cord).startsWith('cord-') ? b.cord : 'cord-' + String(b.cord).replace(/_/g, '-');
+    // The garment's own cord, drawn along its left armhole seam and passing under the epaulet.
+    const own = ctx.base && `${ctx.base.id}-${id}`;
+    if(own && ctx.has(own)){ await ctx.overlay(own, Z.epauletLayer - 0.5); return; }
+    if(!axis) return;
     if(!ctx.has(id)){ ctx.note('No artwork for the selected shoulder cord'); return; }
     const [n, a] = axis;
     const dx = a[0] - n[0], dy = a[1] - n[1];
@@ -467,8 +480,9 @@
     // Grade.
     if(g.category === 'cadet-nco'){
       for(const side of ['right', 'left']){
-        const at = ctx.point('lapel_insignia_' + side);
-        if(at) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: 'center', at, z: semi ? Z.insignia : LAPEL_Z, role: 'grade', key: 'grade:' + side });
+        const rest = !semi && ctx.point('lapel_insignia_rest_' + side);
+        const at = rest || ctx.point('lapel_insignia_' + side);
+        if(at) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: rest ? 'bottom_center' : 'center', at, z: semi ? Z.insignia : LAPEL_Z, role: 'grade', key: 'grade:' + side });
       }
     }else if(!semi && g.category === 'senior-nco'){
       const size = sex === 'male' ? '4' : (b.opt.chevron === '3.5' ? '3.5' : '4');
@@ -479,8 +493,9 @@
     }else if(!semi && g.category === 'senior-none' && g.track === 'nco'){
       // Adults without grade on the NCO track wear CAP collar insignia (1.4.2.1).
       for(const side of ['right', 'left']){
-        const at = ctx.point('lapel_insignia_' + side);
-        if(at) await ctx.place('collar-insignia-cap-metal', { pieceAnchor: 'center', at, z: LAPEL_Z, role: 'grade', key: 'collar:' + side });
+        const rest = ctx.point('lapel_insignia_rest_' + side);
+        const at = rest || ctx.point('lapel_insignia_' + side);
+        if(at) await ctx.place('collar-insignia-cap-metal', { pieceAnchor: rest ? 'bottom_center' : 'center', at, z: LAPEL_Z, role: 'grade', key: 'collar:' + side });
       }
     }
 
