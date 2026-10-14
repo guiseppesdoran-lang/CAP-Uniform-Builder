@@ -219,7 +219,8 @@
         theta = f && typeof f.deg === 'number' ? f.deg + 90 : 0;
         if(side === 'left' && theta < -180) theta += 360;
       }
-      await ctx.place(id, { pieceAnchor: 'center', at, rotate: theta, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+      // The colonel's eagle is mirrored on the wearer's right so the beak faces forward (4.1.6.1.2).
+      await ctx.place(id, { pieceAnchor: 'center', at, rotate: theta, flipX: side === 'right' && /colonel-(bullion|thread)$/.test(id) && !/lieutenant/.test(id), z: Z.insignia, role: 'grade', key: 'grade:' + side });
     }
   }
 
@@ -241,10 +242,17 @@
     const sleeveId = epauletSleeveId(g);
     if(!sleeveId || !ctx.has(sleeveId)) return;
     const s = await ctx.spec(sleeveId);
+    // The eagle faces the art's left; turned flat on the wearer's right shoulder it would face
+    // backward, so there it is redrawn mirrored (beak forward on both shoulders).
+    const eagle = g.key === 'colonel' && !g.cadet ? G.seniorOfficerInsignia(g, 'thread') : null;
+    const ins = core.anchor(s, 'insignia_center');
     for(const side of ['right', 'left']){
       const cx = side === 'right' ? 0.25 + s.h / 2 : ctx.base.w - 0.25 - s.h / 2;
       const cy = -(o.gap == null ? 0.75 : o.gap) - s.w / 2;
-      await ctx.place(sleeveId, { pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: side === 'right' ? 90 : -90, z: Z.hat - 1, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} ${o.label || 'epaulet'}, seen from above` });
+      const mirror = side === 'right' && eagle && ins && ctx.has(eagle);
+      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: side === 'right' ? 90 : -90, z: Z.hat - 1, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} ${o.label || 'epaulet'}, seen from above` }, mirror ? { hideGroups: ['grade'] } : {}));
+      // Turned +90, the sleeve's downward offset to the insignia points to the viewer's left.
+      if(mirror) await ctx.place(eagle, { pieceAnchor: 'center', at: { x: cx - (ins.y - s.h / 2), y: cy }, rotate: 90, flipX: true, z: Z.hat - 0.5, role: 'grade', key: 'grade:top-right' });
     }
   }
 
