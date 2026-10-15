@@ -1,0 +1,1194 @@
+[
+ {
+  "section": "Base garments",
+  "label": "Mess dress, male",
+  "ref": "4.1.1",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Mess dress, female",
+  "ref": "4.1.2",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Mess dress skirt, female: A-line (primary) and straight with split (optional)",
+  "ref": "4.1.2.3",
+  "status": "built",
+  "files": 2,
+  "note": "Lengths and widths estimated (no reg figure shows the lower skirt)."
+ },
+ {
+  "section": "Base garments",
+  "label": "Semi-formal (cadet), male, new-style coat",
+  "ref": "4.1.3.2",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Semi-formal (cadet), female",
+  "ref": "4.1.4",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Service dress Class A, male, new style",
+  "ref": "4.1.5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Service dress Class A, female, new style",
+  "ref": "4.1.9",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Class B, male, short sleeve",
+  "ref": "4.1.11",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Class B, male, long sleeve",
+  "ref": "4.1.11",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Class B, female, short sleeve",
+  "ref": "4.1.12",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Class B, female, long sleeve",
+  "ref": "4.1.12",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Corporate service dress blazer, male",
+  "ref": "4.2.3",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Corporate service dress blazer, female",
+  "ref": "4.2.4",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Aviator shirt, male, short",
+  "ref": "4.2.5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Aviator shirt, male, long",
+  "ref": "4.2.5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Aviator shirt, female, short",
+  "ref": "4.2.6",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Aviator shirt, female, long",
+  "ref": "4.2.6",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Overblouse, female (short)",
+  "ref": "4.2.6.1",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Overblouse, female, long sleeve",
+  "ref": "4.2.6.1",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "White dress shirt / white shell (corporate semi-formal, blazer)",
+  "ref": "4.2.1.2, 4.2.2.2, 4.2.3.2, 4.2.4.2",
+  "status": "skip",
+  "files": 0,
+  "note": "Plain white, nothing customizable sits on it. Revisit only if the white shell needs a different silhouette (no collar, no tie tab)."
+ },
+ {
+  "section": "Base garments",
+  "label": "ABU coat (authorized until 31 Oct 2028, ICL 25-06)",
+  "ref": "5.1.1",
+  "status": "built",
+  "files": 1,
+  "note": "One coat for both genders; ABU_female raster exists in images/base."
+ },
+ {
+  "section": "Base garments",
+  "label": "OCP coat (ICL 25-06, effective 1 Nov 2025)",
+  "ref": "7.1",
+  "status": "built",
+  "files": 1,
+  "note": "One coat for both genders."
+ },
+ {
+  "section": "Base garments",
+  "label": "Corporate field uniform coat (dark blue, BDU style)",
+  "ref": "5.2.1",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Flight duty uniform (FDU)",
+  "ref": "8.2",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Corporate flight duty uniform (CFDU)",
+  "ref": "8.3",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Base garments",
+  "label": "Corporate working uniform / polo",
+  "ref": "5.3",
+  "status": "skip",
+  "files": 0,
+  "note": "Decided not worth building."
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Nametag, Class A coat male: cadet + officer/NCO",
+  "ref": "4.1.5.2",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Nametag, Class A coat female: cadet + officer/NCO",
+  "ref": "4.1.9",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Nametag, Class B male: adult + cadet, short and long",
+  "ref": "4.1.11",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Nametag, Class B female: adult + cadet, short and long",
+  "ref": "4.1.12",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Nameplate, blazer: adult + cadet",
+  "ref": "4.2.3.1.1.2",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Nameplate, 3-line (adult + cadet)",
+  "ref": "4.1.5.2",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Nametag, aviator shirt (adult gray, same plate as the 3-line nameplate)",
+  "ref": "4.2.5.1.2.1, 4.2.6.2.6.1.1",
+  "status": "built",
+  "files": 1,
+  "note": "Aviator shirts carry a nameplate-slot 3.375 x 0.75 in on the wearer's right pocket (Corp Blues chat)."
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Nametag, corporate field uniform / ABU / OCP (name tape)",
+  "ref": "5.1.1.1, 5.2.1.1, 7.1.1.1.2",
+  "status": "skip",
+  "files": 0,
+  "note": "Blank name-tape rectangles are already in the coat assets; text is added by the builder."
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Nametag, FDU / CFDU (black leather or blue cloth)",
+  "ref": "8.2.4.1, 8.3.4.1",
+  "status": "built",
+  "files": 2,
+  "note": "Landmark only, inside suit assets."
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Blank cloth name tape + CAP tape (ultramarine and dark blue), blue field / fleeces",
+  "ref": "A6-3, 10.9.8-9",
+  "status": "built",
+  "files": 4,
+  "note": "Shape, border, stitch and text_zone only; no lettering."
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Blank flight suit name tags: black leather, dark blue embroidered, jacket",
+  "ref": "A6-3, 8.2.4.1, 8.3.4.1",
+  "status": "built",
+  "files": 3,
+  "note": "name / grade / CAP / badge zones as landmarks."
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Collar / lapel insignia: CAP (metal, cloth), U.S., circled U.S.",
+  "ref": "A6-5, 4.1.5.2.2.1",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Class A cadet officer shoulder boards + lapel letters, male",
+  "ref": "4.1.5.2",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Class A cadet officer shoulder boards + lapel letters, female",
+  "ref": "4.1.9",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Class A senior officer layer, male + female",
+  "ref": "4.1.5.3",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Class A general officer layer, male + female",
+  "ref": "4.1.5.3",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Class A senior NCO lapel layer, male + female",
+  "ref": "4.1.5.3",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Class B epaulet sleeves (officer gray, cadet officer blue), male+female, short+long",
+  "ref": "4.1.11, 4.1.12",
+  "status": "built",
+  "files": 8,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Mess dress officer shoulder boards, male + female",
+  "ref": "4.1.1.1, 4.1.2.1",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Mess dress officer sleeve braid, male + female",
+  "ref": "4.1.1.1, 4.1.2.1",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Mess dress general officer sleeve braid, male + female",
+  "ref": "4.1.1.1, 4.1.2.1",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Regimental tie, black bow tie, tie clasps",
+  "ref": "4.2.1.3, 4.2.3.4",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Tie choice, corporate blazer: CAP regimental or AF blue tie",
+  "ref": "4.2.3.4",
+  "status": "built",
+  "files": 0,
+  "note": "Two options per reg: regimental is its own asset, blue is the base. Service dress has one tie option (blue), so no swap there."
+ },
+ {
+  "section": "Layers on garments",
+  "label": "Women's tie tab (blue satin inverted-V)",
+  "ref": "4.1.4.4, 4.1.9.7, 4.2.4.3",
+  "status": "skip",
+  "files": 0,
+  "note": "Only one option in the reg, mandatory (none with the white shell); drawn inside the female garments."
+ },
+ {
+  "section": "Layers on garments",
+  "label": "CAP Crest (standalone) and CAP seal",
+  "ref": "4.2.3.1.1",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Layers on garments",
+  "label": "CAP Crest alternates (CSAG, command council, national board, NEC): badges worn in place of the crest on the blazer",
+  "ref": "4.2.3.1.1.1",
+  "status": "built",
+  "files": 4,
+  "note": "Badge art exists (enamel set); the blazer only needs to expose the crest position as the slot they replace the crest in."
+ },
+ {
+  "section": "Layers on garments",
+  "label": "CAP command patch",
+  "ref": "8.2.4.2, 8.3.4.2",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer second-lieutenant: metal + cloth-bordered + OCP square + thread",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer first-lieutenant: metal + cloth-bordered + OCP square + thread",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer captain: metal + cloth-bordered + OCP square + thread",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer major: metal + cloth-bordered + OCP square + thread",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer lieutenant-colonel: metal + cloth-bordered + OCP square + thread",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer colonel: metal + cloth-bordered + OCP square + thread",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO airman: metal + cloth-bordered + OCP square",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO airman-first-class: metal + cloth-bordered + OCP square",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO senior-airman: metal + cloth-bordered + OCP square",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO staff-sergeant: metal + cloth-bordered + OCP square",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO technical-sergeant: metal + cloth-bordered + OCP square",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO master-sergeant: metal + cloth-bordered + OCP square",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO senior-master-sergeant: metal + cloth-bordered + OCP square",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO chief-master-sergeant: metal + cloth-bordered + OCP square",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO master-sergeant with first sergeant diamond",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO senior-master-sergeant with first sergeant diamond",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet NCO chief-master-sergeant with first sergeant diamond",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer flight-officer",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer technical-flight-officer",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer senior-flight-officer",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer second-lieutenant",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer first-lieutenant",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer captain",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer major",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 17,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer lieutenant-colonel",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer colonel",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 4,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer brigadier-general",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 7,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior officer major-general",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 13,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior NCO staff-sergeant chevron (3.5 in and 4 in)",
+  "ref": "Att. 5, ICL 25-02 (h)",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior NCO technical-sergeant chevron (3.5 in and 4 in)",
+  "ref": "Att. 5, ICL 25-02 (h)",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior NCO master-sergeant chevron (3.5 in and 4 in)",
+  "ref": "Att. 5, ICL 25-02 (h)",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior NCO senior-master-sergeant chevron (3.5 in and 4 in)",
+  "ref": "Att. 5, ICL 25-02 (h)",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior NCO chief-master-sergeant chevron (3.5 in and 4 in)",
+  "ref": "Att. 5, ICL 25-02 (h)",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior NCO command-chief chevron (3.5 in and 4 in)",
+  "ref": "Att. 5, ICL 25-02 (h)",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer blue epaulet sleeve second-lieutenant",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer blue epaulet sleeve first-lieutenant",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer blue epaulet sleeve captain",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer blue epaulet sleeve major",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer blue epaulet sleeve lieutenant-colonel",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Cadet officer blue epaulet sleeve colonel",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve flight-officer",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve technical-flight-officer",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve senior-flight-officer",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve second-lieutenant",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve first-lieutenant",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve captain",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve major",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve lieutenant-colonel",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve colonel",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve brigadier-general",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Senior gray epaulet sleeve major-general",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Grade insignia",
+  "label": "Colonel eagle (senior officer insignia and gray epaulet sleeve) is built from low-res source art",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 0,
+  "note": "Ethan: done. Misc Artwork chat: source is ~100 px wide. Ethan: being worked on. Files exist, so check quality before import."
+ },
+ {
+  "section": "Grade insignia",
+  "label": "\"CAP\" patch for adults without grade",
+  "ref": "Att. 5",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Headgear",
+  "label": "Flight cap: cadet, officer, general (CAPR 39-1 Att. 5 measured)",
+  "ref": "6.2.2",
+  "status": "built",
+  "files": 3,
+  "note": ""
+ },
+ {
+  "section": "Headgear",
+  "label": "Service cap, men's wheel cap and women's bucket cap (general, field grade, officer/NCO, cadet officer)",
+  "ref": "6.2.1",
+  "status": "built",
+  "files": 8,
+  "note": ""
+ },
+ {
+  "section": "Headgear",
+  "label": "NCO cap device on the flight cap (ICL 25-02 (g))",
+  "ref": "6.2.2.2",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Headgear",
+  "label": "Cap devices: officer service cap, cadet officer service cap, officer/general flight cap",
+  "ref": "6.2.1.1.1, 6.2.2.2",
+  "status": "built",
+  "files": 3,
+  "note": "Low fidelity: only Fig A5-8 (about 190 px) as source; sizes estimated."
+ },
+ {
+  "section": "Headgear",
+  "label": "Patrol cap + baseball cap, front and back (ABU/OCP/CFU) as base-art composites only",
+  "ref": "6.2.7-6.2.9, 7.1.1.8",
+  "status": "built",
+  "files": 0,
+  "note": "By design these are part of each uniform (drawn in the coat art by base-art/hats.js), not separate assets. Covers the blue ballcap/navy tactical hat on ABU and CFU."
+ },
+ {
+  "section": "Headgear",
+  "label": "Beret (navy blue, national blue beret)",
+  "ref": "6.2.3, 9.2.3",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: not needed."
+ },
+ {
+  "section": "Headgear",
+  "label": "Blue winter cap, green watch cap, black watch cap",
+  "ref": "6.2.4-6.2.6",
+  "status": "skip",
+  "files": 0,
+  "note": "No customization (no grade insignia worn on them)."
+ },
+ {
+  "section": "Headgear",
+  "label": "Blue boonie hat (corporate field uniform)",
+  "ref": "6.2.10",
+  "status": "built",
+  "files": 0,
+  "note": "Built inside the CFU coat image by the Utility chat (boonie_hat_front/back + insignia zone), not as a separate asset."
+ },
+ {
+  "section": "Headgear",
+  "label": "ABU cap",
+  "ref": "5.1.1.6",
+  "status": "built",
+  "files": 0,
+  "note": "Covered by the ABU patrol cap in the ABU composite."
+ },
+ {
+  "section": "Outer garments",
+  "label": "Green flight jacket + blue flight jacket",
+  "ref": "6.1.7, 8.2.7",
+  "status": "built",
+  "files": 2,
+  "note": ""
+ },
+ {
+  "section": "Outer garments",
+  "label": "CAP command scarf",
+  "ref": "8.2.6",
+  "status": "built",
+  "files": 1,
+  "note": ""
+ },
+ {
+  "section": "Outer garments",
+  "label": "Pullover sweater (blue)",
+  "ref": "6.1.1",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Outer garments",
+  "label": "Cardigan sweater (blue)",
+  "ref": "6.1.2",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Outer garments",
+  "label": "Lightweight blue jacket (+ general officer version, ICL 25-02)",
+  "ref": "6.1.3",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Outer garments",
+  "label": "Black leather jacket",
+  "ref": "6.1.5",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Outer garments",
+  "label": "Light blue windbreaker",
+  "ref": "6.1.6",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Outer garments",
+  "label": "Topcoat / all-weather coat",
+  "ref": "6.1.8",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Outer garments",
+  "label": "ABU Gore-Tex parka",
+  "ref": "6.1.9",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Outer garments",
+  "label": "Green fleece",
+  "ref": "6.1.10",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Outer garments",
+  "label": "Blue field jacket",
+  "ref": "6.1.13",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Outer garments",
+  "label": "Black fleece",
+  "ref": "6.1.14",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Outer garments",
+  "label": "Blue Gore-Tex parka (ICL 25-02 (d))",
+  "ref": "ICL 25-02",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: outer garments are out of scope; the builder covers the common uniforms, not what is worn over them."
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "Ribbons (CAP + military)",
+  "ref": "",
+  "status": "built",
+  "files": 370,
+  "note": "CAPR 39-3 list not cross-checked yet."
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "Military ribbons",
+  "ref": "",
+  "status": "built",
+  "files": 302,
+  "note": "Builder raster catalog: images/military-ribbons (354) + variants (321, composed from base ribbon + devices)."
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "CAP medals and miniatures",
+  "ref": "",
+  "status": "built",
+  "files": 76,
+  "note": "Builder raster catalog: images/medals (37) + images/mini_medals (434)."
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "Military medals (full size and miniature)",
+  "ref": "",
+  "status": "built",
+  "files": 840,
+  "note": "Builder raster catalog: images/military-full-size-medals (246) + military-mini-medals (239)."
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "Ribbon devices",
+  "ref": "",
+  "status": "built",
+  "files": 128,
+  "note": ""
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "Cloth aviation/occupational badges",
+  "ref": "",
+  "status": "built",
+  "files": 37,
+  "note": ""
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "Field badges",
+  "ref": "",
+  "status": "built",
+  "files": 38,
+  "note": ""
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "Mini badges",
+  "ref": "",
+  "status": "built",
+  "files": 27,
+  "note": ""
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "Enamel badges",
+  "ref": "",
+  "status": "built",
+  "files": 90,
+  "note": ""
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "Optional unit / school / event patches (e.g. Hawk Mountain)",
+  "ref": "Att. 8",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: out of scope. The CAP command patch and ES patch stay (uniform-defined, FDU/CFDU)."
+ },
+ {
+  "section": "Badges, ribbons, devices, patches (counts, not checked against reg lists)",
+  "label": "Military badges / medals",
+  "ref": "",
+  "status": "built",
+  "files": 1837,
+  "note": ""
+ },
+ {
+  "section": "Misc",
+  "label": "Honor Guard distinctives (ascot, pistol belt, white gloves, parade rifle, cap device)",
+  "ref": "9.6.7",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: Honor Guard is covered by the academy patch; the uniform itself is service dress / blue service."
+ },
+ {
+  "section": "Misc",
+  "label": "Soaring and ballooning uniforms",
+  "ref": "9.1",
+  "status": "skip",
+  "files": 0,
+  "note": "CAPR 39-1 only points to CAPR 70-1 para 9.8.2 and defines nothing itself."
+ },
+ {
+  "section": "Misc",
+  "label": "Shoulder cord, Gold: National CAC",
+  "ref": "9.3.1.1",
+  "status": "built",
+  "files": 1,
+  "note": "Cadets only except aide de camp. Left shoulder seam, under the epaulet. Class A/B only."
+ },
+ {
+  "section": "Misc",
+  "label": "Shoulder cord, Blue: Region CAC",
+  "ref": "9.3.1.2",
+  "status": "built",
+  "files": 1,
+  "note": "Cadets only except aide de camp. Left shoulder seam, under the epaulet. Class A/B only."
+ },
+ {
+  "section": "Misc",
+  "label": "Shoulder cord, Red: Wing CAC",
+  "ref": "9.3.1.3",
+  "status": "built",
+  "files": 1,
+  "note": "Cadets only except aide de camp. Left shoulder seam, under the epaulet. Class A/B only."
+ },
+ {
+  "section": "Misc",
+  "label": "Shoulder cord, Kelly green: Group CAC",
+  "ref": "9.3.1.4",
+  "status": "built",
+  "files": 1,
+  "note": "Cadets only except aide de camp. Left shoulder seam, under the epaulet. Class A/B only."
+ },
+ {
+  "section": "Misc",
+  "label": "Shoulder cord, White: drill / color guard",
+  "ref": "9.3.2",
+  "status": "built",
+  "files": 1,
+  "note": "Cadets only except aide de camp. Left shoulder seam, under the epaulet. Class A/B only."
+ },
+ {
+  "section": "Misc",
+  "label": "Shoulder cord, Silver: NHGA / RHGA / unit honor guard",
+  "ref": "9.3.3",
+  "status": "built",
+  "files": 1,
+  "note": "Cadets only except aide de camp. Left shoulder seam, under the epaulet. Class A/B only."
+ },
+ {
+  "section": "Misc",
+  "label": "Shoulder cord, USAF aide de camp cord (senior and cadet)",
+  "ref": "9.3.4",
+  "status": "built",
+  "files": 1,
+  "note": "Cadets only except aide de camp. Left shoulder seam, under the epaulet. Class A/B only."
+ },
+ {
+  "section": "Not yet checked",
+  "label": "Badge and ribbon completeness: every badge in CAPR 39-1 Att. 4 and every ribbon/device in CAPR 39-3 exists as an asset",
+  "ref": "Att. 4, 39-3",
+  "status": "skip",
+  "files": 0,
+  "note": "Ethan: badges are covered by the badge chats. File counts only; not cross-checked against the reg lists."
+ }
+]
