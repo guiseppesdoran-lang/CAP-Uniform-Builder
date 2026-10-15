@@ -1,0 +1,107 @@
+{
+ "asset_id": "medal-unit-citation-award-miniature",
+ "name": "Unit Citation Award (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.8303
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  83.03
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_unitci01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8303 in (was 0.6625).",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   83.03
+  ],
+  "center": [
+   31.25,
+   41.52
+  ],
+  "left_edge": [
+   0,
+   41.52
+  ],
+  "right_edge": [
+   62.5,
+   41.52
+  ],
+  "ribbon_attach": [
+   31.88,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-unit-citation-award",
+  "spec": "../ribbons/ribbon-unit-citation-award.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-unit-citation-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9865,
+  "threshold": 0.95,
+  "colour_mae_0_255": 24.6,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#151411",
+  "#4e554e",
+  "#8a867f",
+  "#e4e5e1"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "unitci02",
+   "unitci03",
+   "unitci04",
+   "unitci05",
+   "unitci06",
+   "unitci07",
+   "unitci08",
+   "unitci09",
+   "unitci10",
+   "unitci11",
+   "unitci12",
+   "unitci13",
+   "unitci14",
+   "unitci16",
+   "unitci17",
+   "unitci18",
+   "unitci21"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 0.625,
+  "h": 0.6625
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-unit-citation-miniature-medal",
+  "local_photo": "medals-work/ref-hires/unit-citation.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 189,
+   "h": 250
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 4.5
+}

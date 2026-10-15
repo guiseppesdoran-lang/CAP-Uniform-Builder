@@ -1,0 +1,171 @@
+{
+ "asset_id": "mil-ribbon-air-force-commendation",
+ "name": "Air and Space Commendation Medal",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "003a5e",
+    "fraction": 0.0636,
+    "x0_in": 0,
+    "x1_in": 0.0875
+   },
+   {
+    "index": 1,
+    "hex": "a08346",
+    "fraction": 0.0137,
+    "x0_in": 0.0875,
+    "x1_in": 0.1063
+   },
+   {
+    "index": 2,
+    "hex": "e2b41e",
+    "fraction": 0.2636,
+    "x0_in": 0.1063,
+    "x1_in": 0.4687
+   },
+   {
+    "index": 3,
+    "hex": "003e51",
+    "fraction": 0.0273,
+    "x0_in": 0.4687,
+    "x1_in": 0.5063
+   },
+   {
+    "index": 4,
+    "hex": "f2c75c",
+    "fraction": 0.0454,
+    "x0_in": 0.5063,
+    "x1_in": 0.5687
+   },
+   {
+    "index": 5,
+    "hex": "2f3b77",
+    "fraction": 0.1955,
+    "x0_in": 0.5687,
+    "x1_in": 0.8375
+   },
+   {
+    "index": 6,
+    "hex": "f2c75c",
+    "fraction": 0.0454,
+    "x0_in": 0.8375,
+    "x1_in": 0.8999
+   },
+   {
+    "index": 7,
+    "hex": "808080",
+    "fraction": 0.0273,
+    "x0_in": 0.8999,
+    "x1_in": 0.9375
+   },
+   {
+    "index": 8,
+    "hex": "e2b41e",
+    "fraction": 0.2682,
+    "x0_in": 0.9375,
+    "x1_in": 1.3062
+   },
+   {
+    "index": 9,
+    "hex": "2f3b77",
+    "fraction": 0.05,
+    "x0_in": 1.3062,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes_framed_or_photo",
+ "quality": {
+  "color_source": "measured raster, snapped to the repo palette",
+  "geometry_source": "vendor raster (mid-height columns)",
+  "snap": {
+   "stripes_before": 10,
+   "stripes_after": 10,
+   "max_snap_delta": 18.6
+  },
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/air_force_commendation.jpg"
+  ],
+  "residual": {
+   "vertical": 31.9,
+   "horizontal": 78.7,
+   "central_vertical": 17.9
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": true,
+  "border_frame_detected": true,
+  "fidelity": "approximate",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+ },
+ "authorized_services": [
+  "AIR_FORCE",
+  "SPACE_FORCE"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/air_force_commendation.jpg",
+   "award_ids": [
+    "air_force_commendation"
+   ]
+  }
+ ],
+ "award_names": [
+  "Air and Space Commendation Medal"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 31.9,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

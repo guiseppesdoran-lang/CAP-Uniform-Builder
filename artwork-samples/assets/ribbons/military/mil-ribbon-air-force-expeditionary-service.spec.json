@@ -1,0 +1,205 @@
+{
+ "asset_id": "mil-ribbon-air-force-expeditionary-service",
+ "name": "air force expeditionary",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "7bafd4",
+    "fraction": 0.0136,
+    "x0_in": 0,
+    "x1_in": 0.0187
+   },
+   {
+    "index": 1,
+    "hex": "53749d",
+    "fraction": 0.0364,
+    "x0_in": 0.0187,
+    "x1_in": 0.0688
+   },
+   {
+    "index": 2,
+    "hex": "ba0c2f",
+    "fraction": 0.0409,
+    "x0_in": 0.0688,
+    "x1_in": 0.125
+   },
+   {
+    "index": 3,
+    "hex": "e2b41e",
+    "fraction": 0.0773,
+    "x0_in": 0.125,
+    "x1_in": 0.2313
+   },
+   {
+    "index": 4,
+    "hex": "b0aa7e",
+    "fraction": 0.0182,
+    "x0_in": 0.2313,
+    "x1_in": 0.2563
+   },
+   {
+    "index": 5,
+    "hex": "2f3b77",
+    "fraction": 0.2,
+    "x0_in": 0.2563,
+    "x1_in": 0.5313
+   },
+   {
+    "index": 6,
+    "hex": "bbb9b5",
+    "fraction": 0.05,
+    "x0_in": 0.5313,
+    "x1_in": 0.6
+   },
+   {
+    "index": 7,
+    "hex": "53749d",
+    "fraction": 0.1363,
+    "x0_in": 0.6,
+    "x1_in": 0.7875
+   },
+   {
+    "index": 8,
+    "hex": "bbb9b5",
+    "fraction": 0.05,
+    "x0_in": 0.7875,
+    "x1_in": 0.8562
+   },
+   {
+    "index": 9,
+    "hex": "2f3b77",
+    "fraction": 0.2046,
+    "x0_in": 0.8562,
+    "x1_in": 1.1375
+   },
+   {
+    "index": 10,
+    "hex": "e2b41e",
+    "fraction": 0.0863,
+    "x0_in": 1.1375,
+    "x1_in": 1.2562
+   },
+   {
+    "index": 11,
+    "hex": "ff8040",
+    "fraction": 0.0137,
+    "x0_in": 1.2562,
+    "x1_in": 1.275
+   },
+   {
+    "index": 12,
+    "hex": "ba0c2f",
+    "fraction": 0.0227,
+    "x0_in": 1.275,
+    "x1_in": 1.3062
+   },
+   {
+    "index": 13,
+    "hex": "6f263d",
+    "fraction": 0.0136,
+    "x0_in": 1.3062,
+    "x1_in": 1.325
+   },
+   {
+    "index": 14,
+    "hex": "53749d",
+    "fraction": 0.0364,
+    "x0_in": 1.325,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes_framed_or_photo",
+ "quality": {
+  "color_source": "measured raster, snapped to the repo palette",
+  "geometry_source": "vendor raster (mid-height columns)",
+  "snap": {
+   "stripes_before": 15,
+   "stripes_after": 15,
+   "max_snap_delta": 20.2
+  },
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/air_force_expeditionary_service.jpg"
+  ],
+  "residual": {
+   "vertical": 30.2,
+   "horizontal": 88.6,
+   "central_vertical": 17.8
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": true,
+  "border_frame_detected": true,
+  "fidelity": "approximate",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+ },
+ "authorized_services": [
+  "AIR_FORCE"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/air_force_expeditionary_service.jpg",
+   "award_ids": [
+    "air_force_expeditionary_service"
+   ]
+  }
+ ],
+ "award_names": [
+  "air force expeditionary"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 30.2,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

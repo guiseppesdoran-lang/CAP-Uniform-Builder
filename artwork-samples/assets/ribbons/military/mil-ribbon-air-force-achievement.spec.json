@@ -1,0 +1,269 @@
+{
+ "asset_id": "mil-ribbon-air-force-achievement",
+ "name": "Air and Space Achievement Medal",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "a3c7d2",
+    "fraction": 0.0136,
+    "x0_in": 0,
+    "x1_in": 0.0187
+   },
+   {
+    "index": 1,
+    "hex": "2f3b77",
+    "fraction": 0.0409,
+    "x0_in": 0.0187,
+    "x1_in": 0.0749
+   },
+   {
+    "index": 2,
+    "hex": "9ea2a2",
+    "fraction": 0.0182,
+    "x0_in": 0.0749,
+    "x1_in": 0.1
+   },
+   {
+    "index": 3,
+    "hex": "53749d",
+    "fraction": 0.0228,
+    "x0_in": 0.1,
+    "x1_in": 0.1313
+   },
+   {
+    "index": 4,
+    "hex": "9ea2a2",
+    "fraction": 0.0181,
+    "x0_in": 0.1313,
+    "x1_in": 0.1562
+   },
+   {
+    "index": 5,
+    "hex": "53749d",
+    "fraction": 0.0228,
+    "x0_in": 0.1562,
+    "x1_in": 0.1875
+   },
+   {
+    "index": 6,
+    "hex": "9ea2a2",
+    "fraction": 0.0272,
+    "x0_in": 0.1875,
+    "x1_in": 0.225
+   },
+   {
+    "index": 7,
+    "hex": "2f3b77",
+    "fraction": 0.0455,
+    "x0_in": 0.225,
+    "x1_in": 0.2875
+   },
+   {
+    "index": 8,
+    "hex": "bbb9b5",
+    "fraction": 0.1727,
+    "x0_in": 0.2875,
+    "x1_in": 0.525
+   },
+   {
+    "index": 9,
+    "hex": "2f3b77",
+    "fraction": 0.0546,
+    "x0_in": 0.525,
+    "x1_in": 0.6
+   },
+   {
+    "index": 10,
+    "hex": "9ea2a2",
+    "fraction": 0.0227,
+    "x0_in": 0.6,
+    "x1_in": 0.6313
+   },
+   {
+    "index": 11,
+    "hex": "2f3b77",
+    "fraction": 0.0273,
+    "x0_in": 0.6313,
+    "x1_in": 0.6688
+   },
+   {
+    "index": 12,
+    "hex": "9ea2a2",
+    "fraction": 0.0318,
+    "x0_in": 0.6688,
+    "x1_in": 0.7125
+   },
+   {
+    "index": 13,
+    "hex": "53749d",
+    "fraction": 0.0318,
+    "x0_in": 0.7125,
+    "x1_in": 0.7562
+   },
+   {
+    "index": 14,
+    "hex": "9ea2a2",
+    "fraction": 0.0227,
+    "x0_in": 0.7562,
+    "x1_in": 0.7875
+   },
+   {
+    "index": 15,
+    "hex": "2f3b77",
+    "fraction": 0.0546,
+    "x0_in": 0.7875,
+    "x1_in": 0.8625
+   },
+   {
+    "index": 16,
+    "hex": "bbb9b5",
+    "fraction": 0.1727,
+    "x0_in": 0.8625,
+    "x1_in": 1.1
+   },
+   {
+    "index": 17,
+    "hex": "2f3b77",
+    "fraction": 0.0455,
+    "x0_in": 1.1,
+    "x1_in": 1.1626
+   },
+   {
+    "index": 18,
+    "hex": "9ea2a2",
+    "fraction": 0.0227,
+    "x0_in": 1.1626,
+    "x1_in": 1.1938
+   },
+   {
+    "index": 19,
+    "hex": "53749d",
+    "fraction": 0.0227,
+    "x0_in": 1.1938,
+    "x1_in": 1.225
+   },
+   {
+    "index": 20,
+    "hex": "9ea2a2",
+    "fraction": 0.0227,
+    "x0_in": 1.225,
+    "x1_in": 1.2562
+   },
+   {
+    "index": 21,
+    "hex": "2f3b77",
+    "fraction": 0.0182,
+    "x0_in": 1.2562,
+    "x1_in": 1.2812
+   },
+   {
+    "index": 22,
+    "hex": "9ea2a2",
+    "fraction": 0.0227,
+    "x0_in": 1.2812,
+    "x1_in": 1.3124
+   },
+   {
+    "index": 23,
+    "hex": "2f3b77",
+    "fraction": 0.0455,
+    "x0_in": 1.3124,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes_framed_or_photo",
+ "quality": {
+  "color_source": "measured raster, snapped to the repo palette",
+  "geometry_source": "vendor raster (mid-height columns)",
+  "snap": {
+   "stripes_before": 24,
+   "stripes_after": 24,
+   "max_snap_delta": 13.9
+  },
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/air_force_achievement.jpg"
+  ],
+  "residual": {
+   "vertical": 38.3,
+   "horizontal": 77.7,
+   "central_vertical": 24.6
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": true,
+  "border_frame_detected": true,
+  "fidelity": "approximate",
+  "fallback_central_stripes_only": true,
+  "source_kind": "raster",
+  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+ },
+ "authorized_services": [
+  "AIR_FORCE",
+  "SPACE_FORCE"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/air_force_achievement.jpg",
+   "award_ids": [
+    "air_force_achievement"
+   ]
+  }
+ ],
+ "award_names": [
+  "Air and Space Achievement Medal"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 38.3,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

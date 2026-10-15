@@ -1,0 +1,151 @@
+[
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Medal For Heroism Ribbon",
+  "file": "Ribbon AJROTC Medal of Heroism.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Superior Cadet Ribbon",
+  "file": "Ribbon AJROTC Superior Cadet.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Academic Excellence Ribbon",
+  "file": "Ribbon AJROTC N-1-2.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Good Conduct Ribbon",
+  "file": "Ribbon AJROTC N-3-10.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC JCLC Participation Ribbon",
+  "file": "Ribbon AJROTC N-3-11.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Silver Star Community Service with Excellence Award",
+  "file": "Ribbons, Silver Star Community Service with Excellence Award.png",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Community Service with Excellence Award",
+  "file": "Ribbons, Community Service with Excellence Award.png",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC American Legion Scholastic Award",
+  "file": "Ribbon American Legion Award for Scholastic Excellence.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC American Legion General Military Excellence Award",
+  "file": "Ribbon, American Legion General Military Excellence Award.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Scottish Rite Southern Jurisdiction Award",
+  "file": "Ribbon, Scottish Rite, Southern Jurisdiction.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Air Force Sergeants Association Award",
+  "file": "Ribbon, Air Force Sergeants Association.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Retired Enlisted Association Award",
+  "file": "Ribbon, Retired Enlisted Association Award.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Celebrate Freedom Foundation Award",
+  "file": "Ribbon, Celebrate Freedom Award.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Air Commando Association Award",
+  "file": "Ribbon, Air Commando Association.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Distinguished Unit Award with Merit",
+  "file": "Ribbon, Distinguished Unit Award with Merit.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Outstanding Flight Award",
+  "file": "Ribbon, AFROTC Athletic Award (Four and Six Week Flight) and AFJROTC Outstanding Flight.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Leadership Ribbon",
+  "file": "Ribbon, Leadership Ribbon, AFJROTC.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Achievement Ribbon",
+  "file": "Ribbon, Achievement Ribbon, AFJROTC.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Academic Ribbon",
+  "file": "Ribbon, Academic Ribbon, AFJROTC.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Co-Curricular Activities Leadership Ribbon",
+  "file": "Ribbon, Cocurricular Activities Leadership Ribbon, AFJROTC.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Marksmanship Ribbon",
+  "file": "Ribbon, Marksmanship Ribbon, AFJROTC.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Service Ribbon",
+  "file": "Ribbon, Marksmanship Award (Four and Six Week) AFROTC and AFJROTC Service Ribbon.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Health and Wellness Ribbon",
+  "file": "Ribbon, Health and Wellness Ribbon.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Attendance Ribbon",
+  "file": "Ribbon, AFROTC Commandant's Award (Field Training) and AFJROTC Attendance.svg",
+  "reason": "no vendor product found"
+ },
+ {
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Scottish Rite Medal Ribbon",
+  "reason": "vendor photo not a plain vertical-stripe ribbon (class unresolved, mode V)"
+ }
+]

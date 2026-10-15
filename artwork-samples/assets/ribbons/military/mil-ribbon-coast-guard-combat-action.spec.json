@@ -1,0 +1,163 @@
+{
+ "asset_id": "mil-ribbon-coast-guard-combat-action",
+ "name": "Comabt Action",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "2f3b77",
+    "fraction": 0.1318,
+    "x0_in": 0,
+    "x1_in": 0.1812
+   },
+   {
+    "index": 1,
+    "hex": "e2b41e",
+    "fraction": 0.25,
+    "x0_in": 0.1812,
+    "x1_in": 0.525
+   },
+   {
+    "index": 2,
+    "hex": "ffffff",
+    "fraction": 0.0409,
+    "x0_in": 0.525,
+    "x1_in": 0.5812
+   },
+   {
+    "index": 3,
+    "hex": "ba0c2f",
+    "fraction": 0.0637,
+    "x0_in": 0.5812,
+    "x1_in": 0.6688
+   },
+   {
+    "index": 4,
+    "hex": "ffffff",
+    "fraction": 0.0318,
+    "x0_in": 0.6688,
+    "x1_in": 0.7125
+   },
+   {
+    "index": 5,
+    "hex": "2f3b77",
+    "fraction": 0.0636,
+    "x0_in": 0.7125,
+    "x1_in": 0.8
+   },
+   {
+    "index": 6,
+    "hex": "ffffff",
+    "fraction": 0.0409,
+    "x0_in": 0.8,
+    "x1_in": 0.8562
+   },
+   {
+    "index": 7,
+    "hex": "e2b41e",
+    "fraction": 0.25,
+    "x0_in": 0.8562,
+    "x1_in": 1.2
+   },
+   {
+    "index": 8,
+    "hex": "ba0c2f",
+    "fraction": 0.1273,
+    "x0_in": 1.2,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "measured raster, snapped to the repo palette",
+  "geometry_source": "vendor raster (mid-height columns)",
+  "snap": {
+   "stripes_before": 9,
+   "stripes_after": 9,
+   "max_snap_delta": 9.3
+  },
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/coast_guard_combat_action.jpg"
+  ],
+  "residual": {
+   "vertical": 5.2,
+   "horizontal": 120.1,
+   "central_vertical": 4.7
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": ""
+ },
+ "authorized_services": [
+  "COAST_GUARD"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/coast_guard_combat_action.jpg",
+   "award_ids": [
+    "coast_guard_combat_action"
+   ]
+  }
+ ],
+ "award_names": [
+  "Comabt Action"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 5.2,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

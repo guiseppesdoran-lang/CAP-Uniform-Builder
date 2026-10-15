@@ -1,0 +1,190 @@
+{
+ "asset_id": "mil-ribbon-air-force-expeditionary",
+ "name": "air_force_expeditionary",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "8395ad",
+    "fraction": 0.04,
+    "x0_in": 0,
+    "x1_in": 0.055
+   },
+   {
+    "index": 1,
+    "hex": "9b5777",
+    "fraction": 0.02,
+    "x0_in": 0.055,
+    "x1_in": 0.0825
+   },
+   {
+    "index": 2,
+    "hex": "c23c40",
+    "fraction": 0.03,
+    "x0_in": 0.0825,
+    "x1_in": 0.1237
+   },
+   {
+    "index": 3,
+    "hex": "c8af34",
+    "fraction": 0.09,
+    "x0_in": 0.1237,
+    "x1_in": 0.2475
+   },
+   {
+    "index": 4,
+    "hex": "3e4f8e",
+    "fraction": 0.21,
+    "x0_in": 0.2475,
+    "x1_in": 0.5363
+   },
+   {
+    "index": 5,
+    "hex": "c3c2ba",
+    "fraction": 0.04,
+    "x0_in": 0.5363,
+    "x1_in": 0.5913
+   },
+   {
+    "index": 6,
+    "hex": "6d8cad",
+    "fraction": 0.14,
+    "x0_in": 0.5913,
+    "x1_in": 0.7837
+   },
+   {
+    "index": 7,
+    "hex": "b9c1bf",
+    "fraction": 0.05,
+    "x0_in": 0.7837,
+    "x1_in": 0.8525
+   },
+   {
+    "index": 8,
+    "hex": "344687",
+    "fraction": 0.2,
+    "x0_in": 0.8525,
+    "x1_in": 1.1275
+   },
+   {
+    "index": 9,
+    "hex": "a49856",
+    "fraction": 0.02,
+    "x0_in": 1.1275,
+    "x1_in": 1.155
+   },
+   {
+    "index": 10,
+    "hex": "c7b31f",
+    "fraction": 0.06,
+    "x0_in": 1.155,
+    "x1_in": 1.2375
+   },
+   {
+    "index": 11,
+    "hex": "b87e33",
+    "fraction": 0.02,
+    "x0_in": 1.2375,
+    "x1_in": 1.265
+   },
+   {
+    "index": 12,
+    "hex": "bd3e4c",
+    "fraction": 0.04,
+    "x0_in": 1.265,
+    "x1_in": 1.32
+   },
+   {
+    "index": 13,
+    "hex": "6c83a0",
+    "fraction": 0.04,
+    "x0_in": 1.32,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "McChord-style precomposed variant (flat art)",
+  "geometry_source": "variant base, top/bottom bands",
+  "snap": null,
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_expeditionary/fc1862c7b9c654ca.png"
+  ],
+  "residual": {
+   "variant_bases_measured": 14,
+   "variants_agreeing": 14,
+   "exact_svg": false
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "fallback_central_stripes_only": false,
+  "source_kind": "variant",
+  "note": ""
+ },
+ "authorized_services": [],
+ "aliases": [
+  {
+   "image": "images/military-ribbon-variants/air-force/air_force_expeditionary/fc1862c7b9c654ca.png",
+   "award_ids": [
+    "air_force_expeditionary"
+   ]
+  }
+ ],
+ "award_names": [],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 99,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

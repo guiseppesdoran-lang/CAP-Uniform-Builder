@@ -1,0 +1,3197 @@
+{
+ "mil-ribbon-air-force-achievement": {
+  "title": "File:Air and Space Achievement Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Air_and_Space_Achievement_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.16,
+  "color_err": 73.2,
+  "name_score": 1,
+  "query": "Air and Space Achievement Medal",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0071,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.0071,
+    "x1": 0.0225,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.0225,
+    "x1": 0.9846,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.9846,
+    "x1": 1,
+    "hex": "001489"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-aerial-achievement-medal": {
+  "title": "File:Aerial Achievement Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Aerial_Achievement_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 18.5,
+  "name_score": 1,
+  "query": "Aerial Achievement Medal",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0917,
+    "hex": "00008c"
+   },
+   {
+    "x0": 0.0917,
+    "x1": 0.1835,
+    "hex": "f1bd00"
+   },
+   {
+    "x0": 0.1835,
+    "x1": 0.8165,
+    "hex": "5f8aed"
+   },
+   {
+    "x0": 0.8165,
+    "x1": 0.9083,
+    "hex": "f1bd00"
+   },
+   {
+    "x0": 0.9083,
+    "x1": 1,
+    "hex": "00008c"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-air-force-air-and-space-campaign": {
+  "title": "File:Air and Space Campaign Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/Air_and_Space_Campaign_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 22.6,
+  "name_score": 1,
+  "query": "air and space campaign",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.071,
+    "hex": "a3c7d2"
+   },
+   {
+    "x0": 0.071,
+    "x1": 0.118,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.118,
+    "x1": 0.283,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.283,
+    "x1": 0.3305,
+    "hex": "a3c7d2"
+   },
+   {
+    "x0": 0.3305,
+    "x1": 0.366,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.366,
+    "x1": 0.634,
+    "hex": "a3c7d2"
+   },
+   {
+    "x0": 0.634,
+    "x1": 0.6695,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.6695,
+    "x1": 0.717,
+    "hex": "a3c7d2"
+   },
+   {
+    "x0": 0.717,
+    "x1": 0.882,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.882,
+    "x1": 0.929,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.929,
+    "x1": 1,
+    "hex": "a3c7d2"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-air-force-air-reserve-forces-meritorious-service": {
+  "accepted": false,
+  "reason": "licence not public domain",
+  "title": "File:Air Reserve Forces Meritorious Service Medal ribbon.svg",
+  "license": "CC BY-SA 4.0"
+ },
+ "mil-ribbon-air-force-airmans-medal": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-air-force-basic-military-training-honor-graduate": {
+  "title": "File:USAF Basic Military Training Honor Graduate Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/USAF_Basic_Military_Training_Honor_Graduate_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.83,
+  "color_err": 38.8,
+  "name_score": 0.8,
+  "query": "basic military training honor graduate",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.066,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.066,
+    "x1": 0.2264,
+    "hex": "33cccc"
+   },
+   {
+    "x0": 0.2264,
+    "x1": 0.3868,
+    "hex": "f6f034"
+   },
+   {
+    "x0": 0.3868,
+    "x1": 0.6132,
+    "hex": "000063"
+   },
+   {
+    "x0": 0.6132,
+    "x1": 0.7736,
+    "hex": "f6f034"
+   },
+   {
+    "x0": 0.7736,
+    "x1": 0.934,
+    "hex": "33cccc"
+   },
+   {
+    "x0": 0.934,
+    "x1": 1,
+    "hex": "ffffff"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-air-force-combat-action": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-air-force-combat-rediness": {
+  "title": "File:Combat Readiness Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Combat_Readiness_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0,
+  "color_err": 83.1,
+  "name_score": 0.5,
+  "query": "air force combat readiness",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 1,
+    "hex": "e00434"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-commendation": {
+  "title": "File:Air and Space Commendation Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Air_and_Space_Commendation_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.14,
+  "color_err": 105.2,
+  "name_score": 1,
+  "query": "Air and Space Commendation Medal",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0071,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.0071,
+    "x1": 0.0225,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.0225,
+    "x1": 0.9846,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.9846,
+    "x1": 1,
+    "hex": "001489"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-cross": {
+  "title": "File:Air Force Cross ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/49/Air_Force_Cross_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0,
+  "color_err": 66.3,
+  "name_score": 1,
+  "query": "air force cross",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0071,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.0071,
+    "x1": 0.0225,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.0225,
+    "x1": 0.9846,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.9846,
+    "x1": 1,
+    "hex": "ba0c2f"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-distinguished-service": {
+  "title": "File:Air Force Distinguished Service ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/46/Air_Force_Distinguished_Service_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.47,
+  "color_err": 122.7,
+  "name_score": 1,
+  "query": "air force distinguished service",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.3302,
+    "hex": "ffbf4c"
+   },
+   {
+    "x0": 0.3302,
+    "x1": 0.6698,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.6698,
+    "x1": 1,
+    "hex": "ffbf4c"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-expeditionary-service": {
+  "title": "File:Air and Space Expeditionary Service Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Air_and_Space_Expeditionary_Service_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0,
+  "color_err": 56,
+  "name_score": 0.67,
+  "query": "air force expeditionary service",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 1,
+    "hex": "8ec2ff"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-gallant-unit-citation": {
+  "title": "File:Gallant Unit Citation ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/90/Gallant_Unit_Citation_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 48.5,
+  "name_score": 0.6,
+  "query": "air force gallant unit citation",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1038,
+    "hex": "ed0900"
+   },
+   {
+    "x0": 0.1038,
+    "x1": 0.3255,
+    "hex": "00009c"
+   },
+   {
+    "x0": 0.3255,
+    "x1": 0.4387,
+    "hex": "fcfcfc"
+   },
+   {
+    "x0": 0.4387,
+    "x1": 0.5613,
+    "hex": "ed0900"
+   },
+   {
+    "x0": 0.5613,
+    "x1": 0.6745,
+    "hex": "fcfcfc"
+   },
+   {
+    "x0": 0.6745,
+    "x1": 0.8962,
+    "hex": "00009c"
+   },
+   {
+    "x0": 0.8962,
+    "x1": 1,
+    "hex": "ed0900"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-air-force-good-conduct": {
+  "title": "File:U.S. Air Force Good Conduct Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/36/U.S._Air_Force_Good_Conduct_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 24.9,
+  "name_score": 0.67,
+  "query": "air force good conduct",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1358,
+    "hex": "a3c7d2"
+   },
+   {
+    "x0": 0.1358,
+    "x1": 0.1811,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.1811,
+    "x1": 0.2302,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.2302,
+    "x1": 0.2755,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.2755,
+    "x1": 0.7245,
+    "hex": "a3c7d2"
+   },
+   {
+    "x0": 0.7245,
+    "x1": 0.7698,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.7698,
+    "x1": 0.8189,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.8189,
+    "x1": 0.8642,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.8642,
+    "x1": 1,
+    "hex": "a3c7d2"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-air-force-longevity-service": {
+  "title": "File:Air Force Longevity Service ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/98/Air_Force_Longevity_Service_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0,
+  "color_err": 48.5,
+  "name_score": 1,
+  "query": "air force longevity service",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 1,
+    "hex": "000091"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-meritorious-unit-award": {
+  "title": "File:Air Force Meritorious Unit ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Air_Force_Meritorious_Unit_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.31,
+  "color_err": 98.2,
+  "name_score": 1,
+  "query": "air force meritorious unit award",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.3585,
+    "hex": "ed0900"
+   },
+   {
+    "x0": 0.3585,
+    "x1": 0.6415,
+    "hex": "00009c"
+   },
+   {
+    "x0": 0.6415,
+    "x1": 1,
+    "hex": "ed0900"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-military-training-instructor": {
+  "title": "File:Military Training Instructor Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Military_Training_Instructor_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 60,
+  "name_score": 0.5,
+  "query": "air force military training instructor",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1415,
+    "hex": "000063"
+   },
+   {
+    "x0": 0.1415,
+    "x1": 0.1887,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.1887,
+    "x1": 0.2358,
+    "hex": "ee0028"
+   },
+   {
+    "x0": 0.2358,
+    "x1": 0.283,
+    "hex": "00a5db"
+   },
+   {
+    "x0": 0.283,
+    "x1": 0.717,
+    "hex": "000063"
+   },
+   {
+    "x0": 0.717,
+    "x1": 0.7642,
+    "hex": "00a5db"
+   },
+   {
+    "x0": 0.7642,
+    "x1": 0.8113,
+    "hex": "ee0028"
+   },
+   {
+    "x0": 0.8113,
+    "x1": 0.8585,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.8585,
+    "x1": 1,
+    "hex": "000063"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-air-force-nco-professional-military-education-graduate-2": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-air-force-outstanding-airman-of-the-year-2": {
+  "title": "File:Outstanding Airman of the Year Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Outstanding_Airman_of_the_Year_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 24.9,
+  "name_score": 1,
+  "query": "outstanding airman of the year",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.2727,
+    "hex": "53749d"
+   },
+   {
+    "x0": 0.2727,
+    "x1": 0.3409,
+    "hex": "e67272"
+   },
+   {
+    "x0": 0.3409,
+    "x1": 0.4091,
+    "hex": "2f3b77"
+   },
+   {
+    "x0": 0.4091,
+    "x1": 0.5909,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.5909,
+    "x1": 0.6591,
+    "hex": "2f3b77"
+   },
+   {
+    "x0": 0.6591,
+    "x1": 0.7273,
+    "hex": "e67272"
+   },
+   {
+    "x0": 0.7273,
+    "x1": 1,
+    "hex": "53749d"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-air-force-outstanding-unit-award": {
+  "title": "File:Outstanding Unit ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Outstanding_Unit_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0,
+  "color_err": 111.5,
+  "name_score": 0.5,
+  "query": "air force outstanding unit award",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 1,
+    "hex": "ed0900"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-overseas-long-tour-2": {
+  "title": "File:Air and Space Overseas Long Tour Service Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Air_and_Space_Overseas_Long_Tour_Service_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 26.3,
+  "name_score": 0.8,
+  "query": "air force overseas long tour",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1132,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.1132,
+    "x1": 0.1585,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.1585,
+    "x1": 0.2075,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.2075,
+    "x1": 0.2528,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.2528,
+    "x1": 0.2981,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.2981,
+    "x1": 0.3434,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.3434,
+    "x1": 0.6566,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.6566,
+    "x1": 0.7019,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.7019,
+    "x1": 0.7472,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.7472,
+    "x1": 0.7925,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.7925,
+    "x1": 0.8415,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.8415,
+    "x1": 0.8868,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.8868,
+    "x1": 1,
+    "hex": "7bafd4"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-air-force-overseas-short-tour-2": {
+  "title": "File:Air Force Overseas Short Tour Service Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Air_Force_Overseas_Short_Tour_Service_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.28,
+  "color_err": 41.6,
+  "name_score": 1,
+  "query": "air force overseas short tour",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1038,
+    "hex": "04cccc"
+   },
+   {
+    "x0": 0.1038,
+    "x1": 0.1509,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.1509,
+    "x1": 0.3396,
+    "hex": "04cccc"
+   },
+   {
+    "x0": 0.3396,
+    "x1": 0.6651,
+    "hex": "0d047f"
+   },
+   {
+    "x0": 0.6651,
+    "x1": 1,
+    "hex": "04cccc"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-presidential-unit-citation": {
+  "title": "File:U.S. Army and U.S. Air Force Presidential Unit Citation ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/94/U.S._Army_and_U.S._Air_Force_Presidential_Unit_Citation_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.63,
+  "color_err": 49.4,
+  "name_score": 0.5,
+  "query": "air force presidential unit citation",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0472,
+    "hex": "ce9c29"
+   },
+   {
+    "x0": 0.0472,
+    "x1": 0.9528,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.9528,
+    "x1": 1,
+    "hex": "ce9c29"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-air-force-recognition": {
+  "title": "File:Air Force Recognition Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Air_Force_Recognition_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 50.8,
+  "name_score": 1,
+  "query": "air force recognition",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0472,
+    "hex": "ed0900"
+   },
+   {
+    "x0": 0.0472,
+    "x1": 0.0943,
+    "hex": "fcfcfc"
+   },
+   {
+    "x0": 0.0943,
+    "x1": 0.4198,
+    "hex": "5b7fdf"
+   },
+   {
+    "x0": 0.4198,
+    "x1": 0.5802,
+    "hex": "ed0900"
+   },
+   {
+    "x0": 0.5802,
+    "x1": 0.9057,
+    "hex": "5b7fdf"
+   },
+   {
+    "x0": 0.9057,
+    "x1": 0.9528,
+    "hex": "fcfcfc"
+   },
+   {
+    "x0": 0.9528,
+    "x1": 1,
+    "hex": "ed0900"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-air-force-recruiter": {
+  "title": "File:Air Force Recruiter Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Air_Force_Recruiter_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.97,
+  "color_err": 47.9,
+  "name_score": 1,
+  "query": "air force recruiter",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0472,
+    "hex": "000063"
+   },
+   {
+    "x0": 0.0472,
+    "x1": 0.0943,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.0943,
+    "x1": 0.1415,
+    "hex": "ee0028"
+   },
+   {
+    "x0": 0.1415,
+    "x1": 0.8585,
+    "hex": "000063"
+   },
+   {
+    "x0": 0.8585,
+    "x1": 0.9057,
+    "hex": "ee0028"
+   },
+   {
+    "x0": 0.9057,
+    "x1": 0.9528,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.9528,
+    "x1": 1,
+    "hex": "000063"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-air-force-small-arms-expert-military-ribbons": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-air-force-training": {
+  "title": "File:Air and Space Training Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Air_and_Space_Training_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.18,
+  "color_err": 37.4,
+  "name_score": 0.67,
+  "query": "air force training",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.4009,
+    "hex": "040494"
+   },
+   {
+    "x0": 0.4009,
+    "x1": 0.5991,
+    "hex": "ee0028"
+   },
+   {
+    "x0": 0.5991,
+    "x1": 1,
+    "hex": "040494"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-army-achievement": {
+  "title": "File:Army Achievement Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Army_Achievement_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 43.4,
+  "name_score": 1,
+  "query": "army achievement",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0915,
+    "hex": "215732"
+   },
+   {
+    "x0": 0.0915,
+    "x1": 0.137,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.137,
+    "x1": 0.2285,
+    "hex": "215732"
+   },
+   {
+    "x0": 0.2285,
+    "x1": 0.2745,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.2745,
+    "x1": 0.477,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.477,
+    "x1": 0.523,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.523,
+    "x1": 0.7255,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.7255,
+    "x1": 0.7715,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.7715,
+    "x1": 0.863,
+    "hex": "215732"
+   },
+   {
+    "x0": 0.863,
+    "x1": 0.9085,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.9085,
+    "x1": 1,
+    "hex": "215732"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-army-commendation": {
+  "title": "File:Army Commendation Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Army_Commendation_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 53.3,
+  "name_score": 1,
+  "query": "army commendation",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0685,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.0685,
+    "x1": 0.3515,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.3515,
+    "x1": 0.3745,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.3745,
+    "x1": 0.42,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.42,
+    "x1": 0.443,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.443,
+    "x1": 0.4885,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.4885,
+    "x1": 0.5115,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.5115,
+    "x1": 0.557,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.557,
+    "x1": 0.58,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.58,
+    "x1": 0.6255,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.6255,
+    "x1": 0.6485,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.6485,
+    "x1": 0.9315,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.9315,
+    "x1": 1,
+    "hex": "ffffff"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-army-distinguished-service-cross-military-ribbon": {
+  "title": "File:Distinguished Service Cross ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Distinguished_Service_Cross_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 45,
+  "name_score": 0.67,
+  "query": "army distinguished service cross military ribbon",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0915,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.0915,
+    "x1": 0.137,
+    "hex": "fcfcfc"
+   },
+   {
+    "x0": 0.137,
+    "x1": 0.863,
+    "hex": "003da5"
+   },
+   {
+    "x0": 0.863,
+    "x1": 0.9085,
+    "hex": "fcfcfc"
+   },
+   {
+    "x0": 0.9085,
+    "x1": 1,
+    "hex": "ba0c2f"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-army-distinguished-service-military-ribbon": {
+  "title": "File:U.S. Army Distinguished Service Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/7d/U.S._Army_Distinguished_Service_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 24.9,
+  "name_score": 0.5,
+  "query": "army distinguished service military ribbon",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.2248,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.2248,
+    "x1": 0.2706,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.2706,
+    "x1": 0.7294,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.7294,
+    "x1": 0.7752,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.7752,
+    "x1": 1,
+    "hex": "ba0c2f"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-army-good-conduct": {
+  "title": "File:Army Good Conduct Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Army_Good_Conduct_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 20,
+  "name_score": 1,
+  "query": "Army Good Conduct",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0455,
+    "hex": "6f263d"
+   },
+   {
+    "x0": 0.0455,
+    "x1": 0.0915,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.0915,
+    "x1": 0.137,
+    "hex": "6f263d"
+   },
+   {
+    "x0": 0.137,
+    "x1": 0.183,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.183,
+    "x1": 0.2285,
+    "hex": "6f263d"
+   },
+   {
+    "x0": 0.2285,
+    "x1": 0.2745,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.2745,
+    "x1": 0.7255,
+    "hex": "6f263d"
+   },
+   {
+    "x0": 0.7255,
+    "x1": 0.7715,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.7715,
+    "x1": 0.817,
+    "hex": "6f263d"
+   },
+   {
+    "x0": 0.817,
+    "x1": 0.863,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.863,
+    "x1": 0.9085,
+    "hex": "6f263d"
+   },
+   {
+    "x0": 0.9085,
+    "x1": 0.9545,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.9545,
+    "x1": 1,
+    "hex": "6f263d"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-army-medal-of-honor": {
+  "title": "File:Medal of Honor ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Medal_of_Honor_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 124.8,
+  "name_score": 1,
+  "query": "medal of honor",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 1,
+    "hex": "7bafd4"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-army-meritorious-unit-commendation": {
+  "title": "File:Meritorious Unit Commendation ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Meritorious_Unit_Commendation_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.63,
+  "color_err": 80.4,
+  "name_score": 0.75,
+  "query": "army meritorious unit commendation",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0472,
+    "hex": "ce9c29"
+   },
+   {
+    "x0": 0.0472,
+    "x1": 0.9528,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.9528,
+    "x1": 1,
+    "hex": "ce9c29"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-army-nco-professional-development": {
+  "accepted": false,
+  "reason": "licence not public domain",
+  "title": "File:Texas State Guard NCO Professional Development Ribbon.svg",
+  "license": "CC BY-SA 3.0"
+ },
+ "mil-ribbon-army-occupation-of-germany": {
+  "title": "File:Army of Occupation of Germany ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/23/Army_of_Occupation_of_Germany_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.47,
+  "color_err": 14.7,
+  "name_score": 1,
+  "query": "army occupation of germany",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0189,
+    "hex": "34049c"
+   },
+   {
+    "x0": 0.0189,
+    "x1": 0.0472,
+    "hex": "fc0404"
+   },
+   {
+    "x0": 0.0472,
+    "x1": 0.1698,
+    "hex": "fcfcfc"
+   },
+   {
+    "x0": 0.1698,
+    "x1": 0.8302,
+    "hex": "252525"
+   },
+   {
+    "x0": 0.8302,
+    "x1": 0.9528,
+    "hex": "fcfcfc"
+   },
+   {
+    "x0": 0.9528,
+    "x1": 0.9811,
+    "hex": "fc0404"
+   },
+   {
+    "x0": 0.9811,
+    "x1": 1,
+    "hex": "34049c"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-army-of-occupation-service": {
+  "accepted": false,
+  "reason": "no parseable matching candidate"
+ },
+ "mil-ribbon-army-overseas-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-army-presidential-unit-citation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-army-reserve-components-achievement": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-army-sea-duty": {
+  "title": "File:U.S. Army Sea Duty Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/U.S._Army_Sea_Duty_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 31.5,
+  "name_score": 0.6,
+  "query": "army sea duty",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0685,
+    "hex": "041e42"
+   },
+   {
+    "x0": 0.0685,
+    "x1": 0.183,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.183,
+    "x1": 0.297,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.297,
+    "x1": 0.3655,
+    "hex": "003e51"
+   },
+   {
+    "x0": 0.3655,
+    "x1": 0.4545,
+    "hex": "008eaa"
+   },
+   {
+    "x0": 0.4545,
+    "x1": 0.4885,
+    "hex": "6f263d"
+   },
+   {
+    "x0": 0.4885,
+    "x1": 0.5115,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.5115,
+    "x1": 0.5455,
+    "hex": "6f263d"
+   },
+   {
+    "x0": 0.5455,
+    "x1": 0.6345,
+    "hex": "008eaa"
+   },
+   {
+    "x0": 0.6345,
+    "x1": 0.703,
+    "hex": "003e51"
+   },
+   {
+    "x0": 0.703,
+    "x1": 0.817,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.817,
+    "x1": 0.9315,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.9315,
+    "x1": 1,
+    "hex": "041e42"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-army-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-army-soldiers-medal": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-army-superior-unit-award": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-army-valorous-unit-award": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-army-womens-army-corps-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-achievement": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-arctic-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-basic-training-honor-graduate": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-bicentennial-unit-commendation": {
+  "title": "File:Bicentennial Unit Commendation ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/42/Bicentennial_Unit_Commendation_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 62.6,
+  "name_score": 0.6,
+  "query": "Coast Guard Bicentennial Unit Commendation",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.066,
+    "hex": "339966"
+   },
+   {
+    "x0": 0.066,
+    "x1": 0.1509,
+    "hex": "ed0009"
+   },
+   {
+    "x0": 0.1509,
+    "x1": 0.2453,
+    "hex": "f7ee2a"
+   },
+   {
+    "x0": 0.2453,
+    "x1": 0.4481,
+    "hex": "0000ad"
+   },
+   {
+    "x0": 0.4481,
+    "x1": 0.5519,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.5519,
+    "x1": 0.75,
+    "hex": "0000ad"
+   },
+   {
+    "x0": 0.75,
+    "x1": 0.8491,
+    "hex": "f7ee2a"
+   },
+   {
+    "x0": 0.8491,
+    "x1": 0.934,
+    "hex": "ed0009"
+   },
+   {
+    "x0": 0.934,
+    "x1": 1,
+    "hex": "339966"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-coast-guard-combat-action": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-commandants-letter-of-commendation": {
+  "title": "File:Commandant's Letter of Commendation Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Commandant%27s_Letter_of_Commendation_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.75,
+  "color_err": 43.9,
+  "name_score": 0.5,
+  "query": "Commandants Letter Of Commendation",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0613,
+    "hex": "05bf0c"
+   },
+   {
+    "x0": 0.0613,
+    "x1": 0.2406,
+    "hex": "665500"
+   },
+   {
+    "x0": 0.2406,
+    "x1": 0.3066,
+    "hex": "f1dd19"
+   },
+   {
+    "x0": 0.3066,
+    "x1": 0.3915,
+    "hex": "07c0df"
+   },
+   {
+    "x0": 0.3915,
+    "x1": 0.6085,
+    "hex": "009696"
+   },
+   {
+    "x0": 0.6085,
+    "x1": 0.6981,
+    "hex": "07c0df"
+   },
+   {
+    "x0": 0.6981,
+    "x1": 0.7642,
+    "hex": "f1dd19"
+   },
+   {
+    "x0": 0.7642,
+    "x1": 0.9387,
+    "hex": "665500"
+   },
+   {
+    "x0": 0.9387,
+    "x1": 1,
+    "hex": "05bf0c"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-coast-guard-commendation": {
+  "title": "File:U.S. Coast Guard Commendation Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/59/U.S._Coast_Guard_Commendation_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 17,
+  "name_score": 0.6,
+  "query": "coast guard commendation",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0915,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.0915,
+    "x1": 0.2285,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.2285,
+    "x1": 0.4655,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.4655,
+    "x1": 0.5345,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.5345,
+    "x1": 0.7715,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.7715,
+    "x1": 0.9085,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.9085,
+    "x1": 1,
+    "hex": "007a33"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-coast-guard-distinguished-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-dot-9-11-medal": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-dot-9-11-ribbon": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-dot-outstanding-unit-award": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-e": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-enlisted-person-of-the-year": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-gold-life-saving": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-good-conduct": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-medal": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-meritorious-team-commendation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-meritorious-unit-commendation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-overseas-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-pistol-marksmanship": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-presidential-unit-citation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-recruiting-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-reserve-good-conduct": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-restricted-duty": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-rifle-marksmanship": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-sea-duty": {
+  "title": "File:U.S. Coast Guard Sea Service Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/12/U.S._Coast_Guard_Sea_Service_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 32,
+  "name_score": 0.6,
+  "query": "Coast Guard Sea Service",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1115,
+    "hex": "041e42"
+   },
+   {
+    "x0": 0.1115,
+    "x1": 0.2255,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.2255,
+    "x1": 0.34,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.34,
+    "x1": 0.4085,
+    "hex": "003e51"
+   },
+   {
+    "x0": 0.4085,
+    "x1": 0.4775,
+    "hex": "00c1d5"
+   },
+   {
+    "x0": 0.4775,
+    "x1": 0.5225,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.5225,
+    "x1": 0.5915,
+    "hex": "00c1d5"
+   },
+   {
+    "x0": 0.5915,
+    "x1": 0.66,
+    "hex": "003e51"
+   },
+   {
+    "x0": 0.66,
+    "x1": 0.7745,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.7745,
+    "x1": 0.8885,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.8885,
+    "x1": 1,
+    "hex": "041e42"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-coast-guard-silver-life-saving": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-special-operations-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-transportation-distinguished-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-coast-guard-unit-commendation": {
+  "title": "File:Coast Guard Unit Commendation ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/87/Coast_Guard_Unit_Commendation_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 53.3,
+  "name_score": 1,
+  "query": "Coast Guard Unit Commendation",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0915,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.0915,
+    "x1": 0.183,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.183,
+    "x1": 0.2745,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.2745,
+    "x1": 0.4655,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.4655,
+    "x1": 0.5345,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.5345,
+    "x1": 0.7255,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.7255,
+    "x1": 0.817,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.817,
+    "x1": 0.903,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.903,
+    "x1": 1,
+    "hex": "001489"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-afghanistan-campaign": {
+  "title": "File:Afghanistan Campaign Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Afghanistan_Campaign_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.92,
+  "color_err": 7.4,
+  "name_score": 1,
+  "query": "afghanistan campaign",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.057,
+    "hex": "64a70b"
+   },
+   {
+    "x0": 0.057,
+    "x1": 0.1945,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.1945,
+    "x1": 0.2855,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.2855,
+    "x1": 0.443,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.443,
+    "x1": 0.4655,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.4655,
+    "x1": 0.4885,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.4885,
+    "x1": 0.5115,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.5115,
+    "x1": 0.5345,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.5345,
+    "x1": 0.557,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.557,
+    "x1": 0.7145,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.7145,
+    "x1": 0.8055,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.8055,
+    "x1": 0.943,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.943,
+    "x1": 1,
+    "hex": "64a70b"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-air-force-organizational-excellence-award": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-air-medal": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-american-campaign": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-american-defense": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-antarctica-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-armed-forces-expeditionary": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-armed-forces-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-asiatic-pacific-campaign": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-bronze-star": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-china-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-combat-action": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-defense-distinguished-service": {
+  "title": "File:Defense Distinguished Service Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Defense_Distinguished_Service_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 29.5,
+  "name_score": 1,
+  "query": "defense distinguished service",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.2605,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.2605,
+    "x1": 0.452,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.452,
+    "x1": 0.548,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.548,
+    "x1": 0.7395,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.7395,
+    "x1": 1,
+    "hex": "7bafd4"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-defense-meritorious-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-defense-superior-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-distinguished-flying-cross": {
+  "title": "File:Distinguished Flying Cross ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/81/Distinguished_Flying_Cross_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.47,
+  "color_err": 88.6,
+  "name_score": 1,
+  "query": "distinguished flying cross",
+  "runs": [
+   {
+    "x0": 0.055,
+    "x1": 0.156,
+    "hex": "fcfcfc"
+   },
+   {
+    "x0": 0.4358,
+    "x1": 0.5642,
+    "hex": "fcfcfc"
+   },
+   {
+    "x0": 0.844,
+    "x1": 0.945,
+    "hex": "fcfcfc"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-joint-european-african-middle-eastern-campaign": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-expeditionary": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-global-war-terror-expeditionary": {
+  "title": "File:Global War on Terrorism Expeditionary Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Global_War_on_Terrorism_Expeditionary_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 30.1,
+  "name_score": 1,
+  "query": "global war on terrorism expeditionary",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1145,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.1145,
+    "x1": 0.183,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.183,
+    "x1": 0.2285,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.2285,
+    "x1": 0.297,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.297,
+    "x1": 0.343,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.343,
+    "x1": 0.3885,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.3885,
+    "x1": 0.4345,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.4345,
+    "x1": 0.5655,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.5655,
+    "x1": 0.6115,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.6115,
+    "x1": 0.657,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.657,
+    "x1": 0.703,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.703,
+    "x1": 0.7715,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.7715,
+    "x1": 0.817,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.817,
+    "x1": 0.8855,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.8855,
+    "x1": 1,
+    "hex": "7bafd4"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-global-war-terror-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-humanitarian-service": {
+  "title": "File:Humanitarian Service Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/26/Humanitarian_Service_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 40.8,
+  "name_score": 1,
+  "query": "humanitarian service",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.137,
+    "hex": "981d97"
+   },
+   {
+    "x0": 0.137,
+    "x1": 0.183,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.183,
+    "x1": 0.4085,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.4085,
+    "x1": 0.5975,
+    "hex": "041e42"
+   },
+   {
+    "x0": 0.5975,
+    "x1": 0.8235,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.8235,
+    "x1": 0.869,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.869,
+    "x1": 1,
+    "hex": "981d97"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-inter-american-defense-board": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-iraq-campaign": {
+  "title": "File:Iraq Campaign Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Iraq_Campaign_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 24.4,
+  "name_score": 1,
+  "query": "iraq campaign",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1145,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.1145,
+    "x1": 0.16,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.16,
+    "x1": 0.183,
+    "hex": "215732"
+   },
+   {
+    "x0": 0.183,
+    "x1": 0.2285,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.2285,
+    "x1": 0.343,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.343,
+    "x1": 0.657,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.657,
+    "x1": 0.7715,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.7715,
+    "x1": 0.817,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.817,
+    "x1": 0.84,
+    "hex": "215732"
+   },
+   {
+    "x0": 0.84,
+    "x1": 0.8855,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.8855,
+    "x1": 1,
+    "hex": "ba0c2f"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-joint-meritorious-unit-award": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-joint-service-achievement": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-joint-service-commendation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-korean-defense-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-korean-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-kosovo-campaign": {
+  "title": "File:Kosovo Campaign Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Kosovo_Campaign_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 9.3,
+  "name_score": 1,
+  "query": "kosovo campaign",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.3655,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.3655,
+    "x1": 0.443,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.443,
+    "x1": 0.557,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.557,
+    "x1": 0.6345,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.6345,
+    "x1": 1,
+    "hex": "ba0c2f"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-kuwait-liberation-saudi": {
+  "title": "File:Kuwait Liberation Medal (Saudi Arabia) ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Kuwait_Liberation_Medal_%28Saudi_Arabia%29_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.94,
+  "color_err": 19.2,
+  "name_score": 0.75,
+  "query": "kuwait liberation saudi",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1145,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.1145,
+    "x1": 0.1715,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.1715,
+    "x1": 0.2745,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.2745,
+    "x1": 0.7255,
+    "hex": "00843d"
+   },
+   {
+    "x0": 0.7255,
+    "x1": 0.8285,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.8285,
+    "x1": 0.8855,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.8855,
+    "x1": 1,
+    "hex": "ba0c2f"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-legion-of-merit": {
+  "title": "File:Legion of Merit ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/Legion_of_Merit_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 20.1,
+  "name_score": 1,
+  "query": "legion of merit",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0455,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.0455,
+    "x1": 0.9545,
+    "hex": "a50050"
+   },
+   {
+    "x0": 0.9545,
+    "x1": 1,
+    "hex": "ffffff"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-medal-for-humane-action": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-meritorious-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-multinational-force-observers": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-national-defense-service": {
+  "title": "File:National Defense Service Medal ribbon, 2nd award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/77/National_Defense_Service_Medal_ribbon%2C_2nd_award.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 9.5,
+  "name_score": 0.67,
+  "query": "national defense military service",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.317,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.317,
+    "x1": 0.34,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.34,
+    "x1": 0.363,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.363,
+    "x1": 0.3855,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.3855,
+    "x1": 0.4085,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.4085,
+    "x1": 0.5915,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.5915,
+    "x1": 0.6145,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.6145,
+    "x1": 0.637,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.637,
+    "x1": 0.66,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.66,
+    "x1": 0.683,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.683,
+    "x1": 1,
+    "hex": "ba0c2f"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-nato-kosovo": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-nato-medal": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-outstanding-volunteer-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-philippine-defense": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-philippine-independence": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-philippine-liberation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-philippine-presidential-unit-citation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-prisoner-of-war": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-purple-heart": {
+  "title": "File:Texas Purple Heart Medal Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/13/Texas_Purple_Heart_Medal_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "CC BY-SA 3.0",
+  "match": 0.67,
+  "color_err": 17.1,
+  "name_score": 0.67,
+  "query": "purple heart",
+  "runs": [
+   {
+    "x0": 0.0013,
+    "x1": 0.039,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.039,
+    "x1": 0.9584,
+    "hex": "400080"
+   },
+   {
+    "x0": 0.9584,
+    "x1": 0.9962,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.9962,
+    "x1": 0.9987,
+    "hex": "400080"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-joint-silver-star": {
+  "title": "File:Silver Star Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Silver_Star_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 25.9,
+  "name_score": 1,
+  "query": "silver star",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0655,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.0655,
+    "x1": 0.1,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.1,
+    "x1": 0.26,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.26,
+    "x1": 0.42,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.42,
+    "x1": 0.58,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.58,
+    "x1": 0.74,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.74,
+    "x1": 0.9,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.9,
+    "x1": 0.9345,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.9345,
+    "x1": 1,
+    "hex": "001489"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-southwest-asia-service-military-ribbons": {
+  "title": "File:Southwest Asia Service Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Southwest_Asia_Service_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.86,
+  "color_err": 35,
+  "name_score": 0.67,
+  "query": "southwest asia service military ribbons",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.047,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.047,
+    "x1": 0.1405,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.1405,
+    "x1": 0.187,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.187,
+    "x1": 0.234,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.234,
+    "x1": 0.2805,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.2805,
+    "x1": 0.3275,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.3275,
+    "x1": 0.465,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.465,
+    "x1": 0.535,
+    "hex": "000000"
+   },
+   {
+    "x0": 0.535,
+    "x1": 0.6725,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.6725,
+    "x1": 0.7195,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.7195,
+    "x1": 0.766,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.766,
+    "x1": 0.813,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.813,
+    "x1": 0.8595,
+    "hex": "012169"
+   },
+   {
+    "x0": 0.8595,
+    "x1": 0.953,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.953,
+    "x1": 1,
+    "hex": "000000"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-united-nations-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-united-nations": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-us-antarctic-expedition": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-vietnam-gallantry-cross": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-vietnam-presidential-unit-citation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-joint-vietnam-service": {
+  "title": "File:Vietnam Service Medal ribbon, 5th award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Vietnam_Service_Medal_ribbon%2C_5th_award.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 22.7,
+  "name_score": 0.5,
+  "query": "vietnam service",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0919,
+    "hex": "009a44"
+   },
+   {
+    "x0": 0.0919,
+    "x1": 0.317,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.317,
+    "x1": 0.3629,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.3629,
+    "x1": 0.4778,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.4778,
+    "x1": 0.5222,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.5222,
+    "x1": 0.6371,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.6371,
+    "x1": 0.683,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.683,
+    "x1": 0.9081,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.9081,
+    "x1": 1,
+    "hex": "009a44"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-joint-world-war-2": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-marine-corps-armed-forces-reserve-military-ribbons": {
+  "title": "File:Armed Forces Reserve Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/58/Armed_Forces_Reserve_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.75,
+  "color_err": 35,
+  "name_score": 0.75,
+  "query": "armed forces reserve military ribbons",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0453,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.0453,
+    "x1": 0.0679,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.0679,
+    "x1": 0.1132,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.1132,
+    "x1": 0.1358,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.1358,
+    "x1": 0.1811,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.1811,
+    "x1": 0.4528,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.4528,
+    "x1": 0.5472,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.5472,
+    "x1": 0.8189,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.8189,
+    "x1": 0.8642,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.8642,
+    "x1": 0.8868,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.8868,
+    "x1": 0.9321,
+    "hex": "7bafd4"
+   },
+   {
+    "x0": 0.9321,
+    "x1": 0.9547,
+    "hex": "f2c75c"
+   },
+   {
+    "x0": 0.9547,
+    "x1": 1,
+    "hex": "7bafd4"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-marine-corps-combat-instructor": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-marine-corps-drill-instructor": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-marine-corps-expeditionary": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-marine-corps-good-conduct": {
+  "title": "File:U.S. Marine Corps Good Conduct Medal ribbon, 3rd award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/U.S._Marine_Corps_Good_Conduct_Medal_ribbon%2C_3rd_award.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 20,
+  "name_score": 0.57,
+  "query": "Marine Corps Good Conduct",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.4085,
+    "hex": "6f263d"
+   },
+   {
+    "x0": 0.4085,
+    "x1": 0.5915,
+    "hex": "041e42"
+   },
+   {
+    "x0": 0.5915,
+    "x1": 1,
+    "hex": "6f263d"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-marine-corps-recruiting": {
+  "title": "File:Marine Corps Recruiting Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Marine_Corps_Recruiting_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 31.9,
+  "name_score": 1,
+  "query": "marine corps recruiting",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.4055,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.4055,
+    "x1": 0.5885,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.5885,
+    "x1": 1,
+    "hex": "001489"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-marine-corps-reserve": {
+  "title": "File:Selected Marine Corps Reserve Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Selected_Marine_Corps_Reserve_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 0.25,
+  "color_err": 71.8,
+  "name_score": 0.75,
+  "query": "marine corps reserve",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0915,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.0915,
+    "x1": 0.16,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.16,
+    "x1": 0.2285,
+    "hex": "00205b"
+   },
+   {
+    "x0": 0.2285,
+    "x1": 0.4085,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.4085,
+    "x1": 0.5915,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.5915,
+    "x1": 0.7715,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.7715,
+    "x1": 0.84,
+    "hex": "00205b"
+   },
+   {
+    "x0": 0.84,
+    "x1": 0.9085,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.9085,
+    "x1": 1,
+    "hex": "ba0c2f"
+   }
+  ],
+  "accepted": false
+ },
+ "mil-ribbon-marine-corps-security-guard": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-marine-corps-selected-reserve": {
+  "title": "File:Selected Marine Corps Reserve Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Selected_Marine_Corps_Reserve_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 9.5,
+  "name_score": 1,
+  "query": "selected marine corps reserve",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0915,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.0915,
+    "x1": 0.16,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.16,
+    "x1": 0.2285,
+    "hex": "00205b"
+   },
+   {
+    "x0": 0.2285,
+    "x1": 0.4085,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.4085,
+    "x1": 0.5915,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.5915,
+    "x1": 0.7715,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.7715,
+    "x1": 0.84,
+    "hex": "00205b"
+   },
+   {
+    "x0": 0.84,
+    "x1": 0.9085,
+    "hex": "ffffff"
+   },
+   {
+    "x0": 0.9085,
+    "x1": 1,
+    "hex": "ba0c2f"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-navy-arctic-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-ceremonial-guard": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-cross": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-distinguished-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-e": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-fleet-marine-force": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-good-conduct": {
+  "title": "File:U.S. Navy Good Conduct Medal ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/ac/U.S._Navy_Good_Conduct_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 20,
+  "name_score": 0.6,
+  "query": "navy good conduct",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 1,
+    "hex": "6f263d"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-navy-marine-corps-achievement": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-marine-corps-commendation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-marine-corps-medal": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-marine-corps-overseas-service-military-rbbon": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-meritorious-unit-commendation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-naval-reserve-meritorious-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-naval-reserve-sea-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-naval-reserve-special-commendation": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-naval-reserve": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-occupation-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-pistol-marksmanship": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-recruit-training-service": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-recruiting-service": {
+  "title": "File:U.S. Navy Recruiting Service Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/dc/U.S._Navy_Recruiting_Service_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 22.8,
+  "name_score": 0.5,
+  "query": "navy recruiting service",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0455,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.0455,
+    "x1": 0.183,
+    "hex": "041e42"
+   },
+   {
+    "x0": 0.183,
+    "x1": 0.32,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.32,
+    "x1": 0.397,
+    "hex": "64a70b"
+   },
+   {
+    "x0": 0.397,
+    "x1": 0.443,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.443,
+    "x1": 0.4885,
+    "hex": "041e42"
+   },
+   {
+    "x0": 0.4885,
+    "x1": 0.5115,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.5115,
+    "x1": 0.557,
+    "hex": "041e42"
+   },
+   {
+    "x0": 0.557,
+    "x1": 0.603,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.603,
+    "x1": 0.68,
+    "hex": "64a70b"
+   },
+   {
+    "x0": 0.68,
+    "x1": 0.817,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.817,
+    "x1": 0.9545,
+    "hex": "041e42"
+   },
+   {
+    "x0": 0.9545,
+    "x1": 1,
+    "hex": "ffcd00"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-navy-rifle-marksmanship": {
+  "accepted": false,
+  "reason": "no candidate"
+ },
+ "mil-ribbon-navy-sea-service-deployment": {
+  "title": "File:Navy and Marine Corps Sea Service Deployment Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Navy_and_Marine_Corps_Sea_Service_Deployment_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 14.8,
+  "name_score": 0.6,
+  "query": "Navy Sea Service Deployment",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1115,
+    "hex": "041e42"
+   },
+   {
+    "x0": 0.1115,
+    "x1": 0.2255,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.2255,
+    "x1": 0.34,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.34,
+    "x1": 0.4085,
+    "hex": "003e51"
+   },
+   {
+    "x0": 0.4085,
+    "x1": 0.5915,
+    "hex": "008eaa"
+   },
+   {
+    "x0": 0.5915,
+    "x1": 0.66,
+    "hex": "003e51"
+   },
+   {
+    "x0": 0.66,
+    "x1": 0.7745,
+    "hex": "e2b41e"
+   },
+   {
+    "x0": 0.7745,
+    "x1": 0.8885,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.8885,
+    "x1": 1,
+    "hex": "041e42"
+   }
+  ],
+  "accepted": true
+ },
+ "mil-ribbon-navy-unit-commendation": {
+  "title": "File:U.S. Navy Unit Commendation ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/54/U.S._Navy_Unit_Commendation_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "license": "Public domain",
+  "match": 1,
+  "color_err": 17,
+  "name_score": 0.6,
+  "query": "navy unit commendation",
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0915,
+    "hex": "001489"
+   },
+   {
+    "x0": 0.0915,
+    "x1": 0.183,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.183,
+    "x1": 0.2745,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.2745,
+    "x1": 0.7255,
+    "hex": "007a33"
+   },
+   {
+    "x0": 0.7255,
+    "x1": 0.817,
+    "hex": "ba0c2f"
+   },
+   {
+    "x0": 0.817,
+    "x1": 0.903,
+    "hex": "ffcd00"
+   },
+   {
+    "x0": 0.903,
+    "x1": 1,
+    "hex": "001489"
+   }
+  ],
+  "accepted": true
+ }
+}

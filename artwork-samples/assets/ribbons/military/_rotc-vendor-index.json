@@ -1,0 +1,792 @@
+[
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-distinguished-cadet",
+  "list_index": 2,
+  "service": "army-jrotc",
+  "name": "Army JROTC Distinguished Cadet Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-1-1: AJROTC Distinguished Cadet",
+  "stripes": 9,
+  "max_snap": 10.9,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-academic-achievement",
+  "list_index": 4,
+  "service": "army-jrotc",
+  "name": "Army JROTC Academic Achievement Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-1-3",
+  "stripes": 7,
+  "max_snap": 8.3,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-perfect-attendance",
+  "list_index": 5,
+  "service": "army-jrotc",
+  "name": "Army JROTC Perfect Attendance Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-1-4: AJROTC Perfect Attendance",
+  "stripes": 15,
+  "max_snap": 10.9,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-student-government",
+  "list_index": 6,
+  "service": "army-jrotc",
+  "name": "Army JROTC Student Government Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-1-5",
+  "stripes": 5,
+  "max_snap": 8.2,
+  "unsnapped": 4
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-leadership-education-training-service",
+  "list_index": 7,
+  "service": "army-jrotc",
+  "name": "Army JROTC Leadership Education Training Service Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-1-6: AJROTC Leadership Development Service",
+  "stripes": 9,
+  "max_snap": 8.3,
+  "unsnapped": 8
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-1-7",
+  "list_index": 8,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-1-7 Ribbon (name not given on the public page)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-1-7: AJROTC Honor Roll",
+  "stripes": 9,
+  "max_snap": 9.3,
+  "unsnapped": 6
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-1-8",
+  "list_index": 9,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-1-8 Ribbon (name not given on the public page)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-1-8: AJROTC Honor Cadet",
+  "stripes": 7,
+  "max_snap": 10.9,
+  "unsnapped": 4
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-1-9",
+  "list_index": 10,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-1-9 Ribbon (name not given on the public page)",
+  "vendor_product": "ROTC Ribbon Unit # N-1-9",
+  "stripes": 9,
+  "max_snap": 10.4,
+  "unsnapped": 1
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-1-10",
+  "list_index": 11,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-1-10 Ribbon (name not given on the public page)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-1-10",
+  "stripes": 15,
+  "max_snap": 10.5,
+  "unsnapped": 8
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-dai-sai-instructor-leadership",
+  "list_index": 12,
+  "service": "army-jrotc",
+  "name": "Army JROTC Dai Sai Instructor Leadership Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-3-1",
+  "stripes": 15,
+  "max_snap": 17.4,
+  "unsnapped": 15
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-personal-appearance",
+  "list_index": 13,
+  "service": "army-jrotc",
+  "name": "Army JROTC Personal Appearance Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-3-2",
+  "stripes": 5,
+  "max_snap": 17,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-proficiency",
+  "list_index": 14,
+  "service": "army-jrotc",
+  "name": "Army JROTC Proficiency Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-3-3",
+  "stripes": 9,
+  "max_snap": 17,
+  "unsnapped": 9
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-drill-team",
+  "list_index": 15,
+  "service": "army-jrotc",
+  "name": "Army JROTC Drill Team Ribbon",
+  "vendor_product": "Ribbon Unit: N-3-4: AJROTC Drill Team",
+  "stripes": 7,
+  "max_snap": 17,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-orienteering",
+  "list_index": 16,
+  "service": "army-jrotc",
+  "name": "Army JROTC Orienteering Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-3-5",
+  "stripes": 9,
+  "max_snap": 13,
+  "unsnapped": 9
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-color-guard",
+  "list_index": 17,
+  "service": "army-jrotc",
+  "name": "Army JROTC Color Guard Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-3-6",
+  "stripes": 5,
+  "max_snap": 13,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-rifle-team",
+  "list_index": 18,
+  "service": "army-jrotc",
+  "name": "Army JROTC Rifle Team Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-3-7: AJROTC Marksmanship Team",
+  "stripes": 9,
+  "max_snap": 12,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-adventure-training",
+  "list_index": 19,
+  "service": "army-jrotc",
+  "name": "Army JROTC Adventure Training Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-3-8: AJROTC Adventure Training",
+  "stripes": 7,
+  "max_snap": 8,
+  "unsnapped": 4
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-commendation",
+  "list_index": 20,
+  "service": "army-jrotc",
+  "name": "Army JROTC Commendation Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-3-9: AJROTC Commendation",
+  "stripes": 9,
+  "max_snap": 12.1,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-3-12",
+  "list_index": 23,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-3-12 Ribbon (name not given on the public page)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-3-12: AJROTC Marksmanship",
+  "stripes": 9,
+  "max_snap": 12,
+  "unsnapped": 4
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-3-13",
+  "list_index": 24,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-3-13 Ribbon (name not given on the public page)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-3-13: AJROTC Competitive Drill Individual",
+  "stripes": 9,
+  "max_snap": 12,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-3-14",
+  "list_index": 25,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-3-14 Ribbon (name not given on the public page)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-3-14: AJROTC Competitive Drill Unit",
+  "stripes": 9,
+  "max_snap": 12,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-3-15",
+  "list_index": 26,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-3-15 Ribbon (name not given on the public page)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-3-15: Round Robin Rifle Match",
+  "stripes": 7,
+  "max_snap": 12,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-varsity-athletics",
+  "list_index": 27,
+  "service": "army-jrotc",
+  "name": "Army JROTC Varsity Athletics Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-2-1",
+  "stripes": 13,
+  "max_snap": 18.8,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-physical-fitness",
+  "list_index": 28,
+  "service": "army-jrotc",
+  "name": "Army JROTC Physical Fitness Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-2-2: AJROTC Physical Fitness",
+  "stripes": 11,
+  "max_snap": 18.8,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-athletics",
+  "list_index": 29,
+  "service": "army-jrotc",
+  "name": "Army JROTC Athletics Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-2-3: AJROTC Athletics",
+  "stripes": 9,
+  "max_snap": 17.3,
+  "unsnapped": 2
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-2-4",
+  "list_index": 30,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-2-4 Ribbon (name not given on the public page)",
+  "vendor_product": "ROTC Ribbon Unit #N-2-4",
+  "stripes": 11,
+  "max_snap": 19.1,
+  "unsnapped": 9
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-2-5",
+  "list_index": 31,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-2-5 Ribbon (name not given on the public page)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-2-5: AJROTC Athletic Participation",
+  "stripes": 9,
+  "max_snap": 12.3,
+  "unsnapped": 4
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-parade",
+  "list_index": 32,
+  "service": "army-jrotc",
+  "name": "Army JROTC Parade Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-4-1",
+  "stripes": 9,
+  "max_snap": 11.4,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-recruiting",
+  "list_index": 33,
+  "service": "army-jrotc",
+  "name": "Army JROTC Recruiting Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-4-2: AJROTC Recruiting",
+  "stripes": 9,
+  "max_snap": 13.2,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-4-3",
+  "list_index": 34,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-4-3 Ribbon (name not given on the public page)",
+  "vendor_product": "Ribbon Unit: N-4-3: AJROTC Volunteer Service",
+  "stripes": 13,
+  "max_snap": 13.2,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-4-4",
+  "list_index": 35,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-4-4 Ribbon (name not given on the public page)",
+  "vendor_product": "ROTC Ribbon Unit #N-4-4",
+  "stripes": 13,
+  "max_snap": 13.6,
+  "unsnapped": 6
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-n-4-5",
+  "list_index": 36,
+  "service": "army-jrotc",
+  "name": "Army JROTC N-4-5 Ribbon (name not given on the public page)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-4-5: AJROTC Public Achievement",
+  "stripes": 13,
+  "max_snap": 13.2,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-service-learning",
+  "list_index": 37,
+  "service": "army-jrotc",
+  "name": "Army JROTC Service Learning Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-4-6: AJROTC Service Learning",
+  "stripes": 9,
+  "max_snap": 9.7,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-army-jrotc-excellent-staff-performance",
+  "list_index": 38,
+  "service": "army-jrotc",
+  "name": "Army JROTC Excellent Staff Performance Ribbon",
+  "vendor_product": "Army ROTC Ribbon Unit: N-4-7: AJROTC Excellent Staff",
+  "stripes": 11,
+  "max_snap": 10.5,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-gold-valor-award",
+  "list_index": 39,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Gold Valor Award",
+  "vendor_product": "Ribbon Unit #3016 - Air Force ROTC/JROTCGold Valor Award",
+  "stripes": 1,
+  "max_snap": 2.1,
+  "unsnapped": 0
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-silver-valor-award",
+  "list_index": 40,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Silver Valor Award",
+  "vendor_product": "Ribbon Unit #3001",
+  "stripes": 1,
+  "max_snap": 0,
+  "unsnapped": 0
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-cadet-humanitarian-award",
+  "list_index": 41,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Cadet Humanitarian Award",
+  "vendor_product": "Ribbon Unit #3600: AFJROTC Cadet Humanitarian Award",
+  "stripes": 5,
+  "max_snap": 5.6,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-air-force-association-award",
+  "list_index": 44,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Air Force Association Award",
+  "vendor_product": "Ribbon Unit #3505 Air Force ROTC Ribbon Unit: Outstanding Cadet Training Assistant Award",
+  "stripes": 3,
+  "max_snap": 7.1,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-reserve-officers-association-award",
+  "list_index": 47,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Reserve Officers Association Award",
+  "vendor_product": "Ribbon Unit: Reserve Officers Association",
+  "stripes": 5,
+  "max_snap": 10.2,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-national-sojourners-award",
+  "list_index": 48,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC National Sojourners Award",
+  "vendor_product": "Ribbon Unit #3613 National Sojourners Award",
+  "stripes": 13,
+  "max_snap": 5.3,
+  "unsnapped": 2
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-military-order-of-the-purple-heart-award",
+  "list_index": 50,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Military Order of the Purple Heart Award",
+  "vendor_product": "Ribbon Unit #3007: ROTC Ribbon Unit - Military Order of The Purple Heart",
+  "stripes": 1,
+  "max_snap": 13.5,
+  "unsnapped": 1
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-military-order-of-world-wars-medal",
+  "list_index": 51,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Military Order of World Wars Medal",
+  "vendor_product": "Ribbon Unit: Military Order of World Wars",
+  "stripes": 25,
+  "max_snap": 14.7,
+  "unsnapped": 22
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-tuskegee-airmen-inc-cadet-award",
+  "list_index": 53,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Tuskegee Airmen Inc. Cadet Award",
+  "vendor_product": "Ribbon Unit: AFJROTC Tuskegee Airmen Ribbon",
+  "stripes": 9,
+  "max_snap": 18.1,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-distinguished-unit-award",
+  "list_index": 58,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Distinguished Unit Award",
+  "vendor_product": "Ribbon Unit #3661: AFJROTC Distinguished Unit Award",
+  "stripes": 9,
+  "max_snap": 10.2,
+  "unsnapped": 6
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-outstanding-organization-award",
+  "list_index": 59,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Outstanding Organization Award",
+  "vendor_product": "Ribbon Unit: Air Force JROTC  Outstanding Organization Award",
+  "stripes": 4,
+  "max_snap": 13.3,
+  "unsnapped": 2
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-top-performer-award",
+  "list_index": 61,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Top Performer Award",
+  "vendor_product": "Ribbon Unit: Air Force AFJROTC Top Performer Award",
+  "stripes": 5,
+  "max_snap": 10.5,
+  "unsnapped": 2
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-outstanding-cadet-award",
+  "list_index": 62,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Outstanding Cadet Award",
+  "vendor_product": "Ribbon Unit #3607",
+  "stripes": 7,
+  "max_snap": 6,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-superior-performance",
+  "list_index": 64,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Superior Performance Ribbon",
+  "vendor_product": "Ribbon Unit: Air Force ROTC Superior Performance",
+  "stripes": 11,
+  "max_snap": 10.8,
+  "unsnapped": 6
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-leadership-school",
+  "list_index": 67,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Leadership School Ribbon",
+  "vendor_product": "Ribbon Unit #3709: AFJROTC Leadership School",
+  "stripes": 3,
+  "max_snap": 11.1,
+  "unsnapped": 1
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-orienteering",
+  "list_index": 68,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Orienteering Ribbon",
+  "vendor_product": "Ribbon Unit #3604",
+  "stripes": 7,
+  "max_snap": 6.6,
+  "unsnapped": 2
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-drill-team",
+  "list_index": 70,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Drill Team Ribbon",
+  "vendor_product": "Ribbon Unit: Drill Air Force ROTC Team Competition",
+  "stripes": 7,
+  "max_snap": 21.1,
+  "unsnapped": 6
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-color-guard",
+  "list_index": 71,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Color Guard Ribbon",
+  "vendor_product": "Ribbon Unit: Air Force ROTC Color Guard",
+  "stripes": 4,
+  "max_snap": 13.7,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-sabre-team",
+  "list_index": 72,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Sabre Team Ribbon",
+  "vendor_product": "Ribbon Unit: Air Force ROTC Sabre Team",
+  "stripes": 3,
+  "max_snap": 12.1,
+  "unsnapped": 2
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-good-conduct",
+  "list_index": 74,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Good Conduct Ribbon",
+  "vendor_product": "Ribbon Unit: Air Force AFROTC Meritorious Service Award",
+  "stripes": 5,
+  "max_snap": 15,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-recruiting",
+  "list_index": 77,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Recruiting Ribbon",
+  "vendor_product": "Ribbon Unit: Air Force ROTC Recruiting Award",
+  "stripes": 13,
+  "max_snap": 6,
+  "unsnapped": 1
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-activities",
+  "list_index": 78,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Activities Ribbon",
+  "vendor_product": "Ribbon Unit #3108",
+  "stripes": 2,
+  "max_snap": 5.1,
+  "unsnapped": 1
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-dress-and-appearance",
+  "list_index": 80,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Dress and Appearance Ribbon",
+  "vendor_product": "Ribbon Unit #4020: NS AFROTC Academic Award",
+  "stripes": 9,
+  "max_snap": 4.8,
+  "unsnapped": 0
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-longevity",
+  "list_index": 81,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Longevity Ribbon",
+  "vendor_product": "Ribbon Unit #3414",
+  "stripes": 3,
+  "max_snap": 8.4,
+  "unsnapped": 2
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-bataan-death-march-memorial-hike",
+  "list_index": 82,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Bataan Death March Memorial Hike Ribbon",
+  "vendor_product": "Ribbon Unit #4040: Bataan Death March Memorial Hike unmounted.",
+  "stripes": 3,
+  "max_snap": 5.5,
+  "unsnapped": 1
+ },
+ {
+  "id": "mil-ribbon-rotc-air-force-jrotc-patriotic-flag",
+  "list_index": 83,
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Patriotic Flag Ribbon",
+  "vendor_product": "Ribbon Unit #2900: Stars and Stripes ribbon unmounted",
+  "stripes": 23,
+  "max_snap": 6.9,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-arts-and-academics",
+  "list_index": 1000,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Arts and Academics Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-1-3",
+  "stripes": 7,
+  "max_snap": 8.3,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-athletic-participation",
+  "list_index": 1001,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Athletic Participation Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-1-5",
+  "stripes": 5,
+  "max_snap": 8.2,
+  "unsnapped": 4
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-physical-achievement",
+  "list_index": 1002,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Physical Achievement Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-2-1",
+  "stripes": 13,
+  "max_snap": 18.8,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-rifle-team",
+  "list_index": 1003,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Rifle Team Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-2-4",
+  "stripes": 11,
+  "max_snap": 19.1,
+  "unsnapped": 9
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-best-drill-cadet",
+  "list_index": 1004,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Best Drill Cadet Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-3-1",
+  "stripes": 15,
+  "max_snap": 17.4,
+  "unsnapped": 15
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-color-guard",
+  "list_index": 1005,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Color Guard Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-3-2",
+  "stripes": 5,
+  "max_snap": 17,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-outstanding-cadet",
+  "list_index": 1006,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Outstanding Cadet Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-3-3",
+  "stripes": 9,
+  "max_snap": 17,
+  "unsnapped": 9
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-officer-leadership",
+  "list_index": 1007,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Officer Leadership Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-3-5",
+  "stripes": 9,
+  "max_snap": 13,
+  "unsnapped": 9
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-student-leadership",
+  "list_index": 1008,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Student Leadership Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-3-6",
+  "stripes": 5,
+  "max_snap": 13,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-longevity-and-fidelity",
+  "list_index": 1009,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Longevity and Fidelity Ribbon",
+  "vendor_product": "ROTC Ribbon Unit #N-4-1",
+  "stripes": 9,
+  "max_snap": 11.4,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-superior-marksman",
+  "list_index": 1010,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Superior Marksman Ribbon",
+  "vendor_product": "Marine Corps ROTC Ribbon Unit: Superior Marksman",
+  "stripes": 9,
+  "max_snap": 12.1,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-orienteering",
+  "list_index": 1011,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Orienteering Ribbon",
+  "vendor_product": "Ribbon Unit #5204 - Marine Corps ROTC: Orienteering",
+  "stripes": 7,
+  "max_snap": 14.4,
+  "unsnapped": 7
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-best-drill-squad",
+  "list_index": 1012,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Best Drill Squad Ribbon",
+  "vendor_product": "Marine Corps ROTC Ribbon Unit: Best Drill Squad",
+  "stripes": 7,
+  "max_snap": 12.5,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-women-marines-association",
+  "list_index": 1014,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Women Marines Association Ribbon",
+  "vendor_product": "Ribbon Unit #5119",
+  "stripes": 4,
+  "max_snap": 11.3,
+  "unsnapped": 4
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-daedalian-award",
+  "list_index": 1015,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Daedalian Award Ribbon",
+  "vendor_product": "Ribbon Unit: ROTC Daedalian Award",
+  "stripes": 9,
+  "max_snap": 16.3,
+  "unsnapped": 9
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-daughters-of-the-american-revolution",
+  "list_index": 1016,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Daughters of the American Revolution Ribbon",
+  "vendor_product": "Ribbon Unit #5415: Daughters of The American Revolution Award",
+  "stripes": 5,
+  "max_snap": 11.1,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-reserve-officers-association",
+  "list_index": 1017,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC Reserve Officers Association Ribbon",
+  "vendor_product": "Ribbon Unit: Reserve Officers Association",
+  "stripes": 5,
+  "max_snap": 10.2,
+  "unsnapped": 3
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-american-veterans-award",
+  "list_index": 1018,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps JROTC American Veterans Award Ribbon",
+  "vendor_product": "ROTC Ribbon Unit: American Veterans Award",
+  "stripes": 9,
+  "max_snap": 8.4,
+  "unsnapped": 5
+ },
+ {
+  "id": "mil-ribbon-rotc-marine-corps-jrotc-marine-corps-league-youth-physical-fitness",
+  "list_index": 1019,
+  "service": "marine-corps-jrotc",
+  "name": "Marine Corps League Youth Physical Fitness Ribbon",
+  "vendor_product": "Marine Corps League Youth Physical Fitness Ribbon",
+  "stripes": 7,
+  "max_snap": 7.5,
+  "unsnapped": 1
+ }
+]

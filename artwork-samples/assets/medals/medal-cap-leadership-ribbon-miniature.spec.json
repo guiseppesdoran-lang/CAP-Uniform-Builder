@@ -1,0 +1,99 @@
+{
+ "asset_id": "medal-cap-leadership-ribbon-miniature",
+ "name": "Leadership Award (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.7933
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  79.33
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_leader.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7933 in (was 0.6625).",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   79.33
+  ],
+  "center": [
+   31.25,
+   39.67
+  ],
+  "left_edge": [
+   0,
+   39.67
+  ],
+  "right_edge": [
+   62.5,
+   39.67
+  ],
+  "ribbon_attach": [
+   29.51,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-cap-leadership-ribbon",
+  "spec": "../ribbons/ribbon-cap-leadership-ribbon.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-leadership-award-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9798,
+  "threshold": 0.95,
+  "colour_mae_0_255": 32.3,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#2d2825",
+  "#524c4b",
+  "#8d8a86",
+  "#c1bfbd"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "leader_b",
+   "leader_bb",
+   "leader_bbb",
+   "leader_s",
+   "leader_sb",
+   "leader_sbb",
+   "leader_ss",
+   "leader_ssb",
+   "leader_sss"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 0.625,
+  "h": 0.6625
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-leadership-award-miniature-medal",
+  "local_photo": "medals-work/ref-hires/leadership-award.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 181,
+   "h": 229
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 6.5
+}

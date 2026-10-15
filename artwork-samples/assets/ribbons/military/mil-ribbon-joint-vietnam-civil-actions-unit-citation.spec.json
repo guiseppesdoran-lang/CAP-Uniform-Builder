@@ -1,0 +1,142 @@
+{
+ "asset_id": "mil-ribbon-joint-vietnam-civil-actions-unit-citation",
+ "name": "vietnam civil actions unit citation",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "traced-polygons",
+  "stripes": [],
+  "stars": [],
+  "frame": null,
+  "traced_layers": [
+   {
+    "hex": "fac517",
+    "area_fraction": 0.375,
+    "loops": 2
+   },
+   {
+    "hex": "065637",
+    "area_fraction": 0.2867,
+    "loops": 6
+   },
+   {
+    "hex": "ed2f24",
+    "area_fraction": 0.1847,
+    "loops": 6
+   },
+   {
+    "hex": "95652a",
+    "area_fraction": 0.0838,
+    "loops": 5
+   },
+   {
+    "hex": "fcd664",
+    "area_fraction": 0.0418,
+    "loops": 1
+   },
+   {
+    "hex": "ffffff",
+    "area_fraction": 0.0136,
+    "loops": 2
+   },
+   {
+    "hex": "999924",
+    "area_fraction": 0.0089,
+    "loops": 4
+   },
+   {
+    "hex": "f58b1d",
+    "area_fraction": 0.0055,
+    "loops": 4
+   }
+  ]
+ },
+ "classification": "traced",
+ "quality": {
+  "color_source": "measured (vendor raster)",
+  "geometry_source": "vendor raster",
+  "snap": null,
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/vietnam_civil_actions_unit_citation.png"
+  ],
+  "residual": {
+   "vertical": 87.9,
+   "horizontal": 69.4,
+   "central_vertical": 32.7
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": false,
+  "border_frame_detected": true,
+  "fidelity": "simplified",
+  "traced_from_raster_residual": 6.1,
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": ""
+ },
+ "authorized_services": [
+  "AIR_FORCE",
+  "ARMY",
+  "COAST_GUARD",
+  "MARINE_CORPS",
+  "NAVY"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/vietnam_civil_actions_unit_citation.png",
+   "award_ids": [
+    "vietnam_civil_actions_unit_citation"
+   ]
+  }
+ ],
+ "award_names": [
+  "vietnam civil actions unit citation"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 6.1,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

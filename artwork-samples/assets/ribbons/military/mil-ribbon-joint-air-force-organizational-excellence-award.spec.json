@@ -1,0 +1,164 @@
+{
+ "asset_id": "mil-ribbon-joint-air-force-organizational-excellence-award",
+ "name": "Air and Space Organizational Excellence Award",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "000066",
+    "fraction": 0.0818,
+    "x0_in": 0,
+    "x1_in": 0.1125
+   },
+   {
+    "index": 1,
+    "hex": "a3c7d2",
+    "fraction": 0.0409,
+    "x0_in": 0.1125,
+    "x1_in": 0.1687
+   },
+   {
+    "index": 2,
+    "hex": "ee0028",
+    "fraction": 0.2773,
+    "x0_in": 0.1687,
+    "x1_in": 0.55
+   },
+   {
+    "index": 3,
+    "hex": "a3c7d2",
+    "fraction": 0.0409,
+    "x0_in": 0.55,
+    "x1_in": 0.6062
+   },
+   {
+    "index": 4,
+    "hex": "000066",
+    "fraction": 0.1227,
+    "x0_in": 0.6062,
+    "x1_in": 0.775
+   },
+   {
+    "index": 5,
+    "hex": "a3c7d2",
+    "fraction": 0.0364,
+    "x0_in": 0.775,
+    "x1_in": 0.825
+   },
+   {
+    "index": 6,
+    "hex": "ee0028",
+    "fraction": 0.2818,
+    "x0_in": 0.825,
+    "x1_in": 1.2125
+   },
+   {
+    "index": 7,
+    "hex": "a3c7d2",
+    "fraction": 0.0409,
+    "x0_in": 1.2125,
+    "x1_in": 1.2687
+   },
+   {
+    "index": 8,
+    "hex": "000066",
+    "fraction": 0.0773,
+    "x0_in": 1.2687,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "measured raster, snapped to the repo palette",
+  "geometry_source": "vendor raster (mid-height columns)",
+  "snap": {
+   "stripes_before": 9,
+   "stripes_after": 9,
+   "max_snap_delta": 19.8
+  },
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/ribbons/Air_Force_Organizational_Excellence_Award.png"
+  ],
+  "residual": {
+   "vertical": 17.4,
+   "horizontal": 122.1,
+   "central_vertical": 13.8
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": ""
+ },
+ "authorized_services": [
+  "AIR_FORCE",
+  "SPACE_FORCE"
+ ],
+ "aliases": [
+  {
+   "image": "images/ribbons/Air_Force_Organizational_Excellence_Award.png",
+   "award_ids": [
+    "air_force_organizational_excellence_award"
+   ]
+  }
+ ],
+ "award_names": [
+  "Air and Space Organizational Excellence Award"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 17.4,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

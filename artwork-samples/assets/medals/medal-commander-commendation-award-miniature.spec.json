@@ -1,0 +1,144 @@
+{
+ "asset_id": "medal-commander-commendation-award-miniature",
+ "name": "Commander's Commendation Award (miniature medal body)",
+ "size_in": {
+  "w": 0.625,
+  "h": 0.7632
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  62.5,
+  76.32
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_cmdrco01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7632 in (was 0.6625).",
+ "anchors": {
+  "top_center": [
+   31.25,
+   0
+  ],
+  "bottom_center": [
+   31.25,
+   76.32
+  ],
+  "center": [
+   31.25,
+   38.16
+  ],
+  "left_edge": [
+   0,
+   38.16
+  ],
+  "right_edge": [
+   62.5,
+   38.16
+  ],
+  "ribbon_attach": [
+   30.79,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-commander-commendation-award",
+  "spec": "../ribbons/ribbon-commander-commendation-award.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-commander-commendation-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.9855,
+  "threshold": 0.95,
+  "colour_mae_0_255": 31.3,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#25201c",
+  "#524945",
+  "#887a6c",
+  "#d0cac5"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "cmdrco01b",
+   "cmdrco01s",
+   "cmdrco02",
+   "cmdrco02b",
+   "cmdrco02s",
+   "cmdrco02sb",
+   "cmdrco03",
+   "cmdrco03b",
+   "cmdrco03s",
+   "cmdrco03sb",
+   "cmdrco04",
+   "cmdrco04b",
+   "cmdrco04s",
+   "cmdrco04sb",
+   "cmdrco05",
+   "cmdrco05b",
+   "cmdrco05s",
+   "cmdrco06",
+   "cmdrco06b",
+   "cmdrco06s",
+   "cmdrco06sb",
+   "cmdrco07",
+   "cmdrco07b",
+   "cmdrco07s",
+   "cmdrco07sb",
+   "cmdrco08",
+   "cmdrco08b",
+   "cmdrco08s",
+   "cmdrco08sb",
+   "cmdrco09",
+   "cmdrco09b",
+   "cmdrco10",
+   "cmdrco11",
+   "cmdrco11b",
+   "cmdrco11s",
+   "cmdrco11sb",
+   "cmdrco12",
+   "cmdrco12b",
+   "cmdrco12s",
+   "cmdrco12sb",
+   "cmdrco13",
+   "cmdrco13b",
+   "cmdrco13s",
+   "cmdrco14",
+   "cmdrco16",
+   "cmdrco16b",
+   "cmdrco16s",
+   "cmdrco16sb",
+   "cmdrco17",
+   "cmdrco17b",
+   "cmdrco17s",
+   "cmdrco18",
+   "cmdrco21",
+   "cmdrco21b"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 0.625,
+  "h": 0.6625
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-commander-commendation-miniature-medal",
+  "local_photo": "medals-work/ref-hires/commander-commendation.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 191,
+   "h": 232
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 4.5
+}

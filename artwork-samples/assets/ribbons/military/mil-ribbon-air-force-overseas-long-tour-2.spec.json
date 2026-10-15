@@ -1,0 +1,192 @@
+{
+ "asset_id": "mil-ribbon-air-force-overseas-long-tour-2",
+ "name": "air force overseas long tour",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "7bafd4",
+    "fraction": 0.1132,
+    "x0_in": 0,
+    "x1_in": 0.1556
+   },
+   {
+    "index": 1,
+    "hex": "ffffff",
+    "fraction": 0.0453,
+    "x0_in": 0.1556,
+    "x1_in": 0.2179
+   },
+   {
+    "index": 2,
+    "hex": "7bafd4",
+    "fraction": 0.049,
+    "x0_in": 0.2179,
+    "x1_in": 0.2853
+   },
+   {
+    "index": 3,
+    "hex": "ffffff",
+    "fraction": 0.0453,
+    "x0_in": 0.2853,
+    "x1_in": 0.3476
+   },
+   {
+    "index": 4,
+    "hex": "7bafd4",
+    "fraction": 0.0453,
+    "x0_in": 0.3476,
+    "x1_in": 0.4099
+   },
+   {
+    "index": 5,
+    "hex": "ffffff",
+    "fraction": 0.0453,
+    "x0_in": 0.4099,
+    "x1_in": 0.4722
+   },
+   {
+    "index": 6,
+    "hex": "001489",
+    "fraction": 0.3132,
+    "x0_in": 0.4722,
+    "x1_in": 0.9028
+   },
+   {
+    "index": 7,
+    "hex": "ffffff",
+    "fraction": 0.0453,
+    "x0_in": 0.9028,
+    "x1_in": 0.9651
+   },
+   {
+    "index": 8,
+    "hex": "7bafd4",
+    "fraction": 0.0453,
+    "x0_in": 0.9651,
+    "x1_in": 1.0274
+   },
+   {
+    "index": 9,
+    "hex": "ffffff",
+    "fraction": 0.0453,
+    "x0_in": 1.0274,
+    "x1_in": 1.0897
+   },
+   {
+    "index": 10,
+    "hex": "7bafd4",
+    "fraction": 0.049,
+    "x0_in": 1.0897,
+    "x1_in": 1.1571
+   },
+   {
+    "index": 11,
+    "hex": "ffffff",
+    "fraction": 0.0453,
+    "x0_in": 1.1571,
+    "x1_in": 1.2193
+   },
+   {
+    "index": 12,
+    "hex": "7bafd4",
+    "fraction": 0.1132,
+    "x0_in": 1.2193,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes_framed_or_photo",
+ "quality": {
+  "color_source": "public reference: Wikimedia Commons File:Air and Space Overseas Long Tour Service Ribbon.svg (Public domain), boundary match 1",
+  "geometry_source": "public reference, cross-validated against the raster",
+  "snap": null,
+  "reference": {
+   "title": "File:Air and Space Overseas Long Tour Service Ribbon.svg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Air_and_Space_Overseas_Long_Tour_Service_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "license": "Public domain",
+   "boundary_match": 1
+  },
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/overseas_long_tour.jpg"
+  ],
+  "residual": {
+   "vertical": 33.6,
+   "horizontal": 71.9,
+   "central_vertical": 16.3
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": true,
+  "border_frame_detected": true,
+  "fidelity": "reference",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+ },
+ "authorized_services": [
+  "AIR_FORCE"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/overseas_long_tour.jpg",
+   "award_ids": [
+    "overseas_long_tour"
+   ]
+  }
+ ],
+ "award_names": [
+  "air force overseas long tour"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 33.6,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

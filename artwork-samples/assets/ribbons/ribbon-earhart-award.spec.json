@@ -1,0 +1,103 @@
+{
+ "asset_id": "ribbon-earhart-award",
+ "name": "Amelia Earhart Award",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3), as carried in cap-ribbons/specs.json physicalSize from CAPR 39-3 (28 Dec 2012). Paragraph number to be confirmed.",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "ffffff",
+    "fraction": 0.26,
+    "x0_in": 0,
+    "x1_in": 0.3575
+   },
+   {
+    "index": 1,
+    "hex": "ff0000",
+    "fraction": 0.06,
+    "x0_in": 0.3575,
+    "x1_in": 0.44
+   },
+   {
+    "index": 2,
+    "hex": "ffffff",
+    "fraction": 0.15,
+    "x0_in": 0.44,
+    "x1_in": 0.6462
+   },
+   {
+    "index": 3,
+    "hex": "0000ff",
+    "fraction": 0.06,
+    "x0_in": 0.6462,
+    "x1_in": 0.7288
+   },
+   {
+    "index": 4,
+    "hex": "ffffff",
+    "fraction": 0.15,
+    "x0_in": 0.7288,
+    "x1_in": 0.935
+   },
+   {
+    "index": 5,
+    "hex": "ff0000",
+    "fraction": 0.06,
+    "x0_in": 0.935,
+    "x1_in": 1.0175
+   },
+   {
+    "index": 6,
+    "hex": "ffffff",
+    "fraction": 0.26,
+    "x0_in": 1.0175,
+    "x1_in": 1.375
+   }
+  ],
+  "device_count": 0
+ },
+ "color_source": "CAPR 39-3 (28 Dec 2012) Attachment 3, embedded ribbon image (PDF object 158)",
+ "color_verified_against_regulation": true,
+ "grade": "ribbon",
+ "fit": {
+  "method": "n/a (stripe fractions from regulation image)",
+  "score": null
+ }
+}

@@ -1,0 +1,154 @@
+{
+ "asset_id": "mil-ribbon-rotc-army-jrotc-athletics",
+ "name": "Army JROTC Athletics Ribbon",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 / CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "808080",
+    "fraction": 0.0795,
+    "x0_in": 0,
+    "x1_in": 0.1093
+   },
+   {
+    "index": 1,
+    "hex": "442e1f",
+    "fraction": 0.075,
+    "x0_in": 0.1093,
+    "x1_in": 0.2124
+   },
+   {
+    "index": 2,
+    "hex": "87431a",
+    "fraction": 0.2,
+    "x0_in": 0.2124,
+    "x1_in": 0.4874
+   },
+   {
+    "index": 3,
+    "hex": "7a7470",
+    "fraction": 0.0455,
+    "x0_in": 0.4874,
+    "x1_in": 0.55
+   },
+   {
+    "index": 4,
+    "hex": "215732",
+    "fraction": 0.2,
+    "x0_in": 0.55,
+    "x1_in": 0.825
+   },
+   {
+    "index": 5,
+    "hex": "7a7470",
+    "fraction": 0.0432,
+    "x0_in": 0.825,
+    "x1_in": 0.8844
+   },
+   {
+    "index": 6,
+    "hex": "87431a",
+    "fraction": 0.2,
+    "x0_in": 0.8844,
+    "x1_in": 1.1594
+   },
+   {
+    "index": 7,
+    "hex": "442e1f",
+    "fraction": 0.075,
+    "x0_in": 1.1594,
+    "x1_in": 1.2625
+   },
+   {
+    "index": 8,
+    "hex": "808080",
+    "fraction": 0.0818,
+    "x0_in": 1.2625,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "program": "ROTC/JROTC",
+ "service": "army-jrotc",
+ "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
+ "measurement": {
+  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "fidelity": "measured_from_vendor_image",
+  "source_kind": "vendor-photo-measured",
+  "source_images": [],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-2-3: AJROTC Athletics",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-n23-ajrotc-athletics-rotc-ribbon-unit",
+  "award_list_source": "https://en.wikipedia.org/wiki/Junior_Reserve_Officers%27_Training_Corps (ribbon tables)",
+  "residual": {
+   "vertical": 13.9,
+   "horizontal": 71.4,
+   "central_vertical": 4.7
+  },
+  "border_frame_detected": false,
+  "photographic_source": false,
+  "match_basis": "vendor product title names the award",
+  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+ },
+ "quality": {
+  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
+  "geometry_source": "vendor photo, mid-height columns",
+  "snap": {
+   "stripes_before": 9,
+   "stripes_after": 9,
+   "max_snap_delta": 17.3,
+   "unsnapped": 2,
+   "margin_runs_trimmed": [],
+   "shadow_bands_merged": 0
+  },
+  "min_stripe_in": "1/64"
+ },
+ "fit": {
+  "method": "n/a (vendor photo measured)",
+  "score": null,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

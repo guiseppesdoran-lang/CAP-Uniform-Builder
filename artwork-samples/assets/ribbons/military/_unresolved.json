@@ -1,0 +1,7 @@
+[
+ {
+  "award_id": "coast_guard_cross",
+  "not_buildable": "no reference",
+  "reason": "the catalog has no ribbon raster or vector for this award, so there is nothing to measure"
+ }
+]

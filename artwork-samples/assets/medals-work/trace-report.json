@@ -1,0 +1,24 @@
+[
+ {
+  "stem": "AA01",
+  "id": "medal-cap-achievment-award-full",
+  "kind": "full",
+  "bytes": 42549,
+  "mult": 1.5,
+  "iou": 0.9937,
+  "mae": 24.4,
+  "w": 1.375,
+  "h": 1.7761
+ },
+ {
+  "stem": "AA01",
+  "id": "medal-cap-achievment-award-miniature",
+  "kind": "miniature",
+  "bytes": 16256,
+  "mult": 3.2,
+  "iou": 0.9898,
+  "mae": 25.5,
+  "w": 0.625,
+  "h": 0.8107
+ }
+]

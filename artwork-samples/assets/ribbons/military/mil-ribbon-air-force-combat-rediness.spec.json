@@ -1,0 +1,163 @@
+{
+ "asset_id": "mil-ribbon-air-force-combat-rediness",
+ "name": "air force combat readiness",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "6f263d",
+    "fraction": 0.0909,
+    "x0_in": 0,
+    "x1_in": 0.125
+   },
+   {
+    "index": 1,
+    "hex": "9ea2a2",
+    "fraction": 0.0909,
+    "x0_in": 0.125,
+    "x1_in": 0.25
+   },
+   {
+    "index": 2,
+    "hex": "2f3b77",
+    "fraction": 0.0409,
+    "x0_in": 0.25,
+    "x1_in": 0.3062
+   },
+   {
+    "index": 3,
+    "hex": "808080",
+    "fraction": 0.0955,
+    "x0_in": 0.3062,
+    "x1_in": 0.4375
+   },
+   {
+    "index": 4,
+    "hex": "ba0c2f",
+    "fraction": 0.3727,
+    "x0_in": 0.4375,
+    "x1_in": 0.95
+   },
+   {
+    "index": 5,
+    "hex": "808080",
+    "fraction": 0.0909,
+    "x0_in": 0.95,
+    "x1_in": 1.075
+   },
+   {
+    "index": 6,
+    "hex": "2f3b77",
+    "fraction": 0.0455,
+    "x0_in": 1.075,
+    "x1_in": 1.1375
+   },
+   {
+    "index": 7,
+    "hex": "808080",
+    "fraction": 0.0909,
+    "x0_in": 1.1375,
+    "x1_in": 1.2625
+   },
+   {
+    "index": 8,
+    "hex": "ba0c2f",
+    "fraction": 0.0818,
+    "x0_in": 1.2625,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes_framed_or_photo",
+ "quality": {
+  "color_source": "measured raster, snapped to the repo palette",
+  "geometry_source": "vendor raster (mid-height columns)",
+  "snap": {
+   "stripes_before": 9,
+   "stripes_after": 9,
+   "max_snap_delta": 19.8
+  },
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/air_force_combat_rediness.jpg"
+  ],
+  "residual": {
+   "vertical": 28.2,
+   "horizontal": 76.8,
+   "central_vertical": 18.4
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": true,
+  "border_frame_detected": false,
+  "fidelity": "approximate",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+ },
+ "authorized_services": [
+  "AIR_FORCE"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/air_force_combat_rediness.jpg",
+   "award_ids": [
+    "air_force_combat_rediness"
+   ]
+  }
+ ],
+ "award_names": [
+  "air force combat readiness"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 28.2,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

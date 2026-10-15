@@ -1,0 +1,192 @@
+{
+ "asset_id": "mil-ribbon-navy-recruiting-service",
+ "name": "Navy Recruiting Service",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "ffcd00",
+    "fraction": 0.0455,
+    "x0_in": 0,
+    "x1_in": 0.0626
+   },
+   {
+    "index": 1,
+    "hex": "041e42",
+    "fraction": 0.1375,
+    "x0_in": 0.0626,
+    "x1_in": 0.2516
+   },
+   {
+    "index": 2,
+    "hex": "ffcd00",
+    "fraction": 0.137,
+    "x0_in": 0.2516,
+    "x1_in": 0.44
+   },
+   {
+    "index": 3,
+    "hex": "64a70b",
+    "fraction": 0.077,
+    "x0_in": 0.44,
+    "x1_in": 0.5459
+   },
+   {
+    "index": 4,
+    "hex": "ffcd00",
+    "fraction": 0.046,
+    "x0_in": 0.5459,
+    "x1_in": 0.6091
+   },
+   {
+    "index": 5,
+    "hex": "041e42",
+    "fraction": 0.0455,
+    "x0_in": 0.6091,
+    "x1_in": 0.6717
+   },
+   {
+    "index": 6,
+    "hex": "ba0c2f",
+    "fraction": 0.023,
+    "x0_in": 0.6717,
+    "x1_in": 0.7033
+   },
+   {
+    "index": 7,
+    "hex": "041e42",
+    "fraction": 0.0455,
+    "x0_in": 0.7033,
+    "x1_in": 0.7659
+   },
+   {
+    "index": 8,
+    "hex": "ffcd00",
+    "fraction": 0.046,
+    "x0_in": 0.7659,
+    "x1_in": 0.8291
+   },
+   {
+    "index": 9,
+    "hex": "64a70b",
+    "fraction": 0.077,
+    "x0_in": 0.8291,
+    "x1_in": 0.935
+   },
+   {
+    "index": 10,
+    "hex": "ffcd00",
+    "fraction": 0.137,
+    "x0_in": 0.935,
+    "x1_in": 1.1234
+   },
+   {
+    "index": 11,
+    "hex": "041e42",
+    "fraction": 0.1375,
+    "x0_in": 1.1234,
+    "x1_in": 1.3124
+   },
+   {
+    "index": 12,
+    "hex": "ffcd00",
+    "fraction": 0.0455,
+    "x0_in": 1.3124,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "public reference: Wikimedia Commons File:U.S. Navy Recruiting Service Ribbon.svg (Public domain), boundary match 1",
+  "geometry_source": "public reference, cross-validated against the raster",
+  "snap": null,
+  "reference": {
+   "title": "File:U.S. Navy Recruiting Service Ribbon.svg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/dc/U.S._Navy_Recruiting_Service_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "license": "Public domain",
+   "boundary_match": 1
+  },
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/navy_recruiting_service.jpg"
+  ],
+  "residual": {
+   "vertical": 10,
+   "horizontal": 126.2,
+   "central_vertical": 9.6
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "reference",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": ""
+ },
+ "authorized_services": [
+  "NAVY"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/navy_recruiting_service.jpg",
+   "award_ids": [
+    "navy_recruiting_service"
+   ]
+  }
+ ],
+ "award_names": [
+  "Navy Recruiting Service"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 10,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

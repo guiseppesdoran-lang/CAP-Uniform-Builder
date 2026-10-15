@@ -1,0 +1,1473 @@
+{
+ "aerial_achievement_medal": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1,
+    "hex": "1e1e7a"
+   },
+   {
+    "x0": 0.1,
+    "x1": 0.2,
+    "hex": "f0f000"
+   },
+   {
+    "x0": 0.2,
+    "x1": 0.8,
+    "hex": "14c2f8"
+   },
+   {
+    "x0": 0.8,
+    "x1": 0.9,
+    "hex": "f1f100"
+   },
+   {
+    "x0": 0.9,
+    "x1": 1,
+    "hex": "1e1e7a"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/aerial_achievement_medal/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/aerial_achievement_medal/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/aerial_achievement_medal/0a5792a9add47049.png"
+  ]
+ },
+ "air_and_space_achievement_medal": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.05,
+    "hex": "6572aa"
+   },
+   {
+    "x0": 0.05,
+    "x1": 0.07,
+    "hex": "a2a3b6"
+   },
+   {
+    "x0": 0.07,
+    "x1": 0.09,
+    "hex": "525792"
+   },
+   {
+    "x0": 0.09,
+    "x1": 0.11,
+    "hex": "9c9a9d"
+   },
+   {
+    "x0": 0.11,
+    "x1": 0.14,
+    "hex": "626f9c"
+   },
+   {
+    "x0": 0.14,
+    "x1": 0.16,
+    "hex": "b6b4b9"
+   },
+   {
+    "x0": 0.16,
+    "x1": 0.21,
+    "hex": "5c69a0"
+   },
+   {
+    "x0": 0.21,
+    "x1": 0.35,
+    "hex": "bfbab2"
+   },
+   {
+    "x0": 0.35,
+    "x1": 0.38,
+    "hex": "9c9a9f"
+   },
+   {
+    "x0": 0.38,
+    "x1": 0.43,
+    "hex": "445596"
+   },
+   {
+    "x0": 0.43,
+    "x1": 0.46,
+    "hex": "9091a2"
+   },
+   {
+    "x0": 0.46,
+    "x1": 0.49,
+    "hex": "4f619f"
+   },
+   {
+    "x0": 0.49,
+    "x1": 0.51,
+    "hex": "baaeb6"
+   },
+   {
+    "x0": 0.51,
+    "x1": 0.55,
+    "hex": "6a7ba7"
+   },
+   {
+    "x0": 0.55,
+    "x1": 0.57,
+    "hex": "bfbeca"
+   },
+   {
+    "x0": 0.57,
+    "x1": 0.62,
+    "hex": "6070af"
+   },
+   {
+    "x0": 0.62,
+    "x1": 0.74,
+    "hex": "b9b4af"
+   },
+   {
+    "x0": 0.74,
+    "x1": 0.8,
+    "hex": "a69f9d"
+   },
+   {
+    "x0": 0.8,
+    "x1": 0.84,
+    "hex": "445596"
+   },
+   {
+    "x0": 0.84,
+    "x1": 0.86,
+    "hex": "b0a7ba"
+   },
+   {
+    "x0": 0.86,
+    "x1": 0.89,
+    "hex": "69759c"
+   },
+   {
+    "x0": 0.89,
+    "x1": 0.91,
+    "hex": "b5afba"
+   },
+   {
+    "x0": 0.91,
+    "x1": 0.93,
+    "hex": "6173aa"
+   },
+   {
+    "x0": 0.93,
+    "x1": 0.95,
+    "hex": "c8c9d4"
+   },
+   {
+    "x0": 0.95,
+    "x1": 1,
+    "hex": "5d69a7"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_and_space_achievement_medal/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_and_space_achievement_medal/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_and_space_achievement_medal/0a5792a9add47049.png"
+  ]
+ },
+ "air_and_space_commendation_medal": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.06,
+    "hex": "3d4272"
+   },
+   {
+    "x0": 0.06,
+    "x1": 0.08,
+    "hex": "a49032"
+   },
+   {
+    "x0": 0.08,
+    "x1": 0.34,
+    "hex": "b89319"
+   },
+   {
+    "x0": 0.34,
+    "x1": 0.37,
+    "hex": "504556"
+   },
+   {
+    "x0": 0.37,
+    "x1": 0.41,
+    "hex": "b5932a"
+   },
+   {
+    "x0": 0.41,
+    "x1": 0.6,
+    "hex": "393d6b"
+   },
+   {
+    "x0": 0.6,
+    "x1": 0.65,
+    "hex": "9e8628"
+   },
+   {
+    "x0": 0.65,
+    "x1": 0.67,
+    "hex": "453758"
+   },
+   {
+    "x0": 0.67,
+    "x1": 0.69,
+    "hex": "967a48"
+   },
+   {
+    "x0": 0.69,
+    "x1": 0.95,
+    "hex": "bd9a1e"
+   },
+   {
+    "x0": 0.95,
+    "x1": 1,
+    "hex": "404a7b"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_and_space_commendation_medal/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_and_space_commendation_medal/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_and_space_commendation_medal/0a5792a9add47049.png"
+  ]
+ },
+ "air_and_space_organizational_excellence_award": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.08,
+    "hex": "1f1f7d"
+   },
+   {
+    "x0": 0.08,
+    "x1": 0.12,
+    "hex": "eaeaea"
+   },
+   {
+    "x0": 0.12,
+    "x1": 0.4,
+    "hex": "ef0000"
+   },
+   {
+    "x0": 0.4,
+    "x1": 0.44,
+    "hex": "f3f3f3"
+   },
+   {
+    "x0": 0.44,
+    "x1": 0.56,
+    "hex": "1e1e7a"
+   },
+   {
+    "x0": 0.56,
+    "x1": 0.6,
+    "hex": "f4f4f4"
+   },
+   {
+    "x0": 0.6,
+    "x1": 0.88,
+    "hex": "f00000"
+   },
+   {
+    "x0": 0.88,
+    "x1": 0.92,
+    "hex": "ededed"
+   },
+   {
+    "x0": 0.92,
+    "x1": 1,
+    "hex": "1f1f7d"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_and_space_organizational_excellence_award/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_and_space_organizational_excellence_award/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_and_space_organizational_excellence_award/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_expeditionary": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.04,
+    "hex": "8395ad"
+   },
+   {
+    "x0": 0.04,
+    "x1": 0.06,
+    "hex": "9b5777"
+   },
+   {
+    "x0": 0.06,
+    "x1": 0.09,
+    "hex": "c23c40"
+   },
+   {
+    "x0": 0.09,
+    "x1": 0.18,
+    "hex": "c8af34"
+   },
+   {
+    "x0": 0.18,
+    "x1": 0.39,
+    "hex": "3e4f8e"
+   },
+   {
+    "x0": 0.39,
+    "x1": 0.43,
+    "hex": "c3c2ba"
+   },
+   {
+    "x0": 0.43,
+    "x1": 0.57,
+    "hex": "6d8cad"
+   },
+   {
+    "x0": 0.57,
+    "x1": 0.62,
+    "hex": "b9c1bf"
+   },
+   {
+    "x0": 0.62,
+    "x1": 0.82,
+    "hex": "344687"
+   },
+   {
+    "x0": 0.82,
+    "x1": 0.84,
+    "hex": "a49856"
+   },
+   {
+    "x0": 0.84,
+    "x1": 0.9,
+    "hex": "c7b31f"
+   },
+   {
+    "x0": 0.9,
+    "x1": 0.92,
+    "hex": "b87e33"
+   },
+   {
+    "x0": 0.92,
+    "x1": 0.96,
+    "hex": "bd3e4c"
+   },
+   {
+    "x0": 0.96,
+    "x1": 1,
+    "hex": "6c83a0"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_expeditionary/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_expeditionary/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_expeditionary/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_gallant_unit_citation": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.08,
+    "hex": "c52228"
+   },
+   {
+    "x0": 0.08,
+    "x1": 0.34,
+    "hex": "322f71"
+   },
+   {
+    "x0": 0.34,
+    "x1": 0.45,
+    "hex": "f5f1f1"
+   },
+   {
+    "x0": 0.45,
+    "x1": 0.58,
+    "hex": "bd2329"
+   },
+   {
+    "x0": 0.58,
+    "x1": 0.68,
+    "hex": "f2f2f4"
+   },
+   {
+    "x0": 0.68,
+    "x1": 0.92,
+    "hex": "2f2d71"
+   },
+   {
+    "x0": 0.92,
+    "x1": 1,
+    "hex": "c52228"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_gallant_unit_citation/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_gallant_unit_citation/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_gallant_unit_citation/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_meritorious_unit_award": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.08,
+    "hex": "e0272e"
+   },
+   {
+    "x0": 0.08,
+    "x1": 0.11,
+    "hex": "e9d9da"
+   },
+   {
+    "x0": 0.11,
+    "x1": 0.19,
+    "hex": "d9272e"
+   },
+   {
+    "x0": 0.19,
+    "x1": 0.37,
+    "hex": "f5f5f7"
+   },
+   {
+    "x0": 0.37,
+    "x1": 0.65,
+    "hex": "2c3381"
+   },
+   {
+    "x0": 0.65,
+    "x1": 0.82,
+    "hex": "f8f3f4"
+   },
+   {
+    "x0": 0.82,
+    "x1": 0.89,
+    "hex": "d81d24"
+   },
+   {
+    "x0": 0.89,
+    "x1": 0.92,
+    "hex": "ecd5d6"
+   },
+   {
+    "x0": 0.92,
+    "x1": 1,
+    "hex": "e0272e"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_meritorious_unit_award/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_meritorious_unit_award/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_meritorious_unit_award/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_military_training_instructor": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.14,
+    "hex": "2f2932"
+   },
+   {
+    "x0": 0.14,
+    "x1": 0.19,
+    "hex": "a29691"
+   },
+   {
+    "x0": 0.19,
+    "x1": 0.24,
+    "hex": "a02a3c"
+   },
+   {
+    "x0": 0.24,
+    "x1": 0.29,
+    "hex": "596071"
+   },
+   {
+    "x0": 0.29,
+    "x1": 0.71,
+    "hex": "322d38"
+   },
+   {
+    "x0": 0.71,
+    "x1": 0.75,
+    "hex": "59667b"
+   },
+   {
+    "x0": 0.75,
+    "x1": 0.77,
+    "hex": "804052"
+   },
+   {
+    "x0": 0.77,
+    "x1": 0.81,
+    "hex": "a52a3a"
+   },
+   {
+    "x0": 0.81,
+    "x1": 0.85,
+    "hex": "ab9b94"
+   },
+   {
+    "x0": 0.85,
+    "x1": 1,
+    "hex": "2f2631"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_military_training_instructor/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_military_training_instructor/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_military_training_instructor/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_nco_professional_military_education_graduate": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.13,
+    "hex": "a32e3e"
+   },
+   {
+    "x0": 0.13,
+    "x1": 0.18,
+    "hex": "c6b1a5"
+   },
+   {
+    "x0": 0.18,
+    "x1": 0.39,
+    "hex": "9d2032"
+   },
+   {
+    "x0": 0.39,
+    "x1": 0.47,
+    "hex": "323377"
+   },
+   {
+    "x0": 0.47,
+    "x1": 0.55,
+    "hex": "a3263a"
+   },
+   {
+    "x0": 0.55,
+    "x1": 0.62,
+    "hex": "303673"
+   },
+   {
+    "x0": 0.62,
+    "x1": 0.64,
+    "hex": "65284d"
+   },
+   {
+    "x0": 0.64,
+    "x1": 0.83,
+    "hex": "9e1f31"
+   },
+   {
+    "x0": 0.83,
+    "x1": 0.88,
+    "hex": "cbb3af"
+   },
+   {
+    "x0": 0.88,
+    "x1": 1,
+    "hex": "a92a41"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_nco_professional_military_education_graduate/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_nco_professional_military_education_graduate/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_nco_professional_military_education_graduate/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_outstanding_airman_of_the_year": {
+  "variants_measured": 24,
+  "agreeing": 24,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.29,
+    "hex": "3e5b8a"
+   },
+   {
+    "x0": 0.29,
+    "x1": 0.36,
+    "hex": "b14f58"
+   },
+   {
+    "x0": 0.36,
+    "x1": 0.43,
+    "hex": "3c4079"
+   },
+   {
+    "x0": 0.43,
+    "x1": 0.57,
+    "hex": "bec0b9"
+   },
+   {
+    "x0": 0.57,
+    "x1": 0.64,
+    "hex": "34346d"
+   },
+   {
+    "x0": 0.64,
+    "x1": 0.7,
+    "hex": "af4251"
+   },
+   {
+    "x0": 0.7,
+    "x1": 0.72,
+    "hex": "7d5172"
+   },
+   {
+    "x0": 0.72,
+    "x1": 0.86,
+    "hex": "45638f"
+   },
+   {
+    "x0": 0.86,
+    "x1": 0.97,
+    "hex": "2a477a"
+   },
+   {
+    "x0": 0.97,
+    "x1": 1,
+    "hex": "4f6c9b"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_outstanding_airman_of_the_year/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_outstanding_airman_of_the_year/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_outstanding_airman_of_the_year/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_outstanding_unit_award": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1,
+    "hex": "a23f4a"
+   },
+   {
+    "x0": 0.1,
+    "x1": 0.14,
+    "hex": "b6afab"
+   },
+   {
+    "x0": 0.14,
+    "x1": 0.41,
+    "hex": "3d3b6a"
+   },
+   {
+    "x0": 0.41,
+    "x1": 0.46,
+    "hex": "b2a7a7"
+   },
+   {
+    "x0": 0.46,
+    "x1": 0.55,
+    "hex": "962a39"
+   },
+   {
+    "x0": 0.55,
+    "x1": 0.59,
+    "hex": "c0b1ad"
+   },
+   {
+    "x0": 0.59,
+    "x1": 0.87,
+    "hex": "3a3764"
+   },
+   {
+    "x0": 0.87,
+    "x1": 0.91,
+    "hex": "b3aba8"
+   },
+   {
+    "x0": 0.91,
+    "x1": 1,
+    "hex": "9d3141"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_outstanding_unit_award/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_outstanding_unit_award/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_outstanding_unit_award/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_overseas_long_tour": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.08,
+    "hex": "9b9eaa"
+   },
+   {
+    "x0": 0.08,
+    "x1": 0.14,
+    "hex": "8b9093"
+   },
+   {
+    "x0": 0.14,
+    "x1": 0.18,
+    "hex": "c0c1bf"
+   },
+   {
+    "x0": 0.18,
+    "x1": 0.22,
+    "hex": "94989a"
+   },
+   {
+    "x0": 0.22,
+    "x1": 0.28,
+    "hex": "b4b6b5"
+   },
+   {
+    "x0": 0.28,
+    "x1": 0.32,
+    "hex": "969da0"
+   },
+   {
+    "x0": 0.32,
+    "x1": 0.36,
+    "hex": "bab6b4"
+   },
+   {
+    "x0": 0.36,
+    "x1": 0.64,
+    "hex": "3f4f96"
+   },
+   {
+    "x0": 0.64,
+    "x1": 0.69,
+    "hex": "b1b4b3"
+   },
+   {
+    "x0": 0.69,
+    "x1": 0.74,
+    "hex": "9da0a4"
+   },
+   {
+    "x0": 0.74,
+    "x1": 0.78,
+    "hex": "c2c2c0"
+   },
+   {
+    "x0": 0.78,
+    "x1": 0.83,
+    "hex": "9ba5a5"
+   },
+   {
+    "x0": 0.83,
+    "x1": 0.87,
+    "hex": "ccc6c0"
+   },
+   {
+    "x0": 0.87,
+    "x1": 1,
+    "hex": "979da2"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_overseas_long_tour/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_overseas_long_tour/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_overseas_long_tour/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_overseas_short_tour": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.11,
+    "hex": "8c8e91"
+   },
+   {
+    "x0": 0.11,
+    "x1": 0.16,
+    "hex": "b5b6b4"
+   },
+   {
+    "x0": 0.16,
+    "x1": 0.21,
+    "hex": "989b9c"
+   },
+   {
+    "x0": 0.21,
+    "x1": 0.25,
+    "hex": "bcbbb4"
+   },
+   {
+    "x0": 0.25,
+    "x1": 0.29,
+    "hex": "91979c"
+   },
+   {
+    "x0": 0.29,
+    "x1": 0.34,
+    "hex": "b6b2b1"
+   },
+   {
+    "x0": 0.34,
+    "x1": 0.41,
+    "hex": "31397f"
+   },
+   {
+    "x0": 0.41,
+    "x1": 0.44,
+    "hex": "53618c"
+   },
+   {
+    "x0": 0.44,
+    "x1": 0.49,
+    "hex": "283572"
+   },
+   {
+    "x0": 0.49,
+    "x1": 0.51,
+    "hex": "656fa0"
+   },
+   {
+    "x0": 0.51,
+    "x1": 0.56,
+    "hex": "293475"
+   },
+   {
+    "x0": 0.56,
+    "x1": 0.58,
+    "hex": "6472a0"
+   },
+   {
+    "x0": 0.58,
+    "x1": 0.65,
+    "hex": "2c3876"
+   },
+   {
+    "x0": 0.65,
+    "x1": 0.7,
+    "hex": "acaaaa"
+   },
+   {
+    "x0": 0.7,
+    "x1": 0.75,
+    "hex": "909497"
+   },
+   {
+    "x0": 0.75,
+    "x1": 0.79,
+    "hex": "bebfbb"
+   },
+   {
+    "x0": 0.79,
+    "x1": 0.84,
+    "hex": "9b9f9e"
+   },
+   {
+    "x0": 0.84,
+    "x1": 0.89,
+    "hex": "b6b8b6"
+   },
+   {
+    "x0": 0.89,
+    "x1": 1,
+    "hex": "8a9198"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_overseas_short_tour/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_overseas_short_tour/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_overseas_short_tour/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_presidential_unit_citation": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.02,
+    "hex": "d3c6b6"
+   },
+   {
+    "x0": 0.02,
+    "x1": 0.09,
+    "hex": "8d8367"
+   },
+   {
+    "x0": 0.09,
+    "x1": 0.89,
+    "hex": "7a7470"
+   },
+   {
+    "x0": 0.89,
+    "x1": 0.92,
+    "hex": "6b6259"
+   },
+   {
+    "x0": 0.92,
+    "x1": 1,
+    "hex": "887a5d"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_presidential_unit_citation/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_presidential_unit_citation/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_presidential_unit_citation/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_recognition": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.06,
+    "hex": "992f3f"
+   },
+   {
+    "x0": 0.06,
+    "x1": 0.08,
+    "hex": "c3aeb1"
+   },
+   {
+    "x0": 0.08,
+    "x1": 0.42,
+    "hex": "879aa4"
+   },
+   {
+    "x0": 0.42,
+    "x1": 0.6,
+    "hex": "931f33"
+   },
+   {
+    "x0": 0.6,
+    "x1": 0.92,
+    "hex": "8b9fa9"
+   },
+   {
+    "x0": 0.92,
+    "x1": 0.95,
+    "hex": "d0c8c3"
+   },
+   {
+    "x0": 0.95,
+    "x1": 1,
+    "hex": "9d3645"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_recognition/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_recognition/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_recognition/0a5792a9add47049.png"
+  ]
+ },
+ "air_force_recruiter": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.05,
+    "hex": "58547d"
+   },
+   {
+    "x0": 0.05,
+    "x1": 0.08,
+    "hex": "e8e2df"
+   },
+   {
+    "x0": 0.08,
+    "x1": 0.1,
+    "hex": "9c5f62"
+   },
+   {
+    "x0": 0.1,
+    "x1": 0.13,
+    "hex": "a13847"
+   },
+   {
+    "x0": 0.13,
+    "x1": 0.33,
+    "hex": "4a4572"
+   },
+   {
+    "x0": 0.33,
+    "x1": 0.67,
+    "hex": "383561"
+   },
+   {
+    "x0": 0.67,
+    "x1": 0.86,
+    "hex": "4e4b76"
+   },
+   {
+    "x0": 0.86,
+    "x1": 0.91,
+    "hex": "99424c"
+   },
+   {
+    "x0": 0.91,
+    "x1": 0.95,
+    "hex": "c6bec1"
+   },
+   {
+    "x0": 0.95,
+    "x1": 1,
+    "hex": "636184"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_recruiter/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_force_recruiter/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_force_recruiter/0a5792a9add47049.png"
+  ]
+ },
+ "air_medal": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.08,
+    "hex": "0000f5"
+   },
+   {
+    "x0": 0.08,
+    "x1": 0.26,
+    "hex": "f3c607"
+   },
+   {
+    "x0": 0.26,
+    "x1": 0.74,
+    "hex": "0000ef"
+   },
+   {
+    "x0": 0.74,
+    "x1": 0.92,
+    "hex": "f4c807"
+   },
+   {
+    "x0": 0.92,
+    "x1": 1,
+    "hex": "0000f5"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_medal/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_medal/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_medal/0a5792a9add47049.png"
+  ]
+ },
+ "air_reserve_forces_meritorious_service": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.04,
+    "hex": "a5bdbe"
+   },
+   {
+    "x0": 0.04,
+    "x1": 0.13,
+    "hex": "f6f6f6"
+   },
+   {
+    "x0": 0.13,
+    "x1": 0.2,
+    "hex": "303d94"
+   },
+   {
+    "x0": 0.2,
+    "x1": 0.23,
+    "hex": "e6e51d"
+   },
+   {
+    "x0": 0.23,
+    "x1": 0.3,
+    "hex": "2f3c91"
+   },
+   {
+    "x0": 0.3,
+    "x1": 0.7,
+    "hex": "8fa9ab"
+   },
+   {
+    "x0": 0.7,
+    "x1": 0.76,
+    "hex": "283592"
+   },
+   {
+    "x0": 0.76,
+    "x1": 0.79,
+    "hex": "dede23"
+   },
+   {
+    "x0": 0.79,
+    "x1": 0.86,
+    "hex": "33408f"
+   },
+   {
+    "x0": 0.86,
+    "x1": 0.96,
+    "hex": "f4f5f6"
+   },
+   {
+    "x0": 0.96,
+    "x1": 1,
+    "hex": "99b3b5"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_reserve_forces_meritorious_service/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/air_reserve_forces_meritorious_service/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/air_reserve_forces_meritorious_service/0a5792a9add47049.png"
+  ]
+ },
+ "armed_forces_reserve": {
+  "variants_measured": 16,
+  "agreeing": 16,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.03,
+    "hex": "2891ad"
+   },
+   {
+    "x0": 0.03,
+    "x1": 0.08,
+    "hex": "8dbbb0"
+   },
+   {
+    "x0": 0.08,
+    "x1": 0.1,
+    "hex": "147393"
+   },
+   {
+    "x0": 0.1,
+    "x1": 0.47,
+    "hex": "e5d4a9"
+   },
+   {
+    "x0": 0.47,
+    "x1": 0.51,
+    "hex": "037fa7"
+   },
+   {
+    "x0": 0.51,
+    "x1": 0.9,
+    "hex": "e5d5aa"
+   },
+   {
+    "x0": 0.9,
+    "x1": 0.92,
+    "hex": "107796"
+   },
+   {
+    "x0": 0.92,
+    "x1": 0.94,
+    "hex": "d6d7b3"
+   },
+   {
+    "x0": 0.94,
+    "x1": 0.96,
+    "hex": "0e87ad"
+   },
+   {
+    "x0": 0.96,
+    "x1": 0.98,
+    "hex": "becdb1"
+   },
+   {
+    "x0": 0.98,
+    "x1": 1,
+    "hex": "0a85ae"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/armed_forces_reserve/e89ab88735879823.png",
+   "images/military-ribbon-variants/air-force/armed_forces_reserve/7fb3bf5ae531331d.png",
+   "images/military-ribbon-variants/air-force/armed_forces_reserve/e2b7742d80907f8f.png"
+  ]
+ },
+ "developmental_special_duty": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.04,
+    "hex": "003e65"
+   },
+   {
+    "x0": 0.04,
+    "x1": 0.09,
+    "hex": "c5c3bf"
+   },
+   {
+    "x0": 0.09,
+    "x1": 0.22,
+    "hex": "00179e"
+   },
+   {
+    "x0": 0.22,
+    "x1": 0.27,
+    "hex": "c1bfbb"
+   },
+   {
+    "x0": 0.27,
+    "x1": 0.32,
+    "hex": "da0e36"
+   },
+   {
+    "x0": 0.32,
+    "x1": 0.45,
+    "hex": "f7f7f7"
+   },
+   {
+    "x0": 0.45,
+    "x1": 0.55,
+    "hex": "0018a2"
+   },
+   {
+    "x0": 0.55,
+    "x1": 0.68,
+    "hex": "f6f6f6"
+   },
+   {
+    "x0": 0.68,
+    "x1": 0.73,
+    "hex": "db0e37"
+   },
+   {
+    "x0": 0.73,
+    "x1": 0.78,
+    "hex": "c2c0bc"
+   },
+   {
+    "x0": 0.78,
+    "x1": 0.91,
+    "hex": "00179f"
+   },
+   {
+    "x0": 0.91,
+    "x1": 0.96,
+    "hex": "c7c5c1"
+   },
+   {
+    "x0": 0.96,
+    "x1": 1,
+    "hex": "003e65"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/developmental_special_duty/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/developmental_special_duty/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/developmental_special_duty/0a5792a9add47049.png"
+  ]
+ },
+ "inherent_resolve_campaign_medal": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.18,
+    "hex": "003fac"
+   },
+   {
+    "x0": 0.18,
+    "x1": 0.22,
+    "hex": "8be1e5"
+   },
+   {
+    "x0": 0.22,
+    "x1": 0.38,
+    "hex": "b2b187"
+   },
+   {
+    "x0": 0.38,
+    "x1": 0.62,
+    "hex": "f9a31c"
+   },
+   {
+    "x0": 0.62,
+    "x1": 0.78,
+    "hex": "b3b288"
+   },
+   {
+    "x0": 0.78,
+    "x1": 0.82,
+    "hex": "8de3e7"
+   },
+   {
+    "x0": 0.82,
+    "x1": 1,
+    "hex": "0040ad"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/inherent_resolve_campaign_medal/930cff307d560596.png",
+   "images/military-ribbon-variants/air-force/inherent_resolve_campaign_medal/7936ad71184cf5f1.png",
+   "images/military-ribbon-variants/air-force/inherent_resolve_campaign_medal/87706db53bc321eb.png"
+  ]
+ },
+ "nuclear_deterrence_operations_service_medal": {
+  "variants_measured": 24,
+  "agreeing": 24,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1,
+    "hex": "00158f"
+   },
+   {
+    "x0": 0.1,
+    "x1": 0.15,
+    "hex": "f9b711"
+   },
+   {
+    "x0": 0.15,
+    "x1": 0.19,
+    "hex": "001593"
+   },
+   {
+    "x0": 0.19,
+    "x1": 0.23,
+    "hex": "4c7a2a"
+   },
+   {
+    "x0": 0.23,
+    "x1": 0.28,
+    "hex": "00148e"
+   },
+   {
+    "x0": 0.28,
+    "x1": 0.31,
+    "hex": "c50c31"
+   },
+   {
+    "x0": 0.31,
+    "x1": 0.69,
+    "hex": "00148c"
+   },
+   {
+    "x0": 0.69,
+    "x1": 0.72,
+    "hex": "c60c32"
+   },
+   {
+    "x0": 0.72,
+    "x1": 0.77,
+    "hex": "00148f"
+   },
+   {
+    "x0": 0.77,
+    "x1": 0.81,
+    "hex": "4c7b2a"
+   },
+   {
+    "x0": 0.81,
+    "x1": 0.85,
+    "hex": "001594"
+   },
+   {
+    "x0": 0.85,
+    "x1": 0.91,
+    "hex": "f5b411"
+   },
+   {
+    "x0": 0.91,
+    "x1": 1,
+    "hex": "001593"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/nuclear_deterrence_operations_service_medal/fc1862c7b9c654ca.png",
+   "images/military-ribbon-variants/air-force/nuclear_deterrence_operations_service_medal/cafefcbb8f4e08f2.png",
+   "images/military-ribbon-variants/air-force/nuclear_deterrence_operations_service_medal/0a5792a9add47049.png"
+  ]
+ },
+ "remote_combat_effects_campaign_medal": {
+  "variants_measured": 14,
+  "agreeing": 14,
+  "consistent": true,
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.22,
+    "hex": "00215e"
+   },
+   {
+    "x0": 0.22,
+    "x1": 0.27,
+    "hex": "f9f9f9"
+   },
+   {
+    "x0": 0.27,
+    "x1": 0.73,
+    "hex": "0075d4"
+   },
+   {
+    "x0": 0.73,
+    "x1": 0.78,
+    "hex": "f9f9f9"
+   },
+   {
+    "x0": 0.78,
+    "x1": 1,
+    "hex": "00215f"
+   }
+  ],
+  "source_images": [
+   "images/military-ribbon-variants/air-force/remote_combat_effects_campaign_medal/930cff307d560596.png",
+   "images/military-ribbon-variants/air-force/remote_combat_effects_campaign_medal/7936ad71184cf5f1.png",
+   "images/military-ribbon-variants/air-force/remote_combat_effects_campaign_medal/87706db53bc321eb.png"
+  ]
+ }
+}

@@ -1,0 +1,107 @@
+{
+ "asset_id": "medal-encampment-ribbon-full",
+ "name": "Encampment Ribbon (full-size medal body)",
+ "size_in": {
+  "w": 1.375,
+  "h": 1.7523
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  175.23
+ ],
+ "size_source": "estimated",
+ "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_encamp01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7523 in (was 1.4575).",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   175.23
+  ],
+  "center": [
+   68.75,
+   87.62
+  ],
+  "left_edge": [
+   0,
+   87.62
+  ],
+  "right_edge": [
+   137.5,
+   87.62
+  ],
+  "ribbon_attach": [
+   60.53,
+   0
+  ]
+ },
+ "ribbon_ref": {
+  "asset_id": "ribbon-encampment-ribbon",
+  "spec": "../ribbons/ribbon-encampment-ribbon.spec.json",
+  "attach_anchor": "ribbon_attach",
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+ },
+ "source": "https://vanguardmil.com/products/civil-air-patrol-encampment-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
+ "fidelity": "traced_from_public_reference",
+ "fit": {
+  "metric": "silhouette IoU vs photo foreground mask at working resolution",
+  "score": 0.989,
+  "threshold": 0.95,
+  "colour_mae_0_255": 23.7,
+  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ },
+ "palette": [
+  "#292420",
+  "#584542",
+  "#85817e",
+  "#b1adaa"
+ ],
+ "grade": "medal",
+ "variants_share_body": {
+  "same_body": [
+   "encamp02",
+   "encamp03",
+   "encamp04",
+   "encamp05",
+   "encamp06",
+   "encamp07",
+   "encamp08",
+   "encamp09",
+   "encamp10",
+   "encamp11",
+   "encamp12",
+   "encamp13",
+   "encamp14",
+   "encamp16",
+   "encamp17",
+   "encamp18",
+   "encamp21"
+  ],
+  "different_body": []
+ },
+ "size_in_previous": {
+  "w": 1.375,
+  "h": 1.4575
+ },
+ "source_detail": {
+  "page": "https://vanguardmil.com/products/civil-air-patrol-encampment-miniature-medal",
+  "local_photo": "medals-work/ref-hires/encampment.*",
+  "photo_px": {
+   "w": 600,
+   "h": 600
+  },
+  "body_px": {
+   "w": 190,
+   "h": 242
+  },
+  "work_scale_1_over": 1,
+  "photo_shows": "miniature medal"
+ },
+ "tone_layers": 4,
+ "detail_reduction": 3.2
+}

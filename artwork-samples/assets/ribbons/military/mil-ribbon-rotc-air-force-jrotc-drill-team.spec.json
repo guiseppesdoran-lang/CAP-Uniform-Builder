@@ -1,0 +1,140 @@
+{
+ "asset_id": "mil-ribbon-rotc-air-force-jrotc-drill-team",
+ "name": "Air Force JROTC Drill Team Ribbon",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 / CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "8ec35e",
+    "fraction": 0.0818,
+    "x0_in": 0,
+    "x1_in": 0.1125
+   },
+   {
+    "index": 1,
+    "hex": "537b30",
+    "fraction": 0.1932,
+    "x0_in": 0.1125,
+    "x1_in": 0.3781
+   },
+   {
+    "index": 2,
+    "hex": "222222",
+    "fraction": 0.1,
+    "x0_in": 0.3781,
+    "x1_in": 0.5156
+   },
+   {
+    "index": 3,
+    "hex": "ffffff",
+    "fraction": 0.2477,
+    "x0_in": 0.5156,
+    "x1_in": 0.8562
+   },
+   {
+    "index": 4,
+    "hex": "212321",
+    "fraction": 0.1068,
+    "x0_in": 0.8562,
+    "x1_in": 1.0031
+   },
+   {
+    "index": 5,
+    "hex": "527a2f",
+    "fraction": 0.1887,
+    "x0_in": 1.0031,
+    "x1_in": 1.2625
+   },
+   {
+    "index": 6,
+    "hex": "8ec35e",
+    "fraction": 0.0818,
+    "x0_in": 1.2625,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "program": "ROTC/JROTC",
+ "service": "air-force-jrotc",
+ "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
+ "measurement": {
+  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "fidelity": "measured_from_vendor_image",
+  "source_kind": "vendor-photo-measured",
+  "source_images": [],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Drill Air Force ROTC Team Competition",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-rotc-afrotc-drill-team-competition-ribbon",
+  "award_list_source": "https://en.wikipedia.org/wiki/Junior_Reserve_Officers%27_Training_Corps (ribbon tables)",
+  "residual": {
+   "vertical": 14,
+   "horizontal": 124.4,
+   "central_vertical": 6.3
+  },
+  "border_frame_detected": false,
+  "photographic_source": false,
+  "match_basis": "vendor product title names the award",
+  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+ },
+ "quality": {
+  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
+  "geometry_source": "vendor photo, mid-height columns",
+  "snap": {
+   "stripes_before": 7,
+   "stripes_after": 7,
+   "max_snap_delta": 21.1,
+   "unsnapped": 6,
+   "margin_runs_trimmed": [],
+   "shadow_bands_merged": 2
+  },
+  "min_stripe_in": "1/64"
+ },
+ "fit": {
+  "method": "n/a (vendor photo measured)",
+  "score": null,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}
