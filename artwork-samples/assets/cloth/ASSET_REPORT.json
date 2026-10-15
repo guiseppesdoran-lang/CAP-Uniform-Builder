@@ -1,0 +1,187 @@
+[
+ {
+  "id": "cloth-group-commander",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-group-commander-with-hook",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-medical-officer",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-nurse",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-emt-basic",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-squadron-commander",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-squadron-commander-with-hook-insignia",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-volunteer-university-instructor",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-balloon-wings",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-incident-commander-basic",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-christian-chaplain",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-command-pilot-wings",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-glider-wings",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-ground-team-master",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-ground-team-basic",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-ground-team-senior",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-jewish-chaplain",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-legal-officer-badge",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-incident-commander-master",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-observer-wings-master",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-observer-wings",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-observer-wings-senior",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-pilot-wings",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-pilot-wings-senior",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-pre-solo-wings",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-incident-commander-senior",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-solo-wings",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-suas-basic-pilot",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-suas-basic-technician",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-suas-command-pilot",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-suas-master-technician",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-suas-pre-solo",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-suas-senior-pilot",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-suas-senior-technician",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-aircrew-basic",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-aircrew-master",
+  "pass": true,
+  "fails": []
+ },
+ {
+  "id": "cloth-aircrew-senior",
+  "pass": true,
+  "fails": []
+ }
+]

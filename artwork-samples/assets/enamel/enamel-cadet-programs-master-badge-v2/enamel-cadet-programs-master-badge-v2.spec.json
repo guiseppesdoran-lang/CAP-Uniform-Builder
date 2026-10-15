@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-cadet-programs-master-badge-v2",
+ "width_in": 1.25,
+ "height_in": 1.606,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: cadet class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   62.5,
+   0
+  ],
+  "bottom_center": [
+   62.5,
+   160.618
+  ],
+  "center": [
+   62.5,
+   80.309
+  ],
+  "left_edge": [
+   0,
+   80.309
+  ],
+  "right_edge": [
+   125,
+   80.309
+  ]
+ },
+ "dimensions": {
+  "size_class": "cadet",
+  "level": "master"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + cadet_programs_master_badge_v2",
+ "reference": "../batch/ref/cadet_programs_master_badge_v2.png",
+ "source_bbox_user_units": [
+  0,
+  1,
+  186,
+  240
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.977,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

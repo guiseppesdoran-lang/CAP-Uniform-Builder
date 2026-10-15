@@ -1,0 +1,66 @@
+{
+ "asset_id": "tie-cap-regimental",
+ "name": "CAP regimental tie, four-in-hand (navy, thin red diagonal stripes)",
+ "size_in": {
+  "w": 3.2388,
+  "h": 12.7032
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  323.88,
+  1270.32
+ ],
+ "size_source": "estimated",
+ "size_basis": "Visible portion of the necktie as drawn on the blazer base (same half-widths); stripe pattern read by eye from the Vanguard CAP0977F product photo (red on navy, single thin stripes). Stripe pitch, thickness and angle are estimates.",
+ "anchors": {
+  "top_center": [
+   161.94,
+   0
+  ],
+  "bottom_center": [
+   161.94,
+   1270.32
+  ],
+  "center": [
+   161.94,
+   635.16
+  ],
+  "left_edge": [
+   0,
+   635.16
+  ],
+  "right_edge": [
+   323.88,
+   635.16
+  ],
+  "knot_top_center": [
+   161.94,
+   0
+  ],
+  "tip_visible_center": [
+   161.94,
+   1270.32
+  ],
+  "tie_tack_center": [
+   161.94,
+   670.16
+  ]
+ },
+ "landmarks": {},
+ "landmarks_note": "rects are {x,y,w,h}; all in user units (0.01 in), origin top-left",
+ "documented": [
+  "either the CAP regimental tie or the AF blue tie; mandatory with the corporate service dress unless a turtleneck is worn (CAPR 39-1 4.2.3.4)"
+ ],
+ "assumed": [
+  "stripe pitch 0.8 in (along the blade), thickness 0.065 in, 45 degrees",
+  "colours",
+  "overall shape is the blazer base tie, extended under the lapels in use"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

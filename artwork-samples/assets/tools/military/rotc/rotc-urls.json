@@ -1,0 +1,698 @@
+[
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Medal For Heroism Ribbon",
+  "commons_file": "File:Ribbon AJROTC Medal of Heroism.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Ribbon_AJROTC_Medal_of_Heroism.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Superior Cadet Ribbon",
+  "commons_file": "File:Ribbon AJROTC Superior Cadet.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/76/Ribbon_AJROTC_Superior_Cadet.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Distinguished Cadet Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-1-1.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/85/Ribbon_AJROTC_N-1-1.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Academic Excellence Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-1-2.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/50/Ribbon_AJROTC_N-1-2.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Academic Achievement Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-1-3.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Ribbon_AJROTC_N-1-3.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Perfect Attendance Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-1-4.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Ribbon_AJROTC_N-1-4.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Student Government Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-1-5.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Ribbon_AJROTC_N-1-5.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Leadership Education Training Service Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-1-6.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Ribbon_AJROTC_N-1-6.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-1-7 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-1-7.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/31/Ribbon_AJROTC_N-1-7.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-1-8 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-1-8.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/66/Ribbon_AJROTC_N-1-8.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-1-9 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-1-9.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/73/Ribbon_AJROTC_N-1-9.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-1-10 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-1-10.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Ribbon_AJROTC_N-1-10.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Dai Sai Instructor Leadership Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-1.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Ribbon_AJROTC_N-3-1.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Personal Appearance Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-2.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Ribbon_AJROTC_N-3-2.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Proficiency Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-3.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Ribbon_AJROTC_N-3-3.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Drill Team Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-4.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Ribbon_AJROTC_N-3-4.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Orienteering Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-5.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Ribbon_AJROTC_N-3-5.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Color Guard Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-6.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Ribbon_AJROTC_N-3-6.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Rifle Team Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-7.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/90/Ribbon_AJROTC_N-3-7.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Adventure Training Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-8.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Ribbon_AJROTC_N-3-8.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Commendation Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-9.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/Ribbon_AJROTC_N-3-9.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Good Conduct Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-10.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Ribbon_AJROTC_N-3-10.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC JCLC Participation Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-3-11.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/91/Ribbon_AJROTC_N-3-11.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-3-12 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-3-12.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Ribbon_AJROTC_N-3-12.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-3-13 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-3-13.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Ribbon_AJROTC_N-3-13.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-3-14 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-3-14.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Ribbon_AJROTC_N-3-14.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-3-15 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-3-15.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/32/Ribbon_AJROTC_N-3-15.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Varsity Athletics Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-2-1.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Ribbon_AJROTC_N-2-1.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Physical Fitness Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-2-2.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Ribbon_AJROTC_N-2-2.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Athletics Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-2-3.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/Ribbon_AJROTC_N-2-3.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-2-4 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-2-4.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Ribbon_AJROTC_N-2-4.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-2-5 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-2-5.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/Ribbon_AJROTC_N-2-5.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Parade Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-4-1.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Ribbon_AJROTC_N-4-1.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Recruiting Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-4-2.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Ribbon_AJROTC_N-4-2.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-4-3 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-4-3.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Ribbon_AJROTC_N-4-3.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-4-4 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-4-4.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/88/Ribbon_AJROTC_N-4-4.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC N-4-5 Ribbon (name not given on the public page)",
+  "commons_file": "File:Ribbon AJROTC N-4-5.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/12/Ribbon_AJROTC_N-4-5.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Service Learning Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-4-6.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Ribbon_AJROTC_N-4-6.svg"
+ },
+ {
+  "service": "army-jrotc",
+  "name": "Army JROTC Excellent Staff Performance Ribbon",
+  "commons_file": "File:Ribbon AJROTC N-4-7.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/82/Ribbon_AJROTC_N-4-7.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Meritorious Achievement Ribbon",
+  "commons_file": "File:NJROTC Meritorious Achievement Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cf/NJROTC_Meritorious_Achievement_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Distinguished Unit Ribbon",
+  "commons_file": "File:NJROTC Distinguished Unit Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/50/NJROTC_Distinguished_Unit_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Distinguished Cadet Ribbon",
+  "commons_file": "File:NJROTC Distinguished Cadet Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e4/NJROTC_Distinguished_Cadet_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Honor Cadet Ribbon",
+  "commons_file": "File:NJROTC Honor Cadet Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/b1/NJROTC_Honor_Cadet_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Cadet Achievement Ribbon",
+  "commons_file": "File:NJROTC CNET Unit Award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/92/NJROTC_CNET_Unit_Award.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Unit Achievement Ribbon",
+  "commons_file": "File:NJROTC Unit Achievement Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/NJROTC_Unit_Achievement_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Aptitude Ribbon",
+  "commons_file": "File:NJROTC Aptitude Award Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/23/NJROTC_Aptitude_Award_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC NS IV Outstanding Cadet Ribbon",
+  "commons_file": "File:NJROTC NS IV Outstanding Cadet Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/aa/NJROTC_NS_IV_Outstanding_Cadet_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC NS III Outstanding Cadet Ribbon",
+  "commons_file": "File:NJROTC NS III Outstanding Cadet Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/b5/NJROTC_NS_III_Outstanding_Cadet_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC NS II Outstanding Cadet Ribbon",
+  "commons_file": "File:NJROTC NS II Outstanding Cadet Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/NJROTC_NS_II_Outstanding_Cadet_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC NS I Outstanding Cadet Ribbon",
+  "commons_file": "File:NJROTC NS I Outstanding Cadet Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/28/NJROTC_NS_I_Outstanding_Cadet_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Exemplary Conduct Ribbon",
+  "commons_file": "File:NJROTC Exemplary Conduct Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/5f/NJROTC_Exemplary_Conduct_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Exemplary Personal Appearance Ribbon",
+  "commons_file": "File:NJROTC Exemplary Personal Appearance Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c6/NJROTC_Exemplary_Personal_Appearance_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Physical Fitness Ribbon",
+  "commons_file": "File:NJROTC Physical Fitness Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/NJROTC_Physical_Fitness_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Participation Ribbon",
+  "commons_file": "File:NJROTC Participation Award Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/23/NJROTC_Participation_Award_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Unit Service Ribbon",
+  "commons_file": "File:NJROTC Unit Service Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/64/NJROTC_Unit_Service_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Community Service Ribbon",
+  "commons_file": "File:NJROTC Community Service Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/2a/NJROTC_Community_Service_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Academic Team Ribbon",
+  "commons_file": "File:NJROTC Academic Award Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/17/NJROTC_Academic_Award_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Drill Team Ribbon",
+  "commons_file": "File:NJROTC Drill Team Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/NJROTC_Drill_Team_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Color Guard Ribbon",
+  "commons_file": "File:NJROTC Color Guard Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/94/NJROTC_Color_Guard_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC S.T.E.M. Ribbon",
+  "commons_file": "File:NJROTC STEM Ribbon.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/NJROTC_STEM_Ribbon.png"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Marksmanship Team Ribbon",
+  "commons_file": "File:NJROTC Rifle Team Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/dd/NJROTC_Rifle_Team_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Orienteering Team Ribbon",
+  "commons_file": "File:NJROTC Orienteering Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/5c/NJROTC_Orienteering_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Inter-Service Competition Ribbon",
+  "commons_file": "File:Ribbon, AFROTC Outstanding Flight and AFJROTC Drill Competition.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Ribbon,_AFROTC_Outstanding_Flight_and_AFJROTC_Drill_Competition.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Recruiting Ribbon",
+  "commons_file": "File:NJROTC Recruiting Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/72/NJROTC_Recruiting_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Leadership Training Ribbon",
+  "commons_file": "File:NJROTC Mini Boot Camp Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/NJROTC_Mini_Boot_Camp_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC Sea Cruise Ribbon",
+  "commons_file": "File:NJROTC At Sea Cruise Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d3/NJROTC_At_Sea_Cruise_Ribbon.svg"
+ },
+ {
+  "service": "navy-jrotc",
+  "name": "Navy JROTC C.E.R.T. Ribbon",
+  "commons_file": "File:NJROTC CERT Ribbon.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/3b/NJROTC_CERT_Ribbon.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Gold Valor Award",
+  "commons_file": "File:Ribbon, Gold Valor Award, AFJROTC.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/87/Ribbon,_Gold_Valor_Award,_AFJROTC.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Silver Valor Award",
+  "commons_file": "File:Ribbon, Air Force JROTC Silver Valor Award.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Ribbon,_Air_Force_JROTC_Silver_Valor_Award.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Cadet Humanitarian Award",
+  "commons_file": "File:Ribbon, Cadet Humanitarian Award, AFJROTC.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/93/Ribbon,_Cadet_Humanitarian_Award,_AFJROTC.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Silver Star Community Service with Excellence Award",
+  "commons_file": "File:Ribbons, Silver Star Community Service with Excellence Award.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/88/Ribbons,_Silver_Star_Community_Service_with_Excellence_Award.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Community Service with Excellence Award",
+  "commons_file": "File:Ribbons, Community Service with Excellence Award.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Ribbons,_Community_Service_with_Excellence_Award.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Air Force Association Award",
+  "commons_file": "File:Ribbon, AFA Award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/90/Ribbon,_AFA_Award.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC American Legion Scholastic Award",
+  "commons_file": "File:Ribbon American Legion Award for Scholastic Excellence.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/12/Ribbon_American_Legion_Award_for_Scholastic_Excellence.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC American Legion General Military Excellence Award",
+  "commons_file": "File:Ribbon, American Legion General Military Excellence Award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Ribbon,_American_Legion_General_Military_Excellence_Award.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Reserve Officers Association Award",
+  "commons_file": "File:Reserve Officers Association ribbon.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Reserve_Officers_Association_ribbon.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC National Sojourners Award",
+  "commons_file": "File:Ribbon, National Sojourners Award.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/8b/Ribbon,_National_Sojourners_Award.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Scottish Rite Southern Jurisdiction Award",
+  "commons_file": "File:Ribbon, Scottish Rite, Southern Jurisdiction.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Ribbon,_Scottish_Rite,_Southern_Jurisdiction.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Military Order of the Purple Heart Award",
+  "commons_file": "File:Ribbon, Military Order of the Purple Heart.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Ribbon,_Military_Order_of_the_Purple_Heart.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Sons of the American Revolution Award",
+  "commons_file": "File:National Sons of the American Revolution Ribbon.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/52/National_Sons_of_the_American_Revolution_Ribbon.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Military Order of World Wars Medal",
+  "commons_file": "File:Ribbon, Military Order of World Wars Medal.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Ribbon,_Military_Order_of_World_Wars_Medal.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Air Force Sergeants Association Award",
+  "commons_file": "File:Ribbon, Air Force Sergeants Association.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Ribbon,_Air_Force_Sergeants_Association.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Tuskegee Airmen Inc. Cadet Award",
+  "commons_file": "File:Ribbon, Tuskegee Airmen Inc AFJROTC Cadet Award.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/Ribbon,_Tuskegee_Airmen_Inc_AFJROTC_Cadet_Award.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Retired Enlisted Association Award",
+  "commons_file": "File:Ribbon, Retired Enlisted Association Award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Ribbon,_Retired_Enlisted_Association_Award.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Celebrate Freedom Foundation Award",
+  "commons_file": "File:Ribbon, Celebrate Freedom Award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Ribbon,_Celebrate_Freedom_Award.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Air Commando Association Award",
+  "commons_file": "File:Ribbon, Air Commando Association.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/10/Ribbon,_Air_Commando_Association.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Distinguished Unit Award with Merit",
+  "commons_file": "File:Ribbon, Distinguished Unit Award with Merit.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/64/Ribbon,_Distinguished_Unit_Award_with_Merit.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Distinguished Unit Award",
+  "commons_file": "File:Ribbon, AFROTC College Scholarship Recipient and AFJROTC Distinguished Unit Award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/Ribbon,_AFROTC_College_Scholarship_Recipient_and_AFJROTC_Distinguished_Unit_Award.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Outstanding Organization Award",
+  "commons_file": "File:Ribbon, Outstanding Organization Award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/50/Ribbon,_Outstanding_Organization_Award.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Outstanding Flight Award",
+  "commons_file": "File:Ribbon, AFROTC Athletic Award (Four and Six Week Flight) and AFJROTC Outstanding Flight.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/8b/Ribbon,_AFROTC_Athletic_Award_(Four_and_Six_Week_Flight)_and_AFJROTC_Outstanding_Flight.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Top Performer Award",
+  "commons_file": "File:Ribbon, AFROTC Honors and AFJROTC Top Performer Award.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Ribbon,_AFROTC_Honors_and_AFJROTC_Top_Performer_Award.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Outstanding Cadet Award",
+  "commons_file": "File:Ribbon, Outstanding Cadet AFJROTC.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Ribbon,_Outstanding_Cadet_AFJROTC.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Leadership Ribbon",
+  "commons_file": "File:Ribbon, Leadership Ribbon, AFJROTC.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/Ribbon,_Leadership_Ribbon,_AFJROTC.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Superior Performance Ribbon",
+  "commons_file": "File:Ribbon, Superior Performance Ribbon, AFJROTC.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Ribbon,_Superior_Performance_Ribbon,_AFJROTC.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Achievement Ribbon",
+  "commons_file": "File:Ribbon, Achievement Ribbon, AFJROTC.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/45/Ribbon,_Achievement_Ribbon,_AFJROTC.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Academic Ribbon",
+  "commons_file": "File:Ribbon, Academic Ribbon, AFJROTC.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Ribbon,_Academic_Ribbon,_AFJROTC.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Leadership School Ribbon",
+  "commons_file": "File:Ribbon, Leadership School Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Ribbon,_Leadership_School_Ribbon.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Special Teams Competition",
+  "commons_file": "File:Ribbon, AFROTC Outstanding Flight and AFJROTC Drill Competition.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Ribbon,_AFROTC_Outstanding_Flight_and_AFJROTC_Drill_Competition.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC All Service National Competition Ribbon",
+  "commons_file": "File:AFJROTC All Service National Competition Ribbon.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6d/AFJROTC_All_Service_National_Competition_Ribbon.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Air Force Nationals Competition Ribbon",
+  "commons_file": "File:AFJROTC Air Force Nationals Competition Ribbon.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c4/AFJROTC_Air_Force_Nationals_Competition_Ribbon.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Orienteering Ribbon",
+  "commons_file": "File:Ribbon, AFROTC Distinctive General Military Cadet and AFJROTC Orienteering Competition.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Ribbon,_AFROTC_Distinctive_General_Military_Cadet_and_AFJROTC_Orienteering_Competition.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Co-Curricular Activities Leadership Ribbon",
+  "commons_file": "File:Ribbon, Cocurricular Activities Leadership Ribbon, AFJROTC.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/73/Ribbon,_Cocurricular_Activities_Leadership_Ribbon,_AFJROTC.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Drill Team Ribbon",
+  "commons_file": "File:Ribbon, Drill Team Ribbon, AFJROTC.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Ribbon,_Drill_Team_Ribbon,_AFJROTC.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Color Guard Ribbon",
+  "commons_file": "File:Ribbon, Color Guard Ribbon, AFJROTC.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/18/Ribbon,_Color_Guard_Ribbon,_AFJROTC.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Sabre Team Ribbon",
+  "commons_file": "File:Ribbon, Sabre Team Ribbon, AFJROTC.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/37/Ribbon,_Sabre_Team_Ribbon,_AFJROTC.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Marksmanship Ribbon",
+  "commons_file": "File:Ribbon, Marksmanship Ribbon, AFJROTC.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/27/Ribbon,_Marksmanship_Ribbon,_AFJROTC.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Good Conduct Ribbon",
+  "commons_file": "File:Ribbon, AFROTC Leadership and AFJROTC Good Conduct.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Ribbon,_AFROTC_Leadership_and_AFJROTC_Good_Conduct.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Service Ribbon",
+  "commons_file": "File:Ribbon, Marksmanship Award (Four and Six Week) AFROTC and AFJROTC Service Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Ribbon,_Marksmanship_Award_(Four_and_Six_Week)_AFROTC_and_AFJROTC_Service_Ribbon.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Health and Wellness Ribbon",
+  "commons_file": "File:Ribbon, Health and Wellness Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/Ribbon,_Health_and_Wellness_Ribbon.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Recruiting Ribbon",
+  "commons_file": "File:Ribbon, Recruiting Ribbon, AFJROTC.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Ribbon,_Recruiting_Ribbon,_AFJROTC.png"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Activities Ribbon",
+  "commons_file": "File:Ribbon, AFROTC Warrior Spirit and AFJROTC Activities.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Ribbon,_AFROTC_Warrior_Spirit_and_AFJROTC_Activities.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Attendance Ribbon",
+  "commons_file": "File:Ribbon, AFROTC Commandant's Award (Field Training) and AFJROTC Attendance.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Ribbon,_AFROTC_Commandant's_Award_(Field_Training)_and_AFJROTC_Attendance.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Dress and Appearance Ribbon",
+  "commons_file": "File:Ribbon, AFROTC Academic Award (Six Week Field Training) and AFJROTC Dress and Appearance.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Ribbon,_AFROTC_Academic_Award_(Six_Week_Field_Training)_and_AFJROTC_Dress_and_Appearance.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Longevity Ribbon",
+  "commons_file": "File:Ribbon, AFROTC Superior Performance and AFJROTC Longevity.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Ribbon,_AFROTC_Superior_Performance_and_AFJROTC_Longevity.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Bataan Death March Memorial Hike Ribbon",
+  "commons_file": "File:Ribbon, Bataan Death March Memorial Hike Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ribbon,_Bataan_Death_March_Memorial_Hike_Ribbon.svg"
+ },
+ {
+  "service": "air-force-jrotc",
+  "name": "Air Force JROTC Patriotic Flag Ribbon",
+  "commons_file": "File:Ribbon, Patriotic Flag Ribbon.svg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/70/Ribbon,_Patriotic_Flag_Ribbon.svg"
+ }
+]

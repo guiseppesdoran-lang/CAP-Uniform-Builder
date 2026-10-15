@@ -1,0 +1,83 @@
+{
+ "BRONZE_OLC": {
+  "samples": 20,
+  "w_px": 21,
+  "h_px": 14,
+  "w_in": 0.2888,
+  "h_in": 0.175,
+  "center_x_frac": 0.505,
+  "center_y_frac": 0.5
+ },
+ "SILVER_OLC": {
+  "samples": 20,
+  "w_px": 21,
+  "h_px": 14,
+  "w_in": 0.2888,
+  "h_in": 0.175,
+  "center_x_frac": 0.505,
+  "center_y_frac": 0.5
+ },
+ "BRONZE_SERVICE_STAR": {
+  "samples": 3,
+  "w_px": 16,
+  "h_px": 15,
+  "w_in": 0.22,
+  "h_in": 0.1875,
+  "center_x_frac": 0.495,
+  "center_y_frac": 0.483
+ },
+ "BRONZE_HOURGLASS": {
+  "samples": 1,
+  "w_px": 13,
+  "h_px": 16,
+  "w_in": 0.1787,
+  "h_in": 0.2,
+  "center_x_frac": 0.495,
+  "center_y_frac": 0.5
+ },
+ "GOLD_HOURGLASS": {
+  "samples": 1,
+  "w_px": 13,
+  "h_px": 16,
+  "w_in": 0.1787,
+  "h_in": 0.2,
+  "center_x_frac": 0.495,
+  "center_y_frac": 0.5
+ },
+ "M_DEVICE": {
+  "samples": 1,
+  "w_px": 15,
+  "h_px": 12,
+  "w_in": 0.2062,
+  "h_in": 0.15,
+  "center_x_frac": 0.505,
+  "center_y_frac": 0.5
+ },
+ "SILVER_HOURGLASS": {
+  "samples": 1,
+  "w_px": 13,
+  "h_px": 16,
+  "w_in": 0.1787,
+  "h_in": 0.2,
+  "center_x_frac": 0.495,
+  "center_y_frac": 0.5
+ },
+ "SILVER_SERVICE_STAR": {
+  "samples": 2,
+  "w_px": 16,
+  "h_px": 16,
+  "w_in": 0.22,
+  "h_in": 0.2,
+  "center_x_frac": 0.5,
+  "center_y_frac": 0.483
+ },
+ "N_DEVICE": {
+  "samples": 1,
+  "w_px": 15,
+  "h_px": 15,
+  "w_in": 0.2062,
+  "h_in": 0.1875,
+  "center_x_frac": 0.495,
+  "center_y_frac": 0.483
+ }
+}

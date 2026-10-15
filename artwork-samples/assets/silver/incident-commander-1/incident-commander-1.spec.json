@@ -1,0 +1,53 @@
+{
+ "asset_id": "incident-commander-1",
+ "width_in": 1.625,
+ "height_in": 0.981,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 1.625 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   81.25,
+   0
+  ],
+  "bottom_center": [
+   81.25,
+   98.052
+  ],
+  "center": [
+   81.25,
+   49.026
+  ],
+  "left_edge": [
+   0,
+   49.026
+  ],
+  "right_edge": [
+   162.5,
+   49.026
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 240,
+  "reference_px_height": 147,
+  "in_per_reference_px": 0.00937,
+  "size_class": "ic",
+  "family": null,
+  "variant": null
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + incident_commander_1_badge",
+ "reference": "ALL/ref/incident_commander_1_badge.png",
+ "source_bbox_user_units": [
+  7.167,
+  8.833,
+  232.833,
+  145
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.855,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

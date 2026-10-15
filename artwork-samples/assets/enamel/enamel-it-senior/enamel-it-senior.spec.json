@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-it-senior",
+ "width_in": 1.25,
+ "height_in": 1.76,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   62.5,
+   0
+  ],
+  "bottom_center": [
+   62.5,
+   176.039
+  ],
+  "center": [
+   62.5,
+   88.019
+  ],
+  "left_edge": [
+   0,
+   88.019
+  ],
+  "right_edge": [
+   125,
+   88.019
+  ]
+ },
+ "dimensions": {
+  "size_class": "shield",
+  "level": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + IT_senior",
+ "reference": "../batch/ref/IT_senior.png",
+ "source_bbox_user_units": [
+  39.167,
+  4.167,
+  203.667,
+  235.833
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.961,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

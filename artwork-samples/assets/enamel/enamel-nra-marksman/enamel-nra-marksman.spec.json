@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-nra-marksman",
+ "width_in": 1.1,
+ "height_in": 1.735,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: nra class badge about 1.1 in wide; not from a regulation; verify against the supplier spec",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   55,
+   0
+  ],
+  "bottom_center": [
+   55,
+   173.547
+  ],
+  "center": [
+   55,
+   86.773
+  ],
+  "left_edge": [
+   0,
+   86.773
+  ],
+  "right_edge": [
+   110,
+   86.773
+  ]
+ },
+ "dimensions": {
+  "size_class": "nra",
+  "level": "none"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + nra_marksman_badge",
+ "reference": "../batch/ref/nra_marksman_badge.png",
+ "source_bbox_user_units": [
+  4.5,
+  5.5,
+  152.5,
+  239
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.881,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

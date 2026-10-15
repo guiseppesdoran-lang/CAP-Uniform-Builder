@@ -1,0 +1,46 @@
+{
+ "asset_id": "incident-commander-2-mini",
+ "width_in": 1.125,
+ "height_in": 0.686,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: miniature width 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read (miniature)",
+ "anchors": {
+  "top_center": [
+   56.25,
+   0
+  ],
+  "bottom_center": [
+   56.25,
+   68.63
+  ],
+  "center": [
+   56.25,
+   34.315
+  ],
+  "left_edge": [
+   0,
+   34.315
+  ],
+  "right_edge": [
+   112.5,
+   34.315
+  ]
+ },
+ "dimensions": {
+  "size_class": "ic",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver + incident_commander_2_badge (miniature = same art at miniature size)",
+ "reference": "ALL/ref/incident_commander_2_badge.png",
+ "source_bbox_user_units": [
+  7.167,
+  4.333,
+  232.833,
+  142
+ ],
+ "fit_score": null,
+ "notes": ""
+}

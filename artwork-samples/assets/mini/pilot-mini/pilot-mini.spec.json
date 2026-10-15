@@ -1,0 +1,46 @@
+{
+ "asset_id": "pilot-mini",
+ "width_in": 2,
+ "height_in": 0.534,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: miniature width 2 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read (miniature)",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   53.415
+  ],
+  "center": [
+   100,
+   26.707
+  ],
+  "left_edge": [
+   0,
+   26.707
+  ],
+  "right_edge": [
+   200,
+   26.707
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver + CAPPilot1_FA9D33EA587D8 (miniature = same art at miniature size)",
+ "reference": "ALL/ref/CAPPilot1_FA9D33EA587D8.png",
+ "source_bbox_user_units": [
+  3.667,
+  4.167,
+  194,
+  55
+ ],
+ "fit_score": null,
+ "notes": ""
+}

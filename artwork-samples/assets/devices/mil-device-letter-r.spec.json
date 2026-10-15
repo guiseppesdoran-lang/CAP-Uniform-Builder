@@ -1,0 +1,57 @@
+{
+ "asset_id": "mil-device-letter-r",
+ "name": "\"R\" Device",
+ "size_in": {
+  "w": 0.179,
+  "h": 0.198
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  17.9,
+  19.8
+ ],
+ "size_source": "estimated",
+ "size_basis": "not present in any precomposed variant; height set to the measured N device (0.1875 in)",
+ "anchors": {
+  "top_center": [
+   8.95,
+   0
+  ],
+  "bottom_center": [
+   8.95,
+   19.8
+  ],
+  "center": [
+   8.95,
+   9.9
+  ],
+  "left_edge": [
+   0,
+   9.9
+  ],
+  "right_edge": [
+   17.9,
+   9.9
+  ],
+  "baseline_center": [
+   8.95,
+   19.27
+  ]
+ },
+ "dimensions": {
+  "width_in": 0.179,
+  "height_in": 0.198,
+  "letter": "R",
+  "cap_height_in": 0.1875,
+  "font_outline_source": "Arial Bold, converted to paths"
+ },
+ "metal": "silver",
+ "grade": "device",
+ "catalog_device": "R_DEVICE",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}

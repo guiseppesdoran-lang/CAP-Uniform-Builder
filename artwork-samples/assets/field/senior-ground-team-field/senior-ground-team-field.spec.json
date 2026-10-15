@@ -1,0 +1,136 @@
+{
+ "asset_id": "senior-ground-team-field",
+ "width_in": 1.375,
+ "height_in": 1.21593,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 1.125 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
+ "citation": "OCP: CAPR 39-1 ICL 25-06 para 7.1.1.3.1 (max 4 badges, light silver embroidery on dark blue, 1/8 in of blue exposed at widest/tallest part). ABU: CAPR 39-1 (3 Mar 2020) para 5.1.1.1.2.4 (two aviation/occupational badges, embroidered silver on dark blue, 1/8 in of blue showing) and 5.1.1.1.2.5 (command insignia). Eligible list: Attachment 7 aviation + occupational badges",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   121.593
+  ],
+  "center": [
+   68.75,
+   60.7965
+  ],
+  "left_edge": [
+   0,
+   60.7965
+  ],
+  "right_edge": [
+   137.5,
+   60.7965
+  ],
+  "disc_center": [
+   68.3,
+   64.52
+  ],
+  "disc_top": [
+   68.3,
+   37.003
+  ],
+  "triangle_apex": [
+   67.766,
+   41.281
+  ],
+  "triangle_base_center": [
+   67.766,
+   79.164
+  ],
+  "ribbon_tail_left": [
+   59.936,
+   107.627
+  ],
+  "ribbon_tail_right": [
+   76.664,
+   107.627
+  ],
+  "wreath_bottom": [
+   68.3,
+   100.019
+  ],
+  "star_center": [
+   68.382,
+   27.55
+  ],
+  "star_base": [
+   68.382,
+   39.551
+  ],
+  "star_top": [
+   68.382,
+   12.715
+  ],
+  "art_top_center": [
+   68.75,
+   12.5
+  ],
+  "art_bottom_center": [
+   68.75,
+   109.093
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 228,
+  "reference_px_height": 193,
+  "in_per_reference_px": 0.00877,
+  "size_class": "gt",
+  "family": "ground-team",
+  "variant": "senior",
+  "wreath_nodes_per_branch": 12,
+  "wreath_leaf_rows": 2,
+  "star_inner_ratio": 0.5,
+  "star_points": 5,
+  "disc_radius_in": 0.2752,
+  "disc_rim_radius_in": 0.246,
+  "triangle_height_in": 0.3788,
+  "triangle_base_width_in": 0.369,
+  "wreath_band_width_in": 0.0295,
+  "wreath_leaf_length_in": 0.1634,
+  "wreath_leaf_width_in": 0.1048,
+  "ribbon_width_in": 0.0443,
+  "ribbon_length_in": 0.2453,
+  "wreath_semi_axis_x_in": 0.4752,
+  "wreath_semi_axis_up_in": 0.1839,
+  "wreath_semi_axis_low_in": 0.2891,
+  "star_radius_in": 0.1483
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + senior_ground_team_badge",
+ "reference": "ALL/ref/senior_ground_team_badge.png",
+ "source_bbox_user_units": [
+  5.667,
+  2.5,
+  234.333,
+  198.833
+ ],
+ "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from senior-ground-team.",
+ "field_uniform": {
+  "worn_on": [
+   "abu",
+   "ocp"
+  ],
+  "max_badges": {
+   "abu": 2,
+   "ocp": 4
+  },
+  "backing": "dark blue rectangle (square corners)",
+  "backing_color": "#1b2547",
+  "thread_color": "#d3d8de",
+  "margin_in": 0.125,
+  "corner_radius_in": 0,
+  "backing_minus_art_in": 0.25,
+  "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
+  "art_width_in": 1.125,
+  "art_height_in": 0.96593,
+  "source_asset": "senior-ground-team",
+  "kind": "chest-badge"
+ },
+ "derived_from": "assets/silver/senior-ground-team"
+}

@@ -1,0 +1,46 @@
+{
+ "asset_id": "uas-technician-basic-mini",
+ "width_in": 2,
+ "height_in": 0.522,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: miniature width 2 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read (miniature)",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   52.222
+  ],
+  "center": [
+   100,
+   26.111
+  ],
+  "left_edge": [
+   0,
+   26.111
+  ],
+  "right_edge": [
+   200,
+   26.111
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver + uas_technician_basic_badge (miniature = same art at miniature size)",
+ "reference": "ALL/ref/uas_technician_basic_badge.png",
+ "source_bbox_user_units": [
+  0,
+  21.5,
+  240,
+  84.167
+ ],
+ "fit_score": null,
+ "notes": ""
+}

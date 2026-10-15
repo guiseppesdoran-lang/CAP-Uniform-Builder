@@ -1,0 +1,177 @@
+{
+ "NJROTC_CERT_Ribbon.png": {
+  "w": 752,
+  "h": 203,
+  "class": "stripes",
+  "residual": {
+   "vertical": 8.5,
+   "horizontal": 14.9,
+   "central_vertical": 7.4
+  },
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 1,
+    "hex": "44743e"
+   }
+  ]
+ },
+ "AFJROTC_Air_Force_Nationals_Competition_Ribbon.png": {
+  "w": 752,
+  "h": 203,
+  "class": "stripes",
+  "residual": {
+   "vertical": 3.1,
+   "horizontal": 11.9,
+   "central_vertical": 2.8
+  },
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 1,
+    "hex": "87b5f4"
+   }
+  ]
+ },
+ "NJROTC_STEM_Ribbon.png": {
+  "w": 752,
+  "h": 203,
+  "class": "stripes",
+  "residual": {
+   "vertical": 7.9,
+   "horizontal": 116,
+   "central_vertical": 7.6
+  },
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.0591,
+    "hex": "e6ae2e"
+   },
+   {
+    "x0": 0.0591,
+    "x1": 0.15,
+    "hex": "304f79"
+   },
+   {
+    "x0": 0.15,
+    "x1": 0.2091,
+    "hex": "ecb22d"
+   },
+   {
+    "x0": 0.2091,
+    "x1": 0.3545,
+    "hex": "edecea"
+   },
+   {
+    "x0": 0.3545,
+    "x1": 0.4227,
+    "hex": "ecb12b"
+   },
+   {
+    "x0": 0.4227,
+    "x1": 0.5727,
+    "hex": "edeceb"
+   },
+   {
+    "x0": 0.5727,
+    "x1": 0.6455,
+    "hex": "ecb330"
+   },
+   {
+    "x0": 0.6455,
+    "x1": 0.7909,
+    "hex": "ecebea"
+   },
+   {
+    "x0": 0.7909,
+    "x1": 0.85,
+    "hex": "ecb12a"
+   },
+   {
+    "x0": 0.85,
+    "x1": 0.9409,
+    "hex": "314f78"
+   },
+   {
+    "x0": 0.9409,
+    "x1": 1,
+    "hex": "e6ad2d"
+   }
+  ]
+ },
+ "National_Sons_of_the_American_Revolution_Ribbon.png": {
+  "w": 752,
+  "h": 203,
+  "class": "stripes",
+  "residual": {
+   "vertical": 4.9,
+   "horizontal": 144.8,
+   "central_vertical": 4.6
+  },
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.1773,
+    "hex": "152361"
+   },
+   {
+    "x0": 0.1773,
+    "x1": 0.2682,
+    "hex": "ececec"
+   },
+   {
+    "x0": 0.2682,
+    "x1": 0.4591,
+    "hex": "ebca27"
+   },
+   {
+    "x0": 0.4591,
+    "x1": 0.5545,
+    "hex": "ecebe9"
+   },
+   {
+    "x0": 0.5545,
+    "x1": 0.7455,
+    "hex": "ebca24"
+   },
+   {
+    "x0": 0.7455,
+    "x1": 0.8409,
+    "hex": "e7e7e8"
+   },
+   {
+    "x0": 0.8409,
+    "x1": 1,
+    "hex": "152361"
+   }
+  ]
+ },
+ "AFJROTC_All_Service_National_Competition_Ribbon.png": {
+  "w": 752,
+  "h": 203,
+  "class": "stripes",
+  "residual": {
+   "vertical": 4.1,
+   "horizontal": 146.7,
+   "central_vertical": 3.6
+  },
+  "runs": [
+   {
+    "x0": 0,
+    "x1": 0.3364,
+    "hex": "db241c"
+   },
+   {
+    "x0": 0.3364,
+    "x1": 0.6727,
+    "hex": "ebebec"
+   },
+   {
+    "x0": 0.6727,
+    "x1": 1,
+    "hex": "2d3892"
+   }
+  ]
+ }
+}

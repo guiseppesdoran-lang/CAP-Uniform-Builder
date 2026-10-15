@@ -1,0 +1,79 @@
+{
+ "asset_id": "badge-senior-ground-team",
+ "name": "Senior Ground Team Badge",
+ "size_in": {
+  "w": 1.75,
+  "h": 1.5044
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  175,
+  150.44
+ ],
+ "size_source": "estimated",
+ "size_basis": "No CAP regulation size located. 1.75 in overall width assumed (typical CAP metal-badge pin width); reference art is 240x203 px with no stated scale. Replace with a measured physical badge.",
+ "anchors": {
+  "top_center": [
+   87.5,
+   0
+  ],
+  "bottom_center": [
+   87.5,
+   150.44
+  ],
+  "center": [
+   87.5,
+   75.22
+  ],
+  "left_edge": [
+   0,
+   75.22
+  ],
+  "right_edge": [
+   175,
+   75.22
+  ],
+  "wreath_center": [
+   87.5,
+   80.59
+  ],
+  "disc_center": [
+   86.73,
+   80.59
+  ],
+  "star_center": [
+   87.12,
+   22.57
+  ],
+  "triangle_apex": [
+   85.96,
+   44.52
+  ],
+  "ribbon_tails_y": [
+   87.5,
+   148.14
+  ]
+ },
+ "dimensions": {
+  "disc_radius_in": 0.4221,
+  "disc_inner_radius_in": 0.3838,
+  "star_outer_radius_in": 0.218,
+  "wreath_band_width_in": 0.0461,
+  "leaves_per_side": {
+   "outer": 12,
+   "counted_from_art": "see gt-fit-counts.json"
+  },
+  "triangle_base_in": 0.5757,
+  "triangle_height_in": 0.591,
+  "drawing_scale_units_per_ref_px": 0.76754
+ },
+ "fit": {
+  "method": "silhouette IoU vs images/badges/senior_ground_team_badge.webp (alpha>100), canvas 240x203 px",
+  "score": 0.9479,
+  "metric": "iou",
+  "threshold": 0.88
+ },
+ "grade": "badge"
+}

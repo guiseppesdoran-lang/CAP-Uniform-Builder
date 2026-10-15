@@ -1,0 +1,86 @@
+{
+  "asset_id": "senior-aircrew",
+  "width_in": 3,
+  "height_in": 1.089,
+  "unit": "1 user unit = 0.01 in",
+  "size_source": "regulation",
+  "size_basis": "regulation: width 3 in",
+  "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+  "anchors": {
+    "top_center": [
+      150,
+      0
+    ],
+    "bottom_center": [
+      150,
+      108.873
+    ],
+    "center": [
+      150,
+      54.437
+    ],
+    "left_edge": [
+      0,
+      54.437
+    ],
+    "right_edge": [
+      300,
+      54.437
+    ],
+    "roundel_center": [
+      150.665,
+      77.75
+    ],
+    "roundel_bottom": [
+      150.665,
+      108.783
+    ],
+    "roundel_top": [
+      150.665,
+      46.717
+    ],
+    "star_center": [
+      150.665,
+      30.33
+    ],
+    "wing_tip_left": [
+      0.421,
+      34.259
+    ],
+    "wing_tip_right": [
+      300,
+      34.259
+    ],
+    "centerline_bottom": [
+      150.665,
+      108.783
+    ]
+  },
+  "dimensions": {
+    "reference_px_width": 188,
+    "reference_px_height": 71,
+    "in_per_reference_px": 0.01596,
+    "size_class": "wings",
+    "family": "wings",
+    "variant": "star",
+    "feathers_per_wing": 7,
+    "roundel_rx_in": 0.294,
+    "roundel_ry_in": 0.3103,
+    "star_radius_in": 0.2878,
+    "wing_semi_span_in": 1.5024
+  },
+  "data_source": "reference-art-measured",
+  "generator": "artwork-samples/silver (make-*.js, kit.js) + SeniorAirCrew1_B289BAE6E515C",
+  "reference": "ALL/ref/SeniorAirCrew1_B289BAE6E515C.png",
+  "source_bbox_user_units": [
+    1.667,
+    2.5,
+    189.5,
+    70.667
+  ],
+  "fit_score": {
+    "silhouette_iou_approx": 0.905,
+    "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+  },
+  "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

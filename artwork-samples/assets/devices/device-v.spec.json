@@ -1,0 +1,54 @@
+{
+ "asset_id": "device-v",
+ "name": "\"V\" Device",
+ "size_in": {
+  "w": 0.2938,
+  "h": 0.25
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  29.38,
+  25
+ ],
+ "size_source": "estimated",
+ "size_basis": "1/4 in tall, the usual V-device size; not stated in the CAPR text held in this repo",
+ "anchors": {
+  "top_center": [
+   14.69,
+   0
+  ],
+  "bottom_center": [
+   14.69,
+   25
+  ],
+  "center": [
+   14.69,
+   12.5
+  ],
+  "left_edge": [
+   0,
+   12.5
+  ],
+  "right_edge": [
+   29.38,
+   12.5
+  ],
+  "vertex_bottom": [
+   14.69,
+   24.69
+  ]
+ },
+ "dimensions": {
+  "shape": "V",
+  "height_in": 0.25,
+  "drawing_scale_units_per_local_px": 0.3125
+ },
+ "metal": "silver",
+ "grade": "device",
+ "fit": {
+  "method": "n/a (original drawing)",
+  "score": null
+ }
+}

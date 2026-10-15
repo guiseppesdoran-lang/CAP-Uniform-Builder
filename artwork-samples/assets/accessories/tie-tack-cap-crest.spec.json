@@ -1,0 +1,52 @@
+{
+ "asset_id": "tie-tack-cap-crest",
+ "name": "Tie tack, CAP Crest",
+ "size_in": {
+  "w": 0.7481,
+  "h": 0.9
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  74.81,
+  90
+ ],
+ "size_source": "estimated",
+ "size_basis": "The same CAP Crest art as the blazer pocket crest, at 0.9 in tall (estimate; the regulation gives no tack size).",
+ "anchors": {
+  "top_center": [
+   37.41,
+   0
+  ],
+  "bottom_center": [
+   37.41,
+   90
+  ],
+  "center": [
+   37.4,
+   45
+  ],
+  "left_edge": [
+   0,
+   45
+  ],
+  "right_edge": [
+   74.81,
+   45
+  ]
+ },
+ "landmarks": {},
+ "landmarks_note": "rects are {x,y,w,h}; all in user units (0.01 in), origin top-left",
+ "documented": [
+  "tie tack or clasp may carry the CAP Crest / coat of arms (CAPR 39-1 4.1.11.1.1.3, 4.2.3.4)"
+ ],
+ "assumed": [
+  "0.9 in tall"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

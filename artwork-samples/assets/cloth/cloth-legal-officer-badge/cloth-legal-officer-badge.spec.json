@@ -1,0 +1,45 @@
+{
+ "asset_id": "cloth-legal-officer-badge",
+ "width_in": 1.25,
+ "height_in": 1.055,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "embroidered art width 1.25 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular size), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   62.5,
+   0
+  ],
+  "bottom_center": [
+   62.5,
+   105.469
+  ],
+  "center": [
+   62.5,
+   52.734
+  ],
+  "left_edge": [
+   0,
+   52.734
+  ],
+  "right_edge": [
+   125,
+   52.734
+  ]
+ },
+ "dimensions": {
+  "family": "cloth-ocp-blue-backing"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/cloth (g*/make-*.js) + civil-air-patrol-cloth-insignia-legal-officer-badge-new-insignia",
+ "reference": "refs-png/civil-air-patrol-cloth-insignia-legal-officer-badge-new-insignia.png",
+ "source_bbox_user_units": [
+  26,
+  87,
+  570,
+  546
+ ],
+ "fit_score": null,
+ "notes": "Embroidered thread art on blue cloth backing (OCP). Drawn from the supplier product photo; thread texture not reproduced."
+}

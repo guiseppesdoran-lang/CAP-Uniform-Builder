@@ -1,0 +1,89 @@
+{
+ "asset_id": "cadet-suas",
+ "width_in": 2,
+ "height_in": 0.607,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 2 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   60.694
+  ],
+  "center": [
+   100,
+   30.347
+  ],
+  "left_edge": [
+   0,
+   30.347
+  ],
+  "right_edge": [
+   200,
+   30.347
+  ],
+  "hexagon_center": [
+   100,
+   30.042
+  ],
+  "hexagon_top": [
+   100,
+   7.833
+  ],
+  "hexagon_bottom": [
+   100,
+   52.25
+  ],
+  "apex": [
+   100,
+   60.333
+  ],
+  "arm_tip_left": [
+   0,
+   3.208
+  ],
+  "arm_tip_right": [
+   200,
+   3.208
+  ],
+  "hexagon_vertex_left": [
+   73.667,
+   30.042
+  ],
+  "hexagon_vertex_right": [
+   126.333,
+   30.042
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 240,
+  "reference_px_height": 76,
+  "in_per_reference_px": 0.00833,
+  "size_class": "cadet_v",
+  "family": "suas-cadet-v",
+  "variant": "cadet",
+  "hexagon_width_in": 0.5267,
+  "hexagon_height_in": 0.4442,
+  "arm_end_thickness_in": 0.0642,
+  "apex_depth_in": 0.6033
+ },
+ "data_source": "original",
+ "generator": "artwork-samples/silver/make-suas.js",
+ "reference": null,
+ "source_bbox_user_units": [
+  0,
+  0,
+  240,
+  72.833
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": null,
+  "note": "original drawing: no raster reference, silhouette scoring skipped; judged against CAPR 39-1 Att. 7 figure A7-1 (silver/uas-compare.png)"
+ },
+ "notes": "Hexagon-centre sUAS badge built from CAPR 39-1 Attachment 7 figure A7-1 (regulation figure wins over the round-roundel product photos). Parameter table: silver/suas-spec.json (written by make-suas.js)."
+}

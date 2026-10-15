@@ -1,0 +1,45 @@
+{
+ "asset_id": "cloth-aircrew-master",
+ "width_in": 3,
+ "height_in": 1.195,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "embroidered art width 3 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular size), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   119.45
+  ],
+  "center": [
+   150,
+   59.725
+  ],
+  "left_edge": [
+   0,
+   59.725
+  ],
+  "right_edge": [
+   300,
+   59.725
+  ]
+ },
+ "dimensions": {
+  "family": "cloth-ocp-blue-backing"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/cloth (g*/make-*.js) + civil-air-patrol-insignia-master-aircrew-wings-cloth-new-insignia",
+ "reference": "refs-png/civil-air-patrol-insignia-master-aircrew-wings-cloth-new-insignia.png",
+ "source_bbox_user_units": [
+  32,
+  193,
+  577,
+  410
+ ],
+ "fit_score": null,
+ "notes": "Embroidered thread art on blue cloth backing (OCP). Drawn from the supplier product photo; thread texture not reproduced."
+}

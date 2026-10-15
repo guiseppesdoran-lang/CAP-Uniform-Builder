@@ -1,0 +1,640 @@
+[
+ {
+  "id": "enamel-admin-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.956,
+  "fails": []
+ },
+ {
+  "id": "enamel-admin-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.951,
+  "fails": []
+ },
+ {
+  "id": "enamel-admin-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.907,
+  "fails": []
+ },
+ {
+  "id": "enamel-cap-national-command-board",
+  "width_in": 1.5,
+  "pass": true,
+  "iou": 0.975,
+  "fails": []
+ },
+ {
+  "id": "enamel-cdi-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.968,
+  "fails": []
+ },
+ {
+  "id": "enamel-cdi-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.959,
+  "fails": []
+ },
+ {
+  "id": "enamel-cdi-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.976,
+  "fails": []
+ },
+ {
+  "id": "enamel-command-council",
+  "width_in": 1.5,
+  "pass": true,
+  "iou": 0.975,
+  "fails": []
+ },
+ {
+  "id": "enamel-comms-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.935,
+  "fails": []
+ },
+ {
+  "id": "enamel-comms-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.957,
+  "fails": []
+ },
+ {
+  "id": "enamel-comms-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.97,
+  "fails": []
+ },
+ {
+  "id": "enamel-cyber-advanced",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "enamel-cyber-basic",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.975,
+  "fails": []
+ },
+ {
+  "id": "enamel-cyber-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "enamel-drug-demand-reduction-basic",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.986,
+  "fails": []
+ },
+ {
+  "id": "enamel-finance-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.967,
+  "fails": []
+ },
+ {
+  "id": "enamel-finance-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.954,
+  "fails": []
+ },
+ {
+  "id": "enamel-historian-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.943,
+  "fails": []
+ },
+ {
+  "id": "enamel-historian-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.95,
+  "fails": []
+ },
+ {
+  "id": "enamel-historian-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.965,
+  "fails": []
+ },
+ {
+  "id": "enamel-ig-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.969,
+  "fails": []
+ },
+ {
+  "id": "enamel-ig-master-gold",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "enamel-ig-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.958,
+  "fails": []
+ },
+ {
+  "id": "enamel-ig-senior-gold",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "enamel-ig-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.974,
+  "fails": []
+ },
+ {
+  "id": "enamel-it-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.956,
+  "fails": []
+ },
+ {
+  "id": "enamel-it-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.961,
+  "fails": []
+ },
+ {
+  "id": "enamel-it-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.979,
+  "fails": []
+ },
+ {
+  "id": "enamel-logistics-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.954,
+  "fails": []
+ },
+ {
+  "id": "enamel-logistics-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.963,
+  "fails": []
+ },
+ {
+  "id": "enamel-logistics-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.985,
+  "fails": []
+ },
+ {
+  "id": "enamel-master-es",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.946,
+  "fails": []
+ },
+ {
+  "id": "enamel-national-executive-committee",
+  "width_in": 1.5,
+  "pass": true,
+  "iou": 0.968,
+  "fails": []
+ },
+ {
+  "id": "enamel-ops-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.96,
+  "fails": []
+ },
+ {
+  "id": "enamel-ops-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.954,
+  "fails": []
+ },
+ {
+  "id": "enamel-ops-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.981,
+  "fails": []
+ },
+ {
+  "id": "enamel-personnel-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.946,
+  "fails": []
+ },
+ {
+  "id": "enamel-personnel-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.972,
+  "fails": []
+ },
+ {
+  "id": "enamel-personnel-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.971,
+  "fails": []
+ },
+ {
+  "id": "enamel-professional-development-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.956,
+  "fails": []
+ },
+ {
+  "id": "enamel-professional-development-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.953,
+  "fails": []
+ },
+ {
+  "id": "enamel-professional-development-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.98,
+  "fails": []
+ },
+ {
+  "id": "enamel-public-affairs-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.95,
+  "fails": []
+ },
+ {
+  "id": "enamel-public-affairs-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.959,
+  "fails": []
+ },
+ {
+  "id": "enamel-public-affairs-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.963,
+  "fails": []
+ },
+ {
+  "id": "enamel-recruiter-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.965,
+  "fails": []
+ },
+ {
+  "id": "enamel-recruiter-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.951,
+  "fails": []
+ },
+ {
+  "id": "enamel-recruiter-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.972,
+  "fails": []
+ },
+ {
+  "id": "enamel-stem-advanced",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "enamel-stem-basic",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.977,
+  "fails": []
+ },
+ {
+  "id": "enamel-stem-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "enamel-safety-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.943,
+  "fails": []
+ },
+ {
+  "id": "enamel-safety-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.958,
+  "fails": []
+ },
+ {
+  "id": "enamel-safety-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.972,
+  "fails": []
+ },
+ {
+  "id": "enamel-senior-es",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.963,
+  "fails": []
+ },
+ {
+  "id": "enamel-senior-advisory-group",
+  "width_in": 1.5,
+  "pass": true,
+  "iou": 0.975,
+  "fails": []
+ },
+ {
+  "id": "enamel-stan-eval-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.95,
+  "fails": []
+ },
+ {
+  "id": "enamel-stan-eval-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.975,
+  "fails": []
+ },
+ {
+  "id": "enamel-stan-eval-tech",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.984,
+  "fails": []
+ },
+ {
+  "id": "enamel-vol-u",
+  "width_in": 1.5,
+  "pass": true,
+  "iou": 0.987,
+  "fails": []
+ },
+ {
+  "id": "enamel-aerospace-education-master",
+  "width_in": 1,
+  "pass": true,
+  "iou": 0.979,
+  "fails": []
+ },
+ {
+  "id": "enamel-aerospace-education-technician",
+  "width_in": 1,
+  "pass": true,
+  "iou": 0.961,
+  "fails": []
+ },
+ {
+  "id": "enamel-aerospace-senior",
+  "width_in": 1,
+  "pass": true,
+  "iou": 0.959,
+  "fails": []
+ },
+ {
+  "id": "enamel-buddist-chaplin",
+  "width_in": 1,
+  "pass": false,
+  "iou": 0.781,
+  "fails": [
+   "silhouette IoU 0.781 < 0.80"
+  ]
+ },
+ {
+  "id": "enamel-cadet-programs",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.976,
+  "fails": []
+ },
+ {
+  "id": "enamel-cadet-programs-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.879,
+  "fails": []
+ },
+ {
+  "id": "enamel-cadet-programs-master-badge-v2",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.977,
+  "fails": []
+ },
+ {
+  "id": "enamel-cadet-programs-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.856,
+  "fails": []
+ },
+ {
+  "id": "enamel-cadet-programs-senior-badge-v2",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.967,
+  "fails": []
+ },
+ {
+  "id": "enamel-cadet-programs-technician",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.884,
+  "fails": []
+ },
+ {
+  "id": "enamel-cadet-programs-technician-badge-v2",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.97,
+  "fails": []
+ },
+ {
+  "id": "enamel-christian-chaplin",
+  "width_in": 1,
+  "pass": true,
+  "iou": 0.917,
+  "fails": []
+ },
+ {
+  "id": "enamel-communications-technician",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.905,
+  "fails": []
+ },
+ {
+  "id": "enamel-drug-demand-reduction-master",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.977,
+  "fails": []
+ },
+ {
+  "id": "enamel-drug-demand-reduction-senior",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.977,
+  "fails": []
+ },
+ {
+  "id": "enamel-drug-demand-reduction-technician",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.977,
+  "fails": []
+ },
+ {
+  "id": "enamel-emergency-services",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.974,
+  "fails": []
+ },
+ {
+  "id": "enamel-emt-basic",
+  "width_in": 1,
+  "pass": false,
+  "iou": 0.782,
+  "fails": [
+   "silhouette IoU 0.782 < 0.80"
+  ]
+ },
+ {
+  "id": "enamel-emt-intermediate",
+  "width_in": 1,
+  "pass": false,
+  "iou": 0.7,
+  "fails": [
+   "silhouette IoU 0.700 < 0.80"
+  ]
+ },
+ {
+  "id": "enamel-emt-paramedic",
+  "width_in": 1,
+  "pass": false,
+  "iou": 0.724,
+  "fails": [
+   "silhouette IoU 0.724 < 0.80"
+  ]
+ },
+ {
+  "id": "enamel-finance-technician",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.97,
+  "fails": []
+ },
+ {
+  "id": "enamel-information-technology-technician",
+  "width_in": 1.25,
+  "pass": true,
+  "iou": 0.898,
+  "fails": []
+ },
+ {
+  "id": "enamel-jewish-chaplin",
+  "width_in": 1,
+  "pass": true,
+  "iou": 0.951,
+  "fails": []
+ },
+ {
+  "id": "enamel-muslim-chaplin",
+  "width_in": 1,
+  "pass": true,
+  "iou": 0.844,
+  "fails": []
+ },
+ {
+  "id": "enamel-nra-distinguished-expert",
+  "width_in": 1.1,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "enamel-nra-expert",
+  "width_in": 1.1,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "enamel-nra-marksman",
+  "width_in": 1.1,
+  "pass": true,
+  "iou": 0.881,
+  "fails": []
+ },
+ {
+  "id": "enamel-nra-marksman-first-class",
+  "width_in": 1.1,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "enamel-nra-pro-marksman",
+  "width_in": 1.1,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "enamel-nra-sharpshooter",
+  "width_in": 1.1,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ }
+]

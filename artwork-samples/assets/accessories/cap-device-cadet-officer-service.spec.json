@@ -1,0 +1,69 @@
+{
+ "asset_id": "cap-device-cadet-officer-service",
+ "name": "CAP cadet officer service cap insignia",
+ "size_in": {
+  "w": 1.94,
+  "h": 2.44
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  194,
+  244
+ ],
+ "colours": {
+  "silver": "#d3d7dc",
+  "silverL": "#e3e6ea",
+  "silverD": "#8f969e",
+  "shade": "#b4bac2"
+ },
+ "grade": "accessory",
+ "anchors": {
+  "top_center": [
+   97,
+   0
+  ],
+  "bottom_center": [
+   97,
+   244
+  ],
+  "center": [
+   97,
+   122
+  ],
+  "left_edge": [
+   0,
+   122
+  ],
+  "right_edge": [
+   194,
+   122
+  ],
+  "mount_center": [
+   97,
+   122
+  ]
+ },
+ "size_source": "estimated",
+ "size_basis": "Scaled from Fig A5-8: ~80 px wide x 97 px tall against the 7.4 in cap band (300 px), ~1.9 x 2.4 in; the regulation gives no dimension.",
+ "provenance": "CAPR 39-1 3 Mar 2020 Fig A5-8 (p.138, CAP DEVICES row; A5-9 shows the same devices on the women's caps); source figure is ~190 px of faint grey embossing: outline and large shading traced, no feather or leaf detail; CAP disc / shield and triangle are parametric",
+ "mounts": [
+  {
+   "uniform": "Men's / women's service cap, cadet officers",
+   "rule": "centred on the front of the cap in device_slot_center; no clouds or darts (6.2.1.1.1, 6.2.1.2.1)"
+  }
+ ],
+ "documented": [
+  "cadet officers wear the cadet service cap insignia; no clouds and darts for cadets (6.2.1.1.1, 6.2.1.2.1)"
+ ],
+ "assumed": [
+  "overall size",
+  "shield size and position",
+  "shading detail"
+ ],
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

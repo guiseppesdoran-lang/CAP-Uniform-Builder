@@ -1,0 +1,79 @@
+{
+ "asset_id": "squadron-commander-field",
+ "width_in": 1,
+ "height_in": 1,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "backing: 1 in x 1 in dark blue patch (CAPR 39-1 ICL 25-06 7.1.1.3.1.7); art scaled to fit inside with 1/8 in margin; the pin size itself is not given",
+ "citation": "OCP: CAPR 39-1 ICL 25-06 para 7.1.1.3.1 (max 4 badges, light silver embroidery on dark blue, 1/8 in of blue exposed at widest/tallest part). ABU: CAPR 39-1 (3 Mar 2020) para 5.1.1.1.2.4 (two aviation/occupational badges, embroidered silver on dark blue, 1/8 in of blue showing) and 5.1.1.1.2.5 (command insignia). Eligible list: Attachment 7 aviation + occupational badges",
+ "anchors": {
+  "top_center": [
+   50,
+   0
+  ],
+  "bottom_center": [
+   50,
+   100
+  ],
+  "center": [
+   50,
+   50
+  ],
+  "left_edge": [
+   0,
+   50
+  ],
+  "right_edge": [
+   100,
+   50
+  ],
+  "art_top_center": [
+   50,
+   14.038624999999996
+  ],
+  "art_bottom_center": [
+   50,
+   85.961375
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 240,
+  "reference_px_height": 230,
+  "in_per_reference_px": 0.00667,
+  "size_class": "cmd",
+  "family": null,
+  "variant": null
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + Squadron_Commander_badge",
+ "reference": "ALL/ref/Squadron_Commander_badge.png",
+ "source_bbox_user_units": [
+  0,
+  7,
+  239.667,
+  236.833
+ ],
+ "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from squadron-commander.",
+ "field_uniform": {
+  "worn_on": [
+   "abu",
+   "ocp"
+  ],
+  "max_badges": {
+   "abu": 2,
+   "ocp": 4
+  },
+  "backing": "dark blue rectangle (square corners)",
+  "backing_color": "#1b2547",
+  "thread_color": "#d3d8de",
+  "margin_in": 0.125,
+  "corner_radius_in": 0,
+  "backing_minus_art_in": null,
+  "scale_from_backing": null,
+  "art_width_in": 0.75,
+  "art_height_in": 0.71923,
+  "source_asset": "squadron-commander",
+  "kind": "commander-insignia-patch"
+ },
+ "derived_from": "assets/silver/squadron-commander"
+}

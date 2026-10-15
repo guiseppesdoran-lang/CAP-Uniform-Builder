@@ -1,0 +1,45 @@
+{
+ "asset_id": "cloth-volunteer-university-instructor",
+ "width_in": 2,
+ "height_in": 2,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "backing width 2 in",
+ "citation": "Vanguard listing: Volunteer University Instructor cloth badge 2 in",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   200
+  ],
+  "center": [
+   100,
+   100
+  ],
+  "left_edge": [
+   0,
+   100
+  ],
+  "right_edge": [
+   200,
+   100
+  ]
+ },
+ "dimensions": {
+  "family": "cloth-ocp-blue-backing"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/cloth (g*/make-*.js) + civil-air-patrol-cloth-badge-volunteer-university-instructor",
+ "reference": "refs-png/civil-air-patrol-cloth-badge-volunteer-university-instructor.png",
+ "source_bbox_user_units": [
+  39.444,
+  39.444,
+  960.556,
+  960.556
+ ],
+ "fit_score": null,
+ "notes": "Embroidered thread art on blue cloth backing (OCP). Drawn from the supplier product photo; thread texture not reproduced."
+}

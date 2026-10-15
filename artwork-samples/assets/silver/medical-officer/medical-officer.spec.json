@@ -1,0 +1,53 @@
+{
+ "asset_id": "medical-officer",
+ "width_in": 1.0417,
+ "height_in": 1.125,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: height 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   52.085,
+   0
+  ],
+  "bottom_center": [
+   52.085,
+   112.52
+  ],
+  "center": [
+   52.085,
+   56.26
+  ],
+  "left_edge": [
+   0,
+   56.26
+  ],
+  "right_edge": [
+   104.17,
+   56.26
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 218,
+  "reference_px_height": 236,
+  "in_per_reference_px": 0.00688,
+  "size_class": "med",
+  "family": null,
+  "variant": null
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + Medical_officer",
+ "reference": "ALL/ref/Medical_officer.png",
+ "source_bbox_user_units": [
+  4.833,
+  4.167,
+  223.167,
+  240
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.872,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

@@ -1,0 +1,90 @@
+{
+ "asset_id": "captape-cloth-blank-ultramarine",
+ "name": "Blank cloth \"Civil Air Patrol\" tape, ultramarine",
+ "size_in": {
+  "w": 5.25,
+  "h": 1
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  525,
+  100
+ ],
+ "size_source": "estimated",
+ "size_basis": "5 1/4 x 1 in: the tape loops of the OCP/utility uniform (GL/PD 14-04B, as modelled in garment-ocp-coat-abu-cut name_tape / cap_tape landmarks); CAPR 39-1 7.1.1.2.3 says only that the tape matches the hook panel length. Colours: Fig A6-3 (figure shows bright ultramarine and a teal-leaning dark blue).",
+ "provenance": "in-house construction; shape, merrowed edge and stitch line only, no lettering",
+ "colours": {
+  "cloth": "#0b3fa6",
+  "edge": "#082c78",
+  "stitch": "#5f86d6"
+ },
+ "cloth_color": {
+  "hex": "#0b3fa6",
+  "note": "ultramarine blue (to be phased out 15 June 2021, 10.9.8-9)"
+ },
+ "anchors": {
+  "top_center": [
+   262.5,
+   0
+  ],
+  "bottom_center": [
+   262.5,
+   100
+  ],
+  "center": [
+   262.5,
+   50
+  ],
+  "left_edge": [
+   0,
+   50
+  ],
+  "right_edge": [
+   525,
+   50
+  ],
+  "text_center": [
+   262.5,
+   50
+  ]
+ },
+ "landmarks": {
+  "tape": {
+   "x": 0,
+   "y": 0,
+   "w": 525,
+   "h": 100
+  },
+  "text_zone": {
+   "x": 18,
+   "y": 14.000000000000002,
+   "w": 488.99999999999994,
+   "h": 72
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); text_zone is where the white (ultramarine) or silver (dark blue) lettering goes, centred, letter height up to 0.72 in",
+ "text": {
+  "content": "CIVIL AIR PATROL (fixed legend)",
+  "colour": "white",
+  "case": "upper",
+  "align": "center",
+  "max_height_in": 0.72
+ },
+ "fastener": "sew-on or hook-and-loop (Velcro) back; tapes and rank must be all sewn or all Velcro (7.1.1.1)",
+ "documented": [
+  "name tape right chest, CAP tape left chest on the uniforms that take them (7.1.1.2.3, 5.1.x)",
+  "white lettering on ultramarine or silver lettering on dark blue (10.9.8-9)"
+ ],
+ "assumed": [
+  "5 1/4 x 1 in size",
+  "stitch line inset",
+  "colours"
+ ],
+ "grade": "insignia-plate",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

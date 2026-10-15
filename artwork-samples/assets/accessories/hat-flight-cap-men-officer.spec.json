@@ -1,0 +1,82 @@
+{
+ "asset_id": "hat-flight-cap-men-officer",
+ "name": "Men's flight cap, officer (silver and blue braid)",
+ "size_in": {
+  "w": 11.5975,
+  "h": 3.6487
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  1159.75,
+  364.87
+ ],
+ "size_source": "measured",
+ "size_basis": "Measured from CAPR 39-1 Attachment 5 \"FLIGHT CAPS\" figure (3 March 2020, p.139) at 66.3 px/in, from the figure's own 1 1/2 in marks. Cap body 11.36 x 3.41 in plus 0.12 in margin. The regulation gives no cap dimensions; real caps vary by size.",
+ "anchors": {
+  "top_center": [
+   579.875,
+   0
+  ],
+  "bottom_center": [
+   579.875,
+   364.87
+  ],
+  "center": [
+   579.875,
+   182.435
+  ],
+  "left_edge": [
+   0,
+   182.435
+  ],
+  "right_edge": [
+   1159.75,
+   182.435
+  ],
+  "front_edge_center": [
+   12,
+   182.44
+  ],
+  "device_slot_center": [
+   162,
+   238.68
+  ],
+  "braid_front": [
+   0,
+   124.49
+  ],
+  "garment_attach_center": [
+   579.875,
+   364.87
+  ]
+ },
+ "landmarks": {
+  "device_slot": {
+   "x": 112,
+   "y": 188.68,
+   "w": 100,
+   "h": 100
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); device_slot is a nominal 1 in box centred on the device position",
+ "orientation": "side view, front of cap at left (wearer facing left), wearer's left flap shown",
+ "documented": [
+  "flight cap device on the front left flap, centred halfway between top and bottom of the flap, 1 1/2 in from the front of the cap (6.2.2.2.1-3)",
+  "Field grade, company grade and flight officers (6.2.2.2.5)",
+  "general officers silver braid; other officers silver and blue braid; NCOs and cadets plain blue (6.2.2.2.4-6)",
+  "worn slightly to the wearer's right, about one inch above the eyebrows (6.2.2.1)"
+ ],
+ "assumed": [
+  "braid band width and position (about 0.33 of cap height below the top edge, read off the figure)",
+  "navy colour sampled from the figure",
+  "shading",
+  "figure caps differ slightly in height, each variant keeps its own measured outline"
+ ],
+ "fit": {
+  "method": "measured per-row extents of the regulation figure",
+  "score": null
+ },
+ "grade": "accessory"
+}

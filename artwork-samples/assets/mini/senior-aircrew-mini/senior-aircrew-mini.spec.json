@@ -1,0 +1,46 @@
+{
+ "asset_id": "senior-aircrew-mini",
+ "width_in": 2,
+ "height_in": 0.726,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: miniature width 2 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read (miniature)",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   72.582
+  ],
+  "center": [
+   100,
+   36.291
+  ],
+  "left_edge": [
+   0,
+   36.291
+  ],
+  "right_edge": [
+   200,
+   36.291
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver + SeniorAirCrew1_B289BAE6E515C (miniature = same art at miniature size)",
+ "reference": "ALL/ref/SeniorAirCrew1_B289BAE6E515C.png",
+ "source_bbox_user_units": [
+  1.667,
+  2.5,
+  189.5,
+  70.667
+ ],
+ "fit_score": null,
+ "notes": ""
+}

@@ -1,0 +1,758 @@
+[
+ {
+  "id": "mil-device-olc-bronze",
+  "device": "BRONZE_OLC",
+  "w_in": 0.3125,
+  "h_in": 0.2328,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-olc-silver",
+  "device": "SILVER_OLC",
+  "w_in": 0.3125,
+  "h_in": 0.2328,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-hourglass-bronze",
+  "device": "BRONZE_HOURGLASS",
+  "w_in": 0.1787,
+  "h_in": 0.2102,
+  "size_source": "measured"
+ },
+ {
+  "id": "mil-device-hourglass-silver",
+  "device": "SILVER_HOURGLASS",
+  "w_in": 0.1787,
+  "h_in": 0.2102,
+  "size_source": "measured"
+ },
+ {
+  "id": "mil-device-hourglass-gold",
+  "device": "GOLD_HOURGLASS",
+  "w_in": 0.1787,
+  "h_in": 0.2102,
+  "size_source": "measured"
+ },
+ {
+  "id": "mil-device-arrowhead",
+  "device": "ARROWHEAD_DEVICE",
+  "w_in": 0.2,
+  "h_in": 0.2263,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-letter-c",
+  "device": "C_DEVICE",
+  "w_in": 0.1681,
+  "h_in": 0.1976,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-letter-r",
+  "device": "R_DEVICE",
+  "w_in": 0.179,
+  "h_in": 0.198,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-letter-m",
+  "device": "M_DEVICE",
+  "w_in": 0.1533,
+  "h_in": 0.1584,
+  "size_source": "measured"
+ },
+ {
+  "id": "mil-device-letter-n",
+  "device": "N_DEVICE",
+  "w_in": 0.1592,
+  "h_in": 0.198,
+  "size_source": "measured"
+ },
+ {
+  "id": "mil-device-numeral-2",
+  "device": "NUMERAL",
+  "w_in": 0.1554,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-3",
+  "device": "NUMERAL",
+  "w_in": 0.1517,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-4",
+  "device": "NUMERAL",
+  "w_in": 0.1625,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-5",
+  "device": "NUMERAL",
+  "w_in": 0.1551,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-6",
+  "device": "NUMERAL",
+  "w_in": 0.1514,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-7",
+  "device": "NUMERAL",
+  "w_in": 0.1539,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-8",
+  "device": "NUMERAL",
+  "w_in": 0.1502,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-9",
+  "device": "NUMERAL",
+  "w_in": 0.1514,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-10",
+  "device": "NUMERAL",
+  "w_in": 0.2971,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-11",
+  "device": "NUMERAL",
+  "w_in": 0.2691,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-12",
+  "device": "NUMERAL",
+  "w_in": 0.3011,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-13",
+  "device": "NUMERAL",
+  "w_in": 0.2972,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-14",
+  "device": "NUMERAL",
+  "w_in": 0.3067,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-15",
+  "device": "NUMERAL",
+  "w_in": 0.2976,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-16",
+  "device": "NUMERAL",
+  "w_in": 0.2985,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-17",
+  "device": "NUMERAL",
+  "w_in": 0.3016,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-18",
+  "device": "NUMERAL",
+  "w_in": 0.2971,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-19",
+  "device": "NUMERAL",
+  "w_in": 0.2968,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-20",
+  "device": "NUMERAL",
+  "w_in": 0.3104,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-21",
+  "device": "NUMERAL",
+  "w_in": 0.2825,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-22",
+  "device": "NUMERAL",
+  "w_in": 0.3146,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-23",
+  "device": "NUMERAL",
+  "w_in": 0.3105,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-24",
+  "device": "NUMERAL",
+  "w_in": 0.3202,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-25",
+  "device": "NUMERAL",
+  "w_in": 0.3109,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-26",
+  "device": "NUMERAL",
+  "w_in": 0.3118,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-27",
+  "device": "NUMERAL",
+  "w_in": 0.3151,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-28",
+  "device": "NUMERAL",
+  "w_in": 0.3104,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-29",
+  "device": "NUMERAL",
+  "w_in": 0.31,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-30",
+  "device": "NUMERAL",
+  "w_in": 0.3083,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-31",
+  "device": "NUMERAL",
+  "w_in": 0.276,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-32",
+  "device": "NUMERAL",
+  "w_in": 0.3076,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-33",
+  "device": "NUMERAL",
+  "w_in": 0.3084,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-34",
+  "device": "NUMERAL",
+  "w_in": 0.3131,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-35",
+  "device": "NUMERAL",
+  "w_in": 0.3087,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-36",
+  "device": "NUMERAL",
+  "w_in": 0.3097,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-37",
+  "device": "NUMERAL",
+  "w_in": 0.308,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-38",
+  "device": "NUMERAL",
+  "w_in": 0.3083,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-39",
+  "device": "NUMERAL",
+  "w_in": 0.3079,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-40",
+  "device": "NUMERAL",
+  "w_in": 0.3118,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-41",
+  "device": "NUMERAL",
+  "w_in": 0.284,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-42",
+  "device": "NUMERAL",
+  "w_in": 0.316,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-43",
+  "device": "NUMERAL",
+  "w_in": 0.3119,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-44",
+  "device": "NUMERAL",
+  "w_in": 0.3216,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-45",
+  "device": "NUMERAL",
+  "w_in": 0.3123,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-46",
+  "device": "NUMERAL",
+  "w_in": 0.3132,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-47",
+  "device": "NUMERAL",
+  "w_in": 0.3165,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-48",
+  "device": "NUMERAL",
+  "w_in": 0.3118,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-49",
+  "device": "NUMERAL",
+  "w_in": 0.3114,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-50",
+  "device": "NUMERAL",
+  "w_in": 0.3089,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-51",
+  "device": "NUMERAL",
+  "w_in": 0.2766,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-52",
+  "device": "NUMERAL",
+  "w_in": 0.3082,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-53",
+  "device": "NUMERAL",
+  "w_in": 0.309,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-54",
+  "device": "NUMERAL",
+  "w_in": 0.3137,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-55",
+  "device": "NUMERAL",
+  "w_in": 0.3142,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-56",
+  "device": "NUMERAL",
+  "w_in": 0.3103,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-57",
+  "device": "NUMERAL",
+  "w_in": 0.3135,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-58",
+  "device": "NUMERAL",
+  "w_in": 0.3089,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-59",
+  "device": "NUMERAL",
+  "w_in": 0.3085,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-60",
+  "device": "NUMERAL",
+  "w_in": 0.3066,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-61",
+  "device": "NUMERAL",
+  "w_in": 0.2744,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-62",
+  "device": "NUMERAL",
+  "w_in": 0.3059,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-63",
+  "device": "NUMERAL",
+  "w_in": 0.3068,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-64",
+  "device": "NUMERAL",
+  "w_in": 0.3114,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-65",
+  "device": "NUMERAL",
+  "w_in": 0.3071,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-66",
+  "device": "NUMERAL",
+  "w_in": 0.308,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-67",
+  "device": "NUMERAL",
+  "w_in": 0.3064,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-68",
+  "device": "NUMERAL",
+  "w_in": 0.3066,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-69",
+  "device": "NUMERAL",
+  "w_in": 0.3063,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-70",
+  "device": "NUMERAL",
+  "w_in": 0.306,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-71",
+  "device": "NUMERAL",
+  "w_in": 0.2781,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-72",
+  "device": "NUMERAL",
+  "w_in": 0.3102,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-73",
+  "device": "NUMERAL",
+  "w_in": 0.3062,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-74",
+  "device": "NUMERAL",
+  "w_in": 0.3158,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-75",
+  "device": "NUMERAL",
+  "w_in": 0.3114,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-76",
+  "device": "NUMERAL",
+  "w_in": 0.3075,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-77",
+  "device": "NUMERAL",
+  "w_in": 0.3157,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-78",
+  "device": "NUMERAL",
+  "w_in": 0.306,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-79",
+  "device": "NUMERAL",
+  "w_in": 0.3057,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-80",
+  "device": "NUMERAL",
+  "w_in": 0.3069,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-81",
+  "device": "NUMERAL",
+  "w_in": 0.2746,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-82",
+  "device": "NUMERAL",
+  "w_in": 0.3062,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-83",
+  "device": "NUMERAL",
+  "w_in": 0.307,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-84",
+  "device": "NUMERAL",
+  "w_in": 0.3117,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-85",
+  "device": "NUMERAL",
+  "w_in": 0.3073,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-86",
+  "device": "NUMERAL",
+  "w_in": 0.3083,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-87",
+  "device": "NUMERAL",
+  "w_in": 0.3066,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-88",
+  "device": "NUMERAL",
+  "w_in": 0.3069,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-89",
+  "device": "NUMERAL",
+  "w_in": 0.3065,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-90",
+  "device": "NUMERAL",
+  "w_in": 0.3084,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-91",
+  "device": "NUMERAL",
+  "w_in": 0.2761,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-92",
+  "device": "NUMERAL",
+  "w_in": 0.3077,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-93",
+  "device": "NUMERAL",
+  "w_in": 0.3085,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-94",
+  "device": "NUMERAL",
+  "w_in": 0.3132,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-95",
+  "device": "NUMERAL",
+  "w_in": 0.3089,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-96",
+  "device": "NUMERAL",
+  "w_in": 0.3098,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-97",
+  "device": "NUMERAL",
+  "w_in": 0.3082,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-98",
+  "device": "NUMERAL",
+  "w_in": 0.3084,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ },
+ {
+  "id": "mil-device-numeral-99",
+  "device": "NUMERAL",
+  "w_in": 0.308,
+  "h_in": 0.1875,
+  "size_source": "estimated"
+ }
+]

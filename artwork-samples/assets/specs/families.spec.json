@@ -1,0 +1,223 @@
+{
+ "senior_ground_team_badge": {
+  "family": "ground-team",
+  "variant": "senior",
+  "dimensions": {
+   "disc_radius": 55.93026161429172,
+   "disc_rim_radius": 50,
+   "triangle_height": 77,
+   "triangle_base_width": 75,
+   "wreath_band_width": 6,
+   "wreath_leaf_length": 33.21635086019448,
+   "wreath_leaf_width": 21.302286565823746,
+   "ribbon_width": 9,
+   "ribbon_length": 49.854797859303716,
+   "wreath_semi_axis_x": 96.58767499400714,
+   "wreath_semi_axis_up": 37.381752940022935,
+   "wreath_semi_axis_low": 58.76370178167916,
+   "star_radius": 30.152556862120683
+  },
+  "anchors": {
+   "disc_center": [
+    119.08568206246109,
+    108.23531205104963
+   ],
+   "disc_top": [
+    119.08568206246109,
+    52.30505043675791
+   ],
+   "triangle_apex": [
+    118,
+    61
+   ],
+   "triangle_base_center": [
+    118,
+    138
+   ],
+   "ribbon_tail_left": [
+    102.08568206246109,
+    195.85479785930372
+   ],
+   "ribbon_tail_right": [
+    136.0856820624611,
+    195.85479785930372
+   ],
+   "wreath_bottom": [
+    119.08568206246109,
+    180.38980192478112
+   ],
+   "star_center": [
+    119.25256797382707,
+    33.09005836470263
+   ],
+   "star_base": [
+    119.25256797382707,
+    57.4839892900152
+   ],
+   "star_top": [
+    119.25256797382707,
+    2.937501502581945
+   ]
+  },
+  "counts": {
+   "wreath_nodes_per_branch": 12,
+   "wreath_leaf_rows": 2,
+   "star_inner_ratio": 0.5,
+   "star_points": 5
+  }
+ },
+ "master_ground_team_badge": {
+  "family": "ground-team",
+  "variant": "master",
+  "dimensions": {
+   "disc_radius": 55.93026161429172,
+   "disc_rim_radius": 50,
+   "triangle_height": 77,
+   "triangle_base_width": 75,
+   "wreath_band_width": 6,
+   "wreath_leaf_length": 33.21635086019448,
+   "wreath_leaf_width": 21.302286565823746,
+   "ribbon_width": 9,
+   "ribbon_length": 49.854797859303716,
+   "wreath_semi_axis_x": 96.58767499400714,
+   "wreath_semi_axis_up": 37.381752940022935,
+   "wreath_semi_axis_low": 58.76370178167916,
+   "device_wreath_outer_radius": 29.89539928099516
+  },
+  "anchors": {
+   "disc_center": [
+    119.08568206246109,
+    108.23531205104963
+   ],
+   "disc_top": [
+    119.08568206246109,
+    52.30505043675791
+   ],
+   "triangle_apex": [
+    118,
+    61
+   ],
+   "triangle_base_center": [
+    118,
+    138
+   ],
+   "ribbon_tail_left": [
+    102.08568206246109,
+    195.85479785930372
+   ],
+   "ribbon_tail_right": [
+    136.0856820624611,
+    195.85479785930372
+   ],
+   "wreath_bottom": [
+    119.08568206246109,
+    180.38980192478112
+   ],
+   "device_center": [
+    120.63459006894355,
+    29.38376373136104
+   ],
+   "device_base": [
+    120.63459006894355,
+    59.2791630123562
+   ]
+  },
+  "counts": {
+   "wreath_nodes_per_branch": 12,
+   "wreath_leaf_rows": 2
+  }
+ },
+ "ground_team_basic_badge": {
+  "family": "ground-team",
+  "variant": "basic",
+  "dimensions": {
+   "disc_radius": 55.93026161429172,
+   "disc_rim_radius": 50,
+   "triangle_height": 77,
+   "triangle_base_width": 75,
+   "wreath_band_width": 6,
+   "wreath_leaf_length": 33.21635086019448,
+   "wreath_leaf_width": 21.302286565823746,
+   "ribbon_width": 9,
+   "ribbon_length": 49.854797859303716,
+   "wreath_semi_axis_x": 114.58767499400714,
+   "wreath_semi_axis_up": 37.381752940022935,
+   "wreath_semi_axis_low": 58.76370178167916
+  },
+  "anchors": {
+   "disc_center": [
+    119.08568206246109,
+    108.23531205104963
+   ],
+   "disc_top": [
+    119.08568206246109,
+    52.30505043675791
+   ],
+   "triangle_apex": [
+    118,
+    61
+   ],
+   "triangle_base_center": [
+    118,
+    138
+   ],
+   "ribbon_tail_left": [
+    102.08568206246109,
+    195.85479785930372
+   ],
+   "ribbon_tail_right": [
+    136.0856820624611,
+    195.85479785930372
+   ],
+   "wreath_bottom": [
+    119.08568206246109,
+    180.38980192478112
+   ]
+  },
+  "counts": {
+   "wreath_nodes_per_branch": 17,
+   "wreath_leaf_rows": 2
+  }
+ },
+ "__wings_body": {
+  "family": "wings",
+  "body_grid_width": 240,
+  "dimensions": {
+   "roundel_rx": 23.5,
+   "roundel_ry": 24.8,
+   "star_radius": 23,
+   "wing_semi_span": 120.08423534486919,
+   "feather_count": 7
+  },
+  "anchors": {
+   "roundel_center": [
+    120,
+    60.9
+   ],
+   "roundel_bottom": [
+    120,
+    85.7
+   ],
+   "roundel_top": [
+    120,
+    36.099999999999994
+   ],
+   "star_center": [
+    120,
+    23
+   ],
+   "wing_tip_left": [
+    -0.08423534486918201,
+    26.133814517792985
+   ],
+   "wing_tip_right": [
+    240.08423534486917,
+    26.133814517792985
+   ],
+   "centerline_bottom": [
+    120,
+    85.7
+   ]
+  }
+ }
+}

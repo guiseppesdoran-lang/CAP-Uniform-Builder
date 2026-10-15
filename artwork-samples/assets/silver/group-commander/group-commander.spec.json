@@ -1,0 +1,53 @@
+{
+ "asset_id": "group-commander",
+ "width_in": 1,
+ "height_in": 1.349,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated from supplier listing: width 1 in (cloth badge); metal assumed same",
+ "citation": "Vanguard (vanguardmil.com) product listing for the CLOTH badge: 1 in x 1 in (squadron commander) / 1 in x 1 1/8 in (group commander); metal badge assumed to be the same size",
+ "anchors": {
+  "top_center": [
+   50,
+   0
+  ],
+  "bottom_center": [
+   50,
+   134.93
+  ],
+  "center": [
+   50,
+   67.465
+  ],
+  "left_edge": [
+   0,
+   67.465
+  ],
+  "right_edge": [
+   100,
+   67.465
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 177,
+  "reference_px_height": 240,
+  "in_per_reference_px": 0.00904,
+  "size_class": "cmd",
+  "family": null,
+  "variant": null
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + Group_commander_badge",
+ "reference": "ALL/ref/Group_commander_badge.png",
+ "source_bbox_user_units": [
+  32,
+  0.167,
+  209.5,
+  239.667
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.816,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

@@ -1,0 +1,46 @@
+{
+ "asset_id": "enamel-emt-paramedic-mini",
+ "width_in": 0.875,
+ "height_in": 0.926,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "miniature width 0.875 in",
+ "citation": "CAPR 39-1 Attachment 7 miniature column, as encoded in js/catalog.js",
+ "anchors": {
+  "top_center": [
+   43.75,
+   0
+  ],
+  "bottom_center": [
+   43.75,
+   92.593
+  ],
+  "center": [
+   43.75,
+   46.297
+  ],
+  "left_edge": [
+   0,
+   46.297
+  ],
+  "right_edge": [
+   87.5,
+   46.297
+  ]
+ },
+ "dimensions": {
+  "size_class": "emt",
+  "variant": "miniature"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel + emt_paramedic (miniature = same art at miniature size)",
+ "reference": "../batch/ref/emt_paramedic.png",
+ "source_bbox_user_units": [
+  0,
+  0,
+  567,
+  600
+ ],
+ "fit_score": null,
+ "notes": ""
+}

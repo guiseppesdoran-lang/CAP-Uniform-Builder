@@ -1,0 +1,225 @@
+{
+ "generated_by": "assets/build-rank-insignia.js",
+ "conventions": {
+  "units": "1 user unit = 0.01 in",
+  "cloth_hex": "#142347",
+  "border_each_side_in": 0.125,
+  "ocp_square_in": 2,
+  "border_rule": "light silver on dark blue insignia shows 1/8 in of blue past the widest and tallest point (CAPR 39-1 5.1.1.1.1.1, 5.1.1.1.1.3, 5.1.1.1.2.4, 5.1.1.1.2.5, 7.1.1.3.1, 7.1.1.8). Applies to grade insignia, badges and command insignia alike; derived from the item bbox, never stored per item.",
+  "exceptions": [
+   "OCP chest square is a fixed 2 in x 2 in (7.1.1.2.1)",
+   "CAP command insignia on OCP sits on a fixed 1 in x 1 in patch (7.1.1.3.1.7)"
+  ]
+ },
+ "forms": {
+  "metal-regular": {
+   "for": "cadet officers on dress shoulder boards (Class A, mess dress)",
+   "size_source": "regulation",
+   "cite": "CAPR 39-1 Fig A5-6"
+  },
+  "metal-miniature": {
+   "for": "cadet officers on service / blue-shirt / outer-garment epaulets",
+   "size_source": "regulation",
+   "cite": "CAPR 39-1 Fig A5-6"
+  },
+  "thread": {
+   "for": "embroidered insignia without cloth (any mount)",
+   "size_source": "see asset"
+  },
+  "cloth-bordered": {
+   "for": "ABU collar and OCP / ABU / tactical cap: thread on dark blue cloth with 1/8 in border",
+   "size_source": "regulation (border) + asset size"
+  },
+  "ocp-square": {
+   "for": "OCP chest and coyote fleece: thread centered on a 2 in square (cadet officers at one common scale, see OCP_SCALE)",
+   "size_source": "regulation (square), estimated (insignia scale)"
+  },
+  "chevron": {
+   "for": "senior NCO sleeve chevrons, 3 1/2 and 4 in",
+   "size_source": "regulation",
+   "cite": "CAPR 39-1 Fig A5-4"
+  }
+ },
+ "mounts": [
+  {
+   "uniform": "Class A coat / mess dress",
+   "insignia": "cadet officer metal-regular on shoulder board; officers bullion on board (not built)",
+   "cite": "4.1.1.1.1.1, 4.1.5.2.1.3, A5-6"
+  },
+  {
+   "uniform": "Service coat epaulets, blue shirts",
+   "insignia": "cadet officer metal-miniature; officers embroidered on gray epaulet sleeve",
+   "cite": "4.1.5.2.1.1, 4.1.6.1.4"
+  },
+  {
+   "uniform": "Class A lapels / shirt collars",
+   "insignia": "cadet NCO and Airman metal chevrons, both sides, 1 in from front of collar (pending)",
+   "cite": "4.1.5.2.1.4, 5.1.1.1.1.4, A5-5"
+  },
+  {
+   "uniform": "OCP chest",
+   "insignia": "ocp-square forms; blank square for senior members without grade; nothing for Cadet Airman Basic",
+   "cite": "7.1.1.2.1, 7.1.1.2.2"
+  },
+  {
+   "uniform": "ABU collar",
+   "insignia": "cloth-bordered, centered 1 in from the front of the collar (cadet officers) / 1 in from bottom (officers)",
+   "cite": "5.1.1.1.1.1, 5.1.1.1.1.3"
+  },
+  {
+   "uniform": "OCP / ABU / tactical cap",
+   "insignia": "cloth-bordered (same piece as ABU collar), centered 1/2 in from the visor; NCOs and Airmen wear none",
+   "cite": "7.1.1.8, 6.2.11.1"
+  },
+  {
+   "uniform": "Sleeve (NCO)",
+   "insignia": "chevron 3 1/2 or 4 in, centered halfway between shoulder seam and elbow",
+   "cite": "4.1.5.2.1.2, 5.1.1.1.1.2, A5-4"
+  }
+ ],
+ "built": [
+  "rank-cadet-officer-captain-cloth-bordered-miniature",
+  "rank-cadet-officer-captain-cloth-bordered-regular",
+  "rank-cadet-officer-captain-metal-miniature",
+  "rank-cadet-officer-captain-metal-regular",
+  "rank-cadet-officer-captain-ocp-square",
+  "rank-cadet-officer-captain-thread-miniature-row",
+  "rank-cadet-officer-captain-thread-regular-row",
+  "rank-cadet-officer-colonel-cloth-bordered-miniature",
+  "rank-cadet-officer-colonel-cloth-bordered-regular",
+  "rank-cadet-officer-colonel-metal-miniature",
+  "rank-cadet-officer-colonel-metal-regular",
+  "rank-cadet-officer-colonel-ocp-square",
+  "rank-cadet-officer-colonel-thread-miniature-row",
+  "rank-cadet-officer-colonel-thread-regular-row",
+  "rank-cadet-officer-first-lieutenant-cloth-bordered-miniature",
+  "rank-cadet-officer-first-lieutenant-cloth-bordered-regular",
+  "rank-cadet-officer-first-lieutenant-metal-miniature",
+  "rank-cadet-officer-first-lieutenant-metal-regular",
+  "rank-cadet-officer-first-lieutenant-ocp-square",
+  "rank-cadet-officer-first-lieutenant-thread-miniature-row",
+  "rank-cadet-officer-first-lieutenant-thread-regular-row",
+  "rank-cadet-officer-lieutenant-colonel-cloth-bordered-miniature",
+  "rank-cadet-officer-lieutenant-colonel-cloth-bordered-regular",
+  "rank-cadet-officer-lieutenant-colonel-metal-miniature",
+  "rank-cadet-officer-lieutenant-colonel-metal-regular",
+  "rank-cadet-officer-lieutenant-colonel-ocp-square",
+  "rank-cadet-officer-lieutenant-colonel-thread-miniature-row",
+  "rank-cadet-officer-lieutenant-colonel-thread-regular-row",
+  "rank-cadet-officer-major-cloth-bordered-miniature",
+  "rank-cadet-officer-major-cloth-bordered-regular",
+  "rank-cadet-officer-major-metal-miniature",
+  "rank-cadet-officer-major-metal-regular",
+  "rank-cadet-officer-major-ocp-square",
+  "rank-cadet-officer-major-thread-miniature-row",
+  "rank-cadet-officer-major-thread-regular-row",
+  "rank-cadet-officer-second-lieutenant-cloth-bordered-miniature",
+  "rank-cadet-officer-second-lieutenant-cloth-bordered-regular",
+  "rank-cadet-officer-second-lieutenant-metal-miniature",
+  "rank-cadet-officer-second-lieutenant-metal-regular",
+  "rank-cadet-officer-second-lieutenant-ocp-square",
+  "rank-cadet-officer-second-lieutenant-thread-miniature-row",
+  "rank-cadet-officer-second-lieutenant-thread-regular-row",
+  "rank-ocp-square-blank",
+  "rank-senior-brigadier-general-1in-cloth-bordered",
+  "rank-senior-brigadier-general-1in-ocp-square",
+  "rank-senior-brigadier-general-1in-thread",
+  "rank-senior-brigadier-general-3-4in-cloth-bordered",
+  "rank-senior-brigadier-general-3-4in-ocp-square",
+  "rank-senior-brigadier-general-3-4in-thread",
+  "rank-senior-captain-cloth-bordered",
+  "rank-senior-captain-ocp-square",
+  "rank-senior-captain-thread",
+  "rank-senior-chief-master-sergeant-chevron-3p5in",
+  "rank-senior-chief-master-sergeant-chevron-4in",
+  "rank-senior-colonel-cloth-bordered",
+  "rank-senior-colonel-ocp-square",
+  "rank-senior-colonel-thread",
+  "rank-senior-command-chief-chevron-3p5in",
+  "rank-senior-command-chief-chevron-4in",
+  "rank-senior-first-lieutenant-cloth-bordered",
+  "rank-senior-first-lieutenant-ocp-square",
+  "rank-senior-first-lieutenant-thread",
+  "rank-senior-flight-officer-cloth-bordered",
+  "rank-senior-flight-officer-ocp-square",
+  "rank-senior-flight-officer-thread",
+  "rank-senior-lieutenant-colonel-cloth-bordered",
+  "rank-senior-lieutenant-colonel-ocp-square",
+  "rank-senior-lieutenant-colonel-thread",
+  "rank-senior-major-cloth-bordered",
+  "rank-senior-major-general-1in-horizontal-cloth-bordered",
+  "rank-senior-major-general-1in-horizontal-ocp-square",
+  "rank-senior-major-general-1in-horizontal-thread",
+  "rank-senior-major-general-1in-vertical-cloth-bordered",
+  "rank-senior-major-general-1in-vertical-ocp-square",
+  "rank-senior-major-general-1in-vertical-thread",
+  "rank-senior-major-general-3-4in-horizontal-cloth-bordered",
+  "rank-senior-major-general-3-4in-horizontal-ocp-square",
+  "rank-senior-major-general-3-4in-horizontal-thread",
+  "rank-senior-major-general-3-4in-vertical-cloth-bordered",
+  "rank-senior-major-general-3-4in-vertical-ocp-square",
+  "rank-senior-major-general-3-4in-vertical-thread",
+  "rank-senior-major-ocp-square",
+  "rank-senior-major-thread",
+  "rank-senior-master-sergeant-chevron-3p5in",
+  "rank-senior-master-sergeant-chevron-4in",
+  "rank-senior-second-lieutenant-cloth-bordered",
+  "rank-senior-second-lieutenant-ocp-square",
+  "rank-senior-second-lieutenant-thread",
+  "rank-senior-senior-flight-officer-cloth-bordered",
+  "rank-senior-senior-flight-officer-ocp-square",
+  "rank-senior-senior-flight-officer-thread",
+  "rank-senior-senior-master-sergeant-chevron-3p5in",
+  "rank-senior-senior-master-sergeant-chevron-4in",
+  "rank-senior-staff-sergeant-chevron-3p5in",
+  "rank-senior-staff-sergeant-chevron-4in",
+  "rank-senior-technical-flight-officer-cloth-bordered",
+  "rank-senior-technical-flight-officer-ocp-square",
+  "rank-senior-technical-flight-officer-thread",
+  "rank-senior-technical-sergeant-chevron-3p5in",
+  "rank-senior-technical-sergeant-chevron-4in"
+ ],
+ "not_built": [
+  {
+   "item": "Cadet NCO chevrons",
+   "status": "built from Vanguard photos (raster-backed) by make-cadet-chevrons-vanguard.js",
+   "why": "Fig A5-5 is only 176 px; vector traces and parametric rebuilds were not sharp enough."
+  },
+  {
+   "item": "Colonel eagle",
+   "status": "blocked",
+   "why": "Only regulation source (Fig A5-2) is ~100 px wide and traces to blobs. Needs a higher-resolution source."
+  },
+  {
+   "item": "Brigadier General / Major General metal and plastic-encased forms, officer bullion boards, gray epaulet sleeves",
+   "status": "pending",
+   "why": "Not requested by the first pass; DAFI 36-2903 Fig 4.12 has them as small photographs."
+  },
+  {
+   "item": "Flight Officer / Technical FO / Senior FO in metal",
+   "status": "pending",
+   "why": "Fig A5-2 shows cloth only."
+  },
+  {
+   "item": "CAP Command Chief chevron",
+   "status": "blocked",
+   "why": "Described in the 2013 change summary but not drawn in the PDF copy held here."
+  },
+  {
+   "item": "Parka slides, slip-on rank sleeves",
+   "status": "pending",
+   "why": "Fig A5-7 (rank slide) is a photograph; not yet traced."
+  },
+  {
+   "item": "\"CAP\" patch for adult members without grade pursuing officer grade",
+   "status": "pending",
+   "why": "Fig A5-2 last cell; letters via the glyph-path tool."
+  }
+ ],
+ "open_decisions": [
+  "OCP square: every cadet officer grade uses one common scale (about 0.78 x regular) so the Cadet Colonel / Captain stack just keeps 1/8 in of blue; single-element grades (2d Lt, Major) still leave a lot of blue because the square is a fixed 2 in. Say if you want per-grade fill instead.",
+  "Officer bar / leaf proportions are read from Fig A5-2 at an assumed 1 in largest dimension (DAFI 36-2903 7.1.5.1); width and gap are estimates.",
+  "Cadet NCO / Airman chevron width (about 1.16 in) is derived from Ethan's statement that the CMSgt chevron fills the 2 in OCP square with ~1/8 in top and bottom; confirm against a real device.",
+  "Cloth color #142347 is the 2 x 2 in rank-square and tape blue used by the utility-uniform garments (base-art/make-ocp-abu.js); the regulation only says dark blue (shade 1095 for board braid)."
+ ]
+}

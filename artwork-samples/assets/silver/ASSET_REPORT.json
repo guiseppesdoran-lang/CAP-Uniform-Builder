@@ -1,0 +1,233 @@
+[
+ {
+  "id": "aircrew",
+  "w": 3,
+  "pass": true,
+  "iou": 0.928,
+  "fails": []
+ },
+ {
+  "id": "balloon-pilot",
+  "w": 3,
+  "pass": true,
+  "iou": 0.896,
+  "fails": []
+ },
+ {
+  "id": "basic-incident-commander",
+  "w": 2.25,
+  "pass": true,
+  "iou": 0.871,
+  "fails": []
+ },
+ {
+  "id": "master-pilot",
+  "w": 3,
+  "pass": true,
+  "iou": 0.895,
+  "fails": []
+ },
+ {
+  "id": "pilot",
+  "w": 3,
+  "pass": true,
+  "iou": 0.931,
+  "fails": []
+ },
+ {
+  "id": "senior-pilot",
+  "w": 3,
+  "pass": true,
+  "iou": 0.913,
+  "fails": []
+ },
+ {
+  "id": "glider-pilot",
+  "w": 3,
+  "pass": true,
+  "iou": 0.916,
+  "fails": []
+ },
+ {
+  "id": "group-commander",
+  "w": 1.6,
+  "pass": true,
+  "iou": 0.816,
+  "fails": []
+ },
+ {
+  "id": "legal-officer",
+  "w": 1.6,
+  "pass": true,
+  "iou": 0.813,
+  "fails": []
+ },
+ {
+  "id": "master-aircrew",
+  "w": 3,
+  "pass": true,
+  "iou": 0.891,
+  "fails": []
+ },
+ {
+  "id": "master-observer",
+  "w": 3,
+  "pass": true,
+  "iou": 0.887,
+  "fails": []
+ },
+ {
+  "id": "medical-officer",
+  "w": 1.5,
+  "pass": true,
+  "iou": 0.872,
+  "fails": []
+ },
+ {
+  "id": "nurse",
+  "w": 1.5,
+  "pass": true,
+  "iou": 0.864,
+  "fails": []
+ },
+ {
+  "id": "senior-aircrew",
+  "w": 3,
+  "pass": true,
+  "iou": 0.905,
+  "fails": []
+ },
+ {
+  "id": "senior-observer",
+  "w": 3,
+  "pass": true,
+  "iou": 0.919,
+  "fails": []
+ },
+ {
+  "id": "squadron-commander",
+  "w": 1.6,
+  "pass": true,
+  "iou": 0.809,
+  "fails": []
+ },
+ {
+  "id": "cadet-suas",
+  "w": 2,
+  "pass": true,
+  "iou": null,
+  "fails": []
+ },
+ {
+  "id": "cap-suas-pilot",
+  "w": 3,
+  "pass": true,
+  "iou": 0.916,
+  "fails": []
+ },
+ {
+  "id": "ground-team-basic",
+  "w": 2,
+  "pass": true,
+  "iou": 0.808,
+  "fails": []
+ },
+ {
+  "id": "incident-commander-1",
+  "w": 2.25,
+  "pass": true,
+  "iou": 0.855,
+  "fails": []
+ },
+ {
+  "id": "incident-commander-2",
+  "w": 2.25,
+  "pass": true,
+  "iou": 0.881,
+  "fails": []
+ },
+ {
+  "id": "master-ground-team",
+  "w": 2,
+  "pass": true,
+  "iou": 0.862,
+  "fails": []
+ },
+ {
+  "id": "model-rocketry",
+  "w": 0.55,
+  "pass": true,
+  "iou": 0.98,
+  "fails": []
+ },
+ {
+  "id": "national-staff",
+  "w": 1.5,
+  "pass": true,
+  "iou": 0.847,
+  "fails": []
+ },
+ {
+  "id": "observer",
+  "w": 3,
+  "pass": true,
+  "iou": 0.938,
+  "fails": []
+ },
+ {
+  "id": "pre-solo",
+  "w": 1,
+  "pass": true,
+  "iou": 0.819,
+  "fails": []
+ },
+ {
+  "id": "senior-ground-team",
+  "w": 2,
+  "pass": true,
+  "iou": 0.92,
+  "fails": []
+ },
+ {
+  "id": "solo",
+  "w": 1,
+  "pass": true,
+  "iou": 0.818,
+  "fails": []
+ },
+ {
+  "id": "uas-pilot-master",
+  "w": 3,
+  "pass": true,
+  "iou": 0.826,
+  "fails": []
+ },
+ {
+  "id": "uas-pilot-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.892,
+  "fails": []
+ },
+ {
+  "id": "uas-technician-basic",
+  "w": 3,
+  "pass": true,
+  "iou": 0.9,
+  "fails": []
+ },
+ {
+  "id": "uas-technician-master",
+  "w": 3,
+  "pass": true,
+  "iou": 0.826,
+  "fails": []
+ },
+ {
+  "id": "uas-technician-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.907,
+  "fails": []
+ }
+]

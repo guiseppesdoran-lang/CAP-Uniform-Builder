@@ -1,0 +1,35 @@
+{
+ "source": "public-domain/CC0 PNG ribbons on Commons",
+ "items": [
+  {
+   "service": "navy-jrotc",
+   "name": "Navy JROTC S.T.E.M. Ribbon",
+   "commons_file": "File:NJROTC STEM Ribbon.png",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/NJROTC_STEM_Ribbon.png"
+  },
+  {
+   "service": "navy-jrotc",
+   "name": "Navy JROTC C.E.R.T. Ribbon",
+   "commons_file": "File:NJROTC CERT Ribbon.png",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/3b/NJROTC_CERT_Ribbon.png"
+  },
+  {
+   "service": "air-force-jrotc",
+   "name": "Air Force JROTC Sons of the American Revolution Award",
+   "commons_file": "File:National Sons of the American Revolution Ribbon.png",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/52/National_Sons_of_the_American_Revolution_Ribbon.png"
+  },
+  {
+   "service": "air-force-jrotc",
+   "name": "Air Force JROTC All Service National Competition Ribbon",
+   "commons_file": "File:AFJROTC All Service National Competition Ribbon.png",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/6/6d/AFJROTC_All_Service_National_Competition_Ribbon.png"
+  },
+  {
+   "service": "air-force-jrotc",
+   "name": "Air Force JROTC Air Force Nationals Competition Ribbon",
+   "commons_file": "File:AFJROTC Air Force Nationals Competition Ribbon.png",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c4/AFJROTC_Air_Force_Nationals_Competition_Ribbon.png"
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+{
+ "asset_id": "enamel-cdi-tech",
+ "width_in": 1.25,
+ "height_in": 1.349,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   62.5,
+   0
+  ],
+  "bottom_center": [
+   62.5,
+   134.933
+  ],
+  "center": [
+   62.5,
+   67.466
+  ],
+  "left_edge": [
+   0,
+   67.466
+  ],
+  "right_edge": [
+   125,
+   67.466
+  ]
+ },
+ "dimensions": {
+  "size_class": "shield",
+  "level": "technician"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + CDI_tech",
+ "reference": "../batch/ref/CDI_tech.png",
+ "source_bbox_user_units": [
+  9.333,
+  0,
+  231.667,
+  240
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.976,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+}

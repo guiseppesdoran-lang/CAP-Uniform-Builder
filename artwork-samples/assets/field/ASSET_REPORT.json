@@ -1,0 +1,268 @@
+[
+ {
+  "id": "aircrew-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "senior-aircrew-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "master-aircrew-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "observer-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "senior-observer-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "master-observer-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "pilot-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "senior-pilot-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "master-pilot-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "glider-pilot-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "balloon-pilot-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "solo-field",
+  "src": "silver",
+  "flat": 6,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "pre-solo-field",
+  "src": "silver",
+  "flat": 6,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "cap-suas-pilot-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "uas-pilot-senior-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "uas-pilot-master-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "uas-technician-basic-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "uas-technician-senior-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "uas-technician-master-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "cadet-suas-field",
+  "src": "silver",
+  "flat": 5,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "ground-team-basic-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "senior-ground-team-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "master-ground-team-field",
+  "src": "silver",
+  "flat": 4,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "basic-incident-commander-field",
+  "src": "silver",
+  "flat": 5,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "incident-commander-1-field",
+  "src": "silver",
+  "flat": 5,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "incident-commander-2-field",
+  "src": "silver",
+  "flat": 5,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "legal-officer-field",
+  "src": "silver",
+  "flat": 5,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "medical-officer-field",
+  "src": "silver",
+  "flat": 5,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "nurse-field",
+  "src": "silver",
+  "flat": 5,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "enamel-emt-basic-field",
+  "src": "enamel",
+  "flat": 0,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "enamel-emt-intermediate-field",
+  "src": "enamel",
+  "flat": 0,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "enamel-emt-paramedic-field",
+  "src": "enamel",
+  "flat": 0,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "enamel-buddist-chaplin-field",
+  "src": "enamel",
+  "flat": 1,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "enamel-christian-chaplin-field",
+  "src": "enamel",
+  "flat": 1,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "enamel-jewish-chaplin-field",
+  "src": "enamel",
+  "flat": 1,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "enamel-muslim-chaplin-field",
+  "src": "enamel",
+  "flat": 1,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "group-commander-field",
+  "src": "silver",
+  "flat": 5,
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "squadron-commander-field",
+  "src": "silver",
+  "flat": 5,
+  "pass": true,
+  "fails": ""
+ }
+]

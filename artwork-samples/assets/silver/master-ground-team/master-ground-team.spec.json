@@ -1,0 +1,104 @@
+{
+ "asset_id": "master-ground-team",
+ "width_in": 1.125,
+ "height_in": 0.967,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "regulation",
+ "size_basis": "regulation: width 1.125 in",
+ "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "anchors": {
+  "top_center": [
+   56.25,
+   0
+  ],
+  "bottom_center": [
+   56.25,
+   96.723
+  ],
+  "center": [
+   56.25,
+   48.361
+  ],
+  "left_edge": [
+   0,
+   48.361
+  ],
+  "right_edge": [
+   112.5,
+   48.361
+  ],
+  "disc_center": [
+   55.812,
+   52.719
+  ],
+  "disc_top": [
+   55.812,
+   25.228
+  ],
+  "triangle_apex": [
+   55.279,
+   29.502
+  ],
+  "triangle_base_center": [
+   55.279,
+   67.349
+  ],
+  "ribbon_tail_left": [
+   47.456,
+   95.786
+  ],
+  "ribbon_tail_right": [
+   64.168,
+   95.786
+  ],
+  "wreath_bottom": [
+   55.812,
+   88.185
+  ],
+  "device_center": [
+   56.574,
+   13.961
+  ],
+  "device_base": [
+   56.574,
+   28.656
+  ]
+ },
+ "dimensions": {
+  "reference_px_width": 112,
+  "reference_px_height": 95,
+  "in_per_reference_px": 0.01786,
+  "size_class": "gt",
+  "family": "ground-team",
+  "variant": "master",
+  "wreath_nodes_per_branch": 12,
+  "wreath_leaf_rows": 2,
+  "disc_radius_in": 0.2749,
+  "disc_rim_radius_in": 0.2458,
+  "triangle_height_in": 0.3785,
+  "triangle_base_width_in": 0.3686,
+  "wreath_band_width_in": 0.0295,
+  "wreath_leaf_length_in": 0.1633,
+  "wreath_leaf_width_in": 0.1047,
+  "ribbon_width_in": 0.0442,
+  "ribbon_length_in": 0.2451,
+  "wreath_semi_axis_x_in": 0.4748,
+  "wreath_semi_axis_up_in": 0.1837,
+  "wreath_semi_axis_low_in": 0.2888,
+  "device_wreath_outer_radius_in": 0.1469
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/silver (make-*.js, kit.js) + master_ground_team_badge",
+ "reference": "ALL/ref/master_ground_team_badge.png",
+ "source_bbox_user_units": [
+  5.537,
+  0.98,
+  234.415,
+  197.76
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.862,
+  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+ },
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+}

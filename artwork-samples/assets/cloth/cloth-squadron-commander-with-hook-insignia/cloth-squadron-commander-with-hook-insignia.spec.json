@@ -1,0 +1,45 @@
+{
+ "asset_id": "cloth-squadron-commander-with-hook-insignia",
+ "width_in": 1,
+ "height_in": 0.943,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "backing width 1 in",
+ "citation": "Vanguard listing: Squadron Commander cloth badge 1 in x 1 in",
+ "anchors": {
+  "top_center": [
+   50,
+   0
+  ],
+  "bottom_center": [
+   50,
+   94.336
+  ],
+  "center": [
+   50,
+   47.168
+  ],
+  "left_edge": [
+   0,
+   47.168
+  ],
+  "right_edge": [
+   100,
+   47.168
+  ]
+ },
+ "dimensions": {
+  "family": "cloth-ocp-blue-backing"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/cloth (g*/make-*.js) + civil-air-patrol-cloth-badge-squadron-commander-with-hooknew-insignia",
+ "reference": "refs-png/civil-air-patrol-cloth-badge-squadron-commander-with-hooknew-insignia.png",
+ "source_bbox_user_units": [
+  388.713,
+  519.587,
+  1285.293,
+  1365.38
+ ],
+ "fit_score": null,
+ "notes": "Embroidered thread art on blue cloth backing (OCP). Drawn from the supplier product photo; thread texture not reproduced."
+}
