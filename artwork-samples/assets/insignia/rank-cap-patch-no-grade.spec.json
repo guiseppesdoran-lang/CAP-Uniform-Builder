@@ -1,0 +1,74 @@
+{
+ "asset_id": "rank-cap-patch-no-grade",
+ "name": "CAP patch, adult member without grade",
+ "size_in": {
+  "w": 1.5,
+  "h": 0.83
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  150,
+  83
+ ],
+ "size_source": "estimated",
+ "size_basis": "CAPR 39-1 Fig A5-2, tile \"Adult member without grade pursuing officer grade\": 385 x 212 px against the 1.15 x 1.25 in Lt Col cloth patch in the same figure (295 x 319 px, 1 in leaf + 1/8 in border) = 256 px/in",
+ "provenance": "measured from CAPR 39-1 Fig A5-2; lettering is the sleeve CAP glyph set stretched to the measured word box",
+ "colours": {
+  "cloth": "#142347",
+  "letters": "#f4f6f8"
+ },
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   83
+  ],
+  "center": [
+   75,
+   41.5
+  ],
+  "left_edge": [
+   0,
+   41.5
+  ],
+  "right_edge": [
+   150,
+   41.5
+  ],
+  "insignia_center": [
+   75,
+   41.5
+  ]
+ },
+ "dimensions": {
+  "form": "cloth patch",
+  "patch_w_in": 1.5,
+  "patch_h_in": 0.83,
+  "word_w_in": 1.22,
+  "word_h_in": 0.39
+ },
+ "mounts": [
+  {
+   "uniform": "ABU coat collar / OCP, ABU and tactical caps",
+   "rule": "worn where officers wear grade insignia by adults without grade pursuing officer promotion (CAPR 39-1 1.4.1, Fig A5-2)"
+  },
+  {
+   "uniform": "OCP coat",
+   "rule": "senior members without grade wear the blank 2 x 2 in dark blue square instead (7.1.1.2.1): use rank-ocp-square-blank"
+  }
+ ],
+ "rank": {
+  "grade": "none",
+  "membership": "senior"
+ },
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

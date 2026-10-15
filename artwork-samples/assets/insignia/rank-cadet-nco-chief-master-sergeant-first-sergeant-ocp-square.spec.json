@@ -1,0 +1,79 @@
+{
+ "asset_id": "rank-cadet-nco-chief-master-sergeant-first-sergeant-ocp-square",
+ "name": "Cadet Chief Master Sergeant with first sergeant diamond metal chevron on the 2 in OCP square",
+ "size_in": {
+  "w": 2,
+  "h": 2
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  200,
+  200
+ ],
+ "size_source": "estimated",
+ "size_basis": "Scale 350.0 photo px per inch: the Vanguard Cadet CMSgt photo (612 px tall) is set to 1.75 in, from the requester's statement (2026-10-12) that it nearly fills the 2 in OCP square leaving about 1/8 in top and bottom; CAPR 39-1 Fig A5-5 gives no inch size. Every grade uses the same scale (the photos share one scale: 381 px chevron width). Diamond: measured on CAPR 39-1 Fig A5-5 (width 0.211 of chevron width, width:height 1.34).",
+ "colours": {
+  "navy": "#010066",
+  "silver": "#d3d6d7",
+  "red": "#d03638",
+  "cloth": "#142347"
+ },
+ "provenance": "traced from the Vanguard cadet chevron photos (images/ranks/C) at the requester's direction; chrome shading flattened by chroma classification; first sergeant diamond drawn from CAPR 39-1 Fig A5-5 measurements",
+ "mounts": [
+  {
+   "uniform": "OCP coat / fleeces",
+   "rule": "metal device on the 2 in dark blue square (7.1.1.2.2, 6.1.10.2.2, 6.1.14.4.2); Airman Basic wears no device and no blue material"
+  }
+ ],
+ "rank": {
+  "grade": "Cadet Chief Master Sergeant",
+  "abbrev": "C/CMSgt",
+  "membership": "cadet",
+  "first_sergeant": true
+ },
+ "grade": "rank-insignia",
+ "wear_rule": "Cadet MSgt/SMSgt/CMSgt appointed cadet first sergeant only, for the period of appointment (CAPR 39-1 10.10.4)",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   200
+  ],
+  "center": [
+   100,
+   100
+  ],
+  "left_edge": [
+   0,
+   100
+  ],
+  "right_edge": [
+   200,
+   100
+  ],
+  "insignia_center": [
+   100,
+   100
+  ]
+ },
+ "dimensions": {
+  "form": "metal chevron centred on a 2x2 square canvas (no cloth: place on rank-ocp-square-blank)",
+  "backing": "none",
+  "square_in": 2,
+  "chevron_w_in": 1.0887,
+  "chevron_h_in": 1.75,
+  "clear_blue_top_bottom_in": 0.125,
+  "clear_blue_left_right_in": 0.4556,
+  "first_sergeant_diamond_w_in": 0.2297,
+  "first_sergeant_diamond_h_in": 0.1714
+ },
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

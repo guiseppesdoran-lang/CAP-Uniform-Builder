@@ -1,0 +1,95 @@
+{
+ "asset_id": "rank-senior-major-bullion",
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  90.04,
+  100
+ ],
+ "name": "Major bullion grade insignia, mess dress shoulder board",
+ "size_source": "estimated",
+ "size_basis": "Same shape and size as the embroidered form rank-senior-major-thread (0.9004 x 1 in): CAPR 39-1 Fig A5-3 says only that the grade on the boards is metal bullion and gives no size. Male boards 5 1/2 x 2 1/4 in, female 4 1/2 x 2 in.",
+ "provenance": "recoloured from rank-senior-major-thread: bullion gold (2d Lt and Major gold, others silver, matching the metal and thread forms); bullion texture drawn as a diagonal line pattern",
+ "colours": {
+  "bullion": "#cfa93a",
+  "bullion_line": "#9b7a1c",
+  "bullion_edge": "#7a5f10"
+ },
+ "anchors": {
+  "top_center": [
+   45.02,
+   0
+  ],
+  "bottom_center": [
+   45.02,
+   100
+  ],
+  "center": [
+   45.02,
+   50
+  ],
+  "left_edge": [
+   0,
+   50
+  ],
+  "right_edge": [
+   90.04,
+   50
+  ],
+  "insignia_center": [
+   45.02,
+   50
+  ],
+  "rank_slot_center": [
+   45.02,
+   50
+  ],
+  "mount_center": [
+   45.02,
+   50
+  ]
+ },
+ "dimensions": {
+  "form": "metal bullion grade insignia (mess dress shoulder board)",
+  "insignia_w_in": 0.9004,
+  "insignia_h_in": 1,
+  "shape": "oak leaf",
+  "stem": "toward the ground (OCP, 7.1.1.2.1)",
+  "thread": "gold bullion",
+  "slot_fit": {
+   "garment_rank_slot_in": {
+    "along": 1.5,
+    "across": 1.2
+   },
+   "piece_along_in": 1,
+   "piece_across_in": 0.9,
+   "scale_to_garment_slot": 1,
+   "note": "placement rule: leaf stem / stacked stars along the board, bars across, Colonel eagle wingspan along the board; scale < 1 only if the piece must stay inside the slot"
+  }
+ },
+ "mounts": [
+  {
+   "uniform": "Men's mess dress shoulder boards (garment-mess-dress-male-officer-shoulder-boards)",
+   "rule": "centred on the board with the board centre line, as close to the shoulder seam as possible; board 5.5 x 2.25 in, 1/2 in dark blue lace each side (general officer boards: silver lace with 1/2 in blue lace), button at the peak (4.1.1.1.1.1, Fig A5-3). Lt Col / Major stem points away from the collar, Colonel eagle beak forward (4.1.1.1.1.2-3). No distance from the board end is given by CAPR 39-1 or DAFI 36-2903; use the garment rank_slot centre."
+  },
+  {
+   "uniform": "Women's mess dress shoulder boards (garment-mess-dress-female-officer-shoulder-boards)",
+   "rule": "centred on the board with the board centre line, as close to the shoulder seam as possible; board 4.5 x 2 in, 1/4 in blue lace each side on every grade (Fig A5-3), no button (4.1.2.1.1.1, Fig A5-3). Lt Col / Major stem points away from the collar, Colonel eagle beak forward (4.1.1.1.1.2-3). No distance from the board end is given by CAPR 39-1 or DAFI 36-2903; use the garment rank_slot centre."
+  }
+ ],
+ "rank": {
+  "grade": "Major",
+  "abbrev": "Maj",
+  "membership": "senior"
+ },
+ "grade": "rank-insignia",
+ "size_in": {
+  "w": 0.9004,
+  "h": 1
+ },
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

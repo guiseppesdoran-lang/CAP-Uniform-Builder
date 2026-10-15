@@ -1,0 +1,69 @@
+{
+ "asset_id": "collar-insignia-cap-cloth",
+ "name": "CAP collar / lapel insignia, cloth (white letters on dark blue)",
+ "size_in": {
+  "w": 1.4,
+  "h": 0.55
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  140,
+  55
+ ],
+ "size_source": "estimated",
+ "size_basis": "1.4 x 0.55 in cloth, letters 1.12 x 0.40 in: proportions of the cloth tile in Fig A6-5 (about 2.4 : 1) at the 1.4 in lapel zone width of the garment overlay",
+ "provenance": "letters from the CAP block letters of build-epaulet-sleeves.js; blue = family cloth blue",
+ "colours": {
+  "cloth": "#142347",
+  "letters": "#f4f6f8"
+ },
+ "anchors": {
+  "top_center": [
+   70,
+   0
+  ],
+  "bottom_center": [
+   70,
+   55.00000000000001
+  ],
+  "center": [
+   70,
+   27.500000000000004
+  ],
+  "left_edge": [
+   0,
+   27.500000000000004
+  ],
+  "right_edge": [
+   140,
+   27.500000000000004
+  ],
+  "mount_center": [
+   70,
+   27.500000000000004
+  ]
+ },
+ "mounts": [
+  {
+   "uniform": "Class A coat lapels, cadet officers",
+   "rule": "halfway up the lapel seam, resting on but not over it (4.1.5.2.2.1.2)"
+  }
+ ],
+ "pair": {
+  "count": 2,
+  "mirrored": false
+ },
+ "documented": [
+  "cloth CAP collar insignia tile (Fig A6-5)"
+ ],
+ "assumed": [
+  "size"
+ ],
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

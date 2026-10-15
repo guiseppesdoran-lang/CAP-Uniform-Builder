@@ -1,0 +1,70 @@
+{
+ "asset_id": "rank-cadet-officer-major-metal-miniature",
+ "name": "Cadet Major insignia, miniature metal",
+ "size_in": {
+  "w": 0.375,
+  "h": 0.5
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  37.5,
+  50
+ ],
+ "size_source": "regulation",
+ "size_citation": "CAPR 39-1 (3 March 2020) Figure A5-6, dimension drawing (inches read from the figure)",
+ "anchors": {
+  "top_center": [
+   18.75,
+   0
+  ],
+  "bottom_center": [
+   18.75,
+   50
+  ],
+  "center": [
+   18.75,
+   25
+  ],
+  "left_edge": [
+   0,
+   25
+  ],
+  "right_edge": [
+   37.5,
+   25
+  ],
+  "element_0_center": [
+   18.75,
+   25
+  ]
+ },
+ "dimensions": {
+  "form": "metal",
+  "size": "miniature",
+  "count": 1,
+  "shape": "diamond",
+  "element_w_in": 0.375,
+  "element_h_in": 0.5,
+  "centre_pitch_in": 0,
+  "rim_width_in": 0.03,
+  "overall_w_in": 0.375,
+  "overall_h_in": 0.5
+ },
+ "worn_on": [
+  "service-coat epaulets",
+  "blue-shirt epaulets",
+  "outer-garment epaulets (either size, A5-6)"
+ ],
+ "rank": {
+  "grade": "Cadet Major",
+  "abbrev": "C/Maj",
+  "membership": "cadet"
+ },
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a (geometry from regulation dimensions)",
+  "score": null
+ }
+}

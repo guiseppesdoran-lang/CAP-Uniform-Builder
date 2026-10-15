@@ -1,0 +1,90 @@
+{
+ "asset_id": "rank-senior-senior-master-sergeant-chevron-3p5in",
+ "name": "Senior Master Sergeant chevron, 3.5 in",
+ "size_in": {
+  "w": 3.5,
+  "h": 5.7247
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  350,
+  572.47
+ ],
+ "size_source": "regulation",
+ "size_citation": "CAPR 39-1 (3 March 2020) Figure A5-4: \"Chevrons are available in 3 1/2 and 4 inch sizes\"; width = nominal chevron size, height from the figure proportion",
+ "anchors": {
+  "top_center": [
+   175,
+   0
+  ],
+  "bottom_center": [
+   175,
+   572.47
+  ],
+  "center": [
+   175,
+   286.23
+  ],
+  "left_edge": [
+   0,
+   286.23
+  ],
+  "right_edge": [
+   350,
+   286.23
+  ],
+  "visual_center": [
+   175,
+   286.23
+  ]
+ },
+ "dimensions": {
+  "form": "embroidered chevron patch",
+  "nominal_width_in": 3.5,
+  "height_in": 5.7247,
+  "aspect_h_over_w": 1.6356,
+  "navy_hex": "#292540",
+  "stripe_hex": "#dadadc",
+  "letters": "CAP",
+  "emblem": "3-blade propeller"
+ },
+ "mounts": [
+  {
+   "uniform": "Class B blue shirt / blouse, lightweight blue jacket, topcoat, service coat of 4.1.9",
+   "rule": "3 1/2 or 4 in chevron, centered on the outer arm halfway between the shoulder seam and the elbow bent at 90 degrees; short-sleeved shirt: centered on the bottom edge of the sleeve; shoulder mark insignia not authorized (4.1.6.1.3, 4.1.9.3.3, 4.1.9.5.4, 6.1.3.3, 6.1.11.3.1)"
+  },
+  {
+   "uniform": "Corporate service / aviator shirt",
+   "rule": "3 1/2 in chevron only, centered on the outer arm halfway between the shoulder seam and the elbow bent at 90 degrees (long sleeve) or bottom edge of the sleeve (short sleeve) (4.2.5.1.1.3, 4.2.6.2.3)"
+  },
+  {
+   "uniform": "ABU / BDU / blue field uniform coat",
+   "rule": "4 or 3 1/2 in, full color silver on dark blue, centered on the outer arm halfway between the shoulder seam and the elbow bent at 90 degrees; need not be fully visible if sleeves are rolled (5.1.1.1.1.2, 5.1.2.2.3, 5.2.1.1.1.3)"
+  },
+  {
+   "uniform": "Mess dress",
+   "rule": "white chevron, use rank-senior-<grade>-chevron-white-3p5in (women only, 3 1/2 or 4 in; 4.1.1.1.1.4, 4.1.2.1.1.4); this navy chevron is not worn on the mess dress"
+  },
+  {
+   "uniform": "OCP coat / fleeces",
+   "rule": "grade device in metal on dark blue material (6.1.10.2.1, 6.1.14.4.1); use the ocp-square form where a 2 in square is required (7.1.1.2.1)"
+  }
+ ],
+ "traced_from": {
+  "figure": "CAPR 39-1 Fig A5-4 (embedded raster 1123 x 1638)",
+  "method": "4x bicubic upsample, 3-class k-means, marching squares, RDP+Chaikin",
+  "px_per_in": 238.06
+ },
+ "rank": {
+  "grade": "Senior Master Sergeant",
+  "abbrev": "SMSgt",
+  "membership": "senior"
+ },
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "trace of the regulation figure",
+  "score": null
+ }
+}

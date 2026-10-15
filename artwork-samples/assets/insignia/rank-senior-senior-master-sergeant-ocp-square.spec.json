@@ -1,0 +1,70 @@
+{
+ "asset_id": "rank-senior-senior-master-sergeant-ocp-square",
+ "name": "Senior Master Sergeant grade on the 2 in OCP square",
+ "size_in": {
+  "w": 2,
+  "h": 2
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  200,
+  200
+ ],
+ "size_source": "regulation",
+ "size_citation": "CAPR 39-1 7.1.1.2.1 (ICL 25-06): grade insignia on 2\" x 2\" dark blue material, front of the OCP coat, centre of the chest. The 2 in square is regulation; the chevron scale is estimated.",
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   200
+  ],
+  "center": [
+   100,
+   100
+  ],
+  "left_edge": [
+   0,
+   100
+  ],
+  "right_edge": [
+   200,
+   100
+  ],
+  "insignia_center": [
+   100,
+   100
+  ]
+ },
+ "dimensions": {
+  "form": "on the 2 in OCP square",
+  "square_in": 2,
+  "insignia_w_in": 1.07,
+  "insignia_h_in": 1.75,
+  "scale_vs_3p5in_chevron": 0.3057,
+  "fits_inside_square": true,
+  "blue_border_min_in": 0.125,
+  "cloth_hex": "#142347"
+ },
+ "estimated": "Chevron scale on the square (the regulation gives no size for NCO grade on the OCP square); source chevron is the 3 1/2 in measured form.",
+ "derived_from": "insignia/rank-senior-senior-master-sergeant-chevron-3p5in",
+ "mounts": [
+  {
+   "uniform": "OCP coat",
+   "rule": "2 in x 2 in dark blue square at the centre of the chest, between the name tape and CAP tape (7.1.1.2.1); asset baseline rotation 0",
+   "placement": {
+    "rotate_deg": 0
+   }
+  }
+ ],
+ "rank": {
+  "grade": "Senior Master Sergeant",
+  "abbrev": "SMSgt",
+  "membership": "senior"
+ },
+ "grade": "rank-insignia"
+}

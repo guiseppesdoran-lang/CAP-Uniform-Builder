@@ -1,0 +1,95 @@
+{
+ "asset_id": "rank-epaulet-sleeve-blue-cadet-lieutenant-colonel",
+ "name": "Cadet Lieutenant Colonel blue epaulet sleeve",
+ "size_in": {
+  "w": 1.966,
+  "h": 3.843
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  196.6,
+  384.3
+ ],
+ "size_source": "estimated",
+ "size_basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+ "provenance": "measured from CAPR 39-1 Fig A5-1 (gray) and A5-6 (blue); CAP lettering cleaned from traced glyphs; grade pieces are this family's own assets",
+ "colours": {
+  "gray": "#5f5c5c",
+  "blue": "#142347",
+  "cap": "#dddcdb",
+  "stripe": "#b3b3b3"
+ },
+ "anchors": {
+  "top_center": [
+   98.3,
+   0
+  ],
+  "bottom_center": [
+   98.3,
+   384.3
+  ],
+  "center": [
+   98.3,
+   192.15
+  ],
+  "left_edge": [
+   0,
+   192.15
+  ],
+  "right_edge": [
+   196.6,
+   192.15
+  ],
+  "cap_center": [
+   98.3,
+   102.30438202247191
+  ],
+  "insignia_center": [
+   98.3,
+   296.8
+  ]
+ },
+ "dimensions": {
+  "form": "slip-on epaulet sleeve",
+  "length_in": 3.843,
+  "end_width_in": 1.966,
+  "button_end_width_in": 1.719,
+  "cap_word_w_in": 0.997,
+  "cap_word_h_in": 0.34,
+  "grade_bottom_from_end_in": 0.625,
+  "grade_bottom_note": "DAFI 36-2903 7.1.5.1: 5/8 in from the end of the epaulet; figure shows 0.63-0.71 in",
+  "grade_pieces": "rank-cadet-officer-lieutenant-colonel-metal-miniature",
+  "grade_size_in": {
+   "w": 0.75,
+   "h": 0.5
+  },
+  "cloth_note": "blue = the family cloth blue (#142347); Fig A5-6 shows a slightly more saturated navy"
+ },
+ "mounts": [
+  {
+   "uniform": "Class B blue shirt (long/short sleeve, men and women)",
+   "rule": "slipped over the shirt epaulet; officers gray with embroidered grade, cadet officers blue with miniature metal grade (CAPR 39-1 4.1.6.1.1, 4.1.6.1.4). NCOs wear the 3 1/2 / 4 in chevron on the sleeve instead; cadet NCOs and Airmen wear metal collar chevrons (no sleeve)."
+  },
+  {
+   "uniform": "Corporate aviator shirt (white), worn alone or under the blazer",
+   "rule": "same gray / blue sleeve (4.2.5.1.1.1, 4.2.5.1.1.4). Individuals without grade wear gray sleeves with no insignia (1.2.x, 4.2.5)."
+  },
+  {
+   "uniform": "Corporate blazer",
+   "rule": "no epaulet sleeves; grade insignia is optional on the black blazer nameplate (officers and NCOs), not allowed for cadets (4.2.3.1.1.2, 4.2.4.1.1.2)."
+  }
+ ],
+ "rank": {
+  "grade": "Cadet Lieutenant Colonel",
+  "abbrev": "C/Lt Col",
+  "membership": "cadet",
+  "sleeve": "blue"
+ },
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

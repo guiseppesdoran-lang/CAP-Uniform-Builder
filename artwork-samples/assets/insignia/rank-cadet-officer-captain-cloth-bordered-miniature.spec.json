@@ -1,0 +1,88 @@
+{
+ "asset_id": "rank-cadet-officer-captain-cloth-bordered-miniature",
+ "name": "Cadet Captain insignia on cloth (1/8 in border), miniature",
+ "size_in": {
+  "w": 1.5,
+  "h": 0.625
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  150,
+  62.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "CAPR 39-1 (3 March 2020) Figure A5-6, dimension drawing (inches read from the figure); border: CAPR 39-1 5.1.1.1.1.1 / 5.1.1.1.1.3 (ABU) and 7.1.1.8 (OCP/tactical cap), 1/8 in showing past the widest and tallest point",
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   62.5
+  ],
+  "center": [
+   75,
+   31.25
+  ],
+  "left_edge": [
+   0,
+   31.25
+  ],
+  "right_edge": [
+   150,
+   31.25
+  ],
+  "insignia_center": [
+   75,
+   31.25
+  ],
+  "insignia_left": [
+   12.5,
+   31.25
+  ],
+  "insignia_right": [
+   137.5,
+   31.25
+  ]
+ },
+ "dimensions": {
+  "form": "embroidered on cloth",
+  "size": "miniature",
+  "border_each_side_in": 0.125,
+  "insignia_w_in": 1.25,
+  "insignia_h_in": 0.375,
+  "cloth_w_in": 1.5,
+  "cloth_h_in": 0.625
+ },
+ "mounts": [
+  {
+   "uniform": "ABU / BDU / blue field coat collar",
+   "rule": "regular size (Colonels and Captains may wear miniature), centered 1 in from the FRONT of the collar, 1/8 in of blue showing past the widest and tallest point (5.1.1.1.1.3, 5.1.2.2.4, 5.2.1.1.1.4). Orientation as drawn: field-grade long points vertical, company-grade circles in a horizontal row (6.2.9.2 / 6.1.10.2.2)"
+  },
+  {
+   "uniform": "OCP / ABU / BDU / blue field / navy tactical cap",
+   "rule": "cadet officers only (cadet NCOs and Airmen wear none, 7.1.1.8): centered on the front, 1/2 in from the visor, 1/8 in of blue showing (7.1.1.8, 5.1.2.2.5, 5.2.1.1.1.5, 6.2.11)"
+  },
+  {
+   "uniform": "green / black fleece (front)",
+   "rule": "dark blue material, centered horizontally, long points of field grade vertical, company-grade circles added horizontally (6.1.10.2.2, 6.1.14.4.2)"
+  }
+ ],
+ "cloth_color": {
+  "hex": "#142347",
+  "basis": "sampled from CAPR 39-1 p.136 cloth figure; regulation calls it dark blue"
+ },
+ "rank": {
+  "grade": "Cadet Captain",
+  "abbrev": "C/Capt",
+  "membership": "cadet"
+ },
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

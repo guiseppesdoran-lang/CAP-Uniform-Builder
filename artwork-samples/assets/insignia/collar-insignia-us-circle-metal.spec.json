@@ -1,0 +1,69 @@
+{
+ "asset_id": "collar-insignia-us-circle-metal",
+ "name": "U.S. in circle collar / lapel insignia, metal (NCOs)",
+ "size_in": {
+  "w": 1.13,
+  "h": 1.13
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  113,
+  113
+ ],
+ "size_source": "estimated",
+ "size_basis": "No dimension in CAPR 39-1; same overall 1.05 in as the plain US insignia, ring 0.075 in, letters 0.58 in wide",
+ "provenance": "in-house construction from Fig A6-5",
+ "colours": {
+  "metal": "#d3d7dc",
+  "edge": "#8f969e"
+ },
+ "anchors": {
+  "top_center": [
+   56.50000000000001,
+   0
+  ],
+  "bottom_center": [
+   56.50000000000001,
+   113.00000000000001
+  ],
+  "center": [
+   56.50000000000001,
+   56.50000000000001
+  ],
+  "left_edge": [
+   0,
+   56.50000000000001
+  ],
+  "right_edge": [
+   113.00000000000001,
+   56.50000000000001
+  ],
+  "mount_center": [
+   56.50000000000001,
+   56.50000000000001
+  ]
+ },
+ "mounts": [
+  {
+   "uniform": "Class A / service coat, NCOs and adults without grade who will become NCOs",
+   "rule": "on each lapel halfway up the seam, resting on but not over it; circles are worn around the US insignia for NCOs only (4.1.5.2.2.1.1, 4.1.9.4.1.1)"
+  }
+ ],
+ "pair": {
+  "count": 2,
+  "mirrored": false
+ },
+ "documented": [
+  "circled US lapel insignia, NCOs (Fig A6-5)"
+ ],
+ "assumed": [
+  "size"
+ ],
+ "grade": "rank-insignia",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

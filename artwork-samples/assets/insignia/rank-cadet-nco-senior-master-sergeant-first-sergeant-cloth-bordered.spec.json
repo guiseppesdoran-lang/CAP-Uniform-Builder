@@ -1,0 +1,93 @@
+{
+ "asset_id": "rank-cadet-nco-senior-master-sergeant-first-sergeant-cloth-bordered",
+ "name": "Cadet Senior Master Sergeant with first sergeant diamond chevron on cloth (1/8 in border)",
+ "size_in": {
+  "w": 1.3428,
+  "h": 1.88
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  134.28,
+  188
+ ],
+ "size_source": "estimated",
+ "size_basis": "Scale 350.0 photo px per inch: the Vanguard Cadet CMSgt photo (612 px tall) is set to 1.75 in, from the requester's statement (2026-10-12) that it nearly fills the 2 in OCP square leaving about 1/8 in top and bottom; CAPR 39-1 Fig A5-5 gives no inch size. Every grade uses the same scale (the photos share one scale: 381 px chevron width). Diamond: measured on CAPR 39-1 Fig A5-5 (width 0.211 of chevron width, width:height 1.34).",
+ "colours": {
+  "navy": "#010066",
+  "silver": "#d3d6d7",
+  "red": "#d03638",
+  "cloth": "#142347"
+ },
+ "provenance": "traced from the Vanguard cadet chevron photos (images/ranks/C) at the requester's direction; chrome shading flattened by chroma classification; first sergeant diamond drawn from CAPR 39-1 Fig A5-5 measurements",
+ "mounts": [
+  {
+   "uniform": "(no regulation mount)",
+   "rule": "the regulation prescribes METAL chevrons for cadet NCOs and Airmen on every uniform (see MOUNT_METAL); this cloth-bordered form was built at the requester's direction and has no authorized position (7.1.1.8 and 6.2.11.1 bar insignia on the caps). Not for use on caps."
+  }
+ ],
+ "rank": {
+  "grade": "Cadet Senior Master Sergeant",
+  "abbrev": "C/SMSgt",
+  "membership": "cadet",
+  "first_sergeant": true
+ },
+ "grade": "rank-insignia",
+ "wear_rule": "Cadet MSgt/SMSgt/CMSgt appointed cadet first sergeant only, for the period of appointment (CAPR 39-1 10.10.4)",
+ "regulation_authorized_mount": false,
+ "regulation_note": "Kept at the requester's direction. CAPR 39-1 prescribes METAL chevrons for cadet NCOs and Airmen on every uniform and bars all insignia for them on the OCP/ABU/tactical caps (7.1.1.8, 6.2.11.1); no cloth chevron position exists. The importer should not offer this form by default.",
+ "size_citation": "border: CAPR 39-1 5.1.1.1.1.1 / 5.1.1.1.1.3 (ABU) and 7.1.1.8 (OCP/tactical cap), 1/8 in showing past the widest and tallest point",
+ "cloth_color": {
+  "hex": "#142347",
+  "note": "dark blue cloth; same hex as the utility-uniform rank square and tapes (make-ocp-abu.js)"
+ },
+ "anchors": {
+  "top_center": [
+   67.14,
+   0
+  ],
+  "bottom_center": [
+   67.14,
+   188
+  ],
+  "center": [
+   67.14,
+   94
+  ],
+  "left_edge": [
+   0,
+   94
+  ],
+  "right_edge": [
+   134.28,
+   94
+  ],
+  "insignia_center": [
+   67.14,
+   94
+  ],
+  "insignia_left": [
+   12.5,
+   94
+  ],
+  "insignia_right": [
+   121.78,
+   94
+  ]
+ },
+ "dimensions": {
+  "form": "chevron on cloth",
+  "border_each_side_in": 0.125,
+  "insignia_w_in": 1.0928,
+  "insignia_h_in": 1.63,
+  "cloth_w_in": 1.3428,
+  "cloth_h_in": 1.88,
+  "first_sergeant_diamond_w_in": 0.2306,
+  "first_sergeant_diamond_h_in": 0.1721
+ },
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

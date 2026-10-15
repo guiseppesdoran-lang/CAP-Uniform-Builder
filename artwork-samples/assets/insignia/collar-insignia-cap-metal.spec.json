@@ -1,0 +1,71 @@
+{
+ "asset_id": "collar-insignia-cap-metal",
+ "name": "CAP collar / lapel insignia, metal letters (cadet officers)",
+ "size_in": {
+  "w": 1.38,
+  "h": 0.5233
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  138,
+  52.33
+ ],
+ "size_source": "estimated",
+ "size_basis": "The garment overlay garment-blues-class-a-cadet-officer-insignia reserves a 1.4 x 0.53 in zone for the CAP lapel letters (Fig A6-5 gives no dimension): letters 1.30 x 0.46 in plus 0.04 in margin",
+ "provenance": "letter shapes from the CAP block letters of build-epaulet-sleeves.js (traced from Fig A5-2); finish from Fig A6-5",
+ "colours": {
+  "metal": "#d3d7dc",
+  "edge": "#8f969e"
+ },
+ "anchors": {
+  "top_center": [
+   69,
+   0
+  ],
+  "bottom_center": [
+   69,
+   52.3348365276212
+  ],
+  "center": [
+   69,
+   26.1674182638106
+  ],
+  "left_edge": [
+   0,
+   26.1674182638106
+  ],
+  "right_edge": [
+   138,
+   26.1674182638106
+  ],
+  "mount_center": [
+   69,
+   26.1674182638106
+  ]
+ },
+ "mounts": [
+  {
+   "uniform": "Class A / service coat, cadet officers",
+   "rule": "on each lapel halfway up the seam, resting on but not over it, letters parallel with the ground (4.1.5.2.2.1.2, 4.1.7.2.2.1, 4.1.9.4.1.2, 4.1.10.1.2.1)"
+  }
+ ],
+ "pair": {
+  "count": 2,
+  "mirrored": false,
+  "note": "identical on both lapels"
+ },
+ "documented": [
+  "CAP lapel insignia, cadet officers; metal chevrons replace it for cadet NCOs and Airmen"
+ ],
+ "assumed": [
+  "size"
+ ],
+ "grade": "rank-insignia",
+ "see_also": "rank-collar-cap-officers.* (cadet officer collar / cap grade pieces) is a different set and is not duplicated here",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}
