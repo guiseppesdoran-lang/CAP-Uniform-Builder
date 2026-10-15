@@ -1,0 +1,96 @@
+{
+ "asset_id": "garment-aviator-shirt-male-long-epaulet-sleeve-officer",
+ "name": "Men's Aviator Shirt Uniform adult officer epaulet sleeves (overlay, registered to garment-aviator-shirt-male-long; blank grade)",
+ "size_in": {
+  "w": 21.156,
+  "h": 26.2
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2115.6,
+  2620
+ ],
+ "size_source": "estimated",
+ "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
+ "anchors": {
+  "top_center": [
+   1057.8,
+   0
+  ],
+  "bottom_center": [
+   1057.8,
+   2620
+  ],
+  "center": [
+   1057.8,
+   1310
+  ],
+  "left_edge": [
+   0,
+   1310
+  ],
+  "right_edge": [
+   2115.6,
+   1310
+  ],
+  "rank_slot_right_center": [
+   385.44,
+   290.25
+  ],
+  "rank_slot_left_center": [
+   1730.16,
+   290.25
+  ],
+  "rank_rule_point_right": [
+   316.61,
+   360.74
+  ],
+  "rank_rule_point_left": [
+   1798.99,
+   360.74
+  ]
+ },
+ "landmarks": {
+  "epaulet_sleeve_right": {
+   "x": 245.6,
+   "y": 217.88,
+   "w": 279.68,
+   "h": 144.74
+  },
+  "rank_slot_right": {
+   "x": 245.6,
+   "y": 217.88,
+   "w": 279.68,
+   "h": 144.74
+  },
+  "epaulet_sleeve_left": {
+   "x": 1590.32,
+   "y": 217.88,
+   "w": 279.68,
+   "h": 144.74
+  },
+  "rank_slot_left": {
+   "x": 1590.32,
+   "y": 217.88,
+   "w": 279.68,
+   "h": 144.74
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-aviator-shirt-male-long",
+ "documented": [
+  "gray epaulet sleeves, embroidered grade (CAPR 39-1 4.2.5.1.1.1 / 4.2.6.2.1)",
+  "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "sleeve length (covers the outer 82% of the strap)",
+  "grade not drawn: placed by the rank insignia assets at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

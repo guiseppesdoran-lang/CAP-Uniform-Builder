@@ -1,0 +1,112 @@
+{
+ "asset_id": "garment-blues-class-a-cadet-officer-insignia",
+ "name": "Class A coat cadet officer insignia: shoulder boards + CAP lapel letters (overlay, registered to garment-blues-class-a-coat; blank rank)",
+ "size_in": {
+  "w": 23.726,
+  "h": 29.955
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2372.6,
+  2995.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same artwork box and px-to-inch scale as garment-blues-class-a-coat so it drops on at 0,0. Board length 4.55 in (builder reference); width from the Vanguard CAP0647V product photo proportions (252 x 622 px).",
+ "anchors": {
+  "top_center": [
+   1186.3,
+   0
+  ],
+  "bottom_center": [
+   1186.3,
+   2995.5
+  ],
+  "center": [
+   1186.3,
+   1497.75
+  ],
+  "left_edge": [
+   0,
+   1497.75
+  ],
+  "right_edge": [
+   2372.6,
+   1497.75
+  ],
+  "epaulet_right_center": [
+   535.35,
+   292.5
+  ],
+  "epaulet_left_center": [
+   1837.25,
+   292.5
+  ],
+  "rank_slot_right_center": [
+   535.35,
+   292.5
+  ],
+  "rank_slot_left_center": [
+   1837.25,
+   292.5
+  ]
+ },
+ "landmarks": {
+  "epaulet_right": {
+   "x": 346.3,
+   "y": 228.4,
+   "w": 378.1,
+   "h": 128.2
+  },
+  "rank_slot_right": {
+   "x": 346.3,
+   "y": 228.4,
+   "w": 378.1,
+   "h": 128.2
+  },
+  "lapel_cap_right": {
+   "x": 835.1,
+   "y": 428,
+   "w": 140,
+   "h": 53
+  },
+  "epaulet_left": {
+   "x": 1648.2,
+   "y": 228.4,
+   "w": 378.1,
+   "h": 128.2
+  },
+  "rank_slot_left": {
+   "x": 1648.2,
+   "y": 228.4,
+   "w": 378.1,
+   "h": 128.2
+  },
+  "lapel_cap_left": {
+   "x": 1397.5,
+   "y": 428,
+   "w": 140,
+   "h": 53
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-a-coat",
+ "dimensions": {
+  "strip_thickness_in": 0.32
+ },
+ "documented": [
+  "boards drawn flattened as an edge-on strip on each shoulder; the top-down boards are separate assets",
+  "cadet officers wear gray epaulet sleeves with shoulder boards; cadet NCOs/airmen wear none (CAPR 39-1 4.1.5.2)",
+  "CAP lapel insignia halfway up the lapel seam, cadet officers only; metal chevrons replace it for NCOs/airmen, none for Airman Basic (4.1.5.2.2.1.2-3)"
+ ],
+ "assumed": [
+  "strip thickness 0.32 in",
+  "rank diamonds omitted (sold separately)"
+ ],
+ "fit": {
+  "method": "measured from product photo",
+  "score": null
+ },
+ "grade": "garment"
+}

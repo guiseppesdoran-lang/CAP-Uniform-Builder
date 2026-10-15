@@ -1,0 +1,64 @@
+{
+ "asset_id": "garment-underlayer-turtleneck-female",
+ "name": "White turtleneck sweater, women's corporate blazer V insert (registered to the blazer)",
+ "size_in": {
+  "w": 19.1183,
+  "h": 35.4347
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  1911.83,
+  3543.47
+ ],
+ "size_source": "estimated",
+ "size_basis": "Original flat art fitted to the blazer V (same box/origin as the blazer). The regulation names the garment but gives no figure or dimension: 3.6 in neck width and 3.2 in neck height are estimates.",
+ "anchors": {
+  "top_center": [
+   955.9127185519158,
+   0
+  ],
+  "bottom_center": [
+   955.9127185519158,
+   3543.471205603774
+  ],
+  "center": [
+   955.9127185519158,
+   1771.735602801887
+  ],
+  "left_edge": [
+   0,
+   1771.735602801887
+  ],
+  "right_edge": [
+   1911.8254371038315,
+   1771.735602801887
+  ],
+  "neck_top_center": [
+   955.91,
+   15
+  ],
+  "neck_base_center": [
+   955.91,
+   335
+  ]
+ },
+ "landmarks": {},
+ "landmarks_note": "registered to the blazer box (same origin and size); clipped to the blazer V",
+ "overlay_of": "garment-underlayer-turtleneck-female",
+ "documented": [
+  "regular white cotton-polyester or wool-blend turtleneck sweater or white shell top may be worn instead of the shirt; the blue blazer must be worn; no tie or tie tab with a turtleneck/shell (CAPR 39-1 4.2.3.2.2, 4.2.4.2.2, 4.2.4.3)"
+ ],
+ "assumed": [
+  "neck width / height",
+  "scoop size",
+  "rib spacing",
+  "no figure or base image exists for these garments"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "garment"
+}

@@ -1,0 +1,96 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-long-epaulet-sleeve-officer",
+ "name": "Men's Class B blue long-sleeve shirt adult officer epaulet sleeves (overlay, registered to garment-blues-class-b-shirt-male-long; blank grade)",
+ "size_in": {
+  "w": 21.32,
+  "h": 27.075
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2132,
+  2707.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours sampled from the reference photos (gray #6e6a69, cadet navy #072157); the regulation gives no dimension.",
+ "anchors": {
+  "top_center": [
+   1066,
+   0
+  ],
+  "bottom_center": [
+   1066,
+   2707.5
+  ],
+  "center": [
+   1066,
+   1353.75
+  ],
+  "left_edge": [
+   0,
+   1353.75
+  ],
+  "right_edge": [
+   2132,
+   1353.75
+  ],
+  "rank_slot_right_center": [
+   461.9,
+   247.95
+  ],
+  "rank_slot_left_center": [
+   1670.1,
+   247.95
+  ],
+  "rank_rule_point_right": [
+   395.61,
+   342.82
+  ],
+  "rank_rule_point_left": [
+   1736.39,
+   342.82
+  ]
+ },
+ "landmarks": {
+  "epaulet_sleeve_right": {
+   "x": 307.6,
+   "y": 177.2,
+   "w": 308.6,
+   "h": 141.5
+  },
+  "rank_slot_right": {
+   "x": 307.6,
+   "y": 177.2,
+   "w": 308.6,
+   "h": 141.5
+  },
+  "epaulet_sleeve_left": {
+   "x": 1515.8,
+   "y": 177.2,
+   "w": 308.6,
+   "h": 141.5
+  },
+  "rank_slot_left": {
+   "x": 1515.8,
+   "y": 177.2,
+   "w": 308.6,
+   "h": 141.5
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-shirt-male-long",
+ "documented": [
+  "gray epaulet sleeves, embroidered grade (4.1.11.1.1.1.1 / 4.1.12.2.3.1)",
+  "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "sleeve length (covers the outer 82% of the strap)",
+  "grade insignia not drawn: placed by the rank insignia assets at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

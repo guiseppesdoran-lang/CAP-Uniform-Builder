@@ -1,0 +1,339 @@
+{
+ "asset_id": "garment-fdu-flight-suit",
+ "name": "USAF-style Flight Duty Uniform (FDU) with blank nametag",
+ "size_in": {
+  "w": 47.6933,
+  "h": 41.1567
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  4769.33,
+  4115.67
+ ],
+ "size_source": "estimated",
+ "size_citation": "MIL-C-83141A(USAF), Coveralls, Flyer's, CWU-27/P, 8 Aug 1974, Table II (length of slide fasteners), pp. 6-7, read from the page images: size 40R front opening 28 in, breast pockets 6-1/2, left sleeve pocket 4-3/4.",
+ "size_basis": "Shape follows CAPR 39-1 Figure 8.1. The whole figure is scaled so that its front zipper (591 px at 25.55 px/in = 23.13 in) equals the 28 in front-opening slide fastener of a 40R coverall: scale factor 1.210. This is ONE linear constraint, not a pattern measurement: the spec has no finished body table, and the figure is stylised (its pockets are larger than the spec zipper lengths imply, so pocket zippers are drawn at 6.5 in and 4.75 in and the pocket panels are estimates). Nominal size 40R, chosen to match the MA-1 jacket Medium. The suit is a top only, cut about 37.5 in below the collar tips.",
+ "flag": {
+  "side": "wearer's left sleeve (image right)",
+  "drawn": "in the garment image (flat sleeve view and, clipped to the arm, the front view)",
+  "size_in": [
+   3.5,
+   2
+  ],
+  "border": "gold",
+  "position": "1/2 in below the shoulder seam",
+  "orientation": "normal: canton (union) toward the wearer's front / the viewer's left on the outer face of the left sleeve; the reversed flag is for the right sleeve, which this reg does not give a flag",
+  "basis": "CAPR 39-1 8.2.4.4 / 8.3.4.4 (left sleeve only); orientation convention per DAFI 36-2903 (flag worn so the union leads forward; reversed on the right shoulder)",
+  "loop_tape_left": "not drawn: the 3 1/2 in loop tape on the left is the same colour as the garment and invisible",
+  "loop_square_right": "drawn as the right-sleeve patch slot (8.2.5.5 / 8.3.5.5)"
+ },
+ "anchors": {
+  "top_center": [
+   2384.67,
+   0
+  ],
+  "bottom_center": [
+   2384.67,
+   4115.67
+  ],
+  "center": [
+   2384.67,
+   2057.83
+  ],
+  "left_edge": [
+   0,
+   2057.83
+  ],
+  "right_edge": [
+   4769.33,
+   2057.83
+  ],
+  "zipper_min_closed": [
+   2384.67,
+   1149.97
+  ],
+  "centerline_top": [
+   2384.67,
+   266.31
+  ],
+  "collar_apex": [
+   2384.67,
+   944.18
+  ],
+  "hem_center": [
+   2384.67,
+   4018.83
+  ],
+  "name_tape_center": [
+   2962.7,
+   1149.98
+  ],
+  "command_patch_center": [
+   1806.68,
+   1149.93
+  ],
+  "es_patch_center": [
+   1806.68,
+   2213.89
+  ],
+  "flag_left_center": [
+   4345.62,
+   561.56
+  ],
+  "loop_square_right_center": [
+   423.63,
+   647.09
+  ]
+ },
+ "landmarks": {
+  "name_tape": {
+   "x": 2762.7,
+   "y": 1049.98,
+   "w": 400,
+   "h": 200
+  },
+  "patch_command_right_breast": {
+   "x": 1656.68,
+   "y": 1005.43,
+   "w": 300,
+   "h": 289
+  },
+  "es_patch_zone": {
+   "x": 1656.68,
+   "y": 2063.89,
+   "w": 300,
+   "h": 300
+  },
+  "grade_zone_left": {
+   "x": 3179.35,
+   "y": 544.72,
+   "w": 160,
+   "h": 125
+  },
+  "grade_zone_right": {
+   "x": 1429.95,
+   "y": 544.72,
+   "w": 160,
+   "h": 125
+  },
+  "grade_zone_go_left": {
+   "x": 3061.45,
+   "y": 526.56,
+   "w": 219.95,
+   "h": 119.96
+  },
+  "grade_zone_go_right": {
+   "x": 1487.81,
+   "y": 526.56,
+   "w": 219.95,
+   "h": 119.96
+  },
+  "patch_flag_left": {
+   "x": 4170.62,
+   "y": 461.56,
+   "w": 350,
+   "h": 200
+  },
+  "patch_loop_square_right": {
+   "x": 248.63,
+   "y": 472.09,
+   "w": 350,
+   "h": 350
+  },
+  "sleeve_pocket_left": {
+   "x": 4225.7,
+   "y": 835.24,
+   "w": 240,
+   "h": 550
+  },
+  "pen_pocket_left": {
+   "x": 4352.56,
+   "y": 883.66,
+   "w": 95,
+   "h": 360
+  },
+  "chest_pocket_right": [
+   [
+    1452.59,
+    1222.6
+   ],
+   [
+    2160.73,
+    1755.21
+   ],
+   [
+    2160.73,
+    2051.78
+   ],
+   [
+    1498.59,
+    2051.78
+   ]
+  ],
+  "waist_tab_right": [
+   [
+    2166.78,
+    2372.56
+   ],
+   [
+    1585.74,
+    2372.56
+   ],
+   [
+    1585.74,
+    2493.61
+   ],
+   [
+    2166.78,
+    2493.61
+   ]
+  ],
+  "cuff_right": [
+   [
+    1428.38,
+    3607.26
+   ],
+   [
+    992.6,
+    3607.26
+   ],
+   [
+    1016.81,
+    3867.52
+   ],
+   [
+    1446.54,
+    3867.52
+   ]
+  ],
+  "chest_pocket_left": [
+   [
+    3316.74,
+    1222.6
+   ],
+   [
+    2608.61,
+    1755.21
+   ],
+   [
+    2608.61,
+    2051.78
+   ],
+   [
+    3270.75,
+    2051.78
+   ]
+  ],
+  "waist_tab_left": [
+   [
+    2602.55,
+    2372.56
+   ],
+   [
+    3183.59,
+    2372.56
+   ],
+   [
+    3183.59,
+    2493.61
+   ],
+   [
+    2602.55,
+    2493.61
+   ]
+  ],
+  "cuff_left": [
+   [
+    3340.95,
+    3607.26
+   ],
+   [
+    3776.73,
+    3607.26
+   ],
+   [
+    3752.52,
+    3867.52
+   ],
+   [
+    3322.8,
+    3867.52
+   ]
+  ],
+  "front_zipper": [
+   [
+    2371.35,
+    944.18
+   ],
+   [
+    2397.98,
+    944.18
+   ],
+   [
+    2397.98,
+    3744.18
+   ],
+   [
+    2371.35,
+    3744.18
+   ]
+  ]
+ },
+ "optional_landmarks": {
+  "pen_pocket_left": "pen/pencil pocket cover may be removed (8.1.2.5)",
+  "es_patch_zone": "optional patch (8.2.4.3 / 8.3.4.3)",
+  "grade_zone_go_left": "general officers only (8.2.3.1 / 8.3.3.1)",
+  "grade_zone_go_right": "general officers only",
+  "grade_zone_left": "officers only (8.2.3.2 / 8.3.3.2); NCOs and cadets wear no grade (8.2.3.3 / 8.3.3.3)",
+  "grade_zone_right": "officers only"
+ },
+ "zipper_note": "8.1.2.4: the centerline zipper is closed to no lower than the middle of the nametag; anchors.zipper_min_closed is that height. The artwork shows it fully closed.",
+ "views_note": "Front view plus a flat view of each sleeve: the figures (8.1, 8.3) foreshorten the sleeve patches, and 8.2.4.4 / 8.2.5.5 fix their sizes on the sleeve, so the flat views carry the true-size flag, pocket and loop-tape slot for placement. Decision, not a regulation requirement.",
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's. Zones with no artwork are invisible placement landmarks.",
+ "dimensions": {
+  "collar_to_hem_in": 37.53,
+  "max_width_in": 29.9,
+  "front_opening_zipper_in": 28,
+  "breast_pocket_zipper_in": 6.5,
+  "sleeve_pocket_zipper_in": 4.75,
+  "nametag_in": [
+   4,
+   2
+  ],
+  "flag_in": [
+   3.5,
+   2
+  ],
+  "loop_square_in": [
+   3.5,
+   3.5
+  ],
+  "scale_factor_from_figure": 1.2105
+ },
+ "documented": [
+  "olive drab Nomex one-piece suit (8.2.2)",
+  "nametag 2 x 4 in over the left breast pocket, on a 2 x 4 in loop tape (8.2.4.1, 8.2.5.2)",
+  "CAP Command Patch centred above the right breast pocket, opposite the nametag (8.2.4.2)",
+  "optional ES patch below/centred on the right breast pocket (8.2.4.3)",
+  "left sleeve: US flag 2 x 3 1/2 in with gold border, 1/2 in below the seam (8.2.4.4)",
+  "right sleeve: authorized patch on a 3 1/2 x 3 1/2 in loop square (8.2.4.5, 8.2.5.5)",
+  "officer grade on top of each shoulder, bottom edge 1/2 in from the seam (8.2.3.2)",
+  "CAP Command Patch drawn on the right breast, centred above the pocket opposite the nametag (8.2.4.2)"
+ ],
+ "assumed": [
+  "overall scale from ONE constraint (front opening 28 in, size 40R); widths and lengths otherwise follow the stylised figure",
+  "pocket panel sizes and positions (from Figure 8.1); only their zipper lengths are specified (6 1/2 in breast, 4 3/4 in sleeve)",
+  "command patch size and simplified art",
+  "ES patch zone size",
+  "scarf is optional: its own asset (garment-cap-command-scarf), anchored bottom_center to this suit's collar_apex",
+  "legs and thigh pockets omitted (nothing is sewn on them); hem cut just below the cuffs",
+  "OD green shade"
+ ],
+ "fit": {
+  "method": "n/a",
+  "score": null
+ },
+ "grade": "garment"
+}

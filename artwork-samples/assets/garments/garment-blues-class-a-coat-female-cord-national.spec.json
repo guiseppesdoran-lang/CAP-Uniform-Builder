@@ -1,0 +1,93 @@
+{
+ "asset_id": "garment-blues-class-a-coat-female-cord-national",
+ "name": "Women's Class A service dress coat: National CAC shoulder cord (gold) (overlay, registered to garment-blues-class-a-coat-female)",
+ "size_in": {
+  "w": 24.3883,
+  "h": 29.4756
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2438.83,
+  2947.56
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+ "anchors": {
+  "top_center": [
+   1219.42,
+   0
+  ],
+  "bottom_center": [
+   1219.42,
+   2947.56
+  ],
+  "center": [
+   1219.42,
+   1473.78
+  ],
+  "left_edge": [
+   0,
+   1473.78
+  ],
+  "right_edge": [
+   2438.83,
+   1473.78
+  ],
+  "cord_start": [
+   1987.04,
+   266.9
+  ],
+  "cord_end": [
+   1921.48,
+   1287.18
+  ]
+ },
+ "landmarks": {
+  "cord": [
+   [
+    1987.04,
+    266.9
+   ],
+   [
+    2053.04,
+    280.98
+   ],
+   [
+    2066.24,
+    286.26
+   ],
+   [
+    1900.8,
+    617.14
+   ],
+   [
+    1867.71,
+    823.94
+   ],
+   [
+    1900.8,
+    1030.74
+   ],
+   [
+    1921.48,
+    1287.18
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-a-coat-female",
+ "documented": [
+  "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)"
+ ],
+ "assumed": [
+  "cord thickness 0.36 in",
+  "path along the armhole seam"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

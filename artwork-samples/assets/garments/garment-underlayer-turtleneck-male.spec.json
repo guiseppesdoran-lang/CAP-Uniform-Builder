@@ -1,0 +1,64 @@
+{
+ "asset_id": "garment-underlayer-turtleneck-male",
+ "name": "White turtleneck sweater, men's corporate blazer V insert (registered to the blazer)",
+ "size_in": {
+  "w": 25.522,
+  "h": 38.45
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2552.2,
+  3845
+ ],
+ "size_source": "estimated",
+ "size_basis": "Original flat art fitted to the blazer V (same box/origin as the blazer). The regulation names the garment but gives no figure or dimension: 4.2 in neck width and 3.4 in neck height are estimates.",
+ "anchors": {
+  "top_center": [
+   1276.1,
+   0
+  ],
+  "bottom_center": [
+   1276.1,
+   3845.0000000000005
+  ],
+  "center": [
+   1276.1,
+   1922.5000000000002
+  ],
+  "left_edge": [
+   0,
+   1922.5000000000002
+  ],
+  "right_edge": [
+   2552.2,
+   1922.5000000000002
+  ],
+  "neck_top_center": [
+   1276.1,
+   34.22
+  ],
+  "neck_base_center": [
+   1276.1,
+   374.22
+  ]
+ },
+ "landmarks": {},
+ "landmarks_note": "registered to the blazer box (same origin and size); clipped to the blazer V",
+ "overlay_of": "garment-underlayer-turtleneck-male",
+ "documented": [
+  "regular white cotton-polyester or wool-blend turtleneck sweater or white shell top may be worn instead of the shirt; the blue blazer must be worn; no tie or tie tab with a turtleneck/shell (CAPR 39-1 4.2.3.2.2, 4.2.4.2.2, 4.2.4.3)"
+ ],
+ "assumed": [
+  "neck width / height",
+  "scoop size",
+  "rib spacing",
+  "no figure or base image exists for these garments"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "garment"
+}

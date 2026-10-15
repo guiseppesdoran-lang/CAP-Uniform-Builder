@@ -1,0 +1,110 @@
+{
+ "asset_id": "garment-blues-shoulder-board-top-male-right",
+ "name": "Cadet officer shoulder board, right shoulder, top-down view (blank grade; rank_slot is the grade area)",
+ "size_in": {
+  "w": 4.75,
+  "h": 2.5
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  475,
+  250
+ ],
+ "size_source": "measured",
+ "size_basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
+ "anchors": {
+  "top_center": [
+   237.5,
+   0
+  ],
+  "bottom_center": [
+   237.5,
+   250
+  ],
+  "center": [
+   237.5,
+   125
+  ],
+  "left_edge": [
+   0,
+   125
+  ],
+  "right_edge": [
+   475,
+   125
+  ],
+  "board_center": [
+   237.5,
+   125
+  ],
+  "rank_slot_center": [
+   105.5,
+   125
+  ],
+  "board_outer_end": [
+   10,
+   125
+  ],
+  "outer_end_center": [
+   10,
+   125
+  ],
+  "button_end_center": [
+   465,
+   125
+  ],
+  "board_top_left": [
+   10,
+   10
+  ]
+ },
+ "landmarks": {
+  "board": {
+   "x": 10,
+   "y": 10,
+   "w": 455,
+   "h": 230
+  },
+  "rank_slot": {
+   "x": 38,
+   "y": 10,
+   "w": 135,
+   "h": 230
+  },
+  "rank_slot_frame": {
+   "along_in": 1.35,
+   "across_in": 2.3,
+   "runs": "across the board (perpendicular to its length)",
+   "note": "the row of grade forms (Cadet Colonel: 3 diamonds 2 1/4 x 1 1/4 in) is centred on the blue band, CAPR 39-1 Fig A5-6; the board is 2.3 in wide so every grade fits at true size"
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot is the stripe band at the outer end, below the emblem",
+ "overlay_of": "garment-blues-class-a-cadet-officer-insignia",
+ "dimensions": {
+  "board_in": [
+   4.55,
+   1.843
+  ],
+  "rank_slot_in": [
+   1.35,
+   2.3
+  ],
+  "grade_form_max_in": [
+   2.25,
+   1.25
+  ]
+ },
+ "documented": [
+  "cadet officers wear regular-size grade insignia on Cadet Officer shoulder boards (CAPR 39-1 4.1.5.2.1.3 / 4.1.9.3.4)"
+ ],
+ "assumed": [
+  "stripe band centre 0.935 in from the outer end (from the board photo), grade slot 1.25 in along the board"
+ ],
+ "fit": {
+  "method": "measured from product photo",
+  "score": null
+ },
+ "grade": "accessory"
+}

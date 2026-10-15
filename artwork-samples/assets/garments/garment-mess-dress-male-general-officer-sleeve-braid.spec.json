@@ -1,0 +1,91 @@
+{
+ "asset_id": "garment-mess-dress-male-general-officer-sleeve-braid",
+ "name": "Men's USAF-style mess dress: general officer sleeve braid overlay (1 1/2 in, 3 in from the sleeve end)",
+ "size_in": {
+  "w": 26.522,
+  "h": 33.68
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2652.2,
+  3368
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-male. Braid 1.5 in wide per CAPR 39-1 4.1.1.1 (the sleeve end is 3 in below its lower edge).",
+ "anchors": {
+  "top_center": [
+   1326.1,
+   0
+  ],
+  "bottom_center": [
+   1326.1,
+   3368
+  ],
+  "center": [
+   1326.1,
+   1684
+  ],
+  "left_edge": [
+   0,
+   1684
+  ],
+  "right_edge": [
+   2652.2,
+   1684
+  ]
+ },
+ "landmarks": {
+  "sleeve_braid_right": [
+   [
+    65.3,
+    2681.6
+   ],
+   [
+    444.5,
+    2653
+   ],
+   [
+    444.5,
+    2803
+   ],
+   [
+    65.3,
+    2831.6
+   ]
+  ],
+  "sleeve_braid_left": [
+   [
+    2198.3,
+    2652.4
+   ],
+   [
+    2605.9,
+    2681.3
+   ],
+   [
+    2605.9,
+    2831.3
+   ],
+   [
+    2198.3,
+    2802.4
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-mess-dress-male",
+ "documented": [
+  "1 1/2 in blue sleeve braid for general officers (4.1.1.1 / 4.1.2.1)"
+ ],
+ "assumed": [
+  "braid colour",
+  "1 1/2 in braid edge nearest the sleeve end set at the same distance as the 1/2 in braid"
+ ],
+ "fit": {
+  "method": "measured",
+  "score": null
+ },
+ "grade": "accessory"
+}

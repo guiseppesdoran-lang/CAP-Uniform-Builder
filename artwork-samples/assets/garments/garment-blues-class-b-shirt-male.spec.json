@@ -1,0 +1,262 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male",
+ "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only)",
+ "size_in": {
+  "w": 20.688,
+  "h": 24.28
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2068.8,
+  2428
+ ],
+ "size_source": "estimated",
+ "size_basis": "Silhouette traced from images/base/blues_class_b_male.webp (581x719 px) at 0.0474 in/px. Same canvas and scale assumption as the Class A coat. No real garment was measured.",
+ "anchors": {
+  "top_center": [
+   1034.4,
+   0
+  ],
+  "bottom_center": [
+   1034.4,
+   2428
+  ],
+  "center": [
+   1034.4,
+   1214
+  ],
+  "left_edge": [
+   0,
+   1214
+  ],
+  "right_edge": [
+   2068.8,
+   1214
+  ],
+  "shoulder_seam_right": [
+   242.8,
+   330
+  ],
+  "sleeve_bottom_right": [
+   213.7,
+   1311.8
+  ],
+  "shoulder_seam_left": [
+   1826,
+   330
+  ],
+  "sleeve_bottom_left": [
+   1855.1,
+   1311.8
+  ],
+  "hem_center": [
+   1034.4,
+   2418
+  ],
+  "nameplate_center": [
+   655.25,
+   742.7
+  ],
+  "epaulet_right_center": [
+   494.8,
+   313
+  ],
+  "epaulet_left_center": [
+   1574,
+   313
+  ],
+  "belt_buckle_center": [
+   1100.8,
+   1990.15
+  ],
+  "collar_insignia_right": [
+   1296.79,
+   267.73
+  ],
+  "collar_insignia_left": [
+   772.01,
+   267.73
+  ],
+  "button_1_center": [
+   1034.4,
+   578.8
+  ],
+  "button_2_center": [
+   1034.4,
+   950.89
+  ],
+  "button_3_center": [
+   1034.4,
+   1318.24
+  ],
+  "button_4_center": [
+   1034.4,
+   1683.22
+  ],
+  "pocket_right_top_center": [
+   655.15,
+   780.2
+  ],
+  "pocket_left_top_center": [
+   1413.55,
+   780.2
+  ],
+  "ribbon_row_bottom_center": [
+   1413.55,
+   780.2
+  ],
+  "nameplate_rest_center": [
+   655.15,
+   780.2
+  ]
+ },
+ "landmarks": {
+  "nameplate": {
+   "x": 486.5,
+   "y": 705.2,
+   "w": 337.5,
+   "h": 75
+  },
+  "belt_buckle": {
+   "x": 998.9,
+   "y": 1922.6,
+   "w": 203.8,
+   "h": 135.1
+  },
+  "pocket_right": {
+   "x": 439.5,
+   "y": 780.2,
+   "w": 431.3,
+   "h": 618.6
+  },
+  "pocket_left": {
+   "x": 1197.9,
+   "y": 780.2,
+   "w": 431.3,
+   "h": 618.6
+  },
+  "epaulet_right": [
+   [
+    276,
+    298.1
+   ],
+   [
+    636.2,
+    163.9
+   ],
+   [
+    713.6,
+    228.4
+   ],
+   [
+    697.3,
+    327.9
+   ],
+   [
+    337.1,
+    462.1
+   ]
+  ],
+  "collar_right": [
+   [
+    1280.9,
+    24.2
+   ],
+   [
+    1489.4,
+    417.6
+   ],
+   [
+    1257.2,
+    443.7
+   ],
+   [
+    1041.5,
+    545.6
+   ]
+  ],
+  "epaulet_left": [
+   [
+    1792.8,
+    298.1
+   ],
+   [
+    1432.6,
+    163.9
+   ],
+   [
+    1355.2,
+    228.4
+   ],
+   [
+    1371.5,
+    327.9
+   ],
+   [
+    1731.7,
+    462.1
+   ]
+  ],
+  "collar_left": [
+   [
+    787.9,
+    24.2
+   ],
+   [
+    579.4,
+    417.6
+   ],
+   [
+    811.6,
+    443.7
+   ],
+   [
+    1027.3,
+    545.6
+   ]
+  ],
+  "collar_insignia_angle_deg": {
+   "right": 62.1,
+   "left": 117.9
+  },
+  "ribbon_slot": {
+   "x": 1207.3,
+   "y": 630.2,
+   "w": 412.5,
+   "h": 150
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "dimensions": {
+  "length_in": 24.08,
+  "max_width_in": 20.29,
+  "nameplate_in": [
+   3.375,
+   0.75
+  ],
+  "buttons": 4
+ },
+ "documented": [
+  "light blue short-sleeve shirt, two pleated pockets, epaulets (CAPR 39-1 4.1.11.1.1)",
+  "nameplate centred on, resting on (not over) the top edge of the wearer's right pocket (4.1.11.1.1.2.1)",
+  "ribbons centred on, resting on the top edge of the wearer's left pocket (4.1.11.1.1.2.2)",
+  "cadet officers: miniature grade on blue epaulet sleeves; cadet NCOs/airmen: metal chevrons on both sides of the collar, 1 in from and parallel to the front of the collar (4.1.11.1.1.1.4)",
+  "blue belt with plain silver tip and buckle, tip toward the wearer's left (4.1.11.1.1.5)",
+  "tie optional with short sleeves (4.1.11.1.1.3)"
+ ],
+ "assumed": [
+  "px-to-inch scale",
+  "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate (blue plastic, 3 3/8 x 3/4 in); no dimension in CAPR 39-1 or DAFI 36-2903; no dimension in CAPR 39-1 or DAFI 36-2903)",
+  "epaulet strap size and shape (not drawn in the base image)",
+  "collar leaf, pocket and seam geometry read off the base image",
+  "colours sampled from the base image",
+  "trousers cut off at the base image's crop line"
+ ],
+ "fit": {
+  "method": "traced from the raster",
+  "score": null
+ },
+ "grade": "garment"
+}

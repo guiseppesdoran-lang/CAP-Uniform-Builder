@@ -1,0 +1,74 @@
+{
+ "asset_id": "garment-blues-class-a-coat-lapel-cap",
+ "name": "Men's Class A coat CAP lapel insignia, cadet officers (overlay; draw above the lapel foreground)",
+ "size_in": {
+  "w": 23.726,
+  "h": 29.955
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2372.6,
+  2995.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same box as garment-blues-class-a-coat; CAP letters 0.53 in tall, 1.4 in wide, centred on each lapel (CAPR 39-1 4.1.5.2.2.1.2).",
+ "anchors": {
+  "top_center": [
+   1186.3,
+   0
+  ],
+  "bottom_center": [
+   1186.3,
+   2995.5
+  ],
+  "center": [
+   1186.3,
+   1497.75
+  ],
+  "left_edge": [
+   0,
+   1497.75
+  ],
+  "right_edge": [
+   2372.6,
+   1497.75
+  ],
+  "lapel_cap_right_center": [
+   905.1,
+   454.5
+  ],
+  "lapel_cap_left_center": [
+   1467.5,
+   454.5
+  ]
+ },
+ "landmarks": {
+  "lapel_cap_right": {
+   "x": 835.1,
+   "y": 428,
+   "w": 140,
+   "h": 53
+  },
+  "lapel_cap_left": {
+   "x": 1397.5,
+   "y": 428,
+   "w": 140,
+   "h": 53
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-a-coat",
+ "documented": [
+  "CAP lapel insignia halfway up the seam, cadet officers only (4.1.5.2.2.1.2)"
+ ],
+ "assumed": [
+  "letter size"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

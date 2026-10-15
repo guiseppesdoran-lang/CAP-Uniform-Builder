@@ -1,0 +1,382 @@
+{
+ "asset_id": "garment-mess-dress-male",
+ "name": "Men's USAF-style mess dress (blank: no grade or medals; CAP seal on the right side)",
+ "size_in": {
+  "w": 26.522,
+  "h": 33.68
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2652.2,
+  3368
+ ],
+ "size_source": "estimated",
+ "size_basis": "Silhouette traced from images/base/mess_dress_male.webp (581x719 px) at 0.0474 in/px (same canvas and scale assumption as the Class A coat; 33.13 in tall). No real garment was measured.",
+ "anchors": {
+  "top_center": [
+   1326.1,
+   0
+  ],
+  "bottom_center": [
+   1326.1,
+   3368
+  ],
+  "center": [
+   1326.1,
+   1684
+  ],
+  "left_edge": [
+   0,
+   1684
+  ],
+  "right_edge": [
+   2652.2,
+   1684
+  ],
+  "hem_center": [
+   1326.1,
+   3338
+  ],
+  "cap_seal_center": [
+   861.6,
+   1906.8
+  ],
+  "miniature_medals_center": [
+   2018.61,
+   977.74
+  ],
+  "shoulder_right_center": [
+   245.4,
+   427.9
+  ],
+  "shoulder_left_center": [
+   2387.9,
+   451.6
+  ]
+ },
+ "landmarks": {
+  "miniature_medal_slot": {
+   "x": 1868.61,
+   "y": 915.24,
+   "w": 300,
+   "h": 125
+  },
+  "cap_seal": {
+   "x": 736.6,
+   "y": 1781.8,
+   "w": 250,
+   "h": 250
+  },
+  "shoulder_mark_right": {
+   "x": 225.4,
+   "y": 407.9,
+   "w": 40,
+   "h": 40
+  },
+  "shoulder_mark_left": {
+   "x": 2367.9,
+   "y": 431.6,
+   "w": 40,
+   "h": 40
+  },
+  "shawl_right": [
+   [
+    984.8,
+    53.4
+   ],
+   [
+    833.1,
+    186.2
+   ],
+   [
+    818.9,
+    214.6
+   ],
+   [
+    814.2,
+    451.6
+   ],
+   [
+    837.9,
+    807.1
+   ],
+   [
+    897.1,
+    1044.1
+   ],
+   [
+    956.4,
+    1281.1
+   ],
+   [
+    1041.7,
+    1541.8
+   ],
+   [
+    1131.8,
+    1802.5
+   ],
+   [
+    1202.9,
+    2015.8
+   ],
+   [
+    1202.9,
+    2006.3
+   ],
+   [
+    1202.9,
+    1717.2
+   ],
+   [
+    1157.8,
+    1281.1
+   ],
+   [
+    1110.4,
+    925.6
+   ],
+   [
+    1086.7,
+    688.6
+   ],
+   [
+    1039.3,
+    427.9
+   ],
+   [
+    1022.7,
+    214.6
+   ],
+   [
+    1003.8,
+    53.4
+   ]
+  ],
+  "shawl_left": [
+   [
+    1655.5,
+    67.7
+   ],
+   [
+    1814.3,
+    214.6
+   ],
+   [
+    1833.3,
+    570.1
+   ],
+   [
+    1809.6,
+    925.6
+   ],
+   [
+    1762.2,
+    1281.1
+   ],
+   [
+    1676.9,
+    1565.5
+   ],
+   [
+    1553.6,
+    1826.2
+   ],
+   [
+    1449.3,
+    2015.8
+   ],
+   [
+    1439.9,
+    2006.3
+   ],
+   [
+    1439.9,
+    1717.2
+   ],
+   [
+    1489.6,
+    1281.1
+   ],
+   [
+    1537,
+    982.5
+   ],
+   [
+    1560.7,
+    807.1
+   ],
+   [
+    1601,
+    451.6
+   ],
+   [
+    1643.7,
+    200.4
+   ],
+   [
+    1643.7,
+    67.7
+   ]
+  ],
+  "shirt": [
+   [
+    1086.7,
+    432.6
+   ],
+   [
+    1086.7,
+    688.6
+   ],
+   [
+    1110.4,
+    925.6
+   ],
+   [
+    1157.8,
+    1281.1
+   ],
+   [
+    1202.9,
+    1717.2
+   ],
+   [
+    1202.9,
+    1717.2
+   ],
+   [
+    1439.9,
+    1717.2
+   ],
+   [
+    1439.9,
+    1717.2
+   ],
+   [
+    1489.6,
+    1281.1
+   ],
+   [
+    1537,
+    982.5
+   ],
+   [
+    1560.7,
+    807.1
+   ],
+   [
+    1601,
+    451.6
+   ],
+   [
+    1601,
+    432.6
+   ]
+  ],
+  "cummerbund": [
+   [
+    1202.9,
+    1684
+   ],
+   [
+    1321.4,
+    1731.4
+   ],
+   [
+    1439.9,
+    1684
+   ],
+   [
+    1468.3,
+    2120.1
+   ],
+   [
+    1179.2,
+    2120.1
+   ]
+  ],
+  "bow_tie": [
+   [
+    1259.7,
+    257.3
+   ],
+   [
+    1387.7,
+    257.3
+   ],
+   [
+    1387.7,
+    390
+   ],
+   [
+    1259.7,
+    390
+   ]
+  ],
+  "button_right_1": {
+   "x": 778.92,
+   "y": 1487.58,
+   "w": 80,
+   "h": 80
+  },
+  "button_right_2": {
+   "x": 821.58,
+   "y": 1866.78,
+   "w": 80,
+   "h": 80
+  },
+  "button_right_3": {
+   "x": 831.06,
+   "y": 2245.98,
+   "w": 80,
+   "h": 80
+  },
+  "button_left_1": {
+   "x": 1755.36,
+   "y": 1463.88,
+   "w": 80,
+   "h": 80
+  },
+  "button_left_2": {
+   "x": 1703.22,
+   "y": 1852.56,
+   "w": 80,
+   "h": 80
+  },
+  "button_left_3": {
+   "x": 1641.6,
+   "y": 2236.5,
+   "w": 80,
+   "h": 80
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "dimensions": {
+  "height_in": 33.13,
+  "max_width_in": 26.02,
+  "buttons_per_side": 3,
+  "button_dia_in": 0.8
+ },
+ "documented": [
+  "blue non-fastening single-breasted mess jacket, three wing-and-star / CAP arms / USAF arms buttons each side, satin shawl collar and lapels, two buttons joined by a silver chain close the front (CAPR 39-1 4.1.1.1)",
+  "white pleated shirt with studs, blue satin bow tie, plain blue satin cummerbund with the open edge of the pleats up (4.1.1.2, 4.1.1.2.3, 4.1.1.3.2)",
+  "no nametag on the mess dress (4.1.1.1.2.1)",
+  "CAP seal worn over the middle button on the right side of the jacket (4.1.1.1.2.3)",
+  "sleeve braid 1/2 in (1 1/2 in for general officers), 3 in from the sleeve end: separate overlay asset (4.1.1.1)"
+ ],
+ "assumed": [
+  "px-to-inch scale",
+  "button diameter (about 0.8 in)",
+  "seal drawn at the 2 1/2 in diameter dimensioned in CAPR 39-1 Fig A6-4 (blue-background version); eagle/shield is the measured CAP Crest redraw, ring lettering set in Arial Bold outlines",
+  "shawl collar, shirt, cummerbund and cut-away geometry read off the base image",
+  "satin sheen colours sampled from the base image",
+  "sleeve braid colour"
+ ],
+ "fit": {
+  "method": "traced from the raster",
+  "score": null
+ },
+ "grade": "garment"
+}

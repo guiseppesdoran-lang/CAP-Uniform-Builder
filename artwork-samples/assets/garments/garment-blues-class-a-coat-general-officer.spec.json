@@ -1,0 +1,170 @@
+{
+ "asset_id": "garment-blues-class-a-coat-general-officer",
+ "name": "Men's Class A coat general officer layer: as the officer layer with 1 1/2 in sleeve braid (overlay, blank grade)",
+ "size_in": {
+  "w": 23.726,
+  "h": 29.955
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2372.6,
+  2995.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Sleeve braid width 1.5 in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
+ "anchors": {
+  "top_center": [
+   1186.3,
+   0
+  ],
+  "bottom_center": [
+   1186.3,
+   2995.5
+  ],
+  "center": [
+   1186.3,
+   1497.75
+  ],
+  "left_edge": [
+   0,
+   1497.75
+  ],
+  "right_edge": [
+   2372.6,
+   1497.75
+  ],
+  "epaulet_sleeve_right_center": [
+   487.3,
+   309.25
+  ],
+  "rank_slot_right_center": [
+   487.3,
+   309.3
+  ],
+  "rank_rule_point_right_center": [
+   411.8,
+   329.1
+  ],
+  "lapel_us_right_center": [
+   905.1,
+   456.1
+  ],
+  "sleeve_braid_right_center": [
+   251.4,
+   2353.9
+  ],
+  "epaulet_sleeve_left_center": [
+   1885.3,
+   309.25
+  ],
+  "rank_slot_left_center": [
+   1885.3,
+   309.3
+  ],
+  "rank_rule_point_left_center": [
+   1960.8,
+   329.1
+  ],
+  "lapel_us_left_center": [
+   1467.5,
+   456.1
+  ],
+  "sleeve_braid_left_center": [
+   2122.45,
+   2354.05
+  ]
+ },
+ "landmarks": {
+  "epaulet_right": {
+   "x": 346.3,
+   "y": 228.4,
+   "w": 380.2,
+   "h": 135.9
+  },
+  "epaulet_sleeve_right": {
+   "x": 343.6,
+   "y": 250.8,
+   "w": 287.4,
+   "h": 116.9
+  },
+  "rank_slot_right": {
+   "x": 343.6,
+   "y": 250.8,
+   "w": 287.4,
+   "h": 117
+  },
+  "rank_rule_point_right": {
+   "x": 410.8,
+   "y": 328.1,
+   "w": 2,
+   "h": 2
+  },
+  "lapel_us_right": {
+   "x": 860.1,
+   "y": 426.1,
+   "w": 90,
+   "h": 60
+  },
+  "sleeve_braid_right": {
+   "x": 61,
+   "y": 2258,
+   "w": 380.8,
+   "h": 191.8
+  },
+  "epaulet_left": {
+   "x": 1646.1,
+   "y": 228.4,
+   "w": 380.2,
+   "h": 135.9
+  },
+  "epaulet_sleeve_left": {
+   "x": 1741.6,
+   "y": 250.8,
+   "w": 287.4,
+   "h": 116.9
+  },
+  "rank_slot_left": {
+   "x": 1741.6,
+   "y": 250.8,
+   "w": 287.4,
+   "h": 117
+  },
+  "rank_rule_point_left": {
+   "x": 1959.8,
+   "y": 328.1,
+   "w": 2,
+   "h": 2
+  },
+  "lapel_us_left": {
+   "x": 1422.5,
+   "y": 426.1,
+   "w": 90,
+   "h": 60
+  },
+  "sleeve_braid_left": {
+   "x": 1930.9,
+   "y": 2257.3,
+   "w": 383.1,
+   "h": 193.5
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left of the artwork box",
+ "overlay_of": "garment-blues-class-a-coat",
+ "documented": [
+  "general officers wear 1 1/2 in blue sleeve braid, 3 in from the end of the sleeve (CAPR 39-1 4.1.5.2 / 4.1.9.2)",
+  "otherwise as the officer layer"
+ ],
+ "assumed": [
+  "epaulet and epaulet sleeve size",
+  "US insignia size",
+  "braid colour (blue, not specified as a shade for the Class A coat)",
+  "rank insignia not drawn: placed by the rank insignia assets at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

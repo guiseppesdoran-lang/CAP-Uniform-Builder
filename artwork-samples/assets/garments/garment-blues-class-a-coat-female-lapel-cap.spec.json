@@ -1,0 +1,74 @@
+{
+ "asset_id": "garment-blues-class-a-coat-female-lapel-cap",
+ "name": "Women's Class A coat CAP lapel insignia, cadet officers (overlay; draw above the lapel foreground)",
+ "size_in": {
+  "w": 24.3883,
+  "h": 29.4756
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2438.83,
+  2947.56
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same box and scale as garment-blues-class-a-coat-female; CAP letters 0.5 in tall x 1.4 in wide, true size (CAPR 39-1 4.1.9.4.1.2).",
+ "anchors": {
+  "top_center": [
+   1219.42,
+   0
+  ],
+  "bottom_center": [
+   1219.42,
+   2947.56
+  ],
+  "center": [
+   1219.42,
+   1473.78
+  ],
+  "left_edge": [
+   0,
+   1473.78
+  ],
+  "right_edge": [
+   2438.83,
+   1473.78
+  ],
+  "lapel_cap_right_center": [
+   896.85,
+   395.65
+  ],
+  "lapel_cap_left_center": [
+   1542.07,
+   395.65
+  ]
+ },
+ "landmarks": {
+  "lapel_cap_right": {
+   "x": 826.85,
+   "y": 370.66,
+   "w": 140.01,
+   "h": 49.98
+  },
+  "lapel_cap_left": {
+   "x": 1472.06,
+   "y": 370.66,
+   "w": 140.01,
+   "h": 49.98
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-a-coat-female",
+ "documented": [
+  "CAP lapel insignia halfway up the seam, cadet officers only (4.1.9.4.1.2)"
+ ],
+ "assumed": [
+  "letter size"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

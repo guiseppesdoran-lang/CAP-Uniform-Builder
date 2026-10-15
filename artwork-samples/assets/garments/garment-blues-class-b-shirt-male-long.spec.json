@@ -1,0 +1,277 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-long",
+ "name": "Men's Class B blue long-sleeve shirt, tie and trousers (nametag position only)",
+ "size_in": {
+  "w": 21.32,
+  "h": 27.075
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2132,
+  2707.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Silhouette (long sleeves, collar, torso, trousers/skirt) measured from CAPR 39-1 Figure 4.8 (3 March 2020): the figure was rendered at 2.2x, traced, and scaled with the registration of its short-sleeve twin to the short-sleeve base image, so interior parts line up with garment-blues-class-b-shirt-male. No real garment was measured.",
+ "anchors": {
+  "top_center": [
+   1066,
+   0
+  ],
+  "bottom_center": [
+   1066,
+   2707.5
+  ],
+  "center": [
+   1066,
+   1353.75
+  ],
+  "left_edge": [
+   0,
+   1353.75
+  ],
+  "right_edge": [
+   2132,
+   1353.75
+  ],
+  "shoulder_seam_right": [
+   274.4,
+   330
+  ],
+  "sleeve_bottom_right": [
+   291.3,
+   2594.5
+  ],
+  "elbow_right": [
+   209.6,
+   1575.5
+  ],
+  "chevron_halfway_right": [
+   210.9,
+   952.7
+  ],
+  "shoulder_seam_left": [
+   1857.6,
+   330
+  ],
+  "sleeve_bottom_left": [
+   1840.7,
+   2594.5
+  ],
+  "elbow_left": [
+   1922.4,
+   1575.5
+  ],
+  "chevron_halfway_left": [
+   1921.1,
+   952.7
+  ],
+  "hem_center": [
+   1066,
+   2697.5
+  ],
+  "nameplate_center": [
+   686.85,
+   742.7
+  ],
+  "epaulet_right_center": [
+   525.8,
+   300.25
+  ],
+  "epaulet_left_center": [
+   1606.2,
+   300.25
+  ],
+  "belt_buckle_center": [
+   1132.4,
+   1990.15
+  ],
+  "collar_insignia_right": [
+   1328.39,
+   267.73
+  ],
+  "collar_insignia_left": [
+   803.61,
+   267.73
+  ],
+  "button_1_center": [
+   1066,
+   578.8
+  ],
+  "button_2_center": [
+   1066,
+   950.89
+  ],
+  "button_3_center": [
+   1066,
+   1318.24
+  ],
+  "button_4_center": [
+   1066,
+   1683.22
+  ],
+  "pocket_right_top_center": [
+   686.75,
+   780.2
+  ],
+  "pocket_left_top_center": [
+   1445.15,
+   780.2
+  ],
+  "ribbon_row_bottom_center": [
+   1445.15,
+   780.2
+  ],
+  "nameplate_rest_center": [
+   686.75,
+   780.2
+  ]
+ },
+ "landmarks": {
+  "nameplate": {
+   "x": 518.1,
+   "y": 705.2,
+   "w": 337.5,
+   "h": 75
+  },
+  "belt_buckle": {
+   "x": 1030.5,
+   "y": 1922.6,
+   "w": 203.8,
+   "h": 135.1
+  },
+  "pocket_right": {
+   "x": 471.1,
+   "y": 780.2,
+   "w": 431.3,
+   "h": 618.6
+  },
+  "pocket_left": {
+   "x": 1229.5,
+   "y": 780.2,
+   "w": 431.3,
+   "h": 618.6
+  },
+  "epaulet_right": [
+   [
+    307.6,
+    281
+   ],
+   [
+    667.8,
+    154.4
+   ],
+   [
+    744,
+    220.3
+   ],
+   [
+    725.9,
+    319.4
+   ],
+   [
+    365.7,
+    446.1
+   ]
+  ],
+  "collar_right": [
+   [
+    1312.5,
+    24.2
+   ],
+   [
+    1521,
+    417.6
+   ],
+   [
+    1288.8,
+    443.7
+   ],
+   [
+    1073.1,
+    545.6
+   ]
+  ],
+  "epaulet_left": [
+   [
+    1824.4,
+    281
+   ],
+   [
+    1464.2,
+    154.4
+   ],
+   [
+    1388,
+    220.3
+   ],
+   [
+    1406.1,
+    319.4
+   ],
+   [
+    1766.3,
+    446.1
+   ]
+  ],
+  "collar_left": [
+   [
+    819.5,
+    24.2
+   ],
+   [
+    611,
+    417.6
+   ],
+   [
+    843.2,
+    443.7
+   ],
+   [
+    1058.9,
+    545.6
+   ]
+  ],
+  "collar_insignia_angle_deg": {
+   "right": 62.1,
+   "left": 117.9
+  },
+  "ribbon_slot": {
+   "x": 1238.9,
+   "y": 630.2,
+   "w": 412.5,
+   "h": 150
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "dimensions": {
+  "length_in": 26.88,
+  "max_width_in": 20.92,
+  "nameplate_in": [
+   3.375,
+   0.75
+  ],
+  "buttons": 4
+ },
+ "documented": [
+  "light blue long-sleeve shirt, two pleated pockets, convertible cuffs, epaulets (CAPR 39-1 4.1.11.1.1)",
+  "long sleeves end 1/4 to 1/2 in below the wrist (4.1.11.1.1)",
+  "tie: the tip covers a portion of the belt buckle but does not extend below it (4.1.8.3, as for the other men's blues)",
+  "nameplate centred on, resting on (not over) the top edge of the wearer's right pocket (4.1.11.1.1.2.1)",
+  "cadet NCOs/airmen: metal chevrons on both sides of the collar, 1 in from and parallel to the front of the collar (4.1.11.1.1.1.4)"
+ ],
+ "assumed": [
+  "px-to-inch scale",
+  "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate (blue plastic, 3 3/8 x 3/4 in); no dimension in CAPR 39-1 or DAFI 36-2903; no dimension in CAPR 39-1 or DAFI 36-2903)",
+  "epaulet strap size and shape (not drawn in the base image)",
+  "collar leaf, pocket and seam geometry read off the base image",
+  "colours sampled from the base image",
+  "trousers cut off at the base image's crop line"
+ ],
+ "fit": {
+  "method": "traced from the raster",
+  "score": null
+ },
+ "grade": "garment"
+}

@@ -1,0 +1,62 @@
+{
+ "asset_id": "garment-cap-command-scarf",
+ "name": "CAP command scarf (optional; worn with the FDU and CFDU)",
+ "size_in": {
+  "w": 7.9892,
+  "h": 6.8998
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  798.92,
+  689.98
+ ],
+ "size_source": "estimated",
+ "size_basis": "Two bands lying along the FDU collar V and crossing where they are tucked in; sized to the suit's collar opening. CAPR 39-1 8.2.6 / Figure 8.2 give no dimensions. Motif is an original simplified three-pronged mark, not traced.",
+ "anchors": {
+  "top_center": [
+   399.46,
+   0
+  ],
+  "bottom_center": [
+   399.46,
+   689.98
+  ],
+  "center": [
+   399.46,
+   344.99
+  ],
+  "left_edge": [
+   0,
+   344.99
+  ],
+  "right_edge": [
+   798.92,
+   344.99
+  ],
+  "suit_apex": [
+   399.46,
+   665.77
+  ]
+ },
+ "landmarks": {},
+ "landmarks_note": "Optional accessory. Place so anchors.suit_apex coincides with the suit's anchors.collar_apex (both in the same inch scale).",
+ "dimensions": {
+  "width_in": 7.99,
+  "height_in": 6.9
+ },
+ "documented": [
+  "yellow and red CAP command scarf is authorized with the FDU (8.2.6) and CFDU (8.3.6), worn around the neck and tucked into the flight suit"
+ ],
+ "assumed": [
+  "band width and cross position",
+  "motif drawing",
+  "size"
+ ],
+ "fit": {
+  "method": "n/a",
+  "score": null
+ },
+ "grade": "garment"
+}

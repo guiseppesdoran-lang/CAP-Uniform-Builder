@@ -1,0 +1,96 @@
+{
+ "asset_id": "garment-blues-class-b-blouse-female-epaulet-sleeve-cadet-officer",
+ "name": "Women's Class B blue short-sleeve blouse and skirt (nametag position only) cadet officer epaulet sleeves (overlay, registered to garment-blues-class-b-blouse-female; blank grade)",
+ "size_in": {
+  "w": 20.766,
+  "h": 27.11
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2076.6,
+  2711
+ ],
+ "size_source": "estimated",
+ "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours sampled from the reference photos (gray #6e6a69, cadet navy #072157); the regulation gives no dimension.",
+ "anchors": {
+  "top_center": [
+   1038.3,
+   0
+  ],
+  "bottom_center": [
+   1038.3,
+   2711
+  ],
+  "center": [
+   1038.3,
+   1355.5
+  ],
+  "left_edge": [
+   0,
+   1355.5
+  ],
+  "right_edge": [
+   2076.6,
+   1355.5
+  ],
+  "rank_slot_right_center": [
+   454.6,
+   239.4
+  ],
+  "rank_slot_left_center": [
+   1622,
+   239.4
+  ],
+  "rank_rule_point_right": [
+   368.02,
+   328.52
+  ],
+  "rank_rule_point_left": [
+   1708.58,
+   328.52
+  ]
+ },
+ "landmarks": {
+  "epaulet_sleeve_right": {
+   "x": 287.5,
+   "y": 182.6,
+   "w": 334.2,
+   "h": 113.6
+  },
+  "rank_slot_right": {
+   "x": 287.5,
+   "y": 182.6,
+   "w": 334.2,
+   "h": 113.6
+  },
+  "epaulet_sleeve_left": {
+   "x": 1454.9,
+   "y": 182.6,
+   "w": 334.2,
+   "h": 113.6
+  },
+  "rank_slot_left": {
+   "x": 1454.9,
+   "y": 182.6,
+   "w": 334.2,
+   "h": 113.6
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-blouse-female",
+ "documented": [
+  "blue epaulet sleeves, miniature grade (4.1.11.1.1.1.4 / 4.1.12.2.3.4)",
+  "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "sleeve length (covers the outer 82% of the strap)",
+  "grade insignia not drawn: placed by the rank insignia assets at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

@@ -1,0 +1,267 @@
+{
+ "asset_id": "garment-blues-class-b-blouse-female-long",
+ "name": "Women's Class B blue long-sleeve blouse, tie tab and skirt (nametag position only)",
+ "size_in": {
+  "w": 19.51,
+  "h": 29.896
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  1951,
+  2989.6
+ ],
+ "size_source": "estimated",
+ "size_basis": "Silhouette (long sleeves, collar, torso, trousers/skirt) measured from CAPR 39-1 Figure 4.11 (3 March 2020): the figure was rendered at 2.2x, traced, and scaled with the registration of its short-sleeve twin to the short-sleeve base image, so interior parts line up with garment-blues-class-b-blouse-female. No real garment was measured.",
+ "anchors": {
+  "top_center": [
+   975.5,
+   0
+  ],
+  "bottom_center": [
+   975.5,
+   2989.6
+  ],
+  "center": [
+   975.5,
+   1494.8
+  ],
+  "left_edge": [
+   0,
+   1494.8
+  ],
+  "right_edge": [
+   1951,
+   1494.8
+  ],
+  "shoulder_seam_right": [
+   209.3,
+   267.9
+  ],
+  "sleeve_bottom_right": [
+   235.4,
+   2401.4
+  ],
+  "elbow_right": [
+   203.5,
+   1441.3
+  ],
+  "chevron_halfway_right": [
+   213.7,
+   854.6
+  ],
+  "shoulder_seam_left": [
+   1741.7,
+   267.9
+  ],
+  "sleeve_bottom_left": [
+   1715.6,
+   2401.4
+  ],
+  "elbow_left": [
+   1747.5,
+   1441.3
+  ],
+  "chevron_halfway_left": [
+   1737.3,
+   854.6
+  ],
+  "hem_center": [
+   975.5,
+   2979.6
+  ],
+  "nameplate_center": [
+   670.55,
+   697.1
+  ],
+  "epaulet_right_center": [
+   456.5,
+   283.9
+  ],
+  "epaulet_left_center": [
+   1494.5,
+   283.9
+  ],
+  "belt_buckle_center": [
+   928.35,
+   1837.8
+  ],
+  "collar_insignia_right": [
+   1243.29,
+   237.75
+  ],
+  "collar_insignia_left": [
+   707.71,
+   237.75
+  ],
+  "button_1_center": [
+   975.5,
+   547.07
+  ],
+  "button_2_center": [
+   975.5,
+   916.68
+  ],
+  "button_3_center": [
+   975.5,
+   1251.63
+  ],
+  "button_4_center": [
+   975.5,
+   1615.45
+  ],
+  "ribbon_row_bottom_center": [
+   1280.45,
+   734.6
+  ]
+ },
+ "landmarks": {
+  "nameplate": {
+   "x": 501.8,
+   "y": 659.6,
+   "w": 337.5,
+   "h": 75
+  },
+  "belt_buckle": {
+   "x": 827.3,
+   "y": 1773.3,
+   "w": 202.1,
+   "h": 129
+  },
+  "epaulet_right": [
+   [
+    224.7,
+    240.3
+   ],
+   [
+    621.3,
+    156.3
+   ],
+   [
+    688.3,
+    231.5
+   ],
+   [
+    657.6,
+    327.5
+   ],
+   [
+    261,
+    411.5
+   ]
+  ],
+  "collar_right": [
+   [
+    1216.1,
+    8.1
+   ],
+   [
+    1439.4,
+    360.3
+   ],
+   [
+    1193,
+    344.9
+   ],
+   [
+    1183.4,
+    406.6
+   ],
+   [
+    1091,
+    464.3
+   ],
+   [
+    975.5,
+    495.1
+   ]
+  ],
+  "epaulet_left": [
+   [
+    1726.3,
+    240.3
+   ],
+   [
+    1329.7,
+    156.3
+   ],
+   [
+    1262.7,
+    231.5
+   ],
+   [
+    1293.4,
+    327.5
+   ],
+   [
+    1690,
+    411.5
+   ]
+  ],
+  "collar_left": [
+   [
+    734.9,
+    8.1
+   ],
+   [
+    511.6,
+    360.3
+   ],
+   [
+    758,
+    344.9
+   ],
+   [
+    767.6,
+    406.6
+   ],
+   [
+    860,
+    464.3
+   ],
+   [
+    975.5,
+    495.1
+   ]
+  ],
+  "collar_insignia_angle_deg": {
+   "right": 57.6,
+   "left": 122.4
+  },
+  "ribbon_slot": {
+   "x": 1074.2,
+   "y": 584.6,
+   "w": 412.5,
+   "h": 150
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "dimensions": {
+  "length_in": 29.7,
+  "max_width_in": 19.11,
+  "nameplate_in": [
+   3.375,
+   0.75
+  ],
+  "buttons": 4
+ },
+ "documented": [
+  "long-sleeve blouse with rounded cuffs and buttonhole closures, epaulets, no military creases (CAPR 39-1 4.1.9.5 / 4.1.12.2)",
+  "blue satin tie tab with the long-sleeve blouse (4.1.12)",
+  "nameplate centred on the wearer's right, even with to 1.5 in above/below the first exposed button (4.1.12.2.4.1)"
+ ],
+ "assumed": [
+  "px-to-inch scale (women's base image drawn larger on its canvas; rescaled to match the men's shirt width)",
+  "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate (blue plastic, 3 3/8 x 3/4 in); no dimension in CAPR 39-1 or DAFI 36-2903; no dimension in CAPR 39-1 or DAFI 36-2903)",
+  "epaulet strap size and shape (not drawn in the base image)",
+  "collar leaf, pocket and seam geometry read off the base image",
+  "colours sampled from the base image",
+  "skirt cut off at the base image's crop line"
+ ],
+ "fit": {
+  "method": "traced from the raster",
+  "score": null
+ },
+ "grade": "garment"
+}

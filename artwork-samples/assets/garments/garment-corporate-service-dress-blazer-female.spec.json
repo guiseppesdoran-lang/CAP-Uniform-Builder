@@ -1,0 +1,146 @@
+{
+ "asset_id": "garment-corporate-service-dress-blazer-female",
+ "name": "Women's Corporate Service Dress: navy blazer, white shirt with tie tab, gray skirt (blank nametag)",
+ "size_in": {
+  "w": 19.1183,
+  "h": 35.4347
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  1911.83,
+  3543.47
+ ],
+ "size_source": "estimated",
+ "size_basis": "Silhouette traced from the regulation's Figure 4.15 (CAPR 39-1 p.61) and scaled to 23.0 in sleeve-to-sleeve (estimate: about 9% narrower than the men's blazer; the figures are drawn at the same width). No real garment was measured.",
+ "anchors": {
+  "top_center": [
+   955.91,
+   0
+  ],
+  "bottom_center": [
+   955.91,
+   3543.47
+  ],
+  "center": [
+   955.91,
+   1771.74
+  ],
+  "left_edge": [
+   0,
+   1771.74
+  ],
+  "right_edge": [
+   1911.83,
+   1771.74
+  ],
+  "hem_center": [
+   955.91,
+   2760
+  ],
+  "nameplate_slot_center": [
+   1402.66,
+   1042
+  ],
+  "nameplate_slot_top_left": [
+   1233.91,
+   997
+  ],
+  "crest_center": [
+   1402.65,
+   1235.01
+  ],
+  "crest_top_center": [
+   1402.65,
+   1095.01
+  ],
+  "button_1_center": [
+   950.95,
+   1716.75
+  ],
+  "button_2_center": [
+   950.95,
+   2059.25
+  ],
+  "chaplain_badge_above_nametag": [
+   1402.66,
+   947
+  ],
+  "tie_tab_center": [
+   955.91,
+   128.36
+  ],
+  "lapel_pin_right_center": [
+   628.31,
+   768.7
+  ],
+  "lapel_pin_left_center": [
+   1283.51,
+   768.7
+  ],
+  "medal_slot_center": [
+   1402.61,
+   995
+  ],
+  "chaplain_badge_semiformal": [
+   1402.61,
+   895
+  ]
+ },
+ "landmarks": {
+  "nameplate_slot": {
+   "x": 1233.91,
+   "y": 997,
+   "w": 337.5,
+   "h": 90
+  },
+  "lapel_pin_slot_right": {
+   "x": 603.31,
+   "y": 743.7,
+   "w": 50,
+   "h": 50
+  },
+  "lapel_pin_slot_left": {
+   "x": 1258.51,
+   "y": 743.7,
+   "w": 50,
+   "h": 50
+  },
+  "medal_slot": {
+   "x": 1232.61,
+   "y": 945,
+   "w": 340,
+   "h": 100
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; user units (0.01 in), origin top-left",
+ "dimensions": {
+  "length_in": 35.23,
+  "max_width_in": 18.72,
+  "nametag_slot_in": [
+   3.375,
+   0.9
+  ],
+  "buttons": 2
+ },
+ "documented": [
+  "navy single-breasted blazer, two or three buttons, notched lapels; pockets optional, no patch pockets (CAPR 39-1 4.2.4.1)",
+  "CAP Crest on the left breast pocket or in the same relative position (4.2.4.1.1.1)",
+  "nametag top edge aligned with the top of the left breast pocket, or 1/2 inch above the CAP Crest if the blazer has no pocket (4.2.4.1.1.2)",
+  "white aviator shirt or blouse with collar and blue inverted-V tie tab (4.2.4.2-4.2.4.3)",
+  "medium gray slacks or straight/A-line skirt (4.2.4.4-4.2.4.5)"
+ ],
+ "assumed": [
+  "px-to-inch scale (23.0 in across)",
+  "nametag slot size",
+  "button diameter",
+  "line positions read off the figure",
+  "skirt drawn as in the figure; slacks are a bottoms variant"
+ ],
+ "fit": {
+  "method": "traced from the regulation figure",
+  "score": null
+ },
+ "grade": "garment"
+}

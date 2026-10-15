@@ -1,0 +1,396 @@
+{
+ "asset_id": "garment-mess-dress-female",
+ "name": "Women's USAF-style mess dress (blank: no grade or medals; CAP seal on the right side)",
+ "size_in": {
+  "w": 25.528,
+  "h": 33.26
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2552.8,
+  3326
+ ],
+ "size_source": "estimated",
+ "size_basis": "Silhouette traced from images/base/mess_dress_female.webp (581x719 px) at 0.0474 in/px (same canvas and scale assumption as the Class A coat; 32.71 in tall). No real garment was measured.",
+ "anchors": {
+  "top_center": [
+   1276.4,
+   0
+  ],
+  "bottom_center": [
+   1276.4,
+   3326
+  ],
+  "center": [
+   1276.4,
+   1663
+  ],
+  "left_edge": [
+   0,
+   1663
+  ],
+  "right_edge": [
+   2552.8,
+   1663
+  ],
+  "hem_center": [
+   1276.4,
+   3296
+  ],
+  "cap_seal_center": [
+   899.6,
+   2110.6
+  ],
+  "miniature_medals_center": [
+   1844.61,
+   1067.8
+  ],
+  "shoulder_right_center": [
+   264.4,
+   304.7
+  ],
+  "shoulder_left_center": [
+   2278.9,
+   328.4
+  ]
+ },
+ "landmarks": {
+  "miniature_medal_slot": {
+   "x": 1694.61,
+   "y": 1005.3,
+   "w": 300,
+   "h": 125
+  },
+  "cap_seal": {
+   "x": 774.6,
+   "y": 1985.6,
+   "w": 250,
+   "h": 250
+  },
+  "shoulder_mark_right": {
+   "x": 244.4,
+   "y": 284.7,
+   "w": 40,
+   "h": 40
+  },
+  "shoulder_mark_left": {
+   "x": 2258.9,
+   "y": 308.4,
+   "w": 40,
+   "h": 40
+  },
+  "shawl_right": [
+   [
+    1003.9,
+    25
+   ],
+   [
+    842.7,
+    205.1
+   ],
+   [
+    861.7,
+    304.7
+   ],
+   [
+    868.8,
+    660.2
+   ],
+   [
+    892.5,
+    1015.7
+   ],
+   [
+    937.5,
+    1323.8
+   ],
+   [
+    1022.8,
+    1608.2
+   ],
+   [
+    1127.1,
+    1821.5
+   ],
+   [
+    1174.5,
+    1854.6
+   ],
+   [
+    1174.5,
+    1854.6
+   ],
+   [
+    1136.6,
+    1537.1
+   ],
+   [
+    1098.7,
+    1252.7
+   ],
+   [
+    1070.2,
+    778.7
+   ],
+   [
+    1034.7,
+    423.2
+   ],
+   [
+    1018.1,
+    67.7
+   ],
+   [
+    1018.1,
+    25
+   ]
+  ],
+  "shawl_left": [
+   [
+    1548.9,
+    25
+   ],
+   [
+    1695.9,
+    205.1
+   ],
+   [
+    1686.4,
+    423.2
+   ],
+   [
+    1648.5,
+    778.7
+   ],
+   [
+    1615.3,
+    1086.8
+   ],
+   [
+    1544.2,
+    1371.2
+   ],
+   [
+    1449.4,
+    1655.6
+   ],
+   [
+    1402,
+    1821.5
+   ],
+   [
+    1392.5,
+    1854.6
+   ],
+   [
+    1392.5,
+    1854.6
+   ],
+   [
+    1421,
+    1537.1
+   ],
+   [
+    1449.4,
+    1252.7
+   ],
+   [
+    1473.1,
+    897.2
+   ],
+   [
+    1515.8,
+    423.2
+   ],
+   [
+    1532.4,
+    67.7
+   ],
+   [
+    1534.7,
+    25
+   ]
+  ],
+  "shirt": [
+   [
+    1018.1,
+    67.7
+   ],
+   [
+    1018.1,
+    67.7
+   ],
+   [
+    1034.7,
+    423.2
+   ],
+   [
+    1070.2,
+    778.7
+   ],
+   [
+    1098.7,
+    1252.7
+   ],
+   [
+    1136.6,
+    1537.1
+   ],
+   [
+    1174.5,
+    1854.6
+   ],
+   [
+    1174.5,
+    1854.6
+   ],
+   [
+    1392.5,
+    1854.6
+   ],
+   [
+    1392.5,
+    1854.6
+   ],
+   [
+    1421,
+    1537.1
+   ],
+   [
+    1449.4,
+    1252.7
+   ],
+   [
+    1473.1,
+    897.2
+   ],
+   [
+    1515.8,
+    423.2
+   ],
+   [
+    1532.4,
+    67.7
+   ],
+   [
+    1532.4,
+    67.7
+   ]
+  ],
+  "cummerbund": [
+   [
+    1174.5,
+    1854.6
+   ],
+   [
+    1278.8,
+    1854.6
+   ],
+   [
+    1383.1,
+    1854.6
+   ],
+   [
+    1383.1,
+    2257.5
+   ],
+   [
+    1174.5,
+    2257.5
+   ]
+  ],
+  "tie_tab": [
+   [
+    1079.7,
+    669.6
+   ],
+   [
+    1226.6,
+    281
+   ],
+   [
+    1383.1,
+    281
+   ],
+   [
+    1530,
+    660.2
+   ],
+   [
+    1416.2,
+    707.6
+   ],
+   [
+    1302.5,
+    442.1
+   ],
+   [
+    1193.5,
+    707.6
+   ]
+  ],
+  "button_right_1": {
+   "x": 835.87,
+   "y": 1757.76,
+   "w": 80,
+   "h": 80
+  },
+  "button_right_2": {
+   "x": 859.57,
+   "y": 2070.6,
+   "w": 80,
+   "h": 80
+  },
+  "button_right_3": {
+   "x": 812.17,
+   "y": 2416.62,
+   "w": 80,
+   "h": 80
+  },
+  "button_left_1": {
+   "x": 1646.41,
+   "y": 1767.24,
+   "w": 80,
+   "h": 80
+  },
+  "button_left_2": {
+   "x": 1670.11,
+   "y": 2099.04,
+   "w": 80,
+   "h": 80
+  },
+  "button_left_3": {
+   "x": 1674.85,
+   "y": 2426.1,
+   "w": 80,
+   "h": 80
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "dimensions": {
+  "height_in": 32.71,
+  "max_width_in": 25.03,
+  "buttons_per_side": 3,
+  "button_dia_in": 0.8
+ },
+ "documented": [
+  "women's mess dress jacket and skirt with satin shawl collar (CAPR 39-1 4.1.2)",
+  "CAP seal worn over the middle button on the right side of the jacket (as on the men's, 4.1.1.1.2.3)",
+  "sleeve braid 1/2 in (1 1/2 in for general officers), 3 in from the sleeve end: separate overlay asset"
+ ],
+ "assumed": [
+  "px-to-inch scale",
+  "button diameter (about 0.8 in)",
+  "seal drawn at the 2 1/2 in diameter dimensioned in CAPR 39-1 Fig A6-4 (blue-background version); eagle/shield is the measured CAP Crest redraw, ring lettering set in Arial Bold outlines",
+  "shawl collar, shirt, cummerbund and cut-away geometry read off the base image",
+  "satin sheen colours sampled from the base image",
+  "sleeve braid colour"
+ ],
+ "fit": {
+  "method": "traced from the raster",
+  "score": null
+ },
+ "grade": "garment"
+}

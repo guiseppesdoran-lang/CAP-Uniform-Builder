@@ -1,0 +1,93 @@
+{
+ "asset_id": "garment-blues-class-b-blouse-female-long-cord-national",
+ "name": "Women's Class B blue long-sleeve blouse: National CAC shoulder cord (gold) (overlay, registered to garment-blues-class-b-blouse-female-long)",
+ "size_in": {
+  "w": 19.51,
+  "h": 29.896
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  1951,
+  2989.6
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+ "anchors": {
+  "top_center": [
+   975.4999999999999,
+   0
+  ],
+  "bottom_center": [
+   975.4999999999999,
+   2989.6
+  ],
+  "center": [
+   975.4999999999999,
+   1494.8
+  ],
+  "left_edge": [
+   0,
+   1494.8
+  ],
+  "right_edge": [
+   1950.9999999999998,
+   1494.8
+  ],
+  "cord_start": [
+   1631.65,
+   245.95
+  ],
+  "cord_end": [
+   1544.55,
+   1357.5
+  ]
+ },
+ "landmarks": {
+  "cord": [
+   [
+    1631.7,
+    245.9
+   ],
+   [
+    1706.7,
+    261.9
+   ],
+   [
+    1721.7,
+    267.9
+   ],
+   [
+    1617.7,
+    602.9
+   ],
+   [
+    1560,
+    864.7
+   ],
+   [
+    1552.3,
+    1115
+   ],
+   [
+    1544.6,
+    1357.5
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-blouse-female-long",
+ "documented": [
+  "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)"
+ ],
+ "assumed": [
+  "cord thickness 0.36 in",
+  "path along the armhole seam"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

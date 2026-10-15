@@ -1,0 +1,93 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-long-cord-wing",
+ "name": "Men's Class B blue long-sleeve shirt: Wing CAC shoulder cord (red) (overlay, registered to garment-blues-class-b-shirt-male-long)",
+ "size_in": {
+  "w": 21.32,
+  "h": 27.075
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2132,
+  2707.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+ "anchors": {
+  "top_center": [
+   1066,
+   0
+  ],
+  "bottom_center": [
+   1066,
+   2707.5
+  ],
+  "center": [
+   1066,
+   1353.75
+  ],
+  "left_edge": [
+   0,
+   1353.75
+  ],
+  "right_edge": [
+   2132,
+   1353.75
+  ],
+  "cord_start": [
+   1747.58,
+   307.95
+  ],
+  "cord_end": [
+   1671.68,
+   1301.65
+  ]
+ },
+ "landmarks": {
+  "cord": [
+   [
+    1747.6,
+    307.9
+   ],
+   [
+    1822.6,
+    323.9
+   ],
+   [
+    1837.6,
+    330
+   ],
+   [
+    1790.2,
+    555.1
+   ],
+   [
+    1730.9,
+    815.8
+   ],
+   [
+    1695.4,
+    1052.8
+   ],
+   [
+    1671.7,
+    1301.6
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-shirt-male-long",
+ "documented": [
+  "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)"
+ ],
+ "assumed": [
+  "cord thickness 0.36 in",
+  "path along the armhole seam"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

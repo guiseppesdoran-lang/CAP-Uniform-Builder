@@ -1,0 +1,186 @@
+{
+ "asset_id": "garment-blues-class-a-coat-female-lapel-foreground",
+ "name": "Women's Class A service dress coat collar and lapels (foreground overlay, registered to garment-blues-class-a-coat-female; also fits the semi-formal coat)",
+ "size_in": {
+  "w": 24.3883,
+  "h": 29.4756
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2438.83,
+  2947.56
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same artwork box and scale as garment-blues-class-a-coat-female; collar and lapel faces redrawn opaque so they cover the blouse collar and any badge or device that slides under them.",
+ "anchors": {
+  "top_center": [
+   1219.42,
+   0
+  ],
+  "bottom_center": [
+   1219.42,
+   2947.56
+  ],
+  "center": [
+   1219.42,
+   1473.78
+  ],
+  "left_edge": [
+   0,
+   1473.78
+  ],
+  "right_edge": [
+   2438.83,
+   1473.78
+  ]
+ },
+ "landmarks": {
+  "lapel_face_right": [
+   [
+    977.5,
+    17.42
+   ],
+   [
+    837.85,
+    166.32
+   ],
+   [
+    764.46,
+    335.9
+   ],
+   [
+    764.46,
+    402.07
+   ],
+   [
+    894.7,
+    462
+   ],
+   [
+    1016.75,
+    422.75
+   ],
+   [
+    1029.16,
+    439.3
+   ],
+   [
+    905.08,
+    484.79
+   ],
+   [
+    770.7,
+    517.88
+   ],
+   [
+    801.68,
+    617.14
+   ],
+   [
+    936.06,
+    813.65
+   ],
+   [
+    1070.52,
+    1030.74
+   ],
+   [
+    1215.28,
+    1144.53
+   ],
+   [
+    1044.65,
+    534.42
+   ],
+   [
+    1018.78,
+    451.7
+   ],
+   [
+    981.55,
+    31.86
+   ]
+  ],
+  "lapel_face_left": [
+   [
+    1461.33,
+    17.42
+   ],
+   [
+    1600.98,
+    166.32
+   ],
+   [
+    1674.38,
+    335.9
+   ],
+   [
+    1674.38,
+    402.07
+   ],
+   [
+    1544.14,
+    462
+   ],
+   [
+    1422.08,
+    422.75
+   ],
+   [
+    1409.67,
+    439.3
+   ],
+   [
+    1533.75,
+    484.79
+   ],
+   [
+    1668.13,
+    517.88
+   ],
+   [
+    1637.15,
+    617.14
+   ],
+   [
+    1502.78,
+    813.65
+   ],
+   [
+    1368.31,
+    1030.74
+   ],
+   [
+    1223.55,
+    1144.53
+   ],
+   [
+    1394.18,
+    534.42
+   ],
+   [
+    1420.06,
+    451.7
+   ],
+   [
+    1457.28,
+    31.86
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-a-coat-female",
+ "documented": [
+  "badges and devices worn under the coat collar/lapel tuck beneath it (builder layering)"
+ ],
+ "assumed": [
+  "layer order: above badges"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

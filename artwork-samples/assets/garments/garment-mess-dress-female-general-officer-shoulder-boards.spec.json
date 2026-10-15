@@ -1,0 +1,100 @@
+{
+ "asset_id": "garment-mess-dress-female-general-officer-shoulder-boards",
+ "name": "Women's USAF-style mess dress: general officer shoulder boards (silver lace, overlay, blank grade)",
+ "size_in": {
+  "w": 25.528,
+  "h": 33.26
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2552.8,
+  3326
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); general officer boards are covered in silver lace, 0.5 in blue lace each side.",
+ "anchors": {
+  "top_center": [
+   1276.3999999999999,
+   0
+  ],
+  "bottom_center": [
+   1276.3999999999999,
+   3326
+  ],
+  "center": [
+   1276.3999999999999,
+   1663
+  ],
+  "left_edge": [
+   0,
+   1663
+  ],
+  "right_edge": [
+   2552.7999999999997,
+   1663
+  ],
+  "rank_slot_right_center": [
+   513.13,
+   371.46
+  ],
+  "rank_slot_left_center": [
+   2030.47,
+   369.13
+  ]
+ },
+ "landmarks": {
+  "shoulder_board_right": {
+   "x": 299.41,
+   "y": 245.48,
+   "w": 453.8,
+   "h": 258
+  },
+  "rank_slot_right": {
+   "x": 407.48,
+   "y": 305.66,
+   "w": 211.3,
+   "h": 131.59
+  },
+  "rank_slot_right_frame": {
+   "deg": -10.1,
+   "along": 2,
+   "across": 1
+  },
+  "shoulder_board_left": {
+   "x": 1790.38,
+   "y": 243.61,
+   "w": 453.53,
+   "h": 257
+  },
+  "rank_slot_left": {
+   "x": 1924.95,
+   "y": 303.61,
+   "w": 211.03,
+   "h": 131.05
+  },
+  "rank_slot_left_frame": {
+   "deg": -170,
+   "along": 2,
+   "across": 1
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-mess-dress-female",
+ "documented": [
+  "officers wear shoulder boards with bullion grade insignia and 1/2 in dark blue braid (paragraph text 4.1.2.1.1.1, per Ethan; the Fig A5-3 caption says 1/4 in for women) down each side; women's boards have no button (CAPR 39-1 4.1.2.1.1.1)",
+  "placed as close to the shoulder seam as possible"
+ ],
+ "assumed": [
+  "Air Force blue / silver lace colours sampled, not specified as RGB",
+  "braid shade 1095 approximated",
+  "peak taper 0.8 in",
+  "grade insignia not drawn: placed at rank_slot"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

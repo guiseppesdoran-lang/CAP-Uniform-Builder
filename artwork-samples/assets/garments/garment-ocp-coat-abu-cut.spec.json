@@ -1,0 +1,673 @@
+{
+ "asset_id": "garment-ocp-coat-abu-cut",
+ "name": "OCP coat (ABU cut) with blank name tape",
+ "size_in": {
+  "w": 42.2971,
+  "h": 38.86
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  4229.71,
+  3886
+ ],
+ "size_source": "estimated",
+ "size_basis": "Outline traced from images/base/ABU_male.webp (581x719 px) at 0.0474 in/px, chosen so the coat is 29.96 in long. No real garment was measured. Sleeve cap and width were then modified by script for patch room, and the torso was widened x1.2 (estimate) so the purchase-description chest pocket fits. Length 29.96 in is about a Large Regular back length (30 in, GL/PD 14-04B Table VIIA; Medium Regular is 29-1/2); the Air Force wears this same Army OCP coat (DAFI 36-2903, which CAPR 39-1 7.1 points to) - that identity is an inference.",
+ "component_sources": {
+  "note": "Component sizes below are from the Army purchase description GL/PD 14-04B (rev B, Mar 2023; Detail Spec, Coat, Army Combat Uniform OCP), para 3.7 and Table VIIA, M/L/XL/XXL. Read by the coordination chat and relayed to this chat; rev B differs from rev A only in the upper sleeve pocket width (4-1/2 in, was 5). They are real inches in the coat's own coordinates only if the length scale is right.",
+  "chest_pocket_in": [
+   6.75,
+   5.25
+  ],
+  "chest_pocket_flap_w_in": 1.5,
+  "chest_pocket_opening_in": 6.375,
+  "name_and_army_tape_loop_in": [
+   5.25,
+   1
+  ],
+  "tape_gap_above_flap_corner_in": 0.125,
+  "rank_loop_in": [
+   2,
+   2
+  ],
+  "upper_sleeve_pocket_in": [
+   4.5,
+   7.25
+  ],
+  "sleeve_loop_tape_in": [
+   4,
+   6.5
+  ],
+  "iff_loop_in": [
+   1,
+   3.25
+  ],
+  "iff_cover_in": [
+   1,
+   1.875
+  ],
+  "not_drawn": [
+   "cuff tab 2-1/8 x 3-1/8 (cuff tab rectangles removed on request)",
+   "left sleeve pencil pocket 2-3/8 wide, 2 channels (pen pockets removed on request; CAPR 39-1 7.1.1.1.2 makes it optional)",
+   "front hook-and-loop closure pieces 1 x 1-1/2",
+   "pocket bar-tacks"
+  ],
+  "chosen_size": "Large Regular (back length 30 in); finished half chest 24-1/4 in is a flat measurement and is not comparable to the worn-view torso width drawn here"
+ },
+ "anchors": {
+  "top_center": [
+   2114.86,
+   0
+  ],
+  "bottom_center": [
+   2114.86,
+   3886
+  ],
+  "center": [
+   2114.86,
+   1943
+  ],
+  "left_edge": [
+   0,
+   1943
+  ],
+  "right_edge": [
+   4229.71,
+   1943
+  ],
+  "centerline_top": [
+   2114.86,
+   850
+  ],
+  "collar_apex": [
+   2114.86,
+   1340
+  ],
+  "hem_center": [
+   2114.86,
+   3846
+  ],
+  "name_tape_top_center": [
+   1614.86,
+   1537.8
+  ],
+  "cap_tape_top_center": [
+   2614.86,
+   1537.8
+  ],
+  "rank_square_center": [
+   2114.86,
+   1930
+  ],
+  "unit_patch_right_center": [
+   349.96,
+   1715
+  ],
+  "hhq_patch_left_center": [
+   3879.76,
+   1818.13
+  ],
+  "chest_pocket_right_center": [
+   1614.86,
+   2000
+  ],
+  "chest_pocket_right_top": [
+   1860.86,
+   1650.3
+  ],
+  "sleeve_velcro_right_top_center": [
+   349.96,
+   1390
+  ],
+  "chest_pocket_left_center": [
+   2614.86,
+   2000
+  ],
+  "chest_pocket_left_top": [
+   2368.86,
+   1650.3
+  ],
+  "sleeve_velcro_left_top_center": [
+   3879.76,
+   1390
+  ]
+ },
+ "collar_slots": {
+  "left": {
+   "cadet_officer": {
+    "center": [
+     2369.5,
+     1087.7
+    ],
+    "angle_deg": 27.5,
+    "size_in": {
+     "along": 2.5,
+     "across": 1.5
+    },
+    "bbox": {
+     "x": 2224,
+     "y": 963.4,
+     "w": 291,
+     "h": 248.5
+    }
+   },
+   "cadet_nco": {
+    "center": [
+     2369.5,
+     1087.7
+    ],
+    "angle_deg": 27.5,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.1
+    },
+    "bbox": {
+     "x": 2280.3,
+     "y": 984.7,
+     "w": 178.4,
+     "h": 206
+    }
+   },
+   "officer": {
+    "center": [
+     2354,
+     1153.1
+    ],
+    "angle_deg": -30.3,
+    "size_in": {
+     "along": 1.3,
+     "across": 1.6
+    },
+    "bbox": {
+     "x": 2252.2,
+     "y": 1056.6,
+     "w": 203.7,
+     "h": 192.9
+    }
+   },
+   "front_edge": {
+    "p1": [
+     2373.9,
+     863
+    ],
+    "p2": [
+     2187.9,
+     1220
+    ],
+    "dir_down": [
+     -0.4621,
+     0.8869
+    ],
+    "angle_deg": 27.5
+   },
+   "bottom_edge": {
+    "p1": [
+     2564.9,
+     1120
+    ],
+    "p2": [
+     2224.9,
+     1328
+    ],
+    "mid": [
+     2404.4,
+     1239.4
+    ]
+   },
+   "cadet_axis": [
+    [
+     2392.7,
+     1043.4
+    ],
+    [
+     2346.5,
+     1132
+    ]
+   ]
+  },
+  "right": {
+   "cadet_officer": {
+    "center": [
+     1860.2,
+     1087.7
+    ],
+    "angle_deg": -27.5,
+    "size_in": {
+     "along": 2.5,
+     "across": 1.5
+    },
+    "bbox": {
+     "x": 1714.7,
+     "y": 963.4,
+     "w": 291,
+     "h": 248.5
+    }
+   },
+   "cadet_nco": {
+    "center": [
+     1860.2,
+     1087.7
+    ],
+    "angle_deg": -27.5,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.1
+    },
+    "bbox": {
+     "x": 1771,
+     "y": 984.7,
+     "w": 178.4,
+     "h": 206
+    }
+   },
+   "officer": {
+    "center": [
+     1875.7,
+     1153.1
+    ],
+    "angle_deg": 30.3,
+    "size_in": {
+     "along": 1.3,
+     "across": 1.6
+    },
+    "bbox": {
+     "x": 1773.8,
+     "y": 1056.6,
+     "w": 203.7,
+     "h": 192.9
+    }
+   },
+   "front_edge": {
+    "p1": [
+     1855.9,
+     863
+    ],
+    "p2": [
+     2041.9,
+     1220
+    ],
+    "dir_down": [
+     0.4621,
+     0.8869
+    ],
+    "angle_deg": -27.5
+   },
+   "bottom_edge": {
+    "p1": [
+     1664.9,
+     1120
+    ],
+    "p2": [
+     2004.9,
+     1328
+    ],
+    "mid": [
+     1825.4,
+     1239.4
+    ]
+   },
+   "cadet_axis": [
+    [
+     1837.1,
+     1043.4
+    ],
+    [
+     1883.3,
+     1132
+    ]
+   ]
+  },
+  "note": "angle_deg: SVG rotate() convention (clockwise positive) to apply to an insignia whose long axis is vertical. cadet_* slots: cadet officer grade / cadet NCO metal chevron, centred 1 in from the collar FRONT edge, long axis parallel to it (cadet_axis = two points along that axis). officer_*: officer grade, centred 1 in from the collar BOTTOM edge, long axis perpendicular to it. size_in.along is measured along the long axis. bbox is the axis-aligned box of the rotated slot, also exposed as landmarks collar_*_zone_*. Right/left = wearer's."
+ },
+ "landmarks": {
+  "name_tape": {
+   "x": 1352.36,
+   "y": 1537.8,
+   "w": 525,
+   "h": 100
+  },
+  "cap_tape": {
+   "x": 2352.36,
+   "y": 1537.8,
+   "w": 525,
+   "h": 100
+  },
+  "rank_square": {
+   "x": 2014.86,
+   "y": 1830,
+   "w": 200,
+   "h": 200
+  },
+  "collar_officer_zone_right": {
+   "x": 1773.86,
+   "y": 1056.6,
+   "w": 203.7,
+   "h": 192.9
+  },
+  "collar_cadet_officer_zone_right": {
+   "x": 1714.66,
+   "y": 963.4,
+   "w": 291,
+   "h": 248.5
+  },
+  "collar_cadet_nco_zone_right": {
+   "x": 1770.96,
+   "y": 984.7,
+   "w": 178.4,
+   "h": 206
+  },
+  "collar_officer_zone_left": {
+   "x": 2252.16,
+   "y": 1056.6,
+   "w": 203.7,
+   "h": 192.9
+  },
+  "collar_cadet_officer_zone_left": {
+   "x": 2224.06,
+   "y": 963.4,
+   "w": 291,
+   "h": 248.5
+  },
+  "collar_cadet_nco_zone_left": {
+   "x": 2280.36,
+   "y": 984.7,
+   "w": 178.4,
+   "h": 206
+  },
+  "chest_pocket_right": [
+   [
+    1215.36,
+    1847.6
+   ],
+   [
+    1860.86,
+    1650.3
+   ],
+   [
+    2014.36,
+    2152.4
+   ],
+   [
+    1368.86,
+    2349.7
+   ]
+  ],
+  "chest_flap_right": [
+   [
+    1717.46,
+    1694.2
+   ],
+   [
+    1860.86,
+    1650.3
+   ],
+   [
+    2014.36,
+    2152.4
+   ],
+   [
+    1870.96,
+    2196.2
+   ]
+  ],
+  "sleeve_flap_velcro_right": {
+   "x": 149.96,
+   "y": 1390,
+   "w": 400,
+   "h": 650
+  },
+  "sleeve_pocket_right": {
+   "x": 124.96,
+   "y": 1352.5,
+   "w": 450,
+   "h": 725
+  },
+  "glint_tab_right": {
+   "x": 299.96,
+   "y": 1027.5,
+   "w": 100,
+   "h": 325
+  },
+  "cuff_right": [
+   [
+    786.36,
+    3611
+   ],
+   [
+    1216.26,
+    3611
+   ],
+   [
+    1216.26,
+    3876
+   ],
+   [
+    786.36,
+    3876
+   ]
+  ],
+  "chest_pocket_left": [
+   [
+    2368.86,
+    1650.3
+   ],
+   [
+    3014.36,
+    1847.6
+   ],
+   [
+    2860.86,
+    2349.7
+   ],
+   [
+    2215.36,
+    2152.4
+   ]
+  ],
+  "chest_flap_left": [
+   [
+    2512.26,
+    1694.2
+   ],
+   [
+    2368.86,
+    1650.3
+   ],
+   [
+    2215.36,
+    2152.4
+   ],
+   [
+    2358.76,
+    2196.2
+   ]
+  ],
+  "sleeve_flap_velcro_left": {
+   "x": 3679.76,
+   "y": 1390,
+   "w": 400,
+   "h": 650
+  },
+  "sleeve_pocket_left": {
+   "x": 3654.76,
+   "y": 1352.5,
+   "w": 450,
+   "h": 725
+  },
+  "glint_tab_left": {
+   "x": 3829.76,
+   "y": 1027.5,
+   "w": 100,
+   "h": 325
+  },
+  "cuff_left": [
+   [
+    3013.46,
+    3611
+   ],
+   [
+    3443.36,
+    3611
+   ],
+   [
+    3443.36,
+    3876
+   ],
+   [
+    3013.46,
+    3876
+   ]
+  ],
+  "patch_flag_right": {
+   "x": 187.46,
+   "y": 1415,
+   "w": 325,
+   "h": 181.25
+  },
+  "patch_aux_left": {
+   "x": 3717.26,
+   "y": 1415,
+   "w": 325,
+   "h": 181.25
+  },
+  "placket": [
+   [
+    2014.86,
+    1340
+   ],
+   [
+    2214.86,
+    1340
+   ],
+   [
+    2214.86,
+    3846
+   ],
+   [
+    2014.86,
+    3846
+   ]
+  ],
+  "patrol_cap_front": {
+   "x": 424.86,
+   "y": 200,
+   "w": 780,
+   "h": 500
+  },
+  "patrol_cap_front_insignia_zone": {
+   "x": 734.86,
+   "y": 380,
+   "w": 160,
+   "h": 160
+  },
+  "patrol_cap_back": {
+   "x": 1304.86,
+   "y": 310,
+   "w": 780,
+   "h": 390
+  },
+  "patrol_cap_back_name_tape": {
+   "x": 1432.36,
+   "y": 600,
+   "w": 525,
+   "h": 100
+  },
+  "baseball_cap_front": {
+   "x": 2184.86,
+   "y": 40,
+   "w": 760,
+   "h": 660
+  },
+  "baseball_cap_front_insignia_zone": {
+   "x": 2484.86,
+   "y": 300,
+   "w": 160,
+   "h": 160
+  },
+  "baseball_cap_back": {
+   "x": 3044.86,
+   "y": 230,
+   "w": 760,
+   "h": 470
+  },
+  "baseball_cap_back_name_tape": {
+   "x": 3162.36,
+   "y": 480,
+   "w": 525,
+   "h": 100
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "dimensions": {
+  "coat_length_in": 29.96,
+  "max_width_in": 27.6,
+  "chest_pocket": {
+   "size_in": [
+    6.75,
+    5.25
+   ],
+   "tilt_deg": 17,
+   "note": "top edge rises toward the zipper; mirrored"
+  },
+  "tape": {
+   "w_in": 5.25,
+   "h_in": 1
+  },
+  "rank_square_in": 2,
+  "sleeve_pocket": {
+   "pocket_in": [
+    4.5,
+    7.25
+   ],
+   "loop_tape_in": [
+    4,
+    6.5
+   ],
+   "iff_loop_in": [
+    1,
+    3.25
+   ],
+   "iff_cover_in": [
+    1,
+    1.875
+   ]
+  },
+  "patch_in": {
+   "flag": [
+    3.25,
+    1.8125
+   ],
+   "aux": [
+    3.25,
+    1.8125
+   ]
+  }
+ },
+ "documented": [
+  "no lower pockets",
+  "covered front zipper",
+  "slanted chest pockets angled down toward the placket, 6-3/4 x 5-1/4 in with 1-1/2 in flap (GL/PD 14-04B 3.7; matches the CAP OCP illustration)",
+  "2 x 2 in dark blue rank field at centre chest (CAPR 39-1 7.1.1.2.1)",
+  "name tape right chest, CAP tape left chest, light silver on dark blue (7.1.1.2.3); tape loops 1 x 5-1/4 in, 1/8 in above the flap corner, level (GL/PD 14-04B)",
+  "Velcro shoulder pockets (7.1.1.4): pocket 4-1/2 x 7-1/4 in, loop tape 4 x 6-1/2 in, IFF loop 1 x 3-1/4 in with 1 x 1-7/8 in cover (GL/PD 14-04B 3.7)",
+  "glint squares stay covered (7.1.1.1.1)",
+  "U.S. flag patch 3-1/4 in W x 1-13/16 in H (DAFI 36-2903 5.1.6.2.3)",
+  "OCP patrol cap with name tape centred on the back, rank 1/2 in above the visor (7.1.1.8)",
+  "OCP-pattern baseball cap, no grade insignia (6.2.8)"
+ ],
+ "assumed": [
+  "px-to-inch scale",
+  "pocket and tape POSITIONS (sizes now from GL/PD 14-04A; coordinates still traced)",
+  "torso widening factor 1.2",
+  "AUX width (DAFI caps height at flag size only; drawn at full flag size)",
+  "sleeve-edge foreshortening 0.5 (width of the shoulder pocket seen from the front)",
+  "OCP palette from photos; pattern is procedural",
+  "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)"
+ ],
+ "fit": {
+  "method": "n/a: outline deliberately differs from the ABU raster (sleeve cap and width widened)",
+  "score": null
+ },
+ "grade": "garment"
+}

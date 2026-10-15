@@ -1,0 +1,184 @@
+{
+ "asset_id": "garment-aviator-shirt-female-long",
+ "name": "Women's Aviator Shirt Uniform: white long-sleeve aviator shirt, gray slacks",
+ "size_in": {
+  "w": 21.048,
+  "h": 27.9
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2104.8,
+  2790
+ ],
+ "size_source": "estimated",
+ "size_basis": "Silhouette traced from images/base/aviator_shirt_female.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same sleeve-to-sleeve width as the Class B shirt (20.8 in). No real garment was measured.",
+ "anchors": {
+  "top_center": [
+   1052.4,
+   0
+  ],
+  "bottom_center": [
+   1052.4,
+   2790
+  ],
+  "center": [
+   1052.4,
+   1395
+  ],
+  "left_edge": [
+   0,
+   1395
+  ],
+  "right_edge": [
+   2104.8,
+   1395
+  ],
+  "hem_center": [
+   1052.4,
+   2780
+  ],
+  "nameplate_slot_center": [
+   715.95,
+   831.9
+  ],
+  "ribbon_slot_center": [
+   1428.45,
+   794.4
+  ],
+  "epaulet_right_center": [
+   448.89,
+   315.96
+  ],
+  "epaulet_left_center": [
+   1657.27,
+   319.92
+  ],
+  "tie_mount_center": [
+   1052.4,
+   532.45
+  ],
+  "badge_right_pocket_center": [
+   715.99,
+   1264.78
+  ],
+  "badge_left_pocket_center": [
+   1428.45,
+   1264.78
+  ],
+  "badge_above_ribbons_center": [
+   1428.45,
+   669.4
+  ],
+  "command_pin_above_nametag_center": [
+   715.95,
+   744.4
+  ],
+  "command_pin_below_nametag_center": [
+   715.95,
+   919.4
+  ],
+  "collar_insignia_right_center": [
+   899.42,
+   430.76
+  ],
+  "collar_insignia_left_center": [
+   1205.38,
+   430.76
+  ],
+  "nco_chevron_right_center": [
+   393.85,
+   906.39
+  ],
+  "nco_chevron_left_center": [
+   1699.82,
+   914.8
+  ]
+ },
+ "landmarks": {
+  "nameplate_slot": {
+   "x": 547.2,
+   "y": 794.4,
+   "w": 337.5,
+   "h": 75
+  },
+  "ribbon_slot": {
+   "x": 1222.2,
+   "y": 719.4,
+   "w": 412.5,
+   "h": 150
+  },
+  "epaulet_right": [
+   [
+    247.14,
+    295.18
+   ],
+   [
+    585.48,
+    207.21
+   ],
+   [
+    650.64,
+    258.44
+   ],
+   [
+    618.35,
+    334.81
+   ],
+   [
+    305.14,
+    424.71
+   ]
+  ],
+  "epaulet_left": [
+   [
+    1873.13,
+    312.58
+   ],
+   [
+    1507.72,
+    215.13
+   ],
+   [
+    1441.4,
+    264.82
+   ],
+   [
+    1472.14,
+    341.38
+   ],
+   [
+    1801.59,
+    424.71
+   ]
+  ]
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left",
+ "dimensions": {
+  "length_in": 27.7,
+  "max_width_in": 20.65,
+  "nametag_slot_in": [
+   3.375,
+   0.75
+  ]
+ },
+ "documented": [
+  "white aviator-style shirt, two standard sewn flap pockets, curved flap bottom allowed, straight collar, two epaulet straps (CAPR 39-1 4.2.5.1 / 4.2.6.1.1)",
+  "nametag centred on, resting on (not over) the edge of the pocket on the wearer's right (4.2.5.1.2.1 / 4.2.6.2.6.1.1)",
+  "ribbons centred on, resting on the edge of the wearer's left pocket (4.2.5.1.2.2)",
+  "cadet NCOs/airmen: metal chevrons on both sides of the collar, 1 in from and parallel to the front of the collar; cadet officers: blue epaulet sleeves",
+  "medium gray trousers, plain black belt with silver buckle (4.2.5.1.5-.6)"
+ ],
+ "assumed": [
+  "px-to-inch scale",
+  "nametag slot size (CAP plate size)",
+  "epaulet strap size (not drawn in the base image)",
+  "gray shade and belt colours sampled from the base image"
+ ],
+ "fit": {
+  "method": "traced from the raster",
+  "score": null
+ },
+ "grade": "garment"
+}

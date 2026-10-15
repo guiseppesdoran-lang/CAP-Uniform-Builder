@@ -1,0 +1,535 @@
+{
+ "asset_id": "garment-cfu-coat",
+ "name": "Corporate Field Uniform coat (dark blue, BDU style) with blank name tape",
+ "size_in": {
+  "w": 39.3,
+  "h": 44.56
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  3930,
+  4456
+ ],
+ "size_source": "estimated",
+ "size_basis": "Outline traced from images/base/ABU_male.webp (581x719 px) at 0.0474 in/px, chosen so the coat is 29.96 in long. No real garment was measured. Body basis only: MIL-DTL-44048H (BDU-style combat coat) gives the same body (Medium Regular half chest 24-1/4 in, back length about 29-3/8 to 29-1/2 in, Large about 30 in), so the 29.96 in length is consistent with a Large Regular; that spec has no pocket sizes in its text, so pocket, tape and button sizes remain estimates. Sleeve cap/width widened by script (same as the OCP coat).",
+ "anchors": {
+  "top_center": [
+   1965,
+   0
+  ],
+  "bottom_center": [
+   1965,
+   4456
+  ],
+  "center": [
+   1965,
+   2228
+  ],
+  "left_edge": [
+   0,
+   2228
+  ],
+  "right_edge": [
+   3930,
+   2228
+  ],
+  "collar_apex": [
+   1965,
+   1910
+  ],
+  "hem_center": [
+   1965,
+   4416
+  ],
+  "name_tape_top_center": [
+   1580,
+   2175
+  ],
+  "cap_tape_top_center": [
+   2350,
+   2175
+  ],
+  "chest_pocket_right_center": [
+   1580,
+   2590
+  ],
+  "chest_pocket_left_center": [
+   2350,
+   2590
+  ],
+  "chest_flap_left_bottom_center": [
+   2350,
+   2500
+  ],
+  "chest_flap_right_bottom_center": [
+   1580,
+   2500
+  ]
+ },
+ "collar_slots": {
+  "left": {
+   "cadet_officer": {
+    "center": [
+     2260.3,
+     1627.9
+    ],
+    "angle_deg": 25.7,
+    "size_in": {
+     "along": 2.5,
+     "across": 1.5
+    },
+    "bbox": {
+     "x": 2115.1,
+     "y": 1506.2,
+     "w": 290.3,
+     "h": 243.5
+    }
+   },
+   "cadet_nco": {
+    "center": [
+     2260.3,
+     1627.9
+    ],
+    "angle_deg": 25.7,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.1
+    },
+    "bbox": {
+     "x": 2172.8,
+     "y": 1525.2,
+     "w": 174.9,
+     "h": 205.4
+    }
+   },
+   "officer": {
+    "center": [
+     2364.3,
+     1687.1
+    ],
+    "angle_deg": 13.2,
+    "size_in": {
+     "along": 1.3,
+     "across": 1.6
+    },
+    "bbox": {
+     "x": 2271.6,
+     "y": 1605.6,
+     "w": 185.5,
+     "h": 163.1
+    }
+   },
+   "cadet_axis": [
+    [
+     2281.9,
+     1582.9
+    ],
+    [
+     2238.6,
+     1673
+    ]
+   ],
+   "front_edge": {
+    "p1": [
+     2221,
+     1377
+    ],
+    "p2": [
+     1917,
+     2010
+    ],
+    "dir_down": [
+     -0.433,
+     0.9014
+    ],
+    "angle_deg": 25.7
+   },
+   "bottom_edge": {
+    "p1": [
+     2463,
+     1813
+    ],
+    "p2": [
+     2220,
+     1756
+    ],
+    "mid": [
+     2341.5,
+     1784.5
+    ]
+   }
+  },
+  "right": {
+   "cadet_officer": {
+    "center": [
+     1669.7,
+     1627.9
+    ],
+    "angle_deg": -25.7,
+    "size_in": {
+     "along": 2.5,
+     "across": 1.5
+    },
+    "bbox": {
+     "x": 1524.6,
+     "y": 1506.2,
+     "w": 290.3,
+     "h": 243.5
+    }
+   },
+   "cadet_nco": {
+    "center": [
+     1669.7,
+     1627.9
+    ],
+    "angle_deg": -25.7,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.1
+    },
+    "bbox": {
+     "x": 1582.3,
+     "y": 1525.2,
+     "w": 174.9,
+     "h": 205.4
+    }
+   },
+   "officer": {
+    "center": [
+     1565.7,
+     1687.1
+    ],
+    "angle_deg": -13.2,
+    "size_in": {
+     "along": 1.3,
+     "across": 1.6
+    },
+    "bbox": {
+     "x": 1472.9,
+     "y": 1605.6,
+     "w": 185.5,
+     "h": 163.1
+    }
+   },
+   "cadet_axis": [
+    [
+     1648.1,
+     1582.9
+    ],
+    [
+     1691.4,
+     1673
+    ]
+   ],
+   "front_edge": {
+    "p1": [
+     1709,
+     1377
+    ],
+    "p2": [
+     2013,
+     2010
+    ],
+    "dir_down": [
+     0.433,
+     0.9014
+    ],
+    "angle_deg": -25.7
+   },
+   "bottom_edge": {
+    "p1": [
+     1467,
+     1813
+    ],
+    "p2": [
+     1710,
+     1756
+    ],
+    "mid": [
+     1588.5,
+     1784.5
+    ]
+   }
+  },
+  "note": "angle_deg: SVG rotate() convention (clockwise positive) to apply to an insignia whose long axis is vertical. cadet_* slots: cadet officer grade / cadet NCO metal chevron, centred 1 in from the collar FRONT edge, long axis parallel to it (cadet_axis = two points along that axis). officer_*: officer grade, centred 1 in from the collar BOTTOM edge, long axis perpendicular to it. size_in.along is measured along the long axis. bbox is the axis-aligned box of the rotated slot, also exposed as landmarks collar_*_zone_*. Right/left = wearer's."
+ },
+ "landmarks": {
+  "name_tape": {
+   "x": 1330,
+   "y": 2175,
+   "w": 500,
+   "h": 90
+  },
+  "cap_tape": {
+   "x": 2100,
+   "y": 2175,
+   "w": 500,
+   "h": 90
+  },
+  "chest_pocket_right": {
+   "x": 1330,
+   "y": 2270,
+   "w": 500,
+   "h": 640
+  },
+  "chest_flap_right": {
+   "x": 1327,
+   "y": 2270,
+   "w": 506,
+   "h": 230
+  },
+  "lower_pocket_right": {
+   "x": 1350,
+   "y": 3540,
+   "w": 440,
+   "h": 640
+  },
+  "lower_flap_right": {
+   "x": 1347,
+   "y": 3540,
+   "w": 446,
+   "h": 200
+  },
+  "cuff_right": [
+   [
+    790.7,
+    4176
+   ],
+   [
+    1221.2,
+    4176
+   ],
+   [
+    1221.2,
+    4446
+   ],
+   [
+    790.7,
+    4446
+   ]
+  ],
+  "chest_pocket_left": {
+   "x": 2100,
+   "y": 2270,
+   "w": 500,
+   "h": 640
+  },
+  "chest_flap_left": {
+   "x": 2097,
+   "y": 2270,
+   "w": 506,
+   "h": 230
+  },
+  "lower_pocket_left": {
+   "x": 2140,
+   "y": 3540,
+   "w": 440,
+   "h": 640
+  },
+  "lower_flap_left": {
+   "x": 2137,
+   "y": 3540,
+   "w": 446,
+   "h": 200
+  },
+  "cuff_left": [
+   [
+    2708.8,
+    4176
+   ],
+   [
+    3139.3,
+    4176
+   ],
+   [
+    3139.3,
+    4446
+   ],
+   [
+    2708.8,
+    4446
+   ]
+  ],
+  "placket": [
+   [
+    1870,
+    1910
+   ],
+   [
+    2060,
+    1910
+   ],
+   [
+    2060,
+    4416
+   ],
+   [
+    1870,
+    4416
+   ]
+  ],
+  "collar_officer_zone_right": {
+   "x": 1472.9,
+   "y": 1605.6,
+   "w": 185.5,
+   "h": 163.1
+  },
+  "collar_cadet_officer_zone_right": {
+   "x": 1524.6,
+   "y": 1506.2,
+   "w": 290.3,
+   "h": 243.5
+  },
+  "collar_cadet_nco_zone_right": {
+   "x": 1582.3,
+   "y": 1525.2,
+   "w": 174.9,
+   "h": 205.4
+  },
+  "collar_officer_zone_left": {
+   "x": 2271.6,
+   "y": 1605.6,
+   "w": 185.5,
+   "h": 163.1
+  },
+  "collar_cadet_officer_zone_left": {
+   "x": 2115.1,
+   "y": 1506.2,
+   "w": 290.3,
+   "h": 243.5
+  },
+  "collar_cadet_nco_zone_left": {
+   "x": 2172.8,
+   "y": 1525.2,
+   "w": 174.9,
+   "h": 205.4
+  },
+  "wing_patch_zone_left": {
+   "x": 3430,
+   "y": 1590,
+   "w": 300,
+   "h": 295
+  },
+  "activity_patch_zone_right": {
+   "x": 200,
+   "y": 1590,
+   "w": 300,
+   "h": 300
+  },
+  "chevron_zone_right": {
+   "x": 150,
+   "y": 1886.5,
+   "w": 400,
+   "h": 677
+  },
+  "chevron_zone_left": {
+   "x": 3380,
+   "y": 1886.5,
+   "w": 400,
+   "h": 677
+  },
+  "patrol_cap_front": {
+   "x": 275,
+   "y": 770,
+   "w": 780,
+   "h": 500
+  },
+  "patrol_cap_front_insignia_zone": {
+   "x": 585,
+   "y": 950,
+   "w": 160,
+   "h": 160
+  },
+  "patrol_cap_back": {
+   "x": 1155,
+   "y": 880,
+   "w": 780,
+   "h": 390
+  },
+  "baseball_cap_front": {
+   "x": 2035,
+   "y": 610,
+   "w": 760,
+   "h": 660
+  },
+  "baseball_cap_front_insignia_zone": {
+   "x": 2335,
+   "y": 870,
+   "w": 160,
+   "h": 160
+  },
+  "baseball_cap_back": {
+   "x": 2895,
+   "y": 800,
+   "w": 760,
+   "h": 470
+  },
+  "baseball_cap_back_name_tape": {
+   "x": 3025,
+   "y": 1060,
+   "w": 500,
+   "h": 90
+  },
+  "boonie_hat_front": {
+   "x": 775,
+   "y": 40,
+   "w": 1120,
+   "h": 520
+  },
+  "boonie_hat_front_insignia_zone": {
+   "x": 1255,
+   "y": 160,
+   "w": 160,
+   "h": 160
+  },
+  "boonie_hat_back": {
+   "x": 2035,
+   "y": 40,
+   "w": 1120,
+   "h": 520
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's.",
+ "dimensions": {
+  "coat_length_in": 29.96,
+  "max_width_in": 24.6,
+  "chest_pocket_in": [
+   5,
+   6.4
+  ],
+  "chest_flap_in": [
+   5,
+   2.3
+  ],
+  "lower_pocket_in": [
+   4.4,
+   6.4
+  ],
+  "tape_in": [
+   5,
+   0.9
+  ]
+ },
+ "documented": [
+  "Blue Field Cap (patrol design), CAP baseball / navy tactical cap and Blue Boonie Hat may be worn (CAPR 39-1 5.2.1.2.3, 6.2.9, 6.2.10); boonie headgear insignia as for the Blue Field Cap",
+  "button front, hip length (CAPR 39-1 5.2.1.1: single-breasted, four bellows pockets with flaps, straight-cut sleeve tabs)",
+  "last-name tape above wearer's right upper pocket, CAP tape above left, folded to pocket width, silver on dark blue (5.2.1.1.2.1)",
+  "badges 1/2 in above the CAP tape (5.2.1.1.2.6)"
+ ],
+ "assumed": [
+  "boonie hat size (crown ~7.4 in, brim 2 in all round, ~11.2 in overall) and shape",
+  "px-to-inch scale",
+  "pocket sizes/positions (measured off the ABU raster, then scaled)",
+  "button count and spacing",
+  "lower pocket size",
+  "fabric colour is an estimate (solid dark blue)",
+  "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)"
+ ],
+ "fit": {
+  "method": "n/a",
+  "score": null
+ },
+ "grade": "garment"
+}

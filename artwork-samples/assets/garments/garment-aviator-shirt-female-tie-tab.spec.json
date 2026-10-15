@@ -1,0 +1,69 @@
+{
+ "asset_id": "garment-aviator-shirt-female-tie-tab",
+ "name": "Women's Aviator Shirt Uniform inverted-V tie tab (overlay, registered to garment-aviator-shirt-female)",
+ "size_in": {
+  "w": 21.048,
+  "h": 26.09
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2104.8,
+  2609
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same inverted-V tab as accessories/tie-tab-inverted-v (2.7 x 1.6 in), hung from the collar V; no dimension in the regulation.",
+ "anchors": {
+  "top_center": [
+   1052.3999999999999,
+   0
+  ],
+  "bottom_center": [
+   1052.3999999999999,
+   2609
+  ],
+  "center": [
+   1052.3999999999999,
+   1304.5
+  ],
+  "left_edge": [
+   0,
+   1304.5
+  ],
+  "right_edge": [
+   2104.7999999999997,
+   1304.5
+  ],
+  "tie_tab_center": [
+   1052.4,
+   612.45
+  ],
+  "tie_tab_top_center": [
+   1052.4,
+   532.45
+  ]
+ },
+ "landmarks": {
+  "tie_tab": {
+   "x": 917.4,
+   "y": 532.45,
+   "w": 270,
+   "h": 160
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-aviator-shirt-female",
+ "documented": [
+  "USAF-style inverted-V tie tab; worn with the women's long-sleeved shirt, optional with short sleeves (4.2.6.3)"
+ ],
+ "assumed": [
+  "blue shade",
+  "tie width and length"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

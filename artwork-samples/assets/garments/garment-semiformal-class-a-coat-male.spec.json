@@ -1,0 +1,313 @@
+{
+ "asset_id": "garment-semiformal-class-a-coat-male",
+ "name": "Men's cadet semi-formal dress: Class A coat (new style) over the white long-sleeve shirt, no nametag",
+ "size_in": {
+  "w": 23.726,
+  "h": 29.955
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2372.6,
+  2995.5
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same coat, scale and artwork box as garment-blues-class-a-coat (traced from images/base/jacket_male.webp at 0.0474 in/px), so overlays register. No real garment was measured.",
+ "anchors": {
+  "top_center": [
+   1186.3,
+   0
+  ],
+  "bottom_center": [
+   1186.3,
+   2995.5
+  ],
+  "center": [
+   1186.3,
+   1497.75
+  ],
+  "left_edge": [
+   0,
+   1497.75
+  ],
+  "right_edge": [
+   2372.6,
+   1497.75
+  ],
+  "shoulder_seam_right": [
+   336.3,
+   332.5
+  ],
+  "sleeve_bottom_right": [
+   292,
+   2726.1
+  ],
+  "elbow_right": [
+   230.4,
+   1649
+  ],
+  "chevron_halfway_right": [
+   262.5,
+   990.7
+  ],
+  "shoulder_seam_left": [
+   2036.3,
+   332.5
+  ],
+  "sleeve_bottom_left": [
+   2080.2,
+   2726.1
+  ],
+  "elbow_left": [
+   2142.7,
+   1649
+  ],
+  "chevron_halfway_left": [
+   2111.1,
+   990.7
+  ],
+  "centerline_top": [
+   1186.3,
+   12.5
+  ],
+  "hem_center": [
+   1186.3,
+   2965.5
+  ],
+  "welt_top_center": [
+   1657.9,
+   1079
+  ],
+  "ribbon_row_bottom_center": [
+   1657.9,
+   1079
+  ],
+  "gorge_seam_right_p1": [
+   791.93,
+   500.72
+  ],
+  "gorge_seam_right_p2": [
+   1018.3,
+   461.38
+  ],
+  "gorge_seam_right_mid": [
+   905.12,
+   481.05
+  ],
+  "lapel_insignia_rest_right": [
+   905.12,
+   481.05
+  ],
+  "lapel_insignia_right": [
+   905.12,
+   456.05
+  ],
+  "gorge_seam_left_p1": [
+   1580.67,
+   500.72
+  ],
+  "gorge_seam_left_p2": [
+   1354.3,
+   461.38
+  ],
+  "gorge_seam_left_mid": [
+   1467.48,
+   481.05
+  ],
+  "lapel_insignia_rest_left": [
+   1467.48,
+   481.05
+  ],
+  "lapel_insignia_left": [
+   1467.48,
+   456.05
+  ],
+  "button_1_center": [
+   1186.25,
+   1221.15
+  ],
+  "button_2_center": [
+   1186.25,
+   1567.25
+  ],
+  "button_3_center": [
+   1186.25,
+   1908.55
+  ]
+ },
+ "landmarks": {
+  "welt_pocket": {
+   "x": 1447.9,
+   "y": 1079,
+   "w": 420,
+   "h": 55
+  },
+  "button_1": {
+   "x": 1142.5,
+   "y": 1177.4,
+   "w": 87.5,
+   "h": 87.5
+  },
+  "button_2": {
+   "x": 1142.5,
+   "y": 1523.5,
+   "w": 87.5,
+   "h": 87.5
+  },
+  "button_3": {
+   "x": 1142.5,
+   "y": 1864.8,
+   "w": 87.5,
+   "h": 87.5
+  },
+  "lapel_right": [
+   [
+    973.9,
+    97.8
+   ],
+   [
+    831.7,
+    200.7
+   ],
+   [
+    791.9,
+    500.7
+   ],
+   [
+    649.7,
+    548.1
+   ],
+   [
+    1163.5,
+    1116.9
+   ]
+  ],
+  "lapel_left": [
+   [
+    1398.7,
+    97.8
+   ],
+   [
+    1540.9,
+    200.7
+   ],
+   [
+    1580.7,
+    500.7
+   ],
+   [
+    1722.9,
+    548.1
+   ],
+   [
+    1209.1,
+    1116.9
+   ]
+  ],
+  "shirt": [
+   [
+    973.9,
+    97.8
+   ],
+   [
+    1186.3,
+    391.7
+   ],
+   [
+    1398.7,
+    97.8
+   ],
+   [
+    1354.3,
+    461.4
+   ],
+   [
+    1290.3,
+    702.2
+   ],
+   [
+    1082.3,
+    702.2
+   ],
+   [
+    1018.3,
+    461.4
+   ]
+  ],
+  "tie": [
+   [
+    1186.3,
+    306.4
+   ],
+   [
+    1269.3,
+    378.9
+   ],
+   [
+    1232.3,
+    434.4
+   ],
+   [
+    1238.3,
+    467.5
+   ],
+   [
+    1289.3,
+    704.2
+   ],
+   [
+    1289.3,
+    792.2
+   ],
+   [
+    1083.3,
+    792.2
+   ],
+   [
+    1083.3,
+    704.2
+   ],
+   [
+    1134.3,
+    467.5
+   ],
+   [
+    1140.3,
+    434.4
+   ],
+   [
+    1103.3,
+    378.9
+   ]
+  ]
+ },
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "dimensions": {
+  "coat_length_in": 29.53,
+  "max_width_in": 23.23,
+  "welt_in": [
+   4.2,
+   0.55
+  ],
+  "buttons": 3,
+  "button_dia_in": 0.875
+ },
+ "documented": [
+  "worn as for Service Dress (Class A) new style with the adjustments of CAPR 39-1 4.1.3.2: nametag not worn (4.1.3.2.1)",
+  "white long-sleeve shirt (4.1.3.2.3)",
+  "tie: blue polyester or silk herringbone twill (4.1.3.2.4)"
+ ],
+ "assumed": [
+  "px-to-inch scale",
+  "white shirt tone",
+  "welt size",
+  "button diameter",
+  "shirt and lapel geometry read off the base image"
+ ],
+ "fit": {
+  "method": "traced from the raster",
+  "score": null
+ },
+ "grade": "garment"
+}

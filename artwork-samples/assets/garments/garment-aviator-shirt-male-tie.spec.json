@@ -1,0 +1,73 @@
+{
+ "asset_id": "garment-aviator-shirt-male-tie",
+ "name": "Men's Aviator Shirt Uniform AF blue tie (overlay, registered to garment-aviator-shirt-male)",
+ "size_in": {
+  "w": 21.156,
+  "h": 23.66
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2115.6,
+  2366
+ ],
+ "size_source": "estimated",
+ "size_basis": "Visible blade of the blazer base tie, stretched to run from the collar V to the middle of the belt buckle (the tip covers part of the buckle, 4.2.5.1.4); width profile as the blazer tie. No dimension in the regulation.",
+ "anchors": {
+  "top_center": [
+   1057.8,
+   0
+  ],
+  "bottom_center": [
+   1057.8,
+   2366
+  ],
+  "center": [
+   1057.8,
+   1183
+  ],
+  "left_edge": [
+   0,
+   1183
+  ],
+  "right_edge": [
+   2115.6,
+   1183
+  ],
+  "tie_knot_top_center": [
+   1063.44,
+   533.92
+  ],
+  "tie_tip_center": [
+   1063.44,
+   2010.32
+  ],
+  "tie_tack_center": [
+   1063.44,
+   1307.12
+  ]
+ },
+ "landmarks": {
+  "tie": {
+   "x": 916.5,
+   "y": 533.92,
+   "w": 293.88,
+   "h": 1476.4
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-aviator-shirt-male",
+ "documented": [
+  "AF blue tie (blue polyester or silk, herringbone twill); the CAP regimental tie is not authorized with the aviator shirt uniform; tip covers part of the buckle but not below it (CAPR 39-1 4.2.5.1.4)"
+ ],
+ "assumed": [
+  "blue shade",
+  "tie width and length"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}
