@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-small-craft-default",
+ "width_in": 1.5,
+ "height_in": 1.51964,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 1.5 in from the badge aspect (0.99); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   151.964
+  ],
+  "center": [
+   75,
+   75.982
+  ],
+  "left_edge": [
+   0,
+   75.982
+  ],
+  "right_edge": [
+   150,
+   75.982
+  ]
+ },
+ "dimensions": {
+  "size_class": "medallion",
+  "service": "navy",
+  "design": "navy_small_craft",
+  "variant": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_small_craft__default",
+ "source_bbox_user_units": [
+  59,
+  10.167,
+  199,
+  152
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.947,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

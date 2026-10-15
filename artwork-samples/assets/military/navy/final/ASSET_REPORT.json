@@ -1,0 +1,322 @@
+[
+ {
+  "id": "navy-astronaut-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.771,
+  "fails": "silhouette IoU 0.771 < 0.80"
+ },
+ {
+  "id": "navy-aviation-observer-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.779,
+  "fails": "silhouette IoU 0.779 < 0.80"
+ },
+ {
+  "id": "navy-aviation-supply-corps-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.723,
+  "fails": "silhouette IoU 0.723 < 0.80"
+ },
+ {
+  "id": "navy-aviator-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.833,
+  "fails": ""
+ },
+ {
+  "id": "navy-diving-diving-officer",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.851,
+  "fails": ""
+ },
+ {
+  "id": "navy-diving-diving-officer-medical",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.821,
+  "fails": ""
+ },
+ {
+  "id": "navy-engineering-duty-officer-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.907,
+  "fails": ""
+ },
+ {
+  "id": "navy-enlisted-aviation-warfare-specialist-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.825,
+  "fails": ""
+ },
+ {
+  "id": "navy-explosive-ordnance-disposal-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.822,
+  "fails": ""
+ },
+ {
+  "id": "navy-explosive-ordnance-disposal-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.752,
+  "fails": "silhouette IoU 0.752 < 0.80"
+ },
+ {
+  "id": "navy-explosive-ordnance-disposal-officer",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.794,
+  "fails": "silhouette IoU 0.794 < 0.80"
+ },
+ {
+  "id": "navy-explosive-ordnance-disposal-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.794,
+  "fails": "silhouette IoU 0.794 < 0.80"
+ },
+ {
+  "id": "navy-fleet-marine-force-chaplain",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.927,
+  "fails": ""
+ },
+ {
+  "id": "navy-fleet-marine-force-officer",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.926,
+  "fails": ""
+ },
+ {
+  "id": "navy-flight-medical-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.891,
+  "fails": ""
+ },
+ {
+  "id": "navy-flight-officer-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.784,
+  "fails": "silhouette IoU 0.784 < 0.80"
+ },
+ {
+  "id": "navy-information-warfare-enlisted",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.886,
+  "fails": ""
+ },
+ {
+  "id": "navy-information-warfare-officer",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.896,
+  "fails": ""
+ },
+ {
+  "id": "navy-marine-corps-combat-aircrew-base",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.697,
+  "fails": "silhouette IoU 0.697 < 0.80"
+ },
+ {
+  "id": "navy-marine-corps-combatant-diver-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.928,
+  "fails": ""
+ },
+ {
+  "id": "navy-nuclear-weapons-security-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.944,
+  "fails": ""
+ },
+ {
+  "id": "navy-parachutist-navy-marine-corps-parachutist",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.843,
+  "fails": ""
+ },
+ {
+  "id": "navy-professional-aviation-maintenance-officer-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.879,
+  "fails": ""
+ },
+ {
+  "id": "navy-small-craft-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.947,
+  "fails": ""
+ },
+ {
+  "id": "navy-special-warfare-default",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.786,
+  "fails": "silhouette IoU 0.786 < 0.80"
+ },
+ {
+  "id": "navy-strategic-sealift-officer-warfare-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.893,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-deep-submergence-enlisted",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.761,
+  "fails": "silhouette IoU 0.761 < 0.80"
+ },
+ {
+  "id": "navy-submarine-warfare-deep-submergence-officer",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.598,
+  "fails": "silhouette IoU 0.598 < 0.80"
+ },
+ {
+  "id": "navy-submarine-warfare-engineering-duty",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.892,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-enlisted",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.916,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-medical",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.909,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-officer",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.918,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-supply",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.58,
+  "fails": "silhouette IoU 0.580 < 0.80"
+ },
+ {
+  "id": "navy-surface-warfare-dental",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.642,
+  "fails": "silhouette IoU 0.642 < 0.80"
+ },
+ {
+  "id": "navy-surface-warfare-enlisted",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.917,
+  "fails": ""
+ },
+ {
+  "id": "navy-surface-warfare-medical",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.789,
+  "fails": "silhouette IoU 0.789 < 0.80"
+ },
+ {
+  "id": "navy-surface-warfare-medical-service",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.702,
+  "fails": "silhouette IoU 0.702 < 0.80"
+ },
+ {
+  "id": "navy-surface-warfare-nurse",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.674,
+  "fails": "silhouette IoU 0.674 < 0.80"
+ },
+ {
+  "id": "navy-surface-warfare-officer",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.938,
+  "fails": ""
+ },
+ {
+  "id": "navy-surface-warfare-supply",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.833,
+  "fails": ""
+ }
+]

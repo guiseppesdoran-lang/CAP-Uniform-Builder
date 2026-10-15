@@ -1,0 +1,1002 @@
+[
+ {
+  "id": "af-acquisition-financial-management-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.948,
+  "fails": ""
+ },
+ {
+  "id": "af-acquisition-financial-management-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.947,
+  "fails": ""
+ },
+ {
+  "id": "af-acquisition-financial-management-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.941,
+  "fails": ""
+ },
+ {
+  "id": "af-aetc-instructor-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.988,
+  "fails": ""
+ },
+ {
+  "id": "af-aetc-instructor-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.987,
+  "fails": ""
+ },
+ {
+  "id": "af-aircraft-maintenance-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.945,
+  "fails": ""
+ },
+ {
+  "id": "af-aircraft-maintenance-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.937,
+  "fails": ""
+ },
+ {
+  "id": "af-aircraft-maintenance-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.939,
+  "fails": ""
+ },
+ {
+  "id": "af-airfield-operations-officer-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.853,
+  "fails": ""
+ },
+ {
+  "id": "af-airfield-operations-officer-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.894,
+  "fails": ""
+ },
+ {
+  "id": "af-airfield-operations-officer-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.916,
+  "fails": ""
+ },
+ {
+  "id": "af-band-basic",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.945,
+  "fails": ""
+ },
+ {
+  "id": "af-band-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.941,
+  "fails": ""
+ },
+ {
+  "id": "af-band-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.928,
+  "fails": ""
+ },
+ {
+  "id": "af-base-honor-guard-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.986,
+  "fails": ""
+ },
+ {
+  "id": "af-biomedical-scientist-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.972,
+  "fails": ""
+ },
+ {
+  "id": "af-biomedical-scientist-master",
+  "w": 1.008,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.931,
+  "fails": ""
+ },
+ {
+  "id": "af-biomedical-scientist-senior",
+  "w": 0.917,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.963,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.946,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-master",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.91,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.905,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-readiness-basic",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.918,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-readiness-master",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.927,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-readiness-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.919,
+  "fails": ""
+ },
+ {
+  "id": "af-combat-rescue-officer-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.984,
+  "fails": ""
+ },
+ {
+  "id": "af-command-and-control-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.951,
+  "fails": ""
+ },
+ {
+  "id": "af-command-and-control-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.939,
+  "fails": ""
+ },
+ {
+  "id": "af-command-and-control-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.93,
+  "fails": ""
+ },
+ {
+  "id": "af-commanders-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.933,
+  "fails": ""
+ },
+ {
+  "id": "af-communications-information-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.988,
+  "fails": ""
+ },
+ {
+  "id": "af-communications-information-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.966,
+  "fails": ""
+ },
+ {
+  "id": "af-communications-information-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.97,
+  "fails": ""
+ },
+ {
+  "id": "af-dental-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.983,
+  "fails": ""
+ },
+ {
+  "id": "af-dental-master",
+  "w": 0.931,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.925,
+  "fails": ""
+ },
+ {
+  "id": "af-dental-senior",
+  "w": 0.917,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.969,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-medical-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.985,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-medical-master",
+  "w": 0.915,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.892,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-medical-senior",
+  "w": 0.917,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.951,
+  "fails": ""
+ },
+ {
+  "id": "af-explosive-ordnance-disposal-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.915,
+  "fails": ""
+ },
+ {
+  "id": "af-explosive-ordnance-disposal-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.911,
+  "fails": ""
+ },
+ {
+  "id": "af-explosive-ordnance-disposal-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.907,
+  "fails": ""
+ },
+ {
+  "id": "af-fire-protection-default",
+  "w": 0.995,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.943,
+  "fails": ""
+ },
+ {
+  "id": "af-force-protection-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.989,
+  "fails": ""
+ },
+ {
+  "id": "af-force-protection-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.978,
+  "fails": ""
+ },
+ {
+  "id": "af-force-protection-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.975,
+  "fails": ""
+ },
+ {
+  "id": "af-force-support-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.991,
+  "fails": ""
+ },
+ {
+  "id": "af-force-support-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.975,
+  "fails": ""
+ },
+ {
+  "id": "af-force-support-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.984,
+  "fails": ""
+ },
+ {
+  "id": "af-foreign-area-officer-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.991,
+  "fails": ""
+ },
+ {
+  "id": "af-foreign-area-officer-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.953,
+  "fails": ""
+ },
+ {
+  "id": "af-foreign-area-officer-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.968,
+  "fails": ""
+ },
+ {
+  "id": "af-ground-radar-airfield-systems-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.967,
+  "fails": ""
+ },
+ {
+  "id": "af-ground-radar-airfield-systems-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.965,
+  "fails": ""
+ },
+ {
+  "id": "af-ground-radar-airfield-systems-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.932,
+  "fails": ""
+ },
+ {
+  "id": "af-headquarters-air-force-identification-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.978,
+  "fails": ""
+ },
+ {
+  "id": "af-historian-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.988,
+  "fails": ""
+ },
+ {
+  "id": "af-historian-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.962,
+  "fails": ""
+ },
+ {
+  "id": "af-historian-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.971,
+  "fails": ""
+ },
+ {
+  "id": "af-information-management-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.955,
+  "fails": ""
+ },
+ {
+  "id": "af-information-management-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.942,
+  "fails": ""
+ },
+ {
+  "id": "af-information-operations-officer-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.957,
+  "fails": ""
+ },
+ {
+  "id": "af-information-operations-officer-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.946,
+  "fails": ""
+ },
+ {
+  "id": "af-information-operations-officer-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.907,
+  "fails": ""
+ },
+ {
+  "id": "af-intelligence-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.953,
+  "fails": ""
+ },
+ {
+  "id": "af-intelligence-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.955,
+  "fails": ""
+ },
+ {
+  "id": "af-intelligence-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.951,
+  "fails": ""
+ },
+ {
+  "id": "af-judge-advocate-default",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.942,
+  "fails": ""
+ },
+ {
+  "id": "af-logistics-readiness-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.949,
+  "fails": ""
+ },
+ {
+  "id": "af-logistics-readiness-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.922,
+  "fails": ""
+ },
+ {
+  "id": "af-logistics-readiness-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.946,
+  "fails": ""
+ },
+ {
+  "id": "af-manpower-personnel-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.951,
+  "fails": ""
+ },
+ {
+  "id": "af-manpower-personnel-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.956,
+  "fails": ""
+ },
+ {
+  "id": "af-manpower-personnel-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.949,
+  "fails": ""
+ },
+ {
+  "id": "af-medical-service-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.982,
+  "fails": ""
+ },
+ {
+  "id": "af-medical-service-master",
+  "w": 0.931,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.936,
+  "fails": ""
+ },
+ {
+  "id": "af-medical-service-senior",
+  "w": 0.917,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.957,
+  "fails": ""
+ },
+ {
+  "id": "af-multi-domain-warfare-officer-basic",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.881,
+  "fails": ""
+ },
+ {
+  "id": "af-multi-domain-warfare-officer-master",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.907,
+  "fails": ""
+ },
+ {
+  "id": "af-multi-domain-warfare-officer-senior",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.852,
+  "fails": ""
+ },
+ {
+  "id": "af-munitions-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.955,
+  "fails": ""
+ },
+ {
+  "id": "af-munitions-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.952,
+  "fails": ""
+ },
+ {
+  "id": "af-munitions-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.939,
+  "fails": ""
+ },
+ {
+  "id": "af-nurse-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.949,
+  "fails": ""
+ },
+ {
+  "id": "af-nurse-chief",
+  "w": 0.931,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.931,
+  "fails": ""
+ },
+ {
+  "id": "af-nurse-senior",
+  "w": 0.917,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.952,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-research-analyst-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.925,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-research-analyst-master",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.926,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-research-analyst-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.926,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-support-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.953,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-support-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.95,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-support-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.938,
+  "fails": ""
+ },
+ {
+  "id": "af-paralegal-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.907,
+  "fails": ""
+ },
+ {
+  "id": "af-paralegal-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.918,
+  "fails": ""
+ },
+ {
+  "id": "af-paralegal-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.908,
+  "fails": ""
+ },
+ {
+  "id": "af-physician-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.954,
+  "fails": ""
+ },
+ {
+  "id": "af-physician-chief",
+  "w": 0.931,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.929,
+  "fails": ""
+ },
+ {
+  "id": "af-physician-senior",
+  "w": 0.917,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.96,
+  "fails": ""
+ },
+ {
+  "id": "af-professional-military-education-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.986,
+  "fails": ""
+ },
+ {
+  "id": "af-public-affairs-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.915,
+  "fails": ""
+ },
+ {
+  "id": "af-public-affairs-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.915,
+  "fails": ""
+ },
+ {
+  "id": "af-public-affairs-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.922,
+  "fails": ""
+ },
+ {
+  "id": "af-religious-affairs-basic",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.933,
+  "fails": ""
+ },
+ {
+  "id": "af-religious-affairs-master",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.937,
+  "fails": ""
+ },
+ {
+  "id": "af-religious-affairs-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.916,
+  "fails": ""
+ },
+ {
+  "id": "af-safety-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.873,
+  "fails": ""
+ },
+ {
+  "id": "af-safety-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.902,
+  "fails": ""
+ },
+ {
+  "id": "af-safety-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.904,
+  "fails": ""
+ },
+ {
+  "id": "af-scientific-applications-specialist-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.872,
+  "fails": ""
+ },
+ {
+  "id": "af-scientific-applications-specialist-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.891,
+  "fails": ""
+ },
+ {
+  "id": "af-scientific-applications-specialist-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.884,
+  "fails": ""
+ },
+ {
+  "id": "af-services-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.898,
+  "fails": ""
+ },
+ {
+  "id": "af-services-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.904,
+  "fails": ""
+ },
+ {
+  "id": "af-services-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.897,
+  "fails": ""
+ },
+ {
+  "id": "af-supply-fuels-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.902,
+  "fails": ""
+ },
+ {
+  "id": "af-supply-fuels-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.928,
+  "fails": ""
+ },
+ {
+  "id": "af-supply-fuels-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.911,
+  "fails": ""
+ },
+ {
+  "id": "af-transportation-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.912,
+  "fails": ""
+ },
+ {
+  "id": "af-transportation-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.923,
+  "fails": ""
+ },
+ {
+  "id": "af-transportation-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.908,
+  "fails": ""
+ },
+ {
+  "id": "af-veterinarian-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.98,
+  "fails": ""
+ },
+ {
+  "id": "af-veterinarian-chief",
+  "w": 0.931,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.926,
+  "fails": ""
+ },
+ {
+  "id": "af-veterinarian-senior",
+  "w": 0.917,
+  "cls": "tall",
+  "pass": true,
+  "iou": 0.949,
+  "fails": ""
+ },
+ {
+  "id": "af-weather-operations-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.916,
+  "fails": ""
+ },
+ {
+  "id": "af-weather-operations-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.91,
+  "fails": ""
+ },
+ {
+  "id": "af-weather-operations-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": true,
+  "iou": 0.903,
+  "fails": ""
+ }
+]

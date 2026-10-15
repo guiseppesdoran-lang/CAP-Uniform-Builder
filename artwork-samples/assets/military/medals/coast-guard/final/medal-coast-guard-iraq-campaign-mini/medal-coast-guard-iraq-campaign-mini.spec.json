@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-coast-guard-iraq-campaign-mini",
+ "width_in": 0.7081,
+ "height_in": 0.84837,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3AIraq_Campaign_Medal%2C_obverse.png, Public domain",
+ "anchors": {
+  "top_center": [
+   35.405,
+   0
+  ],
+  "bottom_center": [
+   35.405,
+   84.837
+  ],
+  "center": [
+   35.405,
+   42.419
+  ],
+  "left_edge": [
+   0,
+   42.419
+  ],
+  "right_edge": [
+   70.81,
+   42.419
+  ],
+  "ribbon_attach": [
+   35.211,
+   0.061
+  ]
+ },
+ "dimensions": {
+  "service": "coast-guard",
+  "medal": "iraq_campaign",
+  "variant": "miniature",
+  "ribbon_name": "iraq_campaign",
+  "ribbon_id": "mil-ribbon-joint-iraq-campaign",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-mini-medals/coast-guard/iraq_campaign.png",
+ "source_bbox_user_units": [
+  2.886,
+  3.683,
+  368.114,
+  441.263
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. Miniature uses a lighter trace of the same reference.",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3AIraq_Campaign_Medal%2C_obverse.png, Public domain",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Iraq_Campaign_Medal%2C_obverse.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:Iraq Campaign Medal, obverse.png",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. Miniature uses a lighter trace of the same reference.",
+ "ribbon_id": "mil-ribbon-joint-iraq-campaign",
+ "metal_colours": [
+  "#604b27",
+  "#a69052",
+  "#c0aa6b",
+  "#dbc685"
+ ]
+}

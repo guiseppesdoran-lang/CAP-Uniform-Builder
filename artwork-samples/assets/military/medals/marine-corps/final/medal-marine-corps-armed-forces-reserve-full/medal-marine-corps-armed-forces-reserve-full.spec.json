@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-marine-corps-armed-forces-reserve-full",
+ "width_in": 1.3578,
+ "height_in": 1.74904,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3AArmed_Forces_Reserve_Medal.png, CC0",
+ "anchors": {
+  "top_center": [
+   67.89,
+   0
+  ],
+  "bottom_center": [
+   67.89,
+   174.904
+  ],
+  "center": [
+   67.89,
+   87.452
+  ],
+  "left_edge": [
+   0,
+   87.452
+  ],
+  "right_edge": [
+   135.78,
+   87.452
+  ],
+  "ribbon_attach": [
+   67.347,
+   0.272
+  ]
+ },
+ "dimensions": {
+  "service": "marine-corps",
+  "medal": "armed_forces_reserve",
+  "variant": "full-size",
+  "ribbon_name": "armed_forces_reserve",
+  "ribbon_id": "mil-ribbon-joint-armed-forces-reserve",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-full-size-medals/marine-corps/armed_forces_reserve.png",
+ "source_bbox_user_units": [
+  2.836,
+  2.733,
+  636.228,
+  818.633
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3AArmed_Forces_Reserve_Medal.png, CC0",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Armed_Forces_Reserve_Medal.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:Armed Forces Reserve Medal.png",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "ribbon_id": "mil-ribbon-joint-armed-forces-reserve",
+ "metal_colours": [
+  "#6d4029",
+  "#8f7759",
+  "#b29974",
+  "#e0cca5"
+ ]
+}

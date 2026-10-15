@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-pararescue-default",
+ "width_in": 1.5,
+ "height_in": 1.4613,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 1.5 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   146.13
+  ],
+  "center": [
+   75,
+   73.065
+  ],
+  "left_edge": [
+   0,
+   73.065
+  ],
+  "right_edge": [
+   150,
+   73.065
+  ]
+ },
+ "dimensions": {
+  "size_class": "patch",
+  "service": "usaf",
+  "design": "pararescue",
+  "level": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/pararescue__default",
+ "source_bbox_user_units": [
+  75.2,
+  7.285,
+  243.733,
+  171.471
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.965,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

@@ -1,0 +1,331 @@
+[
+ {
+  "id": "af-air-battle-manager-basic",
+  "w": 3,
+  "pass": true,
+  "iou": 0.963,
+  "fails": ""
+ },
+ {
+  "id": "af-air-battle-manager-master",
+  "w": 3,
+  "pass": true,
+  "iou": 0.969,
+  "fails": ""
+ },
+ {
+  "id": "af-air-battle-manager-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.948,
+  "fails": ""
+ },
+ {
+  "id": "af-air-traffic-control-basic",
+  "w": 2,
+  "pass": true,
+  "iou": 0.947,
+  "fails": ""
+ },
+ {
+  "id": "af-air-traffic-control-master",
+  "w": 2,
+  "pass": true,
+  "iou": 0.935,
+  "fails": ""
+ },
+ {
+  "id": "af-air-traffic-control-senior",
+  "w": 2,
+  "pass": true,
+  "iou": 0.933,
+  "fails": ""
+ },
+ {
+  "id": "af-combat-control-team-default",
+  "w": 1.5,
+  "pass": true,
+  "iou": 0.961,
+  "fails": ""
+ },
+ {
+  "id": "af-combat-systems-officer-basic",
+  "w": 3,
+  "pass": true,
+  "iou": 0.947,
+  "fails": ""
+ },
+ {
+  "id": "af-combat-systems-officer-master",
+  "w": 3,
+  "pass": true,
+  "iou": 0.91,
+  "fails": ""
+ },
+ {
+  "id": "af-combat-systems-officer-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.908,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-operations-basic",
+  "w": 3,
+  "pass": true,
+  "iou": 0.928,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-operations-master",
+  "w": 3,
+  "pass": true,
+  "iou": 0.912,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-operations-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.918,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-support-basic",
+  "w": 2,
+  "pass": true,
+  "iou": 0.921,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-support-master",
+  "w": 2,
+  "pass": true,
+  "iou": 0.924,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-support-senior",
+  "w": 2,
+  "pass": true,
+  "iou": 0.911,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-aircrew-basic",
+  "w": 3,
+  "pass": true,
+  "iou": 0.946,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-aircrew-chief",
+  "w": 3,
+  "pass": true,
+  "iou": 0.898,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-aircrew-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.908,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-nurse-basic",
+  "w": 3,
+  "pass": true,
+  "iou": 0.914,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-nurse-chief",
+  "w": 3,
+  "pass": true,
+  "iou": 0.891,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-nurse-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.899,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-surgeon-basic",
+  "w": 3,
+  "pass": true,
+  "iou": 0.908,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-surgeon-chief",
+  "w": 3,
+  "pass": true,
+  "iou": 0.903,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-surgeon-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.878,
+  "fails": ""
+ },
+ {
+  "id": "af-missile-operations-basic",
+  "w": 1.201,
+  "pass": true,
+  "iou": 0.947,
+  "fails": ""
+ },
+ {
+  "id": "af-missile-operations-master",
+  "w": 1.062,
+  "pass": true,
+  "iou": 0.917,
+  "fails": ""
+ },
+ {
+  "id": "af-missile-operations-senior",
+  "w": 0.989,
+  "pass": true,
+  "iou": 0.93,
+  "fails": ""
+ },
+ {
+  "id": "af-officer-aircrew-basic",
+  "w": 3,
+  "pass": true,
+  "iou": 0.936,
+  "fails": ""
+ },
+ {
+  "id": "af-officer-aircrew-master",
+  "w": 3,
+  "pass": true,
+  "iou": 0.927,
+  "fails": ""
+ },
+ {
+  "id": "af-officer-aircrew-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.903,
+  "fails": ""
+ },
+ {
+  "id": "af-parachutist-basic",
+  "w": 2,
+  "pass": true,
+  "iou": 0.98,
+  "fails": ""
+ },
+ {
+  "id": "af-parachutist-master",
+  "w": 2,
+  "pass": true,
+  "iou": 0.961,
+  "fails": ""
+ },
+ {
+  "id": "af-parachutist-senior",
+  "w": 2,
+  "pass": true,
+  "iou": 0.934,
+  "fails": ""
+ },
+ {
+  "id": "af-pararescue-default",
+  "w": 1.5,
+  "pass": true,
+  "iou": 0.965,
+  "fails": ""
+ },
+ {
+  "id": "af-pilot-command-pilot",
+  "w": 3,
+  "pass": true,
+  "iou": 0.958,
+  "fails": ""
+ },
+ {
+  "id": "af-pilot-pilot",
+  "w": 3,
+  "pass": true,
+  "iou": 0.936,
+  "fails": ""
+ },
+ {
+  "id": "af-pilot-senior-pilot",
+  "w": 3,
+  "pass": true,
+  "iou": 0.934,
+  "fails": ""
+ },
+ {
+  "id": "af-remotely-piloted-aircraft-pilot-basic",
+  "w": 3,
+  "pass": true,
+  "iou": 0.963,
+  "fails": ""
+ },
+ {
+  "id": "af-remotely-piloted-aircraft-pilot-command",
+  "w": 3,
+  "pass": true,
+  "iou": 0.975,
+  "fails": ""
+ },
+ {
+  "id": "af-remotely-piloted-aircraft-pilot-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.947,
+  "fails": ""
+ },
+ {
+  "id": "af-space-basic",
+  "w": 3,
+  "pass": true,
+  "iou": 0.921,
+  "fails": ""
+ },
+ {
+  "id": "af-space-command",
+  "w": 3,
+  "pass": true,
+  "iou": 0.924,
+  "fails": ""
+ },
+ {
+  "id": "af-space-senior",
+  "w": 3,
+  "pass": true,
+  "iou": 0.913,
+  "fails": ""
+ },
+ {
+  "id": "af-weapons-controller-basic",
+  "w": 2,
+  "pass": true,
+  "iou": 0.948,
+  "fails": ""
+ },
+ {
+  "id": "af-weapons-controller-master",
+  "w": 2,
+  "pass": true,
+  "iou": 0.95,
+  "fails": ""
+ },
+ {
+  "id": "af-weapons-controller-senior",
+  "w": 2,
+  "pass": true,
+  "iou": 0.94,
+  "fails": ""
+ }
+]

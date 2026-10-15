@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-force-support-senior",
+ "width_in": 1.5,
+ "height_in": 1.04115,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 1.5 in from the badge aspect (1.44); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   104.115
+  ],
+  "center": [
+   75,
+   52.057
+  ],
+  "left_edge": [
+   0,
+   52.057
+  ],
+  "right_edge": [
+   150,
+   52.057
+  ]
+ },
+ "dimensions": {
+  "size_class": "medallion",
+  "service": "air-force",
+  "design": "force_support",
+  "variant": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/force_support__senior",
+ "source_bbox_user_units": [
+  41.6,
+  7.641,
+  278.4,
+  172.004
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.984,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

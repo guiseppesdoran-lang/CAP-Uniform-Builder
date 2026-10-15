@@ -1,0 +1,42 @@
+[
+ {
+  "id": "usmc-aerial-navigator-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.832,
+  "fails": ""
+ },
+ {
+  "id": "usmc-diver-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.928,
+  "fails": ""
+ },
+ {
+  "id": "usmc-flight-surgeon-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.849,
+  "fails": ""
+ },
+ {
+  "id": "usmc-naval-aviation-observer-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.745,
+  "fails": "silhouette IoU 0.745 < 0.80"
+ },
+ {
+  "id": "usmc-special-operator-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.785,
+  "fails": "silhouette IoU 0.785 < 0.80"
+ }
+]

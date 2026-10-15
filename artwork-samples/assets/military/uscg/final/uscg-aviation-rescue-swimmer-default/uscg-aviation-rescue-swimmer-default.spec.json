@@ -1,0 +1,51 @@
+{
+ "asset_id": "uscg-aviation-rescue-swimmer-default",
+ "width_in": 3,
+ "height_in": 0.78205,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (3.83); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   78.205
+  ],
+  "center": [
+   150,
+   39.102
+  ],
+  "left_edge": [
+   0,
+   39.102
+  ],
+  "right_edge": [
+   300,
+   39.102
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "coast-guard",
+  "design": "coast_guard_aviation_rescue_swimmer",
+  "variant": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/uscg/g*/make*.js",
+ "reference": "images/military-badges/coast-guard/coast_guard_aviation_rescue_swimmer__default",
+ "source_bbox_user_units": [
+  11,
+  48.5,
+  245,
+  109.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.894,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

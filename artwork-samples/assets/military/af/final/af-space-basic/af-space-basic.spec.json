@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-space-basic",
+ "width_in": 3,
+ "height_in": 0.91709,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   91.709
+  ],
+  "center": [
+   150,
+   45.855
+  ],
+  "left_edge": [
+   0,
+   45.855
+  ],
+  "right_edge": [
+   300,
+   45.855
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "space",
+  "level": "basic"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/space__basic",
+ "source_bbox_user_units": [
+  7.467,
+  43.001,
+  311.467,
+  135.933
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.921,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

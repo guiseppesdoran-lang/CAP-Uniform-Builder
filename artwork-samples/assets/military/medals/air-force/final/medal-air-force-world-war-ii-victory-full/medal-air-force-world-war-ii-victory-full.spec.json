@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-air-force-world-war-ii-victory-full",
+ "width_in": 1.3053,
+ "height_in": 1.45642,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3AWorld_War_II_Victory_Medal_-_Obverse.png, CC0",
+ "anchors": {
+  "top_center": [
+   65.265,
+   0
+  ],
+  "bottom_center": [
+   65.265,
+   145.642
+  ],
+  "center": [
+   65.265,
+   72.821
+  ],
+  "left_edge": [
+   0,
+   72.821
+  ],
+  "right_edge": [
+   130.53,
+   72.821
+  ],
+  "ribbon_attach": [
+   67.182,
+   0.382
+  ]
+ },
+ "dimensions": {
+  "service": "air-force",
+  "medal": "world_war_ii_victory",
+  "variant": "full-size",
+  "ribbon_name": "world_war_ii_victory",
+  "ribbon_id": "mil-ribbon-joint-world-war-2",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-full-size-medals/air-force/world_war_ii_victory.png",
+ "source_bbox_user_units": [
+  5.64,
+  1.558,
+  840.83,
+  933.442
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3AWorld_War_II_Victory_Medal_-_Obverse.png, CC0",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/3/37/World_War_II_Victory_Medal_-_Obverse.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:World War II Victory Medal - Obverse.png",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "ribbon_id": "mil-ribbon-joint-world-war-2",
+ "metal_colours": [
+  "#523f34",
+  "#7c663a",
+  "#8c7647",
+  "#a49982"
+ ]
+}

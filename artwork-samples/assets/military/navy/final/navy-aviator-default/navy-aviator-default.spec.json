@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-aviator-default",
+ "width_in": 3,
+ "height_in": 0.96429,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (3.12); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   96.429
+  ],
+  "center": [
+   150,
+   48.215
+  ],
+  "left_edge": [
+   0,
+   48.215
+  ],
+  "right_edge": [
+   300,
+   48.215
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "navy",
+  "design": "navy_aviator",
+  "variant": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_aviator__default",
+ "source_bbox_user_units": [
+  13.167,
+  42.833,
+  241.833,
+  116.333
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.833,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

@@ -1,0 +1,51 @@
+{
+ "asset_id": "army-diver-special-operations-supervisor",
+ "width_in": 1.5,
+ "height_in": 1.536,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 1.5 in from the badge aspect (0.98); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   153.6
+  ],
+  "center": [
+   75,
+   76.8
+  ],
+  "left_edge": [
+   0,
+   76.8
+  ],
+  "right_edge": [
+   150,
+   76.8
+  ]
+ },
+ "dimensions": {
+  "size_class": "medallion",
+  "service": "army",
+  "design": "army_diver",
+  "variant": "special_operations_supervisor"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/army/g*/make*.js",
+ "reference": "images/military-badges/army/army_diver__special_operations_supervisor",
+ "source_bbox_user_units": [
+  71.5,
+  15.5,
+  196.5,
+  143.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.695,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

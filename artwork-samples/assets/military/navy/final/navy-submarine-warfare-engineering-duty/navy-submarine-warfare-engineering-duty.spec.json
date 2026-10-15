@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-submarine-warfare-engineering-duty",
+ "width_in": 3,
+ "height_in": 0.80983,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (3.70); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   80.983
+  ],
+  "center": [
+   150,
+   40.492
+  ],
+  "left_edge": [
+   0,
+   40.492
+  ],
+  "right_edge": [
+   300,
+   40.492
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "navy",
+  "design": "navy_submarine_warfare",
+  "variant": "engineering_duty"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_submarine_warfare__engineering_duty",
+ "source_bbox_user_units": [
+  10,
+  48.333,
+  244,
+  111.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.892,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

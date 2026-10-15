@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-space-force-space-force-good-conduct-medal-full",
+ "width_in": 1.3351,
+ "height_in": 1.59968,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3ASpace_Force_Good_Conduct_Medal_Obverse.png, Public domain",
+ "anchors": {
+  "top_center": [
+   66.755,
+   0
+  ],
+  "bottom_center": [
+   66.755,
+   159.968
+  ],
+  "center": [
+   66.755,
+   79.984
+  ],
+  "left_edge": [
+   0,
+   79.984
+  ],
+  "right_edge": [
+   133.51,
+   79.984
+  ],
+  "ribbon_attach": [
+   66.668,
+   0.253
+  ]
+ },
+ "dimensions": {
+  "service": "space-force",
+  "medal": "space_force_good_conduct_medal",
+  "variant": "full-size",
+  "ribbon_name": "space_force_good_conduct_medal",
+  "ribbon_id": "mil-ribbon-air-force-good-conduct",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-full-size-medals/space-force/space_force_good_conduct_medal.png",
+ "source_bbox_user_units": [
+  1.704,
+  2.553,
+  765.296,
+  917.468
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3ASpace_Force_Good_Conduct_Medal_Obverse.png, Public domain",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Space_Force_Good_Conduct_Medal_Obverse.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:Space Force Good Conduct Medal Obverse.png",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "ribbon_id": "mil-ribbon-air-force-good-conduct",
+ "metal_colours": [
+  "#5f5113",
+  "#a78f37",
+  "#bfa844",
+  "#d0bd70"
+ ]
+}

@@ -1,0 +1,34 @@
+[
+ {
+  "id": "uscg-aviation-rescue-swimmer-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.894,
+  "fails": ""
+ },
+ {
+  "id": "uscg-flight-officer-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.924,
+  "fails": ""
+ },
+ {
+  "id": "uscg-flight-surgeon-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.873,
+  "fails": ""
+ },
+ {
+  "id": "uscg-scuba-diver-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.949,
+  "fails": ""
+ }
+]

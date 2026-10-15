@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-multi-domain-warfare-officer-senior",
+ "width_in": 3,
+ "height_in": 1.07806,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (2.79); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   107.806
+  ],
+  "center": [
+   150,
+   53.903
+  ],
+  "left_edge": [
+   0,
+   53.903
+  ],
+  "right_edge": [
+   300,
+   53.903
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "air-force",
+  "design": "multi_domain_warfare_officer",
+  "variant": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/multi_domain_warfare_officer__senior",
+ "source_bbox_user_units": [
+  7.467,
+  35.005,
+  310.578,
+  143.929
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.852,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

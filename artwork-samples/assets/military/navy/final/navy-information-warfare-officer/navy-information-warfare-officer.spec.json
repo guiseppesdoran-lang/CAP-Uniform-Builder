@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-information-warfare-officer",
+ "width_in": 3,
+ "height_in": 1.0364,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (2.90); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   103.64
+  ],
+  "center": [
+   150,
+   51.82
+  ],
+  "left_edge": [
+   0,
+   51.82
+  ],
+  "right_edge": [
+   300,
+   51.82
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "navy",
+  "design": "navy_information_warfare",
+  "variant": "officer"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_information_warfare__officer",
+ "source_bbox_user_units": [
+  11,
+  39.333,
+  244.5,
+  120
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.896,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

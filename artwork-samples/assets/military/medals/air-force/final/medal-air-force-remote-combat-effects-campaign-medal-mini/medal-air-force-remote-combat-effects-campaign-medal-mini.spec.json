@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-air-force-remote-combat-effects-campaign-medal-mini",
+ "width_in": 0.6915,
+ "height_in": 0.81846,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3AUSAF_Remote_Combat_Effects_Campaign_Medal_Obverse.png, Public domain",
+ "anchors": {
+  "top_center": [
+   34.575,
+   0
+  ],
+  "bottom_center": [
+   34.575,
+   81.846
+  ],
+  "center": [
+   34.575,
+   40.923
+  ],
+  "left_edge": [
+   0,
+   40.923
+  ],
+  "right_edge": [
+   69.15,
+   40.923
+  ],
+  "ribbon_attach": [
+   34.53,
+   0.133
+  ]
+ },
+ "dimensions": {
+  "service": "air-force",
+  "medal": "remote_combat_effects_campaign_medal",
+  "variant": "miniature",
+  "ribbon_name": "remote_combat_effects_campaign_medal",
+  "ribbon_id": "mil-ribbon-joint-remote-combat-effects-campaign-medal",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-mini-medals/air-force/remote_combat_effects_campaign_medal.png",
+ "source_bbox_user_units": [
+  1.707,
+  2.525,
+  766.293,
+  907.485
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. Miniature uses a lighter trace of the same reference.",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3AUSAF_Remote_Combat_Effects_Campaign_Medal_Obverse.png, Public domain",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/f/fd/USAF_Remote_Combat_Effects_Campaign_Medal_Obverse.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:USAF Remote Combat Effects Campaign Medal Obverse.png",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. Miniature uses a lighter trace of the same reference.",
+ "ribbon_id": "mil-ribbon-joint-remote-combat-effects-campaign-medal",
+ "metal_colours": [
+  "#2f4149",
+  "#9b6f1a",
+  "#c69739",
+  "#ecbf59"
+ ]
+}

@@ -1,0 +1,51 @@
+{
+ "asset_id": "army-aviation-senior",
+ "width_in": 3,
+ "height_in": 1.04118,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (2.88); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   104.118
+  ],
+  "center": [
+   150,
+   52.059
+  ],
+  "left_edge": [
+   0,
+   52.059
+  ],
+  "right_edge": [
+   300,
+   52.059
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "army",
+  "design": "army_aviation",
+  "variant": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/army/g*/make*.js",
+ "reference": "images/military-badges/army/army_aviation__senior",
+ "source_bbox_user_units": [
+  13.667,
+  37.5,
+  240.333,
+  116.167
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.484,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

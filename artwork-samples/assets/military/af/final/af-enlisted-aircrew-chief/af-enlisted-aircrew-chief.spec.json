@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-enlisted-aircrew-chief",
+ "width_in": 3,
+ "height_in": 1.30745,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   130.745
+  ],
+  "center": [
+   150,
+   65.373
+  ],
+  "left_edge": [
+   0,
+   65.373
+  ],
+  "right_edge": [
+   300,
+   65.373
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "enlisted_aircrew",
+  "level": "chief"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/enlisted_aircrew__chief",
+ "source_bbox_user_units": [
+  8,
+  24.344,
+  310.933,
+  156.367
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.898,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-missile-operations-master",
+ "width_in": 1.0619,
+ "height_in": 1.74989,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated height 1.75 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   53.095,
+   0
+  ],
+  "bottom_center": [
+   53.095,
+   174.989
+  ],
+  "center": [
+   53.095,
+   87.495
+  ],
+  "left_edge": [
+   0,
+   87.495
+  ],
+  "right_edge": [
+   106.19,
+   87.495
+  ]
+ },
+ "dimensions": {
+  "size_class": "tall",
+  "service": "usaf",
+  "design": "missile_operations",
+  "level": "master"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/missile_operations__master",
+ "source_bbox_user_units": [
+  115.022,
+  24.699,
+  204.089,
+  171.471
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.917,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

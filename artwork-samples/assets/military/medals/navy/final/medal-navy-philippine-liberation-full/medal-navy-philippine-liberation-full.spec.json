@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-navy-philippine-liberation-full",
+ "width_in": 1.0359,
+ "height_in": 1.36742,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3APhilippine_Liberation_Medal.png, CC0",
+ "anchors": {
+  "top_center": [
+   51.795,
+   0
+  ],
+  "bottom_center": [
+   51.795,
+   136.742
+  ],
+  "center": [
+   51.795,
+   68.371
+  ],
+  "left_edge": [
+   0,
+   68.371
+  ],
+  "right_edge": [
+   103.59,
+   68.371
+  ],
+  "ribbon_attach": [
+   51.795,
+   0.153
+  ]
+ },
+ "dimensions": {
+  "service": "navy",
+  "medal": "philippine_liberation",
+  "variant": "full-size",
+  "ribbon_name": "philippine_liberation",
+  "ribbon_id": "mil-ribbon-joint-philippine-liberation",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-full-size-medals/navy/philippine_liberation.png",
+ "source_bbox_user_units": [
+  3.167,
+  3.621,
+  259.833,
+  342.428
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3APhilippine_Liberation_Medal.png, CC0",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Philippine_Liberation_Medal.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:Philippine Liberation Medal.png",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "ribbon_id": "mil-ribbon-joint-philippine-liberation",
+ "metal_colours": [
+  "#5c0830",
+  "#dab751",
+  "#e7cd7c",
+  "#ded4b1"
+ ]
+}

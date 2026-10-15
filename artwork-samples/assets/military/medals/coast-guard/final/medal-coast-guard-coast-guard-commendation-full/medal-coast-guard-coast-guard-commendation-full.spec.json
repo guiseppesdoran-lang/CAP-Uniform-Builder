@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-coast-guard-coast-guard-commendation-full",
+ "width_in": 1.1638,
+ "height_in": 1.48473,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3ACoast_Guard_Commendation_Medal_(CGCM).jpg, Public domain",
+ "anchors": {
+  "top_center": [
+   58.19,
+   0
+  ],
+  "bottom_center": [
+   58.19,
+   148.473
+  ],
+  "center": [
+   58.19,
+   74.237
+  ],
+  "left_edge": [
+   0,
+   74.237
+  ],
+  "right_edge": [
+   116.38,
+   74.237
+  ],
+  "ribbon_attach": [
+   58.092,
+   0.024
+  ]
+ },
+ "dimensions": {
+  "service": "coast-guard",
+  "medal": "coast_guard_commendation",
+  "variant": "full-size",
+  "ribbon_name": "coast_guard_commendation",
+  "ribbon_id": "mil-ribbon-coast-guard-commendation",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-full-size-medals/coast-guard/coast_guard_commendation.png",
+ "source_bbox_user_units": [
+  3.321,
+  3.914,
+  424.391,
+  541.097
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3ACoast_Guard_Commendation_Medal_(CGCM).jpg, Public domain",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Coast_Guard_Commendation_Medal_%28CGCM%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:Coast Guard Commendation Medal (CGCM).jpg",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "ribbon_id": "mil-ribbon-coast-guard-commendation",
+ "metal_colours": [
+  "#6a5617",
+  "#a59734",
+  "#b6aa66",
+  "#d0c699"
+ ]
+}

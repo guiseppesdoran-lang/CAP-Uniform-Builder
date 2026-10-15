@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-marine-corps-combatant-diver-default",
+ "width_in": 1.5,
+ "height_in": 1.50891,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 1.5 in from the badge aspect (0.99); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   150.891
+  ],
+  "center": [
+   75,
+   75.445
+  ],
+  "left_edge": [
+   0,
+   75.445
+  ],
+  "right_edge": [
+   150,
+   75.445
+  ]
+ },
+ "dimensions": {
+  "size_class": "medallion",
+  "service": "navy",
+  "design": "navy_marine_corps_combatant_diver",
+  "variant": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_marine_corps_combatant_diver__default",
+ "source_bbox_user_units": [
+  56.333,
+  10.5,
+  196.667,
+  151.667
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.928,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

@@ -1,0 +1,51 @@
+{
+ "asset_id": "uscg-flight-officer-default",
+ "width_in": 3,
+ "height_in": 0.60426,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (4.98); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   60.426
+  ],
+  "center": [
+   150,
+   30.213
+  ],
+  "left_edge": [
+   0,
+   30.213
+  ],
+  "right_edge": [
+   300,
+   30.213
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "coast-guard",
+  "design": "coast_guard_flight_officer",
+  "variant": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/uscg/g*/make*.js",
+ "reference": "images/military-badges/coast-guard/coast_guard_flight_officer__default",
+ "source_bbox_user_units": [
+  10.5,
+  56.167,
+  245.5,
+  103.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.924,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

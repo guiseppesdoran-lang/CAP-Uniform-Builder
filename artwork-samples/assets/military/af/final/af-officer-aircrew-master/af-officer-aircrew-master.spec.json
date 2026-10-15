@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-officer-aircrew-master",
+ "width_in": 3,
+ "height_in": 1.18427,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   118.427
+  ],
+  "center": [
+   150,
+   59.214
+  ],
+  "left_edge": [
+   0,
+   59.214
+  ],
+  "right_edge": [
+   300,
+   59.214
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "officer_aircrew",
+  "level": "master"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/officer_aircrew__master",
+ "source_bbox_user_units": [
+  8,
+  29.319,
+  310.933,
+  148.904
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.927,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

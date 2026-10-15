@@ -1,0 +1,482 @@
+[
+ {
+  "id": "army-air-assault-default",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.58,
+  "fails": "silhouette IoU 0.580 < 0.80"
+ },
+ {
+  "id": "army-aviation-basic",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.508,
+  "fails": "silhouette IoU 0.508 < 0.80"
+ },
+ {
+  "id": "army-aviation-master",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.467,
+  "fails": "silhouette IoU 0.467 < 0.80"
+ },
+ {
+  "id": "army-aviation-senior",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.484,
+  "fails": "silhouette IoU 0.484 < 0.80"
+ },
+ {
+  "id": "army-aviator-basic",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.522,
+  "fails": "silhouette IoU 0.522 < 0.80"
+ },
+ {
+  "id": "army-aviator-master",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.485,
+  "fails": "silhouette IoU 0.485 < 0.80"
+ },
+ {
+  "id": "army-aviator-senior",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.497,
+  "fails": "silhouette IoU 0.497 < 0.80"
+ },
+ {
+  "id": "army-career-counselor-identification-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.678,
+  "fails": "silhouette IoU 0.678 < 0.80"
+ },
+ {
+  "id": "army-combat-action-first-award",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.676,
+  "fails": "silhouette IoU 0.676 < 0.80"
+ },
+ {
+  "id": "army-combat-action-master-first-award",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.667,
+  "fails": "silhouette IoU 0.667 < 0.80"
+ },
+ {
+  "id": "army-combat-action-master-second-award",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.646,
+  "fails": "silhouette IoU 0.646 < 0.80"
+ },
+ {
+  "id": "army-combat-infantryman-first-award",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.764,
+  "fails": "silhouette IoU 0.764 < 0.80"
+ },
+ {
+  "id": "army-combat-infantryman-master-first-award",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.622,
+  "fails": "silhouette IoU 0.622 < 0.80"
+ },
+ {
+  "id": "army-combat-medical-first-award",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.633,
+  "fails": "silhouette IoU 0.633 < 0.80"
+ },
+ {
+  "id": "army-diver-first-class",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.763,
+  "fails": "silhouette IoU 0.763 < 0.80"
+ },
+ {
+  "id": "army-diver-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.675,
+  "fails": "silhouette IoU 0.675 < 0.80"
+ },
+ {
+  "id": "army-diver-salvage",
+  "w": 1.074,
+  "cls": "tall",
+  "pass": false,
+  "iou": 0.748,
+  "fails": "silhouette IoU 0.748 < 0.80"
+ },
+ {
+  "id": "army-diver-second-class",
+  "w": 1.124,
+  "cls": "tall",
+  "pass": false,
+  "iou": 0.786,
+  "fails": "silhouette IoU 0.786 < 0.80"
+ },
+ {
+  "id": "army-diver-special-operations",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.727,
+  "fails": "silhouette IoU 0.727 < 0.80"
+ },
+ {
+  "id": "army-diver-special-operations-supervisor",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.695,
+  "fails": "silhouette IoU 0.695 < 0.80"
+ },
+ {
+  "id": "army-drill-sergeant-identification-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.717,
+  "fails": "silhouette IoU 0.717 < 0.80"
+ },
+ {
+  "id": "army-driver-and-mechanic-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.949,
+  "fails": ""
+ },
+ {
+  "id": "army-expert-field-medical-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.522,
+  "fails": "silhouette IoU 0.522 < 0.80"
+ },
+ {
+  "id": "army-expert-infantryman-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 1,
+  "fails": ""
+ },
+ {
+  "id": "army-expert-soldier-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": true,
+  "iou": 0.918,
+  "fails": ""
+ },
+ {
+  "id": "army-explosive-ordnance-disposal-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.589,
+  "fails": "silhouette IoU 0.589 < 0.80"
+ },
+ {
+  "id": "army-explosive-ordnance-disposal-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.51,
+  "fails": "silhouette IoU 0.510 < 0.80"
+ },
+ {
+  "id": "army-explosive-ordnance-disposal-senior",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.625,
+  "fails": "silhouette IoU 0.625 < 0.80"
+ },
+ {
+  "id": "army-flight-surgeon-basic",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.505,
+  "fails": "silhouette IoU 0.505 < 0.80"
+ },
+ {
+  "id": "army-flight-surgeon-master",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.474,
+  "fails": "silhouette IoU 0.474 < 0.80"
+ },
+ {
+  "id": "army-flight-surgeon-senior",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.498,
+  "fails": "silhouette IoU 0.498 < 0.80"
+ },
+ {
+  "id": "army-glider-default",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.656,
+  "fails": "silhouette IoU 0.656 < 0.80"
+ },
+ {
+  "id": "army-instructor-identification-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.806,
+  "fails": ""
+ },
+ {
+  "id": "army-instructor-identification-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.736,
+  "fails": "silhouette IoU 0.736 < 0.80"
+ },
+ {
+  "id": "army-instructor-identification-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.806,
+  "fails": ""
+ },
+ {
+  "id": "army-mariner-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.461,
+  "fails": "silhouette IoU 0.461 < 0.80"
+ },
+ {
+  "id": "army-mariner-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.555,
+  "fails": "silhouette IoU 0.555 < 0.80"
+ },
+ {
+  "id": "army-mariner-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.502,
+  "fails": "silhouette IoU 0.502 < 0.80"
+ },
+ {
+  "id": "army-marksmanship-expert",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.745,
+  "fails": "silhouette IoU 0.745 < 0.80"
+ },
+ {
+  "id": "army-marksmanship-marksman",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.855,
+  "fails": ""
+ },
+ {
+  "id": "army-marksmanship-sharpshooter",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.942,
+  "fails": ""
+ },
+ {
+  "id": "army-master-gunner-identification-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.581,
+  "fails": "silhouette IoU 0.581 < 0.80"
+ },
+ {
+  "id": "army-military-freefall-parachutist-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.406,
+  "fails": "silhouette IoU 0.406 < 0.80"
+ },
+ {
+  "id": "army-military-freefall-parachutist-jumpmaster",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.334,
+  "fails": "silhouette IoU 0.334 < 0.80"
+ },
+ {
+  "id": "army-military-horseman-identification-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.723,
+  "fails": "silhouette IoU 0.723 < 0.80"
+ },
+ {
+  "id": "army-parachute-rigger-default",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.477,
+  "fails": "silhouette IoU 0.477 < 0.80"
+ },
+ {
+  "id": "army-parachutist-basic",
+  "w": 2,
+  "cls": "oval-or-wide",
+  "pass": false,
+  "iou": 0.511,
+  "fails": "silhouette IoU 0.511 < 0.80"
+ },
+ {
+  "id": "army-parachutist-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.407,
+  "fails": "silhouette IoU 0.407 < 0.80"
+ },
+ {
+  "id": "army-parachutist-senior",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.419,
+  "fails": "silhouette IoU 0.419 < 0.80"
+ },
+ {
+  "id": "army-pathfinder-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.519,
+  "fails": "silhouette IoU 0.519 < 0.80"
+ },
+ {
+  "id": "army-recruiter-identification-basic",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.736,
+  "fails": "silhouette IoU 0.736 < 0.80"
+ },
+ {
+  "id": "army-recruiter-identification-master",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.736,
+  "fails": "silhouette IoU 0.736 < 0.80"
+ },
+ {
+  "id": "army-retired-service-identification-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.988,
+  "fails": ""
+ },
+ {
+  "id": "army-space-basic",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.381,
+  "fails": "silhouette IoU 0.381 < 0.80"
+ },
+ {
+  "id": "army-space-master",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.377,
+  "fails": "silhouette IoU 0.377 < 0.80"
+ },
+ {
+  "id": "army-space-senior",
+  "w": 3,
+  "cls": "long-wings",
+  "pass": false,
+  "iou": 0.337,
+  "fails": "silhouette IoU 0.337 < 0.80"
+ },
+ {
+  "id": "army-staff-identification-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.574,
+  "fails": "silhouette IoU 0.574 < 0.80"
+ },
+ {
+  "id": "army-tomb-guard-identification-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.854,
+  "fails": ""
+ },
+ {
+  "id": "army-joint-chiefs-of-staff-identification-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": false,
+  "iou": 0.612,
+  "fails": "silhouette IoU 0.612 < 0.80"
+ },
+ {
+  "id": "army-office-of-secretary-of-defense-identification-default",
+  "w": 1.5,
+  "cls": "medallion",
+  "pass": true,
+  "iou": 0.959,
+  "fails": ""
+ }
+]

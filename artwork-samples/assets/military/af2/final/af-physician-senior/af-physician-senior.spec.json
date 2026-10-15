@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-physician-senior",
+ "width_in": 0.9174,
+ "height_in": 1.50016,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated height 1.5 in from the badge aspect (0.61); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   45.87,
+   0
+  ],
+  "bottom_center": [
+   45.87,
+   150.016
+  ],
+  "center": [
+   45.87,
+   75.008
+  ],
+  "left_edge": [
+   0,
+   75.008
+  ],
+  "right_edge": [
+   91.74,
+   75.008
+  ]
+ },
+ "dimensions": {
+  "size_class": "tall",
+  "service": "air-force",
+  "design": "physician",
+  "variant": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/physician__senior",
+ "source_bbox_user_units": [
+  109.689,
+  7.463,
+  210.311,
+  172.004
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.96,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

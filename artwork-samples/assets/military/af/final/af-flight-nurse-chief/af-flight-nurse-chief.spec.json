@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-flight-nurse-chief",
+ "width_in": 3,
+ "height_in": 1.20877,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   120.877
+  ],
+  "center": [
+   150,
+   60.438
+  ],
+  "left_edge": [
+   0,
+   60.438
+  ],
+  "right_edge": [
+   300,
+   60.438
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "flight_nurse",
+  "level": "chief"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/flight_nurse__chief",
+ "source_bbox_user_units": [
+  5.867,
+  28.608,
+  313.244,
+  152.458
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.891,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

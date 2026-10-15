@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-parachutist-senior",
+ "width_in": 2,
+ "height_in": 1.54143,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   154.143
+  ],
+  "center": [
+   100,
+   77.072
+  ],
+  "left_edge": [
+   0,
+   77.072
+  ],
+  "right_edge": [
+   200,
+   77.072
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval",
+  "service": "usaf",
+  "design": "parachutist",
+  "level": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/parachutist__senior",
+ "source_bbox_user_units": [
+  53.156,
+  7.463,
+  265.956,
+  171.471
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.934,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

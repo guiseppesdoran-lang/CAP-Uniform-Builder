@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-navy-silver-star-full",
+ "width_in": 1.4071,
+ "height_in": 1.46824,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3ASilver_Star_medal.png, Public domain",
+ "anchors": {
+  "top_center": [
+   70.355,
+   0
+  ],
+  "bottom_center": [
+   70.355,
+   146.824
+  ],
+  "center": [
+   70.355,
+   73.412
+  ],
+  "left_edge": [
+   0,
+   73.412
+  ],
+  "right_edge": [
+   140.71,
+   73.412
+  ],
+  "ribbon_attach": [
+   69.601,
+   0.251
+  ]
+ },
+ "dimensions": {
+  "service": "navy",
+  "medal": "silver_star",
+  "variant": "full-size",
+  "ribbon_name": "silver_star",
+  "ribbon_id": "mil-ribbon-joint-silver-star",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-full-size-medals/navy/silver_star.png",
+ "source_bbox_user_units": [
+  3.5,
+  3.5,
+  283.5,
+  295.667
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3ASilver_Star_medal.png, Public domain",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/8/89/Silver_Star_medal.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:Silver Star medal.png",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "ribbon_id": "mil-ribbon-joint-silver-star",
+ "metal_colours": [
+  "#893c1d",
+  "#a5893d",
+  "#ceb264",
+  "#edd592"
+ ]
+}

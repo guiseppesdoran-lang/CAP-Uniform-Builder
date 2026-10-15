@@ -1,0 +1,62 @@
+{
+ "asset_id": "medal-air-force-meritorious-service-full",
+ "width_in": 1.32,
+ "height_in": 1.37957,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   66,
+   0
+  ],
+  "bottom_center": [
+   66,
+   137.957
+  ],
+  "center": [
+   66,
+   68.978
+  ],
+  "left_edge": [
+   0,
+   68.978
+  ],
+  "right_edge": [
+   132,
+   68.978
+  ],
+  "ribbon_attach": [
+   61.949,
+   6.613
+  ]
+ },
+ "dimensions": {
+  "service": "air-force",
+  "medal": "meritorious_service",
+  "variant": "full-size",
+  "ribbon_name": "meritorious_service",
+  "ribbon_id": "mil-ribbon-joint-meritorious-service",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/build-medals.js",
+ "reference": "images/military-full-size-medals/air-force/meritorious_service.png",
+ "source_bbox_user_units": [
+  4.167,
+  8,
+  96.5,
+  104.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.915,
+  "note": "mask IoU of the traced outline vs the ribbon-stripped body of the product raster (100x220 / 50x176 px source: low resolution, relief shading is not reproduced)"
+ },
+ "notes": "Outline is the real silhouette of the product raster (smoothed, snapped to a true circle); fill is the sampled median metal colour with one top-to-bottom gradient and an inset rim ring; only large (>=3% of the body) colour features are kept. Relief, lettering and fine engraving are NOT reproduced (source rasters are 50-100 px). Ribbon not included.",
+ "fidelity": "silhouette_and_tone",
+ "fidelity_note": "Outline is the real silhouette of the product raster (smoothed, snapped to a true circle); fill is the sampled median metal colour with one top-to-bottom gradient and an inset rim ring; only large (>=3% of the body) colour features are kept. Relief, lettering and fine engraving are NOT reproduced (source rasters are 50-100 px). Ribbon not included.",
+ "metal_colour": "#9c7e58",
+ "outline_snap": "circle",
+ "ribbon_id": "mil-ribbon-joint-meritorious-service"
+}

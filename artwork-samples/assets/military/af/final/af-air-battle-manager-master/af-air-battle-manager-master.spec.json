@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-air-battle-manager-master",
+ "width_in": 3,
+ "height_in": 1.33209,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   133.209
+  ],
+  "center": [
+   150,
+   66.605
+  ],
+  "left_edge": [
+   0,
+   66.605
+  ],
+  "right_edge": [
+   300,
+   66.605
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "air_battle_manager",
+  "level": "master"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/air_battle_manager__master",
+ "source_bbox_user_units": [
+  8,
+  21.323,
+  310.933,
+  155.834
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.969,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

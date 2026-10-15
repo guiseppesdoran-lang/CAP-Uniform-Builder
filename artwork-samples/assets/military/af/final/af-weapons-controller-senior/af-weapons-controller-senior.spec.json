@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-weapons-controller-senior",
+ "width_in": 2,
+ "height_in": 1.28099,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   128.099
+  ],
+  "center": [
+   100,
+   64.049
+  ],
+  "left_edge": [
+   0,
+   64.049
+  ],
+  "right_edge": [
+   200,
+   64.049
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval",
+  "service": "usaf",
+  "design": "weapons_controller",
+  "level": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/weapons_controller__senior",
+ "source_bbox_user_units": [
+  32.356,
+  8.529,
+  286.756,
+  171.471
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.94,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

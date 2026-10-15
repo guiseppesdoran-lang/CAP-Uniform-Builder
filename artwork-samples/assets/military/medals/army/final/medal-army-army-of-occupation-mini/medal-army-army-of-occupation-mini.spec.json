@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-army-army-of-occupation-mini",
+ "width_in": 0.7017,
+ "height_in": 0.91435,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3AUS_Army_WW2_Occup_Medal_Obverse.png, Public domain",
+ "anchors": {
+  "top_center": [
+   35.085,
+   0
+  ],
+  "bottom_center": [
+   35.085,
+   91.435
+  ],
+  "center": [
+   35.085,
+   45.718
+  ],
+  "left_edge": [
+   0,
+   45.718
+  ],
+  "right_edge": [
+   70.17,
+   45.718
+  ],
+  "ribbon_attach": [
+   35.007,
+   0.065
+  ]
+ },
+ "dimensions": {
+  "service": "army",
+  "medal": "army_of_occupation",
+  "variant": "miniature",
+  "ribbon_name": "army_of_occupation",
+  "ribbon_id": "mil-ribbon-army-of-occupation-service",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-mini-medals/army/army_of_occupation.png",
+ "source_bbox_user_units": [
+  2.511,
+  3.587,
+  449.489,
+  586.022
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. Miniature uses a lighter trace of the same reference.",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3AUS_Army_WW2_Occup_Medal_Obverse.png, Public domain",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/b/b7/US_Army_WW2_Occup_Medal_Obverse.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:US Army WW2 Occup Medal Obverse.png",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. Miniature uses a lighter trace of the same reference.",
+ "ribbon_id": "mil-ribbon-army-of-occupation-service",
+ "metal_colours": [
+  "#380401",
+  "#7c4801",
+  "#ca9901",
+  "#fbfbfb"
+ ]
+}

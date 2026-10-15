@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-weather-operations-senior",
+ "width_in": 2,
+ "height_in": 1.29788,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in from the badge aspect (1.54); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   129.788
+  ],
+  "center": [
+   100,
+   64.894
+  ],
+  "left_edge": [
+   0,
+   64.894
+  ],
+  "right_edge": [
+   200,
+   64.894
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval-or-wide",
+  "service": "air-force",
+  "design": "weather_operations",
+  "variant": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/weather_operations__senior",
+ "source_bbox_user_units": [
+  33.422,
+  7.641,
+  285.333,
+  171.115
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.903,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

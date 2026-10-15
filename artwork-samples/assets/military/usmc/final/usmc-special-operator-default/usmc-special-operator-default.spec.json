@@ -1,0 +1,51 @@
+{
+ "asset_id": "usmc-special-operator-default",
+ "width_in": 1.5,
+ "height_in": 1.06978,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 1.5 in from the badge aspect (1.40); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   106.978
+  ],
+  "center": [
+   75,
+   53.489
+  ],
+  "left_edge": [
+   0,
+   53.489
+  ],
+  "right_edge": [
+   150,
+   53.489
+  ]
+ },
+ "dimensions": {
+  "size_class": "medallion",
+  "service": "marine-corps",
+  "design": "marine_corps_special_operator",
+  "variant": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/usmc/g*/make*.js",
+ "reference": "images/military-badges/marine-corps/marine_corps_special_operator__default",
+ "source_bbox_user_units": [
+  30.167,
+  9.667,
+  224.833,
+  148.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.785,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

@@ -1,0 +1,78 @@
+{
+ "asset_id": "af-air-battle-manager-master-field",
+ "width_in": 3.25,
+ "height_in": 1.58209,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": "OCP: CAPR 39-1 ICL 25-06 para 7.1.1.3.1 (max 4 badges, light silver embroidery on dark blue, 1/8 in of blue exposed at widest/tallest part; earned military badges per DAFI 36-2903; badges originally awarded in gold are embroidered in gold on dark blue). ABU: CAPR 39-1 (3 Mar 2020) para 5.1.1.1.2.4.",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   158.209
+  ],
+  "center": [
+   162.5,
+   79.1045
+  ],
+  "left_edge": [
+   0,
+   79.1045
+  ],
+  "right_edge": [
+   325,
+   79.1045
+  ],
+  "art_top_center": [
+   162.5,
+   12.5
+  ],
+  "art_bottom_center": [
+   162.5,
+   145.709
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "air_battle_manager",
+  "level": "master"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/air_battle_manager__master",
+ "source_bbox_user_units": [
+  8,
+  21.323,
+  310.933,
+  155.834
+ ],
+ "notes": "ABU/OCP version of a military badge: the flat redraw as light silver thread on dark blue; eligibility per DAFI 36-2903 must be confirmed (list not in repo).",
+ "field_uniform": {
+  "worn_on": [
+   "abu",
+   "ocp"
+  ],
+  "max_badges": {
+   "abu": 2,
+   "ocp": 4
+  },
+  "backing": "dark blue rectangle (square corners)",
+  "backing_color": "#1b2547",
+  "thread_color": "#d3d8de",
+  "thread": "light silver",
+  "margin_in": 0.125,
+  "corner_radius_in": 0,
+  "backing_minus_art_in": 0.25,
+  "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
+  "art_width_in": 3,
+  "art_height_in": 1.33209,
+  "source_asset": "af-air-battle-manager-master",
+  "kind": "military-badge"
+ },
+ "derived_from": "assets/military/af/final/af-air-battle-manager-master"
+}

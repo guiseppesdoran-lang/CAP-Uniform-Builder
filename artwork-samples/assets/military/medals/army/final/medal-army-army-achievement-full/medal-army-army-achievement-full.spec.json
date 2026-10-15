@@ -1,0 +1,62 @@
+{
+ "asset_id": "medal-army-army-achievement-full",
+ "width_in": 1.3475,
+ "height_in": 1.38379,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   67.375,
+   0
+  ],
+  "bottom_center": [
+   67.375,
+   138.379
+  ],
+  "center": [
+   67.375,
+   69.189
+  ],
+  "left_edge": [
+   0,
+   69.189
+  ],
+  "right_edge": [
+   134.75,
+   69.189
+  ],
+  "ribbon_attach": [
+   66.044,
+   4.562
+  ]
+ },
+ "dimensions": {
+  "service": "army",
+  "medal": "army_achievement",
+  "variant": "full-size",
+  "ribbon_name": "army_achievement",
+  "ribbon_id": "mil-ribbon-army-achievement",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/build-medals.js",
+ "reference": "images/military-full-size-medals/army/army_achievement.png",
+ "source_bbox_user_units": [
+  5.5,
+  6.5,
+  98.333,
+  101.833
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.913,
+  "note": "mask IoU of the traced outline vs the ribbon-stripped body of the product raster (100x220 / 50x176 px source: low resolution, relief shading is not reproduced)"
+ },
+ "notes": "Outline is the real silhouette of the product raster (smoothed, snapped to a true circle); fill is the sampled median metal colour with one top-to-bottom gradient and an inset rim ring; only large (>=3% of the body) colour features are kept. Relief, lettering and fine engraving are NOT reproduced (source rasters are 50-100 px). Ribbon not included.",
+ "fidelity": "silhouette_and_tone",
+ "fidelity_note": "Outline is the real silhouette of the product raster (smoothed, snapped to a true circle); fill is the sampled median metal colour with one top-to-bottom gradient and an inset rim ring; only large (>=3% of the body) colour features are kept. Relief, lettering and fine engraving are NOT reproduced (source rasters are 50-100 px). Ribbon not included.",
+ "metal_colour": "#d3af7e",
+ "outline_snap": "circle",
+ "ribbon_id": "mil-ribbon-army-achievement"
+}

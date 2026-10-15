@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-cyberspace-support-master",
+ "width_in": 2,
+ "height_in": 1.30557,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   130.557
+  ],
+  "center": [
+   100,
+   65.278
+  ],
+  "left_edge": [
+   0,
+   65.278
+  ],
+  "right_edge": [
+   200,
+   65.278
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval",
+  "service": "usaf",
+  "design": "cyberspace_support",
+  "level": "master"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/cyberspace_support__master",
+ "source_bbox_user_units": [
+  35.378,
+  8.174,
+  284.444,
+  170.76
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.924,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

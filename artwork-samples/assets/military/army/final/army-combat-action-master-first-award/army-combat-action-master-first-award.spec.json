@@ -1,0 +1,51 @@
+{
+ "asset_id": "army-combat-action-master-first-award",
+ "width_in": 2,
+ "height_in": 1.1073,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in from the badge aspect (1.81); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   110.73
+  ],
+  "center": [
+   100,
+   55.365
+  ],
+  "left_edge": [
+   0,
+   55.365
+  ],
+  "right_edge": [
+   200,
+   55.365
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval-or-wide",
+  "service": "army",
+  "design": "army_combat_action",
+  "variant": "master_first_award"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/army/g*/make*.js",
+ "reference": "images/military-badges/army/army_combat_action__master_first_award",
+ "source_bbox_user_units": [
+  32.833,
+  30.667,
+  217.667,
+  133
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.667,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

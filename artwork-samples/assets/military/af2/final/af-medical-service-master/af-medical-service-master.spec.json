@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-medical-service-master",
+ "width_in": 0.9311,
+ "height_in": 1.49955,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated height 1.5 in from the badge aspect (0.62); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   46.555,
+   0
+  ],
+  "bottom_center": [
+   46.555,
+   149.955
+  ],
+  "center": [
+   46.555,
+   74.978
+  ],
+  "left_edge": [
+   0,
+   74.978
+  ],
+  "right_edge": [
+   93.11,
+   74.978
+  ]
+ },
+ "dimensions": {
+  "size_class": "tall",
+  "service": "air-force",
+  "design": "medical_service",
+  "variant": "master"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/medical_service__master",
+ "source_bbox_user_units": [
+  109.689,
+  9.951,
+  210.311,
+  172.004
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.936,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

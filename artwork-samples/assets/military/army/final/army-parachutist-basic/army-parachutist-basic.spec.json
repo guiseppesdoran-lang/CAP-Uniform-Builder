@@ -1,0 +1,51 @@
+{
+ "asset_id": "army-parachutist-basic",
+ "width_in": 2,
+ "height_in": 1.17426,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in from the badge aspect (1.70); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   117.426
+  ],
+  "center": [
+   100,
+   58.713
+  ],
+  "left_edge": [
+   0,
+   58.713
+  ],
+  "right_edge": [
+   200,
+   58.713
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval-or-wide",
+  "service": "army",
+  "design": "army_parachutist",
+  "variant": "basic"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/army/g*/make*.js",
+ "reference": "images/military-badges/army/army_parachutist__basic",
+ "source_bbox_user_units": [
+  44.333,
+  29.5,
+  212.667,
+  128.333
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.511,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

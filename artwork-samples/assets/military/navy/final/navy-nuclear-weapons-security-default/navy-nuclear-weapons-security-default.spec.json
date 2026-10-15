@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-nuclear-weapons-security-default",
+ "width_in": 1.5,
+ "height_in": 1.77786,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 1.5 in from the badge aspect (0.84); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   177.786
+  ],
+  "center": [
+   75,
+   88.893
+  ],
+  "left_edge": [
+   0,
+   88.893
+  ],
+  "right_edge": [
+   150,
+   88.893
+  ]
+ },
+ "dimensions": {
+  "size_class": "medallion",
+  "service": "navy",
+  "design": "navy_nuclear_weapons_security",
+  "variant": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_nuclear_weapons_security__default",
+ "source_bbox_user_units": [
+  70.667,
+  16.5,
+  181.333,
+  147.667
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.944,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

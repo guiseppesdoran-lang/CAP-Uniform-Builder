@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-coast-guard-nato-mini",
+ "width_in": 0.6998,
+ "height_in": 0.86265,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3ANATO_Medal_(Non-Article_5).png, Public domain",
+ "anchors": {
+  "top_center": [
+   34.99,
+   0
+  ],
+  "bottom_center": [
+   34.99,
+   86.265
+  ],
+  "center": [
+   34.99,
+   43.133
+  ],
+  "left_edge": [
+   0,
+   43.133
+  ],
+  "right_edge": [
+   69.98,
+   43.133
+  ],
+  "ribbon_attach": [
+   35.029,
+   0.047
+  ]
+ },
+ "dimensions": {
+  "service": "coast-guard",
+  "medal": "nato",
+  "variant": "miniature",
+  "ribbon_name": "nato",
+  "ribbon_id": "mil-ribbon-joint-nato-medal",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-mini-medals/coast-guard/nato.png",
+ "source_bbox_user_units": [
+  3.013,
+  3.7,
+  449.489,
+  554.075
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. Miniature uses a lighter trace of the same reference.",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3ANATO_Medal_(Non-Article_5).png, Public domain",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/c/c3/NATO_Medal_%28Non-Article_5%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:NATO Medal (Non-Article 5).png",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. Miniature uses a lighter trace of the same reference.",
+ "ribbon_id": "mil-ribbon-joint-nato-medal",
+ "metal_colours": [
+  "#383524",
+  "#7a7144",
+  "#b8aa70",
+  "#e6dcac"
+ ]
+}

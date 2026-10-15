@@ -1,0 +1,690 @@
+[
+ {
+  "id": "medal-coast-guard-afghanistan-campaign-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "afghanistan_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-afghanistan-campaign-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "afghanistan_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-air-medal-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "air_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-air-medal-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "air_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-american-campaign-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "american_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-american-campaign-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "american_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-american-defense-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "american_defense",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-american-defense-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "american_defense",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-antarctica-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "antarctica_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-antarctica-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "antarctica_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-armed-forces-expeditionary-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "armed_forces_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-armed-forces-expeditionary-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "armed_forces_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-armed-forces-reserve-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "armed_forces_reserve",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-armed-forces-reserve-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "armed_forces_reserve",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-armed-forces-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "armed_forces_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-armed-forces-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "armed_forces_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-asiatic-pacific-campaign-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "asiatic_pacific_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-asiatic-pacific-campaign-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "asiatic_pacific_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-bronze-star-miltiary-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "bronze_star_miltiary",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-bronze-star-miltiary-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "bronze_star_miltiary",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-coast-guard-achievement-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "coast_guard_achievement",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-coast-guard-achievement-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "coast_guard_achievement",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-coast-guard-commendation-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "coast_guard_commendation",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-coast-guard-commendation-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "coast_guard_commendation",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-coast-guard-good-conduct-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "coast_guard_good_conduct",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-coast-guard-medal-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "coast_guard_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-coast-guard-medal-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "coast_guard_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-comabt-action-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "comabt_action",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-comabt-action-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "comabt_action",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-defense-distinguished-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "defense_distinguished_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-defense-distinguished-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "defense_distinguished_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-defense-meritorious-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "defense_meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-defense-meritorious-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "defense_meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-distinguished-flying-cross-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "distinguished_flying_cross",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-distinguished-flying-cross-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "distinguished_flying_cross",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-dot-9-11-medal-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "dot_9_11_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-dot-9-11-medal-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "dot_9_11_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-global-war-on-terrorism-expeditionary-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "global_war_on_terrorism_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-global-war-on-terrorism-expeditionary-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "global_war_on_terrorism_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-global-war-on-terrorism-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "global_war_on_terrorism_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-global-war-on-terrorism-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "global_war_on_terrorism_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-humanitarian-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "humanitarian_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-humanitarian-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "humanitarian_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-inherent-resolve-campaign-medal-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "inherent_resolve_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-inherent-resolve-campaign-medal-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "inherent_resolve_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-iraq-campaign-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "iraq_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-iraq-campaign-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "iraq_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-joint-service-achievement-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "joint_service_achievement",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-joint-service-achievement-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "joint_service_achievement",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-joint-service-commendation-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "joint_service_commendation",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-korean-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "korean_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-korean-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "korean_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-kosovo-campaign-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "kosovo_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-kosovo-campaign-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "kosovo_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-kuwait-liberation-saudi-arabia-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "kuwait_liberation_saudi_arabia",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-kuwait-liberation-saudi-arabia-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "kuwait_liberation_saudi_arabia",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-kuwiat-liberation-kuwait-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "kuwiat_liberation_kuwait",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-legion-of-merit-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "legion_of_merit",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-meritorious-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-meritorious-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-nato-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "nato",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-nato-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "nato",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-nato-kosovo-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "nato_kosovo",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-nato-kosovo-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "nato_kosovo",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-navy-cross-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "navy_cross",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-navy-cross-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "navy_cross",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-navy-expeditionary-full",
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "navy_expeditionary",
+  "pass": true,
+  "iou": 0.977,
+  "fails": "",
+  "features": 0,
+  "snap": "circle",
+  "colour": "#866e48"
+ },
+ {
+  "id": "medal-coast-guard-navy-expeditionary-mini",
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "navy_expeditionary",
+  "pass": false,
+  "iou": 0.752,
+  "fails": "silhouette IoU 0.752 < 0.80",
+  "features": 0,
+  "snap": "circle",
+  "colour": "#45220d"
+ },
+ {
+  "id": "medal-coast-guard-purple-heart-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "purple_heart",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-purple-heart-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "purple_heart",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-rok-war-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "rok_war_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-silver-star-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "silver_star",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-silver-star-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "silver_star",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-southwest-asia-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "southwest_asia_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-southwest-asia-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "southwest_asia_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-united-nations-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "united_nations",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-united-nations-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "united_nations",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-vietnam-service-full",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "full",
+  "name": "vietnam_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-vietnam-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "vietnam_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-coast-guard-distinguished-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "coast_guard_distinguished_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-coast-guard-reserve-good-conduct-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "coast_guard_reserve_good_conduct",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-defense-superior-service-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "defense_superior_service",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-inter-american-defense-board-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "inter_american_defense_board",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-medal-for-humane-action-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "medal_for_humane_action",
+  "pass": true
+ },
+ {
+  "id": "medal-coast-guard-prisoner-of-war-mini",
+  "skipped": true,
+  "service": "coast-guard",
+  "kind": "mini",
+  "name": "prisoner_of_war",
+  "pass": true
+ }
+]

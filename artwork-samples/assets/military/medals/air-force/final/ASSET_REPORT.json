@@ -1,0 +1,954 @@
+[
+ {
+  "id": "medal-air-force-aerial-achievement-medal-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "aerial_achievement_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-aerial-achievement-medal-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "aerial_achievement_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-afghanistan-campaign-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "afghanistan_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-afghanistan-campaign-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "afghanistan_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-and-space-achievement-medal-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "air_and_space_achievement_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-and-space-achievement-medal-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "air_and_space_achievement_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-and-space-campaign-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "air_and_space_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-and-space-campaign-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "air_and_space_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-and-space-commendation-medal-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "air_and_space_commendation_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-and-space-commendation-medal-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "air_and_space_commendation_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-force-combat-action-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "air_force_combat_action",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-force-combat-action-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "air_force_combat_action",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-force-combat-readiness-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "air_force_combat_readiness",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-force-combat-readiness-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "air_force_combat_readiness",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-force-distinguishd-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "air_force_distinguishd_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-force-distinguishd-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "air_force_distinguishd_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-force-good-condcut-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "air_force_good_condcut",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-force-good-condcut-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "air_force_good_condcut",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-medal-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "air_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-medal-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "air_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-reserve-forces-meritorious-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "air_reserve_forces_meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-air-reserve-forces-meritorious-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "air_reserve_forces_meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-airmans-medal-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "airmans_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-airmans-medal-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "airmans_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-american-campaign-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "american_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-american-campaign-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "american_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-american-defense-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "american_defense",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-american-defense-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "american_defense",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-antarctica-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "antarctica_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-antarctica-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "antarctica_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-armed-forces-expeditionary-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "armed_forces_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-armed-forces-expeditionary-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "armed_forces_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-armed-forces-reserve-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "armed_forces_reserve",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-armed-forces-reserve-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "armed_forces_reserve",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-armed-forces-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "armed_forces_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-armed-forces-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "armed_forces_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-asiatic-pacific-campaign-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "asiatic_pacific_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-asiatic-pacific-campaign-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "asiatic_pacific_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-bronze-star-miltiary-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "bronze_star_miltiary",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-bronze-star-miltiary-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "bronze_star_miltiary",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-defense-distinguished-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "defense_distinguished_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-defense-distinguished-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "defense_distinguished_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-defense-meritorious-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "defense_meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-defense-meritorious-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "defense_meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-defense-superior-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "defense_superior_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-defense-superior-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "defense_superior_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-distinguished-flying-cross-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "distinguished_flying_cross",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-distinguished-flying-cross-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "distinguished_flying_cross",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-european-african-middle-eastern-campaign-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "european_african_middle_eastern_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-european-african-middle-eastern-campaign-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "european_african_middle_eastern_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-global-war-on-terrorism-expeditionary-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "global_war_on_terrorism_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-global-war-on-terrorism-expeditionary-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "global_war_on_terrorism_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-global-war-on-terrorism-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "global_war_on_terrorism_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-global-war-on-terrorism-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "global_war_on_terrorism_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-humanitarian-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "humanitarian_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-humanitarian-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "humanitarian_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-inherent-resolve-campaign-medal-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "inherent_resolve_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-inherent-resolve-campaign-medal-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "inherent_resolve_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-inter-american-defense-board-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "inter_american_defense_board",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-inter-american-defense-board-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "inter_american_defense_board",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-iraq-campaign-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "iraq_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-iraq-campaign-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "iraq_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-joint-service-achievement-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "joint_service_achievement",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-joint-service-achievement-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "joint_service_achievement",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-joint-service-commendation-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "joint_service_commendation",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-joint-service-commendation-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "joint_service_commendation",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-korean-defense-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "korean_defense_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-korean-defense-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "korean_defense_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-korean-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "korean_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-korean-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "korean_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-kosovo-campaign-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "kosovo_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-kosovo-campaign-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "kosovo_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-kuwait-liberation-saudi-arabia-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "kuwait_liberation_saudi_arabia",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-kuwait-liberation-saudi-arabia-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "kuwait_liberation_saudi_arabia",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-kuwiat-liberation-kuwait-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "kuwiat_liberation_kuwait",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-kuwiat-liberation-kuwait-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "kuwiat_liberation_kuwait",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-legion-of-merit-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "legion_of_merit",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-legion-of-merit-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "legion_of_merit",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-medal-for-humane-action-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "medal_for_humane_action",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-medal-for-humane-action-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "medal_for_humane_action",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-meritorious-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-meritorious-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-multinational-force-and-observers-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "multinational_force_and_observers",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-multinational-force-and-observers-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "multinational_force_and_observers",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-national-defense-military-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "national_defense_military_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-national-defense-military-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "national_defense_military_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-nato-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "nato",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-nato-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "nato",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-nato-kosovo-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "nato_kosovo",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-nato-kosovo-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "nato_kosovo",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-nuclear-deterrence-operations-service-medal-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "nuclear_deterrence_operations_service_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-nuclear-deterrence-operations-service-medal-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "nuclear_deterrence_operations_service_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-outstanding-volunteer-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "outstanding_volunteer_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-outstanding-volunteer-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "outstanding_volunteer_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-philippine-independence-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "philippine_independence",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-philippine-independence-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "philippine_independence",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-philippine-liberation-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "philippine_liberation",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-philippine-liberation-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "philippine_liberation",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-prisoner-of-war-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "prisoner_of_war",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-prisoner-of-war-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "prisoner_of_war",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-purple-heart-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "purple_heart",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-purple-heart-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "purple_heart",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-remote-combat-effects-campaign-medal-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "remote_combat_effects_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-remote-combat-effects-campaign-medal-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "remote_combat_effects_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-republic-of-vietnam-campaign-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "republic_of_vietnam_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-republic-of-vietnam-campaign-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "republic_of_vietnam_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-rok-war-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "rok_war_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-silver-star-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "silver_star",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-silver-star-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "silver_star",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-southwest-asia-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "southwest_asia_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-southwest-asia-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "southwest_asia_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-united-nations-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "united_nations",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-united-nations-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "united_nations",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-united-nations-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "united_nations_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-united-nations-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "united_nations_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-vietnam-service-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "vietnam_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-vietnam-service-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "vietnam_service",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-world-war-ii-victory-full",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "full",
+  "name": "world_war_ii_victory",
+  "pass": true
+ },
+ {
+  "id": "medal-air-force-world-war-ii-victory-mini",
+  "skipped": true,
+  "service": "air-force",
+  "kind": "mini",
+  "name": "world_war_ii_victory",
+  "pass": true
+ }
+]

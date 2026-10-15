@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-combat-systems-officer-master",
+ "width_in": 3,
+ "height_in": 1.44119,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   144.119
+  ],
+  "center": [
+   150,
+   72.059
+  ],
+  "left_edge": [
+   0,
+   72.059
+  ],
+  "right_edge": [
+   300,
+   72.059
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "combat_systems_officer",
+  "level": "master"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/combat_systems_officer__master",
+ "source_bbox_user_units": [
+  8,
+  16.347,
+  310.933,
+  161.876
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.91,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

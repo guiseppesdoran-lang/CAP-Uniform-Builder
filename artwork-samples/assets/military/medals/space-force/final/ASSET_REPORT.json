@@ -1,0 +1,98 @@
+[
+ {
+  "id": "medal-space-force-air-and-space-achievement-medal-full",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "full",
+  "name": "air_and_space_achievement_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-air-and-space-achievement-medal-mini",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "mini",
+  "name": "air_and_space_achievement_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-air-and-space-commendation-medal-full",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "full",
+  "name": "air_and_space_commendation_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-air-and-space-commendation-medal-mini",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "mini",
+  "name": "air_and_space_commendation_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-inherent-resolve-campaign-medal-full",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "full",
+  "name": "inherent_resolve_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-inherent-resolve-campaign-medal-mini",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "mini",
+  "name": "inherent_resolve_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-nuclear-deterrence-operations-service-medal-full",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "full",
+  "name": "nuclear_deterrence_operations_service_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-nuclear-deterrence-operations-service-medal-mini",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "mini",
+  "name": "nuclear_deterrence_operations_service_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-remote-combat-effects-campaign-medal-full",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "full",
+  "name": "remote_combat_effects_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-remote-combat-effects-campaign-medal-mini",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "mini",
+  "name": "remote_combat_effects_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-space-force-good-conduct-medal-full",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "full",
+  "name": "space_force_good_conduct_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-space-force-space-force-good-conduct-medal-mini",
+  "skipped": true,
+  "service": "space-force",
+  "kind": "mini",
+  "name": "space_force_good_conduct_medal",
+  "pass": true
+ }
+]

@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-submarine-warfare-deep-submergence-enlisted",
+ "width_in": 2,
+ "height_in": 1.26946,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in from the badge aspect (1.57); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   126.946
+  ],
+  "center": [
+   100,
+   63.473
+  ],
+  "left_edge": [
+   0,
+   63.473
+  ],
+  "right_edge": [
+   200,
+   63.473
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval-or-wide",
+  "service": "navy",
+  "design": "navy_submarine_warfare",
+  "variant": "deep_submergence_enlisted"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_submarine_warfare__deep_submergence_enlisted",
+ "source_bbox_user_units": [
+  15.5,
+  7.833,
+  238.167,
+  149.167
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.761,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

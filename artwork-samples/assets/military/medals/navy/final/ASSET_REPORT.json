@@ -1,0 +1,746 @@
+[
+ {
+  "id": "medal-navy-afghanistan-campaign-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "afghanistan_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-afghanistan-campaign-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "afghanistan_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-air-medal-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "air_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-air-medal-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "air_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-american-campaign-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "american_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-american-campaign-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "american_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-american-defense-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "american_defense",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-american-defense-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "american_defense",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-antarctica-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "antarctica_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-antarctica-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "antarctica_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-armed-forces-expeditionary-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "armed_forces_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-armed-forces-expeditionary-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "armed_forces_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-armed-forces-reserve-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "armed_forces_reserve",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-armed-forces-reserve-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "armed_forces_reserve",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-armed-forces-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "armed_forces_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-armed-forces-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "armed_forces_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-asiatic-pacific-campaign-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "asiatic_pacific_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-asiatic-pacific-campaign-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "asiatic_pacific_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-bronze-star-miltiary-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "bronze_star_miltiary",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-bronze-star-miltiary-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "bronze_star_miltiary",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-china-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "china_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-china-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "china_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-combat-action-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "combat_action",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-combat-action-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "combat_action",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-defense-distinguished-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "defense_distinguished_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-defense-distinguished-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "defense_distinguished_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-defense-meritorious-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "defense_meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-defense-meritorious-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "defense_meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-distinguished-flying-cross-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "distinguished_flying_cross",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-distinguished-flying-cross-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "distinguished_flying_cross",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-global-war-on-terrorism-expeditionary-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "global_war_on_terrorism_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-global-war-on-terrorism-expeditionary-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "global_war_on_terrorism_expeditionary",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-global-war-on-terrorism-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "global_war_on_terrorism_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-global-war-on-terrorism-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "global_war_on_terrorism_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-humanitarian-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "humanitarian_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-humanitarian-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "humanitarian_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-inherent-resolve-campaign-medal-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "inherent_resolve_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-inherent-resolve-campaign-medal-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "inherent_resolve_campaign_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-iraq-campaign-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "iraq_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-iraq-campaign-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "iraq_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-joint-service-achievement-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "joint_service_achievement",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-joint-service-achievement-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "joint_service_achievement",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-joint-service-commendation-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "joint_service_commendation",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-korean-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "korean_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-korean-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "korean_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-kosovo-campaign-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "kosovo_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-kosovo-campaign-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "kosovo_campaign",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-kuwait-liberation-saudi-arabia-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "kuwait_liberation_saudi_arabia",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-kuwait-liberation-saudi-arabia-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "kuwait_liberation_saudi_arabia",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-kuwiat-liberation-kuwait-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "kuwiat_liberation_kuwait",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-legion-of-merit-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "legion_of_merit",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-meritorious-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-meritorious-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "meritorious_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-nato-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "nato",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-nato-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "nato",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-nato-kosovo-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "nato_kosovo",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-nato-kosovo-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "nato_kosovo",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-naval-reserve-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "naval_reserve",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-and-marine-corps-achievement-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "navy_and_marine_corps_achievement",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-and-marine-corps-achievement-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "navy_and_marine_corps_achievement",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-and-marine-corps-commendation-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "navy_and_marine_corps_commendation",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-and-marine-corps-commendation-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "navy_and_marine_corps_commendation",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-and-marine-corps-medal-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "navy_and_marine_corps_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-and-marine-corps-medal-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "navy_and_marine_corps_medal",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-arctic-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "navy_arctic_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-arctic-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "navy_arctic_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-cross-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "navy_cross",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-cross-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "navy_cross",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-expeditionary-full",
+  "service": "navy",
+  "kind": "full",
+  "name": "navy_expeditionary",
+  "pass": true,
+  "iou": 0.977,
+  "fails": "",
+  "features": 0,
+  "snap": "circle",
+  "colour": "#866e48"
+ },
+ {
+  "id": "medal-navy-navy-expeditionary-mini",
+  "service": "navy",
+  "kind": "mini",
+  "name": "navy_expeditionary",
+  "pass": false,
+  "iou": 0.752,
+  "fails": "silhouette IoU 0.752 < 0.80",
+  "features": 0,
+  "snap": "circle",
+  "colour": "#45220d"
+ },
+ {
+  "id": "medal-navy-navy-good-conduct-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "navy_good_conduct",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-good-conduct-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "navy_good_conduct",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-occupation-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "navy_occupation_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-occupation-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "navy_occupation_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-philippine-independence-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "philippine_independence",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-philippine-liberation-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "philippine_liberation",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-purple-heart-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "purple_heart",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-purple-heart-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "purple_heart",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-rok-war-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "rok_war_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-silver-star-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "silver_star",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-silver-star-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "silver_star",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-southwest-asia-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "southwest_asia_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-southwest-asia-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "southwest_asia_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-united-nations-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "united_nations",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-united-nations-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "united_nations",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-vietnam-service-full",
+  "skipped": true,
+  "service": "navy",
+  "kind": "full",
+  "name": "vietnam_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-vietnam-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "vietnam_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-defense-superior-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "defense_superior_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-inter-american-defense-board-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "inter_american_defense_board",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-medal-for-humane-action-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "medal_for_humane_action",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-navy-distinguished-service-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "navy_distinguished_service",
+  "pass": true
+ },
+ {
+  "id": "medal-navy-prisoner-of-war-mini",
+  "skipped": true,
+  "service": "navy",
+  "kind": "mini",
+  "name": "prisoner_of_war",
+  "pass": true
+ }
+]

@@ -1,0 +1,78 @@
+{
+ "asset_id": "af-services-senior-field",
+ "width_in": 1.75,
+ "height_in": 1.26905,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 1.5 in from the badge aspect (1.47); service dimension table not available in repo",
+ "citation": "OCP: CAPR 39-1 ICL 25-06 para 7.1.1.3.1 (max 4 badges, light silver embroidery on dark blue, 1/8 in of blue exposed at widest/tallest part; earned military badges per DAFI 36-2903; badges originally awarded in gold are embroidered in gold on dark blue). ABU: CAPR 39-1 (3 Mar 2020) para 5.1.1.1.2.4.",
+ "anchors": {
+  "top_center": [
+   87.5,
+   0
+  ],
+  "bottom_center": [
+   87.5,
+   126.905
+  ],
+  "center": [
+   87.5,
+   63.4525
+  ],
+  "left_edge": [
+   0,
+   63.4525
+  ],
+  "right_edge": [
+   175,
+   63.4525
+  ],
+  "art_top_center": [
+   87.5,
+   12.5
+  ],
+  "art_bottom_center": [
+   87.5,
+   114.405
+  ]
+ },
+ "dimensions": {
+  "size_class": "medallion",
+  "service": "air-force",
+  "design": "services",
+  "variant": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/services__senior",
+ "source_bbox_user_units": [
+  39.467,
+  7.641,
+  280.356,
+  171.293
+ ],
+ "notes": "ABU/OCP version of a military badge: the flat redraw as light silver thread on dark blue; eligibility per DAFI 36-2903 must be confirmed (list not in repo).",
+ "field_uniform": {
+  "worn_on": [
+   "abu",
+   "ocp"
+  ],
+  "max_badges": {
+   "abu": 2,
+   "ocp": 4
+  },
+  "backing": "dark blue rectangle (square corners)",
+  "backing_color": "#1b2547",
+  "thread_color": "#d3d8de",
+  "thread": "light silver",
+  "margin_in": 0.125,
+  "corner_radius_in": 0,
+  "backing_minus_art_in": 0.25,
+  "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
+  "art_width_in": 1.5,
+  "art_height_in": 1.01905,
+  "source_asset": "af-services-senior",
+  "kind": "military-badge"
+ },
+ "derived_from": "assets/military/af2/final/af-services-senior"
+}

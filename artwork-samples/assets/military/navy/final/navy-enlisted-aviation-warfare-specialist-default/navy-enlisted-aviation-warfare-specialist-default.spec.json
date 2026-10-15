@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-enlisted-aviation-warfare-specialist-default",
+ "width_in": 3,
+ "height_in": 0.90483,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (3.31); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   90.483
+  ],
+  "center": [
+   150,
+   45.242
+  ],
+  "left_edge": [
+   0,
+   45.242
+  ],
+  "right_edge": [
+   300,
+   45.242
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "navy",
+  "design": "navy_enlisted_aviation_warfare_specialist",
+  "variant": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_enlisted_aviation_warfare_specialist__default",
+ "source_bbox_user_units": [
+  13.667,
+  47.167,
+  241.333,
+  115.833
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.825,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

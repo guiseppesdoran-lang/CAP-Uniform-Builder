@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-public-affairs-master",
+ "width_in": 1.5,
+ "height_in": 1.04663,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 1.5 in from the badge aspect (1.43); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   104.663
+  ],
+  "center": [
+   75,
+   52.331
+  ],
+  "left_edge": [
+   0,
+   52.331
+  ],
+  "right_edge": [
+   150,
+   52.331
+  ]
+ },
+ "dimensions": {
+  "size_class": "medallion",
+  "service": "air-force",
+  "design": "public_affairs",
+  "variant": "master"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/public_affairs__master",
+ "source_bbox_user_units": [
+  42.489,
+  8.174,
+  276.267,
+  171.293
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.915,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

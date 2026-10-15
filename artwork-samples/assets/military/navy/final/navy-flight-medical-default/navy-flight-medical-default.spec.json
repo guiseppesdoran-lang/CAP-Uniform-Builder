@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-flight-medical-default",
+ "width_in": 3,
+ "height_in": 1.11435,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (2.70); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   111.435
+  ],
+  "center": [
+   150,
+   55.718
+  ],
+  "left_edge": [
+   0,
+   55.718
+  ],
+  "right_edge": [
+   300,
+   55.718
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "navy",
+  "design": "navy_flight_medical",
+  "variant": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_flight_medical__default",
+ "source_bbox_user_units": [
+  10.167,
+  40.167,
+  244.833,
+  127.333
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.891,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

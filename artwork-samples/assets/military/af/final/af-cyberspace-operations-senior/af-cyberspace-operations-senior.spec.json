@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-cyberspace-operations-senior",
+ "width_in": 3,
+ "height_in": 1.04571,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   104.571
+  ],
+  "center": [
+   150,
+   52.285
+  ],
+  "left_edge": [
+   0,
+   52.285
+  ],
+  "right_edge": [
+   300,
+   52.285
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "cyberspace_operations",
+  "level": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/cyberspace_operations__senior",
+ "source_bbox_user_units": [
+  7.644,
+  35.538,
+  311.467,
+  141.441
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.918,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

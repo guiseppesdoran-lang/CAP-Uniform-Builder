@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-coast-guard-american-campaign-full",
+ "width_in": 1.3369,
+ "height_in": 1.40769,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3AAmerican_Campaign_-_Obverse_02.png, CC0",
+ "anchors": {
+  "top_center": [
+   66.845,
+   0
+  ],
+  "bottom_center": [
+   66.845,
+   140.769
+  ],
+  "center": [
+   66.845,
+   70.385
+  ],
+  "left_edge": [
+   0,
+   70.385
+  ],
+  "right_edge": [
+   133.69,
+   70.385
+  ],
+  "ribbon_attach": [
+   67.773,
+   0.288
+  ]
+ },
+ "dimensions": {
+  "service": "coast-guard",
+  "medal": "american_campaign",
+  "variant": "full-size",
+  "ribbon_name": "american_campaign",
+  "ribbon_id": "mil-ribbon-joint-american-campaign",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-full-size-medals/coast-guard/american_campaign.png",
+ "source_bbox_user_units": [
+  7.6,
+  2.483,
+  711.6,
+  743.758
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3AAmerican_Campaign_-_Obverse_02.png, CC0",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/b/be/American_Campaign_-_Obverse_02.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:American Campaign - Obverse 02.png",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "ribbon_id": "mil-ribbon-joint-american-campaign",
+ "metal_colours": [
+  "#332c24",
+  "#655533",
+  "#816f49",
+  "#b0a795"
+ ]
+}

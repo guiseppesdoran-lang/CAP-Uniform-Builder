@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-flight-nurse-basic",
+ "width_in": 3,
+ "height_in": 0.92782,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   92.782
+  ],
+  "center": [
+   150,
+   46.391
+  ],
+  "left_edge": [
+   0,
+   46.391
+  ],
+  "right_edge": [
+   300,
+   46.391
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "flight_nurse",
+  "level": "basic"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/flight_nurse__basic",
+ "source_bbox_user_units": [
+  5.867,
+  42.468,
+  313.244,
+  137.532
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.914,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

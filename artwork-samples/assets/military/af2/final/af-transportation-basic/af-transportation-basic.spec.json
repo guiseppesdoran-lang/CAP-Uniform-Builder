@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-transportation-basic",
+ "width_in": 2,
+ "height_in": 0.92912,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in from the badge aspect (2.15); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   92.912
+  ],
+  "center": [
+   100,
+   46.456
+  ],
+  "left_edge": [
+   0,
+   46.456
+  ],
+  "right_edge": [
+   200,
+   46.456
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval-or-wide",
+  "service": "air-force",
+  "design": "transportation",
+  "variant": "basic"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/transportation__basic",
+ "source_bbox_user_units": [
+  8.533,
+  19.546,
+  311.467,
+  160.276
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.912,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-army-air-medal-mini",
+ "width_in": 0.6898,
+ "height_in": 0.86315,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3AAir_Medal_front.jpg, Public domain",
+ "anchors": {
+  "top_center": [
+   34.49,
+   0
+  ],
+  "bottom_center": [
+   34.49,
+   86.315
+  ],
+  "center": [
+   34.49,
+   43.157
+  ],
+  "left_edge": [
+   0,
+   43.157
+  ],
+  "right_edge": [
+   68.98,
+   43.157
+  ],
+  "ribbon_attach": [
+   34.248,
+   0.176
+  ]
+ },
+ "dimensions": {
+  "service": "army",
+  "medal": "air_medal",
+  "variant": "miniature",
+  "ribbon_name": "air_medal",
+  "ribbon_id": "mil-ribbon-joint-air-medal-2",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-mini-medals/army/air_medal.png",
+ "source_bbox_user_units": [
+  2.406,
+  1.8,
+  862.632,
+  1078.2
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. Miniature uses a lighter trace of the same reference.",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3AAir_Medal_front.jpg, Public domain",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/2/24/Air_Medal_front.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:Air Medal front.jpg",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. Miniature uses a lighter trace of the same reference.",
+ "ribbon_id": "mil-ribbon-joint-air-medal-2",
+ "metal_colours": [
+  "#664c34",
+  "#95734d",
+  "#bb966b",
+  "#ccc1aa"
+ ]
+}

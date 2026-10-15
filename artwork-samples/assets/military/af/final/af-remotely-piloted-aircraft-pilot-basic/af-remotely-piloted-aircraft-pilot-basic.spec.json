@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-remotely-piloted-aircraft-pilot-basic",
+ "width_in": 3,
+ "height_in": 0.95727,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   95.727
+  ],
+  "center": [
+   150,
+   47.864
+  ],
+  "left_edge": [
+   0,
+   47.864
+  ],
+  "right_edge": [
+   300,
+   47.864
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "remotely_piloted_aircraft_pilot",
+  "level": "basic"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/remotely_piloted_aircraft_pilot__basic",
+ "source_bbox_user_units": [
+  8,
+  40.691,
+  310.933,
+  137.354
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.963,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

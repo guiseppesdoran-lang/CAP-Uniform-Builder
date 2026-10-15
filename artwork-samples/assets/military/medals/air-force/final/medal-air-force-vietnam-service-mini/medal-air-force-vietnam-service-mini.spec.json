@@ -1,0 +1,62 @@
+{
+ "asset_id": "medal-air-force-vietnam-service-mini",
+ "width_in": 0.6982,
+ "height_in": 0.6982,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   34.91,
+   0
+  ],
+  "bottom_center": [
+   34.91,
+   69.82
+  ],
+  "center": [
+   34.91,
+   34.91
+  ],
+  "left_edge": [
+   0,
+   34.91
+  ],
+  "right_edge": [
+   69.82,
+   34.91
+  ],
+  "ribbon_attach": [
+   30.617,
+   0.706
+  ]
+ },
+ "dimensions": {
+  "service": "air-force",
+  "medal": "vietnam_service",
+  "variant": "miniature",
+  "ribbon_name": "vietnam_service",
+  "ribbon_id": "mil-ribbon-joint-vietnam-service",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/build-medals.js",
+ "reference": "images/military-mini-medals/air-force/vietnam_service.png",
+ "source_bbox_user_units": [
+  2.167,
+  16.667,
+  53.667,
+  68.167
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.746,
+  "note": "mask IoU of the traced outline vs the ribbon-stripped body of the product raster (100x220 / 50x176 px source: low resolution, relief shading is not reproduced)"
+ },
+ "notes": "Outline is the real silhouette of the product raster (smoothed, snapped to a true circle); fill is the sampled median metal colour with one top-to-bottom gradient and an inset rim ring; only large (>=3% of the body) colour features are kept. Relief, lettering and fine engraving are NOT reproduced (source rasters are 50-100 px). Ribbon not included.",
+ "fidelity": "silhouette_and_tone",
+ "fidelity_note": "Outline is the real silhouette of the product raster (smoothed, snapped to a true circle); fill is the sampled median metal colour with one top-to-bottom gradient and an inset rim ring; only large (>=3% of the body) colour features are kept. Relief, lettering and fine engraving are NOT reproduced (source rasters are 50-100 px). Ribbon not included.",
+ "metal_colour": "#7d5f3f",
+ "outline_snap": "circle",
+ "ribbon_id": "mil-ribbon-joint-vietnam-service"
+}

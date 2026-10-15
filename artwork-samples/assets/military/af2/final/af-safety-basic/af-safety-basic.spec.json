@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-safety-basic",
+ "width_in": 2,
+ "height_in": 0.92502,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in from the badge aspect (2.16); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   92.502
+  ],
+  "center": [
+   100,
+   46.251
+  ],
+  "left_edge": [
+   0,
+   46.251
+  ],
+  "right_edge": [
+   200,
+   46.251
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval-or-wide",
+  "service": "air-force",
+  "design": "safety",
+  "variant": "basic"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/safety__basic",
+ "source_bbox_user_units": [
+  12.089,
+  33.583,
+  307.911,
+  170.405
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.873,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

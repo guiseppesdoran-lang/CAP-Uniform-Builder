@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-pilot-senior-pilot",
+ "width_in": 3,
+ "height_in": 1.22123,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   122.123
+  ],
+  "center": [
+   150,
+   61.062
+  ],
+  "left_edge": [
+   0,
+   61.062
+  ],
+  "right_edge": [
+   300,
+   61.062
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "pilot",
+  "level": "senior_pilot"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/pilot__senior_pilot",
+ "source_bbox_user_units": [
+  8,
+  28.075,
+  310.933,
+  151.392
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.934,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

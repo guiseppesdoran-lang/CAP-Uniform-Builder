@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-flight-surgeon-senior",
+ "width_in": 3,
+ "height_in": 1.16021,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   116.021
+  ],
+  "center": [
+   150,
+   58.011
+  ],
+  "left_edge": [
+   0,
+   58.011
+  ],
+  "right_edge": [
+   300,
+   58.011
+  ]
+ },
+ "dimensions": {
+  "size_class": "wings",
+  "service": "usaf",
+  "design": "flight_surgeon",
+  "level": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/flight_surgeon__senior",
+ "source_bbox_user_units": [
+  5.867,
+  30.563,
+  313.244,
+  149.437
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.878,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

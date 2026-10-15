@@ -1,0 +1,51 @@
+{
+ "asset_id": "army-explosive-ordnance-disposal-senior",
+ "width_in": 2,
+ "height_in": 1.11475,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in from the badge aspect (1.80); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   111.475
+  ],
+  "center": [
+   100,
+   55.737
+  ],
+  "left_edge": [
+   0,
+   55.737
+  ],
+  "right_edge": [
+   200,
+   55.737
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval-or-wide",
+  "service": "army",
+  "design": "army_explosive_ordnance_disposal",
+  "variant": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/army/g*/make*.js",
+ "reference": "images/military-badges/army/army_explosive_ordnance_disposal__senior",
+ "source_bbox_user_units": [
+  36.5,
+  22.5,
+  219.5,
+  124.5
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.625,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

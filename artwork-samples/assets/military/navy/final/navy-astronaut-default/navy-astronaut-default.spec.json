@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-astronaut-default",
+ "width_in": 3,
+ "height_in": 1.01926,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (2.94); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   101.926
+  ],
+  "center": [
+   150,
+   50.963
+  ],
+  "left_edge": [
+   0,
+   50.963
+  ],
+  "right_edge": [
+   300,
+   50.963
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "navy",
+  "design": "navy_astronaut",
+  "variant": "default"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_astronaut__default",
+ "source_bbox_user_units": [
+  19.333,
+  42.833,
+  235.667,
+  116.333
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.771,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-parachutist-basic",
+ "width_in": 2,
+ "height_in": 0.93638,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in (AFI 36-2903 figure not available in repo; proportionate to CAP/Army equivalent)",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   93.638
+  ],
+  "center": [
+   100,
+   46.819
+  ],
+  "left_edge": [
+   0,
+   46.819
+  ],
+  "right_edge": [
+   200,
+   46.819
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval",
+  "service": "usaf",
+  "design": "parachutist",
+  "level": "basic"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af/g*/make*.js",
+ "reference": "images/military-badges/air-force/parachutist__basic",
+ "source_bbox_user_units": [
+  7.467,
+  18.48,
+  311.467,
+  160.809
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.98,
+  "note": "bbox-normalised mask IoU vs the 320x180 product reference"
+ },
+ "notes": "Flat silver redraw; engraved texture, small lettering and fine emblem detail simplified."
+}

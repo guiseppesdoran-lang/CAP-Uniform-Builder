@@ -1,0 +1,51 @@
+{
+ "asset_id": "navy-surface-warfare-supply",
+ "width_in": 3,
+ "height_in": 1.05716,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 3 in from the badge aspect (2.84); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   105.716
+  ],
+  "center": [
+   150,
+   52.858
+  ],
+  "left_edge": [
+   0,
+   52.858
+  ],
+  "right_edge": [
+   300,
+   52.858
+  ]
+ },
+ "dimensions": {
+  "size_class": "long-wings",
+  "service": "navy",
+  "design": "navy_surface_warfare",
+  "variant": "supply"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/navy/g*/make*.js",
+ "reference": "images/military-badges/navy/navy_surface_warfare__supply",
+ "source_bbox_user_units": [
+  12.833,
+  38.833,
+  243.167,
+  120
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.833,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

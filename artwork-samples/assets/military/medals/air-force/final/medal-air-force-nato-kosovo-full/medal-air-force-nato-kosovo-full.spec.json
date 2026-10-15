@@ -1,0 +1,66 @@
+{
+ "asset_id": "medal-air-force-nato-kosovo-full",
+ "width_in": 1.3734,
+ "height_in": 1.45664,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: raster scale taken from the 1 3/8 in full-size ribbon = 100 px (72.73 px/in; miniature rasters at the same scale = half-size medal); DoDM 1348.33 dimension text was not available to cite",
+ "citation": "https://commons.wikimedia.org/wiki/File%3ANATO_Medal_KOSOVO.jpg, Public domain",
+ "anchors": {
+  "top_center": [
+   68.67,
+   0
+  ],
+  "bottom_center": [
+   68.67,
+   145.664
+  ],
+  "center": [
+   68.67,
+   72.832
+  ],
+  "left_edge": [
+   0,
+   72.832
+  ],
+  "right_edge": [
+   137.34,
+   72.832
+  ],
+  "ribbon_attach": [
+   68.205,
+   0.312
+  ]
+ },
+ "dimensions": {
+  "service": "air-force",
+  "medal": "nato_kosovo",
+  "variant": "full-size",
+  "ribbon_name": "nato_kosovo",
+  "ribbon_id": "mil-ribbon-joint-nato-kosovo",
+  "ribbon_note": "medal body only; the ribbon is bound by name to the military ribbon assets (assets/ribbons/military)"
+ },
+ "data_source": "reference-art-traced",
+ "generator": "artwork-samples/assets/military/medals/v2work/trace-hires.js + apply-traced.js",
+ "reference": "images/military-full-size-medals/air-force/nato_kosovo.png",
+ "source_bbox_user_units": [
+  3.29,
+  3.268,
+  325.893,
+  345.423
+ ],
+ "fit_score": null,
+ "notes": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "fidelity": "traced_from_public_reference",
+ "source": "https://commons.wikimedia.org/wiki/File%3ANATO_Medal_KOSOVO.jpg, Public domain",
+ "source_file": "https://upload.wikimedia.org/wikipedia/commons/7/79/NATO_Medal_KOSOVO.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+ "source_title": "File:NATO Medal KOSOVO.jpg",
+ "fidelity_note": "Silhouette and tone layers (<=4 colours + a dark line layer) traced by script from a public-domain reference image of the actual medal; fine engraving below about 0.4% of the diameter is dropped. ",
+ "ribbon_id": "mil-ribbon-joint-nato-kosovo",
+ "metal_colours": [
+  "#844f32",
+  "#b8764f",
+  "#e5a076",
+  "#f5d1b6"
+ ]
+}

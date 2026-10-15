@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-civil-engineer-basic",
+ "width_in": 2,
+ "height_in": 1.01044,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in from the badge aspect (1.98); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   101.044
+  ],
+  "center": [
+   100,
+   50.522
+  ],
+  "left_edge": [
+   0,
+   50.522
+  ],
+  "right_edge": [
+   200,
+   50.522
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval-or-wide",
+  "service": "air-force",
+  "design": "civil_engineer",
+  "variant": "basic"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/civil_engineer__basic",
+ "source_bbox_user_units": [
+  13.689,
+  14.571,
+  306.311,
+  162.409
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.946,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

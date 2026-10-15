@@ -1,0 +1,51 @@
+{
+ "asset_id": "army-instructor-identification-senior",
+ "width_in": 1.5,
+ "height_in": 1.57377,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 1.5 in from the badge aspect (0.95); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   75,
+   0
+  ],
+  "bottom_center": [
+   75,
+   157.377
+  ],
+  "center": [
+   75,
+   78.689
+  ],
+  "left_edge": [
+   0,
+   78.689
+  ],
+  "right_edge": [
+   150,
+   78.689
+  ]
+ },
+ "dimensions": {
+  "size_class": "medallion",
+  "service": "army",
+  "design": "army_instructor_identification",
+  "variant": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/army/g*/make*.js",
+ "reference": "images/military-badges/army/army_instructor_identification__senior",
+ "source_bbox_user_units": [
+  66,
+  17,
+  188,
+  145
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.806,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

@@ -1,0 +1,51 @@
+{
+ "asset_id": "af-information-management-basic",
+ "width_in": 2,
+ "height_in": 0.92107,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated width 2 in from the badge aspect (2.17); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   100,
+   0
+  ],
+  "bottom_center": [
+   100,
+   92.107
+  ],
+  "center": [
+   100,
+   46.053
+  ],
+  "left_edge": [
+   0,
+   46.053
+  ],
+  "right_edge": [
+   200,
+   46.053
+  ]
+ },
+ "dimensions": {
+  "size_class": "oval-or-wide",
+  "service": "air-force",
+  "design": "information_management",
+  "variant": "basic"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/af2/g*/make*.js",
+ "reference": "images/military-badges/air-force/information_management__basic",
+ "source_bbox_user_units": [
+  10.489,
+  18.657,
+  309.511,
+  156.367
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.955,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}

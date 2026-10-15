@@ -1,0 +1,1969 @@
+[
+ {
+  "id": "af-air-battle-manager-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-air-battle-manager-master-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-air-battle-manager-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-air-traffic-control-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-air-traffic-control-master-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-air-traffic-control-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-combat-control-team-default-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-combat-systems-officer-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-combat-systems-officer-master-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-combat-systems-officer-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-operations-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-operations-master-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-operations-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-support-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-support-master-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-cyberspace-support-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-aircrew-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-aircrew-chief-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-aircrew-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-nurse-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-nurse-chief-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-nurse-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-surgeon-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-surgeon-chief-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-flight-surgeon-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-missile-operations-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-missile-operations-master-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-missile-operations-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-officer-aircrew-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-officer-aircrew-master-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-officer-aircrew-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-parachutist-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-parachutist-master-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-parachutist-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-pararescue-default-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-pilot-command-pilot-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-pilot-pilot-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-pilot-senior-pilot-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-remotely-piloted-aircraft-pilot-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-remotely-piloted-aircraft-pilot-command-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-remotely-piloted-aircraft-pilot-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-space-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-space-command-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-space-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-weapons-controller-basic-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-weapons-controller-master-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-weapons-controller-senior-field",
+  "set": "af",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-acquisition-financial-management-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-acquisition-financial-management-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-acquisition-financial-management-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-aetc-instructor-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-aetc-instructor-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-aircraft-maintenance-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-aircraft-maintenance-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-aircraft-maintenance-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-airfield-operations-officer-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-airfield-operations-officer-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-airfield-operations-officer-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-band-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-band-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-band-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-base-honor-guard-default-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-biomedical-scientist-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-biomedical-scientist-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-biomedical-scientist-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-readiness-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-readiness-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-readiness-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-civil-engineer-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-combat-rescue-officer-default-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-command-and-control-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-command-and-control-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-command-and-control-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-commanders-default-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-communications-information-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-communications-information-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-communications-information-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-dental-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-dental-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-dental-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-medical-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-medical-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-enlisted-medical-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-explosive-ordnance-disposal-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-explosive-ordnance-disposal-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-explosive-ordnance-disposal-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-fire-protection-default-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-force-protection-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-force-protection-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-force-protection-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-force-support-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-force-support-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-force-support-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-foreign-area-officer-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-foreign-area-officer-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-foreign-area-officer-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-ground-radar-airfield-systems-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-ground-radar-airfield-systems-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-ground-radar-airfield-systems-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-headquarters-air-force-identification-default-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-historian-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-historian-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-historian-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-information-management-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-information-management-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-information-operations-officer-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-information-operations-officer-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-information-operations-officer-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-intelligence-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-intelligence-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-intelligence-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-judge-advocate-default-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-logistics-readiness-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-logistics-readiness-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-logistics-readiness-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-manpower-personnel-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-manpower-personnel-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-manpower-personnel-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-medical-service-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-medical-service-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-medical-service-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-multi-domain-warfare-officer-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-multi-domain-warfare-officer-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-multi-domain-warfare-officer-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-munitions-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-munitions-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-munitions-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-nurse-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-nurse-chief-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-nurse-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-research-analyst-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-research-analyst-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-research-analyst-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-support-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-support-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-operations-support-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-paralegal-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-paralegal-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-paralegal-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-physician-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-physician-chief-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-physician-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-professional-military-education-default-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-public-affairs-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-public-affairs-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-public-affairs-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-religious-affairs-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-religious-affairs-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-religious-affairs-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-safety-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-safety-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-safety-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-scientific-applications-specialist-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-scientific-applications-specialist-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-scientific-applications-specialist-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-services-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-services-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-services-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-supply-fuels-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-supply-fuels-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-supply-fuels-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-transportation-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-transportation-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-transportation-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-veterinarian-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-veterinarian-chief-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-veterinarian-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-weather-operations-basic-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-weather-operations-master-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "af-weather-operations-senior-field",
+  "set": "af2",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-air-assault-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-aviation-basic-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-aviation-master-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-aviation-senior-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-aviator-basic-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-aviator-master-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-aviator-senior-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-career-counselor-identification-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-combat-action-first-award-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-combat-action-master-first-award-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-combat-action-master-second-award-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-combat-infantryman-first-award-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-combat-infantryman-master-first-award-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-combat-medical-first-award-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-diver-first-class-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-diver-master-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-diver-salvage-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-diver-second-class-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-diver-special-operations-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-diver-special-operations-supervisor-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-drill-sergeant-identification-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-driver-and-mechanic-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-expert-field-medical-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-expert-infantryman-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-expert-soldier-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-explosive-ordnance-disposal-basic-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-explosive-ordnance-disposal-master-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-explosive-ordnance-disposal-senior-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-flight-surgeon-basic-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-flight-surgeon-master-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-flight-surgeon-senior-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-glider-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-instructor-identification-basic-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-instructor-identification-master-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-instructor-identification-senior-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-joint-chiefs-of-staff-identification-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-mariner-basic-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-mariner-master-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-mariner-senior-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-marksmanship-expert-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-marksmanship-marksman-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-marksmanship-sharpshooter-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-master-gunner-identification-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-military-freefall-parachutist-basic-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-military-freefall-parachutist-jumpmaster-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-military-horseman-identification-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-office-of-secretary-of-defense-identification-default-field",
+  "set": "army",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-parachute-rigger-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-parachutist-basic-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-parachutist-master-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-parachutist-senior-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-pathfinder-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-recruiter-identification-basic-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-recruiter-identification-master-field",
+  "set": "army",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-retired-service-identification-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-space-basic-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-space-master-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-space-senior-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-staff-identification-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "army-tomb-guard-identification-default-field",
+  "set": "army",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-astronaut-default-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-aviation-observer-default-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-aviation-supply-corps-default-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-aviator-default-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-diving-diving-officer-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-diving-diving-officer-medical-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-engineering-duty-officer-default-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-enlisted-aviation-warfare-specialist-default-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-explosive-ordnance-disposal-basic-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-explosive-ordnance-disposal-master-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-explosive-ordnance-disposal-officer-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-explosive-ordnance-disposal-senior-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-fleet-marine-force-chaplain-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-fleet-marine-force-officer-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-flight-medical-default-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-flight-officer-default-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-information-warfare-enlisted-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-information-warfare-officer-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-marine-corps-combat-aircrew-base-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-marine-corps-combatant-diver-default-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-nuclear-weapons-security-default-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-parachutist-navy-marine-corps-parachutist-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-professional-aviation-maintenance-officer-default-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-small-craft-default-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-special-warfare-default-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-strategic-sealift-officer-warfare-default-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-deep-submergence-enlisted-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-deep-submergence-officer-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-engineering-duty-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-enlisted-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-medical-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-officer-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-submarine-warfare-supply-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-surface-warfare-dental-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-surface-warfare-enlisted-field",
+  "set": "navy",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-surface-warfare-medical-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-surface-warfare-medical-service-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-surface-warfare-nurse-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-surface-warfare-officer-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "navy-surface-warfare-supply-field",
+  "set": "navy",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "usmc-aerial-navigator-default-field",
+  "set": "usmc",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "usmc-diver-default-field",
+  "set": "usmc",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "usmc-flight-surgeon-default-field",
+  "set": "usmc",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "usmc-naval-aviation-observer-default-field",
+  "set": "usmc",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "usmc-special-operator-default-field",
+  "set": "usmc",
+  "thread": "silver",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "uscg-aviation-rescue-swimmer-default-field",
+  "set": "uscg",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "uscg-flight-officer-default-field",
+  "set": "uscg",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "uscg-flight-surgeon-default-field",
+  "set": "uscg",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ },
+ {
+  "id": "uscg-scuba-diver-default-field",
+  "set": "uscg",
+  "thread": "gold",
+  "pass": true,
+  "fails": ""
+ }
+]

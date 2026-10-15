@@ -1,0 +1,51 @@
+{
+ "asset_id": "army-diver-salvage",
+ "width_in": 1.0745,
+ "height_in": 1.50025,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated height 1.5 in from the badge aspect (0.72); service dimension table not available in repo",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   53.725,
+   0
+  ],
+  "bottom_center": [
+   53.725,
+   150.025
+  ],
+  "center": [
+   53.725,
+   75.013
+  ],
+  "left_edge": [
+   0,
+   75.013
+  ],
+  "right_edge": [
+   107.45,
+   75.013
+  ]
+ },
+ "dimensions": {
+  "size_class": "tall",
+  "service": "army",
+  "design": "army_diver",
+  "variant": "salvage"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/military/army/g*/make*.js",
+ "reference": "images/military-badges/army/army_diver__salvage",
+ "source_bbox_user_units": [
+  86.333,
+  21,
+  174.667,
+  144.333
+ ],
+ "fit_score": {
+  "silhouette_iou_approx": 0.748,
+  "note": "bbox-normalised mask IoU vs the product reference; UNRELIABLE where the reference has a camouflage/photo background"
+ },
+ "notes": "Flat single-tone silver redraw (outlines + engraving lines only). Texture, shading and small lettering omitted."
+}
