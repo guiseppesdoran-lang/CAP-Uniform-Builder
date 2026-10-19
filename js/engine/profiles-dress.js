@@ -95,7 +95,7 @@
     for(let i = 0; i < items.length; i++){
       const p = await putBadge(ctx, items[i], { x: x + widths[i] / 2, y: bottomY }, anchor || 'bottom_center');
       if(p) top = Math.min(top, p.y);
-      if(i && gap) ctx.measure({ x: x - gap, y: bottomY - 0.2 }, { x, y: bottomY - 0.2 });
+      if(i && gap) ctx.measure({ x: x - gap, y: bottomY }, { x, y: bottomY });
       x += widths[i] + gap;
     }
     return top;
@@ -131,8 +131,13 @@
         if(tag && geo.un.anchor === 'top_center') ctx.measure({ x: geo.un.x, y: tag.y + tag.h }, { x: geo.un.x, y: geo.un.y });
       }else ctx.note('The graduated commander insignia has no place on this uniform');
     }
-    // Pocket badges measured from their reference line (welt or nametag) to their centre.
-    const pocketMeasure = spot => { if(spot && spot.from != null) ctx.measure({ x: spot.x, y: spot.from }, { x: spot.x, y: spot.y }, C.inchesLabel(spot.y - spot.from) + ' to centre'); };
+    // Pocket badges: from their reference line (welt or nametag) to their centre, or centred
+    // halfway between the flap and the bottom of the pocket (`span`).
+    const pocketMeasure = spot => {
+      if(!spot) return;
+      if(spot.span) ctx.measure({ x: spot.x, y: spot.span[0] }, { x: spot.x, y: spot.span[1] }, 'halfway', { mid: { x: spot.x, y: spot.y } });
+      else if(spot.from != null) ctx.measure({ x: spot.x, y: spot.from }, { x: spot.x, y: spot.y }, null, { center: 'to' });
+    };
     // The over-nametag line, 1/2 in above the nametag.
     const onMeasure = () => { if(tag && geo.onBottom == null && tag.h) ctx.measure({ x: onX, y: tag.y }, { x: onX, y: onBottom }); };
     const pinItem = pinCurrent ? { id: pinCurrent.id, art: pinCurrent.art, title: pinCurrent.title } : null;
@@ -255,6 +260,9 @@
       if(!p) continue;
       await ctx.place(id, { pieceAnchor: 'visual_center', at: { x: p[0], y: p[1] }, rotate: p[2] || 0, z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side });
     }
+    // Halfway between the shoulder seam and the elbow, shown once, on the outside of the sleeve.
+    const s = ctx.point('shoulder_seam_right'), e = ctx.point('elbow_right'), c = ctx.point('chevron_halfway_right');
+    if(s && e && c) ctx.measure(s, e, 'halfway', { mid: c, side: { x: -1, y: 0 }, offsetOnly: true });
   }
 
   // Sleeve chevron points from the sheet: centred halfway between the shoulder seam and the elbow,
@@ -281,10 +289,8 @@
     for(const side of ['right', 'left']){
       const p1 = ctx.point(`gorge_seam_${side}_p1`), mid = ctx.point(`gorge_seam_${side}_mid`), p2 = ctx.point(`gorge_seam_${side}_p2`);
       if(!p1 || !mid || !p2) continue;
-      // Drawn just below the seam so the insignia resting on it stays visible.
-      const dn = pt => ({ x: pt.x, y: pt.y + 0.6 });
-      ctx.measure(dn(p1), dn(mid), '½');
-      ctx.measure(dn(mid), dn(p2), '½');
+      // Set below the seam: the insignia resting on it stays in view.
+      ctx.measure(p1, p2, 'halfway', { mid, side: { x: 0, y: 1 }, offsetOnly: true });
     }
   }
 
@@ -471,6 +477,7 @@
       const tagLayer = g.cadet ? `${A.layer}-nametag-cadet` : `${A.layer}-nametag-officer-nco`;
       await ctx.overlay(tagLayer, Z.tape);
       tagRect = ctx.rect('nametag') || ctx.rect('nameplate') || A.nametag;
+      ctx.keepClear(tagRect, 'nametag');
       if(b.name.show && b.name.last){
         if(g.cadet) threeLineName(ctx, b, tagRect);
         else C.nameText(ctx, b.name.last, { x: tagRect.x + 0.2, y: tagRect.y + 0.12, w: tagRect.w - 0.4, h: tagRect.h - 0.24 }, { color: ENGRAVED_BLUE, maxH: 0.36, key: 'text:name' });
@@ -560,6 +567,7 @@
 
     await ctx.overlay(g.cadet ? `${base}-nametag-cadet` : `${base}-nametag-adult`, Z.tape);
     const tag = ctx.rect('nametag') || ctx.rect('nameplate');
+    ctx.keepClear(tag, 'nametag');
     threeLineName(ctx, b, tag);
 
     if(g.category === 'cadet-nco'){
@@ -586,8 +594,9 @@
       const pocketL = ctx.rect('pocket_left'), pocketR = ctx.rect('pocket_right');
       const flapY = pocketL.y + 2.02;
       const midY = (flapY + pocketL.y + pocketL.h) / 2;
-      geo.lp = { x: pocketL.x + pocketL.w / 2, y: midY };
-      geo.rp = { x: pocketR.x + pocketR.w / 2, y: midY };
+      const span = [flapY, pocketL.y + pocketL.h];
+      geo.lp = { x: pocketL.x + pocketL.w / 2, y: midY, span };
+      geo.rp = { x: pocketR.x + pocketR.w / 2, y: midY, span };
       geo.onStyle = 'men';
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.63 };
       geo.marks = { x: pocketL.x + pocketL.w / 2, y: pocketL.y, anchor: 'top_center' }; // top edge of the flap
@@ -654,8 +663,8 @@
       // in the same spot on the wearer's right; National Staff always on the right.
       const lpItem = others.find(x => x.family !== 'national-staff');
       const rpItem = others.find(x => x !== lpItem);
-      if(lpItem) await putBadge(ctx, lpItem, { x: center.x, y: medBottom + 0.5 }, 'top_center');
-      if(rpItem) await putBadge(ctx, rpItem, { x: wrX, y: medBottom + 0.5 }, 'top_center');
+      if(lpItem && await putBadge(ctx, lpItem, { x: center.x, y: medBottom + 0.5 }, 'top_center')) ctx.measure({ x: center.x, y: medBottom }, { x: center.x, y: medBottom + 0.5 });
+      if(rpItem && await putBadge(ctx, rpItem, { x: wrX, y: medBottom + 0.5 }, 'top_center')) ctx.measure({ x: wrX, y: medBottom }, { x: wrX, y: medBottom + 0.5 });
       if(plan.pin){
         const y = plan.pin.graduated ? medBottom : medTop;
         await putBadge(ctx, { id: plan.pin.id, art: plan.pin.art, title: plan.pin.title }, { x: wrX, y }, plan.pin.graduated ? 'bottom_center' : 'top_center', `badge:${plan.pin.id}:${plan.pin.graduated ? 'UN' : 'ON'}:0`);
@@ -681,8 +690,13 @@
       if(plan.pin){
         const pin = { id: plan.pin.id, art: plan.pin.art, title: plan.pin.title };
         const key = `badge:${plan.pin.id}:${plan.pin.graduated ? 'UN' : 'ON'}:0`;
-        if(plan.pin.graduated) await putBadge(ctx, pin, { x: wrX, y: (pair.length ? bottom : medBottom) + (pair.length ? 0.5 : 0) }, pair.length ? 'top_center' : 'bottom_center', key);
-        else await putBadge(ctx, pin, { x: wrX, y: pair.length ? top - 0.5 : top }, pair.length ? 'bottom_center' : 'top_center', key);
+        if(plan.pin.graduated){
+          await putBadge(ctx, pin, { x: wrX, y: (pair.length ? bottom : medBottom) + (pair.length ? 0.5 : 0) }, pair.length ? 'top_center' : 'bottom_center', key);
+          if(pair.length) ctx.measure({ x: wrX, y: bottom }, { x: wrX, y: bottom + 0.5 });
+        }else{
+          await putBadge(ctx, pin, { x: wrX, y: pair.length ? top - 0.5 : top }, pair.length ? 'bottom_center' : 'top_center', key);
+          if(pair.length) ctx.measure({ x: wrX, y: top }, { x: wrX, y: top - 0.5 });
+        }
       }
       if(others.length > 2) ctx.note('Some badges have no place left on this uniform and are not shown');
     }
@@ -851,7 +865,7 @@
         plateAt = { x: crestTopPt.x, y: top - 0.5 - ps.h / 2 };
       }
       const plate = await ctx.place(plateId, { pieceAnchor: 'center', at: plateAt, z: Z.tape, role: 'nametag', key: 'nametag' });
-      if(female && crestTopPt) ctx.measure({ x: plate.x + plate.w + 0.3, y: plate.y + plate.h }, { x: plate.x + plate.w + 0.3, y: plate.y + plate.h + 0.5 });
+      if(female && crestTopPt) ctx.measure({ x: plate.x + plate.w / 2, y: plate.y + plate.h }, { x: plate.x + plate.w / 2, y: plate.y + plate.h + 0.5 });
       if(b.name.show){
         // Last name and state (4.2.3.1.1.2).
         const nameZone = H.pieceRect(plate, ps, 'name');
@@ -882,7 +896,7 @@
     const crestTop = crestLayer ? crestLayer.y : (ctx.point('crest_top_center') || { y: ms.y + ms.h + 0.5 }).y;
     const medalX = ms.x + ms.w / 2;
     const box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY: crestTop - 0.5 }, { style: b.opt.miniStyle });
-    if(box) ctx.measure({ x: medalX + 1.6, y: crestTop }, { x: medalX + 1.6, y: crestTop - 0.5 });
+    if(box) ctx.measure({ x: medalX, y: crestTop }, { x: medalX, y: crestTop - 0.5 });
     if(chaplain){
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
       await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: ms.x + ms.w / 2, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
