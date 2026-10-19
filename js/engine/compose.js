@@ -236,19 +236,27 @@
     return Object.assign(box, { mode: rack.mode, rows: rack.rows.map(r => r.length) });
   }
 
-  // Miniature medals: medal body under a vertical ribbon drape (5/8 in wide, devices turned
-  // vertical with precedence at the top, CAPR 39-1 11.4.2).
-  // Miniature ribbons are 11/16 in wide (11.3).
-  const MINI_DRAPE = { w: 0.6875, h: 1.125 };
+  // Miniature medals: medal body under a vertical ribbon drape (devices turned vertical with
+  // precedence at the top, CAPR 39-1 11.4.2).
+  // Miniature suspension ribbon: 11/16 in wide (11.3), straight sides of about 1.39 in, then a V
+  // point of about 0.15 in into the medal's ring (measured on the McChord miniatures).
+  const MINI_DRAPE = { w: 0.6875, h: 1.54, point: 0.15 };
   async function drawMiniMedals(ctx, medals, slot, opts){
     if(!medals.length) return null;
     const o = opts || {};
     let maxBodyH = 0;
     for(const m of medals){ if(m.medal && ctx.has(m.medal)){ const s = await ctx.spec(m.medal); maxBodyH = Math.max(maxBodyH, s.h); } }
     const totalH = MINI_DRAPE.h + (maxBodyH || 0.9);
+    // Centred on a point (`slot.centerY`, the mess dress) or resting on a line (`slot.bottomY`):
+    // each row above the first adds its height less the half drape it covers.
+    let bottomY = slot.bottomY;
+    if(slot.centerY != null){
+      const n = awards.miniMedalRows(medals, o.style || 'mounting').length;
+      bottomY = slot.centerY + (totalH + (n - 1) * (totalH - MINI_DRAPE.h * 0.5)) / 2;
+    }
     const out = awards.layoutMiniMedals(medals, {
       style: o.style, medalW: MINI_DRAPE.w, medalH: totalH, drapeH: MINI_DRAPE.h,
-      slotW: slot.w, centerX: slot.centerX, bottomY: slot.bottomY
+      slotW: slot.w, centerX: slot.centerX, bottomY
     });
     const sizes = {};
     for(const d of [...new Set(medals.flatMap(m => m.devices || []))]){ if(ctx.has(d)){ const s = await ctx.spec(d); sizes[d] = { w: s.w, h: s.h }; } }
@@ -256,9 +264,11 @@
       const m = p.item;
       // Upper rows hang over the drapes of the rows below them, so they draw later.
       const zBase = Z.medal + (out.rows.length - 1 - p.row) * 0.1 + p.z * 0.001;
-      // Ribbon drape: the ribbon artwork turned into a vertical 5/8 x 1 1/8 in strip.
+      // Ribbon drape: the ribbon artwork as a vertical strip, cut to its V point.
       if(m.ribbonAsset && ctx.has(m.ribbonAsset)){
-        ctx.layers.push({ type: 'asset', id: m.ribbonAsset, x: p.x, y: p.y, w: MINI_DRAPE.w, h: MINI_DRAPE.h, rotate: 0, origin: { x: p.x, y: p.y }, z: zBase, role: 'mini-drape', key: m.key, title: m.title, className: 'ribbonMini' });
+        const D = MINI_DRAPE;
+        const clip = [{ x: p.x, y: p.y }, { x: p.x + D.w, y: p.y }, { x: p.x + D.w, y: p.y + D.h - D.point }, { x: p.x + D.w / 2, y: p.y + D.h }, { x: p.x, y: p.y + D.h - D.point }];
+        ctx.layers.push({ type: 'asset', id: m.ribbonAsset, x: p.x, y: p.y, w: D.w, h: D.h, rotate: 0, origin: { x: p.x, y: p.y }, z: zBase, role: 'mini-drape', key: m.key, title: m.title, className: 'ribbonMini', clip });
       }else if(m.raster){
         ctx.raster({ href: m.raster, x: p.x, y: p.y, w: MINI_DRAPE.w, h: totalH, z: zBase, role: 'mini', key: m.key, title: m.title, className: 'ribbonMini' });
         continue;
@@ -274,7 +284,7 @@
       const own = (m.devices || []).filter(d => sizes[d]);
       const devs = m.centered ? own : awards.sortRun(own);
       const step = 0.24;
-      const midY = p.y + MINI_DRAPE.h / 2;
+      const midY = p.y + (MINI_DRAPE.h - MINI_DRAPE.point) / 2;
       const y0 = midY - (devs.length - 1) * step / 2;
       devs.forEach((d, i) => {
         const sz = sizes[d];
