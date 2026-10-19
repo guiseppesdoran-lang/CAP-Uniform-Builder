@@ -95,7 +95,10 @@ test('sleeve chevrons are measured halfway between the shoulder seam and the elb
   assert.ok(Math.abs(t - 0.5) < 0.05, `the chevron is halfway (${t.toFixed(3)})`);
 });
 
-test('a distance to a badge centre gets a centre mark', async () => {
-  const { drawings } = await laidOut(CASES[0][1]);
-  assert.ok(drawings.some(d => d.centres.length === 2 && d.label.text === '1½ in'));
+test('the men\'s pocket badges are measured to their top edge, with no centre mark', async () => {
+  const { scene, drawings } = await laidOut(CASES[0][1]);
+  const m = scene.layers.find(l => l.type === 'measure' && l.label === '1½ in');
+  const badge = scene.layers.filter(l => l.role === 'badge').find(l => Math.abs(l.x + l.w / 2 - m.to.x) < 0.01 && Math.abs(l.y - m.to.y) < 0.01);
+  assert.ok(badge, 'the measure ends on a badge top');
+  assert.equal(drawings.find(d => d.key === m.key).centres.length, 0);
 });

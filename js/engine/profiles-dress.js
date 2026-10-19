@@ -131,12 +131,13 @@
         if(tag && geo.un.anchor === 'top_center') ctx.measure({ x: geo.un.x, y: tag.y + tag.h }, { x: geo.un.x, y: geo.un.y });
       }else ctx.note('The graduated commander insignia has no place on this uniform');
     }
-    // Pocket badges: from their reference line (welt or nametag) to their centre, or centred
-    // halfway between the flap and the bottom of the pocket (`span`).
+    // Pocket badges: from their reference line (welt or nametag) to the badge's top edge (or its
+    // centre, for a spot anchored at the centre), or centred halfway between the flap and the bottom
+    // of the pocket (`span`).
     const pocketMeasure = spot => {
       if(!spot) return;
       if(spot.span) ctx.measure({ x: spot.x, y: spot.span[0] }, { x: spot.x, y: spot.span[1] }, 'halfway', { mid: { x: spot.x, y: spot.y } });
-      else if(spot.from != null) ctx.measure({ x: spot.x, y: spot.from }, { x: spot.x, y: spot.y }, null, { center: 'to' });
+      else if(spot.from != null) ctx.measure({ x: spot.x, y: spot.from }, { x: spot.x, y: spot.y }, null, spot.anchor === 'top_center' ? null : { center: 'to' });
     };
     // The over-nametag line, 1/2 in above the nametag.
     const onMeasure = () => { if(tag && geo.onBottom == null && tag.h) ctx.measure({ x: onX, y: tag.y }, { x: onX, y: onBottom }); };
@@ -289,8 +290,9 @@
     for(const side of ['right', 'left']){
       const p1 = ctx.point(`gorge_seam_${side}_p1`), mid = ctx.point(`gorge_seam_${side}_mid`), p2 = ctx.point(`gorge_seam_${side}_p2`);
       if(!p1 || !mid || !p2) continue;
-      // Set below the seam: the insignia resting on it stays in view.
-      ctx.measure(p1, p2, 'halfway', { mid, side: { x: 0, y: 1 }, offsetOnly: true });
+      // The coat does not draw the seam: the overlay draws it dashed, measured just below it so
+      // the insignia resting on it stays in view.
+      ctx.measure(p1, p2, 'halfway', { mid, side: { x: 0, y: 1 }, offsetOnly: true, offsetPx: 5, reference: true });
     }
   }
 
@@ -516,8 +518,10 @@
     const geo = {
       olp: { x: rest.x, baseY: rack ? rack.y : rest.y },
       nametag: tagRect,
-      lp: sex === 'male' ? { x: rest.x, y: rest.y + 1.5, from: rest.y } : null,
-      rp: sex === 'male' ? { x: tagRect.x + tagRect.w / 2, y: tagRect.y + tagRect.h + 1.5, from: tagRect.y + tagRect.h } : null,
+      // Men: 1 1/2 in below the welt top and below the nametag, edge to edge: the top of the badge
+      // (4.1.5.2.2.4.2, Figure 4.6), like every other distance between pieces.
+      lp: sex === 'male' ? { x: rest.x, y: rest.y + 1.5, from: rest.y, anchor: 'top_center' } : null,
+      rp: sex === 'male' ? { x: tagRect.x + tagRect.w / 2, y: tagRect.y + tagRect.h + 1.5, from: tagRect.y + tagRect.h, anchor: 'top_center' } : null,
       onStyle: sex === 'male' ? 'men' : 'women-a',
       un: { x: tagRect.x + tagRect.w / 2, y: tagRect.y + tagRect.h + 0.5, anchor: 'top_center' }
     };
@@ -527,7 +531,7 @@
       // pocket badge stays level with the left one, where the nametag's bottom would be.
       geo.onBottom = rest.y;
       geo.nametag = { x: A.nametagX - 1.6875, y: rest.y, w: 3.375, h: 0 };
-      geo.rp = sex === 'male' ? { x: A.nametagX, y: rest.y + 1.5, from: rest.y } : null;
+      geo.rp = sex === 'male' ? { x: A.nametagX, y: rest.y + 1.5, from: rest.y, anchor: 'top_center' } : null;
       geo.un = null;
       if(sex === 'male') geo.onStyle = 'men';
     }

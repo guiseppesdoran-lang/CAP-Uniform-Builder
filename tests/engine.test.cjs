@@ -167,7 +167,7 @@ test('cadet semi-formal: the right pocket badge stays level with the left one (4
   const es = layersBy(scene, l => l.key === 'badge:emergency_services_badge')[0];
   const comms = layersBy(scene, l => l.key === 'badge:communications_technician_badge')[0];
   assert.ok(es && comms);
-  assert.ok(Math.abs((es.y + es.h / 2) - (comms.y + comms.h / 2)) < 0.001, 'centres level');
+  assert.ok(Math.abs(es.y - comms.y) < 0.001, 'tops level, 1 1/2 in below the welt line');
   assert.ok(es.x > comms.x, 'ES on the wearer\'s left, comms on the right');
 });
 
@@ -203,6 +203,15 @@ test('an appointed Command Chief wears the Command Chief chevron on every unifor
     assert.ok(chev.length && chev.every(l => /command-chief/.test(l.id)), u);
     assert.deepEqual(scene.notes.filter(n => /^No artwork/.test(n)), [], u);
   }
+});
+
+test('men\'s Class A pocket badges: their tops 1 1/2 inch below the welt top and the nametag (4.1.5.2.2.4.2, Figure 4.6)', async () => {
+  const scene = await P.composeUniform(build('blues_a', 'senior', 'Capt', { ribbons: ribbon('cap_achievment_award'), badges: [{ id: 'emergency_services_badge' }, { id: 'CAPPilot1_FA9D33EA587D8' }, { id: 'stem_badges' }] }), store());
+  const tag = { y: 10.04, h: 0.75 };
+  const rp = layersBy(scene, l => l.role === 'badge' && l.x + l.w / 2 < 11.86)[0];
+  assert.ok(Math.abs(rp.y - (tag.y + tag.h + 1.5)) < 0.01, `right pocket badge top ${rp.y.toFixed(3)} is 1 1/2 in below the nametag`);
+  const lp = layersBy(scene, l => l.role === 'badge' && l.x + l.w / 2 > 11.86 && l.y > 10.79)[0];
+  assert.ok(Math.abs(lp.y - (10.79 + 1.5)) < 0.01, `left pocket badge top ${lp.y.toFixed(3)} is 1 1/2 in below the welt top`);
 });
 
 test('model rocketry and marksmanship badges take their own places (4.1.5.2.2.4.2, 4.1.9.4.4.2)', async () => {
