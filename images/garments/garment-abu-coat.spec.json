@@ -424,36 +424,6 @@
    "w": 400,
    "h": 677
   },
-  "button_1": {
-   "x": 1948,
-   "y": 1453,
-   "w": 34,
-   "h": 34
-  },
-  "button_2": {
-   "x": 1948,
-   "y": 1963,
-   "w": 34,
-   "h": 34
-  },
-  "button_3": {
-   "x": 1948,
-   "y": 2473,
-   "w": 34,
-   "h": 34
-  },
-  "button_4": {
-   "x": 1948,
-   "y": 2983,
-   "w": 34,
-   "h": 34
-  },
-  "button_5": {
-   "x": 1948,
-   "y": 3473,
-   "w": 34,
-   "h": 34
-  },
   "patrol_cap_front": {
    "x": 275,
    "y": 200,
@@ -516,18 +486,16 @@
   "tape_in": [
    5,
    0.9
-  ],
-  "buttons": 5
+  ]
  },
  "documented": [
-  "button front, hip length (CAPR 39-1 5.1.1.1)",
+  "button front, hip length (CAPR 39-1 5.1.1.1); all closures are concealed, so no buttons are drawn",
   "name tape above wearer's right upper pocket, CAP tape above left, cut to pocket width, light silver on dark blue (5.1.1.1.2.1)",
   "badges 1/2 in above the CAP tape (5.1.1.1.2.4)"
  ],
  "assumed": [
   "px-to-inch scale",
   "pocket sizes/positions (measured off the ABU raster, then scaled)",
-  "button count and spacing",
   "lower pocket size",
   "tiger-stripe print is procedural; palette sampled from the raster",
   "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)"
