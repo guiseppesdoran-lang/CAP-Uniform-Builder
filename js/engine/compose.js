@@ -91,6 +91,8 @@
       //   mid: point                       a tick where the halfway point falls ("halfway" labels)
       //   side: {x, y}                     the side the line moves to when it cannot stay put
       //   offsetOnly: true                 always move it to that side (the edge is drawn art)
+      //   offsetPx: n                      how far it moves at least, in preview pixels
+      //   reference: true                  also draw the measured edge, dashed (an undrawn seam)
       // js/engine/measure-layout.js decides where the line and its label go.
       measure(from, to, label, opts){
         if(!from || !to) return null;

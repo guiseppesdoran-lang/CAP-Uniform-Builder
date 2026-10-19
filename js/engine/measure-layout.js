@@ -126,7 +126,7 @@
       for(const s of sides){
         // Each extension line starts at the edge of its own piece.
         const startA = clearance(A, s, solids, 1.5 * P), startB = clearance(B, s, solids, 1.5 * P);
-        const first = Math.max(Math.max(startA, startB) + PX.minOffset * P, o.minOffset || 0);
+        const first = Math.max(startA, startB) + (o.offsetPx != null ? o.offsetPx : PX.minOffset) * P;
         for(let d = first; d <= first + PX.maxOffset * P; d += PX.step * P) candidates.push({ side: s, d, startA, startB });
       }
 
@@ -187,7 +187,9 @@
         bars: [[sub(a, half), add(a, half)], [sub(b, half), add(b, half)]],
         ext: exts,
         ticks: [],
-        centres: []
+        centres: [],
+        // The edge being measured, when the artwork does not draw it (a seam): a dashed line.
+        reference: o.reference ? [A, B] : null
       };
       if(o.mid){
         const t = dot(sub(o.mid, A), u);

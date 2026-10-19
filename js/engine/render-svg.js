@@ -77,6 +77,10 @@
       const g = el('g', { class: 'measure', 'data-calib-key': d.key || null, 'pointer-events': 'none' });
       const main = [d.dim, ...d.bars, ...d.ticks, ...d.centres];
       for(const s of [...main, ...d.ext]) seg(g, s, MEASURE.halo, (MEASURE.line + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      if(d.reference){
+        seg(g, d.reference, MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+        seg(g, d.reference, MEASURE.color, MEASURE.ext * px, { 'stroke-dasharray': `${fmt(3 * px)} ${fmt(2.5 * px)}`, 'stroke-linecap': 'butt' });
+      }
       for(const s of d.ext) seg(g, s, MEASURE.color, MEASURE.ext * px, { 'stroke-opacity': 0.9 });
       for(const s of main) seg(g, s, MEASURE.color, MEASURE.line * px);
       const L = d.label;
