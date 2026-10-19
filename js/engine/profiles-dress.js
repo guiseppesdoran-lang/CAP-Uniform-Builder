@@ -648,7 +648,9 @@
     // Miniature medals centred between the lapel and the arm seam (4.1.1.1.2.2, 11.2.8).
     const slot = ctx.rect('miniature_medal_slot');
     const center = ctx.point('miniature_medals_center');
-    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: slot.w, centerX: center.x, bottomY: slot.y + slot.h }, { style: b.opt.miniStyle });
+    // Midway between the top shoulder seam and the top button (4.1.1.1.2.2, 4.1.2.1.2.2): the
+    // sheet's miniature_medals_center is that point.
+    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: slot.w, centerX: center.x, centerY: center.y }, { style: b.opt.miniStyle });
     const wrX = ctx.base.w - center.x;
     const plan = planBadges(ctx, b, {});
     // Aviation / occupational: 1/2 in above the medals; none worn: centred on the medal spot.

@@ -214,6 +214,16 @@ test('men\'s Class A pocket badges: their tops 1 1/2 inch below the welt top and
   assert.ok(Math.abs(lp.y - (10.79 + 1.5)) < 0.01, `left pocket badge top ${lp.y.toFixed(3)} is 1 1/2 in below the welt top`);
 });
 
+test('mess dress miniature medals are centred midway between the shoulder seam and the top button (4.1.1.1.2.2)', async () => {
+  const medals = ['cap_achievment_award', 'unit_citation_award', 'cap_leadership_ribbon', 'cap_membership_ribbon', 'crisis_ribbon', 'mitchell_award'].flatMap(id => ribbon(id)).map(r => ({ key: r.key.replace('ribbon:', 'mini:'), title: r.title, ribbonAsset: r.asset, medal: 'medal-' + r.asset.slice(7) + '-miniature', devices: r.devices }));
+  const scene = await P.composeUniform(build('mess_dress', 'senior', 'Maj', { medals }), store());
+  const minis = layersBy(scene, l => l.role === 'mini-drape' || l.role === 'mini-medal');
+  const top = Math.min(...minis.map(l => l.y)), bottom = Math.max(...minis.map(l => l.y + l.h));
+  const spec = JSON.parse(fs.readFileSync(path.join(root, 'images', 'garments', 'garment-mess-dress-male.spec.json'), 'utf8'));
+  const cy = spec.anchors.miniature_medals_center[1] / 100;
+  assert.ok(Math.abs((top + bottom) / 2 - cy) < 0.15, `group centre ${((top + bottom) / 2).toFixed(2)} at ${cy}`);
+});
+
 test('model rocketry and marksmanship badges take their own places (4.1.5.2.2.4.2, 4.1.9.4.4.2)', async () => {
   const ribbons = ribbon('cap_achievment_award');
   const men = await P.composeUniform(build('blues_a', 'cadet', 'C/SSgt', { ribbons, badges: [{ id: 'emergency_services_badge' }, { id: 'model_rocketry_badge' }, { id: 'nra_marksman_badge' }] }), store());
