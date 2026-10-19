@@ -25,6 +25,7 @@
     for(const lm of ['name_tape', 'patrol_cap_back_name_tape', 'baseball_cap_back_name_tape']){
       const r = ctx.rect(lm);
       if(!r) continue;
+      ctx.keepClear(r, lm);
       const inset = 0.25 * r.h;
       C.nameText(ctx, b.name.last, { x: r.x + inset, y: r.y, w: r.w - 2 * inset, h: r.h }, { color: TAPE_TEXT, size: 0.915 * r.h, condense: 0.546, advance: 0.72, font: 'Arial, Helvetica, sans-serif', key: 'text:' + lm });
     }
@@ -50,6 +51,7 @@
       // "1/2 inch from the visor": the zone's bottom edge already sits 1/2 in above the visor.
       const at = mode === 'visor' ? { x: z.x + z.w / 2, y: z.y + z.h } : core.rectCenter(z);
       await ctx.place(id, { pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: Z.insignia, role: 'grade', key: 'grade:' + name });
+      if(mode === 'visor') ctx.measure({ x: at.x, y: at.y + 0.5 }, at);
     }
   }
 
@@ -166,7 +168,7 @@
     const b3 = await ctx.place(list[2].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xL, y: base } }, opts(2)));
     const b4 = await ctx.place(list[3].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xR, y: base } }, opts(3)));
     const topY = Math.min(b3.y, b4.y) - rowGap;
-    ctx.measure({ x: xL + colL / 2, y: base - 0.3 }, { x: xL + colL / 2 + gapX, y: base - 0.3 });
+    ctx.measure({ x: xL + colL / 2, y: base }, { x: xL + colL / 2 + gapX, y: base });
     ctx.measure({ x: xL, y: Math.min(b3.y, b4.y) }, { x: xL, y: topY });
     await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xL, y: topY } }, opts(0)));
     await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xR, y: topY } }, opts(1)));
@@ -180,15 +182,16 @@
     if(!pin) return;
     const tape = ctx.rect('name_tape');
     const o = { z: Z.badge, role: 'badge', key: `badge:${pin.id}:${pin.graduated ? 'UN' : 'ON'}:0`, title: pin.title, className: 'badge' };
+    const tx = tape.x + tape.w / 2;
     if(!pin.graduated){
-      await ctx.place(pin.art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: tape.x + tape.w / 2, y: tape.y - 0.5 } }, o));
+      if(await ctx.place(pin.art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: tx, y: tape.y - 0.5 } }, o))) ctx.measure({ x: tx, y: tape.y }, { x: tx, y: tape.y - 0.5 });
       return;
     }
     if(b.uniform === 'ocp'){
       const tab = ctx.rect('glint_tab_left');
       if(tab) await ctx.place(pin.art, Object.assign({ pieceAnchor: 'center', at: core.rectCenter(tab) }, o));
     }else if(b.uniform === 'abu'){
-      await ctx.place(pin.art, Object.assign({ pieceAnchor: 'top_center', at: { x: tape.x + tape.w / 2, y: tape.y + tape.h + 0.5 } }, o));
+      if(await ctx.place(pin.art, Object.assign({ pieceAnchor: 'top_center', at: { x: tx, y: tape.y + tape.h + 0.5 } }, o))) ctx.measure({ x: tx, y: tape.y + tape.h }, { x: tx, y: tape.y + tape.h + 0.5 });
     }else{
       const flap = ctx.rect('chest_flap_right');
       if(flap) await ctx.place(pin.art, Object.assign({ pieceAnchor: 'center', at: core.rectCenter(flap) }, o));
@@ -257,6 +260,7 @@
         const s = await ctx.spec(id);
         const scale = Math.min(1, 3 / s.w, 3 / s.h);
         await ctx.place(id, { pieceAnchor: 'bottom_center', at: { x: tape.x + tape.w / 2, y }, scale, z: Z.patch, role: 'patch', key: 'patch:' + id, title: 'Emergency Services patch' });
+        if(!pin) ctx.measure({ x: tape.x + tape.w / 2, y: tape.y }, { x: tape.x + tape.w / 2, y });
       }
     }
     if(patches.length) ctx.note('Some selected patches have no place left on this uniform and are not shown');
