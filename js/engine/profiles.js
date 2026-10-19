@@ -236,6 +236,7 @@
     if(l.clip) l.clip = l.clip.map(p => ({ x: p.x + dx, y: p.y + dy }));
     if(l.from) l.from = { x: l.from.x + dx, y: l.from.y + dy };
     if(l.to) l.to = { x: l.to.x + dx, y: l.to.y + dy };
+    if(l.opts && l.opts.mid) l.opts = Object.assign({}, l.opts, { mid: { x: l.opts.mid.x + dx, y: l.opts.mid.y + dy } });
     return l;
   }
 

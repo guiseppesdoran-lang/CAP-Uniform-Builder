@@ -85,17 +85,29 @@
         return layer;
       },
       note(message){ if(!ctx.notes.includes(message)) ctx.notes.push(message); },
-      // A regulation distance shown on the measurement overlay: a line from `from` to `to` (scene
-      // inches) labelled with its length, or with `label` when given.
-      measure(from, to, label){
+      // A regulation distance shown on the measurement overlay, from `from` to `to` (points on the
+      // edges it measures, in scene inches), labelled with its length or with `label`. `opts`:
+      //   center: 'to' | 'from' | 'both'   that end is a centre (drawn with a centre mark)
+      //   mid: point                       a tick where the halfway point falls ("halfway" labels)
+      //   side: {x, y}                     the side the line moves to when it cannot stay put
+      //   offsetOnly: true                 always move it to that side (the edge is drawn art)
+      // js/engine/measure-layout.js decides where the line and its label go.
+      measure(from, to, label, opts){
         if(!from || !to) return null;
         const len = Math.hypot(to.x - from.x, to.y - from.y);
         if(len < 0.05) return null;
         const layer = { type: 'measure', from: { x: from.x, y: from.y }, to: { x: to.x, y: to.y }, label: label || inchesLabel(len),
           x: Math.min(from.x, to.x), y: Math.min(from.y, to.y), w: Math.abs(to.x - from.x), h: Math.abs(to.y - from.y),
           origin: { x: from.x, y: from.y }, rotate: 0, z: 100, role: 'measure', key: 'measure:' + ctx.layers.length, noBounds: true };
+        if(opts) layer.opts = opts;
         ctx.layers.push(layer);
         return layer;
+      },
+      // A piece the garment sheet draws itself (a nametag, a tape) that the measurement labels keep
+      // clear of, like the pieces placed on top. Not drawn.
+      keepClear(rect, key){
+        if(!rect) return;
+        ctx.layers.push({ type: 'clear', x: rect.x, y: rect.y, w: rect.w, h: rect.h, rotate: 0, origin: { x: rect.x, y: rect.y }, z: 0, role: 'clear', key: 'clear:' + (key || ctx.layers.length), noBounds: true });
       }
     };
     return ctx;

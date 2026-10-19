@@ -66,32 +66,30 @@
     return parts.join(' ') || null;
   }
 
-  // A measurement: the line with end ticks, and its length beside the middle. Amber on a dark
-  // halo so it reads on light and dark cloth alike.
-  const MEASURE = { color: '#ffb000', halo: '#111', line: 0.035, tick: 0.12, text: 0.3 };
-  function measureNode(m, k){
-    const M = { color: MEASURE.color, halo: MEASURE.halo, line: MEASURE.line * k, tick: MEASURE.tick * k, text: MEASURE.text * k };
-    const g = el('g', { class: 'measure', 'pointer-events': 'none' });
-    const dx = m.to.x - m.from.x, dy = m.to.y - m.from.y;
-    const len = Math.hypot(dx, dy) || 1;
-    const nx = -dy / len, ny = dx / len; // perpendicular
-    const segs = [[m.from, m.to]];
-    for(const p of [m.from, m.to]) segs.push([{ x: p.x - nx * M.tick, y: p.y - ny * M.tick }, { x: p.x + nx * M.tick, y: p.y + ny * M.tick }]);
-    for(const [stroke, width] of [[M.halo, M.line * 3], [M.color, M.line]]){
-      for(const [a, b] of segs) g.appendChild(el('line', { x1: fmt(a.x), y1: fmt(a.y), x2: fmt(b.x), y2: fmt(b.y), stroke, 'stroke-width': fmt(width), 'stroke-linecap': 'round' }));
+  // The measurement overlay, laid out by js/engine/measure-layout.js: gold lines on a soft dark
+  // halo (they read on light shirts and dark coats alike) and each length on a dark label. Widths
+  // are in preview pixels (`px` inches each).
+  const MEASURE = { color: '#ffd24a', halo: '#0b1020', line: 1.3, ext: 1, haloExtra: 2.2, labelStroke: 0.9 };
+  function measureNodes(drawings, px, fontPx){
+    const out = [];
+    const seg = (g, [a, b], stroke, width, extra) => g.appendChild(el('line', Object.assign({ x1: fmt(a.x), y1: fmt(a.y), x2: fmt(b.x), y2: fmt(b.y), stroke, 'stroke-width': fmt(width), 'stroke-linecap': 'round' }, extra || {})));
+    for(const d of drawings){
+      const g = el('g', { class: 'measure', 'data-calib-key': d.key || null, 'pointer-events': 'none' });
+      const main = [d.dim, ...d.bars, ...d.ticks, ...d.centres];
+      for(const s of [...main, ...d.ext]) seg(g, s, MEASURE.halo, (MEASURE.line + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      for(const s of d.ext) seg(g, s, MEASURE.color, MEASURE.ext * px, { 'stroke-opacity': 0.9 });
+      for(const s of main) seg(g, s, MEASURE.color, MEASURE.line * px);
+      const L = d.label;
+      g.appendChild(el('rect', { x: fmt(L.x), y: fmt(L.y), width: fmt(L.w), height: fmt(L.h), rx: fmt(L.h / 2), fill: MEASURE.halo, 'fill-opacity': 0.9, stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.labelStroke * px) }));
+      const text = el('text', {
+        x: fmt(L.x + L.w / 2), y: fmt(L.y + L.h / 2), 'text-anchor': 'middle', 'dominant-baseline': 'central',
+        'font-family': 'Arial, Helvetica, sans-serif', 'font-weight': 700, 'font-size': fmt(fontPx * px), fill: MEASURE.color
+      });
+      text.textContent = L.text;
+      g.appendChild(text);
+      out.push(g);
     }
-    // Label to the right of a vertical line, above a horizontal one.
-    const vertical = Math.abs(dy) >= Math.abs(dx);
-    const mx = (m.from.x + m.to.x) / 2, my = (m.from.y + m.to.y) / 2;
-    const text = el('text', {
-      x: fmt(vertical ? mx + M.tick + 0.06 : mx), y: fmt(vertical ? my : my - M.tick - 0.06),
-      'text-anchor': vertical ? 'start' : 'middle', 'dominant-baseline': vertical ? 'central' : 'auto',
-      'font-family': 'Arial, Helvetica, sans-serif', 'font-weight': 700, 'font-size': fmt(M.text),
-      fill: M.color, stroke: M.halo, 'stroke-width': fmt(M.line * 2.5), 'paint-order': 'stroke', 'stroke-linejoin': 'round'
-    });
-    text.textContent = m.label;
-    g.appendChild(text);
-    return g;
+    return out;
   }
 
   // Build the <svg> for a scene. `manifestPath(id)` resolves an asset id to its path.
@@ -178,10 +176,6 @@
         node.setAttributeNS(XLINK_NS, 'xlink:href', data);
       }else if(layer.type === 'rect'){
         node = el('rect', { x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h), rx: layer.rx ? fmt(layer.rx) : null, fill: layer.fill || 'none', stroke: layer.stroke || null, 'stroke-width': layer.strokeWidth ? fmt(layer.strokeWidth) : null });
-      }else if(layer.type === 'measure'){
-        if(!options.measure) continue;
-        // Labels scale with the drawing so they read at the preview's fitted size.
-        node = measureNode(layer, Math.max(1, b.h / 18));
       }else if(layer.type === 'text'){
         node = el('text', {
           x: fmt(layer.x), y: fmt(layer.y),
@@ -229,6 +223,13 @@
       }
       wrap.appendChild(node);
       svg.appendChild(wrap);
+    }
+    // The measurements go over everything, sized for the preview stage unless told otherwise.
+    const ML = root.CAPUBEngine && root.CAPUBEngine.measureLayout;
+    if(options.measure && ML){
+      const px = options.measurePx || ML.previewPx(vb);
+      const drawings = ML.layout(scene, { px, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] } });
+      measureNodes(drawings, px, ML.PX.font).forEach(n => svg.appendChild(n));
     }
     return svg;
   }
