@@ -3,17 +3,17 @@
  "name": "Gen Ira C. Eaker Award (full-size medal body)",
  "size_in": {
   "w": 1.375,
-  "h": 1.5081
+  "h": 1.6706
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   137.5,
-  150.81
+  167.06
  ],
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/medals/ira_c_eaker.webp is 1.375 in wide (ribbon measured 62 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 62 x 68 source px = 1.375 x 1.508 in at that scale. Absolute size is an estimate.",
+ "size_basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
  "anchors": {
   "top_center": [
    68.75,
@@ -21,22 +21,22 @@
   ],
   "bottom_center": [
    68.75,
-   150.81
+   167.06
   ],
   "center": [
    68.75,
-   75.4
+   83.53
   ],
   "left_edge": [
    0,
-   75.4
+   98.31
   ],
   "right_edge": [
    137.5,
-   75.4
+   98.31
   ],
   "ribbon_attach": [
-   69.86,
+   68.75,
    0
   ]
  },
@@ -46,32 +46,18 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": {
-  "raster": "images/medals/ira_c_eaker.webp",
-  "body_top_row": 132,
-  "px_to_in": 0.022177,
-  "bbox_px": [
-   16,
-   0,
-   78,
-   68
-  ]
- },
- "fidelity": "silhouette_and_tone",
+ "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
+ "fidelity": "constructed_geometric",
  "fit": {
-  "metric": "silhouette IoU vs source alpha at source resolution",
-  "score": 0.9597,
-  "threshold": 0.9,
-  "colour_mae_0_255": 28.7,
-  "outline": "circle",
-  "inner_ring_radius_px": null,
-  "note": "Source medal is ~35-50 px across; engraving and lettering are not resolved. Vector = smoothed silhouette (true circle/ellipse where the outline is one) + mid tone + at most dark and light tone layers (sampled k-means colours) + rim."
+  "metric": "constructed from measured proportions; compared by eye against the reference raster",
+  "score": null,
+  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
  },
  "palette": {
-  "mid": "#5c5751",
-  "dark": "#342e29",
-  "light": "#a19b96",
-  "emblem": null
+  "base": "#b3b7bd",
+  "light": "#e6e8eb",
+  "dark": "#4e525a",
+  "rim": "#2f3238"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -79,5 +65,10 @@
   "different_body": [
    "eaker_s"
   ]
+ },
+ "finish": "silver",
+ "size_in_previous": {
+  "w": 1.375,
+  "h": 1.5081
  }
 }

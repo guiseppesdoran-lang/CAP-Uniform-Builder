@@ -25033,9 +25033,9 @@
    "path": "medals/medal-air-force-aerial-achievement-medal-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.7583,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_usaf_aam01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7583 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25043,22 +25043,22 @@
     ],
     "bottom_center": [
      31.25,
-     75.83
+     75.94
     ],
     "center": [
      31.25,
-     37.91
+     37.97
     ],
     "left_edge": [
      0,
-     37.91
+     44.69
     ],
     "right_edge": [
      62.5,
-     37.91
+     44.69
     ],
     "ribbon_attach": [
-     31.41,
+     31.25,
      0
     ]
    },
@@ -25071,9 +25071,9 @@
    "path": "medals/medal-air-medal-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.986,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_airmedal.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.986 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25081,22 +25081,22 @@
     ],
     "bottom_center": [
      68.75,
-     198.6
+     167.06
     ],
     "center": [
      68.75,
-     99.3
+     83.53
     ],
     "left_edge": [
      0,
-     99.3
+     98.31
     ],
     "right_edge": [
      137.5,
-     99.3
+     98.31
     ],
     "ribbon_attach": [
-     69.34,
+     68.75,
      0
     ]
    },
@@ -25109,9 +25109,9 @@
    "path": "medals/medal-air-medal-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.9024,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_airmedal.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.9024 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25119,22 +25119,22 @@
     ],
     "bottom_center": [
      31.25,
-     90.24
+     75.94
     ],
     "center": [
      31.25,
-     45.12
+     37.97
     ],
     "left_edge": [
      0,
-     45.12
+     44.69
     ],
     "right_edge": [
      62.5,
-     45.12
+     44.69
     ],
     "ribbon_attach": [
-     31.53,
+     31.25,
      0
     ]
    },
@@ -25147,9 +25147,9 @@
    "path": "medals/medal-air-search-and-rescue-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7387,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_sar01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7387 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25157,22 +25157,22 @@
     ],
     "bottom_center": [
      68.75,
-     173.87
+     167.06
     ],
     "center": [
      68.75,
-     86.94
+     83.53
     ],
     "left_edge": [
      0,
-     86.94
+     98.31
     ],
     "right_edge": [
      137.5,
-     86.94
+     98.31
     ],
     "ribbon_attach": [
-     72.88,
+     68.75,
      0
     ]
    },
@@ -25185,9 +25185,9 @@
    "path": "medals/medal-air-search-and-rescue-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.795,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_sar01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.795 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25195,22 +25195,22 @@
     ],
     "bottom_center": [
      31.25,
-     79.5
+     75.94
     ],
     "center": [
      31.25,
-     39.75
+     37.97
     ],
     "left_edge": [
      0,
-     39.75
+     44.69
     ],
     "right_edge": [
      62.5,
-     39.75
+     44.69
     ],
     "ribbon_attach": [
-     33.32,
+     31.25,
      0
     ]
    },
@@ -25223,9 +25223,9 @@
    "path": "medals/medal-bronze-medal-of-valor-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.4575,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_bronze01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25233,19 +25233,19 @@
     ],
     "bottom_center": [
      68.75,
-     145.75
+     167.06
     ],
     "center": [
      68.75,
-     72.88
+     83.53
     ],
     "left_edge": [
      0,
-     72.88
+     98.31
     ],
     "right_edge": [
      137.5,
-     72.88
+     98.31
     ],
     "ribbon_attach": [
      68.75,
@@ -25261,9 +25261,9 @@
    "path": "medals/medal-bronze-medal-of-valor-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.6625,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_bronze01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25271,19 +25271,19 @@
     ],
     "bottom_center": [
      31.25,
-     66.25
+     75.94
     ],
     "center": [
      31.25,
-     33.13
+     37.97
     ],
     "left_edge": [
      0,
-     33.13
+     44.69
     ],
     "right_edge": [
      62.5,
-     33.13
+     44.69
     ],
     "ribbon_attach": [
      31.25,
@@ -25299,9 +25299,9 @@
    "path": "medals/medal-cadet-certificate-of-proficiency-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 2.0736,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/medals/proficency.webp is 1.375 in wide (ribbon measured 49 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 58 source px = 1.403 x 1.628 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 2.0736 in (was 1.6276).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25309,22 +25309,22 @@
     ],
     "bottom_center": [
      68.75,
-     207.36
+     167.06
     ],
     "center": [
      68.75,
-     103.68
+     83.53
     ],
     "left_edge": [
      0,
-     103.68
+     98.31
     ],
     "right_edge": [
      137.5,
-     103.68
+     98.31
     ],
     "ribbon_attach": [
-     63.1,
+     68.75,
      0
     ]
    },
@@ -25337,9 +25337,9 @@
    "path": "medals/medal-cadet-certificate-of-proficiency-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.9459,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/medals/proficency.webp is 0.625 in wide (ribbon measured 49 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 58 source px = 0.638 x 0.740 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.9459 in (was 0.7398).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25347,22 +25347,22 @@
     ],
     "bottom_center": [
      31.25,
-     94.59
+     75.94
     ],
     "center": [
      31.25,
-     47.29
+     37.97
     ],
     "left_edge": [
      0,
-     47.29
+     44.69
     ],
     "right_edge": [
      62.5,
-     47.29
+     44.69
     ],
     "ribbon_attach": [
-     28.79,
+     31.25,
      0
     ]
    },
@@ -25375,9 +25375,9 @@
    "path": "medals/medal-cap-a-scott-crossfield-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7273,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_crossf.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7273 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25385,22 +25385,22 @@
     ],
     "bottom_center": [
      68.75,
-     172.73
+     167.06
     ],
     "center": [
      68.75,
-     86.37
+     83.53
     ],
     "left_edge": [
      0,
-     86.37
+     98.31
     ],
     "right_edge": [
      137.5,
-     86.37
+     98.31
     ],
     "ribbon_attach": [
-     70.27,
+     68.75,
      0
     ]
    },
@@ -25413,9 +25413,9 @@
    "path": "medals/medal-cap-a-scott-crossfield-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.7876,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_crossf.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7876 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25423,22 +25423,22 @@
     ],
     "bottom_center": [
      31.25,
-     78.76
+     75.94
     ],
     "center": [
      31.25,
-     39.38
+     37.97
     ],
     "left_edge": [
      0,
-     39.38
+     44.69
     ],
     "right_edge": [
      62.5,
-     39.38
+     44.69
     ],
     "ribbon_attach": [
-     31.84,
+     31.25,
      0
     ]
    },
@@ -25451,9 +25451,9 @@
    "path": "medals/medal-cap-achievment-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7761,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_AA01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7761 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25461,22 +25461,22 @@
     ],
     "bottom_center": [
      68.75,
-     177.61
+     167.06
     ],
     "center": [
      68.75,
-     88.8
+     83.53
     ],
     "left_edge": [
      0,
-     88.8
+     98.31
     ],
     "right_edge": [
      137.5,
-     88.8
+     98.31
     ],
     "ribbon_attach": [
-     68.77,
+     68.75,
      0
     ]
    },
@@ -25489,9 +25489,9 @@
    "path": "medals/medal-cap-achievment-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8107,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_AA01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8107 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25499,22 +25499,22 @@
     ],
     "bottom_center": [
      31.25,
-     81.07
+     75.94
     ],
     "center": [
      31.25,
-     40.53
+     37.97
     ],
     "left_edge": [
      0,
-     40.53
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.53
+     44.69
     ],
     "ribbon_attach": [
-     31.39,
+     31.25,
      0
     ]
    },
@@ -25527,9 +25527,9 @@
    "path": "medals/medal-cap-bridgadier-general-charles-yaeger-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.4575,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_yeager.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25537,19 +25537,19 @@
     ],
     "bottom_center": [
      68.75,
-     145.75
+     167.06
     ],
     "center": [
      68.75,
-     72.88
+     83.53
     ],
     "left_edge": [
      0,
-     72.88
+     98.31
     ],
     "right_edge": [
      137.5,
-     72.88
+     98.31
     ],
     "ribbon_attach": [
      68.75,
@@ -25565,9 +25565,9 @@
    "path": "medals/medal-cap-bridgadier-general-charles-yaeger-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.6625,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_yeager.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25575,19 +25575,19 @@
     ],
     "bottom_center": [
      31.25,
-     66.25
+     75.94
     ],
     "center": [
      31.25,
-     33.13
+     37.97
     ],
     "left_edge": [
      0,
-     33.13
+     44.69
     ],
     "right_edge": [
      62.5,
-     33.13
+     44.69
     ],
     "ribbon_attach": [
      31.25,
@@ -25603,9 +25603,9 @@
    "path": "medals/medal-cap-catalog-air-force-aerial-achievement-medal-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.6704,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_usaf_aam01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.6704 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25613,22 +25613,22 @@
     ],
     "bottom_center": [
      68.75,
-     167.04
+     167.06
     ],
     "center": [
      68.75,
-     83.52
+     83.53
     ],
     "left_edge": [
      0,
-     83.52
+     98.31
     ],
     "right_edge": [
      137.5,
-     83.52
+     98.31
     ],
     "ribbon_attach": [
-     69.02,
+     68.75,
      0
     ]
    },
@@ -25641,9 +25641,9 @@
    "path": "medals/medal-cap-command-service-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7495,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_cmdser.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7495 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25651,22 +25651,22 @@
     ],
     "bottom_center": [
      68.75,
-     174.95
+     167.06
     ],
     "center": [
      68.75,
-     87.47
+     83.53
     ],
     "left_edge": [
      0,
-     87.47
+     98.31
     ],
     "right_edge": [
      137.5,
-     87.47
+     98.31
     ],
     "ribbon_attach": [
-     67.85,
+     68.75,
      0
     ]
    },
@@ -25679,9 +25679,9 @@
    "path": "medals/medal-cap-command-service-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8046,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_cmdser.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8046 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25689,22 +25689,22 @@
     ],
     "bottom_center": [
      31.25,
-     80.46
+     75.94
     ],
     "center": [
      31.25,
-     40.23
+     37.97
     ],
     "left_edge": [
      0,
-     40.23
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.23
+     44.69
     ],
     "ribbon_attach": [
-     30.93,
+     31.25,
      0
     ]
    },
@@ -25717,9 +25717,9 @@
    "path": "medals/medal-cap-gill-robb-wilson-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7916,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_wilson.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7916 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25727,22 +25727,22 @@
     ],
     "bottom_center": [
      68.75,
-     179.16
+     167.06
     ],
     "center": [
      68.75,
-     89.58
+     83.53
     ],
     "left_edge": [
      0,
-     89.58
+     98.31
     ],
     "right_edge": [
      137.5,
-     89.58
+     98.31
     ],
     "ribbon_attach": [
-     69.83,
+     68.75,
      0
     ]
    },
@@ -25755,9 +25755,9 @@
    "path": "medals/medal-cap-gill-robb-wilson-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8143,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_wilson.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8143 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25765,22 +25765,22 @@
     ],
     "bottom_center": [
      31.25,
-     81.43
+     75.94
     ],
     "center": [
      31.25,
-     40.71
+     37.97
     ],
     "left_edge": [
      0,
-     40.71
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.71
+     44.69
     ],
     "ribbon_attach": [
-     31.75,
+     31.25,
      0
     ]
    },
@@ -25793,9 +25793,9 @@
    "path": "medals/medal-cap-grover-loening-aerospace-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7967,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_loening.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7967 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25803,22 +25803,22 @@
     ],
     "bottom_center": [
      68.75,
-     179.67
+     167.06
     ],
     "center": [
      68.75,
-     89.84
+     83.53
     ],
     "left_edge": [
      0,
-     89.84
+     98.31
     ],
     "right_edge": [
      137.5,
-     89.84
+     98.31
     ],
     "ribbon_attach": [
-     73.1,
+     68.75,
      0
     ]
    },
@@ -25831,9 +25831,9 @@
    "path": "medals/medal-cap-grover-loening-aerospace-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8168,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_loening.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8168 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25841,22 +25841,22 @@
     ],
     "bottom_center": [
      31.25,
-     81.68
+     75.94
     ],
     "center": [
      31.25,
-     40.84
+     37.97
     ],
     "left_edge": [
      0,
-     40.84
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.84
+     44.69
     ],
     "ribbon_attach": [
-     33.22,
+     31.25,
      0
     ]
    },
@@ -25869,9 +25869,9 @@
    "path": "medals/medal-cap-leadership-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.745,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_leader.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.745 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25879,22 +25879,22 @@
     ],
     "bottom_center": [
      68.75,
-     174.5
+     167.06
     ],
     "center": [
      68.75,
-     87.25
+     83.53
     ],
     "left_edge": [
      0,
-     87.25
+     98.31
     ],
     "right_edge": [
      137.5,
-     87.25
+     98.31
     ],
     "ribbon_attach": [
-     64.9,
+     68.75,
      0
     ]
    },
@@ -25907,9 +25907,9 @@
    "path": "medals/medal-cap-leadership-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.7933,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_leader.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7933 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25917,22 +25917,22 @@
     ],
     "bottom_center": [
      31.25,
-     79.33
+     75.94
     ],
     "center": [
      31.25,
-     39.67
+     37.97
     ],
     "left_edge": [
      0,
-     39.67
+     44.69
     ],
     "right_edge": [
      62.5,
-     39.67
+     44.69
     ],
     "ribbon_attach": [
-     29.51,
+     31.25,
      0
     ]
    },
@@ -25945,9 +25945,9 @@
    "path": "medals/medal-cap-membership-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7626,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_member.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7626 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -25955,22 +25955,22 @@
     ],
     "bottom_center": [
      68.75,
-     176.26
+     167.06
     ],
     "center": [
      68.75,
-     88.13
+     83.53
     ],
     "left_edge": [
      0,
-     88.13
+     98.31
     ],
     "right_edge": [
      137.5,
-     88.13
+     98.31
     ],
     "ribbon_attach": [
-     64.11,
+     68.75,
      0
     ]
    },
@@ -25983,9 +25983,9 @@
    "path": "medals/medal-cap-membership-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8013,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_member.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8013 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -25993,22 +25993,22 @@
     ],
     "bottom_center": [
      31.25,
-     80.13
+     75.94
     ],
     "center": [
      31.25,
-     40.07
+     37.97
     ],
     "left_edge": [
      0,
-     40.07
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.07
+     44.69
     ],
     "ribbon_attach": [
-     29.14,
+     31.25,
      0
     ]
    },
@@ -26021,9 +26021,9 @@
    "path": "medals/medal-cap-paul-e-garber-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.4575,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_garber.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26031,19 +26031,19 @@
     ],
     "bottom_center": [
      68.75,
-     145.75
+     167.06
     ],
     "center": [
      68.75,
-     72.88
+     83.53
     ],
     "left_edge": [
      0,
-     72.88
+     98.31
     ],
     "right_edge": [
      137.5,
-     72.88
+     98.31
     ],
     "ribbon_attach": [
      68.75,
@@ -26059,9 +26059,9 @@
    "path": "medals/medal-cap-paul-e-garber-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.6625,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_garber.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26069,19 +26069,19 @@
     ],
     "bottom_center": [
      31.25,
-     66.25
+     75.94
     ],
     "center": [
      31.25,
-     33.13
+     37.97
     ],
     "left_edge": [
      0,
-     33.13
+     44.69
     ],
     "right_edge": [
      62.5,
-     33.13
+     44.69
     ],
     "ribbon_attach": [
      31.25,
@@ -26097,9 +26097,9 @@
    "path": "medals/medal-cap-senior-recruiter-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7244,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_senrec01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7244 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26107,22 +26107,22 @@
     ],
     "bottom_center": [
      68.75,
-     172.44
+     167.06
     ],
     "center": [
      68.75,
-     86.22
+     83.53
     ],
     "left_edge": [
      0,
-     86.22
+     98.31
     ],
     "right_edge": [
      137.5,
-     86.22
+     98.31
     ],
     "ribbon_attach": [
-     73.57,
+     68.75,
      0
     ]
    },
@@ -26135,9 +26135,9 @@
    "path": "medals/medal-cap-senior-recruiter-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.7876,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_senrec01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7876 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26145,22 +26145,22 @@
     ],
     "bottom_center": [
      31.25,
-     78.76
+     75.94
     ],
     "center": [
      31.25,
-     39.38
+     37.97
     ],
     "left_edge": [
      0,
-     39.38
+     44.69
     ],
     "right_edge": [
      62.5,
-     39.38
+     44.69
     ],
     "ribbon_attach": [
-     33.31,
+     31.25,
      0
     ]
    },
@@ -26173,9 +26173,9 @@
    "path": "medals/medal-cap-world-war-2-service-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7678,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_wartime.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7678 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26183,22 +26183,22 @@
     ],
     "bottom_center": [
      68.75,
-     176.78
+     167.06
     ],
     "center": [
      68.75,
-     88.39
+     83.53
     ],
     "left_edge": [
      0,
-     88.39
+     98.31
     ],
     "right_edge": [
      137.5,
-     88.39
+     98.31
     ],
     "ribbon_attach": [
-     64.49,
+     68.75,
      0
     ]
    },
@@ -26211,9 +26211,9 @@
    "path": "medals/medal-cap-world-war-2-service-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8036,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_wartime.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8036 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26221,22 +26221,22 @@
     ],
     "bottom_center": [
      31.25,
-     80.36
+     75.94
     ],
     "center": [
      31.25,
-     40.18
+     37.97
     ],
     "left_edge": [
      0,
-     40.18
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.18
+     44.69
     ],
     "ribbon_attach": [
-     29.31,
+     31.25,
      0
     ]
    },
@@ -26249,9 +26249,9 @@
    "path": "medals/medal-commander-commendation-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.6813,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_cmdrco01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.6813 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26259,22 +26259,22 @@
     ],
     "bottom_center": [
      68.75,
-     168.13
+     167.06
     ],
     "center": [
      68.75,
-     84.07
+     83.53
     ],
     "left_edge": [
      0,
-     84.07
+     98.31
     ],
     "right_edge": [
      137.5,
-     84.07
+     98.31
     ],
     "ribbon_attach": [
-     67.61,
+     68.75,
      0
     ]
    },
@@ -26287,9 +26287,9 @@
    "path": "medals/medal-commander-commendation-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.7632,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_cmdrco01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7632 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26297,22 +26297,22 @@
     ],
     "bottom_center": [
      31.25,
-     76.32
+     75.94
     ],
     "center": [
      31.25,
-     38.16
+     37.97
     ],
     "left_edge": [
      0,
-     38.16
+     44.69
     ],
     "right_edge": [
      62.5,
-     38.16
+     44.69
     ],
     "ribbon_attach": [
-     30.79,
+     31.25,
      0
     ]
    },
@@ -26325,9 +26325,9 @@
    "path": "medals/medal-crisis-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.6778,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_crisis.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.6778 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26335,22 +26335,22 @@
     ],
     "bottom_center": [
      68.75,
-     167.78
+     167.06
     ],
     "center": [
      68.75,
-     83.89
+     83.53
     ],
     "left_edge": [
      0,
-     83.89
+     98.31
     ],
     "right_edge": [
      137.5,
-     83.89
+     98.31
     ],
     "ribbon_attach": [
-     67.75,
+     68.75,
      0
     ]
    },
@@ -26363,9 +26363,9 @@
    "path": "medals/medal-crisis-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.765,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_crisis.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.765 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26373,22 +26373,22 @@
     ],
     "bottom_center": [
      31.25,
-     76.5
+     75.94
     ],
     "center": [
      31.25,
-     38.25
+     37.97
     ],
     "left_edge": [
      0,
-     38.25
+     44.69
     ],
     "right_edge": [
      62.5,
-     38.25
+     44.69
     ],
     "ribbon_attach": [
-     30.7,
+     31.25,
      0
     ]
    },
@@ -26401,9 +26401,9 @@
    "path": "medals/medal-disaster-relief-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7545,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_disast01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7545 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26411,22 +26411,22 @@
     ],
     "bottom_center": [
      68.75,
-     175.45
+     167.06
     ],
     "center": [
      68.75,
-     87.72
+     83.53
     ],
     "left_edge": [
      0,
-     87.72
+     98.31
     ],
     "right_edge": [
      137.5,
-     87.72
+     98.31
     ],
     "ribbon_attach": [
-     71.14,
+     68.75,
      0
     ]
    },
@@ -26439,9 +26439,9 @@
    "path": "medals/medal-disaster-relief-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.7975,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_disast01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7975 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26449,22 +26449,22 @@
     ],
     "bottom_center": [
      31.25,
-     79.75
+     75.94
     ],
     "center": [
      31.25,
-     39.87
+     37.97
     ],
     "left_edge": [
      0,
-     39.87
+     44.69
     ],
     "right_edge": [
      62.5,
-     39.87
+     44.69
     ],
     "ribbon_attach": [
-     32.33,
+     31.25,
      0
     ]
    },
@@ -26477,9 +26477,9 @@
    "path": "medals/medal-distinguished-service-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.5125,
+   "h_in": 1.9291,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_distin01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 55 source px = 1.375 x 1.512 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26487,19 +26487,19 @@
     ],
     "bottom_center": [
      68.75,
-     151.25
+     192.91
     ],
     "center": [
      68.75,
-     75.63
+     96.46
     ],
     "left_edge": [
      0,
-     75.63
+     113.52
     ],
     "right_edge": [
      137.5,
-     75.63
+     113.52
     ],
     "ribbon_attach": [
      68.75,
@@ -26515,9 +26515,9 @@
    "path": "medals/medal-distinguished-service-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.6875,
+   "h_in": 0.8769,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_distin01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 55 source px = 0.625 x 0.688 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26525,19 +26525,19 @@
     ],
     "bottom_center": [
      31.25,
-     68.75
+     87.69
     ],
     "center": [
      31.25,
-     34.38
+     43.84
     ],
     "left_edge": [
      0,
-     34.38
+     51.6
     ],
     "right_edge": [
      62.5,
-     34.38
+     51.6
     ],
     "ribbon_attach": [
      31.25,
@@ -26553,9 +26553,9 @@
    "path": "medals/medal-eaker-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.5081,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/medals/ira_c_eaker.webp is 1.375 in wide (ribbon measured 62 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 62 x 68 source px = 1.375 x 1.508 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26563,22 +26563,22 @@
     ],
     "bottom_center": [
      68.75,
-     150.81
+     167.06
     ],
     "center": [
      68.75,
-     75.4
+     83.53
     ],
     "left_edge": [
      0,
-     75.4
+     98.31
     ],
     "right_edge": [
      137.5,
-     75.4
+     98.31
     ],
     "ribbon_attach": [
-     69.86,
+     68.75,
      0
     ]
    },
@@ -26591,9 +26591,9 @@
    "path": "medals/medal-eaker-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.6855,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/medals/ira_c_eaker.webp is 0.625 in wide (ribbon measured 62 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 62 x 68 source px = 0.625 x 0.685 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26601,22 +26601,22 @@
     ],
     "bottom_center": [
      31.25,
-     68.55
+     75.94
     ],
     "center": [
      31.25,
-     34.27
+     37.97
     ],
     "left_edge": [
      0,
-     34.27
+     44.69
     ],
     "right_edge": [
      62.5,
-     34.27
+     44.69
     ],
     "ribbon_attach": [
-     31.75,
+     31.25,
      0
     ]
    },
@@ -26629,9 +26629,9 @@
    "path": "medals/medal-earhart-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7526,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/medals/amelia_earhart.webp is 1.375 in wide (ribbon measured 62 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 62 x 66 source px = 1.375 x 1.464 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7526 in (was 1.4637).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26639,22 +26639,22 @@
     ],
     "bottom_center": [
      68.75,
-     175.26
+     167.06
     ],
     "center": [
      68.75,
-     87.63
+     83.53
     ],
     "left_edge": [
      0,
-     87.63
+     98.31
     ],
     "right_edge": [
      137.5,
-     87.63
+     98.31
     ],
     "ribbon_attach": [
-     69.52,
+     68.75,
      0
     ]
    },
@@ -26667,9 +26667,9 @@
    "path": "medals/medal-earhart-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.7986,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/medals/amelia_earhart.webp is 0.625 in wide (ribbon measured 62 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 62 x 66 source px = 0.625 x 0.665 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7986 in (was 0.6653).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26677,22 +26677,22 @@
     ],
     "bottom_center": [
      31.25,
-     79.86
+     75.94
     ],
     "center": [
      31.25,
-     39.93
+     37.97
     ],
     "left_edge": [
      0,
-     39.93
+     44.69
     ],
     "right_edge": [
      62.5,
-     39.93
+     44.69
     ],
     "ribbon_attach": [
-     31.54,
+     31.25,
      0
     ]
    },
@@ -26705,9 +26705,9 @@
    "path": "medals/medal-encampment-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7523,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_encamp01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7523 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26715,22 +26715,22 @@
     ],
     "bottom_center": [
      68.75,
-     175.23
+     167.06
     ],
     "center": [
      68.75,
-     87.62
+     83.53
     ],
     "left_edge": [
      0,
-     87.62
+     98.31
     ],
     "right_edge": [
      137.5,
-     87.62
+     98.31
     ],
     "ribbon_attach": [
-     60.53,
+     68.75,
      0
     ]
    },
@@ -26743,9 +26743,9 @@
    "path": "medals/medal-encampment-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.7965,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_encamp01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7965 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26753,22 +26753,22 @@
     ],
     "bottom_center": [
      31.25,
-     79.65
+     75.94
     ],
     "center": [
      31.25,
-     39.83
+     37.97
     ],
     "left_edge": [
      0,
-     39.83
+     44.69
     ],
     "right_edge": [
      62.5,
-     39.83
+     44.69
     ],
     "ribbon_attach": [
-     27.51,
+     31.25,
      0
     ]
    },
@@ -26781,9 +26781,9 @@
    "path": "medals/medal-exceptional-service-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.8394,
+   "h_in": 1.9291,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_except01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 54 source px = 1.375 x 1.485 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.8394 in (was 1.485).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26791,22 +26791,22 @@
     ],
     "bottom_center": [
      68.75,
-     183.94
+     192.91
     ],
     "center": [
      68.75,
-     91.97
+     96.46
     ],
     "left_edge": [
      0,
-     91.97
+     113.52
     ],
     "right_edge": [
      137.5,
-     91.97
+     113.52
     ],
     "ribbon_attach": [
-     64.24,
+     68.75,
      0
     ]
    },
@@ -26819,9 +26819,9 @@
    "path": "medals/medal-exceptional-service-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8395,
+   "h_in": 0.8769,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_except01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 54 source px = 0.625 x 0.675 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8395 in (was 0.675).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26829,22 +26829,22 @@
     ],
     "bottom_center": [
      31.25,
-     83.95
+     87.69
     ],
     "center": [
      31.25,
-     41.97
+     43.84
     ],
     "left_edge": [
      0,
-     41.97
+     51.6
     ],
     "right_edge": [
      62.5,
-     41.97
+     51.6
     ],
     "ribbon_attach": [
-     29.06,
+     31.25,
      0
     ]
    },
@@ -26857,9 +26857,9 @@
    "path": "medals/medal-frank-borman-falcon-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.4575,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_falcon.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26867,19 +26867,19 @@
     ],
     "bottom_center": [
      68.75,
-     145.75
+     167.06
     ],
     "center": [
      68.75,
-     72.88
+     83.53
     ],
     "left_edge": [
      0,
-     72.88
+     98.31
     ],
     "right_edge": [
      137.5,
-     72.88
+     98.31
     ],
     "ribbon_attach": [
      68.75,
@@ -26895,9 +26895,9 @@
    "path": "medals/medal-frank-borman-falcon-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.6625,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_falcon.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26905,19 +26905,19 @@
     ],
     "bottom_center": [
      31.25,
-     66.25
+     75.94
     ],
     "center": [
      31.25,
-     33.13
+     37.97
     ],
     "left_edge": [
      0,
-     33.13
+     44.69
     ],
     "right_edge": [
      62.5,
-     33.13
+     44.69
     ],
     "ribbon_attach": [
      31.25,
@@ -26933,9 +26933,9 @@
    "path": "medals/medal-iace-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.8455,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_iace01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.8455 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -26943,22 +26943,22 @@
     ],
     "bottom_center": [
      68.75,
-     184.55
+     167.06
     ],
     "center": [
      68.75,
-     92.28
+     83.53
     ],
     "left_edge": [
      0,
-     92.28
+     98.31
     ],
     "right_edge": [
      137.5,
-     92.28
+     98.31
     ],
     "ribbon_attach": [
-     67.38,
+     68.75,
      0
     ]
    },
@@ -26971,9 +26971,9 @@
    "path": "medals/medal-iace-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.839,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_iace01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.839 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -26981,22 +26981,22 @@
     ],
     "bottom_center": [
      31.25,
-     83.9
+     75.94
     ],
     "center": [
      31.25,
-     41.95
+     37.97
     ],
     "left_edge": [
      0,
-     41.95
+     44.69
     ],
     "right_edge": [
      62.5,
-     41.95
+     44.69
     ],
     "ribbon_attach": [
-     30.63,
+     31.25,
      0
     ]
    },
@@ -27009,9 +27009,9 @@
    "path": "medals/medal-lifesaving-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.6954,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_lifesa01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.6954 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27019,22 +27019,22 @@
     ],
     "bottom_center": [
      68.75,
-     169.54
+     167.06
     ],
     "center": [
      68.75,
-     84.77
+     83.53
     ],
     "left_edge": [
      0,
-     84.77
+     98.31
     ],
     "right_edge": [
      137.5,
-     84.77
+     98.31
     ],
     "ribbon_attach": [
-     70.9,
+     68.75,
      0
     ]
    },
@@ -27047,9 +27047,9 @@
    "path": "medals/medal-lifesaving-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.7705,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_lifesa01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7705 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27057,22 +27057,22 @@
     ],
     "bottom_center": [
      31.25,
-     77.05
+     75.94
     ],
     "center": [
      31.25,
-     38.53
+     37.97
     ],
     "left_edge": [
      0,
-     38.53
+     44.69
     ],
     "right_edge": [
      62.5,
-     38.53
+     44.69
     ],
     "ribbon_attach": [
-     32.23,
+     31.25,
      0
     ]
    },
@@ -27085,9 +27085,9 @@
    "path": "medals/medal-meritorious-service-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.8275,
+   "h_in": 1.9291,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_meriti01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.8275 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27095,22 +27095,22 @@
     ],
     "bottom_center": [
      68.75,
-     182.75
+     192.91
     ],
     "center": [
      68.75,
-     91.37
+     96.46
     ],
     "left_edge": [
      0,
-     91.37
+     113.52
     ],
     "right_edge": [
      137.5,
-     91.37
+     113.52
     ],
     "ribbon_attach": [
-     66.6,
+     68.75,
      0
     ]
    },
@@ -27123,9 +27123,9 @@
    "path": "medals/medal-meritorious-service-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8317,
+   "h_in": 0.8769,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_meriti01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8317 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27133,22 +27133,22 @@
     ],
     "bottom_center": [
      31.25,
-     83.17
+     87.69
     ],
     "center": [
      31.25,
-     41.58
+     43.84
     ],
     "left_edge": [
      0,
-     41.58
+     51.6
     ],
     "right_edge": [
      62.5,
-     41.58
+     51.6
     ],
     "ribbon_attach": [
-     30.26,
+     31.25,
      0
     ]
    },
@@ -27161,9 +27161,9 @@
    "path": "medals/medal-mitchell-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7791,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_mitchel.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7791 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27171,22 +27171,22 @@
     ],
     "bottom_center": [
      68.75,
-     177.91
+     167.06
     ],
     "center": [
      68.75,
-     88.96
+     83.53
     ],
     "left_edge": [
      0,
-     88.96
+     98.31
     ],
     "right_edge": [
      137.5,
-     88.96
+     98.31
     ],
     "ribbon_attach": [
-     74.56,
+     68.75,
      0
     ]
    },
@@ -27199,9 +27199,9 @@
    "path": "medals/medal-mitchell-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8087,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_mitchel.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8087 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27209,22 +27209,22 @@
     ],
     "bottom_center": [
      31.25,
-     80.87
+     75.94
     ],
     "center": [
      31.25,
-     40.43
+     37.97
     ],
     "left_edge": [
      0,
-     40.43
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.43
+     44.69
     ],
     "ribbon_attach": [
-     33.89,
+     31.25,
      0
     ]
    },
@@ -27237,9 +27237,9 @@
    "path": "medals/medal-national-cadet-competition-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7899,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_ncc.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7899 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27247,22 +27247,22 @@
     ],
     "bottom_center": [
      68.75,
-     178.99
+     167.06
     ],
     "center": [
      68.75,
-     89.5
+     83.53
     ],
     "left_edge": [
      0,
-     89.5
+     98.31
     ],
     "right_edge": [
      137.5,
-     89.5
+     98.31
     ],
     "ribbon_attach": [
-     71.25,
+     68.75,
      0
     ]
    },
@@ -27275,9 +27275,9 @@
    "path": "medals/medal-national-cadet-competition-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8134,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_ncc.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8134 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27285,22 +27285,22 @@
     ],
     "bottom_center": [
      31.25,
-     81.34
+     75.94
     ],
     "center": [
      31.25,
-     40.67
+     37.97
     ],
     "left_edge": [
      0,
-     40.67
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.67
+     44.69
     ],
     "ribbon_attach": [
-     32.39,
+     31.25,
      0
     ]
    },
@@ -27313,9 +27313,9 @@
    "path": "medals/medal-national-color-guard-competition-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7859,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_ncgc.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7859 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27323,22 +27323,22 @@
     ],
     "bottom_center": [
      68.75,
-     178.59
+     167.06
     ],
     "center": [
      68.75,
-     89.29
+     83.53
     ],
     "left_edge": [
      0,
-     89.29
+     98.31
     ],
     "right_edge": [
      137.5,
-     89.29
+     98.31
     ],
     "ribbon_attach": [
-     68.03,
+     68.75,
      0
     ]
    },
@@ -27351,9 +27351,9 @@
    "path": "medals/medal-national-color-guard-competition-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8122,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_ncgc.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8122 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27361,22 +27361,22 @@
     ],
     "bottom_center": [
      31.25,
-     81.22
+     75.94
     ],
     "center": [
      31.25,
-     40.61
+     37.97
     ],
     "left_edge": [
      0,
-     40.61
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.61
+     44.69
     ],
     "ribbon_attach": [
-     30.92,
+     31.25,
      0
     ]
    },
@@ -27389,9 +27389,9 @@
    "path": "medals/medal-national-commander-unit-citation-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.8835,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_unitci-nat01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.8835 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27399,22 +27399,22 @@
     ],
     "bottom_center": [
      68.75,
-     188.35
+     167.06
     ],
     "center": [
      68.75,
-     94.17
+     83.53
     ],
     "left_edge": [
      0,
-     94.17
+     98.31
     ],
     "right_edge": [
      137.5,
-     94.17
+     98.31
     ],
     "ribbon_attach": [
-     56.91,
+     68.75,
      0
     ]
    },
@@ -27427,9 +27427,9 @@
    "path": "medals/medal-national-commander-unit-citation-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8558,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_unitci-nat01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8558 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27437,22 +27437,22 @@
     ],
     "bottom_center": [
      31.25,
-     85.58
+     75.94
     ],
     "center": [
      31.25,
-     42.79
+     37.97
     ],
     "left_edge": [
      0,
-     42.79
+     44.69
     ],
     "right_edge": [
      62.5,
-     42.79
+     44.69
     ],
     "ribbon_attach": [
-     25.87,
+     31.25,
      0
     ]
    },
@@ -27465,9 +27465,9 @@
    "path": "medals/medal-national-commanders-citation-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.772,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_natcmdrcom.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.772 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27475,22 +27475,22 @@
     ],
     "bottom_center": [
      68.75,
-     177.2
+     167.06
     ],
     "center": [
      68.75,
-     88.6
+     83.53
     ],
     "left_edge": [
      0,
-     88.6
+     98.31
     ],
     "right_edge": [
      137.5,
-     88.6
+     98.31
     ],
     "ribbon_attach": [
-     66.11,
+     68.75,
      0
     ]
    },
@@ -27503,9 +27503,9 @@
    "path": "medals/medal-national-commanders-citation-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8053,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_natcmdrcom.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8053 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27513,22 +27513,22 @@
     ],
     "bottom_center": [
      31.25,
-     80.53
+     75.94
     ],
     "center": [
      31.25,
-     40.27
+     37.97
     ],
     "left_edge": [
      0,
-     40.27
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.27
+     44.69
     ],
     "ribbon_attach": [
-     30.05,
+     31.25,
      0
     ]
    },
@@ -27541,9 +27541,9 @@
    "path": "medals/medal-red-service-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.7747,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_redser-02yr.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7747 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27551,22 +27551,22 @@
     ],
     "bottom_center": [
      68.75,
-     177.47
+     167.06
     ],
     "center": [
      68.75,
-     88.74
+     83.53
     ],
     "left_edge": [
      0,
-     88.74
+     98.31
     ],
     "right_edge": [
      137.5,
-     88.74
+     98.31
     ],
     "ribbon_attach": [
-     70.19,
+     68.75,
      0
     ]
    },
@@ -27579,9 +27579,9 @@
    "path": "medals/medal-red-service-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8099,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_redser-02yr.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8099 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27589,22 +27589,22 @@
     ],
     "bottom_center": [
      31.25,
-     80.99
+     75.94
     ],
     "center": [
      31.25,
-     40.5
+     37.97
     ],
     "left_edge": [
      0,
-     40.5
+     44.69
     ],
     "right_edge": [
      62.5,
-     40.5
+     44.69
     ],
     "ribbon_attach": [
-     32.04,
+     31.25,
      0
     ]
    },
@@ -27617,9 +27617,9 @@
    "path": "medals/medal-search-find-ribbon-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.8508,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_find01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.8508 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27627,22 +27627,22 @@
     ],
     "bottom_center": [
      68.75,
-     185.08
+     167.06
     ],
     "center": [
      68.75,
-     92.54
+     83.53
     ],
     "left_edge": [
      0,
-     92.54
+     98.31
     ],
     "right_edge": [
      137.5,
-     92.54
+     98.31
     ],
     "ribbon_attach": [
-     56.61,
+     68.75,
      0
     ]
    },
@@ -27655,9 +27655,9 @@
    "path": "medals/medal-search-find-ribbon-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.844,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_find01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.844 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27665,22 +27665,22 @@
     ],
     "bottom_center": [
      31.25,
-     84.4
+     75.94
     ],
     "center": [
      31.25,
-     42.2
+     37.97
     ],
     "left_edge": [
      0,
-     42.2
+     44.69
     ],
     "right_edge": [
      62.5,
-     42.2
+     44.69
     ],
     "ribbon_attach": [
-     25.81,
+     31.25,
      0
     ]
    },
@@ -27693,9 +27693,9 @@
    "path": "medals/medal-silver-medal-of-valor-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.4575,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_silver.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27703,19 +27703,19 @@
     ],
     "bottom_center": [
      68.75,
-     145.75
+     167.06
     ],
     "center": [
      68.75,
-     72.88
+     83.53
     ],
     "left_edge": [
      0,
-     72.88
+     98.31
     ],
     "right_edge": [
      137.5,
-     72.88
+     98.31
     ],
     "ribbon_attach": [
      68.75,
@@ -27731,9 +27731,9 @@
    "path": "medals/medal-silver-medal-of-valor-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.6625,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_silver.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Absolute size is an estimate.",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27741,19 +27741,19 @@
     ],
     "bottom_center": [
      31.25,
-     66.25
+     75.94
     ],
     "center": [
      31.25,
-     33.13
+     37.97
     ],
     "left_edge": [
      0,
-     33.13
+     44.69
     ],
     "right_edge": [
      62.5,
-     33.13
+     44.69
     ],
     "ribbon_attach": [
      31.25,
@@ -27769,9 +27769,9 @@
    "path": "medals/medal-spaatz-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.748,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/medals/carl_a_spaatz.webp is 1.375 in wide (ribbon measured 59 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 60 x 65 source px = 1.398 x 1.515 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.748 in (was 1.5148).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27779,22 +27779,22 @@
     ],
     "bottom_center": [
      68.75,
-     174.8
+     167.06
     ],
     "center": [
      68.75,
-     87.4
+     83.53
     ],
     "left_edge": [
      0,
-     87.4
+     98.31
     ],
     "right_edge": [
      137.5,
-     87.4
+     98.31
     ],
     "ribbon_attach": [
-     68.91,
+     68.75,
      0
     ]
    },
@@ -27807,9 +27807,9 @@
    "path": "medals/medal-spaatz-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.7946,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/medals/carl_a_spaatz.webp is 0.625 in wide (ribbon measured 59 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 60 x 65 source px = 0.636 x 0.689 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7946 in (was 0.6886).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27817,22 +27817,22 @@
     ],
     "bottom_center": [
      31.25,
-     79.46
+     75.94
     ],
     "center": [
      31.25,
-     39.73
+     37.97
     ],
     "left_edge": [
      0,
-     39.73
+     44.69
     ],
     "right_edge": [
      62.5,
-     39.73
+     44.69
     ],
     "ribbon_attach": [
-     31.32,
+     31.25,
      0
     ]
    },
@@ -27845,9 +27845,9 @@
    "path": "medals/medal-unit-citation-award-full.svg",
    "category": "medals",
    "w_in": 1.375,
-   "h_in": 1.8218,
+   "h_in": 1.6706,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_unitci01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.8218 in (was 1.4575).",
+   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      68.75,
@@ -27855,22 +27855,22 @@
     ],
     "bottom_center": [
      68.75,
-     182.18
+     167.06
     ],
     "center": [
      68.75,
-     91.09
+     83.53
     ],
     "left_edge": [
      0,
-     91.09
+     98.31
     ],
     "right_edge": [
      137.5,
-     91.09
+     98.31
     ],
     "ribbon_attach": [
-     70.32,
+     68.75,
      0
     ]
    },
@@ -27883,9 +27883,9 @@
    "path": "medals/medal-unit-citation-award-miniature.svg",
    "category": "medals",
    "w_in": 0.625,
-   "h_in": 0.8303,
+   "h_in": 0.7594,
    "size_source": "estimated",
-   "basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_unitci01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8303 in (was 0.6625).",
+   "basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
    "anchors": {
     "top_center": [
      31.25,
@@ -27893,22 +27893,22 @@
     ],
     "bottom_center": [
      31.25,
-     83.03
+     75.94
     ],
     "center": [
      31.25,
-     41.52
+     37.97
     ],
     "left_edge": [
      0,
-     41.52
+     44.69
     ],
     "right_edge": [
      62.5,
-     41.52
+     44.69
     ],
     "ribbon_attach": [
-     31.88,
+     31.25,
      0
     ]
    },
