@@ -192,6 +192,66 @@
     });
   }
 
+  // Engraved lettering on a nameplate (D30). The lettering is Arial Bold capitals, the face the CAP
+  // tape and plate sheets are drawn in, and it is sized from real metrics rather than a guessed
+  // em: advance widths per glyph and the cap height, both measured in Chrome at 1000 px
+  // (canvas measureText, 700 weight Arial: capital H advance 722, cap height 716 of the 1000 em).
+  const GLYPH_ADV = {
+    A: 722, B: 722, C: 722, D: 722, E: 667, F: 611, G: 778, H: 722, I: 278, J: 556, K: 722, L: 611, M: 833,
+    N: 722, O: 778, P: 667, Q: 778, R: 722, S: 667, T: 611, U: 722, V: 667, W: 944, X: 667, Y: 667, Z: 611,
+    0: 556, 1: 556, 2: 556, 3: 556, 4: 556, 5: 556, 6: 556, 7: 556, 8: 556, 9: 556,
+    ' ': 278, '-': 333, "'": 238, '.': 278, ',': 278
+  };
+  const CAP_HEIGHT = 0.716;       // capital letters, in em
+  const CENTRAL_BASELINE = 0.3465; // 'dominant-baseline: central' sits (ascent 0.905 - descent 0.212) / 2 above the baseline
+  const GLYPH_FALLBACK = 722;      // accented and other capitals
+
+  function textAdvance(text){
+    let sum = 0;
+    for(const ch of String(text)) sum += GLYPH_ADV[ch] != null ? GLYPH_ADV[ch] : GLYPH_FALLBACK;
+    return sum / 1000;
+  }
+
+  // Size the name for a plate. `zone` is the plate spec's name landmark in scene inches. The capitals
+  // fill `fill` (default 0.9) of the zone's height; a name too wide for the zone is first squeezed
+  // horizontally (the condensed lettering of the field name tapes, down to `minCondense`, default
+  // 0.6) and, if that is still too wide, made smaller in proportion. Returns the sizing and the layer.
+  function plateName(ctx, text, zone, opts){
+    const o = opts || {};
+    const str = String(text || '').trim();
+    if(!str || !zone) return null;
+    const value = o.upper === false ? str : str.toUpperCase();
+    const adv = textAdvance(value);
+    const fill = o.fill || 0.9;
+    const minCondense = o.minCondense || 0.6;
+    let size = zone.h * fill / CAP_HEIGHT;
+    let condense = 1;
+    if(adv * size > zone.w){
+      condense = Math.max(minCondense, zone.w / (adv * size));
+      if(adv * size * condense > zone.w) size = zone.w / (adv * condense);
+    }
+    const width = adv * size;               // before condensing
+    const capH = size * CAP_HEIGHT;
+    const layer = ctx.text({
+      text: value,
+      x: zone.x + zone.w / 2,
+      // The capitals' middle on the zone's middle (the baseline 'central' is the em box's middle).
+      y: zone.y + zone.h / 2 + (CAP_HEIGHT / 2 - CENTRAL_BASELINE) * size,
+      size,
+      w: width * condense,
+      h: capH,
+      color: o.color || '#d8dbe0',
+      weight: 700,
+      font: o.font || 'Arial, Helvetica, sans-serif',
+      fitWidth: width,
+      condense: condense < 1 ? condense : null,
+      key: o.key || 'text:name',
+      role: 'text',
+      className: 'nameText'
+    });
+    return { layer, size, capH, condense, width: width * condense };
+  }
+
   // ---- Ribbons --------------------------------------------------------------------------------
 
   // Draw a rack. `ribbons` are resolved ribbons in precedence order, each
@@ -303,5 +363,5 @@
     return { title, layers: ctx.layers, bounds, notes: ctx.notes, garment: ctx.base && ctx.base.id };
   }
 
-  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, drawRack, drawMiniMedals, finish, MINI_DRAPE };
+  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, CAP_HEIGHT, drawRack, drawMiniMedals, finish, MINI_DRAPE };
 });

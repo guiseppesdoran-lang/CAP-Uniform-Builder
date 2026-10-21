@@ -235,12 +235,24 @@
 
   // ---- shared pieces ------------------------------------------------------------------------
 
+  // The name line of a plate, from the plate spec's name landmark (the zone the artwork leaves for
+  // the engraving), scaled with the plate as drawn (D30). The lettering fills the zone's height and
+  // shrinks for a long name (C.plateName). `single` is the officer and NCO plate, which carries only
+  // the name: the same zone, centred up and down on the plate.
+  async function plateNameZone(ctx, plateRect, specId, single){
+    const spec = await ctx.spec(specId);
+    const r = core.landmarkBounds(spec, 'name');
+    if(!r) return null;
+    const s = plateRect.w / spec.w;
+    const h = r.h * s;
+    return { x: plateRect.x + r.x * s, y: single ? plateRect.y + (plateRect.h - h) / 2 : plateRect.y + r.y * s, w: r.w * s, h };
+  }
+
   // The 3-line plate: lines 1 and 2 are drawn on the plate; line 3 is the last name in white.
-  function threeLineName(ctx, b, plateRect){
+  async function threeLineName(ctx, b, plateRect, cadet){
     if(!b.name.show || !b.name.last || !plateRect) return;
-    const s = plateRect.w / 3.375;
-    const zone = { x: plateRect.x + 0.25 * s, y: plateRect.y + 0.43 * s, w: plateRect.w - 0.5 * s, h: 0.2 * s };
-    C.nameText(ctx, b.name.last, zone, { color: PLATE_WHITE, maxH: 0.17 * s, key: 'text:name' });
+    const zone = await plateNameZone(ctx, plateRect, cadet ? 'nameplate-3line-cadet' : 'nameplate-3line-adult');
+    if(zone) C.plateName(ctx, b.name.last, zone, { color: PLATE_WHITE, key: 'text:name' });
   }
 
   // Grade insignia on both epaulets (gray or blue sleeves drawn by a layer): the grade's centre on
@@ -689,8 +701,11 @@
       tagRect = ctx.rect('nametag') || plate;
       ctx.keepClear(tagRect, 'nametag');
       if(b.name.show && b.name.last){
-        if(g.cadet) threeLineName(ctx, b, tagRect);
-        else C.nameText(ctx, b.name.last, { x: tagRect.x + 0.2, y: tagRect.y + 0.12, w: tagRect.w - 0.4, h: tagRect.h - 0.24 }, { color: ENGRAVED_BLUE, maxH: 0.36, key: 'text:name' });
+        if(g.cadet) await threeLineName(ctx, b, tagRect, true);
+        else{
+          const zone = await plateNameZone(ctx, tagRect, 'nameplate-3line-adult', true);
+          if(zone) C.plateName(ctx, b.name.last, zone, { color: ENGRAVED_BLUE, key: 'text:name' });
+        }
       }
     }
 
@@ -781,7 +796,7 @@
     await ctx.overlay(g.cadet ? `${base}-nametag-cadet` : `${base}-nametag-adult`, Z.tape);
     const tag = ctx.rect('nametag') || ctx.rect('nameplate');
     ctx.keepClear(tag, 'nametag');
-    threeLineName(ctx, b, tag);
+    await threeLineName(ctx, b, tag, g.cadet);
 
     if(g.category === 'cadet-nco'){
       // The collar anchors of the Class B sheets are named by the viewer's side (spec defect D1).
@@ -984,7 +999,7 @@
     const plateId = g.cadet ? 'nameplate-3line-cadet' : 'nameplate-3line-adult';
     const plate = await ctx.place(plateId, { pieceAnchor: 'center', at: core.rectCenter(slot), z: Z.tape, role: 'nametag', key: 'nametag' });
     const tag = { x: plate.x, y: plate.y, w: plate.w, h: plate.h };
-    threeLineName(ctx, b, tag);
+    await threeLineName(ctx, b, tag, g.cadet);
 
     // Ribbons: CAP and military (ICL 25-02), rows of 3 resting on the left pocket top.
     const rest = { x: ctx.point('ribbon_slot_center').x, y: slot.y + slot.h };
@@ -1092,9 +1107,9 @@
       if(b.name.show){
         // Last name and state (4.2.3.1.1.2).
         const nameZone = H.pieceRect(plate, ps, 'name');
-        if(nameZone && b.name.last) C.nameText(ctx, b.name.last, nameZone, { color: PLATE_WHITE, maxH: 0.2, key: 'text:name' });
+        if(nameZone && b.name.last) C.plateName(ctx, b.name.last, nameZone, { color: PLATE_WHITE, key: 'text:name' });
         const stateZone = H.pieceRect(plate, ps, 'state');
-        if(stateZone && b.name.state) C.nameText(ctx, b.name.state, stateZone, { color: PLATE_WHITE, maxH: 0.13, key: 'text:state' });
+        if(stateZone && b.name.state) C.plateName(ctx, b.name.state, stateZone, { color: PLATE_WHITE, key: 'text:state' });
       }
       const gz = H.pieceRect(plate, ps, 'grade_insignia');
       if(gz && !g.cadet && b.opt.plateGrade !== false){
