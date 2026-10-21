@@ -119,3 +119,62 @@ test('NCOs and cadets wear no shoulder grade on the flight suit (8.2.3.3, 8.3.3.
     assert.equal(scene.layers.filter(l => l.role === 'grade').length, 0, r);
   }
 });
+
+// ---- the name tag: wings plus one other badge or the command pin -------------------------------
+
+const badgeLayers = (scene, f) => onFigure(scene, f, l => l.role === 'badge');
+
+test('name tag: CAP wings and the command pin both render, the pin on the wearer\'s right (8.2.4.1, 8.3.4.1)', async () => {
+  for(const f of FIGURES){
+    for(const [m, r] of [['senior', 'Col'], ['senior', 'Maj Gen'], ['senior', 'Capt'], ['senior', 'SMSgt']]){
+      const scene = await P.composeUniform(build(f.uniform, m, r, { badges: [PILOT], command: GROUP_PIN }), store());
+      const tag = onFigure(scene, f, l => l.key === 'nametag')[0];
+      const bs = badgeLayers(scene, f);
+      assert.equal(bs.length, 2, `${f.name} ${r}: wings and the command pin`);
+      const wings = bs.find(l => l.key === 'badge:' + PILOT.id), pin = bs.find(l => l.key === 'badge:' + GROUP_PIN.id);
+      assert.ok(wings && pin, `${f.name} ${r}`);
+      // Wearer's right is the viewer's left of the tag.
+      assert.ok(pin.x + pin.w <= wings.x, `${f.name} ${r}: pin to the wearer's right of the wings`);
+      for(const l of [wings, pin]) assert.ok(l.x >= tag.x && l.x + l.w <= tag.x + tag.w && l.y >= tag.y && l.y + l.h <= tag.y + tag.h / 2, `${f.name} ${r}: ${l.key} on the tag, above the name`);
+    }
+  }
+});
+
+test('name tag: wings and an occupational badge when there is no command pin; the wings alone are centred', async () => {
+  const both = await P.composeUniform(build('flight_suit', 'senior', 'Col', { badges: [PILOT, GROUND_TEAM] }), store());
+  const bs = badgeLayers(both, FIGURES[0]);
+  assert.deepEqual(bs.map(l => l.key).sort(), ['badge:CAPPilot1_FA9D33EA587D8', 'badge:ground_team_basic_badge']);
+  const one = await P.composeUniform(build('flight_suit', 'senior', 'Col', { badges: [PILOT] }), store());
+  const tag = onFigure(one, FIGURES[0], l => l.key === 'nametag')[0];
+  const w = badgeLayers(one, FIGURES[0]);
+  assert.equal(w.length, 1);
+  assert.ok(Math.abs(w[0].x + w[0].w / 2 - (tag.x + tag.w / 2)) < 0.01, 'a lone badge is centred on the tag');
+});
+
+test('name tag: the command pin replaces the occupational badge; a graduated commander\'s pin is not on the tag', async () => {
+  const s = await P.composeUniform(build('flight_suit', 'senior', 'Col', { badges: [PILOT, GROUND_TEAM], command: GROUP_PIN }), store());
+  const keys = badgeLayers(s, FIGURES[0]).map(l => l.key);
+  assert.ok(keys.includes('badge:' + GROUP_PIN.id) && !keys.includes('badge:ground_team_basic_badge'), 'pin in place of the occupational badge');
+  const g = await P.composeUniform(build('flight_suit', 'senior', 'Col', { badges: [PILOT], command: Object.assign({}, GROUP_PIN, { graduated: true }) }), store());
+  assert.deepEqual(badgeLayers(g, FIGURES[0]).map(l => l.key), ['badge:' + PILOT.id]);
+});
+
+test('name tag lettering: officers name only; NCOs grade and CAP; cadets "Cadet" and CAP (8.2.4.1)', async () => {
+  const lines = async (m, r) => {
+    const sc = await P.composeUniform(build('flight_suit', m, r, { badges: [PILOT] }), store());
+    return onFigure(sc, FIGURES[0], l => /^text:/.test(l.key)).map(l => l.key).sort();
+  };
+  assert.deepEqual(await lines('senior', 'Col'), ['text:name']);
+  assert.deepEqual(await lines('senior', 'Maj Gen'), ['text:name']);
+  assert.deepEqual(await lines('senior', 'SMSgt'), ['text:cap', 'text:grade', 'text:name']);
+  assert.deepEqual(await lines('cadet', 'C/Capt'), ['text:cap', 'text:grade', 'text:name']);
+  const c = await P.composeUniform(build('flight_suit', 'cadet', 'C/Capt'), store());
+  const grade = c.layers.find(l => l.key === 'text:grade');
+  assert.equal(grade.text, 'Cadet');
+});
+
+test('a third badge is not shown and says so', async () => {
+  const sc = await P.composeUniform(build('flight_suit', 'senior', 'Col', { badges: [PILOT, GROUND_TEAM, { id: 'senior_ground_team_badge', title: 'Senior GT' }] }), store());
+  assert.equal(badgeLayers(sc, FIGURES[0]).length, 2);
+  assert.ok(sc.notes.some(n => /at most two badges/.test(n)));
+});
