@@ -21,6 +21,8 @@
   // 7.1.1.8). The sheets draw it as Arial Bold condensed to 0.546 of its width, capitals 0.655 of
   // the tape's height (an em of 0.915 of the tape).
   function nameTapes(ctx, b){
+    // The CAP tape's lettering is drawn on the sheet; the measurement labels stay off it.
+    ctx.keepClear(ctx.rect('cap_tape'), 'cap_tape');
     if(!b.name.show || !b.name.last) return;
     for(const lm of ['name_tape', 'patrol_cap_back_name_tape', 'baseball_cap_back_name_tape']){
       const r = ctx.rect(lm);
@@ -69,7 +71,23 @@
       const id = ocpSquareId(g);
       if(id) await ctx.place(id, { pieceAnchor: 'center', at, z: Z.insignia, role: 'grade', key: 'grade:chest' });
     }
+    ocpSquareMeasures(ctx, b);
     await capGrade(ctx, b);
+  }
+
+  // The measurement overlay for the chest square: its 2 in size (7.1.1.2.1, 7.1.1.2.2) and where it
+  // sits on the placket: from the point where the collar meets the zipper (the garment's collar_apex)
+  // down to the square's top. The regulation says only "in the center of the chest", so that distance
+  // is the sheet's own and is shown as approximate.
+  function ocpSquareMeasures(ctx, b){
+    if(b.grade.category === 'cadet-basic') return;
+    const sq = ctx.rect('rank_square'), apex = ctx.point('collar_apex');
+    if(!sq) return;
+    ctx.measure({ x: sq.x, y: sq.y }, { x: sq.x + sq.w, y: sq.y });
+    ctx.measure({ x: sq.x + sq.w, y: sq.y }, { x: sq.x + sq.w, y: sq.y + sq.h });
+    if(apex){
+      ctx.measure(apex, { x: apex.x, y: sq.y }, `about ${Math.round((sq.y - apex.y) * 10) / 10} in`, { offsetOnly: true, side: { x: -1, y: 0 } });
+    }
   }
 
   // ABU and CFU: grade on both collars (5.1.1.1.1, 5.2.1.1.1); NCO chevrons on the sleeves.
@@ -101,6 +119,14 @@
         let rotate = s.deg;
         if(g.key === 'major' || g.key === 'lieutenant-colonel') rotate = R ? 90 : -90;
         await ctx.place(id, { pieceAnchor: 'center', at: s.at, rotate, flipX: g.key === 'colonel' && R, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+        // "Centered 1 inch from the bottom of the collar" (5.1.1.1.1.1, 5.2.1.1.1.1): from the free
+        // edge, straight to the centre. Generals' stars begin 1 in up, so no centre line for them.
+        const edge = slots && slots[side] && slots[side].bottom_edge;
+        if(edge && !g.general){
+          const a = { x: edge.p1[0] / 100, y: edge.p1[1] / 100 }, d = { x: (edge.p2[0] - edge.p1[0]) / 100, y: (edge.p2[1] - edge.p1[1]) / 100 };
+          const t = ((s.at.x - a.x) * d.x + (s.at.y - a.y) * d.y) / (d.x * d.x + d.y * d.y);
+          ctx.measure({ x: a.x + t * d.x, y: a.y + t * d.y }, s.at);
+        }
       }
     }
     if(g.category === 'senior-nco'){
@@ -108,7 +134,12 @@
       let drawn = 0;
       for(const side of ['right', 'left']){
         const z = ctx.rect('chevron_zone_' + side);
-        if(z){ await ctx.place(id, { pieceAnchor: 'center', at: core.rectCenter(z), z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side }); drawn++; }
+        if(z){
+          const l = await ctx.place(id, { pieceAnchor: 'center', at: core.rectCenter(z), z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side });
+          // 4 in or 3 1/2 in chevron (5.1.1.1.1.2, 5.2.1.1.1.3).
+          if(l) ctx.measure({ x: l.x, y: l.y + l.h }, { x: l.x + l.w, y: l.y + l.h });
+          drawn++;
+        }
       }
       if(drawn === 1) ctx.note('The ABU sheet shows only the left sleeve; the chevron is worn on both sleeves');
     }
@@ -158,7 +189,11 @@
       const w2 = specs[1].w, w3 = specs[2].w, W = w2 + gapX + w3;
       const a = await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x - W / 2 + w2 / 2, y: base } }, opts(1)));
       const c = await ctx.place(list[2].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x + W / 2 - w3 / 2, y: base } }, opts(2)));
-      await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: Math.min(a.y, c.y) - rowGap } }, opts(0)));
+      const rowTop = Math.min(a.y, c.y);
+      const up = await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: rowTop - rowGap } }, opts(0)));
+      // 1/2 in between the two side by side, 1/4 in from them to the third (7.1.1.3.1.3).
+      ctx.measure({ x: a.x + a.w, y: base - 0.3 }, { x: c.x, y: base - 0.3 });
+      if(up) ctx.measure({ x: T.x, y: up.y + up.h }, { x: T.x, y: rowTop });
       return;
     }
     // Four: two columns of two, precedence top row first, viewer's left first.
@@ -172,6 +207,7 @@
     ctx.measure({ x: xL, y: Math.min(b3.y, b4.y) }, { x: xL, y: topY });
     await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xL, y: topY } }, opts(0)));
     await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xR, y: topY } }, opts(1)));
+    ctx.measure({ x: xR, y: Math.min(b3.y, b4.y) }, { x: xR, y: topY });
   }
 
   // Command insignia: current commanders 1/2 in above the name tape; graduated commanders on the
@@ -212,6 +248,12 @@
     if(flat && f){
       const e = f.map({ x: flat.x, y: flat.y, w: flat.w, h: flat.h });
       await ctx.place(pin.art, Object.assign({}, o, { pieceAnchor: 'center', at: e.center, scaleX: f.sx, rotate: f.tilt, key: o.key + ':edge' }));
+    }
+    // Centred on the loop that shows: the same margin above and below the patch.
+    if(flat){
+      const cx = flat.x + flat.w / 2;
+      ctx.measure({ x: cx, y: loop.y }, { x: cx, y: flat.y });
+      ctx.measure({ x: cx, y: flat.y + flat.h }, { x: cx, y: loop.y + loop.h });
     }
   }
 
@@ -263,6 +305,19 @@
     return flat;
   }
 
+  // Overlay: the patch's width, and the gaps above and below it that centre it under the flag or AUX
+  // patch on the Velcro (7.1.1.4.1.2).
+  function measureSleevePatch(ctx, layer, velcroName, drawnName){
+    const v = ctx.rect(velcroName), d = ctx.rect(drawnName);
+    if(!layer) return;
+    const cx = layer.x + layer.w / 2;
+    ctx.measure({ x: layer.x, y: layer.y + layer.h }, { x: layer.x + layer.w, y: layer.y + layer.h });
+    if(v && d){
+      ctx.measure({ x: cx, y: d.y + d.h }, { x: cx, y: layer.y });
+      ctx.measure({ x: cx, y: layer.y + layer.h }, { x: cx, y: v.y + v.h });
+    }
+  }
+
   function belowOnVelcro(ctx, velcroName, drawnName){
     const v = ctx.rect(velcroName), d = ctx.rect(drawnName);
     if(!v || !d) return null;
@@ -286,21 +341,22 @@
       const unit = take(p => p.kind === 'unit' || p.slot === 'R_SHOULDER');
       if(unit){
         const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_right', 'patch_flag_right');
-        if(z) sleevePatch(ctx, unit, z, 'R_SHOULDER', 'right');
+        if(z) measureSleevePatch(ctx, sleevePatch(ctx, unit, z, 'R_SHOULDER', 'right'), 'sleeve_flap_velcro_right', 'patch_flag_right');
       }
       const hhq = take(p => p.slot === 'L_SHOULDER') || take(() => true);
       if(hhq){
         const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_left', 'patch_aux_left');
-        if(z) sleevePatch(ctx, hhq, z, 'L_SHOULDER', 'left');
+        if(z) measureSleevePatch(ctx, sleevePatch(ctx, hhq, z, 'L_SHOULDER', 'left'), 'sleeve_flap_velcro_left', 'patch_aux_left');
       }
     }else{
+      const widthOf = layer => { if(layer) ctx.measure({ x: layer.x, y: layer.y + layer.h }, { x: layer.x + layer.w, y: layer.y + layer.h }); };
       const left = take(p => p.slot === 'L_SHOULDER');
       const zl = ctx.rect('wing_patch_zone_left');
-      if(left && zl) fitPatch(ctx, left, zl, 'L_SHOULDER');
+      if(left && zl) widthOf(fitPatch(ctx, left, zl, 'L_SHOULDER'));
       if(b.uniform === 'corporate_field'){
         const right = take(p => p.slot === 'R_SHOULDER' || p.kind === 'unit');
         const zr = ctx.rect('activity_patch_zone_right');
-        if(right && zr) fitPatch(ctx, right, zr, 'R_SHOULDER');
+        if(right && zr) widthOf(fitPatch(ctx, right, zr, 'R_SHOULDER'));
       }
       // Breast pocket patches: one in all on the ABU (5.1.1.1.2.3), one per pocket on the CFU.
       const pockets = b.uniform === 'abu' ? 1 : 2;
@@ -310,7 +366,7 @@
         const want = side === 'right' ? 'CHEST_RIGHT' : 'CHEST_LEFT';
         const p = take(x => x.slot === want) || take(x => x.slot === 'CHEST_LEFT' || x.slot === 'CHEST_RIGHT');
         const z = pocketZone(ctx, side);
-        if(p && z){ fitPatch(ctx, p, z, want); used++; }
+        if(p && z){ widthOf(fitPatch(ctx, p, z, want)); used++; }
       }
       if(b.uniform === 'corporate_field' && b.opt.esPatch && b.opt.esPatch !== 'none'){
         // ES patch 1/2 in above the name tape (above the command insignia if worn), 5.2.1.1.2.8.

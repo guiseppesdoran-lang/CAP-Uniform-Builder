@@ -165,3 +165,134 @@ test('OCP: the graduated commander\'s 1 in patch rests on the loop that shows, c
   const sheet = sheetEdgeView('left');
   assert.ok(Math.abs(sheet.tilt - -12.375) < 1e-6, 'the sheet turns the left pocket the same way');
 });
+
+// ---- D26: the measurement overlay ------------------------------------------------------------------
+
+test('every measurement is labelled with its own length, except the one marked approximate', async () => {
+  for(const u of ['ocp', 'abu', 'corporate_field']){
+    for(const [m, r] of [['senior', 'Capt'], ['senior', 'Lt Col'], ['senior', 'SMSgt'], ['cadet', 'C/SSgt']]){
+      if(u === 'corporate_field' && m === 'cadet') continue;
+      const scene = await P.composeUniform(build(u, m, r, { badges: [PILOT, GT], patches: [UNIT, WING], command: PIN }), store());
+      for(const l of measures(scene)){
+        if(/^about /.test(l.label)){ assert.ok(Math.abs(Number(l.label.replace(/[^\d.]/g, '')) - len(l)) < 0.06, `${u} ${r}: ${l.label} for ${len(l)}`); continue; }
+        assert.equal(l.label, C.inchesLabel(len(l)), `${u} ${r}: label ${l.label} on a ${len(l).toFixed(3)} in line`);
+      }
+    }
+  }
+});
+
+test('OCP overlay: chest square size, the collar-to-zipper drop from the garment apex, badges, tapes and caps', async () => {
+  const scene = await P.composeUniform(build('ocp', 'senior', 'Capt', { badges: [PILOT, GT], patches: [UNIT, WING] }), store());
+  const spec = await ST.load(OCP);
+  const apex = core.anchor(spec, 'collar_apex'), sq = await rectOf('rank_square');
+  const ms = measures(scene);
+  // the square: 2 in each way
+  const twos = ms.filter(m => m.label === '2 in');
+  assert.equal(twos.length, 2, 'both sides of the 2 x 2 in square');
+  assert.ok(twos.some(m => Math.abs(m.from.y - m.to.y) < 1e-6) && twos.some(m => Math.abs(m.from.x - m.to.x) < 1e-6));
+  // from the point where the collar meets the zipper to the top of the square
+  const drop = ms.find(m => /^about /.test(m.label));
+  assert.ok(drop, 'collar to square');
+  assert.ok(Math.abs(drop.from.x - apex.x) < 1e-6 && Math.abs(drop.from.y - apex.y) < 1e-6, 'starts at the collar_apex anchor');
+  assert.ok(Math.abs(drop.to.y - sq.y) < 1e-6 && Math.abs(drop.to.x - apex.x) < 1e-6, 'ends on the placket at the top of the square');
+  // two badges, 1/2 in each; the cap grade 1/2 in above the visor on both caps
+  assert.ok(ms.filter(m => m.label === '½ in').length >= 4, 'badges and caps');
+  // patch widths and the equal gaps that centre each under the flag and AUX
+  assert.equal(ms.filter(m => m.label === '3½ in').length, 2, 'both patches');
+  assert.equal(ms.filter(m => m.label === '0.47 in').length, 4, 'gap above and below each patch');
+  // the CAP tape's lettering is kept clear of overlay labels
+  assert.ok(scene.layers.some(l => l.type === 'clear' && l.key === 'clear:cap_tape'));
+  assert.ok(ms.length >= 12, `${ms.length} measurements`);
+});
+
+test('OCP overlay: no square, no square measurements for a Cadet Airman Basic (7.1.1.2.2)', async () => {
+  const scene = await P.composeUniform(build('ocp', 'cadet', 'C/AB'), store());
+  assert.equal(measures(scene).filter(m => m.label === '2 in' || /^about /.test(m.label)).length, 0);
+});
+
+test('badges over the CAP tape: three then four, every regulation gap is measured (7.1.1.3.1.3, 7.1.1.3.1.4)', async () => {
+  const B3 = [PILOT, GT, { id: 'basic_incident_commander_badge', title: 'Basic IC' }];
+  const three = measures(await P.composeUniform(build('ocp', 'senior', 'Capt', { badges: B3 }), store())).map(m => m.label);
+  assert.ok(three.includes('⅛ in'), '1/8 in above the tape');
+  assert.ok(three.filter(l => l === '½ in').length >= 1, '1/2 in between the pair');
+  assert.ok(three.includes('¼ in'), '1/4 in from the pair to the third');
+  const B4 = B3.concat([{ id: 'medical_officer', title: 'Medical' }]);
+  const four = measures(await P.composeUniform(build('ocp', 'senior', 'Capt', { badges: B4 }), store())).map(m => m.label);
+  assert.ok(four.includes('⅛ in'));
+  assert.ok(four.includes('½ in'));
+  assert.equal(four.filter(l => l === '¼ in').length, 2, '1/4 in between the badges of each stack');
+});
+
+test('ABU and CFU overlay: grade 1 in from the collar\'s free edge, chevron width, patch widths, badges (5.1.1.1.1, 5.2.1.1.1, 5.1.1.1.2)', async () => {
+  for(const u of ['abu', 'corporate_field']){
+    const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
+    const spec = await ST.load(garment);
+    const apex = core.anchor(spec, 'collar_apex');
+    assert.ok(apex);
+    // an officer: the grade centred 1 in from the bottom of each collar leaf
+    const scene = await P.composeUniform(build(u, 'senior', 'Capt', { badges: [PILOT, GT], patches: [UNIT, WING] }), store());
+    const ms = measures(scene);
+    const ones = ms.filter(m => m.label === '1 in');
+    assert.equal(ones.length, 2, `${u}: one on each collar`);
+    for(const side of ['right', 'left']){
+      const g = scene.layers.find(l => l.key === 'grade:' + side);
+      const m = ones.find(x => Math.abs(x.to.x - g.origin.x) < 1e-6 && Math.abs(x.to.y - g.origin.y) < 1e-6);
+      assert.ok(m, `${u} ${side}: the line ends on the centre of the grade`);
+      assert.ok(Math.abs(len(m) - 1) < 1e-3, `${u} ${side}: 1 in`);
+    }
+    assert.ok(ms.filter(m => m.label === '½ in').length >= 2, `${u}: badges`);
+    // a senior NCO: the chevron's width on each sleeve view the sheet draws
+    const nco = await P.composeUniform(build(u, 'senior', 'SMSgt', { opt: { headgear: 'auto', chevron: '3.5' } }), store());
+    const chev = nco.layers.filter(l => /^grade:sleeve-/.test(l.key));
+    assert.ok(chev.length >= 1);
+    for(const c of chev) assert.ok(measures(nco).some(m => Math.abs(m.from.x - c.x) < 1e-6 && Math.abs(len(m) - c.w) < 1e-6), `${u}: chevron width`);
+  }
+  // patches: each one's width
+  const cfu = await P.composeUniform(build('corporate_field', 'senior', 'Capt', { patches: [UNIT, WING, { id: 'cos_patch', title: 'COS', href: 'images/patches/cos_patch.webp', aspect: 1, slot: 'CHEST_LEFT', kind: 'general' }] }), store());
+  const patches = cfu.layers.filter(l => l.role === 'patch');
+  assert.equal(patches.length, 3);
+  for(const p of patches) assert.ok(measures(cfu).some(m => Math.abs(m.from.x - p.x) < 1e-6 && Math.abs(len(m) - p.w) < 1e-6), `${p.key} width`);
+});
+
+test('the CAP tape is kept clear of overlay labels on ABU and CFU too', async () => {
+  for(const u of ['abu', 'corporate_field']){
+    const scene = await P.composeUniform(build(u, 'senior', 'Capt'), store());
+    assert.ok(scene.layers.some(l => l.key === 'clear:cap_tape'), u);
+  }
+});
+
+// ---- D26 (4): collar grade orientation on the ABU and CFU ------------------------------------------
+
+test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1.1.1.1, 5.1.1.1.1.3-4, 5.2.1.1.1)', async () => {
+  for(const u of ['abu', 'corporate_field']){
+    const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
+    const spec = await ST.load(garment);
+    const slots = spec.raw.collar_slots;
+    // Cadet NCO and cadet officer: parallel to the collar's front edge.
+    for(const [rank, kind] of [['C/SSgt', 'cadet_nco'], ['C/Maj', 'cadet_officer']]){
+      const scene = await P.composeUniform(build(u, 'cadet', rank), store());
+      for(const side of ['right', 'left']){
+        const g = scene.layers.find(l => l.key === 'grade:' + side);
+        assert.ok(g, `${u} ${rank} ${side}`);
+        const s = slots[side][kind];
+        // the piece's long axis, turned the slot's way (officers' row is drawn across and turned a quarter more)
+        const expect = kind === 'cadet_officer' ? s.angle_deg + (s.angle_deg < 0 ? 90 : -90) : s.angle_deg;
+        assert.ok(Math.abs(g.rotate - expect) < 1e-6, `${u} ${rank} ${side}: ${g.rotate} vs ${expect}`);
+        // the leaf's front edge: the axis points the way the edge runs (top toward the shoulder)
+        const d = slots[side].front_edge.dir_down;
+        const axis = core.rotatePoint({ x: 0, y: 1 }, { x: 0, y: 0 }, s.angle_deg);
+        assert.ok(Math.abs(axis.x - d[0]) < 0.01 && Math.abs(axis.y - d[1]) < 0.01, `${u} ${side}: slot turns the long axis onto the front edge`);
+      }
+    }
+    // Officers: bars/leaf square to the free edge for Capt, stem parallel to the ground for Maj/Lt Col, beak forward for Col.
+    const rotOf = async (rank, side) => (await P.composeUniform(build(u, 'senior', rank), store())).layers.find(l => l.key === 'grade:' + side);
+    assert.equal((await rotOf('Maj', 'right')).rotate, 90);
+    assert.equal((await rotOf('Maj', 'left')).rotate, -90);
+    assert.equal((await rotOf('Lt Col', 'right')).rotate, 90);
+    assert.equal((await rotOf('Lt Col', 'left')).rotate, -90);
+    assert.equal((await rotOf('Col', 'right')).flipX, true);
+    assert.equal((await rotOf('Col', 'left')).flipX, undefined);
+    assert.equal((await rotOf('Capt', 'right')).rotate, slots.right.officer.angle_deg);
+    assert.equal((await rotOf('Capt', 'left')).rotate, slots.left.officer.angle_deg);
+  }
+});
