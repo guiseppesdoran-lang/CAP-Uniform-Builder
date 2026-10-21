@@ -63,6 +63,8 @@
     }
     return t1 > t0 ? (t1 - t0) * len(d) : 0;
   }
+  // Length of the segment a-b that lies outside box `r`.
+  const outsideLength = (a, b, r) => Math.max(0, len(sub(b, a)) - insideLength(a, b, r));
   // How far from `p` along `v` until it leaves every piece it starts on (and any piece that piece
   // runs into), so an extension line starts at the edge of the artwork, not across it.
   function clearance(p, v, boxes, eps){
@@ -155,7 +157,12 @@
           const sA = add(A, mul(c.side, c.startA + PX.extGap * P)), sB = add(B, mul(c.side, c.startB + PX.extGap * P));
           const e = mul(c.side, PX.extOver * P);
           exts.push([sA, add(a, e)], [sB, add(b, e)]);
-          for(const [p, q] of exts) for(const r of shrunk) lineCost += 4 * insideLength(p, q, r) / P;
+          // An extension line over a patch hides it; one that runs out of the view is cut off.
+          for(const [p, q] of exts) for(const r of shrunk) lineCost += 24 * insideLength(p, q, r) / P;
+        }
+        if(area){
+          lineCost += 60 * outsideLength(a, b, area) / P;
+          for(const [p, q] of exts) lineCost += 60 * outsideLength(p, q, area) / P;
         }
         for(const lab of placedLabels) lineCost += 40 * insideLength(a, b, lab) / P;
         lineCost += c.d / P;
