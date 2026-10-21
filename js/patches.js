@@ -21,6 +21,26 @@ const CAPUB_STRICT_COMMAND_DUTY_TITLES = new Set([
   'NATIONAL COMMANDER'
 ]);
 
+function capubNormalizeDutyTitle(title){
+  return String(title || '')
+    .replace(/[“”]/g, '"')
+    .replace(/[’']/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toUpperCase();
+}
+
+function capubIsExactCommanderDutyTitle(title){
+  return CAPUB_STRICT_COMMAND_DUTY_TITLES.has(capubNormalizeDutyTitle(title));
+}
+
+function capubHasDisqualifyingCommanderPrefix(source, index){
+  const before = String(source || '').slice(Math.max(0, index - 45), index).replace(/\s+/g, ' ').trim();
+  // Reject rows where the regex started at the word "Commander" inside a longer
+  // non-authorizing title, especially "Deputy Commander CA-473 ...".
+  return /(?:^|\s)(Deputy|Assistant|Asst\.?|Vice|Cadet|Incident|Mission|Deputy\s+Commander|Assistant\s+Deputy)\s*$/i.test(before);
+}
+
 
 function capubExtractCommanderDutyWindows(section){
   const source = String(section || '').replace(/\s+/g, ' ').trim();
