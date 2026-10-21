@@ -426,10 +426,11 @@ function capubExtendMcchordOptionsTo84(id, sourceOptions){
 }
 
 // Ribbons whose choices CAPR 39-3 sets directly. These come before the older option lists, which
-// carried devices the regulation does not have (honor credit stars, a COS star on the Eaker for
-// cadets) and named the Cadet Advisory Council choices by star instead of by level.
+// carried a COS star on the Eaker for cadets (the regulation allows it on the Mitchell only) and named
+// the Cadet Advisory Council choices by star instead of by level.
 const CAPUB_COS_STAR_RIBBONS = new Set(['eaker_award','earhart_award','spaatz_award','cadet_certificate_of_proficiency','frank_borman_falcon_award']);
-const CAPUB_PLAIN_ACHIEVEMENT_RIBBONS = new Set(['curry_achievement','hap_arnold_achievement','mary_feik_achievement','wright_brothers_award','rickenbacker_achievement','lindbergh_achievement','doolittle_achievement','armstrong_achievement']);
+const CAPUB_HONOR_CREDIT_RIBBONS = new Set(['curry_achievement','hap_arnold_achievement','mary_feik_achievement','rickenbacker_achievement','lindbergh_achievement','doolittle_achievement','armstrong_achievement']);
+const CAPUB_PLAIN_ACHIEVEMENT_RIBBONS = new Set(['wright_brothers_award']);
 function capubRibbonOptionOverride(id){
   const pick = { label:'- Select -', value:'', devices:{} };
   if(id === 'cadet_advisory_council_ribbon'){
@@ -444,9 +445,17 @@ function capubRibbonOptionOverride(id){
     return [pick, { label:'Earned', value:'earned', devices:{} },
       { label:'Earned + COS graduate (silver star)', value:'earned_cos_star', devices:{} }];
   }
+  // Honor credit: a silver star on achievements 1-8 (CAPR 39-3 is silent on it; the vendor ribbons and
+  // the eServices cadet report carry it). Goddard also takes the rocketry star (14h).
   if(id === 'goddard_achievement'){
     return [pick, { label:'Earned', value:'earned', devices:{} },
-      { label:'Earned + Model Rocketry Badge (silver star, Mitchell required)', value:'rocketry_star', devices:{} }];
+      { label:'Earned with Honor Credit (silver star)', value:'honor_credit', devices:{} },
+      { label:'Earned + Model Rocketry Badge (silver star, Mitchell required)', value:'rocketry_star', devices:{} },
+      { label:'Earned + Honor Credit and Model Rocketry Badge (two silver stars)', value:'honor_credit_and_rocketry', devices:{} }];
+  }
+  if(CAPUB_HONOR_CREDIT_RIBBONS.has(id)){
+    return [pick, { label:'Earned', value:'earned', devices:{} },
+      { label:'Earned with Honor Credit (silver star)', value:'honor_credit', devices:{} }];
   }
   if(CAPUB_COS_STAR_RIBBONS.has(id)){
     if(State.membership === 'cadet') return ribbonSelectOnlyOptions();
@@ -1053,7 +1062,7 @@ function buildRibbonGallery(options={}){
         .filter(([,qty]) => Number(qty) > 0)
         .map(([devId,qty]) => `${escapeHtml(deviceMeta[devId]?.label || devId)}: ${Number(qty)}`)
         .join(' • ')
-      : (window.CAPUBUniformView && window.CAPUBRibbonAwards ? escapeHtml(CAPUBUniformView.describeRibbon(id, sel)) : '');
+      : (window.CAPUBRibbonAwards ? escapeHtml(CAPUBRibbonAwards.describe(id, Object.assign({ membership:State.membership }, sel))) : '');
     const award=military ? getMilitaryRibbonAward(id) : null;
     const service=military ? getMilitarySelectionService(id,sel) : null;
     const militaryRules=military ? window.CAPUBMilitary?.inferDeviceRules?.(award,service,{allowUnverified:!!getMilitaryUIState().advancedMode}) : null;

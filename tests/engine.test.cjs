@@ -150,7 +150,9 @@ test('badges earned in levels draw the chosen level (STEM, Cyber, NRA)', async (
 
 test('cadet ribbon stars follow CAPR 39-3 (14h, 14j, 21j)', () => {
   const dev = (id, awardValue, awardLabel, membership) => RA.resolve(id, { awardValue, awardLabel, membership }).flatMap(r => r.devices);
-  assert.deepEqual(dev('curry_achievement', 'honor_credit', 'Earned with Honor Credit', 'cadet'), [], 'no honor credit device');
+  // Honor credit is a silver star on achievements 1-8 (CAPR 39-3 is silent on it; vendor ribbons and the eServices report carry it).
+  assert.deepEqual(dev('curry_achievement', 'honor_credit', 'Earned with Honor Credit', 'cadet'), ['device-star-silver'], 'honor credit star');
+  assert.deepEqual(dev('curry_achievement', 'earned', 'Earned', 'cadet'), [], 'no device without it');
   assert.deepEqual(dev('mitchell_award', 'earned_cos_star', '', 'cadet'), ['device-star-silver']);
   assert.deepEqual(dev('eaker_award', 'earned_cos_star', '', 'cadet'), [], 'cadets keep the COS star on the Mitchell');
   assert.deepEqual(dev('eaker_award', 'earned_cos_star', '', 'senior'), ['device-star-silver']);

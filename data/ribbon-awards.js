@@ -68,6 +68,9 @@
   };
   // 14j: a senior member who removes the Mitchell ribbon may move the COS star to the highest
   // cadet program ribbon earned.
+  // Cadet achievements 1-8 can carry the honor credit star (Curry through Armstrong).
+  const HONOR_CREDIT_RIBBONS = new Set(['curry_achievement', 'hap_arnold_achievement', 'mary_feik_achievement',
+    'rickenbacker_achievement', 'lindbergh_achievement', 'doolittle_achievement', 'goddard_achievement', 'armstrong_achievement']);
   const COS_MOVES_TO = new Set(['eaker_award', 'earhart_award', 'spaatz_award', 'cadet_certificate_of_proficiency', 'frank_borman_falcon_award']);
 
   const ORD = /(\d+)(?:st|nd|rd|th)\b/i;
@@ -167,6 +170,60 @@
   // The ribbons to wear for one selection. Each: { devices: [asset ids, wearer's right first],
   // centered: bool (the first device stays centred, as for a propeller) }.
   function resolve(id, selection){
+    return resolveParts(id, selection).map(p => p.why ? p : Object.assign({}, p, { why: explain(id, p.devices) }));
+  }
+
+  // What each star or device on a ribbon stands for (CAPR 39-3), aligned with `devices`; '' for a
+  // plain clasp. The picker words its device summary from this.
+  const STAR_MEANING = {
+    commander_commendation_award: { [D.starB]: 'authorized by the region commander', [D.starS]: 'authorized by the National Commander' },
+    lifesaving_award: { [D.starS]: 'lifesaving other than blood or organ transport' },
+    cap_command_service_ribbon: { [D.starB]: 'group commander', [D.starS]: 'wing commander', [D.starG]: 'region or National commander' },
+    national_cadet_competition_ribbon: { [D.starB]: 'region competition winner', [D.starS]: 'national competition sweepstakes winner' },
+    national_color_guard_competition_ribbon: { [D.starB]: 'region competition winner', [D.starS]: 'national competition sweepstakes winner' },
+    cadet_advisory_council_ribbon: { [D.starB]: 'wing level', [D.starS]: 'region level', [D.starG]: 'national level' },
+    cadet_special_activity_ribbon: { [D.starB]: 'additional activity', [D.starS]: 'five additional activities' },
+    cap_gill_robb_wilson_ribbon: { [D.starB]: 'Squadron Officer School', [D.starS]: 'Air Command and Staff College', [D.starG]: 'Air War College' },
+    cap_paul_e_garber_ribbon: { [D.starB]: 'Squadron Officer School', [D.starS]: 'Air Command and Staff College', [D.starG]: 'Air War College' },
+    cap_leadership_ribbon: { [D.starB]: 'senior rating', [D.starS]: 'master rating' }
+  };
+  function explain(id, devices){
+    return (devices || []).map(d => {
+      if(d === D.propB) return 'aircrew';
+      if(d === D.vS) return 'Presidentially declared disaster';
+      if(/^device-years-/.test(d)) return 'years of service';
+      return (STAR_MEANING[id] && STAR_MEANING[id][d]) || '';
+    });
+  }
+
+  function deviceName(d){
+    let m;
+    if((m = /^device-years-(\d+)$/.exec(d))) return m[1] + '-year numeral';
+    if(d === D.vS) return 'silver V';
+    if(d === D.propB) return 'propeller';
+    if((m = /^(?:mil-)?device-(clasp|star|olc)-(bronze|silver|gold)$/.exec(d))) return m[2] + ' ' + (m[1] === 'olc' ? 'oak leaf cluster' : m[1]);
+    return d.replace(/^(?:mil-)?device-/, '').replace(/-/g, ' ');
+  }
+
+  // One line saying what a selection wears: "Devices: silver star (Cadet Officer School)". A second
+  // ribbon is listed on its own.
+  function describe(id, selection){
+    const parts = resolve(id, selection);
+    const say = p => {
+      if(!p.devices.length) return 'no devices';
+      const runs = [];
+      p.devices.forEach((d, i) => {
+        const text = deviceName(d) + (p.why[i] ? ` (${p.why[i]})` : '');
+        const last = runs[runs.length - 1];
+        if(last && last.text === text) last.n++; else runs.push({ text, n: 1 });
+      });
+      return runs.map(r => r.n > 1 ? `${r.n} ${r.text.replace(/^(\S+ \S+?)(?= \(|$)/, '$1s')}` : r.text).join(', ');
+    };
+    if(parts.length === 1) return parts[0].devices.length ? 'Devices: ' + say(parts[0]) : 'Basic ribbon, no devices';
+    return parts.map((p, i) => `Ribbon ${i + 1}: ${say(p)}`).join('; ');
+  }
+
+  function resolveParts(id, selection){
     const sel = selection || {};
     const value = String(sel.awardValue || '');
     const label = String(sel.awardLabel || '');
@@ -217,14 +274,21 @@
       case 'cadet': {
         // 14h: the Goddard ribbon takes a silver star for the Model Rocketry Badge. 14j: the Mitchell
         // takes a silver star for COS; only senior members may move it to a higher cadet ribbon.
-        // No other cadet achievement ribbon wears a device (there is no honor credit device).
-        const devices = [];
+        // Honor credit (achievements 1-8, a silver star on the ribbon as on the vendor ribbons and the
+        // eServices cadet report) is not in the 2012 text of CAPR 39-3, which is silent on it.
+        const devices = [], why = [];
+        const honor = HONOR_CREDIT_RIBBONS.has(id) &&
+          (sel.honorCredit || /honor_credit|earned_both_devices/.test(value) || /honor credit/i.test(label));
         const rocketry = id === 'goddard_achievement' &&
           (/rocketry/i.test(text) || sel.rocketryCredit || /earned_(both_)?devices?$/.test(value));
         const cosAllowed = id === 'mitchell_award' || (sel.membership !== 'cadet' && COS_MOVES_TO.has(id));
-        if(rocketry) devices.push(D.starS);
-        if(cosAllowed && /cos/i.test(text)) devices.push(D.starS);
-        return one(devices);
+        if(honor){ devices.push(D.starS); why.push('honor credit'); }
+        if(rocketry){ devices.push(D.starS); why.push('Model Rocketry Badge'); }
+        if(cosAllowed && /cos/i.test(text)){
+          devices.push(D.starS);
+          why.push(id === 'mitchell_award' ? 'Cadet Officer School' : 'Cadet Officer School, moved from the Mitchell');
+        }
+        return [{ devices, centered: false, why }];
       }
       case 'recruiter': {
         // 21k: bronze clasp per `step` additional recruits; a silver clasp replaces five and then
@@ -291,5 +355,5 @@
     return order.indexOf(a) - order.indexOf(b);
   }
 
-  return { DEVICES: D, FAMILIES, resolve, readCount, starsFromText, spread, clasps };
+  return { DEVICES: D, FAMILIES, HONOR_CREDIT_RIBBONS, resolve, describe, explain, readCount, starsFromText, spread, clasps };
 });
