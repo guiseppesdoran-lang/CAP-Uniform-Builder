@@ -76,10 +76,11 @@ function syncRibbonRackColumnsControl(){
   const arrangementHint = by('ribbonRackArrangementHint');
   if(!select) return;
 
-  const classA = State.uniform === 'blues_a';
+  // Four across is allowed only where 11.2.7 allows it (the Class A coat and the cadet semi-formal coat).
+  const classA = CAPUBUniformRules.allowsRackColumns(State.uniform, 4);
   const preferredLayout = ['3','4-left','4-center'].includes(String(State.ribbonRackLayout))
     ? String(State.ribbonRackLayout)
-    : '4-left';
+    : '3';
   select.disabled = !classA;
   select.value = classA ? preferredLayout : '3';
 
@@ -179,7 +180,7 @@ if(ribbonRackColumnsSelect){
   ribbonRackColumnsSelect.addEventListener('change', e=>{
     State.ribbonRackLayout = ['3','4-left','4-center'].includes(e.target.value)
       ? e.target.value
-      : '4-left';
+      : '3';
     if(State.ribbonRackLayout === '4-center'){
       capubNotify('The 4 across, centered above welt/pocket option is more realistic for the preview, but it is not in accordance with CAPR 39-1.', 9000);
     }
@@ -828,7 +829,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     out.miniMountStyle = p.miniMountStyle === 'holding' ? 'holding' : 'mounting';
     out.ribbonRackLayout = ['3','4-left','4-center'].includes(String(p.ribbonRackLayout))
       ? String(p.ribbonRackLayout)
-      : (Number(p.ribbonRackColumns) === 3 ? '3' : '4-left');
+      : (Number(p.ribbonRackColumns) === 4 ? '4-left' : '3');
     out.ribbonRackArrangement = p.ribbonRackArrangement === 'standard' ? 'standard' : 'lapel';
     out.ribbonRowOverrideEnabled = !!p.ribbonRowOverrideEnabled;
     out.ribbonRowOverride = Array.isArray(p.ribbonRowOverride)

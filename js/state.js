@@ -51,7 +51,7 @@ const State = {
   cadetHighestOnly:false,
   adultCadet:false,
   miniMountStyle:'mounting',
-  ribbonRackLayout:'4-left',
+  ribbonRackLayout:'3', // rows of three unless the member picks four where 11.2.7 allows it
   ribbonRackArrangement:'lapel',
   ribbonRowOverrideEnabled:false,
   ribbonRowOverride:[],

@@ -177,7 +177,8 @@
   // as Figure 11-1 allows), or a fixed width: three across, four aligned with the wearer's left
   // edge, or four centred; or the member's own row counts.
   function rackOptions(){
-    const layout = String(State.ribbonRackLayout || '3');
+    // Four across only where 11.2.7 allows it; every other uniform keeps rows of three.
+    const layout = CAPUBUniformRules.allowsRackColumns(State.uniform, 4) ? String(State.ribbonRackLayout || '3') : '3';
     const automatic = State.ribbonRackArrangement !== 'standard';
     const custom = State.uniform === 'blues_a' && State.ribbonRowOverrideEnabled && Array.isArray(State.ribbonRowOverride) && State.ribbonRowOverride.length;
     if(custom) return { rackColumns: 4, rackArrangement: 'standard', rackCounts: [...State.ribbonRowOverride].reverse() };
