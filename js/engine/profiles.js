@@ -201,41 +201,54 @@
     if(!at) return;
     const spec = await ctx.spec(id);
     const tag = await ctx.place(id, { pieceAnchor: 'center', at, z: Z.tape, role: 'nametag', key: 'nametag' });
+    // Officers: the cloth tag carries the name only and one badge (8.2.4.1, 8.3.4.1).
+    const officerLike = g.officer && !g.cadet || (g.category === 'senior-none' && g.track === 'officer');
     if(b.name.show){
       const full = [b.name.first, b.name.last].filter(Boolean).join(' ');
       C.nameText(ctx, full, pieceRect(tag, spec, 'name_zone'), { color: SILVER_TEXT, maxH: 0.36, key: 'text:name' });
       // Officers show no grade or "CAP"; NCOs show grade and CAP; cadets "Cadet" and CAP.
-      const officerLike = g.officer && !g.cadet || (g.category === 'senior-none' && g.track === 'officer');
       if(!officerLike){
         const gradeText = g.cadet ? 'Cadet' : (g.category === 'senior-nco' ? gradeAbbrev(g) : '');
         if(gradeText) C.nameText(ctx, gradeText, pieceRect(tag, spec, 'grade_zone'), { color: SILVER_TEXT, maxH: 0.22, upper: false, key: 'text:grade' });
         C.nameText(ctx, 'CAP', pieceRect(tag, spec, 'cap_zone'), { color: SILVER_TEXT, maxH: 0.22, key: 'text:cap' });
       }
     }
-    // Badges embossed in silver above the name (8.2.4.1, 8.3.4.1): the CAP aeronautical rating (wings) and
-    // either an occupational badge or, for a current group or unit commander, the Command Insignia Pin
-    // on the wearer's right in place of the occupational badge; the wings to its left.
+    // Badges embossed in silver above the name (8.2.4.1, 8.3.4.1). The leather tag and the NCO and cadet
+    // cloth tags carry two: the CAP aeronautical rating (wings) and either an occupational badge or, for a
+    // current group or unit commander, the Command Insignia Pin on the wearer's right "rather than" the
+    // occupational badge; the wings to its left. The cloth tag for officers "will include name (first and
+    // last) and may include one badge as described above" (8.2.4.1, 8.3.4.1), so an officer tag carries
+    // one badge: the aeronautical rating if there is one, else the current command pin, else the
+    // occupational badge.
     const set = badgeSet(ctx, b, 'dress');
     const pin = commandPin(ctx, b, 'dress');
-    // Two badges on every tag: the CAP aeronautical rating and either an occupational badge or the
-    // current command pin (8.2.4.1, 8.3.4.1). The officer cloth tag clause reads "may include one
-    // badge as described above"; that is taken as one badge besides the rating (logged, E7-FLIGHT).
-    const limit = 2;
     const wings = [...set.chaplain, ...set.aviation][0] || null;
-    let other = (pin && !pin.graduated) ? { id: pin.id, art: pin.art, title: pin.title, command: true } : (set.occupational[0] || null);
-    let chosen = [wings, other].filter(Boolean).slice(0, limit);
+    const pinItem = (pin && !pin.graduated) ? { id: pin.id, art: pin.art, title: pin.title, command: true } : null;
+    const other = pinItem || set.occupational[0] || null;
+    const chosen = officerLike ? [wings || other].filter(Boolean) : [wings, other].filter(Boolean);
     const zone = pieceRect(tag, spec, 'badge_zone');
     const opts = it => ({ z: Z.badge, role: 'badge', key: 'badge:' + it.id, title: it.title });
+    // Both slots are fractions of the tag's badge_zone landmark. The wearer's-right slot (the viewer's left)
+    // takes the first 0.3 of the zone for the pin or occupational badge, which are narrow; the wings take
+    // the other 0.7. Each badge is centred in its slot, inset 0.04 of the zone on each side so the two
+    // never touch. A lone badge is centred in the zone and may use the wings' 0.7 width.
+    const PIN_SLOT = 0.3, SLOT_INSET = 0.04;
+    const slot = (from, to) => ({ x: zone.x + zone.w * (from + to) / 2, w: zone.w * (to - from - 2 * SLOT_INSET) });
     if(chosen.length === 1){
-      await placeFitted(ctx, chosen[0].art, core.rectCenter(zone), 2.2, zone.h, opts(chosen[0]));
+      await placeFitted(ctx, chosen[0].art, core.rectCenter(zone), zone.w * (1 - PIN_SLOT), zone.h, opts(chosen[0]));
     }else if(chosen.length === 2){
-      const s = tag.w / spec.w;
+      const pinSlot = slot(0, PIN_SLOT), wingsSlot = slot(PIN_SLOT, 1);
+      const cy = zone.y + zone.h / 2;
       // Wearer's right is the viewer's left of the tag.
-      await placeFitted(ctx, other.art, { x: tag.x + 1.05 * s, y: zone.y + zone.h / 2 }, 0.8, zone.h, opts(other));
-      await placeFitted(ctx, wings.art, { x: tag.x + 2.5 * s, y: zone.y + zone.h / 2 }, 1.7, zone.h, opts(wings));
+      await placeFitted(ctx, other.art, { x: pinSlot.x, y: cy }, pinSlot.w, zone.h, opts(other));
+      await placeFitted(ctx, wings.art, { x: wingsSlot.x, y: cy }, wingsSlot.w, zone.h, opts(wings));
     }
-    const worn = chosen.filter(c => !c.command).length;
-    if(set.all.length > worn) ctx.note('Flight suit name tags carry at most two badges (CAPR 39-1, 8.2.4.1); the rest are not shown');
+    // Something worn on the member's record is not on the tag: the command pin counts as one candidate
+    // when it is current (a graduated pin is never worn).
+    const candidates = set.all.length + (pinItem ? 1 : 0);
+    if(candidates > chosen.length) ctx.note(officerLike
+      ? 'The officer cloth name tag carries one badge (CAPR 39-1, 8.2.4.1); the rest are not shown'
+      : 'Flight suit name tags carry at most two badges (CAPR 39-1, 8.2.4.1); the rest are not shown');
   }
 
   async function flightPatches(ctx, b){
