@@ -103,6 +103,39 @@ for(const uniform of UNIFORMS){
   }
 }
 
+test('the cap sits on the garment top_center, lowered 0.25 in unless the cap art already carries its seating', async () => {
+  for(const [uniform, gender] of [['blues_a', 'male'], ['blues_a', 'female'], ['blues_b', 'male'], ['blues_b', 'female'], ['flight_suit', 'male']]){
+    for(const [rank, kind] of [['Capt', 'auto'], ['Maj', 'service'], ['Maj Gen', 'auto']]){
+      const st = store();
+      const { scene, hat } = await hatAndDevice(build(uniform, gender, 'senior', rank, kind), st);
+      const hs = await st.load(hat.id);
+      const attach = H.piecePoint(hat, hs, 'garment_attach_center');
+      const top = await garmentAnchor(scene, 'top_center', st);
+      const seated = !!(hs.raw && hs.raw.attach_overlap);
+      near(attach.x, top.x, `${uniform} ${gender} ${hat.id} centred on the garment`);
+      near(attach.y, top.y + (seated ? 0 : 0.25), `${uniform} ${gender} ${hat.id} seat`);
+    }
+  }
+});
+
+test('a garment that draws a hat_attach landmark decides where the cap sits', async () => {
+  const loader = async p => {
+    const raw = JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8'));
+    if(/garment-blues-class-a-coat-female\.spec\.json$/.test(p)){
+      raw.anchors = Object.assign({}, raw.anchors, { hat_attach: [raw.anchors.top_center[0], raw.anchors.top_center[1] + 61] });
+    }
+    return raw;
+  };
+  const st = store(loader);
+  const { scene, hat } = await hatAndDevice(build('blues_a', 'female', 'senior', 'Capt', 'auto'), st);
+  const hs = await st.load(hat.id);
+  const attach = H.piecePoint(hat, hs, 'garment_attach_center');
+  const lm = await garmentAnchor(scene, 'hat_attach', st);
+  assert.ok(lm, 'the landmark is on the garment');
+  near(attach.x, lm.x, 'x on the landmark');
+  near(attach.y, lm.y, 'y on the landmark');
+});
+
 test('a service cap is not offered to a cadet NCO: the flight cap with the NCO device', async () => {
   for(const gender of ['male', 'female']){
     const { hat, device } = await hatAndDevice(build('blues_a', gender, 'cadet', 'C/SSgt', 'service'));

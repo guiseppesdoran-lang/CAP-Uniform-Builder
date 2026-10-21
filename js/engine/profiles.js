@@ -179,22 +179,35 @@
     return { hat: 'hat-flight-cap-cadet', device: null };
   }
 
-  // Hats sit on the uniform: the hat's garment_attach_center goes on the garment's top_center; the
-  // device's mount_center goes on the hat's device_slot_center (MANIFEST conventions).
+  // How far below the garment's top_center the cap's garment_attach_center sits when the garment draws
+  // no hat_attach landmark of its own: the cap rests on the collar instead of floating above it. The
+  // regulation gives no seating (6.2.2 shows a cap without a coat), so the value is an estimate:
+  // about the offset of the drawn collar top below the sheet's top_center (0.27 to 0.50 in on the Class A
+  // coats). A cap whose own spec states attach_overlap already carries its seating in the attach point.
+  const HAT_SEAT_IN = 0.25;
+
+  // Hats sit on the uniform: the hat's garment_attach_center goes on the garment's hat_attach landmark
+  // when the sheet has one, else on its top_center lowered by HAT_SEAT_IN; the device's mount_center
+  // goes on the hat's device_slot_center (MANIFEST conventions).
   async function hat(ctx, hatId, device){
     // Flight caps are drawn per cut: the men's caps from the men's figure, the plain ids are the
     // women's (Figure A5-9).
     const men = hatId && hatId.replace(/^hat-flight-cap-/, 'hat-flight-cap-men-');
     if(ctx.build.gender !== 'female' && men !== hatId && ctx.has(men)) hatId = men;
     if(!hatId || !ctx.has(hatId)) return null;
-    const top = ctx.point('top_center');
     const hs = await ctx.spec(hatId);
-    const layer = await ctx.place(hatId, { pieceAnchor: 'garment_attach_center', at: top, z: Z.hat, role: 'hat', key: 'hat:' + hatId, className: 'hat' });
+    let at = ctx.point('hat_attach');
+    if(!at){
+      const top = ctx.point('top_center');
+      const seated = hs.raw && hs.raw.attach_overlap;
+      at = { x: top.x, y: top.y + (seated ? 0 : HAT_SEAT_IN) };
+    }
+    const layer = await ctx.place(hatId, { pieceAnchor: 'garment_attach_center', at, z: Z.hat, role: 'hat', key: 'hat:' + hatId, className: 'hat' });
     if(device && ctx.has(device)){
-      const at = piecePoint(layer, hs, 'device_slot_center');
+      const slot = piecePoint(layer, hs, 'device_slot_center');
       const ds = await ctx.spec(device);
       const anchorName = core.anchor(ds, 'mount_center') ? 'mount_center' : 'center';
-      await ctx.place(device, { pieceAnchor: anchorName, at, z: Z.hatDevice, role: 'hat-device', key: 'hat-device:' + device });
+      await ctx.place(device, { pieceAnchor: anchorName, at: slot, z: Z.hatDevice, role: 'hat-device', key: 'hat-device:' + device });
     }
     return layer;
   }
