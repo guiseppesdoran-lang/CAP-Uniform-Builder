@@ -1,0 +1,137 @@
+'use strict';
+// E3-HATS: the cap follows the member's cut and grade, sits on the collar, and carries the right device
+// on its device slot (CAPR 39-1 6.2.1, 6.2.2, ICL 25-02 (g)). One matrix: grade class x cap x cut on
+// every uniform that draws a cap.
+
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const root = path.join(__dirname, '..');
+const core = require('../js/engine/core.js');
+const G = require('../js/engine/grades.js');
+const P = require('../js/engine/profiles.js');
+require('../js/engine/profiles-field.js');
+require('../js/engine/profiles-dress.js');
+
+const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8'));
+const read = p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8')));
+const store = loader => core.createSpecStore(manifest, loader || read);
+const EPS = 0.006;
+const H = P.helpers;
+
+function build(uniform, gender, membership, rank, headgear, track){
+  return {
+    uniform, gender, grade: G.gradeInfo(membership, rank, { track }),
+    opt: { headgear },
+    name: { first: 'Pat', last: 'Doe', show: true },
+    ribbons: [], medals: [], badges: [], command: null, militaryBadges: [], patches: [], cord: null
+  };
+}
+const byRole = (scene, role) => scene.layers.filter(l => l.role === role);
+const near = (a, b, msg) => assert.ok(Math.abs(a - b) <= EPS, `${msg}: ${a} vs ${b}`);
+
+// What each grade class wears. `flight` / `service` give the cap id for a man ('men') and a woman
+// ('women'), and the device; service is null where the class has no service cap (6.2.1.1).
+const FLIGHT = (mid, dev) => ({ men: mid.men, women: mid.women, device: dev });
+const CLASSES = [
+  { name: 'cadet NCO (C/SSgt)', m: 'cadet', r: 'C/SSgt',
+    flight: FLIGHT({ men: 'hat-flight-cap-men-cadet', women: 'hat-flight-cap-cadet' }, 'cap-device-nco-flight'), service: null },
+  { name: 'cadet officer (C/Maj)', m: 'cadet', r: 'C/Maj',
+    flight: FLIGHT({ men: 'hat-flight-cap-men-cadet', women: 'hat-flight-cap-cadet' }, 'rank-cadet-officer-major-metal-regular'),
+    service: { men: 'hat-service-cap-men-cadet-officer', women: 'hat-service-cap-women-cadet-officer', device: 'cap-device-cadet-officer-service' } },
+  { name: 'senior NCO (SMSgt)', m: 'senior', r: 'SMSgt',
+    flight: FLIGHT({ men: 'hat-flight-cap-men-cadet', women: 'hat-flight-cap-cadet' }, 'cap-device-nco-flight'),
+    service: { men: 'hat-service-cap-men-officer-nco', women: 'hat-service-cap-women-officer-nco', device: 'cap-device-nco-flight' } },
+  { name: 'company grade (Capt)', m: 'senior', r: 'Capt',
+    flight: FLIGHT({ men: 'hat-flight-cap-men-officer', women: 'hat-flight-cap-officer' }, 'cap-device-officer-flight'),
+    service: { men: 'hat-service-cap-men-officer-nco', women: 'hat-service-cap-women-officer-nco', device: 'cap-device-officer-service' } },
+  { name: 'field grade (Maj)', m: 'senior', r: 'Maj',
+    flight: FLIGHT({ men: 'hat-flight-cap-men-officer', women: 'hat-flight-cap-officer' }, 'cap-device-officer-flight'),
+    service: { men: 'hat-service-cap-men-field-grade', women: 'hat-service-cap-women-field-grade', device: 'cap-device-officer-service' } },
+  { name: 'general (Maj Gen)', m: 'senior', r: 'Maj Gen',
+    flight: FLIGHT({ men: 'hat-flight-cap-men-general', women: 'hat-flight-cap-general' }, 'cap-device-officer-flight'),
+    service: { men: 'hat-service-cap-men-general', women: 'hat-service-cap-women-general', device: 'cap-device-officer-service' } }
+];
+
+async function hatAndDevice(b, st){
+  const scene = await P.composeUniform(b, st || store());
+  const hats = byRole(scene, 'hat'), devices = byRole(scene, 'hat-device');
+  return { scene, hat: hats[0] || null, device: devices[0] || null, hats, devices };
+}
+
+// The garment the scene is built on and its anchor, in scene inches.
+async function garmentAnchor(scene, name, st){
+  const base = scene.layers.find(l => l.role === 'garment');
+  const spec = await (st || store()).load(base.id);
+  const a = core.anchor(spec, name);
+  return a && { x: base.x + a.x, y: base.y + a.y };
+}
+
+const UNIFORMS = ['blues_a', 'blues_b', 'flight_suit'];
+
+for(const uniform of UNIFORMS){
+  for(const gender of ['male', 'female']){
+    for(const cls of CLASSES){
+      const hatKinds = uniform === 'flight_suit' ? ['auto'] : ['auto', 'service'];
+      for(const kind of hatKinds){
+        const service = kind === 'service' && cls.service;
+        const want = service ? cls.service : cls.flight;
+        const cut = gender === 'female' ? 'women' : 'men';
+        test(`${uniform} ${gender} ${cls.name}, headgear ${kind}: ${service ? 'service' : 'flight'} cap in the ${cut}'s cut with the right device on its slot`, async () => {
+          const st = store();
+          const { scene, hat, device } = await hatAndDevice(build(uniform, gender, cls.m, cls.r, kind), st);
+          assert.ok(hat, 'a cap is drawn');
+          assert.equal(hat.id, want[cut], `the ${cut}'s cap`);
+          assert.ok(hat.z > Math.max(...scene.layers.filter(l => !/^(hat|measure)/.test(l.role || '')).map(l => l.z)), 'cap on top of the figure');
+          assert.ok(device, 'the cap carries a device');
+          assert.equal(device.id, want.device);
+          assert.ok(device.z > hat.z, 'device over the cap');
+          // The device's mount_center sits on the cap's device_slot_center (R6).
+          const hs = await st.load(hat.id), ds = await st.load(device.id);
+          const slot = H.piecePoint(hat, hs, 'device_slot_center');
+          const mount = H.piecePoint(device, ds, core.anchor(ds, 'mount_center') ? 'mount_center' : 'center');
+          near(mount.x, slot.x, 'device x on the slot');
+          near(mount.y, slot.y, 'device y on the slot');
+          // The cap's size is its own art's size (no scaling by the engine).
+          near(hat.w, hs.w, 'cap width');
+          near(hat.h, hs.h, 'cap height');
+        });
+      }
+    }
+  }
+}
+
+test('a service cap is not offered to a cadet NCO: the flight cap with the NCO device', async () => {
+  for(const gender of ['male', 'female']){
+    const { hat, device } = await hatAndDevice(build('blues_a', gender, 'cadet', 'C/SSgt', 'service'));
+    assert.match(hat.id, /^hat-flight-cap-/);
+    assert.equal(device.id, 'cap-device-nco-flight');
+  }
+});
+
+test('headgear none draws no cap', async () => {
+  for(const uniform of UNIFORMS){
+    const { hats, devices } = await hatAndDevice(build(uniform, 'male', 'senior', 'Capt', 'none'));
+    assert.equal(hats.length + devices.length, 0, uniform);
+  }
+});
+
+test('members without grade wear the flight cap of their track (1.4.1.1, 1.4.2.1), the same on the Class A and the FDU', async () => {
+  for(const uniform of ['blues_a', 'blues_b', 'flight_suit']){
+    for(const gender of ['male', 'female']){
+      const off = await hatAndDevice(build(uniform, gender, 'senior', 'SM', 'auto', 'officer'));
+      assert.equal(off.hat.id, gender === 'female' ? 'hat-flight-cap-officer' : 'hat-flight-cap-men-officer', `${uniform} ${gender} officer track`);
+      assert.equal(off.device.id, 'cap-device-officer-flight');
+      const nco = await hatAndDevice(build(uniform, gender, 'senior', 'SM', 'auto', 'nco'));
+      assert.equal(nco.hat.id, gender === 'female' ? 'hat-flight-cap-cadet' : 'hat-flight-cap-men-cadet', `${uniform} ${gender} NCO track`);
+      assert.equal(nco.device, null, 'no device before an NCO grade');
+    }
+  }
+});
+
+test('no flight cap with the corporate flight suit (8.3.8)', async () => {
+  const { hats } = await hatAndDevice(build('corporate_flight_suit', 'male', 'senior', 'Capt', 'auto'));
+  assert.equal(hats.length, 0);
+});

@@ -140,6 +140,45 @@
   // Grade label for nametags (flight tags, blazer plate).
   function gradeAbbrev(g){ return String(g.rank || '').replace(/^C\//, ''); }
 
+  // Which cap a member wears and the device on it (CAPR 39-1 6.2.1, 6.2.2, ICL 25-02 (g)), one rule for
+  // every uniform that shows a cap. `pref` is the Headgear option: 'auto' = flight cap, 'service',
+  // 'none'. The cut follows the member's gender (men's or women's service cap, Figures A5-8 and A5-9;
+  // the men's or women's flight cap is picked in hat()).
+  //   service cap: officers and generals wear the officer device, NCOs the NCO device (ICL 25-02 (g)),
+  //                cadet officers the cadet service device; cadet NCOs and Airmen have no service cap
+  //   flight cap:  officers and generals the officer flight device, cadet NCOs/Airmen and senior NCOs
+  //                the NCO flight device (6.2.2.2.3, ICL 25-02 (g)), cadet officers their regular metal
+  //                grade (6.2.2.2.2); members without grade follow their track (1.4.1.1, 1.4.2.1)
+  function chooseHat(b){
+    const g = b.grade;
+    const pref = b.opt.headgear;
+    if(pref === 'none') return null;
+    const female = b.gender === 'female';
+    const service = pref === 'service';
+    if(g.cadet){
+      if(g.category === 'cadet-officer'){
+        if(service) return { hat: female ? 'hat-service-cap-women-cadet-officer' : 'hat-service-cap-men-cadet-officer', device: 'cap-device-cadet-officer-service' };
+        return { hat: 'hat-flight-cap-cadet', device: G.cadetOfficerInsignia(g, 'metal-regular') };
+      }
+      return { hat: 'hat-flight-cap-cadet', device: 'cap-device-nco-flight' };
+    }
+    const sex = female ? 'women' : 'men';
+    if(g.general) return service ? { hat: `hat-service-cap-${sex}-general`, device: 'cap-device-officer-service' } : { hat: 'hat-flight-cap-general', device: 'cap-device-officer-flight' };
+    if(g.category === 'senior-officer' || g.category === 'flight-officer'){
+      const field = ['major', 'lieutenant-colonel', 'colonel'].includes(g.key);
+      if(service) return { hat: `hat-service-cap-${sex}-${field ? 'field-grade' : 'officer-nco'}`, device: 'cap-device-officer-service' };
+      return { hat: 'hat-flight-cap-officer', device: 'cap-device-officer-flight' };
+    }
+    if(g.category === 'senior-nco'){
+      // ICL 25-02 (g): senior NCOs wear the NCO device on the flight cap and the service cap.
+      if(service) return { hat: `hat-service-cap-${sex}-officer-nco`, device: 'cap-device-nco-flight' };
+      return { hat: 'hat-flight-cap-cadet', device: 'cap-device-nco-flight' };
+    }
+    // Adults without grade (1.4.1.1, 1.4.2.1): officer-track flight cap, or the plain blue one.
+    if(g.track === 'officer') return { hat: 'hat-flight-cap-officer', device: 'cap-device-officer-flight' };
+    return { hat: 'hat-flight-cap-cadet', device: null };
+  }
+
   // Hats sit on the uniform: the hat's garment_attach_center goes on the garment's top_center; the
   // device's mount_center goes on the hat's device_slot_center (MANIFEST conventions).
   async function hat(ctx, hatId, device){
@@ -279,14 +318,9 @@
   }
 
   function flightHat(b){
-    const g = b.grade;
-    if(b.opt.headgear === 'none' || b.uniform !== 'flight_suit') return null;  // no flight cap with the CFDU (8.3.8)
-    if(g.general) return { hat: 'hat-flight-cap-general', device: 'cap-device-officer-flight' };
-    if((g.officer && !g.cadet) || (g.category === 'senior-none' && g.track === 'officer')) return { hat: 'hat-flight-cap-officer', device: g.category === 'senior-none' ? null : 'cap-device-officer-flight' };
-    if(g.category === 'cadet-officer') return { hat: 'hat-flight-cap-cadet', device: G.cadetOfficerInsignia(g, 'metal-regular') };
-    if(g.category === 'cadet-nco' || g.category === 'cadet-basic') return { hat: 'hat-flight-cap-cadet', device: 'cap-device-nco-flight' };
-    if(g.category === 'senior-nco') return { hat: 'hat-flight-cap-cadet', device: 'cap-device-nco-flight' }; // ICL 25-02: NCO device
-    return { hat: 'hat-flight-cap-cadet', device: null };
+    if(b.uniform !== 'flight_suit') return null;  // no flight cap with the CFDU (8.3.8)
+    // Only the flight cap goes with the FDU (8.2.8.1).
+    return chooseHat(Object.assign({}, b, { opt: Object.assign({}, b.opt, { headgear: b.opt.headgear === 'none' ? 'none' : 'auto' }) }));
   }
 
   async function composeFlight(ctx, b){
@@ -355,5 +389,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

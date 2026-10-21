@@ -591,38 +591,8 @@
     return box;
   }
 
-  function hatChoice(b){
-    const g = b.grade;
-    const pref = b.opt.headgear;
-    if(pref === 'none') return null;
-    const female = b.gender === 'female';
-    const service = pref === 'service';
-    if(g.cadet){
-      if(g.category === 'cadet-officer'){
-        if(service) return { hat: female ? 'hat-service-cap-women-cadet-officer' : 'hat-service-cap-men-cadet-officer', device: 'cap-device-cadet-officer-service' };
-        return { hat: 'hat-flight-cap-cadet', device: G.cadetOfficerInsignia(g, 'metal-regular') };
-      }
-      return { hat: 'hat-flight-cap-cadet', device: 'cap-device-nco-flight' };
-    }
-    const sex = female ? 'women' : 'men';
-    if(g.general) return service ? { hat: `hat-service-cap-${sex}-general`, device: 'cap-device-officer-service' } : { hat: 'hat-flight-cap-general', device: 'cap-device-officer-flight' };
-    if(g.category === 'senior-officer' || g.category === 'flight-officer'){
-      const field = ['major', 'lieutenant-colonel', 'colonel'].includes(g.key);
-      if(service) return { hat: `hat-service-cap-${sex}-${field ? 'field-grade' : 'officer-nco'}`, device: 'cap-device-officer-service' };
-      return { hat: 'hat-flight-cap-officer', device: 'cap-device-officer-flight' };
-    }
-    if(g.category === 'senior-nco'){
-      // ICL 25-02: senior NCOs wear the NCO device on the flight cap and the service cap.
-      if(service) return { hat: `hat-service-cap-${sex}-officer-nco`, device: 'cap-device-nco-flight' };
-      return { hat: 'hat-flight-cap-cadet', device: 'cap-device-nco-flight' };
-    }
-    // Adults without grade (1.4.1.1, 1.4.2.1): officer-track flight cap, or the plain blue one.
-    if(g.track === 'officer') return { hat: 'hat-flight-cap-officer', device: 'cap-device-officer-flight' };
-    return { hat: 'hat-flight-cap-cadet', device: null };
-  }
-
   async function blueHat(ctx, b){
-    const h = hatChoice(b);
+    const h = H.chooseHat(b);
     if(h) await H.hat(ctx, h.hat, h.device);
   }
 
