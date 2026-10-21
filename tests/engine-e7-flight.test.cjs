@@ -190,12 +190,33 @@ test('NCO tag: wings and an occupational badge (8.2.4.1); wings alone are centre
   const bs = badgeLayers(both, FIGURES[0]);
   assert.deepEqual(bs.map(l => l.key).sort(), ['badge:CAPPilot1_FA9D33EA587D8', 'badge:ground_team_basic_badge']);
   const gt = bs.find(l => l.key === 'badge:ground_team_basic_badge'), wg = bs.find(l => l.key === 'badge:' + PILOT.id);
-  assert.ok(gt.x + gt.w <= wg.x, 'occupational badge on the wearer\'s right');
+  // "wings will be to the right or above an occupational badge" (8.2.4.1), read from the wearer's side: the
+  // wings are on the wearer's right (the viewer's left) of the occupational badge.
+  assert.ok(wg.x + wg.w <= gt.x, 'wings on the wearer\'s right of the occupational badge');
   const one = await P.composeUniform(build('flight_suit', 'senior', 'SMSgt', { badges: [PILOT] }), store());
   const tag = onFigure(one, FIGURES[0], l => l.key === 'nametag')[0];
   const w = badgeLayers(one, FIGURES[0]);
   assert.equal(w.length, 1);
   assert.ok(Math.abs(w[0].x + w[0].w / 2 - (tag.x + tag.w / 2)) < 0.01, 'a lone badge is centred on the tag');
+});
+
+test('cadet and NCO tags, wings and an occupational badge: wings on the wearer\'s right on all four garments, male and female (8.2.4.1, 8.3.4.1)', async () => {
+  const cases = [['cadet', 'C/Capt', [PILOT, GROUND_TEAM]], ['senior', 'SMSgt', [PILOT, GROUND_TEAM]]];
+  for(const f of FIGURES){
+    for(const gender of ['male', 'female']){
+      for(const [m, r, badges] of cases){
+        const scene = await P.composeUniform(build(f.uniform, m, r, { gender, badges }), store());
+        const { zone } = await badgeZoneOf(scene, f);
+        const bs = badgeLayers(scene, f);
+        assert.equal(bs.length, 2, `${f.name} ${gender} ${r}: two badges`);
+        const wg = bs.find(l => l.key === 'badge:' + PILOT.id), occ = bs.find(l => l.key === 'badge:' + GROUND_TEAM.id);
+        assert.ok(wg && occ, `${f.name} ${gender} ${r}`);
+        assert.ok(wg.x + wg.w <= occ.x, `${f.name} ${gender} ${r}: wings to the wearer's right of the occupational badge`);
+        assert.ok(wg.x >= zone.x - EPS && wg.x + wg.w <= zone.x + 0.7 * zone.w + EPS, `${f.name} ${gender} ${r}: wings in the first 0.7 of badge_zone`);
+        assert.ok(occ.x >= zone.x + 0.7 * zone.w - EPS && occ.x + occ.w <= zone.x + zone.w + EPS, `${f.name} ${gender} ${r}: occupational badge in the last 0.3`);
+      }
+    }
+  }
 });
 
 test('NCO tag: the command pin replaces the occupational badge; a graduated commander\'s pin is not on the tag (8.2.4.1)', async () => {

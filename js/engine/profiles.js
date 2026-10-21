@@ -215,10 +215,13 @@
     }
     // Badges embossed in silver above the name (8.2.4.1, 8.3.4.1). The leather tag and the NCO and cadet
     // cloth tags carry two: the CAP aeronautical rating (wings) and either an occupational badge or, for a
-    // current group or unit commander, the Command Insignia Pin on the wearer's right "rather than" the
-    // occupational badge; the wings to its left. The cloth tag for officers "will include name (first and
-    // last) and may include one badge as described above" (8.2.4.1, 8.3.4.1), so an officer tag carries
-    // one badge: the aeronautical rating if there is one, else the current command pin, else the
+    // current group or unit commander, the Command Insignia Pin "rather than" the occupational badge.
+    // The text puts the wings "to the right or above an occupational badge", and CAPR 39-1 reads left and
+    // right from the wearer's side throughout, so there the wings are on the wearer's right (the viewer's
+    // left) and the occupational badge on the wearer's left. The command pin is stated outright: it goes
+    // on the wearer's right, the wings to its left. The cloth tag for officers "will include name (first
+    // and last) and may include one badge as described above" (8.2.4.1, 8.3.4.1), so an officer tag
+    // carries one badge: the aeronautical rating if there is one, else the current command pin, else the
     // occupational badge.
     const set = badgeSet(ctx, b, 'dress');
     const pin = commandPin(ctx, b, 'dress');
@@ -228,20 +231,23 @@
     const chosen = officerLike ? [wings || other].filter(Boolean) : [wings, other].filter(Boolean);
     const zone = pieceRect(tag, spec, 'badge_zone');
     const opts = it => ({ z: Z.badge, role: 'badge', key: 'badge:' + it.id, title: it.title });
-    // Both slots are fractions of the tag's badge_zone landmark. The wearer's-right slot (the viewer's left)
-    // takes the first 0.3 of the zone for the pin or occupational badge, which are narrow; the wings take
-    // the other 0.7. Each badge is centred in its slot, inset 0.04 of the zone on each side so the two
-    // never touch. A lone badge is centred in the zone and may use the wings' 0.7 width.
-    const PIN_SLOT = 0.3, SLOT_INSET = 0.04;
+    // Both slots are fractions of the tag's badge_zone landmark, the viewer's left to right. The narrow
+    // badge (pin or occupational) takes 0.3 of the zone and the wings the other 0.7. Each badge is centred
+    // in its slot, inset 0.04 of the zone on each side so the two never touch. A lone badge is centred in
+    // the zone and may use the wings' 0.7 width.
+    const NARROW_SLOT = 0.3, SLOT_INSET = 0.04;
     const slot = (from, to) => ({ x: zone.x + zone.w * (from + to) / 2, w: zone.w * (to - from - 2 * SLOT_INSET) });
     if(chosen.length === 1){
-      await placeFitted(ctx, chosen[0].art, core.rectCenter(zone), zone.w * (1 - PIN_SLOT), zone.h, opts(chosen[0]));
+      await placeFitted(ctx, chosen[0].art, core.rectCenter(zone), zone.w * (1 - NARROW_SLOT), zone.h, opts(chosen[0]));
     }else if(chosen.length === 2){
-      const pinSlot = slot(0, PIN_SLOT), wingsSlot = slot(PIN_SLOT, 1);
       const cy = zone.y + zone.h / 2;
-      // Wearer's right is the viewer's left of the tag.
-      await placeFitted(ctx, other.art, { x: pinSlot.x, y: cy }, pinSlot.w, zone.h, opts(other));
-      await placeFitted(ctx, wings.art, { x: wingsSlot.x, y: cy }, wingsSlot.w, zone.h, opts(wings));
+      // Command pin: narrow slot on the viewer's left (wearer's right), wings to its left as worn.
+      // Occupational badge: wings on the viewer's left (wearer's right), the badge in the narrow slot.
+      const narrowFirst = !!other.command;
+      const narrow = narrowFirst ? slot(0, NARROW_SLOT) : slot(1 - NARROW_SLOT, 1);
+      const wide = narrowFirst ? slot(NARROW_SLOT, 1) : slot(0, 1 - NARROW_SLOT);
+      await placeFitted(ctx, other.art, { x: narrow.x, y: cy }, narrow.w, zone.h, opts(other));
+      await placeFitted(ctx, wings.art, { x: wide.x, y: cy }, wide.w, zone.h, opts(wings));
     }
     // Something worn on the member's record is not on the tag: the command pin counts as one candidate
     // when it is current (a graduated pin is never worn).
