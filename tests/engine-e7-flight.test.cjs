@@ -178,3 +178,50 @@ test('a third badge is not shown and says so', async () => {
   assert.equal(badgeLayers(sc, FIGURES[0]).length, 2);
   assert.ok(sc.notes.some(n => /at most two badges/.test(n)));
 });
+
+// ---- chest layout and the ES patch -------------------------------------------------------------
+
+test('chest: CAP Command Patch on the wearer\'s right breast, name tag on the left, level and opposite (8.2.4.1, 8.2.4.2, 8.3.4.2, 6.1.7)', async () => {
+  for(const f of FIGURES){
+    const scene = await P.composeUniform(build(f.uniform, 'senior', 'Col', { badges: [PILOT] }), store());
+    const spec = await ST.load(f.garment);
+    const g = scene.layers.find(l => l.id === f.garment);
+    const s = g.w / spec.w;
+    const at = name => { const a = core.anchor(spec, name); return { x: g.x + a.x * s, y: g.y + a.y * s }; };
+    const cmd = at('command_patch_center'), tape = at('name_tape_center'), mid = at('center').x;
+    // The wearer's right is the left of the picture.
+    assert.ok(cmd.x < mid && tape.x > mid, `${f.name}: Command Patch on the wearer's right, name tag on the left`);
+    assert.ok(Math.abs(cmd.y - tape.y) < 0.2, `${f.name}: level with each other`);
+    assert.ok(Math.abs((mid - cmd.x) - (tape.x - mid)) < 6, `${f.name}: about the same distance from the centre line (directly opposite)`);
+    const tag = onFigure(scene, f, l => l.key === 'nametag')[0];
+    assert.ok(Math.abs(tag.x + tag.w / 2 - tape.x) < EPS && Math.abs(tag.y + tag.h / 2 - tape.y) < EPS, `${f.name}: tag centred on the name tape position`);
+    assert.ok(Math.abs(tag.w - 4) < 1e-6 && Math.abs(tag.h - 2) < 1e-6, `${f.name}: tag is 2 x 4 in`);
+    // The Command Patch is drawn in the garment art, not as a separate member-chosen layer.
+    assert.equal(onFigure(scene, f, l => l.role === 'patch').length, 0, `${f.name}: no chest patch layer by default`);
+  }
+});
+
+test('ES patch: directly below and centred on the right breast pocket, at the top of the zone (8.2.4.3, 8.3.4.3)', async () => {
+  for(const f of FIGURES.filter(x => !x.jacket)){
+    for(const style of ['style-1', 'style-2']){
+      const scene = await P.composeUniform(build(f.uniform, 'senior', 'Capt', { opt: { esPatch: style } }), store());
+      const es = onFigure(scene, f, l => l.role === 'patch')[0];
+      assert.ok(es, `${f.name} ${style}: ES patch drawn`);
+      const z = await zoneOf(scene, f.garment, 'es_patch_zone');
+      assert.ok(Math.abs(es.y - z.y) < EPS, `${f.name} ${style}: top on the zone top ${z.y.toFixed(3)}, got ${es.y.toFixed(3)}`);
+      assert.ok(Math.abs(es.x + es.w / 2 - (z.x + z.w / 2)) < EPS, `${f.name} ${style}: centred on the zone`);
+      assert.ok(es.w <= z.w + EPS && es.h <= z.h + EPS, `${f.name} ${style}: inside the zone`);
+      // Below the pocket: the zone starts under the pocket's lowest edge, and the patch is centred on the pocket.
+      const spec = await ST.load(f.garment);
+      const g = scene.layers.find(l => l.id === f.garment), s = g.w / spec.w;
+      const raw = JSON.parse(fs.readFileSync(path.join(root, 'images/garments', f.garment + '.spec.json'), 'utf8'));
+      const pocket = raw.landmarks.chest_pocket_right;
+      const pts = pocket.map(p => ({ x: g.x + p[0] * 0.01 * s, y: g.y + p[1] * 0.01 * s })); // raw landmark polygons are in 0.01 in units
+      const bottom = Math.max(...pts.map(p => p.y)), left = Math.min(...pts.map(p => p.x)), right = Math.max(...pts.map(p => p.x));
+      assert.ok(es.y >= bottom - EPS, `${f.name} ${style}: below the pocket`);
+      assert.ok(Math.abs(es.x + es.w / 2 - (left + right) / 2) < 0.3, `${f.name} ${style}: centred on the pocket (${(es.x + es.w / 2).toFixed(2)} vs ${((left + right) / 2).toFixed(2)})`);
+    }
+  }
+  const none = await P.composeUniform(build('flight_suit', 'senior', 'Capt'), store());
+  assert.equal(none.layers.filter(l => l.role === 'patch').length, 0, 'no ES patch unless chosen');
+});

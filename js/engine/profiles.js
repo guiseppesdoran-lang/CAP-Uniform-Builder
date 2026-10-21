@@ -243,7 +243,12 @@
     if(b.opt.esPatch && b.opt.esPatch !== 'none'){
       const zone = ctx.rect('es_patch_zone');
       const id = b.opt.esPatch === 'style-2' ? 'patch-es-style-2' : 'patch-es-style-1';
-      if(zone) await fitCenter(ctx, id, zone, { z: Z.patch, role: 'patch', key: 'patch:' + id, title: 'Emergency Services patch' });
+      if(zone){
+        // Directly below the pocket (the zone's top edge is the line under the pocket), centred on it.
+        const spec = await ctx.spec(id);
+        const scale = Math.min(1, zone.w / spec.w, zone.h / spec.h);
+        await ctx.place(id, { pieceAnchor: 'top_center', at: { x: zone.x + zone.w / 2, y: zone.y }, scale, z: Z.patch, role: 'patch', key: 'patch:' + id, title: 'Emergency Services patch' });
+      }
     }
     // One authorized patch on the right sleeve, inside the 3 1/2 in loop tape (8.2.4.5, 8.2.5.5).
     const slot = ctx.rect('patch_loop_square_right');
