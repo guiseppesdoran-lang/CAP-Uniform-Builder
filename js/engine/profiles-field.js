@@ -187,14 +187,31 @@
       if(await ctx.place(pin.art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: tx, y: tape.y - 0.5 } }, o))) ctx.measure({ x: tx, y: tape.y }, { x: tx, y: tape.y - 0.5 });
       return;
     }
-    if(b.uniform === 'ocp'){
-      const tab = ctx.rect('glint_tab_left');
-      if(tab) await ctx.place(pin.art, Object.assign({ pieceAnchor: 'center', at: core.rectCenter(tab) }, o));
-    }else if(b.uniform === 'abu'){
+    if(b.uniform === 'ocp') await ocpSleevePin(ctx, pin, o);
+    else if(b.uniform === 'abu'){
       if(await ctx.place(pin.art, Object.assign({ pieceAnchor: 'top_center', at: { x: tx, y: tape.y + tape.h + 0.5 } }, o))) ctx.measure({ x: tx, y: tape.y + tape.h }, { x: tx, y: tape.y + tape.h + 0.5 });
     }else{
       const flap = ctx.rect('chest_flap_right');
       if(flap) await ctx.place(pin.art, Object.assign({ pieceAnchor: 'center', at: core.rectCenter(flap) }, o));
+    }
+  }
+
+  // Graduated commanders: the 1 in x 1 in insignia patch on the small Velcro piece on top of the
+  // left sleeve, centred above the shoulder patches (7.1.1.3.1.7). The sheet's piece is the IFF loop,
+  // 1 x 3 1/4 in, whose upper 1 7/8 in is covered by the camouflage flap; the patch goes on the loop
+  // that shows, centred in it, never across the flap's edge. Drawn in the flat sleeve view and in the
+  // edge view of the sleeve.
+  async function ocpSleevePin(ctx, pin, o){
+    const tab = ctx.rect('glint_tab_left');
+    if(!tab) return;
+    const dims = ctx.base && ctx.base.raw && ctx.base.raw.dimensions;
+    const cover = Math.min(tab.h, (dims && dims.sleeve_pocket && dims.sleeve_pocket.iff_cover_in && dims.sleeve_pocket.iff_cover_in[1]) || 1.875);
+    const loop = { x: tab.x, y: tab.y + cover, w: tab.w, h: tab.h - cover };
+    const flat = await ctx.place(pin.art, Object.assign({ pieceAnchor: 'center', at: core.rectCenter(loop) }, o));
+    const f = edgeFrame(ctx, 'left');
+    if(flat && f){
+      const e = f.map({ x: flat.x, y: flat.y, w: flat.w, h: flat.h });
+      await ctx.place(pin.art, Object.assign({}, o, { pieceAnchor: 'center', at: e.center, scaleX: f.sx, rotate: f.tilt, key: o.key + ':edge' }));
     }
   }
 

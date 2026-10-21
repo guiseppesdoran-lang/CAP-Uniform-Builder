@@ -121,3 +121,47 @@ test('OCP: a patch stays inside the Velcro of its sleeve in the flat view (7.1.1
     assert.ok(l.x >= v.x - EPS && l.x + l.w <= v.x + v.w + EPS && l.y >= v.y - EPS && l.y + l.h <= v.y + v.h + EPS, key);
   }
 });
+
+// ---- D23: no grade piece is mounted above the AUX panel -------------------------------------------
+
+test('OCP: the grade is the chest square and the cap piece; nothing mounted on the sleeve tabs but the graduated commander\'s patch (7.1.1.2, 7.1.1.3.1.7, 7.1.1.8)', async () => {
+  const tabs = [await rectOf('glint_tab_left'), await rectOf('glint_tab_right')];
+  const inTab = l => tabs.some(t => l.x + l.w / 2 > t.x && l.x + l.w / 2 < t.x + t.w && l.y + l.h / 2 > t.y && l.y + l.h / 2 < t.y + t.h);
+  for(const [m, r] of [['cadet', 'C/SSgt'], ['cadet', 'C/Maj'], ['senior', 'Capt'], ['senior', 'Lt Col'], ['senior', 'Col'], ['senior', 'SMSgt'], ['senior', 'Brig Gen']]){
+    for(const command of [null, PIN]){
+      const scene = await P.composeUniform(build('ocp', m, r, { command, patches: [UNIT, WING] }), store());
+      const grades = scene.layers.filter(l => l.role === 'grade');
+      assert.ok(grades.length >= 1 && grades.every(g => !inTab(g)), `${r}: no grade piece on a sleeve tab`);
+      const chest = grades.filter(g => g.key === 'grade:chest');
+      assert.ok(chest.length <= 1, `${r}: at most the one chest grade`);
+      const sq = await rectOf('rank_square');
+      for(const g of chest) assert.ok(g.x >= sq.x - EPS && g.x + g.w <= sq.x + sq.w + EPS && g.y >= sq.y - EPS && g.y + g.h <= sq.y + sq.h + EPS, `${r}: chest grade inside the 2 x 2 square`);
+      const rest = grades.filter(g => g.key !== 'grade:chest');
+      assert.ok(rest.every(g => /^grade:(patrol|baseball|boonie)_/.test(g.key)), `${r}: any other grade is on a cap`);
+      // The only thing worn on a tab is the commander's patch.
+      const onTab = scene.layers.filter(l => l.type !== 'measure' && l.role !== 'garment' && inTab(l));
+      assert.ok(onTab.every(l => l.role === 'badge' && /^badge:squadron_commander_badge:UN/.test(l.key)), `${r}: only the graduated commander's insignia on a tab`);
+      assert.equal(onTab.length, command ? 1 : 0, `${r}: the commander's patch on the flat tab only when worn`);
+    }
+  }
+});
+
+test('OCP: the graduated commander\'s 1 in patch rests on the loop that shows, centred in it, never across the flap\'s edge (7.1.1.3.1.7)', async () => {
+  const scene = await P.composeUniform(build('ocp', 'senior', 'Capt', { command: PIN }), store());
+  const tab = await rectOf('glint_tab_left');
+  const spec = await ST.load(OCP);
+  const cover = spec.raw.dimensions.sleeve_pocket.iff_cover_in[1];
+  const pin = scene.layers.find(l => l.key === 'badge:squadron_commander_badge:UN:0');
+  assert.ok(pin);
+  assert.ok(Math.abs(pin.w - 1) < EPS && Math.abs(pin.h - 1) < EPS, 'the 1 x 1 in patch');
+  assert.ok(pin.y >= tab.y + cover - EPS, `top of the patch ${pin.y.toFixed(3)} is below the flap edge ${(tab.y + cover).toFixed(3)}`);
+  assert.ok(pin.y + pin.h <= tab.y + tab.h + EPS, 'inside the loop');
+  assert.ok(Math.abs(pin.x + pin.w / 2 - (tab.x + tab.w / 2)) < EPS, 'centred across the tab');
+  const above = pin.y - (tab.y + cover), below = tab.y + tab.h - (pin.y + pin.h);
+  assert.ok(Math.abs(above - below) < EPS, 'equal margin above and below');
+  const edge = scene.layers.find(l => l.key === 'badge:squadron_commander_badge:UN:0:edge');
+  assert.ok(edge, 'edge view on the coat');
+  assert.ok(Math.abs(edge.w - 0.5) < EPS && Math.abs(edge.rotate - -12.375) < 1e-6);
+  const sheet = sheetEdgeView('left');
+  assert.ok(Math.abs(sheet.tilt - -12.375) < 1e-6, 'the sheet turns the left pocket the same way');
+});
