@@ -176,10 +176,20 @@
       }
       return;
     }
+    // Officers (not generals): the cloth grade sits on top of the shoulder with its outer edge a half
+    // inch from the shoulder seam (8.2.3.2, 8.3.3.2, 6.1.7). The grade zone is sized for the widest
+    // form and its seam-side edge is that half inch line, so every form is set against that edge,
+    // not centred in the zone (a captain's bars would otherwise sit 0.7 in from the seam).
     const id = G.seniorOfficerInsignia(g, 'cloth-bordered');
+    const spec = await ctx.spec(id);
     for(const side of ['right', 'left']){
       const zone = ctx.rect('grade_zone_' + side);
-      if(zone) await fitCenter(ctx, id, zone, { z: Z.insignia, role: 'grade', key: 'grade:' + side });
+      if(!zone) continue;
+      const scale = Math.min(1, zone.w / spec.w, zone.h / spec.h);
+      const w = spec.w * scale;
+      // The wearer's right shoulder is the left of the picture: its seam is the zone's left edge.
+      const cx = side === 'right' ? zone.x + w / 2 : zone.x + zone.w - w / 2;
+      await ctx.place(id, { pieceAnchor: 'center', at: { x: cx, y: zone.y + zone.h / 2 }, scale, z: Z.insignia, role: 'grade', key: 'grade:' + side });
     }
   }
 
