@@ -278,6 +278,46 @@
     return out;
   }
 
+  // Where a piece `w` wide rests on the gorge seam: centred on the seam's midpoint, its bottom edge on
+  // the seam, parallel with the ground, not over it (4.1.5.2.1.4, 4.1.5.2.2.1). The seam slopes, so a
+  // flat bottom edge rests on the seam's highest point under the piece. Null when the sheet has no seam.
+  function seamRest(ctx, side, w){
+    const p1 = ctx.point(`gorge_seam_${side}_p1`), p2 = ctx.point(`gorge_seam_${side}_p2`), mid = ctx.point(`gorge_seam_${side}_mid`);
+    if(!p1 || !p2 || !mid || p1.x === p2.x) return null;
+    const yAt = x => p1.y + (p2.y - p1.y) * (x - p1.x) / (p2.x - p1.x);
+    const slope = (p2.y - p1.y) / (p2.x - p1.x);
+    return { x: mid.x, y: Math.min(yAt(mid.x - w / 2), yAt(mid.x + w / 2)), yAtCenter: yAt(mid.x), cos: 1 / Math.sqrt(1 + slope * slope) };
+  }
+
+  // The bottom-centre point for a placed piece (collar insignia, cadet chevron) resting on the seam.
+  async function restOnSeam(ctx, id, side){
+    if(!ctx.has(id)) return null;
+    const spec = await ctx.spec(id);
+    const r = seamRest(ctx, side, spec.w);
+    return r ? { x: r.x, y: r.y } : null;
+  }
+
+  // The overlay sheets draw the lapel insignia at the seam midpoint. Slide the sheet so each insignia
+  // rests on the sloping seam: a rectangular insignia on its highest point, the NCO circle tangent to
+  // it. The sheet holds both lapels, mirrored, so one shift serves both.
+  function restOverlayOnSeam(ctx, spec, circle){
+    const layer = ctx.layers[ctx.layers.length - 1];
+    let dy = null;
+    for(const side of ['right', 'left']){
+      const r = core.landmarkBounds(spec, 'lapel_us_' + side) || core.landmarkBounds(spec, 'lapel_cap_' + side);
+      const rest = r && seamRest(ctx, side, r.w);
+      if(!rest) continue;
+      const d = circle
+        ? (rest.yAtCenter - r.h / 2 / rest.cos) - (r.y + r.h / 2)
+        : rest.y - (r.y + r.h);
+      dy = dy == null ? d : Math.min(dy, d);
+    }
+    if(dy == null || !layer || layer.type !== 'asset') return;
+    layer.y += dy;
+    layer.origin = { x: layer.origin.x, y: layer.origin.y + dy };
+    layer.noBounds = true; // the garment sheet sets the scene box; the shift only moves the insignia
+  }
+
   // The lapels drawn again over the badges and ribbons they cover (the collar lies on top of them),
   // with the lapel insignia above that.
   async function lapelForeground(ctx, A, g){
@@ -285,7 +325,10 @@
     if(!ctx.has(fg)) return;
     await ctx.overlay(fg, Z.badge + 0.5);
     const ins = g.category === 'cadet-officer' ? 'lapel-cap' : g.category === 'senior-nco' ? 'lapel-us-nco' : isOfficerLike(g) ? 'lapel-us' : null;
-    if(ins) await ctx.overlay(`${A.layer}-${ins}`, LAPEL_Z);
+    if(ins){
+      const s = await ctx.overlay(`${A.layer}-${ins}`, LAPEL_Z);
+      if(s) restOverlayOnSeam(ctx, s, ins === 'lapel-us-nco');
+    }
     // Lapel insignia and cadet NCO chevrons sit halfway up the seam, resting on it (4.1.5.2.2.1).
     for(const side of ['right', 'left']){
       const p1 = ctx.point(`gorge_seam_${side}_p1`), mid = ctx.point(`gorge_seam_${side}_mid`), p2 = ctx.point(`gorge_seam_${side}_p2`);
@@ -623,7 +666,10 @@
     if(g.category === 'cadet-officer') await cadetBoards(ctx, A, g, sex);
     else if(!semi && g.general) await ctx.overlay(`${A.layer}-general-officer`);
     else if(!semi && isOfficerLike(g)) await ctx.overlay(`${A.layer}-senior-officer`);
-    else if(!semi && g.category === 'senior-nco') await ctx.overlay(`${A.layer}-senior-nco-lapel`);
+    else if(!semi && g.category === 'senior-nco'){
+      const s = await ctx.overlay(`${A.layer}-senior-nco-lapel`);
+      if(s) restOverlayOnSeam(ctx, s, true);
+    }
 
     // Nametag (not worn on the semi-formal).
     let tagRect = A.nametag;
@@ -641,9 +687,10 @@
     // Grade.
     if(g.category === 'cadet-nco'){
       for(const side of ['right', 'left']){
-        const rest = !semi && ctx.point('lapel_insignia_rest_' + side);
+        const id = G.cadetNcoChevron(g, 'metal');
+        const rest = !semi && await restOnSeam(ctx, id, side);
         const at = rest || ctx.point('lapel_insignia_' + side);
-        if(at) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: rest ? 'bottom_center' : 'center', at, z: semi ? Z.insignia : LAPEL_Z, role: 'grade', key: 'grade:' + side });
+        if(at) await ctx.place(id, { pieceAnchor: rest ? 'bottom_center' : 'center', at, z: semi ? Z.insignia : LAPEL_Z, role: 'grade', key: 'grade:' + side });
       }
     }else if(!semi && g.category === 'senior-nco'){
       const size = sex === 'male' ? '4' : (b.opt.chevron === '3.5' ? '3.5' : '4');
@@ -654,7 +701,7 @@
     }else if(!semi && g.category === 'senior-none' && g.track === 'nco'){
       // Adults without grade on the NCO track wear CAP collar insignia (1.4.2.1).
       for(const side of ['right', 'left']){
-        const rest = ctx.point('lapel_insignia_rest_' + side);
+        const rest = await restOnSeam(ctx, 'collar-insignia-cap-metal', side);
         const at = rest || ctx.point('lapel_insignia_' + side);
         if(at) await ctx.place('collar-insignia-cap-metal', { pieceAnchor: rest ? 'bottom_center' : 'center', at, z: LAPEL_Z, role: 'grade', key: 'collar:' + side });
       }
