@@ -166,6 +166,70 @@ test('OCP: the graduated commander\'s 1 in patch rests on the loop that shows, c
   assert.ok(Math.abs(sheet.tilt - -12.375) < 1e-6, 'the sheet turns the left pocket the same way');
 });
 
+// ---- D22: nothing in the edge view goes past the Velcro or off the coat (7.1.1.4) -------------------
+
+// The sheet's coat silhouette (clipSil) in scene inches, and the sheet's Velcro pieces of each edge
+// view (the flap, the IFF loop) with their turn.
+function sheetShapes(side){
+  const svg = fs.readFileSync(path.join(root, 'images', 'garments', OCP + '.svg'), 'utf8');
+  const art = /<g id="[^"]*__art" transform="translate\(([\d.]+) ([\d.]+)\) scale\(100\)">/.exec(svg);
+  const ox = Number(art[1]) / 100, oy = Number(art[2]) / 100;
+  const sil = /<clipPath id="[^"]*__clipSil"><path d="([^"]*)"/.exec(svg)[1];
+  const silhouette = (sil.match(/-?\d+\.?\d*,-?\d+\.?\d*/g) || []).map(t => { const [x, y] = t.split(',').map(Number); return { x: ox + x, y: oy + y }; });
+  const edge = sheetEdgeView(side);
+  const groupAt = svg.indexOf(`<g id="${OCP}__sleeve-pocket-edge-${side}"`);
+  const rectAt = (from, re) => { const m = re.exec(svg.slice(from)); return { x: ox + Number(m[1]), y: oy + Number(m[2]), w: Number(m[3]), h: Number(m[4]) }; };
+  const num = '([-\\d.]+)';
+  const flap = rectAt(groupAt, new RegExp(`<rect id="${OCP}__sleeve-flap-edge-${side}" x="${num}" y="${num}" width="${num}" height="${num}"`));
+  const loop = rectAt(groupAt, new RegExp(`<rect x="${num}" y="${num}" width="(0.500)" height="(3.25)"`));
+  return { silhouette, pivot: edge.pivot, tilt: edge.tilt, flap, loop };
+}
+
+function inPoly(p, poly){
+  let c = false;
+  for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){
+    const a = poly[i], b = poly[j];
+    if((a.y > p.y) !== (b.y > p.y) && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x) c = !c;
+  }
+  return c;
+}
+// Inside a rect that is turned `tilt` degrees about `pivot` (tolerance in inches).
+function inTurnedRect(p, r, pivot, tilt, tol){
+  const q = core.rotatePoint(p, pivot, -tilt);
+  return q.x >= r.x - tol && q.x <= r.x + r.w + tol && q.y >= r.y - tol && q.y <= r.y + r.h + tol;
+}
+
+test('OCP: every edge-view patch is clipped to its Velcro and to the coat silhouette, so none lands on the white beside the sleeve (7.1.1.4: patches will not extend past the Velcro)', async () => {
+  for(const gender of ['male', 'female']){
+    const scene = await P.composeUniform(build('ocp', 'senior', 'Capt', { gender, patches: [UNIT, WING], command: PIN }), store());
+    const edges = scene.layers.filter(l => /:edge$/.test(l.key));
+    assert.equal(edges.length, 3, `${gender}: unit patch, HHQ patch and the commander's patch each show in an edge view`);
+    for(const l of edges){
+      const side = /sequoyah/.test(l.key) ? 'right' : 'left';
+      const sheet = sheetShapes(side);
+      const piece = /badge:/.test(l.key) ? sheet.loop : sheet.flap;
+      assert.ok(Array.isArray(l.clip) && l.clip.length >= 3, `${gender} ${l.key}: has a clip polygon`);
+      // The clip is inside the mapped Velcro (flap or IFF loop) and inside the coat silhouette.
+      for(const p of l.clip){
+        assert.ok(inTurnedRect(p, piece, sheet.pivot, sheet.tilt, 0.005), `${gender} ${l.key}: clip corner (${p.x.toFixed(3)}, ${p.y.toFixed(3)}) is inside the ${/badge:/.test(l.key) ? 'IFF loop' : 'flap'}`);
+        assert.ok(inPoly(p, sheet.silhouette), `${gender} ${l.key}: clip corner (${p.x.toFixed(3)}, ${p.y.toFixed(3)}) is inside the coat silhouette`);
+      }
+      // Every point of the patch that the clip lets through is on the Velcro and on the coat.
+      const half = { w: l.w / 2, h: l.h / 2 }, c = l.origin, tilt = l.rotate || 0;
+      let shown = 0, total = 0;
+      for(let u = -half.w + 0.025; u < half.w; u += 0.05) for(let v = -half.h + 0.025; v < half.h; v += 0.05){
+        const p = core.rotatePoint({ x: c.x + u, y: c.y + v }, c, tilt);
+        total++;
+        if(!inPoly(p, l.clip)) continue;
+        shown++;
+        assert.ok(inTurnedRect(p, piece, sheet.pivot, sheet.tilt, 0.005) && inPoly(p, sheet.silhouette), `${gender} ${l.key}: a visible point (${p.x.toFixed(3)}, ${p.y.toFixed(3)}) is off the Velcro or the coat`);
+      }
+      assert.ok(shown > 0, `${gender} ${l.key}: some of it shows`);
+      if(!/badge:/.test(l.key)) assert.ok(shown / total > 0.4, `${gender} ${l.key}: most of the patch stays on the flap (${(100 * shown / total).toFixed(0)} %)`);
+    }
+  }
+});
+
 // ---- D26: the measurement overlay ------------------------------------------------------------------
 
 test('every measurement is labelled with its own length, except the one marked approximate', async () => {

@@ -245,9 +245,11 @@
     const loop = { x: tab.x, y: tab.y + cover, w: tab.w, h: tab.h - cover };
     const flat = await ctx.place(pin.art, Object.assign({ pieceAnchor: 'center', at: core.rectCenter(loop) }, o));
     const f = edgeFrame(ctx, 'left');
-    if(flat && f){
+    // The patch is on the loop in the edge view too, clipped to the loop (7.1.1.4) and the coat.
+    const clip = flat && f && f.shows(tab);
+    if(clip){
       const e = f.map({ x: flat.x, y: flat.y, w: flat.w, h: flat.h });
-      await ctx.place(pin.art, Object.assign({}, o, { pieceAnchor: 'center', at: e.center, scaleX: f.sx, rotate: f.tilt, key: o.key + ':edge' }));
+      await ctx.place(pin.art, Object.assign({}, o, { pieceAnchor: 'center', at: e.center, scaleX: f.sx, rotate: f.tilt, key: o.key + ':edge', clip }));
     }
     // Centred on the loop that shows: the same margin above and below the patch.
     if(flat){
@@ -273,7 +275,37 @@
   // edge view is the flat one narrowed about the pocket's centre line (EDGE.sx), moved down EDGE.dy
   // and turned EDGE.tilt about the pocket's centre, which sits EDGE.pivotDX from the coat's centre
   // line (the sheet's own constants; the sheet publishes no landmark for it yet, see FOLLOWUPS).
-  const EDGE = { 'garment-ocp-coat-abu-cut': { sx: 0.5, dy: 1.6, tilt: 12.375, pivotDX: 12.726 } };
+  //
+  // The sheet draws those groups inside its coat silhouette (`clipSil`), so the outer part of the
+  // edge pocket is cut off where the sleeve's edge passes through it. A patch on the Velcro may not
+  // go past the Velcro (7.1.1.4: patches will not extend past the boundary of the Velcro), and what
+  // shows of the pocket is only what is on the coat, so every edge-view piece is clipped to its
+  // Velcro rect (the flap, or the IFF loop) mapped through the edge frame and to the silhouette.
+  // EDGE.visible is the sheet's silhouette near the pocket: points [v, u] of the sleeve's outer edge in
+  // the pocket's own frame (v down from the pivot, u toward the coat's centre line), a convex curve
+  // kept 0.03 to 0.05 in inside the sheet's clipSil (a test reads clipSil and checks it).
+  const EDGE = { 'garment-ocp-coat-abu-cut': { sx: 0.5, dy: 1.6, tilt: 12.375, pivotDX: 12.726,
+    visible: [[-5.25, 0.46], [-4.25, 0.08], [-3.75, -0.08], [-3.25, -0.14], [-2.25, -0.23], [-1.75, -0.26], [0.25, -0.31], [1.25, -0.33], [1.75, -0.32], [2.25, -0.27], [3.75, -0.08]] } };
+
+  // Sutherland-Hodgman: a polygon cut to a convex one (either winding).
+  function clipConvex(subject, clip){
+    let area = 0;
+    for(let i = 0; i < clip.length; i++){ const a = clip[i], b = clip[(i + 1) % clip.length]; area += a.x * b.y - b.x * a.y; }
+    const sign = area >= 0 ? 1 : -1;
+    let out = subject;
+    for(let i = 0; i < clip.length && out.length; i++){
+      const a = clip[i], b = clip[(i + 1) % clip.length];
+      const side = p => sign * ((b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x));
+      const input = out;
+      out = [];
+      for(let j = 0; j < input.length; j++){
+        const p = input[j], q = input[(j + 1) % input.length], sp = side(p), sq = side(q);
+        if(sp >= 0) out.push(p);
+        if((sp >= 0) !== (sq >= 0)){ const t = sp / (sp - sq); out.push({ x: p.x + (q.x - p.x) * t, y: p.y + (q.y - p.y) * t }); }
+      }
+    }
+    return out;
+  }
 
   function edgeFrame(ctx, side){
     const e = ctx.base && EDGE[ctx.base.id];
@@ -283,23 +315,39 @@
     const c = core.rectCenter(velcro);
     const pivot = { x: top.x + (right ? -e.pivotDX : e.pivotDX), y: c.y + e.dy };
     const tilt = right ? e.tilt : -e.tilt;
+    const dir = right ? 1 : -1;
+    // Where the sheet's coat silhouette lets the pocket show, in the pocket's own (unturned) frame.
+    const first = e.visible[0], last = e.visible[e.visible.length - 1];
+    const visible = [...e.visible.map(([v, u]) => ({ x: dir * u, y: v })), { x: dir * 4, y: last[0] }, { x: dir * 4, y: first[0] }];
+    const toScene = (dx, v) => core.rotatePoint({ x: pivot.x + dx, y: pivot.y + v }, pivot, tilt);
     return {
       sx: e.sx, tilt, pivot,
       // A flat rect on the sleeve -> its width and height in the edge view and its centre there.
       map(r){
         const m = core.rectCenter(r);
         return { w: r.w * e.sx, h: r.h, center: core.rotatePoint({ x: pivot.x + (m.x - c.x) * e.sx, y: m.y + e.dy }, pivot, tilt) };
+      },
+      // What shows in the edge view of a flat rect on the sleeve (the Velcro, the IFF loop): the rect
+      // mapped through the frame and cut to the coat silhouette, as a polygon in scene inches (the
+      // clip of every piece drawn there). Empty when none of it shows.
+      shows(r){
+        const local = [[r.x, r.y], [r.x + r.w, r.y], [r.x + r.w, r.y + r.h], [r.x, r.y + r.h]].map(([x, y]) => ({ x: (x - c.x) * e.sx, y: y - c.y }));
+        const cut = clipConvex(local, visible);
+        return cut.length >= 3 ? cut.map(p => toScene(p.x, p.y)) : null;
       }
     };
   }
 
-  // A patch on a sleeve's Velcro: in the flat view and again, narrowed, in the edge view.
+  // A patch on a sleeve's Velcro: in the flat view and again, narrowed, in the edge view, where it is
+  // clipped to the Velcro and the coat (7.1.1.4).
   function sleevePatch(ctx, patch, zone, slot, side){
     const flat = fitPatch(ctx, patch, zone, slot);
     const f = edgeFrame(ctx, side);
-    if(f){
+    const velcro = ctx.rect('sleeve_flap_velcro_' + side);
+    const clip = f && velcro && f.shows(velcro);
+    if(f && clip){
       const e = f.map(flat);
-      ctx.raster({ href: patch.href, x: e.center.x - e.w / 2, y: e.center.y - e.h / 2, w: e.w, h: e.h, rotate: f.tilt, origin: e.center, fit: 'stretch',
+      ctx.raster({ href: patch.href, x: e.center.x - e.w / 2, y: e.center.y - e.h / 2, w: e.w, h: e.h, rotate: f.tilt, origin: e.center, fit: 'stretch', clip,
         z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:edge`, title: patch.title, className: 'patch' });
     }
     return flat;
