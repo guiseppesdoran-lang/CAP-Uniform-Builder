@@ -3,8 +3,9 @@
 //   - Badges are placed at their own size on every dress uniform; only field Velcro zones fit a piece
 //     to its slot (ICL 25-06 7.1.1.4). A badge never scales to the pocket (critique D29, D35).
 //   - CAPR 39-1 4.2.3.1.1.1 / 4.2.4.1.1.1: the crest, or the CSAG, Command Council, National Board or NEC
-//     badge in its place, is centred on the left breast pocket (the women's blazer has none: same
-//     relative position). 4.2.4.1.1.2: the women's nametag 1/2 in above it.
+//     badge in its place, is centred on the left breast pocket body, the sheet's crest_center (below the
+//     welt opening; centring on the welt strip was rejected, tracker placement item 4). The women's
+//     blazer has no pocket: the same relative position. 4.2.4.1.1.2: the women's nametag 1/2 in above it.
 //   - 4.2.1.4 / 4.2.2.4 with ICL 25-02: semi-formal miniature medals end 1/2 in above the crest or the
 //     service badge worn in its place.
 //   - 4.2.6.2.7.2-3: women's aviator shirt, two badges across the nametag, the command pin 1/2 in above
@@ -116,57 +117,67 @@ for(const marks of ['model_rocketry_badge', 'nra_marksman_badge']){
   });
 }
 
-// ---- the blazer: crest and badge on the pocket, nametag above the women's crest -------------------
+// ---- the blazer: crest and badge on the pocket body, nametag above the women's crest --------------
 
-test('men\'s blazer: the CAP Crest is centred on the left breast pocket (4.2.3.1.1.1)', async () => {
+test('men\'s blazer: the sheet draws the CAP Crest at the pocket body below the welt, and the engine leaves it (4.2.3.1.1.1)', async () => {
   const spec = await store.load('garment-corporate-service-dress-blazer-male');
-  const pocket = core.landmarkBounds(spec, 'breast_pocket');
+  const welt = core.landmarkBounds(spec, 'breast_pocket');
+  const crest = core.anchor(spec, 'crest_center'), crestTop = core.anchor(spec, 'crest_top_center');
   const scene = await P.composeUniform(build('aviator_blazer', 'male', 'senior', 'Capt', []), store);
-  const crest = byKey(scene, 'crest:cap');
-  assert.ok(crest, 'crest placed by the engine');
-  near(cx(crest), pocket.x + pocket.w / 2, 0.005, 'crest across the pocket');
-  near(crest.y + crest.h / 2, pocket.y + pocket.h / 2, 0.005, 'crest up and down the pocket');
   const base = scene.layers.find(l => l.key === 'base:jacket');
-  assert.ok((base.hideGroups || []).includes('cap-crest'), 'the sheet\'s own crest is hidden');
+  assert.ok(!(base.hideGroups || []).includes('cap-crest'), 'the sheet\'s own crest is drawn');
+  assert.ok(!scene.layers.some(l => l.key === 'crest:cap'), 'no second crest placed on the welt');
+  // The sheet's crest sits on the pocket body: it does not straddle the welt strip.
+  assert.ok(crestTop.y >= welt.y + welt.h - 0.05, `crest top ${crestTop.y.toFixed(3)} at or below the welt bottom ${(welt.y + welt.h).toFixed(3)}`);
+  assert.ok(crest.y > welt.y + welt.h, 'crest centre below the welt');
 });
 
-for(const [uniform, sex] of [['aviator_blazer', 'male'], ['semi_formal', 'male']]){
-  test(`${uniform} ${sex}: the Command Council badge takes the crest's place, centred on the pocket (4.2.3.1.1.1)`, async () => {
-    const spec = await store.load('garment-corporate-service-dress-blazer-male');
-    const pocket = core.landmarkBounds(spec, 'breast_pocket');
+for(const [uniform, sex] of [['aviator_blazer', 'male'], ['semi_formal', 'male'], ['aviator_blazer', 'female'], ['semi_formal', 'female']]){
+  test(`${uniform} ${sex}: the Command Council badge takes the crest's place, centred on the sheet's crest_center, below the welt (4.2.3.1.1.1, tracker item 4)`, async () => {
+    const spec = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
+    const at = core.anchor(spec, 'crest_center');
+    const welt = core.landmarkBounds(spec, 'breast_pocket');
     const scene = await P.composeUniform(build(uniform, sex, 'senior', 'Capt', ['command_council_badge']), store);
     const l = byKey(scene, 'badge:command_council_badge');
-    near(cx(l), pocket.x + pocket.w / 2, 0.005, 'badge across the pocket');
-    near(l.y + l.h / 2, pocket.y + pocket.h / 2, 0.005, 'badge up and down the pocket');
-    assert.ok(!scene.layers.some(x => x.key === 'crest:cap'), 'no crest under it');
+    near(cx(l), at.x, 0.005, 'badge across the pocket body');
+    near(l.y + l.h / 2, at.y, 0.005, 'badge up and down the pocket body');
+    if(welt){
+      const weltBottom = welt.y + welt.h;
+      assert.ok(l.y + l.h / 2 > weltBottom, 'badge centre below the welt');
+      // Once the A4b art is synced (1.044 x 1.5 in) the whole badge sits under the welt. The images/ copy
+      // still holds the 2.088 x 3 in art, which cannot fit under it (see FOLLOWUPS: sync-artwork width_in).
+      if(l.h <= 2 * (at.y - weltBottom)) assert.ok(l.y >= weltBottom - 0.05, `badge top ${l.y.toFixed(3)} below the welt bottom ${weltBottom.toFixed(3)}, never straddling the welt`);
+    }
+    const base = scene.layers.find(x => x.key === 'base:jacket');
+    assert.ok(base.hideGroups.includes('cap-crest'), 'the sheet\'s crest is hidden under it');
   });
 }
 
-test('women\'s blazer: crest at the sheet\'s relative position, the nametag 1/2 in above it; the service badge takes both roles (4.2.4.1.1.1-2)', async () => {
+test('women\'s blazer: the nametag 1/2 in above the crest or the service badge in its place (4.2.4.1.1.2)', async () => {
   const spec = await store.load('garment-corporate-service-dress-blazer-female');
-  const at = core.anchor(spec, 'crest_center');
+  const top = core.anchor(spec, 'crest_top_center');
   for(const badges of [[], ['command_council_badge']]){
     const scene = await P.composeUniform(build('aviator_blazer', 'female', 'senior', 'Capt', badges), store);
-    const crest = byKey(scene, badges.length ? 'badge:command_council_badge' : 'crest:cap');
-    near(cx(crest), at.x, 0.005, 'crest across');
-    near(crest.y + crest.h / 2, at.y, 0.005, 'crest at the sheet\'s centre');
-    const plate = scene.layers.find(l => l.role === 'nametag' && l.key === 'nametag' && l.y < crest.y);
-    near(plate.y + plate.h, crest.y - 0.5, 0.005, 'nametag bottom 1/2 in above the crest or badge');
-    near(cx(plate), cx(crest), 0.005, 'nametag centred over it');
+    const plate = scene.layers.find(l => l.role === 'nametag' && l.key === 'nametag');
+    const crestTop = badges.length ? byKey(scene, 'badge:command_council_badge').y : top.y;
+    near(plate.y + plate.h, crestTop - 0.5, 0.005, 'nametag bottom 1/2 in above the crest or badge');
+    near(cx(plate), top.x, 0.005, 'nametag centred over it');
   }
 });
 
-// ---- semi-formal: medals 1/2 in above the crest or service badge ----------------------------------
+// ---- semi-formal: medals 1/2 in above the crest or service badge actually drawn --------------------
 
 for(const sex of ['male', 'female']){
   for(const badges of [[], ['command_council_badge']]){
     test(`corporate semi-formal ${sex}${badges.length ? ' with a service badge' : ''}: the lowest medals end 1/2 in above the ${badges.length ? 'badge' : 'crest'} (4.2.1.4, 4.2.2.4, ICL 25-02)`, async () => {
+      const spec = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
+      const sheetTop = core.anchor(spec, 'crest_top_center').y;
       const scene = await P.composeUniform(build('semi_formal', sex, 'senior', 'Capt', badges, { medals }), store);
-      const crest = byKey(scene, badges.length ? 'badge:command_council_badge' : 'crest:cap');
+      const crestTop = badges.length ? byKey(scene, 'badge:command_council_badge').y : sheetTop;
       const minis = scene.layers.filter(l => l.role === 'mini-drape' || l.role === 'mini-medal');
       assert.ok(minis.length, 'medals drawn');
       const bottom = Math.max(...minis.map(l => l.y + l.h));
-      near(bottom, crest.y - 0.5, 0.01, 'lowest medal bottom 1/2 in above the crest');
+      near(bottom, crestTop - 0.5, 0.01, 'lowest medal bottom 1/2 in above the crest or badge');
     });
   }
 }

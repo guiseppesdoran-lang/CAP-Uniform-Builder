@@ -134,8 +134,7 @@ test('the corporate blazer nameplate sits straight across from the left breast p
 test('the semi-formal blazer swaps the necktie for a bow tie and shows no nametag', async () => {
   const scene = await P.composeUniform(build('semi_formal', 'senior', 'Col'), store());
   const base = scene.layers.find(l => l.role === 'garment');
-  // The sheet's drawn crest is hidden too: the engine places the crest on the pocket (4.2.3.1.1.1).
-  assert.deepEqual(base.hideGroups, ['tie', 'cap-crest']);
+  assert.deepEqual(base.hideGroups, ['tie']);
   assert.ok(scene.layers.some(l => l.id === 'tie-bow-black'));
   assert.ok(!scene.layers.some(l => l.key === 'nametag'));
 });

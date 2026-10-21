@@ -1031,14 +1031,15 @@
 
   // ---- Corporate Service Dress (blazer, 4.2.3 / 4.2.4) and Corporate Semi-Formal (4.2.1 / 4.2.2) ---------
 
-  // Nametag top even with the top of the left breast pocket, the crest centred on that pocket
-  // (4.2.3.1.1.1-2, Figures 4.14 and 4.15); the sheets carry the nametag slot and the pocket.
+  // Nametag top even with the top of the left breast pocket, the crest centred on the pocket below
+  // it (4.2.3.1.1.1-2, Figures 4.14 and 4.15); the sheets carry both slots. The crest, and the badge
+  // that replaces it, sit at the sheet's crest_center: the centre of the pocket body below the welt
+  // opening, traced from the base image. Centring them on the 1 in welt strip put the crest about
+  // 0.9 in above the pocket and was rejected (tracker placement item 4).
   const BLAZER = {
     male: { garment: 'garment-corporate-service-dress-blazer-male', bowTie: { x: 12.761, y: 3.655 }, underlayer: { turtleneck: 'garment-underlayer-turtleneck-male' }, cover: ['shirt', 'tie'] },
     female: { garment: 'garment-corporate-service-dress-blazer-female', plate: null, underlayer: { turtleneck: 'garment-underlayer-turtleneck-female', shell: 'garment-underlayer-shell-female' }, cover: ['shirt', 'tie-tab'] }
   };
-
-  const CREST_ID = 'insignia-cap-crest';
 
   async function composeBlazer(ctx, b){
     const semi = b.uniform === 'semi_formal';
@@ -1053,10 +1054,7 @@
     if(semi && b.opt.underlayer === 'turtleneck'){ under = null; ctx.note('A turtleneck is not worn with the semi-formal uniform (CAPR 39-1, 4.2.1.1, 4.2.2.1)'); }
     if(under) hide.push(...V.cover);
     if(semi && !female && !under) hide.push('tie');
-    // The crest is placed here, not read off the sheet's drawing: the men's sheet draws it under the
-    // welt, the regulation centres it on the pocket (4.2.3.1.1.1). The sheet's own crest is hidden.
-    const crestArt = ctx.has(CREST_ID);
-    if(crestBadge || crestArt) hide.push('cap-crest');
+    if(crestBadge) hide.push('cap-crest');
     const base = await ctx.spec(V.garment);
     if(under){
       // The underlayers are drawn to the blazer's own box.
@@ -1068,14 +1066,8 @@
 
     if(semi && !female && !under) await ctx.place('tie-bow-black', { pieceAnchor: 'knot_center', at: V.bowTie, z: Z.garmentLayer, role: 'tie', key: 'tie:bow' });
 
-    // The crest, or the CSAG, Command Council, National Board or NEC badge worn in its place, is
-    // centred on the left breast pocket (4.2.3.1.1.1). The women's blazer has no pocket: the same
-    // relative position, the sheet's crest_center (4.2.4.1.1.1).
-    const pocket = female ? null : ctx.rect('breast_pocket');
-    const crestAt = pocket ? core.rectCenter(pocket) : ctx.point('crest_center');
-    let crestLayer = null;
-    if(crestBadge) crestLayer = await ctx.place(crestBadge.art, { pieceAnchor: 'center', at: crestAt, z: Z.badge, role: 'badge', key: 'badge:' + crestBadge.id, title: crestBadge.title, className: 'badge' });
-    else if(crestArt) crestLayer = await ctx.place(CREST_ID, { pieceAnchor: 'center', at: crestAt, z: Z.insignia, role: 'crest', key: 'crest:cap', title: 'CAP Crest' });
+    // The CSAG, Command Council, National Board or NEC badge is worn in place of the crest.
+    const crestLayer = crestBadge ? await ctx.place(crestBadge.art, { pieceAnchor: 'center', at: ctx.point('crest_center'), z: Z.badge, role: 'badge', key: 'badge:' + crestBadge.id, title: crestBadge.title, className: 'badge' }) : null;
     const chaplain = set.chaplain[0] || null;
     const dropped = set.all.filter(x => x !== crestBadge && x !== chaplain);
     if(dropped.length) ctx.note('Only the chaplain badge and the CSAG, Command Council, National Board or NEC badge are worn on this uniform; the other badges are not shown');
