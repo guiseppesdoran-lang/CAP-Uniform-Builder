@@ -208,6 +208,44 @@
     return C.fitRaster(ctx, patch.href, cap, patch.aspect || 1, { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' });
   }
 
+  // The OCP sheet draws each shoulder pocket twice: flat (the sleeve views at the sides) and seen
+  // from the front where the sleeve meets the coat, narrowed to half its width and turned a little
+  // (the `sleeve-pocket-edge-*` groups of the sheet). A patch worn on the Velcro shows in both. The
+  // edge view is the flat one narrowed about the pocket's centre line (EDGE.sx), moved down EDGE.dy
+  // and turned EDGE.tilt about the pocket's centre, which sits EDGE.pivotDX from the coat's centre
+  // line (the sheet's own constants; the sheet publishes no landmark for it yet, see FOLLOWUPS).
+  const EDGE = { 'garment-ocp-coat-abu-cut': { sx: 0.5, dy: 1.6, tilt: 12.375, pivotDX: 12.726 } };
+
+  function edgeFrame(ctx, side){
+    const e = ctx.base && EDGE[ctx.base.id];
+    const velcro = ctx.rect('sleeve_flap_velcro_' + side), top = ctx.point('top_center');
+    if(!e || !velcro || !top) return null;
+    const right = side === 'right';
+    const c = core.rectCenter(velcro);
+    const pivot = { x: top.x + (right ? -e.pivotDX : e.pivotDX), y: c.y + e.dy };
+    const tilt = right ? e.tilt : -e.tilt;
+    return {
+      sx: e.sx, tilt, pivot,
+      // A flat rect on the sleeve -> its width and height in the edge view and its centre there.
+      map(r){
+        const m = core.rectCenter(r);
+        return { w: r.w * e.sx, h: r.h, center: core.rotatePoint({ x: pivot.x + (m.x - c.x) * e.sx, y: m.y + e.dy }, pivot, tilt) };
+      }
+    };
+  }
+
+  // A patch on a sleeve's Velcro: in the flat view and again, narrowed, in the edge view.
+  function sleevePatch(ctx, patch, zone, slot, side){
+    const flat = fitPatch(ctx, patch, zone, slot);
+    const f = edgeFrame(ctx, side);
+    if(f){
+      const e = f.map(flat);
+      ctx.raster({ href: patch.href, x: e.center.x - e.w / 2, y: e.center.y - e.h / 2, w: e.w, h: e.h, rotate: f.tilt, origin: e.center, fit: 'stretch',
+        z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:edge`, title: patch.title, className: 'patch' });
+    }
+    return flat;
+  }
+
   function belowOnVelcro(ctx, velcroName, drawnName){
     const v = ctx.rect(velcroName), d = ctx.rect(drawnName);
     if(!v || !d) return null;
@@ -224,14 +262,20 @@
   }
 
   async function fieldPatches(ctx, b){
-    const patches = b.patches || [];
+    const patches = [...(b.patches || [])];   // a copy: patches are taken out of it as they are placed
     const take = pred => { const i = patches.findIndex(pred); return i < 0 ? null : patches.splice(i, 1)[0]; };
     if(b.uniform === 'ocp'){
       // Right sleeve: unit patch centred under the drawn flag (7.1.1.4.1.2). Left: HHQ patch under AUX.
       const unit = take(p => p.kind === 'unit' || p.slot === 'R_SHOULDER');
-      if(unit){ const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_right', 'patch_flag_right'); if(z) fitPatch(ctx, unit, z, 'R_SHOULDER'); }
+      if(unit){
+        const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_right', 'patch_flag_right');
+        if(z) sleevePatch(ctx, unit, z, 'R_SHOULDER', 'right');
+      }
       const hhq = take(p => p.slot === 'L_SHOULDER') || take(() => true);
-      if(hhq){ const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_left', 'patch_aux_left'); if(z) fitPatch(ctx, hhq, z, 'L_SHOULDER'); }
+      if(hhq){
+        const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_left', 'patch_aux_left');
+        if(z) sleevePatch(ctx, hhq, z, 'L_SHOULDER', 'left');
+      }
     }else{
       const left = take(p => p.slot === 'L_SHOULDER');
       const zl = ctx.rect('wing_patch_zone_left');
