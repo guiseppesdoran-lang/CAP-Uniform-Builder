@@ -642,13 +642,13 @@
   const CLASS_A = {
     male: {
       coat: 'garment-blues-class-a-coat', semi: 'garment-semiformal-class-a-coat-male', layer: 'garment-blues-class-a-coat',
-      cadetOfficer: 'garment-blues-class-a-cadet-officer-insignia', nametagX: 7.6445, nametag: { x: 5.957, y: 10.04, w: 3.375, h: 0.75 },
+      cadetOfficer: 'garment-blues-class-a-cadet-officer-insignia',
       ncoChevron: { right: [3.19, 9.86, 1.4], left: [20.54, 9.86, -1.4] }, theta: { right: 75.3, left: -75.3 },
       cord: [[16.52, 2.44], [20.22, 3.41]], strap: strapPair(23.726, [16.52, 2.44], [20.22, 3.41])
     },
     female: {
       coat: 'garment-blues-class-a-coat-female', semi: 'garment-semiformal-class-a-coat-female', layer: 'garment-blues-class-a-coat-female',
-      cadetOfficer: 'garment-blues-class-a-cadet-officer-insignia-female', nametagX: 8.06, nametag: { x: 6.37, y: 9.60, w: 3.375, h: 0.75 },
+      cadetOfficer: 'garment-blues-class-a-cadet-officer-insignia-female',
       ncoChevron: { right: [3.29, 9.88, 2.3], left: [21.10, 9.88, -2.3] }, theta: { right: 78.1, left: -78.1 },
       cord: [[16.57, 1.91], [20.09, 2.65]], strap: strapPair(24.3883, [16.57, 1.91], [20.09, 2.65])
     }
@@ -672,11 +672,14 @@
     }
 
     // Nametag (not worn on the semi-formal).
-    let tagRect = A.nametag;
+    // The plate's place is the full coat's nameplate landmark; the semi-formal coat is the same figure
+    // without the plate, so the badges keep the places they would have (4.1.3.2.2).
+    const plate = ctx.rect('nameplate') || core.landmarkBounds(await ctx.spec(A.coat), 'nameplate');
+    let tagRect = plate;
     if(!semi){
       const tagLayer = g.cadet ? `${A.layer}-nametag-cadet` : `${A.layer}-nametag-officer-nco`;
       await ctx.overlay(tagLayer, Z.tape);
-      tagRect = ctx.rect('nametag') || ctx.rect('nameplate') || A.nametag;
+      tagRect = ctx.rect('nametag') || plate;
       ctx.keepClear(tagRect, 'nametag');
       if(b.name.show && b.name.last){
         if(g.cadet) threeLineName(ctx, b, tagRect);
@@ -729,8 +732,8 @@
       // ribbons. The others keep their service dress places (4.1.3.2.2), so the wearer's right
       // pocket badge stays level with the left one, where the nametag's bottom would be.
       geo.onBottom = rest.y;
-      geo.nametag = { x: A.nametagX - 1.6875, y: rest.y, w: 3.375, h: 0 };
-      geo.rp = sex === 'male' ? { x: A.nametagX, y: rest.y + 1.5, from: rest.y, anchor: 'top_center' } : null;
+      geo.nametag = { x: plate.x, y: rest.y, w: plate.w, h: 0 };
+      geo.rp = sex === 'male' ? { x: plate.x + plate.w / 2, y: rest.y + 1.5, from: rest.y, anchor: 'top_center' } : null;
       geo.un = null;
       if(sex === 'male') geo.onStyle = 'men';
     }
