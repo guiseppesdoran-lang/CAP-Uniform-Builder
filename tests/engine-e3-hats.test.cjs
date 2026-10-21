@@ -105,17 +105,24 @@ for(const uniform of UNIFORMS){
   }
 }
 
-test('the cap sits on the garment top_center, lowered 0.25 in unless the cap art already carries its seating', async () => {
+test('the cap sits on the sheet\'s hat_attach landmark, else on top_center lowered 0.25 in unless the cap art already carries its seating', async () => {
   for(const [uniform, gender] of [['blues_a', 'male'], ['blues_a', 'female'], ['blues_b', 'male'], ['blues_b', 'female'], ['flight_suit', 'male']]){
     for(const [rank, kind] of [['Capt', 'auto'], ['Maj', 'service'], ['Maj Gen', 'auto']]){
       const st = store();
       const { scene, hat } = await hatAndDevice(build(uniform, gender, 'senior', rank, kind), st);
       const hs = await st.load(hat.id);
       const attach = H.piecePoint(hat, hs, 'garment_attach_center');
-      const top = await garmentAnchor(scene, 'top_center', st);
+      // A sheet with its own hat_attach landmark (the FDU: its box carries 2.66 in of margin above the collar)
+      // decides the seat; the others seat on top_center.
+      const own = await garmentAnchor(scene, 'hat_attach', st);
+      const top = own || await garmentAnchor(scene, 'top_center', st);
       const seated = !!(hs.raw && hs.raw.attach_overlap);
       near(attach.x, top.x, `${uniform} ${gender} ${hat.id} centred on the garment`);
-      near(attach.y, top.y + (seated ? 0 : 0.25), `${uniform} ${gender} ${hat.id} seat`);
+      near(attach.y, top.y + (seated || own ? 0 : 0.25), `${uniform} ${gender} ${hat.id} seat`);
+      // Worn: the cap's bottom edge is below the collar top (no gap); a flight cap sinks no more than 1 in into the garment
+      // (a service cap's visor hangs lower).
+      const collar = own || await garmentAnchor(scene, 'top_center', st);
+      assert.ok(hat.y + hat.h >= collar.y - EPS && (!/^hat-flight/.test(hat.id) || hat.y + hat.h <= collar.y + 1), `${uniform} ${gender} ${hat.id}: cap bottom ${hat.y + hat.h} vs collar top ${collar.y}`);
     }
   }
 });
