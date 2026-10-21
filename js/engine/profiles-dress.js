@@ -325,6 +325,7 @@
   // strap landmark (the overlay specs' size_basis). The grade sits 5/8 in from the outer end of the
   // epaulet (DAFI 36-2903 4.5.1.1.1), the same place the sleeve's own grade is drawn.
   const EDGE_ON_THICK = 0.4;
+  const EDGE_ON_COVER = 0.82;
   const GRADE_FROM_END = 0.625;
   // The top view floats this far (vertical inches) above the shoulder line, never touching it.
   const TOP_VIEW_CLEAR = 0.1;
@@ -395,6 +396,34 @@
       min = Math.min(min, r); max = Math.max(max, r); sum += r; n++;
     }
     return { min, max, mean: n ? sum / n : NaN };
+  }
+
+  // A garment sheet with no edge-on epaulet art: the sleeve art squeezed to the 0.4 in strip the other
+  // sheets draw, over the outer 82% of the strap, its upper edge on the shoulder line, grade on it.
+  async function epauletStrips(ctx, g, sleeveId){
+    const edges = {};
+    if(!ctx.has(sleeveId)) return edges;
+    const s = await ctx.spec(sleeveId);
+    for(const side of ['right', 'left']){
+      const f = H.epauletFrame(ctx, side);
+      if(!f) continue;
+      const len = f.length * EDGE_ON_COVER;
+      const scale = Math.min(1, len / s.h);
+      const half = s.h * scale / 2;
+      // Strip centre on the strap axis, outer end flush with the strap's outer end; upper edge flush
+      // with the strap's outer side, then lowered until it lies along the shoulder line on average (the
+      // overblouse's shoulder curves away under a straight strip).
+      const along = { x: f.outer.x + f.axis.x * half, y: f.outer.y + f.axis.y * half };
+      const c0 = { x: along.x + f.normal.x * (f.width / 2 - EDGE_ON_THICK / 2), y: along.y + f.normal.y * (f.width / 2 - EDGE_ON_THICK / 2) };
+      const upper = bandEdge(f, c0, EDGE_ON_THICK / 2, half);
+      const clear = shoulderClearance(f, upper[0], upper[1]);
+      const dy = Number.isFinite(clear.mean) ? clear.mean : 0;
+      const c = { x: c0.x, y: c0.y + dy };
+      edges[side] = upper.map(q => ({ x: q.x, y: q.y + dy }));
+      await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: EDGE_ON_THICK / (s.w * scale), hideGroups: ['grade', 'cap'], z: Z.epauletLayer, role: 'grade', key: 'epaulet:' + side, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
+      const end = { x: c.x - f.axis.x * half, y: c.y - f.axis.y * half };
+      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, EDGE_ON_THICK - 0.08, { title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+    }
   }
 
   // The epaulet sleeves seen from above, each just above its shoulder: turned to lie along the strap,
@@ -835,16 +864,16 @@
 
   // ---- Corporate: aviator shirt (4.2.5 men, 4.2.6 women) -----------------------------------------------
 
-  // Per garment: epaulet angle (wearer's right; the left is the mirror), the width of the drawn
-  // strap, the sleeve chevron points (the short-sleeve sheet anchors sit on the hem, so these are
-  // halfway between the shoulder seam and the hem), the visible sleeve width and collar angle.
+  // Per garment: the sleeve chevron points (the short-sleeve sheet anchors sit on the hem, so these are
+  // halfway between the shoulder seam and the hem), the visible sleeve width and collar angle. The
+  // epaulet's angle and width come from the garment's epaulet landmark (H.epauletFrame).
   const AVIATOR = {
-    'garment-aviator-shirt-male': { ep: [68.6, -68.6], strapW: 1.35, chev: { right: [2.02, 8.23, 11.6], left: [19.136, 8.23, -11.6] }, sleeveW: 2.93, collar: 24.6 },
-    'garment-aviator-shirt-male-long': { ep: [68.6, -68.6], strapW: 1.35, chevAnchors: 11.6, sleeveW: 3.2, collar: 24.6 },
-    'garment-aviator-shirt-female': { ep: [74.8, -75.3], strapW: 1.3, chev: { right: [1.918, 8.97, 10.1], left: [19.13, 8.97, -10.1] }, sleeveW: 2.56, collar: 23.6 },
-    'garment-aviator-shirt-female-long': { ep: [74.8, -75.3], strapW: 1.3, chevAnchors: 10, sleeveW: 2.9, collar: 23.6 },
-    'garment-overblouse-female': { ep: [67.2, -67.2], strapW: 1.3, chev: { right: [3.83, 8.88, 31], left: [17.57, 8.88, -31] }, sleeveW: 2.6, collar: 25, overblouse: true },
-    'garment-overblouse-female-long': { ep: [67.2, -67.2], strapW: 1.3, chevAnchors: 31, sleeveW: 2.9, collar: 25, overblouse: true }
+    'garment-aviator-shirt-male': { chev: { right: [2.02, 8.23, 11.6], left: [19.136, 8.23, -11.6] }, sleeveW: 2.93, collar: 24.6 },
+    'garment-aviator-shirt-male-long': { chevAnchors: 11.6, sleeveW: 3.2, collar: 24.6 },
+    'garment-aviator-shirt-female': { chev: { right: [1.918, 8.97, 10.1], left: [19.13, 8.97, -10.1] }, sleeveW: 2.56, collar: 23.6 },
+    'garment-aviator-shirt-female-long': { chevAnchors: 10, sleeveW: 2.9, collar: 23.6 },
+    'garment-overblouse-female': { chev: { right: [3.83, 8.88, 31], left: [17.57, 8.88, -31] }, sleeveW: 2.6, collar: 25, overblouse: true },
+    'garment-overblouse-female-long': { chevAnchors: 31, sleeveW: 2.9, collar: 25, overblouse: true }
   };
 
   function aviatorEpaulet(g){
@@ -867,16 +896,15 @@
     // Grade. The shirts draw the epaulet sleeve edge-on; its top view (with the grade) goes above.
     const epCat = g.category === 'cadet-officer' ? 'cadet-officer' : (isOfficerLike(g) ? 'officer' : null);
     const ep = aviatorEpaulet(g);
-    if(epCat && !V.overblouse && ctx.has(`${garment}-epaulet-sleeve-${epCat}`)){
+    if(epCat && ctx.has(`${garment}-epaulet-sleeve-${epCat}`)){
       await ctx.overlay(`${garment}-epaulet-sleeve-${epCat}`, Z.epauletLayer);
-      await epauletTopViews(ctx, g);
+      await epauletEdgeGrades(ctx, g);
+      await epauletViews(ctx, g);
     }else if(ep){
-      const s = await ctx.spec(ep);
-      const scaleX = Math.min(1, V.strapW / s.w);
-      for(const [i, side] of [[0, 'right'], [1, 'left']]){
-        const at = ctx.point(`epaulet_${side}_center`);
-        if(at) await ctx.place(ep, { pieceAnchor: 'center', at, rotate: V.ep[i], scaleX, z: Z.epauletLayer, role: 'grade', key: 'grade:' + side });
-      }
+      // The overblouse sheet has no edge-on sleeve art: the sleeve art is drawn as the same 0.4 in
+      // strip over the outer 82% of the strap landmark, seated on the shoulder line, with the grade
+      // at its true shape on it; the top view floats above the shoulder as on the shirts.
+      await epauletViews(ctx, g, await epauletStrips(ctx, g, ep));
     }else if(g.category === 'cadet-nco'){
       const id = G.cadetNcoChevron(g, 'metal');
       for(const side of ['right', 'left']){

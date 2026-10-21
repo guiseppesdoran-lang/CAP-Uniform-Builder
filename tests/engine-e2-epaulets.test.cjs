@@ -33,7 +33,13 @@ const CUTS = [
   ['Class B shirt, short sleeve', 'blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male'],
   ['Class B shirt, long sleeve', 'blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long'],
   ['Class B blouse, short sleeve', 'blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female'],
-  ['Class B blouse, long sleeve', 'blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long']
+  ['Class B blouse, long sleeve', 'blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long'],
+  ['aviator shirt, short sleeve', 'aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male'],
+  ['aviator shirt, long sleeve', 'aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long'],
+  ['women\'s aviator shirt, short sleeve', 'aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female'],
+  ['women\'s aviator shirt, long sleeve', 'aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long'],
+  ['overblouse, short sleeve', 'aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 'garment-overblouse-female'],
+  ['overblouse, long sleeve', 'aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long']
 ];
 // Grades that wear an epaulet sleeve: cadet officers (blue), officers (gray), generals, flight officers,
 // and a senior member with no grade on the officer track (gray, blank).
