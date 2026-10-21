@@ -205,6 +205,19 @@ test('women\'s aviator: no badge, the pin 1/2 in above the nametag', async () =>
   near(pin.y + pin.h, tag.y - 0.5, 0.005, 'pin 1/2 in above the nametag');
 });
 
+test('women\'s aviator: a third ordinary badge takes the men\'s layout, pockets and over the nametag (4.2.6.2.7.2)', async () => {
+  const spec = await store.load('garment-aviator-shirt-female');
+  const lp = core.anchor(spec, 'badge_left_pocket_center'), rp = core.anchor(spec, 'badge_right_pocket_center');
+  const { scene, tag } = await femaleAviator(['command_council_badge', 'emergency_services_badge', 'communications_technician_badge']);
+  const cc = byKey(scene, 'badge:command_council_badge'), es = byKey(scene, 'badge:emergency_services_badge'), third = byKey(scene, 'badge:communications_technician_badge');
+  assert.ok(cc && es && third, 'all three drawn');
+  near(cx(cc), lp.x, 0.005, 'service badge on the wearer\'s left pocket');
+  near(cx(es), rp.x, 0.005, 'second badge on the wearer\'s right pocket');
+  near(third.y + third.h, tag.y - 0.5, 0.005, 'third badge 1/2 in above the nametag');
+  near(cx(third), tag.x + tag.w / 2, 0.005, 'third badge centred over the nametag');
+  assert.ok(!scene.notes.some(n => /no place left/.test(n)), 'no badge is dropped');
+});
+
 test('women\'s aviator: with two ordinary badges the two-across layout stays', async () => {
   const { scene, tag } = await femaleAviator(['command_council_badge', 'communications_technician_badge']);
   for(const k of ['badge:command_council_badge', 'badge:communications_technician_badge']){

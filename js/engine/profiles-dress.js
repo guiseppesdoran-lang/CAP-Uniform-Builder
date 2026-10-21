@@ -111,6 +111,13 @@
   //   un: { x, y, anchor }         graduated commander position
   async function dressBadges(ctx, b, geo){
     const plan = planBadges(ctx, b, { max: geo.max });
+    // Women's aviator shirt: the two places over the nametag hold two badges (4.2.6.2.7.2). A third
+    // ordinary badge takes the men's option the same paragraph allows ("as worn on the male aviator
+    // shirt"): first badge on the left pocket, second on the right, third over the nametag.
+    if(geo.onStyle === 'women-a' && geo.menLayout){
+      const ordinary = plan.nationalStaff.length + plan.rest.filter(x => x.family !== 'rocketry' && x.family !== 'marksmanship').length;
+      if(ordinary > 2) geo = Object.assign({}, geo, geo.menLayout);
+    }
     // Over the left pocket.
     if(plan.olp.length){
       if(geo.olpCenter){
@@ -1002,7 +1009,11 @@
       geo.marksAlt = flapTop;
       // Women: the command pin goes 1/2 in above a badge worn over the nametag (4.2.6.2.7.3).
       geo.onStyle = 'women-a';
-      if(!V.overblouse) geo.rp = null;
+      if(!V.overblouse){
+        // With three ordinary badges: the men's layout (pockets and over the nametag), 4.2.6.2.7.2.
+        geo.menLayout = { onStyle: 'men', lp: geo.lp, rp: geo.rp, marks: flapTop };
+        geo.rp = null;
+      }
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
     }
     // On the aviator shirt the command insignia is worn only by officers (4.2.5.1.3.3, 4.2.6.2.7.3).
