@@ -37,6 +37,65 @@
     return { x: layer.x + a.x * s, y: layer.y + a.y * s };
   }
 
+  // ---- epaulets read from the garment's own landmark --------------------------------------------
+
+  // Height (scene y) of the top boundary of a polygon at x, or null when x is outside it.
+  function polygonTopY(points, x){
+    let best = null;
+    for(let i = 0; i < points.length; i++){
+      const a = points[i], b = points[(i + 1) % points.length];
+      if(a.x === b.x) continue;
+      const lo = Math.min(a.x, b.x), hi = Math.max(a.x, b.x);
+      if(x < lo || x > hi) continue;
+      const y = a.y + (b.y - a.y) * (x - a.x) / (b.x - a.x);
+      if(best == null || y < best) best = y;
+    }
+    return best;
+  }
+
+  // The epaulet strap of one shoulder (`side` is the wearer's side), taken from the garment's
+  // epaulet_<side> landmark polygon: the smallest rectangle that holds the polygon gives the strap
+  // axis, its length and width; the axis points to the neck end. Returns
+  //   { poly, center, axis, normal, length, width, deg, neck, outer, topY(x) }
+  // axis/normal are unit vectors (normal points up and out, away from the garment); `deg` is the
+  // rotation that stands a piece drawn upright with its button end up onto the strap, button end
+  // toward the neck. Null when the garment has no such landmark.
+  function epauletFrame(ctx, side){
+    const lm = ctx.landmark('epaulet_' + side);
+    const poly = lm && lm.points;
+    if(!poly || poly.length < 3) return null;
+    let best = null;
+    for(let t = 0; t < 180; t += 0.25){
+      const r = t * Math.PI / 180, c = Math.cos(r), s = Math.sin(r);
+      let u0 = Infinity, u1 = -Infinity, v0 = Infinity, v1 = -Infinity;
+      for(const p of poly){
+        const u = p.x * c + p.y * s, v = -p.x * s + p.y * c;
+        if(u < u0) u0 = u; if(u > u1) u1 = u; if(v < v0) v0 = v; if(v > v1) v1 = v;
+      }
+      const area = (u1 - u0) * (v1 - v0);
+      if(!best || area < best.area - 1e-9) best = { area, c, s, u0, u1, v0, v1 };
+    }
+    // The rectangle's long side is the strap axis.
+    const mu = (best.u0 + best.u1) / 2, mv = (best.v0 + best.v1) / 2;
+    const center = { x: mu * best.c - mv * best.s, y: mu * best.s + mv * best.c };
+    let ax = { x: best.c, y: best.s };
+    let len = best.u1 - best.u0, wid = best.v1 - best.v0;
+    if(wid > len){ ax = { x: -best.s, y: best.c }; [len, wid] = [wid, len]; }
+    // Axis toward the neck: the end nearer the garment's centre line.
+    const mid = ctx.base.w / 2;
+    if(Math.abs(center.x + ax.x * len / 2 - mid) > Math.abs(center.x - ax.x * len / 2 - mid)) ax = { x: -ax.x, y: -ax.y };
+    // Normal away from the garment: up.
+    let nrm = { x: ax.y, y: -ax.x };
+    if(nrm.y > 0) nrm = { x: -nrm.x, y: -nrm.y };
+    const deg = Math.round((90 + Math.atan2(ax.y, ax.x) * 180 / Math.PI) * 100) / 100;
+    return {
+      side, poly, center, axis: ax, normal: nrm, length: len, width: wid, deg,
+      neck: { x: center.x + ax.x * len / 2, y: center.y + ax.y * len / 2 },
+      outer: { x: center.x - ax.x * len / 2, y: center.y - ax.y * len / 2 },
+      topY: x => polygonTopY(poly, x)
+    };
+  }
+
   // Fit a piece in a rect (never larger than true size) and centre it there.
   async function fitCenter(ctx, id, rect, opts){
     return C.fitIn(ctx, id, rect, opts);
@@ -264,5 +323,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, SILVER_TEXT } };
 });

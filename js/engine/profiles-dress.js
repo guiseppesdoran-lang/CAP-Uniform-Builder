@@ -319,12 +319,135 @@
     }
   }
 
+  // ---- epaulets from the garment's landmark (Class B, aviator shirt, overblouse) ---------------------
+
+  // The garment sheets draw the epaulet sleeve edge-on as a 0.4 in strip over the outer 82% of the
+  // strap landmark (the overlay specs' size_basis). The grade sits 5/8 in from the outer end of the
+  // epaulet (DAFI 36-2903 4.5.1.1.1), the same place the sleeve's own grade is drawn.
+  const EDGE_ON_THICK = 0.4;
+  const GRADE_FROM_END = 0.625;
+  // The top view floats this far (vertical inches) above the shoulder line, never touching it.
+  const TOP_VIEW_CLEAR = 0.1;
+  // Grades the sleeve art draws turned a quarter turn (bars and stripes lie across the strap).
+  const ACROSS_GRADES = new Set(['captain', 'first-lieutenant', 'second-lieutenant', 'flight-officer', 'technical-flight-officer', 'senior-flight-officer']);
+
+  // The grade a member wears on an epaulet sleeve as its own asset (miniature metal for cadet
+  // officers, embroidered thread for officers), or null.
+  function epauletGradeId(g){
+    if(!g.key) return null;
+    if(g.category === 'cadet-officer') return G.cadetOfficerInsignia(g, 'metal-miniature');
+    if(isOfficerLike(g)) return G.seniorOfficerInsignia(g, 'thread');
+    return null;
+  }
+
+  // The colonel's eagle faces the art's left; on the wearer's right it is mirrored so the beak points
+  // forward on both shoulders (4.1.6.1.2).
+  const mirrorsEagle = (g, side) => side === 'right' && g.key === 'colonel' && !g.cadet;
+
+  // Put a grade on an epaulet at its 5/8 in rule distance. `end` is the centre of the epaulet's outer
+  // end, `axis` the unit vector toward the neck and `deg` the rotation that stands the art with its
+  // top toward the neck; the grade is scaled down (never up) to fit `across` inches of the strap.
+  async function gradeOnStrap(ctx, g, side, end, axis, deg, across, opts){
+    const id = epauletGradeId(g);
+    if(!id || !ctx.has(id)) return null;
+    const gs = await ctx.spec(id);
+    const quarter = ACROSS_GRADES.has(g.key) && g.category !== 'cadet-officer';
+    const acr = quarter ? gs.h : gs.w, alo = quarter ? gs.w : gs.h;
+    const scale = Math.min(1, across / acr);
+    const d = GRADE_FROM_END + alo * scale / 2;
+    const at = { x: end.x + axis.x * d, y: end.y + axis.y * d };
+    const o = opts || {};
+    return ctx.place(id, { pieceAnchor: 'center', at, rotate: deg + (quarter ? 90 : 0), scale, flipX: mirrorsEagle(g, side), z: o.z || Z.insignia, role: 'grade', key: o.key || `grade:edge-${side}`, title: o.title });
+  }
+
+  // The grade on each edge-on epaulet strip the garment overlay draws (Class B shirt and blouse,
+  // aviator shirt): centred on the strip's line, 5/8 in from the strap's outer end, turned with it.
+  async function epauletEdgeGrades(ctx, g){
+    for(const side of ['right', 'left']){
+      const f = H.epauletFrame(ctx, side);
+      const mid = ctx.point(`rank_slot_${side}_center`);
+      if(!f || !mid) continue;
+      // Slide from the strip's centre back along the strap axis to the plane of the outer end.
+      const back = (f.outer.x - mid.x) * f.axis.x + (f.outer.y - mid.y) * f.axis.y;
+      const end = { x: mid.x + f.axis.x * back, y: mid.y + f.axis.y * back };
+      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, EDGE_ON_THICK - 0.08, { title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+    }
+  }
+
+  // The two end points of a band's edge that lies `off` inches along the strap normal from the point
+  // `c` (a point on the band's centre line), `half` inches either way along the axis.
+  function bandEdge(f, c, off, half){
+    const q = { x: c.x + f.normal.x * off, y: c.y + f.normal.y * off };
+    return [{ x: q.x - f.axis.x * half, y: q.y - f.axis.y * half }, { x: q.x + f.axis.x * half, y: q.y + f.axis.y * half }];
+  }
+
+  // How far above the shoulder line (the epaulet landmark's top boundary) a straight edge a-b runs,
+  // measured straight up, where the two overlap: { min, max, mean } (negative = below the line, inside).
+  function shoulderClearance(f, a, b){
+    const xs = f.poly.map(p => p.x);
+    const lo = Math.max(Math.min(a.x, b.x), Math.min(...xs)), hi = Math.min(Math.max(a.x, b.x), Math.max(...xs));
+    let min = Infinity, max = -Infinity, sum = 0, n = 0;
+    for(let i = 0; i <= 40; i++){
+      const x = lo + (hi - lo) * i / 40, top = f.topY(x);
+      if(top == null) continue;
+      const t = (x - a.x) / (b.x - a.x || 1);
+      const r = top - (a.y + (b.y - a.y) * t);
+      min = Math.min(min, r); max = Math.max(max, r); sum += r; n++;
+    }
+    return { min, max, mean: n ? sum / n : NaN };
+  }
+
+  // The epaulet sleeves seen from above, each just above its shoulder: turned to lie along the strap,
+  // its near edge TOP_VIEW_CLEAR above the garment's shoulder line (the epaulet landmark's top
+  // boundary), the grade in place. Class B, aviator shirt and overblouse (R7).
+  async function epauletViews(ctx, g, strips){
+    const sleeveId = epauletSleeveId(g);
+    if(!sleeveId || !ctx.has(sleeveId)) return;
+    const s = await ctx.spec(sleeveId);
+    const eagle = g.key === 'colonel' && !g.cadet ? G.seniorOfficerInsignia(g, 'thread') : null;
+    const ins = core.anchor(s, 'insignia_center');
+    for(const side of ['right', 'left']){
+      const f = H.epauletFrame(ctx, side);
+      if(!f) continue;
+      // Centre when the lower edge lies on the strap's outer side, then lifted until it clears the
+      // shoulder line everywhere it overlaps the strap.
+      const half = { a: s.h / 2, n: s.w / 2 };
+      const c0 = { x: f.center.x + f.normal.x * (f.width / 2 + half.n), y: f.center.y + f.normal.y * (f.width / 2 + half.n) };
+      const lower = bandEdge(f, c0, -half.n, half.a);
+      let minClear = shoulderClearance(f, lower[0], lower[1]).min;
+      // A strip drawn above the shoulder line (the overblouse's) is cleared too.
+      const st = strips && strips[side];
+      if(st){
+        const lo = Math.max(Math.min(lower[0].x, lower[1].x), Math.min(st[0].x, st[1].x)), hi = Math.min(Math.max(lower[0].x, lower[1].x), Math.max(st[0].x, st[1].x));
+        const yAt = (a, b, x) => a.y + (b.y - a.y) * (x - a.x) / (b.x - a.x || 1);
+        for(let i = 0; i <= 20 && hi > lo; i++){
+          const x = lo + (hi - lo) * i / 20;
+          minClear = Math.min(minClear, yAt(st[0], st[1], x) - yAt(lower[0], lower[1], x));
+        }
+      }
+      const c = { x: c0.x, y: c0.y - (Number.isFinite(minClear) ? TOP_VIEW_CLEAR - minClear : 0) };
+      const mirror = mirrorsEagle(g, side) && eagle && ins && ctx.has(eagle);
+      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: c, rotate: f.deg, z: Z.hat - 1, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, seen from above` }, mirror ? { hideGroups: ['grade'] } : {}));
+      if(mirror){
+        // The sleeve's insignia point, turned with the sleeve about its centre.
+        const v = core.rotatePoint({ x: c.x + (ins.x - s.w / 2), y: c.y + (ins.y - s.h / 2) }, c, f.deg);
+        await ctx.place(eagle, { pieceAnchor: 'center', at: v, rotate: f.deg, flipX: true, z: Z.hat - 0.5, role: 'grade', key: 'grade:top-right' });
+      }
+    }
+  }
+
   // The epaulet sleeve a member wears on the aviator shirt, the Class A coat or the Class B (gray
   // for officers and officer-track members without grade, blue for cadet officers).
   function epauletSleeveId(g){
     if(g.category === 'cadet-officer') return g.key ? `rank-epaulet-sleeve-blue-cadet-${g.key}` : 'rank-epaulet-sleeve-blue-cadet-blank';
     if((g.officer && !g.cadet) || (g.category === 'senior-none' && g.track === 'officer')) return g.key ? `rank-epaulet-sleeve-gray-${g.key}` : 'rank-epaulet-sleeve-gray-blank';
     return null;
+  }
+
+  // The wearer's-left epaulet strap axis as [neck end, arm end] points, from the garment's landmark.
+  function strapAxis(ctx, side){
+    const f = H.epauletFrame(ctx, side);
+    return f ? [[f.neck.x, f.neck.y], [f.outer.x, f.outer.y]] : null;
   }
 
   // Shoulder cord on the wearer's left shoulder (9.3): the cord's neck end on the strap axis, the
@@ -551,10 +674,10 @@
   // ---- USAF-style Class B (4.1.11 men, 4.1.12 women) -----------------------------------------------
 
   const CLASS_B = {
-    'male-short': { garment: 'garment-blues-class-b-shirt-male', chev: { right: [2.58, 8.40, 6.0], left: [18.11, 8.40, -6.0] }, cord: [[13.682, 1.933], [17.754, 3.45]], sleeveW: 3.0 },
-    'male-long': { garment: 'garment-blues-class-b-shirt-male-long', chev: { right: [3.12, 9.75, 2.4], left: [18.20, 9.75, -2.4] }, cord: [[13.88, 2.20], [17.95, 3.64]] },
-    'female-short': { garment: 'garment-blues-class-b-blouse-female', chev: { right: [2.77, 8.48, 3.4], left: [18.00, 8.48, -3.4] }, cord: [[13.326, 2.038], [17.779, 3.059]], sleeveW: 3.0 },
-    'female-long': { garment: 'garment-blues-class-b-blouse-female-long', chev: { right: [2.31, 8.94, 1.2], left: [17.20, 8.94, -1.2] }, cord: [[12.63, 2.31], [17.08, 3.26]] }
+    'male-short': { garment: 'garment-blues-class-b-shirt-male', chev: { right: [2.58, 8.40, 6.0], left: [18.11, 8.40, -6.0] }, sleeveW: 3.0 },
+    'male-long': { garment: 'garment-blues-class-b-shirt-male-long', chev: { right: [3.12, 9.75, 2.4], left: [18.20, 9.75, -2.4] } },
+    'female-short': { garment: 'garment-blues-class-b-blouse-female', chev: { right: [2.77, 8.48, 3.4], left: [18.00, 8.48, -3.4] }, sleeveW: 3.0 },
+    'female-long': { garment: 'garment-blues-class-b-blouse-female-long', chev: { right: [2.31, 8.94, 1.2], left: [17.20, 8.94, -1.2] } }
   };
 
   async function composeClassB(ctx, b){
@@ -587,8 +710,10 @@
       const id = G.seniorChevron(g, { size });
       await sleeveChevrons(ctx, id, chevronAnchors(ctx) || V.chev);
     }
-    // The epaulet sleeves are edge-on in the front view; their grade shows on the top views.
-    await epauletTopViews(ctx, g);
+    // The epaulet sleeves are edge-on in the front view, each with its grade, and seen from above
+    // just over the shoulder with the grade in place (R7).
+    await epauletEdgeGrades(ctx, g);
+    await epauletViews(ctx, g);
 
     // Ribbons (optional): men on the left pocket top, women with the bottom even with the nametag.
     const rest = ctx.point('ribbon_row_bottom_center');
@@ -611,7 +736,7 @@
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
     }
     await dressBadges(ctx, b, geo);
-    if(g.cadet) await shoulderCord(ctx, b, V.cord);
+    if(g.cadet) await shoulderCord(ctx, b, strapAxis(ctx, 'left'));
     await blueHat(ctx, b);
   }
 
