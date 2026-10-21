@@ -17,7 +17,10 @@
   // Draw order. Later layers cover earlier ones.
   const Z = {
     under: -5, garment: 0, garmentLayer: 2, tape: 4, patch: 6, cord: 7, epauletLayer: 8,
-    insignia: 10, ribbon: 12, device: 13, medal: 14, badge: 16, text: 20, hat: 30, hatDevice: 31
+    insignia: 10, ribbon: 12, device: 13, medal: 14, badge: 16, text: 20, hat: 30, hatDevice: 31,
+    // Epaulet and shoulder-board views from above lie over the cap's corners where the cap is as wide as
+    // the neck opening: the cap is seated on the collar (6.2.2) and must not cover their grade or CAP lettering (R7).
+    epauletTop: 32, epauletTopGrade: 32.5
   };
 
   function createContext(build, store){

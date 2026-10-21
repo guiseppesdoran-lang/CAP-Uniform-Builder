@@ -12,6 +12,7 @@ const root = path.join(__dirname, '..');
 const core = require('../js/engine/core.js');
 const G = require('../js/engine/grades.js');
 const P = require('../js/engine/profiles.js');
+const { Z } = require('../js/engine/compose.js');
 require('../js/engine/profiles-field.js');
 require('../js/engine/profiles-dress.js');
 
@@ -84,7 +85,8 @@ for(const uniform of UNIFORMS){
           const { scene, hat, device } = await hatAndDevice(build(uniform, gender, cls.m, cls.r, kind), st);
           assert.ok(hat, 'a cap is drawn');
           assert.equal(hat.id, want[cut], `the ${cut}'s cap`);
-          assert.ok(hat.z > Math.max(...scene.layers.filter(l => !/^(hat|measure)/.test(l.role || '')).map(l => l.z)), 'cap on top of the figure');
+          // The figure is under the cap; only the epaulet views from above lie over the cap's corners (see below).
+          assert.ok(hat.z > Math.max(...scene.layers.filter(l => !/^(hat|measure)/.test(l.role || '') && l.role !== 'epaulet-top' && !/^grade:top-/.test(l.key || '')).map(l => l.z)), 'cap on top of the figure');
           assert.ok(device, 'the cap carries a device');
           assert.equal(device.id, want.device);
           assert.ok(device.z > hat.z, 'device over the cap');
@@ -168,3 +170,40 @@ test('no flight cap with the corporate flight suit (8.3.8)', async () => {
   const { hats } = await hatAndDevice(build('corporate_flight_suit', 'male', 'senior', 'Capt', 'auto'));
   assert.equal(hats.length, 0);
 });
+
+// The cap seats on the collar (6.2.2) and, where it is as wide as the neck opening, its corners reach the
+// epaulet or shoulder-board views from above. R7 wants both views to show, so the views are drawn over the cap
+// and over its device: a partly covered 'CAP' lettering or slide edge is a failure.
+const boxOf = l => {
+  const c = { x: l.x + l.w / 2, y: l.y + l.h / 2 };
+  const pts = [[l.x, l.y], [l.x + l.w, l.y], [l.x + l.w, l.y + l.h], [l.x, l.y + l.h]].map(([x, y]) => core.rotatePoint({ x, y }, c, l.rotate || 0));
+  return { x0: Math.min(...pts.map(p => p.x)), x1: Math.max(...pts.map(p => p.x)), y0: Math.min(...pts.map(p => p.y)), y1: Math.max(...pts.map(p => p.y)) };
+};
+const overlaps = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
+
+test('the epaulet-view layers are above every cap layer in the draw order (R7)', () => {
+  assert.ok(Z.epauletTop > Z.hatDevice && Z.epauletTopGrade > Z.epauletTop);
+});
+
+for(const uniform of ['blues_a', 'blues_b']){
+  for(const gender of ['male', 'female']){
+    for(const [m, r] of [['cadet', 'C/Maj'], ['senior', 'Capt'], ['senior', 'Maj Gen']]){
+      for(const kind of ['auto', 'service']){
+        test(`${uniform} ${gender} ${r}, headgear ${kind}: no cap layer covers an epaulet view from above (R7, 6.2.2)`, async () => {
+          const { scene } = await hatAndDevice(build(uniform, gender, m, r, kind));
+          const tops = byRole(scene, 'epaulet-top');
+          const caps = scene.layers.filter(l => l.role === 'hat' || l.role === 'hat-device');
+          assert.ok(caps.length >= 1, 'a cap is drawn');
+          for(const t of tops){
+            for(const c of caps){
+              if(overlaps(boxOf(t), boxOf(c))) assert.ok(t.z > c.z, `${t.key} (z ${t.z}) over ${c.key} (z ${c.z})`);
+            }
+            // The grade drawn on the view (mirrored eagle, board rank slot) goes with it.
+            for(const g of scene.layers.filter(l => /^grade:top-/.test(l.key || ''))) assert.ok(g.z > Math.max(...caps.map(c => c.z)), `${g.key} over the cap`);
+          }
+          if(uniform === 'blues_b') assert.equal(tops.length, 2, 'both top-down views on the Class B');
+        });
+      }
+    }
+  }
+}

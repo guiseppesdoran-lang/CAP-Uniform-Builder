@@ -375,9 +375,9 @@
       const cx = side === 'right' ? 0.25 + s.h / 2 : ctx.base.w - 0.25 - s.h / 2;
       const cy = -(o.gap == null ? 0.75 : o.gap) - s.w / 2;
       const mirror = side === 'right' && eagle && ins && ctx.has(eagle);
-      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: side === 'right' ? 90 : -90, z: Z.hat - 1, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} ${o.label || 'epaulet'}, seen from above` }, mirror ? { hideGroups: ['grade'] } : {}));
+      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: side === 'right' ? 90 : -90, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} ${o.label || 'epaulet'}, seen from above` }, mirror ? { hideGroups: ['grade'] } : {}));
       // Turned +90, the sleeve's downward offset to the insignia points to the viewer's left.
-      if(mirror) await ctx.place(eagle, { pieceAnchor: 'center', at: { x: cx - (ins.y - s.h / 2), y: cy }, rotate: 90, flipX: true, z: Z.hat - 0.5, role: 'grade', key: 'grade:top-right' });
+      if(mirror) await ctx.place(eagle, { pieceAnchor: 'center', at: { x: cx - (ins.y - s.h / 2), y: cy }, rotate: 90, flipX: true, z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-right' });
     }
   }
 
@@ -518,11 +518,11 @@
       }
       const c = { x: c0.x, y: c0.y - (Number.isFinite(minClear) ? TOP_VIEW_CLEAR - minClear : 0) };
       const mirror = mirrorsEagle(g, side) && eagle && ins && ctx.has(eagle);
-      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: c, rotate: f.deg, z: Z.hat - 1, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, seen from above` }, mirror ? { hideGroups: ['grade'] } : {}));
+      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: c, rotate: f.deg, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, seen from above` }, mirror ? { hideGroups: ['grade'] } : {}));
       if(mirror){
         // The sleeve's insignia point, turned with the sleeve about its centre.
         const v = core.rotatePoint({ x: c.x + (ins.x - s.w / 2), y: c.y + (ins.y - s.h / 2) }, c, f.deg);
-        await ctx.place(eagle, { pieceAnchor: 'center', at: v, rotate: f.deg, flipX: true, z: Z.hat - 0.5, role: 'grade', key: 'grade:top-right' });
+        await ctx.place(eagle, { pieceAnchor: 'center', at: v, rotate: f.deg, flipX: true, z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-right' });
       }
     }
   }
@@ -616,7 +616,7 @@
       if(!ctx.has(id)) continue;
       const s = await ctx.spec(id);
       const x = side === 'right' ? 0.25 + s.w / 2 : ctx.base.w - 0.25 - s.w / 2;
-      const view = await ctx.place(id, { pieceAnchor: 'bottom_center', at: { x, y: -0.75 }, z: Z.hat - 1, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above` });
+      const view = await ctx.place(id, { pieceAnchor: 'bottom_center', at: { x, y: -0.75 }, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above` });
       const at = view && H.piecePoint(view, s, 'rank_slot_center');
       if(!at || !grade || !ctx.has(grade)) continue;
       // The grade's discs or diamonds sit side by side across the board (Figure A5-6). The figure's
@@ -624,7 +624,7 @@
       // drawn just small enough to sit on it.
       const gs = await ctx.spec(grade), band = core.landmarkBounds(s, 'rank_slot');
       const scale = band ? Math.min(1, (band.h - 0.12) / gs.w, (band.w - 0.12) / gs.h) : 1;
-      await ctx.place(grade, { pieceAnchor: 'center', at, rotate: 90, scale, z: Z.hat - 0.5, role: 'grade', key: 'grade:top-' + side });
+      await ctx.place(grade, { pieceAnchor: 'center', at, rotate: 90, scale, z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-' + side });
     }
   }
 
