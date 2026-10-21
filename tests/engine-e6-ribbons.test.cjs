@@ -59,6 +59,24 @@ test('the propeller device is the CAP three-blade propeller in a triangle, centr
   }
 });
 
+test('the CAP clasp is the triangle carrying the three-blade propeller, as on the worn clasps (39-3 6b, photo L1837)', async () => {
+  for(const metal of ['bronze', 'silver']){
+    const svg = fs.readFileSync(path.join(root, 'images', 'devices', `device-clasp-${metal}.svg`), 'utf8');
+    assert.match(svg, /<polygon points="60,18 108,98 12,98"/, `${metal} clasp: the triangle`);
+    const blades = [...svg.matchAll(/<g transform="translate\(60 71\) rotate\((\d+)\)"/g)].map(m => Number(m[1])).sort((a, b) => a - b);
+    assert.deepEqual(blades, [0, 120, 240], `${metal} clasp: three blades about the triangle's centre, not an outline`);
+  }
+  // A rack with CAP Achievement 7th Award draws clasps; the asset each layer points at carries the blades.
+  const rs = ribbons([['cap_achievment_award', 'capub_total_7', '7th Award', 'cadet']]);
+  const scene = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { ribbons: rs }), store());
+  const clasps = layersBy(scene, l => l.role === 'device' && /^device-clasp-/.test(l.id));
+  assert.ok(clasps.length >= 1, 'the 7th award is worn as clasps');
+  for(const c of clasps){
+    const svg = fs.readFileSync(path.join(root, 'images', 'devices', c.id + '.svg'), 'utf8');
+    assert.equal((svg.match(/rotate\((?:0|120|240)\)/g) || []).length, 3, `${c.id} has the three blades`);
+  }
+});
+
 // ---- 2. cadet stars: COS on the Mitchell only, honor credit, and the picker's words ------------
 
 // The picker's option lists live in js/galleries.js, a page script; run the two pieces it needs.
@@ -181,7 +199,11 @@ test('every ribbon uniform lays the rack in rows of three, partial row on top, n
 
 // ---- 4. miniature medals ----------------------------------------------------------------------
 
-const MEDAL_IDS = RACK_IDS.slice(0, 12);
+// Twelve awards that each have a CAP medal (community service, special activity and the other ribbon-only
+// awards are not worn as miniatures, 11.2.8).
+const MEDAL_IDS = ['cap_achievment_award', 'encampment_ribbon', 'red_service_ribbon', 'search_find_ribbon', 'cap_membership_ribbon', 'unit_citation_award', 'cap_leadership_ribbon', 'crisis_ribbon', 'meritorious_service_award', 'lifesaving_award', 'iace_ribbon', 'national_cadet_competition_ribbon'];
+const hasAsset = id => manifest.assets.some(a => a.id === id);
+const medalAssetOf = id => 'medal-' + id.replace(/_/g, '-') + '-miniature';
 
 test('mess dress miniatures: 11/16 in drapes, one medal per award, centred on the midpoint, four to a row with the upper rows over the drapes (11.2.8, 4.1.1.1.2.2)', async () => {
   // Awards with extra ribbons for their devices still wear one medal each (11.4.2).
@@ -243,5 +265,27 @@ test('semi-formal miniatures end 1/2 inch above the crest, 11/16 in ribbons, one
     assert.ok(Math.abs(crestTop - bottom - 0.5) < 0.12, `${gender}: lowest medals end ${(crestTop - bottom).toFixed(2)} in above the crest`);
     const ribbonsOnCoat = layersBy(scene, l => l.role === 'ribbon');
     assert.equal(ribbonsOnCoat.length, 0, 'miniatures replace the ribbon rack');
+  }
+});
+
+test('every miniature drape on the mess dress and the semi-formal coat hangs a medal; ribbon-only awards are dropped with a note (39-1 11.2.8, Table 11-1)', async () => {
+  for(const id of MEDAL_IDS) assert.ok(hasAsset(medalAssetOf(id)), `${id} has a miniature medal`);
+  const ribbonOnly = ['community_service_ribbon', 'cadet_special_activity_ribbon'];
+  for(const id of ribbonOnly) assert.ok(!hasAsset(medalAssetOf(id)), `${id} has no medal`);
+  const medals = medalsOf(ribbons([...MEDAL_IDS.map(id => [id]), ...ribbonOnly.map(id => [id])]));
+  assert.equal(medals.length, 14);
+  for(const u of ['mess_dress', 'semi_formal']){
+    for(const gender of ['male', 'female']){
+      const scene = await P.composeUniform(build(u, 'senior', 'Capt', { gender, medals }), store());
+      const drapes = layersBy(scene, l => l.role === 'mini-drape');
+      const bodies = layersBy(scene, l => l.role === 'mini-medal');
+      assert.equal(drapes.length, 12, `${u} ${gender}: only the medal-bearing awards hang`);
+      assert.equal(bodies.length, drapes.length, `${u} ${gender}: a medal on every drape`);
+      for(const d of drapes) assert.ok(bodies.some(b => b.key === d.key + ':medal'), `${u} ${gender}: drape ${d.key} has its medal`);
+      for(const id of ribbonOnly){
+        assert.ok(!drapes.some(d => d.key === `mini:${id}`), `${id}: no empty drape`);
+        assert.ok(scene.notes.some(n => n.includes('ribbon-only award, not worn as a miniature medal') && n.includes(id)), `${id}: noted`);
+      }
+    }
   }
 });

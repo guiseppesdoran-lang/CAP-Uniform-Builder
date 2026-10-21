@@ -302,6 +302,13 @@
   // point of about 0.15 in into the medal's ring (measured on the McChord miniatures).
   const MINI_DRAPE = { w: 0.6875, h: 1.54, point: 0.15 };
   async function drawMiniMedals(ctx, medals, slot, opts){
+    // Only medals are worn as miniatures (11.2.8, Table 11-1): an award with no CAP medal is a ribbon-only
+    // award, so it gets no suspension drape; say so rather than hang a ribbon with nothing on it.
+    medals = (medals || []).filter(m => {
+      if(m.raster || !m.ribbonAsset || (m.medal && ctx.has(m.medal))) return true;
+      ctx.note(`${m.title}: ribbon-only award, not worn as a miniature medal (CAPR 39-1 11.2.8)`);
+      return false;
+    });
     if(!medals.length) return null;
     const o = opts || {};
     let maxBodyH = 0;
