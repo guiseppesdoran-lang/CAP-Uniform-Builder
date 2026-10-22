@@ -13,7 +13,7 @@
   3326
  ],
  "size_source": "estimated",
- "size_basis": "Same artwork box and scale as garment-mess-dress-female. Braid 1.5 in wide per CAPR 39-1 4.1.2.1 (the sleeve end is 2.5 in below its lower edge). Braid tone sampled from CAPR 39-1 (3 Mar 2020) rendered at 3x: Fig 4.6 PDF p64 (p.36) braid 2.3,33.1,86.2 / 2.7,31.9,84.3; Fig 4.1 PDF p54 (p.26) 2.1,32.3,83.6; Fig 4.7a PDF p73 (p.45) 2.1,32.4,84.6; coat 0,40,101. Drawn as 0.04 in lines on a 0.1 in pitch, tones = coat navy x RATIO.",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-female. Braid 1.5 in wide per CAPR 39-1 4.1.2.1 (the sleeve end is 2.5 in below its lower edge). Mess dress braid tone: lighter blue taken from the dress's own satin shawl collar (line #2c4a96, band #18306e, edge #0a1740 against the coat #001c52, about 3.6x the coat luminance), not the tonal Class A look, because the tonal braid could not be seen on the mess dress (Doran D37). Drawn as 0.04 in lines on a 0.1 in pitch.",
  "anchors": {
   "top_center": [
    1276.3999999999999,
@@ -80,7 +80,7 @@
   "1 1/2 in blue sleeve braid for general officers (4.1.1.1 / 4.1.2.1)"
  ],
  "assumed": [
-  "braid colour: not specified as a shade; tone sampled from the CAPR 39-1 figures 4.1 / 4.6 (see base-art/braid-art.js)",
+  "braid colour: not specified as a shade; lighter blue from the dress's satin shawl collar so it can be seen on the coat, Doran D37 (see base-art/braid-art.js)",
   "1 1/2 in braid edge nearest the sleeve end set at the same distance as the 1/2 in braid"
  ],
  "fit": {

@@ -10,11 +10,11 @@
  "name": "Major General (stars stacked, one point up each) bullion grade insignia, mess dress shoulder board",
  "size_source": "estimated",
  "size_basis": "Same shape and size as the embroidered form rank-senior-major-general-1in-vertical-thread (0.9511 x 1.809 in): CAPR 39-1 Fig A5-3 says only that the grade on the boards is metal bullion and gives no size. Male boards 5 1/2 x 2 1/4 in, female 4 1/2 x 2 in.",
- "provenance": "recoloured from rank-senior-major-general-1in-vertical-thread: bullion silver (2d Lt and Major gold, others silver, matching the metal and thread forms); bullion texture drawn as a diagonal line pattern",
+ "provenance": "recoloured from rank-senior-major-general-1in-vertical-thread: bullion silver (2d Lt and Major gold, others silver, matching the metal and thread forms); bullion texture drawn as a diagonal line pattern; darker pewter tone and a 0.035 in inside edge because the general officer board is silver-gray (the normal silver is the board tone)",
  "colours": {
-  "bullion": "#c6cbd1",
-  "bullion_line": "#8f969e",
-  "bullion_edge": "#7d848c"
+  "bullion": "#8d949d",
+  "bullion_line": "#5f656d",
+  "bullion_edge": "#4b5058"
  },
  "anchors": {
   "top_center": [
@@ -55,8 +55,8 @@
   "insignia_w_in": 0.9511,
   "insignia_h_in": 1.809,
   "grade_edge": {
-   "width_in": 0.018,
-   "colour": "#2c3037",
+   "width_in": 0.035,
+   "colour": "#23262b",
    "placement": "inside the outline (regulation size unchanged), flat, no gradient",
    "basis": "outline weight measured on CAPR 39-1 Fig A5-1 at 12 px/pt (0.014-0.017 in, tone 55-75/255); critique D20: silver grade nearly invisible on grey / blue boards"
   },
