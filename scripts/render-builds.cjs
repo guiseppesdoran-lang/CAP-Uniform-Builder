@@ -40,11 +40,12 @@ const nodeStore = () => core.createSpecStore(manifest, p => Promise.resolve(JSON
 // ---- arguments ---------------------------------------------------------------------------------
 
 function parseArgs(argv){
-  const a = { all: false, out: null, ppi: 40, pad: 0.4, only: null, jobs: 4, file: null, measure: false };
+  const a = { all: false, out: null, ppi: 40, pad: 0.4, only: null, jobs: 4, file: null, measure: false, clip: null };
   for(let i = 0; i < argv.length; i++){
     const t = argv[i];
     if(t === '--all') a.all = true;
     else if(t === '--measure') a.measure = true;
+    else if(t === '--clip'){ a.clip = String(argv[++i]).split(',').map(Number); if(a.clip.length !== 4 || a.clip.some(n => !Number.isFinite(n))) throw new Error('--clip x,y,w,h in inches'); }
     else if(t === '--out') a.out = argv[++i];
     else if(t === '--ppi') a.ppi = Number(argv[++i]);
     else if(t === '--pad') a.pad = Number(argv[++i]);
@@ -59,6 +60,7 @@ function parseArgs(argv){
 const USAGE = `Usage:
   node scripts/render-builds.cjs --all --out DIR [--ppi 40] [--pad 0.4] [--only REGEX] [--jobs 4] [--measure]
   node scripts/render-builds.cjs builds.json --out DIR [same options]
+  --clip x,y,w,h renders only that box of the scene (inches, scene coordinates) at --ppi, for close-ups of a large uniform sheet.
   --measure draws the measurement overlay (the page's Measurements button) on every build; a build with
   opt.overlay: true gets it alone.`;
 
@@ -272,7 +274,7 @@ window.__ready = (async () => {
   window.__store = E.core.createSpecStore(manifest, p => fetch('/images/' + p).then(r => r.json()));
   return true;
 })();
-window.renderBuild = async function(build, ppi, pad, measure){
+window.renderBuild = async function(build, ppi, pad, measure, clip){
   const E = CAPUBEngine, store = window.__store;
   window.__warnings.length = 0;
   const scene = await E.profiles.composeUniform(build, store);
@@ -281,12 +283,17 @@ window.renderBuild = async function(build, ppi, pad, measure){
   const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad, widthPx, measure: !!measure });
   const heightPx = Math.ceil((b.h + 2 * pad) * ppi);
   svg.setAttribute('width', widthPx); svg.setAttribute('height', heightPx);
+  let outW = widthPx, outH = heightPx;
+  if(clip){ // a close-up: only this box of the scene (inches), at ppi
+    outW = Math.ceil(clip[2] * ppi); outH = Math.ceil(clip[3] * ppi);
+    svg.setAttribute('viewBox', clip.join(' ')); svg.setAttribute('width', outW); svg.setAttribute('height', outH);
+  }
   const o = document.getElementById('out'); o.innerHTML = ''; o.append(svg);
   const imgs = [...svg.querySelectorAll('image')];
   await Promise.all(imgs.map(im => im.decode ? im.decode().catch(() => {}) : null));
   await (document.fonts && document.fonts.ready);
   await new Promise(r => setTimeout(r, 30)); // not rAF: it never fires in a background tab
-  return { w: widthPx, h: heightPx, layers: scene.layers.length, notes: scene.notes, warnings: window.__warnings.slice() };
+  return { w: outW, h: outH, layers: scene.layers.length, notes: scene.notes, warnings: window.__warnings.slice() };
 };
 </script>`;
 
@@ -465,7 +472,7 @@ async function main(){
             viewBox: [b.x - args.pad, b.y - args.pad, b.w + 2 * args.pad, b.h + 2 * args.pad].map(n => +n.toFixed(4)),
             notes: scene.notes, layers: scene.layers
           }, null, 1));
-          const shot = await page.ev(`renderBuild(${JSON.stringify(build)}, ${args.ppi}, ${args.pad}, ${!!(args.measure || (build.opt && build.opt.overlay))})`);
+          const shot = await page.ev(`renderBuild(${JSON.stringify(build)}, ${args.ppi}, ${args.pad}, ${!!(args.measure || (build.opt && build.opt.overlay))}, ${JSON.stringify(args.clip)})`);
           r.px = [shot.w, shot.h];
           r.warnings = shot.warnings;
           if(shot.layers !== scene.layers.length) r.warnings.push(`browser composed ${shot.layers} layers, node ${scene.layers.length}`);
