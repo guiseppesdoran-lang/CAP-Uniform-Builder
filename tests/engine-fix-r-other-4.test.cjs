@@ -205,14 +205,21 @@ test('aviator and Class B shirts, the aviator beside the blazer included: every 
       }
     }
   }
-  assert.ok(reached >= 4, `${reached} layers reach a collar leaf`);
+  // the long sheets draw the closed collar (tie worn, 4.2.5.1.4): its leaves hang near the centre line and no badge or ribbon reaches them any more, so only the open collars of the short shirts count
+  assert.ok(reached >= 2, `${reached} layers reach a collar leaf`);
 });
 
 test('aviator beside the blazer: the chaplain badge is under the shirt collar, on the shirt figure (the polygon moves with the figure)', async () => {
   const scene = await compose(hb('aviator_blazer', 'male', 'senior', 'Capt', { badgeIds: [PILOT, 'observer_badge', 'christian_chaplin'], ribbonSel: RIB }));
   const ch = scene.layers.find(l => l.key === 'badge:christian_chaplin' && l.figure === 2);
-  assert.ok(ch && ch.clipOut, 'the shirt\'s chaplain badge is cut by the collar');
-  for(const poly of ch.clipOut) for(const p of poly) assert.ok(p.x > 27, `cut-out point x ${p.x.toFixed(2)} is on the second figure`);
+  assert.ok(ch, 'the shirt\'s chaplain badge is drawn');
+  // The shirt beside the blazer is the long sleeve, whose closed collar (4.2.5.1.4) hangs near the centre line: the badge is cut by a leaf exactly when its box reaches one, and the cut-out polygons are on this figure.
+  const sheet = scene.layers.find(l => l.role === 'garment' && l.figure === 2);
+  const spec = await store.load(sheet.id);
+  const polys = ['collar_left', 'collar_right'].map(n => spec.landmarks[n].points.map(p => ({ x: p.x + sheet.x, y: p.y + sheet.y })));
+  const reaches = polys.some(p => C.rectHitsPolygon(ch, p));
+  assert.equal(!!(ch.clipOut && ch.clipOut.length), reaches, 'cut by the collar exactly when it reaches a leaf');
+  for(const poly of (ch.clipOut || [])) for(const p of poly) assert.ok(p.x > 27, `cut-out point x ${p.x.toFixed(2)} is on the second figure`);
 });
 
 // ---- 1. Insignia rest on the gorge seam by their ink, not their box ----------------------------------------------

@@ -1205,7 +1205,7 @@
     'garment-aviator-shirt-male-long': { chevAnchors: 11.6, sleeveW: 3.2 },
     'garment-aviator-shirt-female': { sleeveW: 2.56 },
     'garment-aviator-shirt-female-long': { chevAnchors: 10, sleeveW: 2.9 },
-    'garment-overblouse-female': { chev: { right: [3.83, 8.88, 31], left: [17.57, 8.88, -31] }, sleeveW: 2.6, overblouse: true },
+    'garment-overblouse-female': { sleeveW: 2.6, overblouse: true },   // the short sheet states shoulder_seam, sleeve_bottom and chevron_halfway (chevronAnchors)
     'garment-overblouse-female-long': { chevAnchors: 31, sleeveW: 2.9, overblouse: true }
   };
 

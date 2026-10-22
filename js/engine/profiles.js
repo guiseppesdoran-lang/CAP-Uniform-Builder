@@ -202,17 +202,10 @@
   }
 
   // Collar leaf polygons of the sheets that carry no collar_<side> landmark of their own, in sheet
-  // inches (a = the leaf on the left of the picture, b = the right): the leaf path of each sheet's SVG
-  // with the group transforms applied (the overblouse collar-right/-left paths; the aviator shirt and the ABU and CFU
-  // sheets state collar_left / collar_right themselves).
-  // A test reads them again from the SVG. Remove an entry when its sheet states the polygon.
-  const COLLAR_POLYGONS = (() => {
-    const pts = a => a.map(([x, y]) => ({ x, y }));
-    const over = { a: pts([[8.814, 0.100], [9.526, 1.167], [9.988, 1.986], [10.700, 2.448], [8.459, 4.013], [7.961, 1.594]]), b: pts([[12.586, 0.100], [11.874, 1.167], [11.412, 1.986], [10.700, 2.448], [12.941, 4.013], [13.439, 1.594]]) };
-    return {
-      'garment-overblouse-female': over, 'garment-overblouse-female-long': over
-    };
-  })();
+  // inches (a = the leaf on the left of the picture, b = the right). Every sheet states collar_left /
+  // collar_right now (the aviator shirt, ABU, CFU and, since the leaf was re-measured from Figure 4.18, the
+  // overblouse), so the table is empty; a sheet without the landmark gets an entry here.
+  const COLLAR_POLYGONS = {};
 
   // The two collar leaf polygons of the sheet: the landmarks collar_left/collar_right when it states
   // them, else the table above. Each is { points } in sheet inches.

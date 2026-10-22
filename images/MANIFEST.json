@@ -13097,8 +13097,8 @@
      319.92
     ],
     "tie_mount_center": [
-     1122.4,
-     532.45
+     1110.8,
+     149.28
     ],
     "badge_right_pocket_center": [
      785.99,
@@ -13121,12 +13121,12 @@
      919.4
     ],
     "collar_insignia_right_center": [
-     969.42,
-     430.76
+     985.86,
+     109.84
     ],
     "collar_insignia_left_center": [
-     1275.38,
-     430.76
+     1258.94,
+     109.84
     ]
    },
    "landmarks": [
@@ -13340,7 +13340,7 @@
     ],
     "tie_mount_center": [
      1213.44,
-     533.92
+     187.86
     ],
     "badge_right_pocket_center": [
      818.64,
@@ -13363,12 +13363,12 @@
      845.8
     ],
     "collar_insignia_right_center": [
-     972.8,
-     347.46
+     1063.93,
+     246.54
     ],
     "collar_insignia_left_center": [
-     1442.8,
-     347.46
+     1351.67,
+     246.54
     ]
    },
    "landmarks": [
@@ -17326,7 +17326,7 @@
    "path": "garments/garment-overblouse-female-long.svg",
    "category": "garments",
    "w_in": 21.4,
-   "h_in": 24.7472,
+   "h_in": 24.4982,
    "size_source": "estimated",
    "basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured.",
    "anchors": {
@@ -17336,82 +17336,84 @@
     ],
     "bottom_center": [
      1070,
-     2474.72
+     2449.82
     ],
     "center": [
      1070,
-     1237.36
+     1224.91
     ],
     "left_edge": [
      0,
-     1237.36
+     1224.91
     ],
     "right_edge": [
      2140,
-     1237.36
+     1224.91
     ],
     "hem_center": [
      1070,
-     2062.72
+     2037.81
     ],
     "nameplate_slot_center": [
      767.65,
-     444
+     419.1
     ],
     "ribbon_slot_center": [
      1372.35,
-     406.5
+     381.6
     ],
     "button_1_center": [
      1066.44,
-     294.61
+     269.7
     ],
     "badge_above_nametag_center": [
      767.65,
-     356.5
+     331.6
     ],
     "command_pin_above_nametag_center": [
      767.65,
-     356.5
+     331.6
     ],
     "command_pin_below_nametag_center": [
      767.65,
-     531.5
+     506.6
     ],
     "badge_left_above_ribbons_center": [
      1372.35,
-     281.5
+     256.6
     ],
     "nco_chevron_right_center": [
      386.95,
-     774.88
+     749.97
     ],
     "nco_chevron_left_center": [
      1753.05,
-     774.88
+     749.97
     ],
     "collar_insignia_right_center": [
      924.14,
-     187.88
+     162.98
     ],
     "collar_insignia_left_center": [
      1215.86,
-     187.88
+     162.98
     ],
     "epaulet_right_center": [
-     635.45,
-     239.45
+     630.1,
+     221.65
     ],
     "epaulet_left_center": [
-     1504.55,
-     239.45
+     1509.9,
+     221.65
     ]
    },
    "landmarks": [
     "nameplate_slot",
     "ribbon_slot",
     "epaulet_right",
-    "epaulet_left"
+    "epaulet_left",
+    "collar_right",
+    "collar_left"
    ],
    "has_spec": true,
    "issues": []
@@ -17420,93 +17422,121 @@
    "id": "garment-overblouse-female",
    "path": "garments/garment-overblouse-female.svg",
    "category": "garments",
-   "w_in": 21.4,
-   "h_in": 24.7472,
+   "w_in": 24.4,
+   "h_in": 24.4982,
    "size_source": "estimated",
    "basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured.",
    "anchors": {
     "top_center": [
-     1070,
+     1220,
      0
     ],
     "bottom_center": [
-     1070,
-     2474.72
+     1220,
+     2449.82
     ],
     "center": [
-     1070,
-     1237.36
+     1220,
+     1224.91
     ],
     "left_edge": [
      0,
-     1237.36
+     1224.91
     ],
     "right_edge": [
-     2140,
-     1237.36
+     2440,
+     1224.91
+    ],
+    "shoulder_seam_right": [
+     655.22,
+     390.13
+    ],
+    "sleeve_bottom_right": [
+     248.91,
+     1083.64
+    ],
+    "chevron_halfway_right": [
+     452.07,
+     736.88
+    ],
+    "shoulder_seam_left": [
+     1784.78,
+     390.13
+    ],
+    "sleeve_bottom_left": [
+     2191.09,
+     1083.64
+    ],
+    "chevron_halfway_left": [
+     1987.93,
+     736.88
     ],
     "hem_center": [
-     1070,
-     2062.72
+     1220,
+     2037.81
     ],
     "nameplate_slot_center": [
-     767.65,
-     444
+     917.65,
+     419.1
     ],
     "ribbon_slot_center": [
-     1372.35,
-     406.5
+     1522.35,
+     381.6
     ],
     "button_1_center": [
-     1066.44,
-     294.61
+     1216.44,
+     269.7
     ],
     "badge_above_nametag_center": [
-     767.65,
-     356.5
+     917.65,
+     331.6
     ],
     "command_pin_above_nametag_center": [
-     767.65,
-     356.5
+     917.65,
+     331.6
     ],
     "command_pin_below_nametag_center": [
-     767.65,
-     531.5
+     917.65,
+     506.6
     ],
     "badge_left_above_ribbons_center": [
-     1372.35,
-     281.5
+     1522.35,
+     256.6
     ],
     "nco_chevron_right_center": [
-     251.76,
-     1105.73
+     401.76,
+     1080.83
     ],
     "nco_chevron_left_center": [
-     1888.24,
-     1105.73
+     2038.24,
+     1080.83
     ],
     "collar_insignia_right_center": [
-     924.14,
-     187.88
+     1074.14,
+     162.98
     ],
     "collar_insignia_left_center": [
-     1215.86,
-     187.88
+     1365.86,
+     162.98
     ],
     "epaulet_right_center": [
-     635.45,
-     239.45
+     780.1,
+     221.65
     ],
     "epaulet_left_center": [
-     1504.55,
-     239.45
+     1659.9,
+     221.65
     ]
    },
    "landmarks": [
     "nameplate_slot",
     "ribbon_slot",
     "epaulet_right",
-    "epaulet_left"
+    "epaulet_left",
+    "collar_right",
+    "collar_left",
+    "armhole_seam_right",
+    "armhole_seam_left"
    ],
    "has_spec": true,
    "issues": []
@@ -35437,12 +35467,12 @@
      1395
     ],
     "tie_tab_center": [
-     1122.4,
-     612.45
+     1110.8,
+     229.28
     ],
     "tie_tab_top_center": [
-     1122.4,
-     532.45
+     1110.8,
+     149.28
     ]
    },
    "landmarks": [
@@ -35746,7 +35776,7 @@
     ],
     "tie_knot_top_center": [
      1213.44,
-     533.92
+     187.86
     ],
     "tie_tip_center": [
      1213.44,
@@ -35754,7 +35784,7 @@
     ],
     "tie_tack_center": [
      1213.44,
-     1307.12
+     1134.09
     ]
    },
    "landmarks": [

@@ -219,9 +219,9 @@ const COLLAR_CASES = [
   ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female', 1, 2, true],
   ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 1, 2, true],
   ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male', 1, 2, true],
-  ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long', 1, 2, true],
+  ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long', 1, 2, false],   // the long sheets draw the closed collar (tie worn): a leaf of its own, no roll line
   ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female', 1, 2, true],
-  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long', 1, 2, true],
+  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long', 3, 2, false],   // closed collar: the leaf is top, inner top, junction, collar point; the bottom edge runs junction -> collar point
   ['aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 'garment-overblouse-female', 4, 3, false],
   ['aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long', 4, 3, false],
   ['abu', 'male', {}, 'garment-abu-coat', 2, 3, false],
@@ -306,10 +306,16 @@ for(const [uniform, gender, opt, garment, iPoint, iRoll, roll] of COLLAR_CASES){
           // the box corners beside the apex are empty, the apex being the arch)
           for(const [along2, across] of [[1, 0], [-1, -1], [-1, 1]]){
             const pt = { x: cx + axis.x * along2 * l.h / 2 + (-axis.y) * across * l.w / 2, y: cy + axis.y * along2 * l.h / 2 + axis.x * across * l.w / 2 };
-            // The ABU/CFU leaf holds all three points inside (0.02 in). On the overblouse kite the wing ends, now toward
-            // the narrow collar point, pass the outer edge by 0.07 in (C/MSgt), 0.13 in (C/SMSgt) and 0.18 in (C/CMSgt),
-            // measured at the flip of the direction to Figure A5-5 (recorded in DECISIONS); the apex tip is inside.
-            assert.ok(inPolygon(pt, poly) || distToPolygon(pt, poly) < (garment.includes('overblouse') && along2 < 0 ? 0.2 : 0.02), `${side}: chevron point ${pt.x.toFixed(2)},${pt.y.toFixed(2)} off the leaf`);
+            // The ABU/CFU leaf holds all three points inside (0.02 in). The overblouse leaf is the small one Figure 4.18 draws
+            // (re-measured so its points end on the first button's line and clear the badge worn 1/2 in above the ribbons, 4.2.6.2.7.1;
+            // its lower edge is 2.07 in, 3.0 in on the Vanguard-photo leaf it replaced): the chevron 1 in from that edge is taller than the leaf is
+            // high, so the wing ends pass the outer edge by up to 0.31 in (C/CMSgt) and the apex tip by up to 0.15 in (C/CMSgt; art
+            // follow-up: the regulation size is kept, 4.2.6.2.5).
+            // The long aviator sheets draw the closed collar (the tie is worn, 4.2.5.1.4, 4.2.6.3): the leaf is the blazer under-shirt's measured proportion, 2 in wide, so the wing
+            // ends of the wider chevrons pass the outer edge by up to 0.32 in (C/CMSgt, men's) and 0.19 in (women's), the apex tip by 0.03 in (art follow-up: regulation size kept, 4.2.5.1.1.5, 4.2.6.2.5).
+            const closedCollar = /aviator-shirt-(male|female)-long$/.test(garment);
+            const limit = closedCollar ? (along2 < 0 ? 0.35 : 0.05) : !garment.includes('overblouse') ? 0.02 : along2 < 0 ? 0.32 : 0.15;
+            assert.ok(inPolygon(pt, poly) || distToPolygon(pt, poly) < limit, `${side}: chevron point ${pt.x.toFixed(2)},${pt.y.toFixed(2)} off the leaf`);
           }
         }
       }
@@ -345,7 +351,11 @@ test('the art\'s top_center lands closer to the roll-line end than to the collar
       const cx = l.x + l.w / 2, cy = l.y + l.h / 2, up = { x: Math.sin(r), y: -Math.cos(r) };     // the art's top direction after the turn
       const top = { x: cx + up.x * l.h / 2, y: cy + up.y * l.h / 2 };
       const dRoll = Math.hypot(top.x - poly[iRoll].x, top.y - poly[iRoll].y), dPoint = Math.hypot(top.x - poly[iPoint].x, top.y - poly[iPoint].y);
-      assert.ok(dRoll < dPoint, `${garment} ${side}: art top ${dRoll.toFixed(2)} in from the roll end, ${dPoint.toFixed(2)} in from the collar point`);
+      // the art's top direction runs from the collar point toward the roll end along the leaf's bottom edge; on the small overblouse leaf (Figure 4.18) the centred
+      // piece's top is within 0.02 in of equally far from both ends, so the turn is pinned by the direction as well as by the distances
+      const e = { x: poly[iRoll].x - poly[iPoint].x, y: poly[iRoll].y - poly[iPoint].y }, along = (up.x * e.x + up.y * e.y) / Math.hypot(e.x, e.y);
+      assert.ok(along > 0.99, `${garment} ${side}: art top points ${along.toFixed(3)} along the edge toward the roll end`);
+      assert.ok(dRoll < dPoint + (garment.includes('overblouse') ? 0.05 : 0), `${garment} ${side}: art top ${dRoll.toFixed(2)} in from the roll end, ${dPoint.toFixed(2)} in from the collar point`);
       assert.ok(art && art.w > 0);
     }
   }

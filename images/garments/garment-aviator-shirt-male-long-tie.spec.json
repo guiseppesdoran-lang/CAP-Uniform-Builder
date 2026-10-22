@@ -37,7 +37,7 @@
   ],
   "tie_knot_top_center": [
    1213.44,
-   533.92
+   187.86
   ],
   "tie_tip_center": [
    1213.44,
@@ -45,15 +45,15 @@
   ],
   "tie_tack_center": [
    1213.44,
-   1307.12
+   1134.09
   ]
  },
  "landmarks": {
   "tie": {
    "x": 1066.5,
-   "y": 533.92,
+   "y": 187.86,
    "w": 293.88,
-   "h": 1476.4
+   "h": 1822.46
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
