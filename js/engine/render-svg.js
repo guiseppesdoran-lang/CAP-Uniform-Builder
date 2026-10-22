@@ -153,6 +153,10 @@
         const wrap = el('g', { visibility: 'hidden' });
         [...sym.childNodes].forEach(n => { if(n.nodeName !== 'defs') wrap.appendChild(n); });
         sym.appendChild(wrap);
+        // A clip path, mask or pattern inside the hidden wrapper inherits 'hidden' for its own shapes,
+        // which makes it empty, so everything it clips would vanish (the blazer's lapel foreground was
+        // clipped to the silhouette and drew nothing): they stay visible.
+        wrap.querySelectorAll('clipPath, mask, pattern, marker').forEach(n => n.setAttribute('visibility', 'visible'));
         layer.onlyGroups.forEach(g => { const n = byId(g); if(n){ n.setAttribute('visibility', 'visible'); } });
       }
       defs.appendChild(sym);

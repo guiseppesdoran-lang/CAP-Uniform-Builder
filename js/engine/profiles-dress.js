@@ -1171,8 +1171,12 @@
     if(box) ctx.measure({ x: medalX, y: crestTop }, { x: medalX, y: crestTop - 0.5 });
     if(chaplain){
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
-      await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: ms.x + ms.w / 2, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
+      // The chaplain badge is pinned over the lapel (z above the lapel foreground): on the women's blazer
+      // the whole badge lies on the lapel's drawn area, and a badge the lapel hid would not be worn.
+      await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: ms.x + ms.w / 2, y }, z: Z.text + 2, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
     }
+    // The blazer's lapel lies over the miniature medals where it reaches them, as the service coat's lapel
+    // lies over ribbons (11.1.8); the rack keeps the regulation centring above the pocket (4.2.1.4, 4.2.2.4).
     ctx.foreground(['lapel-foreground'], Z.text + 1);
   }
 
