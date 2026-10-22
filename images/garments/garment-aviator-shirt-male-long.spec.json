@@ -212,6 +212,34 @@
     1249.27,
     187.86
    ]
+  ],
+  "armhole_seam_right": [
+   [
+    393.76,
+    329.6
+   ],
+   [
+    517.97,
+    950
+   ],
+   [
+    562.38,
+    1288.4
+   ]
+  ],
+  "armhole_seam_left": [
+   [
+    2021.84,
+    329.6
+   ],
+   [
+    1897.63,
+    950
+   ],
+   [
+    1853.22,
+    1288.4
+   ]
   ]
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left",

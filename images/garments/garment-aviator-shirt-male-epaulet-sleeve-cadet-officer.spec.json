@@ -2,29 +2,29 @@
  "asset_id": "garment-aviator-shirt-male-epaulet-sleeve-cadet-officer",
  "name": "Men's Aviator Shirt Uniform cadet officer epaulet sleeves (overlay, registered to garment-aviator-shirt-male; blank grade)",
  "size_in": {
-  "w": 24.156,
+  "w": 24.756,
   "h": 23.66
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2415.6,
+  2475.6,
   2366
  ],
  "size_source": "estimated",
  "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
  "anchors": {
   "top_center": [
-   1207.8,
+   1237.8,
    0
   ],
   "bottom_center": [
-   1207.8,
+   1237.8,
    2366
   ],
   "center": [
-   1207.8,
+   1237.8,
    1183
   ],
   "left_edge": [
@@ -32,50 +32,50 @@
    1183
   ],
   "right_edge": [
-   2415.6,
+   2475.6,
    1183
   ],
   "rank_slot_right_center": [
-   535.44,
-   290.25
+   565.44,
+   290.19
   ],
   "rank_slot_left_center": [
-   1880.16,
-   290.25
+   1910.16,
+   290.19
   ],
   "rank_rule_point_right": [
-   466.61,
-   360.74
+   496.61,
+   360.65
   ],
   "rank_rule_point_left": [
-   1948.99,
-   360.74
+   1978.99,
+   360.65
   ]
  },
  "landmarks": {
   "epaulet_sleeve_right": {
-   "x": 395.6,
-   "y": 217.88,
+   "x": 425.6,
+   "y": 217.87,
    "w": 279.68,
-   "h": 144.74
+   "h": 144.65
   },
   "rank_slot_right": {
-   "x": 395.6,
-   "y": 217.88,
+   "x": 425.6,
+   "y": 217.87,
    "w": 279.68,
-   "h": 144.74
+   "h": 144.65
   },
   "epaulet_sleeve_left": {
-   "x": 1740.32,
-   "y": 217.88,
+   "x": 1770.32,
+   "y": 217.87,
    "w": 279.68,
-   "h": 144.74
+   "h": 144.65
   },
   "rank_slot_left": {
-   "x": 1740.32,
-   "y": 217.88,
+   "x": 1770.32,
+   "y": 217.87,
    "w": 279.68,
-   "h": 144.74
+   "h": 144.65
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",

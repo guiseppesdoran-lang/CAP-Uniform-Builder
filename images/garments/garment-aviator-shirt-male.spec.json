@@ -2,29 +2,29 @@
  "asset_id": "garment-aviator-shirt-male",
  "name": "Men's Aviator Shirt Uniform: white short-sleeve aviator shirt, gray trousers",
  "size_in": {
-  "w": 24.156,
+  "w": 24.756,
   "h": 23.66
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2415.6,
+  2475.6,
   2366
  ],
  "size_source": "estimated",
- "size_basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 1.5 in (smooth ramp from the shoulder end at 3.6 in to full at 7.5 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line. The widening is an estimate (the regulation gives no sleeve width). No real garment was measured.",
+ "size_basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 1.8 in (smooth ramp from the shoulder end at 3.2 in to full at 5.7 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line. The widening is an estimate (the regulation gives no sleeve width). No real garment was measured.",
  "anchors": {
   "top_center": [
-   1207.8,
+   1237.8,
    0
   ],
   "bottom_center": [
-   1207.8,
+   1237.8,
    2366
   ],
   "center": [
-   1207.8,
+   1237.8,
    1183
   ],
   "left_edge": [
@@ -32,192 +32,220 @@
    1183
   ],
   "right_edge": [
-   2415.6,
+   2475.6,
    1183
   ],
   "shoulder_seam_right": [
-   393.76,
+   423.76,
    329.6
   ],
   "sleeve_bottom_right": [
-   291.53,
+   306.47,
    1321.4
   ],
   "chevron_halfway_right": [
-   275.84,
+   289.01,
    825.5
   ],
   "shoulder_seam_left": [
-   2021.84,
+   2051.84,
    329.6
   ],
   "sleeve_bottom_left": [
-   2124.07,
+   2169.13,
    1321.4
   ],
   "chevron_halfway_left": [
-   2139.76,
+   2186.59,
    825.5
   ],
   "hem_center": [
-   1207.8,
+   1237.8,
    2356
   ],
   "nameplate_slot_center": [
-   818.65,
+   848.65,
    758.3
   ],
   "ribbon_slot_center": [
-   1596.95,
+   1626.95,
    720.8
   ],
   "epaulet_right_center": [
-   586.85,
-   319.1
+   616.85,
+   319.05
   ],
   "epaulet_left_center": [
-   1828.75,
-   319.1
+   1858.75,
+   319.05
   ],
   "tie_mount_center": [
-   1213.44,
+   1243.44,
    533.92
   ],
   "badge_right_pocket_center": [
-   818.64,
+   848.64,
    1164.32
   ],
   "badge_left_pocket_center": [
-   1596.96,
+   1626.96,
    1164.32
   ],
   "badge_above_ribbons_center": [
-   1596.95,
+   1626.95,
    595.8
   ],
   "command_pin_above_nametag_center": [
-   818.65,
+   848.65,
    670.8
   ],
   "command_pin_below_nametag_center": [
-   818.65,
+   848.65,
    845.8
   ],
   "collar_insignia_right_center": [
-   972.8,
+   1002.8,
    347.46
   ],
   "collar_insignia_left_center": [
-   1442.8,
+   1472.8,
    347.46
   ]
  },
  "landmarks": {
   "nameplate_slot": {
-   "x": 649.9,
+   "x": 679.9,
    "y": 720.8,
    "w": 337.5,
    "h": 75
   },
   "ribbon_slot": {
-   "x": 1390.7,
+   "x": 1420.7,
    "y": 645.8,
    "w": 412.5,
    "h": 150
   },
   "epaulet_right": [
    [
-    395.6,
-    323.5
+    425.6,
+    323.4
    ],
    [
-    726.5,
+    756.5,
     194.7
    ],
    [
-    778.1,
+    808.1,
     239
    ],
    [
-    770.1,
+    800,
     306.5
    ],
    [
-    421.2,
-    443.5
+    451.2,
+    443.4
    ]
   ],
   "epaulet_left": [
    [
-    2020,
-    323.5
+    2050,
+    323.4
    ],
    [
-    1689.1,
+    1719.1,
     194.7
    ],
    [
-    1637.5,
+    1667.5,
     239
    ],
    [
-    1645.5,
+    1675.6,
     306.5
    ],
    [
-    1994.4,
-    443.5
+    2024.4,
+    443.4
    ]
   ],
   "collar_right": [
    [
-    961.52,
+    991.52,
     17.52
    ],
    [
-    743.44,
+    773.44,
     423.6
    ],
    [
-    984.08,
+    1014.08,
     404.8
    ],
    [
-    1202.16,
+    1232.16,
     543.92
    ]
   ],
   "collar_left": [
    [
-    1454.08,
+    1484.08,
     17.52
    ],
    [
-    1672.16,
+    1702.16,
     423.6
    ],
    [
-    1431.52,
+    1461.52,
     404.8
    ],
    [
-    1213.44,
+    1243.44,
     543.92
+   ]
+  ],
+  "armhole_seam_right": [
+   [
+    423.76,
+    329.6
+   ],
+   [
+    546.49,
+    950
+   ],
+   [
+    592.26,
+    1288.4
+   ]
+  ],
+  "armhole_seam_left": [
+   [
+    2051.84,
+    329.6
+   ],
+   [
+    1929.11,
+    950
+   ],
+   [
+    1883.34,
+    1288.4
    ]
   ]
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left",
  "dimensions": {
   "length_in": 23.46,
-  "max_width_in": 23.76,
+  "max_width_in": 24.36,
   "nametag_slot_in": [
    3.375,
    0.75
   ],
   "sleeve_widening": {
-   "outward_in": 1.5,
-   "ramp_from_y_in": 3.6,
-   "full_by_y_in": 7.5,
+   "outward_in": 1.8,
+   "ramp_from_y_in": 3.2,
+   "full_by_y_in": 5.7,
    "body_edge_abs_x_in": 6.3,
    "size_source": "estimated",
    "note": "outward warp of the traced sleeve (outline and every stroke in it) so the 3 1/2 in regulation chevron (4.2.5.1.1.3 / 4.2.6.2.3) lies inside the sleeve outline instead of 0.27 in (men) / 0.31 in (women) off the garment; the pre-widening flat sleeve was 2.95 in (men) / 3.5 in (women) at the chevron line"
