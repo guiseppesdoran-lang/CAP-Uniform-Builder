@@ -260,12 +260,21 @@
     const opts = i => ({ z: Z.badge, role: 'badge', key: 'badge:' + list[i].id, title: list[i].title, className: 'badge' });
 
     if(list.length <= 2){
-      // One: 1/2 in from the tape to the silver. Two: the second sits under the first, silver to
-      // silver 1/2 in (7.1.1.3.1.1-2, 5.1.1.1.2.4, 5.2.1.1.2.6). The highest badge is on top.
+      // One: 1/2 in from the tape to the silver. Two: the second sits above the first, 1/2 in apart,
+      // blue edge to blue edge on the OCP (7.1.1.3.1.2), silver to silver on the ABU and CFU
+      // (5.1.1.1.2.4, 5.2.1.1.2.6). The highest badge is on top.
       const lower = list.length === 2 ? 1 : 0;
       const l1 = await ctx.place(list[lower].art, Object.assign({ pieceAnchor: artBottom(specs[lower]), at: { x: T.x, y: T.y - 0.5 } }, opts(lower)));
       ctx.measure({ x: T.x, y: T.y }, { x: T.x, y: T.y - 0.5 });
-      if(list.length === 2){
+      if(list.length === 2 && b.uniform === 'ocp'){
+        // The OCP rule says badge placement is measured from the blue fabric edges (7.1.1.3.1), and the
+        // second badge goes 1/2 in above the first (7.1.1.3.1.2); the three and four badge columns of
+        // 7.1.1.3.1.3-4 measure the same way, at 1/4 in. Only the single badge is placed to the silver
+        // (7.1.1.3.1.1). So the upper badge's blue bottom edge is 1/2 in above the lower one's blue top.
+        await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: l1.y - 0.5 } }, opts(0)));
+        ctx.measure({ x: T.x, y: l1.y }, { x: T.x, y: l1.y - 0.5 });
+      }else if(list.length === 2){
+        // ABU and CFU: silver to silver (5.1.1.1.2.4; 5.2.1.1.2.6 'insignia-to-insignia, not blue to blue').
         const silverTop = l1.y + artTopOffset(specs[1]);
         await ctx.place(list[0].art, Object.assign({ pieceAnchor: artBottom(specs[0]), at: { x: T.x, y: silverTop - 0.5 } }, opts(0)));
         ctx.measure({ x: T.x, y: silverTop }, { x: T.x, y: silverTop - 0.5 });

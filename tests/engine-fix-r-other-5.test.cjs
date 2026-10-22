@@ -86,3 +86,19 @@ test('semi-formal blazer: the left lapel is drawn above every miniature drape, m
   }
 });
 
+// ---- 3. OCP: two badges are 1/2 in apart from blue edge to blue edge --------------------------------------------------
+
+test('OCP two chest badges: the upper badge\'s blue bottom edge is 1/2 in above the lower one\'s blue top edge (CAPR 39-1 ICL 25-06 7.1.1.3.1, 7.1.1.3.1.2); the ABU and CFU stay silver to silver', async () => {
+  for(const gender of ['male', 'female']) for(const [membership, rank, ids] of [['cadet', 'C/SSgt', [AIRCREW, 'emergency_services_badge']], ['cadet', 'C/Maj', [AIRCREW, 'emergency_services_badge']], ['senior', 'Capt', ['CAPPilot1_FA9D33EA587D8', 'emergency_services_badge']], ['senior', 'SMSgt', ['CAPPilot1_FA9D33EA587D8', 'emergency_services_badge']]]){
+    const scene = await compose(hb('ocp', gender, membership, rank, { badgeIds: ids }));
+    const bs = scene.layers.filter(l => l.role === 'badge').sort((a, b) => a.y - b.y);
+    assert.equal(bs.length, 2, `${gender} ${rank}: two badges`);
+    const gap = bs[1].y - (bs[0].y + bs[0].h);
+    assert.ok(Math.abs(gap - 0.5) < 0.005, `${gender} ${rank}: blue to blue ${gap.toFixed(3)} in`);
+  }
+  // Silver to silver on the CFU (5.2.1.1.2.6 'insignia-to-insignia, not blue to blue'): the blue gap is 1/2 in plus both borders.
+  const scene = await compose(hb('corporate_field', 'male', 'senior', 'Capt', { badgeIds: ['CAPPilot1_FA9D33EA587D8', 'observer_badge'] }));
+  const bs = scene.layers.filter(l => l.role === 'badge').sort((a, b) => a.y - b.y);
+  if(bs.length === 2) assert.ok(bs[1].y - (bs[0].y + bs[0].h) < 0.5 - 0.01, 'CFU: silver to silver leaves less than 1/2 in of blue to blue');
+});
+
