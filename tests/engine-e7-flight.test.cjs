@@ -146,7 +146,7 @@ test('officer cloth name tag carries ONE badge: "may include one badge" (8.2.4.1
       assert.ok(Math.abs(bs[0].x + bs[0].w / 2 - (zone.x + zone.w / 2)) < EPS, `${f.name} ${r}: centred in badge_zone`);
       assert.ok(Math.abs(bs[0].y + bs[0].h / 2 - (zone.y + zone.h / 2)) < EPS, `${f.name} ${r}: centred in badge_zone height`);
       assert.ok(bs[0].x >= zone.x - EPS && bs[0].x + bs[0].w <= zone.x + zone.w + EPS && bs[0].h <= zone.h + EPS, `${f.name} ${r}: inside badge_zone`);
-      assert.ok(scene.notes.some(n => /officer cloth name tag carries one badge \(CAPR 39-1, 8\.2\.4\.1\)/.test(n)), `${f.name} ${r}: says the pin is not shown`);
+      assert.ok(scene.notes.some(n => /officer cloth name tag carries one badge \(CAPR 39-1, 8\.[23]\.4\.1\)/.test(n)), `${f.name} ${r}: says the pin is not shown`);
     }
   }
 });

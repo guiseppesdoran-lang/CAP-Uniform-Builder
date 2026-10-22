@@ -497,10 +497,16 @@
     }
     // Something worn on the member's record is not on the tag: the command pin counts as one candidate
     // when it is current (a graduated pin is never worn).
-    const candidates = set.all.length + (pinItem ? 1 : 0);
-    if(candidates > chosen.length) ctx.note(officerLike
-      ? 'The officer cloth name tag carries one badge (CAPR 39-1, 8.2.4.1); the rest are not shown'
-      : 'Flight suit name tags carry at most two badges (CAPR 39-1, 8.2.4.1); the rest are not shown');
+    // The tag takes a CAP aeronautical rating, an occupational badge (or a mission-qualification description)
+    // or the command pin; a specialty track, service or National Staff badge is another kind of badge and
+    // is not on the tag, which is a different reason from the tag being full.
+    const para = b.uniform === 'corporate_flight_suit' ? '8.3.4.1' : '8.2.4.1';
+    const eligible = set.chaplain.length + set.aviation.length + set.occupational.length + (pinItem ? 1 : 0);
+    const other_kinds = set.all.length - set.chaplain.length - set.aviation.length - set.occupational.length;
+    if(other_kinds > 0) ctx.note(`Specialty track and service badges are not worn on the flight suit name tag (CAPR 39-1, ${para})`);
+    if(eligible > chosen.length) ctx.note(officerLike
+      ? `The officer cloth name tag carries one badge (CAPR 39-1, ${para}); the rest are not shown`
+      : `Flight suit name tags carry at most two badges (CAPR 39-1, ${para}); the rest are not shown`);
   }
 
   async function flightPatches(ctx, b){
