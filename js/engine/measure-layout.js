@@ -144,13 +144,17 @@
       const others = owner ? views.filter(v => v !== owner) : [];
       const crossesOther = (p, q) => others.some(r => insideLength(p, q, r) > 0.005);
 
-      const search = (solidsX, shrunkX, strict, outside) => {
+      // `hard`: the label may not lie over any piece, over another label or over a dimension already drawn, and no dimension
+      // may cross a label already placed (D26: every measurement readable). The first pass is hard; only where it finds
+      // nothing does the cost-only search run, which accepts the least bad place.
+      const search = (solidsX, shrunkX, strict, outside, hard) => {
         const candidates = [];
         if(!o.offsetOnly) candidates.push({ side: sides[0], d: 0, inline: true });
         for(const s of sides){
           // Each extension line starts at the edge of its own piece.
           const startA = clearance(A, s, solidsX, 1.5 * P), startB = clearance(B, s, solidsX, 1.5 * P);
-          const first = Math.max(startA, startB) + (o.offsetPx != null ? o.offsetPx : PX.minOffset) * P;
+          // `minOffsetIn`: the line moves at least this many inches (a width measure that must lie past the Velcro it hangs on).
+          const first = Math.max(Math.max(startA, startB) + (o.offsetPx != null ? o.offsetPx : PX.minOffset) * P, o.minOffsetIn || 0);
           for(let d = first; d <= first + PX.maxOffset * P; d += PX.step * P) candidates.push({ side: s, d, startA, startB });
         }
         let found = null;
@@ -177,6 +181,15 @@
             const outward = c.inline ? [c.side, mul(c.side, -1)] : [c.side];
             outward.forEach((v, i) => modes.push({ name: 'beside', at: add(at, mul(v, extent(v) / 2 + PX.labelGap * P)), cost: slide + (i ? 6 : 0) }));
             if(!c.inline) modes.push({ name: 'beside-in', at: add(at, mul(c.side, -(extent(c.side) / 2 + PX.labelGap * P))), cost: slide + 25 });
+            // A dimension whose sides are all artwork (the 1/2 in gap between two patches on a sleeve) carries its label past
+            // one end, on the line's own axis, where the cloth is free (hard pass only).
+            if(hard && t === 0.5){
+              const half = extent(u) / 2 + PX.labelGap * P;
+              for(let k = 0; k < 2; k++){
+                const more = k * 5 * PX.step * P;     // slid on along the axis until it clears the pieces around the end
+                modes.push({ name: 'end-b', at: add(b, mul(u, half + more)), cost: 14 + 4 * k }, { name: 'end-a', at: add(a, mul(u, -(half + more))), cost: 14 + 4 * k });
+              }
+            }
           }
 
           // Line costs, shared by every label mode.
@@ -189,6 +202,7 @@
             for(const [p, q] of exts) lineCost += 60 * outsideLength(p, q, area) / P;
           }
           for(const lab of placedLabels) lineCost += 40 * insideLength(a, b, lab) / P;
+          if(hard && (placedLabels.some(lab => insideLength(a, b, lab) > 0 || exts.some(([p, q]) => insideLength(p, q, lab) > 0)) || shrunkX.some(r => insideLength(a, b, r) > 0 || exts.some(([p, q]) => insideLength(p, q, r) > 0)))) continue;
           lineCost += c.d / P;
 
           // The halfway tick stays in view.
@@ -197,6 +211,13 @@
             const box = { x: md.at.x - lw / 2, y: md.at.y - lh / 2, w: lw, h: lh };
             if(strict && others.some(r => overlap(box, r) > 0)) continue;
             if(outside && overlap(box, outside) > 0) continue;
+            if(hard){
+              const sink = 0.25 * P;
+              if(solidsX.some(r => overlap(box, grow(r, -sink)) > 0)) continue;
+              if(placedLabels.some(r => overlap(box, grow(r, 2 * P)) > 0)) continue;
+              if(placedLines.some(([p, q]) => insideLength(p, q, box) > 0)) continue;
+              if(area && overlap(box, area) < lw * lh - 1e-9) continue;
+            }
             let cost = lineCost + md.cost;
             if(tickAt && contains(grow(box, 3 * P), tickAt)) cost += 300;
             for(const r of solidsX) cost += 6 * overlap(box, r) / (P * P);
@@ -213,7 +234,7 @@
       };
 
       // First beside the view, label outside it (the seated cap's own measure); then, where no side is free, on its cloth.
-      let best = search(solids, shrunk, !!owner, owner);
+      let best = search(solids, shrunk, !!owner, owner, true) || search(solids, shrunk, !!owner, owner, false);
       if(!best && owner){
         const solids2 = solids.filter(b => !(b.x === owner.x && b.y === owner.y && b.w === owner.w && b.h === owner.h));
         best = search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true, null);

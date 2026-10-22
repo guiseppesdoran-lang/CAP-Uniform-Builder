@@ -458,7 +458,19 @@
     const v = ctx.rect(velcroName), d = ctx.rect(drawnName);
     if(!layer) return;
     const cx = layer.x + layer.w / 2;
-    ctx.measure({ x: layer.x, y: layer.y + layer.h }, { x: layer.x + layer.w, y: layer.y + layer.h });
+    // The patch's width is drawn below the Velcro it hangs on, not along the patch's bottom edge across its lettering, and the labels keep off the flag or
+    // AUX patch the sheet draws (flat and seen edge-on) as they do off the patch (D26).
+    ctx.measure({ x: layer.x, y: layer.y + layer.h }, { x: layer.x + layer.w, y: layer.y + layer.h }, null,
+      v ? { side: { x: 0, y: 1 }, offsetOnly: true, minOffsetIn: Math.max(0, v.y + v.h - (layer.y + layer.h)) + 0.15 } : null);
+    if(d){
+      ctx.keepClear(d, drawnName);
+      const f = edgeFrame(ctx, velcroName.endsWith('right') ? 'right' : 'left');
+      if(f){
+        const e = f.map(d), R = f.tilt * Math.PI / 180, c = Math.abs(Math.cos(R)), s = Math.abs(Math.sin(R));
+        const w = e.w * c + e.h * s, h = e.w * s + e.h * c;
+        ctx.keepClear({ x: e.center.x - w / 2, y: e.center.y - h / 2, w, h }, drawnName + '-seen-edge-on');
+      }
+    }
     if(v && d){
       ctx.measure({ x: cx, y: d.y + d.h }, { x: cx, y: layer.y });
       ctx.measure({ x: cx, y: layer.y + layer.h }, { x: cx, y: v.y + v.h });
