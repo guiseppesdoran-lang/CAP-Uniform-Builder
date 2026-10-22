@@ -109,8 +109,12 @@
     "safety_senior_badge": { family: "specialty", name: "Safety Senior Badge", dress: "enamel-safety-senior", field: null, cloth: null, mini: null },
     "safety_master_badge": { family: "specialty", name: "Safety Master Badge", dress: "enamel-safety-master", field: null, cloth: null, mini: null },
     "inspector_general_technician_badge": { family: "specialty", name: "Inspector General Technician Badge", dress: "enamel-ig-tech", field: null, cloth: null, mini: null },
-    "inspector_general_senior_badge": { family: "specialty", name: "Inspector General Senior Badge", dress: "enamel-ig-senior", field: null, cloth: null, mini: null },
-    "inspector_general_master_badge": { family: "specialty", name: "Inspector General Master Badge", dress: "enamel-ig-master", field: null, cloth: null, mini: null },
+    // 10.5.1: the Inspector General badge may carry a gold star while the member serves as a National
+    // Complaints Resolution Officer or a National Compliance Inspection Officer; one device only.
+    "inspector_general_senior_badge": { family: "specialty", name: "Inspector General Senior Badge", dress: "enamel-ig-senior", field: null, cloth: null, mini: null,
+      levels: [["standard", "No device", "enamel-ig-senior"], ["gold-star", "Gold star (National Complaints Resolution or Compliance Inspection Officer)", "enamel-ig-senior-gold"]] },
+    "inspector_general_master_badge": { family: "specialty", name: "Inspector General Master Badge", dress: "enamel-ig-master", field: null, cloth: null, mini: null,
+      levels: [["standard", "No device", "enamel-ig-master"], ["gold-star", "Gold star (National Complaints Resolution or Compliance Inspection Officer)", "enamel-ig-master-gold"]] },
     "stan_eval_tech_badge": { family: "specialty", name: "Standardization/Evaluation Technician Badge", dress: "enamel-stan-eval-tech", field: null, cloth: null, mini: null },
     "stan_eval_senior_badge": { family: "specialty", name: "Standardization/Evaluation Senior Badge", dress: "enamel-stan-eval-senior", field: null, cloth: null, mini: null },
     "stan_eval_master_badge": { family: "specialty", name: "Standardization/Evaluation Master Badge", dress: "enamel-stan-eval-master", field: null, cloth: null, mini: null },

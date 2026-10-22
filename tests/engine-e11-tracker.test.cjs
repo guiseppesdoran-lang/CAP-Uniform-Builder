@@ -199,3 +199,18 @@ test('women\'s Class A: the Volunteer University badge, a CAP service badge, is 
   assert.ok(cx(vu) > cx(es), 'the service badge is on the lapel side of the pair');
 });
 
+// ---- Inspector General gold star -------------------------------------------------------------------------------
+
+test('Inspector General senior and master badges offer the gold star of 10.5.1, drawn from the gold art', async () => {
+  for(const level of ['senior', 'master']){
+    const id = `inspector_general_${level}_badge`;
+    assert.equal(B.levels(id).length, 2);
+    assert.equal(B.art(id, 'dress'), `enamel-ig-${level}`, 'no device by default');
+    assert.equal(B.art(id, 'dress', 'gold-star'), `enamel-ig-${level}-gold`);
+    const scene = await compose(build('blues_a', 'male', 'senior', 'Maj', [], { badges: [{ id, level: 'gold-star' }] }));
+    const badge = scene.layers.find(l => l.key === `badge:${id}`);
+    assert.ok(badge && badge.id === `enamel-ig-${level}-gold`, `${level}: the gold-star badge is drawn`);
+    const plain = await compose(build('blues_a', 'male', 'senior', 'Maj', [], { badges: [{ id }] }));
+    assert.equal(plain.layers.find(l => l.key === `badge:${id}`).id, `enamel-ig-${level}`);
+  }
+});
