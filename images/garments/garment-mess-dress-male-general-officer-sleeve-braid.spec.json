@@ -13,7 +13,7 @@
   3368
  ],
  "size_source": "estimated",
- "size_basis": "Same artwork box and scale as garment-mess-dress-male. Braid 1.5 in wide per CAPR 39-1 4.1.1.1 (the sleeve end is 3 in below its lower edge). Mess dress braid tone: lighter blue taken from the dress's own satin shawl collar (line #2c4a96, band #18306e, edge #0a1740 against the coat #001c52, about 3.6x the coat luminance), not the tonal Class A look, because the tonal braid could not be seen on the mess dress (Doran D37). Drawn as 0.04 in lines on a 0.1 in pitch.",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-male. Braid 1.5 in wide per CAPR 39-1 4.1.1.1 (the sleeve end is 3 in below its lower edge). Braid tone: sampled from CAPR 39-1 (3 Mar 2020) rendered at 3x, Fig 4.6 PDF p64 (p.36) braid 2.3,33.1,86.2 / 2.7,31.9,84.3; Fig 4.1 PDF p54 (p.26) 2.1,32.3,83.6; Fig 4.7a PDF p73 (p.45) 2.1,32.4,84.6 against coat 0,40,101 (the figures draw a tonal braid, ~0.72x the coat luminance); drawn in the figure's line structure, 0.04 in lines on a 0.1 in pitch, but lighter than the figure: the tonal band repeats C/Col Doran's \"too close to the jacket colour\" (mess dress braid #0b1f5e, 1.1x the coat luminance, 2026-10-12) and the flat #2149a0 (5.3x) was \"too light\" (2026-10-14), so lines #1e3c82 (3.6x), gaps #12286a (1.9x), edge #0a1740 on the coat #001c52, band mean 2.5x, the geometric mean of the two rated values.",
  "anchors": {
   "top_center": [
    1426.1,
