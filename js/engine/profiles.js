@@ -287,12 +287,32 @@
       (out[key] || out.specialty).push(item);
       out.all.push(item);
     }
-    // Only one CAP aviation badge is worn (4.1.5.2.2.4.1); keep the first the member listed.
+    // Only one CAP aviation badge is worn; keep the first the member listed. The paragraph is the
+    // uniform's own (ONE_AVIATION_BADGE); the corporate blazers wear no aviation badge at all, so their
+    // own badge note says what is worn and this one is not given.
     if(out.aviation.length > 1){
-      ctx.note('Only one CAP aviation badge is worn; the others are not shown (CAPR 39-1, 4.1.5.2.2.4.1)');
+      const para = oneAviationBadgeParagraph(b);
+      if(para !== false) ctx.note('Only one CAP aviation badge is worn; the others are not shown' + (para ? ` (CAPR 39-1, ${para})` : ''));
       out.aviation = out.aviation.slice(0, 1);
     }
     return out;
+  }
+
+  // CAPR 39-1: 'When more than one CAP aviation badge is authorized, only one will be worn', by uniform
+  // and cut ([men, women]); false = no aviation badge is worn on that uniform.
+  const ONE_AVIATION_BADGE = {
+    blues_a: ['4.1.5.2.2.4.1', '4.1.9.4.4.1'], semi_formal_usaf: ['4.1.5.2.2.4.1', '4.1.9.4.4.1'],
+    blues_b: ['4.1.11.1.1.2.3.1', '4.1.12.2.5.1'], mess_dress: ['4.1.1.1.3.1', '4.1.2.1.2.5'],
+    aviator: ['4.2.5.1.3.1', '4.2.6.2.7.1'], corporate_field: ['5.2.1.1.2.6', '5.2.1.1.2.6'],
+    abu: ['5.1.1.1.2.4', '5.1.1.1.2.4'], ocp: ['7.1.1.3.1', '7.1.1.3.1'],
+    flight_suit: ['8.2.4.1', '8.2.4.1'], corporate_flight_suit: ['8.3.4.1', '8.3.4.1'],
+    semi_formal: false, aviator_blazer: false
+  };
+  function oneAviationBadgeParagraph(b){
+    // The shirt drawn beside a blazer is a companion figure: the blazer's rule applies to its notes.
+    const e = b.companionOf && ONE_AVIATION_BADGE[b.companionOf] === false ? false : ONE_AVIATION_BADGE[b.uniform];
+    if(e === false) return false;
+    return e ? e[b.gender === 'female' ? 1 : 0] : null;
   }
 
   // 10.2.5: the command insignia pin is not worn by officers who were members of the Command Council,
@@ -562,6 +582,7 @@
     const scene = C.finish(ctx, p.title);
     const second = p.companion ? p.companion(build) : null;
     if(!second) return scene;
+    second.companionOf = build.uniform;
     const q = PROFILES[second.uniform];
     const ctx2 = C.createContext(second, store);
     await q.compose(ctx2, second);

@@ -182,3 +182,20 @@ test('mess dress officers: each shoulder has an edge-on strip and a lifted view 
   const male = await compose(build('mess_dress', 'male', 'senior', 'Capt', []));
   assert.ok(!male.notes.some(n => /No artwork/.test(n)));
 });
+
+// ---- 11. The one-aviation-badge note cites the uniform's own paragraph ------------------------------------------
+
+test('the one-aviation-badge note cites the uniform\'s own paragraph and is not given on the corporate blazers', async () => {
+  const two = ['CAPPilot1_FA9D33EA587D8', 'observer_badge'];
+  const note = async (uniform, sex, rank) => (await compose(build(uniform, sex, 'senior', rank, two))).notes.find(n => /Only one CAP aviation badge/.test(n));
+  assert.match(await note('mess_dress', 'male', 'Col'), /4\.1\.1\.1\.3\.1\)/);
+  assert.match(await note('mess_dress', 'female', 'Col'), /4\.1\.2\.1\.2\.5\)/);
+  assert.match(await note('blues_a', 'male', 'Capt'), /4\.1\.5\.2\.2\.4\.1\)/);
+  assert.match(await note('blues_a', 'female', 'Capt'), /4\.1\.9\.4\.4\.1\)/);
+  assert.match(await note('blues_b', 'male', 'Capt'), /4\.1\.11\.1\.1\.2\.3\.1\)/);
+  assert.match(await note('aviator', 'female', 'Capt'), /4\.2\.6\.2\.7\.1\)/);
+  assert.equal(await note('semi_formal', 'male', 'Capt'), undefined);
+  assert.equal(await note('aviator_blazer', 'female', 'Capt'), undefined);
+  const semi = await compose(build('semi_formal', 'male', 'senior', 'Capt', two));
+  assert.ok(semi.notes.some(n => /Only the chaplain badge and the CSAG/.test(n)), 'the corporate badge note stays');
+});
