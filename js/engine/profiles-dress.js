@@ -1082,17 +1082,28 @@
       const plateId = g.cadet ? 'nameplate-blazer-cadet' : 'nameplate-blazer-adult';
       const ps = await ctx.spec(plateId);
       // Men: on the wearer's right, straight across from the left breast pocket with its top even
-      // with the pocket top (the sheet's slot, mirrored). Women's blazer has no pocket: the nametag
-      // sits 1/2 in above the crest or the service badge in its place (4.2.3.1.1.2, 4.2.4.1.1.2).
+      // with the pocket top (the sheet's slot, mirrored). Women: the nametag's top edge is aligned
+      // with the top of the left breast pocket, and with a slanted pocket it runs straight across from
+      // the pocket's inside edge (4.2.4.1.1.2); the sheet's nameplate_slot carries that line, already on
+      // the wearer's left, so it is not mirrored. The sheet's crest, or the badge worn in its place,
+      // stays at crest_center below the plate. Only a sheet with no pocket and no slot falls back to
+      // the nametag 1/2 in above the crest or the service badge in its place (4.2.4.1.1.2).
       const slotAt = ctx.point('nameplate_slot_center');
+      const slotRect = ctx.rect('nameplate_slot');
       let plateAt = slotAt && { x: ctx.base.w - slotAt.x, y: slotAt.y };
       const crestTopPt = ctx.point('crest_top_center');
-      if(female && crestTopPt){
-        const top = crestLayer ? crestLayer.y : crestTopPt.y;
-        plateAt = { x: crestTopPt.x, y: top - 0.5 - ps.h / 2 };
+      let abovePlateFallback = false;
+      if(female){
+        if(slotRect){
+          plateAt = { x: slotRect.x + slotRect.w / 2, y: slotRect.y + ps.h / 2 };
+        }else if(crestTopPt){
+          const top = crestLayer ? crestLayer.y : crestTopPt.y;
+          plateAt = { x: crestTopPt.x, y: top - 0.5 - ps.h / 2 };
+          abovePlateFallback = true;
+        }
       }
       const plate = await ctx.place(plateId, { pieceAnchor: 'center', at: plateAt, z: Z.tape, role: 'nametag', key: 'nametag' });
-      if(female && crestTopPt) ctx.measure({ x: plate.x + plate.w / 2, y: plate.y + plate.h }, { x: plate.x + plate.w / 2, y: plate.y + plate.h + 0.5 });
+      if(abovePlateFallback) ctx.measure({ x: plate.x + plate.w / 2, y: plate.y + plate.h }, { x: plate.x + plate.w / 2, y: plate.y + plate.h + 0.5 });
       if(b.name.show){
         // Last name and state (4.2.3.1.1.2).
         const nameZone = H.pieceRect(plate, ps, 'name');
