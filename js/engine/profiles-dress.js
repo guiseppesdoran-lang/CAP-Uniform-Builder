@@ -1090,14 +1090,18 @@
         // The grade's art is turned as on the board (its width along the strap), scaled to the strip.
         const gs = await ctx.spec(gradeId);
         const turn = boardGradeTurn(gradeId, frame.deg);
-        // The art turned by (turn - frame): its extent across the strip decides the scale, so a piece whose
-        // width lies across the strip (eagle, stars, leaf) is scaled by its width and a bar (height across)
-        // by its height; it never grows (R1).
+        // The strip is the board seen edge-on: it keeps its length along the strap and is squeezed only across
+        // it (gradeOnStrap, 67138dbc). The art turned by (turn - frame) lies with its width along the strap
+        // (rel 0: the bars, whose height, their length, lies across) or across it (rel 90: eagle, leaf, stars),
+        // so the extent across the strip decides one squeeze on that axis only, and the extent along the
+        // strap stays true, as on the top view; it never grows (R1, R7; CAPR 39-1 4.1.1.1.1.1, 4.1.2.1.1.1).
         const rel = (turn - frame.deg) * Math.PI / 180, sn = Math.abs(Math.sin(rel)), cs = Math.abs(Math.cos(rel));
-        const across = gs.w * sn + gs.h * cs, along = gs.w * cs + gs.h * sn;
-        const scale = Math.min(1, (T - 0.08) / across);
-        const dist = GRADE_FROM_END + along * scale / 2;
-        await ctx.place(gradeId, { pieceAnchor: 'center', at: { x: end.x + a.x * dist, y: end.y + a.y * dist }, rotate: side === 'left' && turn < -180 ? turn + 360 : turn, scale,
+        const widthAcross = sn > cs;
+        const across = widthAcross ? gs.w : gs.h, along = widthAcross ? gs.h : gs.w;
+        const squeeze = Math.min(1, (T - 0.08) / across);
+        const scale = widthAcross ? 1 : squeeze, scaleX = widthAcross ? squeeze : 1 / squeeze;
+        const dist = GRADE_FROM_END + along / 2;
+        await ctx.place(gradeId, { pieceAnchor: 'center', at: { x: end.x + a.x * dist, y: end.y + a.y * dist }, rotate: side === 'left' && turn < -180 ? turn + 360 : turn, scale, scaleX,
           flipX: side === 'right' && /colonel-(bullion|thread)$/.test(gradeId) && !/lieutenant/.test(gradeId), z: Z.insignia, role: 'grade', key: `grade:edge-${side}`,
           title: `${side === 'right' ? 'Right' : 'Left'} shoulder board grade, edge-on` });
       }

@@ -56,3 +56,34 @@ test('edge-on epaulet grades keep their true length along the strap and are sque
   }
   assert.ok(compared >= 6, `${compared} edge/top pairs compared (${edgeOnly} grades with the edge view only)`);
 });
+
+// ---- 6. The mess dress boards: the same rule (FIX-R-OTHER-r4 item 3) --------------------------------------------------
+
+test('mess dress boards: the edge-on grade keeps its true length along the strap and is squeezed only across the 0.4 in strip, as on the top view; 5/8 in from the outer end (R7; CAPR 39-1 4.1.1.1.1.1, 4.1.2.1.1.1; DAFI 36-2903 4.5.1.1.1)', async () => {
+  const along = (l, u) => {
+    const R = rad(l.rotate || 0), c = Math.cos(R), s = Math.sin(R);
+    return Math.abs(l.w * (c * u.x + s * u.y)) + Math.abs(l.h * (-s * u.x + c * u.y));
+  };
+  const ranks = [['Capt', 0.8], ['Col', 0.6], ['Maj Gen', 1.5]];
+  for(const gender of ['male', 'female']){
+    for(const [rank, minAlong] of ranks){
+      const scene = await compose(hb('mess_dress', gender, 'senior', rank));
+      for(const side of ['right', 'left']){
+        const label = `mess_dress ${gender} ${rank} ${side}`;
+        const strip = byKey(scene, `epaulet-edge:${side}`), edge = byKey(scene, `grade:edge-${side}`), top = byKey(scene, `grade:top-${side}`);
+        assert.ok(strip && edge && top, `${label}: strip, edge-on grade and top-view grade are drawn`);
+        // The strap axis is the strip's long side; the cross axis is the strip's thickness.
+        const r = rad(strip.rotate || 0), axis = { x: Math.cos(r), y: Math.sin(r) }, cross = { x: -Math.sin(r), y: Math.cos(r) };
+        assert.ok(along(edge, cross) <= 0.32 + 0.005, `${label}: squeezed into the strip (${along(edge, cross).toFixed(3)} across)`);
+        assert.ok(Math.abs(along(edge, axis) - along(top, axis)) < 0.01, `${label}: edge-on length ${along(edge, axis).toFixed(3)} equals the top view's ${along(top, axis).toFixed(3)}`);
+        assert.ok(along(edge, axis) >= minAlong, `${label}: ${along(edge, axis).toFixed(3)} in along the strap is not a speck`);
+        // The grade's outer edge lies 5/8 in from the strip's outer end: half the strip's length, less the grade's
+        // distance from the strip's centre along the strap and half its own length.
+        const ctr = { x: strip.x + strip.w / 2, y: strip.y + strip.h / 2 }, ec = { x: edge.x + edge.w / 2, y: edge.y + edge.h / 2 };
+        const off = Math.abs((ec.x - ctr.x) * axis.x + (ec.y - ctr.y) * axis.y);
+        const fromEnd = strip.w / 2 - off - along(edge, axis) / 2;
+        assert.ok(Math.abs(fromEnd - 0.625) < 0.01, `${label}: the grade is ${fromEnd.toFixed(3)} in from the outer end, not 5/8 in`);
+      }
+    }
+  }
+});
