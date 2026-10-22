@@ -26,6 +26,8 @@ req('js/engine/profiles-dress.js');
 const RULES = req('data/uniform-rules.js');
 const RA = req('data/ribbon-awards.js');
 const BADGES = req('data/badge-catalog.js');
+// An engine note that says a requested piece was left out of the picture (a crop of the old sleeve drawing, no full patch artwork).
+const NOT_DRAWN = /not drawn|only a crop|no full patch artwork/i;
 
 const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'images/MANIFEST.json'), 'utf8'));
@@ -191,6 +193,11 @@ const MEMBERS = [
 ];
 const AVIATION_BADGE = { cadet: 'AirCrew1_DB3F0FCC3650F', senior: 'CAPPilot1_FA9D33EA587D8' };
 const SPECIALTY_BADGE = 'emergency_services_badge';
+// The flight suit name tag takes the aeronautical rating and an occupational badge (CAPR 39-1 8.2.4.1, 8.3.4.1, 10.4.5); the Emergency
+// Services badge is a specialty track badge (10.5) it rejects, so the flight suits' matrix builds wear the Ground Team badge and draw
+// the two-badge tag.
+const OCCUPATIONAL_BADGE = 'ground_team_basic_badge';
+const FLIGHT_UNIFORMS = new Set(['flight_suit', 'corporate_flight_suit']);
 const CHAPLAIN_BADGE = 'christian_chaplin';
 const SHOULDER_CORD = 'wing';
 
@@ -232,7 +239,7 @@ function matrix(){
           if(m.membership === 'senior') spec.badgeIds = [CHAPLAIN_BADGE];
         } else {
           const cap = rule.badgeCap == null ? 2 : rule.badgeCap;
-          spec.badgeIds = [AVIATION_BADGE[m.membership], SPECIALTY_BADGE].slice(0, Math.max(cap, 0));
+          spec.badgeIds = [AVIATION_BADGE[m.membership], FLIGHT_UNIFORMS.has(uniform) ? OCCUPATIONAL_BADGE : SPECIALTY_BADGE].slice(0, Math.max(cap, 0));
         }
         if(RULES.allowsShoulderCord(uniform, m.membership)) spec.cord = SHOULDER_CORD;
         ok.push({ name, build: spec });
@@ -373,10 +380,10 @@ function contactSheet(summary){
     byUniform.get(u).push(b);
   }
   const card = b => {
-    const notes = (b.notes || []).map(n => `<li class="${/^No artwork for/.test(n) ? 'bad' : /artwork/i.test(n) ? 'warn' : ''}">${esc(n)}</li>`).join('');
+    const notes = (b.notes || []).map(n => `<li class="${/^No artwork for/.test(n) || NOT_DRAWN.test(n) ? 'bad' : /artwork/i.test(n) ? 'warn' : ''}">${esc(n)}</li>`).join('');
     const warn = (b.warnings || []).map(n => `<li class="warn">${esc(n)}</li>`).join('');
     const img = b.error ? `<div class="err">${esc(b.error)}</div>` : `<a href="${esc(b.png)}"><img loading="lazy" src="${esc(b.png)}" alt="${esc(b.name)}"></a>`;
-    return `<figure class="${b.error || b.missingArtwork.length ? 'flag' : ''}" data-name="${esc(b.name)}"><figcaption><b>${esc(b.name)}</b> <a href="${esc(b.scene)}">scene.json</a> <span>${b.px ? b.px.join('x') + 'px' : ''}</span></figcaption>${img}<ul>${notes}${warn}</ul></figure>`;
+    return `<figure class="${b.error || b.missingArtwork.length || (b.notDrawn || []).length ? 'flag' : ''}" data-name="${esc(b.name)}"><figcaption><b>${esc(b.name)}</b> <a href="${esc(b.scene)}">scene.json</a> <span>${b.px ? b.px.join('x') + 'px' : ''}</span></figcaption>${img}<ul>${notes}${warn}</ul></figure>`;
   };
   const sections = [...byUniform].map(([u, list]) => `<section><h2>${esc(u)} <small>${list.length}</small></h2><div class="grid">${list.map(card).join('')}</div></section>`).join('\n');
   return `<!doctype html><meta charset="utf-8"><title>Uniform renders</title>
@@ -391,7 +398,7 @@ ul{margin:6px 0 0;padding-left:16px;font-size:11px;color:#445}li.bad{color:#c039
 .err{color:#c0392b;white-space:pre-wrap}input{padding:4px 8px;width:260px}
 </style>
 <h1>Uniform renders</h1>
-<div class="meta">${summary.count} builds, ${summary.failed} failed, ${summary.withMissingArtwork} with missing artwork, ${summary.ppi} px/in, ${summary.elapsedMs} ms. <input id="f" placeholder="filter by name"></div>
+<div class="meta">${summary.count} builds, ${summary.failed} failed, ${summary.withMissingArtwork} with missing artwork, ${summary.withNotDrawn} with a piece not drawn, ${summary.ppi} px/in, ${summary.elapsedMs} ms. <input id="f" placeholder="filter by name"></div>
 ${sections}
 <script>document.getElementById('f').addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('figure').forEach(f=>{f.style.display=f.dataset.name.toLowerCase().includes(q)?'':'none'})})</script>`;
 }
@@ -440,7 +447,7 @@ async function main(){
         if(i >= builds.length) return;
         const { name, build: spec } = builds[i];
         const t0 = Date.now();
-        const r = { name, build: spec, png: `${name}.png`, scene: `${name}.scene.json`, notes: [], missingArtwork: [], warnings: [], error: null };
+        const r = { name, build: spec, png: `${name}.png`, scene: `${name}.scene.json`, notes: [], missingArtwork: [], notDrawn: [], warnings: [], error: null };
         try{
           const build = makeBuild(spec);
           const scene = await P.composeUniform(build, store);
@@ -448,6 +455,7 @@ async function main(){
           for(const n of build.harnessNotes || []) if(!scene.notes.includes(n)) scene.notes.push(n);
           r.notes = scene.notes.slice();
           r.missingArtwork = r.notes.filter(n => /^No artwork for/.test(n));
+          r.notDrawn = r.notes.filter(n => NOT_DRAWN.test(n));
           fs.writeFileSync(path.join(args.out, r.scene), JSON.stringify({
             name, build: spec, title: scene.title, unit: 'inches (scene x right, y down, origin at the garment top-left)',
             bounds: b, ppi: args.ppi, pad: args.pad,
@@ -467,7 +475,7 @@ async function main(){
         }
         r.ms = Date.now() - t0;
         results[i] = r;
-        process.stderr.write(`${r.error ? 'FAIL' : r.missingArtwork.length ? 'GAP ' : 'ok  '} ${name} ${r.ms}ms\n`);
+        process.stderr.write(`${r.error ? 'FAIL' : r.missingArtwork.length ? 'GAP ' : r.notDrawn.length ? 'SKIP' : 'ok  '} ${name} ${r.ms}ms\n`);
       }
     };
     await Promise.all(pages.map(worker));
@@ -480,12 +488,13 @@ async function main(){
     generated: new Date().toISOString(), command: process.argv.slice(1).join(' '), ppi: args.ppi, pad: args.pad,
     count: results.length, failed: results.filter(r => r.error).length,
     withMissingArtwork: results.filter(r => r.missingArtwork.length).length,
+    withNotDrawn: results.filter(r => r.notDrawn.length).length,
     elapsedMs, skipped, matrixWarnings: warnings,
-    builds: results.map(r => ({ name: r.name, build: r.build, png: r.png, scene: r.scene, px: r.px, notes: r.notes, missingArtwork: r.missingArtwork, artworkNotes: r.notes.filter(n => /artwork/i.test(n) && !/^No artwork for/.test(n)), warnings: r.warnings, error: r.error, ms: r.ms }))
+    builds: results.map(r => ({ name: r.name, build: r.build, png: r.png, scene: r.scene, px: r.px, notes: r.notes, missingArtwork: r.missingArtwork, notDrawn: r.notDrawn, artworkNotes: r.notes.filter(n => /artwork/i.test(n) && !/^No artwork for/.test(n)), warnings: r.warnings, error: r.error, ms: r.ms }))
   };
   fs.writeFileSync(path.join(args.out, 'summary.json'), JSON.stringify(summary, null, 1));
   fs.writeFileSync(path.join(args.out, 'index.html'), contactSheet(summary));
-  console.log(`${summary.count} builds in ${(elapsedMs / 1000).toFixed(1)}s (${summary.count ? Math.round(elapsedMs / summary.count) : 0} ms/build): ${summary.failed} failed, ${summary.withMissingArtwork} with "No artwork for", ${skipped.length} combinations skipped (uniform not offered).`);
+  console.log(`${summary.count} builds in ${(elapsedMs / 1000).toFixed(1)}s (${summary.count ? Math.round(elapsedMs / summary.count) : 0} ms/build): ${summary.failed} failed, ${summary.withMissingArtwork} with "No artwork for", ${summary.withNotDrawn} with a piece "not drawn", ${skipped.length} combinations skipped (uniform not offered).`);
   console.log(`Wrote ${path.join(args.out, 'index.html')} and summary.json`);
   process.exitCode = summary.failed ? 1 : 0;
 }

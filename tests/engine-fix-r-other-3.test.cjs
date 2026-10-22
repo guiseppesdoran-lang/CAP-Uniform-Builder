@@ -259,3 +259,67 @@ test('OCP, ABU and CFU: the accessory cap views are kept, in rows above the seat
     assert.ok(!none.layers.some(l => l.role === 'hat' || l.role === 'hat-view'), `${uniform}: no hat layers with headgear none`);
   }
 });
+
+// ---- 6, 9. The critique build set and the matrix prove the utility patches, the commander insignia and the flight name tags ----
+
+const HARNESS = require('../scripts/render-builds.cjs');
+const { execFileSync } = require('node:child_process');
+const critique = JSON.parse(execFileSync(process.execPath, [path.join(root, 'scripts', 'critique-builds.cjs')], { encoding: 'utf8' }));
+const composeNamed = async (list, name) => compose(HARNESS.makeBuild(list.find(x => x.name === name).build));
+const NOT_DRAWN = /not drawn|only a crop|no full patch artwork/i;
+
+test('critique set: the utility builds draw the unit and HHQ patches (patchRefs), no "not drawn" note, ES badge on the OCP (D22, 7.1.1.4.1.2, 7.1.1.4.2)', async () => {
+  for(const name of ['ocp-male-cadet-CSSgt-patches', 'ocp-male-senior-LtCol-patches-overlay', 'abu-male-senior-SMSgt', 'corporate_field-female-senior-Capt']){
+    const scene = await composeNamed(critique, name);
+    assert.deepEqual(scene.notes.filter(n => NOT_DRAWN.test(n)), [], `${name}: nothing left undrawn`);
+    const patches = scene.layers.filter(l => l.role === 'patch');
+    assert.ok(patches.length >= 2, `${name}: unit and HHQ patches drawn (${patches.length})`);
+  }
+  const ocp = await composeNamed(critique, 'ocp-male-senior-LtCol-patches-overlay');
+  assert.ok(ocp.layers.some(l => l.key === 'badge:emergency_services_badge'), 'the OCP LtCol keeps its ES badge');
+  // The one build whose unit patch has no full art says so, so the gap is visible.
+  const noArtBuild = HARNESS.makeBuild(critique.find(x => x.name === 'ocp-male-senior-LtCol-no-unit-art').build);
+  assert.ok((noArtBuild.harnessNotes || []).some(n => NOT_DRAWN.test(n)), 'the no-art build carries the note');
+});
+
+test('critique set: OCP graduated and current commander builds draw the left-loop insignia and the chest badge (D23, 7.1.1.4.2, 7.1.1.3.1.7)', async () => {
+  const grad = await composeNamed(critique, 'ocp-male-senior-LtCol-graduated-commander');
+  const cur = await composeNamed(critique, 'ocp-male-senior-LtCol-current-commander');
+  const gl = grad.layers.filter(l => /^badge:squadron_commander_badge/.test(l.key || ''));
+  const cl = cur.layers.filter(l => /^badge:squadron_commander_badge/.test(l.key || ''));
+  assert.deepEqual(gl.map(l => l.key).sort(), ['badge:squadron_commander_badge:UN:0', 'badge:squadron_commander_badge:UN:0:edge'], 'graduated: the left loop on the flat sleeve and the edge view');
+  assert.ok(gl.every(l => l.x > 30), 'graduated: on the wearer\'s left sleeve (the picture\'s right)');
+  assert.deepEqual(cl.map(l => l.key), ['badge:squadron_commander_badge:ON:0'], 'current: the chest badge only');
+});
+
+test('critique set: the flight builds cover the two-badge tag, the command pin, C/Capt on both suits and both ES patch styles (D14, D17, 8.2.4.1, 8.3.4.1, 8.2.4.3)', async () => {
+  const names = new Set(critique.map(b => b.name));
+  for(const n of ['flight_suit-male-cadet-CSSgt-wings-ground-team', 'flight_suit-female-cadet-CSSgt-wings-ground-team', 'flight_suit-female-senior-SMSgt-wings-pin', 'flight_suit-male-cadet-CCapt-es-style1', 'flight_suit-male-cadet-CCapt-es-style2', 'corporate_flight_suit-female-cadet-CCapt-es-style1', 'corporate_flight_suit-female-cadet-CCapt-es-style2']) assert.ok(names.has(n), n);
+  const two = await composeNamed(critique, 'flight_suit-male-cadet-CSSgt-wings-ground-team');
+  assert.equal(two.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 2, 'two badges on the cadet tag');
+  assert.ok(!two.notes.some(n => /not worn on the flight suit name tag/.test(n)), 'no rejection note');
+  const pin = await composeNamed(critique, 'flight_suit-female-senior-SMSgt-wings-pin');
+  assert.equal(pin.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 2, 'wings and the command pin on the NCO tag');
+  for(const [n, style] of [['flight_suit-male-cadet-CCapt-es-style1', 'patch-es-style-1'], ['flight_suit-male-cadet-CCapt-es-style2', 'patch-es-style-2'], ['corporate_flight_suit-female-cadet-CCapt-es-style1', 'patch-es-style-1'], ['corporate_flight_suit-female-cadet-CCapt-es-style2', 'patch-es-style-2']]){
+    const sc = await composeNamed(critique, n);
+    assert.ok(sc.layers.some(l => l.id === style), `${n}: ES patch ${style} drawn`);
+    if(/^flight_suit/.test(n)) assert.ok(sc.layers.some(l => l.role === 'hat' && /cadet/.test(l.id)), `${n}: the cadet flight cap (6.2.2.2.2)`);
+  }
+});
+
+test('standard matrix: the flight suits wear an occupational badge, so the name tag carries two badges', async () => {
+  const { builds } = HARNESS.matrix();
+  for(const uniform of ['flight_suit', 'corporate_flight_suit']){
+    const b = builds.find(x => x.name === `${uniform}-male-senior-SMSgt`);
+    assert.ok(b && b.build.badgeIds.includes('ground_team_basic_badge') && !b.build.badgeIds.includes('emergency_services_badge'), uniform);
+    const scene = await compose(HARNESS.makeBuild(b.build));
+    assert.ok(scene.layers.filter(l => l.role === 'badge' && l.figure !== 2).length >= 2, `${uniform}: two badges on the NCO tag`);
+    assert.ok(!scene.notes.some(n => /not worn on the flight suit name tag/.test(n)), `${uniform}: no rejection note`);
+  }
+});
+
+test('the harness flags engine notes that say a piece is not drawn, as it flags "No artwork for"', () => {
+  assert.ok(NOT_DRAWN.test('TN-185_ocp_patch is only a crop of the old sleeve drawing, so it is not drawn; it needs full patch artwork'));
+  const src = fs.readFileSync(path.join(root, 'scripts', 'render-builds.cjs'), 'utf8');
+  assert.match(src, /withNotDrawn/);
+});

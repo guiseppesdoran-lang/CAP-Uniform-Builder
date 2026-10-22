@@ -57,13 +57,30 @@ for(const g of ['male', 'female']){
 mk('ocp-male-cadet-CSSgt-patches', 'ocp', 'male', 'cadet', 'C/SSgt', { patchRefs: [unitFull, hhq], badgeIds: [AIRCREW, 'emergency_services_badge'] });
 mk('ocp-male-senior-LtCol-patches-overlay', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitFull, hhq], badgeIds: [A4[0], 'emergency_services_badge'], opt: Object.assign({}, base, { overlay: true }) });
 mk('ocp-male-senior-LtCol-no-unit-art', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitNoArt, hhq], badgeIds: [A4[0]] });
+// D23: the graduated commander's insignia (left IFF loop, flat sleeve and edge view) and the current commander's badge (chest).
+const SQN_GRAD = { id: 'squadron_commander_badge', title: 'Squadron Commander Badge', graduated: true };
+const SQN_CURRENT = { id: 'squadron_commander_badge', title: 'Squadron Commander Badge', graduated: false };
+mk('ocp-male-senior-LtCol-graduated-commander', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitFull, hhq], badgeIds: [A4[0]], command: SQN_GRAD, opt: Object.assign({}, base, { overlay: true }) });
+mk('ocp-male-senior-LtCol-current-commander', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitFull, hhq], badgeIds: [A4[0]], command: SQN_CURRENT });
+mk('ocp-female-cadet-CCapt-graduated-commander', 'ocp', 'female', 'cadet', 'C/Capt', { patchRefs: [unitFull, hhq], badgeIds: [AIRCREW], command: SQN_GRAD });
 mk('abu-male-senior-SMSgt', 'abu', 'male', 'senior', 'SMSgt', { patchRefs: [unitFull, hhq], badgeIds: [A4[0], 'emergency_services_badge'] });
 mk('corporate_field-female-senior-Capt', 'corporate_field', 'female', 'senior', 'Capt', { patchRefs: [unitFull, hhq], badgeIds: [A4[0], 'emergency_services_badge'] });
 
 // Flight suits (items 16-17): name tag with two badges, the command pin, both ES patch styles, the scarf,
 // and the general officers.
 const GROUP_PIN = { id: 'group_commander_badge', title: 'Group Commander Badge', graduated: false };
-mk('flight_suit-male-cadet-CSSgt-wings-es', 'flight_suit', 'male', 'cadet', 'C/SSgt', { badgeIds: [AIRCREW, 'emergency_services_badge'] });
+// The flight suit name tag takes wings and an occupational badge (8.2.4.1, 8.3.4.1, 10.4.5); the Emergency Services badge is a specialty
+// track badge (10.5) the tag rejects with a note, shown once on the male cadet build.
+mk('flight_suit-male-cadet-CSSgt-wings-es-rejected', 'flight_suit', 'male', 'cadet', 'C/SSgt', { badgeIds: [AIRCREW, 'emergency_services_badge'] });
+for(const g of ['male', 'female']){
+  mk(`flight_suit-${g}-cadet-CSSgt-wings-ground-team`, 'flight_suit', g, 'cadet', 'C/SSgt', { badgeIds: [AIRCREW, 'ground_team_basic_badge'] });
+  mk(`corporate_flight_suit-${g}-cadet-CSSgt-wings-ground-team`, 'corporate_flight_suit', g, 'cadet', 'C/SSgt', { badgeIds: [AIRCREW, 'ground_team_basic_badge'] });
+  mk(`flight_suit-${g}-senior-SMSgt-wings-pin`, 'flight_suit', g, 'senior', 'SMSgt', { badgeIds: [A4[0]], command: GROUP_PIN });
+  mk(`flight_suit-${g}-cadet-CCapt-es-style1`, 'flight_suit', g, 'cadet', 'C/Capt', { badgeIds: [AIRCREW], opt: { esPatch: 'style-1' } });
+  mk(`flight_suit-${g}-cadet-CCapt-es-style2`, 'flight_suit', g, 'cadet', 'C/Capt', { badgeIds: [AIRCREW], opt: { esPatch: 'style-2' } });
+  mk(`corporate_flight_suit-${g}-cadet-CCapt-es-style1`, 'corporate_flight_suit', g, 'cadet', 'C/Capt', { badgeIds: [AIRCREW], opt: { esPatch: 'style-1' } });
+  mk(`corporate_flight_suit-${g}-cadet-CCapt-es-style2`, 'corporate_flight_suit', g, 'cadet', 'C/Capt', { badgeIds: [AIRCREW], opt: { esPatch: 'style-2' } });
+}
 mk('flight_suit-male-cadet-CSSgt-two-badges-es-style1-scarf', 'flight_suit', 'male', 'cadet', 'C/SSgt', { badgeIds: [AIRCREW, 'ground_team_basic_badge'], opt: { esPatch: 'style-1', scarf: true } });
 mk('flight_suit-male-cadet-CCapt-command-pin', 'flight_suit', 'male', 'cadet', 'C/Capt', { badgeIds: [AIRCREW], command: GROUP_PIN, opt: { esPatch: 'style-2' } });
 mk('corporate_flight_suit-female-senior-SMSgt-two-badges-es-style2', 'corporate_flight_suit', 'female', 'senior', 'SMSgt', { badgeIds: [A4[0], 'ground_team_basic_badge'], opt: { esPatch: 'style-2' } });
