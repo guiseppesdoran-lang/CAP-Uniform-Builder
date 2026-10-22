@@ -88,8 +88,17 @@ function inkPoints(id){
   return [...readSvg(id).matchAll(/[ML](-?[\d.]+),(-?[\d.]+)/g)].map(m => [Number(m[1]) / 100, Number(m[2]) / 100]);
 }
 
-test('the 3 1/2 in sleeve chevron on the short overblouse lies between the outline and the armhole seam: no ink past the seam onto the bodice (4.2.6.2.3, D8)', async () => {
-  const spec = await store.load('garment-overblouse-female');
+// Round-4 review of ddb0e91f: the first widening warped every outline point beyond |x| > 5 in down to the hem (the bodice flared and the side seam stepped
+// outward 1 in at the waist). The widening moves the sleeve's own run of the outline only: nothing below the armpit.
+function silhouettePoints(id){
+  const svg = readSvg(id), d = svg.match(/id="[^"]*silhouette" d="([^"]+)"/)[1];
+  const n = d.match(/-?\d*\.?\d+/g).map(Number), pts = [];
+  for(let i = 0; i + 1 < n.length; i += 2) pts.push([n[i], n[i + 1]]);   // inches from the neck centre line, y from the sheet's top
+  return pts;
+}
+
+async function chevronClearance(garment, rank, sleeve){
+  const spec = await store.load(garment);
   const seam = core.landmark(spec, 'armhole_seam_right').points;
   const seamX = y => {
     for(let i = 0; i < seam.length - 1; i++){
@@ -98,28 +107,68 @@ test('the 3 1/2 in sleeve chevron on the short overblouse lies between the outli
     }
     return y > seam[seam.length - 1].y ? seam[seam.length - 1].x : seam[0].x;
   };
+  const scene = await P.composeUniform(build('aviator', 'female', 'senior', rank, { sleeve, femaleTop: 'overblouse' }), store);
+  const l = scene.layers.find(x => x.role === 'grade' && x.key === 'grade:sleeve-right');
+  assert.ok(l, `${garment} ${rank}: right chevron`);
+  assert.equal(l.w, 3.5);
+  const cx = l.x + l.w / 2, cy = l.y + l.h / 2, r = l.rotate * Math.PI / 180;
+  let worst = -Infinity;
+  for(const [px, py] of inkPoints(l.id)){
+    const dx = px - l.w / 2, dy = py - l.h / 2;
+    worst = Math.max(worst, cx + dx * Math.cos(r) - dy * Math.sin(r) - seamX(cy + dx * Math.sin(r) + dy * Math.cos(r)));
+  }
+  return { scene, spec, layer: l, worst };
+}
+
+test('the 3 1/2 in sleeve chevron on the short overblouse lies between the outline and the armhole seam: no ink past the seam onto the bodice (4.2.6.2.3, D8)', async () => {
   for(const rank of ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt']){
-    const scene = await P.composeUniform(build('aviator', 'female', 'senior', rank, { sleeve: 'short', femaleTop: 'overblouse' }), store);
-    const l = scene.layers.find(x => x.role === 'grade' && x.key === 'grade:sleeve-right');
-    assert.ok(l, `${rank}: right chevron`);
-    assert.equal(l.w, 3.5);
-    const cx = l.x + l.w / 2, cy = l.y + l.h / 2, r = l.rotate * Math.PI / 180;
-    let worst = -Infinity;
-    for(const [px, py] of inkPoints(l.id)){
-      const dx = px - l.w / 2, dy = py - l.h / 2;
-      worst = Math.max(worst, cx + dx * Math.cos(r) - dy * Math.sin(r) - seamX(cy + dx * Math.sin(r) + dy * Math.cos(r)));
-    }
-    assert.ok(worst < -0.05, `${rank}: chevron ink ${worst.toFixed(3)} in past the armhole seam (want at least 0.05 in clear)`);
-    // the turn follows the sleeve (the outline's slanted edge, about 30 deg), the wearer's left mirrors it
-    assert.ok(Math.abs(l.rotate - 30.4) < 1, `${rank}: rotate ${l.rotate}`);
+    const { scene, spec, layer: l, worst } = await chevronClearance('garment-overblouse-female', rank, 'short');
+    assert.ok(worst <= -0.1, `${rank}: chevron ink ${worst.toFixed(3)} in past the armhole seam (want at least 0.1 in clear)`);
+    // the turn follows the sheet's own sleeve axis (shoulder_seam -> sleeve_bottom), the wearer's left mirrors it
+    const s = core.anchor(spec, 'shoulder_seam_right'), e = core.anchor(spec, 'sleeve_bottom_right');
+    const turn = Math.atan2(s.x - e.x, e.y - s.y) * 180 / Math.PI;
+    assert.ok(Math.abs(l.rotate - turn) < 0.05, `${rank}: rotate ${l.rotate}, sleeve axis ${turn.toFixed(2)}`);
     const left = scene.layers.find(x => x.role === 'grade' && x.key === 'grade:sleeve-left');
     assert.ok(Math.abs(left.rotate + l.rotate) < 1e-6 && Math.abs((left.x + left.w / 2) - (scene.bounds.w - (l.x + l.w / 2))) < 0.01, `${rank}: left mirrors right`);
   }
 });
 
-test('the overblouse sheet states its sleeve widening as an estimate (the regulation gives no sleeve width)', () => {
-  const w = readSpec('garment-overblouse-female').dimensions.sleeve_widening;
-  assert.ok(w && w.outward_in > 0 && w.size_source === 'estimated');
+test('the long overblouse states its sleeve anchors and its 3 1/2 in chevron lies between the outline and the armhole seam; the engine keeps no literal points for it (4.2.6.2.3, D8)', async () => {
+  const spec = await store.load('garment-overblouse-female-long');
+  for(const side of ['right', 'left']) for(const k of ['shoulder_seam_', 'elbow_', 'sleeve_bottom_', 'chevron_halfway_']) assert.ok(core.anchor(spec, k + side), `long overblouse: ${k}${side}`);
+  const sh = core.anchor(spec, 'shoulder_seam_right'), el = core.anchor(spec, 'elbow_right'), half = core.anchor(spec, 'chevron_halfway_right');
+  assert.ok(Math.abs(half.y - (sh.y + el.y) / 2) < 0.01, 'chevron_halfway is halfway between the shoulder seam and the elbow');
+  for(const rank of ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt']){
+    const { layer: l, worst } = await chevronClearance('garment-overblouse-female-long', rank, 'long');
+    assert.ok(worst <= -0.1, `${rank}: chevron ink ${worst.toFixed(3)} in past the armhole seam (want at least 0.1 in clear)`);
+    assert.ok(Math.abs((l.x + l.w / 2) - half.x) < 0.05 && Math.abs((l.y + l.h / 2) - half.y) < 0.05, `${rank}: centred on chevron_halfway`);
+    const turn = Math.atan2(sh.x - el.x, el.y - sh.y) * 180 / Math.PI;
+    assert.ok(Math.abs(l.rotate - turn) < 0.05, `${rank}: rotate ${l.rotate}, sleeve axis ${turn.toFixed(2)} (the engine's literal 31 deg is gone)`);
+  }
+});
+
+test('the overblouse sheets state their sleeve widening as an estimate (the regulation gives no sleeve width)', () => {
+  for(const id of ['garment-overblouse-female', 'garment-overblouse-female-long']){
+    const w = readSpec(id).dimensions.sleeve_widening;
+    assert.ok(w && w.outward_in > 0 && w.size_source === 'estimated', id);
+  }
+});
+
+test('the short overblouse bodice is as traced: the widening moves the sleeve run only, so the side seam runs smoothly from the armpit to the hem and the hem is not wider than the traced one (round-4 review of ddb0e91f)', () => {
+  const pts = silhouettePoints('garment-overblouse-female');
+  const hemY = Math.max(...pts.map(p => p[1])) - 1;
+  const hem = pts.filter(p => p[1] > 14 && p[1] <= hemY + 1);
+  const hemWidth = Math.max(...hem.map(p => p[0])) - Math.min(...hem.map(p => p[0]));
+  assert.ok(Math.abs(hemWidth - 11.062) < 0.01, `hem width ${hemWidth.toFixed(3)} in (traced 11.062)`);
+  // the picture-left side seam, from under the cuff down to the hem corner: no step, no flare past the traced 5.6 in
+  const belowCuffY = 12.4;   // the sleeve's cuff ends at y 12.16 in, so everything lower is bodice
+  const side = pts.filter(p => p[0] < 0 && p[1] > belowCuffY && p[1] < 20.1);   // above the hem's flat bottom edge
+  assert.ok(side.length > 40, 'side seam points');
+  for(const p of side) assert.ok(Math.abs(p[0]) < 5.6, `side seam point ${p} flares past the traced bodice`);
+  for(let i = 1; i < side.length; i++) assert.ok(Math.abs(side[i][0] - side[i - 1][0]) < 0.15, `step in the side seam at ${side[i]}`);
+  // the widening reaches no point of the bodice
+  const widest = Math.max(...pts.filter(p => p[1] > belowCuffY).map(p => Math.abs(p[0])));
+  assert.ok(widest < 5.6, `widest bodice point ${widest.toFixed(2)} in`);
 });
 
 // ---- 4, 5. long-sleeve aviator shirts draw the closed collar (tie / tab worn, 4.2.5.1.4, 4.2.6.3) ---------------------------------

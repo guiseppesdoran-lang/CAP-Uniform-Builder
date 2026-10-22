@@ -1197,8 +1197,8 @@
 
   // ---- Corporate: aviator shirt (4.2.5 men, 4.2.6 women) -----------------------------------------------
 
-  // Per garment: the sleeve chevron points of the sheets that state no sleeve anchors (the long sleeves use the
-  // sheet's nco_chevron points and a turn, the overblouse literal points), the visible sleeve width and collar angle. The
+  // Per garment: the sleeve chevron points of the sheets that state no sleeve anchors (the aviator long shirts use the
+  // sheet's nco_chevron points and a turn; both overblouse sheets state their sleeve anchors), the visible sleeve width and collar angle. The
   // epaulet's angle and width come from the garment's epaulet landmark (H.epauletFrame).
   const AVIATOR = {
     'garment-aviator-shirt-male': { sleeveW: 2.93 },
@@ -1206,7 +1206,7 @@
     'garment-aviator-shirt-female': { sleeveW: 2.56 },
     'garment-aviator-shirt-female-long': { chevAnchors: 10, sleeveW: 2.9 },
     'garment-overblouse-female': { sleeveW: 2.6, overblouse: true },   // the short sheet states shoulder_seam, sleeve_bottom and chevron_halfway (chevronAnchors)
-    'garment-overblouse-female-long': { chevAnchors: 31, sleeveW: 2.9, overblouse: true }
+    'garment-overblouse-female-long': { sleeveW: 2.9, overblouse: true }   // the long sheet states shoulder_seam, elbow, sleeve_bottom and chevron_halfway (chevronAnchors), as the aviator long shirts do
   };
 
   function aviatorEpaulet(g){
@@ -1244,7 +1244,7 @@
       // 3 1/2 in chevrons only (4.2.5.1.1.3, 4.2.6.2.3).
       const id = G.seniorChevron(g, { size: '3.5' });
       // The short-sleeve shirt sheets state shoulder_seam, sleeve_bottom and chevron_halfway anchors on the sleeve as drawn (widened so the true-size chevron lies on it), so
-      // they win over the literal points, as on the Class B sheets (chevronAnchors); the long sleeves and the overblouse keep their own points.
+      // they win over the literal points, as on the Class B sheets (chevronAnchors), the long overblouse's too; the aviator long shirts keep the points of their table where a sheet states none.
       let pts = chevronAnchors(ctx) || V.chev;
       if(!pts){
         const r = ctx.point('nco_chevron_right_center'), l = ctx.point('nco_chevron_left_center');

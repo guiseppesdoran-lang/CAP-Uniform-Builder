@@ -17325,21 +17325,21 @@
    "id": "garment-overblouse-female-long",
    "path": "garments/garment-overblouse-female-long.svg",
    "category": "garments",
-   "w_in": 21.4,
+   "w_in": 24.0282,
    "h_in": 24.4982,
    "size_source": "estimated",
-   "basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured.",
+   "basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured. The short sleeves are then widened (dimensions.sleeve_widening); the bodice keeps the 21.0 in scale.",
    "anchors": {
     "top_center": [
-     1070,
+     1201.41,
      0
     ],
     "bottom_center": [
-     1070,
+     1201.41,
      2449.82
     ],
     "center": [
-     1070,
+     1201.41,
      1224.91
     ],
     "left_edge": [
@@ -17347,63 +17347,95 @@
      1224.91
     ],
     "right_edge": [
-     2140,
+     2402.82,
      1224.91
     ],
+    "shoulder_seam_right": [
+     625.08,
+     326.62
+    ],
+    "elbow_right": [
+     367.22,
+     1285.39
+    ],
+    "sleeve_bottom_right": [
+     101.82,
+     2069.83
+    ],
+    "chevron_halfway_right": [
+     454.42,
+     806.01
+    ],
+    "shoulder_seam_left": [
+     1777.74,
+     326.62
+    ],
+    "elbow_left": [
+     2035.6,
+     1285.39
+    ],
+    "sleeve_bottom_left": [
+     2301,
+     2069.83
+    ],
+    "chevron_halfway_left": [
+     1948.4,
+     806.01
+    ],
     "hem_center": [
-     1070,
+     1201.41,
      2037.81
     ],
     "nameplate_slot_center": [
-     767.65,
+     899.06,
      419.1
     ],
     "ribbon_slot_center": [
-     1372.35,
+     1503.76,
      381.6
     ],
     "button_1_center": [
-     1066.44,
+     1197.85,
      269.7
     ],
     "badge_above_nametag_center": [
-     767.65,
+     899.06,
      331.6
     ],
     "command_pin_above_nametag_center": [
-     767.65,
+     899.06,
      331.6
     ],
     "command_pin_below_nametag_center": [
-     767.65,
+     899.06,
      506.6
     ],
     "badge_left_above_ribbons_center": [
-     1372.35,
+     1503.76,
      256.6
     ],
     "nco_chevron_right_center": [
-     386.95,
+     518.36,
      749.97
     ],
     "nco_chevron_left_center": [
-     1753.05,
+     1884.46,
      749.97
     ],
     "collar_insignia_right_center": [
-     924.14,
+     1055.55,
      162.98
     ],
     "collar_insignia_left_center": [
-     1215.86,
+     1347.27,
      162.98
     ],
     "epaulet_right_center": [
-     630.1,
+     761.51,
      221.65
     ],
     "epaulet_left_center": [
-     1509.9,
+     1641.31,
      221.65
     ]
    },
@@ -17413,7 +17445,9 @@
     "epaulet_right",
     "epaulet_left",
     "collar_right",
-    "collar_left"
+    "collar_left",
+    "armhole_seam_right",
+    "armhole_seam_left"
    ],
    "has_spec": true,
    "issues": []
@@ -17422,21 +17456,21 @@
    "id": "garment-overblouse-female",
    "path": "garments/garment-overblouse-female.svg",
    "category": "garments",
-   "w_in": 24.4,
+   "w_in": 24.6,
    "h_in": 24.4982,
    "size_source": "estimated",
-   "basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured.",
+   "basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured. The short sleeves are then widened (dimensions.sleeve_widening); the bodice keeps the 21.0 in scale.",
    "anchors": {
     "top_center": [
-     1220,
+     1230,
      0
     ],
     "bottom_center": [
-     1220,
+     1230,
      2449.82
     ],
     "center": [
-     1220,
+     1230,
      1224.91
     ],
     "left_edge": [
@@ -17444,87 +17478,87 @@
      1224.91
     ],
     "right_edge": [
-     2440,
+     2460,
      1224.91
     ],
     "shoulder_seam_right": [
-     655.22,
-     390.13
+     687.67,
+     541.93
     ],
     "sleeve_bottom_right": [
      248.91,
      1083.64
     ],
     "chevron_halfway_right": [
-     452.07,
-     736.88
+     468.29,
+     812.78
     ],
     "shoulder_seam_left": [
-     1784.78,
-     390.13
+     1772.33,
+     541.93
     ],
     "sleeve_bottom_left": [
-     2191.09,
+     2211.09,
      1083.64
     ],
     "chevron_halfway_left": [
-     1987.93,
-     736.88
+     1991.71,
+     812.78
     ],
     "hem_center": [
-     1220,
+     1230,
      2037.81
     ],
     "nameplate_slot_center": [
-     917.65,
+     927.65,
      419.1
     ],
     "ribbon_slot_center": [
-     1522.35,
+     1532.35,
      381.6
     ],
     "button_1_center": [
-     1216.44,
+     1226.44,
      269.7
     ],
     "badge_above_nametag_center": [
-     917.65,
+     927.65,
      331.6
     ],
     "command_pin_above_nametag_center": [
-     917.65,
+     927.65,
      331.6
     ],
     "command_pin_below_nametag_center": [
-     917.65,
+     927.65,
      506.6
     ],
     "badge_left_above_ribbons_center": [
-     1522.35,
+     1532.35,
      256.6
     ],
     "nco_chevron_right_center": [
-     401.76,
+     411.76,
      1080.83
     ],
     "nco_chevron_left_center": [
-     2038.24,
+     2048.24,
      1080.83
     ],
     "collar_insignia_right_center": [
-     1074.14,
+     1084.14,
      162.98
     ],
     "collar_insignia_left_center": [
-     1365.86,
+     1375.86,
      162.98
     ],
     "epaulet_right_center": [
-     780.1,
+     790.1,
      221.65
     ],
     "epaulet_left_center": [
-     1659.9,
+     1669.9,
      221.65
     ]
    },
