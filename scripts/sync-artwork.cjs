@@ -35,6 +35,8 @@ for(const id of ids){
   fs.copyFileSync(svg, dest);
   fs.copyFileSync(spec, dest.replace(/\.svg$/, '.spec.json'));
   const s = JSON.parse(fs.readFileSync(spec, 'utf8'));
+  // Two spec dialects exist: size_in {w,h} (garments, badges) and width_in/height_in (enamel, traced patches).
+  if(!s.size_in) s.size_in = { w: s.width_in, h: s.height_in };
   const next = Object.assign(entry || { id, path: rel, category: rel.split('/')[0], has_spec: true, issues: [] }, {
     w_in: s.size_in.w, h_in: s.size_in.h,
     size_source: s.size_source, basis: s.size_basis || (entry && entry.basis),
