@@ -2,29 +2,29 @@
  "asset_id": "garment-mess-dress-male-officer-shoulder-boards",
  "name": "Men's USAF-style mess dress: officer shoulder boards (Air Force blue, overlay, blank grade)",
  "size_in": {
-  "w": 26.522,
+  "w": 28.522,
   "h": 33.68
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2652.2,
+  2852.2,
   3368
  ],
  "size_source": "estimated",
  "size_basis": "Same artwork box and scale as garment-mess-dress-male. Board 5.5 x 2.25 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.5 in blue lace each side.",
  "anchors": {
   "top_center": [
-   1326.1,
+   1426.1,
    0
   ],
   "bottom_center": [
-   1326.1,
+   1426.1,
    3368
   ],
   "center": [
-   1326.1,
+   1426.1,
    1684
   ],
   "left_edge": [
@@ -32,27 +32,27 @@
    1684
   ],
   "right_edge": [
-   2652.2,
+   2852.2,
    1684
   ],
   "rank_slot_right_center": [
-   562.18,
+   662.18,
    409.53
   ],
   "rank_slot_left_center": [
-   2071.92,
+   2171.92,
    403.05
   ]
  },
  "landmarks": {
   "shoulder_board_right": {
-   "x": 280.38,
+   "x": 380.38,
    "y": 217.89,
    "w": 575.22,
    "h": 392.55
   },
   "rank_slot_right": {
-   "x": 442,
+   "x": 542,
    "y": 311.82,
    "w": 240.36,
    "h": 195.42
@@ -63,13 +63,13 @@
    "across": 1.25
   },
   "shoulder_board_left": {
-   "x": 1778.5,
+   "x": 1878.5,
    "y": 213.1,
    "w": 574.36,
    "h": 388.97
   },
   "rank_slot_left": {
-   "x": 1952.22,
+   "x": 2052.22,
    "y": 306.1,
    "w": 239.4,
    "h": 193.9

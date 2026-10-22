@@ -16633,21 +16633,21 @@
    "id": "garment-mess-dress-female-general-officer-sleeve-braid",
    "path": "garments/garment-mess-dress-female-general-officer-sleeve-braid.svg",
    "category": "garments",
-   "w_in": 25.528,
+   "w_in": 26.2099,
    "h_in": 33.26,
    "size_source": "estimated",
    "basis": "Same artwork box and scale as garment-mess-dress-female. Braid 1.5 in wide per CAPR 39-1 4.1.2.1 (the sleeve end is 2.5 in below its lower edge). Mess dress braid tone: lighter blue taken from the dress's own satin shawl collar (line #2c4a96, band #18306e, edge #0a1740 against the coat #001c52, about 3.6x the coat luminance), not the tonal Class A look, because the tonal braid could not be seen on the mess dress (Doran D37). Drawn as 0.04 in lines on a 0.1 in pitch.",
    "anchors": {
     "top_center": [
-     1276.3999999999999,
+     1310.4972866030091,
      0
     ],
     "bottom_center": [
-     1276.3999999999999,
+     1310.4972866030091,
      3326
     ],
     "center": [
-     1276.3999999999999,
+     1310.4972866030091,
      1663
     ],
     "left_edge": [
@@ -16655,7 +16655,7 @@
      1663
     ],
     "right_edge": [
-     2552.7999999999997,
+     2620.9945732060182,
      1663
     ]
    },
@@ -16670,21 +16670,21 @@
    "id": "garment-mess-dress-female-officer-shoulder-boards",
    "path": "garments/garment-mess-dress-female-officer-shoulder-boards.svg",
    "category": "garments",
-   "w_in": 25.528,
+   "w_in": 26.2099,
    "h_in": 33.26,
    "size_source": "estimated",
    "basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.5 in blue lace each side.",
    "anchors": {
     "top_center": [
-     1276.3999999999999,
+     1310.4972866030091,
      0
     ],
     "bottom_center": [
-     1276.3999999999999,
+     1310.4972866030091,
      3326
     ],
     "center": [
-     1276.3999999999999,
+     1310.4972866030091,
      1663
     ],
     "left_edge": [
@@ -16692,15 +16692,15 @@
      1663
     ],
     "right_edge": [
-     2552.7999999999997,
+     2620.9945732060182,
      1663
     ],
     "rank_slot_right_center": [
-     513.13,
-     371.46
+     547.23,
+     371.44
     ],
     "rank_slot_left_center": [
-     2030.47,
+     2064.55,
      369.13
     ]
    },
@@ -16719,21 +16719,21 @@
    "id": "garment-mess-dress-female-officer-sleeve-braid",
    "path": "garments/garment-mess-dress-female-officer-sleeve-braid.svg",
    "category": "garments",
-   "w_in": 25.528,
+   "w_in": 26.2099,
    "h_in": 33.26,
    "size_source": "estimated",
    "basis": "Same artwork box and scale as garment-mess-dress-female. Braid 0.5 in wide, its edge nearest the sleeve end 2.5 in from the sleeve end (cut parallel to the cuff) per CAPR 39-1 4.1.2.1; general officers wear 1 1/2 in (separate overlay). Mess dress braid tone: lighter blue taken from the dress's own satin shawl collar (line #2c4a96, band #18306e, edge #0a1740 against the coat #001c52, about 3.6x the coat luminance), not the tonal Class A look, because the tonal braid could not be seen on the mess dress (Doran D37). Drawn as 0.04 in lines on a 0.1 in pitch.",
    "anchors": {
     "top_center": [
-     1276.3999999999999,
+     1310.4972866030091,
      0
     ],
     "bottom_center": [
-     1276.3999999999999,
+     1310.4972866030091,
      3326
     ],
     "center": [
-     1276.3999999999999,
+     1310.4972866030091,
      1663
     ],
     "left_edge": [
@@ -16741,7 +16741,7 @@
      1663
     ],
     "right_edge": [
-     2552.7999999999997,
+     2620.9945732060182,
      1663
     ]
    },
@@ -16756,21 +16756,21 @@
    "id": "garment-mess-dress-female",
    "path": "garments/garment-mess-dress-female.svg",
    "category": "garments",
-   "w_in": 25.528,
+   "w_in": 26.2099,
    "h_in": 33.26,
    "size_source": "estimated",
    "basis": "Silhouette traced from images/base/mess_dress_female.webp (581x719 px) at 0.0474 in/px (same canvas and scale assumption as the Class A coat; 32.71 in tall). No real garment was measured.",
    "anchors": {
     "top_center": [
-     1276.4,
+     1310.5,
      0
     ],
     "bottom_center": [
-     1276.4,
+     1310.5,
      3326
     ],
     "center": [
-     1276.4,
+     1310.5,
      1663
     ],
     "left_edge": [
@@ -16778,27 +16778,59 @@
      1663
     ],
     "right_edge": [
-     2552.8,
+     2620.99,
      1663
     ],
+    "shoulder_seam_right": [
+     298.5,
+     304.7
+    ],
+    "sleeve_bottom_right": [
+     318.8,
+     3229.5
+    ],
+    "elbow_right": [
+     318.9,
+     1913.3
+    ],
+    "chevron_halfway_right": [
+     287.7,
+     1109
+    ],
+    "shoulder_seam_left": [
+     2322.5,
+     304.7
+    ],
+    "sleeve_bottom_left": [
+     2302.9,
+     3229.5
+    ],
+    "elbow_left": [
+     2303.7,
+     1913.3
+    ],
+    "chevron_halfway_left": [
+     2334.1,
+     1109
+    ],
     "hem_center": [
-     1276.4,
+     1310.5,
      3296
     ],
     "cap_seal_center": [
-     899.6,
+     933.7,
      2110.6
     ],
     "miniature_medals_center": [
-     1844.61,
+     1878.71,
      1067.8
     ],
     "shoulder_right_center": [
-     264.4,
+     298.5,
      304.7
     ],
     "shoulder_left_center": [
-     2278.9,
+     2313,
      328.4
     ]
    },
@@ -16826,21 +16858,21 @@
    "id": "garment-mess-dress-male-general-officer-sleeve-braid",
    "path": "garments/garment-mess-dress-male-general-officer-sleeve-braid.svg",
    "category": "garments",
-   "w_in": 26.522,
+   "w_in": 28.522,
    "h_in": 33.68,
    "size_source": "estimated",
    "basis": "Same artwork box and scale as garment-mess-dress-male. Braid 1.5 in wide per CAPR 39-1 4.1.1.1 (the sleeve end is 3 in below its lower edge). Mess dress braid tone: lighter blue taken from the dress's own satin shawl collar (line #2c4a96, band #18306e, edge #0a1740 against the coat #001c52, about 3.6x the coat luminance), not the tonal Class A look, because the tonal braid could not be seen on the mess dress (Doran D37). Drawn as 0.04 in lines on a 0.1 in pitch.",
    "anchors": {
     "top_center": [
-     1326.1,
+     1426.1,
      0
     ],
     "bottom_center": [
-     1326.1,
+     1426.1,
      3368
     ],
     "center": [
-     1326.1,
+     1426.1,
      1684
     ],
     "left_edge": [
@@ -16848,7 +16880,7 @@
      1684
     ],
     "right_edge": [
-     2652.2,
+     2852.2,
      1684
     ]
    },
@@ -16863,21 +16895,21 @@
    "id": "garment-mess-dress-male-officer-shoulder-boards",
    "path": "garments/garment-mess-dress-male-officer-shoulder-boards.svg",
    "category": "garments",
-   "w_in": 26.522,
+   "w_in": 28.522,
    "h_in": 33.68,
    "size_source": "estimated",
    "basis": "Same artwork box and scale as garment-mess-dress-male. Board 5.5 x 2.25 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); other officers boards are covered in Air Force blue material, 0.5 in blue lace each side.",
    "anchors": {
     "top_center": [
-     1326.1,
+     1426.1,
      0
     ],
     "bottom_center": [
-     1326.1,
+     1426.1,
      3368
     ],
     "center": [
-     1326.1,
+     1426.1,
      1684
     ],
     "left_edge": [
@@ -16885,15 +16917,15 @@
      1684
     ],
     "right_edge": [
-     2652.2,
+     2852.2,
      1684
     ],
     "rank_slot_right_center": [
-     562.18,
+     662.18,
      409.53
     ],
     "rank_slot_left_center": [
-     2071.92,
+     2171.92,
      403.05
     ]
    },
@@ -16912,21 +16944,21 @@
    "id": "garment-mess-dress-male-officer-sleeve-braid",
    "path": "garments/garment-mess-dress-male-officer-sleeve-braid.svg",
    "category": "garments",
-   "w_in": 26.522,
+   "w_in": 28.522,
    "h_in": 33.68,
    "size_source": "estimated",
    "basis": "Same artwork box and scale as garment-mess-dress-male. Braid 0.5 in wide, its edge nearest the sleeve end 3 in from the sleeve end (cut parallel to the cuff) per CAPR 39-1 4.1.1.1; general officers wear 1 1/2 in (separate overlay). Mess dress braid tone: lighter blue taken from the dress's own satin shawl collar (line #2c4a96, band #18306e, edge #0a1740 against the coat #001c52, about 3.6x the coat luminance), not the tonal Class A look, because the tonal braid could not be seen on the mess dress (Doran D37). Drawn as 0.04 in lines on a 0.1 in pitch.",
    "anchors": {
     "top_center": [
-     1326.1,
+     1426.1,
      0
     ],
     "bottom_center": [
-     1326.1,
+     1426.1,
      3368
     ],
     "center": [
-     1326.1,
+     1426.1,
      1684
     ],
     "left_edge": [
@@ -16934,7 +16966,7 @@
      1684
     ],
     "right_edge": [
-     2652.2,
+     2852.2,
      1684
     ]
    },
@@ -16949,21 +16981,21 @@
    "id": "garment-mess-dress-male",
    "path": "garments/garment-mess-dress-male.svg",
    "category": "garments",
-   "w_in": 26.522,
+   "w_in": 28.522,
    "h_in": 33.68,
    "size_source": "estimated",
    "basis": "Silhouette traced from images/base/mess_dress_male.webp (581x719 px) at 0.0474 in/px (same canvas and scale assumption as the Class A coat; 33.13 in tall). No real garment was measured.",
    "anchors": {
     "top_center": [
-     1326.1,
+     1426.1,
      0
     ],
     "bottom_center": [
-     1326.1,
+     1426.1,
      3368
     ],
     "center": [
-     1326.1,
+     1426.1,
      1684
     ],
     "left_edge": [
@@ -16971,27 +17003,59 @@
      1684
     ],
     "right_edge": [
-     2652.2,
+     2852.2,
      1684
     ],
+    "shoulder_seam_right": [
+     345.4,
+     427.9
+    ],
+    "sleeve_bottom_right": [
+     365.4,
+     3127.3
+    ],
+    "elbow_right": [
+     315.5,
+     1912.6
+    ],
+    "chevron_halfway_right": [
+     310.5,
+     1170.2
+    ],
+    "shoulder_seam_left": [
+     2506.8,
+     427.9
+    ],
+    "sleeve_bottom_left": [
+     2486.8,
+     3127.3
+    ],
+    "elbow_left": [
+     2536.7,
+     1912.6
+    ],
+    "chevron_halfway_left": [
+     2541.7,
+     1170.2
+    ],
     "hem_center": [
-     1326.1,
+     1426.1,
      3338
     ],
     "cap_seal_center": [
-     861.6,
+     961.6,
      1906.8
     ],
     "miniature_medals_center": [
-     2018.61,
+     2118.61,
      977.74
     ],
     "shoulder_right_center": [
-     245.4,
+     345.4,
      427.9
     ],
     "shoulder_left_center": [
-     2387.9,
+     2487.9,
      451.6
     ]
    },
@@ -36269,21 +36333,21 @@
    "id": "garment-mess-dress-female-general-officer-shoulder-boards",
    "path": "garments/garment-mess-dress-female-general-officer-shoulder-boards.svg",
    "category": "garments",
-   "w_in": 25.528,
+   "w_in": 26.2099,
    "h_in": 33.26,
    "size_source": "estimated",
    "basis": "Same artwork box and scale as garment-mess-dress-female. Board 4.5 x 2 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); general officer boards are covered in silver lace, 0.5 in blue lace each side.",
    "anchors": {
     "top_center": [
-     1276.3999999999999,
+     1310.4972866030091,
      0
     ],
     "bottom_center": [
-     1276.3999999999999,
+     1310.4972866030091,
      3326
     ],
     "center": [
-     1276.3999999999999,
+     1310.4972866030091,
      1663
     ],
     "left_edge": [
@@ -36291,15 +36355,15 @@
      1663
     ],
     "right_edge": [
-     2552.7999999999997,
+     2620.9945732060182,
      1663
     ],
     "rank_slot_right_center": [
-     513.13,
-     371.46
+     547.23,
+     371.44
     ],
     "rank_slot_left_center": [
-     2030.47,
+     2064.55,
      369.13
     ]
    },
@@ -36318,21 +36382,21 @@
    "id": "garment-mess-dress-male-general-officer-shoulder-boards",
    "path": "garments/garment-mess-dress-male-general-officer-shoulder-boards.svg",
    "category": "garments",
-   "w_in": 26.522,
+   "w_in": 28.522,
    "h_in": 33.68,
    "size_source": "estimated",
    "basis": "Same artwork box and scale as garment-mess-dress-male. Board 5.5 x 2.25 in per CAPR 39-1 Figure A5-3 (men's 5 1/2 x 2 1/4 in with button; women's 4 1/2 x 2 in); general officer boards are covered in silver lace, 0.5 in blue lace each side.",
    "anchors": {
     "top_center": [
-     1326.1,
+     1426.1,
      0
     ],
     "bottom_center": [
-     1326.1,
+     1426.1,
      3368
     ],
     "center": [
-     1326.1,
+     1426.1,
      1684
     ],
     "left_edge": [
@@ -36340,15 +36404,15 @@
      1684
     ],
     "right_edge": [
-     2652.2,
+     2852.2,
      1684
     ],
     "rank_slot_right_center": [
-     562.18,
+     662.18,
      409.53
     ],
     "rank_slot_left_center": [
-     2071.92,
+     2171.92,
      403.05
     ]
    },

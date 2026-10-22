@@ -2,29 +2,29 @@
  "asset_id": "garment-mess-dress-male",
  "name": "Men's USAF-style mess dress (blank: no grade or medals; CAP seal on the right side)",
  "size_in": {
-  "w": 26.522,
+  "w": 28.522,
   "h": 33.68
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2652.2,
+  2852.2,
   3368
  ],
  "size_source": "estimated",
  "size_basis": "Silhouette traced from images/base/mess_dress_male.webp (581x719 px) at 0.0474 in/px (same canvas and scale assumption as the Class A coat; 33.13 in tall). No real garment was measured.",
  "anchors": {
   "top_center": [
-   1326.1,
+   1426.1,
    0
   ],
   "bottom_center": [
-   1326.1,
+   1426.1,
    3368
   ],
   "center": [
-   1326.1,
+   1426.1,
    1684
   ],
   "left_edge": [
@@ -32,321 +32,353 @@
    1684
   ],
   "right_edge": [
-   2652.2,
+   2852.2,
    1684
   ],
+  "shoulder_seam_right": [
+   345.4,
+   427.9
+  ],
+  "sleeve_bottom_right": [
+   365.4,
+   3127.3
+  ],
+  "elbow_right": [
+   315.5,
+   1912.6
+  ],
+  "chevron_halfway_right": [
+   310.5,
+   1170.2
+  ],
+  "shoulder_seam_left": [
+   2506.8,
+   427.9
+  ],
+  "sleeve_bottom_left": [
+   2486.8,
+   3127.3
+  ],
+  "elbow_left": [
+   2536.7,
+   1912.6
+  ],
+  "chevron_halfway_left": [
+   2541.7,
+   1170.2
+  ],
   "hem_center": [
-   1326.1,
+   1426.1,
    3338
   ],
   "cap_seal_center": [
-   861.6,
+   961.6,
    1906.8
   ],
   "miniature_medals_center": [
-   2018.61,
+   2118.61,
    977.74
   ],
   "shoulder_right_center": [
-   245.4,
+   345.4,
    427.9
   ],
   "shoulder_left_center": [
-   2387.9,
+   2487.9,
    451.6
   ]
  },
  "landmarks": {
   "miniature_medal_slot": {
-   "x": 1868.61,
+   "x": 1968.61,
    "y": 915.24,
    "w": 300,
    "h": 125
   },
   "cap_seal": {
-   "x": 736.6,
+   "x": 836.6,
    "y": 1781.8,
    "w": 250,
    "h": 250
   },
   "shoulder_mark_right": {
-   "x": 225.4,
+   "x": 325.4,
    "y": 407.9,
    "w": 40,
    "h": 40
   },
   "shoulder_mark_left": {
-   "x": 2367.9,
+   "x": 2467.9,
    "y": 431.6,
    "w": 40,
    "h": 40
   },
   "shawl_right": [
    [
-    984.8,
+    1084.8,
     53.4
    ],
    [
-    833.1,
+    933.1,
     186.2
    ],
    [
-    818.9,
+    918.9,
     214.6
    ],
    [
-    814.2,
+    914.2,
     451.6
    ],
    [
-    837.9,
+    937.9,
     807.1
    ],
    [
-    897.1,
+    997.1,
     1044.1
    ],
    [
-    956.4,
+    1056.4,
     1281.1
    ],
    [
-    1041.7,
+    1141.7,
     1541.8
    ],
    [
-    1131.8,
+    1231.8,
     1802.5
    ],
    [
-    1202.9,
+    1302.9,
     2015.8
    ],
    [
-    1202.9,
+    1302.9,
     2006.3
    ],
    [
-    1202.9,
+    1302.9,
     1717.2
    ],
    [
-    1157.8,
+    1257.8,
     1281.1
    ],
    [
-    1110.4,
+    1210.4,
     925.6
    ],
    [
-    1086.7,
+    1186.7,
     688.6
    ],
    [
-    1039.3,
+    1139.3,
     427.9
    ],
    [
-    1022.7,
+    1122.7,
     214.6
    ],
    [
-    1003.8,
+    1103.8,
     53.4
    ]
   ],
   "shawl_left": [
    [
-    1655.5,
+    1755.5,
     67.7
    ],
    [
-    1814.3,
+    1914.3,
     214.6
    ],
    [
-    1833.3,
+    1933.3,
     570.1
    ],
    [
-    1809.6,
+    1909.6,
     925.6
    ],
    [
-    1762.2,
+    1862.2,
     1281.1
    ],
    [
-    1676.9,
+    1776.9,
     1565.5
    ],
    [
-    1553.6,
+    1653.6,
     1826.2
    ],
    [
-    1449.3,
+    1549.3,
     2015.8
    ],
    [
-    1439.9,
+    1539.9,
     2006.3
    ],
    [
-    1439.9,
+    1539.9,
     1717.2
    ],
    [
-    1489.6,
+    1589.6,
     1281.1
    ],
    [
-    1537,
+    1637,
     982.5
    ],
    [
-    1560.7,
+    1660.7,
     807.1
    ],
    [
-    1601,
+    1701,
     451.6
    ],
    [
-    1643.7,
+    1743.7,
     200.4
    ],
    [
-    1643.7,
+    1743.7,
     67.7
    ]
   ],
   "shirt": [
    [
-    1086.7,
+    1186.7,
     432.6
    ],
    [
-    1086.7,
+    1186.7,
     688.6
    ],
    [
-    1110.4,
+    1210.4,
     925.6
    ],
    [
-    1157.8,
+    1257.8,
     1281.1
    ],
    [
-    1202.9,
+    1302.9,
     1717.2
    ],
    [
-    1202.9,
+    1302.9,
     1717.2
    ],
    [
-    1439.9,
+    1539.9,
     1717.2
    ],
    [
-    1439.9,
+    1539.9,
     1717.2
    ],
    [
-    1489.6,
+    1589.6,
     1281.1
    ],
    [
-    1537,
+    1637,
     982.5
    ],
    [
-    1560.7,
+    1660.7,
     807.1
    ],
    [
-    1601,
+    1701,
     451.6
    ],
    [
-    1601,
+    1701,
     432.6
    ]
   ],
   "cummerbund": [
    [
-    1202.9,
+    1302.9,
     1684
    ],
    [
-    1321.4,
+    1421.4,
     1731.4
    ],
    [
-    1439.9,
+    1539.9,
     1684
    ],
    [
-    1468.3,
+    1568.3,
     2120.1
    ],
    [
-    1179.2,
+    1279.2,
     2120.1
    ]
   ],
   "bow_tie": [
    [
-    1259.7,
+    1359.7,
     257.3
    ],
    [
-    1387.7,
+    1487.7,
     257.3
    ],
    [
-    1387.7,
+    1487.7,
     390
    ],
    [
-    1259.7,
+    1359.7,
     390
    ]
   ],
   "button_right_1": {
-   "x": 778.92,
+   "x": 878.92,
    "y": 1487.58,
    "w": 80,
    "h": 80
   },
   "button_right_2": {
-   "x": 821.58,
+   "x": 921.58,
    "y": 1866.78,
    "w": 80,
    "h": 80
   },
   "button_right_3": {
-   "x": 831.06,
+   "x": 931.06,
    "y": 2245.98,
    "w": 80,
    "h": 80
   },
   "button_left_1": {
-   "x": 1755.36,
+   "x": 1855.36,
    "y": 1463.88,
    "w": 80,
    "h": 80
   },
   "button_left_2": {
-   "x": 1703.22,
+   "x": 1803.22,
    "y": 1852.56,
    "w": 80,
    "h": 80
   },
   "button_left_3": {
-   "x": 1641.6,
+   "x": 1741.6,
    "y": 2236.5,
    "w": 80,
    "h": 80
@@ -355,9 +387,44 @@
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
  "dimensions": {
   "height_in": 33.13,
-  "max_width_in": 26.02,
+  "max_width_in": 28.02,
   "buttons_per_side": 3,
-  "button_dia_in": 0.8
+  "button_dia_in": 0.8,
+  "sleeve_widening": {
+   "size_source": "estimated",
+   "outward_in": 1,
+   "ramp_from_y_in": 3.9,
+   "full_by_y_in": 9,
+   "fades_out_between_y_in": [
+    17.5,
+    24
+   ],
+   "chevron_fit": {
+    "right": {
+     "4": {
+      "outer_clearance_in": 0.431,
+      "seam_clearance_in": 0.173
+     },
+     "turn_deg": 1.15,
+     "3p5": {
+      "outer_clearance_in": 0.692,
+      "seam_clearance_in": 0.464
+     }
+    },
+    "left": {
+     "4": {
+      "outer_clearance_in": 0.421,
+      "seam_clearance_in": 0.183
+     },
+     "turn_deg": -1.15,
+     "3p5": {
+      "outer_clearance_in": 0.683,
+      "seam_clearance_in": 0.473
+     }
+    }
+   },
+   "chevron_fit_note": "worst clearance over every ink row of the six white chevrons (4 in; 3p5 = the 3 1/2 in option at 7/8 scale), chevron visual centre on chevron_halfway, turned by the line shoulder_seam to elbow; positive = on the sleeve"
+  }
  },
  "documented": [
   "blue non-fastening single-breasted mess jacket, three wing-and-star / CAP arms / USAF arms buttons each side, satin shawl collar and lapels, two buttons joined by a silver chain close the front (CAPR 39-1 4.1.1.1)",
@@ -372,7 +439,8 @@
   "seal drawn at the 2 1/2 in diameter dimensioned in CAPR 39-1 Fig A6-4 (blue-background version); eagle/shield is the measured CAP Crest redraw, ring lettering set in Arial Bold outlines",
   "shawl collar, shirt, cummerbund and cut-away geometry read off the base image",
   "satin sheen colours sampled from the base image",
-  "sleeve braid colour"
+  "sleeve braid colour",
+  "sleeve width: the traced hanging sleeve is widened outward by up to 1 in between the shoulder end and the elbow (one warp of the part between the armhole seam and the outer edge) so the true-size white chevron lies on it; the regulation gives no sleeve width (ESTIMATE)"
  ],
  "fit": {
   "method": "traced from the raster",
