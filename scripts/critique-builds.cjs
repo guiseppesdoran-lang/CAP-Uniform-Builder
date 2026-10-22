@@ -129,4 +129,18 @@ for(const g of ['male', 'female']){
   }
 }
 
+// FIX-R-OTHER-r5: the cadet officer's edge-on and top-down grade on the Class A and the semi-formal coat (item 1), the blazer lapel over the
+// semi-formal's miniature medals and chaplain badge on every cut (item 2), two OCP chest badges blue edge to blue edge (item 3), and the
+// cadet officer on the ABU and CFU tactical cap (item 4).
+for(const g of ['male', 'female']){
+  mk(`blues_a-${g}-cadet-CMaj-board-grade`, 'blues_a', g, 'cadet', 'C/Maj', { badgeIds: [AIRCREW] });
+  mk(`blues_a-${g}-cadet-CCol-board-grade`, 'blues_a', g, 'cadet', 'C/Col', { badgeIds: [AIRCREW] });
+  mk(`semi_formal_usaf-${g}-cadet-CCol-board-grade`, 'semi_formal_usaf', g, 'cadet', 'C/Col', { badgeIds: [AIRCREW] });
+  mk(`semi_formal-${g}-senior-SMSgt-lapel-chaplain`, 'semi_formal', g, 'senior', 'SMSgt', { ribbonSel: twelve, medalSel: true, badgeIds: ['christian_chaplin'], opt: Object.assign({}, base, { rackColumns: 4 }) });
+  mk(`ocp-${g}-cadet-CMaj-two-badges`, 'ocp', g, 'cadet', 'C/Maj', { badgeIds: [AIRCREW, 'emergency_services_badge'] });
+  mk(`ocp-${g}-senior-Capt-two-badges`, 'ocp', g, 'senior', 'Capt', { badgeIds: [A4[0], 'emergency_services_badge'] });
+  mk(`abu-${g}-cadet-CMaj-tactical-cap`, 'abu', g, 'cadet', 'C/Maj', { badgeIds: [AIRCREW] });
+  mk(`corporate_field-${g}-cadet-CMaj-tactical-cap`, 'corporate_field', g, 'cadet', 'C/Maj', { badgeIds: [AIRCREW] });
+}
+
 process.stdout.write(JSON.stringify(out, null, 1) + '\n');
