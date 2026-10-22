@@ -199,12 +199,16 @@
     const ordinary = [...plan.nationalStaff, ...regular];
     const specials = [rocketry, marks].filter(Boolean);
     const queue = ordinary.length ? ordinary : specials;
-    // CAP service badge closest to the lapel (viewer's right of the pair), National Staff to the
-    // wearer's right (viewer's left) of a second badge.
+    // The first badge (the CAP service badge when one is worn, which comes first in the queue) is nearest
+    // the collar, the viewer's right of the pair; the second badge is worn to its right, the wearer's
+    // right, the viewer's left (4.1.9.4.4.2, 4.1.12.2.5.2: 'wear the second badge to the wearer's right, and
+    // wear the CAP service badge closest to the collar'). The National Commander's Staff badge, queued first,
+    // is always to the wearer's right of a second badge (outboard). `pair` is in viewer's-left-first order,
+    // which is what rowOfBadges lays out.
     const pair = queue.slice(0, 2);
     const left = ordinary.length ? queue.slice(2) : [];
     const moved = ordinary.length ? specials : specials.slice(2);
-    if(pair.length === 2 && pair[0].family === 'service') pair.reverse();
+    if(pair.length === 2 && pair[0].family !== 'national-staff') pair.reverse();
     if(onX == null){
       if(pair.length) ctx.note('Some badges have no place left on this uniform and are not shown');
       return;
@@ -1070,7 +1074,7 @@
       // Women: badges on the wearer's right, tops even with the top of the medals; the current pin
       // 1/2 in above them and the graduated pin 1/2 in below them.
       const pair = others.slice(0, 2);
-      if(pair.length === 2 && pair[0].family === 'service') pair.reverse();
+      if(pair.length === 2 && pair[0].family !== 'national-staff') pair.reverse();
       let top = medTop, bottom = medTop;
       if(pair.length){
         const widths = [];
