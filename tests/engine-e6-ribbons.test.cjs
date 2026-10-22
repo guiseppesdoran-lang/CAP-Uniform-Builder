@@ -486,7 +486,9 @@ test('semi-formal miniatures end 1/2 inch above the crest, 11/16 in ribbons, one
     const bottom = Math.max(...bodies.map(l => l.y + l.h));
     const spec = JSON.parse(fs.readFileSync(path.join(root, 'images', 'garments', `garment-corporate-service-dress-blazer-${gender}.spec.json`), 'utf8'));
     const crestTop = spec.anchors.crest_top_center[1] / 100;
-    assert.ok(Math.abs(crestTop - bottom - 0.5) < 0.12, `${gender}: lowest medals end ${(crestTop - bottom).toFixed(2)} in above the crest`);
+    // The men's rack ends at the pocket's top edge instead of 1/2 in over the crest, which is over the welt (FIX-R-OTHER-r1 #4, D8).
+    const pocketTop = gender === 'male' ? spec.anchors.pocket_top_center[1] / 100 : Infinity;
+    assert.ok(Math.abs(Math.min(crestTop - 0.5, pocketTop) - bottom) < 0.12, `${gender}: lowest medals end ${(crestTop - bottom).toFixed(2)} in above the crest`);
     const ribbonsOnCoat = layersBy(scene, l => l.role === 'ribbon');
     assert.equal(ribbonsOnCoat.length, 0, 'miniatures replace the ribbon rack');
   }

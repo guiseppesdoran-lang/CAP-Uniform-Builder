@@ -1424,8 +1424,19 @@
     // rack 1.2 to 1.8 in off the crest). Miniatures are pinned on top of the coat: the lapel group is drawn
     // under every miniature, so where the drawn lapel reaches the rack the medals lie over it and the medal
     // nearest the lapel is fully exposed (11.2.8).
-    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY: crestTop - 0.5 }, { style: b.opt.miniStyle });
-    if(box) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 });
+    // The two clauses cannot both hold on the men's blazer: the crest is centred on the pocket (4.2.3.1.1.1) and
+    // the sheet's crest_center is the centre of the pocket body below its welt, so the crest's top is at the welt's
+    // bottom edge and a rack 1/2 in over it hangs about 0.48 in over the welt, the pocket outline showing between the
+    // medals (review finding, semi_formal male). The rack is 'centered above the pocket' (4.2.1.4), so its lowest
+    // row ends at the pocket's top edge (the sheet's pocket_top_center) when the 1/2 in rule would put it lower;
+    // the crest stays where the pocket puts it (E9 CORRECTION: crest_center, never moved up). The gap to the
+    // crest is then wider than 1/2 in and no measure is drawn for it.
+    const pocketTop = ctx.point('pocket_top_center');
+    const ruleBottom = crestTop - 0.5;
+    const bottomY = pocketTop ? Math.min(ruleBottom, pocketTop.y) : ruleBottom;
+    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle });
+    if(box && bottomY === ruleBottom) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 });
+    if(box && bottomY < ruleBottom) ctx.note('The miniature medals end at the top of the pocket: the crest is centred on the pocket (CAPR 39-1, 4.2.3.1.1.1), so the 1/2 in above the crest (4.2.1.4) would put them over the pocket');
     if(chaplain){
       // The chaplain insignia goes 1/2 in above the top row, on the crest line (4.2.1.5, 4.2.2.5): the sheet's
       // chaplain_badge_semiformal anchor states the x.

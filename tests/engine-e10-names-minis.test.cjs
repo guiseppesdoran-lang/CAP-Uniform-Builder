@@ -190,7 +190,9 @@ for(const sex of ['male', 'female']){
     // which may hang in an upper row and would leave a gap under the shorter ones.
     const lowKeys = new Set(rows.get(ys[0].toFixed(3)).map(l => l.key + ':medal'));
     const bottom = Math.max(...scene.layers.filter(l => l.role === 'mini-medal' && lowKeys.has(l.key)).map(l => l.y + l.h));
-    near(bottom, crestTop - 0.5, 0.01, 'lowest medals end 1/2 in above the crest');
+    // The men's blazer: the crest is centred on the pocket, so 1/2 in over it is over the welt; the rack ends at the pocket's top edge (FIX-R-OTHER-r1 #4, D8).
+    const pocketTop = sex === 'male' ? core.anchor(spec, 'pocket_top_center').y : Infinity;
+    near(bottom, Math.min(crestTop - 0.5, pocketTop), 0.01, 'lowest medals end 1/2 in above the crest, or at the top of the men\'s pocket');
   });
 }
 

@@ -110,14 +110,17 @@ function boxOf(l){
 // The rack stays centred and the lowest row keeps its line; the miniatures lie over the lapel (pinned on top, 11.2.8).
 test('semi-formal blazer: the lowest row of miniatures stays 1/2 in over the crest for 1 to 12 medals (4.2.1.4, 4.2.2.4)', async () => {
   for(const sex of ['male', 'female']){
-    const crestTop = core.anchor(await store.load(`garment-corporate-service-dress-blazer-${sex}`), 'crest_top_center').y;
+    const sheet = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
+    const crestTop = core.anchor(sheet, 'crest_top_center').y;
+    // The men's rack ends at the pocket's top edge (FIX-R-OTHER-r1 #4, D8): 1/2 in over the crest is over the welt.
+    const expected = Math.min(crestTop - 0.5, sex === 'male' ? core.anchor(sheet, 'pocket_top_center').y : Infinity);
     for(const n of [1, 4, 5, 9, 12]){
       const scene = await compose(build('semi_formal', sex, 'senior', 'Col', [], { medals: minisOf(TWELVE.slice(0, n)) }));
       const minis = scene.layers.filter(l => /^mini-/.test(l.role) || (l.role === 'device' && /:device:/.test(l.key)));
       assert.ok(minis.length >= n, `${sex} ${n}: minis drawn`);
       const bodies = scene.layers.filter(l => l.role === 'mini-medal');
       const lowest = Math.max(...bodies.map(l => l.y + l.h));
-      assert.ok(Math.abs(lowest - (crestTop - 0.5)) < 0.01, `${sex} ${n}: lowest medals end 1/2 in above the crest (${lowest.toFixed(3)} vs ${(crestTop - 0.5).toFixed(3)})`);
+      assert.ok(Math.abs(lowest - expected) < 0.01, `${sex} ${n}: lowest medals end 1/2 in above the crest, men's at the pocket top (${lowest.toFixed(3)} vs ${expected.toFixed(3)})`);
     }
   }
 });

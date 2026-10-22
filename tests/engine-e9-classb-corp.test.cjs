@@ -204,7 +204,9 @@ for(const sex of ['male', 'female']){
       const minis = scene.layers.filter(l => l.role === 'mini-drape' || l.role === 'mini-medal');
       assert.ok(minis.length, 'medals drawn');
       const bottom = Math.max(...minis.map(l => l.y + l.h));
-      near(bottom, crestTop - 0.5, 0.01, 'lowest medal bottom 1/2 in above the crest or badge');
+      // On the men's blazer the crest is centred on the pocket: the rack ends at the pocket's top edge when 1/2 in over the crest is over the welt (FIX-R-OTHER-r1 #4, D8).
+      const pocketTop = sex === 'male' ? core.anchor(spec, 'pocket_top_center').y : Infinity;
+      near(bottom, Math.min(crestTop - 0.5, pocketTop), 0.01, 'lowest medal bottom 1/2 in above the crest or badge (men: at the pocket top)');
     });
   }
 }
@@ -234,7 +236,8 @@ for(const sex of ['male', 'female']){
       const { row, upper, bottom } = await lowestRow(scene);
       assert.ok(row.length && upper.length, 'two rows of medals');
       assert.ok(Math.max(...upper.map(l => l.h)) > Math.max(...row.map(l => l.h)) + 0.05, 'the tallest body is in an upper row');
-      near(bottom, crestTop - 0.5, 0.01, 'lowest drawn medal bottom 1/2 in above the crest or badge');
+      const pocketTop = sex === 'male' ? core.anchor(spec, 'pocket_top_center').y : Infinity;
+      near(bottom, Math.min(crestTop - 0.5, pocketTop), 0.01, 'lowest drawn medal bottom 1/2 in above the crest or badge (men: at the pocket top)');
     });
   }
 }
