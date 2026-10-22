@@ -391,7 +391,7 @@
   // end, `axis` the unit vector toward the neck and `deg` the rotation that stands the art with its
   // top toward the neck; the grade is scaled down (never up) to fit `across` inches of the strap.
   async function gradeOnStrap(ctx, g, side, end, axis, deg, across, opts){
-    const id = epauletGradeId(g);
+    const id = (opts && opts.id) || epauletGradeId(g);
     if(!id || !ctx.has(id)) return null;
     const gs = await ctx.spec(id);
     const quarter = ACROSS_GRADES.has(g.key) && g.category !== 'cadet-officer';
@@ -875,6 +875,66 @@
     female: { garment: 'garment-mess-dress-female', chev: { right: [2.57, 11.27, 1.2], left: [22.95, 11.27, -1.2] } }
   };
 
+  // The mess dress sheets draw each shoulder board flat, lying on the shoulder as seen from above
+  // (Figure A5-3, 4.1.1.1.1.1, 4.1.2.1.1.1: as close to the shoulder seam as possible). R7 wants it twice: edge-on
+  // at the shoulder line and seen from above just over the shoulder, both carrying the grade. The board art
+  // is the view from above, lifted along the board's normal until its lower edge clears the shoulder line by
+  // 0.1 in (the overlay copy clipped to the board); the edge-on view is a strip 0.4 in thick whose upper
+  // edge is the board's upper edge (the shoulder line, where the drawn board touches the coat's outline),
+  // over 82% of the board's length from its outer end, in the board's own colour, the bullion grade on it 5/8 in
+  // from the outer end (DAFI 36-2903 4.5.1.1.1) like every other edge-on strip. The boards are 5 1/2 x 2 1/4 in
+  // (men, with a button) and 4 1/2 x 2 in (women), Figure A5-3 (the sheets' size_basis).
+  const MESS_BOARD = { male: { L: 5.5, W: 2.25 }, female: { L: 4.5, W: 2.0 } };
+  const MESS_BOARD_COLOR = { officer: '#2b4f93', general: '#c4c8d0', stroke: '#4d535d' };
+  async function messBoards(ctx, g, M, female){
+    const id = g.general && ctx.has(`${M.garment}-general-officer-shoulder-boards`) ? `${M.garment}-general-officer-shoulder-boards` : `${M.garment}-officer-shoulder-boards`;
+    if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
+    const s = await ctx.spec(id);
+    ctx.overlays = ctx.overlays || [];
+    ctx.overlays.push(s);
+    const { L, W } = MESS_BOARD[female ? 'female' : 'male'];
+    const gradeId = g.key ? G.seniorOfficerInsignia(g, 'bullion') : null;
+    for(const side of ['right', 'left']){
+      const box = core.landmarkBounds(s, 'shoulder_board_' + side), frame = ctx.landmark(`rank_slot_${side}_frame`);
+      if(!box || !frame || typeof frame.deg !== 'number') continue;
+      const th = frame.deg * Math.PI / 180;
+      const a = { x: Math.cos(th), y: Math.sin(th) };            // outer end toward the neck
+      const d = a.y > 0 ? { x: a.y, y: -a.x } : { x: -a.y, y: a.x }; // across the board, downward
+      if(d.y < 0){ d.x = -d.x; d.y = -d.y; }
+      // The board's upper outer corner: its x is the box's outer side, its lower corner is the box's bottom.
+      const A = { x: side === 'right' ? box.x : box.x + box.w, y: box.y + box.h - W * d.y };
+      const lift = { x: -d.x * (W + TOP_VIEW_CLEAR), y: -d.y * (W + TOP_VIEW_CLEAR) };
+      // The view from above: the overlay, lifted, clipped to the board's box.
+      const pad = 0.15;
+      ctx.layers.push({ type: 'asset', id, x: lift.x, y: lift.y, w: s.w, h: s.h, rotate: 0, origin: { x: lift.x, y: lift.y }, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`,
+        title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above`,
+        clip: [{ x: box.x - pad + lift.x, y: box.y - pad + lift.y }, { x: box.x + box.w + pad + lift.x, y: box.y - pad + lift.y }, { x: box.x + box.w + pad + lift.x, y: box.y + box.h + pad + lift.y }, { x: box.x - pad + lift.x, y: box.y + box.h + pad + lift.y }] });
+      if(gradeId && ctx.has(gradeId)){
+        const slot = ctx.point(`rank_slot_${side}_center`);
+        const turn = frame.deg + 90;
+        if(slot) await ctx.place(gradeId, { pieceAnchor: 'center', at: { x: slot.x + lift.x, y: slot.y + lift.y }, rotate: side === 'left' && turn < -180 ? turn + 360 : turn,
+          flipX: side === 'right' && /colonel-(bullion|thread)$/.test(gradeId) && !/lieutenant/.test(gradeId), z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-' + side });
+      }
+      // The edge-on view.
+      const Ls = L * EDGE_ON_COVER, T = EDGE_ON_THICK;
+      const c = { x: A.x + a.x * Ls / 2 + d.x * T / 2, y: A.y + a.y * Ls / 2 + d.y * T / 2 };
+      ctx.layers.push({ type: 'rect', x: c.x - Ls / 2, y: c.y - T / 2, w: Ls, h: T, rotate: side === 'right' ? frame.deg : frame.deg + 180, origin: { x: c.x, y: c.y },
+        fill: g.general ? MESS_BOARD_COLOR.general : MESS_BOARD_COLOR.officer, stroke: MESS_BOARD_COLOR.stroke, strokeWidth: 0.03, z: Z.epauletLayer, role: 'epaulet-edge', key: `epaulet-edge:${side}`,
+        title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on` });
+      if(gradeId && ctx.has(gradeId)){
+        const end = { x: A.x + d.x * T / 2, y: A.y + d.y * T / 2 };
+        // The grade's art is turned as on the board (its width along the strap), scaled to the strip.
+        const gs = await ctx.spec(gradeId);
+        const scale = Math.min(1, (T - 0.08) / gs.h);
+        const dist = GRADE_FROM_END + gs.w * scale / 2;
+        const turn = frame.deg + 90;
+        await ctx.place(gradeId, { pieceAnchor: 'center', at: { x: end.x + a.x * dist, y: end.y + a.y * dist }, rotate: side === 'left' && turn < -180 ? turn + 360 : turn, scale,
+          flipX: side === 'right' && /colonel-(bullion|thread)$/.test(gradeId) && !/lieutenant/.test(gradeId), z: Z.insignia, role: 'grade', key: `grade:edge-${side}`,
+          title: `${side === 'right' ? 'Right' : 'Left'} shoulder board grade, edge-on` });
+      }
+    }
+  }
+
   async function composeMess(ctx, b){
     const g = b.grade;
     const female = b.gender === 'female';
@@ -890,9 +950,8 @@
 
     if(officer){
       // Generals' boards are covered in silver lace, the others' in Air Force blue (Figure A5-3).
-      await ctx.overlay(g.general && ctx.has(`${M.garment}-general-officer-shoulder-boards`) ? `${M.garment}-general-officer-shoulder-boards` : `${M.garment}-officer-shoulder-boards`);
+      await messBoards(ctx, g, M, female);
       await ctx.overlay(g.general ? `${M.garment}-general-officer-sleeve-braid` : `${M.garment}-officer-sleeve-braid`);
-      if(g.key) await epauletGrade(ctx, G.seniorOfficerInsignia(g, 'bullion'), { point: 'rank_slot_' });
     }else if(g.category === 'senior-nco'){
       const size = female && b.opt.chevron === '3.5' ? '3.5' : '4';
       await sleeveChevrons(ctx, G.seniorChevron(g, { white: true, size }), chevronAnchors(ctx) || M.chev);
