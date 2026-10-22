@@ -91,3 +91,13 @@ test('Class A: the cadet semi-formal coat also shows its boards just above the s
   assert.ok(seam.y - Math.max(...corners(view).map(p => p.y)) < 0.9);
 });
 
+// ---- blazer turtleneck --------------------------------------------------------------------------
+
+test('corporate blazer, men: a turtleneck hides the shirt, the tie and the shirt collar (4.2.3.4)', async () => {
+  const worn = await compose(build('aviator_blazer', 'male', 'senior', 'Capt', [], { opt: { headgear: 'auto', underlayer: 'turtleneck' } }));
+  const base = worn.layers.find(l => l.role === 'garment');
+  for(const g of ['shirt', 'tie', 'shirt-collar']) assert.ok(base.hideGroups.includes(g), `${g} hidden`);
+  const shirt = await compose(build('aviator_blazer', 'male', 'senior', 'Capt', [], { opt: { headgear: 'auto', underlayer: 'shirt' } }));
+  assert.ok(!shirt.layers.find(l => l.role === 'garment').hideGroups, 'the shirt and tie show with the shirt option');
+});
+

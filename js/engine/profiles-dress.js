@@ -1021,7 +1021,7 @@
   // opening, traced from the base image. Centring them on the 1 in welt strip put the crest about
   // 0.9 in above the pocket and was rejected (tracker placement item 4).
   const BLAZER = {
-    male: { garment: 'garment-corporate-service-dress-blazer-male', bowTie: { x: 12.761, y: 3.655 }, underlayer: { turtleneck: 'garment-underlayer-turtleneck-male' }, cover: ['shirt', 'tie'] },
+    male: { garment: 'garment-corporate-service-dress-blazer-male', bowTie: { x: 12.761, y: 3.655 }, underlayer: { turtleneck: 'garment-underlayer-turtleneck-male' }, cover: ['shirt', 'tie', 'shirt-collar'] },
     female: { garment: 'garment-corporate-service-dress-blazer-female', plate: null, underlayer: { turtleneck: 'garment-underlayer-turtleneck-female', shell: 'garment-underlayer-shell-female' }, cover: ['shirt', 'tie-tab'] }
   };
 
