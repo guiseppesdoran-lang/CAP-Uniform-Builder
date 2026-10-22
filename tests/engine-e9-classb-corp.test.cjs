@@ -190,9 +190,11 @@ async function femaleAviator(badges, extra){
   return { scene, tag };
 }
 
+// 10.2.5 keeps the pin off members of the Command Council, so the service badge in the pin tests is the
+// Volunteer University badge (10.2.4), a service badge that does not bar the pin.
 test('women\'s aviator: two badges across the nametag 1/2 in above it, the command pin 1/2 in above them (4.2.6.2.7.2-3)', async () => {
-  const { scene, tag } = await femaleAviator(['command_council_badge', 'emergency_services_badge'], { command: CMD });
-  const pair = ['badge:command_council_badge', 'badge:emergency_services_badge'].map(k => byKey(scene, k)).sort((a, b) => a.x - b.x);
+  const { scene, tag } = await femaleAviator(['volunteer_university_instructor_badge', 'emergency_services_badge'], { command: CMD });
+  const pair = ['badge:volunteer_university_instructor_badge', 'badge:emergency_services_badge'].map(k => byKey(scene, k)).sort((a, b) => a.x - b.x);
   const pin = byKey(scene, 'badge:squadron_commander_badge:ON:0');
   const top = Math.min(...pair.map(l => l.y));
   near(pin.y + pin.h, top - 0.5, 0.005, 'pin bottom 1/2 in above the badges');
@@ -200,7 +202,7 @@ test('women\'s aviator: two badges across the nametag 1/2 in above it, the comma
   for(const l of pair) near(l.y + l.h, tag.y - 0.5, 0.005, 'badge bottom 1/2 in above the nametag');
   near(pair[1].x - (pair[0].x + pair[0].w), 0.5, 0.005, 'badges 1/2 in apart');
   // The service badge is closest to the lapel (the viewer's right of the pair).
-  assert.equal(pair[1].key, 'badge:command_council_badge');
+  assert.equal(pair[1].key, 'badge:volunteer_university_instructor_badge');
 });
 
 test('women\'s aviator: a single badge with the pin: the pin 1/2 in above the badge, the badge 1/2 in above the nametag', async () => {

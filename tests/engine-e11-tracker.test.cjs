@@ -101,6 +101,27 @@ test('corporate blazer, men: a turtleneck hides the shirt, the tie and the shirt
   assert.ok(!shirt.layers.find(l => l.role === 'garment').hideGroups, 'the shirt and tie show with the shirt option');
 });
 
+// ---- command pin and governance badges -----------------------------------------------------------
+
+for(const badge of ['command_council_badge', 'senior_advisory_group_badge', 'national_executive_committee_badge', 'cap_national_command_board_badge']){
+  test(`the command pin is not worn with ${badge} (10.2.5)`, async () => {
+    for(const [uniform, sex] of [['blues_a', 'male'], ['blues_a', 'female'], ['blues_b', 'male'], ['aviator', 'male'], ['ocp', 'male'], ['abu', 'female']]){
+      const scene = await compose(build(uniform, sex, 'senior', 'Maj', [badge, 'CAPPilot1_FA9D33EA587D8'], { command: CMD }));
+      assert.ok(!scene.layers.some(l => l.key.startsWith('badge:squadron_commander_badge')), `${uniform} ${sex}: no pin`);
+      assert.ok(scene.notes.some(n => /10\.2\.5/.test(n)), `${uniform} ${sex}: says why`);
+    }
+  });
+}
+
+test('the command pin is worn with the National Staff and Volunteer University badges, which do not bar it', async () => {
+  for(const badge of ['national_staff_badge', 'volunteer_university_instructor_badge']){
+    for(const cmd of [CMD, GRAD]){
+      const scene = await compose(build('blues_a', 'male', 'senior', 'Maj', [badge], { command: cmd }));
+      assert.ok(scene.layers.some(l => l.key.startsWith('badge:squadron_commander_badge')), `${badge} ${cmd.graduated}: pin drawn`);
+    }
+  }
+});
+
 // ---- service badge next to the collar ------------------------------------------------------------------------
 
 test('women\'s Class A: the Volunteer University badge, a CAP service badge, is worn closest to the lapel (10.2.4)', async () => {

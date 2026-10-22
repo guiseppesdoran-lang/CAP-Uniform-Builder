@@ -290,8 +290,17 @@
     return out;
   }
 
+  // 10.2.5: the command insignia pin is not worn by officers who were members of the Command Council,
+  // the CAP Senior Advisory Group, the National Board or the National Executive Committee. They wear
+  // those badges for good (10.2.1, 10.2.2), so a member who lists one of them wears no pin.
+  const NO_PIN_WITH_BADGE = new Set(['senior_advisory_group_badge', 'command_council_badge', 'national_executive_committee_badge', 'cap_national_command_board_badge']);
+
   function commandPin(ctx, b, form){
     if(!b.command) return null;
+    if((b.badges || []).some(x => NO_PIN_WITH_BADGE.has(x.id))){
+      ctx.note('The command insignia pin is not worn by members of the Command Council, the CAP Senior Advisory Group, the National Board or the National Executive Committee (CAPR 39-1, 10.2.5)');
+      return null;
+    }
     const art = B.art(b.command.id, form);
     if(!art){ ctx.note(`${b.command.title || b.command.id} has no ${form} artwork`); return null; }
     return { id: b.command.id, art, graduated: !!b.command.graduated, title: b.command.title || b.command.id };
