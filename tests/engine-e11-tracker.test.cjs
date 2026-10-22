@@ -231,6 +231,21 @@ test('cadet semi-formal: the lapels are drawn over the badges and ribbons as on 
   }
 });
 
+test('cadet semi-formal: cadet officers keep the lapel CAP, drawn above the lapel foreground (4.1.3.2, 4.1.4: worn as for the Service Dress)', async () => {
+  for(const [sex, base] of [['male', 'garment-blues-class-a-coat'], ['female', 'garment-blues-class-a-coat-female']]){
+    for(const rank of ['C/Maj', 'C/Col']){
+      const scene = await compose(build('semi_formal_usaf', sex, 'cadet', rank, []));
+      const fg = byKey(scene, `layer:${base}-lapel-foreground`), cap = byKey(scene, `layer:${base}-lapel-cap`);
+      assert.ok(fg, `${sex} ${rank}: the lapel foreground is drawn`);
+      assert.ok(cap, `${sex} ${rank}: the lapel CAP insignia is drawn`);
+      assert.ok(cap.z > fg.z, `${sex} ${rank}: the lapel CAP (z ${cap.z}) lies above the lapel foreground (z ${fg.z})`);
+    }
+  }
+  // Cadet NCOs wear chevrons, not the lapel CAP.
+  const nco = await compose(build('semi_formal_usaf', 'male', 'cadet', 'C/SSgt', []));
+  assert.ok(!byKey(nco, 'layer:garment-blues-class-a-coat-lapel-cap'), 'a cadet NCO has no lapel CAP');
+});
+
 // ---- unit patch on the ABU and the CFU ----------------------------------------------------------------------------------
 
 test('ABU and CFU: the unit patch is worn on the right breast pocket, the other pocket patch on the left (Attachment 4, 5.1.1.1.2.3, 5.2.1.1.2.4-5)', async () => {

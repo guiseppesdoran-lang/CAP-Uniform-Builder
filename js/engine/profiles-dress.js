@@ -763,8 +763,10 @@
       await blueHat(ctx, b);
     }else{
       // The cadet semi-formal is the Class A coat drawn without its nameplate (same lapels), and the
-      // collar lies over the badges there too: the lapels are drawn again over them.
-      await ctx.overlay(`${A.layer}-lapel-foreground`, Z.badge + 0.5);
+      // collar lies over the badges there too: the lapels are drawn again over them, with the cadet
+      // officer's lapel CAP above that, as on the Class A (4.1.3.2 and 4.1.4: worn as for the Service
+      // Dress). Cadets only, so the lapel U.S. never applies.
+      await lapelForeground(ctx, A, g);
     }
   }
 
