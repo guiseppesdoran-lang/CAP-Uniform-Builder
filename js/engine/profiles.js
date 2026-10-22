@@ -511,8 +511,10 @@
     // general officers' stars do (8.2.3.1): the piece turns a quarter turn, 90 deg clockwise on the wearer's right
     // and 90 deg counter-clockwise on the left, its top toward the neck. The grade zone's seam-side edge is the
     // half inch line, so the turned piece's bottom edge is set on it, centred on the zone's height; it is never
-    // scaled (R1), so a taller piece (the colonel's 1.59 in eagle, the zone being 1.25 in high) extends past the
-    // zone's top and bottom. The colonel's eagle is mirrored on the wearer's right so that its head faces the same
+    // scaled (R1). A piece taller than the zone (the colonel's eagle, 1.59 in turned, the zone being 1.25 in high:
+    // the art sized the zone for the unturned eagle) hangs from the zone's top and extends down, so it does not
+    // run over the shoulder outline at the top (FIX-R-OTHER-r2 #9; 8.3.5.1: the cloth piece itself lies on the
+    // cloth). The colonel's eagle is mirrored on the wearer's right so that its head faces the same
     // way, the wearer's front, on both shoulders (the mess dress boards and the collars do the same).
     const id = G.seniorOfficerInsignia(g, 'cloth-bordered');
     const spec = await ctx.spec(id);
@@ -522,7 +524,9 @@
       // The wearer's right shoulder is the left of the picture: its seam is the zone's left edge. Turned, the
       // piece's width along the shoulder is its height.
       const cx = side === 'right' ? zone.x + spec.h / 2 : zone.x + zone.w - spec.h / 2;
-      await ctx.place(id, { pieceAnchor: 'center', at: { x: cx, y: zone.y + zone.h / 2 }, rotate: side === 'right' ? 90 : -90, flipX: side === 'right' && g.key === 'colonel',
+      // Turned a quarter turn, the piece's height along the shoulder is its width.
+      const cy = zone.y + Math.max(zone.h, spec.w) / 2;
+      await ctx.place(id, { pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: side === 'right' ? 90 : -90, flipX: side === 'right' && g.key === 'colonel',
         z: Z.insignia, role: 'grade', key: 'grade:' + side });
     }
   }

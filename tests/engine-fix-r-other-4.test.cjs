@@ -50,3 +50,37 @@ test('women\'s pair: a CAP service badge is closest to the collar and National S
     assert.ok(ns && es && ns.x < es.x, `${uniform}: National Staff is to the wearer's right of the second badge`);
   }
 });
+
+// ---- 9. Flight garments: the turned officer grade stays inside its zone's top ---------------------------------
+
+test('flight suits and jackets: no senior officer\'s turned cloth grade rises above the grade zone, a piece taller than the zone hangs from its top, the seam-side edge stays on the 1/2 in line (8.2.3.2, 8.3.3.2, 8.3.5.1)', async () => {
+  const cases = [['flight_suit', {}], ['corporate_flight_suit', {}], ['flight_suit', { jacket: 'green' }], ['corporate_flight_suit', { jacket: 'blue' }]];
+  let checked = 0, tall = 0;
+  for(const [uniform, o] of cases){
+    for(const rank of ['2d Lt', '1st Lt', 'Capt', 'Maj', 'Lt Col', 'Col', 'FO', 'TFO', 'SFO']){
+      for(const gender of ['male', 'female']){
+        const scene = await compose(hb(uniform, gender, 'senior', rank, { opt: Object.assign({ headgear: 'auto' }, o) }));
+        const sheets = scene.layers.filter(x => x.role === 'garment');
+        for(const l of scene.layers.filter(x => /^grade:(right|left)$/.test(x.key || ''))){
+          const side = l.key.split(':')[1];
+          const sheet = sheets.find(x => (x.figure || 1) === (l.figure || 1));
+          const spec = await store.load(sheet.id);
+          const z = spec.landmarks['grade_zone_' + side];
+          const box = core.layerBounds(l);
+          const zx = z.x + sheet.x, zy = z.y + sheet.y;
+          const id = `${uniform}${o.jacket ? '+' + o.jacket : ''} ${gender} ${rank} ${side}`;
+          assert.ok(box.y >= zy - 0.005, `${id}: the grade top ${box.y.toFixed(3)} is not above the zone top ${zy.toFixed(3)}`);
+          if(box.h > z.h + 0.005){ tall++; near(box.y, zy, 0.005, `${id}: a piece taller than the zone hangs from its top`); }
+          else assert.ok(box.y + box.h <= zy + z.h + 0.005, `${id}: a piece that fits stays in the zone`);
+          // The seam side (the sleeve side of the zone) is the half inch line.
+          if(side === 'right') near(box.x, zx, 0.005, `${id}: seam-side edge on the zone's seam line`);
+          else near(box.x + box.w, zx + z.w, 0.005, `${id}: seam-side edge on the zone's seam line`);
+          // And the whole piece is on the garment sheet.
+          assert.ok(box.x >= sheet.x && box.x + box.w <= sheet.x + sheet.w && box.y >= sheet.y && box.y + box.h <= sheet.y + sheet.h, `${id}: inside the sheet`);
+          checked++;
+        }
+      }
+    }
+  }
+  assert.ok(checked >= 150 && tall >= 8, `checked ${checked} grades, ${tall} taller than the zone (the colonel's eagles)`);
+});

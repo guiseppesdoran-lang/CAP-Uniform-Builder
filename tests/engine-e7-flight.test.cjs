@@ -78,7 +78,10 @@ test('officer grade: turned a quarter turn, bottom edge on the half inch line fr
       const rightSeamEdge = right.x + right.w / 2 - right.h / 2, leftSeamEdge = left.x + left.w / 2 + left.h / 2;
       assert.ok(Math.abs(rightSeamEdge - zr.x) < EPS, `${f.name} ${rank}: right grade bottom edge ${rightSeamEdge.toFixed(3)} on the zone's seam edge ${zr.x.toFixed(3)}`);
       assert.ok(Math.abs(leftSeamEdge - (zl.x + zl.w)) < EPS, `${f.name} ${rank}: left grade bottom edge on the zone's seam edge`);
-      assert.ok(Math.abs((right.y + right.h / 2) - (zr.y + zr.h / 2)) < EPS && Math.abs((left.y + left.h / 2) - (zl.y + zl.h / 2)) < EPS, `${f.name} ${rank}: centred in the zone's height`);
+      // Centred in the zone's height; a piece taller than the zone once turned (the colonel's 1.59 in eagle against
+      // 1.25 in) hangs from the zone's top instead of overflowing both ends onto the shoulder outline (FIX-R-OTHER-r2 #9).
+      const turnedH = spec.w, zoneH = Math.max(zr.h, turnedH);
+      assert.ok(Math.abs((right.y + right.h / 2) - (zr.y + zoneH / 2)) < EPS && Math.abs((left.y + left.h / 2) - (zl.y + zoneH / 2)) < EPS, `${f.name} ${rank}: centred in the zone's height, or hung from its top when taller`);
       assert.ok(rightSeamEdge + right.h <= zr.x + zr.w + EPS, `${f.name} ${rank}: inside the zone along the shoulder`);
       // The colonel's eagle faces the wearer's front on both shoulders: mirrored on the right only.
       assert.equal(!!right.flipX, rank === 'Col', `${f.name} ${rank}: eagle mirrored on the wearer's right`);
