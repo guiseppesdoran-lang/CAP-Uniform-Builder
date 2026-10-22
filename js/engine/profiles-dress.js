@@ -1004,9 +1004,10 @@
 
   // ---- Mess dress (4.1.1 men, 4.1.2 women) ------------------------------------------------------------
 
+  // The sleeve chevron's position and turn come from the sheets' shoulder_seam, elbow and chevron_halfway anchors (chevronAnchors); the sheets' sleeves are widened so the true-size white chevron lies on them.
   const MESS = {
-    male: { garment: 'garment-mess-dress-male', chev: { right: [2.61, 11.84, 0.2], left: [23.91, 11.84, -0.2] } },
-    female: { garment: 'garment-mess-dress-female', chev: { right: [2.57, 11.27, 1.2], left: [22.95, 11.27, -1.2] } }
+    male: { garment: 'garment-mess-dress-male' },
+    female: { garment: 'garment-mess-dress-female' }
   };
 
   // The mess dress sheets draw each shoulder board flat, lying on the shoulder as seen from above
@@ -1100,7 +1101,9 @@
       await ctx.overlay(g.general ? `${M.garment}-general-officer-sleeve-braid` : `${M.garment}-officer-sleeve-braid`);
     }else if(g.category === 'senior-nco'){
       const size = female && b.opt.chevron === '3.5' ? '3.5' : '4';
-      await sleeveChevrons(ctx, G.seniorChevron(g, { white: true, size }), chevronAnchors(ctx) || M.chev);
+      const pts = chevronAnchors(ctx);
+      if(pts) await sleeveChevrons(ctx, G.seniorChevron(g, { white: true, size }), pts);
+      else ctx.note('The mess dress sheet states no sleeve anchors for the chevron');
     }
 
     // Miniature medals centred between the lapel and the arm seam (4.1.1.1.2.2, 11.2.8).
