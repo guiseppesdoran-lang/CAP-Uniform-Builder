@@ -35,10 +35,11 @@ const nodeStore = () => core.createSpecStore(manifest, p => Promise.resolve(JSON
 // ---- arguments ---------------------------------------------------------------------------------
 
 function parseArgs(argv){
-  const a = { all: false, out: null, ppi: 40, pad: 0.4, only: null, jobs: 4, file: null };
+  const a = { all: false, out: null, ppi: 40, pad: 0.4, only: null, jobs: 4, file: null, measure: false };
   for(let i = 0; i < argv.length; i++){
     const t = argv[i];
     if(t === '--all') a.all = true;
+    else if(t === '--measure') a.measure = true;
     else if(t === '--out') a.out = argv[++i];
     else if(t === '--ppi') a.ppi = Number(argv[++i]);
     else if(t === '--pad') a.pad = Number(argv[++i]);
@@ -51,8 +52,10 @@ function parseArgs(argv){
   return a;
 }
 const USAGE = `Usage:
-  node scripts/render-builds.cjs --all --out DIR [--ppi 40] [--pad 0.4] [--only REGEX] [--jobs 4]
-  node scripts/render-builds.cjs builds.json --out DIR [same options]`;
+  node scripts/render-builds.cjs --all --out DIR [--ppi 40] [--pad 0.4] [--only REGEX] [--jobs 4] [--measure]
+  node scripts/render-builds.cjs builds.json --out DIR [same options]
+  --measure draws the measurement overlay (the page's Measurements button) on every build; a build with
+  opt.overlay: true gets it alone.`;
 
 // ---- turning a build spec into the engine's build ---------------------------------------------
 
@@ -61,10 +64,29 @@ const GARMENT_DEFAULTS = { sleeve: 'short', femaleTop: 'shirt', underlayer: 'shi
 const dbg = (...a) => { if(process.env.RB_DEBUG) console.error('[render-builds]', ...a); };
 const ribbonAsset = id => 'ribbon-' + String(id).replace(/_/g, '-');
 
-// ribbonSel entries: [id, awardValue?, awardLabel?]. Same resolution the page makes (uniform-view.js).
-function ribbonsFrom(sel, membership){
+// The order the page wears a selection in (js/render-core.js sortRibbons, CAPR 39-3 order of precedence,
+// highest first): federal awards (including the Air Medal and the Aerial Achievement Medal in the CAP
+// list), then the AFOEA, then the CAP awards in the catalog's ribbonList order; ids it does not know
+// (military ribbons) keep the order given. Same ids, same groups as ribbonPrecedenceGroup().
+const FEDERAL_IN_CAP_LIST = ['air_medal', 'air_force_aerial_achievement_medal'];
+function precedenceKey(id, prec){
+  if(FEDERAL_IN_CAP_LIST.includes(id)) return [0, FEDERAL_IN_CAP_LIST.indexOf(id)];
+  if(id === 'Air_Force_Organizational_Excellence_Award') return [0.5, 0];
+  return prec.has(id) ? [1, prec.get(id)] : [1, 1e9];
+}
+function sortByPrecedence(sel){
+  const prec = precedenceIndex();
+  const entries = (sel || []).map((entry, i) => ({ entry, i, k: precedenceKey(Array.isArray(entry) ? entry[0] : entry, prec) }));
+  entries.sort((a, b) => a.k[0] - b.k[0] || a.k[1] - b.k[1] || a.i - b.i);
+  return entries.map(e => e.entry);
+}
+
+// ribbonSel entries: [id, awardValue?, awardLabel?]. Same resolution the page makes (uniform-view.js),
+// which sorts the member's ribbons by precedence first: so does this, unless the build says
+// ribbonOrder: 'as-listed'.
+function ribbonsFrom(sel, membership, order){
   const out = [];
-  for(const entry of sel || []){
+  for(const entry of order === 'as-listed' ? (sel || []) : sortByPrecedence(sel)){
     const [id, awardValue, awardLabel] = Array.isArray(entry) ? entry : [entry];
     RA.resolve(id, { awardValue, awardLabel, membership }).forEach((p, i) => out.push({
       key: i ? `ribbon:${id}#${i}` : `ribbon:${id}`, id,
@@ -94,7 +116,7 @@ function makeBuild(spec){
     grade: G.gradeInfo(membership, rank, { firstSergeant: !!spec.firstSergeant, track: spec.track || (spec.opt && spec.opt.noGradeTrack), commandChief: !!spec.commandChief }),
     opt: Object.assign({}, GARMENT_DEFAULTS, spec.opt || {}),
     name: Object.assign({ first: 'Pat', last: 'Doe', show: true }, spec.name || {}),
-    ribbons: spec.ribbons || ribbonsFrom(spec.ribbonSel, membership),
+    ribbons: spec.ribbons || ribbonsFrom(spec.ribbonSel, membership, spec.ribbonOrder),
     medals: spec.medals || [],
     badges: spec.badges || (spec.badgeIds || []).map(id => ({ id, title: (BADGES.get && BADGES.get(id) && BADGES.get(id).name) || id, level: null })),
     command: spec.command || null,
@@ -118,6 +140,10 @@ const MEMBERS = [
   { tag: 'senior-Capt', membership: 'senior', rank: 'Capt',
     ribbons: [['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_7'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon'], ['search_find_ribbon']] },
   { tag: 'senior-Col', membership: 'senior', rank: 'Col',
+    ribbons: [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['cap_achievment_award', 'capub_total_7'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_membership_ribbon']] },
+  // A general officer wears the general officer cap braid, epaulets, mess boards and belt buckle
+  // (6.2.2.2.4, 4.1.1.1.1.1, 4.1.11.1.1.5), none of which a Col build shows.
+  { tag: 'senior-MajGen', membership: 'senior', rank: 'Maj Gen',
     ribbons: [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['cap_achievment_award', 'capub_total_7'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_membership_ribbon']] }
 ];
 const AVIATION_BADGE = { cadet: 'AirCrew1_DB3F0FCC3650F', senior: 'CAPPilot1_FA9D33EA587D8' };
@@ -193,13 +219,13 @@ window.__ready = (async () => {
   window.__store = E.core.createSpecStore(manifest, p => fetch('/images/' + p).then(r => r.json()));
   return true;
 })();
-window.renderBuild = async function(build, ppi, pad){
+window.renderBuild = async function(build, ppi, pad, measure){
   const E = CAPUBEngine, store = window.__store;
   window.__warnings.length = 0;
   const scene = await E.profiles.composeUniform(build, store);
   const b = scene.bounds;
   const widthPx = Math.ceil((b.w + 2 * pad) * ppi);
-  const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad, widthPx });
+  const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad, widthPx, measure: !!measure });
   const heightPx = Math.ceil((b.h + 2 * pad) * ppi);
   svg.setAttribute('width', widthPx); svg.setAttribute('height', heightPx);
   const o = document.getElementById('out'); o.innerHTML = ''; o.append(svg);
@@ -384,7 +410,7 @@ async function main(){
             viewBox: [b.x - args.pad, b.y - args.pad, b.w + 2 * args.pad, b.h + 2 * args.pad].map(n => +n.toFixed(4)),
             notes: scene.notes, layers: scene.layers
           }, null, 1));
-          const shot = await page.ev(`renderBuild(${JSON.stringify(build)}, ${args.ppi}, ${args.pad})`);
+          const shot = await page.ev(`renderBuild(${JSON.stringify(build)}, ${args.ppi}, ${args.pad}, ${!!(args.measure || (build.opt && build.opt.overlay))})`);
           r.px = [shot.w, shot.h];
           r.warnings = shot.warnings;
           if(shot.layers !== scene.layers.length) r.warnings.push(`browser composed ${shot.layers} layers, node ${scene.layers.length}`);
@@ -420,4 +446,5 @@ async function main(){
   process.exitCode = summary.failed ? 1 : 0;
 }
 
-main().catch(e => { console.error(e.stack || e); process.exit(1); });
+if(require.main === module) main().catch(e => { console.error(e.stack || e); process.exit(1); });
+module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS };
