@@ -277,6 +277,16 @@
     for(const sel of b.badges || []){
       const fam = B.family(sel.id);
       if(!fam || fam === 'command') continue;
+      // The same eligibility table as the page's picker: STEM, Cyber, Model Rocketry and NRA badges are
+      // cadets' only, and a cadet wears only the badges the chart authorizes for cadets (4.1.5.2.2.4.2,
+      // 4.1.9.4.4.2, Attachment 4), whatever way the build was made (imports, saved states, the harness).
+      if(B.eligibleFor && b.grade && !B.eligibleFor(sel.id, b.grade.cadet ? 'cadet' : 'senior')){
+        const label = sel.title || (B.get(sel.id) || {}).name || sel.id;
+        ctx.note(b.grade.cadet
+          ? `${label} is not worn by cadets (CAPR 39-1, Attachment 4)`
+          : `${label} is worn by cadets only (CAPR 39-1, 4.1.5.2.2.4.2)`);
+        continue;
+      }
       const art = B.art(sel.id, form, sel.level) || (form === 'mini' ? B.art(sel.id, 'dress', sel.level) : null);
       if(!art){ ctx.note(`${sel.title || sel.id} has no ${form} artwork, so it is not shown on this uniform`); continue; }
       const item = { id: sel.id, art, family: fam, title: sel.title || sel.id };

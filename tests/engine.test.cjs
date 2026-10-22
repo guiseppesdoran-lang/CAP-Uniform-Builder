@@ -211,7 +211,7 @@ test('an appointed Command Chief wears the Command Chief chevron on every unifor
 });
 
 test('men\'s Class A pocket badges: their tops 1 1/2 inch below the welt top and the nametag (4.1.5.2.2.4.2, Figure 4.6)', async () => {
-  const scene = await P.composeUniform(build('blues_a', 'senior', 'Capt', { ribbons: ribbon('cap_achievment_award'), badges: [{ id: 'emergency_services_badge' }, { id: 'CAPPilot1_FA9D33EA587D8' }, { id: 'stem_badges' }] }), store());
+  const scene = await P.composeUniform(build('blues_a', 'senior', 'Capt', { ribbons: ribbon('cap_achievment_award'), badges: [{ id: 'emergency_services_badge' }, { id: 'CAPPilot1_FA9D33EA587D8' }, { id: 'historian_senior_badge' }] }), store());
   const tag = { y: 10.04, h: 0.75 };
   const rp = layersBy(scene, l => l.role === 'badge' && l.x + l.w / 2 < 11.86)[0];
   assert.ok(Math.abs(rp.y - (tag.y + tag.h + 1.5)) < 0.01, `right pocket badge top ${rp.y.toFixed(3)} is 1 1/2 in below the nametag`);

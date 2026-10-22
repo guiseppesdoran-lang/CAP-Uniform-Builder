@@ -156,5 +156,18 @@
     if(lv && (form === 'dress' || (form === 'mini' && !b.mini))) return form === 'dress' ? lv[2] : null;
     return b[form] || null;
   }
-  return { BADGES, LEFT_STACK_ORDER, get, family, art, levels, level };
+  // Who wears what (CAPR 39-1 4.1.5.2.2.4.2, 4.1.9.4.4.2, Attachment 4). The STEM, Cyber, Model Rocketry
+  // and NRA Marksmanship badges are worn by cadets only; a cadet wears only the badges the chart
+  // authorizes for cadets (CAP service badges only by officers and NCOs). The page's picker and the
+  // engine's drawing both read these two lists.
+  const CADET_ONLY = ["model_rocketry_badge", "cyber_badges", "stem_badges", "nra_marksman_badge"];
+  const CADET_AUTHORIZED = ["model_rocketry_badge", "cyber_badges", "stem_badges", "nra_marksman_badge", "pre_solo_badge", "solo_badge", "CAPPilot1_FA9D33EA587D8", "observer_badge", "SeniorObserver1_0E35802A29801", "AirCrew1_DB3F0FCC3650F", "SeniorAirCrew1_B289BAE6E515C", "MasterAirCrew1_72AC4CAE7A310", "uas_pilot_basic_badge", "uas_pilot_senior_badge", "uas_pilot_master_badge", "ground_team_basic_badge", "senior_ground_team_badge", "master_ground_team_badge", "emt_basic_badge", "emt_intermediate", "emt_paramedic", "emergency_services_badge", "information_technology_technician_badge", "historian_technicianIbadge", "communications_technician_badge", "communications_senior_badge", "communications_master_badge"];
+  const cadetOnlySet = new Set(CADET_ONLY), cadetAuthorizedSet = new Set(CADET_AUTHORIZED);
+  // 'cadet' | 'senior' (anything else is not checked).
+  function eligibleFor(id, membership){
+    if(membership === 'cadet') return cadetAuthorizedSet.has(id);
+    if(membership === 'senior') return !cadetOnlySet.has(id);
+    return true;
+  }
+  return { BADGES, LEFT_STACK_ORDER, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor };
 });

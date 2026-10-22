@@ -1177,27 +1177,9 @@ function getBadgeAssetCandidates(id){
   return candidates;
 }
 
-const allowedCadetBadges = new Set([
-  // Cadet-only badges
-  'model_rocketry_badge','cyber_badges','stem_badges','nra_marksman_badge',
-
-  // Aviation / aircrew / observer badges cadets may earn in normal or rare circumstances
-  'pre_solo_badge','solo_badge','CAPPilot1_FA9D33EA587D8',
-  'observer_badge','SeniorObserver1_0E35802A29801',
-  'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
-
-  // UAS pilot badge levels cadets can technically earn in specific circumstances
-  'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge',
-
-  // Emergency services / ground / EMS
-  'ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
-  'emt_basic_badge','emt_intermediate','emt_paramedic',
-  'emergency_services_badge',
-
-  // Cadet-authorized specialty-track badge exceptions
-  'information_technology_technician_badge','historian_technicianIbadge',
-  'communications_technician_badge','communications_senior_badge','communications_master_badge'
-]);
+// The cadet-authorized list is shared with the engine (data/badge-catalog.js), so the page's picker and the
+// uniform drawing agree on who wears which badge.
+const allowedCadetBadges = new Set(CAPUBBadgeCatalog.CADET_AUTHORIZED);
 
 const rareCadetBadges = new Set([
   'CAPPilot1_FA9D33EA587D8',
@@ -1495,9 +1477,7 @@ const BADGE_CATEGORIES = [
 // === CAPUB PATCH 2026-05-13: Badge picker grouping + member eligibility ===
 // Senior members are not eligible for cadet-only STEM, Cyber, Model Rocketry, or NRA badges.
 // Cadets only see their authorized badge set; cadet specialty badges are grouped together.
-const SENIOR_INELIGIBLE_BADGES = new Set([
-  'stem_badges','cyber_badges','model_rocketry_badge','nra_marksman_badge'
-]);
+const SENIOR_INELIGIBLE_BADGES = new Set(CAPUBBadgeCatalog.CADET_ONLY);
 
 function isSeniorAuthorized(id){
   return !SENIOR_INELIGIBLE_BADGES.has(id);

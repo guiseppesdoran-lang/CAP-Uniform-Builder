@@ -74,7 +74,7 @@ for(const [membership, rank, badges] of [
 
 test('men\'s Class A: with three ordinary badges the third sits 1/2 in above the nameplate, centred on it', async () => {
   const { plate } = await landmarks('male');
-  const scene = await P.composeUniform(build('blues_a', 'male', 'senior', 'Capt', ['emergency_services_badge', 'communications_technician_badge', 'stem_badges']), store);
+  const scene = await P.composeUniform(build('blues_a', 'male', 'senior', 'Capt', ['emergency_services_badge', 'communications_technician_badge', 'historian_senior_badge']), store);
   const above = badgeLayers(scene).filter(l => l.y + l.h <= plate.y + 0.01);
   assert.equal(above.length, 1);
   near(above[0].y + above[0].h, plate.y - 0.5, 0.005, 'bottom 1/2 in above the nameplate top');

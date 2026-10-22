@@ -40,3 +40,24 @@ test('semi-formal cadet NCO chevrons rest on the gorge seam exactly as on the Cl
     }
   }
 });
+
+// ---- 2. Cadet-only badges are not drawn on adults, and the other way round ----------------------------
+
+test('a senior member is never shown a cadet-only badge, with a note (4.1.5.2.2.4.2, 4.1.9.4.4.2)', async () => {
+  for(const uniform of ['blues_a', 'blues_b', 'aviator']){
+    for(const sex of ['male', 'female']){
+      const scene = await compose(build(uniform, sex, 'senior', 'Capt', ['model_rocketry_badge', 'stem_badges', 'cyber_badges', 'nra_marksman_badge', 'emergency_services_badge']));
+      const ids = scene.layers.filter(l => l.role === 'badge').map(l => l.key);
+      for(const id of ['model_rocketry_badge', 'stem_badges', 'cyber_badges', 'nra_marksman_badge']) assert.ok(!ids.includes('badge:' + id), `${uniform} ${sex}: ${id} is not drawn on a senior member`);
+      assert.ok(scene.notes.some(n => /Model Rocketry Badge is worn by cadets only \(CAPR 39-1, 4\.1\.5\.2\.2\.4\.2\)/.test(n)), `${uniform} ${sex}: the note names the badge and paragraph: ${scene.notes.join(' | ')}`);
+    }
+  }
+});
+
+test('a cadet keeps the cadet-only badges and is not shown a badge the chart does not authorize for cadets', async () => {
+  const scene = await compose(build('blues_a', 'male', 'cadet', 'C/Maj', ['model_rocketry_badge', 'senior_advisory_group_badge']));
+  const ids = scene.layers.filter(l => l.role === 'badge').map(l => l.key);
+  assert.ok(ids.includes('badge:model_rocketry_badge'), 'the cadet wears the rocketry badge');
+  assert.ok(!ids.includes('badge:senior_advisory_group_badge'), 'a cadet does not wear a CAP service badge');
+  assert.ok(scene.notes.some(n => /not worn by cadets/.test(n)));
+});
