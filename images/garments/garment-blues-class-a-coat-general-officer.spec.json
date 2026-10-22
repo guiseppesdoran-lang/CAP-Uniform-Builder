@@ -52,8 +52,8 @@
    456.1
   ],
   "sleeve_braid_right_center": [
-   251.4,
-   2353.9
+   250.05,
+   2339.65
   ],
   "epaulet_sleeve_left_center": [
    1885.3,
@@ -72,8 +72,8 @@
    456.1
   ],
   "sleeve_braid_left_center": [
-   2122.45,
-   2354.05
+   2123.7,
+   2341.4
   ]
  },
  "landmarks": {
@@ -108,10 +108,10 @@
    "h": 60
   },
   "sleeve_braid_right": {
-   "x": 61,
-   "y": 2258,
-   "w": 380.8,
-   "h": 191.8
+   "x": 59.1,
+   "y": 2250.4,
+   "w": 381.9,
+   "h": 178.5
   },
   "epaulet_left": {
    "x": 1646.1,
@@ -144,10 +144,10 @@
    "h": 60
   },
   "sleeve_braid_left": {
-   "x": 1930.9,
-   "y": 2257.3,
-   "w": 383.1,
-   "h": 193.5
+   "x": 1931.2,
+   "y": 2254.1,
+   "w": 385,
+   "h": 174.6
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left of the artwork box",
@@ -156,6 +156,51 @@
   "general officers wear 1 1/2 in blue sleeve braid, 3 in from the end of the sleeve (CAPR 39-1 4.1.5.2 / 4.1.9.2)",
   "otherwise as the officer layer"
  ],
+ "dimensions": {
+  "sleeve_braid": {
+   "rule": "lower edge parallel to the drawn cuff edge and 3.0 in from it (CAPR 39-1 4.1.5.2), measured perpendicular to the cuff edge on each sleeve",
+   "right": {
+    "cuff_edge_in": [
+     [
+      -10.665,
+      27.136
+     ],
+     [
+      -7.679,
+      26.899
+     ]
+    ],
+    "lower_edge_from_cuff_in": {
+     "outer": 3,
+     "inner": 3
+    },
+    "upper_edge_from_cuff_in": {
+     "outer": 4.5,
+     "inner": 4.5
+    }
+   },
+   "left": {
+    "cuff_edge_in": [
+     [
+      10.665,
+      27.136
+     ],
+     [
+      7.496,
+      26.92
+     ]
+    ],
+    "lower_edge_from_cuff_in": {
+     "outer": 3,
+     "inner": 3
+    },
+    "upper_edge_from_cuff_in": {
+     "outer": 4.5,
+     "inner": 4.5
+    }
+   }
+  }
+ },
  "assumed": [
   "epaulet and epaulet sleeve size",
   "US insignia size",

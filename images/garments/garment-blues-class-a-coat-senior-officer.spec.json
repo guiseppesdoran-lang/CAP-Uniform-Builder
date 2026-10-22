@@ -52,8 +52,8 @@
    456.1
   ],
   "sleeve_braid_right_center": [
-   256.05,
-   2403.65
+   254.65,
+   2389.4
   ],
   "epaulet_sleeve_left_center": [
    1885.3,
@@ -72,8 +72,8 @@
    456.1
   ],
   "sleeve_braid_left_center": [
-   2117.4,
-   2403.8
+   2118.65,
+   2391.2
   ]
  },
  "landmarks": {
@@ -108,10 +108,10 @@
    "h": 60
   },
   "sleeve_braid_right": {
-   "x": 70.3,
-   "y": 2357.5,
-   "w": 371.5,
-   "h": 92.3
+   "x": 68.3,
+   "y": 2349.9,
+   "w": 372.7,
+   "h": 79
   },
   "epaulet_left": {
    "x": 1646.1,
@@ -144,10 +144,10 @@
    "h": 60
   },
   "sleeve_braid_left": {
-   "x": 1930.9,
-   "y": 2356.8,
-   "w": 373,
-   "h": 94
+   "x": 1931.2,
+   "y": 2353.7,
+   "w": 374.9,
+   "h": 75
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left of the artwork box",
@@ -158,6 +158,51 @@
   "1/2 in blue sleeve braid 3 in from the end of the sleeve (4.1.5.2 / 4.1.9.2)",
   "grade insignia 5/8 in from the end of the epaulet, parallel with the sleeve seam (DAFI 36-2903 4.5.1.1.1)"
  ],
+ "dimensions": {
+  "sleeve_braid": {
+   "rule": "lower edge parallel to the drawn cuff edge and 3.0 in from it (CAPR 39-1 4.1.5.2), measured perpendicular to the cuff edge on each sleeve",
+   "right": {
+    "cuff_edge_in": [
+     [
+      -10.665,
+      27.136
+     ],
+     [
+      -7.679,
+      26.899
+     ]
+    ],
+    "lower_edge_from_cuff_in": {
+     "outer": 3,
+     "inner": 3
+    },
+    "upper_edge_from_cuff_in": {
+     "outer": 3.5,
+     "inner": 3.5
+    }
+   },
+   "left": {
+    "cuff_edge_in": [
+     [
+      10.665,
+      27.136
+     ],
+     [
+      7.496,
+      26.92
+     ]
+    ],
+    "lower_edge_from_cuff_in": {
+     "outer": 3,
+     "inner": 3
+    },
+    "upper_edge_from_cuff_in": {
+     "outer": 3.5,
+     "inner": 3.5
+    }
+   }
+  }
+ },
  "assumed": [
   "epaulet and epaulet sleeve size",
   "US insignia size",
