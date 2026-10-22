@@ -84,3 +84,58 @@ test('flight suits and jackets: no senior officer\'s turned cloth grade rises ab
   }
   assert.ok(checked >= 150 && tall >= 8, `checked ${checked} grades, ${tall} taller than the zone (the colonel's eagles)`);
 });
+
+// ---- 6. Overlay: a measure inside a cap view is drawn beside that view ----------------------------------------
+
+const ML = require('../js/engine/measure-layout.js');
+async function laidOut(b){
+  const scene = await compose(b);
+  const B = scene.bounds;
+  const vb = [B.x - 0.4, B.y - 0.4, B.w + 0.8, B.h + 0.8];
+  const px = ML.previewPx(vb);
+  const area = { x: vb[0], y: vb[1], w: vb[2], h: vb[3] };
+  return { scene, drawings: ML.layout(scene, { px, area }) };
+}
+const gap1 = (p, r) => Math.hypot(Math.max(r.x - p.x, 0, p.x - (r.x + r.w)), Math.max(r.y - p.y, 0, p.y - (r.y + r.h)));
+const segIn = (a, b, r) => { // does segment a-b run through box r by more than a hair?
+  const d = { x: b.x - a.x, y: b.y - a.y };
+  let t0 = 0, t1 = 1;
+  for(const [p, q] of [[-d.x, a.x - r.x], [d.x, r.x + r.w - a.x], [-d.y, a.y - r.y], [d.y, r.y + r.h - a.y]]){
+    if(p === 0){ if(q < 0) return false; continue; }
+    const t = q / p;
+    if(p < 0){ if(t > t1) return false; if(t > t0) t0 = t; } else { if(t < t0) return false; if(t < t1) t1 = t; }
+  }
+  return (t1 - t0) * Math.hypot(d.x, d.y) > 0.01;
+};
+
+test('overlay: the 1/2 in measure of a cap view\'s grade is drawn beside that view, not beside another cap view (7.1.1.8, 6.2.11.1; D26)', async () => {
+  let checked = 0;
+  for(const uniform of ['ocp', 'abu', 'corporate_field']){
+    for(const gender of ['male', 'female']){
+      for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'Lt Col'], ['senior', 'Col'], ['cadet', 'C/Capt'], ['cadet', 'C/Maj']]){
+        const { scene, drawings } = await laidOut(hb(uniform, gender, membership, rank, { opt: { headgear: 'auto', overlay: true } }));
+        const views = scene.layers.filter(l => (l.role === 'hat' || l.role === 'hat-view') && l.obstacle).map(l => ({ key: l.key, box: l.obstacle }));
+        for(const m of scene.layers.filter(l => l.type === 'measure')){
+          const mid = { x: (m.from.x + m.to.x) / 2, y: (m.from.y + m.to.y) / 2 };
+          const owner = views.find(v => mid.x >= v.box.x && mid.x <= v.box.x + v.box.w && mid.y >= v.box.y && mid.y <= v.box.y + v.box.h);
+          if(!owner) continue;
+          const d = drawings.find(x => x.key === m.key);
+          assert.ok(d, `${uniform} ${gender} ${rank}: ${m.key} drawn`);
+          const id = `${uniform} ${gender} ${rank} ${m.key} in ${owner.key}`;
+          // The dimension line is within an inch of its own view.
+          for(const p of d.dim) assert.ok(gap1(p, owner.box) <= 1, `${id}: the dimension is ${gap1(p, owner.box).toFixed(2)} in from its view`);
+          // And nothing of it (dimension, extension lines, label) lies over another view.
+          for(const other of views.filter(v => v !== owner)){
+            assert.ok(!segIn(d.dim[0], d.dim[1], other.box), `${id}: the dimension runs over ${other.key}`);
+            for(const [p, q] of d.ext) assert.ok(!segIn(p, q, other.box), `${id}: an extension line runs over ${other.key}`);
+            const L = d.label;
+            const ov = Math.min(L.x + L.w, other.box.x + other.box.w) - Math.max(L.x, other.box.x) > 0 && Math.min(L.y + L.h, other.box.y + other.box.h) - Math.max(L.y, other.box.y) > 0;
+            assert.ok(!ov, `${id}: the label lies over ${other.key}`);
+          }
+          checked++;
+        }
+      }
+    }
+  }
+  assert.ok(checked >= 20, `${checked} measures inside a cap view checked`);
+});

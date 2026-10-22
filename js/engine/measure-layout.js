@@ -35,6 +35,14 @@
       .filter(b => b && b.w > 0 && b.h > 0);
   }
 
+  // The cap views: a seated cap (role 'hat') and the accessory views (role 'hat-view'), each one box.
+  function viewBoxes(scene){
+    return scene.layers
+      .filter(l => l.type !== 'measure' && (l.role === 'hat' || l.role === 'hat-view'))
+      .map(l => l.obstacle || core.layerBounds(l))
+      .filter(b => b && b.w > 0 && b.h > 0);
+  }
+
   // ---- geometry ----
   const add = (a, b) => ({ x: a.x + b.x, y: a.y + b.y });
   const sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y });
@@ -99,6 +107,7 @@
     const P = view.px;
     const area = view.area;
     const solids = obstaclesOf(scene);
+    const views = viewBoxes(scene);
     const shrunk = solids.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0);
     const placedLabels = [];
     const placedLines = [];
@@ -123,65 +132,89 @@
         const s = dot(o.side, n) >= 0 ? n : mul(n, -1);
         sides = [s];
       }
-      const candidates = [];
-      if(!o.offsetOnly) candidates.push({ side: sides[0], d: 0, inline: true });
-      for(const s of sides){
-        // Each extension line starts at the edge of its own piece.
-        const startA = clearance(A, s, solids, 1.5 * P), startB = clearance(B, s, solids, 1.5 * P);
-        const first = Math.max(startA, startB) + (o.offsetPx != null ? o.offsetPx : PX.minOffset) * P;
-        for(let d = first; d <= first + PX.maxOffset * P; d += PX.step * P) candidates.push({ side: s, d, startA, startB });
-      }
 
-      let best = null;
-      for(const c of candidates){
-        const a = add(A, mul(c.side, c.d)), b = add(B, mul(c.side, c.d));
-        const modes = [];
-        // The label goes at the middle of the line when it can, else slides along it (a long line
-        // past a chevron keeps its label on clear cloth).
-        const along = L > 3 * extent(u) ? [0.5, 0.35, 0.65, 0.2, 0.8] : [0.5];
-        for(const t of along){
-          const at = add(a, mul(sub(b, a), t));
-          const slide = Math.abs(t - 0.5) * 60;
-          // Centred on the line when it is long enough to show both bars beside the label.
-          if(L >= extent(u) + 2 * (PX.bar * 0.5 + 4) * P && (t === 0.5 || L * Math.min(t, 1 - t) > extent(u) / 2 + 6 * P)) modes.push({ name: 'centre', at, cost: slide });
-          const outward = c.inline ? [c.side, mul(c.side, -1)] : [c.side];
-          outward.forEach((v, i) => modes.push({ name: 'beside', at: add(at, mul(v, extent(v) / 2 + PX.labelGap * P)), cost: slide + (i ? 6 : 0) }));
-          if(!c.inline) modes.push({ name: 'beside-in', at: add(at, mul(c.side, -(extent(c.side) / 2 + PX.labelGap * P))), cost: slide + 25 });
-        }
+      // A measure inside a cap view belongs to that view (the grade 1/2 in from the visor on the baseball cap
+      // front): its dimension stays beside that view and never lies over, or runs its extension lines across,
+      // another cap view, the drawing the label would then seem to measure (D26: every label sits at the
+      // distance it reports). When the views stand so close that no side is free, the dimension is drawn on the
+      // view's own cloth, next to the measured points: the view's box is then not an obstacle, the grade and the
+      // name tape in it still are.
+      const mid = mul(add(A, B), 0.5);
+      const owner = views.find(v => contains(v, mid)) || null;
+      const others = owner ? views.filter(v => v !== owner) : [];
+      const crossesOther = (p, q) => others.some(r => insideLength(p, q, r) > 0.005);
 
-        // Line costs, shared by every label mode.
-        let lineCost = 0;
-        for(const r of shrunk) lineCost += 60 * insideLength(a, b, r) / P;
-        const exts = [];
-        if(!c.inline){
-          const sA = add(A, mul(c.side, c.startA + PX.extGap * P)), sB = add(B, mul(c.side, c.startB + PX.extGap * P));
-          const e = mul(c.side, PX.extOver * P);
-          exts.push([sA, add(a, e)], [sB, add(b, e)]);
-          // An extension line over a patch hides it; one that runs out of the view is cut off.
-          for(const [p, q] of exts) for(const r of shrunk) lineCost += 24 * insideLength(p, q, r) / P;
+      const search = (solidsX, shrunkX, strict) => {
+        const candidates = [];
+        if(!o.offsetOnly) candidates.push({ side: sides[0], d: 0, inline: true });
+        for(const s of sides){
+          // Each extension line starts at the edge of its own piece.
+          const startA = clearance(A, s, solidsX, 1.5 * P), startB = clearance(B, s, solidsX, 1.5 * P);
+          const first = Math.max(startA, startB) + (o.offsetPx != null ? o.offsetPx : PX.minOffset) * P;
+          for(let d = first; d <= first + PX.maxOffset * P; d += PX.step * P) candidates.push({ side: s, d, startA, startB });
         }
-        if(area){
-          lineCost += 60 * outsideLength(a, b, area) / P;
-          for(const [p, q] of exts) lineCost += 60 * outsideLength(p, q, area) / P;
-        }
-        for(const lab of placedLabels) lineCost += 40 * insideLength(a, b, lab) / P;
-        lineCost += c.d / P;
-
-        // The halfway tick stays in view.
-        const tickAt = o.mid ? add(a, mul(u, dot(sub(o.mid, A), u))) : null;
-        for(const md of modes){
-          const box = { x: md.at.x - lw / 2, y: md.at.y - lh / 2, w: lw, h: lh };
-          let cost = lineCost + md.cost;
-          if(tickAt && contains(grow(box, 3 * P), tickAt)) cost += 300;
-          for(const r of solids) cost += 6 * overlap(box, r) / (P * P);
-          for(const r of placedLabels) cost += 30 * overlap(box, grow(r, 2 * P)) / (P * P);
-          for(const [p, q] of placedLines) cost += 20 * insideLength(p, q, box) / P;
-          if(area){
-            const inside = overlap(box, area);
-            cost += 30 * (lw * lh - inside) / (P * P);
+        let found = null;
+        for(const c of candidates){
+          const a = add(A, mul(c.side, c.d)), b = add(B, mul(c.side, c.d));
+          const exts = [];
+          if(!c.inline){
+            const sA = add(A, mul(c.side, c.startA + PX.extGap * P)), sB = add(B, mul(c.side, c.startB + PX.extGap * P));
+            const e = mul(c.side, PX.extOver * P);
+            exts.push([sA, add(a, e)], [sB, add(b, e)]);
           }
-          if(!best || cost < best.cost) best = { cost, c, a, b, box, exts, mode: md.name };
+          // The whole run from the measured points to the dimension, not only the drawn part of the extension line:
+          // the extension lines start past any piece they leave, which would hide a view they cross.
+          if(strict && !c.inline && (crossesOther(a, b) || crossesOther(A, add(a, mul(c.side, PX.extOver * P))) || crossesOther(B, add(b, mul(c.side, PX.extOver * P))))) continue;
+          const modes = [];
+          // The label goes at the middle of the line when it can, else slides along it (a long line
+          // past a chevron keeps its label on clear cloth).
+          const along = L > 3 * extent(u) ? [0.5, 0.35, 0.65, 0.2, 0.8] : [0.5];
+          for(const t of along){
+            const at = add(a, mul(sub(b, a), t));
+            const slide = Math.abs(t - 0.5) * 60;
+            // Centred on the line when it is long enough to show both bars beside the label.
+            if(L >= extent(u) + 2 * (PX.bar * 0.5 + 4) * P && (t === 0.5 || L * Math.min(t, 1 - t) > extent(u) / 2 + 6 * P)) modes.push({ name: 'centre', at, cost: slide });
+            const outward = c.inline ? [c.side, mul(c.side, -1)] : [c.side];
+            outward.forEach((v, i) => modes.push({ name: 'beside', at: add(at, mul(v, extent(v) / 2 + PX.labelGap * P)), cost: slide + (i ? 6 : 0) }));
+            if(!c.inline) modes.push({ name: 'beside-in', at: add(at, mul(c.side, -(extent(c.side) / 2 + PX.labelGap * P))), cost: slide + 25 });
+          }
+
+          // Line costs, shared by every label mode.
+          let lineCost = 0;
+          for(const r of shrunkX) lineCost += 60 * insideLength(a, b, r) / P;
+          // An extension line over a patch hides it; one that runs out of the view is cut off.
+          for(const [p, q] of exts) for(const r of shrunkX) lineCost += 24 * insideLength(p, q, r) / P;
+          if(area){
+            lineCost += 60 * outsideLength(a, b, area) / P;
+            for(const [p, q] of exts) lineCost += 60 * outsideLength(p, q, area) / P;
+          }
+          for(const lab of placedLabels) lineCost += 40 * insideLength(a, b, lab) / P;
+          lineCost += c.d / P;
+
+          // The halfway tick stays in view.
+          const tickAt = o.mid ? add(a, mul(u, dot(sub(o.mid, A), u))) : null;
+          for(const md of modes){
+            const box = { x: md.at.x - lw / 2, y: md.at.y - lh / 2, w: lw, h: lh };
+            if(strict && others.some(r => overlap(box, r) > 0)) continue;
+            let cost = lineCost + md.cost;
+            if(tickAt && contains(grow(box, 3 * P), tickAt)) cost += 300;
+            for(const r of solidsX) cost += 6 * overlap(box, r) / (P * P);
+            for(const r of placedLabels) cost += 30 * overlap(box, grow(r, 2 * P)) / (P * P);
+            for(const [p, q] of placedLines) cost += 20 * insideLength(p, q, box) / P;
+            if(area){
+              const inside = overlap(box, area);
+              cost += 30 * (lw * lh - inside) / (P * P);
+            }
+            if(!found || cost < found.cost) found = { cost, c, a, b, box, exts, mode: md.name };
+          }
         }
+        return found;
+      };
+
+      let best = search(solids, shrunk, !!owner);
+      if(!best && owner){
+        const solids2 = solids.filter(b => !(b.x === owner.x && b.y === owner.y && b.w === owner.w && b.h === owner.h));
+        best = search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true);
       }
       if(!best) continue;
 
