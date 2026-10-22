@@ -197,6 +197,109 @@ test('every ribbon uniform lays the rack in rows of three, partial row on top, n
   }
 });
 
+// ---- 3b. the lapel never covers a ribbon in the automatic arrangement (11.2.7) ------------------
+
+// 11.2.7: rows may be shortened and aligned to the wearer's left edge to prevent the service coat lapel
+// from covering the ribbons. Doran's L1935 screenshot shows rows of three whose left ribbons are cut by the
+// lapel (the engine used to let up to half a ribbon stand under it), not four across.
+const LAPEL_GARMENT = { 'blues_a-male': 'garment-blues-class-a-coat', 'blues_a-female': 'garment-blues-class-a-coat-female', 'semi_formal_usaf-male': 'garment-semiformal-class-a-coat-male', 'semi_formal_usaf-female': 'garment-semiformal-class-a-coat-female' };
+const SEL28 = ['Air_Force_Organizational_Excellence_Award', 'afa_award', 'afsa_award', 'air_force_aerial_achievement_medal', 'air_medal', 'air_search_and_rescue_ribbon', 'anti_submarine_coastal_patrol_ribbon', 'armstrong_achievement', 'bronze_medal_of_valor', 'cadet_advisory_council_ribbon', 'cadet_certificate_of_proficiency', 'cadet_recruiter_ribbon', 'cadet_special_activity_ribbon', 'cap_a_scott_crossfield_ribbon', 'cap_achievment_award', 'cap_bridgadier_general_charles_yaeger_ribbon', 'cap_cadet_orientation_pilot_ribbon', 'cap_command_service_ribbon', 'cap_counterdrug_ribbon', 'cap_gill_robb_wilson_ribbon', 'cap_grover_loening_aerospace_ribbon', 'cap_leadership_ribbon', 'cap_membership_ribbon', 'cap_paul_e_garber_ribbon', 'cap_senior_recruiter_ribbon', 'cap_world_war_2_service_ribbon', 'commander_commendation_award', 'community_service_ribbon'];
+
+function rowCounts(tiles){
+  const ys = [...new Set(tiles.map(t => t.y.toFixed(3)))].sort((a, b) => a - b);
+  return ys.map(y => tiles.filter(t => t.y.toFixed(3) === y).length);
+}
+
+test('the lapel lets only a sliver of anti-aliasing stand over a ribbon, never half (11.2.7)', () => {
+  assert.ok(awards.LAPEL_COVER_TOLERANCE > 0 && awards.LAPEL_COVER_TOLERANCE <= 0.03, `tolerance ${awards.LAPEL_COVER_TOLERANCE}`);
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'awards.js'), 'utf8');
+  assert.match(src, /11\.2\.7[\s\S]{0,200}lapel/, 'the paragraph is cited next to the rule');
+  assert.ok(!/maxCover : 0\.5/.test(src), 'the 50% default is gone');
+});
+
+test('automatic racks on the Class A coats and the semi-formal coat keep every ribbon clear of the lapel, bottom row on the welt, centred when the lapel is clear (11.2.7, Figure 11-1)', async () => {
+  for(const uniform of ['blues_a', 'semi_formal_usaf']){
+    for(const gender of ['male', 'female']){
+      const garment = await store().load(LAPEL_GARMENT[`${uniform}-${gender}`]);
+      const lapel = core.landmark(garment, 'lapel_left');
+      const welt = core.anchor(garment, 'welt_top_center');
+      assert.ok(lapel && lapel.points && welt, `${uniform} ${gender}: lapel polygon and welt anchor`);
+      for(const n of [3, 13, 28]){
+        const rs = ribbons(SEL28.slice(0, n).map(id => [id]));
+        assert.equal(rs.length, n);
+        for(const opt of [{}, { rackColumns: 3, rackArrangement: 'lapel' }]){
+          const scene = await P.composeUniform(build(uniform, 'cadet', 'C/Maj', { gender, ribbons: rs, opt }), store());
+          const tiles = layersBy(scene, l => l.role === 'ribbon');
+          const label = `${uniform} ${gender} ${n} ${JSON.stringify(opt)}`;
+          assert.equal(tiles.length, n, label);
+          for(const t of tiles) assert.ok(awards.coverage(t, lapel.points) <= awards.LAPEL_COVER_TOLERANCE, `${label}: ${t.key} is under the lapel (${awards.coverage(t, lapel.points)})`);
+          assert.ok(Math.abs(Math.max(...tiles.map(t => t.y + t.h)) - welt.y) < 1e-6, `${label}: the bottom row rests on the welt`);
+          const counts = rowCounts(tiles);
+          assert.ok(counts.every(c => c <= 3), `${label}: rows ${counts} within three across`);
+          for(let i = 1; i < counts.length; i++) assert.ok(counts[i] >= counts[i - 1], `${label}: no row longer than the row below it (${counts})`);
+          assert.equal(counts.reduce((a, c) => a + c, 0), n, label);
+          // The bottom row is centred on the welt when the lapel is clear of the full rows.
+          const bottom = tiles.filter(t => Math.abs(t.y + t.h - welt.y) < 1e-6);
+          const centre = (Math.min(...bottom.map(t => t.x)) + Math.max(...bottom.map(t => t.x + t.w))) / 2;
+          if(counts[counts.length - 1] === 3 && counts.every(c => c === 3 || c === counts[0])){
+            assert.ok(Math.abs(centre - welt.x) < 1e-6, `${label}: full rows centred on the welt (${centre} vs ${welt.x})`);
+          }
+        }
+      }
+    }
+  }
+});
+
+test('rows of three stay centred and untouched when the lapel is clear of them; a lapel that reaches them shortens only those rows to the wearer\'s left edge (11.2.7)', async () => {
+  const garment = await store().load(LAPEL_GARMENT['blues_a-male']);
+  const lapel = core.landmark(garment, 'lapel_left');
+  const welt = core.anchor(garment, 'welt_top_center');
+  const rs = ribbons(SEL28.slice(0, 13).map(id => [id]));
+  const auto = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { ribbons: rs, opt: { rackArrangement: 'lapel' } }), store());
+  const std = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { ribbons: rs, opt: { rackArrangement: 'standard' } }), store());
+  const at = scene => layersBy(scene, l => l.role === 'ribbon').map(l => [l.key, l.x.toFixed(4), l.y.toFixed(4)].join('|')).join(';');
+  assert.equal(at(auto), at(std), 'men\'s 13 ribbons: the lapel is clear, so the automatic rack is the plain rows of three, partial row on top');
+  assert.deepEqual(rowCounts(layersBy(auto, l => l.role === 'ribbon')), [1, 3, 3, 3, 3]);
+  const bottom = layersBy(auto, l => l.role === 'ribbon' && Math.abs(l.y + l.h - welt.y) < 1e-6);
+  assert.ok(Math.abs((Math.min(...bottom.map(t => t.x)) + Math.max(...bottom.map(t => t.x + t.w))) / 2 - welt.x) < 1e-6, 'centred on the welt');
+
+  // The women's coat: the lapel reaches the left ribbons of the upper rows, so those rows are shortened.
+  const fgarment = await store().load(LAPEL_GARMENT['blues_a-female']);
+  const flapel = core.landmark(fgarment, 'lapel_left');
+  const fstd = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { gender: 'female', ribbons: rs, opt: { rackArrangement: 'standard' } }), store());
+  assert.ok(layersBy(fstd, l => l.role === 'ribbon').some(t => awards.coverage(t, flapel.points) > awards.LAPEL_COVER_TOLERANCE), 'the explicit standard arrangement (the member\'s choice) is left alone, lapel over the ribbons');
+  const fauto = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { gender: 'female', ribbons: rs, opt: { rackArrangement: 'lapel' } }), store());
+  const counts = rowCounts(layersBy(fauto, l => l.role === 'ribbon'));
+  assert.deepEqual(counts, [1, 2, 2, 2, 3, 3]);
+  assert.ok(layersBy(fauto, l => l.role === 'ribbon').every(t => awards.coverage(t, flapel.points) <= awards.LAPEL_COVER_TOLERANCE));
+  // Custom row counts are the member's own choice and are not shortened.
+  const custom = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { gender: 'female', ribbons: rs, opt: { rackArrangement: 'standard', rackCounts: [4, 3, 3, 3] } }), store());
+  assert.deepEqual(rowCounts(layersBy(custom, l => l.role === 'ribbon')), [3, 3, 3, 4]);
+  void lapel;
+});
+
+test('layoutRack: rows the lapel reaches shrink to the wearer\'s left edge; a ribbon no position keeps clear is counted, not hidden (11.2.7)', () => {
+  const items = n => Array.from({ length: n }, (_, i) => ({ key: 'r' + i }));
+  const slot = { perRow: 3, centerX: 8, bottomY: 0, outboardX: 10.0625, outboardSign: 1 };
+  // A lapel over everything left of x = 7.5 above y = -0.4: the lower row (y -0.375..0) is clear, the rows above are not.
+  const lapel = [{ x: 0, y: -50 }, { x: 7.5, y: -50 }, { x: 7.5, y: -0.4 }, { x: 0, y: -0.4 }];
+  const r = awards.layoutRack(items(7), Object.assign({ lapel }, slot));
+  assert.equal(r.mode, 'outboard');
+  assert.equal(r.lapelBlocked, 0);
+  assert.equal(r.rows.reduce((n, x) => n + x.length, 0), 7);
+  assert.ok(r.placements.every(p => awards.coverage(p, lapel) <= awards.LAPEL_COVER_TOLERANCE), 'no ribbon under the lapel');
+  const upper = r.placements.filter(p => p.y < -0.38);
+  assert.ok(upper.every(p => p.x + p.w <= slot.outboardX + 1e-9 && p.x >= 7.5 - 1e-9), 'upper rows sit between the lapel and the wearer\'s left edge');
+  // A lapel over every position leaves nothing clear: the ribbon is still shown, and reported.
+  const wall = [{ x: 0, y: -50 }, { x: 99, y: -50 }, { x: 99, y: 50 }, { x: 0, y: 50 }];
+  const b = awards.layoutRack(items(3), Object.assign({ lapel: wall }, slot));
+  assert.ok(b.lapelBlocked > 0);
+  assert.equal(b.placements.length, 3);
+  // The explicit standard arrangement and custom row counts are the member's own choice.
+  assert.equal(awards.layoutRack(items(7), Object.assign({ lapel, arrangement: 'standard' }, slot)).mode, 'center');
+  assert.equal(awards.layoutRack(items(7), Object.assign({ lapel, countsBottomFirst: [3, 2, 2] }, slot)).mode, 'center');
+});
+
 // ---- 4. miniature medals ----------------------------------------------------------------------
 
 // Twelve awards that each have a CAP medal (community service, special activity and the other ribbon-only
