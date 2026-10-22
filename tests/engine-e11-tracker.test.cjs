@@ -171,6 +171,23 @@ test('headgear is not required with the aviator shirt, the blazer or the mess dr
   }
 });
 
+// ---- CFU ES patch ------------------------------------------------------------------------------------------
+
+test('CFU: the ES patch is 1/2 in above the name tape, or above the real top edge of the current command pin (5.2.1.1.2.8)', async () => {
+  for(const sex of ['male', 'female']){
+    const bare = await compose(build('corporate_field', sex, 'senior', 'Maj', [], { opt: { headgear: 'auto', esPatch: 'style-1' } }));
+    const es0 = bare.layers.find(l => l.key === 'patch:patch-es-style-1');
+    assert.ok(es0, `${sex}: ES patch drawn`);
+    const withPin = await compose(build('corporate_field', sex, 'senior', 'Maj', [], { opt: { headgear: 'auto', esPatch: 'style-1' }, command: CMD }));
+    const pin = withPin.layers.find(l => /^badge:squadron_commander_badge:ON:0$/.test(l.key));
+    const es1 = withPin.layers.find(l => l.key === 'patch:patch-es-style-1');
+    assert.ok(pin && es1, `${sex}: pin and ES patch drawn`);
+    near(es1.y + es1.h, pin.y - 0.5, 0.005, `${sex}: the patch's bottom 1/2 in above the pin's real top edge`);
+    // The pin sits 1/2 in above the tape, so with it the patch is lifted by the pin's height plus 1/2 in.
+    near(es0.y + es0.h - (es1.y + es1.h), pin.h + 0.5, 0.005, `${sex}: the pin lifts the patch by its own height and the 1/2 in`);
+  }
+});
+
 // ---- service badge next to the collar ------------------------------------------------------------------------
 
 test('women\'s Class A: the Volunteer University badge, a CAP service badge, is worn closest to the lapel (10.2.4)', async () => {

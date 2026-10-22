@@ -421,12 +421,14 @@
         // ES patch 1/2 in above the name tape (above the command insignia if worn), 5.2.1.1.2.8.
         const tape = ctx.rect('name_tape');
         const id = b.opt.esPatch === 'style-2' ? 'patch-es-style-2' : 'patch-es-style-1';
-        const pin = b.command && !b.command.graduated;
-        const y = tape.y - 0.5 - (pin ? 1.5 : 0);
+        // The pin is the piece placed over the tape: its real top edge, not a guessed height.
+        const pin = ctx.layers.find(l => l.role === 'badge' && /^badge:[^:]+:ON:0$/.test(l.key));
+        const above = pin ? pin.y : tape.y;
+        const y = above - 0.5;
         const s = await ctx.spec(id);
         const scale = Math.min(1, 3 / s.w, 3 / s.h);
         await ctx.place(id, { pieceAnchor: 'bottom_center', at: { x: tape.x + tape.w / 2, y }, scale, z: Z.patch, role: 'patch', key: 'patch:' + id, title: 'Emergency Services patch' });
-        if(!pin) ctx.measure({ x: tape.x + tape.w / 2, y: tape.y }, { x: tape.x + tape.w / 2, y });
+        ctx.measure({ x: tape.x + tape.w / 2, y: above }, { x: tape.x + tape.w / 2, y });
       }
     }
     if(patches.length) ctx.note('Some selected patches have no place left on this uniform and are not shown');
