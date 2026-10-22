@@ -1,0 +1,154 @@
+{
+ "asset_id": "mil-ribbon-rotc-army-jrotc-service-learning",
+ "name": "Army JROTC Service Learning Ribbon",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 / CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "bd6d3e",
+    "fraction": 0.1159,
+    "x0_in": 0,
+    "x1_in": 0.1594
+   },
+   {
+    "index": 1,
+    "hex": "5c487b",
+    "fraction": 0.1455,
+    "x0_in": 0.1594,
+    "x1_in": 0.3594
+   },
+   {
+    "index": 2,
+    "hex": "ffffff",
+    "fraction": 0.0704,
+    "x0_in": 0.3594,
+    "x1_in": 0.4562
+   },
+   {
+    "index": 3,
+    "hex": "5c487a",
+    "fraction": 0.1432,
+    "x0_in": 0.4562,
+    "x1_in": 0.6531
+   },
+   {
+    "index": 4,
+    "hex": "ba6b3d",
+    "fraction": 0.0523,
+    "x0_in": 0.6531,
+    "x1_in": 0.725
+   },
+   {
+    "index": 5,
+    "hex": "5c487b",
+    "fraction": 0.1454,
+    "x0_in": 0.725,
+    "x1_in": 0.925
+   },
+   {
+    "index": 6,
+    "hex": "ffffff",
+    "fraction": 0.0705,
+    "x0_in": 0.925,
+    "x1_in": 1.0219
+   },
+   {
+    "index": 7,
+    "hex": "5c487b",
+    "fraction": 0.1432,
+    "x0_in": 1.0219,
+    "x1_in": 1.2188
+   },
+   {
+    "index": 8,
+    "hex": "bd6d3e",
+    "fraction": 0.1136,
+    "x0_in": 1.2188,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "program": "ROTC/JROTC",
+ "service": "army-jrotc",
+ "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
+ "measurement": {
+  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "fidelity": "measured_from_vendor_image",
+  "source_kind": "vendor-photo-measured",
+  "source_images": [],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-4-6: AJROTC Service Learning",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-n46-ajrotc-service-learning-rotc-ribbon-unit",
+  "award_list_source": "https://en.wikipedia.org/wiki/Junior_Reserve_Officers%27_Training_Corps (ribbon tables)",
+  "residual": {
+   "vertical": 12.3,
+   "horizontal": 84.2,
+   "central_vertical": 5.8
+  },
+  "border_frame_detected": false,
+  "photographic_source": false,
+  "match_basis": "vendor product title names the award",
+  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+ },
+ "quality": {
+  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
+  "geometry_source": "vendor photo, mid-height columns",
+  "snap": {
+   "stripes_before": 9,
+   "stripes_after": 9,
+   "max_snap_delta": 9.7,
+   "unsnapped": 7,
+   "margin_runs_trimmed": [],
+   "shadow_bands_merged": 0
+  },
+  "min_stripe_in": "1/64"
+ },
+ "fit": {
+  "method": "n/a (vendor photo measured)",
+  "score": null,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

@@ -1,0 +1,182 @@
+{
+ "asset_id": "mil-ribbon-rotc-army-jrotc-n-4-3",
+ "name": "Army JROTC N-4-3 Ribbon (name not given on the public page)",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 / CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "a1662c",
+    "fraction": 0.0818,
+    "x0_in": 0,
+    "x1_in": 0.1125
+   },
+   {
+    "index": 1,
+    "hex": "808080",
+    "fraction": 0.1068,
+    "x0_in": 0.1125,
+    "x1_in": 0.2593
+   },
+   {
+    "index": 2,
+    "hex": "4a275a",
+    "fraction": 0.0387,
+    "x0_in": 0.2593,
+    "x1_in": 0.3125
+   },
+   {
+    "index": 3,
+    "hex": "808080",
+    "fraction": 0.0363,
+    "x0_in": 0.3125,
+    "x1_in": 0.3624
+   },
+   {
+    "index": 4,
+    "hex": "492759",
+    "fraction": 0.0387,
+    "x0_in": 0.3624,
+    "x1_in": 0.4157
+   },
+   {
+    "index": 5,
+    "hex": "808080",
+    "fraction": 0.0341,
+    "x0_in": 0.4157,
+    "x1_in": 0.4625
+   },
+   {
+    "index": 6,
+    "hex": "a1652b",
+    "fraction": 0.3295,
+    "x0_in": 0.4625,
+    "x1_in": 0.9156
+   },
+   {
+    "index": 7,
+    "hex": "808080",
+    "fraction": 0.0341,
+    "x0_in": 0.9156,
+    "x1_in": 0.9625
+   },
+   {
+    "index": 8,
+    "hex": "492859",
+    "fraction": 0.0409,
+    "x0_in": 0.9625,
+    "x1_in": 1.0187
+   },
+   {
+    "index": 9,
+    "hex": "808080",
+    "fraction": 0.0341,
+    "x0_in": 1.0187,
+    "x1_in": 1.0656
+   },
+   {
+    "index": 10,
+    "hex": "49285a",
+    "fraction": 0.0409,
+    "x0_in": 1.0656,
+    "x1_in": 1.1219
+   },
+   {
+    "index": 11,
+    "hex": "808080",
+    "fraction": 0.0977,
+    "x0_in": 1.1219,
+    "x1_in": 1.2562
+   },
+   {
+    "index": 12,
+    "hex": "a1662b",
+    "fraction": 0.0864,
+    "x0_in": 1.2562,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "program": "ROTC/JROTC",
+ "service": "army-jrotc",
+ "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
+ "measurement": {
+  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "fidelity": "measured_from_vendor_image",
+  "source_kind": "vendor-photo-measured",
+  "source_images": [],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: N-4-3: AJROTC Volunteer Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-n43-ajrotc-volunteer-service-rotc-ribbon-unit",
+  "award_list_source": "https://en.wikipedia.org/wiki/Junior_Reserve_Officers%27_Training_Corps (ribbon tables)",
+  "residual": {
+   "vertical": 12.9,
+   "horizontal": 72.4,
+   "central_vertical": 6.2
+  },
+  "border_frame_detected": false,
+  "photographic_source": false,
+  "match_basis": "vendor product title names the award",
+  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+ },
+ "quality": {
+  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
+  "geometry_source": "vendor photo, mid-height columns",
+  "snap": {
+   "stripes_before": 13,
+   "stripes_after": 13,
+   "max_snap_delta": 13.2,
+   "unsnapped": 7,
+   "margin_runs_trimmed": [],
+   "shadow_bands_merged": 0
+  },
+  "min_stripe_in": "1/64"
+ },
+ "fit": {
+  "method": "n/a (vendor photo measured)",
+  "score": null,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

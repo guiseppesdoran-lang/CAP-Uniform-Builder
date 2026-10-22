@@ -1,0 +1,126 @@
+{
+ "asset_id": "mil-ribbon-rotc-air-force-jrotc-top-performer-award",
+ "name": "Air Force JROTC Top Performer Award",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 / CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "ffffff",
+    "fraction": 0.3545,
+    "x0_in": 0,
+    "x1_in": 0.4874
+   },
+   {
+    "index": 1,
+    "hex": "3b6b85",
+    "fraction": 0.0978,
+    "x0_in": 0.4874,
+    "x1_in": 0.6219
+   },
+   {
+    "index": 2,
+    "hex": "e6da14",
+    "fraction": 0.0977,
+    "x0_in": 0.6219,
+    "x1_in": 0.7562
+   },
+   {
+    "index": 3,
+    "hex": "3c6c86",
+    "fraction": 0.1,
+    "x0_in": 0.7562,
+    "x1_in": 0.8938
+   },
+   {
+    "index": 4,
+    "hex": "ffffff",
+    "fraction": 0.35,
+    "x0_in": 0.8938,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "program": "ROTC/JROTC",
+ "service": "air-force-jrotc",
+ "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
+ "measurement": {
+  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "fidelity": "measured_from_vendor_image",
+  "source_kind": "vendor-photo-measured",
+  "source_images": [],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Air Force AFJROTC Top Performer Award",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-rotc-afrotc-afjrotc-top-performer-award-ribbon-unit",
+  "award_list_source": "https://en.wikipedia.org/wiki/Junior_Reserve_Officers%27_Training_Corps (ribbon tables)",
+  "residual": {
+   "vertical": 10.1,
+   "horizontal": 85.4,
+   "central_vertical": 7.6
+  },
+  "border_frame_detected": false,
+  "photographic_source": false,
+  "match_basis": "vendor product title names the award",
+  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+ },
+ "quality": {
+  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
+  "geometry_source": "vendor photo, mid-height columns",
+  "snap": {
+   "stripes_before": 5,
+   "stripes_after": 5,
+   "max_snap_delta": 10.5,
+   "unsnapped": 2,
+   "margin_runs_trimmed": [],
+   "shadow_bands_merged": 0
+  },
+  "min_stripe_in": "1/64"
+ },
+ "fit": {
+  "method": "n/a (vendor photo measured)",
+  "score": null,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

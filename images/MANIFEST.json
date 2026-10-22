@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 973,
+ "count": 1083,
  "by_category": {
   "accessories": 30,
   "badges": 1,
@@ -41767,6 +41767,3636 @@
     "art_bottom_center": [
      62.5,
      154.7
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-activities",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-activities.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-air-force-association-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-air-force-association-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-air-force-nationals-competition-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-air-force-nationals-competition-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-all-service-national-competition-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-all-service-national-competition-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-bataan-death-march-memorial-hike",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-bataan-death-march-memorial-hike.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-cadet-humanitarian-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-cadet-humanitarian-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-color-guard",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-color-guard.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-distinguished-unit-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-distinguished-unit-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-dress-and-appearance",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-dress-and-appearance.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-drill-team",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-drill-team.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-gold-valor-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-gold-valor-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-good-conduct",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-good-conduct.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-leadership-school",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-leadership-school.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-longevity",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-longevity.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-military-order-of-the-purple-heart-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-military-order-of-the-purple-heart-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-military-order-of-world-wars-medal",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-military-order-of-world-wars-medal.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-national-sojourners-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-national-sojourners-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-orienteering",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-orienteering.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-outstanding-cadet-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-outstanding-cadet-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-outstanding-organization-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-outstanding-organization-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-patriotic-flag",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-patriotic-flag.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-recruiting",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-recruiting.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-reserve-officers-association-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-reserve-officers-association-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-sabre-team",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-sabre-team.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-silver-valor-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-silver-valor-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-sons-of-the-american-revolution-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-sons-of-the-american-revolution-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-superior-performance",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-superior-performance.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-top-performer-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-top-performer-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-air-force-jrotc-tuskegee-airmen-inc-cadet-award",
+   "path": "ribbons/military/mil-ribbon-rotc-air-force-jrotc-tuskegee-airmen-inc-cadet-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-academic-achievement",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-academic-achievement.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-adventure-training",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-adventure-training.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-athletics",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-athletics.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-color-guard",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-color-guard.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-commendation",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-commendation.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-dai-sai-instructor-leadership",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-dai-sai-instructor-leadership.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-distinguished-cadet",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-distinguished-cadet.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-drill-team",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-drill-team.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-excellent-staff-performance",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-excellent-staff-performance.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-leadership-education-training-service",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-leadership-education-training-service.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-1-10",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-1-10.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-1-7",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-1-7.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-1-8",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-1-8.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-1-9",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-1-9.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-2-4",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-2-4.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-2-5",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-2-5.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-3-12",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-3-12.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-3-13",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-3-13.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-3-14",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-3-14.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-3-15",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-3-15.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-4-3",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-4-3.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-4-4",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-4-4.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-n-4-5",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-n-4-5.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-orienteering",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-orienteering.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-parade",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-parade.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-perfect-attendance",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-perfect-attendance.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-personal-appearance",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-personal-appearance.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-physical-fitness",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-physical-fitness.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-proficiency",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-proficiency.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-recruiting",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-recruiting.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-rifle-team",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-rifle-team.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-service-learning",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-service-learning.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-student-government",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-student-government.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-army-jrotc-varsity-athletics",
+   "path": "ribbons/military/mil-ribbon-rotc-army-jrotc-varsity-athletics.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-american-veterans-award",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-american-veterans-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-arts-and-academics",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-arts-and-academics.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-athletic-participation",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-athletic-participation.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-best-drill-cadet",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-best-drill-cadet.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-best-drill-squad",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-best-drill-squad.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-color-guard",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-color-guard.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-daedalian-award",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-daedalian-award.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-daughters-of-the-american-revolution",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-daughters-of-the-american-revolution.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-longevity-and-fidelity",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-longevity-and-fidelity.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-marine-corps-league-youth-physical-fitness",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-marine-corps-league-youth-physical-fitness.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-officer-leadership",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-officer-leadership.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-orienteering",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-orienteering.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-outstanding-cadet",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-outstanding-cadet.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-physical-achievement",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-physical-achievement.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-reserve-officers-association",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-reserve-officers-association.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-rifle-team",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-rifle-team.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-student-leadership",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-student-leadership.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-superior-marksman",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-superior-marksman.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-marine-corps-jrotc-women-marines-association",
+   "path": "ribbons/military/mil-ribbon-rotc-marine-corps-jrotc-women-marines-association.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-academic-team-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-academic-team-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-aptitude-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-aptitude-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-c-e-r-t-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-c-e-r-t-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-cadet-achievement-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-cadet-achievement-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-color-guard-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-color-guard-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-community-service-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-community-service-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-distinguished-cadet-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-distinguished-cadet-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-distinguished-unit-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-distinguished-unit-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-drill-team-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-drill-team-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-exemplary-conduct-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-exemplary-conduct-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-exemplary-personal-appearance-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-exemplary-personal-appearance-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-honor-cadet-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-honor-cadet-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-inter-service-competition-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-inter-service-competition-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-leadership-training-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-leadership-training-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-marksmanship-team-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-marksmanship-team-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-meritorious-achievement-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-meritorious-achievement-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-ns-i-outstanding-cadet-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-ns-i-outstanding-cadet-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-ns-ii-outstanding-cadet-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-ns-ii-outstanding-cadet-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-ns-iii-outstanding-cadet-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-ns-iii-outstanding-cadet-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-ns-iv-outstanding-cadet-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-ns-iv-outstanding-cadet-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-orienteering-team-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-orienteering-team-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-participation-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-participation-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-physical-fitness-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-physical-fitness-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-recruiting-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-recruiting-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-s-t-e-m-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-s-t-e-m-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-sea-cruise-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-sea-cruise-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-unit-achievement-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-unit-achievement-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "mil-ribbon-rotc-navy-jrotc-unit-service-ribbon",
+   "path": "ribbons/military/mil-ribbon-rotc-navy-jrotc-unit-service-ribbon.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
     ]
    },
    "landmarks": []
