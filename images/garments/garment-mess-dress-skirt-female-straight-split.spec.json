@@ -2,29 +2,29 @@
  "asset_id": "garment-mess-dress-skirt-female-straight-split",
  "name": "Women's mess dress skirt, straight hanging with side split to the top of the knee (optional type)",
  "size_in": {
-  "w": 25.528,
+  "w": 26.2099,
   "h": 55.6
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2552.8,
+  2620.99,
   5560
  ],
  "size_source": "estimated",
  "size_basis": "Registered to garment-mess-dress-female (same x origin and centreline, same y origin; box extended downward to the hem). Waist 19.2 in below the top of the box, 36 in waist-to-hem (ankle length, 4.1.2.3: no higher than the ankle, no longer than the bottom of the heel); widths are a plain pattern estimate, no figure shows the lower skirt.",
  "anchors": {
   "top_center": [
-   1276.3999999999999,
+   1310.4950000000001,
    0
   ],
   "bottom_center": [
-   1276.3999999999999,
+   1310.4950000000001,
    5560
   ],
   "center": [
-   1276.3999999999999,
+   1310.4950000000001,
    2780
   ],
   "left_edge": [
@@ -32,47 +32,47 @@
    2780
   ],
   "right_edge": [
-   2552.8,
+   2620.99,
    2780
   ],
   "waist_center": [
-   1276.3999999999999,
+   1310.4950000000001,
    1920
   ],
   "hip_center": [
-   1276.3999999999999,
+   1310.4950000000001,
    2720
   ],
   "hem_center": [
-   1276.3999999999999,
+   1310.4950000000001,
    5520
   ],
   "hem_right": [
-   426.4,
+   460.5,
    5520
   ],
   "hem_left": [
-   2126.4,
+   2160.5,
    5520
   ],
   "split_top_right": [
-   401.33,
+   435.43,
    3920
   ],
   "split_top_left": [
-   2151.47,
+   2185.56,
    3920
   ]
  },
  "landmarks": {
   "side_split_right": {
-   "x": 401.33,
+   "x": 435.43,
    "y": 3920,
    "w": 25.07,
    "h": 1600
   },
   "side_split_left": {
-   "x": 2056.4,
+   "x": 2090.49,
    "y": 3920,
    "w": 25.07,
    "h": 1600

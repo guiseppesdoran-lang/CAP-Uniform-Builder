@@ -335,32 +335,32 @@
   ],
   "tie_tab": [
    [
-    1113.8,
-    669.6
+    1260.5,
+    320
    ],
    [
-    1260.7,
-    281
+    1360.5,
+    320
    ],
    [
-    1417.2,
-    281
+    1445.5,
+    480
    ],
    [
-    1564.1,
-    660.2
+    1375.5,
+    480
    ],
    [
-    1450.3,
-    707.6
+    1310.5,
+    415
    ],
    [
-    1336.6,
-    442.1
+    1245.5,
+    480
    ],
    [
-    1227.6,
-    707.6
+    1175.5,
+    480
    ]
   ],
   "button_right_1": {
@@ -406,6 +406,44 @@
   "max_width_in": 25.71,
   "buttons_per_side": 3,
   "button_dia_in": 0.8,
+  "tie_tab": {
+   "size_source": "estimated",
+   "w_in": 2.7,
+   "h_in": 1.6,
+   "leg_width_in": 0.7,
+   "top_width_in": 1,
+   "apex_below_top_in": 0.95,
+   "top_y_in": 2.95,
+   "basis": "the house women's tie tab (accessories/tie-tab-inverted-v: 2.7 x 1.6 in, 0.7 in legs), centred, its top edge under the blouse collar leaves; the regulation (CAPR 39-1 4.1.2.2.1) gives the colour, the inverted V and the self-fastening tails but no dimension; the earlier traced tab was 4.27 x 4.5 in and off-centre",
+   "draw_order": "tab first, the blouse collar leaves over it (as the blazer and the semi-formal, 4d6678dd)"
+  },
+  "front_hems": {
+   "size_source": "traced",
+   "panels_note": "the traced front hems of the two jacket fronts in artwork-box inches (x from the box left, y down from the box top); the figure below them, and between the fronts under the cummerbund, is the skirt (garment-mess-dress-skirt-female-*), registered to this sheet",
+   "panels": [
+    {
+     "side": "image_left",
+     "x_in": [
+      6.303,
+      11.754
+     ],
+     "y_in": 26.604
+    },
+    {
+     "side": "image_right",
+     "x_in": [
+      14.456,
+      20.917
+     ],
+     "y_in": 26.841
+    }
+   ],
+   "gap_between_fronts_in": 2.7,
+   "gap_citation": "CAPR 39-1 4.1.2.1: the front opening leaves a gap of 2 to 3 in at the bottom",
+   "cummerbund_bottom_y_in": 22.575,
+   "cummerbund_citation": "CAPR 39-1 4.1.2.2.4: the cummerbund is worn halfway between the blouse and the skirt, so the skirt starts at its lower edge",
+   "back_note": "the back extends only 2 1/2 to 3 in below the natural waist (4.1.2.1), so it is hidden behind the fronts and not drawn"
+  },
   "sleeve_widening": {
    "size_source": "estimated",
    "outward_in": 0.35,
@@ -445,7 +483,8 @@
  "documented": [
   "women's mess dress jacket and skirt with satin shawl collar (CAPR 39-1 4.1.2)",
   "CAP seal worn over the middle button on the right side of the jacket (as on the men's, 4.1.1.1.2.3)",
-  "sleeve braid 1/2 in (1 1/2 in for general officers), 3 in from the sleeve end: separate overlay asset"
+  "sleeve braid 1/2 in (1 1/2 in for general officers), 3 in from the sleeve end: separate overlay asset",
+  "the jacket ends at the traced front hems; the front opening leaves a gap of 2 to 3 in at the bottom and the back extends only 2 1/2 to 3 in below the natural waist, so below the hems and between the fronts under the cummerbund the figure is the skirt, which starts at the cummerbund's lower edge (4.1.2.1, 4.1.2.2.4, 4.1.2.3)"
  ],
  "assumed": [
   "px-to-inch scale",
@@ -454,6 +493,7 @@
   "shawl collar, shirt, cummerbund and cut-away geometry read off the base image",
   "satin sheen colours sampled from the base image",
   "sleeve braid colour",
+  "tie tab size (the regulation gives none): the house 2.7 x 1.6 in tab, tails not drawn",
   "sleeve width: the traced hanging sleeve is widened outward by up to 0.35 in between the shoulder end and the elbow (one warp of the part between the armhole seam and the outer edge) so the true-size white chevron lies on it; the regulation gives no sleeve width (ESTIMATE)"
  ],
  "fit": {
