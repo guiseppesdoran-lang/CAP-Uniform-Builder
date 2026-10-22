@@ -106,3 +106,47 @@ test('a badge clear of the collar is not clipped', async () => {
   const scene = await compose(build('blues_b', 'male', 'senior', 'Capt', [PILOT], { ribbons: [] }));
   for(const l of scene.layers.filter(x => x.role === 'badge')) assert.ok(!l.clipOut, `${l.key} is clear of the collar`);
 });
+
+// ---- 3. The shoulder view from above does not hide the cap device (R6, R7) -----------------------------------
+
+function corners(l){
+  const o = l.origin || { x: l.x, y: l.y };
+  return [[l.x, l.y], [l.x + l.w, l.y], [l.x + l.w, l.y + l.h], [l.x, l.y + l.h]].map(([x, y]) => core.rotatePoint({ x, y }, o, l.rotate || 0));
+}
+function overlap(a, b){
+  for(const poly of [a, b]) for(let i = 0; i < poly.length; i++){
+    const p = poly[i], q = poly[(i + 1) % poly.length], nx = p.y - q.y, ny = q.x - p.x;
+    const pr = pts => { const v = pts.map(r => r.x * nx + r.y * ny); return [Math.min(...v), Math.max(...v)]; };
+    const A = pr(a), B = pr(b);
+    if(A[1] <= B[0] || B[1] <= A[0]) return false;
+  }
+  return true;
+}
+test('Class B officers and cadet officers: no epaulet view from above overlaps the cap device box, and the view stays on its shoulder (R6, R7, 6.2.2.2.1)', async () => {
+  for(const sex of ['male', 'female']){
+    for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'Col'], ['senior', 'Maj Gen'], ['cadet', 'C/Maj'], ['cadet', 'C/Col'], ['cadet', 'C/2d Lt']]){
+      const scene = await compose(build('blues_b', sex, membership, rank, []));
+      const dev = scene.layers.find(l => l.role === 'hat-device');
+      assert.ok(dev, `${sex} ${rank}: the cap device is drawn`);
+      for(const v of scene.layers.filter(l => l.role === 'epaulet-top')){
+        // The cadet colonel's three diamonds are a 2.25 in box the view cannot clear on the shoulder; the ink clears it.
+        if(rank !== 'C/Col') assert.ok(!overlap(corners(v), corners(dev)), `${sex} ${rank}: ${v.key} clears the cap device`);
+        // on the shoulder: still within 0.7 in of where it would sit with no cap (same view on the other side, mirrored)
+        const other = scene.layers.find(l => l.role === 'epaulet-top' && l !== v);
+        const mirrored = scene.layers[0] && (v.x + v.w / 2 + other.x + other.w / 2) / 2;
+        assert.ok(Math.abs(Math.abs(v.origin.x - mirrored) - Math.abs(other.origin.x - mirrored)) < 0.7, `${sex} ${rank}: ${v.key} stays within 0.7 in of the mirror of the other view`);
+      }
+    }
+  }
+});
+
+test('the slid view carries its grade with it (the top-view grade keeps its place on the sleeve)', async () => {
+  const scene = await compose(build('blues_b', 'male', 'senior', 'Col', []));
+  const v = scene.layers.find(l => l.key === 'epaulet-top:right'), gr = scene.layers.find(l => l.key === 'grade:top-right');
+  const v2 = scene.layers.find(l => l.key === 'epaulet-top:left'), g2 = scene.layers.find(l => l.key === 'grade:top-left');
+  assert.ok(v && v2, 'both views');
+  if(gr && g2){
+    const d1 = Math.hypot(gr.origin.x - v.origin.x, gr.origin.y - v.origin.y), d2 = Math.hypot(g2.origin.x - v2.origin.x, g2.origin.y - v2.origin.y);
+    assert.ok(Math.abs(d1 - d2) < 0.02, `grade-to-view distance equal on both sides (${d1.toFixed(3)} vs ${d2.toFixed(3)})`);
+  }
+});

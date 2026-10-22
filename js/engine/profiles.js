@@ -436,9 +436,58 @@
       const slot = piecePoint(layer, hs, 'device_slot_center');
       const ds = await ctx.spec(device);
       const anchorName = core.anchor(ds, 'mount_center') ? 'mount_center' : 'center';
-      await ctx.place(device, { pieceAnchor: anchorName, at: slot, z: Z.hatDevice, role: 'hat-device', key: 'hat-device:' + device });
+      const dl = await ctx.place(device, { pieceAnchor: anchorName, at: slot, z: Z.hatDevice, role: 'hat-device', key: 'hat-device:' + device });
+      if(dl) clearViewsOfDevice(ctx, dl);
     }
     return layer;
+  }
+
+  // The four corners of a placed layer's box, turned about its origin (scene inches).
+  function layerCorners(l){
+    const o = l.origin || { x: l.x, y: l.y };
+    return [[l.x, l.y], [l.x + l.w, l.y], [l.x + l.w, l.y + l.h], [l.x, l.y + l.h]].map(([x, y]) => core.rotatePoint({ x, y }, o, l.rotate || 0));
+  }
+  // Separating-axis test for two convex polygons.
+  function polygonsOverlap(a, b){
+    for(const poly of [a, b]){
+      for(let i = 0; i < poly.length; i++){
+        const p = poly[i], q = poly[(i + 1) % poly.length];
+        const nx = p.y - q.y, ny = q.x - p.x;
+        const proj = pts => { const v = pts.map(r => r.x * nx + r.y * ny); return [Math.min(...v), Math.max(...v)]; };
+        const A = proj(a), B = proj(b);
+        if(A[1] <= B[0] || B[1] <= A[0]) return false;
+      }
+    }
+    return true;
+  }
+  // The shoulder views from above (epaulet sleeves, shoulder boards) lie over the cap's lower corners, and
+  // the cap device is mounted there on the flight cap (6.2.2.2.1): a view that would hide part of the device
+  // (R6, R7) slides outward along its strap, away from the neck, until it clears the device by CLEAR_DEVICE in (only a view that overlaps the device moves).
+  // It stays on the shoulder: the slide is capped at MAX_VIEW_SLIDE (the grade slides with it); a device box the view cannot clear within that is left alone.
+  const CLEAR_DEVICE = 0.05, MAX_VIEW_SLIDE = 0.8;
+  function clearViewsOfDevice(ctx, dev){
+    const rect = (g) => [{ x: dev.x - g, y: dev.y - g }, { x: dev.x + dev.w + g, y: dev.y - g }, { x: dev.x + dev.w + g, y: dev.y + dev.h + g }, { x: dev.x - g, y: dev.y + dev.h + g }];
+    const exact = rect(0), box = rect(CLEAR_DEVICE);
+    for(const l of ctx.layers){
+      if(l.role !== 'epaulet-top' || l.type !== 'asset' || !polygonsOverlap(layerCorners(l), exact)) continue;
+      // Outward along the strap: the box's long axis turned by the layer's rotation, away from the centre line.
+      const r = (l.rotate || 0) * Math.PI / 180;
+      let u = { x: -Math.sin(r), y: Math.cos(r) };
+      const mid = ctx.base ? ctx.base.w / 2 : 0;
+      if((l.x + l.w / 2 - mid) * u.x < 0) u = { x: -u.x, y: -u.y };
+      let t = 0;
+      const moved = () => layerCorners(Object.assign({}, l, { x: l.x + u.x * t, y: l.y + u.y * t, origin: { x: l.origin.x + u.x * t, y: l.origin.y + u.y * t } }));
+      while(t < MAX_VIEW_SLIDE && polygonsOverlap(moved(), box)) t += 0.01;
+      // A box this wide (the cadet colonel's three diamonds) only overlaps the view in its padding: the view stays.
+      if(polygonsOverlap(moved(), box)) continue;
+      const side = (l.key || '').split(':')[1];
+      for(const m of ctx.layers){
+        if(m !== l && !(m.key === 'grade:top-' + side)) continue;
+        m.x += u.x * t; m.y += u.y * t;
+        if(m.origin) m.origin = { x: m.origin.x + u.x * t, y: m.origin.y + u.y * t };
+      }
+      l.slid = Math.round(t * 100) / 100;
+    }
   }
 
   // ---- Flight Duty Uniforms (chapter 8) and flight jackets ---------------------------------------
@@ -638,5 +687,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarOfficerRow, collarPolygons, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarOfficerRow, collarPolygons, clearViewsOfDevice, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });
