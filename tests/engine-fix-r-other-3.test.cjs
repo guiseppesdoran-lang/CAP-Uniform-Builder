@@ -268,7 +268,7 @@ const HARNESS = require('../scripts/render-builds.cjs');
 const { execFileSync } = require('node:child_process');
 const critique = JSON.parse(execFileSync(process.execPath, [path.join(root, 'scripts', 'critique-builds.cjs')], { encoding: 'utf8' }));
 const composeNamed = async (list, name) => compose(HARNESS.makeBuild(list.find(x => x.name === name).build));
-const NOT_DRAWN = /not drawn|only a crop|no full patch artwork/i;
+const { NOT_DRAWN } = HARNESS; // the harness's own regex, not a copy
 
 test('critique set: the utility builds draw the unit and HHQ patches (patchRefs), no "not drawn" note, ES badge on the OCP (D22, 7.1.1.4.1.2, 7.1.1.4.2)', async () => {
   for(const name of ['ocp-male-cadet-CSSgt-patches', 'ocp-male-senior-LtCol-patches-overlay', 'abu-male-senior-SMSgt', 'corporate_field-female-senior-Capt']){
@@ -324,4 +324,13 @@ test('the harness flags engine notes that say a piece is not drawn, as it flags 
   assert.ok(NOT_DRAWN.test('TN-185_ocp_patch is only a crop of the old sleeve drawing, so it is not drawn; it needs full patch artwork'));
   const src = fs.readFileSync(path.join(root, 'scripts', 'render-builds.cjs'), 'utf8');
   assert.match(src, /withNotDrawn/);
+});
+
+test('the harness flags the engine\'s missing-art note for a badge with no field artwork (OCP communications technician badge, G4)', async () => {
+  const scene = await compose(HARNESS.makeBuild({ uniform: 'ocp', gender: 'male', membership: 'senior', rank: 'Capt', badgeIds: ['communications_technician_badge'], ribbonSel: [] }));
+  const missing = scene.notes.filter(n => /has no \w+ artwork/.test(n));
+  assert.ok(missing.length, 'the engine says the badge is not shown: ' + JSON.stringify(scene.notes));
+  assert.deepEqual(missing.filter(n => !NOT_DRAWN.test(n)), [], 'and the harness counts it as not drawn');
+  assert.ok(!NOT_DRAWN.test('At most two aviation and occupational badges are worn over the left pocket; the rest are not shown'), 'a rule trim is not missing art');
+  assert.ok(!NOT_DRAWN.test('Only one service badge is worn; the others are not shown'), 'a rule trim is not missing art');
 });

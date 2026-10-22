@@ -26,8 +26,11 @@ req('js/engine/profiles-dress.js');
 const RULES = req('data/uniform-rules.js');
 const RA = req('data/ribbon-awards.js');
 const BADGES = req('data/badge-catalog.js');
-// An engine note that says a requested piece was left out of the picture (a crop of the old sleeve drawing, no full patch artwork).
-const NOT_DRAWN = /not drawn|only a crop|no full patch artwork/i;
+// An engine note that says a requested piece was left out of the picture because the art is missing: a crop of the
+// old sleeve drawing, no full patch artwork, '<Badge> has no field artwork, so it is not shown on this uniform'
+// (profiles.js), 'No ribbon artwork for ...'. Notes that trim a selection by rule ('At most two badges ... the rest
+// are not shown') are not missing art and do not match.
+const NOT_DRAWN = /not drawn|only a crop|no full patch artwork|\bhas no [\w-]+ artwork\b|^No ribbon artwork for/i;
 
 const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'images/MANIFEST.json'), 'utf8'));
@@ -500,4 +503,4 @@ async function main(){
 }
 
 if(require.main === module) main().catch(e => { console.error(e.stack || e); process.exit(1); });
-module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS, makeBuild, patchesFrom };
+module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS, makeBuild, patchesFrom, NOT_DRAWN };
