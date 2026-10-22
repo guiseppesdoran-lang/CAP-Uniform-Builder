@@ -1336,15 +1336,20 @@
     const ms = ctx.rect('medal_slot');
     const crestTop = crestLayer ? crestLayer.y : (ctx.point('crest_top_center') || { y: ms.y + ms.h + 0.5 }).y;
     const medalX = ms.x + ms.w / 2;
-    // The rack sits 1/2 in above the crest (4.2.1.4, 4.2.2.4) and the medal nearest the lapel is fully exposed
-    // (11.2.8): the lapel does not cover a miniature medal (11.1.8 lets only the service coat's lapel cover ribbons),
-    // so where the drawn lapel reaches the rack it slides toward the arm until its lapel-side column clears the
-    // lapel polygon (the lowest row keeps its line 1/2 in over the crest).
-    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY: crestTop - 0.5 }, { style: b.opt.miniStyle, avoid: [blazerLapel(ctx, female)], avoidDir: 1 });
+    // The rack is centred on the crest and its lowest row ends 1/2 in above it (4.2.1.4, 4.2.2.4 with ICL 25-02:
+    // 'centered above the pocket so that the bottom portion of the medals are 1/2 inch above the CAP Crest'); the
+    // whole rack is never moved off the pocket (FIX-R-OTHER-r2 #4; the r1 slide toward the arm put the women's
+    // rack 1.2 to 1.8 in off the crest). Miniatures are pinned on top of the coat: the lapel group is drawn
+    // under every miniature, so where the drawn lapel reaches the rack the medals lie over it and the medal
+    // nearest the lapel is fully exposed (11.2.8).
+    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY: crestTop - 0.5 }, { style: b.opt.miniStyle });
     if(box) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 });
     if(chaplain){
+      // The chaplain insignia goes 1/2 in above the top row, on the crest line (4.2.1.5, 4.2.2.5): the sheet's
+      // chaplain_badge_semiformal anchor states the x.
+      const cb = ctx.point('chaplain_badge_semiformal');
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
-      await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: box ? box.x + box.w / 2 : ms.x + ms.w / 2, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
+      await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: cb ? cb.x : medalX, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
     }
     // The lapel (and the collar, over the bow tie) is drawn again above the garment layers but under every
     // miniature medal, device and badge, so nothing worn on the chest is under it.
