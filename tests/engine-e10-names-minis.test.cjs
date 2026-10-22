@@ -178,8 +178,11 @@ for(const sex of ['male', 'female']){
     // 1/2 in above the crest (the crest centre and its top come from the garment sheet).
     const spec = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
     const crestTop = core.anchor(spec, 'crest_top_center').y;
-    const bottom = ys[0] + DRAPE + bodyH; // the lowest row's box: drape plus the tallest medal body
-    near(bottom, crestTop - 0.5, 0.02, 'lowest medals end 1/2 in above the crest');
+    // The lowest row's medal bodies as drawn (4.2.2.4, ICL 25-02): not the tallest body of the whole set,
+    // which may hang in an upper row and would leave a gap under the shorter ones.
+    const lowKeys = new Set(rows.get(ys[0].toFixed(3)).map(l => l.key + ':medal'));
+    const bottom = Math.max(...scene.layers.filter(l => l.role === 'mini-medal' && lowKeys.has(l.key)).map(l => l.y + l.h));
+    near(bottom, crestTop - 0.5, 0.01, 'lowest medals end 1/2 in above the crest');
   });
 }
 

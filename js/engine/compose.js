@@ -317,17 +317,33 @@
     let maxBodyH = 0;
     for(const m of medals){ if(m.medal && ctx.has(m.medal)){ const s = await ctx.spec(m.medal); maxBodyH = Math.max(maxBodyH, s.h); } }
     const totalH = MINI_DRAPE.h + (maxBodyH || 0.9);
-    // Centred on a point (`slot.centerY`, the mess dress) or resting on a line (`slot.bottomY`):
-    // each row above the first adds its height less the half drape it covers.
-    let bottomY = slot.bottomY;
-    if(slot.centerY != null){
-      const n = awards.miniMedalRows(medals, o.style || 'mounting').length;
-      bottomY = slot.centerY + (totalH + (n - 1) * (totalH - MINI_DRAPE.h * 0.5)) / 2;
+    // Row spacing uses the tallest body in the set; the group is then placed from the medals actually
+    // drawn. How far each medal's body hangs below its drape comes from its own spec: the body's
+    // height less the ribbon_attach anchor's depth.
+    const hang = new Map();
+    for(const m of medals){
+      let below = 0;
+      if(!(m.ribbonAsset && ctx.has(m.ribbonAsset)) && m.raster) below = totalH - MINI_DRAPE.h;
+      else if(m.medal && ctx.has(m.medal)){
+        const s = await ctx.spec(m.medal);
+        const attach = core.anchor(s, 'ribbon_attach') || { x: s.w / 2, y: 0 };
+        below = s.h - attach.y;
+      }
+      hang.set(m, below);
     }
     const out = awards.layoutMiniMedals(medals, {
       style: o.style, medalW: MINI_DRAPE.w, medalH: totalH, drapeH: MINI_DRAPE.h,
-      slotW: slot.w, centerX: slot.centerX, bottomY
+      slotW: slot.w, centerX: slot.centerX, bottomY: 0
     });
+    // The lowest row's medal bodies end exactly on the line the slot names (1/2 in above the service
+    // badge or crest, CAPR 39-1 4.2.1.4 and 4.2.2.4 with ICL 25-02), or the group is centred on the
+    // slot's point (the mess dress, 4.1.1.1.2.2): measured from the lowest drawn body, not the
+    // tallest body of the whole set, so a taller medal in an upper row cannot leave a gap.
+    const lowRow = out.rows.length - 1;
+    const drawnBottom = Math.max(...out.placements.filter(p => p.row === lowRow).map(p => p.y + MINI_DRAPE.h + (hang.get(p.item) || 0)));
+    const drawnTop = Math.min(...out.placements.map(p => p.y));
+    const shift = slot.centerY != null ? slot.centerY - (drawnTop + drawnBottom) / 2 : slot.bottomY - drawnBottom;
+    for(const p of out.placements) p.y += shift;
     const sizes = {};
     for(const d of [...new Set(medals.flatMap(m => m.devices || []))]){ if(ctx.has(d)){ const s = await ctx.spec(d); sizes[d] = { w: s.w, h: s.h }; } }
     for(const p of out.placements){
@@ -363,7 +379,7 @@
         ctx.layers.push({ type: 'asset', id: d, x: cx - sz.w / 2, y: cy - sz.h / 2, w: sz.w, h: sz.h, rotate: 90, origin: { x: cx, y: cy }, z: zBase + 0.0007, role: 'device', key: `${m.key}:device:${i}` });
       });
     }
-    return core.unionBounds(out.placements.map(p => ({ x: p.x, y: p.y, w: MINI_DRAPE.w, h: totalH })));
+    return core.unionBounds(out.placements.map(p => ({ x: p.x, y: p.y, w: MINI_DRAPE.w, h: p.row === lowRow ? drawnBottom + shift - p.y : MINI_DRAPE.h + (hang.get(p.item) || 0) })));
   }
 
   // ---- The scene ---------------------------------------------------------------------------------

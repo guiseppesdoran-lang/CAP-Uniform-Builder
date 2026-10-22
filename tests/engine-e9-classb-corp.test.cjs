@@ -182,6 +182,46 @@ for(const sex of ['male', 'female']){
   }
 }
 
+// The seven-award proof set: Meritorious Service (the tallest body) lands in the upper row, so the lowest
+// row's bodies are shorter than the set's tallest. The lowest drawn bodies must still end 1/2 in above the
+// crest or badge, and the mess dress group must be centred on its point (4.2.1.4, 4.2.2.4 ICL 25-02; 4.1.1.1.2.2).
+const MIXED = ['meritorious_service_award', 'commander_commendation_award', 'cap_achievment_award', 'cap_leadership_ribbon', 'cap_membership_ribbon', 'red_service_ribbon', 'search_find_ribbon']
+  .flatMap(id => ribbonOf(id)).map(r => ({ key: r.key.replace('ribbon:', 'mini:'), title: r.title, ribbonAsset: r.asset, medal: 'medal-' + r.asset.slice(7) + '-miniature', devices: r.devices }));
+
+async function lowestRow(scene){
+  const drapes = scene.layers.filter(l => l.role === 'mini-drape');
+  const lowY = Math.max(...drapes.map(l => l.y));
+  const keys = new Set(drapes.filter(l => Math.abs(l.y - lowY) < 1e-6).map(l => l.key + ':medal'));
+  const row = scene.layers.filter(l => l.role === 'mini-medal' && keys.has(l.key));
+  const upper = scene.layers.filter(l => l.role === 'mini-medal' && !keys.has(l.key));
+  return { row, upper, bottom: Math.max(...row.map(l => l.y + l.h)) };
+}
+
+for(const sex of ['male', 'female']){
+  for(const badges of [[], ['command_council_badge']]){
+    test(`corporate semi-formal ${sex}, mixed medal heights${badges.length ? ' with a service badge' : ''}: the lowest drawn medal bodies end 1/2 in above the ${badges.length ? 'badge' : 'crest'} (4.2.1.4, 4.2.2.4, ICL 25-02)`, async () => {
+      const spec = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
+      const sheetTop = core.anchor(spec, 'crest_top_center').y;
+      const scene = await P.composeUniform(build('semi_formal', sex, 'senior', 'Capt', badges, { medals: MIXED }), store);
+      const crestTop = badges.length ? byKey(scene, 'badge:command_council_badge').y : sheetTop;
+      const { row, upper, bottom } = await lowestRow(scene);
+      assert.ok(row.length && upper.length, 'two rows of medals');
+      assert.ok(Math.max(...upper.map(l => l.h)) > Math.max(...row.map(l => l.h)) + 0.05, 'the tallest body is in an upper row');
+      near(bottom, crestTop - 0.5, 0.01, 'lowest drawn medal bottom 1/2 in above the crest or badge');
+    });
+  }
+}
+
+test('mess dress, mixed medal heights: the miniature group is centred on the sheet\'s miniature_medals_center (4.1.1.1.2.2)', async () => {
+  const spec = await store.load('garment-mess-dress-male');
+  const cy = core.anchor(spec, 'miniature_medals_center').y;
+  const scene = await P.composeUniform(build('mess_dress', 'male', 'senior', 'Capt', [], { medals: MIXED }), store);
+  const { upper, bottom } = await lowestRow(scene);
+  assert.ok(upper.length, 'two rows');
+  const top = Math.min(...scene.layers.filter(l => l.role === 'mini-drape').map(l => l.y));
+  near((top + bottom) / 2, cy, 0.01, 'group centre on the sheet\'s point');
+});
+
 // ---- women's aviator shirt: command pin and the third badge --------------------------------------
 
 async function femaleAviator(badges, extra){
