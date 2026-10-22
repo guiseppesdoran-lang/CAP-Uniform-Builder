@@ -309,12 +309,19 @@
   }
 
   function edgeFrame(ctx, side){
-    const e = ctx.base && EDGE[ctx.base.id];
+    // The sheet states the frame itself (dimensions.edge_view: scale, tilt, the pivot of each pocket in sheet inches and the silhouette near it); the table below is only for a sheet that does not.
+    const ev = ctx.base && ctx.base.raw && ctx.base.raw.dimensions && ctx.base.raw.dimensions.edge_view;
     const velcro = ctx.rect('sleeve_flap_velcro_' + side), top = ctx.point('top_center');
-    if(!e || !velcro || !top) return null;
     const right = side === 'right';
+    let e = ctx.base && EDGE[ctx.base.id], pivot;
+    if(ev && velcro){
+      const pv = right ? ev.pivot_right_in : ev.pivot_left_in;
+      pivot = { x: pv[0], y: pv[1] };
+      e = { sx: ev.scale, tilt: ev.tilt_deg, dy: pv[1] - core.rectCenter(velcro).y, visible: right ? ev.visible_right : ev.visible_left };
+    }
+    if(!e || !velcro || !top) return null;
     const c = core.rectCenter(velcro);
-    const pivot = { x: top.x + (right ? -e.pivotDX : e.pivotDX), y: c.y + e.dy };
+    if(!pivot) pivot = { x: top.x + (right ? -e.pivotDX : e.pivotDX), y: c.y + e.dy };
     const tilt = right ? e.tilt : -e.tilt;
     const dir = right ? 1 : -1;
     // Where the sheet's coat silhouette lets the pocket show, in the pocket's own (unturned) frame.

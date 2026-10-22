@@ -403,3 +403,18 @@ test('ABU and CFU sleeve patches hang 1/2 in below the shoulder seam and the ove
     }
   }
 });
+
+// review FIX-ART-r1 (10): the two shoulder-pocket edge views of the OCP coat mirror each other and lie on the coat, so the AUX patch is as whole as the flag
+test('OCP shoulder pockets seen edge-on: the sheet states one mirrored frame for both, the AUX and the flag are not cut by the coat silhouette (7.1.1.1.2, 7.1.1.4)', async () => {
+  const spec = await ST.load('garment-ocp-coat-abu-cut');
+  const ev = spec.raw.dimensions.edge_view, top = core.anchor(spec, 'top_center');
+  assert.ok(ev && ev.scale === 0.5 && ev.tilt_deg > 10, 'edge_view stated');
+  assert.ok(Math.abs((top.x - ev.pivot_right_in[0]) - (ev.pivot_left_in[0] - top.x)) < 0.01, 'pivots mirror about the centre line');
+  assert.ok(Math.abs(ev.pivot_right_in[1] - ev.pivot_left_in[1]) < 0.01, 'same height');
+  for(let i = 0; i < ev.visible_right.length; i++) assert.ok(Math.abs(ev.visible_right[i][1] - ev.visible_left[i][1]) < 0.06, `silhouette in the pocket frame, row ${i}`);
+  // the drawn pocket (4.5 in wide face, scale 0.5 for the patches) is inside the silhouette: its outer face u = -2.25 * 0.5 lies at or inside the 0.04 in margin line where the pocket is at its widest
+  const vis = ev.visible_right, mid = vis.find(p => p[0] === 0);
+  assert.ok(mid[1] <= -2.25 * 0.5 + 0.02 && mid[1] >= -2.25 * 0.5 - 0.05, `silhouette at the pocket centre: ${mid[1]}`);
+  // the patches (3.25 in x 0.5) at their rows, every corner inside the silhouette line
+  for(const p of vis.filter(q => q[0] >= -3 && q[0] <= -1)) assert.ok(p[1] <= -1.625 / 2 + 0.01, `row ${p[0]}: the silhouette is outboard of the 1.625 in AUX/flag patch (u ${p[1]})`);
+});

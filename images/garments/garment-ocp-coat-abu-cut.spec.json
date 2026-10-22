@@ -642,6 +642,135 @@
     3.25,
     1.8125
    ]
+  },
+  "edge_view": {
+   "note": "The shoulder pocket seen from the front (edge-on): the flat sleeve view narrowed to scale about the pocket centre line, turned by tilt_deg about the pivot (right: clockwise, left: counter-clockwise), its outer face on the sleeve edge. pivot_*_in are in sheet inches; visible_*: the silhouette near the pocket in the pocket frame as [v down from the pivot, u toward the centre line], 0.04 in inside it. Read by the engine instead of its own constants.",
+   "scale": 0.5,
+   "tilt_deg": 12.375,
+   "pivot_right_in": [
+    9.264,
+    18.75
+   ],
+   "pivot_left_in": [
+    33.033,
+    18.75
+   ],
+   "visible_right": [
+    [
+     -8,
+     2.667
+    ],
+    [
+     -7,
+     1.269
+    ],
+    [
+     -6,
+     -0.042
+    ],
+    [
+     -5,
+     -0.384
+    ],
+    [
+     -4,
+     -0.773
+    ],
+    [
+     -3,
+     -0.968
+    ],
+    [
+     -2,
+     -1.06
+    ],
+    [
+     -1,
+     -1.096
+    ],
+    [
+     0,
+     -1.118
+    ],
+    [
+     1,
+     -1.142
+    ],
+    [
+     2,
+     -1.139
+    ],
+    [
+     3,
+     -1.021
+    ],
+    [
+     4,
+     -0.897
+    ],
+    [
+     5,
+     -0.776
+    ]
+   ],
+   "visible_left": [
+    [
+     -8,
+     2.688
+    ],
+    [
+     -7,
+     1.305
+    ],
+    [
+     -6,
+     -0.073
+    ],
+    [
+     -5,
+     -0.4
+    ],
+    [
+     -4,
+     -0.774
+    ],
+    [
+     -3,
+     -0.966
+    ],
+    [
+     -2,
+     -1.057
+    ],
+    [
+     -1,
+     -1.118
+    ],
+    [
+     0,
+     -1.148
+    ],
+    [
+     1,
+     -1.181
+    ],
+    [
+     2,
+     -1.145
+    ],
+    [
+     3,
+     -1.047
+    ],
+    [
+     4,
+     -0.887
+    ],
+    [
+     5,
+     -0.732
+    ]
+   ]
   }
  },
  "documented": [
