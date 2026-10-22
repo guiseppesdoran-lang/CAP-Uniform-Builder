@@ -1,8 +1,12 @@
 'use strict';
-// E5-CHEVRONS: the cadet NCO chevrons on the collars lie parallel to the front of the collar, by one rule
-// for every garment.
-//   CAPR 39-1 4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5, 5.1.1.1.1.4, 5.2.1.1.1 and Figure A5-5:
-//   cadet chevrons "1 inch from and parallel to the front of the collar and centered".
+// E5-CHEVRONS: sleeve chevrons are drawn at the regulation size with the art's own proportions, centred
+// halfway between the shoulder seam and the elbow where the sheet states those points; the cadet NCO
+// chevrons on the collars lie parallel to the front of the collar, by one rule for every garment.
+//   CAPR 39-1 4.1.5.2.1.2 (men's Class A: 4 in), 4.1.9.3.3 (women's Class A: 3 1/2 or 4), 4.1.11.1.1.1.3
+//   (men's Class B: 3 1/2 in), 4.1.12.2.3.3 (women's Class B: 3 1/2 or 4), 4.1.1.1.1.4 / 4.1.2.1.1.4 (mess
+//   dress: 4 in white / 3 1/2 or 4), 4.2.5.1.1.3 and 4.2.6.2.3 (aviator shirt: 3 1/2 in), 5.1.1.1.1.2 and
+//   5.2.1.1.1.3 (ABU, CFU: 3 1/2 or 4); 4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5, 5.1.1.1.1.4,
+//   5.2.1.1.1 and Figure A5-5 (cadet chevrons "1 inch from and parallel to the front of the collar").
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -26,6 +30,77 @@ function build(uniform, gender, membership, rank, opt){
   };
 }
 const gradeLayer = (scene, side) => scene.layers.find(l => l.role === 'grade' && l.key === side);
+
+// ---- sleeve chevrons: size, proportion, place ----------------------------------------------------------
+
+// [uniform, gender, opt, regulation width in inches, paragraph]
+const SLEEVE_CASES = [
+  ['blues_a', 'male', {}, 4, '4.1.5.2.1.2'],
+  ['blues_a', 'male', { chevron: '3.5' }, 4, '4.1.5.2.1.2 (men: 4 in only)'],
+  ['blues_a', 'female', {}, 4, '4.1.9.3.3'],
+  ['blues_a', 'female', { chevron: '3.5' }, 3.5, '4.1.9.3.3'],
+  ['blues_b', 'male', { sleeve: 'long' }, 3.5, '4.1.11.1.1.1.3'],
+  ['blues_b', 'male', { sleeve: 'short', chevron: '4' }, 3.5, '4.1.11.1.1.1.3 (men: 3 1/2 in only)'],
+  ['blues_b', 'female', { sleeve: 'long' }, 3.5, '4.1.12.2.3.3'],
+  ['blues_b', 'female', { sleeve: 'long', chevron: '4' }, 4, '4.1.12.2.3.3'],
+  ['blues_b', 'female', { sleeve: 'short' }, 3.5, '4.1.12.2.3.3'],
+  ['mess_dress', 'male', {}, 4, '4.1.1.1.1.4'],
+  ['mess_dress', 'female', {}, 4, '4.1.2.1.1.4'],
+  ['mess_dress', 'female', { chevron: '3.5' }, 3.5, '4.1.2.1.1.4'],
+  ['aviator', 'male', { sleeve: 'long' }, 3.5, '4.2.5.1.1.3'],
+  ['aviator', 'male', { sleeve: 'short' }, 3.5, '4.2.5.1.1.3'],
+  ['aviator', 'female', { sleeve: 'long' }, 3.5, '4.2.6.2.3'],
+  ['aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 3.5, '4.2.6.2.3'],
+  ['abu', 'male', {}, 4, '5.1.1.1.1.2'],
+  ['abu', 'female', { chevron: '3.5' }, 3.5, '5.1.1.1.1.2'],
+  ['corporate_field', 'male', {}, 4, '5.2.1.1.1.3'],
+  ['corporate_field', 'female', { chevron: '3.5' }, 3.5, '5.2.1.1.1.3']
+];
+
+for(const [uniform, gender, opt, size, para] of SLEEVE_CASES){
+  for(const rank of ['SSgt', 'SMSgt', 'CMSgt']){
+    test(`${uniform} ${gender} ${JSON.stringify(opt)} ${rank}: sleeve chevron is ${size} in wide at the art's own proportions, never squeezed (${para})`, async () => {
+      const scene = await P.composeUniform(build(uniform, gender, 'senior', rank, opt), store);
+      const g = G.gradeInfo('senior', rank, {});
+      const ids = scene.layers.filter(l => l.role === 'grade' && /^grade:sleeve-/.test(l.key));
+      assert.ok(ids.length >= 1, 'at least one sleeve chevron');
+      for(const l of ids){
+        const spec = await store.load(l.id);
+        const white = uniform === 'mess_dress' ? 'white-' : '';
+        assert.equal(l.id, `rank-senior-${g.key}-chevron-${white}${size === 3.5 ? '3p5in' : '4in'}`, 'the art for the size');
+        assert.ok(Math.abs(l.w - size) < 0.001, `${l.key}: ${l.w} in wide, regulation ${size}`);
+        // the art is drawn at its stated width: its own width is the regulation size and the box keeps its ratio
+        assert.ok(Math.abs(spec.w - size) < 0.001, `${l.id} art width ${spec.w}`);
+        assert.ok(Math.abs(l.h / l.w - spec.h / spec.w) < 1e-6, `${l.key}: box ${l.w} x ${l.h} keeps the art's ${spec.w} x ${spec.h}`);
+        assert.ok(!l.scale || l.scale === 1, 'not scaled');
+      }
+    });
+  }
+}
+
+// Where the sheet states the shoulder seam, elbow and the halfway point, the chevron is centred on that
+// point and turned to the line from the seam to the elbow (4.1.5.2.1.2 and the paragraphs above).
+for(const [uniform, gender, opt, garment] of [
+  ['blues_a', 'male', {}, 'garment-blues-class-a-coat'],
+  ['blues_a', 'female', {}, 'garment-blues-class-a-coat-female'],
+  ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long'],
+  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long']
+]){
+  test(`${uniform} ${gender}: sleeve chevron centred on the sheet's chevron_halfway point, halfway between the shoulder seam and the elbow`, async () => {
+    const spec = await store.load(garment);
+    const scene = await P.composeUniform(build(uniform, gender, 'senior', 'SMSgt', opt), store);
+    for(const side of ['right', 'left']){
+      const c = core.anchor(spec, 'chevron_halfway_' + side), s = core.anchor(spec, 'shoulder_seam_' + side), e = core.anchor(spec, 'elbow_' + side);
+      const l = gradeLayer(scene, 'grade:sleeve-' + side);
+      assert.ok(l && c && s && e, side);
+      assert.ok(Math.hypot(l.x + l.w / 2 - c.x, l.y + l.h / 2 - c.y) < 0.01, `${side}: centre ${l.x + l.w / 2},${l.y + l.h / 2} vs ${c.x},${c.y}`);
+      const turn = Math.atan2(s.x - e.x, e.y - s.y) * 180 / Math.PI;
+      assert.ok(Math.abs(l.rotate - turn) < 0.01, `${side}: turned ${l.rotate} vs the arm's ${turn}`);
+      // halfway down the arm: the anchor's height is the middle of the seam-to-elbow height
+      assert.ok(Math.abs(c.y - (s.y + e.y) / 2) < 0.1, `${side}: anchor ${c.y} in, middle of seam and elbow ${(s.y + e.y) / 2} in`);
+    }
+  });
+}
 
 // ---- cadet NCO chevrons on the collars -----------------------------------------------------------------
 
