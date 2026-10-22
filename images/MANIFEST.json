@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 910,
+ "count": 913,
  "by_category": {
   "accessories": 30,
   "badges": 1,
@@ -280,7 +280,7 @@
     ],
     "garment_attach_center": [
      612,
-     503
+     409.6
     ]
    },
    "landmarks": [
@@ -7665,30 +7665,30 @@
    "id": "enamel-admin-master",
    "path": "enamel/enamel-admin-master/enamel-admin-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.704,
+   "w_in": 1,
+   "h_in": 1.363,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-administration-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     170.367
+     50,
+     136.294
     ],
     "center": [
-     62.5,
-     85.183
+     50,
+     68.146
     ],
     "left_edge": [
      0,
-     85.183
+     68.146
     ],
     "right_edge": [
-     125,
-     85.183
+     100,
+     68.146
     ]
    },
    "landmarks": [],
@@ -7699,30 +7699,30 @@
    "id": "enamel-admin-senior",
    "path": "enamel/enamel-admin-senior/enamel-admin-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.697,
+   "w_in": 1,
+   "h_in": 1.358,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-administration-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     169.715
+     50,
+     135.772
     ],
     "center": [
-     62.5,
-     84.858
+     50,
+     67.886
     ],
     "left_edge": [
      0,
-     84.858
+     67.886
     ],
     "right_edge": [
-     125,
-     84.858
+     100,
+     67.886
     ]
    },
    "landmarks": [],
@@ -7733,30 +7733,30 @@
    "id": "enamel-admin-tech",
    "path": "enamel/enamel-admin-tech/enamel-admin-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.289,
+   "w_in": 1,
+   "h_in": 1.031,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-administration-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     128.92
+     50,
+     103.1
     ],
     "center": [
-     62.5,
-     64.46
+     50,
+     51.568
     ],
     "left_edge": [
      0,
-     64.46
+     51.568
     ],
     "right_edge": [
-     125,
-     64.46
+     100,
+     51.568
     ]
    },
    "landmarks": [],
@@ -7767,30 +7767,30 @@
    "id": "enamel-aerospace-education-master",
    "path": "enamel/enamel-aerospace-education-master/enamel-aerospace-education-master.svg",
    "category": "enamel",
-   "w_in": 1,
-   "h_in": 1.362,
+   "w_in": 0.8,
+   "h_in": 1.089,
    "size_source": "estimated",
-   "basis": "estimated: aero class badge about 1 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-aerospace-education-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     50,
+     40,
      0
     ],
     "bottom_center": [
-     50,
-     136.174
+     40,
+     108.9
     ],
     "center": [
-     50,
-     68.087
+     40,
+     54.47
     ],
     "left_edge": [
      0,
-     68.087
+     54.47
     ],
     "right_edge": [
-     100,
-     68.087
+     80,
+     54.47
     ]
    },
    "landmarks": [],
@@ -7801,30 +7801,30 @@
    "id": "enamel-aerospace-education-technician",
    "path": "enamel/enamel-aerospace-education-technician/enamel-aerospace-education-technician.svg",
    "category": "enamel",
-   "w_in": 1,
-   "h_in": 1.468,
+   "w_in": 0.8,
+   "h_in": 1.175,
    "size_source": "estimated",
-   "basis": "estimated: aero class badge about 1 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-aerospace-education-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     50,
+     40,
      0
     ],
     "bottom_center": [
-     50,
-     146.83
+     40,
+     117.464
     ],
     "center": [
-     50,
-     73.415
+     40,
+     58.732
     ],
     "left_edge": [
      0,
-     73.415
+     58.732
     ],
     "right_edge": [
-     100,
-     73.415
+     80,
+     58.732
     ]
    },
    "landmarks": [],
@@ -7835,30 +7835,30 @@
    "id": "enamel-aerospace-senior",
    "path": "enamel/enamel-aerospace-senior/enamel-aerospace-senior.svg",
    "category": "enamel",
-   "w_in": 1,
-   "h_in": 1.468,
+   "w_in": 0.8,
+   "h_in": 1.175,
    "size_source": "estimated",
-   "basis": "estimated: aero class badge about 1 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-aerospace-education-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     50,
+     40,
      0
     ],
     "bottom_center": [
-     50,
-     146.83
+     40,
+     117.464
     ],
     "center": [
-     50,
-     73.415
+     40,
+     58.732
     ],
     "left_edge": [
      0,
-     73.415
+     58.732
     ],
     "right_edge": [
-     100,
-     73.415
+     80,
+     58.732
     ]
    },
    "landmarks": [],
@@ -7869,7 +7869,7 @@
    "id": "enamel-buddist-chaplin",
    "path": "enamel/enamel-buddist-chaplin/enamel-buddist-chaplin.svg",
    "category": "enamel",
-   "w_in": 1.127,
+   "w_in": 1.1273,
    "h_in": 1.125,
    "size_source": "regulation",
    "basis": "regulation: height 1.125 in",
@@ -7903,30 +7903,30 @@
    "id": "enamel-cadet-programs-master-badge-v2",
    "path": "enamel/enamel-cadet-programs-master-badge-v2/enamel-cadet-programs-master-badge-v2.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.606,
+   "w_in": 1,
+   "h_in": 1.285,
    "size_source": "estimated",
-   "basis": "estimated: cadet class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-cadet-programs-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     160.618
+     50,
+     128.494
     ],
     "center": [
-     62.5,
-     80.309
+     50,
+     64.247
     ],
     "left_edge": [
      0,
-     80.309
+     64.247
     ],
     "right_edge": [
-     125,
-     80.309
+     100,
+     64.247
     ]
    },
    "landmarks": [],
@@ -7937,30 +7937,30 @@
    "id": "enamel-cadet-programs-master",
    "path": "enamel/enamel-cadet-programs-master/enamel-cadet-programs-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.606,
+   "w_in": 1,
+   "h_in": 1.285,
    "size_source": "estimated",
-   "basis": "estimated: cadet class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-cadet-programs-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     160.618
+     50,
+     128.494
     ],
     "center": [
-     62.5,
-     80.309
+     50,
+     64.247
     ],
     "left_edge": [
      0,
-     80.309
+     64.247
     ],
     "right_edge": [
-     125,
-     80.309
+     100,
+     64.247
     ]
    },
    "landmarks": [],
@@ -7971,30 +7971,30 @@
    "id": "enamel-cadet-programs-senior-badge-v2",
    "path": "enamel/enamel-cadet-programs-senior-badge-v2/enamel-cadet-programs-senior-badge-v2.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.606,
+   "w_in": 1,
+   "h_in": 1.285,
    "size_source": "estimated",
-   "basis": "estimated: cadet class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-cadet-programs-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     160.618
+     50,
+     128.494
     ],
     "center": [
-     62.5,
-     80.309
+     50,
+     64.247
     ],
     "left_edge": [
      0,
-     80.309
+     64.247
     ],
     "right_edge": [
-     125,
-     80.309
+     100,
+     64.247
     ]
    },
    "landmarks": [],
@@ -8005,30 +8005,30 @@
    "id": "enamel-cadet-programs-senior",
    "path": "enamel/enamel-cadet-programs-senior/enamel-cadet-programs-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.606,
+   "w_in": 1,
+   "h_in": 1.285,
    "size_source": "estimated",
-   "basis": "estimated: cadet class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-cadet-programs-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     160.618
+     50,
+     128.494
     ],
     "center": [
-     62.5,
-     80.309
+     50,
+     64.247
     ],
     "left_edge": [
      0,
-     80.309
+     64.247
     ],
     "right_edge": [
-     125,
-     80.309
+     100,
+     64.247
     ]
    },
    "landmarks": [],
@@ -8039,30 +8039,30 @@
    "id": "enamel-cadet-programs-technician-badge-v2",
    "path": "enamel/enamel-cadet-programs-technician-badge-v2/enamel-cadet-programs-technician-badge-v2.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.606,
+   "w_in": 1,
+   "h_in": 1.285,
    "size_source": "estimated",
-   "basis": "estimated: cadet class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-cadet-programs-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     160.618
+     50,
+     128.494
     ],
     "center": [
-     62.5,
-     80.309
+     50,
+     64.247
     ],
     "left_edge": [
      0,
-     80.309
+     64.247
     ],
     "right_edge": [
-     125,
-     80.309
+     100,
+     64.247
     ]
    },
    "landmarks": [],
@@ -8073,30 +8073,30 @@
    "id": "enamel-cadet-programs-technician",
    "path": "enamel/enamel-cadet-programs-technician/enamel-cadet-programs-technician.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.606,
+   "w_in": 1,
+   "h_in": 1.285,
    "size_source": "estimated",
-   "basis": "estimated: cadet class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-cadet-programs-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     160.618
+     50,
+     128.494
     ],
     "center": [
-     62.5,
-     80.309
+     50,
+     64.247
     ],
     "left_edge": [
      0,
-     80.309
+     64.247
     ],
     "right_edge": [
-     125,
-     80.309
+     100,
+     64.247
     ]
    },
    "landmarks": [],
@@ -8107,30 +8107,30 @@
    "id": "enamel-cadet-programs",
    "path": "enamel/enamel-cadet-programs/enamel-cadet-programs.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.606,
+   "w_in": 1,
+   "h_in": 1.285,
    "size_source": "estimated",
-   "basis": "estimated: cadet class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-cadet-programs-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     160.618
+     50,
+     128.494
     ],
     "center": [
-     62.5,
-     80.309
+     50,
+     64.247
     ],
     "left_edge": [
      0,
-     80.309
+     64.247
     ],
     "right_edge": [
-     125,
-     80.309
+     100,
+     64.247
     ]
    },
    "landmarks": [],
@@ -8141,30 +8141,30 @@
    "id": "enamel-cap-national-command-board",
    "path": "enamel/enamel-cap-national-command-board/enamel-cap-national-command-board.svg",
    "category": "enamel",
-   "w_in": 2.088,
-   "h_in": 3,
-   "size_source": "regulation",
-   "basis": "regulation: height 3 in",
+   "w_in": 1.044,
+   "h_in": 1.5,
+   "size_source": "estimated",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-national-board-metal-badge prints no dimensions; no regulation size (CAPR 39-1 Att. 7 gives none; the old 3 in was wrong). Sized 1.5 in tall: its listed weight equals the 1 5/8 in regulation Incident Commander Master badge, and Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval",
    "anchors": {
     "top_center": [
-     104.385,
+     52.193,
      0
     ],
     "bottom_center": [
-     104.385,
-     300.029
+     52.193,
+     150
     ],
     "center": [
-     104.385,
-     150.014
+     52.193,
+     75.007
     ],
     "left_edge": [
      0,
-     150.014
+     75.007
     ],
     "right_edge": [
-     208.77,
-     150.014
+     104.385,
+     75.007
     ]
    },
    "landmarks": [],
@@ -8175,30 +8175,30 @@
    "id": "enamel-cdi-master",
    "path": "enamel/enamel-cdi-master/enamel-cdi-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.718,
+   "w_in": 1,
+   "h_in": 1.374,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     171.756
+     50,
+     137.4
     ],
     "center": [
-     62.5,
-     85.878
+     50,
+     68.702
     ],
     "left_edge": [
      0,
-     85.878
+     68.702
     ],
     "right_edge": [
-     125,
-     85.878
+     100,
+     68.702
     ]
    },
    "landmarks": [],
@@ -8209,30 +8209,30 @@
    "id": "enamel-cdi-senior",
    "path": "enamel/enamel-cdi-senior/enamel-cdi-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.757,
+   "w_in": 1,
+   "h_in": 1.405,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     175.651
+     50,
+     140.5
     ],
     "center": [
-     62.5,
-     87.826
+     50,
+     70.261
     ],
     "left_edge": [
      0,
-     87.826
+     70.261
     ],
     "right_edge": [
-     125,
-     87.826
+     100,
+     70.261
     ]
    },
    "landmarks": [],
@@ -8243,30 +8243,30 @@
    "id": "enamel-cdi-tech",
    "path": "enamel/enamel-cdi-tech/enamel-cdi-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.349,
+   "w_in": 1,
+   "h_in": 1.079,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     134.933
+     50,
+     107.9
     ],
     "center": [
-     62.5,
-     67.466
+     50,
+     53.973
     ],
     "left_edge": [
      0,
-     67.466
+     53.973
     ],
     "right_edge": [
-     125,
-     67.466
+     100,
+     53.973
     ]
    },
    "landmarks": [],
@@ -8277,7 +8277,7 @@
    "id": "enamel-christian-chaplin",
    "path": "enamel/enamel-christian-chaplin/enamel-christian-chaplin.svg",
    "category": "enamel",
-   "w_in": 0.701,
+   "w_in": 0.7009,
    "h_in": 1.125,
    "size_source": "regulation",
    "basis": "regulation: height 1.125 in",
@@ -8311,30 +8311,30 @@
    "id": "enamel-command-council",
    "path": "enamel/enamel-command-council/enamel-command-council.svg",
    "category": "enamel",
-   "w_in": 2.088,
-   "h_in": 3,
-   "size_source": "regulation",
-   "basis": "regulation: height 3 in",
+   "w_in": 1.044,
+   "h_in": 1.5,
+   "size_source": "estimated",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-command-council prints no dimensions; no regulation size (CAPR 39-1 Att. 7 gives none; the old 3 in was wrong). Sized 1.5 in tall: its listed weight equals the 1 5/8 in regulation Incident Commander Master badge, and Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval",
    "anchors": {
     "top_center": [
-     104.385,
+     52.193,
      0
     ],
     "bottom_center": [
-     104.385,
-     300.029
+     52.193,
+     150
     ],
     "center": [
-     104.385,
-     150.014
+     52.193,
+     75.007
     ],
     "left_edge": [
      0,
-     150.014
+     75.007
     ],
     "right_edge": [
-     208.77,
-     150.014
+     104.385,
+     75.007
     ]
    },
    "landmarks": [],
@@ -8345,30 +8345,30 @@
    "id": "enamel-comms-master",
    "path": "enamel/enamel-comms-master/enamel-comms-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.701,
+   "w_in": 1,
+   "h_in": 1.361,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-communications-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     170.093
+     50,
+     136.074
     ],
     "center": [
-     62.5,
-     85.046
+     50,
+     68.037
     ],
     "left_edge": [
      0,
-     85.046
+     68.037
     ],
     "right_edge": [
-     125,
-     85.046
+     100,
+     68.037
     ]
    },
    "landmarks": [],
@@ -8379,30 +8379,30 @@
    "id": "enamel-comms-senior",
    "path": "enamel/enamel-comms-senior/enamel-comms-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.734,
+   "w_in": 1,
+   "h_in": 1.387,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-communications-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     173.383
+     50,
+     138.7
     ],
     "center": [
-     62.5,
-     86.692
+     50,
+     69.354
     ],
     "left_edge": [
      0,
-     86.692
+     69.354
     ],
     "right_edge": [
-     125,
-     86.692
+     100,
+     69.354
     ]
    },
    "landmarks": [],
@@ -8413,30 +8413,30 @@
    "id": "enamel-comms-tech",
    "path": "enamel/enamel-comms-tech/enamel-comms-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.35,
+   "w_in": 1,
+   "h_in": 1.08,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-communications-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     134.987
+     50,
+     107.99
     ],
     "center": [
-     62.5,
-     67.493
+     50,
+     53.994
     ],
     "left_edge": [
      0,
-     67.493
+     53.994
     ],
     "right_edge": [
-     125,
-     67.493
+     100,
+     53.994
     ]
    },
    "landmarks": [],
@@ -8447,30 +8447,30 @@
    "id": "enamel-communications-technician",
    "path": "enamel/enamel-communications-technician/enamel-communications-technician.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.359,
+   "w_in": 1,
+   "h_in": 1.087,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-communications-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     135.856
+     50,
+     108.685
     ],
     "center": [
-     62.5,
-     67.928
+     50,
+     54.342
     ],
     "left_edge": [
      0,
-     67.928
+     54.342
     ],
     "right_edge": [
-     125,
-     67.928
+     100,
+     54.342
     ]
    },
    "landmarks": [],
@@ -8481,30 +8481,30 @@
    "id": "enamel-cyber-advanced",
    "path": "enamel/enamel-cyber-advanced/enamel-cyber-advanced.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.128,
+   "w_in": 1,
+   "h_in": 0.903,
    "size_source": "estimated",
-   "basis": "estimated: tri class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-cyber prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     112.839
+     50,
+     90.271
     ],
     "center": [
-     62.5,
-     56.419
+     50,
+     45.135
     ],
     "left_edge": [
      0,
-     56.419
+     45.135
     ],
     "right_edge": [
-     125,
-     56.419
+     100,
+     45.135
     ]
    },
    "landmarks": [],
@@ -8515,30 +8515,30 @@
    "id": "enamel-cyber-basic",
    "path": "enamel/enamel-cyber-basic/enamel-cyber-basic.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.128,
+   "w_in": 1,
+   "h_in": 0.903,
    "size_source": "estimated",
-   "basis": "estimated: tri class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-cyber prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     112.839
+     50,
+     90.271
     ],
     "center": [
-     62.5,
-     56.419
+     50,
+     45.135
     ],
     "left_edge": [
      0,
-     56.419
+     45.135
     ],
     "right_edge": [
-     125,
-     56.419
+     100,
+     45.135
     ]
    },
    "landmarks": [],
@@ -8549,30 +8549,30 @@
    "id": "enamel-cyber-master",
    "path": "enamel/enamel-cyber-master/enamel-cyber-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.128,
+   "w_in": 1,
+   "h_in": 0.903,
    "size_source": "estimated",
-   "basis": "estimated: tri class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-cyber prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     112.839
+     50,
+     90.271
     ],
     "center": [
-     62.5,
-     56.419
+     50,
+     45.135
     ],
     "left_edge": [
      0,
-     56.419
+     45.135
     ],
     "right_edge": [
-     125,
-     56.419
+     100,
+     45.135
     ]
    },
    "landmarks": [],
@@ -8583,30 +8583,30 @@
    "id": "enamel-drug-demand-reduction-basic",
    "path": "enamel/enamel-drug-demand-reduction-basic/enamel-drug-demand-reduction-basic.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.777,
+   "w_in": 1,
+   "h_in": 1.422,
    "size_source": "estimated",
-   "basis": "estimated: ddr class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-drug-demand-reduction-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     177.734
+     50,
+     142.187
     ],
     "center": [
-     62.5,
-     88.867
+     50,
+     71.094
     ],
     "left_edge": [
      0,
-     88.867
+     71.094
     ],
     "right_edge": [
-     125,
-     88.867
+     100,
+     71.094
     ]
    },
    "landmarks": [],
@@ -8617,30 +8617,30 @@
    "id": "enamel-drug-demand-reduction-master",
    "path": "enamel/enamel-drug-demand-reduction-master/enamel-drug-demand-reduction-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.777,
+   "w_in": 1,
+   "h_in": 1.422,
    "size_source": "estimated",
-   "basis": "estimated: ddr class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-drug-demand-reduction-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     177.734
+     50,
+     142.187
     ],
     "center": [
-     62.5,
-     88.867
+     50,
+     71.094
     ],
     "left_edge": [
      0,
-     88.867
+     71.094
     ],
     "right_edge": [
-     125,
-     88.867
+     100,
+     71.094
     ]
    },
    "landmarks": [],
@@ -8651,30 +8651,30 @@
    "id": "enamel-drug-demand-reduction-senior",
    "path": "enamel/enamel-drug-demand-reduction-senior/enamel-drug-demand-reduction-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.777,
+   "w_in": 1,
+   "h_in": 1.422,
    "size_source": "estimated",
-   "basis": "estimated: ddr class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-drug-demand-reduction-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     177.734
+     50,
+     142.187
     ],
     "center": [
-     62.5,
-     88.867
+     50,
+     71.094
     ],
     "left_edge": [
      0,
-     88.867
+     71.094
     ],
     "right_edge": [
-     125,
-     88.867
+     100,
+     71.094
     ]
    },
    "landmarks": [],
@@ -8685,30 +8685,30 @@
    "id": "enamel-drug-demand-reduction-technician",
    "path": "enamel/enamel-drug-demand-reduction-technician/enamel-drug-demand-reduction-technician.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.777,
+   "w_in": 1,
+   "h_in": 1.422,
    "size_source": "estimated",
-   "basis": "estimated: ddr class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-drug-demand-reduction-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     177.734
+     50,
+     142.187
     ],
     "center": [
-     62.5,
-     88.867
+     50,
+     71.094
     ],
     "left_edge": [
      0,
-     88.867
+     71.094
     ],
     "right_edge": [
-     125,
-     88.867
+     100,
+     71.094
     ]
    },
    "landmarks": [],
@@ -8719,30 +8719,30 @@
    "id": "enamel-emergency-services",
    "path": "enamel/enamel-emergency-services/enamel-emergency-services.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.334,
+   "w_in": 1,
+   "h_in": 1.048,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-emergency-services-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     133.43
+     50,
+     104.8
     ],
     "center": [
-     62.5,
-     66.715
+     50,
+     52.419
     ],
     "left_edge": [
      0,
-     66.715
+     52.419
     ],
     "right_edge": [
-     125,
-     66.715
+     100,
+     52.419
     ]
    },
    "landmarks": [],
@@ -8855,30 +8855,30 @@
    "id": "enamel-finance-master",
    "path": "enamel/enamel-finance-master/enamel-finance-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.737,
+   "w_in": 1,
+   "h_in": 1.39,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-finance-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     173.745
+     50,
+     138.996
     ],
     "center": [
-     62.5,
-     86.873
+     50,
+     69.498
     ],
     "left_edge": [
      0,
-     86.873
+     69.498
     ],
     "right_edge": [
-     125,
-     86.873
+     100,
+     69.498
     ]
    },
    "landmarks": [],
@@ -8889,30 +8889,30 @@
    "id": "enamel-finance-senior",
    "path": "enamel/enamel-finance-senior/enamel-finance-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.752,
+   "w_in": 1,
+   "h_in": 1.402,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-finance-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     175.245
+     50,
+     140.196
     ],
     "center": [
-     62.5,
-     87.623
+     50,
+     70.098
     ],
     "left_edge": [
      0,
-     87.623
+     70.098
     ],
     "right_edge": [
-     125,
-     87.623
+     100,
+     70.098
     ]
    },
    "landmarks": [],
@@ -8923,30 +8923,30 @@
    "id": "enamel-finance-technician",
    "path": "enamel/enamel-finance-technician/enamel-finance-technician.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.358,
+   "w_in": 1,
+   "h_in": 1.086,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-finance-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     135.793
+     50,
+     108.6
     ],
     "center": [
-     62.5,
-     67.897
+     50,
+     54.318
     ],
     "left_edge": [
      0,
-     67.897
+     54.318
     ],
     "right_edge": [
-     125,
-     67.897
+     100,
+     54.318
     ]
    },
    "landmarks": [],
@@ -8957,30 +8957,30 @@
    "id": "enamel-historian-master",
    "path": "enamel/enamel-historian-master/enamel-historian-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.83,
+   "w_in": 1,
+   "h_in": 1.464,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-historian-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     183.036
+     50,
+     146.4
     ],
     "center": [
-     62.5,
-     91.518
+     50,
+     73.214
     ],
     "left_edge": [
      0,
-     91.518
+     73.214
     ],
     "right_edge": [
-     125,
-     91.518
+     100,
+     73.214
     ]
    },
    "landmarks": [],
@@ -8991,30 +8991,30 @@
    "id": "enamel-historian-senior",
    "path": "enamel/enamel-historian-senior/enamel-historian-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.753,
+   "w_in": 1,
+   "h_in": 1.402,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-historian-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     175.283
+     50,
+     140.2
     ],
     "center": [
-     62.5,
-     87.641
+     50,
+     70.113
     ],
     "left_edge": [
      0,
-     87.641
+     70.113
     ],
     "right_edge": [
-     125,
-     87.641
+     100,
+     70.113
     ]
    },
    "landmarks": [],
@@ -9025,30 +9025,30 @@
    "id": "enamel-historian-tech",
    "path": "enamel/enamel-historian-tech/enamel-historian-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.429,
+   "w_in": 1,
+   "h_in": 1.143,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-historian-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     142.857
+     50,
+     114.286
     ],
     "center": [
-     62.5,
-     71.428
+     50,
+     57.142
     ],
     "left_edge": [
      0,
-     71.428
+     57.142
     ],
     "right_edge": [
-     125,
-     71.428
+     100,
+     57.142
     ]
    },
    "landmarks": [],
@@ -9059,30 +9059,30 @@
    "id": "enamel-ig-master-gold",
    "path": "enamel/enamel-ig-master-gold/enamel-ig-master-gold.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.727,
+   "w_in": 1,
+   "h_in": 1.382,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-inspector-general-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     172.745
+     50,
+     138.196
     ],
     "center": [
-     62.5,
-     86.373
+     50,
+     69.098
     ],
     "left_edge": [
      0,
-     86.373
+     69.098
     ],
     "right_edge": [
-     125,
-     86.373
+     100,
+     69.098
     ]
    },
    "landmarks": [],
@@ -9093,30 +9093,30 @@
    "id": "enamel-ig-master",
    "path": "enamel/enamel-ig-master/enamel-ig-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.727,
+   "w_in": 1,
+   "h_in": 1.382,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-inspector-general-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     172.745
+     50,
+     138.196
     ],
     "center": [
-     62.5,
-     86.373
+     50,
+     69.098
     ],
     "left_edge": [
      0,
-     86.373
+     69.098
     ],
     "right_edge": [
-     125,
-     86.373
+     100,
+     69.098
     ]
    },
    "landmarks": [],
@@ -9127,30 +9127,30 @@
    "id": "enamel-ig-senior-gold",
    "path": "enamel/enamel-ig-senior-gold/enamel-ig-senior-gold.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.718,
+   "w_in": 1,
+   "h_in": 1.375,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-inspector-general-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     171.843
+     50,
+     137.474
     ],
     "center": [
-     62.5,
-     85.921
+     50,
+     68.737
     ],
     "left_edge": [
      0,
-     85.921
+     68.737
     ],
     "right_edge": [
-     125,
-     85.921
+     100,
+     68.737
     ]
    },
    "landmarks": [],
@@ -9161,30 +9161,30 @@
    "id": "enamel-ig-senior",
    "path": "enamel/enamel-ig-senior/enamel-ig-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.718,
+   "w_in": 1,
+   "h_in": 1.375,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-inspector-general-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     171.843
+     50,
+     137.474
     ],
     "center": [
-     62.5,
-     85.921
+     50,
+     68.737
     ],
     "left_edge": [
      0,
-     85.921
+     68.737
     ],
     "right_edge": [
-     125,
-     85.921
+     100,
+     68.737
     ]
    },
    "landmarks": [],
@@ -9195,30 +9195,30 @@
    "id": "enamel-ig-tech",
    "path": "enamel/enamel-ig-tech/enamel-ig-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.357,
+   "w_in": 1,
+   "h_in": 1.085,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-inspector-general-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     135.655
+     50,
+     108.5
     ],
     "center": [
-     62.5,
-     67.828
+     50,
+     54.262
     ],
     "left_edge": [
      0,
-     67.828
+     54.262
     ],
     "right_edge": [
-     125,
-     67.828
+     100,
+     54.262
     ]
    },
    "landmarks": [],
@@ -9229,30 +9229,30 @@
    "id": "enamel-information-technology-technician",
    "path": "enamel/enamel-information-technology-technician/enamel-information-technology-technician.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.319,
+   "w_in": 1,
+   "h_in": 1.056,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-information-technology-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     131.944
+     50,
+     105.555
     ],
     "center": [
-     62.5,
-     65.972
+     50,
+     52.778
     ],
     "left_edge": [
      0,
-     65.972
+     52.778
     ],
     "right_edge": [
-     125,
-     65.972
+     100,
+     52.778
     ]
    },
    "landmarks": [],
@@ -9263,30 +9263,30 @@
    "id": "enamel-it-master",
    "path": "enamel/enamel-it-master/enamel-it-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.719,
+   "w_in": 1,
+   "h_in": 1.375,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-information-technology-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     171.86
+     50,
+     137.488
     ],
     "center": [
-     62.5,
-     85.93
+     50,
+     68.744
     ],
     "left_edge": [
      0,
-     85.93
+     68.744
     ],
     "right_edge": [
-     125,
-     85.93
+     100,
+     68.744
     ]
    },
    "landmarks": [],
@@ -9297,30 +9297,30 @@
    "id": "enamel-it-senior",
    "path": "enamel/enamel-it-senior/enamel-it-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.76,
+   "w_in": 1,
+   "h_in": 1.408,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-information-technology-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     176.039
+     50,
+     140.8
     ],
     "center": [
-     62.5,
-     88.019
+     50,
+     70.415
     ],
     "left_edge": [
      0,
-     88.019
+     70.415
     ],
     "right_edge": [
-     125,
-     88.019
+     100,
+     70.415
     ]
    },
    "landmarks": [],
@@ -9331,30 +9331,30 @@
    "id": "enamel-it-tech",
    "path": "enamel/enamel-it-tech/enamel-it-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.352,
+   "w_in": 1,
+   "h_in": 1.081,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-information-technology-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     135.176
+     50,
+     108.1
     ],
     "center": [
-     62.5,
-     67.588
+     50,
+     54.07
     ],
     "left_edge": [
      0,
-     67.588
+     54.07
     ],
     "right_edge": [
-     125,
-     67.588
+     100,
+     54.07
     ]
    },
    "landmarks": [],
@@ -9365,7 +9365,7 @@
    "id": "enamel-jewish-chaplin",
    "path": "enamel/enamel-jewish-chaplin/enamel-jewish-chaplin.svg",
    "category": "enamel",
-   "w_in": 0.634,
+   "w_in": 0.6342,
    "h_in": 1.125,
    "size_source": "regulation",
    "basis": "regulation: height 1.125 in",
@@ -9399,30 +9399,30 @@
    "id": "enamel-logistics-master",
    "path": "enamel/enamel-logistics-master/enamel-logistics-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.718,
+   "w_in": 1,
+   "h_in": 1.375,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-logistics-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     171.845
+     50,
+     137.476
     ],
     "center": [
-     62.5,
-     85.922
+     50,
+     68.738
     ],
     "left_edge": [
      0,
-     85.922
+     68.738
     ],
     "right_edge": [
-     125,
-     85.922
+     100,
+     68.738
     ]
    },
    "landmarks": [],
@@ -9433,30 +9433,30 @@
    "id": "enamel-logistics-senior",
    "path": "enamel/enamel-logistics-senior/enamel-logistics-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.751,
+   "w_in": 1,
+   "h_in": 1.401,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-logistics-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     175.097
+     50,
+     140.078
     ],
     "center": [
-     62.5,
-     87.549
+     50,
+     70.039
     ],
     "left_edge": [
      0,
-     87.549
+     70.039
     ],
     "right_edge": [
-     125,
-     87.549
+     100,
+     70.039
     ]
    },
    "landmarks": [],
@@ -9467,30 +9467,30 @@
    "id": "enamel-logistics-tech",
    "path": "enamel/enamel-logistics-tech/enamel-logistics-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.343,
+   "w_in": 1,
+   "h_in": 1.074,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-logistics-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     134.27
+     50,
+     107.4
     ],
     "center": [
-     62.5,
-     67.135
+     50,
+     53.708
     ],
     "left_edge": [
      0,
-     67.135
+     53.708
     ],
     "right_edge": [
-     125,
-     67.135
+     100,
+     53.708
     ]
    },
    "landmarks": [],
@@ -9501,30 +9501,30 @@
    "id": "enamel-master-es",
    "path": "enamel/enamel-master-es/enamel-master-es.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.68,
+   "w_in": 1,
+   "h_in": 1.319,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-emergency-services-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     167.954
+     50,
+     131.86
     ],
     "center": [
-     62.5,
-     83.977
+     50,
+     65.93
     ],
     "left_edge": [
      0,
-     83.977
+     65.93
     ],
     "right_edge": [
-     125,
-     83.977
+     100,
+     65.93
     ]
    },
    "landmarks": [],
@@ -9535,7 +9535,7 @@
    "id": "enamel-muslim-chaplin",
    "path": "enamel/enamel-muslim-chaplin/enamel-muslim-chaplin.svg",
    "category": "enamel",
-   "w_in": 0.761,
+   "w_in": 0.7612,
    "h_in": 1.125,
    "size_source": "regulation",
    "basis": "regulation: height 1.125 in",
@@ -9569,30 +9569,30 @@
    "id": "enamel-national-executive-committee",
    "path": "enamel/enamel-national-executive-committee/enamel-national-executive-committee.svg",
    "category": "enamel",
-   "w_in": 2.088,
-   "h_in": 3,
-   "size_source": "regulation",
-   "basis": "regulation: height 3 in",
+   "w_in": 1.044,
+   "h_in": 1.5,
+   "size_source": "estimated",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-national-executive-committee-badge prints no dimensions; no regulation size (CAPR 39-1 Att. 7 gives none; the old 3 in was wrong). Sized 1.5 in tall: its listed weight equals the 1 5/8 in regulation Incident Commander Master badge, and Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval",
    "anchors": {
     "top_center": [
-     104.385,
+     52.193,
      0
     ],
     "bottom_center": [
-     104.385,
-     300.029
+     52.193,
+     150
     ],
     "center": [
-     104.385,
-     150.014
+     52.193,
+     75.007
     ],
     "left_edge": [
      0,
-     150.014
+     75.007
     ],
     "right_edge": [
-     208.77,
-     150.014
+     104.385,
+     75.007
     ]
    },
    "landmarks": [],
@@ -9603,30 +9603,30 @@
    "id": "enamel-nra-distinguished-expert",
    "path": "enamel/enamel-nra-distinguished-expert/enamel-nra-distinguished-expert.svg",
    "category": "enamel",
-   "w_in": 1.1,
-   "h_in": 2.756,
+   "w_in": 0.88,
+   "h_in": 2.205,
    "size_source": "estimated",
-   "basis": "estimated: nra class badge about 1.1 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     55,
+     44,
      0
     ],
     "bottom_center": [
-     55,
-     275.643
+     44,
+     220.5
     ],
     "center": [
-     55,
-     137.821
+     44,
+     110.257
     ],
     "left_edge": [
      0,
-     137.821
+     110.257
     ],
     "right_edge": [
-     110,
-     137.821
+     88,
+     110.257
     ]
    },
    "landmarks": [],
@@ -9637,30 +9637,30 @@
    "id": "enamel-nra-expert",
    "path": "enamel/enamel-nra-expert/enamel-nra-expert.svg",
    "category": "enamel",
-   "w_in": 1.1,
-   "h_in": 1.735,
+   "w_in": 0.88,
+   "h_in": 1.388,
    "size_source": "estimated",
-   "basis": "estimated: nra class badge about 1.1 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     55,
+     44,
      0
     ],
     "bottom_center": [
-     55,
-     173.547
+     44,
+     138.8
     ],
     "center": [
-     55,
-     86.773
+     44,
+     69.418
     ],
     "left_edge": [
      0,
-     86.773
+     69.418
     ],
     "right_edge": [
-     110,
-     86.773
+     88,
+     69.418
     ]
    },
    "landmarks": [],
@@ -9671,30 +9671,30 @@
    "id": "enamel-nra-marksman-first-class",
    "path": "enamel/enamel-nra-marksman-first-class/enamel-nra-marksman-first-class.svg",
    "category": "enamel",
-   "w_in": 1.1,
-   "h_in": 1.988,
+   "w_in": 0.88,
+   "h_in": 1.591,
    "size_source": "estimated",
-   "basis": "estimated: nra class badge about 1.1 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     55,
+     44,
      0
     ],
     "bottom_center": [
-     55,
-     198.818
+     44,
+     159.054
     ],
     "center": [
-     55,
-     99.409
+     44,
+     79.527
     ],
     "left_edge": [
      0,
-     99.409
+     79.527
     ],
     "right_edge": [
-     110,
-     99.409
+     88,
+     79.527
     ]
    },
    "landmarks": [],
@@ -9705,30 +9705,30 @@
    "id": "enamel-nra-marksman",
    "path": "enamel/enamel-nra-marksman/enamel-nra-marksman.svg",
    "category": "enamel",
-   "w_in": 1.1,
-   "h_in": 1.735,
+   "w_in": 0.88,
+   "h_in": 1.388,
    "size_source": "estimated",
-   "basis": "estimated: nra class badge about 1.1 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     55,
+     44,
      0
     ],
     "bottom_center": [
-     55,
-     173.547
+     44,
+     138.8
     ],
     "center": [
-     55,
-     86.773
+     44,
+     69.418
     ],
     "left_edge": [
      0,
-     86.773
+     69.418
     ],
     "right_edge": [
-     110,
-     86.773
+     88,
+     69.418
     ]
    },
    "landmarks": [],
@@ -9739,30 +9739,30 @@
    "id": "enamel-nra-pro-marksman",
    "path": "enamel/enamel-nra-pro-marksman/enamel-nra-pro-marksman.svg",
    "category": "enamel",
-   "w_in": 1.1,
-   "h_in": 1.735,
+   "w_in": 0.88,
+   "h_in": 1.388,
    "size_source": "estimated",
-   "basis": "estimated: nra class badge about 1.1 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     55,
+     44,
      0
     ],
     "bottom_center": [
-     55,
-     173.547
+     44,
+     138.8
     ],
     "center": [
-     55,
-     86.773
+     44,
+     69.418
     ],
     "left_edge": [
      0,
-     86.773
+     69.418
     ],
     "right_edge": [
-     110,
-     86.773
+     88,
+     69.418
     ]
    },
    "landmarks": [],
@@ -9773,30 +9773,30 @@
    "id": "enamel-nra-sharpshooter",
    "path": "enamel/enamel-nra-sharpshooter/enamel-nra-sharpshooter.svg",
    "category": "enamel",
-   "w_in": 1.1,
-   "h_in": 1.735,
+   "w_in": 0.88,
+   "h_in": 1.388,
    "size_source": "estimated",
-   "basis": "estimated: nra class badge about 1.1 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     55,
+     44,
      0
     ],
     "bottom_center": [
-     55,
-     173.547
+     44,
+     138.8
     ],
     "center": [
-     55,
-     86.773
+     44,
+     69.418
     ],
     "left_edge": [
      0,
-     86.773
+     69.418
     ],
     "right_edge": [
-     110,
-     86.773
+     88,
+     69.418
     ]
    },
    "landmarks": [],
@@ -9807,30 +9807,30 @@
    "id": "enamel-ops-master",
    "path": "enamel/enamel-ops-master/enamel-ops-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.723,
+   "w_in": 1,
+   "h_in": 1.379,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-operations-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     172.321
+     50,
+     137.857
     ],
     "center": [
-     62.5,
-     86.16
+     50,
+     68.928
     ],
     "left_edge": [
      0,
-     86.16
+     68.928
     ],
     "right_edge": [
-     125,
-     86.16
+     100,
+     68.928
     ]
    },
    "landmarks": [],
@@ -9841,30 +9841,30 @@
    "id": "enamel-ops-senior",
    "path": "enamel/enamel-ops-senior/enamel-ops-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.749,
+   "w_in": 1,
+   "h_in": 1.399,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-operations-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     174.927
+     50,
+     139.9
     ],
     "center": [
-     62.5,
-     87.463
+     50,
+     69.97
     ],
     "left_edge": [
      0,
-     87.463
+     69.97
     ],
     "right_edge": [
-     125,
-     87.463
+     100,
+     69.97
     ]
    },
    "landmarks": [],
@@ -9875,30 +9875,30 @@
    "id": "enamel-ops-tech",
    "path": "enamel/enamel-ops-tech/enamel-ops-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.338,
+   "w_in": 1,
+   "h_in": 1.071,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-operations-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     133.849
+     50,
+     107.079
     ],
     "center": [
-     62.5,
-     66.924
+     50,
+     53.539
     ],
     "left_edge": [
      0,
-     66.924
+     53.539
     ],
     "right_edge": [
-     125,
-     66.924
+     100,
+     53.539
     ]
    },
    "landmarks": [],
@@ -9909,30 +9909,30 @@
    "id": "enamel-personnel-master",
    "path": "enamel/enamel-personnel-master/enamel-personnel-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.731,
+   "w_in": 1,
+   "h_in": 1.385,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-personnel-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     173.077
+     50,
+     138.462
     ],
     "center": [
-     62.5,
-     86.538
+     50,
+     69.23
     ],
     "left_edge": [
      0,
-     86.538
+     69.23
     ],
     "right_edge": [
-     125,
-     86.538
+     100,
+     69.23
     ]
    },
    "landmarks": [],
@@ -9943,30 +9943,30 @@
    "id": "enamel-personnel-senior",
    "path": "enamel/enamel-personnel-senior/enamel-personnel-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.778,
+   "w_in": 1,
+   "h_in": 1.422,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-personnel-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     177.789
+     50,
+     142.2
     ],
     "center": [
-     62.5,
-     88.894
+     50,
+     71.115
     ],
     "left_edge": [
      0,
-     88.894
+     71.115
     ],
     "right_edge": [
-     125,
-     88.894
+     100,
+     71.115
     ]
    },
    "landmarks": [],
@@ -9977,30 +9977,30 @@
    "id": "enamel-personnel-tech",
    "path": "enamel/enamel-personnel-tech/enamel-personnel-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.351,
+   "w_in": 1,
+   "h_in": 1.081,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-personnel-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     135.079
+     50,
+     108.063
     ],
     "center": [
-     62.5,
-     67.54
+     50,
+     54.032
     ],
     "left_edge": [
      0,
-     67.54
+     54.032
     ],
     "right_edge": [
-     125,
-     67.54
+     100,
+     54.032
     ]
    },
    "landmarks": [],
@@ -10011,30 +10011,30 @@
    "id": "enamel-professional-development-master",
    "path": "enamel/enamel-professional-development-master/enamel-professional-development-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.749,
+   "w_in": 1,
+   "h_in": 1.399,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-professional-development-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     174.927
+     50,
+     139.9
     ],
     "center": [
-     62.5,
-     87.463
+     50,
+     69.97
     ],
     "left_edge": [
      0,
-     87.463
+     69.97
     ],
     "right_edge": [
-     125,
-     87.463
+     100,
+     69.97
     ]
    },
    "landmarks": [],
@@ -10045,30 +10045,30 @@
    "id": "enamel-professional-development-senior",
    "path": "enamel/enamel-professional-development-senior/enamel-professional-development-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.741,
+   "w_in": 1,
+   "h_in": 1.393,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-professional-development-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     174.081
+     50,
+     139.265
     ],
     "center": [
-     62.5,
-     87.04
+     50,
+     69.632
     ],
     "left_edge": [
      0,
-     87.04
+     69.632
     ],
     "right_edge": [
-     125,
-     87.04
+     100,
+     69.632
     ]
    },
    "landmarks": [],
@@ -10079,30 +10079,30 @@
    "id": "enamel-professional-development-tech",
    "path": "enamel/enamel-professional-development-tech/enamel-professional-development-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.331,
+   "w_in": 1,
+   "h_in": 1.065,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-professional-development-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     133.119
+     50,
+     106.495
     ],
     "center": [
-     62.5,
-     66.559
+     50,
+     53.247
     ],
     "left_edge": [
      0,
-     66.559
+     53.247
     ],
     "right_edge": [
-     125,
-     66.559
+     100,
+     53.247
     ]
    },
    "landmarks": [],
@@ -10113,30 +10113,30 @@
    "id": "enamel-public-affairs-master",
    "path": "enamel/enamel-public-affairs-master/enamel-public-affairs-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.761,
+   "w_in": 1,
+   "h_in": 1.409,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-public-affairs-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     176.125
+     50,
+     140.9
     ],
     "center": [
-     62.5,
-     88.063
+     50,
+     70.45
     ],
     "left_edge": [
      0,
-     88.063
+     70.45
     ],
     "right_edge": [
-     125,
-     88.063
+     100,
+     70.45
     ]
    },
    "landmarks": [],
@@ -10147,30 +10147,30 @@
    "id": "enamel-public-affairs-senior",
    "path": "enamel/enamel-public-affairs-senior/enamel-public-affairs-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.749,
+   "w_in": 1,
+   "h_in": 1.399,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-public-affairs-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     174.927
+     50,
+     139.9
     ],
     "center": [
-     62.5,
-     87.463
+     50,
+     69.97
     ],
     "left_edge": [
      0,
-     87.463
+     69.97
     ],
     "right_edge": [
-     125,
-     87.463
+     100,
+     69.97
     ]
    },
    "landmarks": [],
@@ -10181,30 +10181,30 @@
    "id": "enamel-public-affairs-tech",
    "path": "enamel/enamel-public-affairs-tech/enamel-public-affairs-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.349,
+   "w_in": 1,
+   "h_in": 1.08,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-public-affairs-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     134.95
+     50,
+     107.96
     ],
     "center": [
-     62.5,
-     67.475
+     50,
+     53.98
     ],
     "left_edge": [
      0,
-     67.475
+     53.98
     ],
     "right_edge": [
-     125,
-     67.475
+     100,
+     53.98
     ]
    },
    "landmarks": [],
@@ -10215,30 +10215,30 @@
    "id": "enamel-recruiter-master",
    "path": "enamel/enamel-recruiter-master/enamel-recruiter-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.727,
+   "w_in": 1,
+   "h_in": 1.382,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-recruiter-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     172.707
+     50,
+     138.166
     ],
     "center": [
-     62.5,
-     86.353
+     50,
+     69.082
     ],
     "left_edge": [
      0,
-     86.353
+     69.082
     ],
     "right_edge": [
-     125,
-     86.353
+     100,
+     69.082
     ]
    },
    "landmarks": [],
@@ -10249,30 +10249,30 @@
    "id": "enamel-recruiter-senior",
    "path": "enamel/enamel-recruiter-senior/enamel-recruiter-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.724,
+   "w_in": 1,
+   "h_in": 1.379,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-recruiter-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     172.366
+     50,
+     137.893
     ],
     "center": [
-     62.5,
-     86.183
+     50,
+     68.946
     ],
     "left_edge": [
      0,
-     86.183
+     68.946
     ],
     "right_edge": [
-     125,
-     86.183
+     100,
+     68.946
     ]
    },
    "landmarks": [],
@@ -10283,30 +10283,30 @@
    "id": "enamel-recruiter-tech",
    "path": "enamel/enamel-recruiter-tech/enamel-recruiter-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.348,
+   "w_in": 1,
+   "h_in": 1.079,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-recruiter-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     134.839
+     50,
+     107.871
     ],
     "center": [
-     62.5,
-     67.419
+     50,
+     53.935
     ],
     "left_edge": [
      0,
-     67.419
+     53.935
     ],
     "right_edge": [
-     125,
-     67.419
+     100,
+     53.935
     ]
    },
    "landmarks": [],
@@ -10317,30 +10317,30 @@
    "id": "enamel-safety-master",
    "path": "enamel/enamel-safety-master/enamel-safety-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.686,
+   "w_in": 1,
+   "h_in": 1.349,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-safety-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     168.586
+     50,
+     134.869
     ],
     "center": [
-     62.5,
-     84.293
+     50,
+     67.434
     ],
     "left_edge": [
      0,
-     84.293
+     67.434
     ],
     "right_edge": [
-     125,
-     84.293
+     100,
+     67.434
     ]
    },
    "landmarks": [],
@@ -10351,30 +10351,30 @@
    "id": "enamel-safety-senior",
    "path": "enamel/enamel-safety-senior/enamel-safety-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.719,
+   "w_in": 1,
+   "h_in": 1.375,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-safety-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     171.92
+     50,
+     137.5
     ],
     "center": [
-     62.5,
-     85.96
+     50,
+     68.768
     ],
     "left_edge": [
      0,
-     85.96
+     68.768
     ],
     "right_edge": [
-     125,
-     85.96
+     100,
+     68.768
     ]
    },
    "landmarks": [],
@@ -10385,30 +10385,30 @@
    "id": "enamel-safety-tech",
    "path": "enamel/enamel-safety-tech/enamel-safety-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.364,
+   "w_in": 1,
+   "h_in": 1.091,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-safety-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     136.384
+     50,
+     109.1
     ],
     "center": [
-     62.5,
-     68.192
+     50,
+     54.554
     ],
     "left_edge": [
      0,
-     68.192
+     54.554
     ],
     "right_edge": [
-     125,
-     68.192
+     100,
+     54.554
     ]
    },
    "landmarks": [],
@@ -10419,30 +10419,30 @@
    "id": "enamel-senior-advisory-group",
    "path": "enamel/enamel-senior-advisory-group/enamel-senior-advisory-group.svg",
    "category": "enamel",
-   "w_in": 2.088,
-   "h_in": 3,
-   "size_source": "regulation",
-   "basis": "regulation: height 3 in",
+   "w_in": 1.044,
+   "h_in": 1.5,
+   "size_source": "estimated",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-senior-advisory-group prints no dimensions; no regulation size (CAPR 39-1 Att. 7 gives none; the old 3 in was wrong). Sized 1.5 in tall: its listed weight equals the 1 5/8 in regulation Incident Commander Master badge, and Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval",
    "anchors": {
     "top_center": [
-     104.385,
+     52.193,
      0
     ],
     "bottom_center": [
-     104.385,
-     300.029
+     52.193,
+     150
     ],
     "center": [
-     104.385,
-     150.014
+     52.193,
+     75.007
     ],
     "left_edge": [
      0,
-     150.014
+     75.007
     ],
     "right_edge": [
-     208.77,
-     150.014
+     104.385,
+     75.007
     ]
    },
    "landmarks": [],
@@ -10453,30 +10453,30 @@
    "id": "enamel-senior-es",
    "path": "enamel/enamel-senior-es/enamel-senior-es.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.708,
+   "w_in": 1,
+   "h_in": 1.343,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-emergency-services-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     170.761
+     50,
+     134.25
     ],
     "center": [
-     62.5,
-     85.38
+     50,
+     67.125
     ],
     "left_edge": [
      0,
-     85.38
+     67.125
     ],
     "right_edge": [
-     125,
-     85.38
+     100,
+     67.125
     ]
    },
    "landmarks": [],
@@ -10487,30 +10487,30 @@
    "id": "enamel-stan-eval-master",
    "path": "enamel/enamel-stan-eval-master/enamel-stan-eval-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.731,
+   "w_in": 1,
+   "h_in": 1.385,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-stan-eval-basic-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     173.077
+     50,
+     138.462
     ],
     "center": [
-     62.5,
-     86.538
+     50,
+     69.23
     ],
     "left_edge": [
      0,
-     86.538
+     69.23
     ],
     "right_edge": [
-     125,
-     86.538
+     100,
+     69.23
     ]
    },
    "landmarks": [],
@@ -10521,30 +10521,30 @@
    "id": "enamel-stan-eval-senior",
    "path": "enamel/enamel-stan-eval-senior/enamel-stan-eval-senior.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.731,
+   "w_in": 1,
+   "h_in": 1.385,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-stan-eval-basic-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     173.108
+     50,
+     138.486
     ],
     "center": [
-     62.5,
-     86.554
+     50,
+     69.243
     ],
     "left_edge": [
      0,
-     86.554
+     69.243
     ],
     "right_edge": [
-     125,
-     86.554
+     100,
+     69.243
     ]
    },
    "landmarks": [],
@@ -10555,30 +10555,30 @@
    "id": "enamel-stan-eval-tech",
    "path": "enamel/enamel-stan-eval-tech/enamel-stan-eval-tech.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.401,
+   "w_in": 1,
+   "h_in": 1.121,
    "size_source": "estimated",
-   "basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-stan-eval-basic-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     140.086
+     50,
+     112.069
     ],
     "center": [
-     62.5,
-     70.043
+     50,
+     56.034
     ],
     "left_edge": [
      0,
-     70.043
+     56.034
     ],
     "right_edge": [
-     125,
-     70.043
+     100,
+     56.034
     ]
    },
    "landmarks": [],
@@ -10589,30 +10589,30 @@
    "id": "enamel-stem-advanced",
    "path": "enamel/enamel-stem-advanced/enamel-stem-advanced.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.128,
+   "w_in": 1,
+   "h_in": 0.903,
    "size_source": "estimated",
-   "basis": "estimated: tri class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-stem prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     112.839
+     50,
+     90.271
     ],
     "center": [
-     62.5,
-     56.419
+     50,
+     45.135
     ],
     "left_edge": [
      0,
-     56.419
+     45.135
     ],
     "right_edge": [
-     125,
-     56.419
+     100,
+     45.135
     ]
    },
    "landmarks": [],
@@ -10623,30 +10623,30 @@
    "id": "enamel-stem-basic",
    "path": "enamel/enamel-stem-basic/enamel-stem-basic.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.128,
+   "w_in": 1,
+   "h_in": 0.903,
    "size_source": "estimated",
-   "basis": "estimated: tri class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-stem prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     112.839
+     50,
+     90.271
     ],
     "center": [
-     62.5,
-     56.419
+     50,
+     45.135
     ],
     "left_edge": [
      0,
-     56.419
+     45.135
     ],
     "right_edge": [
-     125,
-     56.419
+     100,
+     45.135
     ]
    },
    "landmarks": [],
@@ -10657,30 +10657,30 @@
    "id": "enamel-stem-master",
    "path": "enamel/enamel-stem-master/enamel-stem-master.svg",
    "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.128,
+   "w_in": 1,
+   "h_in": 0.903,
    "size_source": "estimated",
-   "basis": "estimated: tri class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-badge-stem prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
    "anchors": {
     "top_center": [
-     62.5,
+     50,
      0
     ],
     "bottom_center": [
-     62.5,
-     112.839
+     50,
+     90.271
     ],
     "center": [
-     62.5,
-     56.419
+     50,
+     45.135
     ],
     "left_edge": [
      0,
-     56.419
+     45.135
     ],
     "right_edge": [
-     125,
-     56.419
+     100,
+     45.135
     ]
    },
    "landmarks": [],
@@ -11555,38 +11555,38 @@
    "id": "legal-officer-field",
    "path": "field/legal-officer-field/legal-officer-field.svg",
    "category": "field",
-   "w_in": 1.85,
-   "h_in": 1.44499,
-   "size_source": "estimated",
-   "basis": "estimated: command/legal wreath badge about 1.6 in wide; not from a regulation; verify | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
+   "w_in": 1.5,
+   "h_in": 1.184,
+   "size_source": "regulation",
+   "basis": "regulation: width 1.25 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
    "anchors": {
     "top_center": [
-     92.5,
+     75,
      0
     ],
     "bottom_center": [
-     92.5,
-     144.499
+     75,
+     118.4
     ],
     "center": [
-     92.5,
-     72.2495
+     75,
+     59.2
     ],
     "left_edge": [
      0,
-     72.2495
+     59.2
     ],
     "right_edge": [
-     185,
-     72.2495
+     150,
+     59.2
     ],
     "art_top_center": [
-     92.5,
+     75,
      12.5
     ],
     "art_bottom_center": [
-     92.5,
-     131.999
+     75,
+     105.9
     ]
    },
    "landmarks": [],
@@ -28687,7 +28687,7 @@
     ],
     "bottom_center": [
      100,
-     68.194
+     68.195
     ],
     "center": [
      100,
@@ -28721,7 +28721,7 @@
     ],
     "bottom_center": [
      100,
-     68.472
+     68.473
     ],
     "center": [
      100,
@@ -28789,7 +28789,7 @@
     ],
     "bottom_center": [
      100,
-     68.194
+     68.195
     ],
     "center": [
      100,
@@ -28823,7 +28823,7 @@
     ],
     "bottom_center": [
      100,
-     68.472
+     68.473
     ],
     "center": [
      100,
@@ -32255,30 +32255,30 @@
    "id": "legal-officer",
    "path": "silver/legal-officer/legal-officer.svg",
    "category": "silver",
-   "w_in": 1.6,
-   "h_in": 1.195,
-   "size_source": "estimated",
-   "basis": "estimated: command/legal wreath badge about 1.6 in wide; not from a regulation; verify",
+   "w_in": 1.25,
+   "h_in": 0.934,
+   "size_source": "regulation",
+   "basis": "regulation: width 1.25 in",
    "anchors": {
     "top_center": [
-     80,
+     62.5,
      0
     ],
     "bottom_center": [
-     80,
-     119.499
+     62.5,
+     93.359
     ],
     "center": [
-     80,
-     59.749
+     62.5,
+     46.679
     ],
     "left_edge": [
      0,
-     59.749
+     46.679
     ],
     "right_edge": [
-     160,
-     59.749
+     125,
+     46.679
     ]
    },
    "landmarks": [],
@@ -32613,30 +32613,30 @@
    "id": "national-staff",
    "path": "silver/national-staff/national-staff.svg",
    "category": "silver",
-   "w_in": 3.074,
-   "h_in": 2.999,
-   "size_source": "regulation",
-   "basis": "regulation: height 3 in",
+   "w_in": 1.537,
+   "h_in": 1.5,
+   "size_source": "estimated",
+   "basis": "estimated: no Vanguard listing found; no regulation size (CAPR 39-1 Att. 7 gives none; the old 3 in was wrong). Sized 1.5 in tall, same as the governance badges; no Vanguard listing found",
    "anchors": {
     "top_center": [
-     153.69,
+     76.871,
      0
     ],
     "bottom_center": [
-     153.69,
-     299.904
+     76.871,
+     150
     ],
     "center": [
-     153.69,
-     149.952
+     76.871,
+     75.001
     ],
     "left_edge": [
      0,
-     149.952
+     75.001
     ],
     "right_edge": [
-     307.38,
-     149.952
+     153.7,
+     75.001
     ]
    },
    "landmarks": [],
@@ -38916,6 +38916,132 @@
    "landmarks": [
     "cord"
    ]
+  },
+  {
+   "id": "enamel-emergency-services-field",
+   "path": "field/enamel-emergency-services-field/enamel-emergency-services-field.svg",
+   "category": "field",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.25,
+   "h_in": 1.298,
+   "size_source": "estimated",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-emergency-services-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval) | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
+   "anchors": {
+    "top_center": [
+     62.5,
+     0
+    ],
+    "bottom_center": [
+     62.5,
+     129.8
+    ],
+    "center": [
+     62.5,
+     64.9
+    ],
+    "left_edge": [
+     0,
+     64.9
+    ],
+    "right_edge": [
+     125,
+     64.9
+    ],
+    "art_top_center": [
+     62.5,
+     12.5
+    ],
+    "art_bottom_center": [
+     62.5,
+     117.3
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "enamel-master-es-field",
+   "path": "field/enamel-master-es-field/enamel-master-es-field.svg",
+   "category": "field",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.25,
+   "h_in": 1.569,
+   "size_source": "estimated",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-emergency-services-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval) | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
+   "anchors": {
+    "top_center": [
+     62.5,
+     0
+    ],
+    "bottom_center": [
+     62.5,
+     156.9
+    ],
+    "center": [
+     62.5,
+     78.45
+    ],
+    "left_edge": [
+     0,
+     78.45
+    ],
+    "right_edge": [
+     125,
+     78.45
+    ],
+    "art_top_center": [
+     62.5,
+     12.5
+    ],
+    "art_bottom_center": [
+     62.5,
+     144.4
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "enamel-senior-es-field",
+   "path": "field/enamel-senior-es-field/enamel-senior-es-field.svg",
+   "category": "field",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.25,
+   "h_in": 1.593,
+   "size_source": "estimated",
+   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-emergency-services-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval) | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
+   "anchors": {
+    "top_center": [
+     62.5,
+     0
+    ],
+    "bottom_center": [
+     62.5,
+     159.3
+    ],
+    "center": [
+     62.5,
+     79.65
+    ],
+    "left_edge": [
+     0,
+     79.65
+    ],
+    "right_edge": [
+     125,
+     79.65
+    ],
+    "art_top_center": [
+     62.5,
+     12.5
+    ],
+    "art_bottom_center": [
+     62.5,
+     146.8
+    ]
+   },
+   "landmarks": []
   }
  ],
  "scope": "Non-military set only. Military ribbons, medals, badges and ROTC/JROTC ribbons are imported later."

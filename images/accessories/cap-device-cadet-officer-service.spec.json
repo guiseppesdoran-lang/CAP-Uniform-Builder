@@ -2,52 +2,56 @@
  "asset_id": "cap-device-cadet-officer-service",
  "name": "CAP cadet officer service cap insignia",
  "size_in": {
-  "w": 1.94,
-  "h": 2.44
+  "w": 1.75,
+  "h": 2.25
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  194,
-  244
+  175,
+  225
  ],
  "colours": {
-  "silver": "#d3d7dc",
-  "silverL": "#e3e6ea",
+  "silver": "#bcc1c8",
+  "silverL": "#e6e9ed",
   "silverD": "#8f969e",
-  "shade": "#b4bac2"
+  "disc": "#d8dce1",
+  "navyField": "#0f1f78",
+  "rimSilver": "#dfe2e5",
+  "red": "#d40f19",
+  "redL": "#ec2a33"
  },
  "grade": "accessory",
  "anchors": {
   "top_center": [
-   97,
+   87.5,
    0
   ],
   "bottom_center": [
-   97,
-   244
+   87.5,
+   225
   ],
   "center": [
-   97,
-   122
+   87.5,
+   112.5
   ],
   "left_edge": [
    0,
-   122
+   112.5
   ],
   "right_edge": [
-   194,
-   122
+   175,
+   112.5
   ],
   "mount_center": [
-   97,
-   122
+   87.5,
+   112.5
   ]
  },
- "size_source": "estimated",
- "size_basis": "Scaled from Fig A5-8: ~80 px wide x 97 px tall against the 7.4 in cap band (300 px), ~1.9 x 2.4 in; the regulation gives no dimension.",
- "provenance": "CAPR 39-1 3 Mar 2020 Fig A5-8 (p.138, CAP DEVICES row; A5-9 shows the same devices on the women's caps); source figure is ~190 px of faint grey embossing: outline and large shading traced, no feather or leaf detail; CAP disc / shield and triangle are parametric",
+ "size_source": "measured",
+ "size_basis": "Vanguard product page \"Civil Air Patrol Cap Device: Cadet Officer Service\" prints 2 1/4 in high x 1 3/4 in wide (the regulation gives no dimension); the figure measures 323 x 401 px, a 0.805 aspect against the printed 0.778, so the figure measurements are scaled 3.5 % tighter in x than in y to land on the printed size",
+ "provenance": "CAPR 39-1 3 Mar 2020 Fig A5-8 (p.138, CAP DEVICES row and the devices as drawn on the caps; A5-9 shows the same devices on the women's caps); every position measured on the 10x render (crop frame (96,85)): fan disc r 112 about (168,121) with 16 feather rows 13.2 px apart, six stars (corners y 39, row y 63-69, one at y 89), head r 15.5 at (168,134), shield x 110..226 y 232..345, wreath stem points along the leaf ribbon (10 leaf pairs a side, branches meeting under the shield at y 392); left half measured, right half mirrored",
  "mounts": [
   {
    "uniform": "Men's / women's service cap, cadet officers",
@@ -58,9 +62,11 @@
   "cadet officers wear the cadet service cap insignia; no clouds and darts for cadets (6.2.1.1.1, 6.2.1.2.1)"
  ],
  "assumed": [
-  "overall size",
-  "shield size and position",
-  "shading detail"
+  "feather rows drawn as stepped pills, not the figure's relief",
+  "star count and positions read off a raster where each star is about 8 px (six read; low confidence)",
+  "eagle head, beak, breast rows and feet stylised: the figure shows only a 40 px head and a body mostly hidden by the fan",
+  "leaf shapes stylised along the measured wreath line; leaf count (10 pairs a side) estimated from the figure",
+  "two flat silver tones with a thin grey outline"
  ],
  "fit": {
   "method": "n/a",

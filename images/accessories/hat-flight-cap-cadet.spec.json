@@ -49,7 +49,7 @@
   ],
   "garment_attach_center": [
    611.5,
-   504
+   410.2
   ]
  },
  "landmarks": {
@@ -71,8 +71,8 @@
  "assumed": [
   "braid band width and position (about 0.33 of cap height below the top edge, read off the figure)",
   "navy colour sampled from the figure",
-  "shading",
-  "figure caps differ slightly in height, each variant keeps its own measured outline"
+  "figure caps differ slightly in height, each variant keeps its own measured outline",
+  "collar overlap 0.33 in (estimated, see attach_overlap)"
  ],
  "fit": {
   "method": "per-column profile of the regulation figure",
@@ -88,5 +88,11 @@
  },
  "braid": "NCOs and cadets: plain blue with blue braid (6.2.2.2.6)",
  "alias_of": "hat-flight-cap-women-cadet",
- "name_note": "legacy id: women's flight cap (Fig A5-9, p.140); use hat-flight-cap-women-* / hat-flight-cap-men-*"
+ "name_note": "legacy id: women's flight cap (Fig A5-9, p.140); use hat-flight-cap-women-* / hat-flight-cap-men-*",
+ "hat_attach_note": "garment_attach_center is at the cap outline's own bottom at the centre line (4.43 in from the top of the asset) minus 0.33 in, and the engine puts it on the garment's top_center: at the centre line the cap's lower edge lands 0.33 in below the garment top, over the collar line. The outline bottom is lower toward the front and rear of the cap (0.48 in lower at the lowest point), so the cap overlaps more there. The overlap is estimated (see attach_overlap)",
+ "attach_overlap": {
+  "in": 0.33,
+  "size_source": "estimated",
+  "assumption": "The regulation and Fig A5-9 give no relation between the flight cap and the collar (a side view of a cap, no coat). The engine puts garment_attach_center on the garment bounding-box top_center, and the drawn collar does not start there: rendering garment-blues-class-a-coat-female with this cap, the collar top at the centre line (and 0.5 in either side) is 0.27 to 0.30 in below top_center. OVL = 0.30 in measured collar offset + 0.03 in so the lower edge of the cap lands on the collar with no white gap. The cap outline bottom at the centre line is measured from the figure; only the overlap (the cap-to-collar seating, which the regulation does not give) is estimated. The Class B blouse and the FDU carry no collar art at the centre line, their collar points start about 0.1 in lower than the lower edge of the cap there."
+ }
 }

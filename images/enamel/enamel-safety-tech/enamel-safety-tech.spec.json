@@ -1,31 +1,31 @@
 {
  "asset_id": "enamel-safety-tech",
- "width_in": 1.25,
- "height_in": 1.364,
+ "width_in": 1,
+ "height_in": 1.091,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+ "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-safety-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
  "citation": null,
  "anchors": {
   "top_center": [
-   62.5,
+   50,
    0
   ],
   "bottom_center": [
-   62.5,
-   136.384
+   50,
+   109.1
   ],
   "center": [
-   62.5,
-   68.192
+   50,
+   54.554
   ],
   "left_edge": [
    0,
-   68.192
+   54.554
   ],
   "right_edge": [
-   125,
-   68.192
+   100,
+   54.554
   ]
  },
  "dimensions": {
@@ -45,5 +45,5 @@
   "silhouette_iou_approx": 0.972,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.25 x 1.364 in to 1 x 1.091 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }

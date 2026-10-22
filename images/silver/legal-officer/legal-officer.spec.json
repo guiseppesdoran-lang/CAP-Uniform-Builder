@@ -1,31 +1,31 @@
 {
  "asset_id": "legal-officer",
- "width_in": 1.6,
- "height_in": 1.195,
+ "width_in": 1.25,
+ "height_in": 0.934,
  "unit": "1 user unit = 0.01 in",
- "size_source": "estimated",
- "size_basis": "estimated: command/legal wreath badge about 1.6 in wide; not from a regulation; verify",
- "citation": null,
+ "size_source": "regulation",
+ "size_basis": "regulation: width 1.25 in",
+ "citation": "CAPR 39-1 (3 Mar 2020) Attachment 7, Figure A7-3 Occupational Badges: Legal Officer, metal, Regular: 1 1/4 in wide",
  "anchors": {
   "top_center": [
-   80,
+   62.5,
    0
   ],
   "bottom_center": [
-   80,
-   119.499
+   62.5,
+   93.359
   ],
   "center": [
-   80,
-   59.749
+   62.5,
+   46.679
   ],
   "left_edge": [
    0,
-   59.749
+   46.679
   ],
   "right_edge": [
-   160,
-   59.749
+   125,
+   46.679
   ]
  },
  "dimensions": {
@@ -49,5 +49,5 @@
   "silhouette_iou_approx": 0.813,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art. Rescaled uniformly x0.7813 (A4b) from 1.6 x 1.195 in to 1.25 x 0.934 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }

@@ -33,14 +33,14 @@
   "colour": "full"
  },
  "data_source": "reference-art-measured",
- "generator": "artwork-samples/patches (out) + es-style-2",
- "reference": "refs-png/es-style-2.png",
+ "generator": "artwork-samples/patches (a4/make-es2.js) + es-style-2",
+ "reference": null,
  "source_bbox_user_units": [
-  9,
-  9,
-  591,
-  591
+  5,
+  4,
+  597,
+  596
  ],
  "fit_score": null,
- "notes": "Full-colour patch redrawn as clean flat vector art (hand-constructed shapes, measured from the reference photo; lettering as paths); thread texture not reproduced; size estimated."
+ "notes": "Full-colour patch built from geometry (CAPR 39-1 Figure A8-1): the dog is circles, ellipses, polygons and true circular arcs in flat colour from a measured landmark table (aviator cap with CAP triangle, headset, eyes, nose, ear, neckerchief); rings, border and lettering are geometry; no tracing, no thread texture; size estimated."
 }

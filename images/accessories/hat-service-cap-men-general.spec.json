@@ -3,14 +3,14 @@
  "name": "Men's service cap (wheel cap), general officers (3 clouds and darts)",
  "size_in": {
   "w": 11.5,
-  "h": 6.6
+  "h": 6.9
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   1150,
-  660
+  690
  ],
  "colours": {
   "navy": "#0b1f5e",
@@ -27,7 +27,7 @@
  "grade": "accessory",
  "size_source": "estimated",
  "size_basis": "Not dimensioned in CAPR 39-1 beyond the 1 3/4 in band braid (6.2.1.1.1). Scaled so the band is 7.4 in across (head ~22.5 in, as in base-art/hats.js); proportions read from CAPR 39-1 Fig A5-8 / A5-9 front views.",
- "provenance": "drawn from CAPR 39-1 Fig A5-8 (front views of the four men's service caps); no cap was measured",
+ "provenance": "drawn from CAPR 39-1 Fig A5-8 (front views of the four men's service caps); crown ellipse, visor and cloud/bolt/dart placement read off the 10x render (base-art/rank-traces/capdev-src/cap_*_10x.png); no cap was measured",
  "anchors": {
   "top_center": [
    575,
@@ -35,51 +35,51 @@
   ],
   "bottom_center": [
    575,
-   660
+   690
   ],
   "center": [
    575,
-   330
+   345
   ],
   "left_edge": [
    0,
-   330
+   345
   ],
   "right_edge": [
    1150,
-   330
+   345
   ],
   "device_slot_center": [
    575,
-   135
+   156.29999999999998
   ],
   "garment_attach_center": [
    575,
-   400
+   459.99999999999994
   ],
   "band_top_center": [
    575,
-   225
+   285
   ],
   "visor_center": [
    575,
-   509.99999999999994
+   569.9999999999999
   ],
   "front_center": [
    575,
-   330
+   345
   ]
  },
  "landmarks": {
   "device_slot": {
    "x": 475,
-   "y": 35.00000000000001,
+   "y": 56.3,
    "w": 200,
    "h": 200
   },
   "band": {
    "x": 204.99999999999997,
-   "y": 225,
+   "y": 285,
    "w": 740,
    "h": 175
   }
@@ -87,9 +87,11 @@
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); device_slot is a nominal 2 in box centred where the CAP service cap insignia sits (centred on the front of the crown)",
  "dimensions": {
   "crown_w_in": 11.3,
+  "crown_h_in": 3.84,
+  "crown_top_to_band_top_in": 2.75,
   "band_w_in": 7.4,
   "band_h_in": 1.75,
-  "visor_drop_in": 2.55,
+  "visor_drop_in": 2.25,
   "clouds_and_darts_per_side": 3,
   "visor": "black"
  },
@@ -105,7 +107,10 @@
   "all dimensions except the band height",
   "colours sampled from the figure",
   "chinstrap and button size",
-  "cloud/dart ornaments drawn as a simplified cluster, not the embroidered pattern"
+  "cloud, bolt and dart ornaments are geometric (cumulus lobes, serrated strip, arrow) laid along the visor edge as on the figure, not the embroidered pattern",
+  "visor drawn as a bowl 7.1 in wide and 1.9 in deep (read off the figure, about 1.85 in deep against the 7.4 in band)",
+  "crown drawn as an ellipse 11.5 in wide and 2.8 in from its top to the band top: the figure scales to 2.63 in, raised so the 2.375 in device (Vanguard) keeps the figure's clear space above it",
+  "cloud centres, sizes and bolt lengths read off the 1860 px figure (u, offset and size tables in build-caps.js), cloud shapes are stylised lobes"
  ],
  "fit": {
   "method": "n/a",

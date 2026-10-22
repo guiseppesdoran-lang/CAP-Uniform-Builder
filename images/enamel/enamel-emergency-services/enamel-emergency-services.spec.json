@@ -1,31 +1,31 @@
 {
  "asset_id": "enamel-emergency-services",
- "width_in": 1.25,
- "height_in": 1.334,
+ "width_in": 1,
+ "height_in": 1.048,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+ "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-emergency-services-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
  "citation": null,
  "anchors": {
   "top_center": [
-   62.5,
+   50,
    0
   ],
   "bottom_center": [
-   62.5,
-   133.43
+   50,
+   104.8
   ],
   "center": [
-   62.5,
-   66.715
+   50,
+   52.419
   ],
   "left_edge": [
    0,
-   66.715
+   52.419
   ],
   "right_edge": [
-   125,
-   66.715
+   100,
+   52.419
   ]
  },
  "dimensions": {
@@ -33,17 +33,17 @@
   "level": "none"
  },
  "data_source": "reference-art-measured",
- "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + emergency_services_badge",
+ "generator": "artwork-samples/enamel (g3/make-triangle.js, shield.js + shield-profile-reg.json) + emergency_services_badge",
  "reference": "../batch/ref/emergency_services_badge.png",
  "source_bbox_user_units": [
-  34,
+  32.667,
   55.333,
-  207,
-  240
+  208.333,
+  239.5
  ],
  "fit_score": {
-  "silhouette_iou_approx": 0.974,
-  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+  "silhouette_iou_approx": 0.905,
+  "note": "bbox-normalised 96x96 mask IoU vs the product photo (check-asset.js); the shield outline itself is from Fig A7-4, so a lower IoU than the old photo-averaged shape is expected"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Shield outline measured from CAPR 39-1 Figure A7-4 (enamel/measure-shield-reg.js, 15 technician shields); the triangle, seal and letters come from the product photo. Rescaled uniformly x0.8 (A4b) from 1.25 x 1.31 in to 1 x 1.048 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }

@@ -49,9 +49,15 @@
   ],
   "garment_attach_center": [
    588.17,
-   379.96
+   312.96
   ]
  },
+ "attach_overlap": {
+  "in": 0.55,
+  "size_source": "estimated",
+  "assumption": "The regulation and Attachment 5 give no relation between the flight cap and the collar (a side view of a cap, no coat). The engine puts garment_attach_center on the garment bounding-box top_center, and the drawn collar does not start there: rendering garment-blues-class-a-coat with this cap, the collar top at the centre line (and 0.5 in either side) is 0.50 in below top_center. OVL = 0.50 in measured collar offset + 0.05 in so the lower edge of the cap lands on the collar with no white gap. The cap outline bottom at the centre line is measured from the figure; only the overlap (the cap-to-collar seating, which the regulation does not give) is estimated."
+ },
+ "hat_attach_note": "garment_attach_center is at the cap outline's own bottom at the centre line (3.68 in from the top of the asset) minus 0.55 in; the engine puts it on the garment's top_center, so at the centre line the cap's lower edge lands 0.55 in below the garment top, over the collar line. The overlap is estimated (see attach_overlap)",
  "landmarks": {
   "device_slot": {
    "x": 112,
@@ -71,7 +77,7 @@
  "assumed": [
   "braid band width and position (about 0.33 of cap height below the top edge, read off the figure)",
   "navy colour sampled from the figure",
-  "shading",
+  "collar overlap 0.55 in (estimated, see attach_overlap)",
   "figure caps differ slightly in height, each variant keeps its own measured outline"
  ],
  "fit": {

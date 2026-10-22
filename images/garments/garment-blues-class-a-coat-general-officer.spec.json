@@ -13,7 +13,7 @@
   2995.5
  ],
  "size_source": "estimated",
- "size_basis": "Sleeve braid width 1.5 in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
+ "size_basis": "Sleeve braid width 1.5 in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated. Braid tone sampled from CAPR 39-1 (3 Mar 2020) rendered at 3x: Fig 4.6 PDF p64 (p.36) braid 2.3,33.1,86.2 / 2.7,31.9,84.3; Fig 4.1 PDF p54 (p.26) 2.1,32.3,83.6; Fig 4.7a PDF p73 (p.45) 2.1,32.4,84.6; coat 0,40,101. Drawn as 0.04 in lines on a 0.1 in pitch, tones = coat navy x RATIO.",
  "anchors": {
   "top_center": [
    1186.3,
@@ -159,7 +159,7 @@
  "assumed": [
   "epaulet and epaulet sleeve size",
   "US insignia size",
-  "braid colour (blue, not specified as a shade for the Class A coat)",
+  "braid colour: no shade specified for the Class A coat; tone sampled from the CAPR 39-1 figures 4.6 / 4.7a (see base-art/braid-art.js)",
   "rank insignia not drawn: placed by the rank insignia assets at rank_slot"
  ],
  "fit": {

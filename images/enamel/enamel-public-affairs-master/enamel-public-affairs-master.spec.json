@@ -1,31 +1,31 @@
 {
  "asset_id": "enamel-public-affairs-master",
- "width_in": 1.25,
- "height_in": 1.761,
+ "width_in": 1,
+ "height_in": 1.409,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "estimated: shield class badge about 1.25 in wide; not from a regulation; verify against the supplier spec",
+ "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-public-affairs-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
  "citation": null,
  "anchors": {
   "top_center": [
-   62.5,
+   50,
    0
   ],
   "bottom_center": [
-   62.5,
-   176.125
+   50,
+   140.9
   ],
   "center": [
-   62.5,
-   88.063
+   50,
+   70.45
   ],
   "left_edge": [
    0,
-   88.063
+   70.45
   ],
   "right_edge": [
-   125,
-   88.063
+   100,
+   70.45
   ]
  },
  "dimensions": {
@@ -45,5 +45,5 @@
   "silhouette_iou_approx": 0.95,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.25 x 1.761 in to 1 x 1.409 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }

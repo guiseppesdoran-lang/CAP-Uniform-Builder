@@ -1,31 +1,31 @@
 {
  "asset_id": "enamel-nra-distinguished-expert",
- "width_in": 1.1,
- "height_in": 2.756,
+ "width_in": 0.88,
+ "height_in": 2.205,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "estimated: nra class badge about 1.1 in wide; not from a regulation; verify against the supplier spec",
+ "size_basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
  "citation": null,
  "anchors": {
   "top_center": [
-   55,
+   44,
    0
   ],
   "bottom_center": [
-   55,
-   275.643
+   44,
+   220.5
   ],
   "center": [
-   55,
-   137.821
+   44,
+   110.257
   ],
   "left_edge": [
    0,
-   137.821
+   110.257
   ],
   "right_edge": [
-   110,
-   137.821
+   88,
+   110.257
   ]
  },
  "dimensions": {
@@ -45,5 +45,5 @@
   "silhouette_iou_approx": null,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.1 x 2.756 in to 0.88 x 2.205 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }
