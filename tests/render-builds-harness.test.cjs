@@ -26,3 +26,13 @@ test('the standard matrix has a Maj Gen on every uniform a general officer wears
     assert.ok(names.has(n), `${n} is in the matrix`);
   }
 });
+
+test('the critique build set is valid JSON the harness can turn into engine builds', () => {
+  const { execFileSync } = require('node:child_process');
+  const list = JSON.parse(execFileSync(process.execPath, [require('node:path').join(__dirname, '..', 'scripts', 'critique-builds.cjs')], { encoding: 'utf8' }));
+  assert.ok(list.length > 30);
+  const names = new Set(list.map(b => b.name));
+  assert.equal(names.size, list.length, 'names are unique');
+  for(const b of list) assert.ok(H.makeBuild(b.build).uniform, b.name);
+  for(const n of ['ocp-male-senior-LtCol-patches-overlay', 'flight_suit-male-cadet-CSSgt-two-badges-es-style1-scarf', 'corporate_flight_suit-male-senior-MajGen', 'flight_suit-male-cadet-CCapt-command-pin']) assert.ok(names.has(n), n);
+});
