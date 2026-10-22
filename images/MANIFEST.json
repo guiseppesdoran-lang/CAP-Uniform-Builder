@@ -32775,10 +32775,10 @@
    "id": "model-rocketry",
    "path": "silver/model-rocketry/model-rocketry.svg",
    "category": "silver",
-   "w_in": 0.69,
+   "w_in": 0.6904,
    "h_in": 3,
    "size_source": "regulation",
-   "basis": "regulation: height 3 in",
+   "basis": "regulation: height 3 in (Fig A7-2 dimension arrow, full badge height)",
    "anchors": {
     "top_center": [
      34.52,
