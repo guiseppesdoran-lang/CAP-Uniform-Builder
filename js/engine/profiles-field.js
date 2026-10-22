@@ -514,9 +514,10 @@
       ctx.landmarkShift = ctx.landmarkShift || {};
       const put = (v, dx, dy, z, role) => {
         const layer = Object.assign(core.registerAtOrigin(spec, z, role), { key: `${role}:${v.group}`, x: dx, y: dy, origin: { x: dx, y: dy }, onlyGroups: [v.group, ...(v.with || [])], noBounds: true, className: role });
-        ctx.layers.push(layer);
-        // The scene box takes the view's own extent, not the whole sheet's.
+        // The view's own extent, not the whole sheet's, is what the overlay keeps clear of and what the scene box takes.
         const pad = v.pad || 0.1;
+        layer.obstacle = { x: v.box.x + dx - pad, y: v.box.y + dy - pad, w: v.box.w + 2 * pad, h: v.box.h + 2 * pad };
+        ctx.layers.push(layer);
         ctx.layers.push({ type: 'rect', x: v.box.x + dx - pad, y: v.box.y + dy - pad, w: v.box.w + 2 * pad, h: v.box.h + 2 * pad, rotate: 0, origin: { x: v.box.x + dx, y: v.box.y + dy }, z: 0, role: 'hat-view-bounds', key: `hat-view-bounds:${v.group}`, fill: 'none' });
         for(const n of [v.rect, ...(v.follow || [])]) ctx.landmarkShift[n] = { dx, dy };
         v.shift = { dx, dy };

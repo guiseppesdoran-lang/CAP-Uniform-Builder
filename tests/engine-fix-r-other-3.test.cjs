@@ -228,6 +228,8 @@ test('OCP, ABU and CFU: the patrol cap (ABU cap, OCP patrol cap, Blue Field Cap)
       const vl = core.landmarkBounds(spec, { 'hat-patrol-back': 'patrol_cap_back', 'hat-ball-front': 'baseball_cap_front', 'hat-ball-back': 'baseball_cap_back', 'hat-boonie-front': 'boonie_hat_front', 'hat-boonie-back': 'boonie_hat_back' }[v.onlyGroups[0]]);
       assert.ok(!boxOverlap({ x: vl.x + v.x, y: vl.y + v.y, w: vl.w, h: vl.h }, hbox), `${uniform} ${sex} ${rank}: ${v.onlyGroups[0]} is clear of the seated cap`);
     }
+    // The overlay keeps clear of the cap's own box, not of the whole sheet the view is drawn from.
+    assert.ok(hat.obstacle && hat.obstacle.w < 10 && hat.obstacle.h < 8, `${uniform}: the hat's obstacle is its own box`);
     const base = scene.layers.find(l => l.key === 'base:jacket');
     assert.ok(hat.z > base.z && base.hideGroups.includes('hat-patrol-front'), `${uniform}: the sheet's own patrol cap view is hidden, the cap is drawn over the garment`);
     // Officers' grade is on the seated cap's front, over it, where the view now is.

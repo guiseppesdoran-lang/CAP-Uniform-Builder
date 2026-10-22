@@ -26,12 +26,12 @@
 
   // Placed pieces the overlay keeps clear of. Garment sheets and their overlays are the cloth itself;
   // `clear` marks drawn-in pieces (a nametag on the sheet) that the profile asks to keep clear.
-  const SOLID = new Set(['badge', 'grade', 'hat', 'hat-device', 'epaulet-top', 'mini', 'mini-drape', 'mini-medal', 'nametag', 'patch', 'ribbon', 'device', 'text', 'clear']);
+  const SOLID = new Set(['badge', 'grade', 'hat', 'hat-view', 'hat-device', 'epaulet-top', 'mini', 'mini-drape', 'mini-medal', 'nametag', 'patch', 'ribbon', 'device', 'text', 'clear']);
 
   function obstaclesOf(scene){
     return scene.layers
       .filter(l => l.type !== 'measure' && SOLID.has(l.role))
-      .map(l => l.type === 'clear' ? { x: l.x, y: l.y, w: l.w, h: l.h } : core.layerBounds(l))
+      .map(l => l.type === 'clear' ? { x: l.x, y: l.y, w: l.w, h: l.h } : (l.obstacle || core.layerBounds(l)))
       .filter(b => b && b.w > 0 && b.h > 0);
   }
 
