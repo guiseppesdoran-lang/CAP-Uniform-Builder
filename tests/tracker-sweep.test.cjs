@@ -206,3 +206,15 @@ test('unused functions and the dead references to controls the page no longer ha
   // What the page still calls is still defined.
   for(const name of ['fullRender', 'refreshUI', 'updateAvailabilityUI']) assert.equal(ev(`typeof ${name}`), 'function', name);
 });
+
+test('the picker offers real choices for every ribbon: no placeholder entries, none empty (UI audit 2.7)', () => {
+  assert.doesNotMatch(read('js/galleries.js'), /Basic Award \+ V Device Placeholder|Gold-Level Placeholder/);
+  for(const membership of ['cadet', 'senior']){
+    ev(`State.membership = '${membership}'`);
+    for(const id of Array.from(ev('ribbonList'))){
+      const options = Array.from(ev(`getRibbonAwardOptions('${id}')`));
+      assert.ok(options.filter(o => o.value).length >= 1, `${membership} ${id}: has a choice`);
+      assert.ok(options.every(o => !/placeholder/i.test(o.label)), `${membership} ${id}: no placeholder label`);
+    }
+  }
+});

@@ -505,12 +505,7 @@ function getRibbonAwardOptions(id){
     return continuation.length ? [...specialImageOptions, ...continuation] : specialImageOptions;
   }
 
-  if(id === 'Air_Force_Organizational_Excellence_Award'){
-    return ribbonAwardCountOptions(10);
-  }
-
-  if(id === 'air_medal') return ribbonAwardCountOptions(2);
-
+  // Awards that are earned once and have no devices.
   if(new Set([
     'national_commanders_citation','cadet_certificate_of_proficiency',
     'historic_cadet_blue_achievement','historic_cadet_white_achievement',
@@ -519,61 +514,6 @@ function getRibbonAwardOptions(id){
     'southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon',
     'forest_patrol_ribbon','missing_aircraft_ribbon'
   ]).has(id)) return ribbonSelectOnlyOptions();
-
-  if(id === 'silver_medal_of_valor'){
-    return [
-      { label:'- Select -', value:'', devices:{} },
-      { label:'1 Silver Medal of Valor', value:'silver_valor_1', devices:{} },
-      { label:'2 Silver Medals of Valor', value:'silver_valor_2', devices:{} },
-      { label:'3 Silver Medals of Valor', value:'silver_valor_3', devices:{} }
-    ];
-  }
-
-  if(CADET_ACHIEVEMENT_RIBBONS.has(id)){
-    if(id === 'mitchell_award'){
-      return [
-        { label:'- Select -', value:'', devices:{} },
-        { label:'Earned', value:'earned', devices:{} },
-        { label:'Earned + COS Star', value:'earned_cos_star', devices:{'1_Bronze_Star_Device':1} }
-      ];
-    }
-
-    if(id === 'goddard_achievement'){
-      return [
-        { label:'- Select -', value:'', devices:{} },
-        { label:'Earned', value:'earned', devices:{} },
-        { label:'Earned + Rocketry/Honor Device', value:'earned_device', devices:{'1_Bronze_Star_Device':1} },
-        { label:'Earned + Both Devices', value:'earned_both_devices', devices:{'1_Bronze_Star_Device':2} }
-      ];
-    }
-
-    return ribbonSelectOnlyOptions();
-  }
-
-  if(id === 'red_service_ribbon'){
-    return ribbonYearOptions([2,5,10,15,20,25,30,35,40,45,50,55,60,65]);
-  }
-
-  if(id === 'search_find_ribbon') return ribbonFindOptions(32);
-  if(id === 'air_search_and_rescue_ribbon') return ribbonSortieOptions(320,10);
-  if(id === 'community_service_ribbon') return ribbonHourOptions(1260,60);
-
-  if(id === 'cadet_advisory_council_ribbon'){
-    return [
-      { label:'- Select -', value:'', devices:{} },
-      { label:'Group CAC', value:'group', devices:{} },
-      { label:'Wing CAC / Bronze Star', value:'wing_bronze', devices:{'1_Bronze_Star_Device':1} },
-      { label:'Region CAC / Silver Star', value:'region_silver', devices:{'1_Silver_Star_Device':1} },
-      { label:'National CAC / Gold-Level Placeholder', value:'national_gold', devices:{'1_Silver_Star_Device':1,'1_Bronze_Star_Device':1} }
-    ];
-  }
-
-  if(id === 'disaster_relief_ribbon'){
-    return [
-      ...ribbonAwardCountOptions(10),
-      { label:'Basic Award + V Device Placeholder', value:'basic_v', devices:{'1_Bronze_Star_Device':1} }
-    ];
-  }
 
   if([
     'cap_gill_robb_wilson_ribbon',
