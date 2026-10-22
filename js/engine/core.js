@@ -158,6 +158,8 @@
     if(opts.hideGroups) layer.hideGroups = opts.hideGroups;
     if(opts.onlyGroups) layer.onlyGroups = opts.onlyGroups;
     if(opts.clip) layer.clip = opts.clip;
+    // Draw only what lies inside the silhouette (the `clipSil` clip path) of the named garment sheet.
+    if(opts.clipSil) layer.clipSil = opts.clipSil;
     return layer;
   }
 

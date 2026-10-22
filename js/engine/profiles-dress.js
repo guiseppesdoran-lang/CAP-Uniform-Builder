@@ -276,11 +276,11 @@
   }
 
   // Chevrons keep their true size and shape, even where the front view shows less sleeve.
-  async function sleeveChevrons(ctx, id, pts){
+  async function sleeveChevrons(ctx, id, pts, opts){
     for(const side of ['right', 'left']){
       const p = pts[side];
       if(!p) continue;
-      await ctx.place(id, { pieceAnchor: 'visual_center', at: { x: p[0], y: p[1] }, rotate: p[2] || 0, z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side });
+      await ctx.place(id, Object.assign({ pieceAnchor: 'visual_center', at: { x: p[0], y: p[1] }, rotate: p[2] || 0, z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side }, opts || {}));
     }
     // Halfway between the shoulder seam and the elbow, shown once, on the outside of the sleeve.
     const s = ctx.point('shoulder_seam_right'), e = ctx.point('elbow_right'), c = ctx.point('chevron_halfway_right');
@@ -788,7 +788,13 @@
   //   x  = the midline of the drawn sleeve at that height, from the sheet's silhouette (its outer edge)
   //        and its armhole seam line: men's 2.02 in (outer edge 0.51 in, seam 3.52 in, 3.00 in apart),
   //        women's 2.42 in (0.59 in and 4.26 in, 3.68 in apart); the left sleeve mirrors it
-  //   turn = the tilt of that midline (men's 0.3 deg, women's 1.1 deg toward the outer side at the hem)
+  //   turn = the tilt of that midline in degrees toward the outer side at the hem: women's 1.1; the
+  //        men's measured 0.3 is left at 0 (it is under what the render can show)
+  // The drawn sleeves are narrower than the 3 1/2 in chevron (a wedge: the men's is 3.0 in wide at mid-height
+  // and narrower at the top), so the chevron is not scaled (R1) and the part past the sleeve's outer edge is
+  // clipped to the sheet's garment silhouette (layer clipSil), reading as wrapping round the arm in front view;
+  // it is not clipped at the armhole seam, where the shirt front continues. Remove the table and the clip when
+  // the sheets are widened and carry chevron_halfway anchors (FOLLOWUPS, FIX-R-OTHER-r1).
   // Where a sheet draws chevron_halfway anchors of its own they win (chevronAnchors).
   const SHORT_SLEEVE_MIDLINE = {
     'male-short': { x: 2.02, turn: 0 },
@@ -835,8 +841,9 @@
       const size = female && b.opt.chevron === '4' ? '4' : '3.5';
       const id = G.seniorChevron(g, { size });
       const key = (female ? 'female' : 'male') + (long ? '-long' : '-short');
-      const pts = chevronAnchors(ctx) || (SHORT_SLEEVE_MIDLINE[key] ? shortSleeveChevron(ctx, SHORT_SLEEVE_MIDLINE[key]) : null) || V.chev;
-      await sleeveChevrons(ctx, id, pts);
+      const sheetPts = chevronAnchors(ctx);
+      const midline = !sheetPts && SHORT_SLEEVE_MIDLINE[key] ? shortSleeveChevron(ctx, SHORT_SLEEVE_MIDLINE[key]) : null;
+      await sleeveChevrons(ctx, id, sheetPts || midline || V.chev, midline ? { clipSil: base } : null);
     }
     // The epaulet sleeves are edge-on in the front view, each with its grade, and seen from above
     // just over the shoulder with the grade in place (R7).

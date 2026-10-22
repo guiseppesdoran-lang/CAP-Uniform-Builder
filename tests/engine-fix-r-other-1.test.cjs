@@ -108,8 +108,9 @@ test('Class B short sleeve: the sleeve chevron is centred on the drawn sleeve ha
     near(l.x + l.w / 2, spec.w - midX, 0.03, `${sex}: left chevron mirrors it`);
     near(r.y + r.h / 2, (sh.y + bottom.y) / 2, 0.05, `${sex}: halfway between the shoulder seam and the bottom edge of the sleeve`);
     near(r.w, size, 0.01, `${sex}: regulation 3 1/2 in width, not scaled`);
-    // How far the chevron box passes the armhole seam onto the shirt front: the drawn men's sleeve is 3.0 in
-    // wide at that height, so a 3 1/2 in chevron passes each edge by about a quarter inch (decided, DECISIONS).
+    // How far the chevron box passes the armhole seam at the sleeve's mid-height (the sleeve is a wedge, so at
+    // the chevron's upper corners, y 6.2-6.9 in, it is about 0.6 in on the men's shirt and 0.27 in on the
+    // blouse: accepted until the art widens the sleeves, DECISIONS FIX-R-OTHER-r2).
     const seamX = sex === 'male' ? spec.w / 2 - 6.826 : spec.w / 2 - 6.131;
     assert.ok(r.x + r.w - seamX < 0.35, `${sex}: passes the armhole seam by ${(r.x + r.w - seamX).toFixed(2)} in`);
   }
@@ -253,4 +254,44 @@ test('flight suit name tag: wings plus a specialty badge says specialty badges a
     assert.equal(two.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 2);
     assert.ok(!two.notes.some(n => /name tag/.test(n)));
   }
+});
+
+// ---- 4 (r2). The short-sleeve chevron is clipped to the garment silhouette (4.1.11.1.1.1.3, 4.1.12.2.3.3) -----------
+
+function silhouette(garment){
+  const svg = fs.readFileSync(path.join(root, 'images', 'garments', garment + '.svg'), 'utf8');
+  const art = /<g id="[^"]*__art" transform="translate\(([\d.]+) ([\d.]+)\) scale\(100\)">/.exec(svg);
+  const ox = Number(art[1]) / 100, oy = Number(art[2]) / 100;
+  const d = /<clipPath id="[^"]*__clipSil"><path d="([^"]*)"/.exec(svg)[1];
+  return (d.match(/-?\d+\.?\d*,-?\d+\.?\d*/g) || []).map(t => { const [x, y] = t.split(',').map(Number); return { x: ox + x, y: oy + y }; });
+}
+function inPoly(p, poly){
+  let c = false;
+  for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){
+    const a = poly[i], b = poly[j];
+    if((a.y > p.y) !== (b.y > p.y) && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x) c = !c;
+  }
+  return c;
+}
+
+test('Class B short sleeve: the sleeve chevron layer carries the sheet silhouette clip, at full size, centred as before', async () => {
+  for(const [sex, garment, midX, chevron] of [['male', 'garment-blues-class-b-shirt-male', 2.02, ''], ['female', 'garment-blues-class-b-blouse-female', 2.42, ''], ['female', 'garment-blues-class-b-blouse-female', 2.42, '4']]){
+    const spec = await store.load(garment);
+    const sil = silhouette(garment);
+    const scene = await compose(build('blues_b', sex, 'senior', 'SMSgt', [], { opt: { sleeve: 'short', headgear: 'auto', chevron } }));
+    for(const side of ['right', 'left']){
+      const l = byKey(scene, 'grade:sleeve-' + side);
+      assert.equal(l.clipSil, garment, `${sex} ${chevron || '3.5'} ${side}: clipped to the sheet's silhouette`);
+      assert.ok(l.w >= 3.5 - 0.01, 'not scaled down (R1)');
+      // The clip is the silhouette itself: the chevron's centre is on the garment, and the armhole seam is not a clip edge (the shirt front beyond it is inside).
+      assert.ok(inPoly({ x: l.x + l.w / 2, y: l.y + l.h / 2 }, sil), `${sex} ${side}: centre inside the silhouette`);
+      const inner = side === 'right' ? l.x + l.w : l.x;
+      assert.ok(inPoly({ x: inner, y: l.y + l.h / 2 }, sil), `${sex} ${side}: the part past the armhole seam lies on the shirt front, inside the silhouette`);
+    }
+    near(byKey(scene, 'grade:sleeve-right').x + byKey(scene, 'grade:sleeve-right').w / 2, midX, 0.03, `${sex}: centring unchanged`);
+    assert.ok(spec.w > 0);
+  }
+  // The long sleeve is not clipped.
+  const long = await compose(build('blues_b', 'male', 'senior', 'SMSgt', [], { opt: { sleeve: 'long', headgear: 'auto' } }));
+  assert.ok(!byKey(long, 'grade:sleeve-right').clipSil);
 });

@@ -169,6 +169,25 @@
 
     const layers = [...scene.layers].sort((a, b2) => (a.z || 0) - (b2.z || 0));
     const clipIds = new Map();
+    const silIds = new Map();
+    function silhouetteClip(garmentId){
+      if(silIds.has(garmentId)) return silIds.get(garmentId);
+      let cid = null;
+      const base = scene.layers.find(l => l.type === 'asset' && l.id === garmentId && l.role === 'garment');
+      const data = symbolData.get(garmentId);
+      const path = defs.querySelector(`[id="${garmentId}__clipSil"] path`), art = defs.querySelector(`[id="${garmentId}__art"]`);
+      if(base && data && path && art){
+        const vbox = data.viewBox.split(/\s+/).map(Number);
+        const cp = el('clipPath', { id: 'clipsil-' + silIds.size, clipPathUnits: 'userSpaceOnUse' });
+        const copy = el('path', { d: path.getAttribute('d'), 'clip-rule': path.getAttribute('clip-rule') || null,
+          transform: `translate(${fmt(base.x)} ${fmt(base.y)}) scale(${fmt(base.w / vbox[2])} ${fmt(base.h / vbox[3])}) translate(${fmt(-vbox[0])} ${fmt(-vbox[1])}) ${art.getAttribute('transform') || ''}` });
+        cp.appendChild(copy);
+        defs.appendChild(cp);
+        cid = cp.getAttribute('id');
+      }
+      silIds.set(garmentId, cid);
+      return cid;
+    }
     for(const layer of layers){
       let node = null;
       if(layer.type === 'asset'){
@@ -218,6 +237,16 @@
         const g = el('g', { 'clip-path': `url(#${cid})` });
         g.appendChild(node);
         node = g;
+      }
+      if(layer.clipSil){
+        // Clipped to the garment sheet's own silhouette (its `clipSil` path, in the sheet's art frame): a
+        // copy of the path carried into the scene by the same transform the sheet's symbol is drawn with.
+        const sil = silhouetteClip(layer.clipSil);
+        if(sil){
+          const g = el('g', { 'clip-path': `url(#${sil})` });
+          g.appendChild(node);
+          node = g;
+        }
       }
       const wrap = el('g', {
         class: 'layer ' + (layer.className || ''),
