@@ -889,6 +889,9 @@
 
     if(g.category === 'cadet-officer') await ctx.overlay(`${base}-epaulet-sleeve-cadet-officer`, Z.epauletLayer);
     else if(isOfficerLike(g)) await ctx.overlay(`${base}-epaulet-sleeve-officer`, Z.epauletLayer);
+    // Every member's shirt and blouse has epaulets (4.1.11.1.1, 4.1.12.2): where no sleeve is slipped over the strap (NCOs, cadet NCOs and airmen, adults without grade) the plain strap is
+    // drawn, above the shoulder cord (9.3, 9.4.1: the cord is worn underneath the epaulet) and without a grade.
+    else if(ctx.has(`${base}-epaulet-plain`)) await ctx.overlay(`${base}-epaulet-plain`, Z.epauletLayer);
     if(g.general) await ctx.overlay(`${base}-general-officer-buckle`);
 
     await ctx.overlay(g.cadet ? `${base}-nametag-cadet` : `${base}-nametag-adult`, Z.tape);
