@@ -462,31 +462,47 @@
   }
   // The shoulder views from above (epaulet sleeves, shoulder boards) lie over the cap's lower corners, and
   // the cap device is mounted there on the flight cap (6.2.2.2.1): a view that would hide part of the device
-  // (R6, R7) slides outward along its strap, away from the neck, until it clears the device by CLEAR_DEVICE in (only a view that overlaps the device moves).
-  // It stays on the shoulder: the slide is capped at MAX_VIEW_SLIDE (the grade slides with it); a device box the view cannot clear within that is left alone.
+  // (R6, R7) slides outward along its strap, away from the neck, until it clears the device by CLEAR_DEVICE in.
+  // The garment and the regulation figures for the epaulets are left/right symmetric (CAPR 39-1 4.1.11.1.1.1.1,
+  // Fig 4.9), and each view sits close to its own shoulder (R7), so the other shoulder's view slides by the same
+  // distance along its own outward strap axis: the pair stays mirrored about the garment's centre line (the
+  // views and their grades both move; a view that clears the device on its own shoulder moves with its twin).
+  // The slide is capped at MAX_VIEW_SLIDE (the grade slides with its view); a device box the view cannot clear
+  // within that is left alone.
   const CLEAR_DEVICE = 0.05, MAX_VIEW_SLIDE = 0.8;
   function clearViewsOfDevice(ctx, dev){
     const rect = (g) => [{ x: dev.x - g, y: dev.y - g }, { x: dev.x + dev.w + g, y: dev.y - g }, { x: dev.x + dev.w + g, y: dev.y + dev.h + g }, { x: dev.x - g, y: dev.y + dev.h + g }];
     const exact = rect(0), box = rect(CLEAR_DEVICE);
-    for(const l of ctx.layers){
-      if(l.role !== 'epaulet-top' || l.type !== 'asset' || !polygonsOverlap(layerCorners(l), exact)) continue;
-      // Outward along the strap: the box's long axis turned by the layer's rotation, away from the centre line.
+    const mid = ctx.base ? ctx.base.w / 2 : 0;
+    // Only a view turned along its strap has an outward axis (the mess dress boards are whole-sheet overlays clipped to the board).
+    const views = ctx.layers.filter(l => l.role === 'epaulet-top' && l.type === 'asset' && Math.abs(Math.sin((l.rotate || 0) * Math.PI / 180)) > 1e-6);
+    // Outward along the strap: the box's long axis turned by the layer's rotation, away from the centre line.
+    const outward = (l) => {
       const r = (l.rotate || 0) * Math.PI / 180;
-      let u = { x: -Math.sin(r), y: Math.cos(r) };
-      const mid = ctx.base ? ctx.base.w / 2 : 0;
-      if((l.x + l.w / 2 - mid) * u.x < 0) u = { x: -u.x, y: -u.y };
+      const u = { x: -Math.sin(r), y: Math.cos(r) };
+      return (l.x + l.w / 2 - mid) * u.x < 0 ? { x: -u.x, y: -u.y } : u;
+    };
+    const moved = (l, u, t) => layerCorners(Object.assign({}, l, { x: l.x + u.x * t, y: l.y + u.y * t, origin: { x: l.origin.x + u.x * t, y: l.origin.y + u.y * t } }));
+    let slide = 0;
+    for(const l of views){
+      if(!polygonsOverlap(layerCorners(l), exact)) continue;
+      const u = outward(l);
       let t = 0;
-      const moved = () => layerCorners(Object.assign({}, l, { x: l.x + u.x * t, y: l.y + u.y * t, origin: { x: l.origin.x + u.x * t, y: l.origin.y + u.y * t } }));
-      while(t < MAX_VIEW_SLIDE && polygonsOverlap(moved(), box)) t += 0.01;
+      while(t < MAX_VIEW_SLIDE && polygonsOverlap(moved(l, u, t), box)) t += 0.01;
       // A box this wide (the cadet colonel's three diamonds) only overlaps the view in its padding: the view stays.
-      if(polygonsOverlap(moved(), box)) continue;
+      if(polygonsOverlap(moved(l, u, t), box)) continue;
+      slide = Math.max(slide, t);
+    }
+    if(!slide) return;
+    for(const l of views){
+      const u = outward(l);
       const side = (l.key || '').split(':')[1];
       for(const m of ctx.layers){
         if(m !== l && !(m.key === 'grade:top-' + side)) continue;
-        m.x += u.x * t; m.y += u.y * t;
-        if(m.origin) m.origin = { x: m.origin.x + u.x * t, y: m.origin.y + u.y * t };
+        m.x += u.x * slide; m.y += u.y * slide;
+        if(m.origin) m.origin = { x: m.origin.x + u.x * slide, y: m.origin.y + u.y * slide };
       }
-      l.slid = Math.round(t * 100) / 100;
+      l.slid = Math.round(slide * 100) / 100;
     }
   }
 
