@@ -21,6 +21,7 @@ const NAME = { first: 'Pat', last: 'Doe', show: true };
 const PILOT = 'CAPPilot1_FA9D33EA587D8';
 // A harness build (the same ids the page and the critique set use).
 const hb = (uniform, gender, membership, rank, o) => HARNESS.makeBuild(Object.assign({ uniform, gender, membership, rank, name: NAME, opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' } }, o || {}));
+const RIB = [['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
 const byKey = (scene, key) => scene.layers.find(l => l.key === key);
 const badgeLayers = scene => scene.layers.filter(l => l.role === 'badge' && l.figure !== 2);
 
@@ -170,4 +171,46 @@ test('semi-formal blazers: the miniature rack is centred on the crest and the ch
     }
   }
   assert.equal(checked, 16);
+});
+
+// ---- 5. Shirts: the collar lies over every badge that reaches it, on the companion shirt figure too ------------
+
+const C = require('../js/engine/compose.js');
+test('aviator and Class B shirts, the aviator beside the blazer included: every badge, ribbon or device that reaches a collar leaf is cut out by the leaf polygons where the leaf really is (4.2.5.1.3.1, 4.1.11.1.1.2.3.1)', async () => {
+  const builds = [];
+  for(const gender of ['male', 'female']){
+    for(const rank of ['Capt', 'Col']){
+      builds.push(['aviator_blazer', gender, rank, [PILOT, 'observer_badge', 'christian_chaplin']]);
+      builds.push(['aviator', gender, rank, [PILOT, 'observer_badge', 'christian_chaplin']]);
+      builds.push(['blues_b', gender, rank, [PILOT, 'emergency_services_badge', 'communications_technician_badge']]);
+    }
+  }
+  let reached = 0;
+  for(const [uniform, gender, rank, badgeIds] of builds){
+    for(const sleeve of ['short', 'long']){
+      const scene = await compose(hb(uniform, gender, 'senior', rank, { badgeIds, ribbonSel: RIB, opt: { headgear: 'none', sleeve, underlayer: 'shirt', femaleTop: 'shirt' } }));
+      for(const sheet of scene.layers.filter(l => l.role === 'garment')){
+        const spec = await store.load(sheet.id);
+        const polys = ['collar_left', 'collar_right'].map(n => spec.landmarks[n]).filter(l => l && l.points).map(l => l.points.map(p => ({ x: p.x + sheet.x, y: p.y + sheet.y })));
+        if(polys.length !== 2) continue;
+        for(const l of scene.layers.filter(x => ['badge', 'ribbon', 'device'].includes(x.role) && (x.figure || 1) === (sheet.figure || 1) && !(x.rotate) && x.type === 'asset')){
+          const touches = polys.filter(p => C.rectHitsPolygon(l, p));
+          if(!touches.length) continue;
+          reached++;
+          const id = `${uniform} ${gender} ${rank} ${sleeve} ${l.key}`;
+          assert.ok(l.clipOut && l.clipOut.length, `${id}: reaches a collar leaf, so it is cut by it`);
+          // The cut-out polygons are on this figure, not on the first one.
+          assert.ok(l.clipOut.some(p => C.rectHitsPolygon(l, p)), `${id}: the cut-out polygon lies where the badge is (x ${l.x.toFixed(2)})`);
+        }
+      }
+    }
+  }
+  assert.ok(reached >= 4, `${reached} layers reach a collar leaf`);
+});
+
+test('aviator beside the blazer: the chaplain badge is under the shirt collar, on the shirt figure (the polygon moves with the figure)', async () => {
+  const scene = await compose(hb('aviator_blazer', 'male', 'senior', 'Capt', { badgeIds: [PILOT, 'observer_badge', 'christian_chaplin'], ribbonSel: RIB }));
+  const ch = scene.layers.find(l => l.key === 'badge:christian_chaplin' && l.figure === 2);
+  assert.ok(ch && ch.clipOut, 'the shirt\'s chaplain badge is cut by the collar');
+  for(const poly of ch.clipOut) for(const p of poly) assert.ok(p.x > 27, `cut-out point x ${p.x.toFixed(2)} is on the second figure`);
 });
