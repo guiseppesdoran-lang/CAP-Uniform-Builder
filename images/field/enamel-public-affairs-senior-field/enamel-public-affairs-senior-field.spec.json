@@ -1,0 +1,75 @@
+{
+ "asset_id": "enamel-public-affairs-senior-field",
+ "width_in": 1.25,
+ "height_in": 1.649,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-public-affairs-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval) | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
+ "citation": "OCP: CAPR 39-1 ICL 25-06 para 7.1.1.3.1 (max 4 badges, light silver embroidery on dark blue, 1/8 in of blue exposed at widest/tallest part). ABU: CAPR 39-1 (3 Mar 2020) para 5.1.1.1.2.4 (two aviation/occupational badges, embroidered silver on dark blue, 1/8 in of blue showing) and 5.1.1.1.2.5 (command insignia). Eligible list: Attachment 7 aviation + occupational badges",
+ "anchors": {
+  "top_center": [
+   62.5,
+   0
+  ],
+  "bottom_center": [
+   62.5,
+   164.9
+  ],
+  "center": [
+   62.5,
+   82.45
+  ],
+  "left_edge": [
+   0,
+   82.45
+  ],
+  "right_edge": [
+   125,
+   82.45
+  ],
+  "art_top_center": [
+   62.5,
+   12.5
+  ],
+  "art_bottom_center": [
+   62.5,
+   152.4
+  ]
+ },
+ "dimensions": {
+  "size_class": "shield",
+  "level": "senior"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + Public_affairs_senior",
+ "reference": "../batch/ref/Public_affairs_senior.png",
+ "source_bbox_user_units": [
+  35,
+  0,
+  206.5,
+  240
+ ],
+ "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from enamel-public-affairs-senior.",
+ "field_uniform": {
+  "worn_on": [
+   "abu",
+   "ocp"
+  ],
+  "max_badges": {
+   "abu": 2,
+   "ocp": 4
+  },
+  "backing": "dark blue rectangle (square corners)",
+  "backing_color": "#1b2547",
+  "thread_color": "#d3d8de",
+  "margin_in": 0.125,
+  "corner_radius_in": 0,
+  "backing_minus_art_in": 0.25,
+  "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
+  "art_width_in": 1,
+  "art_height_in": 1.399,
+  "source_asset": "enamel-public-affairs-senior",
+  "kind": "chest-badge"
+ },
+ "derived_from": "assets/enamel/enamel-public-affairs-senior"
+}
