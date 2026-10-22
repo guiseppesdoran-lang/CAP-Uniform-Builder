@@ -97,6 +97,32 @@
   }
 
   // Fit a piece in a rect (never larger than true size) and centre it there.
+  // ---- collar insignia turned to the collar's front edge ---------------------------------------
+
+  // The front edge of a collar polygon, the edge that runs along the neck opening: from the topmost
+  // vertex (where the collar meets the neck at the back) to the vertex nearest the sheet's centre
+  // line (the bottom of the V, at the placket), the lowest of them when several are as near. Same
+  // rule for every sheet. Returns { top, bottom } or null.
+  function polygonFrontEdge(points, centerX){
+    if(!points || points.length < 3) return null;
+    let top = points[0], bottom = points[0];
+    for(const p of points) if(p.y < top.y) top = p;
+    for(const p of points){
+      const d = Math.abs(p.x - centerX), best = Math.abs(bottom.x - centerX);
+      if(d < best - 1e-6 || (Math.abs(d - best) <= 1e-6 && p.y > bottom.y)) bottom = p;
+    }
+    return { top, bottom };
+  }
+
+  // The turn, clockwise in degrees, that lays an upright piece (its apex up) along the line from
+  // `bottom` to `top` with its apex toward `top`. Zero for a vertical edge, positive when the top
+  // leans to the right. One formula for every collar edge: the cadet NCO chevron stands parallel to
+  // the front of the collar (CAPR 39-1 4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5, 5.1.1.1.1.4,
+  // 5.2.1.1.1, Figure A5-5).
+  function edgeTurnDeg(top, bottom){
+    return Math.atan2(top.x - bottom.x, bottom.y - top.y) * 180 / Math.PI;
+  }
+
   async function fitCenter(ctx, id, rect, opts){
     return C.fitIn(ctx, id, rect, opts);
   }
@@ -402,5 +428,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, polygonFrontEdge, edgeTurnDeg, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

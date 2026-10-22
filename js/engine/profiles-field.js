@@ -105,7 +105,12 @@
       };
       if(g.category === 'cadet-nco'){
         const s = slot('cadet_nco');
-        if(s) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: 'center', at: s.at, rotate: s.deg, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+        // The turn that lays the chevron along the collar's front edge: the same formula as the
+        // shirts' collar chevrons (profiles-dress.js), from the edge the sheet measured; the slot's
+        // own angle is that edge's angle.
+        const fe = slots && slots[side] && slots[side].front_edge;
+        const turn = fe ? H.edgeTurnDeg({ x: fe.p1[0], y: fe.p1[1] }, { x: fe.p2[0], y: fe.p2[1] }) : (s && s.deg);
+        if(s) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: 'center', at: s.at, rotate: turn, z: Z.insignia, role: 'grade', key: 'grade:' + side });
       }else if(g.category === 'cadet-officer'){
         // The grade's row is drawn across; turned a quarter more so it runs along the front edge.
         const s = slot('cadet_officer');

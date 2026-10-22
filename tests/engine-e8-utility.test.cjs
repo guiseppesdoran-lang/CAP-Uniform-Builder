@@ -341,7 +341,8 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
         const s = slots[side][kind];
         // the piece's long axis, turned the slot's way (officers' row is drawn across and turned a quarter more)
         const expect = kind === 'cadet_officer' ? s.angle_deg + (s.angle_deg < 0 ? 90 : -90) : s.angle_deg;
-        assert.ok(Math.abs(g.rotate - expect) < 1e-6, `${u} ${rank} ${side}: ${g.rotate} vs ${expect}`);
+        // the cadet NCO chevron's turn is computed from the front edge's two points (one formula for every collar, E5), the slot's angle_deg is that edge's angle rounded to 0.1 deg
+        assert.ok(Math.abs(g.rotate - expect) < (kind === 'cadet_nco' ? 0.1 : 1e-6), `${u} ${rank} ${side}: ${g.rotate} vs ${expect}`);
         // the leaf's front edge: the axis points the way the edge runs (top toward the shoulder)
         const d = slots[side].front_edge.dir_down;
         const axis = core.rotatePoint({ x: 0, y: 1 }, { x: 0, y: 0 }, s.angle_deg);
