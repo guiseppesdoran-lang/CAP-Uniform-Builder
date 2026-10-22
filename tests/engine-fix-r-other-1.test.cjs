@@ -160,3 +160,25 @@ test('semi-formal blazer: the lapel foreground is above the miniature medals and
     near((x0 + x1) / 2, slot.x + slot.w / 2, 0.4, `${sex}: the rack stays centred on the medal slot`);
   }
 });
+
+// ---- 10. Mess dress boards: edge-on strip at the shoulder line plus the view from above, both with the grade (R7) ----
+
+test('mess dress officers: each shoulder has an edge-on strip and a lifted view from above, both carrying the grade', async () => {
+  for(const [sex, rank] of [['male', 'Capt'], ['male', 'Col'], ['male', 'Maj Gen'], ['female', 'Lt Col'], ['female', 'Brig Gen']]){
+    const scene = await compose(build('mess_dress', sex, 'senior', rank, []));
+    for(const side of ['right', 'left']){
+      const top = byKey(scene, `epaulet-top:${side}`), edge = byKey(scene, `epaulet-edge:${side}`);
+      const gTop = byKey(scene, `grade:top-${side}`), gEdge = byKey(scene, `grade:edge-${side}`);
+      assert.ok(top && edge && gTop && gEdge, `${sex} ${rank} ${side}: edge-on strip, view from above and both grades`);
+      assert.ok(top.clip && top.y < -1.5, `${sex} ${rank} ${side}: the view from above is the board art lifted (${top.y.toFixed(2)} in) and clipped to the board`);
+      // The edge-on grade lies on the strip's centre line.
+      const th = (side === 'right' ? edge.rotate : edge.rotate - 180) * Math.PI / 180;
+      const n = { x: Math.sin(th), y: -Math.cos(th) }; // perpendicular to the strip
+      const gc = { x: gEdge.origin.x, y: gEdge.origin.y };
+      assert.ok(Math.abs((gc.x - edge.origin.x) * n.x + (gc.y - edge.origin.y) * n.y) < 0.12, `${sex} ${rank} ${side}: the grade is on the strip`);
+      near(edge.h, 0.4, 0.001, `${sex} ${rank} ${side}: the strip is 0.4 in thick`);
+    }
+  }
+  const male = await compose(build('mess_dress', 'male', 'senior', 'Capt', []));
+  assert.ok(!male.notes.some(n => /No artwork/.test(n)));
+});
