@@ -346,6 +346,21 @@
     for(const p of out.placements) p.y += shift;
     const sizes = {};
     for(const d of [...new Set(medals.flatMap(m => m.devices || []))]){ if(ctx.has(d)){ const s = await ctx.spec(d); sizes[d] = { w: s.w, h: s.h }; } }
+    // Where each medal's drape and body lie, so the devices of a lower row go in the part of the drape the
+    // rows above leave exposed: the upper rows' bodies hang over the drapes below them (11.2.8).
+    const covers = new Map();
+    for(const p of out.placements){
+      const m = p.item;
+      if(m.raster && !(m.ribbonAsset && ctx.has(m.ribbonAsset))){ covers.set(p, { x0: p.x, x1: p.x + MINI_DRAPE.w, bottom: p.y + totalH }); continue; }
+      let x0 = p.x, x1 = p.x + MINI_DRAPE.w;
+      if(m.medal && ctx.has(m.medal)){
+        const s = await ctx.spec(m.medal);
+        const attach = core.anchor(s, 'ribbon_attach') || { x: s.w / 2, y: 0 };
+        x0 = Math.min(x0, p.x + MINI_DRAPE.w / 2 - attach.x); x1 = Math.max(x1, p.x + MINI_DRAPE.w / 2 - attach.x + s.w);
+      }
+      covers.set(p, { x0, x1, bottom: p.y + MINI_DRAPE.h + (hang.get(m) || 0) });
+    }
+    const DEVICE_GAP = 0.04;
     for(const p of out.placements){
       const m = p.item;
       // Upper rows hang over the drapes of the rows below them, so they draw later.
@@ -369,8 +384,23 @@
       // the ribbon (propeller, longevity numeral) is centred vertically, the others above and below.
       const own = (m.devices || []).filter(d => sizes[d]);
       const devs = m.centered ? own : awards.sortRun(own);
-      const step = 0.24;
-      const midY = p.y + (MINI_DRAPE.h - MINI_DRAPE.point) / 2;
+      // The devices go in the exposed part of the drape: from just below the lowest body of an upper
+      // row that overlaps their column (plus a small gap) down to the drape's V point. With nothing
+      // above, that is the whole drape.
+      const colHalf = Math.max(0, ...devs.map(d => sizes[d].h)) / 2, colX = p.x + MINI_DRAPE.w / 2;
+      let exposedTop = p.y;
+      for(const q of out.placements){
+        if(q.row >= p.row) continue;
+        const c = covers.get(q);
+        if(c.x1 > colX - colHalf && c.x0 < colX + colHalf) exposedTop = Math.max(exposedTop, c.bottom + DEVICE_GAP);
+      }
+      const exposedBottom = p.y + MINI_DRAPE.h - MINI_DRAPE.point;
+      const midY = (Math.min(exposedTop, exposedBottom) + exposedBottom) / 2;
+      // The stack's height is the first device's length plus a step for each further one; where less than
+      // that is exposed, the step shrinks (devices nest, they never leave the exposed part).
+      const lead = devs.length ? Math.max(...devs.map(d => sizes[d].w)) : 0;
+      let step = 0.24;
+      if(!m.centered && devs.length > 1) step = Math.max(0.1, Math.min(step, (exposedBottom - exposedTop - lead) / (devs.length - 1)));
       const y0 = midY - (devs.length - 1) * step / 2;
       devs.forEach((d, i) => {
         const sz = sizes[d];

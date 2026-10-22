@@ -114,3 +114,30 @@ test('Class B short sleeve: the sleeve chevron is centred on the drawn sleeve ha
     assert.ok(r.x + r.w - seamX < 0.35, `${sex}: passes the armhole seam by ${(r.x + r.w - seamX).toFixed(2)} in`);
   }
 });
+
+// ---- 8. Mini medal devices are not hidden under the medal bodies of the row above ----------------------------
+
+const HARNESS = require('../scripts/render-builds.cjs');
+const TWELVE = [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['air_search_and_rescue_ribbon'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
+
+test('12 miniatures: no device on a lower row lies under the medal bodies of a row above (11.4.2, 11.2.8)', async () => {
+  for(const [uniform, sex, rank, columns] of [['mess_dress', 'male', 'Col', 4], ['mess_dress', 'female', 'Col', 4], ['semi_formal', 'male', 'Capt', 4], ['semi_formal', 'female', 'Lt Col', 3]]){
+    const b = HARNESS.makeBuild({ uniform, gender: sex, membership: 'senior', rank, ribbonSel: TWELVE, medalSel: true, opt: { rackColumns: columns, rackArrangement: 'lapel', miniStyle: 'mounting' } });
+    const scene = await compose(b);
+    const devices = scene.layers.filter(l => l.role === 'device' && /^mini:/.test(l.key));
+    assert.ok(devices.length >= 3, `${uniform} ${sex}: the build has devices to check (${devices.length})`);
+    const bodies = scene.layers.filter(l => l.role === 'mini-medal');
+    for(const d of devices){
+      // The device is turned a quarter: its box is its height wide and its width tall, about its centre.
+      const cx = d.origin.x, cy = d.origin.y, hw = d.h / 2, hh = d.w / 2;
+      for(const m of bodies){
+        if(m.z <= d.z + 0.05) continue; // the same row or below
+        const hit = cx + hw > m.x && cx - hw < m.x + m.w && cy + hh > m.y && cy - hh < m.y + m.h;
+        assert.ok(!hit, `${uniform} ${sex}: device ${d.key} (y ${(cy - hh).toFixed(2)}-${(cy + hh).toFixed(2)}) is under the body ${m.key} (y ${m.y.toFixed(2)}-${(m.y + m.h).toFixed(2)})`);
+      }
+      // ... and stays on its drape, above the V point.
+      const drape = scene.layers.find(l => l.role === 'mini-drape' && d.key.startsWith(l.key + ':'));
+      assert.ok(drape && cy - hh >= drape.y - 1e-6 && cy + hh <= drape.y + drape.h - 0.14, `${uniform} ${sex}: ${d.key} is on its drape`);
+    }
+  }
+});

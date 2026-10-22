@@ -447,4 +447,4 @@ async function main(){
 }
 
 if(require.main === module) main().catch(e => { console.error(e.stack || e); process.exit(1); });
-module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS };
+module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS, makeBuild };
