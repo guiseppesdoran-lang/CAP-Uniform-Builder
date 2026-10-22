@@ -1,0 +1,78 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-epaulet-plain",
+ "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only) plain epaulet straps (overlay, registered to garment-blues-class-b-shirt-male; no grade)",
+ "size_in": {
+  "w": 23.4863,
+  "h": 24.28
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2348.63,
+  2428
+ ],
+ "size_source": "estimated",
+ "size_basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+ "anchors": {
+  "top_center": [
+   1174.3135441762117,
+   0
+  ],
+  "bottom_center": [
+   1174.3135441762117,
+   2427.9999999999995
+  ],
+  "center": [
+   1174.3135441762117,
+   1213.9999999999998
+  ],
+  "left_edge": [
+   0,
+   1213.9999999999998
+  ],
+  "right_edge": [
+   2348.6270883524235,
+   1213.9999999999998
+  ],
+  "epaulet_plain_right_center": [
+   634.71,
+   313
+  ],
+  "epaulet_plain_left_center": [
+   1713.91,
+   313
+  ]
+ },
+ "landmarks": {
+  "epaulet_plain_right": {
+   "x": 415.91,
+   "y": 163.9,
+   "w": 437.6,
+   "h": 298.2
+  },
+  "epaulet_plain_left": {
+   "x": 1495.11,
+   "y": 163.9,
+   "w": 437.6,
+   "h": 298.2
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-shirt-male",
+ "documented": [
+  "the shirt and blouse have epaulets for every member (CAPR 39-1 4.1.11.1.1 / 4.1.12.2)",
+  "shoulder cords are worn along the shoulder seam and, if the garment has an epaulet, underneath it (9.3, 9.4.1)",
+  "no grade goes on the strap itself: officers slip a gray or blue epaulet sleeve over it, NCOs and airmen wear chevrons or collar insignia"
+ ],
+ "assumed": [
+  "strap size and shape (the traced base image does not draw it)",
+  "button size and position",
+  "topstitch inset"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

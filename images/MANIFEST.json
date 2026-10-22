@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 913,
+ "count": 917,
  "by_category": {
   "accessories": 30,
   "badges": 1,
@@ -39174,6 +39174,186 @@
     ]
    },
    "landmarks": []
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-epaulet-plain",
+   "path": "garments/garment-blues-class-b-shirt-male-epaulet-plain.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 23.4863,
+   "h_in": 24.28,
+   "size_source": "estimated",
+   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+   "anchors": {
+    "top_center": [
+     1174.3135441762117,
+     0
+    ],
+    "bottom_center": [
+     1174.3135441762117,
+     2427.9999999999995
+    ],
+    "center": [
+     1174.3135441762117,
+     1213.9999999999998
+    ],
+    "left_edge": [
+     0,
+     1213.9999999999998
+    ],
+    "right_edge": [
+     2348.6270883524235,
+     1213.9999999999998
+    ],
+    "epaulet_plain_right_center": [
+     634.71,
+     313
+    ],
+    "epaulet_plain_left_center": [
+     1713.91,
+     313
+    ]
+   },
+   "landmarks": [
+    "epaulet_plain_right",
+    "epaulet_plain_left"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-epaulet-plain",
+   "path": "garments/garment-blues-class-b-shirt-male-long-epaulet-plain.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 22.52,
+   "h_in": 27.075,
+   "size_source": "estimated",
+   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male-long, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+   "anchors": {
+    "top_center": [
+     1126,
+     0
+    ],
+    "bottom_center": [
+     1126,
+     2707.5
+    ],
+    "center": [
+     1126,
+     1353.75
+    ],
+    "left_edge": [
+     0,
+     1353.75
+    ],
+    "right_edge": [
+     2252,
+     1353.75
+    ],
+    "epaulet_plain_right_center": [
+     585.8,
+     300.25
+    ],
+    "epaulet_plain_left_center": [
+     1666.2,
+     300.25
+    ]
+   },
+   "landmarks": [
+    "epaulet_plain_right",
+    "epaulet_plain_left"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-epaulet-plain",
+   "path": "garments/garment-blues-class-b-blouse-female-epaulet-plain.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.9779,
+   "h_in": 27.11,
+   "size_source": "estimated",
+   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+   "anchors": {
+    "top_center": [
+     1098.896597554959,
+     0
+    ],
+    "bottom_center": [
+     1098.896597554959,
+     2711
+    ],
+    "center": [
+     1098.896597554959,
+     1355.5
+    ],
+    "left_edge": [
+     0,
+     1355.5
+    ],
+    "right_edge": [
+     2197.793195109918,
+     1355.5
+    ],
+    "epaulet_plain_right_center": [
+     580.55,
+     297
+    ],
+    "epaulet_plain_left_center": [
+     1617.25,
+     297
+    ]
+   },
+   "landmarks": [
+    "epaulet_plain_right",
+    "epaulet_plain_left"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-epaulet-plain",
+   "path": "garments/garment-blues-class-b-blouse-female-long-epaulet-plain.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.4956,
+   "h_in": 29.896,
+   "size_source": "estimated",
+   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female-long, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+   "anchors": {
+    "top_center": [
+     1074.7818012025655,
+     0
+    ],
+    "bottom_center": [
+     1074.7818012025655,
+     2989.6
+    ],
+    "center": [
+     1074.7818012025655,
+     1494.8
+    ],
+    "left_edge": [
+     0,
+     1494.8
+    ],
+    "right_edge": [
+     2149.563602405131,
+     1494.8
+    ],
+    "epaulet_plain_right_center": [
+     555.78,
+     283.9
+    ],
+    "epaulet_plain_left_center": [
+     1593.78,
+     283.9
+    ]
+   },
+   "landmarks": [
+    "epaulet_plain_right",
+    "epaulet_plain_left"
+   ]
   }
  ],
  "scope": "Non-military set only. Military ribbons, medals, badges and ROTC/JROTC ribbons are imported later."
