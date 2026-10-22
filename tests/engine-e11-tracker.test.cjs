@@ -101,3 +101,14 @@ test('corporate blazer, men: a turtleneck hides the shirt, the tie and the shirt
   assert.ok(!shirt.layers.find(l => l.role === 'garment').hideGroups, 'the shirt and tie show with the shirt option');
 });
 
+// ---- service badge next to the collar ------------------------------------------------------------------------
+
+test('women\'s Class A: the Volunteer University badge, a CAP service badge, is worn closest to the lapel (10.2.4)', async () => {
+  const scene = await compose(build('blues_a', 'female', 'senior', 'Maj', ['volunteer_university_instructor_badge', 'emergency_services_badge']));
+  const vu = byKey(scene, 'badge:volunteer_university_instructor_badge'), es = byKey(scene, 'badge:emergency_services_badge');
+  assert.ok(vu && es);
+  const cx = l => l.x + l.w / 2;
+  // The wearer's left is the viewer's right: the lapel side.
+  assert.ok(cx(vu) > cx(es), 'the service badge is on the lapel side of the pair');
+});
+

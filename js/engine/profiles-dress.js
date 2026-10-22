@@ -15,6 +15,8 @@
   const PLATE_WHITE = '#f4f6f8';
   const ENGRAVED_BLUE = '#1f2f5c';
   const LAPEL_Z = Z.badge + 0.6;
+  // The badges that may take the CAP Crest's place on the corporate blazer (4.2.3.1.1.1). Not the
+  // whole service family: the Volunteer University badge and the National Staff badge may not.
   const SERVICE_IDS = new Set(['senior_advisory_group_badge', 'national_executive_committee_badge', 'command_council_badge', 'cap_national_command_board_badge']);
 
   // ---- who wears what ---------------------------------------------------------------------
@@ -198,7 +200,7 @@
     const pair = queue.slice(0, 2);
     const left = ordinary.length ? queue.slice(2) : [];
     const moved = ordinary.length ? specials : specials.slice(2);
-    if(pair.length === 2 && SERVICE_IDS.has(pair[0].id)) pair.reverse();
+    if(pair.length === 2 && pair[0].family === 'service') pair.reverse();
     if(onX == null){
       if(pair.length) ctx.note('Some badges have no place left on this uniform and are not shown');
       return;
@@ -879,7 +881,7 @@
       // Women: badges on the wearer's right, tops even with the top of the medals; the current pin
       // 1/2 in above them and the graduated pin 1/2 in below them.
       const pair = others.slice(0, 2);
-      if(pair.length === 2 && SERVICE_IDS.has(pair[0].id)) pair.reverse();
+      if(pair.length === 2 && pair[0].family === 'service') pair.reverse();
       let top = medTop, bottom = medTop;
       if(pair.length){
         const widths = [];
