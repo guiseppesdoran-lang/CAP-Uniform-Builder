@@ -51,7 +51,10 @@ for(const g of ['male', 'female']){
   mk(`blues_b-${g}-cadet-CCapt-jrotc`, 'blues_b', g, 'cadet', 'C/Capt', { ribbonSel: [...cadRib.slice(0, 5), ...JROTC], badgeIds: [AIRCREW] });
 }
 mk('blues_a-male-senior-Capt-jrotc', 'blues_a', 'male', 'senior', 'Capt', { ribbonSel: [...rib().slice(0, 4), ...JROTC], badgeIds: A4 });
-mk('semi_formal_usaf-male-cadet-CCapt-jrotc', 'semi_formal_usaf', 'male', 'cadet', 'C/Capt', { ribbonSel: [...cadRib.slice(0, 5), ...JROTC], medalSel: true, badgeIds: [AIRCREW] });
+// The USAF semi-formal wears ribbons, not miniatures (11.1.2, 11.1.4): no medalSel here, or the harness moves every ribbon to b.medals and the build
+// draws none. Miniatures are for the mess dress and the corporate semi-formal; the mess dress build below carries the JROTC ids with medalSel.
+mk('semi_formal_usaf-male-cadet-CCapt-jrotc', 'semi_formal_usaf', 'male', 'cadet', 'C/Capt', { ribbonSel: [...cadRib.slice(0, 5), ...JROTC], badgeIds: [AIRCREW] });
+mk('mess_dress-male-senior-Capt-jrotc', 'mess_dress', 'male', 'senior', 'Capt', { ribbonSel: [...rib().slice(0, 4), ...JROTC], medalSel: true, badgeIds: [A4[0]] });
 
 // Class B (items 4-6): short-sleeve NCO chevron, the rack in precedence order, general officer.
 for(const g of ['male', 'female']){

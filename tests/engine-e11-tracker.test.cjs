@@ -380,3 +380,29 @@ test('JROTC/ROTC ribbons are drawn at the ribbon size, in the rack below the CAP
     assert.ok(Math.min(...rotcYs) >= Math.min(...placed.map(l => l.y)), `${uniform} ${sex}: within the rack`);
   }
 });
+
+// The critique build set carries the JROTC ribbons on the USAF semi-formal as ribbons and on the mess dress as no miniature (11.1.2, 11.1.4).
+const HARNESS = require('../scripts/render-builds.cjs');
+const { execFileSync } = require('node:child_process');
+const critiqueSet = JSON.parse(execFileSync(process.execPath, [path.join(root, 'scripts', 'critique-builds.cjs')], { encoding: 'utf8' }));
+const composeCritique = name => compose(HARNESS.makeBuild(critiqueSet.find(x => x.name === name).build));
+
+test('critique build, USAF semi-formal: the three JROTC ribbons are drawn as ribbons in the lowest rack row (the USAF semi-formal wears ribbons, 11.1.2, 11.1.4)', async () => {
+  const scene = await composeCritique('semi_formal_usaf-male-cadet-CCapt-jrotc');
+  assert.ok(!scene.layers.some(l => /medal/.test(l.role)), 'no miniature medal');
+  assert.equal(scene.notes.filter(n => /Ribbons are required|No artwork/i.test(n)).length, 0);
+  const ribbons = scene.layers.filter(l => l.role === 'ribbon');
+  const rotc = ribbons.filter(l => /rotc/.test(l.id));
+  assert.equal(rotc.length, 3);
+  assert.equal(ribbons.length, 8, '5 CAP + 3 JROTC');
+  for(const l of rotc) near(l.w, 1.375, 0.001), near(l.h, 0.375, 0.001);
+  const lowestCap = Math.max(...ribbons.filter(l => !/rotc/.test(l.id)).map(l => l.y));
+  for(const l of rotc) assert.ok(l.y > lowestCap, 'under every CAP row');
+});
+
+test('critique build, mess dress: miniatures for the CAP awards only, none for the JROTC ids, and no missing-art note (11.1.4, 11.2.5)', async () => {
+  const scene = await composeCritique('mess_dress-male-senior-Capt-jrotc');
+  assert.equal(scene.layers.filter(l => l.role === 'mini-medal').length, 4);
+  assert.ok(!scene.layers.some(l => /rotc/i.test(l.key + l.id)), 'no JROTC layer, ribbon or medal');
+  assert.equal(scene.notes.filter(n => /No artwork|not drawn/i.test(n)).length, 0);
+});
