@@ -15,6 +15,10 @@
   const PLATE_WHITE = '#f4f6f8';
   const ENGRAVED_BLUE = '#1f2f5c';
   const LAPEL_Z = Z.badge + 0.6;
+  // A badge that reaches the lapel's drawn area lies on top of it: it is pinned on the coat, and a badge
+  // the lapel half hides is not 'worn and visible' (4.1.5.2.2.4.1, 4.1.9.4.4.1). Above the lapel foreground
+  // (Z.badge + 0.5), below the lapel insignia (LAPEL_Z).
+  const BADGE_OVER_LAPEL_Z = Z.badge + 0.55;
   // The badges that may take the CAP Crest's place on the corporate blazer (4.2.3.1.1.1). Not the
   // whole service family: the Volunteer University badge and the National Staff badge may not.
   const SERVICE_IDS = new Set(['senior_advisory_group_badge', 'national_executive_committee_badge', 'command_council_badge', 'cap_national_command_board_badge']);
@@ -338,6 +342,25 @@
     layer.y += dy;
     layer.origin = { x: layer.origin.x, y: layer.origin.y + dy };
     layer.noBounds = true; // the garment sheet sets the scene box; the shift only moves the insignia
+  }
+
+  // Sampled test: does any part of the box lie inside the polygon (inches)?
+  function boxTouchesPolygon(r, poly){
+    const inside = p => { let c = false; for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){ const a = poly[i], b = poly[j]; if(((a.y > p.y) !== (b.y > p.y)) && (p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x)) c = !c; } return c; };
+    if(poly.some(p => p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h)) return true;
+    for(let i = 0; i <= 24; i++) for(let j = 0; j <= 24; j++) if(inside({ x: r.x + i * r.w / 24, y: r.y + j * r.h / 24 })) return true;
+    return false;
+  }
+
+  // Badges that reach a lapel are drawn above the lapel foreground (see BADGE_OVER_LAPEL_Z). The lapel
+  // polygons are the coat sheet's lapel_left / lapel_right landmarks.
+  function badgesOverLapel(ctx){
+    const polys = ['lapel_left', 'lapel_right'].map(n => ctx.landmark(n)).filter(l => l && l.points && l.points.length > 2).map(l => l.points);
+    if(!polys.length) return;
+    for(const l of ctx.layers){
+      if(l.role !== 'badge' || l.z >= BADGE_OVER_LAPEL_Z || (l.rotate || 0)) continue;
+      if(polys.some(p => boxTouchesPolygon(l, p))) l.z = BADGE_OVER_LAPEL_Z;
+    }
   }
 
   // The lapels drawn again over the badges and ribbons they cover (the collar lies on top of them),
@@ -765,6 +788,7 @@
     if(sex === 'male') geo.marks = { x: rest.x, y: rest.y, anchor: 'top_center' };
     else geo.belowRibbons = { x: rest.x, y: (rack ? rack.y + rack.h : rest.y) + 1.5, anchor: 'top_center' };
     await dressBadges(ctx, b, geo);
+    badgesOverLapel(ctx);
 
     if(!semi){
       await lapelForeground(ctx, A, g);
