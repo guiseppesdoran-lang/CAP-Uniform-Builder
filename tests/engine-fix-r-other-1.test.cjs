@@ -94,3 +94,23 @@ test('Class A officer: the edge-on grade lies 5/8 in from the outer end of the s
   const across = Math.abs((c.x - arm.x) * u.y - (c.y - arm.y) * u.x);
   assert.ok(across < 0.05, `centred on the strap axis (${across.toFixed(3)} in off)`);
 });
+
+// ---- 4. Class B short sleeve: the chevron is centred on the outer arm (4.1.11.1.1.1.3, 4.1.12.2.3.3) --------
+
+test('Class B short sleeve: the sleeve chevron is centred on the drawn sleeve halfway between the shoulder seam and the sleeve bottom', async () => {
+  for(const [sex, garment, midX, size] of [['male', 'garment-blues-class-b-shirt-male', 2.02, 3.5], ['female', 'garment-blues-class-b-blouse-female', 2.42, 3.5]]){
+    const spec = await store.load(garment);
+    const sh = core.anchor(spec, 'shoulder_seam_right'), bottom = core.anchor(spec, 'sleeve_bottom_right');
+    const scene = await compose(build('blues_b', sex, 'senior', 'SMSgt', [], { opt: { sleeve: 'short', headgear: 'auto' } }));
+    const r = byKey(scene, 'grade:sleeve-right'), l = byKey(scene, 'grade:sleeve-left');
+    assert.ok(r && l, `${sex}: both sleeves carry the chevron`);
+    near(r.x + r.w / 2, midX, 0.03, `${sex}: right chevron centred on the sleeve's midline`);
+    near(l.x + l.w / 2, spec.w - midX, 0.03, `${sex}: left chevron mirrors it`);
+    near(r.y + r.h / 2, (sh.y + bottom.y) / 2, 0.05, `${sex}: halfway between the shoulder seam and the bottom edge of the sleeve`);
+    near(r.w, size, 0.01, `${sex}: regulation 3 1/2 in width, not scaled`);
+    // How far the chevron box passes the armhole seam onto the shirt front: the drawn men's sleeve is 3.0 in
+    // wide at that height, so a 3 1/2 in chevron passes each edge by about a quarter inch (decided, DECISIONS).
+    const seamX = sex === 'male' ? spec.w / 2 - 6.826 : spec.w / 2 - 6.131;
+    assert.ok(r.x + r.w - seamX < 0.35, `${sex}: passes the armhole seam by ${(r.x + r.w - seamX).toFixed(2)} in`);
+  }
+});

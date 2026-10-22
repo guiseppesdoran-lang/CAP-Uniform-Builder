@@ -292,7 +292,8 @@
   function chevronAnchors(ctx){
     const out = {};
     for(const side of ['right', 'left']){
-      const c = ctx.point('chevron_halfway_' + side), s = ctx.point('shoulder_seam_' + side), e = ctx.point('elbow_' + side);
+      // A short sleeve has no elbow anchor: the line runs from the seam to the sleeve's bottom edge.
+      const c = ctx.point('chevron_halfway_' + side), s = ctx.point('shoulder_seam_' + side), e = ctx.point('elbow_' + side) || ctx.point('sleeve_bottom_' + side);
       if(!c || !s || !e) return null;
       out[side] = [c.x, c.y, Math.atan2(s.x - e.x, e.y - s.y) * 180 / Math.PI];
     }
@@ -780,10 +781,33 @@
 
   // ---- USAF-style Class B (4.1.11 men, 4.1.12 women) -----------------------------------------------
 
+  // The short-sleeve sheets (shirt, blouse) carry no chevron_halfway anchors, so the sleeve chevron is
+  // centred on the outer arm from what they do carry (4.1.11.1.1.1.3, 4.1.12.2.3.3: centred on the outer
+  // arm, halfway between the shoulder seam and the bottom edge of the short sleeve):
+  //   y  = halfway between the shoulder_seam and sleeve_bottom anchors (men's 8.21 in, women's 8.16 in)
+  //   x  = the midline of the drawn sleeve at that height, from the sheet's silhouette (its outer edge)
+  //        and its armhole seam line: men's 2.02 in (outer edge 0.51 in, seam 3.52 in, 3.00 in apart),
+  //        women's 2.42 in (0.59 in and 4.26 in, 3.68 in apart); the left sleeve mirrors it
+  //   turn = the tilt of that midline (men's 0.3 deg, women's 1.1 deg toward the outer side at the hem)
+  // Where a sheet draws chevron_halfway anchors of its own they win (chevronAnchors).
+  const SHORT_SLEEVE_MIDLINE = {
+    'male-short': { x: 2.02, turn: 0 },
+    'female-short': { x: 2.42, turn: 1.1 }
+  };
+  function shortSleeveChevron(ctx, mid){
+    const out = {};
+    for(const side of ['right', 'left']){
+      const s = ctx.point('shoulder_seam_' + side), e = ctx.point('sleeve_bottom_' + side);
+      if(!s || !e) return null;
+      out[side] = [side === 'right' ? mid.x : ctx.base.w - mid.x, (s.y + e.y) / 2, side === 'right' ? mid.turn : -mid.turn];
+    }
+    return out;
+  }
+
   const CLASS_B = {
-    'male-short': { garment: 'garment-blues-class-b-shirt-male', chev: { right: [2.58, 8.40, 6.0], left: [18.11, 8.40, -6.0] }, sleeveW: 3.0 },
+    'male-short': { garment: 'garment-blues-class-b-shirt-male' },
     'male-long': { garment: 'garment-blues-class-b-shirt-male-long', chev: { right: [3.12, 9.75, 2.4], left: [18.20, 9.75, -2.4] } },
-    'female-short': { garment: 'garment-blues-class-b-blouse-female', chev: { right: [2.77, 8.48, 3.4], left: [18.00, 8.48, -3.4] }, sleeveW: 3.0 },
+    'female-short': { garment: 'garment-blues-class-b-blouse-female' },
     'female-long': { garment: 'garment-blues-class-b-blouse-female-long', chev: { right: [2.31, 8.94, 1.2], left: [17.20, 8.94, -1.2] } }
   };
 
@@ -810,7 +834,9 @@
       // Men: 3 1/2 in (4.1.11.1.1.1.3). Women: 3 1/2 or 4 in on either sleeve (4.1.12.2.3.3).
       const size = female && b.opt.chevron === '4' ? '4' : '3.5';
       const id = G.seniorChevron(g, { size });
-      await sleeveChevrons(ctx, id, chevronAnchors(ctx) || V.chev);
+      const key = (female ? 'female' : 'male') + (long ? '-long' : '-short');
+      const pts = chevronAnchors(ctx) || (SHORT_SLEEVE_MIDLINE[key] ? shortSleeveChevron(ctx, SHORT_SLEEVE_MIDLINE[key]) : null) || V.chev;
+      await sleeveChevrons(ctx, id, pts);
     }
     // The epaulet sleeves are edge-on in the front view, each with its grade, and seen from above
     // just over the shoulder with the grade in place (R7).
