@@ -15,6 +15,13 @@
   const GARMENT = { ocp: 'garment-ocp-coat-abu-cut', abu: 'garment-abu-coat', corporate_field: 'garment-cfu-coat' };
   // Most chest badges above the CAP tape: OCP 4 (7.1.1.3.1), ABU 2 (5.1.1.1.2.4), CFU 2 (5.2.1.1.2.6).
   const MAX_BADGES = { ocp: 4, abu: 2, corporate_field: 2 };
+  // The collar lies over whatever is pinned or sewn where the two meet, as a real collar lies over a badge or a patch placed near it:
+  // the coat's own 'collar-front' group (the lapel quads and the leaves) is drawn again above the badges and the patches, and the collar's
+  // grade above that, so the ES patch 1/2 in over the command insignia (5.2.1.1.2.8), the pocket patches and the chest badges (5.2.1.1.2.6)
+  // are placed where the regulation puts them and the collar covers the part of them that lies under it, while the officer grade, the cadet
+  // officer row and the cadet NCO chevrons (5.2.1.1.1, 5.1.1.1.1) stay whole on the leaf.
+  const Z_COLLAR_FRONT = Z.badge + 0.5;
+  const Z_COLLAR_GRADE = Z.badge + 0.6;
 
   // Last name on the coat's name tape and on any cap back tape the sheet draws: light silver block
   // capitals in the same lettering as the drawn CAP tape (7.1.1.2.3, 5.1.1.1.2.1, 5.2.1.1.2.1,
@@ -106,11 +113,11 @@
       };
       if(g.category === 'cadet-nco'){
         // The shirts' rule, Figure A5-5 (H.collarChevrons, from the sheet's collar leaf polygon); drawn once, for both leaves.
-        if(side === 'right') await H.collarChevrons(ctx, g);
+        if(side === 'right') await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE });
       }else if(g.category === 'cadet-officer'){
         // 'One inch from the front of the collar and centered' (5.1.1.1.1.3, 5.2.1.1.1.4): the row parallel to the leaf's front edge, its near outline 1 in
         // from it, centred on the leaf (H.collarOfficerRow, from the sheet's collar_left / collar_right polygons); drawn once, for both leaves.
-        if(side === 'right') await H.collarOfficerRow(ctx, g);
+        if(side === 'right') await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE });
       }else if(g.officer && !g.cadet){
         const s = slot('officer');
         if(!s) continue;
@@ -119,7 +126,7 @@
         // facing forward on both collars.
         let rotate = s.deg;
         if(g.key === 'major' || g.key === 'lieutenant-colonel') rotate = R ? 90 : -90;
-        await ctx.place(id, { pieceAnchor: 'center', at: s.at, rotate, flipX: g.key === 'colonel' && R, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+        await ctx.place(id, { pieceAnchor: 'center', at: s.at, rotate, flipX: g.key === 'colonel' && R, z: Z_COLLAR_GRADE, role: 'grade', key: 'grade:' + side });
         // "Centered 1 inch from the bottom of the collar" (5.1.1.1.1.1, 5.2.1.1.1.1): from the free
         // edge, straight to the centre. Generals' stars begin 1 in up, so no centre line for them.
         const edge = slots && slots[side] && slots[side].bottom_edge;
@@ -468,6 +475,8 @@
     await fieldBadges(ctx, b);
     await fieldCommand(ctx, b);
     await fieldPatches(ctx, b);
+    // The collar leaves and lapels over the badges, command pin and patches that reach them (the OCP coat has the same group).
+    ctx.foreground(['collar-front'], Z_COLLAR_FRONT);
   }
 
   P.register('ocp', { title: 'OCP Uniform', compose: composeFieldUniform });

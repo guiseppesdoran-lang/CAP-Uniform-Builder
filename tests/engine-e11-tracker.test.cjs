@@ -267,3 +267,95 @@ test('ABU and CFU: the unit patch is worn on the right breast pocket, the other 
     }
   }
 });
+
+// ---- collar over chest badges and patches on the ABU, CFU and OCP --------------------------------------------------------
+// The collar lies over what is worn where it meets the collar (5.2.1.1.2.8 puts the ES patch 1/2 in above the command insignia; 5.2.1.1.2.6 the badges 1/2 in
+// above the tape), so the coat's own 'collar-front' group is drawn again above the patches and badges and the collar's grade above that.
+
+// The collar's pieces in scene inches: the leaf polygons (landmarks collar_left / collar_right) and the lapel quads of the sheet's 'collar-front' group,
+// which lie in the same frame as the leaves (the leaf path's first vertex is the landmark's first point).
+async function collarPieces(garmentId){
+  const spec = await store.load(garmentId);
+  const svg = fs.readFileSync(path.join(root, 'images', 'garments', garmentId + '.svg'), 'utf8');
+  const nums = d => d.match(/-?\d+(?:\.\d+)?/g).map(Number);
+  const pts = d => { const n = nums(d), out = []; for(let i = 0; i + 1 < n.length; i += 2) out.push({ x: n[i], y: n[i + 1] }); return out; };
+  const out = [];
+  for(const side of ['left', 'right']){
+    const leaf = spec.landmarks['collar_' + side].points.map(p => ({ x: p.x != null ? p.x : p[0], y: p.y != null ? p.y : p[1] }));
+    out.push({ name: 'leaf-' + side, points: leaf });
+    const leafD = new RegExp(`id="${garmentId}__collar-leaf-${side}" d="([^"]+)"`).exec(svg)[1];
+    const quadD = new RegExp(`id="${garmentId}__collar-${side}" d="([^"]+)"`).exec(svg)[1];
+    const first = pts(leafD)[0];
+    const dx = leaf[0].x - first.x, dy = leaf[0].y - first.y;
+    out.push({ name: 'lapel-' + side, points: pts(quadD).map(p => ({ x: p.x + dx, y: p.y + dy })) });
+  }
+  return out;
+}
+function insidePoly(pt, poly){
+  let c = false;
+  for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){
+    const a = poly[i], b = poly[j];
+    if((a.y > pt.y) !== (b.y > pt.y) && pt.x < (b.x - a.x) * (pt.y - a.y) / (b.y - a.y) + a.x) c = !c;
+  }
+  return c;
+}
+// How many 0.05 in sample points of the layer's box lie inside the piece.
+function overlapSamples(l, poly){
+  let n = 0;
+  for(let x = l.x; x <= l.x + l.w; x += 0.05) for(let y = l.y; y <= l.y + l.h; y += 0.05) if(insidePoly({ x, y }, poly)) n++;
+  return n;
+}
+const COLLAR_FG = scene => scene.layers.find(l => l.key === 'layer:foreground' && l.onlyGroups && l.onlyGroups.includes('collar-front'));
+const TWO_BADGES = ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge'];
+
+for(const [uniform, garment, patchStyles] of [['corporate_field', 'garment-cfu-coat', ['style-1', 'style-2']], ['abu', 'garment-abu-coat', [null]]]){
+  for(const sex of ['male', 'female']){
+    for(const style of patchStyles){
+      for(const [membership, rank] of [['senior', 'Maj'], ['senior', 'Col'], ['cadet', 'C/SSgt'], ['cadet', 'C/Maj']]){
+        test(`${uniform} ${sex} ${rank}${style ? ' ES ' + style : ''}: the collar group is drawn above every badge and patch that reaches it, under the collar grade (5.2.1.1.2.8, 5.2.1.1.2.6, 5.2.1.1.1)`, async () => {
+          const scene = await compose(build(uniform, sex, membership, rank, TWO_BADGES, { command: CMD, opt: Object.assign({ headgear: 'auto' }, style ? { esPatch: style } : {}) }));
+          const fg = COLLAR_FG(scene);
+          assert.ok(fg, 'a collar-front foreground layer is drawn');
+          assert.deepEqual(fg.onlyGroups, ['collar-front']);
+          const pieces = await collarPieces(garment);
+          const under = scene.layers.filter(l => (l.role === 'patch' || l.role === 'badge') && pieces.some(p => overlapSamples(l, p.points) > 0));
+          for(const l of under) assert.ok(fg.z > l.z, `${l.key} reaches the collar, so it lies under the collar group (z ${l.z} vs ${fg.z})`);
+          // Every patch and badge layer is under the collar group, not only those that touch it (a build that moves one later must not lose the cover).
+          for(const l of scene.layers.filter(x => x.role === 'patch' || x.role === 'badge')) assert.ok(fg.z > l.z, `${l.key} is under the collar group`);
+          const grades = scene.layers.filter(l => l.role === 'grade' && /^grade:(left|right)$/.test(l.key));
+          assert.ok(grades.length >= 2, 'the collar grade is drawn on both leaves');
+          for(const g of grades) assert.ok(g.z > fg.z, `${g.key} stays whole on the leaf (z ${g.z} vs ${fg.z})`);
+          // Nothing is moved to clear the collar: the ES patch's 1/2 in above the pin is checked below, and the two badges are both drawn.
+          assert.equal(scene.layers.filter(l => l.role === 'badge' && /^badge:(CAPPilot1|ground_team)/.test(l.key)).length, 2);
+        });
+      }
+    }
+  }
+}
+
+test('CFU senior officer with the ES patch and the command pin: the patch reaches the collar and is covered by it, the oak leaf is above the collar (5.2.1.1.2.8, 5.2.1.1.1.1)', async () => {
+  let reached = 0;
+  const pieces = await collarPieces('garment-cfu-coat');
+  for(const sex of ['male', 'female']){
+    for(const style of ['style-1', 'style-2']){
+      const scene = await compose(build('corporate_field', sex, 'senior', 'Maj', TWO_BADGES, { command: CMD, opt: { headgear: 'auto', esPatch: style } }));
+      const fg = COLLAR_FG(scene);
+      const es = scene.layers.find(l => l.key === 'patch:patch-es-' + style);
+      assert.ok(es && fg);
+      // The ES patch is 1/2 in above the pin (5.2.1.1.2.8): unchanged.
+      const pin = scene.layers.find(l => /^badge:squadron_commander_badge:ON:0$/.test(l.key));
+      near(pin.y - (es.y + es.h), 0.5, 0.02, `${sex} ${style}: the ES patch is 1/2 in above the command insignia`);
+      if(pieces.some(p => overlapSamples(es, p.points) > 0)) reached++;
+      assert.ok(fg.z > es.z, `${sex} ${style}: the collar covers the ES patch`);
+      for(const g of scene.layers.filter(l => /^grade:(left|right)$/.test(l.key))) assert.ok(g.z > fg.z);
+    }
+  }
+  assert.ok(reached >= 2, 'the ES patch reaches the collar in these builds (' + reached + ')');
+});
+
+test('OCP: the collar group is drawn again above the badges (the same group as the ABU and CFU coats)', async () => {
+  const scene = await compose(build('ocp', 'male', 'senior', 'Maj', [...TWO_BADGES, 'emergency_services_badge', 'AirCrew1_DB3F0FCC3650F'], { command: CMD }));
+  const fg = COLLAR_FG(scene);
+  assert.ok(fg, 'the collar foreground is drawn');
+  for(const l of scene.layers.filter(x => x.role === 'badge')) assert.ok(fg.z > l.z);
+});

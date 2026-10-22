@@ -243,7 +243,7 @@
 
   // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4): the grade's row (its width) runs parallel to the front edge, its near outline 1 in from it,
   // centred on the leaf along it (chord of the leaf on that line), like the cadet NCO chevron's 1 in rule; a 1 in measure from the edge to the near outline.
-  async function collarOfficerRow(ctx, g){
+  async function collarOfficerRow(ctx, g, opts){
     const id = G.cadetOfficerInsignia(g, 'cloth-bordered-regular');
     const polys = collarPolygons(ctx);
     if(!id || polys.length < 2) return;
@@ -258,7 +258,7 @@
       const dx = edge.rollEnd.x - edge.collarPoint.x, dy = edge.rollEnd.y - edge.collarPoint.y;
       let rotate = Math.atan2(dy, dx) * 180 / Math.PI;                 // the row (the art's width) turned onto the edge
       if(rotate > 90) rotate -= 180; if(rotate <= -90) rotate += 180;
-      await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+      await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate, z: opts && opts.z != null ? opts.z : Z.insignia, role: 'grade', key: 'grade:' + side });
       ctx.measure(pl.foot, pl.near);
     }
   }
@@ -269,7 +269,7 @@
   // top of the insignia (peak / shield canton) toward the roll-line end, rockers toward the collar point, the near outline 1 in from the edge, centred on the leaf (4.1.11.1.1.1.4,
   // 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5, 5.1.1.1.1.4, 5.2.1.1.1). The wearer's right is the collar on
   // the left of the picture whatever the sheet calls its sides.
-  async function collarChevrons(ctx, g){
+  async function collarChevrons(ctx, g, opts){
     const id = G.cadetNcoChevron(g, 'metal');
     const polys = collarPolygons(ctx);
     if(!id || polys.length < 2) return;
@@ -281,7 +281,7 @@
       if(!edge) continue;
       const side = edge.collarPoint.x < centerX ? 'right' : 'left';
       const pl = chevronOnLeadingEdge(edge, s.w, 1, collarLeaf(poly.points, edge));
-      await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate: pl.rotate, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+      await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate: pl.rotate, z: opts && opts.z != null ? opts.z : Z.insignia, role: 'grade', key: 'grade:' + side });
       ctx.measure(pl.foot, pl.near);
     }
   }
