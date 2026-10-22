@@ -2,52 +2,56 @@
  "asset_id": "cap-device-officer-flight",
  "name": "CAP flight cap insignia, officers and general officers",
  "size_in": {
-  "w": 1.19,
-  "h": 1.12
+  "w": 1.184,
+  "h": 1.25
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  119,
-  112
+  118.4,
+  125
  ],
  "colours": {
-  "silver": "#d3d7dc",
-  "silverL": "#e3e6ea",
+  "silver": "#bcc1c8",
+  "silverL": "#e6e9ed",
   "silverD": "#8f969e",
-  "shade": "#b4bac2"
+  "disc": "#d8dce1",
+  "navyField": "#0f1f78",
+  "rimSilver": "#dfe2e5",
+  "red": "#d40f19",
+  "redL": "#ec2a33"
  },
  "grade": "accessory",
  "anchors": {
   "top_center": [
-   59.5,
+   59.199999999999996,
    0
   ],
   "bottom_center": [
-   59.5,
-   112.00000000000001
+   59.199999999999996,
+   125
   ],
   "center": [
-   59.5,
-   56.00000000000001
+   59.199999999999996,
+   62.5
   ],
   "left_edge": [
    0,
-   56.00000000000001
+   62.5
   ],
   "right_edge": [
-   119,
-   56.00000000000001
+   118.39999999999999,
+   62.5
   ],
   "mount_center": [
-   59.5,
-   56.00000000000001
+   59.199999999999996,
+   62.5
   ]
  },
- "size_source": "estimated",
- "size_basis": "Same art as the officer service device scaled to ~1.15 in wide: on the Attachment 5 flight-cap figure (p.139) the officer device is ~48 px against the 64 px \"1 1/2 in\" mark. The regulation gives no dimension.",
- "provenance": "CAPR 39-1 3 Mar 2020 Fig A5-8 (p.138, CAP DEVICES row; A5-9 shows the same devices on the women's caps) and p.139 (flight caps); source figure is ~190 px of faint grey embossing: outline and large shading traced, no feather or leaf detail; CAP disc / shield and triangle are parametric",
+ "size_source": "measured",
+ "size_basis": "Vanguard product page \"Civil Air Patrol Flight Cap Device: Senior Members and Officers\" prints 1 1/4 x 1 1/4 in; the art is the officer service device (same figure), so its height is set to 1.25 in and its width follows the figure aspect (1.18 in)",
+ "provenance": "CAPR 39-1 3 Mar 2020 Fig A5-8 (p.138, CAP DEVICES row and the devices as drawn on the caps; A5-9 shows the same devices on the women's caps) and p.139 (flight caps, same device); same geometric build as cap-device-officer-service",
  "mounts": [
   {
    "uniform": "USAF-style flight cap (Class A / Class B / FDU), officers incl. general officers",
@@ -58,8 +62,8 @@
   "officers wear the flight cap insignia on the front left flap (6.2.2.2.1)"
  ],
  "assumed": [
-  "overall size",
-  "shading detail"
+  "feather and leaf shapes are stylised",
+  "relief shading"
  ],
  "fit": {
   "method": "n/a",

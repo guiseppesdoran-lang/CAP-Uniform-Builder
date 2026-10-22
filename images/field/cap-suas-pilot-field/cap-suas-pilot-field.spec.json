@@ -1,7 +1,7 @@
 {
  "asset_id": "cap-suas-pilot-field",
  "width_in": 3.25,
- "height_in": 1.03333,
+ "height_in": 1.03334,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: width 3 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
@@ -13,19 +13,19 @@
   ],
   "bottom_center": [
    162.5,
-   103.333
+   103.334
   ],
   "center": [
    162.5,
-   51.6665
+   51.667
   ],
   "left_edge": [
    0,
-   51.6665
+   51.667
   ],
   "right_edge": [
    325,
-   51.6665
+   51.667
   ],
   "hexagon_center": [
    162.5,
@@ -65,7 +65,7 @@
   ],
   "art_bottom_center": [
    162.5,
-   90.833
+   90.834
   ]
  },
  "dimensions": {
@@ -109,7 +109,7 @@
   "backing_minus_art_in": 0.25,
   "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
   "art_width_in": 3,
-  "art_height_in": 0.78333,
+  "art_height_in": 0.78334,
   "source_asset": "cap-suas-pilot",
   "kind": "chest-badge"
  },

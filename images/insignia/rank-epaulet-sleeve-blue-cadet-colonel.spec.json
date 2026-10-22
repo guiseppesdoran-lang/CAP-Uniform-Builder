@@ -60,6 +60,12 @@
   "cap_word_h_in": 0.34,
   "grade_bottom_from_end_in": 0.625,
   "grade_bottom_note": "DAFI 36-2903 7.1.5.1: 5/8 in from the end of the epaulet; figure shows 0.63-0.71 in",
+  "grade_edge": {
+   "width_in": 0.018,
+   "colour": "#2c3037",
+   "placement": "inside the outline (regulation size unchanged), flat, no gradient",
+   "basis": "outline weight measured on CAPR 39-1 Fig A5-1 at 12 px/pt (0.014-0.017 in, tone 55-75/255); critique D20: silver grade nearly invisible on grey / blue boards"
+  },
   "grade_pieces": "rank-cadet-officer-colonel-metal-miniature",
   "grade_size_in": {
    "w": 1,

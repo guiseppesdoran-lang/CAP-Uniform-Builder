@@ -2,52 +2,56 @@
  "asset_id": "cap-device-officer-service",
  "name": "CAP service cap insignia, officers (men's and women's service caps)",
  "size_in": {
-  "w": 2.24,
-  "h": 2.11
+  "w": 2.25,
+  "h": 2.375
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  224,
-  211
+  225,
+  237.5
  ],
  "colours": {
-  "silver": "#d3d7dc",
-  "silverL": "#e3e6ea",
+  "silver": "#bcc1c8",
+  "silverL": "#e6e9ed",
   "silverD": "#8f969e",
-  "shade": "#b4bac2"
+  "disc": "#d8dce1",
+  "navyField": "#0f1f78",
+  "rimSilver": "#dfe2e5",
+  "red": "#d40f19",
+  "redL": "#ec2a33"
  },
  "grade": "accessory",
  "anchors": {
   "top_center": [
-   112.00000000000001,
+   112.5,
    0
   ],
   "bottom_center": [
-   112.00000000000001,
-   211
+   112.5,
+   237.5
   ],
   "center": [
-   112.00000000000001,
-   105.5
+   112.5,
+   118.75
   ],
   "left_edge": [
    0,
-   105.5
+   118.75
   ],
   "right_edge": [
-   224.00000000000003,
-   105.5
+   225,
+   118.75
   ],
   "mount_center": [
-   112.00000000000001,
-   105.5
+   112.5,
+   118.75
   ]
  },
- "size_source": "estimated",
- "size_basis": "Scaled from Fig A5-8: the device is ~90 px wide against the 7.4 in cap band (300 px) drawn on the same page, ~2.2 in; height from the device figure aspect (about 1.04 wide : 1 tall). The regulation gives no dimension.",
- "provenance": "CAPR 39-1 3 Mar 2020 Fig A5-8 (p.138, CAP DEVICES row; A5-9 shows the same devices on the women's caps); source figure is ~190 px of faint grey embossing: outline and large shading traced, no feather or leaf detail; CAP disc / shield and triangle are parametric",
+ "size_source": "measured",
+ "size_basis": "Vanguard product page \"Civil Air Patrol Cap Device: Senior Member Officer Service\" prints 2 3/8 in high x 2 1/4 in wide (the regulation gives no dimension); the figure device measures 368 x 387 px (aspect 0.951 against 0.947 printed)",
+ "provenance": "CAPR 39-1 3 Mar 2020 Fig A5-8 (p.138, CAP DEVICES row and the devices as drawn on the caps; A5-9 shows the same devices on the women's caps); geometric rebuild (an earlier trace of the ~190 px figure was an unreadable blob): disc, raised-wing eagle, scroll bands, breast shield, tail, crossed arrows and laurel branches placed at positions measured on the figure and drawn as true curves, mirrored about the axis, two flat silver tones with a thin grey outline",
  "mounts": [
   {
    "uniform": "Men's service cap (Fig A5-8) and women's service cap (Fig A5-9)",
@@ -58,9 +62,9 @@
   "officers (and NCOs per ICL 25-02, who wear the NCO device) wear the CAP service cap insignia centred on the front of the cap (6.2.1.1.1, 6.2.1.2.1)"
  ],
  "assumed": [
-  "overall size",
-  "CAP disc position and size",
-  "shading detail"
+  "feather and leaf shapes are stylised (the figure is a ~190 px raster, too coarse to trace)",
+  "relief shading reduced to two flat tones",
+  "CAP triangle inside the disc (faint in the figure)"
  ],
  "fit": {
   "method": "n/a",

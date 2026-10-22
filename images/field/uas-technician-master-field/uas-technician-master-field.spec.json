@@ -1,7 +1,7 @@
 {
  "asset_id": "uas-technician-master-field",
  "width_in": 3.25,
- "height_in": 1.27292,
+ "height_in": 1.27293,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: width 3 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
@@ -13,55 +13,55 @@
   ],
   "bottom_center": [
    162.5,
-   127.292
+   127.293
   ],
   "center": [
    162.5,
-   63.646
+   63.6465
   ],
   "left_edge": [
    0,
-   63.646
+   63.6465
   ],
   "right_edge": [
    325,
-   63.646
+   63.6465
   ],
   "hexagon_center": [
    162.5,
-   85.208
+   85.209
   ],
   "hexagon_top": [
    162.5,
-   56.458
+   56.459
   ],
   "hexagon_bottom": [
    162.5,
-   113.958
+   113.959
   ],
   "hexagon_vertex_left": [
    129.063,
-   85.208
+   85.209
   ],
   "hexagon_vertex_right": [
    195.938,
-   85.208
+   85.209
   ],
   "wing_tip_left": [
    12.5,
-   42.208
+   42.209
   ],
   "wing_tip_right": [
    312.5,
-   42.208
+   42.209
   ],
   "centerline_bottom": [
    162.5,
-   113.958
+   113.959
   ],
   "device_center": [
    162.5,
-   34.608
+   34.609
   ],
   "art_top_center": [
    162.5,
@@ -69,7 +69,7 @@
   ],
   "art_bottom_center": [
    162.5,
-   114.792
+   114.793
   ]
  },
  "dimensions": {
@@ -114,7 +114,7 @@
   "backing_minus_art_in": 0.25,
   "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
   "art_width_in": 3,
-  "art_height_in": 1.02292,
+  "art_height_in": 1.02293,
   "source_asset": "uas-technician-master",
   "kind": "chest-badge"
  },
