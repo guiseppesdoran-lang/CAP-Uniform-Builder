@@ -3,7 +3,7 @@
 // A profile says which garment and layers the member wears and where each kind of item goes, in
 // terms of the garment's own anchors and the regulation's distances. The member's selections come
 // in as a `build` (see js/uniform-view.js, which makes it from the page state):
-//   { uniform, gender, grade (grades.gradeInfo), opt {...garment options}, name {first,last,capTape,show},
+//   { uniform, gender, grade (grades.gradeInfo), opt {...garment options}, name {first,last,state,show},
 //     ribbons [...], medals [...], badges [{id,family,title}], command {id,graduated}|null,
 //     militaryBadges [...], patches [{id,href,aspect,slot,title}], cord }
 // Paragraph numbers are CAPR 39-1 (with the ICLs through 26-04; where an ICL changed a rule, the ICL

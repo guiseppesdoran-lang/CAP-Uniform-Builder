@@ -220,7 +220,7 @@
       opt: Object.assign(opt, rackOptions(), {
         miniStyle: State.miniMountStyle === 'holding' ? 'holding' : 'mounting'
       }),
-      name: { first: text.firstName || '', last: text.lastName || '', state: text.plateLine || '', capTape: text.capTape || 'CIVIL AIR PATROL', show: text.show !== false },
+      name: { first: text.firstName || '', last: text.lastName || '', state: text.plateLine || '', show: text.show !== false },
       ribbons: mini ? [] : ribbons,
       medals: mini ? buildMedals(allRibbons) : [],
       badges,

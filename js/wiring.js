@@ -685,7 +685,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
    =========================== */
 (function capubV2Patch(){
   const V2_VERSION = '2026-05-08-v2';
-  State.text = State.text || { lastName:'', capTape:'CIVIL AIR PATROL', show:true };
+  State.text = State.text || { lastName:'', show:true };
 
   const CAPUB_V2 = window.CAPUB_V2 = {
     version: V2_VERSION,
@@ -841,7 +841,6 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       firstName: String(text.firstName || '').slice(0, 40),
       lastName: String(text.lastName || '').slice(0, 40),
       plateLine: String(text.plateLine || '').slice(0, 40),
-      capTape: String(text.capTape || 'CIVIL AIR PATROL').slice(0, 40),
       show: text.show !== false
     };
     out.commandInsignia = { graduatedCommander: !!(p.commandInsignia && p.commandInsignia.graduatedCommander) };
@@ -893,12 +892,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const fn = by('capubV2FirstName');
     const ln = by('capubV2LastName');
     const pl = by('capubV2PlateLine');
-    const ct = by('capubV2CapTape');
     const sh = by('capubV2ShowText');
     if(fn) fn.value = State.text?.firstName || '';
     if(pl) pl.value = State.text?.plateLine || '';
     if(ln) ln.value = State.text?.lastName || '';
-    if(ct) ct.value = State.text?.capTape || 'CIVIL AIR PATROL';
     if(sh) sh.checked = State.text?.show !== false;
   }
 
@@ -1120,7 +1117,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     syncTextControls();
     const save = by('capubV2SaveLocal'), load = by('capubV2LoadLocal'), exp = by('capubV2ExportJson'), impBtn = by('capubV2ImportBtn'), impFile = by('capubV2ImportFile');
     const reset = by('capubV2Reset');
-    const fn = by('capubV2FirstName'), ln = by('capubV2LastName'), pl = by('capubV2PlateLine'), ct = by('capubV2CapTape'), sh = by('capubV2ShowText');
+    const fn = by('capubV2FirstName'), ln = by('capubV2LastName'), pl = by('capubV2PlateLine'), sh = by('capubV2ShowText');
     if(save) save.onclick = ()=>{ localStorage.setItem(CAPUB_V2.storageKey, JSON.stringify(collectProfile())); updateStatusPanel(); capubNotify('Uniform setup saved in this browser.'); };
     if(load) load.onclick = ()=>{ const raw = localStorage.getItem(CAPUB_V2.storageKey); if(!raw){ capubNotify('No saved setup found in this browser.'); return; } applyProfile(JSON.parse(raw)); };
     if(exp) exp.onclick = ()=>downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'json'), JSON.stringify(collectProfile(), null, 2));
@@ -1131,11 +1128,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       State.text.firstName = fn?.value || '';
       State.text.lastName = ln?.value || '';
       State.text.plateLine = pl?.value || '';
-      State.text.capTape = ct?.value || 'CIVIL AIR PATROL';
       State.text.show = sh?.checked !== false;
     };
     // Typing redraws the uniform only; leaving the field (change) runs the full update and saves.
-    [fn,ln,pl,ct,sh].forEach(el=>{
+    [fn,ln,pl,sh].forEach(el=>{
       if(!el) return;
       el.addEventListener('input', ()=>{ readText(); CAPUBUniformView.scheduleRender(); });
       el.addEventListener('change', ()=>{ readText(); fullRender(); });

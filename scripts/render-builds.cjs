@@ -93,7 +93,7 @@ function makeBuild(spec){
     membership,
     grade: G.gradeInfo(membership, rank, { firstSergeant: !!spec.firstSergeant, track: spec.track || (spec.opt && spec.opt.noGradeTrack), commandChief: !!spec.commandChief }),
     opt: Object.assign({}, GARMENT_DEFAULTS, spec.opt || {}),
-    name: Object.assign({ first: 'Pat', last: 'Doe', capTape: 'CIVIL AIR PATROL', show: true }, spec.name || {}),
+    name: Object.assign({ first: 'Pat', last: 'Doe', show: true }, spec.name || {}),
     ribbons: spec.ribbons || ribbonsFrom(spec.ribbonSel, membership),
     medals: spec.medals || [],
     badges: spec.badges || (spec.badgeIds || []).map(id => ({ id, title: (BADGES.get && BADGES.get(id) && BADGES.get(id).name) || id, level: null })),

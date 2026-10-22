@@ -188,3 +188,9 @@ test('the cord control offers the Aide de Camp cord, names the white and silver 
   assert.match(meta.aide_de_camp.note, /9\.3\.4/);
   assert.match(read('js/uniform-view.js'), /allowsCord\(State\.uniform, State\.membership, State\.shoulderCord\)/);
 });
+
+test('the name has no cap tape field left: the tape art is fixed (UI audit 4.5)', () => {
+  assert.doesNotMatch(read('index.html'), /capubV2CapTape/);
+  assert.doesNotMatch(read('js/wiring.js'), /capTape/);
+  assert.doesNotMatch(read('js/uniform-view.js'), /capTape/);
+});
