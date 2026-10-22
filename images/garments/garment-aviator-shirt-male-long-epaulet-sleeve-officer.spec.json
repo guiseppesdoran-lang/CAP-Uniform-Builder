@@ -3,14 +3,14 @@
  "name": "Men's Aviator Shirt Uniform adult officer epaulet sleeves (overlay, registered to garment-aviator-shirt-male-long; blank grade)",
  "size_in": {
   "w": 21.156,
-  "h": 26.2
+  "h": 26.24
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   2115.6,
-  2620
+  2624
  ],
  "size_source": "estimated",
  "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
@@ -21,19 +21,19 @@
   ],
   "bottom_center": [
    1057.8,
-   2620
+   2624
   ],
   "center": [
    1057.8,
-   1310
+   1312
   ],
   "left_edge": [
    0,
-   1310
+   1312
   ],
   "right_edge": [
    2115.6,
-   1310
+   1312
   ],
   "rank_slot_right_center": [
    385.44,

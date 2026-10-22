@@ -136,7 +136,10 @@
   "nametag slot size",
   "button diameter",
   "line positions read off the figure",
-  "skirt drawn as in the figure; slacks are a bottoms variant"
+  "skirt drawn as in the figure; slacks are a bottoms variant",
+  "skirt flare: 12 px of half-width per 100 px of height measured on Fig 4.15, applied from the coat side hem to the box bottom",
+  "skirt waist and waistband sizes (waist 3.5 in above the coat hem, 1.1 in narrower each side than the hem, 1.5 in waistband): the regulation gives no skirt dimension and the figure hides them under the coat",
+  "shirt placket button size (0.14 in radius) and spacing (2.3 in)"
  ],
  "fit": {
   "method": "traced from the regulation figure",
