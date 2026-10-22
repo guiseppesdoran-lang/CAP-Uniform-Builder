@@ -554,8 +554,9 @@
   // The grade on each edge-on epaulet strip the garment overlay draws (Class B shirt and blouse,
   // aviator shirt): centred on the strip's line, 5/8 in from the strap's outer end, turned with it.
   // `frames` (the Class A coats, whose sheets state the strap as an axis, see strapFrames) gives each
-  // side's strap frame; the strip's outer end is the frame's outer end.
-  async function epauletEdgeGrades(ctx, g, frames){
+  // side's strap frame; the strip's outer end is the frame's outer end. `gradeId` names the piece to
+  // draw when it is not the sleeve's own (the Class A boards' regular-size metal grade).
+  async function epauletEdgeGrades(ctx, g, frames, gradeId){
     for(const side of ['right', 'left']){
       const f = (frames && frames[side]) || H.epauletFrame(ctx, side);
       const mid = frames ? f && f.outer : ctx.point(`rank_slot_${side}_center`);
@@ -563,7 +564,7 @@
       // Slide from the strip's centre back along the strap axis to the plane of the outer end.
       const back = (f.outer.x - mid.x) * f.axis.x + (f.outer.y - mid.y) * f.axis.y;
       const end = { x: mid.x + f.axis.x * back, y: mid.y + f.axis.y * back };
-      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, EDGE_ON_THICK - 0.08, { title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, EDGE_ON_THICK - 0.08, { id: gradeId, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
     }
   }
 
@@ -827,8 +828,11 @@
     // Layers: boards, epaulets and lapel insignia drawn to the coat (4.1.5.2.1, 4.1.5.2.2.1).
     if(g.category === 'cadet-officer'){
       await cadetBoards(ctx, A, g, sex);
-      // The edge-on board at the shoulder line carries the grade as well as the view from above (R7).
-      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A));
+      // The edge-on board at the shoulder line carries the grade as well as the view from above (R7),
+      // the same regular-size piece in both: the cadet officer's boards on the service coat and the
+      // semi-formal coat take the regular grade (4.1.5.2.1.3, 4.1.9.3.4); the miniature is the blue
+      // shirt's epaulet sleeve grade (4.1.6.1.4). The strip squeezes it across the strap only.
+      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'));
     }
     else if(!semi && g.general) await ctx.overlay(`${A.layer}-general-officer`);
     else if(!semi && isOfficerLike(g)) await ctx.overlay(`${A.layer}-senior-officer`);
