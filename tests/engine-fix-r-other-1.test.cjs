@@ -291,7 +291,7 @@ test('Class B short sleeve: the sleeve chevron layer carries the sheet silhouett
     near(byKey(scene, 'grade:sleeve-right').x + byKey(scene, 'grade:sleeve-right').w / 2, midX, 0.03, `${sex}: centring unchanged`);
     assert.ok(spec.w > 0);
   }
-  // The long sleeve is not clipped.
+  // The long sleeve is clipped the same way (E5-CHEVRONS: every dress sleeve chevron carries the clip, R8).
   const long = await compose(build('blues_b', 'male', 'senior', 'SMSgt', [], { opt: { sleeve: 'long', headgear: 'auto' } }));
-  assert.ok(!byKey(long, 'grade:sleeve-right').clipSil);
+  assert.equal(byKey(long, 'grade:sleeve-right').clipSil, 'garment-blues-class-b-shirt-male-long');
 });

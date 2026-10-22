@@ -120,6 +120,33 @@ for(const [gender, sleeve] of [['male', 'short'], ['male', 'long'], ['female', '
   });
 }
 
+// Every dress sleeve chevron (Class A, Class B, aviator shirt, mess dress; men and women) is clipped to the sheet's own
+// garment silhouette: the drawn sleeves are narrower than the regulation chevron (the men's Class A coat, 4 in chevron on
+// a sleeve about 3.4 in wide at the chevron's upper corners: 14 percent of the box past the outer edge, the critique
+// 'fills the upper arm', L1959), so the part past the outer edge wraps round the arm and no ink lands on the white
+// beside the coat; the size is never changed (4.1.5.2.1.2, 4.1.9.3.3, 4.1.11.1.1.1.3, 4.1.12.2.3.3, 4.2.5.1.1.3, 4.2.6.2.3).
+const CLIPPED = [
+  ['blues_a', 'male', {}], ['blues_a', 'female', {}],
+  ['blues_b', 'male', { sleeve: 'long' }], ['blues_b', 'male', { sleeve: 'short' }],
+  ['blues_b', 'female', { sleeve: 'long' }], ['blues_b', 'female', { sleeve: 'short' }],
+  ['aviator', 'male', { sleeve: 'long' }], ['aviator', 'male', { sleeve: 'short' }],
+  ['aviator', 'female', { sleeve: 'long' }], ['aviator', 'female', { sleeve: 'short' }],
+  ['mess_dress', 'male', {}], ['mess_dress', 'female', {}]
+];
+for(const [uniform, gender, opt] of CLIPPED){
+  test(`${uniform} ${gender} ${JSON.stringify(opt)}: the sleeve chevron carries the sheet's silhouette clip and keeps its size`, async () => {
+    for(const rank of ['SMSgt', 'CMSgt']){
+      const scene = await P.composeUniform(build(uniform, gender, 'senior', rank, opt), store);
+      const garment = scene.layers.find(l => l.role === 'garment');
+      for(const side of ['right', 'left']){
+        const l = gradeLayer(scene, 'grade:sleeve-' + side);
+        assert.equal(l.clipSil, garment.id, `${rank} ${side}: clipped to the garment's own silhouette`);
+        assert.ok(l.w === 3.5 || l.w === 4, `${rank} ${side}: ${l.w} in is a regulation width, never scaled`);
+      }
+    }
+  });
+}
+
 // ---- cadet NCO chevrons on the collars -----------------------------------------------------------------
 // Figure A5-5 (CAPR 39-1 page 134, 'shirt without necktie'): the chevron lies parallel to the leading edge
 // of the collar leaf, the top of the insignia (peak; on C/SSgt the shield's starred canton) toward the roll-line

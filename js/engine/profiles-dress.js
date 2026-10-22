@@ -279,12 +279,17 @@
     }
   }
 
-  // Chevrons keep their true size and shape, even where the front view shows less sleeve.
+  // Chevrons keep their true size and shape, even where the front view shows less sleeve. A drawn sleeve is
+  // narrower than the regulation 3 1/2 or 4 in chevron (Class A men's: about 14 percent of the box past the outer
+  // edge, the critique 'fills the upper arm', 4.1.5.2.1.2), so on every uniform the chevron is clipped to the
+  // sheet's own garment silhouette (layer clipSil): the part past the outer edge reads as wrapping round the
+  // arm, no ink lands on the white beside the coat, and the size is never changed (R1, R8).
   async function sleeveChevrons(ctx, id, pts, opts){
+    const sil = ctx.base && ctx.base.id ? { clipSil: ctx.base.id } : null;
     for(const side of ['right', 'left']){
       const p = pts[side];
       if(!p) continue;
-      await ctx.place(id, Object.assign({ pieceAnchor: 'visual_center', at: { x: p[0], y: p[1] }, rotate: p[2] || 0, z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side }, opts || {}));
+      await ctx.place(id, Object.assign({ pieceAnchor: 'visual_center', at: { x: p[0], y: p[1] }, rotate: p[2] || 0, z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side }, sil, opts || {}));
     }
     // Halfway between the shoulder seam and the elbow, shown once, on the outside of the sleeve.
     const s = ctx.point('shoulder_seam_right'), e = ctx.point('elbow_right'), c = ctx.point('chevron_halfway_right');
@@ -896,7 +901,7 @@
       const key = (female ? 'female' : 'male') + (long ? '-long' : '-short');
       const sheetPts = chevronAnchors(ctx);
       const midline = !sheetPts && SHORT_SLEEVE_MIDLINE[key] ? shortSleeveChevron(ctx, SHORT_SLEEVE_MIDLINE[key]) : null;
-      await sleeveChevrons(ctx, id, sheetPts || midline || V.chev, midline ? { clipSil: base } : null);
+      await sleeveChevrons(ctx, id, sheetPts || midline || V.chev);
     }
     // The epaulet sleeves are edge-on in the front view, each with its grade, and seen from above
     // just over the shoulder with the grade in place (R7).
