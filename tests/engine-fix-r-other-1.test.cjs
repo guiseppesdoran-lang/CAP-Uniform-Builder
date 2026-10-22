@@ -203,7 +203,17 @@ test('the one-aviation-badge note cites the uniform\'s own paragraph and is not 
   assert.match(await note('blues_b', 'male', 'Capt'), /4\.1\.11\.1\.1\.2\.3\.1\)/);
   assert.match(await note('aviator', 'female', 'Capt'), /4\.2\.6\.2\.7\.1\)/);
   assert.equal(await note('semi_formal', 'male', 'Capt'), undefined);
-  assert.equal(await note('aviator_blazer', 'female', 'Capt'), undefined);
+  // The aviator shirt beside the blazer wears one aviation badge, so its note is given with the shirt's own paragraph
+  // (FIX-R-OTHER-r4 item 5; D8: the blazer rule used to hide it, the shirt silently dropped the observer badge).
+  assert.match(await note('aviator_blazer', 'female', 'Capt'), /4\.2\.6\.2\.7\.1\)/);
+  assert.match(await note('aviator_blazer', 'male', 'Col'), /4\.2\.5\.1\.3\.1\)/);
+  const blz = await compose(build('aviator_blazer', 'female', 'senior', 'Capt', two));
+  assert.ok(blz.notes.some(n => /worn on the blazer; the other badges are not worn on it, the shirt beside it shows/.test(n)), 'the blazer note says the badges are not worn on the blazer');
+  assert.equal(blz.layers.filter(l => /^badge:/.test(l.key)).length, 1, 'one aviation badge on the shirt, the second is dropped with a note');
+  // With a turtleneck there is no shirt beside the blazer and the blazer's note keeps its plain wording.
+  const turtle = await compose(build('aviator_blazer', 'female', 'senior', 'Capt', two, { opt: { headgear: 'auto', underlayer: 'turtleneck' } }));
+  assert.ok(turtle.notes.some(n => /are worn on this uniform; the other badges are not shown/.test(n)), 'no shirt beside the blazer: the plain note');
+  assert.ok(!turtle.notes.some(n => /Only one CAP aviation badge/.test(n)));
   const semi = await compose(build('semi_formal', 'male', 'senior', 'Capt', two));
   assert.ok(semi.notes.some(n => /Only the chaplain badge and the CSAG/.test(n)), 'the corporate badge note stays');
 });

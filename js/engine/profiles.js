@@ -344,8 +344,10 @@
     semi_formal: false, aviator_blazer: false
   };
   function oneAviationBadgeParagraph(b){
-    // The shirt drawn beside a blazer is a companion figure: the blazer's rule applies to its notes.
-    const e = b.companionOf && ONE_AVIATION_BADGE[b.companionOf] === false ? false : ONE_AVIATION_BADGE[b.uniform];
+    // The shirt drawn beside a blazer is the aviator shirt and wears one aviation badge by the shirt's own
+    // paragraph (4.2.5.1.3.1, 4.2.6.2.7.1), so its note is given and the blazer's own note says the rest are not
+    // worn on the blazer.
+    const e = ONE_AVIATION_BADGE[b.uniform];
     if(e === false) return false;
     return e ? e[b.gender === 'female' ? 1 : 0] : null;
   }
@@ -700,7 +702,6 @@
     const scene = C.finish(ctx, p.title);
     const second = p.companion ? p.companion(build) : null;
     if(!second) return scene;
-    second.companionOf = build.uniform;
     const q = PROFILES[second.uniform];
     const ctx2 = C.createContext(second, store);
     await q.compose(ctx2, second);

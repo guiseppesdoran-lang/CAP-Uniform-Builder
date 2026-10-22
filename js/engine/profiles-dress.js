@@ -1358,7 +1358,13 @@
     const crestLayer = crestBadge ? await ctx.place(crestBadge.art, { pieceAnchor: 'center', at: ctx.point('crest_center'), z: Z.badge, role: 'badge', key: 'badge:' + crestBadge.id, title: crestBadge.title, className: 'badge' }) : null;
     const chaplain = set.chaplain[0] || null;
     const dropped = set.all.filter(x => x !== crestBadge && x !== chaplain);
-    if(dropped.length) ctx.note('Only the chaplain badge and the CSAG, Command Council, National Board or NEC badge are worn on this uniform; the other badges are not shown');
+    // The aviator shirt drawn beside the aviator blazer (no turtleneck or shell) wears the aviation and occupational
+    // badges itself and has its own note for the ones it trims (4.2.5.1.3.1, 4.2.6.2.7.1), so the blazer's note says
+    // only that they are not worn on the blazer.
+    const shirtBeside = b.uniform === 'aviator_blazer' && b.opt.underlayer !== 'turtleneck' && b.opt.underlayer !== 'shell';
+    if(dropped.length) ctx.note(shirtBeside
+      ? 'Only the chaplain badge and the CSAG, Command Council, National Board or NEC badge are worn on the blazer; the other badges are not worn on it, the shirt beside it shows the ones it takes'
+      : 'Only the chaplain badge and the CSAG, Command Council, National Board or NEC badge are worn on this uniform; the other badges are not shown');
     if(b.command) ctx.note('Command insignia is not worn on this uniform');
 
     if(!semi){
