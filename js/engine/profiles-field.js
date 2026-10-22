@@ -102,6 +102,8 @@
   // insignia whose long axis is upright. Cadet NCO chevrons follow Figure A5-5 like the shirts' (parallel
   // to the leaf's leading edge, 1 in from it, H.collarChevrons); cadet officers' row runs along the
   // leaf's front edge, 1 in from it, centred (H.collarOfficerRow); officers' grade sits 1 in from the bottom of the collar, square to its edge.
+  // The cloth border around every insignia is 1/8 in on each side (R5).
+  const CLOTH_BORDER = 0.125;
   async function collarGrade(ctx, b){
     const g = b.grade;
     const slots = ctx.base && ctx.base.raw && ctx.base.raw.collar_slots;
@@ -126,15 +128,31 @@
         // facing forward on both collars.
         let rotate = s.deg;
         if(g.key === 'major' || g.key === 'lieutenant-colonel') rotate = R ? 90 : -90;
-        await ctx.place(id, { pieceAnchor: 'center', at: s.at, rotate, flipX: g.key === 'colonel' && R, z: Z_COLLAR_GRADE, role: 'grade', key: 'grade:' + side });
         // "Centered 1 inch from the bottom of the collar" (5.1.1.1.1.1, 5.2.1.1.1.1): from the free
-        // edge, straight to the centre. Generals' stars begin 1 in up, so no centre line for them.
+        // edge, straight to the centre. General officers' grade is 'centered, perpendicular to, and begins 1 inch from
+        // the bottom of the collar': the bottom of the lowest star's silver (1/8 in inside the cloth) lies 1 in up the
+        // perpendicular from the free edge, on the slot's line along the edge, so the stars' own centre is higher
+        // than the colonel's by half the cloth's height less the border.
         const edge = slots && slots[side] && slots[side].bottom_edge;
-        if(edge && !g.general){
+        let at = s.at, from = null, to = null;
+        if(edge){
           const a = { x: edge.p1[0] / 100, y: edge.p1[1] / 100 }, d = { x: (edge.p2[0] - edge.p1[0]) / 100, y: (edge.p2[1] - edge.p1[1]) / 100 };
-          const t = ((s.at.x - a.x) * d.x + (s.at.y - a.y) * d.y) / (d.x * d.x + d.y * d.y);
-          ctx.measure({ x: a.x + t * d.x, y: a.y + t * d.y }, s.at);
+          const len2 = d.x * d.x + d.y * d.y;
+          const t = ((s.at.x - a.x) * d.x + (s.at.y - a.y) * d.y) / len2;
+          const foot = { x: a.x + t * d.x, y: a.y + t * d.y };
+          from = foot; to = s.at;
+          if(g.general){
+            const len = Math.sqrt(len2);
+            let n = { x: -d.y / len, y: d.x / len };
+            if((s.at.x - foot.x) * n.x + (s.at.y - foot.y) * n.y < 0) n = { x: -n.x, y: -n.y };
+            const gs = await ctx.spec(id);
+            const up = 1 + gs.h / 2 - CLOTH_BORDER;
+            at = { x: foot.x + n.x * up, y: foot.y + n.y * up };
+            to = { x: foot.x + n.x, y: foot.y + n.y };
+          }
         }
+        await ctx.place(id, { pieceAnchor: 'center', at, rotate, flipX: g.key === 'colonel' && R, z: Z_COLLAR_GRADE, role: 'grade', key: 'grade:' + side });
+        if(from) ctx.measure(from, to);
       }
     }
     if(g.category === 'senior-nco'){

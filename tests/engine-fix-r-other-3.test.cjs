@@ -154,3 +154,52 @@ test('corporate service dress: the nametag clears the wearer\'s right lapel by 0
     assert.ok(Math.abs(plate.y - slot.y) < 0.01, `${sex} ${rank}: the top edge stays at the slot top (${plate.y} vs ${slot.y})`);
   }
 });
+
+// ---- 5. ABU and CFU: general officers' stars begin 1 in from the bottom of the collar ------------------------------
+
+function inPoly(p, poly){
+  let c = false;
+  for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){
+    const a = poly[i], b = poly[j];
+    if(((a.y > p.y) !== (b.y > p.y)) && (p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x)) c = !c;
+  }
+  return c;
+}
+const corners = l => {
+  const c = { x: l.x + l.w / 2, y: l.y + l.h / 2 }, t = rad(l.rotate);
+  return [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([a, b]) => ({ x: c.x + a * l.w / 2 * Math.cos(t) - b * l.h / 2 * Math.sin(t), y: c.y + a * l.w / 2 * Math.sin(t) + b * l.h / 2 * Math.cos(t) }));
+};
+
+test('ABU and CFU: a general officer\'s stars begin 1 in up the perpendicular from the collar\'s bottom edge, the 1 in measure is drawn (5.1.1.1.1.1, 5.2.1.1.1.1)', async () => {
+  for(const uniform of ['abu', 'corporate_field']) for(const sex of ['male', 'female']) for(const rank of ['Brig Gen', 'Maj Gen']){
+    const scene = await compose(build(uniform, sex, 'senior', rank));
+    const spec = await store.load(scene.layers.find(l => l.key === 'base:jacket' || /^base:/.test(l.key || '')).id);
+    for(const side of ['right', 'left']){
+      const edge = (spec.raw || spec).collar_slots[side].bottom_edge;
+      const a = { x: edge.p1[0] / 100, y: edge.p1[1] / 100 }, d = { x: (edge.p2[0] - edge.p1[0]) / 100, y: (edge.p2[1] - edge.p1[1]) / 100 };
+      const len = Math.hypot(d.x, d.y);
+      const l = scene.layers.find(x => x.key === 'grade:' + side);
+      assert.ok(l, `${uniform} ${sex} ${rank} ${side}: grade drawn`);
+      // The cloth's bottom edge midpoint is the corner pair at the piece's bottom: distance from the edge line.
+      const cs = corners(l), bottomMid = { x: (cs[2].x + cs[3].x) / 2, y: (cs[2].y + cs[3].y) / 2 };
+      const dist = Math.abs((bottomMid.x - a.x) * d.y - (bottomMid.y - a.y) * d.x) / len;
+      assert.ok(Math.abs(dist - (1 - 0.125)) < 0.02, `${uniform} ${sex} ${rank} ${side}: the stars' silver begins 1 in up (cloth ${dist.toFixed(3)} in from the edge)`);
+      assert.ok(Math.abs(l.rotate) > 13 && Math.abs(l.rotate) < 13.5, `${uniform} ${sex} ${rank}: the 13.2 deg turn is kept`);
+    }
+    assert.ok(scene.layers.some(x => x.type === 'measure' && x.label === '1 in'), `${uniform} ${sex} ${rank}: a 1 in measure`);
+  }
+});
+
+test('ABU and CFU: no officer grade cloth corner lies outside the collar leaf, except the major general\'s top outer corner the drawn leaf is too small for (FOLLOWUP art)', async () => {
+  for(const uniform of ['abu', 'corporate_field']) for(const sex of ['male', 'female']) for(const rank of ['Capt', 'Maj', 'Lt Col', 'Col', 'Brig Gen', 'Maj Gen']){
+    const scene = await compose(build(uniform, sex, 'senior', rank));
+    const spec = await store.load(scene.layers.find(l => /^base:/.test(l.key || '')).id);
+    for(const side of ['right', 'left']){
+      const poly = core.landmark(spec, `collar_${side}`).points;
+      const l = scene.layers.find(x => x.key === 'grade:' + side);
+      const out = corners(l).filter(p => !inPoly(p, poly));
+      if(rank === 'Maj Gen') assert.ok(out.length <= 1, `${uniform} ${sex} ${rank} ${side}: only the top outer corner (${out.length})`);
+      else assert.equal(out.length, 0, `${uniform} ${sex} ${rank} ${side}: every corner on the leaf`);
+    }
+  }
+});
