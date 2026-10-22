@@ -131,3 +131,22 @@ test('mess dress: no literal chevron points are left (the sheets state shoulder_
   const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
   assert.ok(!/chev:\s*\{\s*right:\s*\[2\.(61|57)/.test(src), 'MESS.chev constants removed');
 });
+
+// ---- 7. OCP: CAP specialty track badges have field forms (7.1.1.3.1, 7.1.1.3.1.5.2) ---------------------------------
+
+test('every specialty family badge in the catalog has a field form that exists, and the OCP draws it on the chest (7.1.1.3.1)', async () => {
+  const CAT = require('../data/badge-catalog.js');
+  const ids = Object.entries(CAT.BADGES).filter(([, v]) => v.family === 'specialty').map(([k]) => k);
+  assert.ok(ids.length >= 56, `${ids.length} specialty badges`);
+  for(const id of ids){
+    const field = CAT.art(id, 'field');
+    assert.ok(field, `${id}: field form named`);
+    const s = await store.load(field);
+    assert.ok(s, `${id}: ${field} loads`);
+  }
+  for(const id of ['communications_technician_badge', 'aerospace_education_senior_badge', 'cadet_programs_master_badge', 'safety_technician_badge']){
+    const scene = await compose(build('ocp', 'male', 'senior', 'Capt', { badges: [{ id }] }));
+    assert.ok(scene.layers.find(l => l.key === 'badge:' + id), `${id} drawn on the OCP`);
+    assert.ok(!(scene.notes || []).some(n => /no field artwork/.test(n)), `${id}: no missing-artwork note`);
+  }
+});

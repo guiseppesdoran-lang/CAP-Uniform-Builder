@@ -325,8 +325,8 @@ test('the harness flags engine notes that say a piece is not drawn, as it flags 
   assert.match(src, /withNotDrawn/);
 });
 
-test('the harness flags the engine\'s missing-art note for a badge with no field artwork (OCP communications technician badge, G4)', async () => {
-  const scene = await compose(HARNESS.makeBuild({ uniform: 'ocp', gender: 'male', membership: 'senior', rank: 'Capt', badgeIds: ['communications_technician_badge'], ribbonSel: [] }));
+test('the harness flags the engine\'s missing-art note for a badge with no field artwork (OCP Command Council badge, a service badge with no field form, G4)', async () => {
+  const scene = await compose(HARNESS.makeBuild({ uniform: 'ocp', gender: 'male', membership: 'senior', rank: 'Capt', badgeIds: ['command_council_badge'], ribbonSel: [] }));
   const missing = scene.notes.filter(n => /has no \w+ artwork/.test(n));
   assert.ok(missing.length, 'the engine says the badge is not shown: ' + JSON.stringify(scene.notes));
   assert.deepEqual(missing.filter(n => !NOT_DRAWN.test(n)), [], 'and the harness counts it as not drawn');
