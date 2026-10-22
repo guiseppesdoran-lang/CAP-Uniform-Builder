@@ -1176,12 +1176,13 @@
       // Nameplate: name and state lines, with optional grade for adults (4.2.3.1.1.2).
       const plateId = g.cadet ? 'nameplate-blazer-cadet' : 'nameplate-blazer-adult';
       const ps = await ctx.spec(plateId);
-      // Men: on the wearer's right, straight across from the left breast pocket with its top even
-      // with the pocket top (the sheet's slot, mirrored). Women: the nametag's top edge is aligned
-      // with the top of the left breast pocket, and with a slanted pocket it runs straight across from
-      // the pocket's inside edge (4.2.4.1.1.2); the sheet's nameplate_slot carries that line, already on
-      // the wearer's left, so it is not mirrored. The sheet's crest, or the badge worn in its place,
-      // stays at crest_center below the plate. Only a sheet with no pocket and no slot falls back to
+      // The nametag's top edge is even with the top of the left breast pocket, on the wearer's right,
+      // straight across from it (4.2.3.1.1.2 men, Figure 4.15; 4.2.4.1.1.2 women: on a slanted pocket
+      // the tag is aligned straight across from the pocket's inside edge, which is on the opposite side).
+      // The sheet's nameplate_slot is the line and height of that edge, on the pocket's own side, so the
+      // tag goes at the slot's top y with x mirrored about the blazer's centre line, as the men's. The
+      // chaplain badge follows the tag (4.2.4.1.1.3); the crest, or the badge in its place, stays at the
+      // sheet's crest_center with nothing over it. Only a sheet with no pocket and no slot falls back to
       // the nametag 1/2 in above the crest or the service badge in its place (4.2.4.1.1.2).
       const slotAt = ctx.point('nameplate_slot_center');
       const slotRect = ctx.rect('nameplate_slot');
@@ -1190,7 +1191,7 @@
       let abovePlateFallback = false;
       if(female){
         if(slotRect){
-          plateAt = { x: slotRect.x + slotRect.w / 2, y: slotRect.y + ps.h / 2 };
+          plateAt = { x: ctx.base.w - (slotRect.x + slotRect.w / 2), y: slotRect.y + ps.h / 2 };
         }else if(crestTopPt){
           const top = crestLayer ? crestLayer.y : crestTopPt.y;
           plateAt = { x: crestTopPt.x, y: top - 0.5 - ps.h / 2 };
