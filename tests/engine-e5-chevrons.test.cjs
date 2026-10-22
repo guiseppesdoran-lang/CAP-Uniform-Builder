@@ -103,9 +103,17 @@ for(const [uniform, gender, opt, garment] of [
 }
 
 // ---- cadet NCO chevrons on the collars -----------------------------------------------------------------
+// Figure A5-5 (CAPR 39-1 page 134, 'shirt without necktie'): the chevron lies parallel to the leading edge
+// of the collar leaf, apex (the convex, striped side) toward the collar point, its near outline 1 in from
+// that edge and centred on the leaf. On the open collars the sheets draw, the leading edge is the leaf's
+// BOTTOM edge, from the collar point (the leaf's outer tip) to where it meets the lapel roll line. The
+// checks below read the polygons from the sheets and name the edge by vertex, never through the engine's
+// own edge helpers.
 
 // Collar polygons of a sheet in inches, one per collar: from the sheet's own collar_<side> landmarks, else
-// read from the paths id="<sheet>__collar-right|left" of its SVG with the group transforms applied.
+// read from the leaf paths of its SVG with the group transforms applied (the aviator and overblouse sheets
+// name them id="<sheet>__collar-right|left", the ABU and CFU coats draw the leaf as an unnamed five-point
+// path in collar-front, starting M+-2.560,-0.430).
 function collarPolygonsOf(garment, spec){
   const own = ['left', 'right'].map(n => core.landmark(spec, 'collar_' + n)).filter(l => l && l.points);
   if(own.length === 2) return own.map(l => l.points);
@@ -113,9 +121,13 @@ function collarPolygonsOf(garment, spec){
   const art = new RegExp(`id="${garment}__art" transform="translate\\(([\\d.]+) ([\\d.]+)\\) scale\\(100\\)"`).exec(svg);
   const tx = Number(art[1]), ty = Number(art[2]);
   const out = [];
+  const coat = /^garment-(abu|cfu)-coat$/.test(garment);
   for(const side of ['right', 'left']){
-    const at = svg.indexOf(`id="${garment}__collar-${side}"`);
-    const d = /\sd="([^"]*)"/.exec(svg.slice(at))[1];
+    const at = coat
+      ? svg.indexOf(side === 'left' ? 'd="M2.560,-0.430 L3.800,1.280' : 'd="M-2.560,-0.430 L-3.800,1.280')
+      : svg.indexOf(`id="${garment}__collar-${side}"`);
+    assert.ok(at > 0, `${garment}: ${side} collar path`);
+    const d = /\sd="([^"]*)"/.exec(svg.slice(at - (coat ? 1 : 0)))[1];
     const pts = [...d.matchAll(/[ML]\s*(-?[\d.]+),(-?[\d.]+)/g)].map(m => [Number(m[1]), Number(m[2])]);
     const open = svg.lastIndexOf('<g transform="matrix(', at), close = svg.lastIndexOf('</g>', at);
     const m = open > close ? /matrix\(([-\d. ]+)\)/.exec(svg.slice(open))[1].split(/\s+/).map(Number) : null;
@@ -127,85 +139,107 @@ function collarPolygonsOf(garment, spec){
   return out;
 }
 const meanX = poly => poly.reduce((s, p) => s + p.x, 0) / poly.length;
-
-// The front edge by the stated rule, written out separately from the engine's helper.
-function frontEdge(poly, centerX){
-  const top = poly.reduce((a, p) => p.y < a.y ? p : a, poly[0]);
-  let bottom = poly[0];
-  for(const p of poly){
-    const dp = Math.abs(p.x - centerX), db = Math.abs(bottom.x - centerX);
-    if(dp < db - 1e-6 || (Math.abs(dp - db) <= 1e-6 && p.y > bottom.y)) bottom = p;
+function inPolygon(pt, poly){
+  let c = false;
+  for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){
+    const a = poly[i], b = poly[j];
+    if((a.y > pt.y) !== (b.y > pt.y) && pt.x < (b.x - a.x) * (pt.y - a.y) / (b.y - a.y) + a.x) c = !c;
   }
-  return { top, bottom };
+  return c;
 }
 
+function distToPolygon(pt, poly){
+  let best = Infinity;
+  for(let i = 0; i < poly.length; i++){
+    const a = poly[i], b = poly[(i + 1) % poly.length], dx = b.x - a.x, dy = b.y - a.y;
+    const t = Math.max(0, Math.min(1, ((pt.x - a.x) * dx + (pt.y - a.y) * dy) / (dx * dx + dy * dy)));
+    best = Math.min(best, Math.hypot(pt.x - a.x - t * dx, pt.y - a.y - t * dy));
+  }
+  return best;
+}
+
+// [uniform, gender, options, sheet, vertex of the collar point, vertex of the roll-line end] for the leaf on
+// the LEFT of the picture (the wearer's right); the right leaf mirrors it by its own polygon (same vertex
+// order: the figure's bottom edge runs between these two vertices of each leaf).
 const COLLAR_CASES = [
-  ['blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male'],
-  ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long'],
-  ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female'],
-  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long'],
-  ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male'],
-  ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long'],
-  ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female'],
-  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long'],
-  ['aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 'garment-overblouse-female'],
-  ['aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long']
+  ['blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male', 1, 2],
+  ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long', 1, 2],
+  ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female', 1, 2],
+  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 1, 2],
+  ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male', 1, 2],
+  ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long', 1, 2],
+  ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female', 1, 2],
+  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long', 1, 2],
+  ['aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 'garment-overblouse-female', 4, 3],
+  ['aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long', 4, 3],
+  ['abu', 'male', {}, 'garment-abu-coat', 2, 3],
+  ['abu', 'female', {}, 'garment-abu-coat', 2, 3],
+  ['corporate_field', 'male', {}, 'garment-cfu-coat', 2, 3],
+  ['corporate_field', 'female', {}, 'garment-cfu-coat', 2, 3]
 ];
 
-for(const [uniform, gender, opt, garment] of COLLAR_CASES){
+for(const [uniform, gender, opt, garment, iPoint, iRoll] of COLLAR_CASES){
   for(const rank of ['C/SSgt', 'C/CMSgt']){
-    test(`${garment} ${rank}: each collar chevron lies parallel to the front of its collar, apex toward the neck end (Figure A5-5)`, async () => {
+    test(`${uniform} ${gender} ${opt.sleeve || ''} ${opt.femaleTop || ''} ${rank} (${garment}): each collar chevron lies along the leaf's bottom edge, apex to the collar point, 1 in from it, centred (Figure A5-5)`, async () => {
       const spec = await store.load(garment);
       const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank, opt), store);
       const polys = collarPolygonsOf(garment, spec).sort((a, b) => meanX(a) - meanX(b));   // picture left first
       assert.equal(polys.length, 2);
-      const centerX = spec.w / 2;
-      // the wearer's right is the collar on the left of the picture
-      for(const [side, poly] of [['right', polys[0]], ['left', polys[1]]]){
+      const w = (await store.load(G.cadetNcoChevron(G.gradeInfo('cadet', rank, {}), 'metal'))).w;
+      for(const [side, poly] of [['right', polys[0]], ['left', polys[1]]]){   // the wearer's right is the collar on the left of the picture
         const l = gradeLayer(scene, 'grade:' + side);
         assert.ok(l, `${side} chevron`);
-        // centred on the sheet's collar point of that side of the picture
-        const pts = ['left', 'right'].map(n => core.anchor(spec, 'collar_insignia_' + n)).sort((a, b) => a.x - b.x);
-        const at = side === 'right' ? pts[0] : pts[1];
-        assert.ok(Math.hypot(l.x + l.w / 2 - at.x, l.y + l.h / 2 - at.y) < 0.01, `${side}: centred on the collar point`);
-        // that chevron's axis (its top, apex end, up) against the collar's front edge from its bottom to its top
-        const e = frontEdge(poly, centerX);
-        const want = Math.atan2(e.top.x - e.bottom.x, e.bottom.y - e.top.y) * 180 / Math.PI;
-        assert.ok(Math.abs(l.rotate - want) < 0.01, `${side}: turned ${l.rotate}, front edge ${want}`);
+        // the figure's leading edge, from the polygon's own vertices
+        const cp = poly[iPoint], re = poly[iRoll];
+        const ev = { x: cp.x - re.x, y: cp.y - re.y }, len = Math.hypot(ev.x, ev.y), e = { x: ev.x / len, y: ev.y / len };
+        // (a) the chevron's axis (apex-up piece turned by `rotate`, clockwise) lies within 1 deg of the edge
         const r = l.rotate * Math.PI / 180, axis = { x: Math.sin(r), y: -Math.cos(r) };
-        const ev = { x: e.top.x - e.bottom.x, y: e.top.y - e.bottom.y }, len = Math.hypot(ev.x, ev.y);
-        assert.ok(Math.abs(axis.x * ev.y / len - axis.y * ev.x / len) < 1e-3, `${side}: axis parallel to the edge`);
-        assert.ok(axis.x * ev.x + axis.y * ev.y > 0, `${side}: apex toward the neck end`);
-        // the top of a collar on the left of the picture leans left, on the right leans right, whatever the sheet calls its sides
-        assert.ok(side === 'right' ? l.rotate < 0 : l.rotate > 0, `${side}: ${l.rotate}`);
+        const off = Math.acos(Math.min(1, Math.abs(axis.x * e.x + axis.y * e.y))) * 180 / Math.PI;
+        assert.ok(off < 1, `${side}: axis ${off.toFixed(2)} deg off the bottom edge`);
+        // (b) the apex points toward the collar point
+        assert.ok(axis.x * e.x + axis.y * e.y > 0, `${side}: apex toward the collar point`);
+        // (c) the rotated box of the chevron (its width across the edge, its height along it)
+        const cx = l.x + l.w / 2, cy = l.y + l.h / 2;
+        assert.ok(Math.abs(l.w - w) < 1e-6, 'width is the art\'s');
+        // the leaf lies above its bottom edge: take the edge's unit normal that points up the picture
+        let n = { x: -e.y, y: e.x };
+        const sgn = n.y < 0 ? 1 : -1;
+        const perp = (cx - cp.x) * n.x * sgn + (cy - cp.y) * n.y * sgn;     // centre's distance from the edge line, on the leaf's side
+        // the outline nearest the edge sits 1 in from it: the box is `w` wide across the edge
+        assert.ok(Math.abs(perp - w / 2 - 1) < 0.05, `${side}: nearest outline ${(perp - w / 2).toFixed(3)} in from the edge`);
+        // centred on the leaf: the centre's place along the edge is the middle of the leaf's width on its line
+        const hits = [];
+        for(let i = 0; i < poly.length; i++){
+          const p = poly[i], q = poly[(i + 1) % poly.length];
+          const dp = (p.x - cp.x) * n.x * sgn + (p.y - cp.y) * n.y * sgn, dq = (q.x - cp.x) * n.x * sgn + (q.y - cp.y) * n.y * sgn;
+          if((dp - perp) * (dq - perp) > 0 || dp === dq) continue;
+          const t = (perp - dp) / (dq - dp);
+          hits.push((p.x + t * (q.x - p.x) - cp.x) * e.x + (p.y + t * (q.y - p.y) - cp.y) * e.y);
+        }
+        assert.ok(hits.length >= 2, `${side}: the chevron's line crosses the leaf`);
+        const along = (cx - cp.x) * e.x + (cy - cp.y) * e.y;
+        assert.ok(Math.abs(along - (Math.min(...hits) + Math.max(...hits)) / 2) < 0.05, `${side}: centred on the leaf, ${along.toFixed(2)} vs ${((Math.min(...hits) + Math.max(...hits)) / 2).toFixed(2)}`);
+        // the chevron lies on the collar leaf: its apex tip and the two wing ends (the base corners of its box;
+        // the box corners beside the apex are empty, the apex being the arch)
+        for(const [along2, across] of [[1, 0], [-1, -1], [-1, 1]]){
+          const pt = { x: cx + axis.x * along2 * l.h / 2 + (-axis.y) * across * l.w / 2, y: cy + axis.y * along2 * l.h / 2 + axis.x * across * l.w / 2 };
+          // within 0.1 in: the Chief's 1.75 in chevron reaches the leaf's neck edge on the women's Class B and the overblouse (by 0.05 in and 0.02 in)
+          assert.ok(inPolygon(pt, poly) || distToPolygon(pt, poly) < 0.1, `${side}: chevron point ${pt.x.toFixed(2)},${pt.y.toFixed(2)} off the leaf`);
+        }
       }
     });
   }
 }
 
-test('ABU and CFU cadet NCO chevrons use the same rule on the sheet\'s measured front edge', async () => {
-  for(const [u, garment] of [['abu', 'garment-abu-coat'], ['corporate_field', 'garment-cfu-coat']]){
-    const spec = await store.load(garment);
-    const scene = await P.composeUniform(build(u, 'male', 'cadet', 'C/SSgt'), store);
-    for(const side of ['right', 'left']){
-      const fe = spec.raw.collar_slots[side].front_edge;
-      const l = gradeLayer(scene, 'grade:' + side);
-      const top = { x: fe.p1[0], y: fe.p1[1] }, bottom = { x: fe.p2[0], y: fe.p2[1] };
-      const want = Math.atan2(top.x - bottom.x, bottom.y - top.y) * 180 / Math.PI;
-      assert.ok(Math.abs(l.rotate - want) < 1e-9, `${u} ${side}: ${l.rotate} vs ${want}`);
-      assert.ok(side === 'right' ? l.rotate < 0 : l.rotate > 0, `${u} ${side}`);
-    }
-  }
-});
-
-test('the collar chevron turn has one sign convention on every sheet: the wearer\'s right collar (left of the picture) is turned counter-clockwise', async () => {
+test('the collar chevron turn has one sign convention on every sheet: the wearer\'s right collar (left of the picture) apex turns out to the left, the left collar to the right', async () => {
   const seen = new Set();
   for(const [uniform, gender, opt, garment] of COLLAR_CASES){
     const scene = await P.composeUniform(build(uniform, gender, 'cadet', 'C/SSgt', opt), store);
     const r = gradeLayer(scene, 'grade:right'), l = gradeLayer(scene, 'grade:left');
     assert.ok(r.x < l.x, `${garment}: wearer's right chevron is on the left of the picture`);
-    assert.ok(r.rotate < 0 && l.rotate > 0, `${garment}: ${r.rotate} / ${l.rotate}`);
+    // the apex points toward the shoulder side of each picture half: left half turns left (sin < 0), right half turns right
+    assert.ok(Math.sin(r.rotate * Math.PI / 180) < -0.5 && Math.sin(l.rotate * Math.PI / 180) > 0.5, `${garment}: ${r.rotate} / ${l.rotate}`);
     seen.add(garment);
   }
-  assert.equal(seen.size, COLLAR_CASES.length);
+  assert.equal(seen.size, new Set(COLLAR_CASES.map(c => c[3])).size);
 });

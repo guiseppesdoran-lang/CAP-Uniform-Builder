@@ -92,8 +92,9 @@
 
   // ABU and CFU: grade on both collars (5.1.1.1.1, 5.2.1.1.1); NCO chevrons on the sleeves.
   // The sheets give a slot per side and kind: its centre (0.01 in) and the turn, clockwise, for an
-  // insignia whose long axis is upright. Cadet grade runs 1 in from and parallel to the front of the
-  // collar; officers' grade sits 1 in from the bottom of the collar, square to its edge.
+  // insignia whose long axis is upright. Cadet NCO chevrons follow Figure A5-5 like the shirts' (parallel
+  // to the leaf's leading edge, 1 in from it, H.collarChevrons); cadet officers' row runs along the
+  // slot's front edge; officers' grade sits 1 in from the bottom of the collar, square to its edge.
   async function collarGrade(ctx, b){
     const g = b.grade;
     const slots = ctx.base && ctx.base.raw && ctx.base.raw.collar_slots;
@@ -104,13 +105,8 @@
         return s ? { at: { x: s.center[0] / 100, y: s.center[1] / 100 }, deg: s.angle_deg } : null;
       };
       if(g.category === 'cadet-nco'){
-        const s = slot('cadet_nco');
-        // The turn that lays the chevron along the collar's front edge: the same formula as the
-        // shirts' collar chevrons (profiles-dress.js), from the edge the sheet measured; the slot's
-        // own angle is that edge's angle.
-        const fe = slots && slots[side] && slots[side].front_edge;
-        const turn = fe ? H.edgeTurnDeg({ x: fe.p1[0], y: fe.p1[1] }, { x: fe.p2[0], y: fe.p2[1] }) : (s && s.deg);
-        if(s) await ctx.place(G.cadetNcoChevron(g, 'metal'), { pieceAnchor: 'center', at: s.at, rotate: turn, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+        // The shirts' rule, Figure A5-5 (H.collarChevrons, from the sheet's collar leaf polygon); drawn once, for both leaves.
+        if(side === 'right') await H.collarChevrons(ctx, g);
       }else if(g.category === 'cadet-officer'){
         // The grade's row is drawn across; turned a quarter more so it runs along the front edge.
         const s = slot('cadet_officer');

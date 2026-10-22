@@ -96,33 +96,139 @@
     };
   }
 
-  // Fit a piece in a rect (never larger than true size) and centre it there.
-  // ---- collar insignia turned to the collar's front edge ---------------------------------------
+  // ---- collar insignia on the leading edge of the collar ---------------------------------------
 
-  // The front edge of a collar polygon, the edge that runs along the neck opening: from the topmost
-  // vertex (where the collar meets the neck at the back) to the vertex nearest the sheet's centre
-  // line (the bottom of the V, at the placket), the lowest of them when several are as near. Same
-  // rule for every sheet. Returns { top, bottom } or null.
-  function polygonFrontEdge(points, centerX){
+  // Figure A5-5 (CAPR 39-1 page 134, 'shirt without necktie'): the cadet NCO chevron lies parallel to
+  // the leading edge of the collar leaf, 1 in from it and centred, its apex (the convex, striped side)
+  // toward the collar point. On the open collars the sheets draw (Class B, aviator shirt, overblouse,
+  // ABU/CFU) the leading edge is the leaf's BOTTOM edge, from the collar point (the leaf's outer tip)
+  // to where it meets the lapel roll line. Paragraphs: 4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5,
+  // 4.2.6.2.5, 5.1.1.1.1.4, 5.2.1.1.1 ('1 inch from and parallel to the front of the collar and centered').
+
+  // The leading edge of a collar leaf polygon (points in sheet inches): of its edges 1 in or longer,
+  // the one whose outward normal points most nearly straight down (the free bottom edge of the leaf).
+  // Its end farther from the sheet's centre line is the collar point, the other the roll-line end.
+  // One rule for every sheet. Returns { collarPoint, rollEnd, inward } or null.
+  function collarLeadingEdge(points, centerX){
     if(!points || points.length < 3) return null;
-    let top = points[0], bottom = points[0];
-    for(const p of points) if(p.y < top.y) top = p;
-    for(const p of points){
-      const d = Math.abs(p.x - centerX), best = Math.abs(bottom.x - centerX);
-      if(d < best - 1e-6 || (Math.abs(d - best) <= 1e-6 && p.y > bottom.y)) bottom = p;
+    let area = 0, cx = 0, cy = 0;
+    for(let i = 0; i < points.length; i++){
+      const p = points[i], q = points[(i + 1) % points.length], cr = p.x * q.y - q.x * p.y;
+      area += cr; cx += (p.x + q.x) * cr; cy += (p.y + q.y) * cr;
     }
-    return { top, bottom };
+    const inside = area ? { x: cx / (3 * area), y: cy / (3 * area) } : { x: points.reduce((s, p) => s + p.x, 0) / points.length, y: points.reduce((s, p) => s + p.y, 0) / points.length };
+    let best = null;
+    for(let i = 0; i < points.length; i++){
+      const p = points[i], q = points[(i + 1) % points.length];
+      const len = Math.hypot(q.x - p.x, q.y - p.y);
+      if(len < 1) continue;
+      let n = { x: (q.y - p.y) / len, y: -(q.x - p.x) / len };
+      const mid = { x: (p.x + q.x) / 2, y: (p.y + q.y) / 2 };
+      if(n.x * (inside.x - mid.x) + n.y * (inside.y - mid.y) > 0) n = { x: -n.x, y: -n.y };
+      if(!best || n.y > best.down) best = { p, q, down: n.y, inward: { x: -n.x, y: -n.y } };
+    }
+    if(!best) return null;
+    const [collarPoint, rollEnd] = Math.abs(best.p.x - centerX) >= Math.abs(best.q.x - centerX) ? [best.p, best.q] : [best.q, best.p];
+    return { collarPoint, rollEnd, inward: best.inward };
   }
 
-  // The turn, clockwise in degrees, that lays an upright piece (its apex up) along the line from
-  // `bottom` to `top` with its apex toward `top`. Zero for a vertical edge, positive when the top
-  // leans to the right. One formula for every collar edge: the cadet NCO chevron stands parallel to
-  // the front of the collar (CAPR 39-1 4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5, 5.1.1.1.1.4,
-  // 5.2.1.1.1, Figure A5-5).
-  function edgeTurnDeg(top, bottom){
-    return Math.atan2(top.x - bottom.x, bottom.y - top.y) * 180 / Math.PI;
+  // Where and how a collar chevron sits on a leading edge { collarPoint, rollEnd, inward }: its axis
+  // along the edge with the apex toward the collar point (turn clockwise from apex-up), its width
+  // across the edge, the near outline `gap` inches (1) from the edge. `pieceW` is the chevron's width in
+  // inches. 'Centered on the collar' (Figure A5-5): along the edge it is centred on the leaf, at the
+  // midpoint of the leaf's width on the line the chevron's centre runs along (`points`, the leaf
+  // polygon); without a polygon, at the edge's midpoint. Returns { at, rotate, foot, near }: the centre,
+  // the turn, and the 1 in segment (foot on the edge, point on the chevron's near outline).
+  function chevronOnLeadingEdge(edge, pieceW, gap, points){
+    const g = gap == null ? 1 : gap;
+    const dx = edge.collarPoint.x - edge.rollEnd.x, dy = edge.collarPoint.y - edge.rollEnd.y, len = Math.hypot(dx, dy);
+    const a = { x: dx / len, y: dy / len };
+    const mid = { x: (edge.collarPoint.x + edge.rollEnd.x) / 2, y: (edge.collarPoint.y + edge.rollEnd.y) / 2 };
+    // the perpendicular to the edge on the side of the leaf (`inward` only says which side)
+    let u = { x: -a.y, y: a.x };
+    if(u.x * edge.inward.x + u.y * edge.inward.y < 0) u = { x: -u.x, y: -u.y };
+    const off = g + pieceW / 2;
+    // position along the edge (from `mid`, toward the collar point) of the chord's middle
+    let along = 0;
+    if(points && points.length > 2){
+      let lo = Infinity, hi = -Infinity;
+      for(let i = 0; i < points.length; i++){
+        const p = points[i], q = points[(i + 1) % points.length];
+        const dp = (p.x - mid.x) * u.x + (p.y - mid.y) * u.y, dq = (q.x - mid.x) * u.x + (q.y - mid.y) * u.y;
+        if((dp - off) * (dq - off) > 0 || dp === dq) continue;
+        const t = (off - dp) / (dq - dp);
+        const along_ = (p.x + t * (q.x - p.x) - mid.x) * a.x + (p.y + t * (q.y - p.y) - mid.y) * a.y;
+        lo = Math.min(lo, along_); hi = Math.max(hi, along_);
+      }
+      if(hi > lo) along = (lo + hi) / 2;
+    }
+    const foot = { x: mid.x + a.x * along, y: mid.y + a.y * along };
+    return {
+      at: { x: foot.x + u.x * off, y: foot.y + u.y * off },
+      rotate: Math.atan2(a.x, -a.y) * 180 / Math.PI,
+      foot,
+      near: { x: foot.x + u.x * g, y: foot.y + u.y * g }
+    };
   }
 
+  // Collar leaf polygons of the sheets that carry no collar_<side> landmark of their own, in sheet
+  // inches (a = the leaf on the left of the picture, b = the right): the leaf path of each sheet's SVG
+  // with the group transforms applied (the aviator and overblouse collar-right/-left paths; the ABU and
+  // CFU unnamed five-point leaf path in collar-front, origin 19.65 in across and 8.5 / 14.2 in down).
+  // A test reads them again from the SVG. Remove an entry when its sheet states the polygon.
+  const COLLAR_POLYGONS = (() => {
+    const pts = a => a.map(([x, y]) => ({ x, y }));
+    const male = { a: pts([[8.115, 0.175], [5.934, 4.236], [8.341, 4.048], [10.522, 5.439]]), b: pts([[13.041, 0.175], [15.222, 4.236], [12.815, 4.048], [10.634, 5.439]]) };
+    const female = {
+      a: pts([[8.117, 0.148], [6.010, 4.363], [8.291, 4.150], [8.330, 4.827], [10.534, 5.775], [10.862, 6.432], [10.437, 5.523], [9.374, 3.242]]),
+      b: pts([[12.699, 0.148], [14.845, 4.479], [12.506, 4.247], [12.467, 4.750], [10.553, 5.775], [10.437, 5.523], [11.114, 4.208], [12.080, 2.275]])
+    };
+    const over = { a: pts([[8.814, 0.100], [9.526, 1.167], [9.988, 1.986], [10.700, 2.448], [8.459, 4.013], [7.961, 1.594]]), b: pts([[12.586, 0.100], [11.874, 1.167], [11.412, 1.986], [10.700, 2.448], [12.941, 4.013], [13.439, 1.594]]) };
+    const coat = oy => ({
+      a: pts([[17.090, oy - 0.430], [15.850, oy + 1.280], [14.670, oy + 3.930], [17.100, oy + 3.360], [18.545, oy + 2.600]]),
+      b: pts([[22.210, oy - 0.430], [23.450, oy + 1.280], [24.630, oy + 3.930], [22.200, oy + 3.360], [20.755, oy + 2.600]])
+    });
+    return {
+      'garment-aviator-shirt-male': male, 'garment-aviator-shirt-male-long': male,
+      'garment-aviator-shirt-female': female, 'garment-aviator-shirt-female-long': female,
+      'garment-overblouse-female': over, 'garment-overblouse-female-long': over,
+      'garment-abu-coat': coat(8.5), 'garment-cfu-coat': coat(14.2)
+    };
+  })();
+
+  // The two collar leaf polygons of the sheet: the landmarks collar_left/collar_right when it states
+  // them, else the table above. Each is { points } in sheet inches.
+  function collarPolygons(ctx){
+    const own = ['left', 'right'].map(n => ctx.landmark('collar_' + n)).filter(l => l && l.points);
+    if(own.length === 2) return own;
+    const t = COLLAR_POLYGONS[ctx.base && ctx.base.id];
+    return t ? [{ points: t.a }, { points: t.b }] : [];
+  }
+
+  // Cadet NCO and Airman chevrons on both collars, by the rule of Figure A5-5 ('shirt without necktie',
+  // CAPR 39-1 page 134) for every garment (Class B, aviator shirt, overblouse, ABU, CFU): the chevron's
+  // axis parallel to the leading edge of the collar leaf (its bottom edge, collar point to roll line),
+  // apex toward the collar point, the near outline 1 in from the edge, centred on the leaf (4.1.11.1.1.1.4,
+  // 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5, 5.1.1.1.1.4, 5.2.1.1.1). The wearer's right is the collar on
+  // the left of the picture whatever the sheet calls its sides.
+  async function collarChevrons(ctx, g){
+    const id = G.cadetNcoChevron(g, 'metal');
+    const polys = collarPolygons(ctx);
+    if(!id || polys.length < 2) return;
+    if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
+    const s = await ctx.spec(id);
+    const centerX = ctx.base.w / 2;
+    for(const poly of polys){
+      const edge = collarLeadingEdge(poly.points, centerX);
+      if(!edge) continue;
+      const side = edge.collarPoint.x < centerX ? 'right' : 'left';
+      const pl = chevronOnLeadingEdge(edge, s.w, 1, poly.points);
+      await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate: pl.rotate, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+      ctx.measure(pl.foot, pl.near);
+    }
+  }
+
+  // Fit a piece in a rect (never larger than true size) and centre it there.
   async function fitCenter(ctx, id, rect, opts){
     return C.fitIn(ctx, id, rect, opts);
   }
@@ -428,5 +534,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, polygonFrontEdge, edgeTurnDeg, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, collarLeadingEdge, chevronOnLeadingEdge, collarChevrons, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

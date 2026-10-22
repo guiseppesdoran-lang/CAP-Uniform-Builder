@@ -742,58 +742,6 @@
     }
   }
 
-  // ---- cadet NCO chevrons on the collar (Class B, aviator shirt, overblouse) ---------------------------
-
-  // Collar polygons of the sheets that carry no collar_<side> landmark of their own: the collar path
-  // of each sheet's SVG in sheet inches (a = the collar on the left of the picture, b = the right).
-  // Read off the paths id="<sheet>__collar-right" / "__collar-left" with the group transforms
-  // applied; a test reads them again from the SVG. Remove an entry when its sheet states the polygon.
-  const COLLAR_POLYGONS = (() => {
-    const pts = a => a.map(([x, y]) => ({ x, y }));
-    const male = { a: pts([[8.115, 0.175], [5.934, 4.236], [8.341, 4.048], [10.522, 5.439]]), b: pts([[13.041, 0.175], [15.222, 4.236], [12.815, 4.048], [10.634, 5.439]]) };
-    const female = {
-      a: pts([[8.117, 0.148], [6.010, 4.363], [8.291, 4.150], [8.330, 4.827], [10.534, 5.775], [10.862, 6.432], [10.437, 5.523], [9.374, 3.242]]),
-      b: pts([[12.699, 0.148], [14.845, 4.479], [12.506, 4.247], [12.467, 4.750], [10.553, 5.775], [10.437, 5.523], [11.114, 4.208], [12.080, 2.275]])
-    };
-    const over = { a: pts([[8.814, 0.100], [9.526, 1.167], [9.988, 1.986], [10.700, 2.448], [8.459, 4.013], [7.961, 1.594]]), b: pts([[12.586, 0.100], [11.874, 1.167], [11.412, 1.986], [10.700, 2.448], [12.941, 4.013], [13.439, 1.594]]) };
-    return {
-      'garment-aviator-shirt-male': male, 'garment-aviator-shirt-male-long': male,
-      'garment-aviator-shirt-female': female, 'garment-aviator-shirt-female-long': female,
-      'garment-overblouse-female': over, 'garment-overblouse-female-long': over
-    };
-  })();
-
-  // The two collar polygons of the sheet: the landmarks collar_left/collar_right when it states them,
-  // else the table above. Each is { points } in sheet inches.
-  function collarPolygons(ctx){
-    const own = ['left', 'right'].map(n => ctx.landmark('collar_' + n)).filter(l => l && l.points);
-    if(own.length === 2) return own;
-    const t = COLLAR_POLYGONS[ctx.base && ctx.base.id];
-    return t ? [{ points: t.a }, { points: t.b }] : [];
-  }
-
-  // Cadet NCO and Airman chevrons on both collars: centred on the sheet's collar_insignia point, the
-  // chevron's axis parallel to the front of the collar (the edge along the neck opening) with its
-  // apex toward the collar's neck end (4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5, Figure
-  // A5-5). The turn comes from the sheet's collar polygon by one rule for every garment; the sheets
-  // name their collar anchors by different sides, so the wearer's right is the collar on the left of
-  // the picture whatever the sheet calls it.
-  async function collarChevrons(ctx, g){
-    const id = G.cadetNcoChevron(g, 'metal');
-    const a = ctx.point('collar_insignia_left'), c = ctx.point('collar_insignia_right');
-    const polys = collarPolygons(ctx);
-    if(!a || !c || polys.length < 2) return;
-    const centerX = ctx.base.w / 2;
-    const centroidX = poly => poly.points.reduce((s, p) => s + p.x, 0) / poly.points.length;
-    const [viewerLeft, viewerRight] = a.x <= c.x ? [a, c] : [c, a];
-    for(const [side, at] of [['right', viewerLeft], ['left', viewerRight]]){
-      const poly = polys.slice().sort((p, q) => Math.abs(centroidX(p) - at.x) - Math.abs(centroidX(q) - at.x))[0];
-      const edge = H.polygonFrontEdge(poly.points, centerX);
-      if(!edge) continue;
-      await ctx.place(id, { pieceAnchor: 'center', at, rotate: H.edgeTurnDeg(edge.top, edge.bottom), z: Z.insignia, role: 'grade', key: 'grade:' + side });
-    }
-  }
-
   // ---- USAF-style Class B (4.1.11 men, 4.1.12 women) -----------------------------------------------
 
   const CLASS_B = {
@@ -821,7 +769,7 @@
     await threeLineName(ctx, b, tag, g.cadet);
 
     if(g.category === 'cadet-nco'){
-      await collarChevrons(ctx, g);
+      await H.collarChevrons(ctx, g);
     }else if(g.category === 'senior-nco'){
       // Men: 3 1/2 in (4.1.11.1.1.1.3). Women: 3 1/2 or 4 in on either sleeve (4.1.12.2.3.3).
       const size = female && b.opt.chevron === '4' ? '4' : '3.5';
@@ -995,7 +943,7 @@
       // at its true shape on it; the top view floats above the shoulder as on the shirts.
       await epauletViews(ctx, g, await epauletStrips(ctx, g, ep));
     }else if(g.category === 'cadet-nco'){
-      await collarChevrons(ctx, g);
+      await H.collarChevrons(ctx, g);
     }else if(g.category === 'senior-nco'){
       // 3 1/2 in chevrons only (4.2.5.1.1.3, 4.2.6.2.3).
       const id = G.seniorChevron(g, { size: '3.5' });
