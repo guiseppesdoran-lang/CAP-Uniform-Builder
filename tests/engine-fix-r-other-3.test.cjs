@@ -186,7 +186,7 @@ test('ABU and CFU: a general officer\'s stars begin 1 in up the perpendicular fr
       const cs = corners(l), bottomMid = { x: (cs[2].x + cs[3].x) / 2, y: (cs[2].y + cs[3].y) / 2 };
       const dist = Math.abs((bottomMid.x - a.x) * d.y - (bottomMid.y - a.y) * d.x) / len;
       assert.ok(Math.abs(dist - (1 - 0.125)) < 0.02, `${uniform} ${sex} ${rank} ${side}: the stars' silver begins 1 in up (cloth ${dist.toFixed(3)} in from the edge)`);
-      assert.ok(Math.abs(l.rotate) > 13 && Math.abs(l.rotate) < 13.5, `${uniform} ${sex} ${rank}: the 13.2 deg turn is kept`);
+      assert.ok(Math.abs(l.rotate) > 2.5 && Math.abs(l.rotate) < 3.1, `${uniform} ${sex} ${rank}: the cloth is turned with the leaf's bottom edge, 2.8 deg since the art leveled it from 13.2 (${l.rotate})`);
     }
     assert.ok(scene.layers.some(x => x.type === 'measure' && x.label === '1 in'), `${uniform} ${sex} ${rank}: a 1 in measure`);
   }
