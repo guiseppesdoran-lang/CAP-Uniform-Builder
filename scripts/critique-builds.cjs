@@ -35,6 +35,15 @@ for(const g of ['male', 'female']){
   mk(`semi_formal_usaf-${g}-cadet-CMaj`, 'semi_formal_usaf', g, 'cadet', 'C/Maj', { ribbonSel: cadRib, badgeIds: [AIRCREW] });
 }
 
+// Service caps (D5, R6; CAPR 39-1 6.2.1.1 to 6.2.1.3, ICL 25-02 (g)): every other Class A build wears the flight cap. Company grade (the officer
+// device), field grade (visor clouds), general officer (clouds), a senior NCO (the NCO device) and a cadet officer (the cadet service device),
+// both cuts, with the headgear option set to the service cap.
+for(const g of ['male', 'female']){
+  for(const [m, rank, tag] of [['senior', 'Capt', 'Capt'], ['senior', 'Col', 'Col'], ['senior', 'Maj Gen', 'MajGen'], ['senior', 'SMSgt', 'SMSgt'], ['cadet', 'C/Maj', 'CMaj']]){
+    mk(`blues_a-${g}-${m}-${tag}-service-cap`, 'blues_a', g, m, rank, { ribbonSel: m === 'cadet' ? cadRib : rib(), badgeIds: m === 'cadet' ? [AIRCREW] : A4, opt: Object.assign({}, base, { headgear: 'service' }) });
+  }
+}
+
 // Class B (items 4-6): short-sleeve NCO chevron, the rack in precedence order, general officer.
 for(const g of ['male', 'female']){
   mk(`blues_b-${g}-senior-Capt`, 'blues_b', g, 'senior', 'Capt', { ribbonSel: rib(), badgeIds: [A4[0], 'emergency_services_badge', 'communications_technician_badge'] });

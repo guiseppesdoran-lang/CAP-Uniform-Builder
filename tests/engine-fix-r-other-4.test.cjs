@@ -360,3 +360,43 @@ test('ABU and CFU cadet and officer builds without sleeve items add nothing to t
   const ocp = await compose(hb('ocp', 'male', 'senior', 'Lt Col', { patchRefs: [{ id: 'archer_ocp_patch', kind: 'general', img: 'patches/ocp/archer_ocp_patch.webp', slot: 'L_SHOULDER', label: 'ARCHER' }] }));
   assert.ok(ocp.layers.some(l => /:edge$/.test(l.key || '')), 'the OCP edge views stay');
 });
+
+// ---- 2. The critique set covers the service cap -------------------------------------------------------------------
+
+const { execFileSync } = require('node:child_process');
+const critique = JSON.parse(execFileSync(process.execPath, [path.join(root, 'scripts', 'critique-builds.cjs')], { encoding: 'utf8' }));
+
+test('critique set: blues_a service-cap builds for both cuts, company grade, field grade, general, senior NCO and cadet officer; the cap is seated on the collar, cut for the member, with its device on the slot (6.2.1.1-6.2.1.3, ICL 25-02 (g); R6)', async () => {
+  const want = [
+    ['Capt', 'senior', 'officer-nco', 'cap-device-officer-service'], ['Col', 'senior', 'field-grade', 'cap-device-officer-service'],
+    ['MajGen', 'senior', 'general', 'cap-device-officer-service'], ['SMSgt', 'senior', 'officer-nco', 'cap-device-nco-flight'],
+    ['CMaj', 'cadet', 'cadet-officer', 'cap-device-cadet-officer-service']
+  ];
+  for(const gender of ['male', 'female']){
+    const sex = gender === 'male' ? 'men' : 'women';
+    const coat = await store.load(gender === 'male' ? 'garment-blues-class-a-coat' : 'garment-blues-class-a-coat-female');
+    for(const [tag, membership, hatKind, deviceId] of want){
+      const name = `blues_a-${gender}-${membership}-${tag}-service-cap`;
+      const entry = critique.find(x => x.name === name);
+      assert.ok(entry, `${name} is in the critique set`);
+      assert.equal(entry.build.opt.headgear, 'service');
+      const scene = await compose(HARNESS.makeBuild(entry.build));
+      const hat = scene.layers.find(l => l.role === 'hat'), dev = scene.layers.find(l => l.role === 'hat-device');
+      assert.ok(hat && dev, `${name}: cap and device drawn`);
+      assert.equal(hat.id, `hat-service-cap-${sex}-${hatKind}`, `${name}: the cap for the member's grade class and cut`);
+      assert.equal(dev.id, deviceId, `${name}: the device`);
+      assert.ok(!scene.layers.some(l => /hat-flight-cap/.test(l.id || '')), `${name}: no flight cap`);
+      // Seating: the cap's garment_attach_center on the coat's hat_attach (else top_center + 1/4 in), the device's mount on the cap's slot.
+      const hs = await store.load(hat.id);
+      const attach = core.anchor(hs, 'garment_attach_center');
+      const top = core.anchor(coat, 'hat_attach') || { x: core.anchor(coat, 'top_center').x, y: core.anchor(coat, 'top_center').y + (hs.raw && hs.raw.attach_overlap ? 0 : 0.25) };
+      near(hat.x + attach.x, top.x, 0.01, `${name}: cap centred on the collar`);
+      near(hat.y + attach.y, top.y, 0.01, `${name}: cap seated on the collar`);
+      const slot = core.anchor(hs, 'device_slot_center');
+      const ds = await store.load(dev.id);
+      const mount = core.anchor(ds, 'mount_center') || { x: ds.w / 2, y: ds.h / 2 };
+      near(dev.x + mount.x, hat.x + slot.x, 0.01, `${name}: device on device_slot_center (x)`);
+      near(dev.y + mount.y, hat.y + slot.y, 0.01, `${name}: device on device_slot_center (y)`);
+    }
+  }
+});
