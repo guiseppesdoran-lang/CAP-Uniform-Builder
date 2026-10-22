@@ -952,6 +952,13 @@
   // (men, with a button) and 4 1/2 x 2 in (women), Figure A5-3 (the sheets' size_basis).
   const MESS_BOARD = { male: { L: 5.5, W: 2.25 }, female: { L: 4.5, W: 2.0 } };
   const MESS_BOARD_COLOR = { officer: '#2b4f93', general: '#c4c8d0', stroke: '#4d535d' };
+  // Bars (2d Lt, 1st Lt, Captain, flight officer grades) lie across the board, as the Fig A5-1 sleeve art and
+  // every other uniform draw them: the art's long axis (its height) is perpendicular to the strap, so the
+  // turn is the strap's own angle. The leaf, stars and eagle are turned a quarter more: leaf stem and stacked
+  // stars along the board, eagle wingspan across it (CAPR 39-1 4.1.1.1.1.1, 4.1.2.1.1.1, Figure A5-3).
+  function boardGradeTurn(gradeId, frameDeg){
+    return /rank-senior-(second-lieutenant|first-lieutenant|captain|flight-officer|technical-flight-officer|senior-flight-officer)-/.test(gradeId) ? frameDeg : frameDeg + 90;
+  }
   async function messBoards(ctx, g, M, female){
     const id = g.general && ctx.has(`${M.garment}-general-officer-shoulder-boards`) ? `${M.garment}-general-officer-shoulder-boards` : `${M.garment}-officer-shoulder-boards`;
     if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
@@ -977,7 +984,7 @@
         clip: [{ x: box.x - pad + lift.x, y: box.y - pad + lift.y }, { x: box.x + box.w + pad + lift.x, y: box.y - pad + lift.y }, { x: box.x + box.w + pad + lift.x, y: box.y + box.h + pad + lift.y }, { x: box.x - pad + lift.x, y: box.y + box.h + pad + lift.y }] });
       if(gradeId && ctx.has(gradeId)){
         const slot = ctx.point(`rank_slot_${side}_center`);
-        const turn = frame.deg + 90;
+        const turn = boardGradeTurn(gradeId, frame.deg);
         if(slot) await ctx.place(gradeId, { pieceAnchor: 'center', at: { x: slot.x + lift.x, y: slot.y + lift.y }, rotate: side === 'left' && turn < -180 ? turn + 360 : turn,
           flipX: side === 'right' && /colonel-(bullion|thread)$/.test(gradeId) && !/lieutenant/.test(gradeId), z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-' + side });
       }
@@ -991,9 +998,14 @@
         const end = { x: A.x + d.x * T / 2, y: A.y + d.y * T / 2 };
         // The grade's art is turned as on the board (its width along the strap), scaled to the strip.
         const gs = await ctx.spec(gradeId);
-        const scale = Math.min(1, (T - 0.08) / gs.h);
-        const dist = GRADE_FROM_END + gs.w * scale / 2;
-        const turn = frame.deg + 90;
+        const turn = boardGradeTurn(gradeId, frame.deg);
+        // The art turned by (turn - frame): its extent across the strip decides the scale, so a piece whose
+        // width lies across the strip (eagle, stars, leaf) is scaled by its width and a bar (height across)
+        // by its height; it never grows (R1).
+        const rel = (turn - frame.deg) * Math.PI / 180, sn = Math.abs(Math.sin(rel)), cs = Math.abs(Math.cos(rel));
+        const across = gs.w * sn + gs.h * cs, along = gs.w * cs + gs.h * sn;
+        const scale = Math.min(1, (T - 0.08) / across);
+        const dist = GRADE_FROM_END + along * scale / 2;
         await ctx.place(gradeId, { pieceAnchor: 'center', at: { x: end.x + a.x * dist, y: end.y + a.y * dist }, rotate: side === 'left' && turn < -180 ? turn + 360 : turn, scale,
           flipX: side === 'right' && /colonel-(bullion|thread)$/.test(gradeId) && !/lieutenant/.test(gradeId), z: Z.insignia, role: 'grade', key: `grade:edge-${side}`,
           title: `${side === 'right' ? 'Right' : 'Left'} shoulder board grade, edge-on` });
