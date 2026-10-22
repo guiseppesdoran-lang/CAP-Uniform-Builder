@@ -103,8 +103,9 @@
   // ---- collar insignia on the leading edge of the collar ---------------------------------------
 
   // Figure A5-5 (CAPR 39-1 page 134, 'shirt without necktie'): the cadet NCO chevron lies parallel to
-  // the leading edge of the collar leaf, 1 in from it and centred, its apex (the convex, striped side)
-  // toward the collar point. On the open collars the sheets draw (Class B, aviator shirt, overblouse,
+  // the leading edge of the collar leaf, 1 in from it and centred, the top of the insignia (the chevron
+  // peak, on C/SSgt the shield's starred canton) toward the roll-line end (the shirt's centre side) and
+  // the rockers toward the collar point, as the figure draws both the male and female panels. On the open collars the sheets draw (Class B, aviator shirt, overblouse,
   // ABU/CFU) the leading edge is the leaf's BOTTOM edge, from the collar point (the leaf's outer tip)
   // to where it meets the lapel roll line. Paragraphs: 4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5,
   // 4.2.6.2.5, 5.1.1.1.1.4, 5.2.1.1.1 ('1 inch from and parallel to the front of the collar and centered').
@@ -161,7 +162,8 @@
   }
 
   // Where and how a collar chevron sits on a leading edge { collarPoint, rollEnd, inward }: its axis
-  // along the edge with the apex toward the collar point (turn clockwise from apex-up), its width
+  // along the edge with the top of the insignia (peak / shield canton) toward the roll-line end and the
+  // rockers toward the collar point (Figure A5-5; the turn is clockwise from top-up), its width
   // across the edge, the near outline `gap` inches (1) from the edge. `pieceW` is the chevron's width in
   // inches. 'Centered on the collar' (Figure A5-5): along the edge it is centred on the leaf, at the
   // midpoint of the leaf's width on the line the chevron's centre runs along (`points`, the leaf
@@ -193,7 +195,7 @@
     const foot = { x: mid.x + a.x * along, y: mid.y + a.y * along };
     return {
       at: { x: foot.x + u.x * off, y: foot.y + u.y * off },
-      rotate: Math.atan2(a.x, -a.y) * 180 / Math.PI,
+      rotate: Math.atan2(-a.x, a.y) * 180 / Math.PI,   // (-180, 180]: the art's top turned to the roll-line end
       foot,
       near: { x: foot.x + u.x * g, y: foot.y + u.y * g }
     };
@@ -236,7 +238,7 @@
   // Cadet NCO and Airman chevrons on both collars, by the rule of Figure A5-5 ('shirt without necktie',
   // CAPR 39-1 page 134) for every garment (Class B, aviator shirt, overblouse, ABU, CFU): the chevron's
   // axis parallel to the leading edge of the collar leaf (its bottom edge, collar point to roll line),
-  // apex toward the collar point, the near outline 1 in from the edge, centred on the leaf (4.1.11.1.1.1.4,
+  // top of the insignia (peak / shield canton) toward the roll-line end, rockers toward the collar point, the near outline 1 in from the edge, centred on the leaf (4.1.11.1.1.1.4,
   // 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5, 5.1.1.1.1.4, 5.2.1.1.1). The wearer's right is the collar on
   // the left of the picture whatever the sheet calls its sides.
   async function collarChevrons(ctx, g){
