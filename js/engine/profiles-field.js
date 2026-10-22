@@ -399,6 +399,10 @@
       }
     }else{
       const widthOf = layer => { if(layer) ctx.measure({ x: layer.x, y: layer.y + layer.h }, { x: layer.x + layer.w, y: layer.y + layer.h }); };
+      // The unit (organizational) patch is worn on the right breast pocket of the ABU and the CFU, not on
+      // a sleeve (Attachment 4: Organizational Patch RP; 5.1.1.1.2.3, 5.2.1.1.2.5); the CFU's right
+      // sleeve is for a special activity patch (5.2.1.1.2.3).
+      const unit = take(p => p.kind === 'unit');
       const left = take(p => p.slot === 'L_SHOULDER');
       const zl = ctx.rect('wing_patch_zone_left');
       if(left && zl) widthOf(fitPatch(ctx, left, zl, 'L_SHOULDER'));
@@ -413,7 +417,7 @@
       for(const side of ['right', 'left']){
         if(used >= pockets) break;
         const want = side === 'right' ? 'CHEST_RIGHT' : 'CHEST_LEFT';
-        const p = take(x => x.slot === want) || take(x => x.slot === 'CHEST_LEFT' || x.slot === 'CHEST_RIGHT');
+        const p = (side === 'right' && unit) || take(x => x.slot === want) || take(x => x.slot === 'CHEST_LEFT' || x.slot === 'CHEST_RIGHT');
         const z = pocketZone(ctx, side);
         if(p && z){ widthOf(fitPatch(ctx, p, z, want)); used++; }
       }

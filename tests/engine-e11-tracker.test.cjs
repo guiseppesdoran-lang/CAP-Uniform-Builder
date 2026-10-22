@@ -230,3 +230,25 @@ test('cadet semi-formal: the lapels are drawn over the badges and ribbons as on 
     }
   }
 });
+
+// ---- unit patch on the ABU and the CFU ----------------------------------------------------------------------------------
+
+test('ABU and CFU: the unit patch is worn on the right breast pocket, the other pocket patch on the left (Attachment 4, 5.1.1.1.2.3, 5.2.1.1.2.4-5)', async () => {
+  const unit = { id: 'unit-x', href: 'images/patches/nywg_patch.webp', aspect: 1, slot: 'R_SHOULDER', kind: 'unit', title: 'Unit patch' };
+  const other = { id: 'other-p', href: 'images/patches/archer_patch.webp', aspect: 1, slot: 'CHEST_LEFT', kind: 'general', title: 'Archer patch' };
+  for(const [uniform, garment, pockets] of [['abu', 'garment-abu-coat', 1], ['corporate_field', 'garment-cfu-coat', 2]]){
+    const sheet = await store.load(garment);
+    const scene = await compose(build(uniform, 'male', 'senior', 'Maj', [], { patches: [unit, other] }));
+    const placed = scene.layers.filter(l => l.role === 'patch');
+    const u = placed.find(l => l.key.startsWith('patch:unit-x:'));
+    assert.ok(u, `${uniform}: the unit patch is drawn`);
+    const right = core.landmarkBounds(sheet, 'chest_pocket_right');
+    assert.ok(u.x >= right.x && u.x + u.w <= right.x + right.w + 1e-6, `${uniform}: inside the right pocket's width`);
+    assert.ok(u.y >= right.y && u.y + u.h <= right.y + right.h, `${uniform}: on the right pocket`);
+    assert.equal(placed.length, pockets, `${uniform}: ${pockets} pocket patch${pockets > 1 ? 'es' : ''} (one in all on the ABU, one a pocket on the CFU)`);
+    if(pockets === 2){
+      const o = placed.find(l => l.key.startsWith('patch:other-p:')), left = core.landmarkBounds(sheet, 'chest_pocket_left');
+      assert.ok(o && o.x >= left.x && o.x + o.w <= left.x + left.w + 1e-6, 'the other patch is on the left pocket');
+    }
+  }
+});
