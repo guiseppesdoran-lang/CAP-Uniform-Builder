@@ -62,7 +62,11 @@
   // toward the neck. Null when the garment has no such landmark.
   function epauletFrame(ctx, side){
     const lm = ctx.landmark('epaulet_' + side);
-    const poly = lm && lm.points;
+    return frameFromPolygon(ctx, side, lm && lm.points);
+  }
+  // The same frame from any polygon (the strap of a coat sheet that states its strap axis instead of
+  // an epaulet landmark).
+  function frameFromPolygon(ctx, side, poly){
     if(!poly || poly.length < 3) return null;
     let best = null;
     for(let t = 0; t < 180; t += 0.25){
@@ -558,5 +562,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, collarLeadingEdge, collarLeaf, chevronOnLeadingEdge, collarChevrons, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarLeaf, chevronOnLeadingEdge, collarChevrons, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

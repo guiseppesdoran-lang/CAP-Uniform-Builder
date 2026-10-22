@@ -358,29 +358,6 @@
     }
   }
 
-  // The epaulet sleeves seen from above, drawn above the uniform at its outer corners (the front
-  // view shows them edge-on). The sleeves are traced from Figure A5-1 with their grade, braid bands
-  // and "CAP" in place, upright with the button (neck) end at the top; each is turned flat with its
-  // arm end toward its own side.
-  async function epauletTopViews(ctx, g, opts){
-    const o = opts || {};
-    const sleeveId = epauletSleeveId(g);
-    if(!sleeveId || !ctx.has(sleeveId)) return;
-    const s = await ctx.spec(sleeveId);
-    // The eagle faces the art's left; turned flat on the wearer's right shoulder it would face
-    // backward, so there it is redrawn mirrored (beak forward on both shoulders).
-    const eagle = g.key === 'colonel' && !g.cadet ? G.seniorOfficerInsignia(g, 'thread') : null;
-    const ins = core.anchor(s, 'insignia_center');
-    for(const side of ['right', 'left']){
-      const cx = side === 'right' ? 0.25 + s.h / 2 : ctx.base.w - 0.25 - s.h / 2;
-      const cy = -(o.gap == null ? 0.75 : o.gap) - s.w / 2;
-      const mirror = side === 'right' && eagle && ins && ctx.has(eagle);
-      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: side === 'right' ? 90 : -90, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} ${o.label || 'epaulet'}, seen from above` }, mirror ? { hideGroups: ['grade'] } : {}));
-      // Turned +90, the sleeve's downward offset to the insignia points to the viewer's left.
-      if(mirror) await ctx.place(eagle, { pieceAnchor: 'center', at: { x: cx - (ins.y - s.h / 2), y: cy }, rotate: 90, flipX: true, z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-right' });
-    }
-  }
-
   // ---- epaulets from the garment's landmark (Class B, aviator shirt, overblouse) ---------------------
 
   // The garment sheets draw the epaulet sleeve edge-on as a 0.4 in strip over the outer 82% of the
@@ -491,14 +468,14 @@
   // The epaulet sleeves seen from above, each just above its shoulder: turned to lie along the strap,
   // its near edge TOP_VIEW_CLEAR above the garment's shoulder line (the epaulet landmark's top
   // boundary), the grade in place. Class B, aviator shirt and overblouse (R7).
-  async function epauletViews(ctx, g, strips){
+  async function epauletViews(ctx, g, strips, frames){
     const sleeveId = epauletSleeveId(g);
     if(!sleeveId || !ctx.has(sleeveId)) return;
     const s = await ctx.spec(sleeveId);
     const eagle = g.key === 'colonel' && !g.cadet ? G.seniorOfficerInsignia(g, 'thread') : null;
     const ins = core.anchor(s, 'insignia_center');
     for(const side of ['right', 'left']){
-      const f = H.epauletFrame(ctx, side);
+      const f = (frames && frames[side]) || H.epauletFrame(ctx, side);
       if(!f) continue;
       // Centre when the lower edge lies on the strap's outer side, then lifted until it clears the
       // shoulder line everywhere it overlaps the strap.
@@ -606,25 +583,56 @@
     return { left: { mid, deg }, right: { mid: { x: width - mid.x, y: mid.y }, deg: -deg } };
   }
 
-  // Cadet officer shoulder boards (4.1.5.2.1.3): edge-on on the coat sheet, and seen from above at
-  // the outer corners with the regular-size grade on each board's rank slot.
+  // The Class A coat sheets state the shoulder strap as an axis (neck end, arm end) rather than as an
+  // epaulet landmark; the strap is the same 0.4 in edge-on epaulet the other sheets draw. This makes
+  // the strap's frame (H.epauletFrame's shape) of each side from that axis, so the views from above sit
+  // just above the shoulder by the same rule as on the Class B and the aviator shirt (R7).
+  function strapFrames(ctx, A){
+    const W = ctx.base.w, [n, a] = A.cord, frames = {};
+    for(const side of ['left', 'right']){
+      const neck = side === 'left' ? { x: n[0], y: n[1] } : { x: W - n[0], y: n[1] };
+      const arm = side === 'left' ? { x: a[0], y: a[1] } : { x: W - a[0], y: a[1] };
+      const len = Math.hypot(arm.x - neck.x, arm.y - neck.y), u = { x: (arm.x - neck.x) / len, y: (arm.y - neck.y) / len };
+      const h = EDGE_ON_THICK / 2, v = { x: -u.y * h, y: u.x * h };
+      frames[side] = H.frameFromPolygon(ctx, side, [
+        { x: neck.x + v.x, y: neck.y + v.y }, { x: arm.x + v.x, y: arm.y + v.y },
+        { x: arm.x - v.x, y: arm.y - v.y }, { x: neck.x - v.x, y: neck.y - v.y }]);
+    }
+    return frames;
+  }
+
+  // Cadet officer shoulder boards (4.1.5.2.1.3): edge-on on the coat sheet, and seen from above, each
+  // turned to lie along its strap with its near edge just above the shoulder (R7), the regular-size
+  // grade on its rank slot.
   async function cadetBoards(ctx, A, g, sex){
     await ctx.overlay(A.cadetOfficer, Z.epauletLayer);
     const grade = G.cadetOfficerInsignia(g, 'metal-regular');
+    const frames = strapFrames(ctx, A);
     for(const side of ['right', 'left']){
       const id = `garment-blues-shoulder-board-top-${sex}-${side}`;
-      if(!ctx.has(id)) continue;
+      const f = frames[side];
+      if(!ctx.has(id) || !f) continue;
       const s = await ctx.spec(id);
-      const x = side === 'right' ? 0.25 + s.w / 2 : ctx.base.w - 0.25 - s.w / 2;
-      const view = await ctx.place(id, { pieceAnchor: 'bottom_center', at: { x, y: -0.75 }, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above` });
-      const at = view && H.piecePoint(view, s, 'rank_slot_center');
+      // The board lies along the strap, its button end toward the neck: turn the art's outer-to-button
+      // direction onto the strap's outer-to-neck axis, then rest its near edge TOP_VIEW_CLEAR above the
+      // shoulder line (the strap polygon's top boundary), the same lift epauletViews applies.
+      const board = core.landmarkBounds(s, 'board'), outer = core.anchor(s, 'board_outer_end'), button = core.anchor(s, 'button_end_center');
+      const rot = Math.round((Math.atan2(f.axis.y, f.axis.x) - Math.atan2(button.y - outer.y, button.x - outer.x)) * 18000 / Math.PI) / 100;
+      const half = { a: board.w / 2, n: board.h / 2 };
+      const c0 = { x: f.center.x + f.normal.x * (f.width / 2 + half.n), y: f.center.y + f.normal.y * (f.width / 2 + half.n) };
+      const lower = bandEdge(f, c0, -half.n, half.a);
+      const minClear = shoulderClearance(f, lower[0], lower[1]).min;
+      const c = { x: c0.x, y: c0.y - (Number.isFinite(minClear) ? TOP_VIEW_CLEAR - minClear : 0) };
+      const view = await ctx.place(id, { pieceAnchor: 'center', at: c, rotate: rot, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above` });
+      const slot = core.anchor(s, 'rank_slot_center');
+      const at = view && slot && core.rotatePoint({ x: c.x + (slot.x - s.w / 2), y: c.y + (slot.y - s.h / 2) }, c, rot);
       if(!at || !grade || !ctx.has(grade)) continue;
       // The grade's discs or diamonds sit side by side across the board (Figure A5-6). The figure's
       // board is wider than this one: a grade wider than the band (the Colonel's three diamonds) is
       // drawn just small enough to sit on it.
       const gs = await ctx.spec(grade), band = core.landmarkBounds(s, 'rank_slot');
       const scale = band ? Math.min(1, (band.h - 0.12) / gs.w, (band.w - 0.12) / gs.h) : 1;
-      await ctx.place(grade, { pieceAnchor: 'center', at, rotate: 90, scale, z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-' + side });
+      await ctx.place(grade, { pieceAnchor: 'center', at, rotate: rot + 90, scale, z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-' + side });
     }
   }
 
@@ -692,7 +700,7 @@
       await sleeveChevrons(ctx, G.seniorChevron(g, { size }), chevronAnchors(ctx) || A.ncoChevron);
     }else if(!semi && isOfficerLike(g)){
       // The coat's epaulets are edge-on in the front view; the grade shows on the top views.
-      await epauletTopViews(ctx, g);
+      await epauletViews(ctx, g, null, strapFrames(ctx, A));
     }else if(!semi && g.category === 'senior-none' && g.track === 'nco'){
       // Adults without grade on the NCO track wear CAP collar insignia (1.4.2.1).
       for(const side of ['right', 'left']){
