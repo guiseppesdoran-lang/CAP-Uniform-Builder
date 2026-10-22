@@ -123,3 +123,85 @@ test('the women\'s mess tie tab is drawn under the blouse collar leaves, centred
   const innerY = inner.find(p => Math.abs(p[0]) < 0.01 && p[1] > 2.5)[1] + 0.25;
   assert.ok(Math.min(...ys) / 100 >= innerY - 0.011, `tab top ${Math.min(...ys) / 100} in, leaves meet at ${innerY} in`);
 });
+
+// ---- 4. aviator shirts: the 3 1/2 in NCO chevron lies between the outline and the armhole seam -------------------------
+
+const inkPoints = id => [...readSvg(id).matchAll(/[ML](-?[\d.]+),(-?[\d.]+)/g)].map(m => [Number(m[1]) / 100, Number(m[2]) / 100]);
+// the sheet's silhouette in scene inches (the art group sits at translate(x y) scale(100) in hundredths)
+function silhouetteScene(id){
+  const svg = readSvg(id), t = svg.match(new RegExp(`id="${id}__art" transform="translate\\(([-\\d.]+) ([-\\d.]+)\\)`)), d = svg.match(/id="[^"]*__silhouette" d="([^"]+)"/)[1];
+  const n = d.match(/-?\d*\.?\d+/g).map(Number), pts = [];
+  for(let i = 0; i + 1 < n.length; i += 2) pts.push([(Number(t[1]) + n[i] * 100) / 100, (Number(t[2]) + n[i + 1] * 100) / 100]);
+  return pts;
+}
+const insidePoly = (p, P) => { let r = false; for(let i = 0, j = P.length - 1; i < P.length; j = i++){ const [xi, yi] = P[i], [xj, yj] = P[j]; if((yi > p[1]) !== (yj > p[1]) && p[0] < (xj - xi) * (p[1] - yi) / (yj - yi) + xi) r = !r; } return r; };
+const distSeg = (p, a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], t = Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / (dx * dx + dy * dy || 1))); return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy); };
+
+async function aviatorChevron(garment, gender, rank, sleeve){
+  const spec = await store.load(garment), sil = silhouetteScene(garment);
+  const scene = await P.composeUniform(build('aviator', gender, 'senior', rank, { sleeve }), store);
+  const out = {};
+  for(const side of ['right', 'left']){
+    const l = scene.layers.find(x => x.role === 'grade' && x.key === 'grade:sleeve-' + side);
+    assert.ok(l, `${garment} ${rank} ${side}: chevron`);
+    assert.equal(l.w, 3.5, `${garment} ${rank}: the regulation 3 1/2 in size, not scaled`);
+    const seam = core.landmark(spec, 'armhole_seam_' + side).points.slice().sort((a, b) => a.y - b.y);
+    const seamX = y => {
+      for(let i = 0; i < seam.length - 1; i++){ const a = seam[i], c = seam[i + 1]; if((a.y - y) * (c.y - y) <= 0 && a.y !== c.y) return a.x + (c.x - a.x) * (y - a.y) / (c.y - a.y); }
+      return y > seam[seam.length - 1].y ? seam[seam.length - 1].x : seam[0].x;
+    };
+    const cx = l.x + l.w / 2, cy = l.y + l.h / 2, r = l.rotate * Math.PI / 180;
+    let seamClear = Infinity, outClear = Infinity, outside = 0;
+    for(const [px, py] of inkPoints(l.id)){
+      const dx = px - l.w / 2, dy = py - l.h / 2, q = [cx + dx * Math.cos(r) - dy * Math.sin(r), cy + dx * Math.sin(r) + dy * Math.cos(r)];
+      const sx = seamX(q[1]);
+      seamClear = Math.min(seamClear, side === 'right' ? sx - q[0] : q[0] - sx);
+      let dm = Infinity; for(let i = 0; i < sil.length; i++) dm = Math.min(dm, distSeg(q, sil[i], sil[(i + 1) % sil.length]));
+      const inside = insidePoly(q, sil);
+      if(!inside) outside++;
+      outClear = Math.min(outClear, inside ? dm : -dm);
+    }
+    out[side] = { seamClear, outClear, outside, layer: l };
+  }
+  return out;
+}
+
+test('the men\'s short-sleeve aviator shirt: every SSgt to CMSgt chevron is at least 0.1 in clear of the armhole seam and no ink is cut by the silhouette (4.2.5.1.1.3, D8)', async () => {
+  for(const rank of ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt']){
+    const r = await aviatorChevron('garment-aviator-shirt-male', 'male', rank, 'short');
+    for(const side of ['right', 'left']){
+      assert.ok(r[side].seamClear >= 0.1, `${rank} ${side}: ${r[side].seamClear.toFixed(3)} in from the armhole seam (want at least 0.1)`);
+      assert.equal(r[side].outside, 0, `${rank} ${side}: ink outside the silhouette (the engine's clip would shave it)`);
+      assert.ok(r[side].outClear >= 0.1, `${rank} ${side}: ink ${r[side].outClear.toFixed(3)} in inside the outline (want at least 0.1)`);
+    }
+  }
+});
+
+test('the other aviator shirts (women\'s short, both long) keep their chevron clear of the seam and the outline', async () => {
+  for(const [garment, gender, sleeve] of [['garment-aviator-shirt-male-long', 'male', 'long'], ['garment-aviator-shirt-female', 'female', 'short'], ['garment-aviator-shirt-female-long', 'female', 'long']]){
+    for(const rank of ['SSgt', 'CMSgt']){
+      const r = await aviatorChevron(garment, gender, rank, sleeve);
+      for(const side of ['right', 'left']){
+        assert.ok(r[side].seamClear >= 0.1, `${garment} ${rank} ${side}: seam ${r[side].seamClear.toFixed(3)}`);
+        assert.equal(r[side].outside, 0, `${garment} ${rank} ${side}: ink outside the silhouette`);
+      }
+    }
+  }
+});
+
+test('the men\'s short aviator sheet states its sleeve anchors and armhole seams, flags the widening as an estimate and keeps the bodice as traced (only the sleeve run moves)', () => {
+  const spec = readSpec('garment-aviator-shirt-male');
+  for(const side of ['right', 'left']) for(const k of ['shoulder_seam_', 'sleeve_bottom_', 'chevron_halfway_']) assert.ok(spec.anchors[k + side], `${k}${side}`);
+  const sh = spec.anchors.shoulder_seam_right, bot = spec.anchors.sleeve_bottom_right, half = spec.anchors.chevron_halfway_right;
+  assert.ok(Math.abs(half[1] - (sh[1] + bot[1]) / 2) < 1, 'chevron_halfway is halfway between the shoulder seam and the sleeve bottom');
+  assert.ok(spec.landmarks.armhole_seam_right.length >= 3 && spec.landmarks.armhole_seam_left.length >= 3);
+  const w = spec.dimensions.sleeve_widening;
+  assert.equal(w.size_source, 'estimated');
+  assert.ok(w.outward_in >= 1.8, `widening ${w.outward_in}`);
+  // bodice: the outline's side seam below the armpit is where the trace put it (the sleeve run moves; |x| <= 6.7 in below y 12.9 does not)
+  const pts = silhouetteScene('garment-aviator-shirt-male').map(p => [p[0] - spec.size_in.w / 2, p[1] - 0.1]);
+  const body = pts.filter(p => Math.abs(p[0]) < 6.7 && p[1] > 12.5);
+  assert.ok(body.length >= 6, 'bodice points');
+  const traced = [[6.428, 13.002], [6.527, 23.41], [6.58, 23.29], [6.55, 23.07]];
+  for(const [x, y] of traced) assert.ok(body.some(p => Math.abs(Math.abs(p[0]) - x) < 0.03 && Math.abs(p[1] - y) < 0.03), `side seam point (${x}, ${y})`);
+});
