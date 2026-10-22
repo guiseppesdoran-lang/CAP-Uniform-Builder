@@ -289,11 +289,26 @@
     return { x: plateRect.x + r.x * s, y: single ? plateRect.y + (plateRect.h - h) / 2 : plateRect.y + r.y * s, w: r.w * s, h };
   }
 
-  // The 3-line plate: lines 1 and 2 are drawn on the plate; line 3 is the last name in white.
+  // The 3-line plate: lines 1 and 2 are drawn on the plate (by the garment's nametag layer, whose line 2,
+  // 'UNITED STATES AIR FORCE AUXILIARY', has its baseline THREE_LINE_BASE2 in below the plate's top: measured
+  // on every cadet and adult nametag layer by tests/engine-fix-r-other-5); line 3 is the last name in white
+  // (CAPR 39-1 4.1.5.2.2.2.2, 4.1.9.4.2.2). The plate spec's name landmark (0.36 to 0.68 in) starts 0.015 in under
+  // line 2, so at the landmark's full height the name's capitals nearly touched it and left more empty plate
+  // below than above. The name sits in the band between line 2's baseline and the plate's inner border
+  // (the 0.04 in outline, half of it inside), centred, its capitals THREE_LINE_CLEAR in clear of both:
+  // about 0.245 in tall instead of 0.29 (the legibility rule: line 2 and the name read as two lines).
+  const THREE_LINE_BASE2 = 0.345, THREE_LINE_BORDER = 0.02, THREE_LINE_CLEAR = 0.07;
   async function threeLineName(ctx, b, plateRect, cadet){
     if(!b.name.show || !b.name.last || !plateRect) return;
     const zone = await plateNameZone(ctx, plateRect, cadet ? 'nameplate-3line-cadet' : 'nameplate-3line-adult');
-    if(zone) C.plateName(ctx, b.name.last, zone, { color: PLATE_WHITE, key: 'text:name' });
+    if(!zone) return;
+    const spec = await ctx.spec(cadet ? 'nameplate-3line-cadet' : 'nameplate-3line-adult');
+    const s = plateRect.w / spec.w;
+    const top = plateRect.y + THREE_LINE_BASE2 * s, bottom = plateRect.y + plateRect.h - THREE_LINE_BORDER * s;
+    const capH = Math.min(zone.h * 0.9, (bottom - top) - 2 * THREE_LINE_CLEAR * s);
+    zone.h = capH / 0.9;
+    zone.y = (top + bottom) / 2 - zone.h / 2;
+    C.plateName(ctx, b.name.last, zone, { color: PLATE_WHITE, key: 'text:name' });
   }
 
   // Grade insignia on both epaulets (gray or blue sleeves drawn by a layer): the grade's centre on

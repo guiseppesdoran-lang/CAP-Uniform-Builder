@@ -86,8 +86,16 @@ async function zoneOf(plateId, name, plate, single){
   const spec = await store.load(plateId);
   const r = core.landmarkBounds(spec, name);
   const s = plate.w / spec.w;
-  const h = r.h * s;
-  return { x: plate.x + r.x * s, y: single ? plate.y + (plate.h - h) / 2 : plate.y + r.y * s, w: r.w * s, h };
+  let h = r.h * s;
+  let y = single ? plate.y + (plate.h - h) / 2 : plate.y + r.y * s;
+  // The three-line plates: lines 1-2 are drawn above the name; it stays 0.07 in clear of line 2's baseline (0.345 in) and of the
+  // plate's inner border (0.02 in in), centred in that band (FIX-R-OTHER-r1 #1, D8; tests/engine-fix-r-other-5).
+  if(!single && /3line/.test(plateId) && /nametag$/.test(plate.key)){
+    const top = plate.y + 0.345 * s, bottom = plate.y + plate.h - 0.02 * s;
+    h = Math.min(h * FILL, (bottom - top) - 0.14 * s) / FILL;
+    y = (top + bottom) / 2 - h / 2;
+  }
+  return { x: plate.x + r.x * s, y, w: r.w * s, h };
 }
 
 const PLATES = [
