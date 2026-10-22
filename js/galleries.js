@@ -794,7 +794,7 @@ function setRibbonSelectionFromDropdown(id, value,{deferRender=false}={}){
 
   State.ribbonSelections[id] = sel;
 
-  enforceSeniorSingleCadetAwardRibbon(id);
+  enforceRibbonExclusions(id);
 
   if(id === 'goddard_achievement' || id === 'mitchell_award'){
     syncGoddardRocketryStar();
@@ -814,6 +814,35 @@ function selectAllCapUniformAwards(){
 
   rebuildRibbonsFromGallery();
   buildRibbonGallery();
+}
+
+// Ribbons that share one place in the order of precedence: CAPR 39-3 Attachment 2 lists the National
+// Commander's Citation (earned before 1 July 1977, Note 2) "OR" the Gill Robb Wilson Award, so only one
+// of the two is worn.
+const CAPUB_SHARED_RIBBON_SLOTS = [['national_commanders_citation','cap_gill_robb_wilson_ribbon']];
+
+function clearRibbonSelection(id){
+  const sel = State.ribbonSelections?.[id];
+  if(!sel) return;
+  sel.checked = false;
+  sel.awardValue = '';
+  sel.awardLabel = '';
+  sel.devices = {};
+  sel.imageOverride = null;
+}
+
+function enforceSharedRibbonSlot(selectedId){
+  if(!State.ribbonSelections?.[selectedId]?.checked) return;
+  for(const group of CAPUB_SHARED_RIBBON_SLOTS){
+    if(!group.includes(selectedId)) continue;
+    group.filter(otherId => otherId !== selectedId).forEach(clearRibbonSelection);
+  }
+}
+
+// The choices that rule out others: a senior member's single cadet award, the shared slots.
+function enforceRibbonExclusions(selectedId){
+  enforceSeniorSingleCadetAwardRibbon(selectedId);
+  enforceSharedRibbonSlot(selectedId);
 }
 
 function enforceSeniorSingleCadetAwardRibbon(selectedId){
@@ -886,6 +915,8 @@ function rebuildRibbonsFromGallery(){
     if(!sel || !sel.checked) continue;
     if(!isAwardWornOnUniform(id)) continue;
     if(highestCadetAward && CADET_ACHIEVEMENT_RIBBONS.has(id) && id !== highestCadetAward) continue;
+    // A saved setup may list both ribbons of a shared slot; the one higher in the order is worn.
+    if(CAPUB_SHARED_RIBBON_SLOTS.some(group => group.includes(id) && group.some(other => other !== id && State.ribbonSelections[other]?.checked && precedence(other) < precedence(id)))) continue;
 
     // compute stacks needed due to caps or special rules.
     // Silver Medal of Valor has no device for multiple awards in this builder;

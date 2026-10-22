@@ -58,6 +58,31 @@ const ev = loadPage();
 // ---- shared ribbon slot ------------------------------------------------------------------------------
 
 
+test('the National Commander\'s Citation and the Gill Robb Wilson Award share one slot: choosing one clears the other (39-3 Attachment 2, Note 2)', () => {
+  ev("State.membership = 'senior'; State.uniform = 'blues_a'; State.ribbonSelections = {}; normalizeRibbonSelections();");
+  ev("setRibbonSelectionFromDropdown('national_commanders_citation', 'earned', {deferRender:true})");
+  assert.equal(ev("State.ribbonSelections.national_commanders_citation.checked"), true);
+  const grw = ev("getRibbonAwardOptions('cap_gill_robb_wilson_ribbon').find(o => o.value).value");
+  ev(`setRibbonSelectionFromDropdown('cap_gill_robb_wilson_ribbon', ${JSON.stringify(grw)}, {deferRender:true})`);
+  assert.equal(ev("State.ribbonSelections.cap_gill_robb_wilson_ribbon.checked"), true);
+  assert.equal(ev("State.ribbonSelections.national_commanders_citation.checked"), false, 'the Citation is cleared');
+  assert.equal(ev("State.ribbonSelections.national_commanders_citation.awardValue"), '');
+  ev("setRibbonSelectionFromDropdown('national_commanders_citation', 'earned', {deferRender:true})");
+  assert.equal(ev("State.ribbonSelections.cap_gill_robb_wilson_ribbon.checked"), false, 'and the other way round');
+});
+
+test('a saved setup that lists both wears one: the higher in the order of precedence', () => {
+  ev("State.membership = 'senior'; State.uniform = 'blues_a'; State.ribbonSelections = {}; normalizeRibbonSelections();");
+  const grw = ev("getRibbonAwardOptions('cap_gill_robb_wilson_ribbon').find(o => o.value).value");
+  ev(`State.ribbonSelections.cap_gill_robb_wilson_ribbon = { checked:true, devices:{}, awardValue:${JSON.stringify(grw)}, awardLabel:'x' };
+      State.ribbonSelections.national_commanders_citation = { checked:true, devices:{}, awardValue:'earned', awardLabel:'Earned' };
+      rebuildRibbonsFromGallery();`);
+  const worn = Array.from(ev("State.ribbons.map(r => r.id)"));
+  assert.deepEqual(worn.filter(id => id === 'national_commanders_citation' || id === 'cap_gill_robb_wilson_ribbon'), ['national_commanders_citation']);
+});
+
+// ---- order of the federal awards -------------------------------------------------------------------------
+
 test('Corporate Service Dress and Semi-Formal: the National Staff badge is not authorized, the Command Council badge may take the crest\'s place (4.2.3.1.1.1, Attachment 4)', () => {
   for(const uniform of ['semi_formal', 'aviator_blazer']){
     ev(`State.uniform = '${uniform}'`);

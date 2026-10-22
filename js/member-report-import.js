@@ -172,7 +172,7 @@ function selectImportedRibbon(id, value='earned'){
   State.ribbonSelections[id].awardLabel = option?.label || 'Earned';
   State.ribbonSelections[id].devices = { ...(option?.devices || {}) };
   State.ribbonSelections[id].imageOverride = option?.image || getRibbonImageOverride(id, option?.value || value || 'earned');
-  enforceSeniorSingleCadetAwardRibbon(id);
+  enforceRibbonExclusions(id);
 }
 
 function chooseSpecialRibbonValueByAwardCount(id, count){
