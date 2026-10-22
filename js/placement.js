@@ -71,9 +71,7 @@ function updateAvailabilityUI(prevUniform){
   by('groupPatches').classList.toggle('hidden', !auth.showPatches);
   // Miniature medals are worn only on Mess Dress and Corporate Semi-Formal (CAPR 39-1 11.1.4).
   const miniWorn = CAPUBUniformRules.allowsMiniMedals(State.uniform);
-  ['toggleMini','autoMini','miniMountStyle'].forEach(id=>{
-    by(id)?.closest('label')?.classList.toggle('hidden', !miniWorn);
-  });
+  by('miniMountStyle')?.closest('label')?.classList.toggle('hidden', !miniWorn);
   const badgeCommand = by('cmdBadges');
   const patchCommand = by('cmdPatches');
   if(badgeCommand) badgeCommand.classList.toggle('hidden', !auth.showBadges);
@@ -190,20 +188,6 @@ function militaryAwardFilterType(award){
   if(category.startsWith('FOREIGN')) return 'FOREIGN';
   return 'OTHER';
 }
-
-function militaryBadgeDressPlacementRole(badge){
-  const family=String(badge?.family || '').toUpperCase();
-  const notes=JSON.stringify(badge?.placement?.serviceDress || '').toLowerCase();
-  const id=String(badge?.id || '').toLowerCase();
-  if(/right pocket|above the nametag|above the name tag/.test(notes)) return 'RIGHT_POCKET';
-  if(/wearer's left|left pocket|below the bottom row|below the ribbons|below the medals/.test(notes)) return 'LEFT_POCKET';
-  if(/marksmanship|rifle_qualification|pistol_qualification/.test(id)) return 'LEFT_POCKET';
-  // Identification and command badges use dedicated pocket/duty-badge zones;
-  // they must not be mixed into the occupational stack over the awards.
-  if(family==='IDENTIFICATION' || family==='COMMAND') return 'RIGHT_POCKET';
-  return 'ABOVE_AWARDS';
-}
-
 
 // The preview is drawn by js/uniform-view.js from the page state; every change asks for one render.
 function fullRender(prevUniform){

@@ -194,3 +194,15 @@ test('the name has no cap tape field left: the tape art is fixed (UI audit 4.5)'
   assert.doesNotMatch(read('js/wiring.js'), /capTape/);
   assert.doesNotMatch(read('js/uniform-view.js'), /capTape/);
 });
+
+test('unused functions and the dead references to controls the page no longer has are gone (UI audit 6.2-6.5)', () => {
+  assert.doesNotMatch(read('js/placement.js'), /toggleMini|autoMini/);
+  for(const [file, names] of Object.entries({
+    'js/member-report-import.js': ['removeMemberReportSection', 'countDatedRowsInSection', 'hasCurrentDutyPosition', 'hasSpecialtyTrackLevel', 'highestSpecialtyTrackLevelFromReport', 'addImportedBadge', 'shouldImportCommandInsigniaForMember'],
+    'js/placement.js': ['militaryBadgeDressPlacementRole'], 'js/setup.js': ['optionize']
+  })){
+    for(const name of names) assert.doesNotMatch(read(file), new RegExp(`function ${name}\\b`), name);
+  }
+  // What the page still calls is still defined.
+  for(const name of ['fullRender', 'refreshUI', 'updateAvailabilityUI']) assert.equal(ev(`typeof ${name}`), 'function', name);
+});

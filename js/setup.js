@@ -1,18 +1,5 @@
-// Extracted verbatim from index.html: select population, sidebar toggle, tooltips, the setup flow
+// Extracted verbatim from index.html: sidebar toggle, tooltips, the setup flow
 // and member type / uniform authorization.
-
-/* ===========================
-   POPULATE SELECTS
-   =========================== */
-function optionize(sel,list, pretty=false){
-  sel.innerHTML='';
-  list.forEach(v=>{
-    const o=document.createElement('option');
-    o.value=v;
-    o.textContent = pretty ? v : v.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-    sel.appendChild(o);
-  });
-}
 
 /* ===========================
    SIDEBAR TOGGLE (HAMBURGER)

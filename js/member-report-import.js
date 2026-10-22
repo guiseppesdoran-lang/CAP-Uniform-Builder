@@ -93,18 +93,6 @@ function normalizeMemberReportText(text){
     .trim();
 }
 
-function removeMemberReportSection(text, startLabel, endLabels=[]){
-  const source = String(text || '');
-  const start = source.search(new RegExp(startLabel, 'i'));
-  if(start < 0) return source;
-  const rest = source.slice(start);
-  let end = -1;
-  for(const label of endLabels){
-    const index = rest.search(new RegExp(label, 'i'));
-    if(index > 0 && (end < 0 || index < end)) end = index;
-  }
-  return `${source.slice(0, start)} ${end >= 0 ? rest.slice(end) : ''}`.replace(/\s+/g, ' ').trim();
-}
 
 function removeLocalActivitiesFromMemberReport(text){
   const source = String(text || '');
@@ -361,10 +349,6 @@ function getReportSectionUntilAny(text, startLabel, endLabels=[]){
   return bestEnd >= 0 ? rest.slice(0, bestEnd) : rest;
 }
 
-function countDatedRowsInSection(section){
-  const matches = String(section || '').match(/\b\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/g);
-  return matches ? matches.length : 0;
-}
 
 function extractEncampmentCountFromReport(text){
   const source = String(text || '');
@@ -484,11 +468,6 @@ function extractAwardCountFromAwardsTable(text, awardPattern){
   return m ? m.length : 0;
 }
 
-function hasCurrentDutyPosition(text, positionPattern){
-  const current = getReportSection(text, 'Current Duty Positions', 'Past Duty Positions');
-  if(!current) return false;
-  return new RegExp(`\\b${positionPattern}\\b`, 'i').test(current);
-}
 
 
 
@@ -726,32 +705,6 @@ function parseMemberReportSpecialtyTracks(text){
   return rows;
 }
 
-function hasSpecialtyTrackLevel(text, trackPattern, levelPattern){
-  const rows = parseMemberReportSpecialtyTracks(text);
-  const trackRe = new RegExp(trackPattern, 'i');
-  const levelRe = new RegExp(levelPattern, 'i');
-  return rows.some(row => row.eligible && trackRe.test(row.name) && levelRe.test(row.level));
-}
-
-function highestSpecialtyTrackLevelFromReport(text, trackNames){
-  const wanted = (Array.isArray(trackNames) ? trackNames : [trackNames])
-    .map(normalizeSpecialtyTrackName)
-    .filter(Boolean);
-  if(!wanted.length) return null;
-
-  const rows = parseMemberReportSpecialtyTracks(text);
-  const weight = { TECHNICIAN:1, SENIOR:2, MASTER:3 };
-  let best = null;
-
-  for(const row of rows){
-    if(!row.eligible) continue;
-    const rowName = normalizeSpecialtyTrackName(row.name);
-    const matches = wanted.some(name => rowName === name || rowName.replace(/\s+OFFICER$/, '') === name);
-    if(!matches) continue;
-    if(!best || weight[row.level] > weight[best.level]) best = row;
-  }
-  return best;
-}
 
 function badgeIdForSpecialtyTrack(row, family){
   if(!row || !row.eligible) return null;
@@ -792,11 +745,6 @@ function getSpecialtyBadgesFromTracks(text){
   return { badges: out, notes };
 }
 
-function addImportedBadge(result, id, reason){
-  if(!id || !result || !Array.isArray(result.badges)) return;
-  result.badges.push(id);
-  if(reason && Array.isArray(result.notes)) result.notes.push(reason);
-}
 
 function isCommandInsigniaGradeEligible(rank){
   const r = String(rank || '').replace(/\s+/g, ' ').trim().toUpperCase();
@@ -876,9 +824,6 @@ function getCommandInsigniaStatusForMember(text, result){
   return currentCommander ? 'current' : 'graduated';
 }
 
-function shouldImportCommandInsigniaForMember(text, result){
-  return !!getCommandInsigniaStatusForMember(text, result);
-}
 
 
 function hasCurrentFirstSergeantDutyPosition(text){
