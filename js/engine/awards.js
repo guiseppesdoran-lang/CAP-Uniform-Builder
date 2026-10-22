@@ -166,20 +166,32 @@
       return centerX - count * w / 2;
     }
 
-    // Left edge of a row of `count` ribbons: the bottom row sits on the centre line (or on the wearer's left
-    // edge for the 4-left option); a short row in the outboard mode sits on the wearer's left edge; every
-    // other row centres over the row below.
-    function leftFor(count, fromBottom, belowCenter, mode){
-      const full = count === perRow;
-      const outboardLeft = outboardSign > 0 ? outboardX - count * w : outboardX;
+    // The wearer's-left edge that shortened rows align with (11.2.7).
+    // Rows of three: "aligned with the left ribbon edge", the edge of the full rows below, which is
+    // the bottom row's own outboard edge (centred on the pocket, or on the welt edge for the 4-left option).
+    // Rows of four: "aligned with the left welt or pocket edge", the garment's own edge.
+    const fullEdge = alignOutboard ? outboardX : centerX + outboardSign * perRow * w / 2;
+    const shortEdge = perRow === 4 ? outboardX : fullEdge;
+    const edgeLeft = (count, edge) => outboardSign > 0 ? edge - count * w : edge;
+
+    // Candidate left edges for a row of `count` ribbons, best first. The bottom row sits on the centre
+    // line (a full row on the wearer's left edge for the 4-left option); every row above a full row centres
+    // over the row below it; a shortened row aligns with the wearer's left edge, except the top row,
+    // which 11.2.7 centres over the row immediately below, so it tries that first and falls back to the
+    // aligned position only when the centred one would put a ribbon under the lapel.
+    function candidates(count, fromBottom, belowCenter, isTop){
+      const aligned = edgeLeft(count, shortEdge);
       if(fromBottom === 0){
-        return (alignOutboard && full) || (mode === 'outboard' && !full) ? outboardLeft : centerX - count * w / 2;
+        if(count === perRow) return [alignOutboard ? edgeLeft(count, outboardX) : centerX - count * w / 2];
+        return isTop ? [centerX - count * w / 2, aligned] : [aligned];
       }
-      if(mode === 'outboard' && !full) return outboardLeft;
-      return rowLeft(count, belowCenter); // top rows centre over the row below
+      if(count === perRow) return [rowLeft(count, belowCenter)];
+      return isTop ? [rowLeft(count, belowCenter), aligned] : [aligned];
     }
 
-    function place(rowsTopFirst, mode){
+    // `mode` 'center': every row centred over the row below (the plain arrangement). 'outboard': the
+    // lefts the lapel search chose, bottom row first.
+    function place(rowsTopFirst, mode, lefts){
       const out = [];
       const n = rowsTopFirst.length;
       let belowCenter = null;
@@ -187,7 +199,7 @@
         const row = rowsTopFirst[r];
         const fromBottom = n - 1 - r;
         const y = bottomY - (fromBottom + 1) * h;
-        const left = leftFor(row.length, fromBottom, belowCenter, mode);
+        const left = mode === 'outboard' ? lefts[fromBottom] : (fromBottom === 0 ? (alignOutboard && row.length === perRow ? edgeLeft(row.length, outboardX) : centerX - row.length * w / 2) : rowLeft(row.length, belowCenter));
         belowCenter = left + row.length * w / 2;
         row.forEach((item, i) => out.push({ item, x: left + i * w, y, w, h, row: r }));
       }
@@ -203,27 +215,31 @@
     }
 
     // Lapel avoidance: from the bottom up, each row holds as many ribbons as stay clear of the lapel when
-    // placed as the layout will place them, never more than the row below.
-    const counts = [];
+    // placed as the layout will place them, never more than the row below. A top row is centred over the
+    // row below when that is clear of the lapel (11.2.7: the lapel rule shortens rows, the top-row
+    // centring yields to it only where the lapel would cover a ribbon).
+    const counts = [], lefts = [];
     let left = items.length, cap = perRow, belowCenter = null, blocked = 0;
     for(let fromBottom = 0; left > 0 && fromBottom < 40; fromBottom++){
       const y = bottomY - (fromBottom + 1) * h;
-      let fit = 0;
-      for(let c = Math.min(cap, left); c >= 1; c--){
-        const x0 = leftFor(c, fromBottom, belowCenter, 'outboard');
-        let ok = true;
-        for(let i = 0; i < c; i++) if(coverage({ x: x0 + i * w, y, w, h }, lapel) > maxCover){ ok = false; break; }
-        if(ok){ fit = c; break; }
+      let fit = 0, fitLeft = null;
+      for(let c = Math.min(cap, left); c >= 1 && !fit; c--){
+        for(const x0 of candidates(c, fromBottom, belowCenter, c === left)){
+          let ok = true;
+          for(let i = 0; i < c; i++) if(coverage({ x: x0 + i * w, y, w, h }, lapel) > maxCover){ ok = false; break; }
+          if(ok){ fit = c; fitLeft = x0; break; }
+        }
       }
-      if(!fit){ fit = 1; blocked++; }
-      fit = Math.min(fit, left);
+      if(!fit){ fit = 1; blocked++; fitLeft = candidates(1, fromBottom, belowCenter, false)[0]; }
+      if(fit > left){ fit = left; }
       counts.push(fit);
-      belowCenter = leftFor(fit, fromBottom, belowCenter, 'outboard') + fit * w / 2;
+      lefts.push(fitLeft);
+      belowCenter = fitLeft + fit * w / 2;
       cap = Math.min(cap, fit);
       left -= fit;
     }
     const rows = rackRows(items, perRow, counts);
-    return { placements: place(rows, 'outboard'), rows, mode: 'outboard', lapelCover: worst, lapelBlocked: blocked };
+    return { placements: place(rows, 'outboard', lefts), rows, mode: 'outboard', lapelCover: worst, lapelBlocked: blocked };
   }
 
   // Miniature medals (CAPR 39-1 11.2.8 and Table 11-1): up to four in a row fully exposed; more in a

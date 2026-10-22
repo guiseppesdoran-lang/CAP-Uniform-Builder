@@ -300,6 +300,123 @@ test('layoutRack: rows the lapel reaches shrink to the wearer\'s left edge; a ri
   assert.equal(awards.layoutRack(items(7), Object.assign({ lapel, countsBottomFirst: [3, 2, 2] }, slot)).mode, 'center');
 });
 
+// ---- 3c. shortened rows align with the full rows' edge; the top row centres over the row below (11.2.7) ----
+
+// Rows grouped by y, bottom row first, each with its wearer's-left (viewer's right) edge.
+function rowsOf(tiles){
+  const ys = [...new Set(tiles.map(t => t.y.toFixed(4)))].sort((a, b) => b - a);
+  return ys.map(y => {
+    const r = tiles.filter(t => t.y.toFixed(4) === y);
+    return { n: r.length, left: Math.min(...r.map(t => t.x)), right: Math.max(...r.map(t => t.x + t.w)), y: r[0].y, tiles: r };
+  });
+}
+
+test('rows of three: every shortened row but the top one ends at the full rows\' wearer\'s-left edge, and the top row centres over the row below when the lapel is clear of it (11.2.7)', async () => {
+  for(const uniform of ['blues_a', 'semi_formal_usaf']){
+    for(const gender of ['male', 'female']){
+      const garment = await store().load(LAPEL_GARMENT[`${uniform}-${gender}`]);
+      const lapel = core.landmark(garment, 'lapel_left');
+      for(const n of [10, 13, 16, 28]){
+        const rs = ribbons(SEL28.slice(0, n).map(id => [id]));
+        const scene = await P.composeUniform(build(uniform, 'cadet', 'C/Maj', { gender, ribbons: rs }), store());
+        const rows = rowsOf(layersBy(scene, l => l.role === 'ribbon'));
+        const label = `${uniform} ${gender} ${n}`;
+        const full = rows.filter(r => r.n === 3);
+        assert.ok(full.length >= 1, `${label}: at least one full row`);
+        const edge = full[0].right;
+        for(const r of full) assert.ok(Math.abs(r.right - edge) < 1e-6, `${label}: full rows share one wearer's-left edge`);
+        rows.forEach((r, i) => {
+          const isTop = i === rows.length - 1;
+          if(r.n === 3 || isTop) return;
+          assert.ok(Math.abs(r.right - edge) < 1e-6, `${label}: row ${i + 1} (${r.n} across) ends at ${r.right}, the full rows at ${edge}`);
+        });
+        const top = rows[rows.length - 1], below = rows[rows.length - 2];
+        if(top.n < below.n){
+          const belowCentre = (below.left + below.right) / 2;
+          const centredLeft = belowCentre - top.n * 1.375 / 2;
+          const clear = top.tiles.every((t, k) => awards.coverage({ x: centredLeft + k * t.w, y: t.y, w: t.w, h: t.h }, lapel.points) <= awards.LAPEL_COVER_TOLERANCE);
+          if(clear) assert.ok(Math.abs((top.left + top.right) / 2 - belowCentre) < 1e-6, `${label}: the top row (${top.n}) is centred over the row below`);
+          else assert.ok(Math.abs(top.right - edge) < 1e-6, `${label}: the top row cannot centre without the lapel covering it, so it aligns with the edge`);
+        }
+      }
+    }
+  }
+});
+
+test('rows of four: shortened rows align with the welt edge, the top row centres over the row below (11.2.7)', async () => {
+  for(const gender of ['male', 'female']){
+    const garment = await store().load(LAPEL_GARMENT[`blues_a-${gender}`]);
+    const welt = core.landmarkBounds(garment, 'welt_pocket');
+    const lapel = core.landmark(garment, 'lapel_left');
+    for(const n of [10, 13, 28]){
+      const rs = ribbons(SEL28.slice(0, n).map(id => [id]));
+      const scene = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { gender, ribbons: rs, opt: { rackColumns: 4 } }), store());
+      const rows = rowsOf(layersBy(scene, l => l.role === 'ribbon'));
+      const label = `blues_a ${gender} ${n} four across`;
+      assert.ok(rows.every(r => r.n <= 4), label);
+      rows.forEach((r, i) => {
+        if(r.n === 4 || i === rows.length - 1) return;
+        assert.ok(Math.abs(r.right - (welt.x + welt.w)) < 1e-6, `${label}: row ${i + 1} (${r.n} across) ends at ${r.right}, the welt edge is ${welt.x + welt.w}`);
+      });
+      const top = rows[rows.length - 1], below = rows[rows.length - 2];
+      if(below && top.n < below.n){
+        const belowCentre = (below.left + below.right) / 2;
+        const clear = top.tiles.every((t, k) => awards.coverage({ x: belowCentre - top.n * 1.375 / 2 + k * t.w, y: t.y, w: t.w, h: t.h }, lapel.points) <= awards.LAPEL_COVER_TOLERANCE);
+        if(clear) assert.ok(Math.abs((top.left + top.right) / 2 - belowCentre) < 1e-6, `${label}: the top row is centred`);
+        else assert.ok(Math.abs(top.right - (welt.x + welt.w)) < 1e-6, `${label}: the top row aligns with the welt edge`);
+      }
+    }
+  }
+});
+
+test('layoutRack: the shortened-row edge is the full rows\' edge, not the pocket edge, for three across; the lapel search tests the positions that are drawn (11.2.7)', () => {
+  const items = n => Array.from({ length: n }, (_, i) => ({ key: 'r' + i }));
+  // The welt edge (10.5) is outboard of the rack's own edge (8 + 1.5 * 1.375 = 10.0625).
+  const slot = { perRow: 3, centerX: 8, bottomY: 0, outboardX: 10.5, outboardSign: 1 };
+  const lapel = [{ x: 0, y: -50 }, { x: 7.5, y: -50 }, { x: 7.5, y: -0.4 }, { x: 0, y: -0.4 }];
+  const r = awards.layoutRack(items(8), Object.assign({ lapel }, slot));
+  assert.equal(r.mode, 'outboard');
+  const rows = rowsOf(r.placements.map(p => Object.assign({}, p, { t: p })));
+  const edge = 8 + 1.5 * 1.375;
+  assert.ok(Math.abs(rows[0].right - edge) < 1e-9, 'the full bottom row ends at the rack\'s edge');
+  for(const row of rows.slice(1, -1)) assert.ok(Math.abs(row.right - edge) < 1e-9, `a ${row.n}-across row ends at the full rows\' edge ${edge}, not at the welt edge 10.5`);
+  assert.ok(r.placements.every(p => awards.coverage(p, lapel) <= awards.LAPEL_COVER_TOLERANCE));
+  // Four across aligns with the welt edge.
+  const r4 = awards.layoutRack(items(9), Object.assign({ lapel }, slot, { perRow: 4 }));
+  const rows4 = rowsOf(r4.placements);
+  for(const row of rows4.slice(1, -1)) assert.ok(Math.abs(row.right - 10.5) < 1e-9, 'four across: the welt edge');
+  // Mirrored (wearer's left on the viewer's left): the same rule on the other side.
+  const m = awards.layoutRack(items(8), { perRow: 3, centerX: 8, bottomY: 0, outboardX: 5.5, outboardSign: -1, lapel: [{ x: 99, y: -50 }, { x: 8.5, y: -50 }, { x: 8.5, y: -0.4 }, { x: 99, y: -0.4 }] });
+  const mrows = rowsOf(m.placements);
+  for(const row of mrows.slice(0, -1)) assert.ok(Math.abs(row.left - (8 - 1.5 * 1.375)) < 1e-9, 'mirrored: rows start at the full rows\' left edge');
+});
+
+test('layoutRack: the top row centres over the row below unless that puts a ribbon under the lapel, and then it aligns with the edge (11.2.7)', () => {
+  const items = n => Array.from({ length: n }, (_, i) => ({ key: 'r' + i }));
+  const slot = { perRow: 3, centerX: 8, bottomY: 0, outboardX: 10.0625, outboardSign: 1 };
+  const H = awards.RIBBON_H;
+  // A lapel over x < 6.8 above the bottom row: the bottom row of three is clear, the rows above
+  // shorten to two (7.3125 onward), and the one ribbon left is the top row.
+  const tall = [{ x: 0, y: -50 }, { x: 6.8, y: -50 }, { x: 6.8, y: -H - 0.02 }, { x: 0, y: -H - 0.02 }];
+  const free = rowsOf(awards.layoutRack(items(6), Object.assign({ lapel: tall }, slot)).placements);
+  assert.deepEqual(free.map(r => r.n), [3, 2, 1]);
+  assert.ok(Math.abs((free[2].left + free[2].right) / 2 - (free[1].left + free[1].right) / 2) < 1e-9, 'centred over the row below while clear of the lapel');
+  assert.ok(Math.abs(free[1].right - 10.0625) < 1e-9, 'the shortened row ends at the full row\'s edge');
+  // A lapel that reaches only the centred top position over a row of three: the top ribbon moves to the edge.
+  const topY = -3 * H;
+  const nick = [{ x: 7.5, y: topY - 0.1 }, { x: 7.9, y: topY - 0.1 }, { x: 7.9, y: topY + 0.2 }, { x: 7.5, y: topY + 0.2 }];
+  const pushed = awards.layoutRack(items(7), Object.assign({ lapel: nick }, slot));
+  assert.equal(pushed.mode, 'outboard');
+  assert.ok(pushed.placements.every(p => awards.coverage(p, nick) <= awards.LAPEL_COVER_TOLERANCE));
+  const pr = rowsOf(pushed.placements);
+  assert.deepEqual(pr.map(r => r.n), [3, 3, 1]);
+  assert.ok(Math.abs(pr[2].right - 10.0625) < 1e-9, 'the top row aligns with the edge when centring would be covered');
+  assert.ok(Math.abs(pr[1].left - pr[0].left) < 1e-9, 'the full rows stay centred');
+  // The same rack with no lapel in the way keeps the top ribbon centred.
+  const clear = rowsOf(awards.layoutRack(items(7), Object.assign({ lapel: [{ x: 0, y: 5 }, { x: 1, y: 5 }, { x: 1, y: 6 }] }, slot)).placements);
+  assert.ok(Math.abs((clear[2].left + clear[2].right) / 2 - 8) < 1e-9);
+});
+
 // ---- 4. miniature medals ----------------------------------------------------------------------
 
 // Twelve awards that each have a CAP medal (community service, special activity and the other ribbon-only
