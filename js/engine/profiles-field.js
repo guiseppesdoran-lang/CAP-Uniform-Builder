@@ -94,7 +94,7 @@
   // The sheets give a slot per side and kind: its centre (0.01 in) and the turn, clockwise, for an
   // insignia whose long axis is upright. Cadet NCO chevrons follow Figure A5-5 like the shirts' (parallel
   // to the leaf's leading edge, 1 in from it, H.collarChevrons); cadet officers' row runs along the
-  // slot's front edge; officers' grade sits 1 in from the bottom of the collar, square to its edge.
+  // leaf's front edge, 1 in from it, centred (H.collarOfficerRow); officers' grade sits 1 in from the bottom of the collar, square to its edge.
   async function collarGrade(ctx, b){
     const g = b.grade;
     const slots = ctx.base && ctx.base.raw && ctx.base.raw.collar_slots;
@@ -108,9 +108,9 @@
         // The shirts' rule, Figure A5-5 (H.collarChevrons, from the sheet's collar leaf polygon); drawn once, for both leaves.
         if(side === 'right') await H.collarChevrons(ctx, g);
       }else if(g.category === 'cadet-officer'){
-        // The grade's row is drawn across; turned a quarter more so it runs along the front edge.
-        const s = slot('cadet_officer');
-        if(s) await ctx.place(G.cadetOfficerInsignia(g, 'cloth-bordered-regular'), { pieceAnchor: 'center', at: s.at, rotate: s.deg + (s.deg < 0 ? 90 : -90), z: Z.insignia, role: 'grade', key: 'grade:' + side });
+        // 'One inch from the front of the collar and centered' (5.1.1.1.1.3, 5.2.1.1.1.4): the row parallel to the leaf's front edge, its near outline 1 in
+        // from it, centred on the leaf (H.collarOfficerRow, from the sheet's collar_left / collar_right polygons); drawn once, for both leaves.
+        if(side === 'right') await H.collarOfficerRow(ctx, g);
       }else if(g.officer && !g.cadet){
         const s = slot('officer');
         if(!s) continue;
@@ -405,12 +405,24 @@
       // sleeve is for a special activity patch (5.2.1.1.2.3).
       const unit = take(p => p.kind === 'unit');
       const left = take(p => p.slot === 'L_SHOULDER');
+      // The ABU and CFU sleeve patches are sewn 1/2 in below the shoulder seam (5.1.1.1.2.2; 5.2.1.1.2.2-3): the zone's top is that line (the sheet puts it 0.5 in under the seam_top_center
+      // anchor), so the patch hangs from the zone's top and the overlay draws the 1/2 in from the seam to its top edge.
+      const hang = (patch, zone, slot, side) => {
+        const cap = { x: zone.x + (zone.w - Math.min(zone.w, 3.5)) / 2, w: Math.min(zone.w, 3.5), h: Math.min(zone.h, 3.5) };
+        let w = cap.w, h = w / (patch.aspect || 1);
+        if(h > cap.h){ h = cap.h; w = h * (patch.aspect || 1); }
+        const layer = C.fitRaster(ctx, patch.href, { x: cap.x, y: zone.y, w: cap.w, h }, patch.aspect || 1, { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' });
+        widthOf(layer);
+        const seam = ctx.point('seam_top_center_' + side);
+        if(layer && seam) ctx.measure({ x: layer.x + layer.w / 2, y: seam.y }, { x: layer.x + layer.w / 2, y: layer.y });
+        return layer;
+      };
       const zl = ctx.rect('wing_patch_zone_left');
-      if(left && zl) widthOf(fitPatch(ctx, left, zl, 'L_SHOULDER'));
+      if(left && zl) hang(left, zl, 'L_SHOULDER', 'left');
       if(b.uniform === 'corporate_field'){
         const right = take(p => p.slot === 'R_SHOULDER' || p.kind === 'unit');
         const zr = ctx.rect('activity_patch_zone_right');
-        if(right && zr) widthOf(fitPatch(ctx, right, zr, 'R_SHOULDER'));
+        if(right && zr) hang(right, zr, 'R_SHOULDER', 'right');
       }
       // Breast pocket patches: one in all on the ABU (5.1.1.1.2.3), one per pocket on the CFU.
       const pockets = b.uniform === 'abu' ? 1 : 2;

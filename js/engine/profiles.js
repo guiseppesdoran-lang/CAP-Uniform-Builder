@@ -203,19 +203,14 @@
 
   // Collar leaf polygons of the sheets that carry no collar_<side> landmark of their own, in sheet
   // inches (a = the leaf on the left of the picture, b = the right): the leaf path of each sheet's SVG
-  // with the group transforms applied (the overblouse collar-right/-left paths; the aviator shirt sheets state collar_left / collar_right themselves; the ABU and
-  // CFU unnamed five-point leaf path in collar-front, origin 19.65 in across and 8.5 / 14.2 in down).
+  // with the group transforms applied (the overblouse collar-right/-left paths; the aviator shirt and the ABU and CFU
+  // sheets state collar_left / collar_right themselves).
   // A test reads them again from the SVG. Remove an entry when its sheet states the polygon.
   const COLLAR_POLYGONS = (() => {
     const pts = a => a.map(([x, y]) => ({ x, y }));
     const over = { a: pts([[8.814, 0.100], [9.526, 1.167], [9.988, 1.986], [10.700, 2.448], [8.459, 4.013], [7.961, 1.594]]), b: pts([[12.586, 0.100], [11.874, 1.167], [11.412, 1.986], [10.700, 2.448], [12.941, 4.013], [13.439, 1.594]]) };
-    const coat = oy => ({
-      a: pts([[17.090, oy - 0.430], [15.850, oy + 1.280], [14.670, oy + 3.930], [17.100, oy + 3.360], [18.545, oy + 2.600]]),
-      b: pts([[22.210, oy - 0.430], [23.450, oy + 1.280], [24.630, oy + 3.930], [22.200, oy + 3.360], [20.755, oy + 2.600]])
-    });
     return {
-      'garment-overblouse-female': over, 'garment-overblouse-female-long': over,
-      'garment-abu-coat': coat(8.5), 'garment-cfu-coat': coat(14.2)
+      'garment-overblouse-female': over, 'garment-overblouse-female-long': over
     };
   })();
 
@@ -226,6 +221,46 @@
     if(own.length === 2) return own;
     const t = COLLAR_POLYGONS[ctx.base && ctx.base.id];
     return t ? [{ points: t.a }, { points: t.b }] : [];
+  }
+
+  // The front edge of a collar leaf polygon, the one a cadet officer's grade is 1 in from (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the edge from the
+  // leaf's top vertex (the collar tip) to its other neighbour nearer the sheet's centre line, along the neck opening. { collarPoint, rollEnd, inward } like collarLeadingEdge, or null.
+  function collarFrontEdge(points, centerX){
+    if(!points || points.length < 3) return null;
+    let top = 0;
+    points.forEach((p, i) => { if(p.y < points[top].y) top = i; });
+    const n = points.length, a = points[(top + n - 1) % n], b = points[(top + 1) % n];
+    const other = Math.abs(a.x - centerX) <= Math.abs(b.x - centerX) ? a : b, tip = points[top];
+    const len = Math.hypot(other.x - tip.x, other.y - tip.y);
+    if(len < 1) return null;
+    let area = 0, cx = 0, cy = 0;
+    for(let i = 0; i < n; i++){ const p = points[i], q = points[(i + 1) % n], cr = p.x * q.y - q.x * p.y; area += cr; cx += (p.x + q.x) * cr; cy += (p.y + q.y) * cr; }
+    const inside = area ? { x: cx / (3 * area), y: cy / (3 * area) } : tip;
+    let nrm = { x: (other.y - tip.y) / len, y: -(other.x - tip.x) / len };
+    if(nrm.x * (inside.x - tip.x) + nrm.y * (inside.y - tip.y) < 0) nrm = { x: -nrm.x, y: -nrm.y };
+    return { collarPoint: tip, rollEnd: other, inward: nrm };
+  }
+
+  // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4): the grade's row (its width) runs parallel to the front edge, its near outline 1 in from it,
+  // centred on the leaf along it (chord of the leaf on that line), like the cadet NCO chevron's 1 in rule; a 1 in measure from the edge to the near outline.
+  async function collarOfficerRow(ctx, g){
+    const id = G.cadetOfficerInsignia(g, 'cloth-bordered-regular');
+    const polys = collarPolygons(ctx);
+    if(!id || polys.length < 2) return;
+    if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
+    const s = await ctx.spec(id);
+    const centerX = ctx.base.w / 2;
+    for(const poly of polys){
+      const edge = collarFrontEdge(poly.points, centerX);
+      if(!edge) continue;
+      const side = edge.collarPoint.x < centerX ? 'right' : 'left';
+      const pl = chevronOnLeadingEdge(edge, s.h, 1, poly.points);   // the row's height is across the edge
+      const dx = edge.rollEnd.x - edge.collarPoint.x, dy = edge.rollEnd.y - edge.collarPoint.y;
+      let rotate = Math.atan2(dy, dx) * 180 / Math.PI;                 // the row (the art's width) turned onto the edge
+      if(rotate > 90) rotate -= 180; if(rotate <= -90) rotate += 180;
+      await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+      ctx.measure(pl.foot, pl.near);
+    }
   }
 
   // Cadet NCO and Airman chevrons on both collars, by the rule of Figure A5-5 ('shirt without necktie',
@@ -603,5 +638,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarLeaf, chevronOnLeadingEdge, collarChevrons, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarOfficerRow, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

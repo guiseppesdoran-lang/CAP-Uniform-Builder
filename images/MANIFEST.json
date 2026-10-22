@@ -12930,6 +12930,14 @@
      3930,
      1943
     ],
+    "seam_top_center_right": [
+     350,
+     920
+    ],
+    "seam_top_center_left": [
+     3580,
+     920
+    ],
     "collar_apex": [
      1965,
      1340
@@ -12977,9 +12985,11 @@
     "lower_flap_left",
     "cuff_left",
     "placket",
+    "collar_right",
     "collar_officer_zone_right",
     "collar_cadet_officer_zone_right",
     "collar_cadet_nco_zone_right",
+    "collar_left",
     "collar_officer_zone_left",
     "collar_cadet_officer_zone_left",
     "collar_cadet_nco_zone_left",
@@ -16059,6 +16069,14 @@
      3930,
      2228
     ],
+    "seam_top_center_right": [
+     350,
+     1490
+    ],
+    "seam_top_center_left": [
+     3580,
+     1490
+    ],
     "collar_apex": [
      1965,
      1910
@@ -16106,9 +16124,11 @@
     "lower_flap_left",
     "cuff_left",
     "placket",
+    "collar_right",
     "collar_officer_zone_right",
     "collar_cadet_officer_zone_right",
     "collar_cadet_nco_zone_right",
+    "collar_left",
     "collar_officer_zone_left",
     "collar_cadet_officer_zone_left",
     "collar_cadet_nco_zone_left",

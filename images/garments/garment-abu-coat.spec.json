@@ -35,6 +35,14 @@
    3930,
    1943
   ],
+  "seam_top_center_right": [
+   350,
+   920
+  ],
+  "seam_top_center_left": [
+   3580,
+   920
+  ],
   "collar_apex": [
    1965,
    1340
@@ -72,8 +80,8 @@
   "left": {
    "cadet_officer": {
     "center": [
-     2260.3,
-     1057.9
+     2284.8,
+     1078.4
     ],
     "angle_deg": 25.7,
     "size_in": {
@@ -81,16 +89,16 @@
      "across": 1.5
     },
     "bbox": {
-     "x": 2115.1,
-     "y": 936.2,
-     "w": 290.3,
-     "h": 243.5
+     "x": 2163.1,
+     "y": 933.3,
+     "w": 243.5,
+     "h": 290.3
     }
    },
    "cadet_nco": {
     "center": [
-     2260.3,
-     1057.9
+     2268.6,
+     1065.9
     ],
     "angle_deg": 25.7,
     "size_in": {
@@ -98,16 +106,16 @@
      "across": 1.1
     },
     "bbox": {
-     "x": 2172.8,
-     "y": 955.2,
+     "x": 2181.1,
+     "y": 963.2,
      "w": 174.9,
      "h": 205.4
     }
    },
    "officer": {
     "center": [
-     2364.3,
-     1117.1
+     2256.8,
+     1091.9
     ],
     "angle_deg": 13.2,
     "size_in": {
@@ -115,20 +123,20 @@
      "across": 1.6
     },
     "bbox": {
-     "x": 2271.6,
-     "y": 1035.6,
+     "x": 2164.1,
+     "y": 1010.4,
      "w": 185.5,
      "h": 163.1
     }
    },
    "cadet_axis": [
     [
-     2281.9,
-     1012.9
+     2306.4,
+     1033.3
     ],
     [
-     2238.6,
-     1103
+     2263.1,
+     1123.5
     ]
    ],
    "front_edge": {
@@ -164,8 +172,8 @@
   "right": {
    "cadet_officer": {
     "center": [
-     1669.7,
-     1057.9
+     1645.2,
+     1078.4
     ],
     "angle_deg": -25.7,
     "size_in": {
@@ -173,16 +181,16 @@
      "across": 1.5
     },
     "bbox": {
-     "x": 1524.6,
-     "y": 936.2,
-     "w": 290.3,
-     "h": 243.5
+     "x": 1523.5,
+     "y": 933.3,
+     "w": 243.5,
+     "h": 290.3
     }
    },
    "cadet_nco": {
     "center": [
-     1669.7,
-     1057.9
+     1661.4,
+     1065.9
     ],
     "angle_deg": -25.7,
     "size_in": {
@@ -190,16 +198,16 @@
      "across": 1.1
     },
     "bbox": {
-     "x": 1582.3,
-     "y": 955.2,
+     "x": 1573.9,
+     "y": 963.2,
      "w": 174.9,
      "h": 205.4
     }
    },
    "officer": {
     "center": [
-     1565.7,
-     1117.1
+     1673.2,
+     1091.9
     ],
     "angle_deg": -13.2,
     "size_in": {
@@ -207,20 +215,20 @@
      "across": 1.6
     },
     "bbox": {
-     "x": 1472.9,
-     "y": 1035.6,
+     "x": 1580.5,
+     "y": 1010.4,
      "w": 185.5,
      "h": 163.1
     }
    },
    "cadet_axis": [
     [
-     1648.1,
-     1012.9
+     1623.6,
+     1033.3
     ],
     [
-     1691.4,
-     1103
+     1666.9,
+     1123.5
     ]
    ],
    "front_edge": {
@@ -253,7 +261,7 @@
     ]
    }
   },
-  "note": "angle_deg: SVG rotate() convention (clockwise positive) to apply to an insignia whose long axis is vertical. cadet_* slots: cadet officer grade / cadet NCO metal chevron, centred 1 in from the collar FRONT edge, long axis parallel to it (cadet_axis = two points along that axis). officer_*: officer grade, centred 1 in from the collar BOTTOM edge, long axis perpendicular to it. size_in.along is measured along the long axis. bbox is the axis-aligned box of the rotated slot, also exposed as landmarks collar_*_zone_*. Right/left = wearer's."
+  "note": "angle_deg: SVG rotate() convention (clockwise positive) to apply to an insignia whose long axis is vertical. cadet_* slots: cadet officer grade (nominal 2.5 x 1.5 in row) / cadet NCO metal chevron, NEAR OUTLINE 1 in from the collar FRONT edge (front_edge) and centred on the leaf along it, long axis parallel to it (cadet_axis = two points along that axis); the engine places each cadet officer grade by the same rule with its own width (the nominal 2.5 in row is wider than the leaf allows 1 in from the front edge, CAPR 39-1 5.1.1.1.1.3, 5.2.1.1.1.4). officer: officer grade centred 1 in from the collar BOTTOM edge on the centre line of the leaf there (the midpoint of the chord that parallel line cuts across the leaf), long axis perpendicular to the edge; its 1.6 x 1.3 in box lies inside the leaf (collar_left / collar_right). size_in.along is measured along the long axis. bbox is the axis-aligned box of the rotated slot, also exposed as landmarks collar_*_zone_*. Right/left = wearer's."
  },
  "landmarks": {
   "name_tape": {
@@ -370,45 +378,89 @@
     3846
    ]
   ],
+  "collar_right": [
+   [
+    1709,
+    807
+   ],
+   [
+    1585,
+    978
+   ],
+   [
+    1467,
+    1243
+   ],
+   [
+    1710,
+    1186
+   ],
+   [
+    1854.5,
+    1110
+   ]
+  ],
   "collar_officer_zone_right": {
-   "x": 1472.9,
-   "y": 1035.6,
+   "x": 1580.5,
+   "y": 1010.4,
    "w": 185.5,
    "h": 163.1
   },
   "collar_cadet_officer_zone_right": {
-   "x": 1524.6,
-   "y": 936.2,
-   "w": 290.3,
-   "h": 243.5
+   "x": 1523.5,
+   "y": 933.3,
+   "w": 243.5,
+   "h": 290.3
   },
   "collar_cadet_nco_zone_right": {
-   "x": 1582.3,
-   "y": 955.2,
+   "x": 1573.9,
+   "y": 963.2,
    "w": 174.9,
    "h": 205.4
   },
+  "collar_left": [
+   [
+    2221,
+    807
+   ],
+   [
+    2345,
+    978
+   ],
+   [
+    2463,
+    1243
+   ],
+   [
+    2220,
+    1186
+   ],
+   [
+    2075.5,
+    1110
+   ]
+  ],
   "collar_officer_zone_left": {
-   "x": 2271.6,
-   "y": 1035.6,
+   "x": 2164.1,
+   "y": 1010.4,
    "w": 185.5,
    "h": 163.1
   },
   "collar_cadet_officer_zone_left": {
-   "x": 2115.1,
-   "y": 936.2,
-   "w": 290.3,
-   "h": 243.5
+   "x": 2163.1,
+   "y": 933.3,
+   "w": 243.5,
+   "h": 290.3
   },
   "collar_cadet_nco_zone_left": {
-   "x": 2172.8,
-   "y": 955.2,
+   "x": 2181.1,
+   "y": 963.2,
    "w": 174.9,
    "h": 205.4
   },
   "wing_patch_zone_left": {
    "x": 3430,
-   "y": 1020,
+   "y": 970,
    "w": 300,
    "h": 295
   },

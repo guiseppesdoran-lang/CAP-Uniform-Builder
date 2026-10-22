@@ -332,22 +332,26 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
     const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
     const spec = await ST.load(garment);
     const slots = spec.raw.collar_slots;
-    // Cadet officer: the row runs along the slot's front edge. Cadet NCO: the chevron follows Figure A5-5
-    // 'shirt without necktie' like the shirts' (parallel to the leaf's bottom edge, apex to the collar point,
-    // 1 in from it; tests/engine-e5-chevrons.test.cjs), no longer the slot's front (neck) edge.
-    for(const [rank, kind] of [['C/Maj', 'cadet_officer']]){
+    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the row (the art's width) runs parallel to the leaf's front edge, its NEAR OUTLINE
+    // 1 in from that edge, centred on the leaf, drawn from the sheet's collar_left / collar_right polygons (it was the sheet's slot centre, 1.44 in from the edge, so the near edge was 0.69 in
+    // from it; D8: the old assertion pinned the slot's turn and not the distance). Cadet NCO: the chevron follows Figure A5-5 like the shirts' (tests/engine-e5-chevrons.test.cjs).
+    for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col']){
       const scene = await P.composeUniform(build(u, 'cadet', rank), store());
       for(const side of ['right', 'left']){
         const g = scene.layers.find(l => l.key === 'grade:' + side);
         assert.ok(g, `${u} ${rank} ${side}`);
-        const s = slots[side][kind];
-        // the piece's long axis, turned the slot's way (officers' row is drawn across and turned a quarter more)
-        const expect = s.angle_deg + (s.angle_deg < 0 ? 90 : -90);
-        assert.ok(Math.abs(g.rotate - expect) < 1e-6, `${u} ${rank} ${side}: ${g.rotate} vs ${expect}`);
-        // the leaf's front edge: the axis points the way the edge runs (top toward the shoulder)
         const d = slots[side].front_edge.dir_down;
-        const axis = core.rotatePoint({ x: 0, y: 1 }, { x: 0, y: 0 }, s.angle_deg);
-        assert.ok(Math.abs(axis.x - d[0]) < 0.01 && Math.abs(axis.y - d[1]) < 0.01, `${u} ${side}: slot turns the long axis onto front_edge`);
+        // the row's long axis (its width) points down the front edge
+        const axis = core.rotatePoint({ x: 1, y: 0 }, { x: 0, y: 0 }, g.rotate);
+        assert.ok(Math.abs(axis.x * d[1] - axis.y * d[0]) < 0.01, `${u} ${rank} ${side}: row parallel to the front edge`);
+        // distance from the front edge line to the nearest point of the rotated box: 1 in
+        const p1 = slots[side].front_edge.p1.map(v => v / 100), n = { x: d[1], y: -d[0] };
+        const c = { x: g.x + g.w / 2, y: g.y + g.h / 2 }, a = (g.rotate * Math.PI) / 180;
+        const corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * g.w / 2 * Math.cos(a) - j * g.h / 2 * Math.sin(a), y: c.y + i * g.w / 2 * Math.sin(a) + j * g.h / 2 * Math.cos(a) }));
+        const dist = corners.map(q => Math.abs((q.x - p1[0]) * n.x + (q.y - p1[1]) * n.y));
+        assert.ok(Math.abs(Math.min(...dist) - 1) < 0.01, `${u} ${rank} ${side}: near outline ${Math.min(...dist).toFixed(3)} in from the front edge`);
+        const m = measures(scene).find(x => Math.abs(Math.hypot(x.to.x - x.from.x, x.to.y - x.from.y) - 1) < 0.01 && Math.hypot(x.to.x - c.x, x.to.y - c.y) < 1.2 && Math.hypot(x.to.x - c.x, x.to.y - c.y) > 0.4);
+        assert.ok(m, `${u} ${rank} ${side}: the 1 in measure is drawn`);
       }
     }
     // Officers: bars/leaf square to the free edge for Capt, stem parallel to the ground for Maj/Lt Col, beak forward for Col.
@@ -360,5 +364,42 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
     assert.equal((await rotOf('Col', 'left')).flipX, undefined);
     assert.equal((await rotOf('Capt', 'right')).rotate, slots.right.officer.angle_deg);
     assert.equal((await rotOf('Capt', 'left')).rotate, slots.left.officer.angle_deg);
+  }
+});
+
+// ---- review FIX-ART-r1 (7, 9): the officer grade lies on the collar leaf; the sleeve patch hangs 1/2 in below the seam ----
+
+test('ABU and CFU officer grade (Capt, Maj, Lt Col, Col, Brig Gen) lies wholly inside the collar leaf, 1 in from the bottom edge (5.1.1.1.1.1, 5.2.1.1.1.1)', async () => {
+  const inPoly = (p, P) => { let r = false; for(let i = 0, j = P.length - 1; i < P.length; j = i++){ const [xi, yi] = P[i], [xj, yj] = P[j]; if(((yi > p.y) !== (yj > p.y)) && (p.x < (xj - xi) * (p.y - yi) / (yj - yi) + xi)) r = !r; } return r; };
+  for(const u of ['abu', 'corporate_field']){
+    const spec = await ST.load(u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat');
+    // (Maj Gen's 2.06 in star stack is not here: it needs more leaf than the drawn collar has, see FOLLOWUPS)
+    for(const rank of ['Capt', 'Maj', 'Lt Col', 'Col', 'Brig Gen']){
+      const scene = await P.composeUniform(build(u, 'senior', rank), store());
+      for(const side of ['right', 'left']){
+        const g = scene.layers.find(l => l.key === 'grade:' + side);
+        assert.ok(g, `${u} ${rank} ${side}`);
+        const poly = spec.raw.landmarks['collar_' + side].map(p => [p[0] / 100, p[1] / 100]);
+        const c = { x: g.x + g.w / 2, y: g.y + g.h / 2 }, a = (g.rotate * Math.PI) / 180;
+        const corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * g.w / 2 * Math.cos(a) - j * g.h / 2 * Math.sin(a), y: c.y + i * g.w / 2 * Math.sin(a) + j * g.h / 2 * Math.cos(a) }));
+        for(const q of corners) assert.ok(inPoly(q, poly), `${u} ${rank} ${side}: corner ${q.x.toFixed(2)},${q.y.toFixed(2)} off the leaf`);
+      }
+    }
+  }
+});
+
+test('ABU and CFU sleeve patches hang 1/2 in below the shoulder seam and the overlay draws the 1/2 in (5.1.1.1.2.2, 5.2.1.1.2.2-3)', async () => {
+  const left = { id: 'wing_patch', title: 'Wing', href: 'images/patches/wing.webp', aspect: 1, slot: 'L_SHOULDER', kind: 'general' };
+  const right = { id: 'act_patch', title: 'Activity', href: 'images/patches/act.webp', aspect: 1.4, slot: 'R_SHOULDER', kind: 'general' };
+  for(const [u, patches] of [['abu', [left]], ['corporate_field', [left, right]]]){
+    const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
+    const spec = await ST.load(garment);
+    const scene = await P.composeUniform(build(u, 'senior', 'Capt', { patches }), store());
+    for(const p of scene.layers.filter(l => l.role === 'patch' && /L_SHOULDER|R_SHOULDER/.test(l.key))){
+      const side = /L_SHOULDER/.test(p.key) ? 'left' : 'right';
+      const seam = core.anchor(spec, 'seam_top_center_' + side);
+      assert.ok(Math.abs(p.y - seam.y - 0.5) < 0.005, `${u} ${side}: patch top ${p.y} is ${(p.y - seam.y).toFixed(3)} in below the seam`);
+      assert.ok(measures(scene).some(m => Math.abs(m.from.y - seam.y) < 1e-6 && Math.abs(m.to.y - p.y) < 1e-6 && Math.abs(len(m) - 0.5) < 0.005), `${u} ${side}: the 1/2 in measure`);
+    }
   }
 });
