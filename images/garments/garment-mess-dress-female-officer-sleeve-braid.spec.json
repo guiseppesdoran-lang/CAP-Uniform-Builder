@@ -1,6 +1,6 @@
 {
  "asset_id": "garment-mess-dress-female-officer-sleeve-braid",
- "name": "Women's USAF-style mess dress: officer sleeve braid overlay (1/2 in, 3 in from the sleeve end)",
+ "name": "Women's USAF-style mess dress: officer sleeve braid overlay (1/2 in, 2 1/2 in from the sleeve end)",
  "size_in": {
   "w": 26.2099,
   "h": 33.26
@@ -39,43 +39,96 @@
  "landmarks": {
   "sleeve_braid_right": [
    [
-    71,
-    2937.1
+    59.8,
+    2999.7
    ],
    [
-    488.1,
-    2991.9
+    396.5,
+    2974.2
    ],
    [
-    488.1,
-    3041.9
+    396.5,
+    2924
    ],
    [
-    71,
-    2987.1
+    59.5,
+    2949.6
    ]
   ],
   "sleeve_braid_left": [
    [
-    2170.8,
-    2920.2
+    2558.7,
+    2999.5
    ],
    [
-    2550,
-    2948.8
+    2224.5,
+    2974.2
    ],
    [
-    2550,
-    2998.8
+    2224.5,
+    2924
    ],
    [
-    2170.8,
-    2970.2
+    2558,
+    2949.3
    ]
   ]
  },
  "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
  "overlay_of": "garment-mess-dress-female",
+ "dimensions": {
+  "sleeve_braid": {
+   "rule": "lower edge parallel to the drawn cuff edge and 2.5 in from it (CAPR 39-1 4.1.2.1), measured perpendicular to the cuff edge; the ends are cut on the sleeve outline (outer) and on the vertical 9.14 in from the centre line (box x 3.96 in), where the cuff is seen to end in the composed figure (the skirt's edge below it); the two sleeves are mirror images; all in outline inches (x from the centre line, y down from the top of the traced outline)",
+   "right": {
+    "cuff_edge_in": [
+     [
+      -11.897,
+      32.208
+     ],
+     [
+      -8.864,
+      31.978
+     ]
+    ],
+    "inner_clip_x_in": -9.14,
+    "inner_clip_x_in_box": 3.965,
+    "lower_edge_from_cuff_in": {
+     "outer": 2.5,
+     "inner": 2.5
+    },
+    "upper_edge_from_cuff_in": {
+     "outer": 3,
+     "inner": 3
+    },
+    "inner_end_vs_traced_cuff_inner_corner_in": 0.276,
+    "outer_end_vs_outline_in": 0
+   },
+   "left": {
+    "cuff_edge_in": [
+     [
+      11.897,
+      32.208
+     ],
+     [
+      8.864,
+      31.978
+     ]
+    ],
+    "inner_clip_x_in": 9.14,
+    "inner_clip_x_in_box": 22.245,
+    "lower_edge_from_cuff_in": {
+     "outer": 2.5,
+     "inner": 2.5
+    },
+    "upper_edge_from_cuff_in": {
+     "outer": 3,
+     "inner": 3
+    },
+    "inner_end_vs_traced_cuff_inner_corner_in": 0.276,
+    "outer_end_vs_outline_in": 0
+   }
+  }
+ },
  "documented": [
   "1/2 in blue sleeve braid 2.5 in from the end of the sleeve, all officers except generals (4.1.2.1)"
  ],

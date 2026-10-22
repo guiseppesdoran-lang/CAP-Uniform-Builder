@@ -390,6 +390,19 @@
   "max_width_in": 28.02,
   "buttons_per_side": 3,
   "button_dia_in": 0.8,
+  "trousers": {
+   "size_source": "estimated",
+   "leg_outer_half_width_in": {
+    "top": 7.2,
+    "hem": 6.7
+   },
+   "top_y_in": 24.3,
+   "stripe_width_in": 0.875,
+   "stripe_size_source": "documented",
+   "stripe_citation": "CAPR 39-1 4.1.1.3 (7/8 inch blue striping down the pant legs)",
+   "stripe_colour": "#27407f (the satin shawl collar's sheen blue), flat",
+   "note": "below the front points the figure is the trousers (4.1.1.1: the jacket ends at the waist in front); the traced coat tails are not drawn; leg width and the waist line are estimates, the regulation gives neither"
+  },
   "sleeve_widening": {
    "size_source": "estimated",
    "outward_in": 1,
@@ -431,7 +444,8 @@
   "white pleated shirt with studs, blue satin bow tie, plain blue satin cummerbund with the open edge of the pleats up (4.1.1.2, 4.1.1.2.3, 4.1.1.3.2)",
   "no nametag on the mess dress (4.1.1.1.2.1)",
   "CAP seal worn over the middle button on the right side of the jacket (4.1.1.1.2.3)",
-  "sleeve braid 1/2 in (1 1/2 in for general officers), 3 in from the sleeve end: separate overlay asset (4.1.1.1)"
+  "sleeve braid 1/2 in (1 1/2 in for general officers), 3 in from the sleeve end: separate overlay asset (4.1.1.1)",
+  "trousers blue, without pleats and cuffs, high-rise waist, 7/8 in blue stripe down each outer leg seam (4.1.1.3); the jacket ends at the waist in front, so below the front points the figure is the trousers (4.1.1.1)"
  ],
  "assumed": [
   "px-to-inch scale",
@@ -440,6 +454,7 @@
   "shawl collar, shirt, cummerbund and cut-away geometry read off the base image",
   "satin sheen colours sampled from the base image",
   "sleeve braid colour",
+  "trouser leg width and the waist line (the regulation gives neither; the stripe width is documented), trouser shade and the stripe colour (the satin collar's sheen blue)",
   "sleeve width: the traced hanging sleeve is widened outward by up to 1 in between the shoulder end and the elbow (one warp of the part between the armhole seam and the outer edge) so the true-size white chevron lies on it; the regulation gives no sleeve width (ESTIMATE)"
  ],
  "fit": {
