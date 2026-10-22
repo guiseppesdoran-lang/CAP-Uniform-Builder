@@ -144,7 +144,7 @@
       const others = owner ? views.filter(v => v !== owner) : [];
       const crossesOther = (p, q) => others.some(r => insideLength(p, q, r) > 0.005);
 
-      const search = (solidsX, shrunkX, strict) => {
+      const search = (solidsX, shrunkX, strict, outside) => {
         const candidates = [];
         if(!o.offsetOnly) candidates.push({ side: sides[0], d: 0, inline: true });
         for(const s of sides){
@@ -164,7 +164,7 @@
           }
           // The whole run from the measured points to the dimension, not only the drawn part of the extension line:
           // the extension lines start past any piece they leave, which would hide a view they cross.
-          if(strict && !c.inline && (crossesOther(a, b) || crossesOther(A, add(a, mul(c.side, PX.extOver * P))) || crossesOther(B, add(b, mul(c.side, PX.extOver * P))))) continue;
+          if(strict && (crossesOther(a, b) || (!c.inline && (crossesOther(A, add(a, mul(c.side, PX.extOver * P))) || crossesOther(B, add(b, mul(c.side, PX.extOver * P))))))) continue;
           const modes = [];
           // The label goes at the middle of the line when it can, else slides along it (a long line
           // past a chevron keeps its label on clear cloth).
@@ -196,6 +196,7 @@
           for(const md of modes){
             const box = { x: md.at.x - lw / 2, y: md.at.y - lh / 2, w: lw, h: lh };
             if(strict && others.some(r => overlap(box, r) > 0)) continue;
+            if(outside && overlap(box, outside) > 0) continue;
             let cost = lineCost + md.cost;
             if(tickAt && contains(grow(box, 3 * P), tickAt)) cost += 300;
             for(const r of solidsX) cost += 6 * overlap(box, r) / (P * P);
@@ -211,10 +212,11 @@
         return found;
       };
 
-      let best = search(solids, shrunk, !!owner);
+      // First beside the view, label outside it (the seated cap's own measure); then, where no side is free, on its cloth.
+      let best = search(solids, shrunk, !!owner, owner);
       if(!best && owner){
         const solids2 = solids.filter(b => !(b.x === owner.x && b.y === owner.y && b.w === owner.w && b.h === owner.h));
-        best = search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true);
+        best = search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true, null);
       }
       if(!best) continue;
 

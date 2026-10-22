@@ -66,10 +66,21 @@ for(const [name, b] of CASES){
     assert.ok(drawings.length > 0, 'something is measured');
     const solids = ML.obstaclesOf(scene);
     const tol = (2 * px) ** 2;
+    // A measure inside a cap view (the grade 1/2 in from the visor) belongs to that view: where the views stand
+    // too close for a free side, its label lies on that view's own cloth (FIX-R-OTHER-r2 #6; D8: this test asked
+    // every label to clear the view's box too). The grade and the name tape in it are still solids.
+    const views = scene.layers.filter(l => (l.role === 'hat' || l.role === 'hat-view') && l.obstacle).map(l => l.obstacle);
+    const ownerOf = d => {
+      const m = scene.layers.find(l => l.type === 'measure' && l.key === d.key);
+      if(!m) return null;
+      const mid = { x: (m.from.x + m.to.x) / 2, y: (m.from.y + m.to.y) / 2 };
+      return views.find(v => mid.x >= v.x && mid.x <= v.x + v.w && mid.y >= v.y && mid.y <= v.y + v.h) || null;
+    };
     drawings.forEach((d, i) => {
       const L = d.label;
+      const own = ownerOf(d);
       assert.ok(overlap(L, area) > L.w * L.h - tol, `${L.text} label inside the drawing`);
-      for(const s of solids) assert.ok(overlap(L, s) <= 4 * tol, `${L.text} label clear of a piece at ${s.x.toFixed(2)},${s.y.toFixed(2)}`);
+      for(const s of solids) if(s !== own) assert.ok(overlap(L, s) <= 4 * tol, `${L.text} label clear of a piece at ${s.x.toFixed(2)},${s.y.toFixed(2)}`);
       drawings.slice(i + 1).forEach(e => assert.equal(overlap(L, e.label), 0, `${L.text} and ${e.label.text} labels apart`));
     });
   });
