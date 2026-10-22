@@ -171,7 +171,7 @@
       if(out.some(p => p.id === resolved)) return;
       const img = wholePatchImage(resolved, meta);
       if(!img){ patchNotes.push(`${meta.label || resolved} has no full patch artwork yet, so it is not shown`); return; }
-      out.push({ id: resolved, title: meta.label || resolved, href: ASSET(img), aspect: img === meta.img ? patchAspect(meta) : 1, slot: kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER'), kind });
+      out.push({ id: resolved, title: meta.label || resolved, href: ASSET(img), aspect: img === meta.img ? patchAspect(meta) : 1, slot: kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER'), kind, echelon: meta.echelon || null });
     };
     const unit = typeof getSelectedUnitPatchId === 'function' ? getSelectedUnitPatchId() : null;
     if(unit) add(unit, 'unit');

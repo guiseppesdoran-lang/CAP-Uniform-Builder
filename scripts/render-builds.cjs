@@ -142,7 +142,8 @@ function patchesFrom(refs){
     const label = ref.label || (meta[ref.id] && meta[ref.id].label) || ref.id;
     if(!whole){ notes.push(`${label} has no full patch artwork yet, so it is not shown`); continue; }
     patches.push({ id: ref.id, title: label, href: '/images/' + whole, aspect: whole === img ? ((meta[ref.id] && meta[ref.id].w) || 1) / ((meta[ref.id] && meta[ref.id].h) || 1) : 1,
-      slot: ref.kind === 'unit' ? 'R_SHOULDER' : (ref.slot || (meta[ref.id] && meta[ref.id].slotHint) || 'L_SHOULDER'), kind: ref.kind || 'general' });
+      slot: ref.kind === 'unit' ? 'R_SHOULDER' : (ref.slot || (meta[ref.id] && meta[ref.id].slotHint) || 'L_SHOULDER'), kind: ref.kind || 'general',
+      echelon: ref.echelon || (meta[ref.id] && meta[ref.id].echelon) || null });
   }
   return { patches, notes };
 }

@@ -25,7 +25,7 @@ const EPS = 0.01;
 
 const OCP = 'garment-ocp-coat-abu-cut';
 const UNIT = { id: 'sequoyah_cadet_squadron_patch', title: 'Unit', href: 'images/patches/sequoyah_cadet_squadron_patch.webp', aspect: 1, slot: 'R_SHOULDER', kind: 'unit' };
-const WING = { id: 'nywg_patch', title: 'Wing', href: 'images/patches/nywg_patch.webp', aspect: 1, slot: 'L_SHOULDER', kind: 'general' };
+const WING = { id: 'nywg_patch', title: 'Wing', href: 'images/patches/nywg_patch.webp', aspect: 1, slot: 'L_SHOULDER', kind: 'general', echelon: 'wing' };
 const PILOT = { id: 'CAPPilot1_FA9D33EA587D8', title: 'Pilot Badge' };
 const GT = { id: 'ground_team_basic_badge', title: 'Ground Team Badge' };
 const PIN = { id: 'squadron_commander_badge', title: 'Squadron Commander Badge', graduated: true };
@@ -389,7 +389,7 @@ test('ABU and CFU officer grade (Capt, Maj, Lt Col, Col, Brig Gen) lies wholly i
 });
 
 test('ABU and CFU sleeve patches hang 1/2 in below the shoulder seam and the overlay draws the 1/2 in (5.1.1.1.2.2, 5.2.1.1.2.2-3)', async () => {
-  const left = { id: 'wing_patch', title: 'Wing', href: 'images/patches/wing.webp', aspect: 1, slot: 'L_SHOULDER', kind: 'general' };
+  const left = { id: 'wing_patch', title: 'Wing', href: 'images/patches/wing.webp', aspect: 1, slot: 'L_SHOULDER', kind: 'general', echelon: 'wing' };
   const right = { id: 'act_patch', title: 'Activity', href: 'images/patches/act.webp', aspect: 1.4, slot: 'R_SHOULDER', kind: 'general' };
   for(const [u, patches] of [['abu', [left]], ['corporate_field', [left, right]]]){
     const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
@@ -401,6 +401,7 @@ test('ABU and CFU sleeve patches hang 1/2 in below the shoulder seam and the ove
       assert.ok(Math.abs(p.y - seam.y - 0.5) < 0.005, `${u} ${side}: patch top ${p.y} is ${(p.y - seam.y).toFixed(3)} in below the seam`);
       assert.ok(measures(scene).some(m => Math.abs(m.from.y - seam.y) < 1e-6 && Math.abs(m.to.y - p.y) < 1e-6 && Math.abs(len(m) - 0.5) < 0.005), `${u} ${side}: the 1/2 in measure`);
     }
+    assert.equal(scene.layers.filter(l => l.role === 'patch' && /L_SHOULDER|R_SHOULDER/.test(l.key) && !/:edge$/.test(l.key)).length, patches.length, `${u}: every sleeve patch is drawn`);
   }
 });
 

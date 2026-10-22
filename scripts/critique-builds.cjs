@@ -21,6 +21,8 @@ const AIRCREW = 'AirCrew1_DB3F0FCC3650F';
 const unitFull = { id: 'TN-330_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-330_ocp_patch.webp', label: 'TN-330 Sequoyah Cadet Squadron' };
 const unitNoArt = { id: 'TN-185_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-185_ocp_patch.webp', label: 'TN-185' };
 const hhq = { id: 'archer_ocp_patch', kind: 'general', img: 'patches/ocp/archer_ocp_patch.webp', slot: 'L_SHOULDER', label: 'ARCHER' };
+// A wing patch (echelon wing): the left sleeve of the ABU and the CFU takes it (5.1.1.1.2.2, 5.2.1.1.2.2); ARCHER, a special activity patch, does not.
+const wing = { id: 'nywg_patch', kind: 'general', slot: 'L_SHOULDER', label: 'New York Wing' };
 const mk = (name, uniform, gender, membership, rank, o) => out.push({ name, build: Object.assign({ uniform, gender, membership, rank, name: nm, opt: Object.assign({}, base) }, o || {}) });
 
 // Class A: badges the regulation limits to cadets, edge-on grades, semi-formal NCO chevrons (items 1-3).
@@ -84,8 +86,10 @@ const SQN_CURRENT = { id: 'squadron_commander_badge', title: 'Squadron Commander
 mk('ocp-male-senior-LtCol-graduated-commander', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitFull, hhq], badgeIds: [A4[0]], command: SQN_GRAD, opt: Object.assign({}, base, { overlay: true }) });
 mk('ocp-male-senior-LtCol-current-commander', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitFull, hhq], badgeIds: [A4[0]], command: SQN_CURRENT });
 mk('ocp-female-cadet-CCapt-graduated-commander', 'ocp', 'female', 'cadet', 'C/Capt', { patchRefs: [unitFull, hhq], badgeIds: [AIRCREW], command: SQN_GRAD });
-mk('abu-male-senior-SMSgt', 'abu', 'male', 'senior', 'SMSgt', { patchRefs: [unitFull, hhq], badgeIds: [A4[0], 'emergency_services_badge'] });
-mk('corporate_field-female-senior-Capt', 'corporate_field', 'female', 'senior', 'Capt', { patchRefs: [unitFull, hhq], badgeIds: [A4[0], 'emergency_services_badge'] });
+mk('abu-male-senior-SMSgt', 'abu', 'male', 'senior', 'SMSgt', { patchRefs: [unitFull, wing, hhq], badgeIds: [A4[0], 'emergency_services_badge'] });
+mk('corporate_field-female-senior-Capt', 'corporate_field', 'female', 'senior', 'Capt', { patchRefs: [unitFull, wing, hhq], badgeIds: [A4[0], 'emergency_services_badge'] });
+// The wing patch is on the left sleeve of both (above); ARCHER, a special activity patch, is the CFU's right sleeve (5.2.1.1.2.3) and is noted, not drawn, on the ABU.
+mk('corporate_field-male-senior-Col', 'corporate_field', 'male', 'senior', 'Col', { patchRefs: [unitFull, wing, hhq], badgeIds: [A4[0], 'emergency_services_badge'] });
 
 // Flight suits (items 16-17): name tag with two badges, the command pin, both ES patch styles, the scarf,
 // and the general officers.

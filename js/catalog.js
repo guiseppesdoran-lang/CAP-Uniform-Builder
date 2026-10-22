@@ -1673,6 +1673,7 @@ const PATCH_META = {
   'national_staff_ocp_patch':{
     label:'National Staff OCP Sleeve Patch',
     slotHint:'L_SHOULDER',
+    echelon:'national',
     w:70,h:70,
     img:'badges/utility/national_staff_badge.webp',
     authorizedUniforms:['ocp'],
@@ -1680,8 +1681,8 @@ const PATCH_META = {
     sourceBadgeId:'national_staff_badge'
   },
    // Previously added field-uniform patches.
-  'ner_patch':{label:'Northeast Region Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/ner_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'nywg_patch':{label:'New York Wing Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nywg_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'ner_patch':{label:'Northeast Region Patch', slotHint:'L_SHOULDER', echelon:'region', w:70,h:70, img:'patches/ner_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'nywg_patch':{label:'New York Wing Patch', slotHint:'L_SHOULDER', echelon:'wing', w:70,h:70, img:'patches/nywg_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'comms_patch':{label:'Communications Patch', slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/comms_patch.webp', authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'},
   'check_pilot_patch':{label:'Check Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/check_pilot_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
 

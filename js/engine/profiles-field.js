@@ -491,14 +491,20 @@
       // a sleeve (Attachment 4: Organizational Patch RP; 5.1.1.1.2.3, 5.2.1.1.2.5); the CFU's right
       // sleeve is for a special activity patch (5.2.1.1.2.3).
       const unit = take(p => p.kind === 'unit');
-      const left = take(p => p.slot === 'L_SHOULDER');
+      // The left sleeve of both uniforms takes one wing, region or national patch and nothing else (5.1.1.1.2.2 ABU,
+      // 5.2.1.1.2.2 CFU): only a patch the page marks with its echelon goes there, whatever slot it was filed under.
+      // A special activity patch is the CFU's right sleeve (5.2.1.1.2.3); the ABU has no sleeve place for it.
+      const isHq = p => !!p.echelon;
+      const left = take(p => p.slot === 'L_SHOULDER' && isHq(p));
       // The ABU and CFU sleeve patches are sewn 1/2 in below the shoulder seam (5.1.1.1.2.2; 5.2.1.1.2.2-3): the zone's top is that line (the sheet puts it 0.5 in under the seam_top_center
       // anchor), so the patch hangs from the zone's top and the overlay draws the 1/2 in from the seam to its top edge.
+      // A patch is drawn at its own size, the 3.5 in the OCP Velcro and the pockets allow, whatever the sleeve zone (the zone fixes the
+      // position, not the size: the same patch is one size on every uniform, R1, D2); the edge-on copy is cut to the coat's silhouette.
       const hang = (patch, zone, slot, side) => {
-        const cap = { x: zone.x + (zone.w - Math.min(zone.w, 3.5)) / 2, w: Math.min(zone.w, 3.5), h: Math.min(zone.h, 3.5) };
-        let w = cap.w, h = w / (patch.aspect || 1);
-        if(h > cap.h){ h = cap.h; w = h * (patch.aspect || 1); }
-        const layer = C.fitRaster(ctx, patch.href, { x: cap.x, y: zone.y, w: cap.w, h }, patch.aspect || 1, { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' });
+        const box = { x: zone.x + (zone.w - 3.5) / 2, w: 3.5 };
+        let w = box.w, h = w / (patch.aspect || 1);
+        if(h > 3.5){ h = 3.5; w = h * (patch.aspect || 1); }
+        const layer = C.fitRaster(ctx, patch.href, { x: box.x, y: zone.y, w: box.w, h }, patch.aspect || 1, { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' });
         widthOf(layer);
         // And edge-on on the figure's arm.
         const e = layer && armEdgeOf(ctx, side, layer);
@@ -510,9 +516,14 @@
       const zl = ctx.rect('wing_patch_zone_left');
       if(left && zl) hang(left, zl, 'L_SHOULDER', 'left');
       if(b.uniform === 'corporate_field'){
-        const right = take(p => p.slot === 'R_SHOULDER' || p.kind === 'unit');
+        // The right sleeve: the special activity patch (5.2.1.1.2.3); a general patch the page filed under the left shoulder is one.
+        const right = take(p => p.slot === 'R_SHOULDER' || p.kind === 'unit') || take(p => p.slot === 'L_SHOULDER' && !isHq(p));
         const zr = ctx.rect('activity_patch_zone_right');
         if(right && zr) hang(right, zr, 'R_SHOULDER', 'right');
+      }else{
+        for(let stray = take(p => p.slot === 'L_SHOULDER' && !isHq(p)); stray; stray = take(p => p.slot === 'L_SHOULDER' && !isHq(p))){
+          ctx.note(`${stray.title} is not worn on the ABU sleeve: the left sleeve takes one wing, region or national patch only (CAPR 39-1, 5.1.1.1.2.2)`);
+        }
       }
       // Breast pocket patches: one in all on the ABU (5.1.1.1.2.3), one per pocket on the CFU.
       const pockets = b.uniform === 'abu' ? 1 : 2;

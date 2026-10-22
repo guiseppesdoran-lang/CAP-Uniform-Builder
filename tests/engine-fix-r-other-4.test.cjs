@@ -320,7 +320,8 @@ const distToPolyline = (p, poly) => Math.min(...poly.slice(1).map((b, i) => {
 
 test('ABU and CFU, senior NCO chevrons and shoulder patches: the figure\'s arms carry them edge-on, centred on the arm\'s outer edge, narrowed, turned with the edge and cut to the coat (5.1.1.1.1.2, 5.2.1.1.1.3, 5.1.1.1.2.2, 5.2.1.1.2.2-3; D22, D42)', async () => {
   const table = ARM.compute();
-  const patch = { id: 'archer_ocp_patch', kind: 'general', img: 'patches/ocp/archer_ocp_patch.webp', slot: 'L_SHOULDER', label: 'ARCHER' };
+  // The left sleeve takes a wing, region or national patch (5.1.1.1.2.2, 5.2.1.1.2.2); ARCHER is a special activity patch (FIX-R-OTHER-r4 item 6, D8).
+  const patch = { id: 'nywg_patch', kind: 'general', slot: 'L_SHOULDER', label: 'New York Wing' };
   for(const [uniform, sheet] of [['abu', 'garment-abu-coat'], ['corporate_field', 'garment-cfu-coat']]){
     for(const gender of ['male', 'female']){
       const scene = await compose(hb(uniform, gender, 'senior', 'SMSgt', { patchRefs: [patch], badgeIds: [PILOT] }));
@@ -344,7 +345,7 @@ test('ABU and CFU, senior NCO chevrons and shoulder patches: the figure\'s arms 
         near((centre.y - arm[0][1]) / (arm[arm.length - 1][1] - arm[0][1]), frac, 0.04, `${id}: same fraction of the sleeve down the arm (arm ${armLen.toFixed(1)} in)`);
       }
       const p = scene.layers.filter(l => l.role === 'patch' && /L_SHOULDER/.test(l.key));
-      assert.deepEqual(p.map(l => l.key).sort(), ['patch:archer_ocp_patch:L_SHOULDER:0', 'patch:archer_ocp_patch:L_SHOULDER:edge'], `${uniform} ${gender}: the shoulder patch flat and edge-on`);
+      assert.deepEqual(p.map(l => l.key).sort(), ['patch:nywg_patch:L_SHOULDER:0', 'patch:nywg_patch:L_SHOULDER:edge'], `${uniform} ${gender}: the shoulder patch flat and edge-on`);
       const pe = p.find(l => /:edge$/.test(l.key));
       assert.equal(pe.clipSil, sheet);
       assert.ok(pe.x + pe.w / 2 < 40 && pe.w < p.find(l => /:0$/.test(l.key)).w * 0.55, 'narrowed');
