@@ -102,3 +102,17 @@ test('OCP two chest badges: the upper badge\'s blue bottom edge is 1/2 in above 
   if(bs.length === 2) assert.ok(bs[1].y - (bs[0].y + bs[0].h) < 0.5 - 0.01, 'CFU: silver to silver leaves less than 1/2 in of blue to blue');
 });
 
+// ---- 4. ABU and CFU navy tactical cap: no cadet grade (6.2.11.1) ---------------------------------------------------------
+
+test('ABU and CFU: a cadet officer wears no grade on the navy tactical cap (ICL 25-02 6.2.11.1), the ABU patrol cap keeps it (5.1.1.6); the OCP ball cap keeps it (7.1.1.8); senior officers keep it', async () => {
+  for(const gender of ['male', 'female']) for(const u of ['abu', 'corporate_field']){
+    const scene = await compose(hb(u, gender, 'cadet', 'C/Maj', { badgeIds: [AIRCREW] }));
+    assert.ok(!byKey(scene, 'grade:baseball_cap_front_insignia_zone'), `${u} ${gender}: no grade on the tactical cap`);
+    assert.ok(scene.notes.some(n => /6\.2\.11\.1/.test(n)), `${u} ${gender}: note cites 6.2.11.1`);
+    if(u === 'abu') assert.ok(byKey(scene, 'grade:patrol_cap_front_insignia_zone'), `${gender}: the ABU patrol cap keeps the cadet officer grade`);
+    const sen = await compose(hb(u, gender, 'senior', 'Capt', { badgeIds: ['CAPPilot1_FA9D33EA587D8'] }));
+    assert.ok(byKey(sen, 'grade:baseball_cap_front_insignia_zone'), `${u} ${gender}: a senior officer keeps the grade on the tactical cap`);
+  }
+  const ocp = await compose(hb('ocp', 'male', 'cadet', 'C/Maj', { badgeIds: [AIRCREW] }));
+  assert.ok(byKey(ocp, 'grade:baseball_cap_front_insignia_zone'), 'OCP ball cap keeps the cadet officer grade');
+});

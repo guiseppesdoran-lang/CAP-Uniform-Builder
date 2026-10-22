@@ -67,6 +67,16 @@
     for(const [name, mode] of zones){
       const z = ctx.rect(name);
       if(!z) continue;
+      // The navy tactical cap of the ABU and CFU: 6.2.11.1 (ICL 25-02), the paragraph written for that
+      // cap, has NCOs and cadets wear no insignia on its front (only the nametape on the back), and the
+      // front must carry no Velcro or other items; the parent paragraph 6.2.11 repeats the ABU cap text
+      // and names cadet officers, so the ICL is not consistent with itself: the specific paragraph wins
+      // for this cap, and the cadet officer keeps the grade on the ABU patrol cap (5.1.1.6). The OCP's
+      // ball cap is covered by 7.1.1.8, which names cadet officers.
+      if(name === 'baseball_cap_front_insignia_zone' && g.cadet && b.uniform !== 'ocp'){
+        ctx.note('Cadets wear no insignia on the front of the navy blue tactical cap, only the nametape on the back (CAPR 39-1 ICL 25-02, 6.2.11.1)');
+        continue;
+      }
       // "1/2 inch from the visor": the zone's bottom edge already sits 1/2 in above the visor.
       const at = mode === 'visor' ? { x: z.x + z.w / 2, y: z.y + z.h } : core.rectCenter(z);
       // On the cap seated on the figure the grade lies over the hat (R6).
