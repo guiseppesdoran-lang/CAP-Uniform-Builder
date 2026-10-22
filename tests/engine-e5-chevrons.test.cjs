@@ -158,29 +158,39 @@ function distToPolygon(pt, poly){
   return best;
 }
 
-// [uniform, gender, options, sheet, vertex of the collar point, vertex of the roll-line end] for the leaf on
-// the LEFT of the picture (the wearer's right); the right leaf mirrors it by its own polygon (same vertex
-// order: the figure's bottom edge runs between these two vertices of each leaf).
+// [uniform, gender, options, sheet, vertex of the collar point, vertex of the roll-line end, roll line] for
+// the leaf on the LEFT of the picture (the wearer's right); the right leaf mirrors it by its own polygon
+// (same vertex order: the figure's bottom edge runs between these two vertices of each leaf). `roll` is
+// true on the sheets that draw the roll line from the polygon's top vertex (vertex 0) down to the roll
+// end (Class B and aviator shirt, checked in the SVG): the polygon then also takes in the band between
+// the roll line and the neck opening, and the collar leaf proper is the triangle vertex 0, collar point,
+// roll end. The overblouse kite and the ABU/CFU five-point leaf draw no such line: the leaf is the whole
+// polygon.
 const COLLAR_CASES = [
-  ['blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male', 1, 2],
-  ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long', 1, 2],
-  ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female', 1, 2],
-  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 1, 2],
-  ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male', 1, 2],
-  ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long', 1, 2],
-  ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female', 1, 2],
-  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long', 1, 2],
-  ['aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 'garment-overblouse-female', 4, 3],
-  ['aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long', 4, 3],
-  ['abu', 'male', {}, 'garment-abu-coat', 2, 3],
-  ['abu', 'female', {}, 'garment-abu-coat', 2, 3],
-  ['corporate_field', 'male', {}, 'garment-cfu-coat', 2, 3],
-  ['corporate_field', 'female', {}, 'garment-cfu-coat', 2, 3]
+  ['blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male', 1, 2, true],
+  ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long', 1, 2, true],
+  ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female', 1, 2, true],
+  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 1, 2, true],
+  ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male', 1, 2, true],
+  ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long', 1, 2, true],
+  ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female', 1, 2, true],
+  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long', 1, 2, true],
+  ['aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 'garment-overblouse-female', 4, 3, false],
+  ['aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long', 4, 3, false],
+  ['abu', 'male', {}, 'garment-abu-coat', 2, 3, false],
+  ['abu', 'female', {}, 'garment-abu-coat', 2, 3, false],
+  ['corporate_field', 'male', {}, 'garment-cfu-coat', 2, 3, false],
+  ['corporate_field', 'female', {}, 'garment-cfu-coat', 2, 3, false]
 ];
+// the ranks whose chevron fits the leaf proper on the Class B and aviator sheets, and those that are longer
+// along the edge than the leaf is wide at the chevron's centre line (1.5 to 1.75 in against a 1.3 to 1.5 in
+// chord; the regulation size is kept, Figure A5-5 'centered on the collar')
+const FITTING = ['C/Amn', 'C/SSgt', 'C/TSgt'];
+const OVERHANGING = ['C/MSgt', 'C/SMSgt', 'C/CMSgt'];
 
-for(const [uniform, gender, opt, garment, iPoint, iRoll] of COLLAR_CASES){
-  for(const rank of ['C/SSgt', 'C/CMSgt']){
-    test(`${uniform} ${gender} ${opt.sleeve || ''} ${opt.femaleTop || ''} ${rank} (${garment}): each collar chevron lies along the leaf's bottom edge, apex to the collar point, 1 in from it, centred (Figure A5-5)`, async () => {
+for(const [uniform, gender, opt, garment, iPoint, iRoll, roll] of COLLAR_CASES){
+  for(const rank of FITTING.concat(OVERHANGING)){
+    test(`${uniform} ${gender} ${opt.sleeve || ''} ${opt.femaleTop || ''} ${rank} (${garment}): each collar chevron lies along the leaf's bottom edge, apex to the collar point, 1 in from it, centred on the leaf (Figure A5-5)`, async () => {
       const spec = await store.load(garment);
       const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank, opt), store);
       const polys = collarPolygonsOf(garment, spec).sort((a, b) => meanX(a) - meanX(b));   // picture left first
@@ -191,6 +201,8 @@ for(const [uniform, gender, opt, garment, iPoint, iRoll] of COLLAR_CASES){
         assert.ok(l, `${side} chevron`);
         // the figure's leading edge, from the polygon's own vertices
         const cp = poly[iPoint], re = poly[iRoll];
+        // the collar leaf proper: the triangle top vertex / collar point / roll end where the sheet draws the roll line
+        const leaf = roll ? [poly[0], cp, re] : poly;
         const ev = { x: cp.x - re.x, y: cp.y - re.y }, len = Math.hypot(ev.x, ev.y), e = { x: ev.x / len, y: ev.y / len };
         // (a) the chevron's axis (apex-up piece turned by `rotate`, clockwise) lies within 1 deg of the edge
         const r = l.rotate * Math.PI / 180, axis = { x: Math.sin(r), y: -Math.cos(r) };
@@ -207,24 +219,45 @@ for(const [uniform, gender, opt, garment, iPoint, iRoll] of COLLAR_CASES){
         const perp = (cx - cp.x) * n.x * sgn + (cy - cp.y) * n.y * sgn;     // centre's distance from the edge line, on the leaf's side
         // the outline nearest the edge sits 1 in from it: the box is `w` wide across the edge
         assert.ok(Math.abs(perp - w / 2 - 1) < 0.05, `${side}: nearest outline ${(perp - w / 2).toFixed(3)} in from the edge`);
-        // centred on the leaf: the centre's place along the edge is the middle of the leaf's width on its line
+        // centred on the leaf: the centre's place along the edge is the middle of the leaf's chord on the line the centre runs along
         const hits = [];
-        for(let i = 0; i < poly.length; i++){
-          const p = poly[i], q = poly[(i + 1) % poly.length];
+        for(let i = 0; i < leaf.length; i++){
+          const p = leaf[i], q = leaf[(i + 1) % leaf.length];
           const dp = (p.x - cp.x) * n.x * sgn + (p.y - cp.y) * n.y * sgn, dq = (q.x - cp.x) * n.x * sgn + (q.y - cp.y) * n.y * sgn;
           if((dp - perp) * (dq - perp) > 0 || dp === dq) continue;
           const t = (perp - dp) / (dq - dp);
           hits.push((p.x + t * (q.x - p.x) - cp.x) * e.x + (p.y + t * (q.y - p.y) - cp.y) * e.y);
         }
         assert.ok(hits.length >= 2, `${side}: the chevron's line crosses the leaf`);
+        const lo = Math.min(...hits), hi = Math.max(...hits), mid = (lo + hi) / 2;
         const along = (cx - cp.x) * e.x + (cy - cp.y) * e.y;
-        assert.ok(Math.abs(along - (Math.min(...hits) + Math.max(...hits)) / 2) < 0.05, `${side}: centred on the leaf, ${along.toFixed(2)} vs ${((Math.min(...hits) + Math.max(...hits)) / 2).toFixed(2)}`);
-        // the chevron lies on the collar leaf: its apex tip and the two wing ends (the base corners of its box;
-        // the box corners beside the apex are empty, the apex being the arch)
-        for(const [along2, across] of [[1, 0], [-1, -1], [-1, 1]]){
-          const pt = { x: cx + axis.x * along2 * l.h / 2 + (-axis.y) * across * l.w / 2, y: cy + axis.y * along2 * l.h / 2 + axis.x * across * l.w / 2 };
-          // within 0.1 in: the Chief's 1.75 in chevron reaches the leaf's neck edge on the women's Class B and the overblouse (by 0.05 in and 0.02 in)
-          assert.ok(inPolygon(pt, poly) || distToPolygon(pt, poly) < 0.1, `${side}: chevron point ${pt.x.toFixed(2)},${pt.y.toFixed(2)} off the leaf`);
+        assert.ok(Math.abs(along - mid) < 0.05, `${side}: centred on the leaf, ${along.toFixed(2)} vs ${mid.toFixed(2)}`);
+        const corners = [[1, -1], [1, 1], [-1, -1], [-1, 1]].map(([a, c]) => ({ x: cx + axis.x * a * l.h / 2 + (-axis.y) * c * l.w / 2, y: cy + axis.y * a * l.h / 2 + axis.x * c * l.w / 2 }));
+        if(roll && FITTING.includes(rank)){
+          // the chevron fits on the leaf proper: the apex tip and the two wing ends (the base corners of its box) lie
+          // inside the triangle within 0.02 in
+          const [apexA, apexB, wingA, wingB] = corners;
+          for(const [what, pt] of [['apex tip', { x: (apexA.x + apexB.x) / 2, y: (apexA.y + apexB.y) / 2 }], ['wing end', wingA], ['wing end', wingB]]) assert.ok(inPolygon(pt, leaf) || distToPolygon(pt, leaf) < 0.02, `${side}: ${what} ${pt.x.toFixed(2)},${pt.y.toFixed(2)} off the leaf (${distToPolygon(pt, leaf).toFixed(3)} in)`);
+          // The box corner beside the apex, on the side of the leaf's top vertex, is the one that can pass the outer
+          // edge: centred on the chord at the chevron's centre line, the chord is shorter one chevron width further
+          // up the leaf (the outer edge leans in). Men's Class B: within 0.02 in. Women's Class B and both aviator
+          // sheets: up to 0.21 in for C/TSgt (recorded in DECISIONS; the leaf is narrower than the chevron needs).
+          const reach = Math.max(...corners.map(pt => inPolygon(pt, leaf) ? 0 : distToPolygon(pt, leaf)));
+          assert.ok(reach < (garment.includes('class-b-shirt-male') ? 0.02 : 0.25), `${side}: a box corner is ${reach.toFixed(3)} in off the leaf`);
+        }else if(roll){
+          // longer than the leaf is wide here: the same overhang past the outer edge and past the roll line
+          const half = l.h / 2, past = ((cx - cp.x) * e.x + (cy - cp.y) * e.y);
+          const outer = (lo - (past - half)), rollSide = ((past + half) - hi);
+          assert.ok(half * 2 > hi - lo, `${rank} (${(2 * half).toFixed(2)} in) is longer than the leaf chord (${(hi - lo).toFixed(2)} in)`);
+          assert.ok(Math.abs(outer - rollSide) < 0.05, `${side}: overhang ${outer.toFixed(3)} in at the outer edge vs ${rollSide.toFixed(3)} in at the roll line`);
+        }else{
+          // the chevron lies on the collar leaf: its apex tip and the two wing ends (the base corners of its box;
+          // the box corners beside the apex are empty, the apex being the arch)
+          for(const [along2, across] of [[1, 0], [-1, -1], [-1, 1]]){
+            const pt = { x: cx + axis.x * along2 * l.h / 2 + (-axis.y) * across * l.w / 2, y: cy + axis.y * along2 * l.h / 2 + axis.x * across * l.w / 2 };
+            // within 0.1 in: the Chief's 1.75 in chevron reaches the leaf's neck edge on the overblouse (by 0.02 in)
+            assert.ok(inPolygon(pt, poly) || distToPolygon(pt, poly) < 0.1, `${side}: chevron point ${pt.x.toFixed(2)},${pt.y.toFixed(2)} off the leaf`);
+          }
         }
       }
     });

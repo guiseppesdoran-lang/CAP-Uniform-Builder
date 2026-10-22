@@ -132,6 +132,30 @@
     return { collarPoint, rollEnd, inward: best.inward };
   }
 
+  // The collar leaf proper of a collar polygon, as a point list. Figure A5-5 centres the chevron on the
+  // leaf ('centered on the collar'), not on the band between the roll line and the neck opening, which the
+  // Class B and aviator sheets include in the collar polygon. Those sheets draw the roll line from the
+  // polygon's top vertex down to the roll end of the leading edge, and the outline turns back (a reflex
+  // corner) at the roll end where it passes onto the band: the leaf is then the triangle top vertex,
+  // collar point, roll end. A polygon that is convex at the roll end (the ABU/CFU five-point leaf, the
+  // overblouse kite) has no roll line inside it: the leaf is the whole polygon. One rule, no vertex
+  // indices. `edge` is collarLeadingEdge(points, centerX).
+  function collarLeaf(points, edge){
+    if(!edge) return points;
+    const n = points.length, at = points.indexOf(edge.rollEnd);
+    if(at < 0) return points;
+    let area = 0;
+    for(let i = 0; i < n; i++){ const p = points[i], q = points[(i + 1) % n]; area += p.x * q.y - q.x * p.y; }
+    const prev = points[(at + n - 1) % n], next = points[(at + 1) % n], re = edge.rollEnd;
+    // reflex at the roll end: the turn there runs against the polygon's own winding
+    const turn = (re.x - prev.x) * (next.y - re.y) - (re.y - prev.y) * (next.x - re.x);
+    if(turn * area >= 0) return points;
+    let top = points[0];
+    for(const p of points) if(p.y < top.y) top = p;
+    if(top === edge.collarPoint || top === edge.rollEnd) return points;
+    return [top, edge.collarPoint, edge.rollEnd];
+  }
+
   // Where and how a collar chevron sits on a leading edge { collarPoint, rollEnd, inward }: its axis
   // along the edge with the apex toward the collar point (turn clockwise from apex-up), its width
   // across the edge, the near outline `gap` inches (1) from the edge. `pieceW` is the chevron's width in
@@ -222,7 +246,7 @@
       const edge = collarLeadingEdge(poly.points, centerX);
       if(!edge) continue;
       const side = edge.collarPoint.x < centerX ? 'right' : 'left';
-      const pl = chevronOnLeadingEdge(edge, s.w, 1, poly.points);
+      const pl = chevronOnLeadingEdge(edge, s.w, 1, collarLeaf(poly.points, edge));
       await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate: pl.rotate, z: Z.insignia, role: 'grade', key: 'grade:' + side });
       ctx.measure(pl.foot, pl.near);
     }
@@ -534,5 +558,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, collarLeadingEdge, chevronOnLeadingEdge, collarChevrons, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, collarLeadingEdge, collarLeaf, chevronOnLeadingEdge, collarChevrons, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });
