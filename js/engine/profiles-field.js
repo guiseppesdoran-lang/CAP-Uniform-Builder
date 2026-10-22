@@ -25,8 +25,17 @@
 
   // Last name on the coat's name tape and on any cap back tape the sheet draws: light silver block
   // capitals in the same lettering as the drawn CAP tape (7.1.1.2.3, 5.1.1.1.2.1, 5.2.1.1.2.1,
-  // 7.1.1.8). The sheets draw it as Arial Bold condensed to 0.546 of its width, capitals 0.655 of
-  // the tape's height (an em of 0.915 of the tape).
+  // 7.1.1.8). The coat sheets draw 'CIVIL AIR PATROL' as Arial Bold outlines at a fixed em, 0.81 in (capitals 0.58 in
+  // tall) on every sheet whatever the tape's height, condensed by the sheet's own x/y scale, so the name on the coat's
+  // name tape takes that em and condense (Ethan: 'dynamic name in CAP-tape font'): the two tapes of a set have the
+  // same capital height and stroke. COAT_CAP_LETTERING is read from the sheets' cap-tape-lettering transforms
+  // (scale y x 100 glyph units = em; scale x / scale y = condense) and a test re-reads them; a sheet not in the
+  // table, and the caps' back tapes, which have no CAP lettering beside them, keep the em of 0.915 of the tape.
+  const COAT_CAP_LETTERING = {
+    'garment-ocp-coat-abu-cut': { em: 0.81, condense: 0.5728 },
+    'garment-abu-coat': { em: 0.81, condense: 0.5457 },
+    'garment-cfu-coat': { em: 0.81, condense: 0.5457 }
+  };
   function nameTapes(ctx, b){
     // The CAP tape's lettering is drawn on the sheet; the measurement labels stay off it.
     ctx.keepClear(ctx.rect('cap_tape'), 'cap_tape');
@@ -36,7 +45,8 @@
       if(!r) continue;
       ctx.keepClear(r, lm);
       const inset = 0.25 * r.h;
-      C.nameText(ctx, b.name.last, { x: r.x + inset, y: r.y, w: r.w - 2 * inset, h: r.h }, { color: TAPE_TEXT, size: 0.915 * r.h, condense: 0.546, advance: 0.72, font: 'Arial, Helvetica, sans-serif', key: 'text:' + lm });
+      const cap = lm === 'name_tape' ? COAT_CAP_LETTERING[ctx.base.id] : null;
+      C.nameText(ctx, b.name.last, { x: r.x + inset, y: r.y, w: r.w - 2 * inset, h: r.h }, { color: TAPE_TEXT, size: cap ? cap.em : 0.915 * r.h, condense: cap ? cap.condense : 0.546, advance: 0.72, font: 'Arial, Helvetica, sans-serif', key: 'text:' + lm });
     }
   }
 
