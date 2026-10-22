@@ -58,6 +58,20 @@ const ev = loadPage();
 // ---- shared ribbon slot ------------------------------------------------------------------------------
 
 
+test('Corporate Service Dress and Semi-Formal: the National Staff badge is not authorized, the Command Council badge may take the crest\'s place (4.2.3.1.1.1, Attachment 4)', () => {
+  for(const uniform of ['semi_formal', 'aviator_blazer']){
+    ev(`State.uniform = '${uniform}'`);
+    assert.equal(ev("isBadgeAuthorizedOnCurrentDressUniform('national_staff_badge')"), false, uniform);
+    assert.equal(ev("isBadgeAuthorizedOnCurrentDressUniform('volunteer_university_instructor_badge')"), false, uniform);
+    assert.equal(ev("isBadgeAuthorizedOnCurrentDressUniform('emergency_services_badge')"), false, uniform);
+    for(const ok of ['command_council_badge', 'senior_advisory_group_badge', 'national_executive_committee_badge', 'cap_national_command_board_badge', 'christian_chaplin']){
+      assert.equal(ev(`isBadgeAuthorizedOnCurrentDressUniform('${ok}')`), true, `${uniform} ${ok}`);
+    }
+  }
+  ev("State.uniform = 'blues_a'");
+  assert.equal(ev("isBadgeAuthorizedOnCurrentDressUniform('national_staff_badge')"), true, 'every badge is allowed on the Class A');
+});
+
 test('shoulder cords: cadets wear the cadet cords on Class A and Class B, the Aide de Camp cord is worn by senior members too, nobody on other uniforms (9.3, 9.3.4, 9.4.1)', () => {
   for(const uniform of Object.keys(rules.RULES)){
     const dress = uniform === 'blues_a' || uniform === 'blues_b';

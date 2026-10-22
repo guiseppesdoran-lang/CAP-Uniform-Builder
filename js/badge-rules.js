@@ -68,8 +68,13 @@ const SPECIALTY_TRACK_BADGE_IDS = new Set([
 const POCKET_SERVICE_BADGE_IDS = new Set([
   ...SPECIALTY_TRACK_BADGE_IDS
 ]);
+// Only these may take the CAP Crest's place on the corporate blazer (4.2.3.1.1.1). The National Staff
+// badge may not: Attachment 4 marks it not authorized on the Corporate Service Dress.
 const CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS = new Set([
-  ...GOVERNANCE_SERVICE_BADGE_IDS
+  'senior_advisory_group_badge',
+  'command_council_badge',
+  'national_executive_committee_badge',
+  'cap_national_command_board_badge'
 ]);
 
 const CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS = new Set([
@@ -80,10 +85,10 @@ const CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS = new Set([
 ]);
 
 function isBadgeAuthorizedOnCurrentDressUniform(id){
-  if(State.uniform !== 'semi_formal') return true;
-  // CAPR 39-1 4.2.1/4.2.2 carries forward Corporate Service Dress rules:
-  // the Chaplain insignia and the listed service-badge substitutes for the
-  // pocket CAP crest are the only selectable badges worn on this uniform.
+  // The Corporate Service Dress (4.2.3.1.1.3) and the Corporate Semi-Formal, which carries its rules
+  // forward (4.2.1, 4.2.2): the chaplain insignia and the listed service-badge substitutes for the
+  // pocket CAP crest are the only badges worn on them.
+  if(!CAPUBUniformRules.allowsOnlyChaplainBadge(State.uniform)) return true;
   return CHAPLAIN_BADGE_IDS.has(id) || CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS.has(id);
 }
 
