@@ -525,26 +525,33 @@
       return;
     }
     // Officers (not generals): the cloth grade is 'centered on top of each shoulder with bottom edge of insignia
-    // placed 1/2 inch from shoulder seam' (8.2.3.2, 8.3.3.2, 6.1.7), so its bottom faces the seam, the arm, as the
-    // general officers' stars do (8.2.3.1): the piece turns a quarter turn, 90 deg clockwise on the wearer's right
-    // and 90 deg counter-clockwise on the left, its top toward the neck. The grade zone's seam-side edge is the
-    // half inch line, so the turned piece's bottom edge is set on it, centred on the zone's height; it is never
-    // scaled (R1). A piece taller than the zone (the colonel's eagle, 1.59 in turned, the zone being 1.25 in high:
-    // the art sized the zone for the unturned eagle) hangs from the zone's top and extends down, so it does not
-    // run over the shoulder outline at the top (FIX-R-OTHER-r2 #9; 8.3.5.1: the cloth piece itself lies on the
-    // cloth). The colonel's eagle is mirrored on the wearer's right so that its head faces the same
-    // way, the wearer's front, on both shoulders (the mess dress boards and the collars do the same).
+    // placed 1/2 inch from shoulder seam' (8.2.3.2, 8.3.3.2, 6.1.7). The grade zone's seam-side edge is the half inch
+    // line (the armhole seam, the zone's outer edge), so the piece's seam-side edge is set on it, centred on the zone's
+    // height; it is never scaled (R1). The leaf and the eagle are turned a quarter turn, 90 deg clockwise on the
+    // wearer's right and 90 deg counter-clockwise on the left, their tops toward the neck and their bottoms (stem,
+    // talons) toward the seam, as the general officers' stars are (8.2.3.1) and as the Class B epaulet seen from above
+    // and the mess dress board turn them. The bars (2d Lt, 1st Lt, Captain, flight officer grades) are not turned: the
+    // art draws them upright, each bar standing along the seam and the pair side by side toward the neck, which is
+    // the Class B epaulet's top view (the bars across the strap, parallel to the seam, FIX-R-OTHER-r4 item 10, R8) and
+    // is what the zone, 1.60 x 1.25 in, is sized for (the sheet's reg-audit row 8.2.3.2: 'captain bars / major leaf 1.25
+    // high'); turned, they ran from the neck to the sleeve, across the seam. A piece taller than the zone (the colonel's
+    // eagle, 1.59 in turned, the zone being 1.25 in high: the art sized the zone for the unturned eagle) hangs from the
+    // zone's top and extends down 0.34 in past the zone's bottom, so it does not run over the shoulder outline at the top
+    // (FIX-R-OTHER-r2 #9; 8.3.5.1: the cloth piece itself lies on the cloth; centring it would put 0.17 in of it over the
+    // outline; the art followup widens the zone to 1.6 in). The colonel's eagle is mirrored on the wearer's right so that
+    // its head faces the same way, the wearer's front, on both shoulders (the mess dress boards and the collars do the same).
     const id = G.seniorOfficerInsignia(g, 'cloth-bordered');
     const spec = await ctx.spec(id);
+    const bars = /^rank-senior-(second-lieutenant|first-lieutenant|captain|flight-officer|technical-flight-officer|senior-flight-officer)-/.test(id);
     for(const side of ['right', 'left']){
       const zone = ctx.rect('grade_zone_' + side);
       if(!zone) continue;
-      // The wearer's right shoulder is the left of the picture: its seam is the zone's left edge. Turned, the
-      // piece's width along the shoulder is its height.
-      const cx = side === 'right' ? zone.x + spec.h / 2 : zone.x + zone.w - spec.h / 2;
-      // Turned a quarter turn, the piece's height along the shoulder is its width.
-      const cy = zone.y + Math.max(zone.h, spec.w) / 2;
-      await ctx.place(id, { pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: side === 'right' ? 90 : -90, flipX: side === 'right' && g.key === 'colonel',
+      // The wearer's right shoulder is the left of the picture: its seam is the zone's left edge. Upright, the piece's width
+      // lies along the shoulder; turned, its height does.
+      const along = bars ? spec.w : spec.h, high = bars ? spec.h : spec.w;
+      const cx = side === 'right' ? zone.x + along / 2 : zone.x + zone.w - along / 2;
+      const cy = zone.y + Math.max(zone.h, high) / 2;
+      await ctx.place(id, { pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: bars ? 0 : side === 'right' ? 90 : -90, flipX: !bars && side === 'right' && g.key === 'colonel',
         z: Z.insignia, role: 'grade', key: 'grade:' + side });
     }
   }

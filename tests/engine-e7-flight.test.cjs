@@ -56,10 +56,14 @@ const onFigure = (scene, f, pred) => scene.layers.filter(l => (f.jacket ? l.figu
 // ---- officer grade and general officer stars on the shoulders ---------------------------------
 
 // D8 (FIX-R-OTHER-r1 review round 3, 8.2.3.2 / 8.3.3.2): the grade is 'centered on top of each shoulder with bottom edge
-// of insignia placed 1/2 inch from shoulder seam', so its bottom faces the seam: the piece is turned 90 deg clockwise on
-// the wearer's right and 90 deg counter-clockwise on the left (as the general officer stars, 8.2.3.1), not left upright;
-// the old test asserted the upright piece's outer edge on the half inch line.
-test('officer grade: turned a quarter turn, bottom edge on the half inch line from the shoulder seam, centred in height, never scaled (8.2.3.2, 8.3.3.2, 6.1.7)', async () => {
+// of insignia placed 1/2 inch from shoulder seam', so the leaf and the eagle are turned 90 deg clockwise on the wearer's
+// right and 90 deg counter-clockwise on the left (as the general officer stars, 8.2.3.1), their bottoms toward the seam.
+// FIX-R-OTHER-r4 item 10 (D8): the bars (2d Lt, 1st Lt, Captain, the flight officer grades) are NOT turned: they stand
+// upright, each bar along the seam and the pair side by side toward the neck, as on the Class B epaulet seen from above
+// (bars across the strap, parallel to the seam; R8) and as the grade zone (1.60 x 1.25 in) is sized; turned they ran from
+// the neck to the sleeve, across the seam. The piece's outer edge, its edge toward the seam, is on the half inch line.
+const BARS = new Set(['2d Lt', '1st Lt', 'Capt', 'FO', 'TFO', 'SFO']);
+test('officer grade: bars upright with their outer edge on the half inch line, leaf and eagle turned a quarter turn with their bottom edge on it, centred in height, never scaled (8.2.3.2, 8.3.3.2, 6.1.7)', async () => {
   const ranks = ['2d Lt', '1st Lt', 'Capt', 'Maj', 'Lt Col', 'Col'];
   for(const f of FIGURES){
     for(const rank of ranks){
@@ -70,19 +74,23 @@ test('officer grade: turned a quarter turn, bottom edge on the half inch line fr
       const zr = await zoneOf(scene, f.garment, 'grade_zone_right');
       const zl = await zoneOf(scene, f.garment, 'grade_zone_left');
       const spec = await ST.load(right.id);
-      assert.equal(right.rotate, 90, `${f.name} ${rank}: wearer's right turned 90 deg clockwise (bottom toward the seam)`);
-      assert.equal(left.rotate, -90, `${f.name} ${rank}: wearer's left turned 90 deg counter-clockwise`);
+      const bars = BARS.has(rank);
+      assert.equal(right.rotate, bars ? 0 : 90, `${f.name} ${rank}: wearer's right ${bars ? 'upright, the bars along the seam' : 'turned 90 deg clockwise (bottom toward the seam)'}`);
+      assert.equal(left.rotate, bars ? 0 : -90, `${f.name} ${rank}: wearer's left ${bars ? 'upright' : 'turned 90 deg counter-clockwise'}`);
       assert.ok(Math.abs(right.w - spec.w) < 1e-6 && Math.abs(right.h - spec.h) < 1e-6, `${f.name} ${rank}: not scaled`);
-      // Turned, the piece's width along the shoulder is its height; the wearer's right shoulder is the left of the
-      // picture, its seam side the zone's left edge: that is the piece's bottom edge.
-      const rightSeamEdge = right.x + right.w / 2 - right.h / 2, leftSeamEdge = left.x + left.w / 2 + left.h / 2;
-      assert.ok(Math.abs(rightSeamEdge - zr.x) < EPS, `${f.name} ${rank}: right grade bottom edge ${rightSeamEdge.toFixed(3)} on the zone's seam edge ${zr.x.toFixed(3)}`);
-      assert.ok(Math.abs(leftSeamEdge - (zl.x + zl.w)) < EPS, `${f.name} ${rank}: left grade bottom edge on the zone's seam edge`);
-      // Centred in the zone's height; a piece taller than the zone once turned (the colonel's 1.59 in eagle against
-      // 1.25 in) hangs from the zone's top instead of overflowing both ends onto the shoulder outline (FIX-R-OTHER-r2 #9).
-      const turnedH = spec.w, zoneH = Math.max(zr.h, turnedH);
+      // The width along the shoulder is the piece's width when upright and its height when turned; the wearer's right
+      // shoulder is the left of the picture, its seam side the zone's left edge: that is the piece's outer edge.
+      const alongR = bars ? right.w : right.h, alongL = bars ? left.w : left.h;
+      const rightSeamEdge = right.x + right.w / 2 - alongR / 2, leftSeamEdge = left.x + left.w / 2 + alongL / 2;
+      assert.ok(Math.abs(rightSeamEdge - zr.x) < EPS, `${f.name} ${rank}: right grade outer edge ${rightSeamEdge.toFixed(3)} on the zone's seam edge ${zr.x.toFixed(3)}`);
+      assert.ok(Math.abs(leftSeamEdge - (zl.x + zl.w)) < EPS, `${f.name} ${rank}: left grade outer edge on the zone's seam edge`);
+      // Centred in the zone's height; a piece taller than the zone (the colonel's turned 1.59 in eagle against 1.25 in)
+      // hangs from the zone's top instead of overflowing both ends onto the shoulder outline (FIX-R-OTHER-r2 #9).
+      const highH = bars ? spec.h : spec.w, zoneH = Math.max(zr.h, highH);
       assert.ok(Math.abs((right.y + right.h / 2) - (zr.y + zoneH / 2)) < EPS && Math.abs((left.y + left.h / 2) - (zl.y + zoneH / 2)) < EPS, `${f.name} ${rank}: centred in the zone's height, or hung from its top when taller`);
-      assert.ok(rightSeamEdge + right.h <= zr.x + zr.w + EPS, `${f.name} ${rank}: inside the zone along the shoulder`);
+      assert.ok(rightSeamEdge + alongR <= zr.x + zr.w + EPS, `${f.name} ${rank}: inside the zone along the shoulder`);
+      // The bars fit the zone, which the art sized for them upright.
+      if(bars) assert.ok(right.h <= zr.h + EPS && right.w <= zr.w + EPS, `${f.name} ${rank}: the upright bars (${right.w.toFixed(2)} x ${right.h.toFixed(2)} in) lie inside the ${zr.w.toFixed(2)} x ${zr.h.toFixed(2)} in zone`);
       // The colonel's eagle faces the wearer's front on both shoulders: mirrored on the right only.
       assert.equal(!!right.flipX, rank === 'Col', `${f.name} ${rank}: eagle mirrored on the wearer's right`);
       assert.ok(!left.flipX, `${f.name} ${rank}: not mirrored on the left`);
@@ -90,15 +98,38 @@ test('officer grade: turned a quarter turn, bottom edge on the half inch line fr
   }
 });
 
-test('flight officers (FO, TFO, SFO) wear the same shoulder grade placement', async () => {
+test('flight officers (FO, TFO, SFO) wear the same shoulder grade placement as the other bars', async () => {
   for(const rank of ['FO', 'TFO', 'SFO']){
     const scene = await P.composeUniform(build('flight_suit', 'senior', rank), store());
     const grades = onFigure(scene, FIGURES[0], l => l.role === 'grade');
     assert.equal(grades.length, 2, rank);
     const zr = await zoneOf(scene, FIGURES[0].garment, 'grade_zone_right');
     const r = grades.find(l => l.key === 'grade:right');
-    assert.equal(r.rotate, 90, rank);
-    assert.ok(Math.abs(r.x + r.w / 2 - r.h / 2 - zr.x) < EPS, rank);
+    assert.equal(r.rotate, 0, rank);
+    assert.ok(Math.abs(r.x - zr.x) < EPS, rank);
+  }
+});
+
+// The bars on the flight shoulder lie as they do on the Class B epaulet seen from above: their long axis (the art's height)
+// perpendicular to the strap, i.e. parallel to the armhole seam (R7, R8, FIX-R-OTHER-r4 item 10; 8.2.3.2, 4.2.5.1.1.1).
+test('flight shoulder bars match the epaulet\'s top view: the long axis of the bars is across the strap, along the seam', async () => {
+  const axisOf = l => { const r = (l.rotate || 0) * Math.PI / 180; return { x: -Math.sin(r), y: Math.cos(r) }; };   // the art's height direction
+  const cb = await P.composeUniform(build('blues_b', 'senior', 'Capt'), store());
+  // The Class B captain's bars are placed by gradeOnStrap (the edge-on strip) with the same quarter turn the epaulet's top view art carries;
+  // the strip's strap axis is the top view's long side.
+  const top = cb.layers.find(l => l.key === 'grade:edge-right'), view = cb.layers.find(l => l.key === 'epaulet-top:right');
+  assert.ok(top && view, 'the Class B captain has the epaulet view and the grade on the strip');
+  const vr = (view.rotate || 0) * Math.PI / 180, strap = { x: -Math.sin(vr), y: Math.cos(vr) };     // the view's long side
+  const a = axisOf(top);
+  assert.ok(Math.abs(a.x * strap.x + a.y * strap.y) < 0.45, `Class B top view: the bars' long axis is across the strap (dot ${(a.x * strap.x + a.y * strap.y).toFixed(2)})`);
+  for(const f of FIGURES){
+    const scene = await P.composeUniform(build(f.uniform, 'senior', 'Capt'), store());
+    for(const l of onFigure(scene, f, l => l.role === 'grade')){
+      const ax = axisOf(l);
+      // The shoulder line (the strap) runs along the picture's x axis here; the bars' long axis is the picture's y axis, the seam's direction.
+      assert.ok(Math.abs(ax.x) < 1e-6 && Math.abs(ax.y) > 0.999, `${f.name} ${l.key}: the bars stand along the seam (${ax.x.toFixed(2)}, ${ax.y.toFixed(2)})`);
+      assert.ok(l.h > l.w, `${f.name} ${l.key}: the long side of the bars is vertical`);
+    }
   }
 });
 
