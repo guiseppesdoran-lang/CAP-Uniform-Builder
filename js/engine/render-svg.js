@@ -238,6 +238,22 @@
         g.appendChild(node);
         node = g;
       }
+      if(layer.clipOut && layer.clipOut.length){
+        // Everything except the polygons in scene inches (a collar leaf lying over a badge pinned under it):
+        // one clip path of a rectangle larger than the scene and the polygons, filled even-odd.
+        const d = 'M-1000 -1000H2000V2000H-1000Z ' + layer.clipOut.map(poly => 'M' + poly.map(p => fmt(p.x) + ' ' + fmt(p.y)).join('L') + 'Z').join(' ');
+        let cid = clipIds.get('out:' + d);
+        if(!cid){
+          cid = 'clip-' + clipIds.size;
+          const cp = el('clipPath', { id: cid, clipPathUnits: 'userSpaceOnUse' });
+          cp.appendChild(el('path', { d, 'clip-rule': 'evenodd' }));
+          defs.appendChild(cp);
+          clipIds.set('out:' + d, cid);
+        }
+        const g = el('g', { 'clip-path': `url(#${cid})` });
+        g.appendChild(node);
+        node = g;
+      }
       if(layer.clipSil){
         // Clipped to the garment sheet's own silhouette (its `clipSil` path, in the sheet's art frame): a
         // copy of the path carried into the scene by the same transform the sheet's symbol is drawn with.

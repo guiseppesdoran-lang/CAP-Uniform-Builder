@@ -363,6 +363,35 @@
     }
   }
 
+  // The polygon grown outward by `d` inches (a mitred offset), so the leaf's own edge stroke, half of which lies
+  // outside the polygon, stays uncovered.
+  function growPolygon(pts, d){
+    const n = pts.length;
+    let area = 0;
+    for(let i = 0; i < n; i++){ const p = pts[i], q = pts[(i + 1) % n]; area += p.x * q.y - q.x * p.y; }
+    const sgn = area > 0 ? 1 : -1;
+    const norm = (p, q) => { const dx = q.x - p.x, dy = q.y - p.y, len = Math.hypot(dx, dy) || 1; return { x: sgn * dy / len, y: -sgn * dx / len }; };
+    return pts.map((p, i) => {
+      const a = norm(pts[(i + n - 1) % n], p), b = norm(p, pts[(i + 1) % n]);
+      const k = Math.max(0.35, 1 + a.x * b.x + a.y * b.y);
+      return { x: p.x + (a.x + b.x) / k * d, y: p.y + (a.y + b.y) / k * d };
+    });
+  }
+
+  // The shirts' collar leaves lie over a badge, ribbon or device that reaches them: a badge pinned on the shirt
+  // is under the collar there (4.1.11.1.1.2.3.1, 4.1.12.2.5.1: the second badge 1/2 in above the first, 'under the
+  // collar'). The layer is drawn without the leaf polygons (clipOut), the leaf edge's stroke width included.
+  const COLLAR_EDGE_GROW = 0.025;
+  function tuckUnderCollar(ctx){
+    const polys = H.collarPolygons(ctx).map(l => growPolygon(l.points, COLLAR_EDGE_GROW));
+    if(!polys.length) return;
+    for(const l of ctx.layers){
+      if(!['badge', 'ribbon', 'device'].includes(l.role) || (l.rotate || 0) || (l.type !== 'asset' && l.type !== 'raster')) continue;
+      const hit = polys.filter(p => boxTouchesPolygon(l, p));
+      if(hit.length) l.clipOut = hit;
+    }
+  }
+
   // The lapels drawn again over the badges and ribbons they cover (the collar lies on top of them),
   // with the lapel insignia above that.
   async function lapelForeground(ctx, A, g){
@@ -895,6 +924,7 @@
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
     }
     await dressBadges(ctx, b, geo);
+    tuckUnderCollar(ctx);
     await shoulderCord(ctx, b, strapAxis(ctx, 'left'));
     await blueHat(ctx, b);
   }
@@ -1152,6 +1182,7 @@
       b = Object.assign({}, b, { command: null });
     }
     await dressBadges(ctx, b, geo);
+    tuckUnderCollar(ctx);
     // The long-sleeve shirt is worn with a tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3).
     if(long && !V.overblouse){
       const tie = `${garment}-${female ? 'tie-tab' : 'tie'}`;

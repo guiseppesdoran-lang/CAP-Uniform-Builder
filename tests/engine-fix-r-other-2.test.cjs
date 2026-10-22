@@ -75,3 +75,34 @@ test('Class A and cadet semi-formal: no badge lies under a higher-z lapel foregr
   }
   assert.ok(touched >= 3, 'the cases include badges that reach the lapel (' + touched + ')');
 });
+
+// ---- 2. Class B and aviator shirts: the collar lies over a badge that reaches it -------------------------------
+
+const THREE = [PILOT, GT, 'emergency_services_badge'];
+test('Class B: a badge that reaches a collar leaf is drawn without the leaf, so the collar covers it (4.1.11.1.1.2.3.1, 4.1.12.2.5.1)', async () => {
+  let clipped = 0;
+  for(const sex of ['male', 'female']){
+    for(const sleeve of ['short', 'long']){
+      for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'Col']]){
+        const scene = await compose(build('blues_b', sex, membership, rank, THREE, { ribbons: RACK, opt: { headgear: 'auto', sleeve } }));
+        const base = scene.layers.find(l => l.key === 'base:jacket');
+        const spec = await store.load(base.id);
+        const polys = ['collar_left', 'collar_right'].map(n => spec.landmarks[n].points);
+        for(const l of scene.layers.filter(x => x.role === 'badge')){
+          const over = polys.filter(p => share(box(l), p) > 0.0004);
+          if(!over.length) continue;
+          clipped++;
+          assert.ok(l.clipOut && l.clipOut.length, `${sex} ${sleeve} ${rank}: ${l.key} reaches a collar leaf (${over.length}) so it is drawn without it`);
+          // every polygon it reaches is subtracted, whole (grown a little to keep the leaf's edge stroke)
+          for(const p of over) assert.ok(l.clipOut.some(c => p.every(v => inside(v, c) || c.some(w => Math.hypot(w.x - v.x, w.y - v.y) < 0.15))), `${sex} ${sleeve} ${rank}: the clip-out contains the leaf polygon`);
+        }
+      }
+    }
+  }
+  assert.ok(clipped >= 2, 'the builds include a badge that reaches the collar (' + clipped + ')');
+});
+
+test('a badge clear of the collar is not clipped', async () => {
+  const scene = await compose(build('blues_b', 'male', 'senior', 'Capt', [PILOT], { ribbons: [] }));
+  for(const l of scene.layers.filter(x => x.role === 'badge')) assert.ok(!l.clipOut, `${l.key} is clear of the collar`);
+});
