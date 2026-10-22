@@ -149,6 +149,28 @@ test('no cord is drawn on the cadet semi-formal, the aviator shirt or a field un
   }
 });
 
+// ---- headgear notice ----------------------------------------------------------------------------------
+
+test('Class A and Class B: "No headgear" is drawn bare and says headgear is mandatory (4.1.6.7, 4.1.9.12, 4.1.11.1.1.7, 4.1.12.9)', async () => {
+  const want = { 'blues_a:male': '4.1.6.7', 'blues_a:female': '4.1.9.12', 'blues_b:male': '4.1.11.1.1.7', 'blues_b:female': '4.1.12.9' };
+  for(const [key, para] of Object.entries(want)){
+    const [uniform, sex] = key.split(':');
+    const none = await compose(build(uniform, sex, 'senior', 'Capt', [], { opt: { headgear: 'none' } }));
+    assert.ok(!none.layers.some(l => l.role === 'hat'), `${key}: no cap drawn`);
+    assert.ok(none.notes.some(n => /Headgear is mandatory/.test(n) && n.includes(para)), `${key}: note cites ${para}`);
+    const worn = await compose(build(uniform, sex, 'senior', 'Capt', [], { opt: { headgear: 'auto' } }));
+    assert.ok(worn.layers.some(l => l.role === 'hat'), `${key}: cap drawn`);
+    assert.ok(!worn.notes.some(n => /Headgear is mandatory/.test(n)), `${key}: no note with a cap`);
+  }
+});
+
+test('headgear is not required with the aviator shirt, the blazer or the mess dress: no notice (4.2.5.1.8, 4.2.3.7, 4.1.1.5)', async () => {
+  for(const uniform of ['aviator', 'aviator_blazer', 'mess_dress']){
+    const scene = await compose(build(uniform, 'male', 'senior', 'Capt', [], { opt: { headgear: 'none' } }));
+    assert.ok(!scene.notes.some(n => /Headgear is mandatory/.test(n)), uniform);
+  }
+});
+
 // ---- service badge next to the collar ------------------------------------------------------------------------
 
 test('women\'s Class A: the Volunteer University badge, a CAP service badge, is worn closest to the lapel (10.2.4)', async () => {

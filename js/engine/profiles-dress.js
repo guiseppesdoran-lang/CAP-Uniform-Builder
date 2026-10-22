@@ -572,9 +572,19 @@
     return box;
   }
 
+  // Headgear is mandatory with the Class A and Class B (the paragraph says so for each cut); a member
+  // who picks 'No headgear' is shown bare and told why that is not how the uniform is worn.
+  const HEADGEAR_MANDATORY = {
+    blues_a: { male: '4.1.6.7', female: '4.1.9.12' },
+    blues_b: { male: '4.1.11.1.1.7', female: '4.1.12.9' }
+  };
   async function blueHat(ctx, b){
     const h = H.chooseHat(b);
     if(h) await H.hat(ctx, h.hat, h.device);
+    else if(b.opt.headgear === 'none'){
+      const para = HEADGEAR_MANDATORY[b.uniform] && HEADGEAR_MANDATORY[b.uniform][b.gender === 'female' ? 'female' : 'male'];
+      if(para) ctx.note(`Headgear is mandatory with this uniform; it is shown without a cap here (CAPR 39-1, ${para})`);
+    }
   }
 
   // ---- USAF-style Class A service dress (4.1.5, 4.1.9) and cadet semi-formal (4.1.3.2, 4.1.4) --------
