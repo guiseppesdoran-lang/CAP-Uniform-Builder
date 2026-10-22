@@ -56,12 +56,16 @@
       // A point on the garment: anchor names are looked up on the base, then on the overlays.
       point(name){
         const specs = [ctx.base, ...(ctx.overlays || [])];
-        for(const s of specs){ const a = s && core.anchor(s, name); if(a) return { x: a.x, y: a.y }; }
+        const sh = ctx.landmarkShift && ctx.landmarkShift[name];
+        for(const s of specs){ const a = s && core.anchor(s, name); if(a) return { x: a.x + (sh ? sh.dx : 0), y: a.y + (sh ? sh.dy : 0) }; }
         return null;
       },
+      // `landmarkShift` {name: {dx, dy}}: a landmark of a view the profile has moved on the scene (the cap views
+      // seated on the figure or lifted out of the way, profiles-field.js) is read where the view now is.
       rect(name){
         const specs = [ctx.base, ...(ctx.overlays || [])];
-        for(const s of specs){ const r = s && core.landmarkBounds(s, name); if(r) return r; }
+        const sh = ctx.landmarkShift && ctx.landmarkShift[name];
+        for(const s of specs){ const r = s && core.landmarkBounds(s, name); if(r) return sh ? { x: r.x + sh.dx, y: r.y + sh.dy, w: r.w, h: r.h } : r; }
         return null;
       },
       landmark(name){

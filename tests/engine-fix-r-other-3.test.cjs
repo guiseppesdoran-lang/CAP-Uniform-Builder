@@ -203,3 +203,59 @@ test('ABU and CFU: no officer grade cloth corner lies outside the collar leaf, e
     }
   }
 });
+
+// ---- 7. Utility uniforms: the patrol cap is seated on the figure (R6) ----------------------------------------
+
+const UTILITY = { ocp: 'garment-ocp-coat-abu-cut', abu: 'garment-abu-coat', corporate_field: 'garment-cfu-coat' };
+const boxOverlap = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+
+test('OCP, ABU and CFU: the patrol cap (ABU cap, OCP patrol cap, Blue Field Cap) is seated on the collar, centred on the figure, nothing lies over it (R6; 5.1.1.6, 6.2.9.1, 7.1.1.8)', async () => {
+  for(const uniform of Object.keys(UTILITY)) for(const sex of ['male', 'female']) for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'SMSgt'], ['cadet', 'C/Maj'], ['cadet', 'C/SSgt']]){
+    const scene = await compose(build(uniform, sex, membership, rank));
+    const spec = await store.load(UTILITY[uniform]);
+    const hat = scene.layers.find(l => l.role === 'hat');
+    assert.ok(hat, `${uniform} ${sex} ${rank}: a hat layer on the figure`);
+    assert.deepEqual(hat.onlyGroups, ['hat-patrol-front']);
+    const top = core.anchor(spec, 'top_center'), apex = core.anchor(spec, 'collar_apex');
+    const lm = core.landmarkBounds(spec, 'patrol_cap_front');
+    // The cap's bottom centre is on the collar's back top (5.635 in above the V's apex) lowered by the 1/4 in seat.
+    const bottomCenter = { x: lm.x + lm.w / 2 + hat.x, y: lm.y + lm.h + hat.y };
+    assert.ok(Math.abs(bottomCenter.x - top.x) < 0.005, `${uniform} ${sex} ${rank}: centred on the figure (${bottomCenter.x} vs ${top.x})`);
+    assert.ok(Math.abs(bottomCenter.y - (apex.y - 5.635 + 0.25)) < 0.005, `${uniform} ${sex} ${rank}: seated on the collar (${bottomCenter.y.toFixed(3)})`);
+    // The hat is the patrol cap's own box, on top of the garment, and the other views do not touch it.
+    const hbox = { x: lm.x + hat.x, y: lm.y + hat.y, w: lm.w, h: lm.h };
+    for(const v of scene.layers.filter(l => l.role === 'hat-view')){
+      const vl = core.landmarkBounds(spec, { 'hat-patrol-back': 'patrol_cap_back', 'hat-ball-front': 'baseball_cap_front', 'hat-ball-back': 'baseball_cap_back', 'hat-boonie-front': 'boonie_hat_front', 'hat-boonie-back': 'boonie_hat_back' }[v.onlyGroups[0]]);
+      assert.ok(!boxOverlap({ x: vl.x + v.x, y: vl.y + v.y, w: vl.w, h: vl.h }, hbox), `${uniform} ${sex} ${rank}: ${v.onlyGroups[0]} is clear of the seated cap`);
+    }
+    const base = scene.layers.find(l => l.key === 'base:jacket');
+    assert.ok(hat.z > base.z && base.hideGroups.includes('hat-patrol-front'), `${uniform}: the sheet's own patrol cap view is hidden, the cap is drawn over the garment`);
+    // Officers' grade is on the seated cap's front, over it, where the view now is.
+    const grade = scene.layers.find(l => l.key === 'grade:patrol_cap_front_insignia_zone');
+    if((membership === 'senior' && rank === 'Capt') || rank === 'C/Maj'){
+      assert.ok(grade, `${uniform} ${sex} ${rank}: grade on the cap`);
+      assert.ok(grade.z > hat.z && grade.x >= hbox.x && grade.x + grade.w <= hbox.x + hbox.w && grade.y >= hbox.y && grade.y + grade.h <= hbox.y + hbox.h, `${uniform} ${sex} ${rank}: the grade lies on the seated cap`);
+    }
+  }
+});
+
+test('OCP, ABU and CFU: the accessory cap views are kept, in rows above the seated cap, with their name tape text and grade where they now are; headgear none leaves the sheet as drawn', async () => {
+  for(const uniform of Object.keys(UTILITY)){
+    const scene = await compose(build(uniform, 'male', 'senior', 'Capt'));
+    const spec = await store.load(UTILITY[uniform]);
+    const views = scene.layers.filter(l => l.role === 'hat-view');
+    assert.ok(views.length >= 3, `${uniform}: accessory views kept (${views.length})`);
+    assert.ok(views.every(v => v.y < 0 || v.y === 0), `${uniform}: lifted, never lowered`);
+    // The last name on a cap back tape lies on the tape where the view now is.
+    for(const [lmName, group] of [['baseball_cap_back_name_tape', 'hat-ball-back'], ['patrol_cap_back_name_tape', 'hat-patrol-back']]){
+      const tape = core.landmarkBounds(spec, lmName);
+      if(!tape) continue;
+      const v = views.find(x => x.onlyGroups[0] === group);
+      const t = scene.layers.find(l => l.key === 'text:' + lmName);
+      assert.ok(v && t, `${uniform} ${lmName}: view and name text`);
+      assert.ok(Math.abs(t.x - (tape.x + tape.w / 2 + v.x)) < 0.05 && Math.abs(t.y - (tape.y + tape.h / 2 + v.y)) < 0.1, `${uniform} ${lmName}: the name is on the tape where its view is`);
+    }
+    const none = await compose(build(uniform, 'male', 'senior', 'Capt', [], { opt: { headgear: 'none' } }));
+    assert.ok(!none.layers.some(l => l.role === 'hat' || l.role === 'hat-view'), `${uniform}: no hat layers with headgear none`);
+  }
+});

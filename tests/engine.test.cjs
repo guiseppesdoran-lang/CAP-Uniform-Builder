@@ -202,7 +202,8 @@ test('grade rules: mess dress needs a grade, men\'s Class B chevrons are 3 1/2 i
   const women = await P.composeUniform(build('blues_b', 'senior', 'MSgt', { gender: 'female', opt: { chevron: '4', sleeve: 'long' } }), store());
   assert.ok(women.layers.filter(l => l.role === 'grade').every(l => /-4in/.test(l.id)));
   const cab = await P.composeUniform(build('ocp', 'cadet', 'C/AB'), store());
-  assert.deepEqual(cab.layers.find(l => l.role === 'garment').hideGroups, ['rank-square']);
+  // The OCP also hides the cap views it moves (R6, FIX-R-OTHER-r1 round 3): C/AB's sheet loses the rank square.
+  assert.ok(cab.layers.find(l => l.role === 'garment').hideGroups.includes('rank-square'));
 });
 
 test('an appointed Command Chief wears the Command Chief chevron on every uniform (ICL 25-02)', async () => {
