@@ -52,8 +52,8 @@
    395.65
   ],
   "sleeve_braid_right_center": [
-   224.97,
-   1890.63
+   256.57,
+   2553.37
   ],
   "epaulet_sleeve_left_center": [
    1877.93,
@@ -72,8 +72,8 @@
    395.65
   ],
   "sleeve_braid_left_center": [
-   2211.39,
-   2056.52
+   2183.24,
+   2553.41
   ]
  },
  "landmarks": {
@@ -108,10 +108,10 @@
    "h": 60.02
   },
   "sleeve_braid_right": {
-   "x": 22,
-   "y": 1865.16,
-   "w": 405.94,
-   "h": 50.95
+   "x": 69.26,
+   "y": 2519.53,
+   "w": 374.62,
+   "h": 67.67
   },
   "epaulet_left": {
    "x": 1651.23,
@@ -144,10 +144,10 @@
    "h": 60.02
   },
   "sleeve_braid_left": {
-   "x": 2015.55,
-   "y": 2022.86,
-   "w": 391.69,
-   "h": 67.32
+   "x": 1994.96,
+   "y": 2518.74,
+   "w": 376.55,
+   "h": 69.34
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left of the artwork box",
