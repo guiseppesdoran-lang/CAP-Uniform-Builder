@@ -78,3 +78,79 @@ test('mess dress: every edge-on grade is 0.25-0.32 in across the 0.4 in strip, e
     }
   }
 });
+
+// ---- 3. Semi-formal blazer: the lapel does not cover a miniature medal ----------------------------------------
+
+const RA = require('../data/ribbon-awards.js');
+const C = require('../js/engine/compose.js');
+function minisOf(ids){
+  return ids.flatMap(id => RA.resolve(id, id === 'cap_achievment_award' ? { capub_total_3: true } : {}).map(r => ({ key: 'mini:' + id, title: id, ribbonAsset: 'ribbon-' + id.replace(/_/g, '-'), medal: 'medal-' + id.replace(/_/g, '-') + '-miniature', devices: r.devices })));
+}
+const TWELVE = ['distinguished_service_award', 'exceptional_service_award', 'meritorious_service_award', 'commander_commendation_award', 'cap_achievment_award', 'search_find_ribbon', 'air_search_and_rescue_ribbon', 'cap_gill_robb_wilson_ribbon', 'cap_command_service_ribbon', 'cap_leadership_ribbon', 'cap_membership_ribbon', 'red_service_ribbon'];
+
+// The wearer's left lapel read straight from the sheet's lapel-foreground group (art frame translate + path points).
+function lapelFromSheet(sex){
+  const svg = fs.readFileSync(path.join(root, 'images', 'garments', `garment-corporate-service-dress-blazer-${sex}.svg`), 'utf8');
+  const tr = /<g id="[^"]*__art" transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(100\)"/.exec(svg);
+  const d = new RegExp(`id="[^"]*lapel-left" d="([^"]*)"`).exec(svg)[1];
+  const pts = [...d.matchAll(/[ML](-?[\d.]+),(-?[\d.]+)/g)].map(m => ({ x: +m[1] + tr[1] / 100, y: +m[2] + tr[2] / 100 }));
+  return pts;
+}
+function boxOf(l){
+  // The layer's box turned about its origin (devices are turned 90 deg).
+  const cx = l.x + l.w / 2, cy = l.y + l.h / 2, t = rad(l.rotate || 0);
+  const ox = l.origin ? l.origin.x : cx, oy = l.origin ? l.origin.y : cy;
+  const pts = [[l.x, l.y], [l.x + l.w, l.y], [l.x + l.w, l.y + l.h], [l.x, l.y + l.h]].map(([x, y]) => ({ x: ox + (x - ox) * Math.cos(t) - (y - oy) * Math.sin(t), y: oy + (x - ox) * Math.sin(t) + (y - oy) * Math.cos(t) }));
+  const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+  return { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
+}
+
+test('semi-formal blazer: no miniature drape, medal or device touches the lapel, and the lowest row stays 1/2 in over the crest (11.2.8, 4.2.1.4, 4.2.2.4)', async () => {
+  for(const sex of ['male', 'female']){
+    const lapel = lapelFromSheet(sex);
+    assert.ok(lapel.length > 10, `${sex}: lapel polygon read from the sheet`);
+    const crestTop = core.anchor(await store.load(`garment-corporate-service-dress-blazer-${sex}`), 'crest_top_center').y;
+    for(const n of [1, 4, 5, 9, 12]){
+      const scene = await compose(build('semi_formal', sex, 'senior', 'Col', [], { medals: minisOf(TWELVE.slice(0, n)) }));
+      const minis = scene.layers.filter(l => /^mini-/.test(l.role) || (l.role === 'device' && /:device:/.test(l.key)));
+      assert.ok(minis.length >= n, `${sex} ${n}: minis drawn`);
+      for(const l of minis) assert.ok(!C.rectHitsPolygon(boxOf(l), lapel), `${sex} ${n}: ${l.key} (${l.role}) clear of the lapel`);
+      assert.ok(!scene.notes.some(x => /no room to move them clear/.test(x)), `${sex} ${n}: room to clear the lapel`);
+      const bodies = scene.layers.filter(l => l.role === 'mini-medal');
+      const lowest = Math.max(...bodies.map(l => l.y + l.h));
+      assert.ok(Math.abs(lowest - (crestTop - 0.5)) < 0.01, `${sex} ${n}: lowest medals end 1/2 in above the crest (${lowest.toFixed(3)} vs ${(crestTop - 0.5).toFixed(3)})`);
+    }
+  }
+});
+
+test('semi-formal blazer: the lapel group is drawn under every miniature layer and under the chaplain badge', async () => {
+  for(const sex of ['male', 'female']){
+    const scene = await compose(build('semi_formal', sex, 'senior', 'Col', ['christian_chaplin'], { medals: minisOf(TWELVE) }));
+    const fg = scene.layers.find(l => l.role === 'garment-foreground' && l.onlyGroups && l.onlyGroups.includes('lapel-foreground'));
+    assert.ok(fg);
+    for(const l of scene.layers.filter(l => /^mini-/.test(l.role) || l.role === 'device' || l.role === 'badge')) assert.ok(l.z > fg.z, `${sex}: ${l.key} over the lapel group`);
+  }
+});
+
+// ---- 4. Corporate service dress (women): the nametag lies on the coat front, not on the lapel --------------------
+
+function lapelRightFromSheet(sex){
+  const svg = fs.readFileSync(path.join(root, 'images', 'garments', `garment-corporate-service-dress-blazer-${sex}.svg`), 'utf8');
+  const tr = /<g id="[^"]*__art" transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(100\)"/.exec(svg);
+  const d = /id="[^"]*lapel-right" d="([^"]*)"/.exec(svg)[1];
+  return [...d.matchAll(/[ML](-?[\d.]+),(-?[\d.]+)/g)].map(m => ({ x: +m[1] + tr[1] / 100, y: +m[2] + tr[2] / 100 }));
+}
+
+test('corporate service dress: the nametag clears the wearer\'s right lapel by 0.1 in, top edge at the slot, men and women (4.2.3.1.1.2, 4.2.4.1.1.2)', async () => {
+  for(const sex of ['male', 'female']) for(const rank of ['SMSgt', 'Capt', 'Col']){
+    const lapel = lapelRightFromSheet(sex);
+    const spec = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
+    const slot = core.landmarkBounds(spec, 'nameplate_slot');
+    const scene = await compose(build('aviator_blazer', sex, 'senior', rank, ['CAPPilot1_FA9D33EA587D8']));
+    const plate = scene.layers.find(l => l.key === 'nametag' && !l.figure);
+    assert.ok(plate, `${sex} ${rank}: nametag drawn`);
+    const r = { x: plate.x - 0.1, y: plate.y, w: plate.w + 0.2, h: plate.h };
+    assert.ok(!C.rectHitsPolygon(r, lapel), `${sex} ${rank}: the plate (x ${plate.x.toFixed(3)}-${(plate.x + plate.w).toFixed(3)}) is 0.1 in clear of the lapel`);
+    assert.ok(Math.abs(plate.y - slot.y) < 0.01, `${sex} ${rank}: the top edge stays at the slot top (${plate.y} vs ${slot.y})`);
+  }
+});

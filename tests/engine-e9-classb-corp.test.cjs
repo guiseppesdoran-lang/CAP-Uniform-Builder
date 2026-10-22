@@ -169,7 +169,10 @@ test('women\'s blazer: the nametag top edge is at the sheet\'s nameplate_slot he
     const plate = scene.layers.find(l => l.role === 'nametag' && l.key === 'nametag');
     const label = badges.join('+') || 'crest';
     near(plate.y, slot.y, 0.005, `${label}: nametag top at the slot top`);
-    near(cx(plate), spec.w - (slot.x + slot.w / 2), 0.005, `${label}: nametag centred straight across the slot, on the wearer's right`);
+    // FIX-R-OTHER-r1 review round 3 (D8): the tag's inner end lay 0.1 in over the wearer's right lapel, so it moves
+    // outward (toward the arm) by the least that clears the lapel by 0.1 in, 0.3 in at most.
+    const across = spec.w - (slot.x + slot.w / 2);
+    assert.ok(cx(plate) <= across + 0.005 && cx(plate) >= across - 0.3, `${label}: nametag straight across the slot on the wearer's right, moved at most 0.3 in outward off the lapel (${cx(plate).toFixed(3)} vs ${across.toFixed(3)})`);
     assert.ok(cx(plate) < spec.w / 2, `${label}: the nametag is on the wearer's right (the viewer's left)`);
     assert.ok(plate.x + plate.w < crest.x - 0.5, `${label}: nothing of the nametag lies over the left breast pocket or the crest`);
     // The crest, or the badge in its place, stays centred on crest_center and clear of the plate.

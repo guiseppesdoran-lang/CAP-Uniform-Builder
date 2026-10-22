@@ -1219,6 +1219,19 @@
     female: { garment: 'garment-corporate-service-dress-blazer-female', plate: null, underlayer: { turtleneck: 'garment-underlayer-turtleneck-female', shell: 'garment-underlayer-shell-female' }, cover: ['shirt', 'tie-tab'] }
   };
 
+  // The wearer's left lapel of each blazer sheet (the `lapel-left` path of its lapel-foreground group, in garment
+  // inches: the group's art frame translate + the path's points), used to keep the miniature medals clear of it. A
+  // sheet that states a `lapel_left` landmark polygon wins. FOLLOWUP (art): state lapel_left / lapel_right on the
+  // blazer sheets as the Class A coats do.
+  const BLAZER_LAPEL_LEFT = {
+    male: [[15.98, 1.07], [15.3, 0.95], [12.74, 15.03], [13.02, 17.07], [13.39, 16.4], [14.13, 15.06], [15.24, 13.05], [16.72, 10.37], [17.73, 8.32], [18.27, 6.9], [18.34, 6.11], [17.94, 5.94], [17.64, 5.82], [17.44, 5.73], [17.34, 5.69]],
+    female: [[9.56, 13.79], [9.99, 12.93], [10.23, 12.06], [10.46, 11.2], [10.68, 10.34], [10.89, 9.47], [11.07, 8.59], [11.22, 7.71], [11.35, 6.83], [11.47, 5.94], [11.56, 5.05], [11.65, 4.17], [11.7, 3.27], [11.71, 2.38], [11.64, 1.49], [11.56, 0.9], [11.54, 0.49], [11.88, 0.96], [12.55, 1.9], [13.18, 2.8], [13.78, 3.64], [14.19, 4.51], [14.41, 5.4], [14.11, 6.68], [13.29, 8.34], [12.45, 9.93], [11.58, 11.45], [10.71, 12.82], [9.84, 14.06], [9.41, 14.69]]
+  };
+  function blazerLapel(ctx, female){
+    const l = ctx.landmark('lapel_left');
+    return l && l.points && l.points.length > 2 ? l.points : BLAZER_LAPEL_LEFT[female ? 'female' : 'male'];
+  }
+
   async function composeBlazer(ctx, b){
     const semi = b.uniform === 'semi_formal';
     const g = b.grade;
@@ -1277,6 +1290,17 @@
           abovePlateFallback = true;
         }
       }
+      // The tag lies on the coat front, not on the lapel: its inner end (the top right corner, where the lapel
+      // edge runs under the slot) clears the wearer's right lapel by 0.1 in. The lapel polygon is the wearer's
+      // left lapel mirrored about the blazer's centre line; the tag keeps its top edge and moves outward (4.2.4.1.1.2).
+      if(female && plateAt){
+        const lapelR = blazerLapel(ctx, true).map(q => Array.isArray(q) ? { x: ctx.base.w - q[0], y: q[1] } : { x: ctx.base.w - q.x, y: q.y });
+        const GAP = 0.1;
+        let moved = 0;
+        const hits = d => C.rectHitsPolygon({ x: plateAt.x - ps.w / 2 - GAP - d, y: plateAt.y - ps.h / 2, w: ps.w + 2 * GAP, h: ps.h }, lapelR);
+        while(moved < 1 && hits(moved)) moved += 0.01;
+        plateAt = { x: plateAt.x - moved, y: plateAt.y };
+      }
       const plate = await ctx.place(plateId, { pieceAnchor: 'center', at: plateAt, z: Z.tape, role: 'nametag', key: 'nametag' });
       if(abovePlateFallback) ctx.measure({ x: plate.x + plate.w / 2, y: plate.y + plate.h }, { x: plate.x + plate.w / 2, y: plate.y + plate.h + 0.5 });
       if(b.name.show){
@@ -1308,17 +1332,19 @@
     const ms = ctx.rect('medal_slot');
     const crestTop = crestLayer ? crestLayer.y : (ctx.point('crest_top_center') || { y: ms.y + ms.h + 0.5 }).y;
     const medalX = ms.x + ms.w / 2;
-    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY: crestTop - 0.5 }, { style: b.opt.miniStyle });
-    if(box) ctx.measure({ x: medalX, y: crestTop }, { x: medalX, y: crestTop - 0.5 });
+    // The rack sits 1/2 in above the crest (4.2.1.4, 4.2.2.4) and the medal nearest the lapel is fully exposed
+    // (11.2.8): the lapel does not cover a miniature medal (11.1.8 lets only the service coat's lapel cover ribbons),
+    // so where the drawn lapel reaches the rack it slides toward the arm until its lapel-side column clears the
+    // lapel polygon (the lowest row keeps its line 1/2 in over the crest).
+    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY: crestTop - 0.5 }, { style: b.opt.miniStyle, avoid: [blazerLapel(ctx, female)], avoidDir: 1 });
+    if(box) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 });
     if(chaplain){
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
-      // The chaplain badge is pinned over the lapel (z above the lapel foreground): on the women's blazer
-      // the whole badge lies on the lapel's drawn area, and a badge the lapel hid would not be worn.
-      await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: ms.x + ms.w / 2, y }, z: Z.text + 2, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
+      await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: box ? box.x + box.w / 2 : ms.x + ms.w / 2, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
     }
-    // The blazer's lapel lies over the miniature medals where it reaches them, as the service coat's lapel
-    // lies over ribbons (11.1.8); the rack keeps the regulation centring above the pocket (4.2.1.4, 4.2.2.4).
-    ctx.foreground(['lapel-foreground'], Z.text + 1);
+    // The lapel (and the collar, over the bow tie) is drawn again above the garment layers but under every
+    // miniature medal, device and badge, so nothing worn on the chest is under it.
+    ctx.foreground(['lapel-foreground'], Z.garmentLayer + 0.5);
   }
 
   P.register('blues_a', { title: 'Service Dress (Class A)', compose: composeClassA });

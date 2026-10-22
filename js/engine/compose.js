@@ -310,6 +310,22 @@
   // Miniature suspension ribbon: 11/16 in wide (11.3), straight sides of about 1.39 in, then a V
   // point of about 0.15 in into the medal's ring (measured on the McChord miniatures).
   const MINI_DRAPE = { w: 0.6875, h: 1.54, point: 0.15 };
+  // True when the rectangle and the polygon (points {x, y}, or [x, y] pairs) share any area or edge.
+  function rectHitsPolygon(r, poly){
+    const pts = poly.map(q => Array.isArray(q) ? { x: q[0], y: q[1] } : q);
+    const inRect = q => q.x >= r.x && q.x <= r.x + r.w && q.y >= r.y && q.y <= r.y + r.h;
+    const inPoly = q => { let c = false; for(let i = 0, j = pts.length - 1; i < pts.length; j = i++){ const a = pts[i], b = pts[j]; if(((a.y > q.y) !== (b.y > q.y)) && (q.x < (b.x - a.x) * (q.y - a.y) / (b.y - a.y) + a.x)) c = !c; } return c; };
+    if(pts.some(inRect)) return true;
+    const corners = [{ x: r.x, y: r.y }, { x: r.x + r.w, y: r.y }, { x: r.x + r.w, y: r.y + r.h }, { x: r.x, y: r.y + r.h }];
+    if(corners.some(inPoly)) return true;
+    const cross = (a, b, c) => (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+    const seg = (a, b, c, d) => (cross(a, b, c) > 0) !== (cross(a, b, d) > 0) && (cross(c, d, a) > 0) !== (cross(c, d, b) > 0);
+    for(let i = 0; i < pts.length; i++){
+      const a = pts[i], b = pts[(i + 1) % pts.length];
+      for(let k = 0; k < 4; k++) if(seg(a, b, corners[k], corners[(k + 1) % 4])) return true;
+    }
+    return false;
+  }
   async function drawMiniMedals(ctx, medals, slot, opts){
     // Only medals are worn as miniatures (11.2.8, Table 11-1): an award with no CAP medal is a ribbon-only
     // award, so it gets no suspension drape; say so rather than hang a ribbon with nothing on it.
@@ -326,16 +342,17 @@
     // Row spacing uses the tallest body in the set; the group is then placed from the medals actually
     // drawn. How far each medal's body hangs below its drape comes from its own spec: the body's
     // height less the ribbon_attach anchor's depth.
-    const hang = new Map();
+    const hang = new Map(), reach = new Map();
     for(const m of medals){
-      let below = 0;
+      let below = 0, left = 0, right = MINI_DRAPE.w;
       if(!(m.ribbonAsset && ctx.has(m.ribbonAsset)) && m.raster) below = totalH - MINI_DRAPE.h;
       else if(m.medal && ctx.has(m.medal)){
         const s = await ctx.spec(m.medal);
         const attach = core.anchor(s, 'ribbon_attach') || { x: s.w / 2, y: 0 };
         below = s.h - attach.y;
+        left = Math.min(0, MINI_DRAPE.w / 2 - attach.x); right = Math.max(MINI_DRAPE.w, MINI_DRAPE.w / 2 - attach.x + s.w);
       }
-      hang.set(m, below);
+      hang.set(m, below); reach.set(m, { left, right });
     }
     const out = awards.layoutMiniMedals(medals, {
       style: o.style, medalW: MINI_DRAPE.w, medalH: totalH, drapeH: MINI_DRAPE.h,
@@ -350,6 +367,20 @@
     const drawnTop = Math.min(...out.placements.map(p => p.y));
     const shift = slot.centerY != null ? slot.centerY - (drawnTop + drawnBottom) / 2 : slot.bottomY - drawnBottom;
     for(const p of out.placements) p.y += shift;
+    // The rack never lies under a part of the garment that would cover it (the blazer's lapel, 11.2.8: the medal
+    // nearest the lapel is fully exposed): when `avoid` polygons are given, the whole rack slides toward
+    // `avoidDir` (+1 toward larger x) in 0.02 in steps until no drape or body touches one, at most `maxShift`
+    // (rows keep their alignment, the lowest row keeps its line).
+    let slide = 0;
+    if(o.avoid && o.avoid.length){
+      const dir = o.avoidDir < 0 ? -1 : 1, maxShift = o.maxShift != null ? o.maxShift : 2.5, gap = o.avoidGap != null ? o.avoidGap : 0.03;
+      const boxes = out.placements.map(p => { const r = reach.get(p.item) || { left: 0, right: MINI_DRAPE.w }; return { x0: p.x + r.left - gap, x1: p.x + r.right + gap, y0: p.y, y1: p.y + MINI_DRAPE.h + (hang.get(p.item) || 0) }; });
+      const hits = d => boxes.some(b => o.avoid.some(poly => rectHitsPolygon({ x: b.x0 + d, y: b.y0, w: b.x1 - b.x0, h: b.y1 - b.y0 }, poly)));
+      while(slide < maxShift && hits(dir * slide)) slide += 0.02;
+      if(hits(dir * slide)) ctx.note('The miniature medals reach the lapel: there is no room to move them clear of it');
+      slide *= dir;
+      for(const p of out.placements) p.x += slide;
+    }
     const sizes = {};
     for(const d of [...new Set(medals.flatMap(m => m.devices || []))]){ if(ctx.has(d)){ const s = await ctx.spec(d); sizes[d] = { w: s.w, h: s.h }; } }
     // Where each medal's drape and body lie, so the devices of a lower row go in the part of the drape the
@@ -425,5 +456,5 @@
     return { title, layers: ctx.layers, bounds, notes: ctx.notes, garment: ctx.base && ctx.base.id };
   }
 
-  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, CAP_HEIGHT, drawRack, drawMiniMedals, finish, MINI_DRAPE };
+  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, MINI_DRAPE };
 });
