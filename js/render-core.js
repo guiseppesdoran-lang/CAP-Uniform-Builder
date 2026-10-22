@@ -11,6 +11,7 @@
 const CAPUB_FEDERAL_IN_CAP_LIST = ['air_medal','air_force_aerial_achievement_medal'];
 const CAPUB_AFOEA_ID = 'Air_Force_Organizational_Excellence_Award';
 function ribbonPrecedenceGroup(id){
+  if(isRotcRibbonId(id)) return 2; // JROTC/ROTC awards follow the CAP awards and precede foreign ones (39-1 11.2.1)
   if(isMilitaryRibbonId(id)) return militaryAwardFilterType(getMilitaryRibbonAward(id)) === 'FOREIGN' ? 3 : 0;
   if(id === CAPUB_AFOEA_ID) return 0.5;
   return CAPUB_FEDERAL_IN_CAP_LIST.includes(id) ? 0 : 1;

@@ -26,6 +26,7 @@ req('js/engine/profiles-dress.js');
 const RULES = req('data/uniform-rules.js');
 const RA = req('data/ribbon-awards.js');
 const BADGES = req('data/badge-catalog.js');
+const ROTC = req('data/rotc-ribbons.js');
 // An engine note that says a requested piece was left out of the picture because the art is missing: a crop of the
 // old sleeve drawing, no full patch artwork, '<Badge> has no field artwork, so it is not shown on this uniform'
 // (profiles.js), 'No ribbon artwork for ...'. Notes that trim a selection by rule ('At most two badges ... the rest
@@ -69,7 +70,8 @@ const USAGE = `Usage:
 const GARMENT_DEFAULTS = { sleeve: 'short', femaleTop: 'shirt', underlayer: 'shirt', skirt: 'a-line', headgear: 'auto', chevron: '', scarf: false, jacket: true, esPatch: 'none', noGradeTrack: 'officer', plateGrade: true };
 
 const dbg = (...a) => { if(process.env.RB_DEBUG) console.error('[render-builds]', ...a); };
-const ribbonAsset = id => 'ribbon-' + String(id).replace(/_/g, '-');
+// A JROTC/ROTC ribbon is its own sheet (data/rotc-ribbons.js), not a 'ribbon-' sheet.
+const ribbonAsset = id => ROTC.isRotcRibbonId(id) ? ROTC.get(id).asset : 'ribbon-' + String(id).replace(/_/g, '-');
 
 // The order the page wears a selection in (js/render-core.js sortRibbons, CAPR 39-3 order of precedence,
 // highest first): federal awards (including the Air Medal and the Aerial Achievement Medal in the CAP
@@ -82,6 +84,7 @@ function precedenceKey(id, prec){
   if(String(id).startsWith('military:')) return [0, -1];
   if(FEDERAL_IN_CAP_LIST.includes(id)) return [0, FEDERAL_IN_CAP_LIST.indexOf(id)];
   if(id === 'Air_Force_Organizational_Excellence_Award') return [0.5, 0];
+  if(ROTC.isRotcRibbonId(id)) return [2, ROTC.ribbons.findIndex(r => r.id === id)]; // after the CAP awards, before foreign ones (39-1 11.2.1)
   return prec.has(id) ? [1, prec.get(id)] : [1, 1e9];
 }
 function sortByPrecedence(sel){
@@ -147,7 +150,7 @@ function patchesFrom(refs){
 // One miniature medal per award; devices of the extra ribbons stay on the one medal (uniform-view.js).
 function medalsFrom(ribbons){
   const list = [];
-  for(const r of ribbons){
+  for(const r of ribbons.filter(r => !ROTC.isRotcRibbonId(r.id))){ // no miniature medal for a JROTC/ROTC ribbon
     const prev = list.find(x => x.id === r.id);
     if(prev){ prev.devices = [...prev.devices, ...(r.devices || [])]; continue; }
     list.push(Object.assign({}, r, { devices: [...(r.devices || [])] }));

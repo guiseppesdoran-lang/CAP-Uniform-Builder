@@ -354,7 +354,9 @@ function mcchordContinuationOptions(id){
 // Earned once: the AFOEA was awarded for one period only (ICL 18-02). The other single-looking ribbons
 // follow 39-3 6b, a bronze clasp for each later award.
 const CAPUB_SINGLE_AWARD_RIBBON_IDS = new Set([
-  'Air_Force_Organizational_Excellence_Award'
+  'Air_Force_Organizational_Excellence_Award',
+  // A JROTC/ROTC ribbon is shown once, with no devices (39-1 11.2.5).
+  ...ROTC_RIBBONS.ribbons.map(r => r.id)
 ]);
 
 const CAPUB_REPEATABLE_RIBBON_84_CONFIG = {
@@ -755,6 +757,8 @@ function selectAllCapUniformAwards(){
   normalizeRibbonSelections();
 
   for(const id of getEligibleRibbonIds()){
+    // JROTC/ROTC ribbons are worn only while enrolled and three at most (39-1 11.2.5), so they are never ticked for the member.
+    if(isRotcRibbonId(id)) continue;
     const usable=getRibbonAwardOptions(id).filter(option=>option.value);
     const selected=usable[0];
     if(selected) setRibbonSelectionFromDropdown(id,selected.value,{deferRender:true});
@@ -791,6 +795,16 @@ function enforceSharedRibbonSlot(selectedId){
 function enforceRibbonExclusions(selectedId){
   enforceSeniorSingleCadetAwardRibbon(selectedId);
   enforceSharedRibbonSlot(selectedId);
+  enforceRotcRibbonLimit(selectedId);
+}
+
+// Three JROTC/ROTC ribbons may be worn (39-1 11.2.5): choosing a fourth is refused and says why.
+function enforceRotcRibbonLimit(selectedId){
+  if(!isRotcRibbonId(selectedId) || !State.ribbonSelections?.[selectedId]?.checked) return;
+  const chosen = Object.keys(State.ribbonSelections).filter(id => isRotcRibbonId(id) && State.ribbonSelections[id].checked);
+  if(chosen.length <= ROTC_RIBBONS.limit) return;
+  clearRibbonSelection(selectedId);
+  if(typeof window.capubToastShow === 'function') window.capubToastShow(`At most ${ROTC_RIBBONS.limit} JROTC/ROTC ribbons may be worn (CAPR 39-1, ${ROTC_RIBBONS.ref}); remove one to add another.`);
 }
 
 function enforceSeniorSingleCadetAwardRibbon(selectedId){
@@ -858,10 +872,13 @@ function rebuildRibbonsFromGallery(){
         .sort((a,b) => precedence(a) - precedence(b))[0] || null
     : null;
 
+  let rotcWorn = 0;
   for(const id of [...getEligibleRibbonIds(), ...getMilitaryRibbonIds()]){
     const sel = State.ribbonSelections[id];
     if(!sel || !sel.checked) continue;
     if(!isAwardWornOnUniform(id)) continue;
+    // Three JROTC/ROTC ribbons at most (39-1 11.2.5); a saved setup that lists more wears the first three in order.
+    if(isRotcRibbonId(id) && ++rotcWorn > ROTC_RIBBONS.limit) continue;
     if(highestCadetAward && CADET_ACHIEVEMENT_RIBBONS.has(id) && id !== highestCadetAward) continue;
     // A saved setup may list both ribbons of a shared slot; the one higher in the order is worn.
     if(CAPUB_SHARED_RIBBON_SLOTS.some(group => group.includes(id) && group.some(other => other !== id && State.ribbonSelections[other]?.checked && precedence(other) < precedence(id)))) continue;
@@ -1014,7 +1031,7 @@ function buildRibbonGallery(options={}){
   const visible = State.ribbonGalleryExpanded ? eligible : eligible.slice(0, 12);
   // Grouped the way CAPR 39-3 Attachment 2 lists them, in precedence order within each group.
   const sections = State.ribbonGalleryExpanded
-    ? groupRibbonIds(visible).map(group => ({ title:group.label, description:'', ids:group.ids }))
+    ? groupRibbonIds(visible).map(group => ({ title:group.label, description:group.note ? ` ${group.note}` : '', ids:group.ids }))
     : [{ title:'', description:'', ids:visible }];
 
   const buildTile=(id,military=false)=>{
@@ -1027,7 +1044,8 @@ function buildRibbonGallery(options={}){
     const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
     const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
     // A miniature medal only matters on the uniforms that wear them (CAPR 39-1 11.1.4).
-    const showMini = CAPUBUniformRules.allowsMiniMedals(State.uniform);
+    // The JROTC/ROTC ribbons have no miniature medal in the builder, so the tile does not offer one.
+    const showMini = CAPUBUniformRules.allowsMiniMedals(State.uniform) && !isRotcRibbonId(id);
     const miniPreview = !showMini ? '' : miniPath
       ? `<div class="miniMedalPreview"><span>Mini medal</span><img loading="lazy" decoding="async" alt="${escapeHtml(title)} mini medal"></div>`
       : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
@@ -1059,7 +1077,7 @@ function buildRibbonGallery(options={}){
       ${military ? `<span class="militaryRibbonArt"><img loading="lazy" decoding="async" alt="${escapeHtml(title)}"></span>` : `<img loading="lazy" decoding="async" alt="${escapeHtml(title)}">`}
       <div style="flex:1;min-width:0;">
         <div class="title">${escapeHtml(title)}</div>
-        <div class="sub">${military ? `${(award?.authorizedServices || []).map(service=>escapeHtml(MILITARY_BRANCH_LABELS[service] || service)).join(' / ') || 'U.S. MILITARY'}` : (CAPUB_DEV ? escapeHtml(id) : '')}</div>
+        <div class="sub">${isRotcRibbonId(id) ? 'JROTC / ROTC' : military ? `${(award?.authorizedServices || []).map(service=>escapeHtml(MILITARY_BRANCH_LABELS[service] || service)).join(' / ') || 'U.S. MILITARY'}` : (CAPUB_DEV ? escapeHtml(id) : '')}</div>
         ${miniPreview}
         ${military ? `<label class="ribbonAwardLabel">Awarding / wearer service<select class="militaryServiceSelect" data-ribbon-id="${escapeHtml(id)}">${serviceOptions}</select></label>` : ''}
         <label class="ribbonAwardLabel">

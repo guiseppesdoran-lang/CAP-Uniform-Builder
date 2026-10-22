@@ -53,7 +53,11 @@
     return m ? 'mil-device-numeral-' + Number(m[1]) : null;
   }
 
-  function ribbonAssetId(id){ return 'ribbon-' + String(id).replace(/_/g, '-'); }
+  function ribbonAssetId(id){
+    // A JROTC/ROTC ribbon is the sheet of the same name, not a 'ribbon-' sheet (data/rotc-ribbons.js).
+    if(isRotcRibbonId(id)) return ROTC_RIBBONS.get(id).asset;
+    return 'ribbon-' + String(id).replace(/_/g, '-');
+  }
 
   // The ribbons to wear, in precedence order, each split into the ribbons its devices need.
   function buildRibbons(){
@@ -80,7 +84,8 @@
         title: getRibbonDisplayName(id) + (i ? ' (additional ribbon)' : ''),
         asset: ribbonAssetId(id),
         devices: p.devices,
-        centered: p.centered
+        centered: p.centered,
+        rotc: isRotcRibbonId(id) || undefined
       }));
     }
     return out;
@@ -90,7 +95,8 @@
   // since more than four devices is allowed when it avoids a second medal (11.4.2).
   function buildMedals(allRibbons){
     const ribbons = [];
-    for(const r of allRibbons){
+    // JROTC/ROTC ribbons have no miniature medal, so none is drawn for them (ribbonNotes says so).
+    for(const r of allRibbons.filter(r => !r.rotc)){
       const prev = !r.military && r.id && ribbons.find(x => x.id === r.id && !x.military);
       if(prev){ prev.devices = [...prev.devices, ...(r.devices || [])]; continue; }
       ribbons.push(Object.assign({}, r, { devices: [...(r.devices || [])] }));
@@ -204,12 +210,23 @@
     return [...rows.keys()].sort((a, b) => a - b).map(y => rows.get(y));
   }
 
+  // Notes the page adds to a drawing about the ribbons it was asked for (the engine knows only what it is given).
+  let ribbonNotes = [];
+  function rotcNotes(wearsMinis){
+    const notes = [];
+    const chosen = Object.keys(State.ribbonSelections || {}).filter(id => isRotcRibbonId(id) && State.ribbonSelections[id].checked && isAwardWornOnUniform(id));
+    if(chosen.length > ROTC_RIBBONS.limit) notes.push(`Only ${ROTC_RIBBONS.limit} JROTC/ROTC ribbons may be worn, so the first ${ROTC_RIBBONS.limit} in order are shown (CAPR 39-1, ${ROTC_RIBBONS.ref})`);
+    if(wearsMinis && chosen.length) notes.push('The JROTC/ROTC ribbons have no miniature medal, so none is shown for them');
+    return notes;
+  }
+
   function buildFromState(){
     const opt = garmentOptions();
     const g = E.grades.gradeInfo(State.membership, State.rank, { firstSergeant: !!State.cadetFirstSergeant, track: opt.noGradeTrack, commandChief: !!opt.commandChief });
     const ribbons = CAPUBUniformRules.allowsRibbons(State.uniform) ? buildRibbons() : [];
     const mini = CAPUBUniformRules.allowsMiniMedals(State.uniform);
     const allRibbons = mini ? buildRibbons() : ribbons;
+    ribbonNotes = CAPUBUniformRules.allowsRibbons(State.uniform) || mini ? rotcNotes(mini) : [];
     const { badges, command } = buildBadges();
     const text = State.text || {};
     return {
@@ -249,6 +266,7 @@
       const build = buildFromState();
       const scene = await E.profiles.composeUniform(build, s);
       patchNotes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
+      ribbonNotes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
       if(seq !== renderSeq) return null; // a newer render started
       const svg = await E.renderSvg.buildSvg(scene, id => s.entry(id).path, { pad: 0.4, measure: !!State.showMeasurements });
       if(seq !== renderSeq) return null;
@@ -353,6 +371,7 @@
 
   window.CAPUBUniformView = {
     render, scheduleRender, exportCanvas, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview,
+    get ribbonNotes(){ return ribbonNotes; },
     get scene(){ return lastScene; },
     get svg(){ return lastSvg; },
     GARMENT_DEFAULTS

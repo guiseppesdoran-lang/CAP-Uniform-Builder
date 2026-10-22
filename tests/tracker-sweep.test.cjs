@@ -221,3 +221,106 @@ test('the picker offers real choices for every ribbon: no placeholder entries, n
 test('the preview carries no "Uniform Preview" label over the artwork (UI audit 7)', () => {
   assert.doesNotMatch(read('styles/app.css'), /content:"Uniform Preview"/);
 });
+
+// ---- JROTC and ROTC ribbons (tracker Ribbon 6; CAPR 39-1 11.2.1, 11.2.5) --------------------------------------
+
+const ROTC = require('../data/rotc-ribbons.js');
+const MANIFEST = JSON.parse(read('images/MANIFEST.json'));
+const pick = id => ev(`getRibbonAwardOptions('${id}').find(o => o.value).value`);
+const choose = id => ev(`setRibbonSelectionFromDropdown('${id}', ${JSON.stringify(pick(id))}, {deferRender:true})`);
+const fresh = (membership, uniform) => ev(`State.membership = '${membership}'; State.gender = 'male'; State.rank = '${membership === 'cadet' ? 'C/Capt' : 'Capt'}'; State.uniform = '${uniform || 'blues_a'}'; State.ribbonSelections = {}; State.ribbons = []; normalizeRibbonSelections();`);
+
+test('the catalog lists the 110 JROTC/ROTC sheets of the art tree, each with its sheet in the manifest at 1 3/8 x 3/8 in (39-1 11.3)', () => {
+  assert.equal(ROTC.ribbons.length, 110);
+  assert.equal(new Set(ROTC.ribbons.map(r => r.id)).size, 110, 'ids are unique');
+  for(const r of ROTC.ribbons){
+    const entry = MANIFEST.assets.find(a => a.id === r.asset);
+    assert.ok(entry, `${r.asset} is in the manifest`);
+    assert.deepEqual([entry.w_in, entry.h_in], [1.375, 0.375], r.asset);
+    assert.ok(fs.existsSync(path.join(ROOT, 'images', entry.path)), `${r.asset} file`);
+    assert.equal(r.id, 'rotc_' + r.asset.slice('mil-ribbon-rotc-'.length).replace(/-/g, '_'));
+    assert.ok(ROTC.services.some(s => s.key === r.service), r.id);
+  }
+  assert.equal(ROTC.limit, 3);
+  assert.equal(ROTC.ref, '11.2.5');
+});
+
+test('the picker groups the JROTC/ROTC ribbons by service after the CAP groups, with the three-ribbon rule beside them, for cadets and senior members', () => {
+  for(const membership of ['cadet', 'senior']){
+    fresh(membership);
+    const groups = Array.from(ev('groupRibbonIds(getEligibleRibbonIds())')).map(g => ({ key: g.key, n: g.ids.length, note: g.note }));
+    const rotcGroups = groups.filter(g => /^rotc-/.test(g.key));
+    assert.deepEqual(rotcGroups.map(g => g.n), [29, 34, 19, 28], membership);
+    assert.equal(groups.findIndex(g => /^rotc-/.test(g.key)), groups.findIndex(g => g.key === 'activity') + 1 + (groups.some(g => g.key === 'wartime') ? 1 : 0), 'after the last CAP group');
+    for(const g of rotcGroups) assert.match(g.note, /at most 3.*while enrolled.*11\.2\.5|at most 3.*enrolled.*11\.2\.5/i);
+    assert.equal(groups.filter(g => g.key === 'other').length, 0, 'none falls into Other');
+  }
+});
+
+test('a JROTC/ROTC ribbon is chosen once, with no devices, and shows its own sheet and name', () => {
+  fresh('cadet');
+  const id = 'rotc_navy_jrotc_unit_service_ribbon';
+  assert.equal(ev(`getRibbonDisplayName('${id}')`), 'Navy JROTC Unit Service Ribbon');
+  assert.deepEqual(Array.from(ev(`getRibbonAwardOptions('${id}')`)).filter(o => o.value).map(o => o.value), ['earned']);
+  assert.equal(ev(`getRibbonImagePath('${id}')`), ev("CAPUBAssetIndex['mil-ribbon-rotc-navy-jrotc-unit-service-ribbon']"));
+  assert.ok(ev(`getRibbonImagePath('${id}')`));
+});
+
+test('JROTC/ROTC ribbons follow the CAP ribbons in the rack and precede foreign awards (39-1 11.2.1)', () => {
+  fresh('senior');
+  for(const id of ['rotc_army_jrotc_proficiency', 'cap_membership_ribbon', 'rotc_air_force_jrotc_color_guard', 'cap_achievment_award']) choose(id);
+  ev('rebuildRibbonsFromGallery()');
+  assert.deepEqual(Array.from(ev('State.ribbons.map(r => r.id)')), ['cap_achievment_award', 'cap_membership_ribbon', 'rotc_air_force_jrotc_color_guard', 'rotc_army_jrotc_proficiency']);
+  assert.equal(ev("ribbonPrecedenceGroup('rotc_army_jrotc_proficiency')"), 2);
+  assert.ok(ev("ribbonPrecedenceGroup('cap_membership_ribbon')") < 2 && ev("ribbonPrecedenceGroup('rotc_army_jrotc_proficiency')") < 3, 'CAP before JROTC before foreign (group 3)');
+  const built = Array.from(ev('CAPUBUniformView.buildFromState().ribbons')).map(r => [r.asset, r.rotc === true]);
+  assert.deepEqual(built.map(b => b[0]), ['ribbon-cap-achievment-award', 'ribbon-cap-membership-ribbon', 'mil-ribbon-rotc-air-force-jrotc-color-guard', 'mil-ribbon-rotc-army-jrotc-proficiency']);
+  assert.deepEqual(built.map(b => b[1]), [false, false, true, true]);
+});
+
+test('three JROTC/ROTC ribbons may be worn: a fourth is refused, and a saved setup that lists more wears the first three (39-1 11.2.5)', () => {
+  fresh('cadet');
+  const ids = ['rotc_navy_jrotc_unit_service_ribbon', 'rotc_army_jrotc_n_1_10', 'rotc_air_force_jrotc_color_guard', 'rotc_army_jrotc_recruiting'];
+  ev('window.__toasts = []; window.capubToastShow = m => window.__toasts.push(m)');
+  ids.forEach(choose);
+  assert.deepEqual(ids.filter(id => ev(`State.ribbonSelections.${id}.checked`)), ids.slice(0, 3), 'the fourth is cleared');
+  assert.match(String(ev('window.__toasts[0]')), /At most 3 JROTC\/ROTC ribbons.*11\.2\.5/);
+  // A saved setup written by hand with four ticked.
+  ev(`State.ribbonSelections.${ids[3]}.checked = true; State.ribbonSelections.${ids[3]}.awardValue = 'earned'; rebuildRibbonsFromGallery();`);
+  assert.equal(Array.from(ev('State.ribbons.map(r => r.id)')).length, 3);
+  ev('CAPUBUniformView.buildFromState()');
+  assert.deepEqual(Array.from(ev('CAPUBUniformView.ribbonNotes')), ['Only 3 JROTC/ROTC ribbons may be worn, so the first 3 in order are shown (CAPR 39-1, 11.2.5)']);
+});
+
+test('"Select all basic" never ticks a JROTC/ROTC ribbon (they are worn only while enrolled, three at most)', () => {
+  ev('buildRibbonGallery = () => {}'); // the picker's DOM is not under test
+  fresh('cadet');
+  ev('selectAllCapUniformAwards()');
+  assert.ok(ev("Object.keys(State.ribbonSelections).filter(id => State.ribbonSelections[id].checked).length") > 10, 'it still ticks the CAP ribbons');
+  assert.deepEqual(Array.from(ev("Object.keys(State.ribbonSelections).filter(id => isRotcRibbonId(id) && State.ribbonSelections[id].checked)")), []);
+  fresh('senior');
+  ev('selectAllCapUniformAwards()');
+  assert.deepEqual(Array.from(ev("Object.keys(State.ribbonSelections).filter(id => isRotcRibbonId(id) && State.ribbonSelections[id].checked)")), []);
+});
+
+test('JROTC/ROTC ribbons follow the military awards\' rule on the uniforms: worn on the USAF-style, not on Corporate-style uniforms that bar military awards (11.1.6)', () => {
+  const id = 'rotc_army_jrotc_proficiency';
+  for(const u of ['blues_a', 'blues_b', 'mess_dress', 'semi_formal_usaf']) assert.equal(ev(`isAwardWornOnUniform('${id}', '${u}')`), ev(`isAwardWornOnUniform('military:air_force_cross', '${u}')`), u);
+  for(const u of ['blues_a', 'blues_b']) assert.equal(ev(`isAwardWornOnUniform('${id}', '${u}')`), true, u);
+});
+
+test('the picker tile for a JROTC/ROTC ribbon carries no miniature medal box, and saved setups keep the choice (the sanitiser walks ribbonList)', () => {
+  assert.match(read('js/galleries.js'), /allowsMiniMedals\(State\.uniform\) && !isRotcRibbonId\(id\)/);
+  assert.match(read('js/wiring.js'), /for\(const id of \[\.\.\.ribbonList, \.\.\.getMilitaryRibbonIds\(\)\]\)/);
+  assert.ok(ROTC.ribbons.every(r => ev(`ribbonList.includes('${r.id}')`)));
+});
+
+test('miniature medals: none is drawn for a JROTC/ROTC ribbon and the drawing says so (the engine has no miniature for them)', () => {
+  fresh('senior', 'semi_formal');
+  ev("State.gender = 'male'");
+  for(const id of ['cap_membership_ribbon', 'rotc_army_jrotc_proficiency']) choose(id);
+  ev('rebuildRibbonsFromGallery()');
+  const build = ev('CAPUBUniformView.buildFromState()');
+  assert.deepEqual(Array.from(build.medals).map(m => m.ribbonAsset), ['ribbon-cap-membership-ribbon']);
+  assert.deepEqual(Array.from(ev('CAPUBUniformView.ribbonNotes')), ['The JROTC/ROTC ribbons have no miniature medal, so none is shown for them']);
+});

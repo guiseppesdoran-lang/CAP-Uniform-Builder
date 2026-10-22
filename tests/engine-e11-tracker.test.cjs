@@ -359,3 +359,24 @@ test('OCP: the collar group is drawn again above the badges (the same group as t
   assert.ok(fg, 'the collar foreground is drawn');
   for(const l of scene.layers.filter(x => x.role === 'badge')) assert.ok(fg.z > l.z);
 });
+
+// ---- JROTC and ROTC ribbons: sheets drawn in the rack after the CAP ribbons (CAPR 39-1 11.2.1, 11.2.5) ----
+
+test('JROTC/ROTC ribbons are drawn at the ribbon size, in the rack below the CAP ribbons, on every uniform that wears a rack', async () => {
+  const rotc = ['mil-ribbon-rotc-air-force-jrotc-color-guard', 'mil-ribbon-rotc-army-jrotc-proficiency', 'mil-ribbon-rotc-navy-jrotc-unit-service-ribbon'];
+  const ribbons = [...['ribbon-cap-achievment-award', 'ribbon-cap-membership-ribbon', 'ribbon-red-service-ribbon', 'ribbon-search-find-ribbon'].map((asset, i) => ({ key: `ribbon:c${i}`, id: `c${i}`, title: asset, asset, devices: [], centered: false })),
+    ...rotc.map((asset, i) => ({ key: `ribbon:r${i}`, id: `r${i}`, title: asset, asset, devices: [], centered: false, rotc: true }))];
+  for(const [uniform, sex, membership, rank] of [['blues_a', 'male', 'senior', 'Capt'], ['blues_a', 'female', 'cadet', 'C/Capt'], ['blues_b', 'male', 'cadet', 'C/Maj'], ['aviator', 'male', 'senior', 'Col']]){
+    const scene = await compose(build(uniform, sex, membership, rank, [], { ribbons }));
+    assert.equal(scene.notes.filter(n => /No artwork|No ribbon artwork/i.test(n)).length, 0, `${uniform} ${sex}: no missing art`);
+    const placed = scene.layers.filter(l => l.role === 'ribbon');
+    assert.equal(placed.length, 7, `${uniform} ${sex}`);
+    for(const l of placed) near(l.w, 1.375, 0.001, `${uniform} width`), near(l.h, 0.375, 0.001, `${uniform} height`);
+    const lowestCap = Math.max(...placed.filter(l => !/rotc/.test(l.id)).map(l => l.y));
+    const rotcYs = placed.filter(l => /rotc/.test(l.id)).map(l => l.y);
+    assert.equal(rotcYs.length, 3);
+    // The rack lays the list top row first, so the last three (the JROTC ones) end on the bottom of the rack.
+    assert.ok(Math.max(...rotcYs) >= lowestCap - 0.001, `${uniform} ${sex}: the JROTC ribbons are in the lowest row`);
+    assert.ok(Math.min(...rotcYs) >= Math.min(...placed.map(l => l.y)), `${uniform} ${sex}: within the rack`);
+  }
+});

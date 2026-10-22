@@ -176,6 +176,11 @@ const ribbonList = [
   // Wartime service awards (February 1942 through July 1945).
   'air_medal','cap_world_war_2_service_ribbon','anti_submarine_coastal_patrol_ribbon','southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon','forest_patrol_ribbon','missing_aircraft_ribbon'
 ];
+// JROTC and ROTC ribbons (CAPR 39-1 11.2.5): the order of wear puts them after every CAP ribbon (11.2.1), so they
+// come last in the list. data/rotc-ribbons.js is generated from the sheets in images/ribbons/military.
+const ROTC_RIBBONS = window.CAPUBRotcRibbons || { limit:3, ref:'11.2.5', services:[], ribbons:[], isRotcRibbonId:()=>false, get:()=>null };
+function isRotcRibbonId(id){ return ROTC_RIBBONS.isRotcRibbonId(id); }
+ribbonList.push(...ROTC_RIBBONS.ribbons.map(r => r.id));
 
 // Robust ribbon precedence lookup. Unknown/renamed asset IDs are pushed to the end
 // instead of sorting as -1 and jumping ahead of the Silver Medal of Valor.
@@ -252,7 +257,8 @@ function isMilitaryRibbonId(id){
 // Corporate-style uniforms (CAPR 39-1 11.1.6, 11.2.3). Selections are kept, so switching back
 // to a USAF-style uniform brings them back.
 function isAwardWornOnUniform(id, uniformId = State.uniform){
-  return CAPUBUniformRules.isAwardAllowedOnUniform(id, uniformId, {isMilitary:isMilitaryRibbonId(id)});
+  // JROTC/ROTC ribbons are awarded by the military departments, so the military awards' rule covers them (11.1.6, 11.2.5).
+  return CAPUBUniformRules.isAwardAllowedOnUniform(id, uniformId, {isMilitary:isMilitaryRibbonId(id) || isRotcRibbonId(id)});
 }
 function isMilitaryAwardWornOnUniform(uniformId = State.uniform){
   return CAPUBUniformRules.isAwardAllowedOnUniform('', uniformId, {isMilitary:true});
@@ -304,6 +310,7 @@ function getMilitarySelectionService(id,selection=State.ribbonSelections?.[id]){
   return services.includes(selection?.militaryService) ? selection.militaryService : (services[0] || 'AIR_FORCE');
 }
 function getRibbonDisplayName(id){
+  if(isRotcRibbonId(id)) return ROTC_RIBBONS.get(id).name;
   if(isMilitaryRibbonId(id)){
     const award = getMilitaryRibbonAward(id);
     return award?.officialName || award?.name || militaryRibbonCatalogId(id).replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
@@ -320,7 +327,12 @@ const RIBBON_GROUPS = [
   {key:'cadet', label:'Cadet program awards', seniorLabel:'Cadet awards (only the highest is worn)', ids:['spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement','cadet_certificate_of_proficiency','historic_cadet_blue_achievement','historic_cadet_white_achievement','historic_cadet_red_achievement','frank_borman_falcon_award']},
   {key:'service', label:'Service', ids:['cap_command_service_ribbon','crisis_ribbon','red_service_ribbon','afa_award','afsa_award','vfw_officer_award','vfw_nco_award']},
   {key:'activity', label:'Activity', ids:['search_find_ribbon','air_search_and_rescue_ribbon','cap_counterdrug_ribbon','disaster_relief_ribbon','homeland_security_ribbon','cap_cadet_orientation_pilot_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon','cadet_recruiter_ribbon','cap_senior_recruiter_ribbon']},
-  {key:'wartime', label:'Wartime service (1942\u20131945)', ids:['air_medal','cap_world_war_2_service_ribbon','anti_submarine_coastal_patrol_ribbon','southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon','forest_patrol_ribbon','missing_aircraft_ribbon']}
+  {key:'wartime', label:'Wartime service (1942\u20131945)', ids:['air_medal','cap_world_war_2_service_ribbon','anti_submarine_coastal_patrol_ribbon','southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon','forest_patrol_ribbon','missing_aircraft_ribbon']},
+  // JROTC/ROTC ribbons come after the CAP awards and before foreign ones (11.2.1); three at most, while enrolled (11.2.5).
+  ...ROTC_RIBBONS.services.map(service => ({
+    key:'rotc-' + service.key, label:service.label + ' ribbons', ids:ROTC_RIBBONS.ribbons.filter(r => r.service === service.key).map(r => r.id),
+    note:`Worn after the CAP ribbons, at most ${ROTC_RIBBONS.limit} in all, only while enrolled in the program (CAPR 39-1, ${ROTC_RIBBONS.ref})`
+  })),
 ];
 // Groups for one list of ids, in regulation order. Anything not placed lands in "Other".
 function groupRibbonIds(ids, membership = State.membership){
@@ -329,7 +341,7 @@ function groupRibbonIds(ids, membership = State.membership){
   for(const group of RIBBON_GROUPS){
     const members = group.ids.filter(id => ids.includes(id));
     members.forEach(id => placed.add(id));
-    if(members.length) groups.push({key:group.key, label:(membership === 'senior' && group.seniorLabel) || group.label, ids:members});
+    if(members.length) groups.push({key:group.key, label:(membership === 'senior' && group.seniorLabel) || group.label, note:group.note || '', ids:members});
   }
   const rest = ids.filter(id => !placed.has(id));
   if(rest.length) groups.push({key:'other', label:'Other', ids:rest});
@@ -375,6 +387,7 @@ const COMMON_ELIGIBLE_RIBBONS = new Set([
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
   'crisis_ribbon','red_service_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','disaster_relief_ribbon','homeland_security_ribbon','community_service_ribbon','iace_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon','cadet_advisory_council_ribbon','cadet_special_activity_ribbon','encampment_ribbon'
 ]);
+ROTC_RIBBONS.ribbons.forEach(r => COMMON_ELIGIBLE_RIBBONS.add(r.id)); // enrolled cadets and senior members alike (39-3 Attachment 2)
 const CADET_ONLY_RIBBONS = new Set([
   'spaatz_award','eaker_award','earhart_award','mitchell_award','armstrong_achievement','goddard_achievement','doolittle_achievement','lindbergh_achievement','rickenbacker_achievement','wright_brothers_award','mary_feik_achievement','hap_arnold_achievement','curry_achievement',
   'afa_award','afsa_award','vfw_officer_award','vfw_nco_award','cadet_recruiter_ribbon'
@@ -810,6 +823,7 @@ function normalizeRibbonImageFileName(name){
 function getRibbonImagePath(ribbonOrId){
   const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
   if(isMilitaryRibbonId(id)) return getMilitaryRibbonAward(id)?.images?.ribbon || '';
+  if(isRotcRibbonId(id)) return (window.CAPUBAssetIndex && CAPUBAssetIndex[ROTC_RIBBONS.get(id).asset]) || '';
   // The measured ribbon artwork (images/ribbons); devices are drawn on it by the engine.
   const art = window.CAPUBAssetIndex && CAPUBAssetIndex['ribbon-' + String(normalizeRibbonId(id)).replace(/_/g, '-')];
   if(art) return art;

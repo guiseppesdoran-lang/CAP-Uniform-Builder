@@ -44,6 +44,15 @@ for(const g of ['male', 'female']){
   }
 }
 
+// JROTC/ROTC ribbons (tracker Ribbon 6; CAPR 39-1 11.2.1, 11.2.5): three at most, after every CAP ribbon, no miniature medal.
+const JROTC = [['rotc_air_force_jrotc_color_guard'], ['rotc_army_jrotc_proficiency'], ['rotc_navy_jrotc_unit_service_ribbon']];
+for(const g of ['male', 'female']){
+  mk(`blues_a-${g}-cadet-CCapt-jrotc`, 'blues_a', g, 'cadet', 'C/Capt', { ribbonSel: [...cadRib.slice(0, 5), ...JROTC], badgeIds: [AIRCREW] });
+  mk(`blues_b-${g}-cadet-CCapt-jrotc`, 'blues_b', g, 'cadet', 'C/Capt', { ribbonSel: [...cadRib.slice(0, 5), ...JROTC], badgeIds: [AIRCREW] });
+}
+mk('blues_a-male-senior-Capt-jrotc', 'blues_a', 'male', 'senior', 'Capt', { ribbonSel: [...rib().slice(0, 4), ...JROTC], badgeIds: A4 });
+mk('semi_formal_usaf-male-cadet-CCapt-jrotc', 'semi_formal_usaf', 'male', 'cadet', 'C/Capt', { ribbonSel: [...cadRib.slice(0, 5), ...JROTC], medalSel: true, badgeIds: [AIRCREW] });
+
 // Class B (items 4-6): short-sleeve NCO chevron, the rack in precedence order, general officer.
 for(const g of ['male', 'female']){
   mk(`blues_b-${g}-senior-Capt`, 'blues_b', g, 'senior', 'Capt', { ribbonSel: rib(), badgeIds: [A4[0], 'emergency_services_badge', 'communications_technician_badge'] });
