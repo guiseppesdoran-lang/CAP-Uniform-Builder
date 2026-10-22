@@ -526,18 +526,25 @@
 
   // Put a grade on an epaulet at its 5/8 in rule distance. `end` is the centre of the epaulet's outer
   // end, `axis` the unit vector toward the neck and `deg` the rotation that stands the art with its
-  // top toward the neck; the grade is scaled down (never up) to fit `across` inches of the strap.
+  // top toward the neck. The strip is the epaulet seen edge-on, so the grade is foreshortened the way the
+  // strip is: squeezed across the strap to `across` inches (never widened), kept at its true size along
+  // the strap, where the strip keeps its length. One scale on both axes shrank the colonel's eagle to a
+  // speck 0.32 in long (R7: rank visible from the front; CAPR 39-1 4.2.5.1.1.1, 4.2.6.2.1).
   async function gradeOnStrap(ctx, g, side, end, axis, deg, across, opts){
     const id = (opts && opts.id) || epauletGradeId(g);
     if(!id || !ctx.has(id)) return null;
     const gs = await ctx.spec(id);
     const quarter = ACROSS_GRADES.has(g.key) && g.category !== 'cadet-officer';
     const acr = quarter ? gs.h : gs.w, alo = quarter ? gs.w : gs.h;
-    const scale = Math.min(1, across / acr);
-    const d = GRADE_FROM_END + alo * scale / 2;
+    const squeeze = Math.min(1, across / acr);
+    const d = GRADE_FROM_END + alo / 2;
     const at = { x: end.x + axis.x * d, y: end.y + axis.y * d };
     const o = opts || {};
-    return ctx.place(id, { pieceAnchor: 'center', at, rotate: deg + (quarter ? 90 : 0), scale, flipX: mirrorsEagle(g, side), z: o.z || Z.insignia, role: 'grade', key: o.key || `grade:edge-${side}`, title: o.title });
+    // The art's width is the across axis unless the quarter turn lays it along the strap; `place` has a
+    // uniform scale and an extra x factor, so the quarter-turned piece squeezes its height and widens
+    // its width back to true.
+    const scale = quarter ? squeeze : 1, scaleX = quarter ? 1 / squeeze : squeeze;
+    return ctx.place(id, { pieceAnchor: 'center', at, rotate: deg + (quarter ? 90 : 0), scale, scaleX, flipX: mirrorsEagle(g, side), z: o.z || Z.insignia, role: 'grade', key: o.key || `grade:edge-${side}`, title: o.title });
   }
 
   // The grade on each edge-on epaulet strip the garment overlay draws (Class B shirt and blouse,
