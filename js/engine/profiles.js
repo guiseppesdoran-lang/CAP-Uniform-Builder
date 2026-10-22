@@ -506,20 +506,24 @@
       }
       return;
     }
-    // Officers (not generals): the cloth grade sits on top of the shoulder with its outer edge a half
-    // inch from the shoulder seam (8.2.3.2, 8.3.3.2, 6.1.7). The grade zone is sized for the widest
-    // form and its seam-side edge is that half inch line, so every form is set against that edge,
-    // not centred in the zone (a captain's bars would otherwise sit 0.7 in from the seam).
+    // Officers (not generals): the cloth grade is 'centered on top of each shoulder with bottom edge of insignia
+    // placed 1/2 inch from shoulder seam' (8.2.3.2, 8.3.3.2, 6.1.7), so its bottom faces the seam, the arm, as the
+    // general officers' stars do (8.2.3.1): the piece turns a quarter turn, 90 deg clockwise on the wearer's right
+    // and 90 deg counter-clockwise on the left, its top toward the neck. The grade zone's seam-side edge is the
+    // half inch line, so the turned piece's bottom edge is set on it, centred on the zone's height; it is never
+    // scaled (R1), so a taller piece (the colonel's 1.59 in eagle, the zone being 1.25 in high) extends past the
+    // zone's top and bottom. The colonel's eagle is mirrored on the wearer's right so that its head faces the same
+    // way, the wearer's front, on both shoulders (the mess dress boards and the collars do the same).
     const id = G.seniorOfficerInsignia(g, 'cloth-bordered');
     const spec = await ctx.spec(id);
     for(const side of ['right', 'left']){
       const zone = ctx.rect('grade_zone_' + side);
       if(!zone) continue;
-      const scale = Math.min(1, zone.w / spec.w, zone.h / spec.h);
-      const w = spec.w * scale;
-      // The wearer's right shoulder is the left of the picture: its seam is the zone's left edge.
-      const cx = side === 'right' ? zone.x + w / 2 : zone.x + zone.w - w / 2;
-      await ctx.place(id, { pieceAnchor: 'center', at: { x: cx, y: zone.y + zone.h / 2 }, scale, z: Z.insignia, role: 'grade', key: 'grade:' + side });
+      // The wearer's right shoulder is the left of the picture: its seam is the zone's left edge. Turned, the
+      // piece's width along the shoulder is its height.
+      const cx = side === 'right' ? zone.x + spec.h / 2 : zone.x + zone.w - spec.h / 2;
+      await ctx.place(id, { pieceAnchor: 'center', at: { x: cx, y: zone.y + zone.h / 2 }, rotate: side === 'right' ? 90 : -90, flipX: side === 'right' && g.key === 'colonel',
+        z: Z.insignia, role: 'grade', key: 'grade:' + side });
     }
   }
 

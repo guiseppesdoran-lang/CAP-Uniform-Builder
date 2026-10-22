@@ -55,7 +55,11 @@ const onFigure = (scene, f, pred) => scene.layers.filter(l => (f.jacket ? l.figu
 
 // ---- officer grade and general officer stars on the shoulders ---------------------------------
 
-test('officer grade: outer edge on the half inch line from the shoulder seam, centred in height (8.2.3.2, 8.3.3.2, 6.1.7)', async () => {
+// D8 (FIX-R-OTHER-r1 review round 3, 8.2.3.2 / 8.3.3.2): the grade is 'centered on top of each shoulder with bottom edge
+// of insignia placed 1/2 inch from shoulder seam', so its bottom faces the seam: the piece is turned 90 deg clockwise on
+// the wearer's right and 90 deg counter-clockwise on the left (as the general officer stars, 8.2.3.1), not left upright;
+// the old test asserted the upright piece's outer edge on the half inch line.
+test('officer grade: turned a quarter turn, bottom edge on the half inch line from the shoulder seam, centred in height, never scaled (8.2.3.2, 8.3.3.2, 6.1.7)', async () => {
   const ranks = ['2d Lt', '1st Lt', 'Capt', 'Maj', 'Lt Col', 'Col'];
   for(const f of FIGURES){
     for(const rank of ranks){
@@ -65,11 +69,20 @@ test('officer grade: outer edge on the half inch line from the shoulder seam, ce
       const right = grades.find(l => l.key === 'grade:right'), left = grades.find(l => l.key === 'grade:left');
       const zr = await zoneOf(scene, f.garment, 'grade_zone_right');
       const zl = await zoneOf(scene, f.garment, 'grade_zone_left');
-      // The wearer's right shoulder is the left of the picture: its seam side is the zone's left edge.
-      assert.ok(Math.abs(right.x - zr.x) < EPS, `${f.name} ${rank}: right grade outer edge ${right.x.toFixed(3)} on ${zr.x.toFixed(3)}`);
-      assert.ok(Math.abs((left.x + left.w) - (zl.x + zl.w)) < EPS, `${f.name} ${rank}: left grade outer edge on the zone edge`);
-      assert.ok(Math.abs((right.y + right.h / 2) - (zr.y + zr.h / 2)) < EPS, `${f.name} ${rank}: centred in the zone's height`);
-      assert.ok(right.x >= zr.x - EPS && right.x + right.w <= zr.x + zr.w + EPS, `${f.name} ${rank}: inside the zone`);
+      const spec = await ST.load(right.id);
+      assert.equal(right.rotate, 90, `${f.name} ${rank}: wearer's right turned 90 deg clockwise (bottom toward the seam)`);
+      assert.equal(left.rotate, -90, `${f.name} ${rank}: wearer's left turned 90 deg counter-clockwise`);
+      assert.ok(Math.abs(right.w - spec.w) < 1e-6 && Math.abs(right.h - spec.h) < 1e-6, `${f.name} ${rank}: not scaled`);
+      // Turned, the piece's width along the shoulder is its height; the wearer's right shoulder is the left of the
+      // picture, its seam side the zone's left edge: that is the piece's bottom edge.
+      const rightSeamEdge = right.x + right.w / 2 - right.h / 2, leftSeamEdge = left.x + left.w / 2 + left.h / 2;
+      assert.ok(Math.abs(rightSeamEdge - zr.x) < EPS, `${f.name} ${rank}: right grade bottom edge ${rightSeamEdge.toFixed(3)} on the zone's seam edge ${zr.x.toFixed(3)}`);
+      assert.ok(Math.abs(leftSeamEdge - (zl.x + zl.w)) < EPS, `${f.name} ${rank}: left grade bottom edge on the zone's seam edge`);
+      assert.ok(Math.abs((right.y + right.h / 2) - (zr.y + zr.h / 2)) < EPS && Math.abs((left.y + left.h / 2) - (zl.y + zl.h / 2)) < EPS, `${f.name} ${rank}: centred in the zone's height`);
+      assert.ok(rightSeamEdge + right.h <= zr.x + zr.w + EPS, `${f.name} ${rank}: inside the zone along the shoulder`);
+      // The colonel's eagle faces the wearer's front on both shoulders: mirrored on the right only.
+      assert.equal(!!right.flipX, rank === 'Col', `${f.name} ${rank}: eagle mirrored on the wearer's right`);
+      assert.ok(!left.flipX, `${f.name} ${rank}: not mirrored on the left`);
     }
   }
 });
@@ -80,7 +93,9 @@ test('flight officers (FO, TFO, SFO) wear the same shoulder grade placement', as
     const grades = onFigure(scene, FIGURES[0], l => l.role === 'grade');
     assert.equal(grades.length, 2, rank);
     const zr = await zoneOf(scene, FIGURES[0].garment, 'grade_zone_right');
-    assert.ok(Math.abs(grades.find(l => l.key === 'grade:right').x - zr.x) < EPS, rank);
+    const r = grades.find(l => l.key === 'grade:right');
+    assert.equal(r.rotate, 90, rank);
+    assert.ok(Math.abs(r.x + r.w / 2 - r.h / 2 - zr.x) < EPS, rank);
   }
 });
 
