@@ -82,6 +82,21 @@ test('the first badge on the overblouse is whole: no collar leaf polygon crosses
   }
 });
 
+// FIX-ART-r4 round 2: the leaf's lower tip lies on the first button's line (Figure 4.18's size); with the ribbon stack of a decorated officer (three rows) the nameplate is already at its
+// lowest allowed place (4.2.6.2.6.1.2) and the pilot wings (1/2 in above the top row, 4.2.6.2.7.1) reach into the leaf's wedge: the engine says so rather than hiding the wing tip silently.
+const HARNESS = require('../scripts/render-builds.cjs');
+const SEVEN = [['distinguished_service_award', null], ['exceptional_service_award', null], ['meritorious_service_award', null], ['cap_achievment_award', 'capub_total_7'], ['cap_gill_robb_wilson_ribbon', null], ['cap_membership_ribbon', null], ['cap_command_service_ribbon', null]];
+
+test('a badge box that meets a collar leaf polygon is reported in the scene notes (the overblouse pilot wings over seven ribbons); a badge clear of the leaves is not', async () => {
+  const under = await P.composeUniform(HARNESS.makeBuild({ uniform: 'aviator', gender: 'female', membership: 'senior', rank: 'Col', ribbonSel: SEVEN, badgeIds: ['CAPPilot1_FA9D33EA587D8'], opt: { femaleTop: 'overblouse' } }), store);
+  const wings = under.layers.find(l => l.role === 'badge');
+  assert.ok(wings && wings.clipOut && wings.clipOut.length, 'the wings are clipped by the leaf (the tuck)');
+  assert.ok(under.notes.some(n => /collar leaf lies over part of the .*badge/i.test(n)), `notes: ${JSON.stringify(under.notes)}`);
+  const clear = await P.composeUniform(HARNESS.makeBuild({ uniform: 'aviator', gender: 'female', membership: 'senior', rank: 'Col', ribbonSel: [], badgeIds: ['CAPPilot1_FA9D33EA587D8'], opt: { femaleTop: 'overblouse' } }), store);
+  assert.ok(!clear.layers.find(l => l.role === 'badge').clipOut, 'no ribbons: the wings sit below the leaves');
+  assert.ok(!clear.notes.some(n => /collar leaf lies over/i.test(n)), `notes: ${JSON.stringify(clear.notes)}`);
+});
+
 // ---- 6. overblouse sleeve chevron -----------------------------------------------------------------------------
 
 function inkPoints(id){

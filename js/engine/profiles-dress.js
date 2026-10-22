@@ -473,7 +473,11 @@
     for(const l of ctx.layers){
       if(!['badge', 'ribbon', 'device'].includes(l.role) || (l.rotate || 0) || (l.type !== 'asset' && l.type !== 'raster')) continue;
       const hit = polys.filter(p => boxTouchesPolygon(l, p));
-      if(hit.length) l.clipOut = hit;
+      if(hit.length){
+        l.clipOut = hit;
+        // The leaf hides part of a badge: say so (the person can read it off the scene), rather than hiding it silently.
+        if(l.role === 'badge') ctx.note(`The collar leaf lies over part of the ${l.title || l.id} badge, which is worn under the collar there`);
+      }
     }
   }
 
