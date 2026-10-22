@@ -57,7 +57,6 @@ const ev = loadPage();
 
 // ---- shared ribbon slot ------------------------------------------------------------------------------
 
-
 test('the National Commander\'s Citation and the Gill Robb Wilson Award share one slot: choosing one clears the other (39-3 Attachment 2, Note 2)', () => {
   ev("State.membership = 'senior'; State.uniform = 'blues_a'; State.ribbonSelections = {}; normalizeRibbonSelections();");
   ev("setRibbonSelectionFromDropdown('national_commanders_citation', 'earned', {deferRender:true})");
@@ -217,4 +216,8 @@ test('the picker offers real choices for every ribbon: no placeholder entries, n
       assert.ok(options.every(o => !/placeholder/i.test(o.label)), `${membership} ${id}: no placeholder label`);
     }
   }
+});
+
+test('the preview carries no "Uniform Preview" label over the artwork (UI audit 7)', () => {
+  assert.doesNotMatch(read('styles/app.css'), /content:"Uniform Preview"/);
 });
