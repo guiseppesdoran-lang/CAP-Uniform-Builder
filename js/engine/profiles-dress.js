@@ -705,7 +705,7 @@
     if(g.category === 'cadet-nco'){
       for(const side of ['right', 'left']){
         const id = G.cadetNcoChevron(g, 'metal');
-        const rest = !semi && await restOnSeam(ctx, id, side);
+        const rest = await restOnSeam(ctx, id, side);
         const at = rest || ctx.point('lapel_insignia_' + side);
         if(at) await ctx.place(id, { pieceAnchor: rest ? 'bottom_center' : 'center', at, z: LAPEL_Z, role: 'grade', key: 'grade:' + side });
       }
