@@ -404,10 +404,12 @@
 
   // The grade on each edge-on epaulet strip the garment overlay draws (Class B shirt and blouse,
   // aviator shirt): centred on the strip's line, 5/8 in from the strap's outer end, turned with it.
-  async function epauletEdgeGrades(ctx, g){
+  // `frames` (the Class A coats, whose sheets state the strap as an axis, see strapFrames) gives each
+  // side's strap frame; the strip's outer end is the frame's outer end.
+  async function epauletEdgeGrades(ctx, g, frames){
     for(const side of ['right', 'left']){
-      const f = H.epauletFrame(ctx, side);
-      const mid = ctx.point(`rank_slot_${side}_center`);
+      const f = (frames && frames[side]) || H.epauletFrame(ctx, side);
+      const mid = frames ? f && f.outer : ctx.point(`rank_slot_${side}_center`);
       if(!f || !mid) continue;
       // Slide from the strip's centre back along the strap axis to the plane of the outer end.
       const back = (f.outer.x - mid.x) * f.axis.x + (f.outer.y - mid.y) * f.axis.y;
@@ -674,7 +676,11 @@
     if(semi && !g.cadet) ctx.note('The USAF-style semi-formal uniform is worn by cadets only (CAPR 39-1, 4.1.3 and 4.1.4)');
 
     // Layers: boards, epaulets and lapel insignia drawn to the coat (4.1.5.2.1, 4.1.5.2.2.1).
-    if(g.category === 'cadet-officer') await cadetBoards(ctx, A, g, sex);
+    if(g.category === 'cadet-officer'){
+      await cadetBoards(ctx, A, g, sex);
+      // The edge-on board at the shoulder line carries the grade as well as the view from above (R7).
+      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A));
+    }
     else if(!semi && g.general) await ctx.overlay(`${A.layer}-general-officer`);
     else if(!semi && isOfficerLike(g)) await ctx.overlay(`${A.layer}-senior-officer`);
     else if(!semi && g.category === 'senior-nco'){
@@ -713,7 +719,9 @@
       const size = sex === 'male' ? '4' : (b.opt.chevron === '3.5' ? '3.5' : '4');
       await sleeveChevrons(ctx, G.seniorChevron(g, { size }), chevronAnchors(ctx) || A.ncoChevron);
     }else if(!semi && isOfficerLike(g)){
-      // The coat's epaulets are edge-on in the front view; the grade shows on the top views.
+      // The coat's epaulets are edge-on in the front view and carry the grade there too, 5/8 in from the
+      // outer end like the Class B (D6, D42; R7), as well as on the views from above.
+      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A));
       await epauletViews(ctx, g, null, strapFrames(ctx, A));
     }else if(!semi && g.category === 'senior-none' && g.track === 'nco'){
       // Adults without grade on the NCO track wear CAP collar insignia (1.4.2.1).

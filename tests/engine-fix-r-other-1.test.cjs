@@ -61,3 +61,36 @@ test('a cadet keeps the cadet-only badges and is not shown a badge the chart doe
   assert.ok(!ids.includes('badge:senior_advisory_group_badge'), 'a cadet does not wear a CAP service badge');
   assert.ok(scene.notes.some(n => /not worn by cadets/.test(n)));
 });
+
+// ---- 3. Class A: the edge-on epaulet or board carries the grade too (R7, D6, D42) -------------------------
+
+test('Class A and semi-formal: the edge-on epaulet strip carries the grade, 5/8 in from its outer end, as well as the view from above', async () => {
+  const cases = [
+    ['blues_a', 'male', 'senior', 'Capt'], ['blues_a', 'male', 'senior', 'Col'], ['blues_a', 'male', 'senior', 'Maj Gen'],
+    ['blues_a', 'female', 'senior', 'Capt'], ['blues_a', 'female', 'senior', 'Brig Gen'],
+    ['blues_a', 'male', 'cadet', 'C/Maj'], ['blues_a', 'female', 'cadet', 'C/Col'],
+    ['semi_formal_usaf', 'male', 'cadet', 'C/Maj'], ['semi_formal_usaf', 'female', 'cadet', 'C/2d Lt']
+  ];
+  for(const [uniform, sex, membership, rank] of cases){
+    const scene = await compose(build(uniform, sex, membership, rank, []));
+    for(const side of ['right', 'left']){
+      const edge = byKey(scene, `grade:edge-${side}`);
+      assert.ok(edge, `${uniform} ${sex} ${rank}: grade on the ${side} edge-on strip`);
+    }
+    assert.ok(scene.layers.some(l => l.role === 'epaulet-top' && l.key === 'epaulet-top:right'), `${uniform} ${sex} ${rank}: the view from above is still drawn`);
+  }
+});
+
+test('Class A officer: the edge-on grade lies 5/8 in from the outer end of the strap, on the strap axis (DAFI 36-2903 4.5.1.1.1)', async () => {
+  const scene = await compose(build('blues_a', 'male', 'senior', 'Capt', []));
+  const edge = byKey(scene, 'grade:edge-right');
+  // Right strap, from the left strap axis [16.52, 2.44] -> [20.22, 3.41] mirrored on the 23.726 in coat.
+  const neck = { x: 23.726 - 16.52, y: 2.44 }, arm = { x: 23.726 - 20.22, y: 3.41 };
+  const len = Math.hypot(arm.x - neck.x, arm.y - neck.y), u = { x: (neck.x - arm.x) / len, y: (neck.y - arm.y) / len };
+  const c = { x: edge.x + edge.w / 2, y: edge.y + edge.h / 2 };
+  // Distance of the grade centre from the outer end along the axis: 5/8 in plus half the grade's length.
+  const along = (c.x - arm.x) * u.x + (c.y - arm.y) * u.y;
+  assert.ok(along > 0.625 && along < 0.625 + 0.5, `grade ${along.toFixed(3)} in from the outer end`);
+  const across = Math.abs((c.x - arm.x) * u.y - (c.y - arm.y) * u.x);
+  assert.ok(across < 0.05, `centred on the strap axis (${across.toFixed(3)} in off)`);
+});
