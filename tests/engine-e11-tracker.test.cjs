@@ -214,3 +214,19 @@ test('Inspector General senior and master badges offer the gold star of 10.5.1, 
     assert.equal(plain.layers.find(l => l.key === `badge:${id}`).id, `enamel-ig-${level}`);
   }
 });
+
+// ---- cadet semi-formal lapel ---------------------------------------------------------------------------------
+
+test('cadet semi-formal: the lapels are drawn over the badges and ribbons as on the Class A, the cadet chevrons above them (11.1.8)', async () => {
+  for(const [sex, fg] of [['male', 'layer:garment-blues-class-a-coat-lapel-foreground'], ['female', 'layer:garment-blues-class-a-coat-female-lapel-foreground']]){
+    for(const rank of ['C/SSgt', 'C/Maj']){
+      const scene = await compose(build('semi_formal_usaf', sex, 'cadet', rank, ['AirCrew1_DB3F0FCC3650F', 'emergency_services_badge']));
+      const lapel = byKey(scene, fg);
+      assert.ok(lapel, `${sex} ${rank}: the lapel foreground is drawn`);
+      const badges = scene.layers.filter(l => l.role === 'badge' || l.role === 'ribbon');
+      assert.ok(badges.length >= 2);
+      assert.ok(badges.every(l => l.z < lapel.z), `${sex} ${rank}: every badge and ribbon is under the lapel`);
+      for(const chevron of scene.layers.filter(l => /^grade:(left|right)$/.test(l.key))) assert.ok(chevron.z > lapel.z, `${sex} ${rank}: the chevron lies over the lapel`);
+    }
+  }
+});

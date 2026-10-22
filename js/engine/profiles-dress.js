@@ -707,7 +707,7 @@
         const id = G.cadetNcoChevron(g, 'metal');
         const rest = !semi && await restOnSeam(ctx, id, side);
         const at = rest || ctx.point('lapel_insignia_' + side);
-        if(at) await ctx.place(id, { pieceAnchor: rest ? 'bottom_center' : 'center', at, z: semi ? Z.insignia : LAPEL_Z, role: 'grade', key: 'grade:' + side });
+        if(at) await ctx.place(id, { pieceAnchor: rest ? 'bottom_center' : 'center', at, z: LAPEL_Z, role: 'grade', key: 'grade:' + side });
       }
     }else if(!semi && g.category === 'senior-nco'){
       const size = sex === 'male' ? '4' : (b.opt.chevron === '3.5' ? '3.5' : '4');
@@ -761,6 +761,10 @@
       await lapelForeground(ctx, A, g);
       await shoulderCord(ctx, b, A.cord);
       await blueHat(ctx, b);
+    }else{
+      // The cadet semi-formal is the Class A coat drawn without its nameplate (same lapels), and the
+      // collar lies over the badges there too: the lapels are drawn again over them.
+      await ctx.overlay(`${A.layer}-lapel-foreground`, Z.badge + 0.5);
     }
   }
 
