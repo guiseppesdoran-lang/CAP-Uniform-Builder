@@ -343,6 +343,7 @@
   // clipped to the Velcro and the coat (7.1.1.4).
   function sleevePatch(ctx, patch, zone, slot, side){
     const flat = fitPatch(ctx, patch, zone, slot);
+    if(!flat) return null; // a crop of the old sleeve drawing is not drawn (ctx.raster)
     const f = edgeFrame(ctx, side);
     const velcro = ctx.rect('sleeve_flap_velcro_' + side);
     const clip = f && velcro && f.shows(velcro);

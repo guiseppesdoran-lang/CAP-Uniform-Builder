@@ -77,6 +77,12 @@
         return layer;
       },
       raster(opts){
+        // The patches/ocp images are crops of the old sleeve drawing (a small patch and a sliver of the next),
+        // not patches: nothing draws them, whoever asks. The page hands the engine the patch's full artwork.
+        if(/(^|\/)patches\/ocp\//.test(String(opts.href || ''))){
+          ctx.note(`${opts.title || 'A patch'} is only a crop of the old sleeve drawing, so it is not drawn; it needs full patch artwork`);
+          return null;
+        }
         const layer = Object.assign({ type: 'raster', rotate: 0, origin: { x: opts.x, y: opts.y }, z: Z.patch }, opts);
         ctx.layers.push(layer);
         return layer;

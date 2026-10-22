@@ -219,3 +219,19 @@ test('OCP draws the Emergency Services badge above the CAP tape with the aviatio
     assert.ok(!scene.notes.some(n => /no field artwork/.test(n)), `${u}: not a missing-artwork note`);
   }
 });
+
+// ---- 14. Patches under patches/ocp/ are crops of the old sleeve drawing: never drawn -----------------------------
+
+test('the engine does not draw a patches/ocp crop; the harness resolves patches to full artwork as the page does (D22)', async () => {
+  const crop = { id: 'TN-185_ocp_patch', title: 'TN-185', href: '/images/patches/ocp/TN-185_ocp_patch.webp', aspect: 1, slot: 'R_SHOULDER', kind: 'unit' };
+  const scene = await compose(build('ocp', 'male', 'senior', 'Lt Col', ['CAPPilot1_FA9D33EA587D8'], { patches: [crop] }));
+  assert.ok(!scene.layers.some(l => l.role === 'patch'), 'no patch layer from a crop');
+  assert.ok(scene.notes.some(n => /only a crop of the old sleeve drawing/.test(n)), scene.notes.join(' | '));
+  // The harness maps a crop to the whole patch (TN-330 has full art, archer_ocp_patch resolves through its base id) or leaves it off.
+  const r = HARNESS.patchesFrom([{ id: 'TN-330_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-330_ocp_patch.webp' }, { id: 'archer_ocp_patch', kind: 'general', img: 'patches/ocp/archer_ocp_patch.webp', slot: 'L_SHOULDER' }, { id: 'TN-185_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-185_ocp_patch.webp' }]);
+  assert.deepEqual(r.patches.map(p => p.href), ['/images/patches/sequoyah_cadet_squadron_patch.webp', '/images/patches/archer_patch.webp']);
+  assert.ok(r.notes.some(n => /TN-185.*has no full patch artwork yet/.test(n)));
+  const ok = await compose(HARNESS.makeBuild({ uniform: 'ocp', gender: 'male', membership: 'senior', rank: 'Lt Col', patchRefs: [{ id: 'TN-330_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-330_ocp_patch.webp' }] }));
+  const unit = ok.layers.find(l => l.role === 'patch' && /TN-330/.test(l.key));
+  assert.ok(unit && unit.w <= 3.5 + 1e-6, 'the full patch is drawn under the flag');
+});

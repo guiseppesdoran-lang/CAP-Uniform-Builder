@@ -95,6 +95,45 @@ function ribbonsFrom(sel, membership, order){
   }
   return out;
 }
+// Patches as the page hands them to the engine (js/uniform-view.js buildPatches): a spec's `patchRefs` are
+// [{id, kind: 'unit'|'general', img?, label?, slot?}], where `img` is the catalog image under images/ the
+// page would find (for OCP, a patches/ocp/ crop of the old sleeve drawing). The same wholePatchImage rule
+// applies: a patches/ocp/ crop is replaced by the patch's full-colour artwork (OCP_CROP_BASE, or the
+// patches/<name>_patch.webp the catalog lists for the base id), or the patch is left off with the page's
+// note. Passing crops straight to the engine drew a small round patch and a cut fragment (D22).
+function pageConstant(file, re){
+  const m = re.exec(fs.readFileSync(path.join(ROOT, file), 'utf8'));
+  if(!m) throw new Error(`${file}: ${re} not found`);
+  return Function(`return ${m[1]}`)();
+}
+function patchMeta(){
+  const src = fs.readFileSync(path.join(ROOT, 'js/catalog.js'), 'utf8');
+  const start = src.indexOf('const PATCH_META = ') + 'const PATCH_META = '.length;
+  let depth = 0, i = start;
+  for(; i < src.length; i++){ if(src[i] === '{') depth++; else if(src[i] === '}' && !--depth) break; }
+  return Function(`return ${src.slice(start, i + 1)}`)();
+}
+function patchesFrom(refs){
+  const cropBase = pageConstant('js/uniform-view.js', /const OCP_CROP_BASE = (\{[^}]*\});/);
+  const meta = patchMeta();
+  const patches = [], notes = [];
+  for(const ref of refs || []){
+    const img = String(ref.img || (meta[ref.id] && meta[ref.id].img) || '');
+    let whole = img;
+    if(/(^|\/)ocp\//.test(img)){
+      const file = img.split('/').pop().replace(/\.webp$/, '');
+      const baseId = String(ref.id).replace(/_ocp_patch$/, '_patch');
+      const base = meta[baseId] && meta[baseId].img;
+      whole = cropBase[file] || (baseId !== ref.id && base && !/\/ocp\//.test(base) ? base : null);
+    }
+    const label = ref.label || (meta[ref.id] && meta[ref.id].label) || ref.id;
+    if(!whole){ notes.push(`${label} has no full patch artwork yet, so it is not shown`); continue; }
+    patches.push({ id: ref.id, title: label, href: '/images/' + whole, aspect: whole === img ? ((meta[ref.id] && meta[ref.id].w) || 1) / ((meta[ref.id] && meta[ref.id].h) || 1) : 1,
+      slot: ref.kind === 'unit' ? 'R_SHOULDER' : (ref.slot || (meta[ref.id] && meta[ref.id].slotHint) || 'L_SHOULDER'), kind: ref.kind || 'general' });
+  }
+  return { patches, notes };
+}
+
 // One miniature medal per award; devices of the extra ribbons stay on the one medal (uniform-view.js).
 function medalsFrom(ribbons){
   const list = [];
@@ -124,6 +163,7 @@ function makeBuild(spec){
     patches: spec.patches || [],
     cord: spec.cord || null
   };
+  if(spec.patchRefs){ const r = patchesFrom(spec.patchRefs); b.patches = [...b.patches, ...r.patches]; b.harnessNotes = r.notes; }
   if(spec.medalSel){ b.medals = medalsFrom(b.ribbons); b.ribbons = []; }
   return b;
 }
@@ -402,6 +442,7 @@ async function main(){
           const build = makeBuild(spec);
           const scene = await P.composeUniform(build, store);
           const b = scene.bounds;
+          for(const n of build.harnessNotes || []) if(!scene.notes.includes(n)) scene.notes.push(n);
           r.notes = scene.notes.slice();
           r.missingArtwork = r.notes.filter(n => /^No artwork for/.test(n));
           fs.writeFileSync(path.join(args.out, r.scene), JSON.stringify({
@@ -447,4 +488,4 @@ async function main(){
 }
 
 if(require.main === module) main().catch(e => { console.error(e.stack || e); process.exit(1); });
-module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS, makeBuild };
+module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS, makeBuild, patchesFrom };
