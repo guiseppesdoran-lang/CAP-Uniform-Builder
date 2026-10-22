@@ -13001,21 +13001,21 @@
    "id": "garment-aviator-shirt-female-long",
    "path": "garments/garment-aviator-shirt-female-long.svg",
    "category": "garments",
-   "w_in": 21.048,
+   "w_in": 22.448,
    "h_in": 27.9,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/aviator_shirt_female.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same sleeve-to-sleeve width as the Class B shirt (20.8 in). No real garment was measured.",
+   "basis": "Silhouette traced from images/base/aviator_shirt_female.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 0.7 in (smooth ramp from the shoulder end at 4.2 in to full at 8 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 3.5 in wide at the chevron line. The widening is an estimate (the regulation gives no sleeve width). No real garment was measured.",
    "anchors": {
     "top_center": [
-     1052.4,
+     1122.4,
      0
     ],
     "bottom_center": [
-     1052.4,
+     1122.4,
      2790
     ],
     "center": [
-     1052.4,
+     1122.4,
      1395
     ],
     "left_edge": [
@@ -13023,75 +13023,101 @@
      1395
     ],
     "right_edge": [
-     2104.8,
+     2244.8,
      1395
     ],
+    "shoulder_seam_right": [
+     338.14,
+     350
+    ],
+    "elbow_right": [
+     242.32,
+     1675.5
+    ],
+    "sleeve_bottom_right": [
+     240.07,
+     2760
+    ],
+    "chevron_halfway_right": [
+     265.23,
+     1012.75
+    ],
+    "shoulder_seam_left": [
+     1906.66,
+     350
+    ],
+    "elbow_left": [
+     2002.48,
+     1675.5
+    ],
+    "sleeve_bottom_left": [
+     2004.73,
+     2760
+    ],
+    "chevron_halfway_left": [
+     1979.57,
+     1012.75
+    ],
     "hem_center": [
-     1052.4,
+     1122.4,
      2780
     ],
     "nameplate_slot_center": [
-     715.95,
+     785.95,
      831.9
     ],
     "ribbon_slot_center": [
-     1428.45,
+     1498.45,
      794.4
     ],
     "epaulet_right_center": [
-     448.89,
+     518.89,
      315.96
     ],
     "epaulet_left_center": [
-     1657.27,
+     1727.27,
      319.92
     ],
     "tie_mount_center": [
-     1052.4,
+     1122.4,
      532.45
     ],
     "badge_right_pocket_center": [
-     715.99,
+     785.99,
      1264.78
     ],
     "badge_left_pocket_center": [
-     1428.45,
+     1498.45,
      1264.78
     ],
     "badge_above_ribbons_center": [
-     1428.45,
+     1498.45,
      669.4
     ],
     "command_pin_above_nametag_center": [
-     715.95,
+     785.95,
      744.4
     ],
     "command_pin_below_nametag_center": [
-     715.95,
+     785.95,
      919.4
     ],
     "collar_insignia_right_center": [
-     899.42,
+     969.42,
      430.76
     ],
     "collar_insignia_left_center": [
-     1205.38,
+     1275.38,
      430.76
-    ],
-    "nco_chevron_right_center": [
-     393.85,
-     906.39
-    ],
-    "nco_chevron_left_center": [
-     1699.82,
-     914.8
     ]
    },
    "landmarks": [
     "nameplate_slot",
     "ribbon_slot",
     "epaulet_right",
-    "epaulet_left"
+    "epaulet_left",
+    "collar_right",
+    "collar_left"
    ],
    "has_spec": true,
    "issues": []
@@ -13100,21 +13126,21 @@
    "id": "garment-aviator-shirt-female",
    "path": "garments/garment-aviator-shirt-female.svg",
    "category": "garments",
-   "w_in": 21.048,
+   "w_in": 22.448,
    "h_in": 26.09,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/aviator_shirt_female.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same sleeve-to-sleeve width as the Class B shirt (20.8 in). No real garment was measured.",
+   "basis": "Silhouette traced from images/base/aviator_shirt_female.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 0.7 in (smooth ramp from the shoulder end at 4.2 in to full at 8 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 3.5 in wide at the chevron line. The widening is an estimate (the regulation gives no sleeve width). No real garment was measured.",
    "anchors": {
     "top_center": [
-     1052.4,
+     1122.4,
      0
     ],
     "bottom_center": [
-     1052.4,
+     1122.4,
      2609
     ],
     "center": [
-     1052.4,
+     1122.4,
      1304.5
     ],
     "left_edge": [
@@ -13122,75 +13148,93 @@
      1304.5
     ],
     "right_edge": [
-     2104.8,
+     2244.8,
      1304.5
     ],
+    "shoulder_seam_right": [
+     338.14,
+     350
+    ],
+    "sleeve_bottom_right": [
+     240.74,
+     1494.85
+    ],
+    "chevron_halfway_right": [
+     277.08,
+     922.42
+    ],
+    "shoulder_seam_left": [
+     1906.66,
+     350
+    ],
+    "sleeve_bottom_left": [
+     2004.06,
+     1494.85
+    ],
+    "chevron_halfway_left": [
+     1967.72,
+     922.42
+    ],
     "hem_center": [
-     1052.4,
+     1122.4,
      2599
     ],
     "nameplate_slot_center": [
-     715.95,
+     785.95,
      831.9
     ],
     "ribbon_slot_center": [
-     1428.45,
+     1498.45,
      794.4
     ],
     "epaulet_right_center": [
-     448.89,
+     518.89,
      315.96
     ],
     "epaulet_left_center": [
-     1657.27,
+     1727.27,
      319.92
     ],
     "tie_mount_center": [
-     1052.4,
+     1122.4,
      532.45
     ],
     "badge_right_pocket_center": [
-     715.99,
+     785.99,
      1264.78
     ],
     "badge_left_pocket_center": [
-     1428.45,
+     1498.45,
      1264.78
     ],
     "badge_above_ribbons_center": [
-     1428.45,
+     1498.45,
      669.4
     ],
     "command_pin_above_nametag_center": [
-     715.95,
+     785.95,
      744.4
     ],
     "command_pin_below_nametag_center": [
-     715.95,
+     785.95,
      919.4
     ],
     "collar_insignia_right_center": [
-     899.42,
+     969.42,
      430.76
     ],
     "collar_insignia_left_center": [
-     1205.38,
+     1275.38,
      430.76
-    ],
-    "nco_chevron_right_center": [
-     427.9,
-     1590.2
-    ],
-    "nco_chevron_left_center": [
-     1671.58,
-     1598
     ]
    },
    "landmarks": [
     "nameplate_slot",
     "ribbon_slot",
     "epaulet_right",
-    "epaulet_left"
+    "epaulet_left",
+    "collar_right",
+    "collar_left"
    ],
    "has_spec": true,
    "issues": []
@@ -13199,21 +13243,21 @@
    "id": "garment-aviator-shirt-male-long",
    "path": "garments/garment-aviator-shirt-male-long.svg",
    "category": "garments",
-   "w_in": 21.156,
+   "w_in": 24.156,
    "h_in": 26.24,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same sleeve-to-sleeve width as the Class B shirt (20.8 in). No real garment was measured.",
+   "basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 1.5 in (smooth ramp from the shoulder end at 3.6 in to full at 7.5 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line. The widening is an estimate (the regulation gives no sleeve width). No real garment was measured.",
    "anchors": {
     "top_center": [
-     1057.8,
+     1207.8,
      0
     ],
     "bottom_center": [
-     1057.8,
+     1207.8,
      2624
     ],
     "center": [
-     1057.8,
+     1207.8,
      1312
     ],
     "left_edge": [
@@ -13221,75 +13265,101 @@
      1312
     ],
     "right_edge": [
-     2115.6,
+     2415.6,
      1312
     ],
+    "shoulder_seam_right": [
+     393.76,
+     329.6
+    ],
+    "elbow_right": [
+     281.69,
+     1572.82
+    ],
+    "sleeve_bottom_right": [
+     235.6,
+     2590
+    ],
+    "chevron_halfway_right": [
+     277.89,
+     951.21
+    ],
+    "shoulder_seam_left": [
+     2021.84,
+     329.6
+    ],
+    "elbow_left": [
+     2133.91,
+     1572.82
+    ],
+    "sleeve_bottom_left": [
+     2180,
+     2590
+    ],
+    "chevron_halfway_left": [
+     2137.71,
+     951.21
+    ],
     "hem_center": [
-     1057.8,
+     1207.8,
      2610
     ],
     "nameplate_slot_center": [
-     668.65,
+     818.65,
      758.3
     ],
     "ribbon_slot_center": [
-     1446.95,
+     1596.95,
      720.8
     ],
     "epaulet_right_center": [
-     436.85,
+     586.85,
      319.1
     ],
     "epaulet_left_center": [
-     1678.75,
+     1828.75,
      319.1
     ],
     "tie_mount_center": [
-     1063.44,
+     1213.44,
      533.92
     ],
     "badge_right_pocket_center": [
-     668.64,
+     818.64,
      1164.32
     ],
     "badge_left_pocket_center": [
-     1446.96,
+     1596.96,
      1164.32
     ],
     "badge_above_ribbons_center": [
-     1446.95,
+     1596.95,
      595.8
     ],
     "command_pin_above_nametag_center": [
-     668.65,
+     818.65,
      670.8
     ],
     "command_pin_below_nametag_center": [
-     668.65,
+     818.65,
      845.8
     ],
     "collar_insignia_right_center": [
-     822.8,
+     972.8,
      347.46
     ],
     "collar_insignia_left_center": [
-     1292.8,
+     1442.8,
      347.46
-    ],
-    "nco_chevron_right_center": [
-     131.94,
-     928.01
-    ],
-    "nco_chevron_left_center": [
-     1948.83,
-     928.01
     ]
    },
    "landmarks": [
     "nameplate_slot",
     "ribbon_slot",
     "epaulet_right",
-    "epaulet_left"
+    "epaulet_left",
+    "collar_right",
+    "collar_left"
    ],
    "has_spec": true,
    "issues": []
@@ -13298,21 +13368,21 @@
    "id": "garment-aviator-shirt-male",
    "path": "garments/garment-aviator-shirt-male.svg",
    "category": "garments",
-   "w_in": 21.156,
+   "w_in": 24.156,
    "h_in": 23.66,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same sleeve-to-sleeve width as the Class B shirt (20.8 in). No real garment was measured.",
+   "basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 1.5 in (smooth ramp from the shoulder end at 3.6 in to full at 7.5 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line. The widening is an estimate (the regulation gives no sleeve width). No real garment was measured.",
    "anchors": {
     "top_center": [
-     1057.8,
+     1207.8,
      0
     ],
     "bottom_center": [
-     1057.8,
+     1207.8,
      2366
     ],
     "center": [
-     1057.8,
+     1207.8,
      1183
     ],
     "left_edge": [
@@ -13320,75 +13390,93 @@
      1183
     ],
     "right_edge": [
-     2115.6,
+     2415.6,
      1183
     ],
+    "shoulder_seam_right": [
+     393.76,
+     329.6
+    ],
+    "sleeve_bottom_right": [
+     291.53,
+     1321.4
+    ],
+    "chevron_halfway_right": [
+     275.84,
+     825.5
+    ],
+    "shoulder_seam_left": [
+     2021.84,
+     329.6
+    ],
+    "sleeve_bottom_left": [
+     2124.07,
+     1321.4
+    ],
+    "chevron_halfway_left": [
+     2139.76,
+     825.5
+    ],
     "hem_center": [
-     1057.8,
+     1207.8,
      2356
     ],
     "nameplate_slot_center": [
-     668.65,
+     818.65,
      758.3
     ],
     "ribbon_slot_center": [
-     1446.95,
+     1596.95,
      720.8
     ],
     "epaulet_right_center": [
-     436.85,
+     586.85,
      319.1
     ],
     "epaulet_left_center": [
-     1678.75,
+     1828.75,
      319.1
     ],
     "tie_mount_center": [
-     1063.44,
+     1213.44,
      533.92
     ],
     "badge_right_pocket_center": [
-     668.64,
+     818.64,
      1164.32
     ],
     "badge_left_pocket_center": [
-     1446.96,
+     1596.96,
      1164.32
     ],
     "badge_above_ribbons_center": [
-     1446.95,
+     1596.95,
      595.8
     ],
     "command_pin_above_nametag_center": [
-     668.65,
+     818.65,
      670.8
     ],
     "command_pin_below_nametag_center": [
-     668.65,
+     818.65,
      845.8
     ],
     "collar_insignia_right_center": [
-     822.8,
+     972.8,
      347.46
     ],
     "collar_insignia_left_center": [
-     1292.8,
+     1442.8,
      347.46
-    ],
-    "nco_chevron_right_center": [
-     181.94,
-     1311.4
-    ],
-    "nco_chevron_left_center": [
-     1898.83,
-     1311.4
     ]
    },
    "landmarks": [
     "nameplate_slot",
     "ribbon_slot",
     "epaulet_right",
-    "epaulet_left"
+    "epaulet_left",
+    "collar_right",
+    "collar_left"
    ],
    "has_spec": true,
    "issues": []
@@ -34995,21 +35083,21 @@
    "id": "garment-aviator-shirt-female-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-aviator-shirt-female-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 21.048,
+   "w_in": 22.448,
    "h_in": 26.09,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      0
     ],
     "bottom_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      2609
     ],
     "center": [
-     1052.3999999999999,
+     1122.3999999999999,
      1304.5
     ],
     "left_edge": [
@@ -35017,23 +35105,23 @@
      1304.5
     ],
     "right_edge": [
-     2104.7999999999997,
+     2244.7999999999997,
      1304.5
     ],
     "rank_slot_right_center": [
-     394.03,
+     464.03,
      277.36
     ],
     "rank_slot_left_center": [
-     1712.56,
+     1782.56,
      289.49
     ],
     "rank_rule_point_right": [
-     336.43,
+     406.43,
      343.49
     ],
     "rank_rule_point_left": [
-     1776.87,
+     1846.87,
      352.91
     ]
    },
@@ -35050,21 +35138,21 @@
    "id": "garment-aviator-shirt-female-epaulet-sleeve-officer",
    "path": "garments/garment-aviator-shirt-female-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 21.048,
+   "w_in": 22.448,
    "h_in": 26.09,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      0
     ],
     "bottom_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      2609
     ],
     "center": [
-     1052.3999999999999,
+     1122.3999999999999,
      1304.5
     ],
     "left_edge": [
@@ -35072,23 +35160,23 @@
      1304.5
     ],
     "right_edge": [
-     2104.7999999999997,
+     2244.7999999999997,
      1304.5
     ],
     "rank_slot_right_center": [
-     394.03,
+     464.03,
      277.36
     ],
     "rank_slot_left_center": [
-     1712.56,
+     1782.56,
      289.49
     ],
     "rank_rule_point_right": [
-     336.43,
+     406.43,
      343.49
     ],
     "rank_rule_point_left": [
-     1776.87,
+     1846.87,
      352.91
     ]
    },
@@ -35105,21 +35193,21 @@
    "id": "garment-aviator-shirt-female-long-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-aviator-shirt-female-long-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 21.048,
+   "w_in": 22.448,
    "h_in": 27.9,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      0
     ],
     "bottom_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      2790
     ],
     "center": [
-     1052.3999999999999,
+     1122.3999999999999,
      1395
     ],
     "left_edge": [
@@ -35127,23 +35215,23 @@
      1395
     ],
     "right_edge": [
-     2104.7999999999997,
+     2244.7999999999997,
      1395
     ],
     "rank_slot_right_center": [
-     394.03,
+     464.03,
      277.36
     ],
     "rank_slot_left_center": [
-     1712.56,
+     1782.56,
      289.49
     ],
     "rank_rule_point_right": [
-     336.43,
+     406.43,
      343.49
     ],
     "rank_rule_point_left": [
-     1776.87,
+     1846.87,
      352.91
     ]
    },
@@ -35160,21 +35248,21 @@
    "id": "garment-aviator-shirt-female-long-epaulet-sleeve-officer",
    "path": "garments/garment-aviator-shirt-female-long-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 21.048,
+   "w_in": 22.448,
    "h_in": 27.9,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      0
     ],
     "bottom_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      2790
     ],
     "center": [
-     1052.3999999999999,
+     1122.3999999999999,
      1395
     ],
     "left_edge": [
@@ -35182,23 +35270,23 @@
      1395
     ],
     "right_edge": [
-     2104.7999999999997,
+     2244.7999999999997,
      1395
     ],
     "rank_slot_right_center": [
-     394.03,
+     464.03,
      277.36
     ],
     "rank_slot_left_center": [
-     1712.56,
+     1782.56,
      289.49
     ],
     "rank_rule_point_right": [
-     336.43,
+     406.43,
      343.49
     ],
     "rank_rule_point_left": [
-     1776.87,
+     1846.87,
      352.91
     ]
    },
@@ -35215,21 +35303,21 @@
    "id": "garment-aviator-shirt-female-long-tie-tab",
    "path": "garments/garment-aviator-shirt-female-long-tie-tab.svg",
    "category": "garments",
-   "w_in": 21.048,
+   "w_in": 22.448,
    "h_in": 27.9,
    "size_source": "estimated",
    "basis": "Same inverted-V tab as accessories/tie-tab-inverted-v (2.7 x 1.6 in), hung from the collar V; no dimension in the regulation.",
    "anchors": {
     "top_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      0
     ],
     "bottom_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      2790
     ],
     "center": [
-     1052.3999999999999,
+     1122.3999999999999,
      1395
     ],
     "left_edge": [
@@ -35237,15 +35325,15 @@
      1395
     ],
     "right_edge": [
-     2104.7999999999997,
+     2244.7999999999997,
      1395
     ],
     "tie_tab_center": [
-     1052.4,
+     1122.4,
      612.45
     ],
     "tie_tab_top_center": [
-     1052.4,
+     1122.4,
      532.45
     ]
    },
@@ -35259,21 +35347,21 @@
    "id": "garment-aviator-shirt-female-tie-tab",
    "path": "garments/garment-aviator-shirt-female-tie-tab.svg",
    "category": "garments",
-   "w_in": 21.048,
+   "w_in": 22.448,
    "h_in": 26.09,
    "size_source": "estimated",
    "basis": "Same inverted-V tab as accessories/tie-tab-inverted-v (2.7 x 1.6 in), hung from the collar V; no dimension in the regulation.",
    "anchors": {
     "top_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      0
     ],
     "bottom_center": [
-     1052.3999999999999,
+     1122.3999999999999,
      2609
     ],
     "center": [
-     1052.3999999999999,
+     1122.3999999999999,
      1304.5
     ],
     "left_edge": [
@@ -35281,15 +35369,15 @@
      1304.5
     ],
     "right_edge": [
-     2104.7999999999997,
+     2244.7999999999997,
      1304.5
     ],
     "tie_tab_center": [
-     1052.4,
+     1122.4,
      612.45
     ],
     "tie_tab_top_center": [
-     1052.4,
+     1122.4,
      532.45
     ]
    },
@@ -35303,21 +35391,21 @@
    "id": "garment-aviator-shirt-male-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-aviator-shirt-male-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 21.156,
+   "w_in": 24.156,
    "h_in": 23.66,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1057.8,
+     1207.8,
      0
     ],
     "bottom_center": [
-     1057.8,
+     1207.8,
      2366
     ],
     "center": [
-     1057.8,
+     1207.8,
      1183
     ],
     "left_edge": [
@@ -35325,23 +35413,23 @@
      1183
     ],
     "right_edge": [
-     2115.6,
+     2415.6,
      1183
     ],
     "rank_slot_right_center": [
-     385.44,
+     535.44,
      290.25
     ],
     "rank_slot_left_center": [
-     1730.16,
+     1880.16,
      290.25
     ],
     "rank_rule_point_right": [
-     316.61,
+     466.61,
      360.74
     ],
     "rank_rule_point_left": [
-     1798.99,
+     1948.99,
      360.74
     ]
    },
@@ -35358,21 +35446,21 @@
    "id": "garment-aviator-shirt-male-epaulet-sleeve-officer",
    "path": "garments/garment-aviator-shirt-male-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 21.156,
+   "w_in": 24.156,
    "h_in": 23.66,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1057.8,
+     1207.8,
      0
     ],
     "bottom_center": [
-     1057.8,
+     1207.8,
      2366
     ],
     "center": [
-     1057.8,
+     1207.8,
      1183
     ],
     "left_edge": [
@@ -35380,23 +35468,23 @@
      1183
     ],
     "right_edge": [
-     2115.6,
+     2415.6,
      1183
     ],
     "rank_slot_right_center": [
-     385.44,
+     535.44,
      290.25
     ],
     "rank_slot_left_center": [
-     1730.16,
+     1880.16,
      290.25
     ],
     "rank_rule_point_right": [
-     316.61,
+     466.61,
      360.74
     ],
     "rank_rule_point_left": [
-     1798.99,
+     1948.99,
      360.74
     ]
    },
@@ -35413,21 +35501,21 @@
    "id": "garment-aviator-shirt-male-long-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-aviator-shirt-male-long-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 21.156,
+   "w_in": 24.156,
    "h_in": 26.24,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1057.8,
+     1207.8,
      0
     ],
     "bottom_center": [
-     1057.8,
+     1207.8,
      2624
     ],
     "center": [
-     1057.8,
+     1207.8,
      1312
     ],
     "left_edge": [
@@ -35435,23 +35523,23 @@
      1312
     ],
     "right_edge": [
-     2115.6,
+     2415.6,
      1312
     ],
     "rank_slot_right_center": [
-     385.44,
+     535.44,
      290.25
     ],
     "rank_slot_left_center": [
-     1730.16,
+     1880.16,
      290.25
     ],
     "rank_rule_point_right": [
-     316.61,
+     466.61,
      360.74
     ],
     "rank_rule_point_left": [
-     1798.99,
+     1948.99,
      360.74
     ]
    },
@@ -35468,21 +35556,21 @@
    "id": "garment-aviator-shirt-male-long-epaulet-sleeve-officer",
    "path": "garments/garment-aviator-shirt-male-long-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 21.156,
+   "w_in": 24.156,
    "h_in": 26.24,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours as the Class B sleeves (gray #6e6a69, cadet navy #072157); the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1057.8,
+     1207.8,
      0
     ],
     "bottom_center": [
-     1057.8,
+     1207.8,
      2624
     ],
     "center": [
-     1057.8,
+     1207.8,
      1312
     ],
     "left_edge": [
@@ -35490,23 +35578,23 @@
      1312
     ],
     "right_edge": [
-     2115.6,
+     2415.6,
      1312
     ],
     "rank_slot_right_center": [
-     385.44,
+     535.44,
      290.25
     ],
     "rank_slot_left_center": [
-     1730.16,
+     1880.16,
      290.25
     ],
     "rank_rule_point_right": [
-     316.61,
+     466.61,
      360.74
     ],
     "rank_rule_point_left": [
-     1798.99,
+     1948.99,
      360.74
     ]
    },
@@ -35523,21 +35611,21 @@
    "id": "garment-aviator-shirt-male-long-tie",
    "path": "garments/garment-aviator-shirt-male-long-tie.svg",
    "category": "garments",
-   "w_in": 21.156,
+   "w_in": 24.156,
    "h_in": 26.24,
    "size_source": "estimated",
    "basis": "Visible blade of the blazer base tie, stretched to run from the collar V to the middle of the belt buckle (the tip covers part of the buckle, 4.2.5.1.4); width profile as the blazer tie. No dimension in the regulation.",
    "anchors": {
     "top_center": [
-     1057.8,
+     1207.8,
      0
     ],
     "bottom_center": [
-     1057.8,
+     1207.8,
      2624
     ],
     "center": [
-     1057.8,
+     1207.8,
      1312
     ],
     "left_edge": [
@@ -35545,19 +35633,19 @@
      1312
     ],
     "right_edge": [
-     2115.6,
+     2415.6,
      1312
     ],
     "tie_knot_top_center": [
-     1063.44,
+     1213.44,
      533.92
     ],
     "tie_tip_center": [
-     1063.44,
+     1213.44,
      2010.32
     ],
     "tie_tack_center": [
-     1063.44,
+     1213.44,
      1307.12
     ]
    },
@@ -35571,21 +35659,21 @@
    "id": "garment-aviator-shirt-male-tie",
    "path": "garments/garment-aviator-shirt-male-tie.svg",
    "category": "garments",
-   "w_in": 21.156,
+   "w_in": 24.156,
    "h_in": 23.66,
    "size_source": "estimated",
    "basis": "Visible blade of the blazer base tie, stretched to run from the collar V to the middle of the belt buckle (the tip covers part of the buckle, 4.2.5.1.4); width profile as the blazer tie. No dimension in the regulation.",
    "anchors": {
     "top_center": [
-     1057.8,
+     1207.8,
      0
     ],
     "bottom_center": [
-     1057.8,
+     1207.8,
      2366
     ],
     "center": [
-     1057.8,
+     1207.8,
      1183
     ],
     "left_edge": [
@@ -35593,19 +35681,19 @@
      1183
     ],
     "right_edge": [
-     2115.6,
+     2415.6,
      1183
     ],
     "tie_knot_top_center": [
-     1063.44,
+     1213.44,
      533.92
     ],
     "tie_tip_center": [
-     1063.44,
+     1213.44,
      2010.32
     ],
     "tie_tack_center": [
-     1063.44,
+     1213.44,
      1307.12
     ]
    },

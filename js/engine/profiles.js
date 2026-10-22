@@ -203,24 +203,17 @@
 
   // Collar leaf polygons of the sheets that carry no collar_<side> landmark of their own, in sheet
   // inches (a = the leaf on the left of the picture, b = the right): the leaf path of each sheet's SVG
-  // with the group transforms applied (the aviator and overblouse collar-right/-left paths; the ABU and
+  // with the group transforms applied (the overblouse collar-right/-left paths; the aviator shirt sheets state collar_left / collar_right themselves; the ABU and
   // CFU unnamed five-point leaf path in collar-front, origin 19.65 in across and 8.5 / 14.2 in down).
   // A test reads them again from the SVG. Remove an entry when its sheet states the polygon.
   const COLLAR_POLYGONS = (() => {
     const pts = a => a.map(([x, y]) => ({ x, y }));
-    const male = { a: pts([[8.115, 0.175], [5.934, 4.236], [8.341, 4.048], [10.522, 5.439]]), b: pts([[13.041, 0.175], [15.222, 4.236], [12.815, 4.048], [10.634, 5.439]]) };
-    const female = {
-      a: pts([[8.117, 0.148], [6.010, 4.363], [8.291, 4.150], [8.330, 4.827], [10.534, 5.775], [10.862, 6.432], [10.437, 5.523], [9.374, 3.242]]),
-      b: pts([[12.699, 0.148], [14.845, 4.479], [12.506, 4.247], [12.467, 4.750], [10.553, 5.775], [10.437, 5.523], [11.114, 4.208], [12.080, 2.275]])
-    };
     const over = { a: pts([[8.814, 0.100], [9.526, 1.167], [9.988, 1.986], [10.700, 2.448], [8.459, 4.013], [7.961, 1.594]]), b: pts([[12.586, 0.100], [11.874, 1.167], [11.412, 1.986], [10.700, 2.448], [12.941, 4.013], [13.439, 1.594]]) };
     const coat = oy => ({
       a: pts([[17.090, oy - 0.430], [15.850, oy + 1.280], [14.670, oy + 3.930], [17.100, oy + 3.360], [18.545, oy + 2.600]]),
       b: pts([[22.210, oy - 0.430], [23.450, oy + 1.280], [24.630, oy + 3.930], [22.200, oy + 3.360], [20.755, oy + 2.600]])
     });
     return {
-      'garment-aviator-shirt-male': male, 'garment-aviator-shirt-male-long': male,
-      'garment-aviator-shirt-female': female, 'garment-aviator-shirt-female-long': female,
       'garment-overblouse-female': over, 'garment-overblouse-female-long': over,
       'garment-abu-coat': coat(8.5), 'garment-cfu-coat': coat(14.2)
     };

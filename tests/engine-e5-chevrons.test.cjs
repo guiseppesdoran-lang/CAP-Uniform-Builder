@@ -84,20 +84,38 @@ for(const [uniform, gender, opt, garment] of [
   ['blues_a', 'male', {}, 'garment-blues-class-a-coat'],
   ['blues_a', 'female', {}, 'garment-blues-class-a-coat-female'],
   ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long'],
-  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long']
+  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long'],
+  ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male'],
+  ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long'],
+  ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female'],
+  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long']
 ]){
   test(`${uniform} ${gender}: sleeve chevron centred on the sheet's chevron_halfway point, halfway between the shoulder seam and the elbow`, async () => {
     const spec = await store.load(garment);
     const scene = await P.composeUniform(build(uniform, gender, 'senior', 'SMSgt', opt), store);
     for(const side of ['right', 'left']){
-      const c = core.anchor(spec, 'chevron_halfway_' + side), s = core.anchor(spec, 'shoulder_seam_' + side), e = core.anchor(spec, 'elbow_' + side);
+      const c = core.anchor(spec, 'chevron_halfway_' + side), s = core.anchor(spec, 'shoulder_seam_' + side), e = core.anchor(spec, 'elbow_' + side) || core.anchor(spec, 'sleeve_bottom_' + side);
       const l = gradeLayer(scene, 'grade:sleeve-' + side);
       assert.ok(l && c && s && e, side);
       assert.ok(Math.hypot(l.x + l.w / 2 - c.x, l.y + l.h / 2 - c.y) < 0.01, `${side}: centre ${l.x + l.w / 2},${l.y + l.h / 2} vs ${c.x},${c.y}`);
       const turn = Math.atan2(s.x - e.x, e.y - s.y) * 180 / Math.PI;
       assert.ok(Math.abs(l.rotate - turn) < 0.01, `${side}: turned ${l.rotate} vs the arm's ${turn}`);
-      // halfway down the arm: the anchor's height is the middle of the seam-to-elbow height
+      // halfway down the arm: the anchor's height is the middle of the seam-to-elbow height (long sleeves: the elbow is 55 % of the way to the cuff, so the middle of seam and elbow)
       assert.ok(Math.abs(c.y - (s.y + e.y) / 2) < 0.1, `${side}: anchor ${c.y} in, middle of seam and elbow ${(s.y + e.y) / 2} in`);
+    }
+  });
+}
+
+// The aviator shirt's sleeves are drawn wide enough for the regulation 3 1/2 in chevron (4.2.5.1.1.3, 4.2.6.2.3): the chevron's rotated box lies inside the garment's own box,
+// so nothing hangs off the shirt into the background (it used to pass the outline by 0.27 in on the men's short sleeve and 0.62 in beside the blazer).
+for(const [gender, sleeve] of [['male', 'short'], ['male', 'long'], ['female', 'short'], ['female', 'long']]){
+  test(`aviator ${gender} ${sleeve}: the 3 1/2 in sleeve chevron does not leave the shirt's box`, async () => {
+    const scene = await P.composeUniform(build('aviator', gender, 'senior', 'SMSgt', { sleeve }), store);
+    const sh = scene.layers.find(l => l.role === 'garment' || /^base:/.test(l.key));
+    for(const side of ['right', 'left']){
+      const l = gradeLayer(scene, 'grade:sleeve-' + side), th = l.rotate * Math.PI / 180, cx = l.x + l.w / 2, cy = l.y + l.h / 2;
+      const hw = (Math.abs(Math.cos(th)) * l.w + Math.abs(Math.sin(th)) * l.h) / 2;
+      assert.ok(cx - hw >= sh.x - 0.01 && cx + hw <= sh.x + sh.w + 0.01, `${side}: chevron spans ${(cx - hw).toFixed(2)}..${(cx + hw).toFixed(2)} in, shirt box ${sh.x}..${sh.x + sh.w}`);
     }
   });
 }
