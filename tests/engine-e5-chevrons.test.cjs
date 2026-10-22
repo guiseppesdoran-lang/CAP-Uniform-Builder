@@ -62,7 +62,8 @@ for(const [uniform, gender, opt, size, para] of SLEEVE_CASES){
     test(`${uniform} ${gender} ${JSON.stringify(opt)} ${rank}: sleeve chevron is ${size} in wide at the art's own proportions, never squeezed (${para})`, async () => {
       const scene = await P.composeUniform(build(uniform, gender, 'senior', rank, opt), store);
       const g = G.gradeInfo('senior', rank, {});
-      const ids = scene.layers.filter(l => l.role === 'grade' && /^grade:sleeve-/.test(l.key));
+      // The flat sleeve views; the ABU and CFU figure's arms carry a narrowed edge-on copy (':edge', FIX-R-OTHER-r2 #7).
+      const ids = scene.layers.filter(l => l.role === 'grade' && /^grade:sleeve-/.test(l.key) && !/:edge$/.test(l.key));
       assert.ok(ids.length >= 1, 'at least one sleeve chevron');
       for(const l of ids){
         const spec = await store.load(l.id);

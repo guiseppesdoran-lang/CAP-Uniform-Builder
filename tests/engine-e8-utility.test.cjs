@@ -307,13 +307,13 @@ test('ABU and CFU overlay: grade 1 in from the collar\'s free edge, chevron widt
     assert.ok(ms.filter(m => m.label === '½ in').length >= 2, `${u}: badges`);
     // a senior NCO: the chevron's width on each sleeve view the sheet draws
     const nco = await P.composeUniform(build(u, 'senior', 'SMSgt', { opt: { headgear: 'auto', chevron: '3.5' } }), store());
-    const chev = nco.layers.filter(l => /^grade:sleeve-/.test(l.key));
+    const chev = nco.layers.filter(l => /^grade:sleeve-/.test(l.key) && !/:edge$/.test(l.key)); // the flat views; the arms' edge-on copies are narrowed (FIX-R-OTHER-r2 #7)
     assert.ok(chev.length >= 1);
     for(const c of chev) assert.ok(measures(nco).some(m => Math.abs(m.from.x - c.x) < 1e-6 && Math.abs(len(m) - c.w) < 1e-6), `${u}: chevron width`);
   }
   // patches: each one's width
   const cfu = await P.composeUniform(build('corporate_field', 'senior', 'Capt', { patches: [UNIT, WING, { id: 'cos_patch', title: 'COS', href: 'images/patches/cos_patch.webp', aspect: 1, slot: 'CHEST_LEFT', kind: 'general' }] }), store());
-  const patches = cfu.layers.filter(l => l.role === 'patch');
+  const patches = cfu.layers.filter(l => l.role === 'patch' && !/:edge$/.test(l.key));
   assert.equal(patches.length, 3);
   for(const p of patches) assert.ok(measures(cfu).some(m => Math.abs(m.from.x - p.x) < 1e-6 && Math.abs(len(m) - p.w) < 1e-6), `${p.key} width`);
 });
@@ -395,7 +395,7 @@ test('ABU and CFU sleeve patches hang 1/2 in below the shoulder seam and the ove
     const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
     const spec = await ST.load(garment);
     const scene = await P.composeUniform(build(u, 'senior', 'Capt', { patches }), store());
-    for(const p of scene.layers.filter(l => l.role === 'patch' && /L_SHOULDER|R_SHOULDER/.test(l.key))){
+    for(const p of scene.layers.filter(l => l.role === 'patch' && /L_SHOULDER|R_SHOULDER/.test(l.key) && !/:edge$/.test(l.key))){
       const side = /L_SHOULDER/.test(p.key) ? 'left' : 'right';
       const seam = core.anchor(spec, 'seam_top_center_' + side);
       assert.ok(Math.abs(p.y - seam.y - 0.5) < 0.005, `${u} ${side}: patch top ${p.y} is ${(p.y - seam.y).toFixed(3)} in below the seam`);
