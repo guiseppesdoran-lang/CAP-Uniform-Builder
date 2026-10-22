@@ -83,6 +83,64 @@ test('a saved setup that lists both wears one: the higher in the order of preced
 
 // ---- order of the federal awards -------------------------------------------------------------------------
 
+test('the Crisis Service Ribbon is earned once a service period and a later period adds a bronze clasp (39-3, Crisis Service Ribbon)', () => {
+  ev("State.membership = 'senior'");
+  const options = ev("getRibbonAwardOptions('crisis_ribbon').filter(o => o.value)");
+  assert.ok(options.length >= 3);
+  options.forEach((o, i) => {
+    const parts = RA.resolve('crisis_ribbon', { awardValue: o.value, awardLabel: o.label });
+    assert.equal(parts.length, 1);
+    assert.deepEqual(parts[0].devices, Array(i).fill('device-clasp-bronze'), o.label);
+  });
+  // An imported 'earned' selection is the first period.
+  assert.equal(ev("getRibbonSelectionOption('crisis_ribbon', 'earned').value"), options[0].value);
+});
+
+test('the IACE ribbon and the annual cadet awards take a bronze clasp for each later award, a silver clasp for five (39-3 6b)', () => {
+  for(const id of ['iace_ribbon', 'afa_award', 'afsa_award', 'vfw_officer_award', 'vfw_nco_award']){
+    ev("State.membership = 'cadet'");
+    const options = ev(`getRibbonAwardOptions('${id}').filter(o => o.value)`);
+    assert.ok(options.length > 5, `${id}: more than one choice`);
+    const devices = n => RA.resolve(id, { awardValue: options[n - 1].value, awardLabel: options[n - 1].label })[0].devices;
+    assert.deepEqual(devices(1), []);
+    assert.deepEqual(devices(2), ['device-clasp-bronze']);
+    assert.deepEqual(devices(6), ['device-clasp-silver']);
+    assert.deepEqual(devices(7), ['device-clasp-silver', 'device-clasp-bronze']);
+  }
+});
+
+test('the AFOEA stays a single award (ICL 18-02: one award period)', () => {
+  ev("State.membership = 'senior'");
+  assert.equal(ev("getRibbonAwardOptions('Air_Force_Organizational_Excellence_Award').filter(o => o.value).length"), 1);
+});
+
+test('the cadet recruiter ribbon counts recruits: 2 earn it, a bronze clasp per 2 more, silver for five, another silver per 10 (39-3 21k(1))', () => {
+  ev("State.membership = 'cadet'");
+  const options = ev("getRibbonAwardOptions('cadet_recruiter_ribbon').filter(o => o.value)");
+  assert.match(options[0].label, /^2 members recruited$/);
+  const d = recruits => {
+    const o = options.find(x => new RegExp(`^${recruits} members`).test(x.label));
+    assert.ok(o, `an option for ${recruits}`);
+    return RA.resolve('cadet_recruiter_ribbon', { awardValue: o.value, awardLabel: o.label })[0].devices;
+  };
+  assert.deepEqual(d(2), []);
+  assert.deepEqual(d(4), ['device-clasp-bronze']);
+  assert.deepEqual(d(10), Array(4).fill('device-clasp-bronze'));
+  assert.deepEqual(d(12), ['device-clasp-silver'], 'a silver clasp replaces five bronze');
+  assert.deepEqual(d(22), ['device-clasp-silver', 'device-clasp-silver']);
+});
+
+test('the picker has a rule line for the ribbons whose counting is not plain "Nth award" (39-3 21c, 21d, 21k, 6b)', () => {
+  for(const id of ['search_find_ribbon', 'air_search_and_rescue_ribbon', 'crisis_ribbon', 'cadet_recruiter_ribbon', 'cap_senior_recruiter_ribbon', 'iace_ribbon', 'national_commanders_citation', 'cap_gill_robb_wilson_ribbon']){
+    assert.ok(RA.hint(id).length > 20, `${id} has a hint`);
+  }
+  assert.match(RA.hint('search_find_ribbon'), /20 non-distress finds/);
+  assert.equal(RA.hint('meritorious_service_award'), '');
+  assert.match(read('js/galleries.js'), /CAPUBRibbonAwards\.hint\(id\)/);
+});
+
+// ---- badges and cords ------------------------------------------------------------------------------------------------
+
 test('Corporate Service Dress and Semi-Formal: the National Staff badge is not authorized, the Command Council badge may take the crest\'s place (4.2.3.1.1.1, Attachment 4)', () => {
   for(const uniform of ['semi_formal', 'aviator_blazer']){
     ev(`State.uniform = '${uniform}'`);

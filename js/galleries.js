@@ -351,14 +351,10 @@ function mcchordContinuationOptions(id){
   }));
 }
 
+// Earned once: the AFOEA was awarded for one period only (ICL 18-02). The other single-looking ribbons
+// follow 39-3 6b, a bronze clasp for each later award.
 const CAPUB_SINGLE_AWARD_RIBBON_IDS = new Set([
-  'Air_Force_Organizational_Excellence_Award',
-  'crisis_ribbon',
-  'iace_ribbon',
-  'afa_award',
-  'afsa_award',
-  'vfw_officer_award',
-  'vfw_nco_award'
+  'Air_Force_Organizational_Excellence_Award'
 ]);
 
 const CAPUB_REPEATABLE_RIBBON_84_CONFIG = {
@@ -433,6 +429,18 @@ const CAPUB_HONOR_CREDIT_RIBBONS = new Set(['curry_achievement','hap_arnold_achi
 const CAPUB_PLAIN_ACHIEVEMENT_RIBBONS = new Set(['wright_brothers_award']);
 function capubRibbonOptionOverride(id){
   const pick = { label:'- Select -', value:'', devices:{} };
+  if(id === 'crisis_ribbon'){
+    // One award per service period; a later period adds a bronze clasp (the ICL that made the ribbon).
+    return [pick, ...[1,2,3,4,5].map(n => ({
+      label: n === 1 ? '1st service period (basic ribbon)' : `${ordinalLabel(n)} service period / ${n - 1} Bronze Clasp${n > 2 ? 's' : ''}`,
+      value:`award_${n}`, devices:{}
+    }))];
+  }
+  if(id === 'cadet_recruiter_ribbon'){
+    // 21k(1): two recruits earn the ribbon, a bronze clasp for each additional two, a silver clasp for
+    // five bronze, another silver clasp for each additional ten.
+    return [pick, ...[2,4,6,8,10,12,22,32,42].map(n => ({ label:`${n} members recruited`, value:`recruits_${n}`, devices:{} }))];
+  }
   if(id === 'cadet_advisory_council_ribbon'){
     // 39-3 21j: the highest level served, shown by the star.
     return [pick,
@@ -1121,6 +1129,7 @@ function buildRibbonGallery(options={}){
           </select>
         </label>
         ${military ? `<div class="militarySpecialDeviceRow" title="Select only devices authorized on your award orders.">${specialControls}</div>` : ''}
+        ${!military && window.CAPUBRibbonAwards && CAPUBRibbonAwards.hint(id) ? `<div class="sub ribbonRuleHint">${escapeHtml(CAPUBRibbonAwards.hint(id))}</div>` : ''}
         <div class="sub ribbonDeviceSummary">
           ${sel.checked ? `Selected: <b>${escapeHtml(sel.awardLabel || 'Earned')}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` • ${escapeHtml(sel.deviceWarnings.join(' '))}` : ''}` : ''}
         </div>

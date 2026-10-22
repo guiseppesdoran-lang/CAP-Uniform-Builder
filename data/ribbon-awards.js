@@ -44,6 +44,15 @@
     lifesaving_award: { devices: 'clasps', lifesavingStar: true },
     cadet_recruiter_ribbon: { devices: 'recruiter', first: 2, step: 2, silverStep: 10 },
     cap_senior_recruiter_ribbon: { devices: 'recruiter', first: 7, step: 10, silverStep: 50 },
+    // 6b: subsequent awards of the same ribbon are marked by the bronze clasp. The Crisis Service Ribbon
+    // is earned once per service period, later periods are marked by the clasp (ICL); the IACE and the
+    // annual cadet awards follow the general rule.
+    crisis_ribbon: { devices: 'clasps' },
+    iace_ribbon: { devices: 'clasps' },
+    afa_award: { devices: 'clasps' },
+    afsa_award: { devices: 'clasps' },
+    vfw_officer_award: { devices: 'clasps' },
+    vfw_nco_award: { devices: 'clasps' },
     Air_Force_Organizational_Excellence_Award: { devices: 'olc' },
     air_force_aerial_achievement_medal: { devices: 'olc' },
     air_medal: { devices: 'olc' },
@@ -195,6 +204,23 @@
       return (STAR_MEANING[id] && STAR_MEANING[id][d]) || '';
     });
   }
+
+  // A line under the picker for the ribbons whose counting is not plain "Nth award".
+  const HINTS = {
+    search_find_ribbon: 'A bronze clasp for each additional distress find, or for each additional 20 non-distress finds. A propeller marks a find made as aircrew (CAPR 39-3, 21d).',
+    air_search_and_rescue_ribbon: 'A bronze clasp for each additional 10 sorties; the propeller marks aircrew sorties (CAPR 39-3, 21c).',
+    crisis_ribbon: 'One award for each service period; a later period is marked by a bronze clasp (CAPR 39-3, Crisis Service Ribbon).',
+    iace_ribbon: 'A bronze clasp marks each later exchange (CAPR 39-3, 6b).',
+    afa_award: 'A bronze clasp marks each later award (CAPR 39-3, 6b).',
+    afsa_award: 'A bronze clasp marks each later award (CAPR 39-3, 6b).',
+    vfw_officer_award: 'A bronze clasp marks each later award (CAPR 39-3, 6b).',
+    vfw_nco_award: 'A bronze clasp marks each later award (CAPR 39-3, 6b).',
+    cadet_recruiter_ribbon: 'Two recruits earn the ribbon; a bronze clasp for each additional two, and a silver clasp replaces five (CAPR 39-3, 21k(1)).',
+    cap_senior_recruiter_ribbon: 'Seven recruits earn the ribbon; a bronze clasp for each additional ten, and a silver clasp replaces five (CAPR 39-3, 21k(2)).',
+    national_commanders_citation: 'Worn in the place of the Gill Robb Wilson Award: one of the two, not both (CAPR 39-3, Attachment 2, Note 2).',
+    cap_gill_robb_wilson_ribbon: 'Worn in the place of the National Commander\'s Citation: one of the two, not both (CAPR 39-3, Attachment 2).'
+  };
+  function hint(id){ return HINTS[id] || ''; }
 
   function deviceName(d){
     let m;
@@ -355,5 +381,5 @@
     return order.indexOf(a) - order.indexOf(b);
   }
 
-  return { DEVICES: D, FAMILIES, HONOR_CREDIT_RIBBONS, resolve, describe, explain, readCount, starsFromText, spread, clasps };
+  return { DEVICES: D, FAMILIES, HONOR_CREDIT_RIBBONS, resolve, describe, explain, hint, readCount, starsFromText, spread, clasps };
 });
