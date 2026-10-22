@@ -13,7 +13,7 @@
   171.8
  ],
  "size_source": "estimated",
- "size_basis": "Length and mean width of the senior layer epaulet sleeve (true size on this coat); gray sampled from the reference photo (images/base/lt_col_blues_class_b_male, #6e6a69); the regulation gives no dimension.",
+ "size_basis": "Length and mean width of the senior layer epaulet sleeve (true size on this coat); gray is that of the top-down sleeve assets (rank-epaulet-sleeve-gray-*, #5f5c5c, measured on CAPR 39-1 Fig A5-1; assets/epaulet-sleeve-colours.js), the same as the edge-on strip on the coat; the regulation gives no dimension.",
  "anchors": {
   "top_center": [
    143.1,
