@@ -122,6 +122,33 @@ test('the command pin is worn with the National Staff and Volunteer University b
   }
 });
 
+// ---- shoulder cords ----------------------------------------------------------------------------------
+
+test('Aide de Camp cord: senior members and cadets wear it on Class A and Class B (9.3.4)', async () => {
+  const cases = [['blues_a', 'male', 'senior', 'Col'], ['blues_a', 'female', 'senior', 'Capt'], ['blues_b', 'male', 'senior', 'Maj'], ['blues_b', 'female', 'senior', 'Lt Col'],
+    ['blues_a', 'male', 'cadet', 'C/Maj'], ['blues_b', 'female', 'cadet', 'C/Capt']];
+  for(const [uniform, sex, membership, rank] of cases){
+    const scene = await compose(build(uniform, sex, membership, rank, [], { cord: 'aide_de_camp' }));
+    assert.ok(scene.layers.some(l => /cord-aide-de-camp/.test(l.id || '')), `${uniform} ${sex} ${rank}: the aide cord is drawn`);
+  }
+});
+
+test('the cadet cords (CAC, color guard, honor guard) are for cadets: a senior member shows none (9.3)', async () => {
+  for(const cord of ['group', 'wing', 'region', 'national', 'color_guard', 'honor_guard']){
+    const senior = await compose(build('blues_a', 'male', 'senior', 'Capt', [], { cord }));
+    assert.ok(!senior.layers.some(l => /-cord-/.test(l.id || '')), `${cord}: none on a senior member`);
+    const cadet = await compose(build('blues_a', 'male', 'cadet', 'C/Maj', [], { cord }));
+    assert.ok(cadet.layers.some(l => /-cord-/.test(l.id || '')), `${cord}: drawn on a cadet`);
+  }
+});
+
+test('no cord is drawn on the cadet semi-formal, the aviator shirt or a field uniform (9.3, 9.4.1)', async () => {
+  for(const [uniform, sex, membership, rank] of [['semi_formal_usaf', 'male', 'cadet', 'C/Maj'], ['aviator', 'male', 'senior', 'Capt'], ['ocp', 'male', 'cadet', 'C/Maj'], ['mess_dress', 'male', 'senior', 'Capt']]){
+    const scene = await compose(build(uniform, sex, membership, rank, [], { cord: 'aide_de_camp' }));
+    assert.ok(!scene.layers.some(l => /-cord-|^cord-/.test(l.id || '')), `${uniform}: no cord`);
+  }
+});
+
 // ---- service badge next to the collar ------------------------------------------------------------------------
 
 test('women\'s Class A: the Volunteer University badge, a CAP service badge, is worn closest to the lapel (10.2.4)', async () => {

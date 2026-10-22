@@ -524,6 +524,8 @@
   // cord turned to follow it and moved 1/8 in toward the neck.
   async function shoulderCord(ctx, b, axis){
     if(!b.cord) return;
+    // The cadet cords are for cadets (9.3); the Aide de Camp cord is also worn by senior members (9.3.4).
+    if(!b.grade.cadet && b.cord !== 'aide_de_camp') return;
     const id = String(b.cord).startsWith('cord-') ? b.cord : 'cord-' + String(b.cord).replace(/_/g, '-');
     // The garment's own cord, drawn along its left armhole seam and passing under the epaulet.
     const own = ctx.base && `${ctx.base.id}-${id}`;
@@ -747,7 +749,7 @@
 
     if(!semi){
       await lapelForeground(ctx, A, g);
-      if(g.cadet) await shoulderCord(ctx, b, A.cord);
+      await shoulderCord(ctx, b, A.cord);
       await blueHat(ctx, b);
     }
   }
@@ -812,7 +814,7 @@
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
     }
     await dressBadges(ctx, b, geo);
-    if(g.cadet) await shoulderCord(ctx, b, strapAxis(ctx, 'left'));
+    await shoulderCord(ctx, b, strapAxis(ctx, 'left'));
     await blueHat(ctx, b);
   }
 

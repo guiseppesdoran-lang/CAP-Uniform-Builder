@@ -35,15 +35,18 @@
   // patchesShareBadgeCap: the regulation counts badges and patches together against badgeCap.
   // shoulderCord: shoulder cords may be worn on it, by cadets only (9.3, 9.4.1: cadets, on the
   //               USAF-style Service Dress and Blue Service uniforms, never on a Working Uniform)
+  // aideCord:     the USAF Aide de Camp cord may be worn, by senior members and cadets alike, while they
+  //               serve as an aide to a general officer, on the Service uniform (Class B) and Service
+  //               Dress (Class A) (9.3.4)
   // chaplainBadgeOnly: the only occupational badge authorized is the chaplain badge
   //               (4.2.3.1.1.3; Corporate Semi-Formal is worn as for Corporate Service
   //               Dress, 4.2.1).
   const RULES=Object.freeze({
     blues_a:{group:'everyday',style:'usaf',membership:['cadet','senior'],adultCadet:false,
-      ribbons:'required',mini:false,usafAwards:true,rackColumns:[3,4],badgeCap:4,shoulderCord:true,
+      ribbons:'required',mini:false,usafAwards:true,rackColumns:[3,4],badgeCap:4,shoulderCord:true,aideCord:true,
       refs:{ribbons:'11.1.2',rack:'11.2.7',badges:'4.1.5.2.2.4',cords:'9.3, 9.4.1'}},
     blues_b:{group:'everyday',style:'usaf',membership:['cadet','senior'],adultCadet:false,minimum:true,
-      ribbons:'optional',mini:false,usafAwards:true,rackColumns:[3],badgeCap:4,shoulderCord:true,
+      ribbons:'optional',mini:false,usafAwards:true,rackColumns:[3],badgeCap:4,shoulderCord:true,aideCord:true,
       refs:{ribbons:'11.1.2',rack:'11.2.7',minimum:'1.2.2',badges:'4.1.11.1.1.2.3',cords:'9.3, 9.4.1'}},
     // 4.1.1, 4.1.2, 1.4.1.1: not worn by members without grade.
     mess_dress:{group:'formal',style:'usaf',membership:['senior'],adultCadet:false,gradeRequired:true,
@@ -171,6 +174,18 @@
     const rule=getUniformRule(uniformId);
     return !!(rule && rule.shoulderCord && membership==='cadet');
   }
+  function allowsAideCord(uniformId){
+    const rule=getUniformRule(uniformId);
+    return !!(rule && rule.aideCord);
+  }
+  // Whether this cord may be worn on this uniform by this member: the cadet cords (CAC, color guard,
+  // honor guard) by cadets on the cadet-cord uniforms (9.3, 9.4.1); the Aide de Camp cord by cadets and
+  // senior members alike (9.3.4).
+  function allowsCord(uniformId,membership,cord){
+    if(!cord) return false;
+    if(cord==='aide_de_camp') return allowsAideCord(uniformId);
+    return allowsShoulderCord(uniformId,membership);
+  }
   function allowsOnlyChaplainBadge(uniformId){
     const rule=getUniformRule(uniformId);
     return !!(rule && rule.chaplainBadgeOnly);
@@ -204,6 +219,6 @@
     GROUPS,RULES,NOT_MODELLED,BADGES_NOT_PLACED,USAF_ONLY_AWARD_IDS,
     getUniformRule,ribbonPolicy,allowsRibbons,allowsMiniMedals,allowsRackColumns,
     allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,uniformIdsInGroup,
-    lockedReason,allowsOnlyChaplainBadge,allowsShoulderCord,badgeLimit,plannedUniformsFor,plannedBadge
+    lockedReason,allowsOnlyChaplainBadge,allowsShoulderCord,allowsAideCord,allowsCord,badgeLimit,plannedUniformsFor,plannedBadge
   };
 });

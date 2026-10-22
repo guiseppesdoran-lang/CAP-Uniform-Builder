@@ -38,7 +38,8 @@ test('shoulder cords are for cadets on Class A and Class B only (CAPR 39-1 9.3, 
     assert.equal(rules.allowsShoulderCord(id,'senior'),false,`${id} for a senior member`);
   }
   assert.match(patches,/panel\.classList\.toggle\('hidden', !usable\)/);
-  assert.match(patches,/CAPUBUniformRules\.allowsShoulderCord\(State\.uniform, State\.membership\)/);
+  // The Aide de Camp cord is also worn by senior members (9.3.4), so the control asks per cord.
+  assert.match(patches,/CAPUBUniformRules\.allowsCord\(State\.uniform, State\.membership, o\.value\)/);
 });
 
 test('the collar and lapel mask editor is gone: the engine redraws the lapel from the artwork',()=>{

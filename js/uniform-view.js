@@ -227,7 +227,7 @@
       command,
       militaryBadges: buildMilitaryBadges(),
       patches: buildPatches(),
-      cord: CAPUBUniformRules.allowsShoulderCord(State.uniform, State.membership) ? (State.shoulderCord || null) : null
+      cord: CAPUBUniformRules.allowsCord(State.uniform, State.membership, State.shoulderCord) ? State.shoulderCord : null
     };
   }
 

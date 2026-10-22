@@ -160,10 +160,23 @@ function syncShoulderCordControl(){
   if(!sel) return;
   sel.value = State.shoulderCord || '';
   // Cadets only, on Class A and Class B (CAPR 39-1, 9.3 and 9.4.1). Anyone else is not shown it.
-  const usable = CAPUBUniformRules.allowsShoulderCord(State.uniform, State.membership);
+  // Cadets wear the CAC, color guard and honor guard cords on Class A and Class B (9.3, 9.4.1); the Aide
+  // de Camp cord is for senior members as well (9.3.4). Anyone else is not shown the control.
+  const choices = [...sel.options].filter(o => o.value);
+  choices.forEach(o => { o.hidden = o.disabled = !CAPUBUniformRules.allowsCord(State.uniform, State.membership, o.value); });
+  const usable = choices.some(o => !o.disabled);
+  if(State.shoulderCord && !CAPUBUniformRules.allowsCord(State.uniform, State.membership, State.shoulderCord)) sel.value = '';
   sel.disabled = false;
   const panel = by('shoulderCordPanel');
   if(panel) panel.classList.toggle('hidden', !usable);
+  const note = by('shoulderCordNote');
+  if(note){
+    const meta = SHOULDER_CORD_META[State.shoulderCord];
+    note.textContent = meta && meta.note ? meta.note
+      : (State.membership === 'senior'
+        ? 'Senior members wear only the Aide de Camp cord; the other shoulder cords are for cadets (CAPR 39-1, 9.3).'
+        : 'Pick the cord you wear. A member report import fills in a Cadet Advisory Council cord.');
+  }
 }
 
 function wireShoulderCordControl(){
@@ -195,8 +208,12 @@ const SHOULDER_CORD_META = {
   wing:        { label:'Wing CAC shoulder cord - red',       srcBase:'cords/wing',        imported:true  },
   region:      { label:'Region CAC shoulder cord - blue',    srcBase:'cords/region',      imported:true  },
   national:    { label:'National CAC shoulder cord - gold',  srcBase:'cords/national',    imported:true  },
-  color_guard: { label:'Color Guard shoulder cord',          srcBase:'cords/color_guard', imported:false },
-  honor_guard: { label:'Honor Guard shoulder cord',          srcBase:'cords/honor_guard', imported:false }
+  color_guard: { label:'Color Guard shoulder cord - white',  srcBase:'cords/color_guard', imported:false,
+                 note:'White cord for cadets on a drill or color guard competition team, or acting as a color guard (CAPR 39-1, 9.3.2).' },
+  honor_guard: { label:'Honor Guard shoulder cord - silver', srcBase:'cords/honor_guard', imported:false,
+                 note:'Silver cord: worn for good by graduates of the former National or a Region Honor Guard Academy; members of a unit honor guard who are not graduates wear it only while taking part in an honor guard activity (CAPR 39-1, 9.3.3).' },
+  aide_de_camp: { label:'Aide de Camp shoulder cord',        srcBase:'cords/aide_de_camp', imported:false,
+                 note:'Worn by senior members and cadets serving as an aide to a general officer, only while acting as an aide, on the Class A and Class B (CAPR 39-1, 9.3.4).' }
 };
 const SHOULDER_CORD_IDS = Object.keys(SHOULDER_CORD_META);
 
