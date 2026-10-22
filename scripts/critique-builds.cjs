@@ -113,7 +113,20 @@ mk('flight_suit-female-senior-MajGen', 'flight_suit', 'female', 'senior', 'Maj G
 mk('flight_suit-male-senior-MajGen', 'flight_suit', 'male', 'senior', 'Maj Gen', { badgeIds: [A4[0]] });
 mk('corporate_flight_suit-male-senior-MajGen', 'corporate_flight_suit', 'male', 'senior', 'Maj Gen', { badgeIds: [A4[0]] });
 mk('corporate_flight_suit-female-senior-MajGen', 'corporate_flight_suit', 'female', 'senior', 'Maj Gen', { badgeIds: [A4[0]] });
-mk('flight_suit-female-cadet-CCapt', 'flight_suit', 'female', 'cadet', 'C/Capt', { badgeIds: [AIRCREW] });
 mk('corporate_flight_suit-male-senior-Capt', 'corporate_flight_suit', 'male', 'senior', 'Capt', { badgeIds: [A4[0]] });
+
+// Coverage the review (FIX-R-OTHER-r4 item 11) found missing: the cadet C/Capt on both suits and both cuts, the officer shoulder bars (the Capt
+// and the Col, flight suit and corporate, both cuts), the ES patch under the right pocket in each style on a senior Capt (D14: top of the
+// es_patch_zone), the Christian chaplain field badge on the tag (D15), and the cadet C/Capt tag with two badges and the command pin (D17).
+for(const g of ['male', 'female']){
+  for(const u of ['flight_suit', 'corporate_flight_suit']){
+    mk(`${u}-${g}-cadet-CCapt`, u, g, 'cadet', 'C/Capt', { badgeIds: [AIRCREW] });
+    mk(`${u}-${g}-cadet-CCapt-two-badges-command-pin`, u, g, 'cadet', 'C/Capt', { badgeIds: [AIRCREW, 'ground_team_basic_badge'], command: GROUP_PIN });
+    mk(`${u}-${g}-senior-Capt-es-style1`, u, g, 'senior', 'Capt', { badgeIds: [A4[0]], opt: { esPatch: 'style-1' } });
+    mk(`${u}-${g}-senior-Capt-es-style2`, u, g, 'senior', 'Capt', { badgeIds: [A4[0]], opt: { esPatch: 'style-2' } });
+    mk(`${u}-${g}-senior-Capt-chaplain`, u, g, 'senior', 'Capt', { badgeIds: ['christian_chaplin'] });
+    mk(`${u}-${g}-senior-Col-shoulders`, u, g, 'senior', 'Col', { badgeIds: [A4[0]] });
+  }
+}
 
 process.stdout.write(JSON.stringify(out, null, 1) + '\n');

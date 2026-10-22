@@ -74,3 +74,29 @@ test('one patch is one size on every uniform: ARCHER is 3.5 in on the OCP Velcro
     assert.ok(Math.abs(flat(abu, 'nywg_patch').y - seam.y - 0.5) < 0.005, `${gender} ABU: 1/2 in below the seam`);
   }
 });
+
+// ---- FIX-R-OTHER-r4 item 11: the critique set covers the flight suits' ES patch, chaplain badge, command pin and cadet C/Capt ----------------
+
+test('critique set: flight suits carry the cadet C/Capt on both suits and cuts, the ES patch at the top of the es_patch_zone in each style, the Christian chaplain badge and the command pin with two badges (D14, D15, D17; 8.2.4.1, 8.2.4.3, 8.3.4.3)', async () => {
+  const { execFileSync } = require('node:child_process');
+  const critique = JSON.parse(execFileSync(process.execPath, [path.join(root, 'scripts', 'critique-builds.cjs')], { encoding: 'utf8' }));
+  const names = new Set(critique.map(x => x.name));
+  assert.equal(names.size, critique.length, 'critique build names are unique');
+  for(const u of ['flight_suit', 'corporate_flight_suit']) for(const g of ['male', 'female']){
+    for(const n of [`${u}-${g}-cadet-CCapt`, `${u}-${g}-cadet-CCapt-two-badges-command-pin`, `${u}-${g}-senior-Capt-es-style1`, `${u}-${g}-senior-Capt-es-style2`, `${u}-${g}-senior-Capt-chaplain`]) assert.ok(names.has(n), n);
+  }
+  const sheet = { flight_suit: 'garment-fdu-flight-suit', corporate_flight_suit: 'garment-cfdu-flight-suit' };
+  for(const u of ['flight_suit', 'corporate_flight_suit']) for(const g of ['male', 'female']) for(const [style, id] of [['style1', 'patch-es-style-1'], ['style2', 'patch-es-style-2']]){
+    const x = critique.find(c => c.name === `${u}-${g}-senior-Capt-es-${style}`);
+    const scene = await compose(HARNESS.makeBuild(x.build));
+    const es = scene.layers.find(l => l.id === id && l.figure !== 2);
+    assert.ok(es, `${u} ${g} ${style}: ES patch drawn`);
+    const spec = await store.load(sheet[u]);
+    const z = core.landmarkBounds(spec, 'es_patch_zone');
+    const garment = scene.layers.find(l => l.role === 'garment' && l.figure !== 2);
+    assert.ok(Math.abs(es.y - (garment.y + z.y * (garment.w / spec.w))) < 0.02, `${u} ${g} ${style}: top of the zone (y ${es.y})`);
+    assert.ok(Math.abs(es.x + es.w / 2 - (garment.x + (z.x + z.w / 2) * (garment.w / spec.w))) < 0.02, `${u} ${g} ${style}: centred on the zone (x ${(es.x + es.w / 2).toFixed(2)})`);
+  }
+  const chap = await compose(HARNESS.makeBuild(critique.find(c => c.name === 'flight_suit-male-senior-Capt-chaplain').build));
+  assert.ok(chap.layers.some(l => l.key === 'badge:christian_chaplin'), 'the chaplain badge is on the tag');
+});
