@@ -5,11 +5,15 @@
    RIBBON ORDER AND RACK CONTROLS
    =========================== */
 // The groups of 39-1 11.2.1: U.S. federal awards, then CAP awards, then foreign awards. The Army
-// Air Forces Air Medal and the Air Force Aerial Achievement Medal in the CAP list are federal.
-const CAPUB_FEDERAL_IN_CAP_LIST = new Set(['air_medal','air_force_aerial_achievement_medal','Air_Force_Organizational_Excellence_Award']);
+// Air Forces Air Medal and the Air Force Aerial Achievement Medal in the CAP list are federal awards
+// (the Air Medal ranks above the Aerial Achievement Medal). The AFOEA is worn below the lowest military
+// ribbon and above the CAP ribbons (ICL 18-02, 39-3 ICL 5), so it is a group of its own between them.
+const CAPUB_FEDERAL_IN_CAP_LIST = ['air_medal','air_force_aerial_achievement_medal'];
+const CAPUB_AFOEA_ID = 'Air_Force_Organizational_Excellence_Award';
 function ribbonPrecedenceGroup(id){
   if(isMilitaryRibbonId(id)) return militaryAwardFilterType(getMilitaryRibbonAward(id)) === 'FOREIGN' ? 3 : 0;
-  return CAPUB_FEDERAL_IN_CAP_LIST.has(id) ? 0 : 1;
+  if(id === CAPUB_AFOEA_ID) return 0.5;
+  return CAPUB_FEDERAL_IN_CAP_LIST.includes(id) ? 0 : 1;
 }
 function sortRibbons(arr){
   return [...arr].sort((a,b)=>{
@@ -25,6 +29,8 @@ function sortRibbons(arr){
       }
     }
     if(aMilitary !== bMilitary) return aMilitary ? -1 : 1;
+    const af = CAPUB_FEDERAL_IN_CAP_LIST.indexOf(a.id), bf = CAPUB_FEDERAL_IN_CAP_LIST.indexOf(b.id);
+    if(af >= 0 && bf >= 0 && af !== bf) return af - bf;
     const ap = precedence(a.id);
     const bp = precedence(b.id);
     if(ap !== bp) return ap - bp;

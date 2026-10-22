@@ -83,6 +83,13 @@ test('a saved setup that lists both wears one: the higher in the order of preced
 
 // ---- order of the federal awards -------------------------------------------------------------------------
 
+test('order: federal awards (AAF Air Medal, then the Aerial Achievement Medal), the AFOEA, then the CAP ribbons (39-1 11.2.1, ICL 18-02)', () => {
+  const order = Array.from(ev("sortRibbons([{id:'cap_achievment_award'},{id:'Air_Force_Organizational_Excellence_Award'},{id:'air_force_aerial_achievement_medal'},{id:'air_medal'},{id:'meritorious_service_award'}]).map(r => r.id)"));
+  assert.deepEqual(order, ['air_medal', 'air_force_aerial_achievement_medal', 'Air_Force_Organizational_Excellence_Award', 'meritorious_service_award', 'cap_achievment_award']);
+});
+
+// ---- ribbons repeated by the bronze clasp -----------------------------------------------------------------------
+
 test('the Crisis Service Ribbon is earned once a service period and a later period adds a bronze clasp (39-3, Crisis Service Ribbon)', () => {
   ev("State.membership = 'senior'");
   const options = ev("getRibbonAwardOptions('crisis_ribbon').filter(o => o.value)");
