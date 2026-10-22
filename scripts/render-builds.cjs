@@ -66,10 +66,13 @@ const ribbonAsset = id => 'ribbon-' + String(id).replace(/_/g, '-');
 
 // The order the page wears a selection in (js/render-core.js sortRibbons, CAPR 39-3 order of precedence,
 // highest first): federal awards (including the Air Medal and the Aerial Achievement Medal in the CAP
-// list), then the AFOEA, then the CAP awards in the catalog's ribbonList order; ids it does not know
-// (military ribbons) keep the order given. Same ids, same groups as ribbonPrecedenceGroup().
+// list), then the AFOEA, then the CAP awards in the catalog's ribbonList order. Military ribbons ('military:'
+// ids, MILITARY_RIBBON_PREFIX in js/catalog.js) go first, as sortRibbons puts them before the CAP and federal
+// CAP-list ribbons; their own order (compareAwardsUniversal, a browser-only module) is not available in node,
+// so they keep the order given. Other unknown ids go after the known CAP ribbons.
 const FEDERAL_IN_CAP_LIST = ['air_medal', 'air_force_aerial_achievement_medal'];
 function precedenceKey(id, prec){
+  if(String(id).startsWith('military:')) return [0, -1];
   if(FEDERAL_IN_CAP_LIST.includes(id)) return [0, FEDERAL_IN_CAP_LIST.indexOf(id)];
   if(id === 'Air_Force_Organizational_Excellence_Award') return [0.5, 0];
   return prec.has(id) ? [1, prec.get(id)] : [1, 1e9];

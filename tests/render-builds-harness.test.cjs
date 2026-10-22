@@ -36,3 +36,9 @@ test('the critique build set is valid JSON the harness can turn into engine buil
   for(const b of list) assert.ok(H.makeBuild(b.build).uniform, b.name);
   for(const n of ['ocp-male-senior-LtCol-patches-overlay', 'flight_suit-male-cadet-CSSgt-two-badges-es-style1-scarf', 'corporate_flight_suit-male-senior-MajGen', 'flight_suit-male-cadet-CCapt-command-pin']) assert.ok(names.has(n), n);
 });
+
+test('the harness puts military ribbons before the CAP ribbons, keeping their given order, as js/render-core.js sortRibbons does', () => {
+  const order = H.sortByPrecedence([['curry_achievement'], ['military:b'], ['mitchell_award'], ['military:a']]).map(e => e[0]);
+  assert.deepEqual(order.slice(0, 2), ['military:b', 'military:a']);
+  assert.ok(order.indexOf('mitchell_award') < order.indexOf('curry_achievement'));
+});
