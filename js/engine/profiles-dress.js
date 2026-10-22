@@ -1446,9 +1446,8 @@
     // The rack is centred on the crest and its lowest row ends 1/2 in above it (4.2.1.4, 4.2.2.4 with ICL 25-02:
     // 'centered above the pocket so that the bottom portion of the medals are 1/2 inch above the CAP Crest'); the
     // whole rack is never moved off the pocket (FIX-R-OTHER-r2 #4; the r1 slide toward the arm put the women's
-    // rack 1.2 to 1.8 in off the crest). Miniatures are pinned on top of the coat: the lapel group is drawn
-    // under every miniature, so where the drawn lapel reaches the rack the medals lie over it and the medal
-    // nearest the lapel is fully exposed (11.2.8).
+    // rack 1.2 to 1.8 in off the crest). Where the drawn lapel reaches the rack the lapel lies over the medals
+    // (FIX-R-OTHER-r5 #2, 11.1.8; see the lapel foreground at the end of this function).
     // The two clauses cannot both hold on the men's blazer: the crest is centred on the pocket (4.2.3.1.1.1) and
     // the sheet's crest_center is the centre of the pocket body below its welt, so the crest's top is at the welt's
     // bottom edge and a rack 1/2 in over it hangs about 0.48 in over the welt, the pocket outline showing between the
@@ -1469,9 +1468,24 @@
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
       await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: cb ? cb.x : medalX, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
     }
-    // The lapel (and the collar, over the bow tie) is drawn again above the garment layers but under every
-    // miniature medal, device and badge, so nothing worn on the chest is under it.
+    // The lapel (and the collar, over the bow tie) is drawn again above the garment layers, under the tie.
     ctx.foreground(['lapel-foreground'], Z.garmentLayer + 0.5);
+    // The lapel lies over anything worn under its edge: CAPR 39-1 11.1.8 lets the lapel cover part of the
+    // awards, never the reverse. The wearer's left lapel is drawn once more above every miniature drape, medal
+    // and device (Z.badge + 0.5, the Class A coats' order), clipped to its own polygon grown by the edge
+    // stroke's half width, so the rack stays centred over the pocket (4.2.1.4, 4.2.2.4, ICL 25-02) and the
+    // part of it under the lapel is covered. The badges stay whole above it (BADGE_OVER_LAPEL_Z, as on the
+    // Class A coats): the chaplain badge 1/2 in above the top row (4.2.1.5, 4.2.2.5) is never hidden.
+    const lapelPoly = blazerLapel(ctx, female).map(q => Array.isArray(q) ? { x: q[0], y: q[1] } : { x: q.x, y: q.y });
+    ctx.foreground(['lapel-foreground'], Z.badge + 0.5);
+    ctx.layers[ctx.layers.length - 1].clip = growPolygon(lapelPoly, 0.03);
+    const touching = [];
+    for(const l of ctx.layers){
+      if(l.role !== 'badge' || (l.rotate || 0) || !C.rectHitsPolygon(l, lapelPoly)) continue;
+      l.z = Math.max(l.z, BADGE_OVER_LAPEL_Z);
+      touching.push(l);
+    }
+    for(const l of touching) ctx.note(`${l.title || 'The badge'} meets the lapel; it is drawn whole over it, the lapel covers the miniature medals only (CAPR 39-1 11.1.8)`);
   }
 
   P.register('blues_a', { title: 'Service Dress (Class A)', compose: composeClassA });
