@@ -103,6 +103,7 @@ test('the nameplate comes from the coat\'s landmark: the cadet semi-formal coat 
 
 // ---- lapel insignia on the gorge seam ------------------------------------------------------------
 
+const INK = require('./helpers/ink-rest.cjs');
 const seamY = (spec, side, x) => {
   const p1 = core.anchor(spec, `gorge_seam_${side}_p1`), p2 = core.anchor(spec, `gorge_seam_${side}_p2`);
   return p1.y + (p2.y - p1.y) * (x - p1.x) / (p2.x - p1.x);
@@ -110,11 +111,14 @@ const seamY = (spec, side, x) => {
 
 // The insignia sheets carry both lapels; their landmark rects, moved by the layer's offset, are the
 // insignia's boxes in the scene.
+// The letters overlays are drawn once per side (each lapel's letters rest on their own seam, FIX-R-OTHER-r2 #1): the right
+// layer is the sheet's key, the left one carries ':left'. The circle overlays are one layer.
+const sideLayer = (scene, id, side) => scene.layers.find(l => l.id === id && (side === 'left' ? l.key.endsWith(':left') || !scene.layers.some(m => m.id === id && m.key.endsWith(':left')) : !l.key.endsWith(':left')));
 async function insigniaBoxes(scene, id){
-  const layer = scene.layers.find(l => l.id === id);
-  assert.ok(layer, id + ' drawn');
+  assert.ok(scene.layers.some(l => l.id === id), id + ' drawn');
   const spec = await store.load(id);
   return ['right', 'left'].map(side => {
+    const layer = sideLayer(scene, id, side);
     const r = core.landmarkBounds(spec, 'lapel_us_' + side) || core.landmarkBounds(spec, 'lapel_cap_' + side);
     return { side, x: r.x + layer.x, y: r.y + layer.y, w: r.w, h: r.h };
   });
@@ -140,9 +144,13 @@ for(const sex of ['male', 'female']){
           const slope = (p2.y - p1.y) / (p2.x - p1.x);
           near(box.y + box.h / 2, seamY(coat.spec, box.side, mid.x) - box.h / 2 * Math.sqrt(1 + slope * slope), 0.005, `${box.side} circle tangent to the seam`);
         }else{
-          const lowest = Math.min(seamY(coat.spec, box.side, box.x), seamY(coat.spec, box.side, box.x + box.w));
-          near(bottom, lowest, 0.005, `${box.side} insignia bottom on the seam's high point`);
-          assert.ok(bottom <= lowest + 0.0001, `${box.side} insignia not over the seam`);
+          // FIX-R-OTHER-r2 #1 (D8): the box's bottom edge on the seam's high point left the letters 0.04 to 0.1 in above
+          // the seam; the ink rests on it: the lowest point of the drawn letters touches the seam line, none is over it.
+          const layer = sideLayer(scene, id, box.side);
+          const gap = INK.overlayInkGap(coat.spec, box.side, layer);
+          near(gap, 0, 0.006, `${box.side} lowest ink of the letters on the seam`);
+          assert.ok(gap >= -0.0015, `${box.side} insignia not over the seam (${gap.toFixed(4)})`);
+          void bottom;
         }
       }
     });
@@ -157,7 +165,10 @@ for(const sex of ['male', 'female']){
       assert.equal(l.rotate || 0, 0, 'parallel with the ground');
       const mid = core.anchor(coat.spec, `gorge_seam_${side}_mid`);
       near(l.x + l.w / 2, mid.x, 0.005, `${side} chevron centred on the seam midpoint`);
-      near(l.y + l.h, Math.min(seamY(coat.spec, side, l.x), seamY(coat.spec, side, l.x + l.w)), 0.005, `${side} chevron bottom on the seam`);
+      // FIX-R-OTHER-r2 #1 (D8): the chevron's ink, not its box, rests on the seam (the shield bottom and stripe ends stop short of the box).
+      const gap = INK.placedInkGap(coat.spec, side, l);
+      near(gap, 0, 0.006, `${side} chevron's lowest ink on the seam`);
+      assert.ok(gap >= -0.0015, `${side} chevron not over the seam (${gap.toFixed(4)})`);
     }
   });
 }

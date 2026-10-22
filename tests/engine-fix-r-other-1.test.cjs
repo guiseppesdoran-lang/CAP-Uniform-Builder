@@ -24,19 +24,22 @@ function build(uniform, gender, membership, rank, badges, extra){
 }
 const compose = b => P.composeUniform(b, store);
 const byKey = (scene, key) => scene.layers.find(l => l.key === key);
+const INK = require('./helpers/ink-rest.cjs');
 const near = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg}: ${a.toFixed(3)} vs ${b.toFixed(3)}`);
 
 // ---- 1. Cadet NCO lapel chevrons rest on the gorge seam on the semi-formal too ------------------------
 
 test('semi-formal cadet NCO chevrons rest on the gorge seam exactly as on the Class A (4.1.3.2, 4.1.4, 4.1.5.2.1.4, 4.1.9.3.5)', async () => {
-  for(const [sex, bottom] of [['male', 4.715], ['female', 4.13]]){
+  for(const sex of ['male', 'female']){
+    const coat = await store.load(sex === 'male' ? 'garment-blues-class-a-coat' : 'garment-blues-class-a-coat-female');
     const semi = await compose(build('semi_formal_usaf', sex, 'cadet', 'C/SSgt', []));
     const a = await compose(build('blues_a', sex, 'cadet', 'C/SSgt', []));
     for(const side of ['right', 'left']){
       const s = byKey(semi, 'grade:' + side), c = byKey(a, 'grade:' + side);
       assert.ok(s && c, `${sex} ${side}: both coats draw the chevron`);
       near(s.y + s.h, c.y + c.h, 0.005, `${sex} ${side}: semi-formal chevron bottom equals the Class A's`);
-      if(side === 'right') near(s.y + s.h, bottom, 0.02, `${sex}: chevron bottom on the seam rest point`);
+      // The ink rests on the seam (FIX-R-OTHER-r2 #1; D8: the box bottom was 4.715 / 4.13 in, the ink is lower in the box).
+      near(INK.placedInkGap(coat, side, s), 0, 0.006, `${sex} ${side}: lowest ink of the semi-formal chevron on the seam`);
     }
   }
 });

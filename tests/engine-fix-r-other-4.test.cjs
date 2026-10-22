@@ -214,3 +214,90 @@ test('aviator beside the blazer: the chaplain badge is under the shirt collar, o
   assert.ok(ch && ch.clipOut, 'the shirt\'s chaplain badge is cut by the collar');
   for(const poly of ch.clipOut) for(const p of poly) assert.ok(p.x > 27, `cut-out point x ${p.x.toFixed(2)} is on the second figure`);
 });
+
+// ---- 1. Insignia rest on the gorge seam by their ink, not their box ----------------------------------------------
+
+const INK = require('./helpers/ink-rest.cjs');
+const COATS = { male: 'garment-blues-class-a-coat', female: 'garment-blues-class-a-coat-female' };
+
+test('the engine\'s INK_REST table is the lower hull of the drawn ink of the current SVGs (regenerate with scripts/measure-ink-rest.cjs after an art sync)', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
+  const body = /\/\/ INK_REST begin\n([\s\S]*?)\/\/ INK_REST end/.exec(src);
+  assert.ok(body, 'the table is in the engine between its markers');
+  const table = new Function(body[1] + '; return INK_REST;')();
+  const fresh = INK.allHulls();
+  assert.deepEqual(Object.keys(table).sort(), Object.keys(fresh).sort(), 'the same pieces');
+  assert.deepEqual(table, fresh, 'the same hulls');
+});
+
+test('cadet NCO metal chevrons (every grade, both cuts, Class A and semi-formal): the lowest ink rests on the gorge seam, parallel with the ground, centred on its midpoint (4.1.5.2.1.4, 4.1.9.3.5)', async () => {
+  let checked = 0;
+  for(const uniform of ['blues_a', 'semi_formal_usaf']){
+    for(const sex of ['male', 'female']){
+      const coat = await store.load(COATS[sex]);
+      for(const rank of ['C/Amn', 'C/A1C', 'C/SrA', 'C/SSgt', 'C/TSgt', 'C/MSgt', 'C/SMSgt', 'C/CMSgt']){
+        const scene = await compose(hb(uniform, sex, 'cadet', rank, {}));
+        for(const side of ['right', 'left']){
+          const l = byKey(scene, 'grade:' + side);
+          assert.ok(l, `${uniform} ${sex} ${rank} ${side}: chevron drawn`);
+          assert.equal(l.rotate || 0, 0, 'parallel with the ground');
+          const gap = INK.placedInkGap(coat, side, l);
+          near(gap, 0, 0.003, `${uniform} ${sex} ${rank} ${side}: lowest ink on the seam`);
+          assert.ok(gap >= -0.001, `${uniform} ${sex} ${rank} ${side}: not over the seam (${gap.toFixed(4)})`);
+          near(l.x + l.w / 2, core.anchor(coat, `gorge_seam_${side}_mid`).x, 0.005, 'centred on the seam midpoint');
+          checked++;
+        }
+      }
+    }
+  }
+  assert.equal(checked, 64);
+});
+
+test('the evidence builds: the cadet C/SSgt chevron box bottom is lower than before, the ink touches the seam (men 4.715 in box bottom, 0.095 in gap at the centre; women 4.13, 0.077)', async () => {
+  for(const [sex, oldBottom] of [['male', 4.715], ['female', 4.13]]){
+    const coat = await store.load(COATS[sex]);
+    const scene = await compose(hb('blues_a', sex, 'cadet', 'C/SSgt', {}));
+    const l = byKey(scene, 'grade:right');
+    const bottom = l.y + l.h;
+    // The shield's bottom point (the box bottom, 0.935 in down the box) is the lowest ink: it lies 0 to 0.02 in above the box edge.
+    assert.ok(bottom - oldBottom > 0.01, `${sex}: the box now sits below the old rest (${bottom.toFixed(3)} vs ${oldBottom})`);
+    near(INK.placedInkGap(coat, 'right', l), 0, 0.003, `${sex}: ink on the seam`);
+  }
+});
+
+test('lapel US letters (officers, men and women) and cadet officer CAP letters: each lapel\'s lowest ink rests on its own seam (4.1.5.2.2.1, 4.1.9.4.1)', async () => {
+  let checked = 0;
+  for(const uniform of ['blues_a', 'semi_formal_usaf']){
+    for(const sex of ['male', 'female']){
+      const coat = await store.load(COATS[sex]);
+      for(const [membership, rank, sheet] of [['senior', 'Capt', 'lapel-us'], ['senior', 'Col', 'lapel-us'], ['senior', 'Maj Gen', 'lapel-us'], ['cadet', 'C/Maj', 'lapel-cap'], ['cadet', 'C/Col', 'lapel-cap']]){
+        if(uniform === 'semi_formal_usaf' && membership === 'senior') continue; // the semi-formal is a cadet uniform
+        const scene = await compose(hb(uniform, sex, membership, rank, {}));
+        const id = `${COATS[sex]}-${sheet}`;
+        for(const side of ['right', 'left']){
+          const l = scene.layers.find(x => x.id === id && (side === 'left' ? x.key.endsWith(':left') : !x.key.endsWith(':left')));
+          assert.ok(l, `${uniform} ${sex} ${rank} ${side}: letters drawn`);
+          assert.deepEqual(l.onlyGroups, [`${sheet}-${side}`], 'one side per layer');
+          const gap = INK.overlayInkGap(coat, side, l);
+          near(gap, 0, 0.003, `${uniform} ${sex} ${rank} ${side}: lowest ink of the letters on the seam`);
+          assert.ok(gap >= -0.001, `${uniform} ${sex} ${rank} ${side}: not over the seam (${gap.toFixed(4)})`);
+          checked++;
+        }
+      }
+    }
+  }
+  assert.ok(checked >= 28, String(checked));
+});
+
+test('the CAP collar insignia of an adult on the NCO track rests by its ink too', async () => {
+  for(const sex of ['male', 'female']){
+    const coat = await store.load(COATS[sex]);
+    const scene = await compose(hb('blues_a', sex, 'senior', 'SM', { opt: { headgear: 'auto', noGradeTrack: 'nco' } }));
+    for(const side of ['right', 'left']){
+      const l = byKey(scene, 'collar:' + side);
+      assert.ok(l, `${sex} ${side}: CAP collar insignia drawn`);
+      near(INK.placedInkGap(coat, side, l), 0, 0.003, `${sex} ${side}: collar insignia ink on the seam`);
+    }
+  }
+});
+
