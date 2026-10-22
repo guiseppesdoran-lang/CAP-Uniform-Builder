@@ -301,3 +301,62 @@ test('the CAP collar insignia of an adult on the NCO track rests by its ink too'
   }
 });
 
+
+// ---- 7. ABU and CFU: the figure's arms carry the chevron and sleeve patch edge-on ---------------------------------
+
+const ARM = require('../scripts/measure-arm-edge.cjs');
+test('the engine\'s ARM_EDGE table is the outline of the arms of the current ABU and CFU sheets (regenerate with scripts/measure-arm-edge.cjs)', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-field.js'), 'utf8');
+  const body = /\/\/ ARM_EDGE begin\n([\s\S]*?)\/\/ ARM_EDGE end/.exec(src);
+  assert.ok(body);
+  assert.deepEqual(new Function(body[1] + '; return ARM_EDGE;')(), ARM.compute());
+});
+
+const distToPolyline = (p, poly) => Math.min(...poly.slice(1).map((b, i) => {
+  const a = poly[i], dx = b[0] - a[0], dy = b[1] - a[1];
+  const t = Math.max(0, Math.min(1, ((p.x - a[0]) * dx + (p.y - a[1]) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(p.x - (a[0] + t * dx), p.y - (a[1] + t * dy));
+}));
+
+test('ABU and CFU, senior NCO chevrons and shoulder patches: the figure\'s arms carry them edge-on, centred on the arm\'s outer edge, narrowed, turned with the edge and cut to the coat (5.1.1.1.1.2, 5.2.1.1.1.3, 5.1.1.1.2.2, 5.2.1.1.2.2-3; D22, D42)', async () => {
+  const table = ARM.compute();
+  const patch = { id: 'archer_ocp_patch', kind: 'general', img: 'patches/ocp/archer_ocp_patch.webp', slot: 'L_SHOULDER', label: 'ARCHER' };
+  for(const [uniform, sheet] of [['abu', 'garment-abu-coat'], ['corporate_field', 'garment-cfu-coat']]){
+    for(const gender of ['male', 'female']){
+      const scene = await compose(hb(uniform, gender, 'senior', 'SMSgt', { patchRefs: [patch], badgeIds: [PILOT] }));
+      const spec = await store.load(sheet);
+      for(const side of ['right', 'left']){
+        const flat = byKey(scene, `grade:sleeve-${side}`), edge = byKey(scene, `grade:sleeve-${side}:edge`);
+        const id = `${uniform} ${gender} ${side}`;
+        assert.ok(flat && edge, `${id}: the chevron on the flat sleeve and edge-on on the arm`);
+        assert.equal(edge.clipSil, sheet, `${id}: cut to the coat silhouette`);
+        near(edge.w, flat.w * 0.5, 0.001, `${id}: narrowed to half`);
+        near(edge.h, flat.h, 0.001, `${id}: not shortened`);
+        const centre = { x: edge.x + edge.w / 2, y: edge.y + edge.h / 2 };
+        assert.ok(distToPolyline(centre, table[sheet][side]) < 0.05, `${id}: centred on the arm's outer edge (${centre.x.toFixed(2)}, ${centre.y.toFixed(2)})`);
+        // Turned with the edge: clockwise on the wearer's right arm (the picture's left, the edge runs down and out to the left), the other way on the left.
+        assert.ok(side === 'right' ? edge.rotate > 3 && edge.rotate < 25 : edge.rotate < -3 && edge.rotate > -25, `${id}: turn ${edge.rotate.toFixed(1)} deg follows the edge`);
+        // The same distance down the sleeve: the chevron's centre lies about the arm's own length fraction below the seam.
+        const seam = core.anchor(spec, `seam_top_center_${side}`);
+        const frac = (flat.y + flat.h / 2 - seam.y) / 27.66;
+        const arm = table[sheet][side];
+        const armLen = arm.slice(1).reduce((s, p, i) => s + Math.hypot(p[0] - arm[i][0], p[1] - arm[i][1]), 0);
+        near((centre.y - arm[0][1]) / (arm[arm.length - 1][1] - arm[0][1]), frac, 0.04, `${id}: same fraction of the sleeve down the arm (arm ${armLen.toFixed(1)} in)`);
+      }
+      const p = scene.layers.filter(l => l.role === 'patch' && /L_SHOULDER/.test(l.key));
+      assert.deepEqual(p.map(l => l.key).sort(), ['patch:archer_ocp_patch:L_SHOULDER:0', 'patch:archer_ocp_patch:L_SHOULDER:edge'], `${uniform} ${gender}: the shoulder patch flat and edge-on`);
+      const pe = p.find(l => /:edge$/.test(l.key));
+      assert.equal(pe.clipSil, sheet);
+      assert.ok(pe.x + pe.w / 2 < 40 && pe.w < p.find(l => /:0$/.test(l.key)).w * 0.55, 'narrowed');
+    }
+  }
+});
+
+test('ABU and CFU cadet and officer builds without sleeve items add nothing to the arms; the OCP keeps its own edge view', async () => {
+  for(const uniform of ['abu', 'corporate_field']){
+    const scene = await compose(hb(uniform, 'male', 'senior', 'Capt', {}));
+    assert.ok(!scene.layers.some(l => /:edge$/.test(l.key || '')), `${uniform}: an officer wears no sleeve chevron or patch here`);
+  }
+  const ocp = await compose(hb('ocp', 'male', 'senior', 'Lt Col', { patchRefs: [{ id: 'archer_ocp_patch', kind: 'general', img: 'patches/ocp/archer_ocp_patch.webp', slot: 'L_SHOULDER', label: 'ARCHER' }] }));
+  assert.ok(ocp.layers.some(l => /:edge$/.test(l.key || '')), 'the OCP edge views stay');
+});

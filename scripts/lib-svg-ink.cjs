@@ -51,7 +51,26 @@ function lowerHull(P){
   for(const p of pts){while(h.length>=2&&cross(h[h.length-2],h[h.length-1],p)>=0)h.pop();h.push(p);}
   return h;
 }
-module.exports={polys,lowerHull};
+
+// The garment sheet's silhouette (its clipSil path, M/L/Z only) as polygons in sheet inches, and the x crossings of a
+// horizontal line with it, sorted.
+function silhouette(svg){
+  const art=/<g id="[^"]*__art" transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(([-\d.]+)\)"/.exec(svg);
+  const m=/<clipPath id="[^"]*clipSil"[^>]*>\s*<path d="([^"]*)"/.exec(svg);
+  if(!art||!m) return null;
+  const [ax,ay,sc]=[+art[1],+art[2],+art[3]];
+  const subs=[];let cur=null;
+  for(const t of m[1].matchAll(/([MLZ])\s*(-?[\d.]+)?[ ,]?(-?[\d.]+)?/g)){
+    if(t[1]==='M'){cur=[];subs.push(cur);cur.push([+t[2],+t[3]]);}else if(t[1]==='L'){cur.push([+t[2],+t[3]]);}
+  }
+  return subs.map(p=>p.map(([x,y])=>[(ax+x*sc)/100,(ay+y*sc)/100]));
+}
+function scanline(subs,y){
+  const xs=[];
+  for(const p of subs)for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];if((a[1]<=y&&b[1]>y)||(b[1]<=y&&a[1]>y))xs.push(a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1]));}
+  return xs.sort((a,b)=>a-b);
+}
+module.exports={polys,lowerHull,silhouette,scanline};
 if(false){
  const f=process.argv[2];const svg=fs.readFileSync(f,'utf8');const P=polys(svg);
  let minx=1e9,maxx=-1e9,maxy=-1e9,miny=1e9;for(const p of P)for(const [x,y] of p){minx=Math.min(minx,x);maxx=Math.max(maxx,x);maxy=Math.max(maxy,y);miny=Math.min(miny,y);}
