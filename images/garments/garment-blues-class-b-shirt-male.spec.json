@@ -2,29 +2,29 @@
  "asset_id": "garment-blues-class-b-shirt-male",
  "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only)",
  "size_in": {
-  "w": 20.688,
+  "w": 23.4863,
   "h": 24.28
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2068.8,
+  2348.63,
   2428
  ],
  "size_source": "estimated",
  "size_basis": "Silhouette traced from images/base/blues_class_b_male.webp (581x719 px) at 0.0474 in/px. Same canvas and scale assumption as the Class A coat. No real garment was measured.",
  "anchors": {
   "top_center": [
-   1034.4,
+   1174.31,
    0
   ],
   "bottom_center": [
-   1034.4,
+   1174.31,
    2428
   ],
   "center": [
-   1034.4,
+   1174.31,
    1214
   ],
   "left_edge": [
@@ -32,188 +32,196 @@
    1214
   ],
   "right_edge": [
-   2068.8,
+   2348.63,
    1214
   ],
   "shoulder_seam_right": [
-   242.8,
+   382.71,
    330
   ],
   "sleeve_bottom_right": [
-   213.7,
+   316.81,
    1311.8
   ],
+  "chevron_halfway_right": [
+   262.11,
+   820.9
+  ],
   "shoulder_seam_left": [
-   1826,
+   1965.91,
    330
   ],
   "sleeve_bottom_left": [
-   1855.1,
+   2031.81,
    1311.8
   ],
+  "chevron_halfway_left": [
+   2086.51,
+   820.9
+  ],
   "hem_center": [
-   1034.4,
+   1174.31,
    2418
   ],
   "nameplate_center": [
-   655.25,
+   795.16,
    742.7
   ],
   "epaulet_right_center": [
-   494.8,
+   634.71,
    313
   ],
   "epaulet_left_center": [
-   1574,
+   1713.91,
    313
   ],
   "belt_buckle_center": [
-   1100.8,
+   1240.71,
    1990.15
   ],
   "collar_insignia_right": [
-   1296.79,
+   1436.7,
    267.73
   ],
   "collar_insignia_left": [
-   772.01,
+   911.92,
    267.73
   ],
   "button_1_center": [
-   1034.4,
+   1174.31,
    578.8
   ],
   "button_2_center": [
-   1034.4,
+   1174.31,
    950.89
   ],
   "button_3_center": [
-   1034.4,
+   1174.31,
    1318.24
   ],
   "button_4_center": [
-   1034.4,
+   1174.31,
    1683.22
   ],
   "pocket_right_top_center": [
-   655.15,
+   795.06,
    780.2
   ],
   "pocket_left_top_center": [
-   1413.55,
+   1553.46,
    780.2
   ],
   "ribbon_row_bottom_center": [
-   1413.55,
+   1553.46,
    780.2
   ],
   "nameplate_rest_center": [
-   655.15,
+   795.06,
    780.2
   ]
  },
  "landmarks": {
   "nameplate": {
-   "x": 486.5,
+   "x": 626.41,
    "y": 705.2,
    "w": 337.5,
    "h": 75
   },
   "belt_buckle": {
-   "x": 998.9,
+   "x": 1138.81,
    "y": 1922.6,
    "w": 203.8,
    "h": 135.1
   },
   "pocket_right": {
-   "x": 439.5,
+   "x": 579.41,
    "y": 780.2,
    "w": 431.3,
    "h": 618.6
   },
   "pocket_left": {
-   "x": 1197.9,
+   "x": 1337.81,
    "y": 780.2,
    "w": 431.3,
    "h": 618.6
   },
   "epaulet_right": [
    [
-    276,
+    415.91,
     298.1
    ],
    [
-    636.2,
+    776.11,
     163.9
    ],
    [
-    713.6,
+    853.51,
     228.4
    ],
    [
-    697.3,
+    837.21,
     327.9
    ],
    [
-    337.1,
+    477.01,
     462.1
    ]
   ],
   "collar_right": [
    [
-    1280.9,
+    1420.81,
     24.2
    ],
    [
-    1489.4,
+    1629.31,
     417.6
    ],
    [
-    1257.2,
+    1397.11,
     443.7
    ],
    [
-    1041.5,
+    1181.41,
     545.6
    ]
   ],
   "epaulet_left": [
    [
-    1792.8,
+    1932.71,
     298.1
    ],
    [
-    1432.6,
+    1572.51,
     163.9
    ],
    [
-    1355.2,
+    1495.11,
     228.4
    ],
    [
-    1371.5,
+    1511.41,
     327.9
    ],
    [
-    1731.7,
+    1871.61,
     462.1
    ]
   ],
   "collar_left": [
    [
-    787.9,
+    927.81,
     24.2
    ],
    [
-    579.4,
+    719.31,
     417.6
    ],
    [
-    811.6,
+    951.51,
     443.7
    ],
    [
-    1027.3,
+    1167.21,
     545.6
    ]
   ],
@@ -222,7 +230,7 @@
    "left": 117.9
   },
   "ribbon_slot": {
-   "x": 1207.3,
+   "x": 1347.21,
    "y": 630.2,
    "w": 412.5,
    "h": 150
@@ -231,12 +239,46 @@
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
  "dimensions": {
   "length_in": 24.08,
-  "max_width_in": 20.29,
+  "max_width_in": 23.09,
   "nameplate_in": [
    3.375,
    0.75
   ],
-  "buttons": 4
+  "buttons": 4,
+  "sleeve_widening": {
+   "size_source": "estimated",
+   "outward_in": 1.6,
+   "ramp_from_y_in": 3.3,
+   "full_by_y_in": 5.9,
+   "eases_to_in": 0.7,
+   "from_y_in": 8.5,
+   "note": "outward warp of the sleeve between the armhole seam and the outer edge (seam, body, shoulder and straps unmoved) so the true-size 3 1/2 in chevron lies between the outline and the armhole seam; an estimate, the regulation gives no sleeve width",
+   "chevron_3p5_fit": {
+    "right": {
+     "4": {
+      "outer_clearance_in": -0.041,
+      "seam_clearance_in": -0.144
+     },
+     "turn_deg": 3.84,
+     "3p5": {
+      "outer_clearance_in": 0.25,
+      "seam_clearance_in": 0.16
+     }
+    },
+    "left": {
+     "4": {
+      "outer_clearance_in": -0.002,
+      "seam_clearance_in": -0.155
+     },
+     "turn_deg": -3.84,
+     "3p5": {
+      "outer_clearance_in": 0.297,
+      "seam_clearance_in": 0.15
+     }
+    }
+   },
+   "chevron_fit_note": "clearance in inches from every row of the 3 1/2 in chevron, placed as the engine does (visual centre on chevron_halfway, turned along shoulder_seam to sleeve_bottom), to the outer edge and to the armhole seam; positive = on the sleeve. The women's 4 in option (4.1.12.2.3.3, the 3 1/2 in art scaled to 4.00 x 6.54 in) is listed under 4 and still overhangs, clipped to the silhouette by the engine"
+  }
  },
  "documented": [
   "light blue short-sleeve shirt, two pleated pockets, epaulets (CAPR 39-1 4.1.11.1.1)",
@@ -252,6 +294,7 @@
   "epaulet strap size and shape (not drawn in the base image)",
   "collar leaf, pocket and seam geometry read off the base image",
   "shirt, trouser/skirt and line colours sampled from the base image",
+  "sleeve widening: the sleeve is drawn wider than the traced hanging view (CFG.widen, dimensions.sleeve_widening)",
   "belt strap colour #14347f (and its #7d95d6 stitching) is a choice, not sampled: the base image paints the belt the same navy as the trousers; regulation says only blue belt (4.1.11.1.1.5, 4.1.12.7)",
   "trousers cut off at the base image's crop line"
  ],

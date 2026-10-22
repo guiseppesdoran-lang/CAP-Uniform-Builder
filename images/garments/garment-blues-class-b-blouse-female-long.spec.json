@@ -2,29 +2,29 @@
  "asset_id": "garment-blues-class-b-blouse-female-long",
  "name": "Women's Class B blue long-sleeve blouse, tie tab and skirt (nametag position only)",
  "size_in": {
-  "w": 19.51,
+  "w": 21.4956,
   "h": 29.896
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  1951,
+  2149.56,
   2989.6
  ],
  "size_source": "estimated",
  "size_basis": "Silhouette (long sleeves, collar, torso, trousers/skirt) measured from CAPR 39-1 Figure 4.11 (3 March 2020): the figure was rendered at 2.2x, traced, and scaled with the registration of its short-sleeve twin to the short-sleeve base image, so interior parts line up with garment-blues-class-b-blouse-female. No real garment was measured.",
  "anchors": {
   "top_center": [
-   975.5,
+   1074.78,
    0
   ],
   "bottom_center": [
-   975.5,
+   1074.78,
    2989.6
   ],
   "center": [
-   975.5,
+   1074.78,
    1494.8
   ],
   "left_edge": [
@@ -32,196 +32,196 @@
    1494.8
   ],
   "right_edge": [
-   1951,
+   2149.56,
    1494.8
   ],
   "shoulder_seam_right": [
-   209.3,
+   308.58,
    267.9
   ],
   "sleeve_bottom_right": [
-   235.4,
+   334.68,
    2401.4
   ],
   "elbow_right": [
-   203.5,
+   282.78,
    1441.3
   ],
   "chevron_halfway_right": [
-   213.7,
+   253.08,
    854.6
   ],
   "shoulder_seam_left": [
-   1741.7,
+   1840.98,
    267.9
   ],
   "sleeve_bottom_left": [
-   1715.6,
+   1814.88,
    2401.4
   ],
   "elbow_left": [
-   1747.5,
+   1866.78,
    1441.3
   ],
   "chevron_halfway_left": [
-   1737.3,
+   1896.48,
    854.6
   ],
   "hem_center": [
-   975.5,
+   1074.78,
    2979.6
   ],
   "nameplate_center": [
-   670.55,
+   769.83,
    697.1
   ],
   "epaulet_right_center": [
-   456.5,
+   555.78,
    283.9
   ],
   "epaulet_left_center": [
-   1494.5,
+   1593.78,
    283.9
   ],
   "belt_buckle_center": [
-   928.35,
+   1027.63,
    1837.8
   ],
   "collar_insignia_right": [
-   1243.29,
+   1342.57,
    237.75
   ],
   "collar_insignia_left": [
-   707.71,
+   806.99,
    237.75
   ],
   "button_1_center": [
-   975.5,
+   1074.78,
    547.07
   ],
   "button_2_center": [
-   975.5,
+   1074.78,
    916.68
   ],
   "button_3_center": [
-   975.5,
+   1074.78,
    1251.63
   ],
   "button_4_center": [
-   975.5,
+   1074.78,
    1615.45
   ],
   "ribbon_row_bottom_center": [
-   1280.45,
+   1379.73,
    734.6
   ]
  },
  "landmarks": {
   "nameplate": {
-   "x": 501.8,
+   "x": 601.08,
    "y": 659.6,
    "w": 337.5,
    "h": 75
   },
   "belt_buckle": {
-   "x": 827.3,
+   "x": 926.58,
    "y": 1773.3,
    "w": 202.1,
    "h": 129
   },
   "epaulet_right": [
    [
-    224.7,
+    323.98,
     240.3
    ],
    [
-    621.3,
+    720.58,
     156.3
    ],
    [
-    688.3,
+    787.58,
     231.5
    ],
    [
-    657.6,
+    756.88,
     327.5
    ],
    [
-    261,
+    360.28,
     411.5
    ]
   ],
   "collar_right": [
    [
-    1216.1,
+    1315.38,
     8.1
    ],
    [
-    1439.4,
+    1538.68,
     360.3
    ],
    [
-    1193,
+    1292.28,
     344.9
    ],
    [
-    1183.4,
+    1282.68,
     406.6
    ],
    [
-    1091,
+    1190.28,
     464.3
    ],
    [
-    975.5,
+    1074.78,
     495.1
    ]
   ],
   "epaulet_left": [
    [
-    1726.3,
+    1825.58,
     240.3
    ],
    [
-    1329.7,
+    1428.98,
     156.3
    ],
    [
-    1262.7,
+    1361.98,
     231.5
    ],
    [
-    1293.4,
+    1392.68,
     327.5
    ],
    [
-    1690,
+    1789.28,
     411.5
    ]
   ],
   "collar_left": [
    [
-    734.9,
+    834.18,
     8.1
    ],
    [
-    511.6,
+    610.88,
     360.3
    ],
    [
-    758,
+    857.28,
     344.9
    ],
    [
-    767.6,
+    866.88,
     406.6
    ],
    [
-    860,
+    959.28,
     464.3
    ],
    [
-    975.5,
+    1074.78,
     495.1
    ]
   ],
@@ -230,7 +230,7 @@
    "left": 122.4
   },
   "ribbon_slot": {
-   "x": 1074.2,
+   "x": 1173.48,
    "y": 584.6,
    "w": 412.5,
    "h": 150
@@ -239,12 +239,48 @@
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
  "dimensions": {
   "length_in": 29.7,
-  "max_width_in": 19.11,
+  "max_width_in": 21.1,
   "nameplate_in": [
    3.375,
    0.75
   ],
-  "buttons": 4
+  "buttons": 4,
+  "sleeve_widening": {
+   "size_source": "estimated",
+   "outward_in": 1.2,
+   "ramp_from_y_in": 2.7,
+   "full_by_y_in": 6,
+   "falls_to_0_between_y_in": [
+    10,
+    17
+   ],
+   "note": "outward warp of the sleeve between the armhole seam and the outer edge (seam, body, shoulder and straps unmoved) so the true-size 3 1/2 in chevron lies between the outline and the armhole seam; an estimate, the regulation gives no sleeve width",
+   "chevron_3p5_fit": {
+    "right": {
+     "4": {
+      "outer_clearance_in": -0.046,
+      "seam_clearance_in": -0.22
+     },
+     "turn_deg": 1.26,
+     "3p5": {
+      "outer_clearance_in": 0.236,
+      "seam_clearance_in": 0.077
+     }
+    },
+    "left": {
+     "4": {
+      "outer_clearance_in": -0.033,
+      "seam_clearance_in": -0.231
+     },
+     "turn_deg": -1.26,
+     "3p5": {
+      "outer_clearance_in": 0.24,
+      "seam_clearance_in": 0.067
+     }
+    }
+   },
+   "chevron_fit_note": "clearance in inches from every row of the 3 1/2 in chevron, placed as the engine does (visual centre on chevron_halfway, turned along shoulder_seam to elbow), to the outer edge and to the armhole seam; positive = on the sleeve. The women's 4 in option (4.1.12.2.3.3, the 3 1/2 in art scaled to 4.00 x 6.54 in) is listed under 4 and still overhangs, clipped to the silhouette by the engine"
+  }
  },
  "documented": [
   "long-sleeve blouse with rounded cuffs and buttonhole closures, epaulets, no military creases (CAPR 39-1 4.1.9.5 / 4.1.12.2)",
@@ -257,6 +293,7 @@
   "epaulet strap size and shape (not drawn in the base image)",
   "collar leaf, pocket and seam geometry read off the base image",
   "shirt, trouser/skirt and line colours sampled from the base image",
+  "sleeve widening: the sleeve is drawn wider than the traced hanging view (CFG.widen, dimensions.sleeve_widening)",
   "belt strap colour #14347f (and its #7d95d6 stitching) is a choice, not sampled: the base image paints the belt the same navy as the trousers; regulation says only blue belt (4.1.11.1.1.5, 4.1.12.7)",
   "skirt cut off at the base image's crop line"
  ],

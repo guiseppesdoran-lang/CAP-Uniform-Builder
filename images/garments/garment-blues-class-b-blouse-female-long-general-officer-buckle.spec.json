@@ -2,29 +2,29 @@
  "asset_id": "garment-blues-class-b-blouse-female-long-general-officer-buckle",
  "name": "Women's Class B blue long-sleeve blouse general officer belt buckle: Wing and Star (overlay, registered to garment-blues-class-b-blouse-female-long)",
  "size_in": {
-  "w": 19.51,
+  "w": 21.4956,
   "h": 29.896
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  1951,
+  2149.56,
   2989.6
  ],
  "size_source": "estimated",
  "size_basis": "Drawn on the buckle body of garment-blues-class-b-blouse-female-long (same box and origin); emblem about 0.75 x the smaller buckle dimension. The regulation gives no emblem dimension.",
  "anchors": {
   "top_center": [
-   975.4999999999999,
+   1074.7818012025655,
    0
   ],
   "bottom_center": [
-   975.4999999999999,
+   1074.7818012025655,
    2989.6
   ],
   "center": [
-   975.4999999999999,
+   1074.7818012025655,
    1494.8
   ],
   "left_edge": [
@@ -32,17 +32,17 @@
    1494.8
   ],
   "right_edge": [
-   1950.9999999999998,
+   2149.563602405131,
    1494.8
   ],
   "buckle_center": [
-   950.68,
+   1049.95,
    1837.8
   ]
  },
  "landmarks": {
   "buckle_plate": {
-   "x": 871.95,
+   "x": 971.23,
    "y": 1773.3,
    "w": 157.45,
    "h": 129

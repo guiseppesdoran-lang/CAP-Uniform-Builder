@@ -2,29 +2,29 @@
  "asset_id": "garment-blues-class-b-shirt-male-epaulet-sleeve-officer",
  "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only) adult officer epaulet sleeves (overlay, registered to garment-blues-class-b-shirt-male; blank grade)",
  "size_in": {
-  "w": 20.688,
+  "w": 23.4863,
   "h": 24.28
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2068.8,
+  2348.63,
   2428
  ],
  "size_source": "estimated",
  "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours sampled from the reference photos (gray #6e6a69, cadet navy #072157); the regulation gives no dimension.",
  "anchors": {
   "top_center": [
-   1034.3999999999999,
+   1174.3135441762117,
    0
   ],
   "bottom_center": [
-   1034.3999999999999,
+   1174.3135441762117,
    2427.9999999999995
   ],
   "center": [
-   1034.3999999999999,
+   1174.3135441762117,
    1213.9999999999998
   ],
   "left_edge": [
@@ -32,47 +32,47 @@
    1213.9999999999998
   ],
   "right_edge": [
-   2068.7999999999997,
+   2348.6270883524235,
    1213.9999999999998
   ],
   "rank_slot_right_center": [
-   430.65,
+   570.56,
    261.85
   ],
   "rank_slot_left_center": [
-   1638.15,
+   1778.06,
    261.85
   ],
   "rank_rule_point_right": [
-   365.12,
+   505.03,
    358.28
   ],
   "rank_rule_point_left": [
-   1703.68,
+   1843.59,
    358.28
   ]
  },
  "landmarks": {
   "epaulet_sleeve_right": {
-   "x": 276,
+   "x": 415.91,
    "y": 188.1,
    "w": 309.3,
    "h": 147.5
   },
   "rank_slot_right": {
-   "x": 276,
+   "x": 415.91,
    "y": 188.1,
    "w": 309.3,
    "h": 147.5
   },
   "epaulet_sleeve_left": {
-   "x": 1483.5,
+   "x": 1623.41,
    "y": 188.1,
    "w": 309.3,
    "h": 147.5
   },
   "rank_slot_left": {
-   "x": 1483.5,
+   "x": 1623.41,
    "y": 188.1,
    "w": 309.3,
    "h": 147.5

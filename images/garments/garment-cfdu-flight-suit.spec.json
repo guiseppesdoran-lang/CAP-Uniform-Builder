@@ -23,7 +23,7 @@
    2
   ],
   "border": "gold",
-  "position": "1/2 in below the shoulder seam",
+  "position": "1/2 in below the shoulder seam, measured from the arched seam at the sleeve centre line (flat sleeve view)",
   "orientation": "normal: canton (union) toward the wearer's front / the viewer's left on the outer face of the left sleeve; the reversed flag is for the right sleeve, which this reg does not give a flag",
   "basis": "CAPR 39-1 8.2.4.4 / 8.3.4.4 (left sleeve only); orientation convention per DAFI 36-2903 (flag worn so the union leads forward; reversed on the right shoulder)",
   "loop_tape_left": "not drawn: the 3 1/2 in loop tape on the left is the same colour as the garment and invisible",
@@ -84,11 +84,11 @@
   ],
   "flag_left_center": [
    4345.62,
-   561.56
+   501.04
   ],
   "loop_square_right_center": [
    423.63,
-   647.09
+   576.04
   ]
  },
  "landmarks": {
@@ -136,13 +136,13 @@
   },
   "patch_flag_left": {
    "x": 4170.62,
-   "y": 461.56,
+   "y": 401.04,
    "w": 350,
    "h": 200
   },
   "patch_loop_square_right": {
    "x": 248.63,
-   "y": 472.09,
+   "y": 401.04,
    "w": 350,
    "h": 350
   },

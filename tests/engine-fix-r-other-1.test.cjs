@@ -98,21 +98,27 @@ test('Class A officer: the edge-on grade lies 5/8 in from the outer end of the s
 // ---- 4. Class B short sleeve: the chevron is centred on the outer arm (4.1.11.1.1.1.3, 4.1.12.2.3.3) --------
 
 test('Class B short sleeve: the sleeve chevron is centred on the drawn sleeve halfway between the shoulder seam and the sleeve bottom', async () => {
-  for(const [sex, garment, midX, size] of [['male', 'garment-blues-class-b-shirt-male', 2.02, 3.5], ['female', 'garment-blues-class-b-blouse-female', 2.42, 3.5]]){
+  // D8 (FIX-ART-r1 item 2, CAPR 39-1 4.1.11.1.1.1.3, 4.1.12.2.3.3): the sheets now carry chevron_halfway anchors and their short sleeves are widened
+  // until the true-size 3 1/2 in chevron lies between the outline and the armhole seam; this asserted the old fixed midline (2.02 / 2.42 in) and that the
+  // chevron passed the seam by up to 0.35 in (the wedge sleeve), which the art no longer does.
+  for(const [sex, garment, size] of [['male', 'garment-blues-class-b-shirt-male', 3.5], ['female', 'garment-blues-class-b-blouse-female', 3.5]]){
     const spec = await store.load(garment);
-    const sh = core.anchor(spec, 'shoulder_seam_right'), bottom = core.anchor(spec, 'sleeve_bottom_right');
+    const sh = core.anchor(spec, 'shoulder_seam_right'), bottom = core.anchor(spec, 'sleeve_bottom_right'), half = core.anchor(spec, 'chevron_halfway_right'), halfL = core.anchor(spec, 'chevron_halfway_left');
+    assert.ok(half && halfL, `${sex}: the sheet states chevron_halfway on both sleeves`);
+    near(half.y, (sh.y + bottom.y) / 2, 0.01, `${sex}: chevron_halfway is halfway between the shoulder seam and the sleeve bottom`);
     const scene = await compose(build('blues_b', sex, 'senior', 'SMSgt', [], { opt: { sleeve: 'short', headgear: 'auto' } }));
     const r = byKey(scene, 'grade:sleeve-right'), l = byKey(scene, 'grade:sleeve-left');
     assert.ok(r && l, `${sex}: both sleeves carry the chevron`);
-    near(r.x + r.w / 2, midX, 0.03, `${sex}: right chevron centred on the sleeve's midline`);
-    near(l.x + l.w / 2, spec.w - midX, 0.03, `${sex}: left chevron mirrors it`);
+    near(r.x + r.w / 2, half.x, 0.03, `${sex}: right chevron centred on the sleeve's midline`);
+    near(l.x + l.w / 2, halfL.x, 0.03, `${sex}: left chevron centred on its midline`);
     near(r.y + r.h / 2, (sh.y + bottom.y) / 2, 0.05, `${sex}: halfway between the shoulder seam and the bottom edge of the sleeve`);
     near(r.w, size, 0.01, `${sex}: regulation 3 1/2 in width, not scaled`);
-    // How far the chevron box passes the armhole seam at the sleeve's mid-height (the sleeve is a wedge, so at
-    // the chevron's upper corners, y 6.2-6.9 in, it is about 0.6 in on the men's shirt and 0.27 in on the
-    // blouse: accepted until the art widens the sleeves, DECISIONS FIX-R-OTHER-r2).
-    const seamX = sex === 'male' ? spec.w / 2 - 6.826 : spec.w / 2 - 6.131;
-    assert.ok(r.x + r.w - seamX < 0.35, `${sex}: passes the armhole seam by ${(r.x + r.w - seamX).toFixed(2)} in`);
+    // The sleeve is wide enough: every row of the chevron clears the outer edge and the armhole seam (recorded by the art generator, base-art/make-blues-b.js).
+    const fit = JSON.parse(fs.readFileSync(path.join(root, 'images', 'garments', garment + '.spec.json'), 'utf8')).dimensions.sleeve_widening.chevron_3p5_fit;
+    for(const side of ['right', 'left']){
+      assert.ok(fit[side]['3p5'].outer_clearance_in >= 0.05, `${sex} ${side}: the chevron clears the sleeve's outer edge by ${fit[side]['3p5'].outer_clearance_in} in`);
+      assert.ok(fit[side]['3p5'].seam_clearance_in >= 0.05, `${sex} ${side}: the chevron's inner edge is outside the armhole seam by ${fit[side]['3p5'].seam_clearance_in} in`);
+    }
   }
 });
 
@@ -272,8 +278,8 @@ function inPoly(p, poly){
   return c;
 }
 
-test('Class B short sleeve: the sleeve chevron layer carries the sheet silhouette clip, at full size, centred as before', async () => {
-  for(const [sex, garment, midX, chevron] of [['male', 'garment-blues-class-b-shirt-male', 2.02, ''], ['female', 'garment-blues-class-b-blouse-female', 2.42, ''], ['female', 'garment-blues-class-b-blouse-female', 2.42, '4']]){
+test('Class B short sleeve: the sleeve chevron layer carries the sheet silhouette clip, at full size, centred on chevron_halfway', async () => {
+  for(const [sex, garment, chevron] of [['male', 'garment-blues-class-b-shirt-male', ''], ['female', 'garment-blues-class-b-blouse-female', ''], ['female', 'garment-blues-class-b-blouse-female', '4']]){
     const spec = await store.load(garment);
     const sil = silhouette(garment);
     const scene = await compose(build('blues_b', sex, 'senior', 'SMSgt', [], { opt: { sleeve: 'short', headgear: 'auto', chevron } }));
@@ -286,7 +292,7 @@ test('Class B short sleeve: the sleeve chevron layer carries the sheet silhouett
       const inner = side === 'right' ? l.x + l.w : l.x;
       assert.ok(inPoly({ x: inner, y: l.y + l.h / 2 }, sil), `${sex} ${side}: the part past the armhole seam lies on the shirt front, inside the silhouette`);
     }
-    near(byKey(scene, 'grade:sleeve-right').x + byKey(scene, 'grade:sleeve-right').w / 2, midX, 0.03, `${sex}: centring unchanged`);
+    near(byKey(scene, 'grade:sleeve-right').x + byKey(scene, 'grade:sleeve-right').w / 2, core.anchor(spec, 'chevron_halfway_right').x, 0.03, `${sex}: centred on the sheet's chevron_halfway`);
     assert.ok(spec.w > 0);
   }
   // The long sleeve is clipped the same way (E5-CHEVRONS: every dress sleeve chevron carries the clip, R8).

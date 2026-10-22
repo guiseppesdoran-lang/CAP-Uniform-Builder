@@ -2,29 +2,29 @@
  "asset_id": "garment-blues-class-b-shirt-male-general-officer-buckle",
  "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only) general officer belt buckle: Wing and Star (overlay, registered to garment-blues-class-b-shirt-male)",
  "size_in": {
-  "w": 20.688,
+  "w": 23.4863,
   "h": 24.28
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2068.8,
+  2348.63,
   2428
  ],
  "size_source": "estimated",
  "size_basis": "Drawn on the buckle body of garment-blues-class-b-shirt-male (same box and origin); emblem about 0.75 x the smaller buckle dimension. The regulation gives no emblem dimension.",
  "anchors": {
   "top_center": [
-   1034.3999999999999,
+   1174.3135441762117,
    0
   ],
   "bottom_center": [
-   1034.3999999999999,
+   1174.3135441762117,
    2427.9999999999995
   ],
   "center": [
-   1034.3999999999999,
+   1174.3135441762117,
    1213.9999999999998
   ],
   "left_edge": [
@@ -32,17 +32,17 @@
    1213.9999999999998
   ],
   "right_edge": [
-   2068.7999999999997,
+   2348.6270883524235,
    1213.9999999999998
   ],
   "buckle_center": [
-   1082.56,
+   1222.46,
    1990.15
   ]
  },
  "landmarks": {
   "buckle_plate": {
-   "x": 998.9,
+   "x": 1138.81,
    "y": 1922.6,
    "w": 167.31,
    "h": 135.1

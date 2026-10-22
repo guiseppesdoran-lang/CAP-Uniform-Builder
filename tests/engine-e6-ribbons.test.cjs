@@ -42,12 +42,16 @@ function build(uniform, membership, rank, extra){
 
 // ---- 1. the triangular devices carry the CAP tri-blade -----------------------------------------
 
-test('the propeller device is the CAP three-blade propeller in a triangle, centred on the ribbon (39-3 21c, 21d)', async () => {
+// D8 (FIX-ART-r1 item 9): this asserted the propeller device was the clasp's twin, a triangle carrying the blades; the aircrew propeller (39-3 Attachment 3, listed
+// separately from clasps) is now the bare three-blade propeller, so the two read differently on a Find / ASAR ribbon that carries both.
+test('the propeller device is the bare CAP three-blade propeller, no triangle, centred on the ribbon (39-3 21c, 21d)', async () => {
   for(const metal of ['bronze', 'silver']){
     const svg = fs.readFileSync(path.join(root, 'images', 'devices', `device-propeller-${metal}.svg`), 'utf8');
-    assert.match(svg, /<polygon points="60,18 108,98 12,98"/, `${metal}: the triangle`);
-    const blades = [...svg.matchAll(/rotate\((\d+)\)/g)].map(m => Number(m[1])).sort((a, b) => a - b);
+    assert.doesNotMatch(svg, /<polygon points="60,18 108,98 12,98"/, `${metal}: no triangle (that is the clasp)`);
+    const blades = [...svg.matchAll(/translate\(60 71\) rotate\((\d+)\)/g)].map(m => Number(m[1])).sort((a, b) => a - b);
     assert.deepEqual(blades, [0, 120, 240], `${metal}: three blades 120 degrees apart, not an empty outline`);
+    const clasp = fs.readFileSync(path.join(root, 'images', 'devices', `device-clasp-${metal}.svg`), 'utf8');
+    assert.notEqual(svg.replace(/<title>.*?<\/title>|<metadata>.*?<\/metadata>/g, '').replace(/data-asset-id="[^"]*"/, ''), clasp.replace(/<title>.*?<\/title>|<metadata>.*?<\/metadata>/g, '').replace(/data-asset-id="[^"]*"/, ''), `${metal}: the propeller is not the clasp's drawing`);
   }
   const rs = ribbons([['air_search_and_rescue_ribbon', 'mcchord_36800', '20 Sorties (Aircrew)'], ['search_find_ribbon', 'mcchord_24500', '2nd w/Prop']]);
   const scene = await P.composeUniform(build('blues_a', 'senior', 'Capt', { ribbons: rs }), store());

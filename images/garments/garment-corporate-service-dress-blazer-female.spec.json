@@ -128,7 +128,7 @@
   "navy single-breasted blazer, two or three buttons, notched lapels; pockets optional, no patch pockets (CAPR 39-1 4.2.4.1)",
   "CAP Crest on the left breast pocket or in the same relative position (4.2.4.1.1.1)",
   "nametag top edge aligned with the top of the left breast pocket, or 1/2 inch above the CAP Crest if the blazer has no pocket (4.2.4.1.1.2)",
-  "white aviator shirt or blouse with collar and blue inverted-V tie tab (4.2.4.2-4.2.4.3)",
+  "white aviator shirt or blouse with straight collar and blue inverted-V tie tab, the tab under the collar leaves (4.2.4.2-4.2.4.3)",
   "medium gray slacks or straight/A-line skirt (4.2.4.4-4.2.4.5)"
  ],
  "assumed": [
@@ -139,7 +139,10 @@
   "skirt drawn as in the figure; slacks are a bottoms variant",
   "skirt flare: 12 px of half-width per 100 px of height measured on Fig 4.15, applied from the coat side hem to the box bottom",
   "skirt waist and waistband sizes (waist 3.5 in above the coat hem, 1.1 in narrower each side than the hem, 1.5 in waistband): the regulation gives no skirt dimension and the figure hides them under the coat",
-  "shirt placket button size (0.14 in radius) and spacing (2.3 in)"
+  "shirt placket button size (0.14 in radius) and spacing (2.3 in)",
+  "collar leaf and neckband shape and size: Fig 4.15 draws only the scooped neckline and the tab (no collar), so the straight collar of 4.2.4.2.1 is built on it: leaves from the lapel tips to the neck over the tab corners, neckband between them",
+  "skirt gray #736f6c: the same medium gray as the aviator-shirt slacks and the men's blazer trousers (4.2.4.5, 4.2.5.1.5); the figure sample was #807d7b",
+  "skirt side shade (about 16 percent at the edges): the figure draws the skirt flat; no seam, pleat or vent because 4.2.4.5 forbids pleats and slits"
  ],
  "fit": {
   "method": "traced from the regulation figure",

@@ -2,29 +2,29 @@
  "asset_id": "garment-blues-class-b-shirt-male-cord-region",
  "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only): Region CAC shoulder cord (blue) (overlay, registered to garment-blues-class-b-shirt-male)",
  "size_in": {
-  "w": 20.688,
+  "w": 23.4863,
   "h": 24.28
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2068.8,
+  2348.63,
   2428
  ],
  "size_source": "estimated",
  "size_basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
  "anchors": {
   "top_center": [
-   1034.3999999999999,
+   1174.3135441762117,
    0
   ],
   "bottom_center": [
-   1034.3999999999999,
+   1174.3135441762117,
    2427.9999999999995
   ],
   "center": [
-   1034.3999999999999,
+   1174.3135441762117,
    1213.9999999999998
   ],
   "left_edge": [
@@ -32,38 +32,38 @@
    1213.9999999999998
   ],
   "right_edge": [
-   2068.7999999999997,
+   2348.6270883524235,
    1213.9999999999998
   ],
   "cord_start": [
-   1757.71,
-   306.37
+   1960.31,
+   261.45
   ],
   "cord_end": [
-   1640.08,
+   1779.99,
    1301.65
   ]
  },
  "landmarks": {
   "cord": [
    [
-    1757.7,
-    306.4
+    1960.31,
+    261.5
    ],
    [
-    1758.6,
+    1898.51,
     555.1
    ],
    [
-    1699.3,
+    1839.21,
     815.8
    ],
    [
-    1663.8,
+    1803.71,
     1052.8
    ],
    [
-    1640.1,
+    1780.01,
     1301.6
    ]
   ]
