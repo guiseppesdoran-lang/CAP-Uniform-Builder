@@ -846,9 +846,19 @@
       const arm = side === 'left' ? { x: a[0], y: a[1] } : { x: W - a[0], y: a[1] };
       const len = Math.hypot(arm.x - neck.x, arm.y - neck.y), u = { x: (arm.x - neck.x) / len, y: (arm.y - neck.y) / len };
       const h = EDGE_ON_THICK / 2, v = { x: -u.y * h, y: u.x * h };
-      frames[side] = H.frameFromPolygon(ctx, side, [
+      const f = H.frameFromPolygon(ctx, side, [
         { x: neck.x + v.x, y: neck.y + v.y }, { x: arm.x + v.x, y: arm.y + v.y },
         { x: arm.x - v.x, y: arm.y - v.y }, { x: neck.x - v.x, y: neck.y - v.y }]);
+      if(f){
+        // The sheet states the strap as an axis: the frame takes that axis exactly (the rectangle fit steps a quarter of a degree),
+        // so everything drawn along the strip lies on the strip's own line.
+        const ax = { x: -u.x, y: -u.y };
+        let nrm = { x: ax.y, y: -ax.x };
+        if(nrm.y > 0) nrm = { x: -nrm.x, y: -nrm.y };
+        Object.assign(f, { axis: ax, normal: nrm, length: len, deg: Math.round((90 + Math.atan2(ax.y, ax.x) * 180 / Math.PI) * 100) / 100,
+          center: { x: (neck.x + arm.x) / 2, y: (neck.y + arm.y) / 2 }, neck: { x: neck.x, y: neck.y }, outer: { x: arm.x, y: arm.y } });
+      }
+      frames[side] = f;
     }
     return frames;
   }
@@ -858,6 +868,7 @@
   // grade on its rank slot.
   async function cadetBoards(ctx, A, g, sex){
     await ctx.overlay(A.cadetOfficer, Z.epauletLayer);
+    const overlay = ctx.layers[ctx.layers.length - 1];
     const grade = G.cadetOfficerInsignia(g, 'metal-regular');
     const frames = strapFrames(ctx, A);
     for(const side of ['right', 'left']){
@@ -887,6 +898,36 @@
       await ctx.place(grade, { pieceAnchor: 'center', at, rotate: rot + 90, scale, z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-' + side });
     }
     seatViewsAboveOutline(ctx);
+    await boardStrips(ctx, sex, frames, overlay);
+  }
+
+  // The edge-on board (the lower copy) is the shoulder board of the view from above flattened: squeezed across the strap to the
+  // strip's 0.32 in (the board sheet's 2.3 in width), true length along it, its outer end on the strap's outer end and cut at the
+  // strap's neck end, so the CAP crest and the button are on the strip as on the view from above (Ethan, live site: 'there should
+  // be a cap logo here', 'the shoulder board crest thing should be flattened on the lower copy as well'; R7) and the blue band the
+  // grade sits on is the board's own, at the same distance from the outer end in both views. The coat overlay's own strip drawing
+  // (a separate drawing from the product photo whose blue field lay 0.4 in nearer the arm than the board's) is hidden where the board
+  // is drawn. Neither sheet has a crest group of its own, so the whole board is used (FOLLOWUPS: art to give the sheets one).
+  const BOARD_STRIP_THICK = 0.32;
+  async function boardStrips(ctx, sex, frames, overlay){
+    for(const side of ['right', 'left']){
+      const id = `garment-blues-shoulder-board-top-${sex}-${side}`;
+      const f = frames[side];
+      if(!ctx.has(id) || !f) continue;
+      const s = await ctx.spec(id);
+      const board = core.landmarkBounds(s, 'board'), outer = core.anchor(s, 'board_outer_end'), button = core.anchor(s, 'button_end_center');
+      if(!board || !outer || !button) continue;
+      const rot = Math.round((Math.atan2(f.axis.y, f.axis.x) - Math.atan2(button.y - outer.y, button.x - outer.x)) * 18000 / Math.PI) / 100;
+      const k = BOARD_STRIP_THICK / board.h;
+      // Cut at the strap's neck end, the strap's own width across.
+      const h = EDGE_ON_THICK / 2;
+      const clip = [
+        { x: f.outer.x + f.normal.x * h, y: f.outer.y + f.normal.y * h }, { x: f.neck.x + f.normal.x * h, y: f.neck.y + f.normal.y * h },
+        { x: f.neck.x - f.normal.x * h, y: f.neck.y - f.normal.y * h }, { x: f.outer.x - f.normal.x * h, y: f.outer.y - f.normal.y * h }
+      ].map(p => ({ x: Math.round(p.x * 1000) / 1000, y: Math.round(p.y * 1000) / 1000 }));
+      await ctx.place(id, { pieceAnchor: 'board_outer_end', at: f.outer, rotate: rot, scale: k, scaleX: 1 / k, clip, z: Z.epauletLayer + 0.5, role: 'epaulet', key: 'epaulet:' + side, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on` });
+      if(overlay) overlay.hideGroups = [...new Set([...(overlay.hideGroups || []), 'shoulder-strip-right', 'shoulder-strip-left'])];
+    }
   }
 
   const CLASS_A = {
