@@ -541,9 +541,11 @@
     const quarter = ACROSS_GRADES.has(g.key) && g.category !== 'cadet-officer';
     const acr = quarter ? gs.h : gs.w, alo = quarter ? gs.w : gs.h;
     const squeeze = Math.min(1, across / acr);
-    const d = GRADE_FROM_END + alo / 2;
-    const at = { x: end.x + axis.x * d, y: end.y + axis.y * d };
     const o = opts || {};
+    // `centerFromEnd`: the piece's centre this far from the strap's outer end (the Class A boards, where it is the
+    // top view's rank slot distance from the board's outer end); else the piece's outer edge is 5/8 in from the end.
+    const d = o.centerFromEnd != null ? o.centerFromEnd : GRADE_FROM_END + alo / 2;
+    const at = { x: end.x + axis.x * d, y: end.y + axis.y * d };
     // The art's width is the across axis unless the quarter turn lays it along the strap; `place` has a
     // uniform scale and an extra x factor, so the quarter-turned piece squeezes its height and widens
     // its width back to true.
@@ -556,7 +558,7 @@
   // `frames` (the Class A coats, whose sheets state the strap as an axis, see strapFrames) gives each
   // side's strap frame; the strip's outer end is the frame's outer end. `gradeId` names the piece to
   // draw when it is not the sleeve's own (the Class A boards' regular-size metal grade).
-  async function epauletEdgeGrades(ctx, g, frames, gradeId){
+  async function epauletEdgeGrades(ctx, g, frames, gradeId, centerFromEnd){
     for(const side of ['right', 'left']){
       const f = (frames && frames[side]) || H.epauletFrame(ctx, side);
       const mid = frames ? f && f.outer : ctx.point(`rank_slot_${side}_center`);
@@ -564,7 +566,7 @@
       // Slide from the strip's centre back along the strap axis to the plane of the outer end.
       const back = (f.outer.x - mid.x) * f.axis.x + (f.outer.y - mid.y) * f.axis.y;
       const end = { x: mid.x + f.axis.x * back, y: mid.y + f.axis.y * back };
-      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, EDGE_ON_THICK - 0.08, { id: gradeId, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, EDGE_ON_THICK - 0.08, { id: gradeId, centerFromEnd: centerFromEnd ? centerFromEnd[side] : null, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
     }
   }
 
@@ -832,7 +834,15 @@
       // the same regular-size piece in both: the cadet officer's boards on the service coat and the
       // semi-formal coat take the regular grade (4.1.5.2.1.3, 4.1.9.3.4); the miniature is the blue
       // shirt's epaulet sleeve grade (4.1.6.1.4). The strip squeezes it across the strap only.
-      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'));
+      // Its centre is as far from the board's outer end as the top view's rank slot is (the board sheet's
+      // rank_slot_center and board_outer_end), so the two views place one piece at one distance (R7).
+      const fromEnd = {};
+      for(const side of ['right', 'left']){
+        const bs = await ctx.spec(`garment-blues-shoulder-board-top-${sex}-${side}`).catch(() => null);
+        const slot = bs && core.anchor(bs, 'rank_slot_center'), outer = bs && core.anchor(bs, 'board_outer_end');
+        if(slot && outer) fromEnd[side] = Math.hypot(slot.x - outer.x, slot.y - outer.y);
+      }
+      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'), fromEnd);
     }
     else if(!semi && g.general) await ctx.overlay(`${A.layer}-general-officer`);
     else if(!semi && isOfficerLike(g)) await ctx.overlay(`${A.layer}-senior-officer`);

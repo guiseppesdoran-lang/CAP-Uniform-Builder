@@ -51,6 +51,26 @@ test('Class A and cadet semi-formal coats: a cadet officer\'s edge-on strip carr
   assert.equal(n, 48);
 });
 
+test('Class A and cadet semi-formal coats: the edge-on grade\'s centre is as far from the strap\'s outer end as the top view\'s rank slot is from the board\'s outer end, on both sides and both cuts (R7; the board sheets\' rank_slot_center and board_outer_end)', async () => {
+  // The strap's arm end (its outer end) is the coat's cord line end (CLASS_A in js/engine/profiles-dress.js), mirrored for the wearer's right.
+  const ARM = { male: { W: 23.726, a: [20.22, 3.41] }, female: { W: 24.3883, a: [20.09, 2.65] } };
+  let n = 0;
+  for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const gender of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/Maj', 'C/Col']){
+    const scene = await compose(hb(uniform, gender, 'cadet', rank, { badgeIds: [AIRCREW] }));
+    for(const side of ['right', 'left']){
+      const bs = await store.load(`garment-blues-shoulder-board-top-${gender}-${side}`);
+      const slot = core.anchor(bs, 'rank_slot_center'), outer = core.anchor(bs, 'board_outer_end');
+      const want = Math.hypot(slot.x - outer.x, slot.y - outer.y);
+      const edge = byKey(scene, `grade:edge-${side}`);
+      const end = side === 'left' ? { x: ARM[gender].a[0], y: ARM[gender].a[1] } : { x: ARM[gender].W - ARM[gender].a[0], y: ARM[gender].a[1] };
+      const got = Math.hypot(edge.origin.x - end.x, edge.origin.y - end.y);
+      assert.ok(Math.abs(got - want) < 0.02, `${uniform} ${gender} ${rank} ${side}: edge-on centre ${got.toFixed(3)} in from the strap's outer end, the top view's slot is ${want.toFixed(3)} in from the board's`);
+      n++;
+    }
+  }
+  assert.equal(n, 24);
+});
+
 test('the blue shirt\'s epaulet sleeves keep the cadet officer\'s miniature metal grade (CAPR 39-1 4.1.6.1.4)', async () => {
   for(const gender of ['male', 'female']){
     const scene = await compose(hb('blues_b', gender, 'cadet', 'C/Maj', { badgeIds: [AIRCREW] }));
