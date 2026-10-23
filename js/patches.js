@@ -698,6 +698,15 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       const art = window.CAPUBBadgeCatalog && CAPUBBadgeCatalog.art(id, 'field');
       return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || `badges/utility/${id}.webp`;
     }
+    // The picker's thumbnail on a field uniform: the field form, or for a badge with no field form (STEM,
+    // Cyber, Model Rocketry, NRA, the service badges) its dress, then cloth, artwork rather than a broken
+    // image. The engine still draws only what a field uniform wears and notes the rest.
+    function capubBadgeThumbnailPath(id){
+      const cat = window.CAPUBBadgeCatalog;
+      const level = State.badgeSelections?.[id]?.level;
+      const art = cat && (cat.art(id, 'field') || cat.art(id, 'dress', level) || cat.art(id, 'cloth'));
+      return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || `badges/utility/${id}.webp`;
+    }
     function capubUtilityBadgePreviewUrl(id){
       return ASSET(capubFieldBadgePath(id));
     }
@@ -757,7 +766,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
     const capubPreviousGetBadgeAssetPath = getBadgeAssetPath;
     getBadgeAssetPath = function capubGetBadgeAssetPathUtilityAware(id){
-      if(capubIsUtilityUniform()) return capubFieldBadgePath(id);
+      if(capubIsUtilityUniform()) return capubBadgeThumbnailPath(id);
       return capubPreviousGetBadgeAssetPath(id);
     };
 
