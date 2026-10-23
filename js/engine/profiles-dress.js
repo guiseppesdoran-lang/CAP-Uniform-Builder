@@ -554,7 +554,10 @@
   // epaulet 'tilted across the shoulder seam and the collar, over the shirt'). Each view keeps its turn along the strap and
   // is lifted along the strap's normal, away from the garment, by the least that clears; both views take the larger lift, so
   // the pair stays level and mirrored (R7); the grade on a view goes with it.
-  const OUTLINE_CLEAR = 0.1, MAX_OUTLINE_LIFT = 2;
+  // The table is the outline simplified within 0.01 in (TOL in scripts/measure-garment-outline.cjs), a chord can lie that far
+  // inside the drawn edge, so the seat clears OUTLINE_CLEAR plus that tolerance and the view is 0.1 in clear of the sheet's
+  // true outline, not only of the table (the rescaled sheets put a view 0.096 in from the drawn edge).
+  const OUTLINE_CLEAR = 0.1, OUTLINE_TABLE_TOL = 0.01, MAX_OUTLINE_LIFT = 2;
   function seatViewsAboveOutline(ctx){
     const top = ctx.base && GARMENT_TOP[ctx.base.id];
     if(!top) return;
@@ -575,7 +578,7 @@
     for(const l of views){
       const n = normalOf(l);
       let t = 0;
-      while(t < MAX_OUTLINE_LIFT && quadGap(quad(l, n, t), poly) < OUTLINE_CLEAR - 1e-9) t += 0.01;
+      while(t < MAX_OUTLINE_LIFT && quadGap(quad(l, n, t), poly) < OUTLINE_CLEAR + OUTLINE_TABLE_TOL - 1e-9) t += 0.01;
       lift = Math.max(lift, t);
     }
     if(!lift) return;
