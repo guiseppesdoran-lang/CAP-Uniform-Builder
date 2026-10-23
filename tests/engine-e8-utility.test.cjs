@@ -293,14 +293,14 @@ test('ABU and CFU overlay: grade 1 in from the collar\'s free edge, chevron widt
     const spec = await ST.load(garment);
     const apex = core.anchor(spec, 'collar_apex');
     assert.ok(apex);
-    // an officer: the grade centred 1 in from the bottom of each collar leaf
+    // an officer: the grade centred 1 in from the bottom of each collar leaf (COLLAR4: the bars' centre 1 in from the leaf's outer edge, so the 1 in line runs from that edge to the centre)
     const scene = await P.composeUniform(build(u, 'senior', 'Capt', { badges: [PILOT, GT], patches: [UNIT, WING] }), store());
     const ms = measures(scene);
     const ones = ms.filter(m => m.label === '1 in');
     assert.equal(ones.length, 2, `${u}: one on each collar`);
     for(const side of ['right', 'left']){
       const g = scene.layers.find(l => l.key === 'grade:' + side);
-      const m = ones.find(x => Math.abs(x.to.x - g.origin.x) < 1e-6 && Math.abs(x.to.y - g.origin.y) < 1e-6);
+      const m = ones.find(x => Math.abs(x.to.x - g.origin.x) < 1e-3 && Math.abs(x.to.y - g.origin.y) < 1e-3); // layers keep 4 decimals; the bars' centre is computed from the outer edge, not a 0.01 in slot
       assert.ok(m, `${u} ${side}: the line ends on the centre of the grade`);
       assert.ok(Math.abs(len(m) - 1) < 1e-3, `${u} ${side}: 1 in`);
     }
@@ -332,7 +332,7 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
     const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
     const spec = await ST.load(garment);
     const slots = spec.raw.collar_slots;
-    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the row's long axis (the art's longer side) lies parallel to the leaf's OUTER edge, the long diagonal
+    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the cloth's short side lies parallel to the leaf's OUTER edge, the long diagonal
     // from the collar point to the shoulder end (COLLAR3, Ethan: 'needs to be parallel to the bottom line'; D8: the old assertions had it along the front edge, then along the edge between the two lowest vertices), its NEAR OUTLINE 1 in from the front edge, centred on the leaf, drawn from the sheet's
     // collar_left / collar_right polygons. Cadet NCO: the chevron follows Figure A5-5 like the shirts' (tests/engine-e5-chevrons.test.cjs).
     for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col']){
@@ -341,13 +341,16 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
         const g = scene.layers.find(l => l.key === 'grade:' + side);
         assert.ok(g, `${u} ${rank} ${side}`);
         const d = slots[side].front_edge.dir_down;
-        // the row's long axis runs along the outer edge: the leaf's top vertex to its neighbour farther from the centre line
+        // COLLAR4 (Ethan: 'the short edge needs to be parallel to the bottom of the collar. diamonds should always be the same sides'): the cloth's short side lies on the outer
+        // edge (the leaf's top vertex to its neighbour farther from the centre line), so the art's y axis (each diamond's long point-to-point axis, insignia_h_in; the discs' row is x)
+        // is parallel to it, the row stacking across the leaf. D8: the old assertion had the row's long axis along the edge.
         const lp = spec.raw.landmarks['collar_' + side].map(p => ({ x: p[0] / 100, y: p[1] / 100 })), cxs = spec.w / 2;
         let top = 0; lp.forEach((p, i) => { if(p.y < lp[top].y) top = i; });
         const nb = [lp[(top + lp.length - 1) % lp.length], lp[(top + 1) % lp.length]].sort((p, q) => Math.abs(q.x - cxs) - Math.abs(p.x - cxs))[0];
         const bd = { x: nb.x - lp[top].x, y: nb.y - lp[top].y }, bl = Math.hypot(bd.x, bd.y);
-        const axis = g.w >= g.h ? core.rotatePoint({ x: 1, y: 0 }, { x: 0, y: 0 }, g.rotate) : core.rotatePoint({ x: 0, y: -1 }, { x: 0, y: 0 }, g.rotate);
-        assert.ok(Math.abs(axis.x * bd.y / bl - axis.y * bd.x / bl) < 0.01, `${u} ${rank} ${side}: row's long axis parallel to the outer edge`);
+        const axis = core.rotatePoint({ x: 0, y: -1 }, { x: 0, y: 0 }, g.rotate), row = core.rotatePoint({ x: 1, y: 0 }, { x: 0, y: 0 }, g.rotate);
+        assert.ok(Math.abs(axis.x * bd.y / bl - axis.y * bd.x / bl) < 0.01, `${u} ${rank} ${side}: the diamonds' long axis (the cloth's short side) parallel to the outer edge`);
+        assert.ok(Math.abs(row.x * bd.x / bl + row.y * bd.y / bl) < 0.01, `${u} ${rank} ${side}: the row stacks across the leaf, perpendicular to the outer edge`);
         assert.ok(Math.abs(bd.y / bl) > 0.5 && Math.abs(bd.y / bl) < 0.87, `${u} ${rank} ${side}: the outer edge is a diagonal, not horizontal`);
         // distance from the front edge line to the nearest point of the rotated box: 1 in
         const p1 = slots[side].front_edge.p1.map(v => v / 100), n = { x: d[1], y: -d[0] };

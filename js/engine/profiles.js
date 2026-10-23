@@ -235,11 +235,14 @@
   }
 
   // `opts.edgeOf(poly, centerX)`, when given (the ABU and CFU, profiles-field.js), supplies the front (leading) edge in place of the polygon search.
-  // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the row lies parallel
-  // to the OUTER edge of the leaf (Ethan: 'needs to be parallel to the bottom line'; the text states no orientation), the art's long axis along that edge
-  // (collarOuterEdge, the long diagonal from the collar point to the shoulder end, from the leaf polygon, the same code for both leaves), its near outline 1 in from the front edge, centred on the leaf along it
-  // (chord of the leaf on that line), a 1 in measure from the front edge to the near outline. The row is turned, so its near outline is where its
-  // corner reaches toward the front edge: the 1 in is taken to that corner.
+  // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'). The text states no orientation;
+  // Ethan's reading (COLLAR4, 'the short edge needs to be parallel to the bottom of the collar. diamonds should always be the same sides'): the cloth's SHORT side
+  // lies on the OUTER edge of the leaf (collarOuterEdge, the long diagonal from the collar point to the shoulder end, from the leaf polygon, the same code for both
+  // leaves), so every field-grade diamond (Major, Lieutenant Colonel, Colonel) has its long point-to-point axis parallel to that edge, all alike, and the row
+  // (the Lieutenant Colonel's two, the Colonel's three, the company grades' two and three discs) stacks away from the edge, across the leaf. The art is drawn
+  // with its diamonds' long axis vertical (y) and its row horizontal (x), so the turn is the edge's angle plus a quarter turn for every grade. Near outline 1 in
+  // from the front edge, centred on the leaf along the row, a 1 in measure from the front edge to the near outline (the row is turned, so the 1 in is taken to the
+  // corner of the box that reaches toward the front edge).
   async function collarOfficerRow(ctx, g, opts){
     // `opts.miniatureKeys` (the ABU and CFU, 5.1.1.1.1.3, 5.2.1.1.1.4: 'Cadet Colonels and Cadet Captains may wear miniature, embroidered insignia') names the
     // grades drawn in the miniature cloth-bordered form, which is what fits the leaf; the others wear regular size.
@@ -254,10 +257,8 @@
       const edge = opts && opts.edgeOf ? opts.edgeOf(poly, centerX) : collarFrontEdge(poly.points, centerX);
       if(!edge) continue;
       const side = edge.collarPoint.x < centerX ? 'right' : 'left';
-      // The row's LONG axis lies along the outer edge: the cloth is drawn with its row of diamonds across its width (the Captain's 2.5 x 1 in, the Colonel's
-      // 2.5 x 1.5 in, their miniatures, the Lieutenant Colonel's) so its x axis is turned onto the edge; the Major's and the Lieutenant Colonel's tall cloth
-      // (taller than wide) has its y axis there, a quarter turn more. In (-90, 90], mirrored on the other leaf.
-      let rotate = collarOuterAngle(poly.points, centerX) + (s.h > s.w ? 90 : 0);
+      // The art's y axis (the diamonds' long axis) onto the outer edge: the edge's angle plus a quarter turn, in (-90, 90], mirrored on the other leaf.
+      let rotate = collarOuterAngle(poly.points, centerX) + 90;
       if(rotate > 90) rotate -= 180;
       const r = rotate * Math.PI / 180, b = { x: Math.cos(r), y: Math.sin(r) }, n = { x: -b.y, y: b.x };
       // The perpendicular of the front edge on the leaf's side; the row's half-extent toward the edge is its corner reach.
