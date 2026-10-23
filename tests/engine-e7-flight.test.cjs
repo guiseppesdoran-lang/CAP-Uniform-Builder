@@ -1,7 +1,7 @@
 'use strict';
 // E7-FLIGHT: the flight duty uniforms and flight jackets (CAPR 39-1 ch. 8, 6.1.7), measured in inches
 // on the composed scene: officer grade 1/2 in from the shoulder seam, general officer stars centred
-// on the shoulder, the name tag's badges (one on an officer cloth tag, two on NCO and cadet tags), the chest layout, the ES patch under the pocket.
+// on the shoulder, the name tag's badge (ONE on every tag, Ethan's ruling over 8.2.4.1's 'up to two', LIVE-FIELD B8), the chest layout, the ES patch under the pocket.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -169,7 +169,7 @@ test('NCOs and cadets wear no shoulder grade on the flight suit (8.2.3.3, 8.3.3.
   }
 });
 
-// ---- the name tag: wings plus one other badge or the command pin -------------------------------
+// ---- the name tag: ONE badge (LIVE-FIELD B8; Ethan over 'up to two' in 8.2.4.1, 8.3.4.1): the aviation badge, else the command pin, else the occupational badge ----
 
 const badgeLayers = (scene, f) => onFigure(scene, f, l => l.role === 'badge');
 
@@ -195,7 +195,7 @@ test('officer cloth name tag carries ONE badge: "may include one badge" (8.2.4.1
       assert.ok(Math.abs(bs[0].x + bs[0].w / 2 - (zone.x + zone.w / 2)) < EPS, `${f.name} ${r}: centred in badge_zone`);
       assert.ok(Math.abs(bs[0].y + bs[0].h / 2 - (zone.y + zone.h / 2)) < EPS, `${f.name} ${r}: centred in badge_zone height`);
       assert.ok(bs[0].x >= zone.x - EPS && bs[0].x + bs[0].w <= zone.x + zone.w + EPS && bs[0].h <= zone.h + EPS, `${f.name} ${r}: inside badge_zone`);
-      assert.ok(scene.notes.some(n => /officer cloth name tag carries one badge \(CAPR 39-1, 8\.[23]\.4\.1\)/.test(n)), `${f.name} ${r}: says the pin is not shown`);
+      assert.ok(scene.notes.some(n => /name tag carries one badge here .*8\.[23]\.4\.1.*Pilot Badge is shown; Group Commander Badge is not shown/.test(n)), `${f.name} ${r}: says the pin is not shown: ${scene.notes.join(' | ')}`);
     }
   }
 });
@@ -204,7 +204,7 @@ test('officer cloth name tag, no wings: the current command pin, else the occupa
   const f = FIGURES[0];
   const pinOnly = await P.composeUniform(build('flight_suit', 'senior', 'Capt', { badges: [GROUND_TEAM], command: GROUP_PIN }), store());
   assert.deepEqual(badgeLayers(pinOnly, f).map(l => l.key), ['badge:' + GROUP_PIN.id]);
-  assert.ok(pinOnly.notes.some(n => /officer cloth name tag carries one badge/.test(n)), 'ground team badge dropped, and said');
+  assert.ok(pinOnly.notes.some(n => /Group Commander Badge is shown; Ground Team Badge is not shown/.test(n)), 'ground team badge dropped, and said');
   const occ = await P.composeUniform(build('flight_suit', 'senior', 'Capt', { badges: [GROUND_TEAM] }), store());
   assert.deepEqual(badgeLayers(occ, f).map(l => l.key), ['badge:' + GROUND_TEAM.id]);
   assert.ok(!occ.notes.some(n => /name tag/.test(n)), 'nothing dropped, no note');
@@ -215,65 +215,59 @@ test('officer cloth name tag, no wings: the current command pin, else the occupa
   assert.ok(!wingsOnly.notes.some(n => /name tag/.test(n)));
 });
 
-test('NCO and cadet name tags carry two badges: command pin on the wearer\'s right, wings to its left (8.2.4.1, 8.3.4.1)', async () => {
+test('NCO and cadet name tags carry ONE badge: wings and the command pin show the wings, centred in badge_zone, and the note names the pin (8.2.4.1, 8.3.4.1; Ethan)', async () => {
   for(const f of FIGURES){
     for(const [m, r] of NON_OFFICERS){
       const scene = await P.composeUniform(build(f.uniform, m, r, { badges: [PILOT], command: GROUP_PIN }), store());
       const { tag, zone } = await badgeZoneOf(scene, f);
       const bs = badgeLayers(scene, f);
-      assert.equal(bs.length, 2, `${f.name} ${r}: wings and the command pin`);
-      const wings = bs.find(l => l.key === 'badge:' + PILOT.id), pin = bs.find(l => l.key === 'badge:' + GROUP_PIN.id);
-      assert.ok(wings && pin, `${f.name} ${r}`);
-      // Wearer's right is the viewer's left of the tag.
-      assert.ok(pin.x + pin.w <= wings.x, `${f.name} ${r}: pin to the wearer's right of the wings`);
-      // Both slots come from badge_zone: 0.3 of its width for the pin, 0.7 for the wings.
-      assert.ok(pin.x >= zone.x - EPS && pin.x + pin.w <= zone.x + 0.3 * zone.w + EPS, `${f.name} ${r}: pin in the first 0.3 of badge_zone`);
-      assert.ok(wings.x >= zone.x + 0.3 * zone.w - EPS && wings.x + wings.w <= zone.x + zone.w + EPS, `${f.name} ${r}: wings in the other 0.7`);
-      for(const l of [wings, pin]) assert.ok(l.y >= zone.y - EPS && l.y + l.h <= zone.y + zone.h + EPS && l.y + l.h <= tag.y + tag.h / 2, `${f.name} ${r}: ${l.key} in badge_zone, above the name`);
+      assert.equal(bs.length, 1, `${f.name} ${r}: one badge`);
+      assert.equal(bs[0].key, 'badge:' + PILOT.id, `${f.name} ${r}: the wings`);
+      assert.ok(Math.abs(bs[0].x + bs[0].w / 2 - (zone.x + zone.w / 2)) < EPS, `${f.name} ${r}: centred in badge_zone`);
+      assert.ok(bs[0].x >= zone.x - EPS && bs[0].x + bs[0].w <= zone.x + zone.w + EPS && bs[0].y >= zone.y - EPS && bs[0].y + bs[0].h <= zone.y + zone.h + EPS && bs[0].y + bs[0].h <= tag.y + tag.h / 2, `${f.name} ${r}: in badge_zone, above the name`);
+      assert.ok(scene.notes.some(n => /one badge here.*Pilot Badge is shown; Group Commander Badge is not shown/.test(n)), `${f.name} ${r}: ${scene.notes.join(' | ')}`);
     }
   }
 });
 
-test('NCO tag: wings and an occupational badge (8.2.4.1); wings alone are centred', async () => {
+test('NCO tag: wings and an occupational badge show the wings only and name the occupational badge; a lone badge of either kind is centred on the tag (8.2.4.1; Ethan)', async () => {
   const both = await P.composeUniform(build('flight_suit', 'senior', 'SMSgt', { badges: [PILOT, GROUND_TEAM] }), store());
-  const bs = badgeLayers(both, FIGURES[0]);
-  assert.deepEqual(bs.map(l => l.key).sort(), ['badge:CAPPilot1_FA9D33EA587D8', 'badge:ground_team_basic_badge']);
-  const gt = bs.find(l => l.key === 'badge:ground_team_basic_badge'), wg = bs.find(l => l.key === 'badge:' + PILOT.id);
-  // "wings will be to the right or above an occupational badge" (8.2.4.1), read from the wearer's side: the
-  // wings are on the wearer's right (the viewer's left) of the occupational badge.
-  assert.ok(wg.x + wg.w <= gt.x, 'wings on the wearer\'s right of the occupational badge');
-  const one = await P.composeUniform(build('flight_suit', 'senior', 'SMSgt', { badges: [PILOT] }), store());
-  const tag = onFigure(one, FIGURES[0], l => l.key === 'nametag')[0];
-  const w = badgeLayers(one, FIGURES[0]);
-  assert.equal(w.length, 1);
-  assert.ok(Math.abs(w[0].x + w[0].w / 2 - (tag.x + tag.w / 2)) < 0.01, 'a lone badge is centred on the tag');
+  assert.deepEqual(badgeLayers(both, FIGURES[0]).map(l => l.key), ['badge:' + PILOT.id]);
+  assert.ok(both.notes.some(n => /Pilot Badge is shown; Ground Team Badge is not shown/.test(n)), both.notes.join(' | '));
+  for(const badges of [[PILOT], [GROUND_TEAM]]){
+    const one = await P.composeUniform(build('flight_suit', 'senior', 'SMSgt', { badges }), store());
+    const tag = onFigure(one, FIGURES[0], l => l.key === 'nametag')[0];
+    const w = badgeLayers(one, FIGURES[0]);
+    assert.equal(w.length, 1);
+    assert.ok(Math.abs(w[0].x + w[0].w / 2 - (tag.x + tag.w / 2)) < 0.01, 'a lone badge is centred on the tag');
+    assert.ok(!one.notes.some(n => /one badge here/.test(n)), 'nothing left off, no note');
+  }
 });
 
-test('cadet and NCO tags, wings and an occupational badge: wings on the wearer\'s right on all four garments, male and female (8.2.4.1, 8.3.4.1)', async () => {
-  const cases = [['cadet', 'C/Capt', [PILOT, GROUND_TEAM]], ['senior', 'SMSgt', [PILOT, GROUND_TEAM]]];
+test('cadet and NCO tags, wings and an occupational badge: one badge, the wings, on all four garments, male and female (8.2.4.1, 8.3.4.1; Ethan)', async () => {
+  const cases = [['cadet', 'C/Capt', [PILOT, GROUND_TEAM]], ['cadet', 'C/SSgt', [PILOT, GROUND_TEAM]], ['senior', 'SMSgt', [PILOT, GROUND_TEAM]]];
   for(const f of FIGURES){
     for(const gender of ['male', 'female']){
       for(const [m, r, badges] of cases){
         const scene = await P.composeUniform(build(f.uniform, m, r, { gender, badges }), store());
         const { zone } = await badgeZoneOf(scene, f);
         const bs = badgeLayers(scene, f);
-        assert.equal(bs.length, 2, `${f.name} ${gender} ${r}: two badges`);
-        const wg = bs.find(l => l.key === 'badge:' + PILOT.id), occ = bs.find(l => l.key === 'badge:' + GROUND_TEAM.id);
-        assert.ok(wg && occ, `${f.name} ${gender} ${r}`);
-        assert.ok(wg.x + wg.w <= occ.x, `${f.name} ${gender} ${r}: wings to the wearer's right of the occupational badge`);
-        assert.ok(wg.x >= zone.x - EPS && wg.x + wg.w <= zone.x + 0.7 * zone.w + EPS, `${f.name} ${gender} ${r}: wings in the first 0.7 of badge_zone`);
-        assert.ok(occ.x >= zone.x + 0.7 * zone.w - EPS && occ.x + occ.w <= zone.x + zone.w + EPS, `${f.name} ${gender} ${r}: occupational badge in the last 0.3`);
+        assert.equal(bs.length, 1, `${f.name} ${gender} ${r}: one badge`);
+        assert.equal(bs[0].key, 'badge:' + PILOT.id, `${f.name} ${gender} ${r}: the wings`);
+        assert.ok(Math.abs(bs[0].x + bs[0].w / 2 - (zone.x + zone.w / 2)) < EPS, `${f.name} ${gender} ${r}: centred in badge_zone`);
+        assert.ok(scene.notes.some(n => /Ground Team Badge is not shown/.test(n)), `${f.name} ${gender} ${r}: names what was left off`);
       }
     }
   }
 });
 
-test('NCO tag: the command pin replaces the occupational badge; a graduated commander\'s pin is not on the tag (8.2.4.1)', async () => {
-  const s = await P.composeUniform(build('flight_suit', 'senior', 'SMSgt', { badges: [PILOT, GROUND_TEAM], command: GROUP_PIN }), store());
-  const keys = badgeLayers(s, FIGURES[0]).map(l => l.key);
-  assert.ok(keys.includes('badge:' + GROUP_PIN.id) && !keys.includes('badge:ground_team_basic_badge'), 'pin in place of the occupational badge');
+test('NCO tag, no wings: the current command pin takes the occupational badge\'s place; a graduated commander\'s pin is not on the tag (8.2.4.1; Ethan)', async () => {
+  const s = await P.composeUniform(build('flight_suit', 'senior', 'SMSgt', { badges: [GROUND_TEAM], command: GROUP_PIN }), store());
+  assert.deepEqual(badgeLayers(s, FIGURES[0]).map(l => l.key), ['badge:' + GROUP_PIN.id], 'the pin alone, in place of the occupational badge');
+  assert.ok(s.notes.some(n => /Group Commander Badge is shown; Ground Team Badge is not shown/.test(n)));
   const g = await P.composeUniform(build('flight_suit', 'senior', 'SMSgt', { badges: [PILOT], command: Object.assign({}, GROUP_PIN, { graduated: true }) }), store());
   assert.deepEqual(badgeLayers(g, FIGURES[0]).map(l => l.key), ['badge:' + PILOT.id]);
+  assert.ok(!g.notes.some(n => /one badge here/.test(n)), 'a graduated pin is not a candidate, so nothing is left off');
 });
 
 test('name tag lettering: officers name only; NCOs grade and CAP; cadets "Cadet" and CAP (8.2.4.1)', async () => {
@@ -290,10 +284,10 @@ test('name tag lettering: officers name only; NCOs grade and CAP; cadets "Cadet"
   assert.equal(grade.text, 'Cadet');
 });
 
-test('NCO tag: a third badge is not shown and says so (8.2.4.1)', async () => {
+test('NCO tag: a third badge is not shown and says so (8.2.4.1; Ethan: one badge)', async () => {
   const sc = await P.composeUniform(build('flight_suit', 'senior', 'SMSgt', { badges: [PILOT, GROUND_TEAM, { id: 'senior_ground_team_badge', title: 'Senior GT' }] }), store());
-  assert.equal(badgeLayers(sc, FIGURES[0]).length, 2);
-  assert.ok(sc.notes.some(n => /at most two badges/.test(n)));
+  assert.equal(badgeLayers(sc, FIGURES[0]).length, 1);
+  assert.ok(sc.notes.some(n => /Pilot Badge is shown; Ground Team Badge and Senior GT are not shown/.test(n)), sc.notes.join(' | '));
 });
 
 // ---- chest layout and the ES patch -------------------------------------------------------------

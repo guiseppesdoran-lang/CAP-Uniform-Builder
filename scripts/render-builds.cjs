@@ -205,9 +205,8 @@ const SPECIALTY_BADGE = 'emergency_services_badge';
 // The OCP, ABU and Corporate Field Uniform wear only badges with genuine field artwork (data/badge-catalog.js, LIVE-FIELD B6): the Emergency
 // Services badge has none, so their matrix builds wear the Ground Team badge as the second badge.
 const FIELD_UNIFORMS = new Set(['ocp', 'abu', 'corporate_field']);
-// The flight suit name tag takes the aeronautical rating and an occupational badge (CAPR 39-1 8.2.4.1, 8.3.4.1, 10.4.5); the Emergency
-// Services badge is a specialty track badge (10.5) it rejects, so the flight suits' matrix builds wear the Ground Team badge and draw
-// the two-badge tag.
+// The flight suit name tag carries ONE badge (Ethan's ruling over 'up to two' in CAPR 39-1 8.2.4.1, 8.3.4.1, LIVE-FIELD B8): the aeronautical
+// rating if held, so the flight suits' matrix builds wear the aviation badge alone (a second would only be named in a note).
 const OCCUPATIONAL_BADGE = 'ground_team_basic_badge';
 const FLIGHT_UNIFORMS = new Set(['flight_suit', 'corporate_flight_suit']);
 const CHAPLAIN_BADGE = 'christian_chaplin';
@@ -251,7 +250,7 @@ function matrix(){
           if(m.membership === 'senior') spec.badgeIds = [CHAPLAIN_BADGE];
         } else {
           const cap = rule.badgeCap == null ? 2 : rule.badgeCap;
-          spec.badgeIds = [AVIATION_BADGE[m.membership], FLIGHT_UNIFORMS.has(uniform) || FIELD_UNIFORMS.has(uniform) ? OCCUPATIONAL_BADGE : SPECIALTY_BADGE].slice(0, Math.max(cap, 0));
+          spec.badgeIds = [AVIATION_BADGE[m.membership], FIELD_UNIFORMS.has(uniform) ? OCCUPATIONAL_BADGE : SPECIALTY_BADGE].slice(0, FLIGHT_UNIFORMS.has(uniform) ? 1 : Math.max(cap, 0));
         }
         if(RULES.allowsShoulderCord(uniform, m.membership)) spec.cord = SHOULDER_CORD;
         ok.push({ name, build: spec });

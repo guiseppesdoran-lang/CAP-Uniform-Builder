@@ -250,20 +250,20 @@ test('the engine does not draw a patches/ocp crop; the harness resolves patches 
 
 // ---- 16. Flight suit name tag: a specialty badge is dropped for its own reason ----------------------------------
 
-test('flight suit name tag: wings plus a specialty badge says specialty badges are not worn there, not that the tag is full (8.2.4.1, 8.3.4.1, 10.4, 10.5)', async () => {
+test('flight suit name tag: wings plus a specialty badge says specialty badges are not worn there, not that the tag carries one badge (8.2.4.1, 8.3.4.1, 10.4, 10.5)', async () => {
   for(const [uniform, para] of [['flight_suit', '8.2.4.1'], ['corporate_flight_suit', '8.3.4.1']]){
     const nco = await compose(build(uniform, 'male', 'senior', 'SMSgt', ['CAPPilot1_FA9D33EA587D8', 'emergency_services_badge']));
     assert.ok(nco.notes.some(n => n === `Specialty track and service badges are not worn on the flight suit name tag (CAPR 39-1, ${para})`), `${uniform}: ${nco.notes.join(' | ')}`);
-    assert.ok(!nco.notes.some(n => /at most two badges/.test(n)), `${uniform}: two badges is within the limit, so no 'at most two' note`);
+    assert.ok(!nco.notes.some(n => /one badge here/.test(n)), `${uniform}: the wings are the only candidate, so nothing is left off for the one-badge rule`);
     assert.ok(!nco.layers.some(l => l.key === 'badge:emergency_services_badge'));
-    // Wings, an occupational badge and a third eligible badge: the tag is full, and says so.
+    // Wings, an occupational badge and a third eligible badge: the tag carries one badge (Ethan, LIVE-FIELD B8), and says which were left off.
     const full = await compose(build(uniform, 'male', 'senior', 'SMSgt', ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge', 'emt_basic_badge']));
-    assert.ok(full.notes.some(n => /at most two badges/.test(n)), `${uniform}: a third eligible badge is the tag being full`);
+    assert.ok(full.notes.some(n => /one badge here.*is shown; .* not shown/.test(n)), `${uniform}: the other eligible badges are named as left off`);
     assert.ok(!full.notes.some(n => /Specialty track/.test(n)));
-    // Wings and an occupational badge: both on the tag, no note.
+    // Wings and an occupational badge: the wings only, and the note names the occupational badge.
     const two = await compose(build(uniform, 'male', 'senior', 'SMSgt', ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge']));
-    assert.equal(two.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 2);
-    assert.ok(!two.notes.some(n => /name tag/.test(n)));
+    assert.equal(two.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 1);
+    assert.ok(two.notes.some(n => /one badge here.*ground_team_basic_badge is not shown|one badge here.*Ground Team.*not shown/.test(n)), two.notes.join(' | '));
   }
 });
 
