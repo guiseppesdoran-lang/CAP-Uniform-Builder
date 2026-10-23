@@ -13013,8 +13013,10 @@
     "baseball_cap_back_name_tape",
     "collar_lapel_right",
     "collar_leading_edge_right",
+    "collar_bottom_edge_right",
     "collar_lapel_left",
-    "collar_leading_edge_left"
+    "collar_leading_edge_left",
+    "collar_bottom_edge_left"
    ],
    "has_spec": true,
    "issues": []
@@ -16184,8 +16186,10 @@
     "boonie_hat_back",
     "collar_lapel_right",
     "collar_leading_edge_right",
+    "collar_bottom_edge_right",
     "collar_lapel_left",
-    "collar_leading_edge_left"
+    "collar_leading_edge_left",
+    "collar_bottom_edge_left"
    ],
    "has_spec": true,
    "issues": []

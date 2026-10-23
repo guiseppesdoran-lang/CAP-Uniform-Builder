@@ -80,65 +80,55 @@
   "left": {
    "cadet_officer": {
     "center": [
-     2281.7,
-     1654.8
+     2314,
+     1671.5
     ],
-    "angle_deg": 25.7,
+    "angle_deg": 0,
     "size_in": {
-     "along": 2.5,
+     "along": 1.75,
      "across": 1.5
     },
     "bbox": {
-     "x": 2160,
-     "y": 1509.6,
-     "w": 243.5,
-     "h": 290.3
+     "x": 2226.5,
+     "y": 1596.5,
+     "w": 175,
+     "h": 150
     }
    },
    "cadet_nco": {
     "center": [
-     2263.9,
-     1645.7
+     2291.8,
+     1662.5
     ],
-    "angle_deg": 25.7,
+    "angle_deg": 0,
     "size_in": {
      "along": 1.75,
      "across": 1.1
     },
     "bbox": {
-     "x": 2176.4,
-     "y": 1543,
-     "w": 174.9,
-     "h": 205.4
+     "x": 2236.8,
+     "y": 1575,
+     "w": 110,
+     "h": 175
     }
    },
    "officer": {
     "center": [
-     2264.8,
-     1703.3
+     2269.9,
+     1707
     ],
-    "angle_deg": 2.8,
+    "angle_deg": 0,
     "size_in": {
      "along": 1.3,
      "across": 1.6
     },
     "bbox": {
-     "x": 2181.8,
-     "y": 1634.6,
-     "w": 166.1,
-     "h": 137.5
+     "x": 2189.9,
+     "y": 1642,
+     "w": 160,
+     "h": 130
     }
    },
-   "cadet_axis": [
-    [
-     2303.4,
-     1609.7
-    ],
-    [
-     2260.1,
-     1699.8
-    ]
-   ],
    "front_edge": {
     "p1": [
      2221,
@@ -171,80 +161,82 @@
    "bottom_edge": {
     "p1": [
      2463,
-     1813
+     1807
     ],
     "p2": [
      2193,
-     1800
+     1807
     ],
     "mid": [
      2328,
-     1806.5
-    ]
+     1807
+    ],
+    "points": [
+     [
+      2463,
+      1807
+     ],
+     [
+      2193,
+      1807
+     ]
+    ],
+    "angle_deg": 0,
+    "note": "the leaf's lower seam (the stitched bottom edge under the grade), outer corner to notch; HORIZONTAL (parallel to the ground). Every grade piece's bottom edge is parallel to it; officer grade is centred 1 in above it (CAPR 39-1 5.1.1.1.1.1, 5.2.1.1.1.1)"
    }
   },
   "right": {
    "cadet_officer": {
     "center": [
-     1648.3,
-     1654.8
+     1616,
+     1671.5
     ],
-    "angle_deg": -25.7,
+    "angle_deg": 0,
     "size_in": {
-     "along": 2.5,
+     "along": 1.75,
      "across": 1.5
     },
     "bbox": {
-     "x": 1526.5,
-     "y": 1509.6,
-     "w": 243.5,
-     "h": 290.3
+     "x": 1528.5,
+     "y": 1596.5,
+     "w": 175,
+     "h": 150
     }
    },
    "cadet_nco": {
     "center": [
-     1666.1,
-     1645.7
+     1638.2,
+     1662.5
     ],
-    "angle_deg": -25.7,
+    "angle_deg": 0,
     "size_in": {
      "along": 1.75,
      "across": 1.1
     },
     "bbox": {
-     "x": 1578.6,
-     "y": 1543,
-     "w": 174.9,
-     "h": 205.4
+     "x": 1583.2,
+     "y": 1575,
+     "w": 110,
+     "h": 175
     }
    },
    "officer": {
     "center": [
-     1665.2,
-     1703.3
+     1660.1,
+     1707
     ],
-    "angle_deg": -2.8,
+    "angle_deg": 0,
     "size_in": {
      "along": 1.3,
      "across": 1.6
     },
     "bbox": {
-     "x": 1582.1,
-     "y": 1634.6,
-     "w": 166.1,
-     "h": 137.5
+     "x": 1580.1,
+     "y": 1642,
+     "w": 160,
+     "h": 130
     }
    },
-   "cadet_axis": [
-    [
-     1626.6,
-     1609.7
-    ],
-    [
-     1669.9,
-     1699.8
-    ]
-   ],
    "front_edge": {
     "p1": [
      1709,
@@ -277,19 +269,31 @@
    "bottom_edge": {
     "p1": [
      1467,
-     1813
+     1807
     ],
     "p2": [
      1737,
-     1800
+     1807
     ],
     "mid": [
      1602,
-     1806.5
-    ]
+     1807
+    ],
+    "points": [
+     [
+      1467,
+      1807
+     ],
+     [
+      1737,
+      1807
+     ]
+    ],
+    "angle_deg": 0,
+    "note": "the leaf's lower seam (the stitched bottom edge under the grade), outer corner to notch; HORIZONTAL (parallel to the ground). Every grade piece's bottom edge is parallel to it; officer grade is centred 1 in above it (CAPR 39-1 5.1.1.1.1.1, 5.2.1.1.1.1)"
    }
   },
-  "note": "angle_deg: SVG rotate() convention (clockwise positive) to apply to an insignia whose long axis is vertical. cadet_* slots: cadet officer grade (nominal 2.5 x 1.5 in row) / cadet NCO metal chevron, NEAR OUTLINE 1 in from the collar FRONT edge (front_edge) and centred on the leaf along it, long axis parallel to it (cadet_axis = two points along that axis); the engine places each cadet officer grade by the same rule with its own width (the nominal 2.5 in row is wider than the leaf allows 1 in from the front edge, CAPR 39-1 5.1.1.1.1.3, 5.2.1.1.1.4). officer: officer grade centred 1 in from the collar BOTTOM edge on the centre line of the leaf there (the midpoint of the chord that parallel line cuts across the leaf), long axis perpendicular to the edge; its 1.6 x 1.3 in box lies inside the leaf (collar_left / collar_right). size_in.along is measured along the long axis. bbox is the axis-aligned box of the rotated slot, also exposed as landmarks collar_*_zone_*. Right/left = wearer's."
+  "note": "angle_deg: SVG rotate() convention (clockwise positive) to apply to an insignia whose long axis is vertical. cadet_* slots: cadet officer grade (nominal 1.75 x 1.5 in, the regular C/Lt Col cloth) / cadet NCO metal chevron (1.1 x 1.75 in), NEAR CORNER 1 in from the collar FRONT edge (front_edge) and centred on the leaf along it, NOT turned: every grade piece stands on the leaf's horizontal lower seam (bottom_edge, angle_deg), so angle_deg of every slot is the seam's angle (0); the engine places each cadet officer grade by the same rule with its own size (CAPR 39-1 5.1.1.1.1.3-4, 5.2.1.1.1.4). bottom_edge: the leaf's lower seam, two points (p1, p2, also points), horizontal, with its angle_deg; also the landmark collar_bottom_edge_<side>. officer: officer grade centred 1 in from the collar BOTTOM edge on the centre line of the leaf there (the midpoint of the chord that parallel line cuts across the leaf), long axis perpendicular to the edge; its 1.6 x 1.3 in box lies inside the leaf (collar_left / collar_right). size_in.along is measured along the long axis. bbox is the axis-aligned box of the rotated slot, also exposed as landmarks collar_*_zone_*. Right/left = wearer's."
  },
  "landmarks": {
   "name_tape": {
@@ -417,11 +421,11 @@
    ],
    [
     1467,
-    1813
+    1807
    ],
    [
     1737,
-    1800
+    1807
    ],
    [
     1854.5,
@@ -429,22 +433,22 @@
    ]
   ],
   "collar_officer_zone_right": {
-   "x": 1582.1,
-   "y": 1634.6,
-   "w": 166.1,
-   "h": 137.5
+   "x": 1580.1,
+   "y": 1642,
+   "w": 160,
+   "h": 130
   },
   "collar_cadet_officer_zone_right": {
-   "x": 1526.5,
-   "y": 1509.6,
-   "w": 243.5,
-   "h": 290.3
+   "x": 1528.5,
+   "y": 1596.5,
+   "w": 175,
+   "h": 150
   },
   "collar_cadet_nco_zone_right": {
-   "x": 1578.6,
-   "y": 1543,
-   "w": 174.9,
-   "h": 205.4
+   "x": 1583.2,
+   "y": 1575,
+   "w": 110,
+   "h": 175
   },
   "collar_left": [
    [
@@ -457,11 +461,11 @@
    ],
    [
     2463,
-    1813
+    1807
    ],
    [
     2193,
-    1800
+    1807
    ],
    [
     2075.5,
@@ -469,22 +473,22 @@
    ]
   ],
   "collar_officer_zone_left": {
-   "x": 2181.8,
-   "y": 1634.6,
-   "w": 166.1,
-   "h": 137.5
+   "x": 2189.9,
+   "y": 1642,
+   "w": 160,
+   "h": 130
   },
   "collar_cadet_officer_zone_left": {
-   "x": 2160,
-   "y": 1509.6,
-   "w": 243.5,
-   "h": 290.3
+   "x": 2226.5,
+   "y": 1596.5,
+   "w": 175,
+   "h": 150
   },
   "collar_cadet_nco_zone_left": {
-   "x": 2176.4,
-   "y": 1543,
-   "w": 174.9,
-   "h": 205.4
+   "x": 2236.8,
+   "y": 1575,
+   "w": 110,
+   "h": 175
   },
   "wing_patch_zone_left": {
    "x": 3430,
@@ -577,7 +581,7 @@
    ],
    [
     1737,
-    1800
+    1807
    ],
    [
     1660,
@@ -598,6 +602,16 @@
     1910
    ]
   ],
+  "collar_bottom_edge_right": [
+   [
+    1467,
+    1807
+   ],
+   [
+    1737,
+    1807
+   ]
+  ],
   "collar_lapel_left": [
    [
     2075.47,
@@ -605,7 +619,7 @@
    ],
    [
     2193,
-    1800
+    1807
    ],
    [
     2270,
@@ -624,6 +638,16 @@
    [
     1965,
     1910
+   ]
+  ],
+  "collar_bottom_edge_left": [
+   [
+    2463,
+    1807
+   ],
+   [
+    2193,
+    1807
    ]
   ]
  },
