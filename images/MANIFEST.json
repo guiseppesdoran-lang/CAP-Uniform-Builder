@@ -40,7 +40,7 @@
    "w_in": 1.75,
    "h_in": 2.25,
    "size_source": "measured",
-   "basis": "Vanguard product page \"Civil Air Patrol Cap Device: Cadet Officer Service\" prints 2 1/4 in high x 1 3/4 in wide (the regulation gives no dimension); the figure measures 323 x 401 px, a 0.805 aspect against the printed 0.778, so the figure measurements are scaled 3.5 % tighter in x than in y to land on the printed size",
+   "basis": "Vanguard product page \"Civil Air Patrol Cadet Officer Service Cap Device (Male)\", SKU CAP0748F, https://www.vanguardmil.com/products/civil-air-patrol-cadet-officer-service-cap-device-for-male : \"measures 2 1/4\" in height by 1 3/4\" width\" (the regulation gives no dimension); the listing photo is tight to the device, ink box 462 x 600 px (aspect 0.770 against 0.778 printed), so x is scaled 1 % wider than y to land on the printed size",
    "anchors": {
     "top_center": [
      87.5,
