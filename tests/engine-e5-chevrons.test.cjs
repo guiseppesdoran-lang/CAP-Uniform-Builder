@@ -279,17 +279,20 @@ for(const [uniform, gender, opt, garment, iPoint, iRoll, roll] of COLLAR_CASES){
         const along = (cx - cp.x) * e.x + (cy - cp.y) * e.y;
         assert.ok(Math.abs(along - mid) < 0.05, `${side}: centred on the leaf, ${along.toFixed(2)} vs ${mid.toFixed(2)}`);
         const corners = [[1, -1], [1, 1], [-1, -1], [-1, 1]].map(([a, c]) => ({ x: cx + axis.x * a * l.h / 2 + (-axis.y) * c * l.w / 2, y: cy + axis.y * a * l.h / 2 + axis.x * c * l.w / 2 }));
-        if(roll && FITTING.includes(rank)){
+        // The leaves are at true size since the shirt sheets were rescaled about 1.2x (Class B 1.2171, aviator 1.2036): the chord at the
+        // chevron's line is 1.88 to 1.97 in, so the 1.5 to 1.75 in chevrons of C/MSgt to C/CMSgt now lie on the leaf too (they overhung
+        // the old 1.3 to 1.5 in chord). Which branch applies is read from the geometry, not from the rank.
+        if(roll && l.h <= hi - lo + 1e-6){
           // the chevron fits on the leaf proper. Its top (the apex tip) points to the roll end, where the leaf is wide:
           // the apex tip lies inside the triangle within 0.02 in on every sheet. The wing ends (the base corners of its
-          // box, toward the collar point) lie inside within 0.02 in on the men's Class B; toward the collar point the
-          // leaf narrows, so on the women's Class B and both aviator sheets a wing end passes the outer edge by up to
-          // 0.21 in for C/TSgt (0.07 for C/Amn, 0.16 for C/SSgt on the blouse; 0.14 for C/TSgt on the aviator
-          // sheets; measured at the flip of the direction to Figure A5-5, recorded in DECISIONS).
+          // box, toward the collar point) lie inside; toward the collar point the leaf narrows, so the wing ends of the
+          // widest chevrons pass the outer edge (limits below).
           const [apexA, apexB, wingA, wingB] = corners;
           const apexTip = { x: (apexA.x + apexB.x) / 2, y: (apexA.y + apexB.y) / 2 };
           assert.ok(inPolygon(apexTip, leaf) || distToPolygon(apexTip, leaf) < 0.02, `${side}: apex tip ${apexTip.x.toFixed(2)},${apexTip.y.toFixed(2)} off the leaf (${distToPolygon(apexTip, leaf).toFixed(3)} in)`);
-          const wingLimit = garment.includes('class-b-shirt-male') ? 0.02 : 0.22;
+          // Measured on the true-size leaves: C/CMSgt's wing ends pass the narrowing point of the leaf by 0.10 in on the men's Class B shirts,
+          // 0.24 on the aviator shirts and 0.27 on the blouses (0.04 to 0.22 for C/SMSgt, 0 to 0.17 for C/MSgt); C/Amn to C/TSgt lie wholly on it.
+          const wingLimit = garment.includes('class-b-shirt-male') ? 0.1 : 0.28;
           for(const pt of [wingA, wingB]) assert.ok(inPolygon(pt, leaf) || distToPolygon(pt, leaf) < wingLimit, `${side}: wing end ${pt.x.toFixed(2)},${pt.y.toFixed(2)} off the leaf (${distToPolygon(pt, leaf).toFixed(3)} in)`);
           // any box corner (the two beside the apex included): the same bounds
           const reach = Math.max(...corners.map(pt => inPolygon(pt, leaf) ? 0 : distToPolygon(pt, leaf)));
@@ -351,10 +354,10 @@ test('the art\'s top_center lands closer to the roll-line end than to the collar
       const top = { x: cx + up.x * l.h / 2, y: cy + up.y * l.h / 2 };
       const dRoll = Math.hypot(top.x - poly[iRoll].x, top.y - poly[iRoll].y), dPoint = Math.hypot(top.x - poly[iPoint].x, top.y - poly[iPoint].y);
       // the art's top direction runs from the collar point toward the roll end along the leaf's bottom edge; on the small overblouse leaf (Figure 4.18) the centred
-      // piece's top is within 0.02 in of equally far from both ends, so the turn is pinned by the direction as well as by the distances
+      // piece's top is within 0.02 in (0.07 in on the overblouse at its true size, 1.2036) of equally far from both ends, so the turn is pinned by the direction as well as by the distances
       const e = { x: poly[iRoll].x - poly[iPoint].x, y: poly[iRoll].y - poly[iPoint].y }, along = (up.x * e.x + up.y * e.y) / Math.hypot(e.x, e.y);
       assert.ok(along > 0.99, `${garment} ${side}: art top points ${along.toFixed(3)} along the edge toward the roll end`);
-      assert.ok(dRoll < dPoint + (garment.includes('overblouse') ? 0.05 : 0), `${garment} ${side}: art top ${dRoll.toFixed(2)} in from the roll end, ${dPoint.toFixed(2)} in from the collar point`);
+      assert.ok(dRoll < dPoint + (garment.includes('overblouse') ? 0.1 : 0), `${garment} ${side}: art top ${dRoll.toFixed(2)} in from the roll end, ${dPoint.toFixed(2)} in from the collar point`);
       assert.ok(art && art.w > 0);
     }
   }
