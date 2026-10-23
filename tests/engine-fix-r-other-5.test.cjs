@@ -44,7 +44,7 @@ test('Class A and cadet semi-formal coats: a cadet officer\'s edge-on strip carr
       assert.equal(edge.id, top.id, `${label}: one grade in both views`);
       const r = rad(edge.rotate || 0), axis = { x: -Math.sin(r), y: Math.cos(r) }, cross = { x: Math.cos(r), y: Math.sin(r) };
       assert.ok(Math.abs(along(edge, axis) - along(top, axis)) <= 0.05, `${label}: along the strap ${along(edge, axis).toFixed(3)} edge-on vs ${along(top, axis).toFixed(3)} from above`);
-      assert.ok(along(edge, cross) <= 0.325, `${label}: squeezed to the 0.4 in strip (${along(edge, cross).toFixed(3)} across)`);
+      assert.ok(along(edge, cross) <= 0.425, `${label}: squeezed to the 0.5 in board strip (${along(edge, cross).toFixed(3)} across)`);
       n++;
     }
   }

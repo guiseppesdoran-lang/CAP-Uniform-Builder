@@ -689,8 +689,11 @@
   // figure: the cap's front view is carried onto the collar, its bottom centre on the collar's back top (the sheet's
   // hat_attach anchor when it has one, else the apex of its collar-back curve, 5.635 in above collar_apex, measured
   // on the three sheets) lowered by HAT_SEAT (the seat the dress caps use, an estimate: the regulation shows no
-  // seating). Its back view, with the name tape, stands beside it at BACK_VIEW_SCALE, its bottom on the front's, so the
-  // name tape (7.1.1.8, 5.1.1.6, 6.2.11.1) shows without a second full-size cap. The ABU cap (5.1.1.6), the OCP patrol
+  // seating). Its back view, with the name tape, stands beside it at the same size as the front (BACK_VIEW_SCALE 1; Ethan:
+  // 'why is the back of the hats so small'), 1/2 in clear of it (BACK_VIEW_GAP), its bottom on the front's, so the name tape
+  // (7.1.1.8, 6.2.11.1) reads at the size the sheet draws it. Only the OCP patrol cap and the tactical cap carry a name tape
+  // (7.1.1.8: 'only a nametape on the back of the cap is authorized'; 6.2.11.1); 5.1.1.6 (the ABU cap) and 6.2.10 (the
+  // boonie hat) name none and the sheets draw none on those backs, so their backs show no tape. The ABU cap (5.1.1.6), the OCP patrol
   // cap (7.1.1.8) and the Blue Field Cap, a 'patrol cap design' (6.2.9.1, 5.2.1.2.3), are the patrol cap; the navy
   // tactical cap (ICL 25-02 6.2.11) and the OCP ball cap are the tactical one. The member's grade and last name are
   // placed on the views where they now are (ctx.landmarkShift).
@@ -708,7 +711,7 @@
     tactical: { front: 'hat-ball-front', back: 'hat-ball-back', zone: 'baseball_cap_front_insignia_zone', tape: 'baseball_cap_back_name_tape' },
     boonie: { front: 'hat-boonie-front', back: 'hat-boonie-back', zone: 'boonie_hat_front_insignia_zone', tape: null }
   };
-  const HAT_SEAT = 0.25, COLLAR_BACK_TOP_ABOVE_APEX = 5.635, BACK_VIEW_SCALE = 0.6, BACK_VIEW_GAP = 0.3;
+  const HAT_SEAT = 0.25, COLLAR_BACK_TOP_ABOVE_APEX = 5.635, BACK_VIEW_SCALE = 1, BACK_VIEW_GAP = 0.5;
   // The cap a build wears: 'tactical' and (CFU only, 5.2.1.2) 'boonie' by choice, else the patrol cap; null with 'none'.
   function headgearChoice(b){
     const v = b.opt.headgear;

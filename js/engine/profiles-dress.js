@@ -646,16 +646,42 @@
   // `frames` (the Class A coats, whose sheets state the strap as an axis, see strapFrames) gives each
   // side's strap frame; the strip's outer end is the frame's outer end. `gradeId` names the piece to
   // draw when it is not the sleeve's own (the Class A boards' regular-size metal grade).
-  async function epauletEdgeGrades(ctx, g, frames, gradeId, centerFromEnd){
+  // `strip` ({ thick, drop }): the strip's thickness and how far its centre line lies below the strap axis (the boards, drawn
+  // thicker than the strap with their upper edge kept on the strap's); the grade is squeezed to that thickness and kept on its centre.
+  async function epauletEdgeGrades(ctx, g, frames, gradeId, centerFromEnd, strip){
+    const thick = (strip && strip.thick) || EDGE_ON_THICK, drop = (strip && strip.drop) || 0, z = strip && strip.z;
     for(const side of ['right', 'left']){
       const f = (frames && frames[side]) || H.epauletFrame(ctx, side);
       const mid = frames ? f && f.outer : ctx.point(`rank_slot_${side}_center`);
       if(!f || !mid) continue;
       // Slide from the strip's centre back along the strap axis to the plane of the outer end.
       const back = (f.outer.x - mid.x) * f.axis.x + (f.outer.y - mid.y) * f.axis.y;
-      const end = { x: mid.x + f.axis.x * back, y: mid.y + f.axis.y * back };
-      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, EDGE_ON_THICK - 0.08, { id: gradeId, centerFromEnd: centerFromEnd ? centerFromEnd[side] : null, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+      const end = { x: mid.x + f.axis.x * back - f.normal.x * drop, y: mid.y + f.axis.y * back - f.normal.y * drop };
+      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, thick - 0.08, { id: gradeId, z, centerFromEnd: centerFromEnd ? centerFromEnd[side] : null, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
     }
+  }
+
+  // Edge-on strips are the epaulet or board seen from the front, so they get a little depth: a lighter band along the upper edge
+  // (catching the light) and a darker one along the lower edge (turning away), flat tints of white and black over whatever colours
+  // the strip has (R2: no gradient, no shine). `c` is the strip's centre, `axis` the unit vector toward its neck end, `normal`
+  // the unit vector up and out across it, `length` and `thick` its size, `peak` the depth of a pointed neck end (0 = square):
+  // the bands are cut to the strip's outline, so the point keeps both.
+  const SHADE_BAND = 0.06;
+  const SHADE = { light: { fill: '#ffffff', opacity: 0.16 }, dark: { fill: '#000000', opacity: 0.3 } };
+  function stripShading(ctx, side, c, axis, normal, length, thick, peak, z){
+    const p = (s, t) => ({ x: c.x + axis.x * s + normal.x * t, y: c.y + axis.y * s + normal.y * t });
+    const L = length / 2, h = thick / 2;
+    const outline = peak > 0 ? [p(-L, h), p(L - peak, h), p(L, 0), p(L - peak, -h), p(-L, -h)] : null;
+    // Local frame of a rect layer: x along ex, y down (= -normal); the turn is ex's angle.
+    const ex = { x: -normal.y, y: normal.x };
+    const sMin = axis.x * ex.x + axis.y * ex.y > 0 ? -L : L;
+    const deg = Math.atan2(ex.y, ex.x) * 180 / Math.PI;
+    for(const [name, tone, top] of [['light', SHADE.light, h], ['dark', SHADE.dark, -h + SHADE_BAND]]){
+      const o = p(sMin, top);
+      ctx.layers.push({ type: 'rect', x: o.x, y: o.y, w: length, h: SHADE_BAND, rotate: deg, origin: { x: o.x, y: o.y }, fill: tone.fill, fillOpacity: tone.opacity,
+        clip: outline || undefined, z, role: 'epaulet-shade', key: `epaulet-shade:${name}:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, ${name} edge`, noBounds: true });
+    }
+    return outline;
   }
 
   // The two end points of a band's edge that lies `off` inches along the strap normal from the point
@@ -915,14 +941,22 @@
     await boardStrips(ctx, sex, frames, overlay);
   }
 
-  // The edge-on board (the lower copy) is the shoulder board of the view from above flattened: squeezed across the strap to the
-  // strip's 0.32 in (the board sheet's 2.3 in width), true length along it, its outer end on the strap's outer end and cut at the
-  // strap's neck end, so the CAP crest and the button are on the strip as on the view from above (Ethan, live site: 'there should
-  // be a cap logo here', 'the shoulder board crest thing should be flattened on the lower copy as well'; R7) and the blue band the
-  // grade sits on is the board's own, at the same distance from the outer end in both views. The coat overlay's own strip drawing
-  // (a separate drawing from the product photo whose blue field lay 0.4 in nearer the arm than the board's) is hidden where the board
-  // is drawn. Neither sheet has a crest group of its own, so the whole board is used (FOLLOWUPS: art to give the sheets one).
-  const BOARD_STRIP_THICK = 0.32;
+  // The edge-on board (the lower copy) is the shoulder board of the view from above seen from the front: the whole board, flat
+  // outer end on the strap's outer end and its pointed neck end (the peak, with the button) running on past the strap's neck end
+  // toward the collar at true length, so the CAP crest, the peak and the button are all on the strip as on the view from above
+  // (Ethan, live site: 'there should be a cap logo here', 'the shoulder boards on the uniform are missing the triangle part, and
+  // it's looking a little flat'; R7). It is foreshortened across the strap only, to 0.5 in (a board seen from the front, not
+  // flattened to a line: at the strap's 0.32 in the peak was a sliver), its upper edge kept where the strap's is, so the strip
+  // grows downward, over the top of the shoulder cord. The coat overlay's own strip drawing (a separate drawing from the
+  // product photo whose blue field lay 0.4 in nearer the arm than the board's) is hidden where the board is drawn. Neither sheet
+  // has a crest group of its own, so the whole board is used (FOLLOWUPS: art to give the sheets one).
+  const BOARD_STRIP_THICK = 0.5;
+  const BOARD_STRIP_DROP = (BOARD_STRIP_THICK - EDGE_ON_THICK) / 2;
+  // Depth of the board's pointed neck end (the board sheets' size basis: 0.74 in peak).
+  const BOARD_PEAK = 0.74;
+  // The board's neck end runs on past the strap's, toward the neck, where the coat's collar leaf (the lapel foreground, Z.badge + 0.5)
+  // would cover the peak and the button: the board is drawn over it, and the cord stays under (Z.cord).
+  const BOARD_STRIP_Z = LAPEL_Z + 0.1;
   async function boardStrips(ctx, sex, frames, overlay){
     for(const side of ['right', 'left']){
       const id = `garment-blues-shoulder-board-top-${sex}-${side}`;
@@ -933,14 +967,28 @@
       if(!board || !outer || !button) continue;
       const rot = Math.round((Math.atan2(f.axis.y, f.axis.x) - Math.atan2(button.y - outer.y, button.x - outer.x)) * 18000 / Math.PI) / 100;
       const k = BOARD_STRIP_THICK / board.h;
-      // Cut at the strap's neck end, the strap's own width across.
-      const h = EDGE_ON_THICK / 2;
-      const clip = [
-        { x: f.outer.x + f.normal.x * h, y: f.outer.y + f.normal.y * h }, { x: f.neck.x + f.normal.x * h, y: f.neck.y + f.normal.y * h },
-        { x: f.neck.x - f.normal.x * h, y: f.neck.y - f.normal.y * h }, { x: f.outer.x - f.normal.x * h, y: f.outer.y - f.normal.y * h }
-      ].map(p => ({ x: Math.round(p.x * 1000) / 1000, y: Math.round(p.y * 1000) / 1000 }));
-      await ctx.place(id, { pieceAnchor: 'board_outer_end', at: f.outer, rotate: rot, scale: k, scaleX: 1 / k, clip, z: Z.epauletLayer + 0.5, role: 'epaulet', key: 'epaulet:' + side, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on` });
+      const at = { x: f.outer.x - f.normal.x * BOARD_STRIP_DROP, y: f.outer.y - f.normal.y * BOARD_STRIP_DROP };
+      await ctx.place(id, { pieceAnchor: 'board_outer_end', at, rotate: rot, scale: k, scaleX: 1 / k, z: BOARD_STRIP_Z, role: 'epaulet', key: 'epaulet:' + side, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on` });
+      const c = { x: at.x + f.axis.x * board.w / 2, y: at.y + f.axis.y * board.w / 2 };
+      stripShading(ctx, side, c, f.axis, f.normal, board.w, BOARD_STRIP_THICK, BOARD_PEAK, BOARD_STRIP_Z + 0.1);
       if(overlay) overlay.hideGroups = [...new Set([...(overlay.hideGroups || []), 'shoulder-strip-right', 'shoulder-strip-left'])];
+    }
+  }
+
+  // The officers' epaulet strips on the Class A coat (the senior and general officer overlays draw them, gray, over the outer part
+  // of the strap): the same two shading bands, on the strip's own rectangle, which the overlay's epaulet_sleeve_<side> landmark
+  // boxes (the box of the strip turned along the strap: its length and thickness follow from the box and the strap's angle).
+  async function officerStripShading(ctx, overlayId, frames){
+    if(!ctx.has(overlayId)) return;
+    const s = await ctx.spec(overlayId);
+    for(const side of ['right', 'left']){
+      const f = frames[side], box = core.landmarkBounds(s, 'epaulet_sleeve_' + side);
+      if(!f || !box) continue;
+      const cs = Math.abs(f.axis.x), sn = Math.abs(f.axis.y), det = cs * cs - sn * sn;
+      if(det < 0.2) continue;
+      const length = (box.w * cs - box.h * sn) / det, thick = (box.h * cs - box.w * sn) / det;
+      if(!(length > 1 && thick > 0.2 && thick < 0.8)) continue;
+      stripShading(ctx, side, { x: box.x + box.w / 2, y: box.y + box.h / 2 }, f.axis, f.normal, length, thick, 0, Z.epauletLayer + 0.6);
     }
   }
 
@@ -980,10 +1028,16 @@
         const slot = bs && core.anchor(bs, 'rank_slot_center'), outer = bs && core.anchor(bs, 'board_outer_end');
         if(slot && outer) fromEnd[side] = Math.hypot(slot.x - outer.x, slot.y - outer.y);
       }
-      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'), fromEnd);
+      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'), fromEnd, { thick: BOARD_STRIP_THICK, drop: BOARD_STRIP_DROP, z: BOARD_STRIP_Z + 0.2 });
     }
-    else if(!semi && g.general) await ctx.overlay(`${A.layer}-general-officer`);
-    else if(!semi && isOfficerLike(g)) await ctx.overlay(`${A.layer}-senior-officer`);
+    else if(!semi && g.general){
+      await ctx.overlay(`${A.layer}-general-officer`);
+      await officerStripShading(ctx, `${A.layer}-general-officer`, strapFrames(ctx, A));
+    }
+    else if(!semi && isOfficerLike(g)){
+      await ctx.overlay(`${A.layer}-senior-officer`);
+      await officerStripShading(ctx, `${A.layer}-senior-officer`, strapFrames(ctx, A));
+    }
     else if(!semi && g.category === 'senior-nco'){
       const s = await ctx.overlay(`${A.layer}-senior-nco-lapel`);
       if(s) restOverlayOnSeam(ctx, s, true);
