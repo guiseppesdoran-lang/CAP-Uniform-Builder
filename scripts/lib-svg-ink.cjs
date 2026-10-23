@@ -25,7 +25,7 @@ function polys(svg){
   return out;
 }
 function flatten(d,M){
-  const toks=d.match(/[MLHVQCZ]|-?\d*\.?\d+(?:e-?\d+)?/gi);let i=0,cmd,x=0,y=0,sx=0,sy=0;const res=[];let cur=null;
+  const toks=d.match(/[MLHVQCZA]|-?\d*\.?\d+(?:e-?\d+)?/gi);let i=0,cmd,x=0,y=0,sx=0,sy=0;const res=[];let cur=null;
   const T=(px,py)=>[M[0]*px+M[2]*py+M[4],M[1]*px+M[3]*py+M[5]];
   const num=()=>+toks[i++];
   while(i<toks.length){
@@ -36,6 +36,18 @@ function flatten(d,M){
     else if(cmd==='V'){y=num();cur.push(T(x,y));}
     else if(cmd==='Q'){const cx=num(),cy=num(),ex=num(),ey=num();for(let k=1;k<=8;k++){const t=k/8;cur.push(T((1-t)**2*x+2*(1-t)*t*cx+t*t*ex,(1-t)**2*y+2*(1-t)*t*cy+t*t*ey));}x=ex;y=ey;}
     else if(cmd==='C'){const a=num(),b=num(),c=num(),e=num(),ex=num(),ey=num();for(let k=1;k<=8;k++){const t=k/8,u=1-t;cur.push(T(u**3*x+3*u*u*t*a+3*u*t*t*c+t**3*ex,u**3*y+3*u*u*t*b+3*u*t*t*e+t**3*ey));}x=ex;y=ey;}
+    else if(cmd==='A'){
+      // Elliptical arc, endpoint form (SVG 1.1 F.6.5): the men's service cap's crown is two half-ellipse arcs.
+      let rx=Math.abs(num()),ry=Math.abs(num());const phi=num()*Math.PI/180,fa=num(),fs=num(),ex=num(),ey=num();
+      const c=Math.cos(phi),s=Math.sin(phi),dx=(x-ex)/2,dy=(y-ey)/2,x1=c*dx+s*dy,y1=-s*dx+c*dy;
+      const lam=x1*x1/(rx*rx)+y1*y1/(ry*ry);if(lam>1){rx*=Math.sqrt(lam);ry*=Math.sqrt(lam);}
+      const num2=rx*rx*ry*ry-rx*rx*y1*y1-ry*ry*x1*x1,den=rx*rx*y1*y1+ry*ry*x1*x1,k=(fa===fs?-1:1)*Math.sqrt(Math.max(0,num2/den));
+      const cxp=k*rx*y1/ry,cyp=-k*ry*x1/rx,cx=c*cxp-s*cyp+(x+ex)/2,cy=s*cxp+c*cyp+(y+ey)/2;
+      const ang=(ux,uy,vx,vy)=>{const a=Math.atan2(ux*vy-uy*vx,ux*vx+uy*vy);return a;};
+      const th1=ang(1,0,(x1-cxp)/rx,(y1-cyp)/ry);let dth=ang((x1-cxp)/rx,(y1-cyp)/ry,(-x1-cxp)/rx,(-y1-cyp)/ry);
+      if(!fs&&dth>0)dth-=2*Math.PI;else if(fs&&dth<0)dth+=2*Math.PI;
+      for(let k2=1;k2<=24;k2++){const t=th1+dth*k2/24;cur.push(T(c*rx*Math.cos(t)-s*ry*Math.sin(t)+cx,s*rx*Math.cos(t)+c*ry*Math.sin(t)+cy));}
+      x=ex;y=ey;}
     else if(cmd==='Z'||cmd==='z'){x=sx;y=sy;}
     else throw new Error('cmd '+cmd);
   }

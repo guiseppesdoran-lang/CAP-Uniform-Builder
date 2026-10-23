@@ -67,6 +67,9 @@ function corners(l){
     return { x: o.x + dx * Math.cos(r) - dy * Math.sin(r), y: o.y + dx * Math.sin(r) + dy * Math.cos(r) };
   });
 }
+// The view where the engine seated it on the shoulder, before the cap slid it outward along its strap to clear the cap
+// (clearViewsOfHat): R7's closeness rule is about the seat, the slide is tested in tests/engine-live-hat-views.test.cjs.
+const seated = l => l.slid ? Object.assign({}, l, { x: l.x - l.slideDir.x * l.slid, y: l.y - l.slideDir.y * l.slid, origin: { x: l.origin.x - l.slideDir.x * l.slid, y: l.origin.y - l.slideDir.y * l.slid } }) : l;
 // Lowest point (largest y) of a convex polygon at x, or null.
 function bottomY(poly, x){
   let best = null;
@@ -115,7 +118,7 @@ for(const [label, uniform, gender, opt, garment] of CUTS){
         // The top-down view: just above the shoulder, never over the garment.
         const top = scene.layers.find(l => l.key === `epaulet-top:${side}`);
         assert.ok(top, `${tag} ${side}: the top view is drawn`);
-        const box = corners(top);
+        const box = corners(seated(top));
         const cx = box.reduce((a, c) => a + c.x, 0) / 4;
         const gap = topY(poly, cx) - bottomY(box, cx);
         assert.ok(gap >= 0 && gap <= 0.4, `${tag} ${side}: the top view is ${gap.toFixed(2)} in above the shoulder at its centre`);

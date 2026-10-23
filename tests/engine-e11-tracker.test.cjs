@@ -51,6 +51,10 @@ function corners(l){
   });
 }
 
+// The view where the engine seated it on the shoulder, before the cap slid it outward along its strap to clear the cap
+// (clearViewsOfHat): R7's closeness rule is about the seat, the slide is tested in tests/engine-live-hat-views.test.cjs.
+const seated = l => l.slid ? Object.assign({}, l, { x: l.x - l.slideDir.x * l.slid, y: l.y - l.slideDir.y * l.slid, origin: { x: l.origin.x - l.slideDir.x * l.slid, y: l.origin.y - l.slideDir.y * l.slid } }) : l;
+
 for(const [sex, membership, rank] of [
   ['male', 'senior', 'Capt'], ['male', 'senior', 'Col'], ['male', 'senior', 'Maj Gen'], ['female', 'senior', 'Lt Col'], ['female', 'senior', 'Brig Gen'],
   ['male', 'cadet', 'C/2d Lt'], ['male', 'cadet', 'C/Col'], ['female', 'cadet', 'C/Maj'], ['female', 'cadet', 'C/Col']
@@ -64,7 +68,7 @@ for(const [sex, membership, rank] of [
     for(const side of ['right', 'left']){
       const view = byKey(scene, `epaulet-top:${side}`);
       assert.ok(view, `${side} view`);
-      const c = corners(view);
+      const c = corners(seated(view));
       const lowest = Math.max(...c.map(p => p.y));
       // Not on the coat (it lies above the shoulder seam), and not floating: within 0.9 in of it. The old
       // rule hung the view 0.75 in over the sheet's top edge, 3 in above the shoulder.
