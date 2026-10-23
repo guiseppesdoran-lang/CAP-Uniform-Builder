@@ -218,23 +218,17 @@ test('the one-aviation-badge note cites the uniform\'s own paragraph and is not 
   assert.ok(semi.notes.some(n => /Only the chaplain badge and the CSAG/.test(n)), 'the corporate badge note stays');
 });
 
-// ---- 13. The ES badges have field artwork: OCP draws a second badge, the ABU and CFU leave it out by rule --------
+// ---- 13. The ES badges have no genuine field artwork: no field uniform draws them (LIVE-FIELD B6) -----------------------------
 
-test('OCP draws the Emergency Services badge above the CAP tape with the aviation badge; ABU and CFU leave it out by rule, not for missing artwork (7.1.1.3.1.2, 5.1.1.1.2.4, 5.2.1.1.2.6)', async () => {
+test('the Emergency Services badges are dress-only: the OCP, ABU and CFU draw the aviation badge alone and note the ES badge as having no field artwork', async () => {
   const B = require('../data/badge-catalog.js');
-  for(const id of ['emergency_services_badge', 'senior_emergency_services_badge', 'master_emergency_services_badge']) assert.ok(B.art(id, 'field') && store.has(B.art(id, 'field')), `${id} has field artwork in the manifest`);
+  for(const id of ['emergency_services_badge', 'senior_emergency_services_badge', 'master_emergency_services_badge']) assert.equal(B.art(id, 'field'), null, `${id} has no field form`);
   const badges = ['CAPPilot1_FA9D33EA587D8', 'emergency_services_badge'];
-  const ocp = await compose(build('ocp', 'male', 'senior', 'Col', badges));
-  const pilot = byKey(ocp, 'badge:CAPPilot1_FA9D33EA587D8'), es = byKey(ocp, 'badge:emergency_services_badge');
-  assert.ok(pilot && es, 'both badges are drawn on the OCP');
-  near((pilot.x + pilot.w / 2), (es.x + es.w / 2), 0.01, 'the two badges are centred on each other (7.1.1.3.1.2)');
-  assert.ok(es.y > pilot.y, 'the Emergency Services badge is the first, nearest the tape; the aviation badge, with precedence, above it');
-  assert.ok(!ocp.notes.some(n => /no field artwork/.test(n)), 'no missing-artwork note');
-  for(const u of ['abu', 'corporate_field']){
+  for(const u of ['ocp', 'abu', 'corporate_field']){
     const scene = await compose(build(u, 'male', 'senior', 'Col', badges));
-    assert.ok(!byKey(scene, 'badge:emergency_services_badge'), `${u}: not worn (specialty track)`);
-    assert.ok(scene.notes.some(n => /Only aviation and occupational badges are worn above the CAP tape/.test(n)), `${u}: the rule note`);
-    assert.ok(!scene.notes.some(n => /no field artwork/.test(n)), `${u}: not a missing-artwork note`);
+    assert.ok(byKey(scene, 'badge:CAPPilot1_FA9D33EA587D8'), `${u}: the pilot badge is drawn`);
+    assert.ok(!byKey(scene, 'badge:emergency_services_badge'), `${u}: no ES badge`);
+    assert.ok(scene.notes.some(n => /has no field artwork/.test(n)), `${u}: ${scene.notes.join(' | ')}`);
   }
 });
 

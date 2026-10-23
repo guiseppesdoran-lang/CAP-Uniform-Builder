@@ -132,21 +132,23 @@ test('mess dress: no literal chevron points are left (the sheets state shoulder_
   assert.ok(!/chev:\s*\{\s*right:\s*\[2\.(61|57)/.test(src), 'MESS.chev constants removed');
 });
 
-// ---- 7. OCP: CAP specialty track badges have field forms (7.1.1.3.1, 7.1.1.3.1.5.2) ---------------------------------
+// ---- 7. OCP: the CAP specialty track badges have NO field form (LIVE-FIELD B6, Ethan: dress enamel art never appears on a field uniform) ----
+// ff66b8ac pointed the 56 specialty track badges at '<dress>-field' recolours of the enamel art; those recolours (ESTIMATED size, derived
+// from the dress art, not a measured OCP badge) are not field artwork, so the catalog names none and a field uniform neither offers nor draws them.
 
-test('every specialty family badge in the catalog has a field form that exists, and the OCP draws it on the chest (7.1.1.3.1)', async () => {
+test('the specialty family badges have no field form: the OCP does not draw them and says so, and nothing from enamel dress art is drawn (7.1.1.3.1)', async () => {
   const CAT = require('../data/badge-catalog.js');
   const ids = Object.entries(CAT.BADGES).filter(([, v]) => v.family === 'specialty').map(([k]) => k);
   assert.ok(ids.length >= 56, `${ids.length} specialty badges`);
   for(const id of ids){
-    const field = CAT.art(id, 'field');
-    assert.ok(field, `${id}: field form named`);
-    const s = await store.load(field);
-    assert.ok(s, `${id}: ${field} loads`);
+    assert.equal(CAT.art(id, 'field'), null, `${id}: no field form`);
+    assert.equal(CAT.hasField(id), false, id);
+    assert.ok(CAT.art(id, 'dress'), `${id}: still a dress badge`);
   }
-  for(const id of ['communications_technician_badge', 'aerospace_education_senior_badge', 'cadet_programs_master_badge', 'safety_technician_badge']){
+  for(const id of ['communications_technician_badge', 'aerospace_education_senior_badge', 'cadet_programs_master_badge', 'safety_technician_badge', 'emergency_services_badge']){
     const scene = await compose(build('ocp', 'male', 'senior', 'Capt', { badges: [{ id }] }));
-    assert.ok(scene.layers.find(l => l.key === 'badge:' + id), `${id} drawn on the OCP`);
-    assert.ok(!(scene.notes || []).some(n => /no field artwork/.test(n)), `${id}: no missing-artwork note`);
+    assert.ok(!scene.layers.find(l => l.key === 'badge:' + id), `${id} not drawn on the OCP`);
+    assert.ok(!scene.layers.some(l => /^enamel-/.test(l.id || '')), `${id}: no enamel art on the OCP`);
+    assert.ok((scene.notes || []).some(n => /no field artwork/.test(n)), `${id}: the note says why`);
   }
 });

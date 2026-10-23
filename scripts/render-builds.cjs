@@ -202,6 +202,9 @@ const MEMBERS = [
 ];
 const AVIATION_BADGE = { cadet: 'AirCrew1_DB3F0FCC3650F', senior: 'CAPPilot1_FA9D33EA587D8' };
 const SPECIALTY_BADGE = 'emergency_services_badge';
+// The OCP, ABU and Corporate Field Uniform wear only badges with genuine field artwork (data/badge-catalog.js, LIVE-FIELD B6): the Emergency
+// Services badge has none, so their matrix builds wear the Ground Team badge as the second badge.
+const FIELD_UNIFORMS = new Set(['ocp', 'abu', 'corporate_field']);
 // The flight suit name tag takes the aeronautical rating and an occupational badge (CAPR 39-1 8.2.4.1, 8.3.4.1, 10.4.5); the Emergency
 // Services badge is a specialty track badge (10.5) it rejects, so the flight suits' matrix builds wear the Ground Team badge and draw
 // the two-badge tag.
@@ -248,7 +251,7 @@ function matrix(){
           if(m.membership === 'senior') spec.badgeIds = [CHAPLAIN_BADGE];
         } else {
           const cap = rule.badgeCap == null ? 2 : rule.badgeCap;
-          spec.badgeIds = [AVIATION_BADGE[m.membership], FLIGHT_UNIFORMS.has(uniform) ? OCCUPATIONAL_BADGE : SPECIALTY_BADGE].slice(0, Math.max(cap, 0));
+          spec.badgeIds = [AVIATION_BADGE[m.membership], FLIGHT_UNIFORMS.has(uniform) || FIELD_UNIFORMS.has(uniform) ? OCCUPATIONAL_BADGE : SPECIALTY_BADGE].slice(0, Math.max(cap, 0));
         }
         if(RULES.allowsShoulderCord(uniform, m.membership)) spec.cord = SHOULDER_CORD;
         ok.push({ name, build: spec });

@@ -76,9 +76,9 @@ for(const g of ['male', 'female']){
   mk(`mess_dress-${g}-senior-MajGen`, 'mess_dress', g, 'senior', 'Maj Gen', { ribbonSel: rib(), medalSel: true, badgeIds: A4 });
 }
 
-// Utility uniforms (items 13-15): ES badge on OCP, unit and HHQ patches resolved to full art, the overlay.
-mk('ocp-male-cadet-CSSgt-patches', 'ocp', 'male', 'cadet', 'C/SSgt', { patchRefs: [unitFull, hhq], badgeIds: [AIRCREW, 'emergency_services_badge'] });
-mk('ocp-male-senior-LtCol-patches-overlay', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitFull, hhq], badgeIds: [A4[0], 'emergency_services_badge'], opt: Object.assign({}, base, { overlay: true }) });
+// Utility uniforms (items 13-15): a Ground Team badge on OCP (the ES badge has no field art), unit and HHQ patches resolved to full art, the overlay.
+mk('ocp-male-cadet-CSSgt-patches', 'ocp', 'male', 'cadet', 'C/SSgt', { patchRefs: [unitFull, hhq], badgeIds: [AIRCREW, 'ground_team_basic_badge'] });
+mk('ocp-male-senior-LtCol-patches-overlay', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitFull, hhq], badgeIds: [A4[0], 'ground_team_basic_badge'], opt: Object.assign({}, base, { overlay: true }) });
 mk('ocp-male-senior-LtCol-no-unit-art', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitNoArt, hhq], badgeIds: [A4[0]] });
 // D23: the graduated commander's insignia (left IFF loop, flat sleeve and edge view) and the current commander's badge (chest).
 const SQN_GRAD = { id: 'squadron_commander_badge', title: 'Squadron Commander Badge', graduated: true };
@@ -86,10 +86,10 @@ const SQN_CURRENT = { id: 'squadron_commander_badge', title: 'Squadron Commander
 mk('ocp-male-senior-LtCol-graduated-commander', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitFull, hhq], badgeIds: [A4[0]], command: SQN_GRAD, opt: Object.assign({}, base, { overlay: true }) });
 mk('ocp-male-senior-LtCol-current-commander', 'ocp', 'male', 'senior', 'Lt Col', { patchRefs: [unitFull, hhq], badgeIds: [A4[0]], command: SQN_CURRENT });
 mk('ocp-female-cadet-CCapt-graduated-commander', 'ocp', 'female', 'cadet', 'C/Capt', { patchRefs: [unitFull, hhq], badgeIds: [AIRCREW], command: SQN_GRAD });
-mk('abu-male-senior-SMSgt', 'abu', 'male', 'senior', 'SMSgt', { patchRefs: [unitFull, wing, hhq], badgeIds: [A4[0], 'emergency_services_badge'] });
-mk('corporate_field-female-senior-Capt', 'corporate_field', 'female', 'senior', 'Capt', { patchRefs: [unitFull, wing, hhq], badgeIds: [A4[0], 'emergency_services_badge'] });
+mk('abu-male-senior-SMSgt', 'abu', 'male', 'senior', 'SMSgt', { patchRefs: [unitFull, wing, hhq], badgeIds: [A4[0], 'ground_team_basic_badge'] });
+mk('corporate_field-female-senior-Capt', 'corporate_field', 'female', 'senior', 'Capt', { patchRefs: [unitFull, wing, hhq], badgeIds: [A4[0], 'ground_team_basic_badge'] });
 // The wing patch is on the left sleeve of both (above); ARCHER, a special activity patch, is the CFU's right sleeve (5.2.1.1.2.3) and is noted, not drawn, on the ABU.
-mk('corporate_field-male-senior-Col', 'corporate_field', 'male', 'senior', 'Col', { patchRefs: [unitFull, wing, hhq], badgeIds: [A4[0], 'emergency_services_badge'] });
+mk('corporate_field-male-senior-Col', 'corporate_field', 'male', 'senior', 'Col', { patchRefs: [unitFull, wing, hhq], badgeIds: [A4[0], 'ground_team_basic_badge'] });
 
 // Flight suits (items 16-17): name tag with two badges, the command pin, both ES patch styles, the scarf,
 // and the general officers.

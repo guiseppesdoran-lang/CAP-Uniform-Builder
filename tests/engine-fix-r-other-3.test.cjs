@@ -293,7 +293,7 @@ const critique = JSON.parse(execFileSync(process.execPath, [path.join(root, 'scr
 const composeNamed = async (list, name) => compose(HARNESS.makeBuild(list.find(x => x.name === name).build));
 const { NOT_DRAWN } = HARNESS; // the harness's own regex, not a copy
 
-test('critique set: the utility builds draw the unit and HHQ patches (patchRefs), no "not drawn" note, ES badge on the OCP (D22, 7.1.1.4.1.2, 7.1.1.4.2)', async () => {
+test('critique set: the utility builds draw the unit and HHQ patches (patchRefs), no "not drawn" note, a genuine field badge on the OCP (D22, 7.1.1.4.1.2, 7.1.1.4.2)', async () => {
   for(const name of ['ocp-male-cadet-CSSgt-patches', 'ocp-male-senior-LtCol-patches-overlay', 'abu-male-senior-SMSgt', 'corporate_field-female-senior-Capt']){
     const scene = await composeNamed(critique, name);
     assert.deepEqual(scene.notes.filter(n => NOT_DRAWN.test(n)), [], `${name}: nothing left undrawn`);
@@ -301,7 +301,7 @@ test('critique set: the utility builds draw the unit and HHQ patches (patchRefs)
     assert.ok(patches.length >= 2, `${name}: unit and HHQ patches drawn (${patches.length})`);
   }
   const ocp = await composeNamed(critique, 'ocp-male-senior-LtCol-patches-overlay');
-  assert.ok(ocp.layers.some(l => l.key === 'badge:emergency_services_badge'), 'the OCP LtCol keeps its ES badge');
+  assert.ok(ocp.layers.some(l => l.key === 'badge:ground_team_basic_badge'), 'the OCP LtCol keeps its Ground Team badge (the ES badge has no field artwork, LIVE-FIELD B6)');
   // The one build whose unit patch has no full art says so, so the gap is visible.
   const noArtBuild = HARNESS.makeBuild(critique.find(x => x.name === 'ocp-male-senior-LtCol-no-unit-art').build);
   assert.ok((noArtBuild.harnessNotes || []).some(n => NOT_DRAWN.test(n)), 'the no-art build carries the note');

@@ -101,7 +101,7 @@ test('the picker tile of every badge has an existing thumbnail on every uniform,
 // Cadet Specialty Track Badges (Information Technology, Historian, Communications, Emergency Services and
 // the rest of the cadet-authorized specialty badges) are the same badges the senior members wear, so a cadet
 // and a senior see the same enamel (coloured) dress art in the picker and on the dress uniforms; the OCP and
-// ABU field form (silver on blue, CAPR 39-1 7.1.1.3.1, 5.1.1.1.2.4) is the same for both too.
+// ABU have no field form for either of them (LIVE-FIELD B6).
 test('cadet and senior specialty-track badges resolve to the same enamel dress asset, in the picker', () => {
   const ids = ['emergency_services_badge', 'information_technology_technician_badge', 'historian_technicianIbadge',
     'communications_technician_badge', 'communications_senior_badge', 'communications_master_badge'];
@@ -109,7 +109,7 @@ test('cadet and senior specialty-track badges resolve to the same enamel dress a
     const b = CAT.get(id);
     assert.equal(b.family, 'specialty', id);
     assert.match(b.dress, /^enamel-/, `${id} dress art is the enamel form`);
-    assert.match(b.field, /^enamel-.*-field$/, `${id} field art is its own field form`);
+    assert.equal(b.field, null, `${id} has no field form: a recolour of the enamel art is not field artwork (LIVE-FIELD B6)`);
     for(const m of ['cadet', 'senior']) assert.ok(CAT.eligibleFor(id, m), `${id} is worn by ${m}s`);
     for(const u of ['blues_a', 'semi_formal', 'mess_dress']){
       const paths = ['cadet', 'senior'].map(m => ev(`State.membership = '${m}'; State.uniform = '${u}'; State.badgeSelections = {}; getBadgeAssetPath('${id}')`));
