@@ -4,13 +4,18 @@
 // tests/asset-index.test.cjs fails when the two disagree.
 'use strict';
 const fs = require('fs');
+const crypto = require('crypto');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
 const OUT = path.join(root, 'data', 'asset-index.js');
 
 function build(){
-  const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8'));
+  const manifestText = fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8');
+  const manifest = JSON.parse(manifestText);
+  // Version stamp for artwork URLs: a changed manifest gives a changed query, so edge caches (Cloudflare
+  // keeps SVGs for hours) never serve an older copy of an asset after a deploy.
+  const version = crypto.createHash('md5').update(manifestText).digest('hex').slice(0, 10);
   const index = {};
   for(const a of manifest.assets || []) index[a.id] = a.path;
   const lines = Object.keys(index).sort().map(id => `  ${JSON.stringify(id)}: ${JSON.stringify(index[id])}`);
@@ -19,8 +24,9 @@ function build(){
   const index = {
 ${lines.map(l => '  ' + l).join(',\n')}
   };
+  Object.defineProperty(index, 'version', { value: ${JSON.stringify(version)}, enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else root.CAPUBAssetIndex = index;
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = ${JSON.stringify(version)}; }
 })(typeof self !== 'undefined' ? self : this);
 `;
 }

@@ -54,7 +54,9 @@ function ASSET(p){
   // Encode each path segment without encoding slash separators. This fixes
   // filenames containing spaces, #, %, apostrophes, and other URL characters.
   const safeSub = sub.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg))).join('/');
-  return `${b}/${safeSub}`;
+  // The artwork version from data/asset-index.js busts edge caches when the artwork set changes.
+  const v = (typeof window !== 'undefined' && window.CAPUBAssetVersion) ? `?v=${window.CAPUBAssetVersion}` : '';
+  return `${b}/${safeSub}${safeSub.includes('?') ? '' : v}`;
 }
 
 /* ===========================
