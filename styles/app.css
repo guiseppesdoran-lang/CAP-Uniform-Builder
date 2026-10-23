@@ -269,7 +269,8 @@ header h1::after{
   right:0;
   background:var(--bg);
   color:var(--ink);
-  overflow:hidden;
+  /* clip, not hidden: scrollIntoView() on a sidebar control must not scroll the shell itself. */
+  overflow:clip;
 }
 #controls{
   width:var(--sidebar-w);
@@ -280,7 +281,7 @@ header h1::after{
   display:flex;
   flex-direction:column;
   z-index:10;
-  overflow:hidden;
+  overflow:clip;
   transition:width .2s ease,min-width .2s ease,max-width .2s ease,transform .2s ease;
 }
 #layoutShell.sidebar-collapsed #controls{
