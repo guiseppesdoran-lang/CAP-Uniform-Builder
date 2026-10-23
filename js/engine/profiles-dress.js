@@ -1336,6 +1336,43 @@
     const l = ctx.landmark('lapel_left');
     return l && l.points && l.points.length > 2 ? l.points : BLAZER_LAPEL_LEFT[female ? 'female' : 'male'];
   }
+  // The wearer's left arm seam (sleeve seam) of each blazer sheet: the `seams` group's left armhole path in garment
+  // inches, sampled about every 0.8 in. The miniature medals lie between the lapel and this seam (11.2.8, 4.2.1.4,
+  // 4.2.2.4); the region beyond it, closed above the seam's top and to the right, is what the rack must not reach.
+  // FOLLOWUP (art): state arm_seam_left on the blazer sheets next to lapel_left.
+  const BLAZER_ARM_SEAM_LEFT = {
+    male: [[22.64,4.06],[22.66,4.74],[22.59,5.55],[22.49,6.35],[22.43,7.17],[22.34,7.97],[22.24,8.77],[22.16,9.58],[22.06,10.38],[21.95,11.18],[21.84,11.97],[21.72,12.76],[21.58,13.54],[21.44,14.31],[21.32,15.05]],
+    female: [[17.15,4.06],[17.10,4.18],[16.99,4.42],[16.84,4.77],[16.63,5.24],[16.42,5.75],[16.21,6.30],[16.01,6.88],[15.81,7.50],[15.63,8.15],[15.45,8.83],[15.29,9.55],[15.14,10.29],[15.02,11.07],[14.92,11.88],[14.84,12.71],[14.80,13.58],[14.77,14.45],[14.75,15.32],[14.76,16.19],[14.78,17.06],[14.80,17.71],[14.81,18.14],[14.82,18.36]]
+  };
+  // The top edge of the wearer's left shoulder (the coat outline from the neck to the sleeve head), in garment inches.
+  const BLAZER_SHOULDER_LEFT = {
+    male: [[15.46,1.05],[17.03,2.41],[22.29,3.69]],
+    female: [[12.55,1.35],[13.59,1.92],[14.71,2.33],[15.81,2.78],[16.83,3.38],[17.29,3.74],[17.59,4.23]]
+  };
+  function lerpAt(poly, v, axis){
+    // poly: [[x,y]...] monotone in `axis` (0 = x, 1 = y); the other coordinate at v, clamped to the ends.
+    const k = axis, o = 1 - axis;
+    if(v <= poly[0][k]) return poly[0][o];
+    for(let i = 1; i < poly.length; i++){
+      if(v <= poly[i][k]){ const a = poly[i - 1], b = poly[i], t = b[k] === a[k] ? 0 : (v - a[k]) / (b[k] - a[k]); return a[o] + (b[o] - a[o]) * t; }
+    }
+    return poly[poly.length - 1][o];
+  }
+  // How far a box (x0/x1/y0/y1) lies past the arm seam or above the shoulder, in inches (0 when it is between the
+  // lapel and the seam and under the shoulder line): the larger of the horizontal overshoot past the seam at the
+  // box's top and bottom, and the vertical overshoot above the shoulder at its inner and outer edge.
+  function blazerOvershoot(ctx, female, bx){
+    const seam = BLAZER_ARM_SEAM_LEFT[female ? 'female' : 'male'], sh = BLAZER_SHOULDER_LEFT[female ? 'female' : 'male'];
+    const sx = y => lerpAt(seam, y, 1);
+    return {
+      seam: Math.max(0, bx.x1 - Math.min(sx(bx.y0), sx(bx.y1))),
+      shoulder: Math.max(0, Math.max(lerpAt(sh, bx.x0, 0), lerpAt(sh, bx.x1, 0)) - bx.y0)
+    };
+  }
+  const worseOver = (a, b) => ({ seam: Math.max(a.seam, b.seam), shoulder: Math.max(a.shoulder, b.shoulder) });
+  // A coat that cannot hold the rack and the badge inside both lines is judged by how far they stray, the shoulder
+  // line (nothing worn above the coat) twice as heavily as the seam.
+  const overScore = o => o.seam + 2 * o.shoulder;
 
   async function composeBlazer(ctx, b){
     const semi = b.uniform === 'semi_formal';
@@ -1458,27 +1495,79 @@
     const pocketTop = ctx.point('pocket_top_center');
     const ruleBottom = crestTop - 0.5;
     const bottomY = pocketTop ? Math.min(ruleBottom, pocketTop.y) : ruleBottom;
-    const box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle });
+    // The rack lies between the lapel and the arm seam (11.2.8; 4.2.1.4, 4.2.2.4 with ICL 25-02), whole: no drape,
+    // medal, device or the chaplain badge is under the lapel, and nothing clips it. It starts centred over the crest;
+    // where the lapel edge reaches it, the whole rack moves toward the arm by the least that clears the lapel (0.02 in
+    // steps, the lowest row keeping its line); the badge 1/2 in above the top row moves with it and clears the lapel
+    // the same way. Where the lapel and the arm seam leave less room than the rack needs, the rack has one column
+    // fewer (4 to 1; 7 to 1 for a held rack) and the rows are one more: each column count is drawn, the first whose
+    // rack and badge stay within TOLERANCE of the seam and the shoulder line wins, else the one that overshoots least.
+    const lapelPoly = blazerLapel(ctx, female).map(q => Array.isArray(q) ? { x: q[0], y: q[1] } : { x: q.x, y: q.y });
+    const widest = b.opt.miniStyle !== 'holding' ? 4 : 7;
+    const TOLERANCE = 0.1;
+    const cs = chaplain ? await ctx.spec(chaplain.art) : null;
+    const cb = ctx.point('chaplain_badge_semiformal');
+    const tries = [];
+    let box = null;
+    for(let cols = widest; cols >= 1; cols--){
+      const snap = { layers: ctx.layers.length, notes: ctx.notes.length };
+      const report = {};
+      const bx = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, avoid: [lapelPoly], avoidDir: 1, avoidGap: 0.05, maxShift: 2, report });
+      if(!bx) break;
+      let over = report.boxes.map(q => blazerOvershoot(ctx, female, q)).reduce(worseOver, { seam: 0, shoulder: 0 });
+      let badgeAt = null;
+      if(cs){
+        const y = bx.y - 0.5;
+        const hitsLapel = x => C.rectHitsPolygon({ x: x - cs.w / 2 - 0.05, y: y - cs.h, w: cs.w + 0.1, h: cs.h }, lapelPoly);
+        let x = (cb ? cb.x : medalX) + report.slide;
+        for(let n = 0; n < 200 && hitsLapel(x); n++) x += 0.02;
+        badgeAt = { x, y, blocked: hitsLapel(x) };
+        over = worseOver(over, blazerOvershoot(ctx, female, { x0: x - cs.w / 2, x1: x + cs.w / 2, y0: y - cs.h, y1: y }));
+      }
+      tries.push({ cols, over, slide: report.slide, blocked: report.blocked || (badgeAt && badgeAt.blocked), badgeAt });
+      ctx.layers.length = snap.layers; ctx.notes.length = snap.notes;
+      if(!tries[tries.length - 1].blocked && overScore(over) <= TOLERANCE) break;
+    }
+    // The winner: the first try with no lapel hit within the tolerance, else the clear try that overshoots least
+    // (more columns on a tie), else none clears the lapel.
+    const clear = tries.filter(t => !t.blocked);
+    const win = clear.find(t => overScore(t.over) <= TOLERANCE) || clear.slice().sort((p, q) => overScore(p.over) - overScore(q.over) || q.cols - p.cols)[0] || null;
+    let slide = 0, cols = widest;
+    if(tries.length){
+      if(win){
+        cols = win.cols;
+        box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, avoid: [lapelPoly], avoidDir: 1, avoidGap: 0.05, maxShift: 2 });
+        slide = win.slide;
+        if(overScore(win.over) > TOLERANCE) ctx.note('The miniature medals' + (cs ? ' and the chaplain badge' : '') + ' do not all fit between the lapel and the arm seam on this coat: up to ' + Math.max(win.over.seam, win.over.shoulder).toFixed(1) + ' in of them lies past the seam or the shoulder line (CAPR 39-1 11.2.8)');
+        if(cols < Math.min(widest, (b.medals || []).length)) ctx.note(`The miniature medals are worn ${cols} to a row: between the lapel and the arm seam there is no room for more (CAPR 39-1 11.2.8)`);
+        if(slide) ctx.note('The miniature medals are moved toward the arm until they clear the lapel (CAPR 39-1 11.2.8)');
+      }else{
+        // No column count clears the lapel: centred over the crest, the lapel lies over them (11.1.8).
+        box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: 1 });
+        cols = 1;
+        ctx.note('The miniature medals do not fit between the lapel and the arm seam: the lapel lies over them');
+      }
+    }
+    const cleared = !!win;
     if(box && bottomY === ruleBottom) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 });
     if(box && bottomY < ruleBottom) ctx.note('The miniature medals end at the top of the pocket: the crest is centred on the pocket (CAPR 39-1, 4.2.3.1.1.1), so the 1/2 in above the crest (4.2.1.4) would put them over the pocket');
     if(chaplain){
       // The chaplain insignia goes 1/2 in above the top row, on the crest line (4.2.1.5, 4.2.2.5): the sheet's
-      // chaplain_badge_semiformal anchor states the x.
-      const cb = ctx.point('chaplain_badge_semiformal');
+      // chaplain_badge_semiformal anchor states the x, which moves with the rack.
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
-      await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: cb ? cb.x : medalX, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
+      const at = win && win.badgeAt ? win.badgeAt : { x: cb ? cb.x : medalX, y };
+      await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: at.x, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
     }
     // The lapel (and the collar, over the bow tie) is drawn again above the garment layers, under the tie.
     ctx.foreground(['lapel-foreground'], Z.garmentLayer + 0.5);
-    // The lapel lies over anything worn under its edge: CAPR 39-1 11.1.8 lets the lapel cover part of the
-    // awards, never the reverse. The wearer's left lapel is drawn once more above every miniature drape, medal
-    // and device (Z.badge + 0.5, the Class A coats' order), clipped to its own polygon grown by the edge
-    // stroke's half width, so the rack stays centred over the pocket (4.2.1.4, 4.2.2.4, ICL 25-02) and the
-    // part of it under the lapel is covered. The badges stay whole above it (BADGE_OVER_LAPEL_Z, as on the
-    // Class A coats): the chaplain badge 1/2 in above the top row (4.2.1.5, 4.2.2.5) is never hidden.
-    const lapelPoly = blazerLapel(ctx, female).map(q => Array.isArray(q) ? { x: q[0], y: q[1] } : { x: q.x, y: q.y });
-    ctx.foreground(['lapel-foreground'], Z.badge + 0.5);
-    ctx.layers[ctx.layers.length - 1].clip = growPolygon(lapelPoly, 0.03);
+    // Fallback only (not even one column clears the lapel and the arm seam): CAPR 39-1 11.1.8 lets the lapel cover
+    // part of the awards, never the reverse, so the wearer's left lapel is drawn once more above every miniature drape,
+    // medal and device (Z.badge + 0.5, the Class A coats' order), clipped to its own polygon grown by the edge
+    // stroke's half width. The badges stay whole above it (BADGE_OVER_LAPEL_Z).
+    if(box && !cleared){
+      ctx.foreground(['lapel-foreground'], Z.badge + 0.5);
+      ctx.layers[ctx.layers.length - 1].clip = growPolygon(lapelPoly, 0.03);
+    }
     const touching = [];
     for(const l of ctx.layers){
       if(l.role !== 'badge' || (l.rotate || 0) || !C.rectHitsPolygon(l, lapelPoly)) continue;

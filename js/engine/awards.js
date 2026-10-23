@@ -246,11 +246,13 @@
   // row overlap equally toward the wearer's left, never more than half, with the medal nearest the
   // lapel fully exposed; upper rows cover about half of the ribbon part of the row below.
   // `style` 'mounting' = rows of four (max 24), 'holding' = balanced rows of up to seven (max 28).
-  function miniMedalRows(items, style){
+  // `perRow` narrows the rack (a corporate blazer whose lapel and arm seam leave less room than the full rack
+  // needs wears fewer columns): at most 4 a row mounted, at most 7 a row held.
+  function miniMedalRows(items, style, perRow){
     const max = style === 'holding' ? 28 : 24;
     const list = items.slice(0, max);
-    if(style !== 'holding') return rackRows(list, 4);
-    const rowCount = Math.max(1, Math.ceil(list.length / 7));
+    if(style !== 'holding') return rackRows(list, Math.max(1, Math.min(4, perRow || 4)));
+    const rowCount = Math.max(1, Math.ceil(list.length / Math.max(1, Math.min(7, perRow || 7))));
     const base = Math.floor(list.length / rowCount), extra = list.length % rowCount;
     const countsBottomFirst = Array.from({ length: rowCount }, (_, i) => base + (i < extra ? 1 : 0));
     return rackRows(list, 7, countsBottomFirst);
@@ -258,7 +260,7 @@
 
   function layoutMiniMedals(items, opts){
     const style = opts.style || 'mounting';
-    const rows = miniMedalRows(items, style);
+    const rows = miniMedalRows(items, style, opts.perRow);
     const medalW = opts.medalW;            // width of one medal (ribbon drape width)
     const totalH = opts.medalH;            // drape + body
     const drapeH = opts.drapeH;

@@ -60,29 +60,14 @@ test('the blue shirt\'s epaulet sleeves keep the cadet officer\'s miniature meta
   }
 });
 
-// ---- 2. The blazer's left lapel lies over the semi-formal's miniature medals ---------------------------------------------
+// ---- 2. The blazer's left lapel and the semi-formal's miniature medals --------------------------------------------------
 
-test('semi-formal blazer: the left lapel is drawn above every miniature drape, medal and device, clipped to the lapel; the chaplain badge stays whole above it with a scene note (CAPR 39-1 11.1.8, 4.2.1.5, 4.2.2.5)', async () => {
+test('semi-formal blazer: the rack and the chaplain badge are clear of the lapel, so no lapel foreground is drawn over the miniature medals and no note says a badge meets the lapel (CAPR 39-1 11.2.8, 4.2.1.5, 4.2.2.5; the lapel fix, D8)', async () => {
   for(const gender of ['male', 'female']){
     const scene = await compose(crit(`semi_formal-${gender}-senior-Capt-12minis`));
-    const fgs = scene.layers.filter(l => l.key === 'layer:foreground');
-    const top = fgs.find(l => l.clip);
-    assert.ok(top && top.clip.length > 10, `${gender}: a lapel foreground clipped to the lapel polygon`);
-    const minis = scene.layers.filter(l => /^mini/.test(l.key || '') || ['mini-drape', 'mini-medal', 'device'].includes(l.role));
-    assert.ok(minis.length >= 24, `${gender}: ${minis.length} mini layers`);
-    assert.ok(minis.every(l => l.z < top.z), `${gender}: no drape, medal or device above the lapel (max ${Math.max(...minis.map(l => l.z))} vs ${top.z})`);
-    // The lapel polygon's bounds reach the rack (the lapel edge runs through its left column).
-    const xs = top.clip.map(p => p.x), ys = top.clip.map(p => p.y);
-    const hit = minis.filter(l => l.x < Math.max(...xs) && l.x + l.w > Math.min(...xs) && l.y < Math.max(...ys) && l.y + l.h > Math.min(...ys));
-    assert.ok(hit.length > 0);
-  }
-  for(const gender of ['male', 'female']){
-    const scene = await compose(crit(`semi_formal-${gender}-senior-SMSgt-lapel-chaplain`));
-    const top = scene.layers.find(l => l.key === 'layer:foreground' && l.clip);
-    const badge = scene.layers.find(l => l.role === 'badge');
-    assert.ok(top && badge, `${gender}: lapel foreground and chaplain badge`);
-    assert.ok(badge.z > top.z, `${gender}: the badge (z ${badge.z}) is whole above the lapel (z ${top.z})`);
-    assert.ok(scene.notes.some(n => /meets the lapel/.test(n)), `${gender}: scene note that the badge meets the lapel`);
+    assert.ok(!scene.layers.some(l => l.key === 'layer:foreground' && l.clip), `${gender}: no lapel foreground clipped over the miniature medals`);
+    assert.ok(scene.layers.some(l => l.role === 'mini-drape'), `${gender}: miniature medals drawn`);
+    assert.ok(!scene.notes.some(n => /meets the lapel|lapel lies over/.test(n)), `${gender}: no note about the lapel covering anything`);
   }
 });
 

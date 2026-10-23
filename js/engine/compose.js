@@ -359,7 +359,7 @@
       hang.set(m, below); reach.set(m, { left, right });
     }
     const out = awards.layoutMiniMedals(medals, {
-      style: o.style, medalW: MINI_DRAPE.w, medalH: totalH, drapeH: MINI_DRAPE.h,
+      style: o.style, perRow: o.perRow, medalW: MINI_DRAPE.w, medalH: totalH, drapeH: MINI_DRAPE.h,
       slotW: slot.w, centerX: slot.centerX, bottomY: 0
     });
     // The lowest row's medal bodies end exactly on the line the slot names (1/2 in above the service
@@ -375,16 +375,24 @@
     // nearest the lapel is fully exposed): when `avoid` polygons are given, the whole rack slides toward
     // `avoidDir` (+1 toward larger x) in 0.02 in steps until no drape or body touches one, at most `maxShift`
     // (rows keep their alignment, the lowest row keeps its line).
+    // `report` (an object the caller passes) gets `blocked` (a drape or body still touches an `avoid` polygon after
+    // the slide), `slide`, and `boxes` (each medal's drape and body box, x0/x1/y0/y1, as drawn), so the caller can
+    // try a narrower rack and measure how far the rack lies from the rest of the garment.
     let slide = 0;
+    const gap = o.avoidGap != null ? o.avoidGap : 0.03;
+    const boxOf = p => { const r = reach.get(p.item) || { left: 0, right: MINI_DRAPE.w }; return { x0: p.x + r.left, x1: p.x + r.right, y0: p.y, y1: p.y + MINI_DRAPE.h + (hang.get(p.item) || 0) }; };
+    if(o.report) o.report.blocked = false;
     if(o.avoid && o.avoid.length){
-      const dir = o.avoidDir < 0 ? -1 : 1, maxShift = o.maxShift != null ? o.maxShift : 2.5, gap = o.avoidGap != null ? o.avoidGap : 0.03;
-      const boxes = out.placements.map(p => { const r = reach.get(p.item) || { left: 0, right: MINI_DRAPE.w }; return { x0: p.x + r.left - gap, x1: p.x + r.right + gap, y0: p.y, y1: p.y + MINI_DRAPE.h + (hang.get(p.item) || 0) }; });
-      const hits = d => boxes.some(b => o.avoid.some(poly => rectHitsPolygon({ x: b.x0 + d, y: b.y0, w: b.x1 - b.x0, h: b.y1 - b.y0 }, poly)));
+      const dir = o.avoidDir < 0 ? -1 : 1, maxShift = o.maxShift != null ? o.maxShift : 2.5;
+      const boxes = out.placements.map(boxOf);
+      const hits = d => boxes.some(b => o.avoid.some(poly => rectHitsPolygon({ x: b.x0 - gap + d, y: b.y0, w: b.x1 - b.x0 + 2 * gap, h: b.y1 - b.y0 }, poly)));
       while(slide < maxShift && hits(dir * slide)) slide += 0.02;
-      if(hits(dir * slide)) ctx.note('The miniature medals reach the lapel: there is no room to move them clear of it');
+      if(o.report) o.report.blocked = hits(dir * slide);
+      else if(hits(dir * slide)) ctx.note('The miniature medals reach the lapel: there is no room to move them clear of it');
       slide *= dir;
       for(const p of out.placements) p.x += slide;
     }
+    if(o.report){ o.report.slide = slide; o.report.boxes = out.placements.map(boxOf); }
     const sizes = {};
     for(const d of [...new Set(medals.flatMap(m => m.devices || []))]){ if(ctx.has(d)){ const s = await ctx.spec(d); sizes[d] = { w: s.w, h: s.h }; } }
     // Where each medal's drape and body lie, so the devices of a lower row go in the part of the drape the

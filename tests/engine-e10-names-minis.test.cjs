@@ -175,7 +175,9 @@ for(const sex of ['male', 'female']){
     const rows = new Map();
     drapes.forEach(l => { const k = l.y.toFixed(3); rows.set(k, [...(rows.get(k) || []), l]); });
     const ys = [...rows.keys()].map(Number).sort((a, b) => b - a);
-    assert.deepEqual(ys.map(y => rows.get(y.toFixed(3)).length), [4, 4, 1], 'rows of four, then the remainder');
+    // The men's coat has room for rows of four beside the lapel; the women's, whose lapel and arm seam leave less,
+    // wears three to a row (the rack has one column fewer where it would not fit between them, 11.2.8; FINAL semi-formal lapel fix, D8).
+    assert.deepEqual(ys.map(y => rows.get(y.toFixed(3)).length), sex === 'male' ? [4, 4, 1] : [3, 3, 3], sex === 'male' ? 'rows of four, then the remainder' : 'rows of three');
     for(const [, row] of rows){
       row.sort((a, b) => a.x - b.x);
       for(let i = 1; i < row.length; i++) near(row[i].x - row[i - 1].x, W, 1e-6, 'step between medals in a row');
