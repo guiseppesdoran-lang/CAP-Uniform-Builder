@@ -1,15 +1,11 @@
 'use strict';
-// LIVE-FIELD B7 (Ethan): on the ABU and the Corporate Field Uniform the collar grade's axis is parallel to the collar's LEADING edge, centred
-// on the leaf, 1 in from it (CAPR 39-1 5.1.1.1.1.3-4, 5.2.1.1.1.4-6: 'one inch from the front of the collar and centered', 'parallel to the
-// front of the collar'). The leading edge is the sheet's collar_slots[side].leading_edge when it states one, else the longest edge of the
-// collar_left / collar_right polygon; one code for both leaves, so the two are mirror images.
-// COLLAR3 (Ethan, 'needs to be parallel to the bottom line'; 'blatantly wrong' to the read that took the edge between the leaf's two lowest vertices,
-// 2.8 degrees off horizontal): the cadet officer cloth and the officers' Lieutenant and Captain bars lie on the OUTER edge of the leaf, the long
-// diagonal from the collar point (the leaf's top vertex) out to the shoulder end (its neighbour farther from the centre line), 45 degrees on these sheets,
-// the row's long axis along it, 1 in from the front (leading) edge and centred, the bars centred 1 in from the bottom as the text says (5.1.1.1.1.1,
-// 5.1.1.1.1.3, 5.2.1.1.1); the cadet NCO chevron keeps 'parallel to the front of the collar' (5.1.1.1.1.4).
-// COLLAR4 (Ethan: 'the short edge needs to be parallel to the bottom of the collar. diamonds should always be the same sides'): the row is turned a quarter from COLLAR3: the
-// cloth's short side lies on the outer edge, every diamond's long axis (the art's y; insignia_h_in) is parallel to it, the row stacks across the leaf; the bars' centre is 1 in from the outer edge.
+// ABU and Corporate Field Uniform collar grade (CAPR 39-1 5.1.1.1.1, 5.2.1.1.1), COLLAR5.
+// Ethan, on the cadet Lt Col cloth drawn as a square turned 45 degrees on the leaf: "the edge on the bottom right needs to be parallel with the seam
+// below it. and it should apply for all. that seam should also be parallel with the ground." The leaf's lower seam (collar_slots[side].bottom_edge) is
+// horizontal on both sheets, and EVERY collar grade piece sits with its bottom edge parallel to it: the cadet officers' cloth (six grades), the senior
+// officers' cloth (all grades) and the cadet NCO metal chevrons. D8: the earlier tests (LIVE-FIELD B7, COLLAR3, COLLAR4) had the cadet row along the front
+// or the outer edge and the bars on the outer edge; they now assert the seam, with the positions the text gives: cadet officers and the cadet NCO chevron
+// 1 in from the front of the collar and centred (5.1.1.1.1.3-4, 5.2.1.1.1.4), officers 1 in from the bottom, centred (5.1.1.1.1.1, 5.2.1.1.1.1).
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -26,14 +22,21 @@ require('../js/engine/profiles-dress.js');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8'));
 const load = p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8')));
 const store = core.createSpecStore(manifest, load);
-// The same store with a `leading_edge` stated on the wearer's right leaf of the ABU sheet (0.01 in), the other leaf left without one.
-const withEdge = edge => core.createSpecStore(manifest, async p => {
+// The same store with `edit(json)` applied to the ABU sheet's spec.
+const edited = edit => core.createSpecStore(manifest, async p => {
   const j = await load(p);
-  if(/garment-abu-coat\.spec\.json$/.test(p)) j.collar_slots.right.leading_edge = edge;
+  if(/garment-abu-coat\.spec\.json$/.test(p)) edit(j);
   return j;
 });
 
 const SHEETS = { abu: 'garment-abu-coat', corporate_field: 'garment-cfu-coat' };
+const CADET_OFFICERS = ['C/2d Lt', 'C/1st Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col'];
+const CADET_NCOS = ['C/Amn', 'C/SSgt', 'C/MSgt', 'C/CMSgt'];
+const SENIOR_OFFICERS = ['2d Lt', '1st Lt', 'Capt', 'Maj', 'Lt Col', 'Col', 'Brig Gen', 'Maj Gen'];
+const STEM_RANKS = ['Maj', 'Lt Col'];   // the stem lies parallel to the ground pointing away from the neck: a quarter turn from the seam's frame (5.1.1.1.1.1)
+const GENERALS = ['Brig Gen', 'Maj Gen'];
+const CLOTH_BORDER = 0.125;
+
 function build(uniform, gender, membership, rank){
   return {
     uniform, gender, grade: G.gradeInfo(membership, rank, {}), opt: { headgear: 'none' }, name: { first: 'Pat', last: 'Doe', show: true },
@@ -41,164 +44,189 @@ function build(uniform, gender, membership, rank){
   };
 }
 const layer = (scene, side) => scene.layers.find(l => l.key === 'grade:' + side);
+const measures = scene => scene.layers.filter(l => l.type === 'measure');
 const deg = r => r * 180 / Math.PI;
 
-// The leading edge as the engine should read it: the sheet's own pair of points when stated, else the polygon's longest edge.
-function expectedEdge(spec, side){
-  const le = spec.raw.collar_slots[side].leading_edge;
-  const pts = core.landmark(spec, side === 'right' ? 'collar_right' : 'collar_left').points;
-  if(le){ const pair = le.points || (le.p1 && le.p2 ? [le.p1, le.p2] : le), a = pair[0], b = pair[1]; return { a: { x: a[0] / 100, y: a[1] / 100 }, b: { x: b[0] / 100, y: b[1] / 100 } }; }
-  let best = null, len = 0;
-  for(let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i + 1) % pts.length], l = Math.hypot(q.x - p.x, q.y - p.y); if(l > len){ len = l; best = { a: p, b: q }; } }
-  return best;
+// The sheet's lower seam of a leaf as an edge {a, b} (inches) and its angle in (-90, 90].
+function seamOf(spec, side){
+  const be = spec.raw.collar_slots[side].bottom_edge, pair = be.points || [be.p1, be.p2];
+  const a = { x: pair[0][0] / 100, y: pair[0][1] / 100 }, b = { x: pair[1][0] / 100, y: pair[1][1] / 100 };
+  let d = deg(Math.atan2(b.y - a.y, b.x - a.x)); if(d > 90) d -= 180; if(d <= -90) d += 180;
+  return { a, b, angle: Math.abs(d) < 1e-9 ? 0 : d };
 }
-// Angle in degrees between a line through the origin along `v` and the edge, 0-90.
-function between(v, edge){
-  const e = { x: edge.b.x - edge.a.x, y: edge.b.y - edge.a.y }, el = Math.hypot(e.x, e.y), vl = Math.hypot(v.x, v.y);
-  return deg(Math.asin(Math.min(1, Math.abs(v.x * e.y - v.y * e.x) / (el * vl))));
+// The leading (front) edge as the sheet states it.
+function frontOf(spec, side){
+  const le = spec.raw.collar_slots[side].leading_edge, pair = le.points || (le.p1 && le.p2 ? [le.p1, le.p2] : le);
+  return { a: { x: pair[0][0] / 100, y: pair[0][1] / 100 }, b: { x: pair[1][0] / 100, y: pair[1][1] / 100 } };
 }
-// Distance from the edge's line to the box's centre.
-function across(l, edge){
-  const e = { x: edge.b.x - edge.a.x, y: edge.b.y - edge.a.y }, el = Math.hypot(e.x, e.y);
-  const c = { x: l.x + l.w / 2, y: l.y + l.h / 2 };
-  return Math.abs((c.x - edge.a.x) * e.y - (c.y - edge.a.y) * e.x) / el;
-}
-// The outer edge of the leaf as an edge {a, b}: from the polygon's top vertex (the collar point) to its neighbour farther from the sheet's centre line.
-function outerEdge(spec, side){
-  const pts = core.landmark(spec, side === 'right' ? 'collar_right' : 'collar_left').points, cx = spec.w / 2;
-  let top = 0; pts.forEach((p, i) => { if(p.y < pts[top].y) top = i; });
-  const n = pts.length, p = pts[(top + n - 1) % n], q = pts[(top + 1) % n];
-  return { a: pts[top], b: Math.abs(p.x - cx) >= Math.abs(q.x - cx) ? p : q };
-}
-const edgeDeg = e => { let d = deg(Math.atan2(e.b.y - e.a.y, e.b.x - e.a.x)); if(d > 90) d -= 180; if(d <= -90) d += 180; return d; };
-// Distance from a leaf's piece's long axis (the art's longer side) to the edge, in degrees.
-const longAxis = l => l.w >= l.h ? widthAxisOf(l) : upAxisOf(l);
-function widthAxisOf(l){ return { x: Math.cos(l.rotate * Math.PI / 180), y: Math.sin(l.rotate * Math.PI / 180) }; }
-function upAxisOf(l){ return { x: Math.sin(l.rotate * Math.PI / 180), y: -Math.cos(l.rotate * Math.PI / 180) }; }
-function nearestToEdge(l, edge){
-  const e = { x: edge.b.x - edge.a.x, y: edge.b.y - edge.a.y }, el = Math.hypot(e.x, e.y);
+const polyOf = (spec, side) => core.landmark(spec, side === 'right' ? 'collar_right' : 'collar_left').points;
+// A layer's four corners (the box turned by its rotate about its centre) and its centre.
+function cornersOf(l){
   const c = { x: l.x + l.w / 2, y: l.y + l.h / 2 }, a = l.rotate * Math.PI / 180;
-  const corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * l.w / 2 * Math.cos(a) - j * l.h / 2 * Math.sin(a), y: c.y + i * l.w / 2 * Math.sin(a) + j * l.h / 2 * Math.cos(a) }));
-  return Math.min(...corners.map(q => Math.abs((q.x - edge.a.x) * e.y - (q.y - edge.a.y) * e.x) / el));
+  return [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * l.w / 2 * Math.cos(a) - j * l.h / 2 * Math.sin(a), y: c.y + i * l.w / 2 * Math.sin(a) + j * l.h / 2 * Math.cos(a) }));
 }
-const upAxis = l => ({ x: Math.sin(l.rotate * Math.PI / 180), y: -Math.cos(l.rotate * Math.PI / 180) });
-const widthAxis = l => ({ x: Math.cos(l.rotate * Math.PI / 180), y: Math.sin(l.rotate * Math.PI / 180) });
+const centreOf = l => ({ x: l.x + l.w / 2, y: l.y + l.h / 2 });
+const inside = (q, poly) => { let r = false; for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){ const pi = poly[i], pj = poly[j]; if((pi.y > q.y) !== (pj.y > q.y) && q.x < (pj.x - pi.x) * (q.y - pi.y) / (pj.y - pi.y) + pi.x) r = !r; } return r; };
+// Signed distance from a point to the line through the edge (absolute value), in inches.
+function lineDist(q, e){ const dx = e.b.x - e.a.x, dy = e.b.y - e.a.y; return Math.abs((q.x - e.a.x) * dy - (q.y - e.a.y) * dx) / Math.hypot(dx, dy); }
+// The turn of a layer relative to the seam, in (-180, 180].
+const relTurn = (l, seam) => { let d = l.rotate - seam.angle; while(d > 180) d -= 360; while(d <= -180) d += 360; return d; };
 
 for(const uniform of ['abu', 'corporate_field']){
   for(const gender of ['male', 'female']){
-    test(`${uniform} ${gender}: cadet NCO chevrons lie along the leading edge of each leaf, near outline 1 in from it, mirrored (5.1.1.1.1.4, 5.2.1.1.1.6)`, async () => {
+    test(`${uniform} ${gender}: the leaf's lower seam is horizontal on both leaves, stated by the sheet as bottom_edge and as a landmark (COLLAR5)`, async () => {
       const spec = await store.load(SHEETS[uniform]);
-      for(const rank of ['C/Amn', 'C/SSgt', 'C/MSgt', 'C/CMSgt']){
-        const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank), store);
-        const w = (await store.load(G.cadetNcoChevron(G.gradeInfo('cadet', rank, {}), 'metal'))).w;
-        for(const side of ['right', 'left']){
-          const l = layer(scene, side), edge = expectedEdge(spec, side);
-          assert.ok(l, `${rank} ${side}`);
-          assert.ok(between(upAxis(l), edge) < 0.5, `${rank} ${side}: axis ${between(upAxis(l), edge).toFixed(2)} deg off the leading edge`);
-          assert.ok(Math.abs(across(l, edge) - w / 2 - 1) < 0.02, `${rank} ${side}: near outline ${(across(l, edge) - w / 2).toFixed(3)} in from the edge`);
-        }
-        const r = layer(scene, 'right'), lft = layer(scene, 'left');
-        assert.ok(Math.abs(Math.abs(r.rotate) - Math.abs(lft.rotate)) < 2.5 && r.rotate * lft.rotate < 0, `${rank}: mirrored turns ${r.rotate} / ${lft.rotate}`);
+      for(const side of ['right', 'left']){
+        const seam = seamOf(spec, side), be = spec.raw.collar_slots[side].bottom_edge;
+        assert.equal(seam.a.y, seam.b.y, `${side}: the seam's two points share a height`);
+        assert.ok(Math.abs(seam.b.x - seam.a.x) > 2, `${side}: the seam is ${Math.abs(seam.b.x - seam.a.x).toFixed(2)} in long`);
+        assert.equal(be.angle_deg, 0, `${side}: bottom_edge.angle_deg`);
+        // the landmark agrees, and the leaf polygon's two lowest vertices are the seam's ends
+        const lm = core.landmark(spec, 'collar_bottom_edge_' + side).points;
+        assert.ok(Math.hypot(lm[0].x - seam.a.x, lm[0].y - seam.a.y) < 0.02 && Math.hypot(lm[1].x - seam.b.x, lm[1].y - seam.b.y) < 0.02, `${side}: landmark collar_bottom_edge`);
+        const poly = polyOf(spec, side), low = poly.slice().sort((p, q) => q.y - p.y).slice(0, 2);
+        assert.ok(Math.abs(low[0].y - low[1].y) < 1e-9 && Math.abs(low[0].y - seam.a.y) < 0.005, `${side}: the leaf's two lowest vertices are the seam's ends and level`);
+        for(const p of [seam.a, seam.b]) assert.ok(poly.some(q => Math.hypot(q.x - p.x, q.y - p.y) < 0.02), `${side}: a seam end is a vertex of the leaf`);
       }
     });
 
-    test(`${uniform} ${gender}: the cadet officer cloth's short side lies on the OUTER edge, every diamond's long axis parallel to it, the discs' and diamonds' row stacking across the leaf, near outline 1 in from the leading edge, mirrored (5.1.1.1.1.3, 5.2.1.1.1.4; COLLAR4)`, async () => {
+    test(`${uniform} ${gender}: every cadet officer, cadet NCO and senior officer piece sits with its bottom edge parallel to the seam, both leaves (COLLAR5)`, async () => {
       const spec = await store.load(SHEETS[uniform]);
-      for(const [rank, diamonds] of [['C/2d Lt', false], ['C/1st Lt', false], ['C/Capt', false], ['C/Maj', true], ['C/Lt Col', true], ['C/Col', true]]){
-        const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank), store);
+      const cases = [...CADET_OFFICERS.map(r => ['cadet', r]), ...CADET_NCOS.map(r => ['cadet', r]), ...SENIOR_OFFICERS.map(r => ['senior', r])];
+      for(const [membership, rank] of cases){
+        const scene = await P.composeUniform(build(uniform, gender, membership, rank), store);
         for(const side of ['right', 'left']){
-          const l = layer(scene, side), front = expectedEdge(spec, side), outer = outerEdge(spec, side);
+          const l = layer(scene, side), seam = seamOf(spec, side);
           assert.ok(l, `${rank} ${side}`);
-          const dims = (await store.load(l.id)).raw.dimensions;
-          // The art draws its diamonds with the long point-to-point axis vertical (insignia_h_in, 1.25 in regular, 1/2 in miniature) and its row horizontal (x).
-          const count = { 'C/2d Lt': 1, 'C/1st Lt': 2, 'C/Capt': 3, 'C/Maj': 1, 'C/Lt Col': 2, 'C/Col': 3 }[rank], each = dims.insignia_w_in / count;
-          if(diamonds) assert.ok(dims.insignia_h_in > each + 1e-9, `${rank}: each diamond is ${each} in wide and ${dims.insignia_h_in} in point to point, so y is its long axis`);
-          else assert.ok(dims.insignia_w_in >= count * dims.insignia_h_in - 1e-9, `${rank}: ${count} disc(s) of ${dims.insignia_h_in} in in a row ${dims.insignia_w_in} in wide, so x is the row`);
-          if(diamonds) assert.ok(between(upAxis(l), outer) < 0.1, `${rank} ${side}: the diamond's long axis ${between(upAxis(l), outer).toFixed(2)} deg off the outer edge`);
-          // The discs' row (x) stacks across the leaf, so the cloth's short side (y) is the one on the edge.
-          if(!diamonds) assert.ok(between(widthAxis(l), outer) > 89.9, `${rank} ${side}: the discs' row ${between(widthAxis(l), outer).toFixed(2)} deg off the outer edge, not across it`);
-          // The cloth's short side is parallel to the outer edge (C/Maj's single diamond is taller than wide, so there the diamond's long axis rules, as the line above checks).
-          if(rank !== 'C/Maj'){
-            const shortAxis = l.w < l.h ? widthAxis(l) : upAxis(l);
-            assert.ok(between(shortAxis, outer) < 0.1, `${rank} ${side}: short side ${between(shortAxis, outer).toFixed(2)} deg off the outer edge`);
+          const stem = membership === 'senior' && STEM_RANKS.includes(rank);
+          // the art stands on the seam: turned by the seam's own angle (0), the Major's and Lieutenant Colonel's stem a quarter turn from it, away from the neck (right leaf 90, left -90)
+          const want = stem ? (side === 'right' ? 90 : -90) : 0;
+          assert.ok(Math.abs(relTurn(l, seam) - want) < 0.01, `${rank} ${side}: turned ${l.rotate} deg, the seam is ${seam.angle}, wanted ${want} from it`);
+          // whatever the turn, the piece's edges are parallel or square to the seam: its bottom edge runs along the seam's direction
+          const cs = cornersOf(l), e = cs.slice().sort((p, q) => q.y - p.y).slice(0, 2);
+          assert.ok(Math.abs(e[0].y - e[1].y) < 0.005, `${rank} ${side}: the piece's bottom edge is level (${e[0].y.toFixed(3)} / ${e[1].y.toFixed(3)})`);
+        }
+        const r = layer(scene, 'right'), lf = layer(scene, 'left');
+        assert.ok(Math.abs(r.rotate + lf.rotate) < 0.01, `${rank}: the two leaves are mirror images (${r.rotate} / ${lf.rotate})`);
+      }
+    });
+
+    test(`${uniform} ${gender}: cadet officers and cadet NCOs: near corner 1 in from the front of the collar, centred on the leaf, the 1 in measure drawn (5.1.1.1.1.3-4, 5.2.1.1.1.4)`, async () => {
+      const spec = await store.load(SHEETS[uniform]);
+      for(const [membership, rank] of [...CADET_OFFICERS.map(r => ['cadet', r]), ...CADET_NCOS.map(r => ['cadet', r])]){
+        const scene = await P.composeUniform(build(uniform, gender, membership, rank), store);
+        for(const side of ['right', 'left']){
+          const l = layer(scene, side), front = frontOf(spec, side), poly = polyOf(spec, side);
+          const d = Math.min(...cornersOf(l).map(q => lineDist(q, front)));
+          assert.ok(Math.abs(d - 1) < 0.02, `${rank} ${side}: near corner ${d.toFixed(3)} in from the front edge`);
+          // centred on the leaf: the centre is the middle of the chord the line through it, parallel to the front edge, cuts across the leaf
+          const t = { x: front.b.x - front.a.x, y: front.b.y - front.a.y }, tl = Math.hypot(t.x, t.y); t.x /= tl; t.y /= tl;
+          const c = centreOf(l), ts = [];
+          for(let i = 0; i < poly.length; i++){
+            const p = poly[i], q = poly[(i + 1) % poly.length], ex = q.x - p.x, ey = q.y - p.y, den = t.x * ey - t.y * ex;
+            if(Math.abs(den) < 1e-9) continue;
+            const s = ((p.x - c.x) * ey - (p.y - c.y) * ex) / den, u = ((p.x - c.x) * t.y - (p.y - c.y) * t.x) / den;
+            if(u >= 0 && u <= 1) ts.push(s);
           }
-          // The three things it must not be: horizontal (the rejected second read), the front edge (the rejected first read), and in any case a diagonal.
-          const turn = Math.abs(edgeDeg(outer));
-          assert.ok(turn > 30 && turn < 60, `${rank} ${side}: the outer edge is ${turn.toFixed(1)} deg from horizontal`);
-          assert.ok(between(upAxis(l), front) > 15, `${rank} ${side}: axis ${between(upAxis(l), front).toFixed(1)} deg off the front edge, so not along it`);
-          assert.ok(Math.abs(upAxis(l).y) > 0.5, `${rank} ${side}: the diamonds are not upright`);
-          assert.ok(Math.abs(nearestToEdge(l, front) - 1) < 0.02, `${rank} ${side}: near outline ${nearestToEdge(l, front).toFixed(3)} in from the leading edge`);
-        }
-        const r = layer(scene, 'right'), lft = layer(scene, 'left');
-        assert.ok(Math.abs(r.rotate + lft.rotate) < 0.01, `${rank}: mirrored turns ${r.rotate} / ${lft.rotate}`);
-        // "Same sides": the diamonds sit the same way relative to the collar on both leaves (the turns are mirror images, so the angle to each leaf's outer edge is equal).
-        assert.ok(Math.abs(between(upAxis(r), outerEdge(spec, 'right')) - between(upAxis(lft), outerEdge(spec, 'left'))) < 0.01, `${rank}: same orientation on both leaves`);
-      }
-    });
-
-    test(`${uniform} ${gender}: Cadet Colonels and Cadet Captains wear the miniature cloth-bordered form, which lies wholly on the leaf; the other cadet officers wear regular size (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
-      const spec = await store.load(SHEETS[uniform]);
-      for(const [rank, form] of [['C/2d Lt', 'regular'], ['C/1st Lt', 'regular'], ['C/Capt', 'miniature'], ['C/Maj', 'regular'], ['C/Lt Col', 'regular'], ['C/Col', 'miniature']]){
-        const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank), store);
-        for(const side of ['right', 'left']){
-          const l = layer(scene, side), poly = core.landmark(spec, side === 'right' ? 'collar_right' : 'collar_left').points;
-          assert.ok(l, `${rank} ${side}`);
-          assert.match(l.id, new RegExp(`cloth-bordered-${form}$`), `${rank} ${side}: ${l.id}`);
-          const c = { x: l.x + l.w / 2, y: l.y + l.h / 2 }, a = l.rotate * Math.PI / 180;
-          const corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * l.w / 2 * Math.cos(a) - j * l.h / 2 * Math.sin(a), y: c.y + i * l.w / 2 * Math.sin(a) + j * l.h / 2 * Math.cos(a) }));
-          const inside = q => { let r = false; for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){ const pi = poly[i], pj = poly[j]; if((pi.y > q.y) !== (pj.y > q.y) && q.x < (pj.x - pi.x) * (q.y - pi.y) / (pj.y - pi.y) + pi.x) r = !r; } return r; };
-          if(form === 'miniature') assert.ok(corners.every(inside), `${rank} ${side}: the miniature row lies wholly on the leaf`);
+          assert.ok(Math.abs(Math.min(...ts) + Math.max(...ts)) < 0.03, `${rank} ${side}: centred on the leaf along the front edge (chord ${Math.min(...ts).toFixed(2)} .. ${Math.max(...ts).toFixed(2)} about the centre)`);
+          // the 1 in measure runs from the front edge's line to that corner
+          const ms = measures(scene).filter(x => Math.abs(Math.hypot(x.to.x - x.from.x, x.to.y - x.from.y) - 1) < 0.01);
+          assert.ok(ms.some(x => cornersOf(l).some(q => Math.hypot(q.x - x.to.x, q.y - x.to.y) < 0.02) && lineDist(x.from, front) < 0.02), `${rank} ${side}: the 1 in measure from the front edge to the near corner`);
         }
       }
     });
 
-    test(`${uniform} ${gender}: the Lieutenant and Captain bars lie parallel to the outer edge, centred 1 in from it, mirrored; Major, Lt Col, Col keep the regulation's own turn (5.1.1.1.1.1, 5.2.1.1.1.1)`, async () => {
+    test(`${uniform} ${gender}: officers: centred 1 in above the seam on the leaf's centre line; generals' stars begin 1 in above it, perpendicular to it (5.1.1.1.1.1, 5.2.1.1.1.1)`, async () => {
       const spec = await store.load(SHEETS[uniform]);
-      for(const rank of ['2d Lt', '1st Lt', 'Capt']){
+      for(const rank of SENIOR_OFFICERS){
         const scene = await P.composeUniform(build(uniform, gender, 'senior', rank), store);
         for(const side of ['right', 'left']){
-          const l = layer(scene, side), outer = outerEdge(spec, side);
-          // The bars' long end is the art's tall axis.
-          assert.ok(between(upAxis(l), outer) < 0.1, `${rank} ${side}: bars ${between(upAxis(l), outer).toFixed(2)} deg off the outer edge`);
-          assert.ok(Math.abs(edgeDeg(outer)) > 30 && Math.abs(edgeDeg(outer)) < 60, `${rank} ${side}: outer edge ${edgeDeg(outer).toFixed(1)} deg`);
-          // COLLAR4: the same reading as the cadet officers' row: the bars' centre lies 1 in from the outer edge ('centered 1 inch from the bottom of the collar'), wholly on the leaf.
-          assert.ok(Math.abs(across(l, outer) - 1) < 0.02, `${rank} ${side}: bars' centre ${across(l, outer).toFixed(3)} in from the outer edge`);
-          const poly = core.landmark(spec, side === 'right' ? 'collar_right' : 'collar_left').points, c = { x: l.x + l.w / 2, y: l.y + l.h / 2 }, a = l.rotate * Math.PI / 180;
-          const inside = q => { let r = false; for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){ const pi = poly[i], pj = poly[j]; if((pi.y > q.y) !== (pj.y > q.y) && q.x < (pj.x - pi.x) * (q.y - pi.y) / (pj.y - pi.y) + pi.x) r = !r; } return r; };
-          [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(([i, j]) => assert.ok(inside({ x: c.x + i * l.w / 2 * Math.cos(a) - j * l.h / 2 * Math.sin(a), y: c.y + i * l.w / 2 * Math.sin(a) + j * l.h / 2 * Math.cos(a) }), `${rank} ${side}: bars on the leaf`));
+          const l = layer(scene, side), seam = seamOf(spec, side), poly = polyOf(spec, side), c = centreOf(l);
+          // the height of the piece's centre above the seam: 1 in, and for the generals the cloth's half height less the 1/8 in border more (the lowest star's silver begins 1 in up)
+          const want = GENERALS.includes(rank) ? 1 + (await store.load(l.id)).h / 2 - CLOTH_BORDER : 1;
+          assert.ok(Math.abs(lineDist(c, seam) - want) < 0.015, `${rank} ${side}: centre ${lineDist(c, seam).toFixed(3)} in above the seam, wanted ${want.toFixed(3)}`);
+          assert.ok(c.y < seam.a.y, `${rank} ${side}: above the seam`);
+          // centred on the leaf: the middle of the chord the seam's parallel 1 in above it cuts across the leaf (the generals' stars stand higher, on the same centre line)
+          const yl = seam.a.y - 1, xs = []; for(let i = 0; i < poly.length; i++){ const p = poly[i], q = poly[(i + 1) % poly.length]; if((p.y - yl) * (q.y - yl) < 0) xs.push(p.x + (q.x - p.x) * (yl - p.y) / (q.y - p.y)); }
+          assert.ok(Math.abs((Math.min(...xs) + Math.max(...xs)) / 2 - c.x) < 0.03, `${rank} ${side}: centred on the leaf`);
+          // the 1 in is drawn from the seam to the centre (the generals: to the line 1 in up their own perpendicular)
+          const ms = measures(scene);
+          assert.ok(ms.some(x => Math.abs(Math.hypot(x.to.x - x.from.x, x.to.y - x.from.y) - 1) < 0.01 && lineDist(x.from, seam) < 0.01 && Math.abs(x.to.x - c.x) < 0.02), `${rank} ${side}: the 1 in measure`);
         }
-        assert.ok(Math.abs(layer(scene, 'right').rotate + layer(scene, 'left').rotate) < 0.01, `${rank}: mirrored`);
       }
-      const rot = async (rank, side) => layer(await P.composeUniform(build(uniform, gender, 'senior', rank), store), side).rotate;
-      assert.equal(await rot('Maj', 'right'), 90); assert.equal(await rot('Maj', 'left'), -90);
-      assert.equal(await rot('Lt Col', 'right'), 90);
+      // the Colonel's beak forward (the eagle mirrored on the wearer's right leaf only), the Major's and Lieutenant Colonel's stem away from the neck, the generals upright to the seam
+      assert.equal(layer(await P.composeUniform(build(uniform, gender, 'senior', 'Col'), store), 'right').flipX, true);
+      assert.ok(!layer(await P.composeUniform(build(uniform, gender, 'senior', 'Col'), store), 'left').flipX);
+    });
+
+    test(`${uniform} ${gender}: every piece lies wholly inside its collar leaf, both leaves, every grade (5.1.1.1.1, 5.2.1.1.1)`, async () => {
+      const spec = await store.load(SHEETS[uniform]);
+      const cases = [...CADET_OFFICERS.map(r => ['cadet', r]), ...CADET_NCOS.map(r => ['cadet', r]), ...SENIOR_OFFICERS.map(r => ['senior', r])];
+      for(const [membership, rank] of cases){
+        const scene = await P.composeUniform(build(uniform, gender, membership, rank), store);
+        for(const side of ['right', 'left']){
+          const l = layer(scene, side), poly = polyOf(spec, side);
+          for(const q of cornersOf(l)) assert.ok(inside(q, poly), `${rank} ${side}: corner ${q.x.toFixed(2)},${q.y.toFixed(2)} is off the leaf`);
+        }
+      }
+    });
+
+    test(`${uniform} ${gender}: Cadet Colonels and Cadet Captains wear the miniature cloth-bordered form; the other cadet officers wear regular size (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
+      for(const [rank, form] of [['C/2d Lt', 'regular'], ['C/1st Lt', 'regular'], ['C/Capt', 'miniature'], ['C/Maj', 'regular'], ['C/Lt Col', 'regular'], ['C/Col', 'miniature']]){
+        const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank), store);
+        for(const side of ['right', 'left']) assert.match(layer(scene, side).id, new RegExp(`cloth-bordered-${form}$`), `${rank} ${side}`);
+      }
     });
   }
 }
 
-test('a leading_edge stated by the sheet is used in place of the polygon search; the other leaf, with none, falls back to its longest edge (same code, both leaves)', async () => {
-  // The sheet states a vertical edge for the wearer's right leaf: the chevron stands upright there and the left leaf keeps the longest edge.
+test('the seam angle is read from the sheet: a seam stated 10 degrees off turns every piece on that leaf by 10 degrees, the leaf without one keeps its own (COLLAR5, generic)', async () => {
+  // The wearer's right leaf of the ABU sheet is given a sloping bottom_edge (0.01 in): the pieces on it follow; the other leaf is untouched.
+  const st = edited(j => { j.collar_slots.right.bottom_edge = { points: [[1467, 1237], [1737, 1237 + Math.round(270 * Math.tan(10 * Math.PI / 180))]] }; });
+  const spec = await st.load('garment-abu-coat');
+  const want = deg(Math.atan2(Math.round(270 * Math.tan(10 * Math.PI / 180)), 270));
+  for(const [membership, rank] of [['cadet', 'C/Lt Col'], ['cadet', 'C/SSgt'], ['senior', 'Capt'], ['senior', 'Col'], ['senior', 'Brig Gen']]){
+    const scene = await P.composeUniform(build('abu', 'male', membership, rank), st);
+    assert.ok(Math.abs(layer(scene, 'right').rotate - want) < 0.01, `${rank} right: ${layer(scene, 'right').rotate} vs ${want}`);
+    assert.equal(layer(scene, 'left').rotate, 0, `${rank} left`);
+  }
+  assert.ok(Math.abs(seamOf(spec, 'right').angle - want) < 0.01);
+  // a sheet with no bottom_edge at all falls back to the leaf polygon's own bottom edge (the edge whose outward normal points most nearly down): level here
+  const bare = edited(j => { delete j.collar_slots.right.bottom_edge; delete j.collar_slots.left.bottom_edge; });
+  const sc = await P.composeUniform(build('abu', 'male', 'cadet', 'C/Lt Col'), bare);
+  assert.equal(layer(sc, 'right').rotate, 0);
+  assert.equal(layer(sc, 'left').rotate, 0);
+});
+
+test('a leading_edge stated by the sheet is the edge the cadet grade is 1 in from; the other leaf, with none, falls back to its longest edge (same code, both leaves)', async () => {
+  // The sheet states a vertical edge for the wearer's right leaf: the near corner of the (unturned) chevron is 1 in from it, and the left leaf keeps the longest edge, the neck-opening edge.
   const edge = [[1709, 807], [1709, 1110]];
-  const st = withEdge(edge);
+  const st = edited(j => { j.collar_slots.right.leading_edge = edge; });
   const spec = await st.load('garment-abu-coat');
   const scene = await P.composeUniform(build('abu', 'male', 'cadet', 'C/SSgt'), st);
   const r = layer(scene, 'right'), l = layer(scene, 'left');
-  assert.ok(between(upAxis(r), expectedEdge(spec, 'right')) < 0.5 && Math.abs(Math.sin(r.rotate * Math.PI / 180)) < 0.01, `stated edge: ${r.rotate}`);
-  assert.ok(between(upAxis(l), expectedEdge(spec, 'left')) < 0.5, 'the leaf without one: its longest edge');
-  assert.ok(Math.abs(l.rotate) > 100, `the left leaf is not upright (${l.rotate})`);
-  // The pair may also be given as {p1, p2}.
-  const st2 = withEdge({ p1: edge[0], p2: edge[1] });
+  const stated = { a: { x: 17.09, y: 8.07 }, b: { x: 17.09, y: 11.1 } };
+  assert.ok(Math.abs(Math.min(...cornersOf(r).map(q => lineDist(q, stated))) - 1) < 0.02, 'stated edge: near corner 1 in from it');
+  assert.equal(r.rotate, 0);
+  // the left leaf: the polygon's longest edge
+  const pts = polyOf(spec, 'left'); let best = null, len = 0;
+  for(let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i + 1) % pts.length], d = Math.hypot(q.x - p.x, q.y - p.y); if(d > len){ len = d; best = { a: p, b: q }; } }
+  assert.ok(Math.abs(Math.min(...cornersOf(l).map(q => lineDist(q, best))) - 1) < 0.02, 'the leaf without one: 1 in from its longest edge');
+  // the pair may also be given as {p1, p2}
+  const st2 = edited(j => { j.collar_slots.right.leading_edge = { p1: edge[0], p2: edge[1] }; });
   const again = layer(await P.composeUniform(build('abu', 'male', 'cadet', 'C/SSgt'), st2), 'right');
-  assert.ok(Math.abs(again.rotate - r.rotate) < 1e-9);
+  assert.ok(Math.abs(again.x - r.x) < 1e-9 && Math.abs(again.y - r.y) < 1e-9);
 });
 
 test('the longest edge of the collar polygon is the front edge of the leaf on both sheets, both leaves (the fallback when the sheet states no leading_edge)', async () => {
   for(const u of ['abu', 'corporate_field']){
     const spec = await store.load(SHEETS[u]);
     for(const side of ['right', 'left']){
-      const e = expectedEdge(spec, side), f = spec.raw.collar_slots[side].front_edge;
-      const a = { x: f.p1[0] / 100, y: f.p1[1] / 100 }, b = { x: f.p2[0] / 100, y: f.p2[1] / 100 };
-      assert.ok(between({ x: b.x - a.x, y: b.y - a.y }, e) < 1, `${u} ${side}: ${between({ x: b.x - a.x, y: b.y - a.y }, e).toFixed(2)} deg from the slot's front edge`);
+      const pts = polyOf(spec, side); let best = null, len = 0;
+      for(let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i + 1) % pts.length], d = Math.hypot(q.x - p.x, q.y - p.y); if(d > len){ len = d; best = { a: p, b: q }; } }
+      const f = spec.raw.collar_slots[side].front_edge, a = { x: f.p1[0] / 100, y: f.p1[1] / 100 }, b = { x: f.p2[0] / 100, y: f.p2[1] / 100 };
+      const ang = Math.abs(Math.asin(Math.min(1, Math.abs((b.x - a.x) * (best.b.y - best.a.y) - (b.y - a.y) * (best.b.x - best.a.x)) / (Math.hypot(b.x - a.x, b.y - a.y) * len))));
+      assert.ok(deg(ang) < 1, `${u} ${side}: ${deg(ang).toFixed(2)} deg from the slot's front edge`);
     }
   }
 });
@@ -215,14 +243,15 @@ test('the sheets state the leading edge twice, as collar_slots[side].leading_edg
   }
 });
 
-test('H.collarOuterEdge: the top vertex to its neighbour farther from the centre line, the same edge mirrored, null for a degenerate leaf (COLLAR3)', () => {
-  const E = P.helpers.collarOuterEdge, A = P.helpers.collarOuterAngle;
-  // The ABU right leaf's polygon (sheet inches): its lowest vertex (14.67, 12.43) is also its farthest-out vertex, so only the top vertex names the edge.
-  const right = [[17.09, 8.07], [15.25, 9.92], [14.67, 12.43], [17.37, 12.30], [18.545, 11.10]].map(([x, y]) => ({ x, y }));
-  const left = right.map(p => ({ x: 39.3 - p.x, y: p.y }));
-  const er = E(right, 19.65), el = E(left, 19.65);
-  assert.deepEqual([er.collarPoint, er.rollEnd], [right[0], right[1]]);
-  assert.deepEqual([el.collarPoint, el.rollEnd], [left[0], left[1]]);
-  assert.ok(Math.abs(A(right, 19.65) + 45.2) < 0.2 && Math.abs(A(left, 19.65) - 45.2) < 0.2, `${A(right, 19.65)} / ${A(left, 19.65)}`);
-  assert.equal(E([{ x: 0, y: 0 }, { x: 0.2, y: 0 }], 5), null);
+test('H.boxExtentAcross and H.nearCornerToEdge: a box unturned against a slanting edge reaches |u.x| w/2 + |u.y| h/2 toward it; the near corner is 1 in from the edge when placed so (COLLAR5)', () => {
+  const E = P.helpers.boxExtentAcross, N = P.helpers.nearCornerToEdge;
+  // a vertical edge (collar point above the roll end): the box's width is its extent across it
+  const vertical = { collarPoint: { x: 10, y: 0 }, rollEnd: { x: 10, y: 5 }, inward: { x: 1, y: 0 } };
+  assert.ok(Math.abs(E(vertical, 2, 1, 0) - 2) < 1e-9 && Math.abs(E(vertical, 2, 1, 90) - 1) < 1e-9);
+  // a 45 degree edge: both half-sides count
+  const diag = { collarPoint: { x: 0, y: 0 }, rollEnd: { x: 4, y: 4 }, inward: { x: 1, y: -1 } };
+  assert.ok(Math.abs(E(diag, 2, 1, 0) - 2 * (Math.SQRT1_2 * 1 + Math.SQRT1_2 * 0.5)) < 1e-9);
+  // the near corner of a 2 x 1 box centred 1 + extent/2 from a vertical edge lies 1 in from it, its foot on the edge's line level with the corner
+  const at = { x: 10 + 1 + E(vertical, 2, 1, 0) / 2, y: 2 }, m = N(vertical, at, 2, 1, 0);
+  assert.ok(Math.abs(m.near.x - 11) < 1e-9 && Math.abs(m.foot.x - 10) < 1e-9 && Math.abs(m.foot.y - m.near.y) < 1e-9);
 });

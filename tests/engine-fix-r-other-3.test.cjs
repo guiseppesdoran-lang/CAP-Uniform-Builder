@@ -186,13 +186,14 @@ test('ABU and CFU: a general officer\'s stars begin 1 in up the perpendicular fr
       const cs = corners(l), bottomMid = { x: (cs[2].x + cs[3].x) / 2, y: (cs[2].y + cs[3].y) / 2 };
       const dist = Math.abs((bottomMid.x - a.x) * d.y - (bottomMid.y - a.y) * d.x) / len;
       assert.ok(Math.abs(dist - (1 - 0.125)) < 0.02, `${uniform} ${sex} ${rank} ${side}: the stars' silver begins 1 in up (cloth ${dist.toFixed(3)} in from the edge)`);
-      assert.ok(Math.abs(l.rotate) > 2.5 && Math.abs(l.rotate) < 3.1, `${uniform} ${sex} ${rank}: the cloth is turned with the leaf's bottom edge, 2.8 deg since the art leveled it from 13.2 (${l.rotate})`);
+      // D8 (COLLAR5): the leaf's lower seam is level now (it was 2.8 deg off, 13.2 in the figure), so the cloth stands on it unturned (Ethan: the grade's bottom edge parallel to the seam, parallel to the ground).
+      assert.equal(Math.abs(l.rotate), 0, `${uniform} ${sex} ${rank}: the cloth stands on the level seam (${l.rotate})`);
     }
     assert.ok(scene.layers.some(x => x.type === 'measure' && x.label === '1 in'), `${uniform} ${sex} ${rank}: a 1 in measure`);
   }
 });
 
-test('ABU and CFU: no officer grade cloth corner lies outside the collar leaf, except the major general\'s top outer corner the drawn leaf is too small for (FOLLOWUP art)', async () => {
+test('ABU and CFU: no officer grade cloth corner lies outside the collar leaf, the major general\'s included (the leaf\'s lower seam is level, COLLAR5)', async () => {
   for(const uniform of ['abu', 'corporate_field']) for(const sex of ['male', 'female']) for(const rank of ['Capt', 'Maj', 'Lt Col', 'Col', 'Brig Gen', 'Maj Gen']){
     const scene = await compose(build(uniform, sex, 'senior', rank));
     const spec = await store.load(scene.layers.find(l => /^base:/.test(l.key || '')).id);
@@ -200,8 +201,7 @@ test('ABU and CFU: no officer grade cloth corner lies outside the collar leaf, e
       const poly = core.landmark(spec, `collar_${side}`).points;
       const l = scene.layers.find(x => x.key === 'grade:' + side);
       const out = corners(l).filter(p => !inPoly(p, poly));
-      if(rank === 'Maj Gen') assert.ok(out.length <= 1, `${uniform} ${sex} ${rank} ${side}: only the top outer corner (${out.length})`);
-      else assert.equal(out.length, 0, `${uniform} ${sex} ${rank} ${side}: every corner on the leaf`);
+      assert.equal(out.length, 0, `${uniform} ${sex} ${rank} ${side}: every corner on the leaf`);
     }
   }
 });

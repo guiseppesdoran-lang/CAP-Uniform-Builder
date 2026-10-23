@@ -171,10 +171,12 @@
   }
 
   // ABU and CFU: grade on both collars (5.1.1.1.1, 5.2.1.1.1); NCO chevrons on the sleeves.
-  // The sheets give a slot per side and kind: its centre (0.01 in) and the turn, clockwise, for an
-  // insignia whose long axis is upright. Cadet NCO chevrons follow Figure A5-5 like the shirts' (parallel
-  // to the leaf's leading edge, 1 in from it, H.collarChevrons); cadet officers' cloth has its SHORT side on the
-  // leaf's outer edge (the long diagonal, H.collarOuterEdge; each diamond's long axis parallel to it, the row stacking across the leaf), 1 in from the front edge, centred (H.collarOfficerRow); the officers' bars lie parallel to the outer edge, centred 1 in from it.
+  // COLLAR5 (Ethan, 'the edge on the bottom right needs to be parallel with the seam below it. and it should apply for all. that seam should also be parallel with the ground'): the leaf's lower seam
+  // is horizontal on the sheets (collar_slots[side].bottom_edge, two points and an angle) and EVERY collar grade piece sits with its bottom edge parallel to it: the cadet officers' cloth, the cadet NCO
+  // chevron and the senior officers' cloth are all turned by the seam's angle (0 when it is level; read from the sheet so it holds for any seam), none onto the slanting front or outer edge.
+  // Positions follow the text: cadet officers and the cadet NCO chevron 1 in from the front of the collar and centred (5.1.1.1.1.3-4, 5.2.1.1.1.4), officers 1 in from the bottom, centred
+  // (5.1.1.1.1.1, 5.2.1.1.1.1); the Major's and Lieutenant Colonel's stem lies parallel to the ground pointing away from the neck, the Colonel's beak faces forward, the generals' stars stand
+  // perpendicular to the bottom (all in the seam's frame, a quarter turn from it for the stems).
   // The cloth border around every insignia is 1/8 in on each side (R5).
   const CLOTH_BORDER = 0.125;
 
@@ -186,6 +188,25 @@
   function leafSide(ctx, poly){
     const c = poly.points.reduce((s, q) => ({ x: s.x + q.x / poly.points.length, y: s.y + q.y / poly.points.length }), { x: 0, y: 0 });
     return c.x < ctx.base.w / 2 ? 'right' : 'left';
+  }
+  // The angle of a leaf's lower seam, degrees in (-90, 90] (SVG rotate: the turn that lays a piece's x axis along it): the sheet's own collar_slots[side].bottom_edge (two points, 0.01 in, as
+  // {points}, {p1, p2} or a bare pair) when it states one, else the leaf polygon's own bottom edge (the edge whose outward normal points most nearly down, H.collarLeadingEdge). 0 when neither is found.
+  function seamEdge(ctx, poly){
+    const side = leafSide(ctx, poly), slots = ctx.base && ctx.base.raw && ctx.base.raw.collar_slots, be = slots && slots[side] && slots[side].bottom_edge;
+    const pair = be && (be.points || (be.p1 && be.p2 ? [be.p1, be.p2] : be));
+    if(pair && pair[0] && pair[1]){
+      const pt = q => ({ x: (q.x != null ? q.x : q[0]) / 100, y: (q.y != null ? q.y : q[1]) / 100 });
+      return { a: pt(pair[0]), b: pt(pair[1]) };
+    }
+    const e = H.collarLeadingEdge(poly.points, ctx.base.w / 2);
+    return e && { a: e.collarPoint, b: e.rollEnd };
+  }
+  function seamAngle(ctx, poly){
+    const e = seamEdge(ctx, poly);
+    if(!e) return 0;
+    let d = Math.atan2(e.b.y - e.a.y, e.b.x - e.a.x) * 180 / Math.PI;
+    if(d > 90) d -= 180; if(d <= -90) d += 180;
+    return Math.abs(d) < 1e-9 ? 0 : d;
   }
   function fieldLeadingEdge(ctx, poly){
     const pts = poly.points, centerX = ctx.base.w / 2;
@@ -225,46 +246,32 @@
         return s ? { at: { x: s.center[0] / 100, y: s.center[1] / 100 }, deg: s.angle_deg } : null;
       };
       if(g.category === 'cadet-nco'){
-        // The shirts' rule, Figure A5-5 (H.collarChevrons, from the sheet's collar leaf polygon); drawn once, for both leaves.
-        if(side === 'right') await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => fieldLeadingEdge(ctx, poly) });
+        // 1 in from the front of the collar and centred (5.1.1.1.1.4, 5.2.1.1.1.6), bottom edge parallel to the leaf's lower seam (COLLAR5: unturned when the seam is level); drawn once, for both leaves.
+        if(side === 'right') await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => fieldLeadingEdge(ctx, poly), turnOf: poly => seamAngle(ctx, poly) });
       }else if(g.category === 'cadet-officer'){
-        // 'One inch from the front of the collar and centered' (5.1.1.1.1.3, 5.2.1.1.1.4): the row parallel to the leaf's outer edge (the long diagonal from the collar point to the shoulder end), its near outline 1 in
-        // from the front edge, centred on the leaf (H.collarOfficerRow, from the sheet's collar_left / collar_right polygons); drawn once, for both leaves. Cadet Colonels and
+        // 'One inch from the front of the collar and centered' (5.1.1.1.1.3, 5.2.1.1.1.4): the cloth's bottom edge parallel to the leaf's lower seam (COLLAR5), its near corner 1 in from the front edge,
+        // centred on the leaf (H.collarOfficerRow, from the sheet's collar_left / collar_right polygons); drawn once, for both leaves. Cadet Colonels and
         // Cadet Captains wear the miniature embroidered form, which the leaf can hold (5.1.1.1.1.3, 5.2.1.1.1.4); the other cadet officers wear regular size.
-        if(side === 'right') await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE, miniatureKeys: ['captain', 'colonel'], edgeOf: poly => fieldLeadingEdge(ctx, poly) });
+        if(side === 'right') await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE, miniatureKeys: ['captain', 'colonel'], edgeOf: poly => fieldLeadingEdge(ctx, poly), turnOf: poly => seamAngle(ctx, poly) });
       }else if(g.officer && !g.cadet){
         const s = slot('officer');
         if(!s) continue;
         const id = G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: false });
-        // Major and Lt Col: stem parallel to the ground, pointing away from the neck. Colonel: beak
-        // facing forward on both collars.
-        let rotate = s.deg;
-        // The bars (Flight Officer, Lieutenant, Captain) lie parallel to the outer edge of the leaf (the long diagonal, H.collarOuterEdge), their long end along it, and are
-        // centred 1 in from that edge, centred on the leaf along it (Ethan: 'needs to be parallel to the bottom line'; 5.1.1.1.1.1, 5.2.1.1.1.1: 'the long end of the
-        // Lieutenant and Captain bars will be centered 1 inch from the bottom of the collar'; COLLAR4 takes the same reading as the cadet officers' row, with the bottom
-        // of the collar being the outer edge). The art's long axis is vertical, so it is turned a quarter onto the outer edge (H.collarOuterAngle, from the leaf polygon,
-        // mirrored on the other leaf). The stem rules of the Major and Lieutenant Colonel (horizontal) and the Colonel's and generals' 'perpendicular to the bottom of
-        // the collar' are regulation text and stay.
-        let barPlace = null;
-        if(['second-lieutenant', 'first-lieutenant', 'captain', 'flight-officer', 'technical-flight-officer', 'senior-flight-officer'].includes(g.key)){
-          const poly = H.collarPolygons(ctx).find(q => leafSide(ctx, q) === side);
-          const outer = poly && H.collarOuterEdge(poly.points, ctx.base.w / 2);
-          if(outer){
-            rotate = H.collarOuterAngle(poly.points, ctx.base.w / 2) + 90;
-            if(rotate > 90) rotate -= 180;
-            barPlace = H.chevronOnLeadingEdge(outer, 0, 1, poly.points);
-          }
-        }
-        if(g.key === 'major' || g.key === 'lieutenant-colonel') rotate = R ? 90 : -90;
+        // Every piece stands on the leaf's lower seam: turned by the seam's angle (COLLAR5; 0 on these sheets), the bars, the Colonel (beak forward, mirrored on the right leaf) and the generals
+        // (perpendicular to the bottom) in the seam's frame, the Major's and Lieutenant Colonel's stem parallel to the ground pointing away from the neck, a quarter turn from it.
+        const poly = H.collarPolygons(ctx).find(q => leafSide(ctx, q) === side);
+        const seam = poly ? seamAngle(ctx, poly) : s.deg;
+        let rotate = seam;
+        if(g.key === 'major' || g.key === 'lieutenant-colonel') rotate = seam + (R ? 90 : -90);
         // "Centered 1 inch from the bottom of the collar" (5.1.1.1.1.1, 5.2.1.1.1.1): from the free
         // edge, straight to the centre. General officers' grade is 'centered, perpendicular to, and begins 1 inch from
         // the bottom of the collar': the bottom of the lowest star's silver (1/8 in inside the cloth) lies 1 in up the
         // perpendicular from the free edge, on the slot's line along the edge, so the stars' own centre is higher
         // than the colonel's by half the cloth's height less the border.
-        const edge = slots && slots[side] && slots[side].bottom_edge;
+        const edge = poly && seamEdge(ctx, poly);
         let at = s.at, from = null, to = null;
         if(edge){
-          const a = { x: edge.p1[0] / 100, y: edge.p1[1] / 100 }, d = { x: (edge.p2[0] - edge.p1[0]) / 100, y: (edge.p2[1] - edge.p1[1]) / 100 };
+          const a = edge.a, d = { x: edge.b.x - edge.a.x, y: edge.b.y - edge.a.y };
           const len2 = d.x * d.x + d.y * d.y;
           const t = ((s.at.x - a.x) * d.x + (s.at.y - a.y) * d.y) / len2;
           const foot = { x: a.x + t * d.x, y: a.y + t * d.y };
@@ -279,7 +286,6 @@
             to = { x: foot.x + n.x, y: foot.y + n.y };
           }
         }
-        if(barPlace){ at = barPlace.at; from = barPlace.foot; to = barPlace.near; }
         await ctx.place(id, { pieceAnchor: 'center', at, rotate, flipX: g.key === 'colonel' && R, z: Z_COLLAR_GRADE, role: 'grade', key: 'grade:' + side });
         if(from) ctx.measure(from, to);
       }

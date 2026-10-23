@@ -293,14 +293,14 @@ test('ABU and CFU overlay: grade 1 in from the collar\'s free edge, chevron widt
     const spec = await ST.load(garment);
     const apex = core.anchor(spec, 'collar_apex');
     assert.ok(apex);
-    // an officer: the grade centred 1 in from the bottom of each collar leaf (COLLAR4: the bars' centre 1 in from the leaf's outer edge, so the 1 in line runs from that edge to the centre)
+    // an officer: the grade centred 1 in above the lower seam of each collar leaf (COLLAR5; the 1 in line runs from the seam to the centre)
     const scene = await P.composeUniform(build(u, 'senior', 'Capt', { badges: [PILOT, GT], patches: [UNIT, WING] }), store());
     const ms = measures(scene);
     const ones = ms.filter(m => m.label === '1 in');
     assert.equal(ones.length, 2, `${u}: one on each collar`);
     for(const side of ['right', 'left']){
       const g = scene.layers.find(l => l.key === 'grade:' + side);
-      const m = ones.find(x => Math.abs(x.to.x - g.origin.x) < 1e-3 && Math.abs(x.to.y - g.origin.y) < 1e-3); // layers keep 4 decimals; the bars' centre is computed from the outer edge, not a 0.01 in slot
+      const m = ones.find(x => Math.abs(x.to.x - g.origin.x) < 1e-3 && Math.abs(x.to.y - g.origin.y) < 1e-3); // layers keep 4 decimals
       assert.ok(m, `${u} ${side}: the line ends on the centre of the grade`);
       assert.ok(Math.abs(len(m) - 1) < 1e-3, `${u} ${side}: 1 in`);
     }
@@ -325,68 +325,56 @@ test('the CAP tape is kept clear of overlay labels on ABU and CFU too', async ()
   }
 });
 
-// ---- D26 (4): collar grade orientation on the ABU and CFU ------------------------------------------
+// ---- D26 (4), COLLAR5: collar grade orientation on the ABU and CFU ------------------------------------------
 
-test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1.1.1.1, 5.1.1.1.1.3-4, 5.2.1.1.1)', async () => {
+test('ABU and CFU collar grade stands on the leaf\'s horizontal lower seam: every piece\'s bottom edge parallel to it, the stems and beak as the regulation says (5.1.1.1.1.1, 5.1.1.1.1.3-4, 5.2.1.1.1)', async () => {
+  // D8: this test had the cadet row's short side on the leaf's outer edge (COLLAR3/COLLAR4) and the bars on that edge, a 45 degree turn; Ethan (COLLAR5): "the edge on the bottom right needs to be parallel
+  // with the seam below it. and it should apply for all. that seam should also be parallel with the ground." The full matrix is in tests/engine-live-field-collar.test.cjs; this is the overlay's own check.
   for(const u of ['abu', 'corporate_field']){
     const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
     const spec = await ST.load(garment);
     const slots = spec.raw.collar_slots;
-    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the cloth's short side lies parallel to the leaf's OUTER edge, the long diagonal
-    // from the collar point to the shoulder end (COLLAR3, Ethan: 'needs to be parallel to the bottom line'; D8: the old assertions had it along the front edge, then along the edge between the two lowest vertices), its NEAR OUTLINE 1 in from the front edge, centred on the leaf, drawn from the sheet's
-    // collar_left / collar_right polygons. Cadet NCO: the chevron follows Figure A5-5 like the shirts' (tests/engine-e5-chevrons.test.cjs).
-    for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col']){
+    for(const side of ['right', 'left']){
+      const be = slots[side].bottom_edge;
+      assert.equal(be.p1[1], be.p2[1], `${u} ${side}: the seam is level`);
+      assert.equal(be.angle_deg, 0, `${u} ${side}: the seam's angle`);
+    }
+    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered') and cadet NCO: unturned (the seam's angle, 0), the near corner 1 in from the front edge.
+    for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col', 'C/Lt Col', 'C/SSgt', 'C/MSgt']){
       const scene = await P.composeUniform(build(u, 'cadet', rank), store());
       for(const side of ['right', 'left']){
         const g = scene.layers.find(l => l.key === 'grade:' + side);
         assert.ok(g, `${u} ${rank} ${side}`);
-        const d = slots[side].front_edge.dir_down;
-        // COLLAR4 (Ethan: 'the short edge needs to be parallel to the bottom of the collar. diamonds should always be the same sides'): the cloth's short side lies on the outer
-        // edge (the leaf's top vertex to its neighbour farther from the centre line), so the art's y axis (each diamond's long point-to-point axis, insignia_h_in; the discs' row is x)
-        // is parallel to it, the row stacking across the leaf. D8: the old assertion had the row's long axis along the edge.
-        const lp = spec.raw.landmarks['collar_' + side].map(p => ({ x: p[0] / 100, y: p[1] / 100 })), cxs = spec.w / 2;
-        let top = 0; lp.forEach((p, i) => { if(p.y < lp[top].y) top = i; });
-        const nb = [lp[(top + lp.length - 1) % lp.length], lp[(top + 1) % lp.length]].sort((p, q) => Math.abs(q.x - cxs) - Math.abs(p.x - cxs))[0];
-        const bd = { x: nb.x - lp[top].x, y: nb.y - lp[top].y }, bl = Math.hypot(bd.x, bd.y);
-        const axis = core.rotatePoint({ x: 0, y: -1 }, { x: 0, y: 0 }, g.rotate), row = core.rotatePoint({ x: 1, y: 0 }, { x: 0, y: 0 }, g.rotate);
-        assert.ok(Math.abs(axis.x * bd.y / bl - axis.y * bd.x / bl) < 0.01, `${u} ${rank} ${side}: the diamonds' long axis (the cloth's short side) parallel to the outer edge`);
-        assert.ok(Math.abs(row.x * bd.x / bl + row.y * bd.y / bl) < 0.01, `${u} ${rank} ${side}: the row stacks across the leaf, perpendicular to the outer edge`);
-        assert.ok(Math.abs(bd.y / bl) > 0.5 && Math.abs(bd.y / bl) < 0.87, `${u} ${rank} ${side}: the outer edge is a diagonal, not horizontal`);
-        // distance from the front edge line to the nearest point of the rotated box: 1 in
-        const p1 = slots[side].front_edge.p1.map(v => v / 100), n = { x: d[1], y: -d[0] };
-        const c = { x: g.x + g.w / 2, y: g.y + g.h / 2 }, a = (g.rotate * Math.PI) / 180;
-        const corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * g.w / 2 * Math.cos(a) - j * g.h / 2 * Math.sin(a), y: c.y + i * g.w / 2 * Math.sin(a) + j * g.h / 2 * Math.cos(a) }));
+        assert.equal(g.rotate, 0, `${u} ${rank} ${side}: bottom edge parallel to the level seam, so not turned`);
+        // distance from the front edge line to the nearest point of the box: 1 in
+        const d = slots[side].front_edge.dir_down, p1 = slots[side].front_edge.p1.map(v => v / 100), n = { x: d[1], y: -d[0] };
+        const c = { x: g.x + g.w / 2, y: g.y + g.h / 2 };
+        const corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * g.w / 2, y: c.y + j * g.h / 2 }));
         const dist = corners.map(q => Math.abs((q.x - p1[0]) * n.x + (q.y - p1[1]) * n.y));
-        assert.ok(Math.abs(Math.min(...dist) - 1) < 0.01, `${u} ${rank} ${side}: near outline ${Math.min(...dist).toFixed(3)} in from the front edge`);
-        const m = measures(scene).find(x => Math.abs(Math.hypot(x.to.x - x.from.x, x.to.y - x.from.y) - 1) < 0.01 && Math.hypot(x.to.x - c.x, x.to.y - c.y) < 1.5 && Math.hypot(x.to.x - c.x, x.to.y - c.y) > 0.4);
-        assert.ok(m, `${u} ${rank} ${side}: the 1 in measure is drawn`);
+        assert.ok(Math.abs(Math.min(...dist) - 1) < 0.01, `${u} ${rank} ${side}: near corner ${Math.min(...dist).toFixed(3)} in from the front edge`);
+        const m = measures(scene).find(x => Math.abs(len(x) - 1) < 0.01 && corners.some(q => Math.hypot(q.x - x.to.x, q.y - x.to.y) < 0.02));
+        assert.ok(m, `${u} ${rank} ${side}: the 1 in measure is drawn to the near corner`);
       }
     }
-    // Officers: bars along the bottom edge for Capt, stem parallel to the ground for Maj/Lt Col, beak forward for Col.
+    // Officers: bars (2d Lt, 1st Lt, Capt), Colonel and generals unturned (beak forward on the Colonel), stem parallel to the ground for Maj/Lt Col.
     const rotOf = async (rank, side) => (await P.composeUniform(build(u, 'senior', rank), store())).layers.find(l => l.key === 'grade:' + side);
+    for(const rank of ['2d Lt', '1st Lt', 'Capt', 'Col', 'Brig Gen', 'Maj Gen']) for(const side of ['right', 'left']) assert.equal((await rotOf(rank, side)).rotate, 0, `${u} ${rank} ${side}`);
     assert.equal((await rotOf('Maj', 'right')).rotate, 90);
     assert.equal((await rotOf('Maj', 'left')).rotate, -90);
     assert.equal((await rotOf('Lt Col', 'right')).rotate, 90);
     assert.equal((await rotOf('Lt Col', 'left')).rotate, -90);
     assert.equal((await rotOf('Col', 'right')).flipX, true);
     assert.equal((await rotOf('Col', 'left')).flipX, undefined);
-    // The bars lie along the outer edge of the leaf, long end along it (COLLAR3, Ethan; D8: LIVE-FIELD B7 had them along the front edge, FIELD2 along the bottom edge):
-    // the art's tall axis is turned onto the outer edge (45 degrees from horizontal on these sheets, mirrored), so the turn is the edge's angle plus or minus 90.
-    for(const side of ['right', 'left']){
-      const r = (await rotOf('Capt', side)).rotate, want = side === 'right' ? 44.84 : -44.84;
-      assert.ok(Math.abs(r - want) < 0.5, `${u} ${side}: Capt bars turned ${r}, the outer edge says ${want}`);
-    }
   }
 });
 
 // ---- review FIX-ART-r1 (7, 9): the officer grade lies on the collar leaf; the sleeve patch hangs 1/2 in below the seam ----
 
-test('ABU and CFU officer grade (Capt, Maj, Lt Col, Col, Brig Gen) lies wholly inside the collar leaf, 1 in from the bottom edge (5.1.1.1.1.1, 5.2.1.1.1.1)', async () => {
+test('ABU and CFU officer grade (Capt, Maj, Lt Col, Col, Brig Gen, Maj Gen) lies wholly inside the collar leaf, 1 in from the bottom edge (5.1.1.1.1.1, 5.2.1.1.1.1)', async () => {
   const inPoly = (p, P) => { let r = false; for(let i = 0, j = P.length - 1; i < P.length; j = i++){ const [xi, yi] = P[i], [xj, yj] = P[j]; if(((yi > p.y) !== (yj > p.y)) && (p.x < (xj - xi) * (p.y - yi) / (yj - yi) + xi)) r = !r; } return r; };
   for(const u of ['abu', 'corporate_field']){
     const spec = await ST.load(u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat');
-    // (Maj Gen's 2.06 in star stack is not here: it needs more leaf than the drawn collar has, see FOLLOWUPS)
-    for(const rank of ['Capt', 'Maj', 'Lt Col', 'Col', 'Brig Gen']){
+    for(const rank of ['Capt', 'Maj', 'Lt Col', 'Col', 'Brig Gen', 'Maj Gen']){
       const scene = await P.composeUniform(build(u, 'senior', rank), store());
       for(const side of ['right', 'left']){
         const g = scene.layers.find(l => l.key === 'grade:' + side);
