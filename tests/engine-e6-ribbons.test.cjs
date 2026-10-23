@@ -445,11 +445,16 @@ test('mess dress miniatures: 11/16 in drapes, one medal per award, centred on th
     assert.deepEqual(rowsY.map(y => drapes.filter(d => d.y.toFixed(3) === y).length), [4, 4, 4], 'rows of four');
     const xs = [...new Set(drapes.map(d => d.x.toFixed(3)))];
     assert.equal(xs.length, 4, 'four columns, each row over the one below');
-    // Each upper row hangs over half of the ribbon part of the row below it.
+    // Each upper row hangs over the ribbon of the row below it, one medal body and a short band of ribbon apart (0.05 in, 0.5 in where a lower row carries a device) (Doran's photo L1837,
+    // Ethan: 'spaced way too far apart'; 11.2.8 says about half of the ribbon, the old pitch of 1.65 in).
     const drapeH = drapes[0].h;
-    const bodyH = Math.max(...layersBy(scene, l => l.role === 'mini-medal').map(l => l.h));
+    let hang = 0;
+    for(const l of layersBy(scene, l => l.role === 'mini-medal')){ const s = await store().load(l.id); const at = core.anchor(s, 'ribbon_attach') || { x: 0, y: 0 }; hang = Math.max(hang, s.h - at.y); }
+    const lowerDev = layersBy(scene, l => l.role === 'device' && /^mini:/.test(l.key)).some(d => drapes.find(x => d.key.startsWith(x.key + ':') && x.y.toFixed(3) !== rowsY[0]));
     for(let i = 1; i < rowsY.length; i++){
-      assert.ok(Math.abs((Number(rowsY[i - 1]) + drapeH + bodyH) - (Number(rowsY[i]) + drapeH / 2)) < 0.02, 'the upper row ends halfway down the ribbon of the row below');
+      const pitch = Number(rowsY[i]) - Number(rowsY[i - 1]);
+      assert.ok(Math.abs(pitch - (hang + (lowerDev ? 0.5 : 0.05))) < 0.02, `row pitch ${pitch.toFixed(3)} is a body (${hang.toFixed(3)}) and a band of ribbon`);
+      assert.ok(pitch < drapeH * 0.75, 'the upper row hangs over the ribbon below it');
     }
     // Centred midway between the shoulder seam and the top button.
     const spec = JSON.parse(fs.readFileSync(path.join(root, 'images', 'garments', `garment-mess-dress-${gender}.spec.json`), 'utf8'));

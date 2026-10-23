@@ -330,6 +330,17 @@
   // Miniature suspension ribbon: 11/16 in wide (11.3), straight sides of about 1.39 in, then a V
   // point of about 0.15 in into the medal's ring (measured on the McChord miniatures).
   const MINI_DRAPE = { w: 0.6875, h: 1.54, point: 0.15 };
+  // CAPR 39-1 11.2.8: 'Upper rows will be placed to cover approximately 50% of the ribbon portion of the medals in the row below.'
+  // On the worn jacket (Doran's photo L1837: four rows of four, each medal hanging almost directly under the one above, the lower
+  // ribbons showing only as short bands between the medals and at their edges) the rows are one medal body apart plus a short band
+  // of ribbon, so the upper pendants hang over the whole ribbon below but its lowest part; Ethan: the rows were 'spaced way too far
+  // apart' (1.65 in, the old 50% of the drape). The pitch is the tallest body that hangs below a drape plus a band of the lower
+  // ribbon left in view: MINI_ROW_BAND (0.05 in) where no lower row carries a device, else enough for the half-size device and its
+  // gaps above the drape's V point (a device on a lower row stays in view, 11.4.2), never under MINI_ROW_MIN.
+  const MINI_ROW_MIN = 0.5, MINI_ROW_BAND = 0.05, MINI_DEVICE_BAND = 0.5;
+  // 11.3: 'Miniature medals are approximately 1/2 the size of regular medals': the attachments on a miniature medal's ribbon
+  // (11.4.2, 'either full size or miniature attachments') are drawn at that half size, on the 11/16 in drape.
+  const MINI_DEVICE_SCALE = 0.5;
   // True when the rectangle and the polygon (points {x, y}, or [x, y] pairs) share any area or edge.
   function rectHitsPolygon(r, poly){
     const pts = poly.map(q => Array.isArray(q) ? { x: q[0], y: q[1] } : q);
@@ -374,7 +385,13 @@
       }
       hang.set(m, below); reach.set(m, { left, right });
     }
+    // The rows lie one medal body and a band of ribbon apart (MINI_ROW_BAND, MINI_DEVICE_BAND): the upper row's pendants hang over the ribbons of the row below, as on
+    // the worn jacket (Doran's photo, thread L1837: row to row about 0.65 in against the ribbons' 11/16 in width; 11.2.8, 11.3).
+    const rows = awards.miniMedalRows(medals, o.style || 'mounting', o.perRow);
+    const lowerDevices = rows.slice(1).some(row => row.some(m => (m.devices || []).length));
+    const rowPitch = Math.max(MINI_ROW_MIN, Math.max(...[...hang.values()]) + (lowerDevices ? MINI_DEVICE_BAND : MINI_ROW_BAND));
     const out = awards.layoutMiniMedals(medals, {
+      rowPitch,
       style: o.style, perRow: o.perRow, medalW: MINI_DRAPE.w, medalH: totalH, drapeH: MINI_DRAPE.h,
       slotW: slot.w, centerX: slot.centerX, bottomY: 0
     });
@@ -410,6 +427,7 @@
     }
     if(o.report){ o.report.slide = slide; o.report.boxes = out.placements.map(boxOf); }
     const sizes = await deviceSizes(ctx, medals.flatMap(m => m.devices || []));
+    for(const d of Object.keys(sizes)) sizes[d] = { w: sizes[d].w * MINI_DEVICE_SCALE, h: sizes[d].h * MINI_DEVICE_SCALE };
     // Where each medal's drape and body lie, so the devices of a lower row go in the part of the drape the
     // rows above leave exposed: the upper rows' bodies hang over the drapes below them (11.2.8).
     const covers = new Map();
@@ -463,8 +481,8 @@
       // The stack's height is the first device's length plus a step for each further one; where less than
       // that is exposed, the step shrinks (devices nest, they never leave the exposed part).
       const lead = devs.length ? Math.max(...devs.map(d => sizes[d].w)) : 0;
-      let step = 0.24;
-      if(!m.centered && devs.length > 1) step = Math.max(0.1, Math.min(step, (exposedBottom - exposedTop - lead) / (devs.length - 1)));
+      let step = 0.24 * MINI_DEVICE_SCALE;
+      if(!m.centered && devs.length > 1) step = Math.max(0.05, Math.min(step, (exposedBottom - exposedTop - lead) / (devs.length - 1)));
       const y0 = midY - (devs.length - 1) * step / 2;
       devs.forEach((d, i) => {
         const sz = sizes[d];

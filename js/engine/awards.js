@@ -282,8 +282,9 @@
       // Draw order: the medal nearest the lapel (viewer's left on the wearer's left breast) is fully
       // exposed, so later medals in the row go under it: z decreases toward the viewer's right.
       row.forEach((item, i) => out.push({ item, x: left + i * step, y: top, row: r, z: count - i }));
-      // The next row up covers about half of this row's ribbon drape.
-      y = top + drapeH * 0.5;
+      // The next row up covers about half of this row's ribbon drape, or, with `rowPitch` (the rows' spacing, top to top), lies
+      // that far above this row.
+      y = opts.rowPitch != null ? top - opts.rowPitch + totalH : top + drapeH * 0.5;
     }
     return { placements: out, rows };
   }

@@ -165,7 +165,7 @@ function medalsOf(ids){
 const IDS = ['distinguished_service_award', 'exceptional_service_award', 'meritorious_service_award', 'commander_commendation_award', 'cap_achievment_award', 'cap_gill_robb_wilson_ribbon', 'cap_command_service_ribbon', 'cap_membership_ribbon', 'cap_leadership_ribbon'];
 
 for(const sex of ['male', 'female']){
-  test(`semi_formal ${sex}: miniature medals sit 11/16 in apart in rows of four, upper rows cover half a drape, lowest row 1/2 in above the crest`, async () => {
+  test(`semi_formal ${sex}: miniature medals sit 11/16 in apart in rows of four, upper rows hang over the ribbons below (one medal body and a short band of ribbon apart, the photo L1837), lowest row 1/2 in above the crest`, async () => {
     const medals = medalsOf(IDS);
     const scene = await P.composeUniform(build('semi_formal', sex, 'senior', 'Col', 'Doe', { medals }), store);
     const drapes = scene.layers.filter(l => l.role === 'mini-drape');
@@ -177,14 +177,24 @@ for(const sex of ['male', 'female']){
     const ys = [...rows.keys()].map(Number).sort((a, b) => b - a);
     // The men's coat has room for rows of four beside the lapel; the women's, whose lapel and arm seam leave less,
     // wears three to a row (the rack has one column fewer where it would not fit between them, 11.2.8; FINAL semi-formal lapel fix, D8).
-    assert.deepEqual(ys.map(y => rows.get(y.toFixed(3)).length), sex === 'male' ? [4, 4, 1] : [3, 3, 3], sex === 'male' ? 'rows of four, then the remainder' : 'rows of three');
+    // The rows lie closer now (a body and a 0.2 in band apart, Doran's photo L1837), so the rack is shorter and the least-overshoot column
+    // count the women's coat settles on is two to a row (it was three at the old 1.65 in pitch; D8).
+    assert.deepEqual(ys.map(y => rows.get(y.toFixed(3)).length), sex === 'male' ? [4, 4, 1] : [2, 2, 2, 2, 1], sex === 'male' ? 'rows of four, then the remainder' : 'rows of two');
     for(const [, row] of rows){
       row.sort((a, b) => a.x - b.x);
       for(let i = 1; i < row.length; i++) near(row[i].x - row[i - 1].x, W, 1e-6, 'step between medals in a row');
       near(row.reduce((s, l) => s + l.w, 0) / row.length, W, 1e-6, 'drape width');
     }
     const bodyH = scene.layers.filter(l => l.role === 'mini-medal').reduce((m, l) => Math.max(m, l.h), 0);
-    for(let i = 1; i < ys.length; i++) near(ys[i - 1] - ys[i], DRAPE + bodyH - DRAPE * 0.5, 0.002, 'upper row covers half the drape below');
+    // Row to row: the tallest body hanging below a drape plus a 0.05 in band of ribbon left in view (0.5 in where a lower row carries a device) (Doran's
+    // photo L1837, Ethan: 'spaced way too far apart'; the old 50% of the drape was 1.65 in); the upper row's pendants hang over the ribbon below.
+    const lowerDev = scene.layers.some(l => l.role === 'device' && /^mini:/.test(l.key) && drapes.find(d => l.key.startsWith(d.key + ':') && d.y > ys[ys.length - 1] + 0.01));
+    let hang = 0;
+    for(const l of scene.layers.filter(x => x.role === 'mini-medal')){ const s = await store.load(l.id); const at = core.anchor(s, 'ribbon_attach') || { x: 0, y: 0 }; hang = Math.max(hang, s.h - at.y); }
+    for(let i = 1; i < ys.length; i++){
+      near(ys[i - 1] - ys[i], hang + (lowerDev ? 0.5 : 0.05), 0.002, 'row pitch: a medal body and a band of ribbon');
+      assert.ok(ys[i - 1] - ys[i] < DRAPE * 0.75, 'the upper row hangs over the ribbon below it');
+    }
     // 1/2 in above the crest (the crest centre and its top come from the garment sheet).
     const spec = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
     const crestTop = core.anchor(spec, 'crest_top_center').y;
