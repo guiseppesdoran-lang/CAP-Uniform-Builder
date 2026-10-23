@@ -1245,3 +1245,17 @@ html[data-access="ok"] #accessGate{display:none}
 .accessGateHint{font-size:.9rem}
 .accessGateHint summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:var(--ink)}
 .accessGateHint p{margin:0 0 8px;color:var(--muted)}
+
+/* ---- Badge chooser (Badges panel): which badge to show where more are selected than a position takes ---- */
+.badgeChooser{display:grid;gap:var(--s3);margin-top:var(--s3)}
+.badgeChooser.hidden{display:none}
+.badgeChooserLead{margin:0}
+.badgeChooserGroup{margin:0;padding:var(--s3);display:grid;gap:var(--s1);min-width:0;
+  border:1px solid var(--line);border-left:4px solid var(--cap-yellow);border-radius:var(--r-lg);background:var(--panel-2)}
+.badgeChooserGroup legend{padding:0 var(--s1);font-family:var(--font-head);font-weight:700;font-size:var(--t-md);color:var(--ink)}
+.badgeChooserOption{display:flex;align-items:center;gap:var(--s2);min-height:44px;padding:0 var(--s1);
+  font-size:var(--t-sm);color:var(--ink);cursor:pointer;border-radius:var(--r)}
+.badgeChooserOption input{flex:none;width:20px;height:20px;margin:0;accent-color:var(--action)}
+.badgeChooserOption:focus-within{outline:2px solid var(--focus);outline-offset:2px}
+.badgeChooserName{min-width:0;overflow-wrap:anywhere}
+.badgeChooserTag{margin-left:auto;flex:none;font-size:var(--t-xs);color:var(--muted)}

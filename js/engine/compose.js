@@ -98,6 +98,10 @@
         return layer;
       },
       note(message){ if(!ctx.notes.includes(message)) ctx.notes.push(message); },
+      // More badges are selected for a position than it takes (the one CAP aviation badge, the two over the left pocket, the one service badge,
+      // the pocket badges): the scene says which compete and which are shown, so the page can ask the member (scene.conflicts, see
+      // reportBadgeConflict).
+      conflicts: [],
       // A regulation distance shown on the measurement overlay, from `from` to `to` (points on the
       // edges it measures, in scene inches), labelled with its length or with `label`. `opts`:
       //   center: 'to' | 'from' | 'both'   that end is a centre (drawn with a centre mark)
@@ -498,8 +502,33 @@
 
   function finish(ctx, title){
     const bounds = core.unionBounds(ctx.layers.filter(l => !l.noBounds).map(core.layerBounds));
-    return { title, layers: ctx.layers, bounds, notes: ctx.notes, garment: ctx.base && ctx.base.id };
+    return { title, layers: ctx.layers, bounds, notes: ctx.notes, conflicts: ctx.conflicts || [], garment: ctx.base && ctx.base.id };
   }
 
-  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, MINI_DRAPE };
+  // ---- Badge conflicts and the member's choice ------------------------------------------------------------------------------------
+
+  // The member's preferred badge for a position, from build.badgeChoices ({ position: badgeId }; the page keeps them per uniform): the list with
+  // that badge first when it is one of the candidates, else the list as it is.
+  function preferred(list, id){
+    const i = id ? list.findIndex(x => x.id === id) : -1;
+    return i > 0 ? [list[i], ...list.slice(0, i), ...list.slice(i + 1)] : list;
+  }
+  // The conflict the scene reports: { position, label, limit, candidates: [{ id, title, family }], shown: [ids], choice: id | null }. `list` is
+  // the candidates in the order the engine would show them by default, `ordered` the same list with the member's choice first; the first
+  // `limit` of `ordered` are shown.
+  function reportBadgeConflict(ctx, position, label, list, ordered, limit){
+    const wanted = ctx.build && ctx.build.badgeChoices && ctx.build.badgeChoices[position];
+    const c = {
+      position, label, limit,
+      candidates: list.map(x => ({ id: x.id, title: x.title || x.id, family: x.family || null })),
+      shown: ordered.slice(0, limit).map(x => x.id),
+      choice: wanted && list.some(x => x.id === wanted) ? wanted : null
+    };
+    const key = JSON.stringify([c.position, c.candidates.map(x => x.id)]);
+    ctx.conflicts = ctx.conflicts || [];
+    if(!ctx.conflicts.some(x => JSON.stringify([x.position, x.candidates.map(y => y.id)]) === key)) ctx.conflicts.push(c);
+    return c;
+  }
+
+  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, MINI_DRAPE, preferred, reportBadgeConflict };
 });

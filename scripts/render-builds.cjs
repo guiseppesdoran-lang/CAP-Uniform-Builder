@@ -171,6 +171,7 @@ function makeBuild(spec){
     name: Object.assign({ first: 'Pat', last: 'Doe', show: true }, spec.name || {}),
     ribbons: spec.ribbons || ribbonsFrom(spec.ribbonSel, membership, spec.ribbonOrder),
     medals: spec.medals || [],
+    badgeChoices: spec.badgeChoices || {},
     badges: spec.badges || (spec.badgeIds || []).map(id => ({ id, title: (BADGES.get && BADGES.get(id) && BADGES.get(id).name) || id, level: null })),
     command: spec.command || null,
     militaryBadges: spec.militaryBadges || [],
@@ -476,7 +477,7 @@ async function main(){
             name, build: spec, title: scene.title, unit: 'inches (scene x right, y down, origin at the garment top-left)',
             bounds: b, ppi: args.ppi, pad: args.pad,
             viewBox: [b.x - args.pad, b.y - args.pad, b.w + 2 * args.pad, b.h + 2 * args.pad].map(n => +n.toFixed(4)),
-            notes: scene.notes, layers: scene.layers
+            notes: scene.notes, conflicts: scene.conflicts || [], layers: scene.layers
           }, null, 1));
           const shot = await page.ev(`renderBuild(${JSON.stringify(build)}, ${args.ppi}, ${args.pad}, ${!!(args.measure || (build.opt && build.opt.overlay))}, ${JSON.stringify(args.clip)})`);
           r.px = [shot.w, shot.h];

@@ -74,22 +74,33 @@
     }
     if(olp.length > 2){
       ctx.note('At most two aviation and occupational badges are worn over the left pocket; the rest are not shown');
-      // Keep the chaplain badge and the aviation badge first.
-      const keep = [...set.chaplain, ...set.aviation, ...military, ...set.occupational].slice(0, 2);
+      // Keep the chaplain badge and the aviation badge first; the member's choice (build.badgeChoices['over-pocket']) goes before them.
+      const byRule = [...set.chaplain, ...set.aviation, ...military, ...set.occupational];
+      const ordered = C.preferred(byRule, (b.badgeChoices || {})['over-pocket']);
+      C.reportBadgeConflict(ctx, 'over-pocket', 'Over the left pocket', byRule, ordered, 2);
+      const keep = ordered.slice(0, 2);
       olp = olp.filter(x => keep.includes(x));
     }
     // Everything else goes on the pockets or over the nametag. National Staff is always on the
     // wearer's right; the CSAG / Command Council / NB / NEC badges always on the wearer's left.
     const nationalStaff = set.nationalStaff.slice(0, 1);
-    const service = set.service.slice(0, 1);
-    if(set.service.length > 1) ctx.note('Only one service badge is worn; the others are not shown');
+    const serviceOrdered = C.preferred(set.service, (b.badgeChoices || {}).service);
+    const service = serviceOrdered.slice(0, 1);
+    if(set.service.length > 1){
+      ctx.note('Only one service badge is worn; the others are not shown');
+      C.reportBadgeConflict(ctx, 'service', 'Service badge', set.service, serviceOrdered, 1);
+    }
     const others = [...service, ...set.cadetSpecialty, ...set.specialty, ...set.rocketry, ...set.marksmanship];
     const total = olp.length + nationalStaff.length + others.length;
     const max = o.max || 4;
     let rest = others;
     if(total > max){
       ctx.note(`At most ${max} badges are worn on this uniform; the rest are not shown`);
-      rest = others.slice(0, Math.max(0, max - olp.length - nationalStaff.length));
+      const room = Math.max(0, max - olp.length - nationalStaff.length);
+      // The member's choice for the pocket badges (build.badgeChoices.pocket) is shown first; the service badge stays the first of the others.
+      const rule = others.slice(), ordered = C.preferred(rule, (b.badgeChoices || {}).pocket);
+      if(room >= 1 && rule.length > room) C.reportBadgeConflict(ctx, 'pocket', 'Pocket and nametag badges', rule, ordered, room);
+      rest = ordered.slice(0, room);
     }
     return { olp, nationalStaff, rest, pin: H.commandPin(ctx, b, 'dress') };
   }

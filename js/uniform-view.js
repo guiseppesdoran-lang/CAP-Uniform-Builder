@@ -241,6 +241,8 @@
       ribbons: mini ? [] : ribbons,
       medals: mini ? buildMedals(allRibbons) : [],
       badges,
+      // Which badge the member wants shown where more are selected than a position takes (the Badges panel; engine: scene.conflicts).
+      badgeChoices: Object.assign({}, (State.badgeChoices || {})[State.uniform] || {}),
       command,
       militaryBadges: buildMilitaryBadges(),
       patches: buildPatches(),
@@ -259,6 +261,7 @@
     if(!State.membership || !State.gender || !State.rank || !CAPUBEngine.profiles.PROFILES[State.uniform]){
       host.querySelectorAll('svg.uniformSvg').forEach(n => n.remove());
       lastScene = null; lastSvg = null;
+      updateBadgeChooser(null);
       return null;
     }
     try{
@@ -275,6 +278,7 @@
       host.appendChild(svg);
       lastScene = scene; lastSvg = svg;
       host.dataset.rendered = String(seq);
+      updateBadgeChooser(scene);
       document.dispatchEvent(new CustomEvent('capub:rendered', { detail: { scene } }));
       return scene;
     }catch(err){
@@ -319,6 +323,96 @@
     if(!lastSvg) return null;
     const vb = lastSvg.getAttribute('viewBox').split(/\s+/).map(Number);
     return E.renderSvg.svgToCanvas(lastSvg, vb[2] * (ppi || 60));
+  }
+
+  // ---- Badge chooser: which badge to show where more are selected than a position takes ----------------------------------------------
+
+  // The engine reports each position that has more badges selected than it takes (scene.conflicts: { position, label, limit,
+  // candidates: [{ id, title }], shown: [ids], choice }). The Badges panel lists them, one fieldset per position with a radio per
+  // competing badge, instead of the engine silently dropping the rest; the pick is kept in State.badgeChoices[uniform][position], saved
+  // with the setup, and the engine shows that badge (first, where the position takes several).
+  const CHOOSER_ID = 'badgeChooser';
+  let chooserSignature = '';
+
+  function setBadgeChoice(position, id){
+    State.badgeChoices = State.badgeChoices || {};
+    State.badgeChoices[State.uniform] = Object.assign({}, State.badgeChoices[State.uniform], { [position]: id });
+    scheduleRender();
+  }
+
+  function chooserHost(){
+    let host = document.getElementById(CHOOSER_ID);
+    if(host) return host;
+    const group = document.getElementById('groupBadges');
+    if(!group) return null;
+    host = document.createElement('div');
+    host.id = CHOOSER_ID;
+    host.className = 'badgeChooser hidden';
+    host.setAttribute('role', 'region');
+    host.setAttribute('aria-label', 'Badge choices');
+    const note = document.getElementById('badgesPlannedNote');
+    (note || group.querySelector('.hintText') || group.firstElementChild).insertAdjacentElement('afterend', host);
+    return host;
+  }
+
+  function updateBadgeChooser(scene){
+    const host = chooserHost();
+    if(!host) return;
+    const conflicts = (scene && scene.conflicts) || [];
+    if(!conflicts.length){ host.classList.add('hidden'); host.replaceChildren(); chooserSignature = ''; return; }
+    host.classList.remove('hidden');
+    const signature = JSON.stringify(conflicts.map(c => [c.position, c.limit, c.candidates.map(x => x.id + '|' + x.title)]));
+    if(signature !== chooserSignature){
+      // Rebuilt only when the competing badges change, so a pick never loses keyboard focus.
+      chooserSignature = signature;
+      const focused = document.activeElement && host.contains(document.activeElement) ? document.activeElement : null;
+      const keep = focused ? { name: focused.name, value: focused.value } : null;
+      host.replaceChildren();
+      const lead = document.createElement('p');
+      lead.className = 'hintText badgeChooserLead';
+      lead.textContent = 'More badges are selected than this uniform takes in some places. Pick the one you want shown.';
+      host.append(lead);
+      for(const c of conflicts){
+        const set = document.createElement('fieldset');
+        set.className = 'badgeChooserGroup';
+        set.dataset.position = c.position;
+        const legend = document.createElement('legend');
+        legend.textContent = c.limit > 1 ? `${c.label}: ${c.limit} are worn, this one first` : `${c.label}: one is worn`;
+        set.append(legend);
+        for(const cand of c.candidates){
+          const label = document.createElement('label');
+          label.className = 'badgeChooserOption';
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.name = `badgeChoice:${c.position}`;
+          input.value = cand.id;
+          input.addEventListener('change', () => { if(input.checked) setBadgeChoice(c.position, cand.id); });
+          const name = document.createElement('span');
+          name.className = 'badgeChooserName';
+          name.textContent = cand.title;
+          const tag = document.createElement('span');
+          tag.className = 'badgeChooserTag';
+          label.append(input, name, tag);
+          set.append(label);
+        }
+        host.append(set);
+      }
+      if(keep){
+        const again = [...host.querySelectorAll('input[type=radio]')].find(i => i.name === keep.name && i.value === keep.value);
+        if(again) again.focus();
+      }
+    }
+    // The picked and the shown badges, read off the latest scene.
+    for(const c of conflicts){
+      const set = host.querySelector(`fieldset[data-position="${CSS.escape(c.position)}"]`);
+      if(!set) continue;
+      const picked = c.choice || c.shown[0];
+      for(const label of set.querySelectorAll('label')){
+        const input = label.querySelector('input');
+        input.checked = input.value === picked;
+        label.querySelector('.badgeChooserTag').textContent = c.shown.includes(input.value) ? 'shown' : 'not shown';
+      }
+    }
   }
 
   // ---- Ribbon picker: what a selection puts on the ribbon -------------------------------------
@@ -370,7 +464,7 @@
   }
 
   window.CAPUBUniformView = {
-    render, scheduleRender, exportCanvas, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview,
+    render, scheduleRender, exportCanvas, updateBadgeChooser, setBadgeChoice, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview,
     get ribbonNotes(){ return ribbonNotes; },
     get scene(){ return lastScene; },
     get svg(){ return lastSvg; },

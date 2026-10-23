@@ -73,6 +73,9 @@ const State = {
   },
 
   badgeSelections:{},
+  // Which badge to show where more are selected than a position takes (the one aviation badge, the two over the left pocket...):
+  // { [uniformId]: { [position]: badgeId } }. The engine reports the positions (scene.conflicts); the Badges panel asks. Saved with the setup.
+  badgeChoices:{},
   badgeGalleryExpanded:false,
   // Null until a member report is imported. Once populated, the badge picker
   // separates report-authorized badges from the remaining eligible catalog.

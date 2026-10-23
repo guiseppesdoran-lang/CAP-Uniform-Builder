@@ -728,6 +728,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       patches: State.patches,
       ribbonSelections: State.ribbonSelections,
       badgeSelections: State.badgeSelections,
+      badgeChoices: State.badgeChoices || {},
       militaryBadges: State.militaryBadges || {},
       patchSelections: State.patchSelections,
       cadetHighestOnly: State.cadetHighestOnly,
@@ -749,6 +750,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     (known uniforms, ranks, ribbon/badge/patch ids, device ids and bounded counts) and
     drops everything else, so nothing outside those lists ever reaches State or the page.
   */
+  // The positions where the engine may ask which badge to show (scene.conflicts, js/engine/profiles-dress.js, profiles.js).
+  const BADGE_POSITIONS = ['aviation', 'over-pocket', 'service', 'pocket'];
   const SAFE_TOKEN = /^[A-Za-z0-9_.:#-]{0,80}$/;
   const has = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
   function safeToken(value){ return typeof value === 'string' && SAFE_TOKEN.test(value) ? value : ''; }
@@ -807,6 +810,16 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     out.badges = (Array.isArray(p.badges) ? p.badges : []).filter(id => typeof id === 'string' && badgeList.includes(id));
     out.patches = (Array.isArray(p.patches) ? p.patches : []).filter(id => typeof id === 'string' && patchList.includes(id));
     out.badgeSelections = pick(badgeList, p.badgeSelections);
+    // The member's choice of badge per uniform and position (the Badges panel): known uniforms, known positions, known badge ids.
+    out.badgeChoices = {};
+    const choicesIn = p.badgeChoices && typeof p.badgeChoices === 'object' && !Array.isArray(p.badgeChoices) ? p.badgeChoices : {};
+    for(const u of Object.keys(choicesIn)){
+      if(!has(UNIFORMS, u) || !choicesIn[u] || typeof choicesIn[u] !== 'object') continue;
+      for(const position of BADGE_POSITIONS){
+        const id = choicesIn[u][position];
+        if(typeof id === 'string' && badgeList.includes(id)) (out.badgeChoices[u] = out.badgeChoices[u] || {})[position] = id;
+      }
+    }
     // U.S. military badges: known ids only, with a token-safe variant.
     out.militaryBadges = {};
     const milBadgeIds = new Set((window.CAPUBMilitaryData?.badges || []).map(b => b.id));
@@ -858,6 +871,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.patches = p.patches;
     State.ribbonSelections = p.ribbonSelections;
     State.badgeSelections = p.badgeSelections;
+    State.badgeChoices = p.badgeChoices || {};
     State.militaryBadges = p.militaryBadges || {};
     State.patchSelections = p.patchSelections;
     State.cadetHighestOnly = p.cadetHighestOnly;
