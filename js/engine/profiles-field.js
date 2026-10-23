@@ -177,6 +177,48 @@
   // leaf's front edge, 1 in from it, centred (H.collarOfficerRow); officers' grade sits 1 in from the bottom of the collar, square to its edge.
   // The cloth border around every insignia is 1/8 in on each side (R5).
   const CLOTH_BORDER = 0.125;
+
+  // The leading edge of a collar leaf of the ABU and CFU (LIVE-FIELD B7, Ethan: the grade's axis is parallel to the collar's leading edge,
+  // centred, 1 in from it; 5.1.1.1.1, 5.2.1.1.1): the sheet's own `collar_slots[side].leading_edge` (two points, 0.01 in, as {p1, p2} or
+  // [[x, y], [x, y]]) when it states one, else the longest edge of the leaf's collar_left / collar_right polygon (on the five-point leaf
+  // that is the edge from the collar tip along the neck opening, not the short bottom edge the shirts' search finds). The same code serves
+  // both leaves, so the two are mirror images; `collarPoint` is the end farther from the centre line. Returns { collarPoint, rollEnd, inward }.
+  function leafSide(ctx, poly){
+    const c = poly.points.reduce((s, q) => ({ x: s.x + q.x / poly.points.length, y: s.y + q.y / poly.points.length }), { x: 0, y: 0 });
+    return c.x < ctx.base.w / 2 ? 'right' : 'left';
+  }
+  function fieldLeadingEdge(ctx, poly){
+    const pts = poly.points, centerX = ctx.base.w / 2;
+    const slots = ctx.base && ctx.base.raw && ctx.base.raw.collar_slots;
+    const le = slots && slots[leafSide(ctx, poly)] && slots[leafSide(ctx, poly)].leading_edge;
+    let a = null, b = null;
+    const pt = q => q && { x: (q.x != null ? q.x : q[0]) / 100, y: (q.y != null ? q.y : q[1]) / 100 };
+    if(le && (le.p1 || le[0]) && (le.p2 || le[1])){ a = pt(le.p1 || le[0]); b = pt(le.p2 || le[1]); }
+    else{
+      let best = 0;
+      for(let i = 0; i < pts.length; i++){
+        const p = pts[i], q = pts[(i + 1) % pts.length], len = Math.hypot(q.x - p.x, q.y - p.y);
+        if(len > best){ best = len; a = p; b = q; }
+      }
+    }
+    if(!a || !b || Math.hypot(b.x - a.x, b.y - a.y) < 1) return null;
+    const [collarPoint, rollEnd] = Math.abs(a.x - centerX) >= Math.abs(b.x - centerX) ? [a, b] : [b, a];
+    // The side of the edge the leaf lies on.
+    const n = pts.length;
+    let area = 0, cx = 0, cy = 0;
+    for(let i = 0; i < n; i++){ const p = pts[i], q = pts[(i + 1) % n], cr = p.x * q.y - q.x * p.y; area += cr; cx += (p.x + q.x) * cr; cy += (p.y + q.y) * cr; }
+    const inside = area ? { x: cx / (3 * area), y: cy / (3 * area) } : collarPoint;
+    const len = Math.hypot(rollEnd.x - collarPoint.x, rollEnd.y - collarPoint.y);
+    let inward = { x: (rollEnd.y - collarPoint.y) / len, y: -(rollEnd.x - collarPoint.x) / len };
+    if(inward.x * (inside.x - collarPoint.x) + inward.y * (inside.y - collarPoint.y) < 0) inward = { x: -inward.x, y: -inward.y };
+    return { collarPoint, rollEnd, inward };
+  }
+  // Turn (SVG rotate, clockwise, degrees in (-90, 90]) that puts the long axis of an upright piece along the leading edge.
+  function edgeTurn(edge){
+    let d = Math.atan2(edge.rollEnd.x - edge.collarPoint.x, -(edge.rollEnd.y - edge.collarPoint.y)) * 180 / Math.PI;
+    if(d > 90) d -= 180; if(d <= -90) d += 180;
+    return d;
+  }
   async function collarGrade(ctx, b){
     const g = b.grade;
     const slots = ctx.base && ctx.base.raw && ctx.base.raw.collar_slots;
@@ -188,11 +230,11 @@
       };
       if(g.category === 'cadet-nco'){
         // The shirts' rule, Figure A5-5 (H.collarChevrons, from the sheet's collar leaf polygon); drawn once, for both leaves.
-        if(side === 'right') await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE });
+        if(side === 'right') await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => fieldLeadingEdge(ctx, poly) });
       }else if(g.category === 'cadet-officer'){
         // 'One inch from the front of the collar and centered' (5.1.1.1.1.3, 5.2.1.1.1.4): the row parallel to the leaf's front edge, its near outline 1 in
         // from it, centred on the leaf (H.collarOfficerRow, from the sheet's collar_left / collar_right polygons); drawn once, for both leaves.
-        if(side === 'right') await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE });
+        if(side === 'right') await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => fieldLeadingEdge(ctx, poly) });
       }else if(g.officer && !g.cadet){
         const s = slot('officer');
         if(!s) continue;
@@ -200,6 +242,14 @@
         // Major and Lt Col: stem parallel to the ground, pointing away from the neck. Colonel: beak
         // facing forward on both collars.
         let rotate = s.deg;
+        // The bars (Flight Officer, Lieutenant, Captain) have their long axis along the collar's leading edge (LIVE-FIELD B7; 5.1.1.1.1.1,
+        // 5.2.1.1.1.1 give only 'the long end centered 1 inch from the bottom of the collar'); the stem rules of the Major and Lieutenant Colonel
+        // and the Colonel's and generals' 'perpendicular to the bottom of the collar' are regulation text and stay.
+        if(['second-lieutenant', 'first-lieutenant', 'captain', 'flight-officer', 'technical-flight-officer', 'senior-flight-officer'].includes(g.key)){
+          const poly = H.collarPolygons(ctx).find(q => leafSide(ctx, q) === side);
+          const le = poly && fieldLeadingEdge(ctx, poly);
+          if(le) rotate = edgeTurn(le);
+        }
         if(g.key === 'major' || g.key === 'lieutenant-colonel') rotate = R ? 90 : -90;
         // "Centered 1 inch from the bottom of the collar" (5.1.1.1.1.1, 5.2.1.1.1.1): from the free
         // edge, straight to the centre. General officers' grade is 'centered, perpendicular to, and begins 1 inch from

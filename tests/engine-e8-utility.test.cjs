@@ -354,7 +354,7 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
         assert.ok(m, `${u} ${rank} ${side}: the 1 in measure is drawn`);
       }
     }
-    // Officers: bars/leaf square to the free edge for Capt, stem parallel to the ground for Maj/Lt Col, beak forward for Col.
+    // Officers: bars along the leading edge for Capt, stem parallel to the ground for Maj/Lt Col, beak forward for Col.
     const rotOf = async (rank, side) => (await P.composeUniform(build(u, 'senior', rank), store())).layers.find(l => l.key === 'grade:' + side);
     assert.equal((await rotOf('Maj', 'right')).rotate, 90);
     assert.equal((await rotOf('Maj', 'left')).rotate, -90);
@@ -362,8 +362,10 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
     assert.equal((await rotOf('Lt Col', 'left')).rotate, -90);
     assert.equal((await rotOf('Col', 'right')).flipX, true);
     assert.equal((await rotOf('Col', 'left')).flipX, undefined);
-    assert.equal((await rotOf('Capt', 'right')).rotate, slots.right.officer.angle_deg);
-    assert.equal((await rotOf('Capt', 'left')).rotate, slots.left.officer.angle_deg);
+    // The bars lie along the collar's leading edge (LIVE-FIELD B7, Ethan; D8: they were turned by the slot's angle, square to the bottom edge):
+    // the front edge's direction, tests/engine-live-field-collar.test.cjs.
+    assert.ok(Math.abs((await rotOf('Capt', 'right')).rotate - slots.right.front_edge.angle_deg) < 0.2);
+    assert.ok(Math.abs((await rotOf('Capt', 'left')).rotate - slots.left.front_edge.angle_deg) < 0.2);
   }
 });
 

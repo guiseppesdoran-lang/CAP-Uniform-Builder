@@ -223,12 +223,11 @@ const COLLAR_CASES = [
   ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female', 1, 2, true],
   ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long', 3, 2, false],   // closed collar: the leaf is top, inner top, junction, collar point; the bottom edge runs junction -> collar point
   ['aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 'garment-overblouse-female', 4, 3, false],
-  ['aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long', 4, 3, false],
-  ['abu', 'male', {}, 'garment-abu-coat', 2, 3, false],
-  ['abu', 'female', {}, 'garment-abu-coat', 2, 3, false],
-  ['corporate_field', 'male', {}, 'garment-cfu-coat', 2, 3, false],
-  ['corporate_field', 'female', {}, 'garment-cfu-coat', 2, 3, false]
+  ['aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long', 4, 3, false]
 ];
+// The ABU and CFU coats are not here any more (LIVE-FIELD B7, D8): their chevron lies along the collar's LEADING edge (the front of the
+// collar, 5.1.1.1.1.4 'Insignia is 1 inch from and parallel to the front of the collar', 5.2.1.1.1.6), not along the leaf's short bottom
+// edge the shirts' search finds; tests/engine-live-field-collar.test.cjs pins it for both coats, both cuts and both leaves.
 // the ranks whose chevron fits the leaf proper on the Class B and aviator sheets, and those that are longer
 // along the edge than the leaf is wide at the chevron's centre line (1.5 to 1.75 in against a 1.3 to 1.5 in
 // chord; the regulation size is kept, Figure A5-5 'centered on the collar')

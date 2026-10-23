@@ -234,6 +234,7 @@
     return { collarPoint: tip, rollEnd: other, inward: nrm };
   }
 
+  // `opts.edgeOf(poly, centerX)`, when given (the ABU and CFU, profiles-field.js), supplies the leading edge in place of the polygon search.
   // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4): the grade's row (its width) runs parallel to the front edge, its near outline 1 in from it,
   // centred on the leaf along it (chord of the leaf on that line), like the cadet NCO chevron's 1 in rule; a 1 in measure from the edge to the near outline.
   async function collarOfficerRow(ctx, g, opts){
@@ -244,7 +245,7 @@
     const s = await ctx.spec(id);
     const centerX = ctx.base.w / 2;
     for(const poly of polys){
-      const edge = collarFrontEdge(poly.points, centerX);
+      const edge = opts && opts.edgeOf ? opts.edgeOf(poly, centerX) : collarFrontEdge(poly.points, centerX);
       if(!edge) continue;
       const side = edge.collarPoint.x < centerX ? 'right' : 'left';
       const pl = chevronOnLeadingEdge(edge, s.h, 1, poly.points);   // the row's height is across the edge
@@ -270,7 +271,7 @@
     const s = await ctx.spec(id);
     const centerX = ctx.base.w / 2;
     for(const poly of polys){
-      const edge = collarLeadingEdge(poly.points, centerX);
+      const edge = opts && opts.edgeOf ? opts.edgeOf(poly, centerX) : collarLeadingEdge(poly.points, centerX);
       if(!edge) continue;
       const side = edge.collarPoint.x < centerX ? 'right' : 'left';
       const pl = chevronOnLeadingEdge(edge, s.w, 1, collarLeaf(poly.points, edge));
