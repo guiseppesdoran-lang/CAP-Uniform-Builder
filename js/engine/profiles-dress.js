@@ -948,13 +948,11 @@
     male: {
       coat: 'garment-blues-class-a-coat', semi: 'garment-semiformal-class-a-coat-male', layer: 'garment-blues-class-a-coat',
       cadetOfficer: 'garment-blues-class-a-cadet-officer-insignia',
-      ncoChevron: { right: [3.19, 9.86, 1.4], left: [20.54, 9.86, -1.4] }, theta: { right: 75.3, left: -75.3 },
       cord: [[16.52, 2.44], [20.22, 3.41]], strap: strapPair(23.726, [16.52, 2.44], [20.22, 3.41])
     },
     female: {
       coat: 'garment-blues-class-a-coat-female', semi: 'garment-semiformal-class-a-coat-female', layer: 'garment-blues-class-a-coat-female',
       cadetOfficer: 'garment-blues-class-a-cadet-officer-insignia-female',
-      ncoChevron: { right: [3.29, 9.88, 2.3], left: [21.10, 9.88, -2.3] }, theta: { right: 78.1, left: -78.1 },
       cord: [[16.57, 1.91], [20.09, 2.65]], strap: strapPair(24.3883, [16.57, 1.91], [20.09, 2.65])
     }
   };
@@ -1020,7 +1018,9 @@
       }
     }else if(!semi && g.category === 'senior-nco'){
       const size = sex === 'male' ? '4' : (b.opt.chevron === '3.5' ? '3.5' : '4');
-      await sleeveChevrons(ctx, G.seniorChevron(g, { size }), chevronAnchors(ctx) || A.ncoChevron);
+      const sheetPts = chevronAnchors(ctx);
+      if(sheetPts) await sleeveChevrons(ctx, G.seniorChevron(g, { size }), sheetPts);
+      else ctx.note('No artwork for the sleeve chevron position on this sheet');
     }else if(!semi && isOfficerLike(g)){
       // The coat's epaulets are edge-on in the front view and carry the grade there too, 5/8 in from the
       // outer end like the Class B (D6, D42; R7), as well as on the views from above.
@@ -1083,40 +1083,16 @@
 
   // ---- USAF-style Class B (4.1.11 men, 4.1.12 women) -----------------------------------------------
 
-  // The short-sleeve sheets (shirt, blouse) carry no chevron_halfway anchors, so the sleeve chevron is
-  // centred on the outer arm from what they do carry (4.1.11.1.1.1.3, 4.1.12.2.3.3: centred on the outer
-  // arm, halfway between the shoulder seam and the bottom edge of the short sleeve):
-  //   y  = halfway between the shoulder_seam and sleeve_bottom anchors (men's 8.21 in, women's 8.16 in)
-  //   x  = the midline of the drawn sleeve at that height, from the sheet's silhouette (its outer edge)
-  //        and its armhole seam line: men's 2.02 in (outer edge 0.51 in, seam 3.52 in, 3.00 in apart),
-  //        women's 2.42 in (0.59 in and 4.26 in, 3.68 in apart); the left sleeve mirrors it
-  //   turn = the tilt of that midline in degrees toward the outer side at the hem: women's 1.1; the
-  //        men's measured 0.3 is left at 0 (it is under what the render can show)
-  // The drawn sleeves are narrower than the 3 1/2 in chevron (a wedge: the men's is 3.0 in wide at mid-height
-  // and narrower at the top), so the chevron is not scaled (R1) and the part past the sleeve's outer edge is
-  // clipped to the sheet's garment silhouette (layer clipSil), reading as wrapping round the arm in front view;
-  // it is not clipped at the armhole seam, where the shirt front continues. Remove the table and the clip when
-  // the sheets are widened and carry chevron_halfway anchors (FOLLOWUPS, FIX-R-OTHER-r1).
-  // Where a sheet draws chevron_halfway anchors of its own they win (chevronAnchors).
-  const SHORT_SLEEVE_MIDLINE = {
-    'male-short': { x: 2.02, turn: 0 },
-    'female-short': { x: 2.42, turn: 1.1 }
-  };
-  function shortSleeveChevron(ctx, mid){
-    const out = {};
-    for(const side of ['right', 'left']){
-      const s = ctx.point('shoulder_seam_' + side), e = ctx.point('sleeve_bottom_' + side);
-      if(!s || !e) return null;
-      out[side] = [side === 'right' ? mid.x : ctx.base.w - mid.x, (s.y + e.y) / 2, side === 'right' ? mid.turn : -mid.turn];
-    }
-    return out;
-  }
+  // The sleeve chevron of the shirts and blouses is centred on the outer arm where the sheet says so: chevron_halfway_<side> (halfway between shoulder_seam and
+  // the elbow, or the sleeve's bottom edge on a short sleeve; 4.1.11.1.1.1.3, 4.1.12.2.3.3), turned along the sleeve axis (chevronAnchors). All four
+  // Class B sheets state those anchors for the sleeve as drawn (rescaled 1.2171 with the sheet), so the engine keeps no literal point or midline for them:
+  // the table that stood here (a sleeve midline at 2.02 / 2.42 in from the outer edge, points for the long sleeves) was the old trace's geometry.
 
   const CLASS_B = {
     'male-short': { garment: 'garment-blues-class-b-shirt-male' },
-    'male-long': { garment: 'garment-blues-class-b-shirt-male-long', chev: { right: [3.12, 9.75, 2.4], left: [18.20, 9.75, -2.4] } },
+    'male-long': { garment: 'garment-blues-class-b-shirt-male-long' },
     'female-short': { garment: 'garment-blues-class-b-blouse-female' },
-    'female-long': { garment: 'garment-blues-class-b-blouse-female-long', chev: { right: [2.31, 8.94, 1.2], left: [17.20, 8.94, -1.2] } }
+    'female-long': { garment: 'garment-blues-class-b-blouse-female-long' }
   };
 
   async function composeClassB(ctx, b){
@@ -1145,10 +1121,9 @@
       // Men: 3 1/2 in (4.1.11.1.1.1.3). Women: 3 1/2 or 4 in on either sleeve (4.1.12.2.3.3).
       const size = female && b.opt.chevron === '4' ? '4' : '3.5';
       const id = G.seniorChevron(g, { size });
-      const key = (female ? 'female' : 'male') + (long ? '-long' : '-short');
       const sheetPts = chevronAnchors(ctx);
-      const midline = !sheetPts && SHORT_SLEEVE_MIDLINE[key] ? shortSleeveChevron(ctx, SHORT_SLEEVE_MIDLINE[key]) : null;
-      await sleeveChevrons(ctx, id, sheetPts || midline || V.chev);
+      if(sheetPts) await sleeveChevrons(ctx, id, sheetPts);
+      else ctx.note('No artwork for the sleeve chevron position on this sheet');
     }
     // The epaulet sleeves are edge-on in the front view, each with its grade, and seen from above
     // just over the shoulder with the grade in place (R7).
@@ -1354,16 +1329,17 @@
 
   // ---- Corporate: aviator shirt (4.2.5 men, 4.2.6 women) -----------------------------------------------
 
-  // Per garment: the sleeve chevron points of the sheets that state no sleeve anchors (the aviator long shirts use the
-  // sheet's nco_chevron points and a turn; both overblouse sheets state their sleeve anchors), the visible sleeve width and collar angle. The
-  // epaulet's angle and width come from the garment's epaulet landmark (H.epauletFrame).
+  // Per garment: which sheets are the women's overblouse. Every aviator and overblouse sheet states shoulder_seam, sleeve_bottom (and the elbow on the long
+  // sleeves) and chevron_halfway, so the sleeve chevron is placed from those anchors (chevronAnchors) and the engine keeps no point, turn or sleeve width
+  // of the old traces (the sheets were rescaled 1.2036 with the art sync). The epaulet's angle and width come from the garment's epaulet landmark
+  // (H.epauletFrame).
   const AVIATOR = {
-    'garment-aviator-shirt-male': { sleeveW: 2.93 },
-    'garment-aviator-shirt-male-long': { chevAnchors: 11.6, sleeveW: 3.2 },
-    'garment-aviator-shirt-female': { sleeveW: 2.56 },
-    'garment-aviator-shirt-female-long': { chevAnchors: 10, sleeveW: 2.9 },
-    'garment-overblouse-female': { sleeveW: 2.6, overblouse: true },   // the short sheet states shoulder_seam, sleeve_bottom and chevron_halfway (chevronAnchors)
-    'garment-overblouse-female-long': { sleeveW: 2.9, overblouse: true }   // the long sheet states shoulder_seam, elbow, sleeve_bottom and chevron_halfway (chevronAnchors), as the aviator long shirts do
+    'garment-aviator-shirt-male': {},
+    'garment-aviator-shirt-male-long': {},
+    'garment-aviator-shirt-female': {},
+    'garment-aviator-shirt-female-long': {},
+    'garment-overblouse-female': { overblouse: true },
+    'garment-overblouse-female-long': { overblouse: true }
   };
 
   function aviatorEpaulet(g){
@@ -1400,14 +1376,11 @@
     }else if(g.category === 'senior-nco'){
       // 3 1/2 in chevrons only (4.2.5.1.1.3, 4.2.6.2.3).
       const id = G.seniorChevron(g, { size: '3.5' });
-      // The short-sleeve shirt sheets state shoulder_seam, sleeve_bottom and chevron_halfway anchors on the sleeve as drawn (widened so the true-size chevron lies on it), so
-      // they win over the literal points, as on the Class B sheets (chevronAnchors), the long overblouse's too; the aviator long shirts keep the points of their table where a sheet states none.
-      let pts = chevronAnchors(ctx) || V.chev;
-      if(!pts){
-        const r = ctx.point('nco_chevron_right_center'), l = ctx.point('nco_chevron_left_center');
-        pts = { right: [r.x, r.y, V.chevAnchors], left: [l.x, l.y, -V.chevAnchors] };
-      }
-      await sleeveChevrons(ctx, id, pts);
+      // Every aviator and overblouse sheet states shoulder_seam, sleeve_bottom (elbow on the long sleeves) and chevron_halfway on the sleeve as drawn (widened so the
+      // true-size chevron lies on it): the chevron is centred there and turned along the sleeve axis, as on the Class B sheets (chevronAnchors).
+      const pts = chevronAnchors(ctx);
+      if(pts) await sleeveChevrons(ctx, id, pts);
+      else ctx.note('No artwork for the sleeve chevron position on this sheet');
     }
 
     // Nametag over the right pocket (4.2.5.1.2.1, 4.2.6.2.6.1).
