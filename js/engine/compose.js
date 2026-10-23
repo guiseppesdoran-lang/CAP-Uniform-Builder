@@ -267,15 +267,31 @@
 
   // ---- Ribbons --------------------------------------------------------------------------------
 
+  // The size each ribbon device is drawn at, by asset id: its spec size, except that a star is drawn as tall as
+  // the CAP tri-blade propeller on the same ribbon (Ethan: "the stars are a little small. should be the same size
+  // of the triblade"), keeping its own aspect. The star's own 3/16 in point-to-point (0.173 in tall, spec
+  // device-star-*) is an estimate; the bronze propeller is 0.262 in tall, so a star is drawn at 1.51 times its
+  // spec size. The art and the manifest keep their sizes; this is the one place the factor is applied.
+  async function deviceSizes(ctx, ids){
+    const sizes = {};
+    const propId = awards.DEVICE.propeller_bronze;
+    const prop = ctx.has(propId) ? await ctx.spec(propId) : null;
+    for(const d of [...new Set(ids)]){
+      if(!ctx.has(d)) continue;
+      const s = await ctx.spec(d);
+      const k = prop && /^device-star-/.test(d) && s.h > 0 ? prop.h / s.h : 1;
+      sizes[d] = { w: s.w * k, h: s.h * k };
+    }
+    return sizes;
+  }
+
   // Draw a rack. `ribbons` are resolved ribbons in precedence order, each
   // { key, title, asset | raster, devices:[ids], centered }. `slot` gives centerX, bottomY and the
   // wearer's-left (outboard) edge. Returns the rack's bounding box.
   async function drawRack(ctx, ribbons, slot, opts){
     if(!ribbons.length) return null;
     const o = opts || {};
-    const sizes = {};
-    const deviceIds = [...new Set(ribbons.flatMap(r => r.devices || []))];
-    for(const d of deviceIds){ if(ctx.has(d)){ const s = await ctx.spec(d); sizes[d] = { w: s.w, h: s.h }; } }
+    const sizes = await deviceSizes(ctx, ribbons.flatMap(r => r.devices || []));
     const rack = awards.layoutRack(ribbons, {
       perRow: o.perRow || 3,
       centerX: slot.centerX,
@@ -393,8 +409,7 @@
       for(const p of out.placements) p.x += slide;
     }
     if(o.report){ o.report.slide = slide; o.report.boxes = out.placements.map(boxOf); }
-    const sizes = {};
-    for(const d of [...new Set(medals.flatMap(m => m.devices || []))]){ if(ctx.has(d)){ const s = await ctx.spec(d); sizes[d] = { w: s.w, h: s.h }; } }
+    const sizes = await deviceSizes(ctx, medals.flatMap(m => m.devices || []));
     // Where each medal's drape and body lie, so the devices of a lower row go in the part of the drape the
     // rows above leave exposed: the upper rows' bodies hang over the drapes below them (11.2.8).
     const covers = new Map();
