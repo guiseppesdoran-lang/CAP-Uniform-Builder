@@ -97,3 +97,28 @@ test('the picker tile of every badge has an existing thumbnail on every uniform,
   }
   assert.deepEqual(bad, []);
 });
+
+// Cadet Specialty Track Badges (Information Technology, Historian, Communications, Emergency Services and
+// the rest of the cadet-authorized specialty badges) are the same badges the senior members wear, so a cadet
+// and a senior see the same enamel (coloured) dress art in the picker and on the dress uniforms; the OCP and
+// ABU field form (silver on blue, CAPR 39-1 7.1.1.3.1, 5.1.1.1.2.4) is the same for both too.
+test('cadet and senior specialty-track badges resolve to the same enamel dress asset, in the picker', () => {
+  const ids = ['emergency_services_badge', 'information_technology_technician_badge', 'historian_technicianIbadge',
+    'communications_technician_badge', 'communications_senior_badge', 'communications_master_badge'];
+  for(const id of ids){
+    const b = CAT.get(id);
+    assert.equal(b.family, 'specialty', id);
+    assert.match(b.dress, /^enamel-/, `${id} dress art is the enamel form`);
+    assert.match(b.field, /^enamel-.*-field$/, `${id} field art is its own field form`);
+    for(const m of ['cadet', 'senior']) assert.ok(CAT.eligibleFor(id, m), `${id} is worn by ${m}s`);
+    for(const u of ['blues_a', 'semi_formal', 'mess_dress']){
+      const paths = ['cadet', 'senior'].map(m => ev(`State.membership = '${m}'; State.uniform = '${u}'; State.badgeSelections = {}; getBadgeAssetPath('${id}')`));
+      assert.equal(paths[0], paths[1], `${id} on ${u}`);
+      assert.equal(paths[0], INDEX[b.dress], `${id} on ${u} is the dress art`);
+    }
+  }
+  // The cadet picker offers them under the cadet specialty group, with the ids the senior picker uses.
+  ev("State.membership = 'cadet'");
+  const cadetGroups = ev('getBadgeCategoriesForCurrentMembership()').find(g => g.key === 'Cadet Specialty Track Badges').ids;
+  for(const id of ids) assert.ok(cadetGroups.includes(id), id);
+});
