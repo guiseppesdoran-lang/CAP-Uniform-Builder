@@ -161,14 +161,34 @@ for(const uniform of ['abu', 'corporate_field']){
       }
     });
 
-    test(`${uniform} ${gender}: Cadet Colonels and Cadet Captains wear the miniature cloth-bordered form; the other cadet officers wear regular size (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
-      for(const [rank, form] of [['C/2d Lt', 'regular'], ['C/1st Lt', 'regular'], ['C/Capt', 'miniature'], ['C/Maj', 'regular'], ['C/Lt Col', 'regular'], ['C/Col', 'miniature']]){
+    test(`${uniform} ${gender}: every cadet officer, C/2d Lt to C/Col, wears the regular cloth-bordered form; the miniature only where the regular would cross the leaf (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
+      // Ethan, on the Spaatz and C/Capt drawn as miniatures: "why is the spaatz so small lol, and c/capt". D8: the COLLAR6 test had C/Capt and C/Col in the miniature form always.
+      const spec = await store.load(SHEETS[uniform]);
+      for(const rank of CADET_OFFICERS){
         const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank), store);
-        for(const side of ['right', 'left']) assert.match(layer(scene, side).id, new RegExp(`cloth-bordered-${form}$`), `${rank} ${side}`);
+        for(const side of ['right', 'left']){
+          const l = layer(scene, side);
+          assert.match(l.id, /cloth-bordered-regular$/, `${rank} ${side}`);
+          for(const q of cornersOf(l)) assert.ok(inside(q, polyOf(spec, side)), `${rank} ${side}: the regular cloth lies inside the leaf`);
+        }
       }
     });
   }
 }
+
+test('a leaf too small for the regular cloth falls back to the miniature cloth-bordered form (5.1.1.1.1.3); the full-size leaf does not', async () => {
+  // Both leaves of the ABU sheet shrunk to 40 percent about their centroids: no regular cadet officer cloth, stood vertical, fits.
+  const small = edited(j => {
+    for(const n of ['collar_right', 'collar_left']){
+      const pts = j.landmarks[n].map(([x, y]) => ({ x, y })), c = centroidOf(pts);
+      j.landmarks[n] = pts.map(p => [c.x + (p.x - c.x) * 0.4, c.y + (p.y - c.y) * 0.4]);
+    }
+  });
+  for(const rank of CADET_OFFICERS){
+    const scene = await P.composeUniform(build('abu', 'male', 'cadet', rank), small);
+    for(const side of ['right', 'left']) assert.match(layer(scene, side).id, /cloth-bordered-miniature$/, `${rank} ${side}`);
+  }
+});
 
 test('the seam angle is read from the sheet: a seam stated 10 degrees off turns every piece on that leaf by 10 degrees from its COLLAR6 frame, the leaf without one keeps its own', async () => {
   // The wearer's right leaf of the ABU sheet is given a sloping bottom_edge (0.01 in): the pieces on it follow; the other leaf is untouched.

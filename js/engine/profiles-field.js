@@ -209,9 +209,10 @@
       await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE, turnOf: poly => seamAngle(ctx, poly) });
     }else if(g.category === 'cadet-officer'){
       // Centred on the leaf (5.1.1.1.1.3, 5.2.1.1.1.4), turned a quarter turn from the seam's frame so the cloth's long side stands vertical (COLLAR6), drawn once for both leaves (H.collarOfficerRow, from
-      // the sheet's collar_left / collar_right polygons). Cadet Colonels and Cadet Captains wear the miniature embroidered form (5.1.1.1.1.3, 5.2.1.1.1.4); the other cadet officers wear regular size,
-      // the miniature when the regular cloth would cross the leaf's outline centred.
-      await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE, miniatureKeys: ['captain', 'colonel'], turnOf: poly => seamAngle(ctx, poly) + 90 });
+      // the sheet's collar_left / collar_right polygons). Every cadet officer wears the regular-size cloth; the miniature form
+      // (which 5.1.1.1.1.3 / 5.2.1.1.1.4 allow Cadet Colonels and Cadet Captains) is used only when the regular cloth, stood
+      // vertical and centred, would cross the leaf's outline (Ethan: the Spaatz and C/Capt rows read too small as miniatures).
+      await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE, turnOf: poly => seamAngle(ctx, poly) + 90 });
     }else if(g.officer && !g.cadet){
       const id = G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: false });
       for(const poly of H.collarPolygons(ctx)){
