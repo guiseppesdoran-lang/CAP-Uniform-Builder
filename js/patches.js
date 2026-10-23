@@ -625,7 +625,16 @@ capubGetCACRibbonFromDutyAssignments = function capubGetCACRibbonFinalFixed(text
     explicitAny ? { level:explicitAny } : null,
     oldLevel ? { level:oldLevel } : null
   ].filter(Boolean));
-  if(!winningLevel) return old || null;
+  if(!winningLevel){
+    if(old) return old;
+    // The Activity/Service Ribbon rows of the report list the ribbon itself ("Cadet Advisory Council Ribbon"):
+    // that is the exact label, not the broad CAC wording the duty rules guard against. The row carries no level,
+    // so the basic ribbon is selected; a Wing, Region or National CAC term in the duty positions raises it above.
+    if(/Cadet\s+Advisory\s+Council\s+Ribbon/i.test(removeLocalActivitiesFromMemberReport(text))){
+      return { id:'cadet_advisory_council_ribbon', value:CAC_RIBBON_VALUE_BY_LEVEL.group, reason:'Cadet Advisory Council Ribbon listed in the report (no level shown; basic ribbon)' };
+    }
+    return null;
+  }
   return { id:'cadet_advisory_council_ribbon', value:CAC_RIBBON_VALUE_BY_LEVEL[winningLevel], reason:`Highest qualifying CAC level found in duty assignments: ${winningLevel.toUpperCase()}` };
 };
 
@@ -637,7 +646,11 @@ parseCapMemberReport = function capubParseCapMemberReportCACFinalFix(textRaw){
   const finalCord = capubGetCACShoulderCordFromCurrentDutyAssignments(normalized);
   const finalRibbon = capubGetCACRibbonFromDutyAssignments(normalized);
   result.shoulderCord = finalCord || null;
-  if(finalRibbon) result.ribbons.push(finalRibbon);
+  if(finalRibbon){
+    result.ribbons.push(finalRibbon);
+    // The earlier wrappers each noted 'CAC ribbon not imported' before this check found one; drop those lines.
+    result.notes = (result.notes || []).filter(n => !/^CAC text found, but/.test(n));
+  }
   if(finalCord) result.notes.push(`CAC final check: ${CAC_CORD_LABEL_BY_LEVEL[finalCord]} selected from current CAC duty.`);
   if(finalRibbon) result.notes.push(`CAC final check: CAC ribbon set to ${finalRibbon.value}.`);
   result.ribbons = dedupeImportedRibbons(result.ribbons);

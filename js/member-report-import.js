@@ -234,7 +234,8 @@ function extractCommandersCommendationFromReport(text){
     'Ribbons', 'Local Activities', 'Professional Development', 'Cadet Training'
   ]);
   const scope = decorations || String(text || '');
-  const rowRe = /Commander's\s+Commendation\s+Award(?:\s*\(\s*(National|Region|Wing)\s*\))?/gi;
+  // The apostrophe is straight in an HTML copy and curly in a PDF export; some rows read "Commanders'".
+  const rowRe = /Commanders?['\u2018\u2019]s?\s+Commendation\s+Award(?:\s*\(\s*(National|Region|Wing)\s*\))?/gi;
   const rows = [];
   let match;
   while((match = rowRe.exec(scope))){
@@ -246,6 +247,21 @@ function extractCommandersCommendationFromReport(text){
     priority[row.level] > priority[best] ? row.level : best, 'wing');
   const count = rows.filter(row => row.level === highestLevel).length;
   return { level:highestLevel, count, value:chooseCommandersCommendationValue(highestLevel, count) };
+}
+
+// CAPR 39-3 9h: the Certificate of Recognition for Lifesaving carries the Lifesaving Award ribbon (Attachment 2:
+// "Lifesaving Award"). A save in a blood or organ transport mission earns the basic ribbon; a save of any other
+// kind adds the silver star. Later awards add bronze clasps, five bronze become one silver clasp. The report row
+// names neither kind, so the import selects the ribbon and the clasps and leaves the star to the member.
+function chooseLifesavingValue(count){
+  if(count <= 1) return 'earned';
+  if(count === 2) return 'bronze_clasp_1';
+  if(count === 3) return 'bronze_clasp_2';
+  if(count === 4) return 'bronze_clasp_3';
+  if(count === 5) return 'bronze_clasp_4';
+  if(count === 6) return 'silver_clasp_1';
+  if(count === 7) return 'silver_clasp_1_bronze_clasp_1';
+  return 'silver_clasp_1_bronze_clasp_2';
 }
 
 function chooseEncampmentValue(count){
@@ -929,8 +945,9 @@ function parseCapMemberReport(textRaw){
   if(/\bSpaatz\b/i.test(cadetAchievements)) result.ribbons.push({ id:'spaatz_award', value:'earned', reason:'Spaatz' });
 
   // Decorations / service ribbons.
-  const achievementAwardCount = countOccurrences(text, /Achievement Award\s+\d{1,2}\s+[A-Z][a-z]{2}\s+\d{4}/gi) ||
-                                countOccurrences(text, /Achievement Award/gi);
+  // Every listed line is one award: a row without a date still counts, so the dated and the bare counts are compared.
+  const achievementAwardCount = Math.max(countOccurrences(text, /Achievement Award\s+\d{1,2}\s+[A-Z][a-z]{2}\s+\d{4}/gi),
+                                         countOccurrences(text, /Achievement Award/gi));
   if(achievementAwardCount > 0){
     result.ribbons.push({
       id:'cap_achievment_award',
@@ -946,6 +963,17 @@ function parseCapMemberReport(textRaw){
       value:commandersCommendation.value,
       reason:`${commandersCommendation.level[0].toUpperCase() + commandersCommendation.level.slice(1)} Commander's Commendation Award (${commandersCommendation.count} at this level)`
     });
+  }
+
+  // The eServices row reads "Certificate of Recognition for Lifesaving"; older records read "Lifesaving Award".
+  const lifesavingCount = countOccurrences(text, /Certificate\s+of\s+Recognition\s+for\s+Life[\s-]?saving|\bLife[\s-]?saving\s+Award\b/gi);
+  if(lifesavingCount > 0){
+    result.ribbons.push({
+      id:'lifesaving_award',
+      value:chooseLifesavingValue(lifesavingCount),
+      reason:`${lifesavingCount} Certificate of Recognition for Lifesaving record(s)`
+    });
+    result.notes.push(`Certificate of Recognition for Lifesaving imported as the Lifesaving Award ribbon (CAPR 39-3, 9h)${lifesavingCount > 1 ? ` with ${lifesavingCount - 1} subsequent-award clasp(s)` : ''}. The report does not say whether the save was a blood or organ transport, so the silver star for a save of another kind is not added; add it in the ribbon picker if it applies.`);
   }
 
   if(/Air Force Organizational Excellence Award/i.test(text)){
