@@ -10,6 +10,13 @@
   }
   const FLIGHT = ['flight_suit', 'corporate_flight_suit'];
   const FIELD = ['ocp', 'abu', 'corporate_field'];
+  // The most badges each field uniform draws above the CAP tape (js/engine/profiles-field.js MAX_BADGES): the OCP four, the ABU and
+  // CFU two (aviation and occupational badges only, 5.1.1.1.2.4, 5.2.1.1.2.6).
+  const FIELD_CHEST_MAX = { ocp: 4, abu: 2, corporate_field: 2 };
+  function chestBadgeCount(){
+    const max = FIELD_CHEST_MAX[State.uniform];
+    return max ? Math.min((State.badges || []).length, max) : 0;
+  }
 
   // { key, label, type: 'select' | 'check', choices: [[value, label]] | fn, when(ctx) }
   const OPTIONS = [
@@ -65,6 +72,11 @@
       when: c => c.g.category === 'senior-nco' && (
         (c.female && ['blues_a', 'blues_b', 'mess_dress'].includes(c.u)) ||
         ['abu', 'corporate_field'].includes(c.u)) },
+    // 7.1.1.3.1.3-4: with three or four badges the regulation allows a column (three) or two columns of two (four), or a pair on
+    // the tape with the rest centred above it. The first form is the default (opt.badgeLayout 'pair' is the second).
+    { key: 'badgeLayout', label: 'Chest badge layout', type: 'select',
+      choices: c => [['column', c.chestBadges >= 4 ? 'Two columns of two' : 'Column'], ['pair', 'Two side by side']],
+      when: c => FIELD.includes(c.u) && c.chestBadges >= 3 },
     { key: 'jacket', label: 'Show the flight jacket too', type: 'check', defaultValue: true, when: c => FLIGHT.includes(c.u) },
     { key: 'scarf', label: 'Command scarf', type: 'check', when: c => FLIGHT.includes(c.u) },
     { key: 'esPatch', label: 'Emergency Services patch', type: 'select',
@@ -78,7 +90,7 @@
   const ALLOWED = {
     noGradeTrack: ['officer', 'nco'], sleeve: ['short', 'long'], femaleTop: ['shirt', 'overblouse'],
     underlayer: ['shirt', 'turtleneck', 'shell'], skirt: ['a-line', 'straight-split'],
-    headgear: ['auto', 'service', 'tactical', 'boonie', 'none'], chevron: ['', '3.5', '4'], esPatch: ['none', 'style-1', 'style-2']
+    headgear: ['auto', 'service', 'tactical', 'boonie', 'none'], chevron: ['', '3.5', '4'], badgeLayout: ['column', 'pair'], esPatch: ['none', 'style-1', 'style-2']
   };
 
   // Keep only values this panel could have produced (a saved setup is untrusted input).
@@ -95,7 +107,7 @@
   }
 
   function context(){
-    return { u: State.uniform, female: State.gender === 'female', g: gradeOf() };
+    return { u: State.uniform, female: State.gender === 'female', g: gradeOf(), chestBadges: chestBadgeCount() };
   }
 
   // Name fields that only some uniforms use: the first name on the flight suit tags (8.2.4.1), the
@@ -117,7 +129,7 @@
     const c = context();
     const active = OPTIONS.filter(o => o.when(c));
     const g = State.garment || {};
-    const signature = JSON.stringify([c.u, c.female, c.g.category, active.map(o => o.key), g]);
+    const signature = JSON.stringify([c.u, c.female, c.g.category, c.chestBadges, active.map(o => o.key), g]);
     if(!force && signature === lastSignature) return;
     lastSignature = signature;
     host.textContent = '';

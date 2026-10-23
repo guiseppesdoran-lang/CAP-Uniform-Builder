@@ -31,7 +31,7 @@
   // Options for the garment itself (sleeve length, skirt, headgear...). Defaults per uniform.
   const GARMENT_DEFAULTS = {
     sleeve: 'short', femaleTop: 'shirt', underlayer: 'shirt', skirt: 'a-line', headgear: 'auto',
-    chevron: '', scarf: false, jacket: true, esPatch: 'none', noGradeTrack: 'officer', plateGrade: true
+    chevron: '', scarf: false, jacket: true, esPatch: 'none', noGradeTrack: 'officer', plateGrade: true, badgeLayout: 'column'
   };
   function garmentOptions(){
     const g = Object.assign({}, GARMENT_DEFAULTS, State.garment || {});
