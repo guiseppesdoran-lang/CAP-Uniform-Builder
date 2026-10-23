@@ -55,17 +55,24 @@ document.addEventListener('mouseout', e => {
 /* ===========================
    SETUP FLOW
    =========================== */
+// What the setup choices unlock, worked out from State alone: the rank list needs a membership
+// type, and the uniform and cut blocks need membership and rank (they start as .disabledBlock,
+// which also turns off pointer events). Anything that sets State without going through the
+// change handlers (Resume, Load, Import, Undo) reaches this through refreshUI(), so the blocks
+// can never stay locked over controls that already show their values.
+function capubSyncSetupGates(){
+  const enableUniformGender = !!State.membership && !!State.rank;
+  rankSetupSelect.disabled = !State.membership;
+  uniformBlock.classList.toggle('disabledBlock', !enableUniformGender);
+  genderBlock.classList.toggle('disabledBlock', !enableUniformGender);
+}
 function updateSetupGates(){
   const readyMembership = !!State.membership;
   const readyRank       = !!State.rank;
   const readyGender     = !!State.gender;
 
-  rankSetupSelect.disabled = !readyMembership;
+  capubSyncSetupGates();
   syncCadetFirstSergeantControl();
-
-  const enableUniformGender = readyMembership && readyRank;
-  uniformBlock.classList.toggle('disabledBlock', !enableUniformGender);
-  genderBlock.classList.toggle('disabledBlock', !enableUniformGender);
 
   if(readyMembership && readyRank && readyGender && State.uniform){
     fullRender();

@@ -212,6 +212,9 @@ function refreshUI(){
   syncRibbonRackColumnsControl();
   syncCadetFirstSergeantControl();
 
+  // State is the source of truth: unlock the uniform and cut blocks from it, so a restored
+  // setup (Resume, Load, Import, Undo) is never left behind the "choose a rank first" lock.
+  if(typeof capubSyncSetupGates === 'function') capubSyncSetupGates();
   highlightActiveUniformButton();
   applyMemberTypeToUniformOptions();
 
