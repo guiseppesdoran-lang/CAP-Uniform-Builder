@@ -8,6 +8,7 @@ const path = require('node:path');
 
 const root = path.join(__dirname, '..');
 const core = require('../js/engine/core.js');
+const C = require('../js/engine/compose.js');
 const G = require('../js/engine/grades.js');
 const P = require('../js/engine/profiles.js');
 require('../js/engine/profiles-field.js');
@@ -47,9 +48,11 @@ function share(r, poly){
 }
 const box = l => ({ x: l.x, y: l.y, w: l.w, h: l.h });
 
-// ---- 1. Class A and semi-formal: a badge on the lapel is drawn over it ---------------------------------------
+// ---- 1. Class A and semi-formal: the collar lies over every badge ------------------------------------------
+// (Ethan 2026-10-22, 'the collar should be over the badges'; this replaces the earlier rule that lifted a badge that reached the lapel
+// above it, D8)
 
-test('Class A and cadet semi-formal: no badge lies under a higher-z lapel foreground layer (4.1.5.2.2.4.1, 4.1.9.4.4.1)', async () => {
+test('Class A and cadet semi-formal: every badge is below the lapel foreground, none is lifted over a lapel (4.1.5.2.2.4.1, 4.1.9.4.4.1, 11.1.8)', async () => {
   const cases = [
     ['blues_a', 'female', 'cadet', 'C/Maj', [AIRCREW, GT]], ['blues_a', 'male', 'senior', 'Capt', [PILOT, GT]],
     ['blues_a', 'female', 'senior', 'Col', [PILOT, GT]], ['blues_a', 'male', 'cadet', 'C/Maj', [AIRCREW, GT]],
@@ -66,14 +69,31 @@ test('Class A and cadet semi-formal: no badge lies under a higher-z lapel foregr
     const bs = scene.layers.filter(l => l.role === 'badge');
     assert.equal(bs.length, 2, `${uniform} ${sex} ${rank}: two left badges`);
     for(const l of bs){
+      assert.ok(l.z < fg.z, `${uniform} ${sex} ${rank}: ${l.key} is below the lapel foreground (z ${l.z} vs ${fg.z})`);
+      assert.equal(l.z, C.Z.badge, `${uniform} ${sex} ${rank}: ${l.key} is not lifted`);
       if(polys.some(p => share(box(l), p) > 0)){
         touched++;
-        assert.ok(l.z > fg.z, `${uniform} ${sex} ${rank}: ${l.key} reaches the lapel, so it is above the lapel foreground (z ${l.z} vs ${fg.z})`);
         for(const ins of scene.layers.filter(x => /lapel-(us|cap)/.test(x.id || ''))) assert.ok(ins.z > l.z, `${uniform} ${sex} ${rank}: the lapel insignia stays above ${l.key}`);
       }
     }
   }
   assert.ok(touched >= 3, 'the cases include badges that reach the lapel (' + touched + ')');
+});
+
+test('Class A: the lapel foreground group covers the lapel where the wings cross it (its face polygon is the coat sheet\'s lapel polygon), and the wings stay below it', async () => {
+  const twelve = [];
+  for(let i = 0; i < 12; i++) twelve.push(RACK[i % RACK.length]);
+  const scene = await compose(build('blues_a', 'female', 'senior', 'Capt', [PILOT], { ribbons: twelve }));
+  const fg = scene.layers.find(l => /lapel-foreground$/.test(l.key || ''));
+  const fgSpec = await store.load(fg.id);
+  const base = await store.load(scene.layers.find(l => l.key === 'base:jacket').id);
+  const wings = scene.layers.find(l => l.role === 'badge');
+  const face = fgSpec.landmarks.lapel_face_left.points;
+  assert.ok(share(box(wings), face) > 0.05, 'the wings cross the lapel face');
+  assert.ok(wings.z < fg.z, 'the wings are below the lapel foreground');
+  // the foreground's face is the sheet's lapel: nothing of the garment's lapel polygon is left uncovered where the wings are
+  const lapel = base.landmarks.lapel_left.points;
+  assert.ok(Math.abs(share(box(wings), lapel) - share(box(wings), face)) < 0.02, 'the foreground face covers the garment lapel polygon where the wings are');
 });
 
 // ---- 2. Class B and aviator shirts: the collar lies over a badge that reaches it -------------------------------

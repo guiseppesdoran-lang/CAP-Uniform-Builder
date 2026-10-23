@@ -15,10 +15,8 @@
   const PLATE_WHITE = '#f4f6f8';
   const ENGRAVED_BLUE = '#1f2f5c';
   const LAPEL_Z = Z.badge + 0.6;
-  // A badge that reaches the lapel's drawn area lies on top of it: it is pinned on the coat, and a badge
-  // the lapel half hides is not 'worn and visible' (4.1.5.2.2.4.1, 4.1.9.4.4.1). Above the lapel foreground
-  // (Z.badge + 0.5), below the lapel insignia (LAPEL_Z).
-  const BADGE_OVER_LAPEL_Z = Z.badge + 0.55;
+  // The collar lies over every badge: the lapel foreground (Z.badge + 0.5) is drawn above the badges (Z.badge) and below the
+  // lapel insignia (LAPEL_Z); no badge is lifted over a lapel (Ethan 2026-10-22: 'the collar should be over the badges'; 11.1.8).
   // The badges that may take the CAP Crest's place on the corporate blazer (4.2.3.1.1.1). Not the
   // whole service family: the Volunteer University badge and the National Staff badge may not.
   const SERVICE_IDS = new Set(['senior_advisory_group_badge', 'national_executive_committee_badge', 'command_council_badge', 'cap_national_command_board_badge']);
@@ -435,17 +433,6 @@
     if(poly.some(p => p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h)) return true;
     for(let i = 0; i <= 24; i++) for(let j = 0; j <= 24; j++) if(inside({ x: r.x + i * r.w / 24, y: r.y + j * r.h / 24 })) return true;
     return false;
-  }
-
-  // Badges that reach a lapel are drawn above the lapel foreground (see BADGE_OVER_LAPEL_Z). The lapel
-  // polygons are the coat sheet's lapel_left / lapel_right landmarks.
-  function badgesOverLapel(ctx){
-    const polys = ['lapel_left', 'lapel_right'].map(n => ctx.landmark(n)).filter(l => l && l.points && l.points.length > 2).map(l => l.points);
-    if(!polys.length) return;
-    for(const l of ctx.layers){
-      if(l.role !== 'badge' || l.z >= BADGE_OVER_LAPEL_Z || (l.rotate || 0)) continue;
-      if(polys.some(p => boxTouchesPolygon(l, p))) l.z = BADGE_OVER_LAPEL_Z;
-    }
   }
 
   // The polygon grown outward by `d` inches (a mitred offset), so the leaf's own edge stroke, half of which lies
@@ -1021,7 +1008,6 @@
     if(sex === 'male') geo.marks = { x: rest.x, y: rest.y, anchor: 'top_center' };
     else geo.belowRibbons = { x: rest.x, y: (rack ? rack.y + rack.h : rest.y) + 1.5, anchor: 'top_center' };
     await dressBadges(ctx, b, geo);
-    badgesOverLapel(ctx);
 
     if(!semi){
       await lapelForeground(ctx, A, g);
@@ -1664,21 +1650,17 @@
     }
     // The lapel (and the collar, over the bow tie) is drawn again above the garment layers, under the tie.
     ctx.foreground(['lapel-foreground'], Z.garmentLayer + 0.5);
-    // Fallback only (not even one column clears the lapel and the arm seam): CAPR 39-1 11.1.8 lets the lapel cover
-    // part of the awards, never the reverse, so the wearer's left lapel is drawn once more above every miniature drape,
-    // medal and device (Z.badge + 0.5, the Class A coats' order), clipped to its own polygon grown by the edge
-    // stroke's half width. The badges stay whole above it (BADGE_OVER_LAPEL_Z).
-    if(box && !cleared){
+    // The collar lies over every badge (Ethan 2026-10-22; CAPR 39-1 11.1.8 lets the lapel cover part of the awards, never the
+    // reverse). Normally nothing is under the wearer's left lapel (the rack and the chaplain badge are moved clear of it); where
+    // a miniature, a device or a badge does meet it (not even one column clears the lapel and the arm seam, or the badge could not
+    // be moved clear), the wearer's left lapel is drawn once more above them (Z.badge + 0.5, the Class A coats' order), clipped
+    // to its own polygon grown by the edge stroke's half width. No badge is lifted over it.
+    const touching = ctx.layers.filter(l => l.role === 'badge' && !(l.rotate || 0) && C.rectHitsPolygon(l, lapelPoly));
+    if((box && !cleared) || touching.length){
       ctx.foreground(['lapel-foreground'], Z.badge + 0.5);
       ctx.layers[ctx.layers.length - 1].clip = growPolygon(lapelPoly, 0.03);
     }
-    const touching = [];
-    for(const l of ctx.layers){
-      if(l.role !== 'badge' || (l.rotate || 0) || !C.rectHitsPolygon(l, lapelPoly)) continue;
-      l.z = Math.max(l.z, BADGE_OVER_LAPEL_Z);
-      touching.push(l);
-    }
-    for(const l of touching) ctx.note(`${l.title || 'The badge'} meets the lapel; it is drawn whole over it, the lapel covers the miniature medals only (CAPR 39-1 11.1.8)`);
+    for(const l of touching) ctx.note(`The lapel lies over part of the ${l.title || 'badge'}: it is worn under the collar there (CAPR 39-1 11.1.8)`);
   }
 
   P.register('blues_a', { title: 'Service Dress (Class A)', compose: composeClassA });
