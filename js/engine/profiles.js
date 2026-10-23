@@ -241,7 +241,10 @@
   // (chord of the leaf on that line), a 1 in measure from the front edge to the near outline. The row is turned, so its near outline is where its
   // corner reaches toward the front edge: the 1 in is taken to that corner.
   async function collarOfficerRow(ctx, g, opts){
-    const id = G.cadetOfficerInsignia(g, 'cloth-bordered-regular');
+    // `opts.miniatureKeys` (the ABU and CFU, 5.1.1.1.1.3, 5.2.1.1.1.4: 'Cadet Colonels and Cadet Captains may wear miniature, embroidered insignia') names the
+    // grades drawn in the miniature cloth-bordered form, which is what fits the leaf; the others wear regular size.
+    const mini = opts && opts.miniatureKeys && opts.miniatureKeys.includes(g.key);
+    const id = G.cadetOfficerInsignia(g, mini ? 'cloth-bordered-miniature' : 'cloth-bordered-regular');
     const polys = collarPolygons(ctx);
     if(!id || polys.length < 2) return;
     if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }

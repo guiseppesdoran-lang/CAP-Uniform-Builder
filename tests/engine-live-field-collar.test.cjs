@@ -108,6 +108,22 @@ for(const uniform of ['abu', 'corporate_field']){
       }
     });
 
+    test(`${uniform} ${gender}: Cadet Colonels and Cadet Captains wear the miniature cloth-bordered form, which lies wholly on the leaf; the other cadet officers wear regular size (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
+      const spec = await store.load(SHEETS[uniform]);
+      for(const [rank, form] of [['C/2d Lt', 'regular'], ['C/1st Lt', 'regular'], ['C/Capt', 'miniature'], ['C/Maj', 'regular'], ['C/Lt Col', 'regular'], ['C/Col', 'miniature']]){
+        const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank), store);
+        for(const side of ['right', 'left']){
+          const l = layer(scene, side), poly = core.landmark(spec, side === 'right' ? 'collar_right' : 'collar_left').points;
+          assert.ok(l, `${rank} ${side}`);
+          assert.match(l.id, new RegExp(`cloth-bordered-${form}$`), `${rank} ${side}: ${l.id}`);
+          const c = { x: l.x + l.w / 2, y: l.y + l.h / 2 }, a = l.rotate * Math.PI / 180;
+          const corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * l.w / 2 * Math.cos(a) - j * l.h / 2 * Math.sin(a), y: c.y + i * l.w / 2 * Math.sin(a) + j * l.h / 2 * Math.cos(a) }));
+          const inside = q => { let r = false; for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){ const pi = poly[i], pj = poly[j]; if((pi.y > q.y) !== (pj.y > q.y) && q.x < (pj.x - pi.x) * (q.y - pi.y) / (pj.y - pi.y) + pi.x) r = !r; } return r; };
+          if(form === 'miniature') assert.ok(corners.every(inside), `${rank} ${side}: the miniature row lies wholly on the leaf`);
+        }
+      }
+    });
+
     test(`${uniform} ${gender}: the Lieutenant and Captain bars lie parallel to the bottom edge, mirrored; Major, Lt Col, Col keep the regulation's own turn (5.1.1.1.1.1, 5.2.1.1.1.1)`, async () => {
       const spec = await store.load(SHEETS[uniform]);
       for(const rank of ['2d Lt', '1st Lt', 'Capt']){

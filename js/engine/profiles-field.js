@@ -229,8 +229,9 @@
         if(side === 'right') await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => fieldLeadingEdge(ctx, poly) });
       }else if(g.category === 'cadet-officer'){
         // 'One inch from the front of the collar and centered' (5.1.1.1.1.3, 5.2.1.1.1.4): the row parallel to the leaf's bottom edge, its near outline 1 in
-        // from the front edge, centred on the leaf (H.collarOfficerRow, from the sheet's collar_left / collar_right polygons); drawn once, for both leaves.
-        if(side === 'right') await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => fieldLeadingEdge(ctx, poly) });
+        // from the front edge, centred on the leaf (H.collarOfficerRow, from the sheet's collar_left / collar_right polygons); drawn once, for both leaves. Cadet Colonels and
+        // Cadet Captains wear the miniature embroidered form, which the leaf can hold (5.1.1.1.1.3, 5.2.1.1.1.4); the other cadet officers wear regular size.
+        if(side === 'right') await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE, miniatureKeys: ['captain', 'colonel'], edgeOf: poly => fieldLeadingEdge(ctx, poly) });
       }else if(g.officer && !g.cadet){
         const s = slot('officer');
         if(!s) continue;
