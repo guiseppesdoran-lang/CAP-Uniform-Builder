@@ -431,12 +431,10 @@ const CAPUB_HONOR_CREDIT_RIBBONS = new Set(['curry_achievement','hap_arnold_achi
 const CAPUB_PLAIN_ACHIEVEMENT_RIBBONS = new Set(['wright_brothers_award']);
 function capubRibbonOptionOverride(id){
   const pick = { label:'- Select -', value:'', devices:{} };
-  if(id === 'crisis_ribbon'){
-    // One award per service period; a later period adds a bronze clasp (the ICL that made the ribbon).
-    return [pick, ...[1,2,3,4,5].map(n => ({
-      label: n === 1 ? '1st service period (basic ribbon)' : `${ordinalLabel(n)} service period / ${n - 1} Bronze Clasp${n > 2 ? 's' : ''}`,
-      value:`award_${n}`, devices:{}
-    }))];
+  if(globalThis.CAPUBRibbonAwards?.FAMILIES?.[id]?.once){
+    // An award given a single time (the Crisis Service Ribbon, the Cadet of the Year awards): no clasps,
+    // no repeat counts, only the basic award.
+    return [pick, { label:'Basic Award', value:'award_1', devices:{} }];
   }
   if(id === 'cadet_recruiter_ribbon'){
     // 21k(1): two recruits earn the ribbon, a bronze clasp for each additional two, a silver clasp for

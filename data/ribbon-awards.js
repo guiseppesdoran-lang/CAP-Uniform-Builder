@@ -44,15 +44,17 @@
     lifesaving_award: { devices: 'clasps', lifesavingStar: true },
     cadet_recruiter_ribbon: { devices: 'recruiter', first: 2, step: 2, silverStep: 10 },
     cap_senior_recruiter_ribbon: { devices: 'recruiter', first: 7, step: 10, silverStep: 50 },
-    // 6b: subsequent awards of the same ribbon are marked by the bronze clasp. The Crisis Service Ribbon
-    // is earned once per service period, later periods are marked by the clasp (ICL); the IACE and the
-    // annual cadet awards follow the general rule.
-    crisis_ribbon: { devices: 'clasps' },
+    // 6b: subsequent awards of the same ribbon are marked by the bronze clasp; the IACE follows that rule.
+    // `once`: awarded a single time, so no clasp and no repeat count. The Cadet of the Year awards (AFA,
+    // AFSA, VFW officer and NCO) are given for one year's winner (CAPR 39-3); the Crisis Service Ribbon is
+    // one award, by Ethan's ruling (the earlier reading, one per service period with a clasp for each later
+    // period, is dropped: .scratch/DECISIONS.md). `devices` stays for shape compatibility.
+    crisis_ribbon: { devices: 'clasps', once: true },
     iace_ribbon: { devices: 'clasps' },
-    afa_award: { devices: 'clasps' },
-    afsa_award: { devices: 'clasps' },
-    vfw_officer_award: { devices: 'clasps' },
-    vfw_nco_award: { devices: 'clasps' },
+    afa_award: { devices: 'clasps', once: true },
+    afsa_award: { devices: 'clasps', once: true },
+    vfw_officer_award: { devices: 'clasps', once: true },
+    vfw_nco_award: { devices: 'clasps', once: true },
     Air_Force_Organizational_Excellence_Award: { devices: 'olc' },
     air_force_aerial_achievement_medal: { devices: 'olc' },
     air_medal: { devices: 'olc' },
@@ -209,12 +211,12 @@
   const HINTS = {
     search_find_ribbon: 'A bronze clasp for each additional distress find, or for each additional 20 non-distress finds. A propeller marks a find made as aircrew (CAPR 39-3, 21d).',
     air_search_and_rescue_ribbon: 'A bronze clasp for each additional 10 sorties; the propeller marks aircrew sorties (CAPR 39-3, 21c).',
-    crisis_ribbon: 'One award for each service period; a later period is marked by a bronze clasp (CAPR 39-3, Crisis Service Ribbon).',
+    crisis_ribbon: 'Earned once; it takes no clasp and has no repeat count.',
     iace_ribbon: 'A bronze clasp marks each later exchange (CAPR 39-3, 6b).',
-    afa_award: 'A bronze clasp marks each later award (CAPR 39-3, 6b).',
-    afsa_award: 'A bronze clasp marks each later award (CAPR 39-3, 6b).',
-    vfw_officer_award: 'A bronze clasp marks each later award (CAPR 39-3, 6b).',
-    vfw_nco_award: 'A bronze clasp marks each later award (CAPR 39-3, 6b).',
+    afa_award: 'Earned once, for the year as Unit Cadet of the Year; no clasp (CAPR 39-3).',
+    afsa_award: 'Earned once, for the year as Unit Cadet of the Year; no clasp (CAPR 39-3).',
+    vfw_officer_award: 'Earned once, for the year as Outstanding Cadet Officer of the Year; no clasp (CAPR 39-3).',
+    vfw_nco_award: 'Earned once, for the year as Outstanding Cadet NCO of the Year; no clasp (CAPR 39-3).',
     cadet_recruiter_ribbon: 'Two recruits earn the ribbon; a bronze clasp for each additional two, and a silver clasp replaces five (CAPR 39-3, 21k(1)).',
     cap_senior_recruiter_ribbon: 'Seven recruits earn the ribbon; a bronze clasp for each additional ten, and a silver clasp replaces five (CAPR 39-3, 21k(2)).',
     national_commanders_citation: 'Worn in the place of the Gill Robb Wilson Award: one of the two, not both (CAPR 39-3, Attachment 2, Note 2).',
@@ -257,6 +259,8 @@
     const fam = FAMILIES[id];
     const one = devices => [{ devices, centered: false }];
     if(!fam) return one([]);
+    // Awarded once: a single ribbon, no devices, whatever count a saved selection carries.
+    if(fam.once) return one([]);
 
     switch(fam.devices){
       case 'separate': {

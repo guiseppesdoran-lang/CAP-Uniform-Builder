@@ -89,30 +89,39 @@ test('order: federal awards (AAF Air Medal, then the Aerial Achievement Medal), 
 
 // ---- ribbons repeated by the bronze clasp -----------------------------------------------------------------------
 
-test('the Crisis Service Ribbon is earned once a service period and a later period adds a bronze clasp (39-3, Crisis Service Ribbon)', () => {
-  ev("State.membership = 'senior'");
-  const options = ev("getRibbonAwardOptions('crisis_ribbon').filter(o => o.value)");
-  assert.ok(options.length >= 3);
-  options.forEach((o, i) => {
-    const parts = RA.resolve('crisis_ribbon', { awardValue: o.value, awardLabel: o.label });
-    assert.equal(parts.length, 1);
-    assert.deepEqual(parts[0].devices, Array(i).fill('device-clasp-bronze'), o.label);
-  });
-  // An imported 'earned' selection is the first period.
-  assert.equal(ev("getRibbonSelectionOption('crisis_ribbon', 'earned').value"), options[0].value);
+test('the IACE ribbon takes a bronze clasp for each later award, a silver clasp for five (39-3 6b)', () => {
+  ev("State.membership = 'cadet'");
+  const options = ev("getRibbonAwardOptions('iace_ribbon').filter(o => o.value)");
+  assert.ok(options.length > 5, 'more than one choice');
+  const devices = n => RA.resolve('iace_ribbon', { awardValue: options[n - 1].value, awardLabel: options[n - 1].label })[0].devices;
+  assert.deepEqual(devices(1), []);
+  assert.deepEqual(devices(2), ['device-clasp-bronze']);
+  assert.deepEqual(devices(6), ['device-clasp-silver']);
+  assert.deepEqual(devices(7), ['device-clasp-silver', 'device-clasp-bronze']);
 });
 
-test('the IACE ribbon and the annual cadet awards take a bronze clasp for each later award, a silver clasp for five (39-3 6b)', () => {
-  for(const id of ['iace_ribbon', 'afa_award', 'afsa_award', 'vfw_officer_award', 'vfw_nco_award']){
-    ev("State.membership = 'cadet'");
-    const options = ev(`getRibbonAwardOptions('${id}').filter(o => o.value)`);
-    assert.ok(options.length > 5, `${id}: more than one choice`);
-    const devices = n => RA.resolve(id, { awardValue: options[n - 1].value, awardLabel: options[n - 1].label })[0].devices;
-    assert.deepEqual(devices(1), []);
-    assert.deepEqual(devices(2), ['device-clasp-bronze']);
-    assert.deepEqual(devices(6), ['device-clasp-silver']);
-    assert.deepEqual(devices(7), ['device-clasp-silver', 'device-clasp-bronze']);
+// Ethan: "this isn't a thing" (the Crisis Service Ribbon's Nth service period / N bronze clasps) and "OTY awards
+// are once" (the AFA Award to Unit Cadet of the Year showing 2nd/3rd/4th Award). Each of these is awarded once.
+test('the Crisis Service Ribbon and the Cadet of the Year awards (AFA, AFSA, VFW officer, VFW NCO) are awarded once: only the basic award, no clasps, no repeat counts', () => {
+  for(const id of ['crisis_ribbon', 'afa_award', 'afsa_award', 'vfw_officer_award', 'vfw_nco_award']){
+    assert.equal(RA.FAMILIES[id].once, true, id);
+    for(const membership of ['cadet', 'senior']){
+      ev(`State.membership = '${membership}'`);
+      const options = ev(`getRibbonAwardOptions('${id}')`);
+      assert.deepEqual(Array.from(options, o => [o.label, o.value]), [['- Select -', ''], ['Basic Award', 'award_1']], `${id} ${membership}`);
+    }
+    // Whatever count a saved selection or an import carries, the ribbon wears no device and is one ribbon.
+    for(const [awardValue, awardLabel] of [['award_1', 'Basic Award'], ['award_4', '4th Award'], ['count_6', ''], ['capub_total_9', '9th Award'], ['bronze_clasp_3', '3rd service period / 2 Bronze Clasps']]){
+      const parts = RA.resolve(id, { awardValue, awardLabel });
+      assert.equal(parts.length, 1, `${id} ${awardValue}`);
+      assert.deepEqual(parts[0].devices, [], `${id} ${awardValue}`);
+    }
+    assert.match(RA.hint(id), /once/i, id);
+    assert.doesNotMatch(RA.hint(id), /clasp marks|service period/i, id);
   }
+  // An imported 'earned' selection is the one award.
+  ev("State.membership = 'senior'");
+  assert.equal(ev("getRibbonSelectionOption('crisis_ribbon', 'earned').value"), 'award_1');
 });
 
 test('the AFOEA stays a single award (ICL 18-02: one award period)', () => {
