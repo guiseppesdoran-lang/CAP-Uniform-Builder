@@ -292,33 +292,68 @@
       }
       return;
     }
-    // Three or four: measured from the blue edges, the bottom row 1/8 in above the tape, 1/2 in
-    // between badges side by side, 1/4 in between rows (7.1.1.3.1.3-4).
+    // Three or four (OCP only; the ABU and CFU wear two): measured from the blue cloth edges, which carry the 1/8 in border
+    // (7.1.1.3.1 'Badge placement is measured from the blue fabric edges'), the lowest row's blue bottom edge 1/8 in above the CAP
+    // tape (7.1.1.3.1.3, 7.1.1.3.1.4), badges stacked on one another centred on each other, the smaller on the larger, and the
+    // vertical spacing set by the larger badges. The regulation allows two layouts for each count; the defaults are the first:
+    //   three: a single column, 1/4 in between badges, highest on top            | opt.badgeLayout 'pair': two side by side 1/2 in
+    //          apart on the tape, the third centred 1/4 in above them
+    //   four:  two stacks of two, 1/4 in between badges vertically and 1/2 in    | opt.badgeLayout 'pair': two side by side 1/2 in
+    //          horizontally; highest badges on top, viewer's left first               apart, the other two stacked on the centre line 1/4 in above, 1/4 in apart
     const gapX = 0.5, rowGap = 0.25, base = T.y - 0.125;
+    const pair = !!(b.opt && b.opt.badgeLayout === 'pair');
     ctx.measure({ x: T.x, y: T.y }, { x: T.x, y: base }, '⅛ in');
+    // Two badges side by side on the base line, 1/2 in apart, centred on the tape; returns their boxes.
+    const sideBySide = async (i, j) => {
+      const wi = specs[i].w, wj = specs[j].w, W = wi + gapX + wj;
+      const l = await ctx.place(list[i].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x - W / 2 + wi / 2, y: base } }, opts(i)));
+      const r = await ctx.place(list[j].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x + W / 2 - wj / 2, y: base } }, opts(j)));
+      ctx.measure({ x: l.x + l.w, y: base - 0.3 }, { x: r.x, y: base - 0.3 });
+      return [l, r];
+    };
+    if(list.length === 3 && !pair){
+      // 7.1.1.3.1.3, a single vertical column with 1/4 in between badges: the third (lowest precedence) at the bottom.
+      let bottom = base;
+      const boxes = [];
+      for(const i of [2, 1, 0]){
+        const box = await ctx.place(list[i].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: bottom } }, opts(i)));
+        boxes[i] = box;
+        if(box) bottom = box.y - rowGap;
+      }
+      for(const i of [2, 1]) if(boxes[i] && boxes[i - 1]) ctx.measure({ x: T.x, y: boxes[i - 1].y + boxes[i - 1].h }, { x: T.x, y: boxes[i].y });
+      return;
+    }
     if(list.length === 3){
-      const w2 = specs[1].w, w3 = specs[2].w, W = w2 + gapX + w3;
-      const a = await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x - W / 2 + w2 / 2, y: base } }, opts(1)));
-      const c = await ctx.place(list[2].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x + W / 2 - w3 / 2, y: base } }, opts(2)));
+      // 7.1.1.3.1.3, second form: two side by side, the third centred on the tape 1/4 in above the lower two.
+      const [a, c] = await sideBySide(1, 2);
       const rowTop = Math.min(a.y, c.y);
       const up = await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: rowTop - rowGap } }, opts(0)));
-      // 1/2 in between the two side by side, 1/4 in from them to the third (7.1.1.3.1.3).
-      ctx.measure({ x: a.x + a.w, y: base - 0.3 }, { x: c.x, y: base - 0.3 });
       if(up) ctx.measure({ x: T.x, y: up.y + up.h }, { x: T.x, y: rowTop });
       return;
     }
-    // Four: two columns of two, precedence top row first, viewer's left first.
-    const colL = Math.max(specs[0].w, specs[2].w), colR = Math.max(specs[1].w, specs[3].w);
-    const W = colL + gapX + colR;
-    const xL = T.x - W / 2 + colL / 2, xR = T.x + W / 2 - colR / 2;
-    const b3 = await ctx.place(list[2].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xL, y: base } }, opts(2)));
-    const b4 = await ctx.place(list[3].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xR, y: base } }, opts(3)));
-    const topY = Math.min(b3.y, b4.y) - rowGap;
-    ctx.measure({ x: xL + colL / 2, y: base }, { x: xL + colL / 2 + gapX, y: base });
-    ctx.measure({ x: xL, y: Math.min(b3.y, b4.y) }, { x: xL, y: topY });
-    await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xL, y: topY } }, opts(0)));
-    await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xR, y: topY } }, opts(1)));
-    ctx.measure({ x: xR, y: Math.min(b3.y, b4.y) }, { x: xR, y: topY });
+    if(!pair){
+      // 7.1.1.3.1.4, first form: two columns of two; the top row is the two highest badges, the viewer's left first. A stack is centred on its
+      // wider badge; the rows keep 1/4 in measured from the taller of the lower badges.
+      const colL = Math.max(specs[0].w, specs[2].w), colR = Math.max(specs[1].w, specs[3].w);
+      const W = colL + gapX + colR;
+      const xL = T.x - W / 2 + colL / 2, xR = T.x + W / 2 - colR / 2;
+      const b3 = await ctx.place(list[2].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xL, y: base } }, opts(2)));
+      const b4 = await ctx.place(list[3].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xR, y: base } }, opts(3)));
+      const topY = Math.min(b3.y, b4.y) - rowGap;
+      ctx.measure({ x: xL + colL / 2, y: base }, { x: xL + colL / 2 + gapX, y: base });
+      ctx.measure({ x: xL, y: Math.min(b3.y, b4.y) }, { x: xL, y: topY });
+      await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xL, y: topY } }, opts(0)));
+      await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xR, y: topY } }, opts(1)));
+      ctx.measure({ x: xR, y: Math.min(b3.y, b4.y) }, { x: xR, y: topY });
+      return;
+    }
+    // 7.1.1.3.1.4, second form: two side by side on the tape, the other two stacked on the centre line 1/4 in above them, 1/4 in apart.
+    const [l, r] = await sideBySide(2, 3);
+    const rowTop = Math.min(l.y, r.y);
+    const lower = await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: rowTop - rowGap } }, opts(1)));
+    ctx.measure({ x: T.x, y: lower.y + lower.h }, { x: T.x, y: rowTop });
+    const top = await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: lower.y - rowGap } }, opts(0)));
+    if(top) ctx.measure({ x: T.x, y: top.y + top.h }, { x: T.x, y: lower.y });
   }
 
   // Command insignia: current commanders 1/2 in above the name tape; graduated commanders on the
