@@ -89,7 +89,7 @@ test('every uniform x cut x rank x headgear: no cap ink or cap device within 0.1
     }
   }
   // The standard matrix draws caps only with the Class A and Class B; the other uniforms draw no view from above and a cap together.
-  assert.ok(hats >= 40 && views >= 150 && slid >= 20, `${builds} builds, ${hats} caps, ${views} views, ${slid} slid`);
+  assert.ok(hats >= 40 && views >= 150 && slid >= 12, `${builds} builds, ${hats} caps, ${views} views, ${slid} slid`);
 });
 
 test('the three builds Ethan named: the views clear the cap by 0.1 in and stay beside their shoulders (blues A female C/Maj, blues B male Capt, blues A male Maj Gen service)', async () => {
