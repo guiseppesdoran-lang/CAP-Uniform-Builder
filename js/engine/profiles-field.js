@@ -179,7 +179,7 @@
   const CLOTH_BORDER = 0.125;
 
   // The leading edge of a collar leaf of the ABU and CFU (LIVE-FIELD B7, Ethan: the grade's axis is parallel to the collar's leading edge,
-  // centred, 1 in from it; 5.1.1.1.1, 5.2.1.1.1): the sheet's own `collar_slots[side].leading_edge` (two points, 0.01 in, as {p1, p2} or
+  // centred, 1 in from it; 5.1.1.1.1, 5.2.1.1.1): the sheet's own `collar_slots[side].leading_edge` (two points, 0.01 in, as {points: [[x, y], [x, y]]}, {p1, p2} or
   // [[x, y], [x, y]]) when it states one, else the longest edge of the leaf's collar_left / collar_right polygon (on the five-point leaf
   // that is the edge from the collar tip along the neck opening, not the short bottom edge the shirts' search finds). The same code serves
   // both leaves, so the two are mirror images; `collarPoint` is the end farther from the centre line. Returns { collarPoint, rollEnd, inward }.
@@ -193,7 +193,9 @@
     const le = slots && slots[leafSide(ctx, poly)] && slots[leafSide(ctx, poly)].leading_edge;
     let a = null, b = null;
     const pt = q => q && { x: (q.x != null ? q.x : q[0]) / 100, y: (q.y != null ? q.y : q[1]) / 100 };
-    if(le && (le.p1 || le[0]) && (le.p2 || le[1])){ a = pt(le.p1 || le[0]); b = pt(le.p2 || le[1]); }
+    // The sheets state it as { points: [[x, y], [x, y]], angle_deg, note } (the redrawn notch collar, tip to apex); {p1, p2} and a bare pair are read too.
+    const pair = le && (le.points || (le.p1 && le.p2 ? [le.p1, le.p2] : le));
+    if(pair && pair[0] && pair[1]){ a = pt(pair[0]); b = pt(pair[1]); }
     else{
       let best = 0;
       for(let i = 0; i < pts.length; i++){

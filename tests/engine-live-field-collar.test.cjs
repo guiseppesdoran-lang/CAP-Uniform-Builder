@@ -40,7 +40,7 @@ const deg = r => r * 180 / Math.PI;
 function expectedEdge(spec, side){
   const le = spec.raw.collar_slots[side].leading_edge;
   const pts = core.landmark(spec, side === 'right' ? 'collar_right' : 'collar_left').points;
-  if(le){ const a = le.p1 || le[0], b = le.p2 || le[1]; return { a: { x: a[0] / 100, y: a[1] / 100 }, b: { x: b[0] / 100, y: b[1] / 100 } }; }
+  if(le){ const pair = le.points || (le.p1 && le.p2 ? [le.p1, le.p2] : le), a = pair[0], b = pair[1]; return { a: { x: a[0] / 100, y: a[1] / 100 }, b: { x: b[0] / 100, y: b[1] / 100 } }; }
   let best = null, len = 0;
   for(let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i + 1) % pts.length], l = Math.hypot(q.x - p.x, q.y - p.y); if(l > len){ len = l; best = { a: p, b: q }; } }
   return best;
@@ -129,6 +129,18 @@ test('the longest edge of the collar polygon is the front edge of the leaf on bo
       const e = expectedEdge(spec, side), f = spec.raw.collar_slots[side].front_edge;
       const a = { x: f.p1[0] / 100, y: f.p1[1] / 100 }, b = { x: f.p2[0] / 100, y: f.p2[1] / 100 };
       assert.ok(between({ x: b.x - a.x, y: b.y - a.y }, e) < 1, `${u} ${side}: ${between({ x: b.x - a.x, y: b.y - a.y }, e).toFixed(2)} deg from the slot's front edge`);
+    }
+  }
+});
+
+test('the sheets state the leading edge twice, as collar_slots[side].leading_edge.points and as the landmark collar_leading_edge_<side>, and the two agree (0.02 in); the engine reads the slot', async () => {
+  for(const sheet of Object.values(SHEETS)){
+    const spec = await store.load(sheet);
+    for(const side of ['right', 'left']){
+      const le = spec.raw.collar_slots[side].leading_edge;
+      assert.ok(le && le.points && le.points.length === 2, `${sheet} ${side}: leading_edge.points`);
+      const lm = core.landmark(spec, 'collar_leading_edge_' + side).points;
+      le.points.forEach((p, i) => assert.ok(Math.hypot(p[0] / 100 - lm[i].x, p[1] / 100 - lm[i].y) <= 0.02, `${sheet} ${side}: point ${i}`));
     }
   }
 });
