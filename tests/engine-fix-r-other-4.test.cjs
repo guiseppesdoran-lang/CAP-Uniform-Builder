@@ -179,19 +179,22 @@ test('semi-formal blazers: the miniature rack starts centred on the crest and mo
 // ---- 5. Shirts: the collar lies over every badge that reaches it, on the companion shirt figure too ------------
 
 const C = require('../js/engine/compose.js');
+const TWELVE_RIB = [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['air_search_and_rescue_ribbon'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
 test('aviator and Class B shirts, the aviator beside the blazer included: a ribbon or device that reaches a collar leaf is cut out by the leaf polygons where the leaf really is, a badge never is (4.2.5.1.3.1, 4.1.11.1.1.2.3.1; Ethan 2026-10-22, D8)', async () => {
   const builds = [];
   for(const gender of ['male', 'female']){
     for(const rank of ['Capt', 'Col']){
-      builds.push(['aviator_blazer', gender, rank, [PILOT, 'observer_badge', 'christian_chaplin']]);
-      builds.push(['aviator', gender, rank, [PILOT, 'observer_badge', 'christian_chaplin']]);
-      builds.push(['blues_b', gender, rank, [PILOT, 'emergency_services_badge', 'communications_technician_badge']]);
+      for(const rib of [RIB, TWELVE_RIB]){
+        builds.push(['aviator_blazer', gender, rank, [PILOT, 'observer_badge', 'christian_chaplin'], rib]);
+        builds.push(['aviator', gender, rank, [PILOT, 'observer_badge', 'christian_chaplin'], rib]);
+        builds.push(['blues_b', gender, rank, [PILOT, 'emergency_services_badge', 'communications_technician_badge', 'christian_chaplin'], rib]);
+      }
     }
   }
   let reached = 0;
-  for(const [uniform, gender, rank, badgeIds] of builds){
+  for(const [uniform, gender, rank, badgeIds, rib] of builds){
     for(const sleeve of ['short', 'long']){
-      const scene = await compose(hb(uniform, gender, 'senior', rank, { badgeIds, ribbonSel: RIB, opt: { headgear: 'none', sleeve, underlayer: 'shirt', femaleTop: 'shirt' } }));
+      const scene = await compose(hb(uniform, gender, 'senior', rank, { badgeIds, ribbonSel: rib, opt: { headgear: 'none', sleeve, underlayer: 'shirt', femaleTop: 'shirt' } }));
       for(const sheet of scene.layers.filter(l => l.role === 'garment')){
         const spec = await store.load(sheet.id);
         const polys = ['collar_left', 'collar_right'].map(n => spec.landmarks[n]).filter(l => l && l.points).map(l => l.points.map(p => ({ x: p.x + sheet.x, y: p.y + sheet.y })));
@@ -210,7 +213,9 @@ test('aviator and Class B shirts, the aviator beside the blazer included: a ribb
       }
     }
   }
-  // the long sheets draw the closed collar (tie worn, 4.2.5.1.4): its leaves hang near the centre line and no badge or ribbon reaches them any more, so only the open collars of the short shirts count
+  // The shirt sheets are drawn at true size since the art sync (the pocket is 5.25 in wide, Class B 1.2171, aviator 1.2036), so seven or twelve ribbons and the badges
+  // above them no longer reach a collar leaf on the aviator shirts; the long sheets draw the closed collar (tie worn, 4.2.5.1.4) with its leaves near the centre line. What
+  // still reaches a leaf is the chaplain badge over twelve ribbons on the Class B shirt and blouse: a badge, never cut, which is what the loop above asserts.
   assert.ok(reached >= 1, `${reached} layers reach a collar leaf`);
 });
 
