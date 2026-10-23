@@ -320,8 +320,11 @@
       }
       const devs = (r.devices || []).filter(d => sizes[d]);
       const placed = awards.layoutDevices(r.centered ? devs : awards.sortRun(devs), sizes, { centered: r.centered, ribbonW: p.w, ribbonH: p.h });
+      // Devices that cannot all fit at full size are drawn smaller by one factor (awards.layoutDevices: the gap closes first).
+      const k = placed.scale || 1;
+      if(k < 1) ctx.note(`${r.title || r.key}: ${placed.length} devices do not fit the ribbon at full size; drawn at ${k.toFixed(2)} of their size, ${awards.DEVICE_END_MARGIN} in inside each end (CAPR 39-3 6b)`);
       placed.forEach((d, i) => {
-        const sz = sizes[d.id];
+        const sz = { w: sizes[d.id].w * k, h: sizes[d.id].h * k };
         ctx.layers.push({ type: 'asset', id: d.id, x: p.x + d.x - sz.w / 2, y: p.y + d.y - sz.h / 2, w: sz.w, h: sz.h, rotate: 0, origin: { x: p.x + d.x, y: p.y + d.y }, z: Z.device, role: 'device', key: `${r.key}:device:${i}`, className: 'ribbonDevice' });
       });
     }

@@ -61,36 +61,64 @@
     return ribbons;
   }
 
-  // Lay out the devices on one ribbon. Returns centres in inches from the ribbon's top-left.
-  // `devices` is in wearer's-right-first order (viewer's left first).
+  // A device never comes closer to the ribbon's end than this (CAPR 39-3 6b: devices are worn on the ribbon; the margin keeps the
+  // drawing and its stroke inside the ribbon's cut edge).
+  const DEVICE_END_MARGIN = 0.02;
+
+  // Lay out the devices on one ribbon. Returns centres in inches from the ribbon's top-left, and `.scale` on the array: the factor
+  // the devices must be drawn at (1 unless they could not fit). `devices` is in wearer's-right-first order (viewer's left first).
+  // When the devices do not fit at full size, the gap between them closes first (down to touching); only then are the devices scaled
+  // down, all by the same factor, until the group lies DEVICE_END_MARGIN inside both ends.
   function layoutDevices(devices, sizes, opts){
     const w = (opts && opts.ribbonW) || RIBBON_W;
     const h = (opts && opts.ribbonH) || RIBBON_H;
+    const margin = opts && opts.endMargin != null ? opts.endMargin : DEVICE_END_MARGIN;
     const centered = opts && opts.centered;
     const cy = h / 2;
-    if(!devices.length) return [];
+    const done = (list, scale) => { list.scale = scale; return list; };
+    if(!devices.length) return done([], 1);
+    const avail = Math.max(0.01, w - 2 * margin);
     if(centered){
-      // devices[0] is the centred device; the rest are clasps: first on the wearer's left (viewer's
-      // right) halfway between the device and the edge, the second opposite.
-      const c = devices[0];
-      const half = sizes[c].w / 2;
-      const out = [{ id: c, x: w / 2, y: cy }];
-      const rightX = (w / 2 + half + w) / 2;
-      const leftX = (w / 2 - half) / 2;
-      if(devices[1]) out.push({ id: devices[1], x: rightX, y: cy });
-      if(devices[2]) out.push({ id: devices[2], x: leftX, y: cy });
-      return out;
+      // devices[0] is the centred device; the rest are clasps: first on the wearer's left (viewer's right) halfway between the
+      // device and the edge, the second opposite. At scale k the devices shrink about their own centres; the halfway points follow
+      // the centred device's half width.
+      const at = k => {
+        const c = devices[0];
+        const half = sizes[c].w * k / 2;
+        const out = [{ id: c, x: w / 2, y: cy }];
+        if(devices[1]) out.push({ id: devices[1], x: (w / 2 + half + w) / 2, y: cy });
+        if(devices[2]) out.push({ id: devices[2], x: (w / 2 - half) / 2, y: cy });
+        return out;
+      };
+      const fits = (list, k) => {
+        const boxes = list.map(d => ({ x0: d.x - sizes[d.id].w * k / 2, x1: d.x + sizes[d.id].w * k / 2 }));
+        if(boxes.some(b => b.x0 < margin - 1e-9 || b.x1 > w - margin + 1e-9)) return false;
+        const s = [...boxes].sort((a, b) => a.x0 - b.x0);
+        for(let i = 1; i < s.length; i++) if(s[i].x0 < s[i - 1].x1 - 1e-9) return false;
+        return true;
+      };
+      if(fits(at(1), 1)) return done(at(1), 1);
+      let lo = 0.05, hi = 1;
+      for(let i = 0; i < 40; i++){ const mid = (lo + hi) / 2; if(fits(at(mid), mid)) lo = mid; else hi = mid; }
+      return done(at(lo), lo);
     }
     // A run centred on the ribbon, devices touching (as on the measured McChord artwork) unless the
     // run is short enough to leave a small gap.
-    const gap = devices.length <= 2 ? 0.04 : 0.01;
-    const total = devices.reduce((s, d) => s + sizes[d].w, 0) + gap * (devices.length - 1);
+    const sum = devices.reduce((t, d) => t + sizes[d].w, 0);
+    const gaps = devices.length - 1;
+    const wanted = devices.length <= 2 ? 0.04 : 0.01;
+    let scale = 1, gap = wanted;
+    if(sum + wanted * gaps > avail){
+      if(sum <= avail) gap = gaps ? (avail - sum) / gaps : 0;       // close the gap first
+      else { gap = 0; scale = avail / sum; }                         // then shrink every device by the same factor
+    }
+    const total = sum * scale + gap * gaps;
     let x = (w - total) / 2;
-    return devices.map(d => {
-      const cx = x + sizes[d].w / 2;
-      x += sizes[d].w + gap;
+    return done(devices.map(d => {
+      const cx = x + sizes[d].w * scale / 2;
+      x += sizes[d].w * scale + gap;
       return { id: d, x: cx, y: cy };
-    });
+    }), scale);
   }
 
   // Precedence order for a free run (viewer's left first): level devices, then silver, then bronze.
@@ -291,7 +319,7 @@
 
   return {
     RIBBON_W, RIBBON_H, MAX_DEVICES, DEVICE,
-    claspsFor, splitAwardCount, layoutDevices, sortRun,
+    claspsFor, splitAwardCount, layoutDevices, DEVICE_END_MARGIN, sortRun,
     rackRows, layoutRack, coverage, pointInPolygon, LAPEL_COVER_TOLERANCE,
     miniMedalRows, layoutMiniMedals
   };
