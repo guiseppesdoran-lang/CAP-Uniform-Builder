@@ -132,3 +132,44 @@ test('the cord\'s start meets the epaulet strap: the engine\'s strip on the Clas
     assert.ok(gap <= (KNOWN_STRAP_GAP[gid] || CORD_MEETS_STRAP), `${gid}: the cord's start cap is ${gap.toFixed(3)} in from the strap`);
   }
 });
+
+// Ethan, live: 'cord is still off a bit' on the Class A coat with a shoulder board. The cord must come out from under the board at its
+// outer (arm) end: its top end lies under the strip (inside it, to 0.02 in), within the strip's outer end (none of it past that end), its
+// path leaves the strip across the strip's lower edge, and it is drawn under the strip (9.3, 9.4.1: the cord is worn under the epaulet).
+test('Class A: every cord kind starts under the shoulder board\'s strip at its arm end and leaves from its lower edge, under it in z (9.3, 9.4.1)', async () => {
+  // The coat sheets' strap axis on the wearer's left (neck end, arm end), as in js/engine/profiles-dress.js CLASS_A.
+  const AXIS = { male: [[16.52, 2.44], [20.22, 3.41]], female: [[16.57, 1.91], [20.09, 2.65]] };
+  let checked = 0;
+  for(const [gid, uniform, gender, opt] of GARMENTS.filter(g => g[1] === 'blues_a')) for(const k of KINDS){
+    const cord = k.replace(/-/g, '_');
+    for(const rank of ['C/Maj', 'C/Col']){
+      const scene = await P.composeUniform(hb(uniform, gender, 'cadet', rank, opt, cord), store);
+      const strip = scene.layers.find(x => x.key === 'epaulet:left'), cl = scene.layers.find(x => x.id === `${gid}-cord-${k}`);
+      const tag = `${gid} ${k} ${rank}`;
+      assert.ok(strip && cl, `${tag}: strip and cord are drawn`);
+      assert.ok(cl.z < strip.z, `${tag}: the cord (z ${cl.z}) is under the strip (z ${strip.z})`);
+      const o = strip.origin, R = strip.rotate || 0;
+      const poly = [[strip.x, strip.y], [strip.x + strip.w, strip.y], [strip.x + strip.w, strip.y + strip.h], [strip.x, strip.y + strip.h]].map(([x, y]) => { const q = core.rotatePoint({ x, y }, o, R); return [q.x, q.y]; });
+      const pts = cordStrokes(`${gid}-cord-${k}`)[0].pts;
+      const [p0, p1] = pts, dx = p1[0] - p0[0], dy = p1[1] - p0[1], len = Math.hypot(dx, dy), nx = -dy / len * 0.18, ny = dx / len * 0.18;
+      for(const c of [[p0[0] + nx, p0[1] + ny], [p0[0] - nx, p0[1] - ny], p0]) assert.ok(polyDist(c, poly) <= CORD_MEETS_STRAP, `${tag}: the cord's top end is ${polyDist(c, poly).toFixed(3)} in outside the strip`);
+      // None of the cord's top end lies past the strip's outer end: measured along the strap axis from that end, toward the neck.
+      const [nk, am] = AXIS[gender], al = Math.hypot(nk[0] - am[0], nk[1] - am[1]), u = [(nk[0] - am[0]) / al, (nk[1] - am[1]) / al];
+      for(const c of [[p0[0] + nx, p0[1] + ny], [p0[0] - nx, p0[1] - ny]]){
+        const along = (c[0] - am[0]) * u[0] + (c[1] - am[1]) * u[1];
+        assert.ok(along >= -CORD_MEETS_STRAP, `${tag}: the cord's top end is ${(-along).toFixed(3)} in past the strip's outer end`);
+      }
+      // The path leaves the strip: its second vertex is outside it (below the lower edge), so the cord comes out from under the strip.
+      assert.ok(polyDist(p1, poly) > 0.5, `${tag}: the cord leaves the strip`);
+      checked++;
+    }
+  }
+  assert.equal(checked, 2 * KINDS.length * 2);
+});
+
+test('the cadet semi-formal wears no shoulder cord (9.3, 9.4.1 name the Service Dress and the Blue Service only), so none is drawn under its boards', async () => {
+  for(const k of ['group', 'national', 'aide_de_camp']){
+    const scene = await P.composeUniform(hb('semi_formal_usaf', 'male', 'cadet', 'C/Capt', {}, k), store);
+    assert.ok(!scene.layers.some(l => /-cord-|^cord-/.test(l.id || '')), `${k}: no cord on the semi-formal`);
+  }
+});
