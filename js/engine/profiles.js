@@ -262,9 +262,14 @@
 
   // Cadet NCO and Airman chevrons on both collars. On the shirts (Class B, aviator shirt, overblouse), the rule of Figure A5-5 ('shirt without necktie', CAPR 39-1 page 134): the chevron's
   // axis parallel to the leading edge of the collar leaf (its bottom edge, collar point to roll line), top of the insignia (peak / shield canton) toward the roll-line end, rockers toward the
-  // collar point, the near outline 1 in from the edge, centred on the leaf (4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5). The wearer's right is the collar on the left of the picture whatever
-  // the sheet calls its sides. `opts.turnOf(poly)` (the ABU and CFU, COLLAR6): the chevron stays upright, apex up, turned by the leaf's lower seam's angle (0), and is centred on the leaf, its
-  // centre the centroid of the leaf polygon (5.1.1.1.1.4, 5.2.1.1.1).
+  // collar point, the near outline 1 in from the edge, centred on the leaf (4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5).
+  // `opts.edgeOf(poly)` (the ABU and CFU, COLLAR8): the leaf's front (leading) edge as { top, bottom } in sheet inches, tip end first. 5.1.1.1.1.4 / 5.2.1.1.1: the chevron is 'parallel to the front of the
+  // collar', so its long edge (the art's vertical axis, apex up) lies along that edge, apex toward the tip, the turn mirrored on the two leaves because the edges are; its centre is the centroid of the
+  // leaf polygon (Ethan's centring rule, COLLAR6). Ethan's ruling (COLLAR8, "the chief specifically needs to be bigger ... for all enlisted things"): every enlisted collar chevron is drawn at ONE
+  // common factor of its metal art so the C/CMSgt chevron stands `opts.tallIn` (2.5 in, the long dimension the regular officer rows take on this leaf); each grade keeps its own aspect and the grades
+  // keep their sizes relative to each other. No collar size is published for the chevron (an estimate, D2); if the scaled C/CMSgt chevron, with `opts.clearIn` (0.1 in) all round, would cross the
+  // leaf outline on either leaf, the factor is reduced (bisection) until it clears. The factor does not depend on the grade shown, so a smaller chevron, concentric with the C/CMSgt one and turned the
+  // same, always lies inside it.
   async function collarChevrons(ctx, g, opts){
     const id = G.cadetNcoChevron(g, 'metal');
     const polys = collarPolygons(ctx);
@@ -272,11 +277,15 @@
     if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
     const s = await ctx.spec(id);
     const centerX = ctx.base.w / 2;
-    const turnOf = opts && opts.turnOf, z = opts && opts.z != null ? opts.z : Z.insignia;
+    const edgeOf = opts && opts.edgeOf, z = opts && opts.z != null ? opts.z : Z.insignia;
+    let scale = 1;
+    if(edgeOf){
+      scale = await collarChevronScale(ctx, polys, opts);
+    }
     for(const poly of polys){
-      if(turnOf){
+      if(edgeOf){
         const at = polygonCentroid(poly.points), side = at.x < centerX ? 'right' : 'left';
-        await ctx.place(id, { pieceAnchor: 'center', at, rotate: turnOf(poly), z, role: 'grade', key: 'grade:' + side });
+        await ctx.place(id, { pieceAnchor: 'center', at, scale, rotate: edgeTurn(edgeOf(poly)), z, role: 'grade', key: 'grade:' + side });
         continue;
       }
       const edge = collarLeadingEdge(poly.points, centerX);
@@ -286,6 +295,26 @@
       await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate: pl.rotate, z, role: 'grade', key: 'grade:' + side });
       ctx.measure(pl.foot, pl.near);
     }
+  }
+
+  // The SVG turn (degrees) that lays a piece's upward axis along the edge { top, bottom }, pointing from `bottom` to `top`.
+  function edgeTurn(e){
+    const dx = e.top.x - e.bottom.x, dy = e.top.y - e.bottom.y;
+    return Math.atan2(dx, -dy) * 180 / Math.PI;
+  }
+
+  // The common factor of the enlisted collar chevrons on this sheet (COLLAR8, Ethan's ruling and an estimate; see collarChevrons): tallIn / (the C/CMSgt metal chevron's height), reduced until the
+  // CMSgt chevron plus clearIn on every side lies inside both leaves, each turned along its own front edge. Returns the factor (1 = the art's own size).
+  async function collarChevronScale(ctx, polys, opts){
+    const refId = 'rank-cadet-nco-chief-master-sergeant-metal';
+    if(!ctx.has(refId)) return 1;
+    const r = await ctx.spec(refId), clear = opts.clearIn == null ? 0.1 : opts.clearIn;
+    const fits = f => polys.every(poly => boxInPolygon(poly.points, polygonCentroid(poly.points), r.w * f + 2 * clear, r.h * f + 2 * clear, edgeTurn(opts.edgeOf(poly))));
+    const want = opts.tallIn / r.h;
+    if(fits(want)) return want;
+    let lo = 0, hi = want;
+    for(let i = 0; i < 40; i++){ const mid = (lo + hi) / 2; if(fits(mid)) lo = mid; else hi = mid; }
+    return lo;
   }
 
   // Fit a piece in a rect (never larger than true size) and centre it there.
@@ -755,5 +784,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });
