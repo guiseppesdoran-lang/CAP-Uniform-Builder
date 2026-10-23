@@ -752,22 +752,6 @@ function setRibbonSelectionFromDropdown(id, value,{deferRender=false}={}){
   if(!deferRender) rebuildRibbonsFromGallery();
 }
 
-function selectAllCapUniformAwards(){
-  State.ribbonSelections={};
-  normalizeRibbonSelections();
-
-  for(const id of getEligibleRibbonIds()){
-    // JROTC/ROTC ribbons are worn only while enrolled and three at most (39-1 11.2.5), so they are never ticked for the member.
-    if(isRotcRibbonId(id)) continue;
-    const usable=getRibbonAwardOptions(id).filter(option=>option.value);
-    const selected=usable[0];
-    if(selected) setRibbonSelectionFromDropdown(id,selected.value,{deferRender:true});
-  }
-
-  rebuildRibbonsFromGallery();
-  buildRibbonGallery();
-}
-
 // Ribbons that share one place in the order of precedence: CAPR 39-3 Attachment 2 lists the National
 // Commander's Citation (earned before 1 July 1977, Note 2) "OR" the Gill Robb Wilson Award, so only one
 // of the two is worn.

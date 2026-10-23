@@ -292,17 +292,6 @@ test('three JROTC/ROTC ribbons may be worn: a fourth is refused, and a saved set
   assert.deepEqual(Array.from(ev('CAPUBUniformView.ribbonNotes')), ['Only 3 JROTC/ROTC ribbons may be worn, so the first 3 in order are shown (CAPR 39-1, 11.2.5)']);
 });
 
-test('"Select all basic" never ticks a JROTC/ROTC ribbon (they are worn only while enrolled, three at most)', () => {
-  ev('buildRibbonGallery = () => {}'); // the picker's DOM is not under test
-  fresh('cadet');
-  ev('selectAllCapUniformAwards()');
-  assert.ok(ev("Object.keys(State.ribbonSelections).filter(id => State.ribbonSelections[id].checked).length") > 10, 'it still ticks the CAP ribbons');
-  assert.deepEqual(Array.from(ev("Object.keys(State.ribbonSelections).filter(id => isRotcRibbonId(id) && State.ribbonSelections[id].checked)")), []);
-  fresh('senior');
-  ev('selectAllCapUniformAwards()');
-  assert.deepEqual(Array.from(ev("Object.keys(State.ribbonSelections).filter(id => isRotcRibbonId(id) && State.ribbonSelections[id].checked)")), []);
-});
-
 test('JROTC/ROTC ribbons follow the military awards\' rule on the uniforms: worn on the USAF-style, not on Corporate-style uniforms that bar military awards (11.1.6)', () => {
   const id = 'rotc_army_jrotc_proficiency';
   for(const u of ['blues_a', 'blues_b', 'mess_dress', 'semi_formal_usaf']) assert.equal(ev(`isAwardWornOnUniform('${id}', '${u}')`), ev(`isAwardWornOnUniform('military:air_force_cross', '${u}')`), u);

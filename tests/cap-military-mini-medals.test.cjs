@@ -18,9 +18,9 @@ test('calibrator stays within the visible viewport', () => {
   assert.match(styleSource, /#calibKeyPill\{[\s\S]*?overflow-wrap:anywhere/);
 });
 
-test('CAP uniform ribbon UI offers select all (basic) and no select max control', () => {
-  assert.match(indexSource, /id="capSelectAllBasic"/);
+test('the ribbon picker has a Clear control and no select-all or select-max control (Ethan: remove the select all button for ribbons)', () => {
+  assert.match(indexSource, /id="clearRibbons"/);
+  assert.doesNotMatch(indexSource, /capSelectAllBasic|modalSelectAllBasic|selectAllCapUniformAwards|Select all \(basic\)/);
   assert.doesNotMatch(indexSource, /SelectAllMax|Select max devices/);
-  assert.match(indexSource, /function selectAllCapUniformAwards\(\)/);
   assert.match(indexSource, /getEligibleRibbonIds\(\)/);
 });
