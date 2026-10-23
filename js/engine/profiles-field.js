@@ -69,15 +69,15 @@
     for(const [name, mode] of zones.filter(([n]) => ctx.headgear && ctx.headgear.zone === n)){
       const z = ctx.rect(name);
       if(!z) continue;
-      // The navy tactical cap of the ABU and CFU: 6.2.11.1 (ICL 25-02), the paragraph written for that
-      // cap, has NCOs and cadets wear no insignia on its front (only the nametape on the back), and the
-      // front must carry no Velcro or other items; the parent paragraph 6.2.11 repeats the ABU cap text
-      // and names cadet officers, so the ICL is not consistent with itself: the specific paragraph wins
-      // for this cap, and the cadet officer keeps the grade on the ABU patrol cap (5.1.1.6). The OCP's
-      // ball cap is covered by 7.1.1.8, which names cadet officers.
+      // The navy tactical cap of the ABU and CFU: ICL 25-02 contradicts itself. 6.2.11 says 'Cadet Officers will wear
+      // embroidered grade insignia on dark blue cloth centered on the front of the cap' (the ABU cap text repeated,
+      // and 5.1.1.6 says the same for the patrol cap); 6.2.11.1 says NCOs and cadets wear no insignia and the front
+      // carries no Velcro or other items. The ruling (Ethan, LIVE-ENGINE 4, over the earlier reading that 6.2.11.1
+      // wins): cadet OFFICERS wear their grade on this cap, the ABU collar's cloth-bordered piece, centred 1/2 in above
+      // the visor like the officers' (6.2.11.1 for officers); cadet NCOs and airmen wear none (6.2.11.1), which the
+      // `g.officer` test above already skips. The OCP's ball cap is covered by 7.1.1.8, which names cadet officers.
       if(name === 'baseball_cap_front_insignia_zone' && g.cadet && b.uniform !== 'ocp'){
-        ctx.note('Cadets wear no insignia on the front of the navy blue tactical cap, only the nametape on the back (CAPR 39-1 ICL 25-02, 6.2.11.1)');
-        continue;
+        ctx.note('ICL 25-02 contradicts itself on the navy blue tactical cap: 6.2.11 has cadet officers wear grade on dark blue cloth centered on the front, 6.2.11.1 has NCOs and cadets wear no insignia; the grade is shown for cadet officers only');
       }
       // "1/2 inch from the visor": the zone's bottom edge already sits 1/2 in above the visor.
       const at = mode === 'visor' ? { x: z.x + z.w / 2, y: z.y + z.h } : core.rectCenter(z);

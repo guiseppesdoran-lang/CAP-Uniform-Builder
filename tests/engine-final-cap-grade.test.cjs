@@ -1,9 +1,9 @@
 'use strict';
-// FINAL fix 3: the grade on the front of the caps, per grade class. CAPR 39-1 ICL 25-02 6.2.11.1: NCOs and cadets
-// wear no insignia on the patrol or tactical cap, only a nametape on the back; the parent 6.2.11 and 5.1.1.6 name
-// cadet officers, and 6.2.11.1 (the paragraph written for the navy tactical cap) wins for that cap, as in
-// FIX-R-OTHER-r5 #4. The OCP caps follow 7.1.1.8: officers and cadet officers wear grade, NCOs, cadet NCOs and
-// airmen none.
+// FINAL fix 3, revised by LIVE-ENGINE 4: the grade on the front of the caps, per grade class. CAPR 39-1 ICL 25-02 contradicts itself
+// on the navy tactical cap of the ABU and CFU: 6.2.11 has cadet officers wear grade on dark blue cloth centred on the front,
+// 6.2.11.1 has NCOs and cadets wear no insignia. Ethan's ruling: cadet OFFICERS wear it (the ABU collar's cloth-bordered piece,
+// centred 1/2 in above the visor like the officers'), cadet NCOs and airmen do not. The ABU patrol cap (5.1.1.6) and the OCP caps
+// (7.1.1.8: officers and cadet officers; NCOs, cadet NCOs and airmen none) already followed that split.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -50,7 +50,7 @@ for(const uniform of ['abu', 'corporate_field', 'ocp']){
             const got = capGrades(scene);
             let want;
             if(/NCO|airman basic/.test(label)) want = [];
-            else if(label === 'cadet officer') want = uniform !== 'ocp' && headgear === 'tactical' ? [] : reference;
+            else if(label === 'cadet officer') want = reference;
             else want = reference;
             assert.deepEqual(got, want, `${uniform} ${gender} ${headgear} ${rank} (${label}): grade on ${JSON.stringify(got)}, expected ${JSON.stringify(want)}`);
             checked++;
@@ -62,15 +62,35 @@ for(const uniform of ['abu', 'corporate_field', 'ocp']){
   }
 }
 
-test('the ABU and the CFU: a cadet officer\'s scene says why the tactical cap front is bare (ICL 25-02 6.2.11.1) when that cap is worn; no other class gets that note', async () => {
+test('the ABU and the CFU: a cadet officer on the navy tactical cap gets the grade and a note on the ICL\'s two paragraphs (6.2.11, 6.2.11.1); no other class, and no other cap, gets that note', async () => {
   for(const uniform of ['abu', 'corporate_field']){
-    const cadet = await compose(hb2(uniform, 'male', 'cadet', 'C/Maj', 'tactical'));
-    assert.ok(cadet.notes.some(n => /6\.2\.11\.1/.test(n)), `${uniform}: cadet officer`);
+    for(const rank of ['C/2d Lt', 'C/Maj', 'C/Col']){
+      const cadet = await compose(hb2(uniform, 'male', 'cadet', rank, 'tactical'));
+      assert.ok(cadet.notes.some(n => /6\.2\.11\.1/.test(n) && /6\.2\.11 /.test(n)), `${uniform} ${rank}: note cites 6.2.11 and 6.2.11.1`);
+      assert.ok(cadet.layers.some(l => l.key === 'grade:baseball_cap_front_insignia_zone'), `${uniform} ${rank}: grade on the tactical cap`);
+    }
     // The patrol cap, and any cap but the tactical one, is not that cap.
     for(const headgear of ['auto', 'none']) assert.ok(!(await compose(hb2(uniform, 'male', 'cadet', 'C/Maj', headgear))).notes.some(n => /6\.2\.11\.1/.test(n)), `${uniform} ${headgear}: no tactical cap note`);
-    for(const [membership, rank] of [['cadet', 'C/SSgt'], ['senior', 'Capt'], ['senior', 'SMSgt']]){
+    for(const [membership, rank] of [['cadet', 'C/SSgt'], ['cadet', 'C/AB'], ['senior', 'Capt'], ['senior', 'SMSgt']]){
       const s = await compose(hb2(uniform, 'male', membership, rank, 'tactical'));
       assert.ok(!s.notes.some(n => /6\.2\.11\.1/.test(n)), `${uniform} ${rank}: no tactical cap note`);
     }
+  }
+});
+
+test('the cadet officer\'s grade on the tactical cap is the ABU collar\'s piece, centred on the cap 1/2 in above the visor like the officers\' (ICL 25-02 6.2.11.1)', async () => {
+  for(const uniform of ['abu', 'corporate_field']) for(const gender of ['male', 'female']){
+    const scene = await compose(hb2(uniform, gender, 'cadet', 'C/Maj', 'tactical'));
+    const grade = scene.layers.find(l => l.key === 'grade:baseball_cap_front_insignia_zone');
+    assert.equal(grade.id, 'rank-cadet-officer-major-cloth-bordered-regular', `${uniform} ${gender}: the cloth-bordered piece`);
+    const collar = scene.layers.find(l => /^grade:(right|left)$/.test(l.key) && l.id === grade.id) || scene.layers.find(l => l.role === 'grade' && l.id === grade.id && l !== grade);
+    assert.ok(collar, `${uniform} ${gender}: the same piece is on the collar`);
+    const officer = await compose(hb2(uniform, gender, 'senior', 'Capt', 'tactical'));
+    const og = officer.layers.find(l => l.key === 'grade:baseball_cap_front_insignia_zone');
+    // Same centre line, same bottom: 1/2 in above the visor, centred on the cap front.
+    assert.ok(Math.abs((grade.x + grade.w / 2) - (og.x + og.w / 2)) < 0.01, `${uniform} ${gender}: centred like the officers'`);
+    assert.ok(Math.abs((grade.y + grade.h) - (og.y + og.h)) < 0.01, `${uniform} ${gender}: bottom 1/2 in above the visor like the officers'`);
+    const half = scene.layers.find(l => l.type === 'measure' && Math.abs(l.to.y - (grade.y + grade.h)) < 1e-6 && Math.abs(l.from.y - l.to.y - 0.5) < 1e-6);
+    assert.ok(half, `${uniform} ${gender}: the 1/2 in measure under the grade`);
   }
 });
