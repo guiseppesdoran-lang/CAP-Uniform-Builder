@@ -99,27 +99,20 @@ test('Class A: the lapel foreground group covers the lapel where the wings cross
 // ---- 2. Class B and aviator shirts: the collar lies over a badge that reaches it -------------------------------
 
 const THREE = [PILOT, GT, 'emergency_services_badge'];
-test('Class B: a badge that reaches a collar leaf is drawn without the leaf, so the collar covers it (4.1.11.1.1.2.3.1, 4.1.12.2.5.1)', async () => {
-  let clipped = 0;
+test('Class B: the collar leaves are drawn again above the badges (the sheet\'s collar-foreground group); no badge is cut (4.1.11.1.1.2.3.1, 4.1.12.2.5.1; Ethan 2026-10-22: never slice a badge, D8)', async () => {
   for(const sex of ['male', 'female']){
     for(const sleeve of ['short', 'long']){
       for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'Col']]){
         const scene = await compose(build('blues_b', sex, membership, rank, THREE, { ribbons: RACK, opt: { headgear: 'auto', sleeve } }));
-        const base = scene.layers.find(l => l.key === 'base:jacket');
-        const spec = await store.load(base.id);
-        const polys = ['collar_left', 'collar_right'].map(n => spec.landmarks[n].points);
+        const fg = scene.layers.find(l => l.role === 'garment-foreground' && l.onlyGroups && l.onlyGroups.includes('collar-foreground'));
+        assert.ok(fg, `${sex} ${sleeve} ${rank}: the collar foreground is drawn`);
         for(const l of scene.layers.filter(x => x.role === 'badge')){
-          const over = polys.filter(p => share(box(l), p) > 0.0004);
-          if(!over.length) continue;
-          clipped++;
-          assert.ok(l.clipOut && l.clipOut.length, `${sex} ${sleeve} ${rank}: ${l.key} reaches a collar leaf (${over.length}) so it is drawn without it`);
-          // every polygon it reaches is subtracted, whole (grown a little to keep the leaf's edge stroke)
-          for(const p of over) assert.ok(l.clipOut.some(c => p.every(v => inside(v, c) || c.some(w => Math.hypot(w.x - v.x, w.y - v.y) < 0.15))), `${sex} ${sleeve} ${rank}: the clip-out contains the leaf polygon`);
+          assert.ok(!l.clipOut, `${sex} ${sleeve} ${rank}: ${l.key} is whole`);
+          assert.ok(l.z < fg.z, `${sex} ${sleeve} ${rank}: ${l.key} is below the collar foreground (z ${l.z} vs ${fg.z})`);
         }
       }
     }
   }
-  assert.ok(clipped >= 2, 'the builds include a badge that reaches the collar (' + clipped + ')');
 });
 
 test('a badge clear of the collar is not clipped', async () => {

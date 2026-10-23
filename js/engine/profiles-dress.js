@@ -450,21 +450,25 @@
     });
   }
 
-  // The shirts' collar leaves lie over a badge, ribbon or device that reaches them: a badge pinned on the shirt
-  // is under the collar there (4.1.11.1.1.2.3.1, 4.1.12.2.5.1: the second badge 1/2 in above the first, 'under the
-  // collar'). The layer is drawn without the leaf polygons (clipOut), the leaf edge's stroke width included.
+  // The shirts' collar leaves lie over what reaches them (4.1.11.1.1.2.3.1, 4.1.12.2.5.1: the second badge 1/2 in above the
+  // first, 'under the collar'), but a badge is never cut: Ethan 2026-10-22, 'never slice a badge'. Where the sheet draws its
+  // leaves as a foreground group (the Class B shirt and blouse: `collar-foreground`), that group is drawn again above the badges,
+  // ribbons and devices (Z.badge + 0.5), so the collar covers them by order alone and the badge stays whole in the scene. A
+  // sheet without such a group (the aviator shirts, the overblouse) cannot draw the leaf over a badge: the scene says the badge
+  // reaches the leaf (FOLLOWUPS: art to give those sheets a collar foreground group). Ribbons and devices that reach a leaf
+  // there are still drawn without it (clipOut), as before; badges never are.
   const COLLAR_EDGE_GROW = 0.025;
-  function tuckUnderCollar(ctx){
+  function collarOverBadges(ctx, foregroundGroup){
     const polys = H.collarPolygons(ctx).map(l => growPolygon(l.points, COLLAR_EDGE_GROW));
     if(!polys.length) return;
+    if(foregroundGroup) ctx.foreground([foregroundGroup], Z.badge + 0.5);
     for(const l of ctx.layers){
       if(!['badge', 'ribbon', 'device'].includes(l.role) || (l.rotate || 0) || (l.type !== 'asset' && l.type !== 'raster')) continue;
       const hit = polys.filter(p => boxTouchesPolygon(l, p));
-      if(hit.length){
-        l.clipOut = hit;
-        // The leaf hides part of a badge: say so (the person can read it off the scene), rather than hiding it silently.
-        if(l.role === 'badge') ctx.note(`The collar leaf lies over part of the ${l.title || l.id}: it is worn under the collar there`);
-      }
+      if(!hit.length) continue;
+      if(l.role === 'badge'){
+        if(!foregroundGroup) ctx.note(`The collar leaf reaches the ${l.title || l.id}: it is shown whole, over the collar, because this garment's artwork has no collar layer to draw over it (CAPR 39-1 4.2.5.1.3.1, 4.2.6.2.7.1)`);
+      }else if(!foregroundGroup) l.clipOut = hit;
     }
   }
 
@@ -1117,7 +1121,7 @@
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
     }
     await dressBadges(ctx, b, geo);
-    tuckUnderCollar(ctx);
+    collarOverBadges(ctx, 'collar-foreground');
     await shoulderCord(ctx, b, strapAxis(ctx, 'left'));
     await blueHat(ctx, b);
   }
@@ -1394,7 +1398,7 @@
       b = Object.assign({}, b, { command: null });
     }
     await dressBadges(ctx, b, geo);
-    tuckUnderCollar(ctx);
+    collarOverBadges(ctx, null);
     // The long-sleeve shirt is worn with a tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3).
     if(long && !V.overblouse){
       const tie = `${garment}-${female ? 'tie-tab' : 'tie'}`;

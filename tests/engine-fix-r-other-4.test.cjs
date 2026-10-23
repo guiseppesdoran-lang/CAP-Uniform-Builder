@@ -179,7 +179,7 @@ test('semi-formal blazers: the miniature rack starts centred on the crest and mo
 // ---- 5. Shirts: the collar lies over every badge that reaches it, on the companion shirt figure too ------------
 
 const C = require('../js/engine/compose.js');
-test('aviator and Class B shirts, the aviator beside the blazer included: every badge, ribbon or device that reaches a collar leaf is cut out by the leaf polygons where the leaf really is (4.2.5.1.3.1, 4.1.11.1.1.2.3.1)', async () => {
+test('aviator and Class B shirts, the aviator beside the blazer included: a ribbon or device that reaches a collar leaf is cut out by the leaf polygons where the leaf really is, a badge never is (4.2.5.1.3.1, 4.1.11.1.1.2.3.1; Ethan 2026-10-22, D8)', async () => {
   const builds = [];
   for(const gender of ['male', 'female']){
     for(const rank of ['Capt', 'Col']){
@@ -201,18 +201,20 @@ test('aviator and Class B shirts, the aviator beside the blazer included: every 
           if(!touches.length) continue;
           reached++;
           const id = `${uniform} ${gender} ${rank} ${sleeve} ${l.key}`;
+          if(l.role === 'badge'){ assert.ok(!l.clipOut, `${id}: a badge is never cut`); continue; }
+          if(uniform === 'blues_b'){ assert.ok(!l.clipOut, `${id}: the Class B collar foreground covers it by order`); continue; }
           assert.ok(l.clipOut && l.clipOut.length, `${id}: reaches a collar leaf, so it is cut by it`);
           // The cut-out polygons are on this figure, not on the first one.
-          assert.ok(l.clipOut.some(p => C.rectHitsPolygon(l, p)), `${id}: the cut-out polygon lies where the badge is (x ${l.x.toFixed(2)})`);
+          assert.ok(l.clipOut.some(p => C.rectHitsPolygon(l, p)), `${id}: the cut-out polygon lies where the ribbon is (x ${l.x.toFixed(2)})`);
         }
       }
     }
   }
   // the long sheets draw the closed collar (tie worn, 4.2.5.1.4): its leaves hang near the centre line and no badge or ribbon reaches them any more, so only the open collars of the short shirts count
-  assert.ok(reached >= 2, `${reached} layers reach a collar leaf`);
+  assert.ok(reached >= 1, `${reached} layers reach a collar leaf`);
 });
 
-test('aviator beside the blazer: the chaplain badge is under the shirt collar, on the shirt figure (the polygon moves with the figure)', async () => {
+test('aviator beside the blazer: the chaplain badge on the shirt figure is never cut by the collar (the polygon moves with the figure)', async () => {
   const scene = await compose(hb('aviator_blazer', 'male', 'senior', 'Capt', { badgeIds: [PILOT, 'observer_badge', 'christian_chaplin'], ribbonSel: RIB }));
   const ch = scene.layers.find(l => l.key === 'badge:christian_chaplin' && l.figure === 2);
   assert.ok(ch, 'the shirt\'s chaplain badge is drawn');
@@ -221,8 +223,8 @@ test('aviator beside the blazer: the chaplain badge is under the shirt collar, o
   const spec = await store.load(sheet.id);
   const polys = ['collar_left', 'collar_right'].map(n => spec.landmarks[n].points.map(p => ({ x: p.x + sheet.x, y: p.y + sheet.y })));
   const reaches = polys.some(p => C.rectHitsPolygon(ch, p));
-  assert.equal(!!(ch.clipOut && ch.clipOut.length), reaches, 'cut by the collar exactly when it reaches a leaf');
-  for(const poly of (ch.clipOut || [])) for(const p of poly) assert.ok(p.x > 27, `cut-out point x ${p.x.toFixed(2)} is on the second figure`);
+  assert.ok(!ch.clipOut, `never cut (it ${reaches ? 'reaches' : 'does not reach'} a leaf)`);
+  if(reaches) assert.ok(scene.notes.some(n => /collar leaf reaches the Christian Chaplain Badge/.test(n)), 'a leaf it reaches is reported');
 });
 
 // ---- 1. Insignia rest on the gorge seam by their ink, not their box ----------------------------------------------
