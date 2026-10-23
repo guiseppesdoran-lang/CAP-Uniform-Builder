@@ -3,10 +3,11 @@
 // on the leaf, 1 in from it (CAPR 39-1 5.1.1.1.1.3-4, 5.2.1.1.1.4-6: 'one inch from the front of the collar and centered', 'parallel to the
 // front of the collar'). The leading edge is the sheet's collar_slots[side].leading_edge when it states one, else the longest edge of the
 // collar_left / collar_right polygon; one code for both leaves, so the two are mirror images.
-// FIELD2 (Ethan: 'needs to be parallel to the bottom line', 'abu ranks still aren't parallel to the collar'): the cadet officer row and the
-// officers' Lieutenant and Captain bars lie parallel to the BOTTOM edge of the leaf (the free edge from the collar point toward the shoulder,
-// read from the polygon's two lowest vertices), the row 1 in from the front (leading) edge and centred, the bars centred 1 in from the bottom
-// as the text says (5.1.1.1.1.1, 5.1.1.1.1.3, 5.2.1.1.1); the cadet NCO chevron keeps 'parallel to the front of the collar' (5.1.1.1.1.4).
+// COLLAR3 (Ethan, 'needs to be parallel to the bottom line'; 'blatantly wrong' to the read that took the edge between the leaf's two lowest vertices,
+// 2.8 degrees off horizontal): the cadet officer row and the officers' Lieutenant and Captain bars lie parallel to the OUTER edge of the leaf, the long
+// diagonal from the collar point (the leaf's top vertex) out to the shoulder end (its neighbour farther from the centre line), 45 degrees on these sheets,
+// the row's long axis along it, 1 in from the front (leading) edge and centred, the bars centred 1 in from the bottom as the text says (5.1.1.1.1.1,
+// 5.1.1.1.1.3, 5.2.1.1.1); the cadet NCO chevron keeps 'parallel to the front of the collar' (5.1.1.1.1.4).
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -60,12 +61,18 @@ function across(l, edge){
   const c = { x: l.x + l.w / 2, y: l.y + l.h / 2 };
   return Math.abs((c.x - edge.a.x) * e.y - (c.y - edge.a.y) * e.x) / el;
 }
-// The bottom edge of the leaf, the one between its two lowest vertices (largest y), as an edge {a, b}, and the nearest distance from the
-// leading edge's line to the rotated box of a layer.
-function bottomEdge(spec, side){
-  const pts = core.landmark(spec, side === 'right' ? 'collar_right' : 'collar_left').points.slice().sort((p, q) => q.y - p.y).slice(0, 2);
-  return { a: pts[0], b: pts[1] };
+// The outer edge of the leaf as an edge {a, b}: from the polygon's top vertex (the collar point) to its neighbour farther from the sheet's centre line.
+function outerEdge(spec, side){
+  const pts = core.landmark(spec, side === 'right' ? 'collar_right' : 'collar_left').points, cx = spec.w / 2;
+  let top = 0; pts.forEach((p, i) => { if(p.y < pts[top].y) top = i; });
+  const n = pts.length, p = pts[(top + n - 1) % n], q = pts[(top + 1) % n];
+  return { a: pts[top], b: Math.abs(p.x - cx) >= Math.abs(q.x - cx) ? p : q };
 }
+const edgeDeg = e => { let d = deg(Math.atan2(e.b.y - e.a.y, e.b.x - e.a.x)); if(d > 90) d -= 180; if(d <= -90) d += 180; return d; };
+// Distance from a leaf's piece's long axis (the art's longer side) to the edge, in degrees.
+const longAxis = l => l.w >= l.h ? widthAxisOf(l) : upAxisOf(l);
+function widthAxisOf(l){ return { x: Math.cos(l.rotate * Math.PI / 180), y: Math.sin(l.rotate * Math.PI / 180) }; }
+function upAxisOf(l){ return { x: Math.sin(l.rotate * Math.PI / 180), y: -Math.cos(l.rotate * Math.PI / 180) }; }
 function nearestToEdge(l, edge){
   const e = { x: edge.b.x - edge.a.x, y: edge.b.y - edge.a.y }, el = Math.hypot(e.x, e.y);
   const c = { x: l.x + l.w / 2, y: l.y + l.h / 2 }, a = l.rotate * Math.PI / 180;
@@ -93,14 +100,19 @@ for(const uniform of ['abu', 'corporate_field']){
       }
     });
 
-    test(`${uniform} ${gender}: the cadet officer row lies parallel to the bottom edge, near outline 1 in from the leading edge, mirrored (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
+    test(`${uniform} ${gender}: the cadet officer row's long axis lies along the OUTER edge (the leaf's long diagonal, not horizontal, not the front edge), near outline 1 in from the leading edge, mirrored (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
       const spec = await store.load(SHEETS[uniform]);
-      for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col']){
+      for(const rank of ['C/2d Lt', 'C/1st Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col']){
         const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank), store);
         for(const side of ['right', 'left']){
-          const l = layer(scene, side), front = expectedEdge(spec, side), bottom = bottomEdge(spec, side);
+          const l = layer(scene, side), front = expectedEdge(spec, side), outer = outerEdge(spec, side);
           assert.ok(l, `${rank} ${side}`);
-          assert.ok(between(widthAxis(l), bottom) < 0.1, `${rank} ${side}: row ${between(widthAxis(l), bottom).toFixed(2)} deg off the bottom edge`);
+          assert.ok(between(longAxis(l), outer) < 0.1, `${rank} ${side}: row ${between(longAxis(l), outer).toFixed(2)} deg off the outer edge`);
+          // The three things it must not be: horizontal (the rejected second read), the front edge (the rejected first read), and in any case a diagonal.
+          const turn = Math.abs(edgeDeg(outer));
+          assert.ok(turn > 30 && turn < 60, `${rank} ${side}: the outer edge is ${turn.toFixed(1)} deg from horizontal`);
+          assert.ok(between(longAxis(l), front) > 15, `${rank} ${side}: row ${between(longAxis(l), front).toFixed(1)} deg off the front edge, so not along it`);
+          assert.ok(Math.abs(longAxis(l).y) > 0.5, `${rank} ${side}: row is not horizontal`);
           assert.ok(Math.abs(nearestToEdge(l, front) - 1) < 0.02, `${rank} ${side}: near outline ${nearestToEdge(l, front).toFixed(3)} in from the leading edge`);
         }
         const r = layer(scene, 'right'), lft = layer(scene, 'left');
@@ -124,14 +136,15 @@ for(const uniform of ['abu', 'corporate_field']){
       }
     });
 
-    test(`${uniform} ${gender}: the Lieutenant and Captain bars lie parallel to the bottom edge, mirrored; Major, Lt Col, Col keep the regulation's own turn (5.1.1.1.1.1, 5.2.1.1.1.1)`, async () => {
+    test(`${uniform} ${gender}: the Lieutenant and Captain bars lie parallel to the outer edge, mirrored; Major, Lt Col, Col keep the regulation's own turn (5.1.1.1.1.1, 5.2.1.1.1.1)`, async () => {
       const spec = await store.load(SHEETS[uniform]);
       for(const rank of ['2d Lt', '1st Lt', 'Capt']){
         const scene = await P.composeUniform(build(uniform, gender, 'senior', rank), store);
         for(const side of ['right', 'left']){
-          const l = layer(scene, side), bottom = bottomEdge(spec, side);
+          const l = layer(scene, side), outer = outerEdge(spec, side);
           // The bars' long end is the art's tall axis.
-          assert.ok(between(upAxis(l), bottom) < 0.1, `${rank} ${side}: bars ${between(upAxis(l), bottom).toFixed(2)} deg off the bottom edge`);
+          assert.ok(between(upAxis(l), outer) < 0.1, `${rank} ${side}: bars ${between(upAxis(l), outer).toFixed(2)} deg off the outer edge`);
+          assert.ok(Math.abs(edgeDeg(outer)) > 30 && Math.abs(edgeDeg(outer)) < 60, `${rank} ${side}: outer edge ${edgeDeg(outer).toFixed(1)} deg`);
         }
         assert.ok(Math.abs(layer(scene, 'right').rotate + layer(scene, 'left').rotate) < 0.01, `${rank}: mirrored`);
       }
@@ -179,4 +192,16 @@ test('the sheets state the leading edge twice, as collar_slots[side].leading_edg
       le.points.forEach((p, i) => assert.ok(Math.hypot(p[0] / 100 - lm[i].x, p[1] / 100 - lm[i].y) <= 0.02, `${sheet} ${side}: point ${i}`));
     }
   }
+});
+
+test('H.collarOuterEdge: the top vertex to its neighbour farther from the centre line, the same edge mirrored, null for a degenerate leaf (COLLAR3)', () => {
+  const E = P.helpers.collarOuterEdge, A = P.helpers.collarOuterAngle;
+  // The ABU right leaf's polygon (sheet inches): its lowest vertex (14.67, 12.43) is also its farthest-out vertex, so only the top vertex names the edge.
+  const right = [[17.09, 8.07], [15.25, 9.92], [14.67, 12.43], [17.37, 12.30], [18.545, 11.10]].map(([x, y]) => ({ x, y }));
+  const left = right.map(p => ({ x: 39.3 - p.x, y: p.y }));
+  const er = E(right, 19.65), el = E(left, 19.65);
+  assert.deepEqual([er.collarPoint, er.rollEnd], [right[0], right[1]]);
+  assert.deepEqual([el.collarPoint, el.rollEnd], [left[0], left[1]]);
+  assert.ok(Math.abs(A(right, 19.65) + 45.2) < 0.2 && Math.abs(A(left, 19.65) - 45.2) < 0.2, `${A(right, 19.65)} / ${A(left, 19.65)}`);
+  assert.equal(E([{ x: 0, y: 0 }, { x: 0.2, y: 0 }], 5), null);
 });

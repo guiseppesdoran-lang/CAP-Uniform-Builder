@@ -174,7 +174,7 @@
   // The sheets give a slot per side and kind: its centre (0.01 in) and the turn, clockwise, for an
   // insignia whose long axis is upright. Cadet NCO chevrons follow Figure A5-5 like the shirts' (parallel
   // to the leaf's leading edge, 1 in from it, H.collarChevrons); cadet officers' row lies parallel to the
-  // leaf's bottom edge, 1 in from the front edge, centred (H.collarOfficerRow); the officers' bars lie parallel to the bottom edge, 1 in from it.
+  // leaf's outer edge (the long diagonal, H.collarOuterEdge), 1 in from the front edge, centred (H.collarOfficerRow); the officers' bars lie parallel to the outer edge.
   // The cloth border around every insignia is 1/8 in on each side (R5).
   const CLOTH_BORDER = 0.125;
 
@@ -228,7 +228,7 @@
         // The shirts' rule, Figure A5-5 (H.collarChevrons, from the sheet's collar leaf polygon); drawn once, for both leaves.
         if(side === 'right') await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => fieldLeadingEdge(ctx, poly) });
       }else if(g.category === 'cadet-officer'){
-        // 'One inch from the front of the collar and centered' (5.1.1.1.1.3, 5.2.1.1.1.4): the row parallel to the leaf's bottom edge, its near outline 1 in
+        // 'One inch from the front of the collar and centered' (5.1.1.1.1.3, 5.2.1.1.1.4): the row parallel to the leaf's outer edge (the long diagonal from the collar point to the shoulder end), its near outline 1 in
         // from the front edge, centred on the leaf (H.collarOfficerRow, from the sheet's collar_left / collar_right polygons); drawn once, for both leaves. Cadet Colonels and
         // Cadet Captains wear the miniature embroidered form, which the leaf can hold (5.1.1.1.1.3, 5.2.1.1.1.4); the other cadet officers wear regular size.
         if(side === 'right') await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE, miniatureKeys: ['captain', 'colonel'], edgeOf: poly => fieldLeadingEdge(ctx, poly) });
@@ -239,15 +239,15 @@
         // Major and Lt Col: stem parallel to the ground, pointing away from the neck. Colonel: beak
         // facing forward on both collars.
         let rotate = s.deg;
-        // The bars (Flight Officer, Lieutenant, Captain) lie parallel to the bottom edge of the leaf, their long end along it (Ethan: 'needs to be
+        // The bars (Flight Officer, Lieutenant, Captain) lie parallel to the outer edge of the leaf (the long diagonal, H.collarOuterEdge), their long end along it (Ethan: 'needs to be
         // parallel to the bottom line'; 5.1.1.1.1.1, 5.2.1.1.1.1: 'the long end of the Lieutenant and Captain bars will be centered 1 inch from the
         // bottom of the collar'), centred 1 in from that edge as the slot gives. The art's long axis is vertical, so it is turned a quarter onto the
-        // bottom edge (H.collarBottomAngle, from the leaf polygon, mirrored on the other leaf). The stem rules of the Major and Lieutenant Colonel
+        // outer edge (H.collarOuterAngle, from the leaf polygon, mirrored on the other leaf). The stem rules of the Major and Lieutenant Colonel
         // (horizontal) and the Colonel's and generals' 'perpendicular to the bottom of the collar' are regulation text and stay.
         if(['second-lieutenant', 'first-lieutenant', 'captain', 'flight-officer', 'technical-flight-officer', 'senior-flight-officer'].includes(g.key)){
           const poly = H.collarPolygons(ctx).find(q => leafSide(ctx, q) === side);
           if(poly){
-            rotate = H.collarBottomAngle(poly.points, ctx.base.w / 2) + 90;
+            rotate = H.collarOuterAngle(poly.points, ctx.base.w / 2) + 90;
             if(rotate > 90) rotate -= 180;
           }
         }

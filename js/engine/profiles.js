@@ -236,8 +236,8 @@
 
   // `opts.edgeOf(poly, centerX)`, when given (the ABU and CFU, profiles-field.js), supplies the front (leading) edge in place of the polygon search.
   // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the row lies parallel
-  // to the BOTTOM edge of the leaf (Ethan: 'needs to be parallel to the bottom line'; the text states no orientation), the art's width along that edge
-  // (collarBottomEdge, from the leaf polygon, the same code for both leaves), its near outline 1 in from the front edge, centred on the leaf along it
+  // to the OUTER edge of the leaf (Ethan: 'needs to be parallel to the bottom line'; the text states no orientation), the art's long axis along that edge
+  // (collarOuterEdge, the long diagonal from the collar point to the shoulder end, from the leaf polygon, the same code for both leaves), its near outline 1 in from the front edge, centred on the leaf along it
   // (chord of the leaf on that line), a 1 in measure from the front edge to the near outline. The row is turned, so its near outline is where its
   // corner reaches toward the front edge: the 1 in is taken to that corner.
   async function collarOfficerRow(ctx, g, opts){
@@ -254,7 +254,11 @@
       const edge = opts && opts.edgeOf ? opts.edgeOf(poly, centerX) : collarFrontEdge(poly.points, centerX);
       if(!edge) continue;
       const side = edge.collarPoint.x < centerX ? 'right' : 'left';
-      const rotate = collarBottomAngle(poly.points, centerX);
+      // The row's LONG axis lies along the outer edge: the cloth is drawn with its row of diamonds across its width (the Captain's 2.5 x 1 in, the Colonel's
+      // 2.5 x 1.5 in, their miniatures, the Lieutenant Colonel's) so its x axis is turned onto the edge; the Major's and the Lieutenant Colonel's tall cloth
+      // (taller than wide) has its y axis there, a quarter turn more. In (-90, 90], mirrored on the other leaf.
+      let rotate = collarOuterAngle(poly.points, centerX) + (s.h > s.w ? 90 : 0);
+      if(rotate > 90) rotate -= 180;
       const r = rotate * Math.PI / 180, b = { x: Math.cos(r), y: Math.sin(r) }, n = { x: -b.y, y: b.x };
       // The perpendicular of the front edge on the leaf's side; the row's half-extent toward the edge is its corner reach.
       const dx = edge.rollEnd.x - edge.collarPoint.x, dy = edge.rollEnd.y - edge.collarPoint.y, len = Math.hypot(dx, dy);
@@ -267,14 +271,34 @@
     }
   }
 
-  // The bottom edge of a collar leaf polygon (the free edge, from the collar point toward the shoulder): of its edges the one whose outward normal points most
-  // nearly straight down, the same search that finds the shirts' leading edge (collarLeadingEdge). Returns { collarPoint, rollEnd, inward } or null.
-  function collarBottomEdge(points, centerX){
-    return collarLeadingEdge(points, centerX);
+  // The OUTER edge of a collar leaf polygon: the long diagonal edge from the leaf's collar point (its top vertex, where the front edge starts) outward to the
+  // shoulder end (the polygon neighbour of that vertex farther from the sheet's centre line). Ethan's 'bottom line' of the ABU and CFU leaf (the third read:
+  // the first took the front edge, the second the edge between the two lowest vertices, 2.8 degrees off horizontal, 'blatantly wrong'). The leaf is a
+  // five-point polygon, so the lowest vertex and the vertex farthest out are one and the same and cannot name the edge; the top vertex and its outer
+  // neighbour do. Found by extremes alone, no vertex indices, the same code for both leaves (the mirror image gives the mirrored edge).
+  // Returns { collarPoint, rollEnd, inward } ({ collarPoint: the top vertex, rollEnd: the shoulder end, inward: the side the leaf lies on }) or null.
+  function collarOuterEdge(points, centerX){
+    if(!points || points.length < 3) return null;
+    const n = points.length;
+    let top = 0;
+    points.forEach((p, i) => {
+      const t = points[top];
+      if(p.y < t.y - 0.005 || (Math.abs(p.y - t.y) <= 0.005 && Math.abs(p.x - centerX) > Math.abs(t.x - centerX))) top = i;
+    });
+    const a = points[(top + n - 1) % n], b = points[(top + 1) % n], tip = points[top];
+    const end = Math.abs(a.x - centerX) >= Math.abs(b.x - centerX) ? a : b;
+    const len = Math.hypot(end.x - tip.x, end.y - tip.y);
+    if(len < 1) return null;
+    let area = 0, cx = 0, cy = 0;
+    for(let i = 0; i < n; i++){ const p = points[i], q = points[(i + 1) % n], cr = p.x * q.y - q.x * p.y; area += cr; cx += (p.x + q.x) * cr; cy += (p.y + q.y) * cr; }
+    const inside = area ? { x: cx / (3 * area), y: cy / (3 * area) } : tip;
+    let inward = { x: (end.y - tip.y) / len, y: -(end.x - tip.x) / len };
+    if(inward.x * (inside.x - tip.x) + inward.y * (inside.y - tip.y) < 0) inward = { x: -inward.x, y: -inward.y };
+    return { collarPoint: tip, rollEnd: end, inward };
   }
-  // SVG rotate, degrees in (-90, 90], that lays the x axis of a piece along the bottom edge of the leaf: the same for a leaf and its mirror image (mirrored sign).
-  function collarBottomAngle(points, centerX){
-    const e = collarBottomEdge(points, centerX);
+  // SVG rotate, degrees in (-90, 90], that lays the x axis of a piece along the outer edge of the leaf: mirrored sign on the mirror-image leaf.
+  function collarOuterAngle(points, centerX){
+    const e = collarOuterEdge(points, centerX);
     if(!e) return 0;
     let d = Math.atan2(e.rollEnd.y - e.collarPoint.y, e.rollEnd.x - e.collarPoint.x) * 180 / Math.PI;
     if(d > 90) d -= 180; if(d <= -90) d += 180;
@@ -771,5 +795,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarBottomEdge, collarBottomAngle, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarOuterEdge, collarOuterAngle, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

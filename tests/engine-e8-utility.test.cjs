@@ -332,8 +332,8 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
     const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
     const spec = await ST.load(garment);
     const slots = spec.raw.collar_slots;
-    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the row (the art's width) lies parallel to the leaf's BOTTOM edge (FIELD2, Ethan:
-    // 'needs to be parallel to the bottom line'; D8: the old assertion had it along the front edge), its NEAR OUTLINE 1 in from the front edge, centred on the leaf, drawn from the sheet's
+    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the row's long axis (the art's longer side) lies parallel to the leaf's OUTER edge, the long diagonal
+    // from the collar point to the shoulder end (COLLAR3, Ethan: 'needs to be parallel to the bottom line'; D8: the old assertions had it along the front edge, then along the edge between the two lowest vertices), its NEAR OUTLINE 1 in from the front edge, centred on the leaf, drawn from the sheet's
     // collar_left / collar_right polygons. Cadet NCO: the chevron follows Figure A5-5 like the shirts' (tests/engine-e5-chevrons.test.cjs).
     for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col']){
       const scene = await P.composeUniform(build(u, 'cadet', rank), store());
@@ -341,10 +341,14 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
         const g = scene.layers.find(l => l.key === 'grade:' + side);
         assert.ok(g, `${u} ${rank} ${side}`);
         const d = slots[side].front_edge.dir_down;
-        // the row's width axis runs along the bottom edge (the slot states it from p1 to p2)
-        const be = slots[side].bottom_edge, bd = { x: (be.p2[0] - be.p1[0]) / 100, y: (be.p2[1] - be.p1[1]) / 100 }, bl = Math.hypot(bd.x, bd.y);
-        const axis = core.rotatePoint({ x: 1, y: 0 }, { x: 0, y: 0 }, g.rotate);
-        assert.ok(Math.abs(axis.x * bd.y / bl - axis.y * bd.x / bl) < 0.01, `${u} ${rank} ${side}: row parallel to the bottom edge`);
+        // the row's long axis runs along the outer edge: the leaf's top vertex to its neighbour farther from the centre line
+        const lp = spec.raw.landmarks['collar_' + side].map(p => ({ x: p[0] / 100, y: p[1] / 100 })), cxs = spec.w / 2;
+        let top = 0; lp.forEach((p, i) => { if(p.y < lp[top].y) top = i; });
+        const nb = [lp[(top + lp.length - 1) % lp.length], lp[(top + 1) % lp.length]].sort((p, q) => Math.abs(q.x - cxs) - Math.abs(p.x - cxs))[0];
+        const bd = { x: nb.x - lp[top].x, y: nb.y - lp[top].y }, bl = Math.hypot(bd.x, bd.y);
+        const axis = g.w >= g.h ? core.rotatePoint({ x: 1, y: 0 }, { x: 0, y: 0 }, g.rotate) : core.rotatePoint({ x: 0, y: -1 }, { x: 0, y: 0 }, g.rotate);
+        assert.ok(Math.abs(axis.x * bd.y / bl - axis.y * bd.x / bl) < 0.01, `${u} ${rank} ${side}: row's long axis parallel to the outer edge`);
+        assert.ok(Math.abs(bd.y / bl) > 0.5 && Math.abs(bd.y / bl) < 0.87, `${u} ${rank} ${side}: the outer edge is a diagonal, not horizontal`);
         // distance from the front edge line to the nearest point of the rotated box: 1 in
         const p1 = slots[side].front_edge.p1.map(v => v / 100), n = { x: d[1], y: -d[0] };
         const c = { x: g.x + g.w / 2, y: g.y + g.h / 2 }, a = (g.rotate * Math.PI) / 180;
@@ -363,11 +367,11 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
     assert.equal((await rotOf('Lt Col', 'left')).rotate, -90);
     assert.equal((await rotOf('Col', 'right')).flipX, true);
     assert.equal((await rotOf('Col', 'left')).flipX, undefined);
-    // The bars lie along the bottom edge of the leaf, long end along it (FIELD2, Ethan; D8: LIVE-FIELD B7 had them along the front edge, before that square to the bottom edge):
-    // the art's tall axis is turned a quarter onto the bottom edge, so the turn is the slot's own angle (the bottom edge's) plus or minus 90.
+    // The bars lie along the outer edge of the leaf, long end along it (COLLAR3, Ethan; D8: LIVE-FIELD B7 had them along the front edge, FIELD2 along the bottom edge):
+    // the art's tall axis is turned onto the outer edge (45 degrees from horizontal on these sheets, mirrored), so the turn is the edge's angle plus or minus 90.
     for(const side of ['right', 'left']){
-      const r = (await rotOf('Capt', side)).rotate, want = slots[side].officer.angle_deg + (slots[side].officer.angle_deg > 0 ? -90 : 90);
-      assert.ok(Math.abs(r - want) < 0.5, `${u} ${side}: Capt bars turned ${r}, bottom edge says ${want}`);
+      const r = (await rotOf('Capt', side)).rotate, want = side === 'right' ? 44.84 : -44.84;
+      assert.ok(Math.abs(r - want) < 0.5, `${u} ${side}: Capt bars turned ${r}, the outer edge says ${want}`);
     }
   }
 });
