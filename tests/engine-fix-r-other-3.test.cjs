@@ -172,24 +172,21 @@ const corners = l => {
   return [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([a, b]) => ({ x: c.x + a * l.w / 2 * Math.cos(t) - b * l.h / 2 * Math.sin(t), y: c.y + a * l.w / 2 * Math.sin(t) + b * l.h / 2 * Math.cos(t) }));
 };
 
-test('ABU and CFU: a general officer\'s stars begin 1 in up the perpendicular from the collar\'s bottom edge, the 1 in measure is drawn (5.1.1.1.1.1, 5.2.1.1.1.1)', async () => {
+test('ABU and CFU: a general officer\'s stars are centred on the collar leaf, stacked perpendicular to its level lower seam (COLLAR6; 5.1.1.1.1.1, 5.2.1.1.1.1)', async () => {
+  // D8: this test had the stars begin 1 in up the perpendicular from the collar's bottom edge, with the 1 in measure drawn; Ethan (COLLAR6): "flip it 90 degrees, and center it, and apply that logic for everything else."
+  const centroid = pts => { let a = 0, cx = 0, cy = 0; for(let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i + 1) % pts.length], cr = p.x * q.y - q.x * p.y; a += cr; cx += (p.x + q.x) * cr; cy += (p.y + q.y) * cr; } return { x: cx / (3 * a), y: cy / (3 * a) }; };
   for(const uniform of ['abu', 'corporate_field']) for(const sex of ['male', 'female']) for(const rank of ['Brig Gen', 'Maj Gen']){
     const scene = await compose(build(uniform, sex, 'senior', rank));
     const spec = await store.load(scene.layers.find(l => l.key === 'base:jacket' || /^base:/.test(l.key || '')).id);
     for(const side of ['right', 'left']){
-      const edge = (spec.raw || spec).collar_slots[side].bottom_edge;
-      const a = { x: edge.p1[0] / 100, y: edge.p1[1] / 100 }, d = { x: (edge.p2[0] - edge.p1[0]) / 100, y: (edge.p2[1] - edge.p1[1]) / 100 };
-      const len = Math.hypot(d.x, d.y);
       const l = scene.layers.find(x => x.key === 'grade:' + side);
       assert.ok(l, `${uniform} ${sex} ${rank} ${side}: grade drawn`);
-      // The cloth's bottom edge midpoint is the corner pair at the piece's bottom: distance from the edge line.
-      const cs = corners(l), bottomMid = { x: (cs[2].x + cs[3].x) / 2, y: (cs[2].y + cs[3].y) / 2 };
-      const dist = Math.abs((bottomMid.x - a.x) * d.y - (bottomMid.y - a.y) * d.x) / len;
-      assert.ok(Math.abs(dist - (1 - 0.125)) < 0.02, `${uniform} ${sex} ${rank} ${side}: the stars' silver begins 1 in up (cloth ${dist.toFixed(3)} in from the edge)`);
-      // D8 (COLLAR5): the leaf's lower seam is level now (it was 2.8 deg off, 13.2 in the figure), so the cloth stands on it unturned (Ethan: the grade's bottom edge parallel to the seam, parallel to the ground).
-      assert.equal(Math.abs(l.rotate), 0, `${uniform} ${sex} ${rank}: the cloth stands on the level seam (${l.rotate})`);
+      const want = centroid(core.landmark(spec, `collar_${side}`).points), c = { x: l.x + l.w / 2, y: l.y + l.h / 2 };
+      assert.ok(Math.hypot(c.x - want.x, c.y - want.y) < 0.02, `${uniform} ${sex} ${rank} ${side}: centred on the leaf`);
+      // the leaf's lower seam is level (COLLAR5), so the stars, perpendicular to it, stand unturned
+      assert.equal(Math.abs(l.rotate), 0, `${uniform} ${sex} ${rank}: the stars stand on the level seam (${l.rotate})`);
     }
-    assert.ok(scene.layers.some(x => x.type === 'measure' && x.label === '1 in'), `${uniform} ${sex} ${rank}: a 1 in measure`);
+    assert.ok(!scene.layers.some(x => x.type === 'measure' && x.label === '1 in'), `${uniform} ${sex} ${rank}: no 1 in measure`);
   }
 });
 

@@ -216,82 +216,55 @@
     return t ? [{ points: t.a }, { points: t.b }] : [];
   }
 
-  // The front edge of a collar leaf polygon, the one a cadet officer's grade is 1 in from (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the edge from the
-  // leaf's top vertex (the collar tip) to its other neighbour nearer the sheet's centre line, along the neck opening. { collarPoint, rollEnd, inward } like collarLeadingEdge, or null.
-  function collarFrontEdge(points, centerX){
-    if(!points || points.length < 3) return null;
-    let top = 0;
-    points.forEach((p, i) => { if(p.y < points[top].y) top = i; });
-    const n = points.length, a = points[(top + n - 1) % n], b = points[(top + 1) % n];
-    const other = Math.abs(a.x - centerX) <= Math.abs(b.x - centerX) ? a : b, tip = points[top];
-    const len = Math.hypot(other.x - tip.x, other.y - tip.y);
-    if(len < 1) return null;
+  // The area centroid of a polygon given as points [{x, y}] (inches), the point a piece is 'centred on the leaf' at (COLLAR6). Falls back to the vertex mean for a degenerate polygon.
+  function polygonCentroid(points){
+    const n = points.length;
     let area = 0, cx = 0, cy = 0;
     for(let i = 0; i < n; i++){ const p = points[i], q = points[(i + 1) % n], cr = p.x * q.y - q.x * p.y; area += cr; cx += (p.x + q.x) * cr; cy += (p.y + q.y) * cr; }
-    const inside = area ? { x: cx / (3 * area), y: cy / (3 * area) } : tip;
-    let nrm = { x: (other.y - tip.y) / len, y: -(other.x - tip.x) / len };
-    if(nrm.x * (inside.x - tip.x) + nrm.y * (inside.y - tip.y) < 0) nrm = { x: -nrm.x, y: -nrm.y };
-    return { collarPoint: tip, rollEnd: other, inward: nrm };
+    if(Math.abs(area) < 1e-9) return { x: points.reduce((t, p) => t + p.x, 0) / n, y: points.reduce((t, p) => t + p.y, 0) / n };
+    return { x: cx / (3 * area), y: cy / (3 * area) };
   }
 
-  // The extent of a w x h box turned `deg` degrees (SVG rotate, about its centre) measured across a leading edge { collarPoint, rollEnd, inward }, perpendicular to it: twice the box's
-  // reach toward the edge. A box standing square to the edge has its width there; a box turned to some other line has the corner reach |u.x| w/2 + |u.y| h/2 along the edge's normal u.
-  function boxExtentAcross(edge, w, h, deg){
-    const dx = edge.rollEnd.x - edge.collarPoint.x, dy = edge.rollEnd.y - edge.collarPoint.y, len = Math.hypot(dx, dy);
-    const u = { x: -dy / len, y: dx / len }, r = (deg || 0) * Math.PI / 180, cs = Math.cos(r), sn = Math.sin(r);
-    // the box's own axes in the sheet: x' = (cs, sn), y' = (-sn, cs)
-    return 2 * (Math.abs(cs * u.x + sn * u.y) * w / 2 + Math.abs(-sn * u.x + cs * u.y) * h / 2);
-  }
-  // The corner of that box nearest the edge and the foot of the perpendicular from it, for the overlay's 1 in measure: { foot, near }. `at` is the box's centre.
-  function nearCornerToEdge(edge, at, w, h, deg){
-    const dx = edge.rollEnd.x - edge.collarPoint.x, dy = edge.rollEnd.y - edge.collarPoint.y, len = Math.hypot(dx, dy);
-    const t = { x: dx / len, y: dy / len };
+  // Whether a w x h box centred on `at` and turned `deg` degrees (SVG rotate, about its centre) lies wholly inside the polygon `points`: its four corners and the middle of each side are inside.
+  function boxInPolygon(points, at, w, h, deg){
     const r = (deg || 0) * Math.PI / 180, cs = Math.cos(r), sn = Math.sin(r);
-    let best = null;
-    for(const [i, j] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]){
-      const q = { x: at.x + i * w / 2 * cs - j * h / 2 * sn, y: at.y + i * w / 2 * sn + j * h / 2 * cs };
-      const d = Math.abs((q.x - edge.collarPoint.x) * t.y - (q.y - edge.collarPoint.y) * t.x);
-      if(!best || d < best.d) best = { q, d };
-    }
-    const along = (best.q.x - edge.collarPoint.x) * t.x + (best.q.y - edge.collarPoint.y) * t.y;
-    // the foot lies on the edge's line, the perpendicular from the corner
-    return { near: best.q, foot: { x: edge.collarPoint.x + t.x * along, y: edge.collarPoint.y + t.y * along } };
+    const q = (i, j) => ({ x: at.x + i * w / 2 * cs - j * h / 2 * sn, y: at.y + i * w / 2 * sn + j * h / 2 * cs });
+    const inside = p => { let c = false; for(let i = 0, j = points.length - 1; i < points.length; j = i++){ const a = points[i], b = points[j]; if((a.y > p.y) !== (b.y > p.y) && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x) c = !c; } return c; };
+    return [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [-1, 0], [0, 1], [0, -1]].every(([i, j]) => inside(q(i, j)));
   }
 
-  // `opts.edgeOf(poly, centerX)`, when given (the ABU and CFU, profiles-field.js), supplies the front (leading) edge in place of the polygon search; `opts.turnOf(poly)`, the turn in degrees.
-  // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'). The text states no orientation;
-  // COLLAR5 (Ethan: "the edge on the bottom right needs to be parallel with the seam below it. and it should apply for all. that seam should also be parallel with the ground"):
-  // the cloth's bottom edge is parallel to the leaf's lower seam, which the sheets draw horizontal (collar_slots[side].bottom_edge), so the art is turned by the seam's angle (0), never onto the
-  // slanting front, outer or any other edge; every grade alike. The art is drawn with its diamonds' long axis vertical and its row horizontal. Near corner 1 in from the front edge, centred on the
-  // leaf along the front edge (the chord the line 1 in + half the box's reach in from the edge cuts across the leaf), the 1 in measure drawn from the edge to that corner.
+  // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'). COLLAR6 (Ethan, on the cloth drawn as a level rectangle pushed toward the
+  // leaf's outer side: "flip it 90 degrees, and center it, and apply that logic for everything else"): the cloth is turned a quarter turn from the seam's frame, so its long side stands vertical (`opts.turnOf(poly)`
+  // supplies the turn, the seam's angle + 90: the diamonds of the Lt Col stack one above the other, each with its long axis along the seam), and its centre is the centroid of the leaf polygon on both axes.
+  // The art is drawn with its diamonds' long axis vertical and its row horizontal. A grade worn in the regular size whose cloth would cross the leaf's outline when centred is drawn in the miniature
+  // cloth-bordered form instead (5.1.1.1.1.3: miniature insignia may be worn); `opts.miniatureKeys` names the grades that wear the miniature form always (Cadet Colonels and Captains).
   async function collarOfficerRow(ctx, g, opts){
-    // `opts.miniatureKeys` (the ABU and CFU, 5.1.1.1.1.3, 5.2.1.1.1.4: 'Cadet Colonels and Cadet Captains may wear miniature, embroidered insignia') names the
-    // grades drawn in the miniature cloth-bordered form, which is what fits the leaf; the others wear regular size.
     const mini = opts && opts.miniatureKeys && opts.miniatureKeys.includes(g.key);
-    const id = G.cadetOfficerInsignia(g, mini ? 'cloth-bordered-miniature' : 'cloth-bordered-regular');
     const polys = collarPolygons(ctx);
-    if(!id || polys.length < 2) return;
+    if(polys.length < 2) return;
+    let id = G.cadetOfficerInsignia(g, mini ? 'cloth-bordered-miniature' : 'cloth-bordered-regular');
+    if(!id) return;
     if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
-    const s = await ctx.spec(id);
+    let s = await ctx.spec(id);
     const centerX = ctx.base.w / 2;
-    for(const poly of polys){
-      const edge = opts && opts.edgeOf ? opts.edgeOf(poly, centerX) : collarFrontEdge(poly.points, centerX);
-      if(!edge) continue;
-      const side = edge.collarPoint.x < centerX ? 'right' : 'left';
-      const rotate = opts && opts.turnOf ? opts.turnOf(poly) : 0;
-      const pl = chevronOnLeadingEdge(edge, boxExtentAcross(edge, s.w, s.h, rotate), 1, poly.points);
-      await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate, z: opts && opts.z != null ? opts.z : Z.insignia, role: 'grade', key: 'grade:' + side });
-      const m = nearCornerToEdge(edge, pl.at, s.w, s.h, rotate);
-      ctx.measure(m.foot, m.near);
+    const turns = polys.map(poly => opts && opts.turnOf ? opts.turnOf(poly) : 0);
+    // regular size that does not fit on both leaves, centred: the miniature form
+    if(!mini && polys.some((poly, i) => !boxInPolygon(poly.points, polygonCentroid(poly.points), s.w, s.h, turns[i]))){
+      const small = G.cadetOfficerInsignia(g, 'cloth-bordered-miniature');
+      if(small && ctx.has(small)){ id = small; s = await ctx.spec(id); }
+    }
+    for(let i = 0; i < polys.length; i++){
+      const poly = polys[i], at = polygonCentroid(poly.points);
+      const side = at.x < centerX ? 'right' : 'left';
+      await ctx.place(id, { pieceAnchor: 'center', at, rotate: turns[i], z: opts && opts.z != null ? opts.z : Z.insignia, role: 'grade', key: 'grade:' + side });
     }
   }
 
-  // Cadet NCO and Airman chevrons on both collars, by the rule of Figure A5-5 ('shirt without necktie',
-  // CAPR 39-1 page 134) for every garment (Class B, aviator shirt, overblouse, ABU, CFU): the chevron's
-  // axis parallel to the leading edge of the collar leaf (its bottom edge, collar point to roll line),
-  // top of the insignia (peak / shield canton) toward the roll-line end, rockers toward the collar point, the near outline 1 in from the edge, centred on the leaf (4.1.11.1.1.1.4,
-  // 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5, 5.1.1.1.1.4, 5.2.1.1.1). The wearer's right is the collar on
-  // the left of the picture whatever the sheet calls its sides.
+  // Cadet NCO and Airman chevrons on both collars. On the shirts (Class B, aviator shirt, overblouse), the rule of Figure A5-5 ('shirt without necktie', CAPR 39-1 page 134): the chevron's
+  // axis parallel to the leading edge of the collar leaf (its bottom edge, collar point to roll line), top of the insignia (peak / shield canton) toward the roll-line end, rockers toward the
+  // collar point, the near outline 1 in from the edge, centred on the leaf (4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5). The wearer's right is the collar on the left of the picture whatever
+  // the sheet calls its sides. `opts.turnOf(poly)` (the ABU and CFU, COLLAR6): the chevron stays upright, apex up, turned by the leaf's lower seam's angle (0), and is centred on the leaf, its
+  // centre the centroid of the leaf polygon (5.1.1.1.1.4, 5.2.1.1.1).
   async function collarChevrons(ctx, g, opts){
     const id = G.cadetNcoChevron(g, 'metal');
     const polys = collarPolygons(ctx);
@@ -299,18 +272,19 @@
     if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
     const s = await ctx.spec(id);
     const centerX = ctx.base.w / 2;
+    const turnOf = opts && opts.turnOf, z = opts && opts.z != null ? opts.z : Z.insignia;
     for(const poly of polys){
-      const edge = opts && opts.edgeOf ? opts.edgeOf(poly, centerX) : collarLeadingEdge(poly.points, centerX);
+      if(turnOf){
+        const at = polygonCentroid(poly.points), side = at.x < centerX ? 'right' : 'left';
+        await ctx.place(id, { pieceAnchor: 'center', at, rotate: turnOf(poly), z, role: 'grade', key: 'grade:' + side });
+        continue;
+      }
+      const edge = collarLeadingEdge(poly.points, centerX);
       if(!edge) continue;
       const side = edge.collarPoint.x < centerX ? 'right' : 'left';
-      // `opts.turnOf(poly)` (the ABU and CFU, COLLAR5): the chevron stands on the leaf's horizontal lower seam like every grade piece there, turned by the seam's angle and not onto the front edge;
-      // its near corner is then 1 in from the front edge, centred on the leaf along it. Without it (the shirts), the chevron's axis lies along the leading edge (Figure A5-5).
-      const turnOf = opts && opts.turnOf;
-      const rotate = turnOf ? turnOf(poly) : null;
-      const pl = chevronOnLeadingEdge(edge, turnOf ? boxExtentAcross(edge, s.w, s.h, rotate) : s.w, 1, collarLeaf(poly.points, edge));
-      await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate: turnOf ? rotate : pl.rotate, z: opts && opts.z != null ? opts.z : Z.insignia, role: 'grade', key: 'grade:' + side });
-      if(turnOf){ const m = nearCornerToEdge(edge, pl.at, s.w, s.h, rotate); ctx.measure(m.foot, m.near); }
-      else ctx.measure(pl.foot, pl.near);
+      const pl = chevronOnLeadingEdge(edge, s.w, 1, collarLeaf(poly.points, edge));
+      await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate: pl.rotate, z, role: 'grade', key: 'grade:' + side });
+      ctx.measure(pl.foot, pl.near);
     }
   }
 
@@ -781,5 +755,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, boxExtentAcross, nearCornerToEdge, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

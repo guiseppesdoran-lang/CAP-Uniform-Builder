@@ -287,23 +287,16 @@ test('badges over the CAP tape: three then four, every regulation gap is measure
   assert.equal(four.filter(l => l === '¼ in').length, 2, '1/4 in between the badges of each stack');
 });
 
-test('ABU and CFU overlay: grade 1 in from the collar\'s free edge, chevron width, patch widths, badges (5.1.1.1.1, 5.2.1.1.1, 5.1.1.1.2)', async () => {
+test('ABU and CFU overlay: grade centred on the collar, chevron width, patch widths, badges (5.1.1.1.1, 5.2.1.1.1, 5.1.1.1.2)', async () => {
   for(const u of ['abu', 'corporate_field']){
     const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
     const spec = await ST.load(garment);
     const apex = core.anchor(spec, 'collar_apex');
     assert.ok(apex);
-    // an officer: the grade centred 1 in above the lower seam of each collar leaf (COLLAR5; the 1 in line runs from the seam to the centre)
+    // an officer: the grade is centred on each collar leaf (COLLAR6), so no 1 in measure is drawn on the collar
     const scene = await P.composeUniform(build(u, 'senior', 'Capt', { badges: [PILOT, GT], patches: [UNIT, WING] }), store());
     const ms = measures(scene);
-    const ones = ms.filter(m => m.label === '1 in');
-    assert.equal(ones.length, 2, `${u}: one on each collar`);
-    for(const side of ['right', 'left']){
-      const g = scene.layers.find(l => l.key === 'grade:' + side);
-      const m = ones.find(x => Math.abs(x.to.x - g.origin.x) < 1e-3 && Math.abs(x.to.y - g.origin.y) < 1e-3); // layers keep 4 decimals
-      assert.ok(m, `${u} ${side}: the line ends on the centre of the grade`);
-      assert.ok(Math.abs(len(m) - 1) < 1e-3, `${u} ${side}: 1 in`);
-    }
+    assert.equal(ms.filter(m => m.label === '1 in').length, 0, `${u}: nothing is 1 in from an edge`);
     assert.ok(ms.filter(m => m.label === '½ in').length >= 2, `${u}: badges`);
     // a senior NCO: the chevron's width on each sleeve view the sheet draws
     const nco = await P.composeUniform(build(u, 'senior', 'SMSgt', { opt: { headgear: 'auto', chevron: '3.5' } }), store());
@@ -327,9 +320,10 @@ test('the CAP tape is kept clear of overlay labels on ABU and CFU too', async ()
 
 // ---- D26 (4), COLLAR5: collar grade orientation on the ABU and CFU ------------------------------------------
 
-test('ABU and CFU collar grade stands on the leaf\'s horizontal lower seam: every piece\'s bottom edge parallel to it, the stems and beak as the regulation says (5.1.1.1.1.1, 5.1.1.1.1.3-4, 5.2.1.1.1)', async () => {
-  // D8: this test had the cadet row's short side on the leaf's outer edge (COLLAR3/COLLAR4) and the bars on that edge, a 45 degree turn; Ethan (COLLAR5): "the edge on the bottom right needs to be parallel
-  // with the seam below it. and it should apply for all. that seam should also be parallel with the ground." The full matrix is in tests/engine-live-field-collar.test.cjs; this is the overlay's own check.
+test('ABU and CFU collar grade is centred on the leaf and stands in the frame of its horizontal lower seam: cloth rows and bars a quarter turn, chevrons upright, stems and beak as the regulation says (5.1.1.1.1.1, 5.1.1.1.1.3-4, 5.2.1.1.1)', async () => {
+  // D8 (COLLAR6): this test had the cadet pieces 1 in from the front edge, unturned, and the officers 1 in above the seam; Ethan: "flip it 90 degrees, and center it, and apply that logic for everything else."
+  // The full matrix is in tests/engine-live-field-collar.test.cjs; this is the overlay's own check.
+  const centroid = pts => { let a = 0, cx = 0, cy = 0; for(let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i + 1) % pts.length], cr = p.x * q.y - q.x * p.y; a += cr; cx += (p.x + q.x) * cr; cy += (p.y + q.y) * cr; } return { x: cx / (3 * a), y: cy / (3 * a) }; };
   for(const u of ['abu', 'corporate_field']){
     const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
     const spec = await ST.load(garment);
@@ -339,26 +333,22 @@ test('ABU and CFU collar grade stands on the leaf\'s horizontal lower seam: ever
       assert.equal(be.p1[1], be.p2[1], `${u} ${side}: the seam is level`);
       assert.equal(be.angle_deg, 0, `${u} ${side}: the seam's angle`);
     }
-    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered') and cadet NCO: unturned (the seam's angle, 0), the near corner 1 in from the front edge.
+    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4): a quarter turn from the seam (90), long side vertical; cadet NCO chevron upright (0); both centred on the leaf, no measure drawn.
     for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col', 'C/Lt Col', 'C/SSgt', 'C/MSgt']){
       const scene = await P.composeUniform(build(u, 'cadet', rank), store());
       for(const side of ['right', 'left']){
         const g = scene.layers.find(l => l.key === 'grade:' + side);
         assert.ok(g, `${u} ${rank} ${side}`);
-        assert.equal(g.rotate, 0, `${u} ${rank} ${side}: bottom edge parallel to the level seam, so not turned`);
-        // distance from the front edge line to the nearest point of the box: 1 in
-        const d = slots[side].front_edge.dir_down, p1 = slots[side].front_edge.p1.map(v => v / 100), n = { x: d[1], y: -d[0] };
-        const c = { x: g.x + g.w / 2, y: g.y + g.h / 2 };
-        const corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * g.w / 2, y: c.y + j * g.h / 2 }));
-        const dist = corners.map(q => Math.abs((q.x - p1[0]) * n.x + (q.y - p1[1]) * n.y));
-        assert.ok(Math.abs(Math.min(...dist) - 1) < 0.01, `${u} ${rank} ${side}: near corner ${Math.min(...dist).toFixed(3)} in from the front edge`);
-        const m = measures(scene).find(x => Math.abs(len(x) - 1) < 0.01 && corners.some(q => Math.hypot(q.x - x.to.x, q.y - x.to.y) < 0.02));
-        assert.ok(m, `${u} ${rank} ${side}: the 1 in measure is drawn to the near corner`);
+        assert.equal(g.rotate, /SSgt|MSgt/.test(rank) ? 0 : 90, `${u} ${rank} ${side}: turn`);
+        const want = centroid(core.landmark(spec, 'collar_' + side).points), c = { x: g.x + g.w / 2, y: g.y + g.h / 2 };
+        assert.ok(Math.hypot(c.x - want.x, c.y - want.y) < 0.02, `${u} ${rank} ${side}: centred on the leaf`);
       }
+      assert.equal(measures(scene).filter(m => m.label === '1 in').length, 0, `${u} ${rank}: no 1 in measure`);
     }
-    // Officers: bars (2d Lt, 1st Lt, Capt), Colonel and generals unturned (beak forward on the Colonel), stem parallel to the ground for Maj/Lt Col.
+    // Officers: bars (2d Lt, 1st Lt, Capt) a quarter turn so they lie along the seam, Colonel and generals unturned (beak forward on the Colonel), stem parallel to the ground for Maj/Lt Col.
     const rotOf = async (rank, side) => (await P.composeUniform(build(u, 'senior', rank), store())).layers.find(l => l.key === 'grade:' + side);
-    for(const rank of ['2d Lt', '1st Lt', 'Capt', 'Col', 'Brig Gen', 'Maj Gen']) for(const side of ['right', 'left']) assert.equal((await rotOf(rank, side)).rotate, 0, `${u} ${rank} ${side}`);
+    for(const rank of ['Col', 'Brig Gen', 'Maj Gen']) for(const side of ['right', 'left']) assert.equal((await rotOf(rank, side)).rotate, 0, `${u} ${rank} ${side}`);
+    for(const rank of ['2d Lt', '1st Lt', 'Capt']) for(const side of ['right', 'left']) assert.equal((await rotOf(rank, side)).rotate, 90, `${u} ${rank} ${side}`);
     assert.equal((await rotOf('Maj', 'right')).rotate, 90);
     assert.equal((await rotOf('Maj', 'left')).rotate, -90);
     assert.equal((await rotOf('Lt Col', 'right')).rotate, 90);
@@ -370,7 +360,7 @@ test('ABU and CFU collar grade stands on the leaf\'s horizontal lower seam: ever
 
 // ---- review FIX-ART-r1 (7, 9): the officer grade lies on the collar leaf; the sleeve patch hangs 1/2 in below the seam ----
 
-test('ABU and CFU officer grade (Capt, Maj, Lt Col, Col, Brig Gen, Maj Gen) lies wholly inside the collar leaf, 1 in from the bottom edge (5.1.1.1.1.1, 5.2.1.1.1.1)', async () => {
+test('ABU and CFU officer grade (Capt, Maj, Lt Col, Col, Brig Gen, Maj Gen) lies wholly inside the collar leaf, centred on it (COLLAR6; 5.1.1.1.1.1, 5.2.1.1.1.1)', async () => {
   const inPoly = (p, P) => { let r = false; for(let i = 0, j = P.length - 1; i < P.length; j = i++){ const [xi, yi] = P[i], [xj, yj] = P[j]; if(((yi > p.y) !== (yj > p.y)) && (p.x < (xj - xi) * (p.y - yi) / (yj - yi) + xi)) r = !r; } return r; };
   for(const u of ['abu', 'corporate_field']){
     const spec = await ST.load(u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat');
