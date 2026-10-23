@@ -9,6 +9,7 @@
     return CAPUBEngine.grades.gradeInfo(State.membership, State.rank, {});
   }
   const FLIGHT = ['flight_suit', 'corporate_flight_suit'];
+  const FIELD = ['ocp', 'abu', 'corporate_field'];
 
   // { key, label, type: 'select' | 'check', choices: [[value, label]] | fn, when(ctx) }
   const OPTIONS = [
@@ -37,13 +38,22 @@
     { key: 'headgear', label: 'Headgear', type: 'select',
       choices: c => {
         if(FLIGHT.includes(c.u)) return [['auto', 'Flight cap'], ['none', 'No headgear']];
+        // The field uniforms draw the cap worn, front and back: the patrol cap (the ABU cap, the OCP patrol cap, the Blue
+        // Field Cap), the tactical cap (the navy tactical cap of the ABU and CFU, ICL 25-02 6.2.11; the OCP ball cap), and
+        // the CFU's boonie hat.
+        if(FIELD.includes(c.u)){
+          const list = [['auto', 'Patrol cap'], ['tactical', 'Tactical cap']];
+          if(c.u === 'corporate_field') list.push(['boonie', 'Boonie hat']);
+          list.push(['none', 'No headgear']);
+          return list;
+        }
         const list = [['auto', 'Flight cap']];
         const cadetEnlisted = c.g.cadet && c.g.category !== 'cadet-officer';
         if(!cadetEnlisted && c.g.category !== 'senior-none') list.push(['service', 'Service cap']);
         list.push(['none', 'No headgear']);
         return list;
       },
-      when: c => ['blues_a', 'blues_b', 'flight_suit'].includes(c.u) },
+      when: c => ['blues_a', 'blues_b', 'flight_suit', ...FIELD].includes(c.u) },
     { key: 'chevron', label: 'Chevron size', type: 'select',
       choices: c => {
         // The default each uniform's paragraph names comes first.
@@ -68,7 +78,7 @@
   const ALLOWED = {
     noGradeTrack: ['officer', 'nco'], sleeve: ['short', 'long'], femaleTop: ['shirt', 'overblouse'],
     underlayer: ['shirt', 'turtleneck', 'shell'], skirt: ['a-line', 'straight-split'],
-    headgear: ['auto', 'service', 'none'], chevron: ['', '3.5', '4'], esPatch: ['none', 'style-1', 'style-2']
+    headgear: ['auto', 'service', 'tactical', 'boonie', 'none'], chevron: ['', '3.5', '4'], esPatch: ['none', 'style-1', 'style-2']
   };
 
   // Keep only values this panel could have produced (a saved setup is untrusted input).

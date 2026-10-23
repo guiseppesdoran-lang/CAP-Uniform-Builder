@@ -57,15 +57,15 @@
       point(name){
         const specs = [ctx.base, ...(ctx.overlays || [])];
         const sh = ctx.landmarkShift && ctx.landmarkShift[name];
-        for(const s of specs){ const a = s && core.anchor(s, name); if(a) return { x: a.x + (sh ? sh.dx : 0), y: a.y + (sh ? sh.dy : 0) }; }
+        for(const s of specs){ const a = s && core.anchor(s, name); if(a) return sh ? { x: a.x * (sh.k || 1) + sh.dx, y: a.y * (sh.k || 1) + sh.dy } : { x: a.x, y: a.y }; }
         return null;
       },
-      // `landmarkShift` {name: {dx, dy}}: a landmark of a view the profile has moved on the scene (the cap views
-      // seated on the figure or lifted out of the way, profiles-field.js) is read where the view now is.
+      // `landmarkShift` {name: {dx, dy, k}}: a landmark of a view the profile has moved on the scene (the cap views
+      // seated on the figure or set beside it at a reduced size k, profiles-field.js) is read where the view now is.
       rect(name){
         const specs = [ctx.base, ...(ctx.overlays || [])];
         const sh = ctx.landmarkShift && ctx.landmarkShift[name];
-        for(const s of specs){ const r = s && core.landmarkBounds(s, name); if(r) return sh ? { x: r.x + sh.dx, y: r.y + sh.dy, w: r.w, h: r.h } : r; }
+        for(const s of specs){ const r = s && core.landmarkBounds(s, name); if(r) return sh ? { x: r.x * (sh.k || 1) + sh.dx, y: r.y * (sh.k || 1) + sh.dy, w: r.w * (sh.k || 1), h: r.h * (sh.k || 1) } : r; }
         return null;
       },
       landmark(name){

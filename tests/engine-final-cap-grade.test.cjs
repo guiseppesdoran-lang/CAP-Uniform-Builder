@@ -32,35 +32,44 @@ const CLASSES = [
   ['senior officer', 'senior', ['2d Lt', 'Capt', 'Maj', 'Col', 'Maj Gen']]
 ];
 
+// One cap is drawn (LIVE-ENGINE 3): its zone is the only one that can carry a grade, so each cap a uniform offers is tried in turn.
+const CAPS = uniform => uniform === 'corporate_field' ? ['auto', 'tactical', 'boonie'] : ['auto', 'tactical'];
+const hb2 = (uniform, gender, membership, rank, headgear) => HARNESS.makeBuild({ uniform, gender, membership, rank, name: NAME, badgeIds: [], opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting', headgear } });
+const ZONE = { auto: 'patrol_cap_front_insignia_zone', tactical: 'baseball_cap_front_insignia_zone', boonie: 'boonie_hat_front_insignia_zone' };
+
 for(const uniform of ['abu', 'corporate_field', 'ocp']){
   for(const gender of ['male', 'female']){
-    test(`${uniform} ${gender}: grade on the cap fronts per grade class (ICL 25-02 6.2.11.1, 5.1.1.6, 7.1.1.8)`, async () => {
-      const reference = capGrades(await compose(hb(uniform, gender, 'senior', 'Capt')));
-      assert.ok(reference.length >= 1, `${uniform} ${gender}: a senior officer wears grade on at least one cap`);
-      let checked = 0;
-      for(const [label, membership, ranks] of CLASSES){
-        for(const rank of ranks){
-          const scene = await compose(hb(uniform, gender, membership, rank));
-          const got = capGrades(scene);
-          let want;
-          if(/NCO|airman basic/.test(label)) want = [];
-          else if(label === 'cadet officer') want = uniform === 'ocp' ? reference : reference.filter(z => z !== 'baseball_cap');
-          else want = reference;
-          assert.deepEqual(got, want, `${uniform} ${gender} ${rank} (${label}): grade on ${JSON.stringify(got)}, expected ${JSON.stringify(want)}`);
-          checked++;
+    for(const headgear of CAPS(uniform)){
+      test(`${uniform} ${gender} ${headgear}: grade on the cap front per grade class (ICL 25-02 6.2.11.1, 5.1.1.6, 7.1.1.8)`, async () => {
+        const reference = capGrades(await compose(hb2(uniform, gender, 'senior', 'Capt', headgear)));
+        assert.deepEqual(reference, [ZONE[headgear].replace(/_front_insignia_zone$/, '')], `${uniform} ${gender} ${headgear}: a senior officer wears grade on the one cap drawn`);
+        let checked = 0;
+        for(const [label, membership, ranks] of CLASSES){
+          for(const rank of ranks){
+            const scene = await compose(hb2(uniform, gender, membership, rank, headgear));
+            const got = capGrades(scene);
+            let want;
+            if(/NCO|airman basic/.test(label)) want = [];
+            else if(label === 'cadet officer') want = uniform !== 'ocp' && headgear === 'tactical' ? [] : reference;
+            else want = reference;
+            assert.deepEqual(got, want, `${uniform} ${gender} ${headgear} ${rank} (${label}): grade on ${JSON.stringify(got)}, expected ${JSON.stringify(want)}`);
+            checked++;
+          }
         }
-      }
-      assert.equal(checked, 15);
-    });
+        assert.equal(checked, 15);
+      });
+    }
   }
 }
 
-test('the ABU and the CFU: a cadet officer\'s scene says why the tactical cap front is bare (ICL 25-02 6.2.11.1); no other class gets that note', async () => {
+test('the ABU and the CFU: a cadet officer\'s scene says why the tactical cap front is bare (ICL 25-02 6.2.11.1) when that cap is worn; no other class gets that note', async () => {
   for(const uniform of ['abu', 'corporate_field']){
-    const cadet = await compose(hb(uniform, 'male', 'cadet', 'C/Maj'));
+    const cadet = await compose(hb2(uniform, 'male', 'cadet', 'C/Maj', 'tactical'));
     assert.ok(cadet.notes.some(n => /6\.2\.11\.1/.test(n)), `${uniform}: cadet officer`);
+    // The patrol cap, and any cap but the tactical one, is not that cap.
+    for(const headgear of ['auto', 'none']) assert.ok(!(await compose(hb2(uniform, 'male', 'cadet', 'C/Maj', headgear))).notes.some(n => /6\.2\.11\.1/.test(n)), `${uniform} ${headgear}: no tactical cap note`);
     for(const [membership, rank] of [['cadet', 'C/SSgt'], ['senior', 'Capt'], ['senior', 'SMSgt']]){
-      const s = await compose(hb(uniform, 'male', membership, rank));
+      const s = await compose(hb2(uniform, 'male', membership, rank, 'tactical'));
       assert.ok(!s.notes.some(n => /6\.2\.11\.1/.test(n)), `${uniform} ${rank}: no tactical cap note`);
     }
   }

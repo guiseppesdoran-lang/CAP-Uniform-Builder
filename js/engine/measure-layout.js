@@ -177,7 +177,9 @@
             const at = add(a, mul(sub(b, a), t));
             const slide = Math.abs(t - 0.5) * 60;
             // Centred on the line when it is long enough to show both bars beside the label.
-            if(L >= extent(u) + 2 * (PX.bar * 0.5 + 4) * P && (t === 0.5 || L * Math.min(t, 1 - t) > extent(u) / 2 + 6 * P)) modes.push({ name: 'centre', at, cost: slide });
+            // A width measure that hangs below the Velcro (`minOffsetIn`) keeps its label beside the line, on the open side: centred on the
+            // line, the label would cover the gap between the two patches, where the next measures' extension lines must run.
+            if(!o.minOffsetIn && L >= extent(u) + 2 * (PX.bar * 0.5 + 4) * P && (t === 0.5 || L * Math.min(t, 1 - t) > extent(u) / 2 + 6 * P)) modes.push({ name: 'centre', at, cost: slide });
             const outward = c.inline ? [c.side, mul(c.side, -1)] : [c.side];
             outward.forEach((v, i) => modes.push({ name: 'beside', at: add(at, mul(v, extent(v) / 2 + PX.labelGap * P)), cost: slide + (i ? 6 : 0) }));
             if(!c.inline) modes.push({ name: 'beside-in', at: add(at, mul(c.side, -(extent(c.side) / 2 + PX.labelGap * P))), cost: slide + 25 });

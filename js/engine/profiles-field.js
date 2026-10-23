@@ -40,7 +40,8 @@
     // The CAP tape's lettering is drawn on the sheet; the measurement labels stay off it.
     ctx.keepClear(ctx.rect('cap_tape'), 'cap_tape');
     if(!b.name.show || !b.name.last) return;
-    for(const lm of ['name_tape', 'patrol_cap_back_name_tape', 'baseball_cap_back_name_tape']){
+    // The coat's name tape, and the back tape of the cap that is worn (ctx.headgear, set by composeFieldUniform).
+    for(const lm of ['name_tape', ctx.headgear && ctx.headgear.tape].filter(Boolean)){
       const r = ctx.rect(lm);
       if(!r) continue;
       ctx.keepClear(r, lm);
@@ -64,7 +65,8 @@
     if(!g.officer) return;
     const id = g.cadet ? G.cadetOfficerInsignia(g, 'cloth-bordered-regular') : G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: true });
     const zones = [['patrol_cap_front_insignia_zone', b.uniform === 'ocp' ? 'visor' : 'center'], ['baseball_cap_front_insignia_zone', 'visor'], ['boonie_hat_front_insignia_zone', 'center']];
-    for(const [name, mode] of zones){
+    // Only the cap that is worn has a front to carry it.
+    for(const [name, mode] of zones.filter(([n]) => ctx.headgear && ctx.headgear.zone === n)){
       const z = ctx.rect(name);
       if(!z) continue;
       // The navy tactical cap of the ABU and CFU: 6.2.11.1 (ICL 25-02), the paragraph written for that
@@ -80,8 +82,7 @@
       // "1/2 inch from the visor": the zone's bottom edge already sits 1/2 in above the visor.
       const at = mode === 'visor' ? { x: z.x + z.w / 2, y: z.y + z.h } : core.rectCenter(z);
       // On the cap seated on the figure the grade lies over the hat (R6).
-      const seated = ctx.landmarkShift && ctx.landmarkShift.patrol_cap_front && name === 'patrol_cap_front_insignia_zone';
-      await ctx.place(id, { pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: seated ? Z.hatDevice : Z.insignia, role: 'grade', key: 'grade:' + name });
+      await ctx.place(id, { pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: Z.hatDevice, role: 'grade', key: 'grade:' + name });
       if(mode === 'visor') ctx.measure({ x: at.x, y: at.y + 0.5 }, at);
     }
   }
@@ -593,16 +594,19 @@
     if(patches.length) ctx.note('Some selected patches have no place left on this uniform and are not shown');
   }
 
-  // ---- headgear: the patrol cap on the figure, the other cap views above it ----
-  // The coat sheets draw the caps as views in the top margin (patrol cap front and back, tactical / baseball cap
-  // front and back, the CFU's boonie hat): groups of the sheet, each with its own landmarks. R6 wants the hat on top
-  // of the figure, so the primary cap, the ABU cap (5.1.1.6, the only authorized headgear with the ABU), the OCP
-  // patrol cap (7.1.1.8) and the Blue Field Cap, which is a 'patrol cap design' (6.2.9.1, 5.2.1.2.3), is the sheet's
-  // patrol cap front view carried onto the collar: its bottom centre on the collar's back top (the sheet's
+  // ---- headgear: the cap worn, its front on the collar and its back beside it ----
+  // The coat sheets draw every cap as views in the top margin (patrol cap front and back, tactical / baseball cap front
+  // and back, the CFU's boonie hat): groups of the sheet, each with its own landmarks. Drawing all of them was clunky
+  // (Ethan, live site), so only the cap the member chose (opt.headgear: the patrol cap by default, 'tactical', the
+  // CFU's 'boonie', or 'none') is drawn, and the sheet's own cap views are all hidden. R6 wants the hat on top of the
+  // figure: the cap's front view is carried onto the collar, its bottom centre on the collar's back top (the sheet's
   // hat_attach anchor when it has one, else the apex of its collar-back curve, 5.635 in above collar_apex, measured
   // on the three sheets) lowered by HAT_SEAT (the seat the dress caps use, an estimate: the regulation shows no
-  // seating). The other views stay as views of the accessory caps, lifted in rows above the seated cap so that none
-  // lies over it. The member's grade and last name are placed on the views where they now are (ctx.landmarkShift).
+  // seating). Its back view, with the name tape, stands beside it at BACK_VIEW_SCALE, its bottom on the front's, so the
+  // name tape (7.1.1.8, 5.1.1.6, 6.2.11.1) shows without a second full-size cap. The ABU cap (5.1.1.6), the OCP patrol
+  // cap (7.1.1.8) and the Blue Field Cap, a 'patrol cap design' (6.2.9.1, 5.2.1.2.3), are the patrol cap; the navy
+  // tactical cap (ICL 25-02 6.2.11) and the OCP ball cap are the tactical one. The member's grade and last name are
+  // placed on the views where they now are (ctx.landmarkShift).
   const HAT_VIEWS = [
     { group: 'hat-patrol-front', rect: 'patrol_cap_front', follow: ['patrol_cap_front_insignia_zone'] },
     { group: 'hat-patrol-back', rect: 'patrol_cap_back', with: ['hat-patrol-back-name-tape'], follow: ['patrol_cap_back_name_tape'] },
@@ -611,48 +615,50 @@
     { group: 'hat-boonie-front', rect: 'boonie_hat_front', follow: ['boonie_hat_front_insignia_zone'] },
     { group: 'hat-boonie-back', rect: 'boonie_hat_back' }
   ];
-  const HAT_SEAT = 0.25, COLLAR_BACK_TOP_ABOVE_APEX = 5.635, VIEW_ROW_GAP = 0.5;
+  // The caps a member can wear: the views that make one, the grade zone on its front and its back name tape landmark.
+  const HEADGEAR = {
+    patrol: { front: 'hat-patrol-front', back: 'hat-patrol-back', zone: 'patrol_cap_front_insignia_zone', tape: 'patrol_cap_back_name_tape' },
+    tactical: { front: 'hat-ball-front', back: 'hat-ball-back', zone: 'baseball_cap_front_insignia_zone', tape: 'baseball_cap_back_name_tape' },
+    boonie: { front: 'hat-boonie-front', back: 'hat-boonie-back', zone: 'boonie_hat_front_insignia_zone', tape: null }
+  };
+  const HAT_SEAT = 0.25, COLLAR_BACK_TOP_ABOVE_APEX = 5.635, BACK_VIEW_SCALE = 0.6, BACK_VIEW_GAP = 0.3;
+  // The cap a build wears: 'tactical' and (CFU only, 5.2.1.2) 'boonie' by choice, else the patrol cap; null with 'none'.
+  function headgearChoice(b){
+    const v = b.opt.headgear;
+    if(v === 'none') return null;
+    if(v === 'tactical') return 'tactical';
+    if(v === 'boonie' && b.uniform === 'corporate_field') return 'boonie';
+    return 'patrol';
+  }
   async function hatViews(ctx, b, garmentId){
-    if(b.opt.headgear === 'none') return { hide: [], place(){} };
     const spec = await ctx.spec(garmentId);
-    const find = name => { const r = core.landmarkBounds(spec, name); return r; };
-    const views = HAT_VIEWS.map(v => Object.assign({ box: find(v.rect) }, v)).filter(v => v.box);
+    const views = HAT_VIEWS.map(v => Object.assign({ box: core.landmarkBounds(spec, v.rect) }, v)).filter(v => v.box);
+    // Every cap view the sheet draws is hidden; the one worn is drawn again where it is worn.
     const hide = views.flatMap(v => [v.group, ...(v.with || [])]);
-    return { hide, place(){
+    const worn = headgearChoice(b);
+    const caps = worn && HEADGEAR[worn];
+    const front = caps && views.find(v => v.group === caps.front), back = caps && views.find(v => v.group === caps.back);
+    return { hide, choice: front ? caps : null, place(){
+      if(!front) return;
       ctx.landmarkShift = ctx.landmarkShift || {};
-      const put = (v, dx, dy, z, role) => {
-        const layer = Object.assign(core.registerAtOrigin(spec, z, role), { key: `${role}:${v.group}`, x: dx, y: dy, origin: { x: dx, y: dy }, onlyGroups: [v.group, ...(v.with || [])], noBounds: true, className: role });
+      const put = (v, dx, dy, z, role, k) => {
+        const layer = Object.assign(core.registerAtOrigin(spec, z, role), { key: `${role}:${v.group}`, x: dx, y: dy, w: spec.w * k, h: spec.h * k, origin: { x: dx, y: dy }, onlyGroups: [v.group, ...(v.with || [])], noBounds: true, className: role });
         // The view's own extent, not the whole sheet's, is what the overlay keeps clear of and what the scene box takes.
-        const pad = v.pad || 0.1;
-        layer.obstacle = { x: v.box.x + dx - pad, y: v.box.y + dy - pad, w: v.box.w + 2 * pad, h: v.box.h + 2 * pad };
+        const pad = v.pad || 0.1, box = { x: v.box.x * k + dx, y: v.box.y * k + dy, w: v.box.w * k, h: v.box.h * k };
+        layer.obstacle = { x: box.x - pad, y: box.y - pad, w: box.w + 2 * pad, h: box.h + 2 * pad };
         ctx.layers.push(layer);
-        ctx.layers.push({ type: 'rect', x: v.box.x + dx - pad, y: v.box.y + dy - pad, w: v.box.w + 2 * pad, h: v.box.h + 2 * pad, rotate: 0, origin: { x: v.box.x + dx, y: v.box.y + dy }, z: 0, role: 'hat-view-bounds', key: `hat-view-bounds:${v.group}`, fill: 'none' });
-        for(const n of [v.rect, ...(v.follow || [])]) ctx.landmarkShift[n] = { dx, dy };
-        v.shift = { dx, dy };
+        ctx.layers.push({ type: 'rect', x: box.x - pad, y: box.y - pad, w: box.w + 2 * pad, h: box.h + 2 * pad, rotate: 0, origin: { x: box.x, y: box.y }, z: 0, role: 'hat-view-bounds', key: `hat-view-bounds:${v.group}`, fill: 'none' });
+        for(const n of [v.rect, ...(v.follow || [])]) ctx.landmarkShift[n] = { dx, dy, k };
+        v.shift = { dx, dy, k, box };
       };
-      const primary = views.find(v => v.group === 'hat-patrol-front');
-      let capTop = null;
       const attach = ctx.point('hat_attach'), apex = ctx.point('collar_apex'), top = ctx.point('top_center');
-      if(primary && top && (attach || apex)){
-        const seatY = (attach ? attach.y : apex.y - COLLAR_BACK_TOP_ABOVE_APEX) + HAT_SEAT;
-        const dx = top.x - (primary.box.x + primary.box.w / 2), dy = seatY - (primary.box.y + primary.box.h);
-        put(primary, dx, dy, Z.hat, 'hat');
-        capTop = primary.box.y + dy;
-      }
-      // The other views: rows (views whose heights overlap on the sheet), the lowest first, each lifted just enough
-      // for its bottom to clear the ceiling, which starts 1/2 in above the seated cap and rises with every row.
-      const rest = views.filter(v => !v.shift).sort((a, b2) => (b2.box.y + b2.box.h) - (a.box.y + a.box.h));
-      const rows = [];
-      for(const v of rest){
-        const row = rows.find(r => v.box.y < r.bottom && v.box.y + v.box.h > r.top);
-        if(row){ row.views.push(v); row.top = Math.min(row.top, v.box.y); row.bottom = Math.max(row.bottom, v.box.y + v.box.h); }
-        else rows.push({ views: [v], top: v.box.y, bottom: v.box.y + v.box.h });
-      }
-      let ceiling = capTop == null ? Infinity : capTop - VIEW_ROW_GAP;
-      for(const row of rows.sort((a, b2) => b2.bottom - a.bottom)){
-        const lift = Math.max(0, row.bottom - ceiling);
-        for(const v of row.views) put(v, 0, -lift, Z.garmentLayer, 'hat-view');
-        ceiling = row.top - lift - VIEW_ROW_GAP;
+      if(!top || !(attach || apex)) return;
+      const seatY = (attach ? attach.y : apex.y - COLLAR_BACK_TOP_ABOVE_APEX) + HAT_SEAT;
+      put(front, top.x - (front.box.x + front.box.w / 2), seatY - (front.box.y + front.box.h), Z.hat, 'hat', 1);
+      // The back view: beside the front, on the picture's right of it, bottoms level.
+      if(back){
+        const f = front.shift.box, k = BACK_VIEW_SCALE;
+        put(back, f.x + f.w + BACK_VIEW_GAP - back.box.x * k, f.y + f.h - (back.box.y + back.box.h) * k, Z.garmentLayer, 'hat-view', k);
       }
     } };
   }
@@ -663,6 +669,7 @@
     const hats = await hatViews(ctx, b, GARMENT[b.uniform]);
     const hide = [...(bare ? ['rank-square'] : []), ...hats.hide];
     await ctx.garment(GARMENT[b.uniform], hide.length ? { hideGroups: hide } : null);
+    ctx.headgear = hats.choice;
     hats.place();
     nameTapes(ctx, b);
     if(b.uniform === 'ocp') await ocpGrade(ctx, b);

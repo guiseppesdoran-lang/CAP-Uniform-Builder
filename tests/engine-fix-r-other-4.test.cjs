@@ -114,7 +114,9 @@ test('overlay: the 1/2 in measure of a cap view\'s grade is drawn beside that vi
   for(const uniform of ['ocp', 'abu', 'corporate_field']){
     for(const gender of ['male', 'female']){
       for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'Lt Col'], ['senior', 'Col'], ['cadet', 'C/Capt'], ['cadet', 'C/Maj']]){
-        const { scene, drawings } = await laidOut(hb(uniform, gender, membership, rank, { opt: { headgear: 'auto', overlay: true } }));
+      // One cap is drawn (LIVE-ENGINE 3): each cap the uniform offers is laid out in turn.
+      for(const headgear of uniform === 'corporate_field' ? ['auto', 'tactical', 'boonie'] : ['auto', 'tactical']){
+        const { scene, drawings } = await laidOut(hb(uniform, gender, membership, rank, { opt: { headgear, overlay: true } }));
         const views = scene.layers.filter(l => (l.role === 'hat' || l.role === 'hat-view') && l.obstacle).map(l => ({ key: l.key, box: l.obstacle }));
         for(const m of scene.layers.filter(l => l.type === 'measure')){
           const mid = { x: (m.from.x + m.to.x) / 2, y: (m.from.y + m.to.y) / 2 };
@@ -135,6 +137,7 @@ test('overlay: the 1/2 in measure of a cap view\'s grade is drawn beside that vi
           }
           checked++;
         }
+      }
       }
     }
   }

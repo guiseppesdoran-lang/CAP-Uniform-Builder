@@ -259,8 +259,8 @@ test('OCP overlay: chest square size, the collar-to-zipper drop from the garment
   assert.ok(drop, 'collar to square');
   assert.ok(Math.abs(drop.from.x - apex.x) < 1e-6 && Math.abs(drop.from.y - apex.y) < 1e-6, 'starts at the collar_apex anchor');
   assert.ok(Math.abs(drop.to.y - sq.y) < 1e-6 && Math.abs(drop.to.x - apex.x) < 1e-6, 'ends on the placket at the top of the square');
-  // two badges, 1/2 in each; the cap grade 1/2 in above the visor on both caps
-  assert.ok(ms.filter(m => m.label === '½ in').length >= 4, 'badges and caps');
+  // two badges, 1/2 in each; the cap grade 1/2 in above the visor on the cap worn (the front only, LIVE-ENGINE 3)
+  assert.ok(ms.filter(m => m.label === '½ in').length >= 3, 'badges and the cap');
   // patch widths and the equal gaps that centre each under the flag and AUX
   assert.equal(ms.filter(m => m.label === '3½ in').length, 2, 'both patches');
   assert.equal(ms.filter(m => m.label === '0.47 in').length, 4, 'gap above and below each patch');
