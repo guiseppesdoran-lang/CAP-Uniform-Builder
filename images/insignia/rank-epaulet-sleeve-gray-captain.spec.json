@@ -13,7 +13,7 @@
   384.3
  ],
  "size_source": "estimated",
- "size_basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+ "size_basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
  "provenance": "measured from CAPR 39-1 Fig A5-1 (gray) and A5-6 (blue); CAP lettering cleaned from traced glyphs; grade pieces are this family's own assets",
  "colours": {
   "gray": "#5f5c5c",

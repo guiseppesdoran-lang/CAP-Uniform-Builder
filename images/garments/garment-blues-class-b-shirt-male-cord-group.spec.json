@@ -2,69 +2,69 @@
  "asset_id": "garment-blues-class-b-shirt-male-cord-group",
  "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only): Group CAC shoulder cord (kelly green) (overlay, registered to garment-blues-class-b-shirt-male)",
  "size_in": {
-  "w": 23.4863,
-  "h": 24.28
+  "w": 26.8594,
+  "h": 29.5087
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2348.63,
-  2428
+  2685.94,
+  2950.87
  ],
  "size_source": "estimated",
  "size_basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
  "anchors": {
   "top_center": [
-   1174.3135441762117,
+   1342.9676342368648,
    0
   ],
   "bottom_center": [
-   1174.3135441762117,
-   2427.9999999999995
+   1342.9676342368648,
+   2950.87
   ],
   "center": [
-   1174.3135441762117,
-   1213.9999999999998
+   1342.9676342368648,
+   1475.435
   ],
   "left_edge": [
    0,
-   1213.9999999999998
+   1475.435
   ],
   "right_edge": [
-   2348.6270883524235,
-   1213.9999999999998
+   2685.9352684737296,
+   1475.435
   ],
   "cord_start": [
-   1960.31,
-   261.45
+   2300.85,
+   330.92
   ],
   "cord_end": [
-   1779.99,
-   1301.65
+   2084.51,
+   1582.12
   ]
  },
  "landmarks": {
   "cord": [
    [
-    1960.31,
-    261.5
+    2300.87,
+    330.9
    ],
    [
-    1898.51,
-    555.1
+    2228.77,
+    673.5
    ],
    [
-    1839.21,
-    815.8
+    2156.67,
+    990.8
    ],
    [
-    1803.71,
-    1052.8
+    2113.37,
+    1279.2
    ],
    [
-    1780.01,
-    1301.6
+    2084.47,
+    1582.1
    ]
   ]
  },

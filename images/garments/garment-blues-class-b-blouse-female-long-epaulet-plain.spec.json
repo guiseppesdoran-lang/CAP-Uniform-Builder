@@ -2,60 +2,60 @@
  "asset_id": "garment-blues-class-b-blouse-female-long-epaulet-plain",
  "name": "Women's Class B blue long-sleeve blouse plain epaulet straps (overlay, registered to garment-blues-class-b-blouse-female-long; no grade)",
  "size_in": {
-  "w": 21.4956,
-  "h": 29.896
+  "w": 24.5174,
+  "h": 36.3441
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2149.56,
-  2989.6
+  2451.74,
+  3634.41
  ],
  "size_source": "estimated",
  "size_basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female-long, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
  "anchors": {
   "top_center": [
-   1074.7818012025655,
+   1225.8712042116981,
    0
   ],
   "bottom_center": [
-   1074.7818012025655,
-   2989.6
+   1225.8712042116981,
+   3634.4100000000003
   ],
   "center": [
-   1074.7818012025655,
-   1494.8
+   1225.8712042116981,
+   1817.2050000000002
   ],
   "left_edge": [
    0,
-   1494.8
+   1817.2050000000002
   ],
   "right_edge": [
-   2149.563602405131,
-   1494.8
+   2451.7424084233962,
+   1817.2050000000002
   ],
   "epaulet_plain_right_center": [
-   555.78,
-   283.9
+   586.92,
+   324.3
   ],
   "epaulet_plain_left_center": [
-   1593.78,
-   283.9
+   1864.82,
+   324.3
   ]
  },
  "landmarks": {
   "epaulet_plain_right": {
-   "x": 323.98,
-   "y": 156.3,
-   "w": 463.6,
-   "h": 255.2
+   "x": 312.07,
+   "y": 187.6,
+   "w": 549.7,
+   "h": 273.4
   },
   "epaulet_plain_left": {
-   "x": 1361.98,
-   "y": 156.3,
-   "w": 463.6,
-   "h": 255.2
+   "x": 1589.97,
+   "y": 187.6,
+   "w": 549.7,
+   "h": 273.4
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",

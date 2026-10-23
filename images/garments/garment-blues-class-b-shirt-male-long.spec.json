@@ -2,235 +2,235 @@
  "asset_id": "garment-blues-class-b-shirt-male-long",
  "name": "Men's Class B blue long-sleeve shirt, tie and trousers (nametag position only)",
  "size_in": {
-  "w": 22.52,
-  "h": 27.075
+  "w": 25.8626,
+  "h": 32.9106
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2252,
-  2707.5
+  2586.26,
+  3291.06
  ],
  "size_source": "estimated",
- "size_basis": "Silhouette (long sleeves, collar, torso, trousers/skirt) measured from CAPR 39-1 Figure 4.8 (3 March 2020): the figure was rendered at 2.2x, traced, and scaled with the registration of its short-sleeve twin to the short-sleeve base image, so interior parts line up with garment-blues-class-b-shirt-male. No real garment was measured.",
+ "size_basis": "Silhouette (long sleeves, collar, torso, trousers/skirt) measured from CAPR 39-1 Figure 4.8 (3 March 2020): the figure was rendered at 2.2x, traced, and scaled with the registration of its short-sleeve twin to the short-sleeve base image, so interior parts line up with garment-blues-class-b-shirt-male. No real garment was measured. Then the whole sheet is scaled by 1.2171 (LIVE-ART2 item 1; 0.0474 in/px becomes 0.0577): the men's pocket measures 4.31 in wide on the traced image, and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 in wide x 6 in tall (ESTIMATE: AF shirt pattern dimension supplied with the task, no CAPR 39-1 or DAFI 36-2903 dimension; the CAPR 39-1 Fig 4.9 nametag (3 3/8 in) read as a ruler gives a smaller 4.56 in, the figure is schematic), so K = 5.25 / 4.313. The pocket is drawn 5.25 x 6.0 in, flap 2.02 in deep. Nameplate, epaulet strap width, buttons and strokes stay true size.",
  "anchors": {
   "top_center": [
-   1126,
+   1293.13,
    0
   ],
   "bottom_center": [
-   1126,
-   2707.5
+   1293.13,
+   3291.06
   ],
   "center": [
-   1126,
-   1353.75
+   1293.13,
+   1645.53
   ],
   "left_edge": [
    0,
-   1353.75
+   1645.53
   ],
   "right_edge": [
-   2252,
-   1353.75
+   2586.26,
+   1645.53
   ],
   "shoulder_seam_right": [
-   334.4,
-   330
+   329.63,
+   399.4
   ],
   "sleeve_bottom_right": [
-   351.3,
-   2594.5
+   350.53,
+   3155.7
   ],
   "elbow_right": [
-   269.1,
-   1575.5
+   250.83,
+   1915.4
   ],
   "chevron_halfway_right": [
-   240.9,
-   952.7
+   252.33,
+   1157.4
   ],
   "shoulder_seam_left": [
-   1917.6,
-   330
+   2256.63,
+   399.4
   ],
   "sleeve_bottom_left": [
-   1900.7,
-   2594.5
+   2235.73,
+   3155.7
   ],
   "elbow_left": [
-   1982.9,
-   1575.5
+   2335.43,
+   1915.4
   ],
   "chevron_halfway_left": [
-   2011.1,
-   952.7
+   2333.83,
+   1157.4
   ],
   "hem_center": [
-   1126,
-   2697.5
+   1293.13,
+   3281.06
   ],
   "nameplate_center": [
-   746.85,
-   742.7
+   831.58,
+   910
   ],
   "epaulet_right_center": [
-   585.8,
-   300.25
+   627.38,
+   344.95
   ],
   "epaulet_left_center": [
-   1666.2,
-   300.25
+   1958.88,
+   344.95
   ],
   "belt_buckle_center": [
-   1192.4,
-   1990.15
+   1373.88,
+   2420.1
   ],
   "collar_insignia_right": [
-   1388.39,
-   267.73
+   1631.67,
+   313.58
   ],
   "collar_insignia_left": [
-   863.61,
-   267.73
+   954.59,
+   313.58
   ],
   "button_1_center": [
-   1126,
-   578.8
+   1293.13,
+   702.31
   ],
   "button_2_center": [
-   1126,
-   950.89
+   1293.13,
+   1155.19
   ],
   "button_3_center": [
-   1126,
-   1318.24
+   1293.13,
+   1602.31
   ],
   "button_4_center": [
-   1126,
-   1683.22
+   1293.13,
+   2046.54
   ],
   "pocket_right_top_center": [
-   746.75,
-   780.2
+   831.63,
+   947.5
   ],
   "pocket_left_top_center": [
-   1505.15,
-   780.2
+   1754.63,
+   947.5
   ],
   "ribbon_row_bottom_center": [
-   1505.15,
-   780.2
+   1754.63,
+   947.5
   ],
   "nameplate_rest_center": [
-   746.75,
-   780.2
+   831.63,
+   947.5
   ]
  },
  "landmarks": {
   "nameplate": {
-   "x": 578.1,
-   "y": 705.2,
+   "x": 662.83,
+   "y": 872.5,
    "w": 337.5,
    "h": 75
   },
   "belt_buckle": {
-   "x": 1090.5,
-   "y": 1922.6,
-   "w": 203.8,
-   "h": 135.1
+   "x": 1249.83,
+   "y": 2337.9,
+   "w": 248.1,
+   "h": 164.4
   },
   "pocket_right": {
-   "x": 531.1,
-   "y": 780.2,
-   "w": 431.3,
-   "h": 618.6
+   "x": 569.13,
+   "y": 947.5,
+   "w": 525,
+   "h": 600
   },
   "pocket_left": {
-   "x": 1289.5,
-   "y": 780.2,
-   "w": 431.3,
-   "h": 618.6
+   "x": 1492.13,
+   "y": 947.5,
+   "w": 525,
+   "h": 600
   },
   "epaulet_right": [
    [
-    367.6,
-    281
+    370.03,
+    339.5
    ],
    [
-    727.8,
-    154.4
+    808.53,
+    185.3
    ],
    [
-    804,
-    220.3
+    884.73,
+    251.2
    ],
    [
-    785.9,
-    319.4
+    866.53,
+    350.3
    ],
    [
-    425.7,
-    446.1
+    428.13,
+    504.6
    ]
   ],
   "collar_right": [
    [
-    1372.5,
-    24.2
+    1593.13,
+    27.3
    ],
    [
-    1581,
-    417.6
+    1846.93,
+    506.2
    ],
    [
-    1348.8,
-    443.7
+    1564.33,
+    537.9
    ],
    [
-    1133.1,
-    545.6
+    1301.83,
+    661.9
    ]
   ],
   "epaulet_left": [
    [
-    1884.4,
-    281
+    2216.23,
+    339.5
    ],
    [
-    1524.2,
-    154.4
+    1777.73,
+    185.3
    ],
    [
-    1448,
-    220.3
+    1701.53,
+    251.2
    ],
    [
-    1466.1,
-    319.4
+    1719.73,
+    350.3
    ],
    [
-    1826.3,
-    446.1
+    2158.13,
+    504.6
    ]
   ],
   "collar_left": [
    [
-    879.5,
-    24.2
+    993.13,
+    27.3
    ],
    [
-    671,
-    417.6
+    739.33,
+    506.2
    ],
    [
-    903.2,
-    443.7
+    1021.93,
+    537.9
    ],
    [
-    1118.9,
-    545.6
+    1284.43,
+    661.9
    ]
   ],
   "collar_insignia_angle_deg": {
@@ -238,16 +238,28 @@
    "left": 117.9
   },
   "ribbon_slot": {
-   "x": 1298.9,
-   "y": 630.2,
+   "x": 1548.38,
+   "y": 797.5,
    "w": 412.5,
    "h": 150
   }
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
  "dimensions": {
-  "length_in": 26.88,
-  "max_width_in": 22.12,
+  "scale": {
+   "k": 1.2171,
+   "in_per_px": 0.05769,
+   "previous_in_per_px": 0.0474,
+   "pocket_in": [
+    5.25,
+    6
+   ],
+   "pocket_flap_depth_in": 2.02,
+   "size_source": "estimated",
+   "note": "pocket 5.25 x 6 in = USAF-style men's size-M short-sleeve shirt (estimate); the whole sheet scaled so the traced pocket width equals it"
+  },
+  "length_in": 32.71,
+  "max_width_in": 25.46,
   "nameplate_in": [
    3.375,
    0.75
@@ -255,35 +267,35 @@
   "buttons": 4,
   "sleeve_widening": {
    "size_source": "estimated",
-   "outward_in": 0.6,
-   "ramp_from_y_in": 3.3,
-   "full_by_y_in": 6.5,
+   "outward_in": 0,
+   "ramp_from_y_in": 4.0166,
+   "full_by_y_in": 7.9114,
    "falls_to_0_between_y_in": [
-    11.5,
-    13.5
+    13.9971,
+    16.4314
    ],
    "note": "outward warp of the sleeve between the armhole seam and the outer edge (seam, body, shoulder and straps unmoved) so the true-size 3 1/2 in chevron lies between the outline and the armhole seam; an estimate, the regulation gives no sleeve width",
    "chevron_3p5_fit": {
     "right": {
      "4": {
-      "outer_clearance_in": -0.077,
-      "seam_clearance_in": -0.1
+      "outer_clearance_in": 0.208,
+      "seam_clearance_in": 0.026
      },
-     "turn_deg": 3,
+     "turn_deg": 2.98,
      "3p5": {
-      "outer_clearance_in": 0.209,
-      "seam_clearance_in": 0.198
+      "outer_clearance_in": 0.472,
+      "seam_clearance_in": 0.312
      }
     },
     "left": {
      "4": {
-      "outer_clearance_in": -0.066,
-      "seam_clearance_in": -0.111
+      "outer_clearance_in": 0.232,
+      "seam_clearance_in": 0.013
      },
-     "turn_deg": -3,
+     "turn_deg": -2.98,
      "3p5": {
-      "outer_clearance_in": 0.219,
-      "seam_clearance_in": 0.188
+      "outer_clearance_in": 0.487,
+      "seam_clearance_in": 0.302
      }
     }
    },
@@ -298,7 +310,7 @@
   "cadet NCOs/airmen: metal chevrons on both sides of the collar, 1 in from and parallel to the front of the collar (4.1.11.1.1.1.4)"
  ],
  "assumed": [
-  "px-to-inch scale",
+  "px-to-inch scale (0.0474 in/px x K, K from the 5.25 in pocket width, an estimate)",
   "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate (blue plastic, 3 3/8 x 3/4 in); no dimension in CAPR 39-1 or DAFI 36-2903; no dimension in CAPR 39-1 or DAFI 36-2903)",
   "epaulet strap size and shape (not drawn in the base image)",
   "collar leaf, pocket and seam geometry read off the base image",

@@ -145,14 +145,28 @@
      807
     ],
     "p2": [
-     1917,
-     1440
+     1965,
+     1340
     ],
     "dir_down": [
      -0.433,
      0.9014
     ],
     "angle_deg": 25.7
+   },
+   "leading_edge": {
+    "points": [
+     [
+      2221,
+      807
+     ],
+     [
+      1965,
+      1340
+     ]
+    ],
+    "angle_deg": 25.7,
+    "note": "the leaf and lapel front edge, tip to apex (one straight line); grade is 1 in from it and parallel (CAPR 39-1 5.1.1.1.1.4, 5.2.1.1.1)"
    },
    "bottom_edge": {
     "p1": [
@@ -237,14 +251,28 @@
      807
     ],
     "p2": [
-     2013,
-     1440
+     1965,
+     1340
     ],
     "dir_down": [
      0.433,
      0.9014
     ],
     "angle_deg": -25.7
+   },
+   "leading_edge": {
+    "points": [
+     [
+      1709,
+      807
+     ],
+     [
+      1965,
+      1340
+     ]
+    ],
+    "angle_deg": -25.7,
+    "note": "the leaf and lapel front edge, tip to apex (one straight line); grade is 1 in from it and parallel (CAPR 39-1 5.1.1.1.1.4, 5.2.1.1.1)"
    },
    "bottom_edge": {
     "p1": [
@@ -517,7 +545,63 @@
    "y": 490,
    "w": 500,
    "h": 90
-  }
+  },
+  "collar_lapel_right": [
+   [
+    1854.53,
+    1110
+   ],
+   [
+    1737,
+    1230
+   ],
+   [
+    1660,
+    1310
+   ],
+   [
+    1965,
+    1340
+   ]
+  ],
+  "collar_leading_edge_right": [
+   [
+    1709,
+    807
+   ],
+   [
+    1965,
+    1340
+   ]
+  ],
+  "collar_lapel_left": [
+   [
+    2075.47,
+    1110
+   ],
+   [
+    2193,
+    1230
+   ],
+   [
+    2270,
+    1310
+   ],
+   [
+    1965,
+    1340
+   ]
+  ],
+  "collar_leading_edge_left": [
+   [
+    2221,
+    807
+   ],
+   [
+    1965,
+    1340
+   ]
+  ]
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's.",
  "dimensions": {

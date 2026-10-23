@@ -2,52 +2,52 @@
  "asset_id": "garment-aviator-shirt-female-long-tie-tab",
  "name": "Women's Aviator Shirt Uniform inverted-V tie tab (overlay, registered to garment-aviator-shirt-female-long)",
  "size_in": {
-  "w": 22.448,
-  "h": 27.9
+  "w": 25.3352,
+  "h": 33.5829
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2244.8,
-  2790
+  2533.52,
+  3358.29
  ],
  "size_source": "estimated",
  "size_basis": "Same inverted-V tab as accessories/tie-tab-inverted-v (2.7 x 1.6 in), hung from the collar V; no dimension in the regulation.",
  "anchors": {
   "top_center": [
-   1122.3999999999999,
+   1266.76,
    0
   ],
   "bottom_center": [
-   1122.3999999999999,
-   2790
+   1266.76,
+   3358.29
   ],
   "center": [
-   1122.3999999999999,
-   1395
+   1266.76,
+   1679.14
   ],
   "left_edge": [
    0,
-   1395
+   1679.14
   ],
   "right_edge": [
-   2244.7999999999997,
-   1395
+   2533.52,
+   1679.14
   ],
   "tie_tab_center": [
-   1110.8,
-   229.28
+   1252.8,
+   259.68
   ],
   "tie_tab_top_center": [
-   1110.8,
-   149.28
+   1252.8,
+   179.69
   ]
  },
  "landmarks": {
   "tie_tab": {
-   "x": 987.4,
-   "y": 149.28,
+   "x": 1117.79,
+   "y": 179.69,
    "w": 270,
    "h": 160
   }

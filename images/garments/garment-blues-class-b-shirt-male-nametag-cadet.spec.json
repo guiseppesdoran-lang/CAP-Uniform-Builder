@@ -2,48 +2,48 @@
  "asset_id": "garment-blues-class-b-shirt-male-nametag-cadet",
  "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only) nametag, cadet (overlay, registered to garment-blues-class-b-shirt-male; name left blank)",
  "size_in": {
-  "w": 23.4863,
-  "h": 24.28
+  "w": 26.8594,
+  "h": 29.5087
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2348.63,
-  2428
+  2685.94,
+  2950.87
  ],
  "size_source": "estimated",
  "size_basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
  "anchors": {
   "top_center": [
-   1174.3135441762117,
+   1342.9676342368648,
    0
   ],
   "bottom_center": [
-   1174.3135441762117,
-   2427.9999999999995
+   1342.9676342368648,
+   2950.87
   ],
   "center": [
-   1174.3135441762117,
-   1213.9999999999998
+   1342.9676342368648,
+   1475.435
   ],
   "left_edge": [
    0,
-   1213.9999999999998
+   1475.435
   ],
   "right_edge": [
-   2348.6270883524235,
-   1213.9999999999998
+   2685.9352684737296,
+   1475.435
   ],
   "nametag_center": [
-   795.16,
-   742.7
+   881.42,
+   910
   ]
  },
  "landmarks": {
   "nametag": {
-   "x": 626.41,
-   "y": 705.2,
+   "x": 712.67,
+   "y": 872.5,
    "w": 337.5,
    "h": 75
   }

@@ -2,80 +2,80 @@
  "asset_id": "garment-blues-class-b-blouse-female-long-epaulet-sleeve-cadet-officer",
  "name": "Women's Class B blue long-sleeve blouse cadet officer epaulet sleeves (overlay, registered to garment-blues-class-b-blouse-female-long; blank grade)",
  "size_in": {
-  "w": 21.4956,
-  "h": 29.896
+  "w": 24.5174,
+  "h": 36.3441
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2149.56,
-  2989.6
+  2451.74,
+  3634.41
  ],
  "size_source": "estimated",
  "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
  "anchors": {
   "top_center": [
-   1074.7818012025655,
+   1225.8712042116981,
    0
   ],
   "bottom_center": [
-   1074.7818012025655,
-   2989.6
+   1225.8712042116981,
+   3634.4100000000003
   ],
   "center": [
-   1074.7818012025655,
-   1494.8
+   1225.8712042116981,
+   1817.2050000000002
   ],
   "left_edge": [
    0,
-   1494.8
+   1817.2050000000002
   ],
   "right_edge": [
-   2149.563602405131,
-   1494.8
+   2451.7424084233962,
+   1817.2050000000002
   ],
   "rank_slot_right_center": [
-   490.73,
-   225.4
+   514.12,
+   267.45
   ],
   "rank_slot_left_center": [
-   1658.83,
-   225.4
+   1937.62,
+   267.45
   ],
   "rank_rule_point_right": [
-   403.27,
-   312.95
+   391.36,
+   362.45
   ],
   "rank_rule_point_left": [
-   1746.29,
-   312.95
+   2060.38,
+   362.45
   ]
  },
  "landmarks": {
   "epaulet_sleeve_right": {
-   "x": 323.98,
-   "y": 171.4,
-   "w": 333.5,
-   "h": 108
+   "x": 312.07,
+   "y": 206,
+   "w": 404.1,
+   "h": 122.9
   },
   "rank_slot_right": {
-   "x": 323.98,
-   "y": 171.4,
-   "w": 333.5,
-   "h": 108
+   "x": 312.07,
+   "y": 206,
+   "w": 404.1,
+   "h": 122.9
   },
   "epaulet_sleeve_left": {
-   "x": 1492.08,
-   "y": 171.4,
-   "w": 333.5,
-   "h": 108
+   "x": 1735.57,
+   "y": 206,
+   "w": 404.1,
+   "h": 122.9
   },
   "rank_slot_left": {
-   "x": 1492.08,
-   "y": 171.4,
-   "w": 333.5,
-   "h": 108
+   "x": 1735.57,
+   "y": 206,
+   "w": 404.1,
+   "h": 122.9
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",

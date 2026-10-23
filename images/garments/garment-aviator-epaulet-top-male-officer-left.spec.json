@@ -2,75 +2,75 @@
  "asset_id": "garment-aviator-epaulet-top-male-officer-left",
  "name": "Men's Aviator Shirt Uniform adult officer epaulet sleeve, left shoulder, top-down (blank grade)",
  "size_in": {
-  "w": 3.112,
-  "h": 1.427
+  "w": 3.704,
+  "h": 1.677
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  311.2,
-  142.7
+  370.4,
+  167.7
  ],
  "size_source": "estimated",
  "size_basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
  "anchors": {
   "top_center": [
-   155.6,
+   185.20000000000002,
    0
   ],
   "bottom_center": [
-   155.6,
-   142.70000000000002
+   185.20000000000002,
+   167.70000000000002
   ],
   "center": [
-   155.6,
-   71.35000000000001
+   185.20000000000002,
+   83.85000000000001
   ],
   "left_edge": [
    0,
-   71.35000000000001
+   83.85000000000001
   ],
   "right_edge": [
-   311.2,
-   71.35000000000001
+   370.40000000000003,
+   83.85000000000001
   ],
   "rank_slot_center": [
-   176.2,
-   71.35
+   235.4,
+   83.85
   ],
   "rank_rule_point": [
-   238.7,
-   71.35
+   297.9,
+   83.85
   ],
   "outer_end_center": [
-   301.2,
-   71.35
+   360.4,
+   83.85
   ]
  },
  "landmarks": {
   "sleeve": {
    "x": 10,
    "y": 10,
-   "w": 291.2,
-   "h": 122.7
+   "w": 350.4,
+   "h": 147.70000000000002
   },
   "rank_slot": {
-   "x": 61.2,
+   "x": 120.4,
    "y": 20,
    "w": 230,
-   "h": 102.7
+   "h": 127.7
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form; rank_rule_point is the 5/8 in from the outer end point for single forms",
  "dimensions": {
   "sleeve_in": [
-   2.912,
-   1.227
+   3.504,
+   1.477
   ],
   "rank_slot_in": [
    2.3,
-   1.03
+   1.28
   ]
  },
  "documented": [

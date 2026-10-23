@@ -13,7 +13,7 @@
   2947.56
  ],
  "size_source": "estimated",
- "size_basis": "Same artwork box and px-to-inch scale as garment-blues-class-a-coat-female so it drops on at 0,0. Board length 4.55 in (builder reference); width from the Vanguard CAP0647V product photo proportions (252 x 622 px).",
+ "size_basis": "Same artwork box and px-to-inch scale as garment-blues-class-a-coat-female so it drops on at 0,0. Board length 4.55 in (builder reference); width from the Vanguard CAP0647V product photo proportions (252 x 622 px). The edge-on shoulder strips take the colours of the top-down board (garment-blues-class-a-cadet-officer-board-*, board/board.json measured on that photo): body #171717, white bands #d9d9db, red #7f1b1e, blue #2a348c; the strips were #15171c / #f2f2f2 / #c8453f / #2b4aa0 (a lighter, more saturated set than the board seen from above).",
  "anchors": {
   "top_center": [
    1219.42,

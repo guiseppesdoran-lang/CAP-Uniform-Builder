@@ -84,11 +84,11 @@
   ],
   "flag_left_center": [
    4345.62,
-   501.04
+   416.3
   ],
   "loop_square_right_center": [
    423.63,
-   576.04
+   491.3
   ]
  },
  "landmarks": {
@@ -136,25 +136,25 @@
   },
   "patch_flag_left": {
    "x": 4170.62,
-   "y": 401.04,
+   "y": 316.3,
    "w": 350,
    "h": 200
   },
   "patch_loop_square_right": {
    "x": 248.63,
-   "y": 401.04,
+   "y": 316.3,
    "w": 350,
    "h": 350
   },
   "sleeve_pocket_left": {
    "x": 4225.7,
-   "y": 835.24,
+   "y": 750.5,
    "w": 240,
    "h": 550
   },
   "pen_pocket_left": {
    "x": 4352.56,
-   "y": 883.66,
+   "y": 798.92,
    "w": 95,
    "h": 360
   },
@@ -314,7 +314,18 @@
    3.5,
    3.5
   ],
-  "scale_factor_from_figure": 1.2105
+  "scale_factor_from_figure": 1.2105,
+  "sheet_alignment": {
+   "note": "Suit and both flat sleeve panels share one top line (collar tips = top of the arch) and one cuff line (suit cuff bottom = panel cuff bottom). Y in artwork-box inches. The hem is 1.25 figure in lower and is the suit's own bottom (a flat sleeve cannot reach it).",
+   "top_line_y_in": 2.663,
+   "panel_arch_top_y_in": 2.663,
+   "cuff_line_y_in": 38.675,
+   "panel_cuff_bottom_y_in": 38.675,
+   "hem_y_in": 40.188,
+   "flat_sleeve_length_in": 35.41,
+   "flat_sleeve_length_source": "ESTIMATE: from the suit cuff line up to the corner line under the arch; the suit outer sleeve edge measures 34.4 in along the edge in the figure (OUTER), the flat panel adds the cap arch",
+   "symmetry": "silhouette, sleeves, cuffs, collar leaves, pockets and waist tabs are one half mirrored about the zip line (audit-flight.js checks it to 0.05 in); only the patches differ side to side (flag and pocket left, loop square right, CAPR 39-1 8.2.4.4/8.2.4.5)"
+  }
  },
  "documented": [
   "olive drab Nomex one-piece suit (8.2.2)",

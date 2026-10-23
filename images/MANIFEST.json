@@ -13010,7 +13010,11 @@
     "baseball_cap_front",
     "baseball_cap_front_insignia_zone",
     "baseball_cap_back",
-    "baseball_cap_back_name_tape"
+    "baseball_cap_back_name_tape",
+    "collar_lapel_right",
+    "collar_leading_edge_right",
+    "collar_lapel_left",
+    "collar_leading_edge_left"
    ],
    "has_spec": true,
    "issues": []
@@ -13019,114 +13023,114 @@
    "id": "garment-aviator-shirt-female-long",
    "path": "garments/garment-aviator-shirt-female-long.svg",
    "category": "garments",
-   "w_in": 22.448,
-   "h_in": 27.9,
+   "w_in": 25.3352,
+   "h_in": 33.5829,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/aviator_shirt_female.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 0.7 in (smooth ramp from the shoulder end at 4.2 in to full at 8 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 3.5 in wide at the chevron line. The widening is an estimate (the regulation gives no sleeve width). No real garment was measured.",
+   "basis": "Silhouette traced from images/base/aviator_shirt_female.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 0 in (smooth ramp from the shoulder end at 5.06 in to full at 9.63 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 3.5 in wide at the chevron line (x 1.204 after the scale). The widening is an estimate (the regulation gives no sleeve width). Then the whole sheet is scaled by 1.2037 (LIVE-ART2 item 1; 0.0376 in/px becomes 0.0453): the men's pocket measures 4.36 in wide on the traced image and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 x 6 in (ESTIMATE: AF shirt pattern dimension supplied with the task; no CAPR 39-1 or DAFI 36-2903 dimension), so the men's pocket is drawn 5.25 x 6.0 in and the women's shirt, registered to the men's, takes the same scale (its traced pocket becomes about 5.5 in wide). Nametag and ribbon slots, edge-on strip thickness and the tie tab keep their true size. No real garment was measured.",
    "anchors": {
     "top_center": [
-     1122.4,
+     1266.76,
      0
     ],
     "bottom_center": [
-     1122.4,
-     2790
+     1266.76,
+     3358.29
     ],
     "center": [
-     1122.4,
-     1395
+     1266.76,
+     1679.14
     ],
     "left_edge": [
      0,
-     1395
+     1679.14
     ],
     "right_edge": [
-     2244.8,
-     1395
+     2533.52,
+     1679.14
     ],
     "shoulder_seam_right": [
-     338.14,
-     350
+     322.76,
+     421.29
     ],
     "elbow_right": [
-     242.32,
-     1675.5
+     262.15,
+     2016.78
     ],
     "sleeve_bottom_right": [
-     240.07,
-     2760
+     288.92,
+     3322.18
     ],
     "chevron_halfway_right": [
-     265.23,
-     1012.75
+     277.94,
+     1219.03
     ],
     "shoulder_seam_left": [
-     1906.66,
-     350
+     2210.76,
+     421.29
     ],
     "elbow_left": [
-     2002.48,
-     1675.5
+     2271.37,
+     2016.78
     ],
     "sleeve_bottom_left": [
-     2004.73,
-     2760
+     2244.6,
+     3322.18
     ],
     "chevron_halfway_left": [
-     1979.57,
-     1012.75
+     2255.58,
+     1219.03
     ],
     "hem_center": [
-     1122.4,
-     2780
+     1266.76,
+     3346.25
     ],
     "nameplate_slot_center": [
-     785.95,
-     831.9
+     861.84,
+     1008.99
     ],
     "ribbon_slot_center": [
-     1498.45,
-     794.4
+     1719.41,
+     971.5
     ],
     "epaulet_right_center": [
-     518.89,
-     315.96
+     540.32,
+     380.32
     ],
     "epaulet_left_center": [
-     1727.27,
-     319.92
+     1994.83,
+     385.08
     ],
     "tie_mount_center": [
-     1110.8,
-     149.28
+     1252.8,
+     179.69
     ],
     "badge_right_pocket_center": [
-     785.99,
-     1264.78
+     861.83,
+     1522.4
     ],
     "badge_left_pocket_center": [
-     1498.45,
-     1264.78
+     1719.41,
+     1522.4
     ],
     "badge_above_ribbons_center": [
-     1498.45,
-     669.4
+     1719.41,
+     846.5
     ],
     "command_pin_above_nametag_center": [
-     785.95,
-     744.4
+     861.84,
+     921.49
     ],
     "command_pin_below_nametag_center": [
-     785.95,
-     919.4
+     861.84,
+     1096.49
     ],
     "collar_insignia_right_center": [
-     985.86,
-     109.84
+     1102.41,
+     132.21
     ],
     "collar_insignia_left_center": [
-     1258.94,
-     109.84
+     1431.11,
+     132.21
     ]
    },
    "landmarks": [
@@ -13146,106 +13150,106 @@
    "id": "garment-aviator-shirt-female",
    "path": "garments/garment-aviator-shirt-female.svg",
    "category": "garments",
-   "w_in": 22.448,
-   "h_in": 26.09,
+   "w_in": 25.3352,
+   "h_in": 31.4042,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/aviator_shirt_female.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 0.7 in (smooth ramp from the shoulder end at 4.2 in to full at 8 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 3.5 in wide at the chevron line. The widening is an estimate (the regulation gives no sleeve width). No real garment was measured.",
+   "basis": "Silhouette traced from images/base/aviator_shirt_female.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 0 in (smooth ramp from the shoulder end at 5.06 in to full at 9.63 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 3.5 in wide at the chevron line (x 1.204 after the scale). The widening is an estimate (the regulation gives no sleeve width). Then the whole sheet is scaled by 1.2037 (LIVE-ART2 item 1; 0.0376 in/px becomes 0.0453): the men's pocket measures 4.36 in wide on the traced image and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 x 6 in (ESTIMATE: AF shirt pattern dimension supplied with the task; no CAPR 39-1 or DAFI 36-2903 dimension), so the men's pocket is drawn 5.25 x 6.0 in and the women's shirt, registered to the men's, takes the same scale (its traced pocket becomes about 5.5 in wide). Nametag and ribbon slots, edge-on strip thickness and the tie tab keep their true size. No real garment was measured.",
    "anchors": {
     "top_center": [
-     1122.4,
+     1266.76,
      0
     ],
     "bottom_center": [
-     1122.4,
-     2609
+     1266.76,
+     3140.42
     ],
     "center": [
-     1122.4,
-     1304.5
+     1266.76,
+     1570.21
     ],
     "left_edge": [
      0,
-     1304.5
+     1570.21
     ],
     "right_edge": [
-     2244.8,
-     1304.5
+     2533.52,
+     1570.21
     ],
     "shoulder_seam_right": [
-     338.14,
-     350
+     322.76,
+     421.29
     ],
     "sleeve_bottom_right": [
-     240.74,
-     1494.85
+     249.75,
+     1799.33
     ],
     "chevron_halfway_right": [
-     277.08,
-     922.42
+     291.81,
+     1110.3
     ],
     "shoulder_seam_left": [
-     1906.66,
-     350
+     2210.76,
+     421.29
     ],
     "sleeve_bottom_left": [
-     2004.06,
-     1494.85
+     2283.77,
+     1799.33
     ],
     "chevron_halfway_left": [
-     1967.72,
-     922.42
+     2241.71,
+     1110.3
     ],
     "hem_center": [
-     1122.4,
-     2599
+     1266.76,
+     3128.38
     ],
     "nameplate_slot_center": [
-     785.95,
-     831.9
+     861.84,
+     1008.99
     ],
     "ribbon_slot_center": [
-     1498.45,
-     794.4
+     1719.41,
+     971.5
     ],
     "epaulet_right_center": [
-     518.89,
-     315.96
+     540.32,
+     380.32
     ],
     "epaulet_left_center": [
-     1727.27,
-     319.92
+     1994.83,
+     385.08
     ],
     "tie_mount_center": [
-     1122.4,
-     532.45
+     1266.76,
+     640.9
     ],
     "badge_right_pocket_center": [
-     785.99,
-     1264.78
+     861.83,
+     1522.4
     ],
     "badge_left_pocket_center": [
-     1498.45,
-     1264.78
+     1719.41,
+     1522.4
     ],
     "badge_above_ribbons_center": [
-     1498.45,
-     669.4
+     1719.41,
+     846.5
     ],
     "command_pin_above_nametag_center": [
-     785.95,
-     744.4
+     861.84,
+     921.49
     ],
     "command_pin_below_nametag_center": [
-     785.95,
-     919.4
+     861.84,
+     1096.49
     ],
     "collar_insignia_right_center": [
-     969.42,
-     430.76
+     1082.62,
+     518.5
     ],
     "collar_insignia_left_center": [
-     1275.38,
-     430.76
+     1450.9,
+     518.5
     ]
    },
    "landmarks": [
@@ -13265,114 +13269,114 @@
    "id": "garment-aviator-shirt-male-long",
    "path": "garments/garment-aviator-shirt-male-long.svg",
    "category": "garments",
-   "w_in": 24.156,
-   "h_in": 26.24,
+   "w_in": 26.0652,
+   "h_in": 31.5847,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 1.5 in (smooth ramp from the shoulder end at 3.6 in to full at 7.5 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line. The widening is an estimate (the regulation gives no sleeve width). No real garment was measured.",
+   "basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 0.3 in (smooth ramp from the shoulder end at 4.33 in to full at 9.03 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line (x 1.204 after the scale). The widening is an estimate (the regulation gives no sleeve width). Then the whole sheet is scaled by 1.2037 (LIVE-ART2 item 1; 0.0376 in/px becomes 0.0453): the men's pocket measures 4.36 in wide on the traced image and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 x 6 in (ESTIMATE: AF shirt pattern dimension supplied with the task; no CAPR 39-1 or DAFI 36-2903 dimension), so the men's pocket is drawn 5.25 x 6.0 in. Nametag and ribbon slots, edge-on strip thickness and the tie tab keep their true size. No real garment was measured.",
    "anchors": {
     "top_center": [
-     1207.8,
+     1303.26,
      0
     ],
     "bottom_center": [
-     1207.8,
-     2624
+     1303.26,
+     3158.47
     ],
     "center": [
-     1207.8,
-     1312
+     1303.26,
+     1579.24
     ],
     "left_edge": [
      0,
-     1312
+     1579.24
     ],
     "right_edge": [
-     2415.6,
-     1312
+     2606.52,
+     1579.24
     ],
     "shoulder_seam_right": [
-     393.76,
-     329.6
+     323.41,
+     396.74
     ],
     "elbow_right": [
-     281.69,
-     1572.82
+     279.41,
+     1893.18
     ],
     "sleeve_bottom_right": [
-     235.6,
-     2590
+     283.59,
+     3117.55
     ],
     "chevron_halfway_right": [
-     277.89,
-     951.21
+     262.91,
+     1144.96
     ],
     "shoulder_seam_left": [
-     2021.84,
-     329.6
+     2283.1,
+     396.74
     ],
     "elbow_left": [
-     2133.91,
-     1572.82
+     2327.1,
+     1893.18
     ],
     "sleeve_bottom_left": [
-     2180,
-     2590
+     2322.93,
+     3117.55
     ],
     "chevron_halfway_left": [
-     2137.71,
-     951.21
+     2343.61,
+     1144.96
     ],
     "hem_center": [
-     1207.8,
-     2610
+     1303.26,
+     3141.62
     ],
     "nameplate_slot_center": [
-     818.65,
-     758.3
+     834.78,
+     920.4
     ],
     "ribbon_slot_center": [
-     1596.95,
-     720.8
+     1771.67,
+     882.9
     ],
     "epaulet_right_center": [
-     586.85,
-     319.1
+     555.83,
+     384.1
     ],
     "epaulet_left_center": [
-     1828.75,
-     319.1
+     2050.68,
+     384.1
     ],
     "tie_mount_center": [
-     1213.44,
-     187.86
+     1310.04,
+     226.12
     ],
     "badge_right_pocket_center": [
-     818.64,
-     1164.32
+     834.83,
+     1382.4
     ],
     "badge_left_pocket_center": [
-     1596.96,
-     1164.32
+     1771.68,
+     1382.4
     ],
     "badge_above_ribbons_center": [
-     1596.95,
-     595.8
+     1771.67,
+     757.91
     ],
     "command_pin_above_nametag_center": [
-     818.65,
-     670.8
+     834.78,
+     832.9
     ],
     "command_pin_below_nametag_center": [
-     818.65,
-     845.8
+     834.78,
+     1007.9
     ],
     "collar_insignia_right_center": [
-     1063.93,
-     246.54
+     1130.08,
+     296.76
     ],
     "collar_insignia_left_center": [
-     1351.67,
-     246.54
+     1476.44,
+     296.76
     ]
    },
    "landmarks": [
@@ -13392,106 +13396,106 @@
    "id": "garment-aviator-shirt-male",
    "path": "garments/garment-aviator-shirt-male.svg",
    "category": "garments",
-   "w_in": 24.756,
-   "h_in": 23.66,
+   "w_in": 27.4652,
+   "h_in": 28.4792,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 1.8 in (smooth ramp from the shoulder end at 3.2 in to full at 5.7 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line. The widening is an estimate (the regulation gives no sleeve width). No real garment was measured.",
+   "basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 1 in (smooth ramp from the shoulder end at 3.85 in to full at 6.86 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line (x 1.204 after the scale). The widening is an estimate (the regulation gives no sleeve width). Then the whole sheet is scaled by 1.2037 (LIVE-ART2 item 1; 0.0376 in/px becomes 0.0453): the men's pocket measures 4.36 in wide on the traced image and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 x 6 in (ESTIMATE: AF shirt pattern dimension supplied with the task; no CAPR 39-1 or DAFI 36-2903 dimension), so the men's pocket is drawn 5.25 x 6.0 in. Nametag and ribbon slots, edge-on strip thickness and the tie tab keep their true size. No real garment was measured.",
    "anchors": {
     "top_center": [
-     1237.8,
+     1373.26,
      0
     ],
     "bottom_center": [
-     1237.8,
-     2366
+     1373.26,
+     2847.92
     ],
     "center": [
-     1237.8,
-     1183
+     1373.26,
+     1423.96
     ],
     "left_edge": [
      0,
-     1183
+     1423.96
     ],
     "right_edge": [
-     2475.6,
-     1183
+     2746.52,
+     1423.96
     ],
     "shoulder_seam_right": [
-     423.76,
-     329.6
+     393.41,
+     396.74
     ],
     "sleeve_bottom_right": [
-     306.47,
-     1321.4
+     310.79,
+     1590.55
     ],
     "chevron_halfway_right": [
-     289.01,
-     825.5
+     291.85,
+     993.64
     ],
     "shoulder_seam_left": [
-     2051.84,
-     329.6
+     2353.11,
+     396.74
     ],
     "sleeve_bottom_left": [
-     2169.13,
-     1321.4
+     2435.73,
+     1590.55
     ],
     "chevron_halfway_left": [
-     2186.59,
-     825.5
+     2454.68,
+     993.64
     ],
     "hem_center": [
-     1237.8,
-     2356
+     1373.26,
+     2835.89
     ],
     "nameplate_slot_center": [
-     848.65,
-     758.3
+     904.79,
+     920.4
     ],
     "ribbon_slot_center": [
-     1626.95,
-     720.8
+     1841.68,
+     882.9
     ],
     "epaulet_right_center": [
-     616.85,
-     319.05
+     625.83,
+     384.04
     ],
     "epaulet_left_center": [
-     1858.75,
-     319.05
+     2120.69,
+     384.04
     ],
     "tie_mount_center": [
-     1243.44,
-     533.92
+     1380.05,
+     642.67
     ],
     "badge_right_pocket_center": [
-     848.64,
-     1164.32
+     904.84,
+     1382.4
     ],
     "badge_left_pocket_center": [
-     1626.96,
-     1164.32
+     1841.69,
+     1382.4
     ],
     "badge_above_ribbons_center": [
-     1626.95,
-     595.8
+     1841.68,
+     757.91
     ],
     "command_pin_above_nametag_center": [
-     848.65,
-     670.8
+     904.79,
+     832.9
     ],
     "command_pin_below_nametag_center": [
-     848.65,
-     845.8
+     904.79,
+     1007.9
     ],
     "collar_insignia_right_center": [
-     1002.8,
-     347.46
+     1090.4,
+     418.23
     ],
     "collar_insignia_left_center": [
-     1472.8,
-     347.46
+     1656.13,
+     418.23
     ]
    },
    "landmarks": [
@@ -13514,7 +13518,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same artwork box and px-to-inch scale as garment-blues-class-a-coat-female so it drops on at 0,0. Board length 4.55 in (builder reference); width from the Vanguard CAP0647V product photo proportions (252 x 622 px).",
+   "basis": "Same artwork box and px-to-inch scale as garment-blues-class-a-coat-female so it drops on at 0,0. Board length 4.55 in (builder reference); width from the Vanguard CAP0647V product photo proportions (252 x 622 px). The edge-on shoulder strips take the colours of the top-down board (garment-blues-class-a-cadet-officer-board-*, board/board.json measured on that photo): body #171717, white bands #d9d9db, red #7f1b1e, blue #2a348c; the strips were #15171c / #f2f2f2 / #c8453f / #2b4aa0 (a lighter, more saturated set than the board seen from above).",
    "anchors": {
     "top_center": [
      1219.42,
@@ -13571,7 +13575,7 @@
    "w_in": 23.726,
    "h_in": 29.955,
    "size_source": "estimated",
-   "basis": "Same artwork box and px-to-inch scale as garment-blues-class-a-coat so it drops on at 0,0. Board length 4.55 in (builder reference); width from the Vanguard CAP0647V product photo proportions (252 x 622 px).",
+   "basis": "Same artwork box and px-to-inch scale as garment-blues-class-a-coat so it drops on at 0,0. Board length 4.55 in (builder reference); width from the Vanguard CAP0647V product photo proportions (252 x 622 px). The edge-on shoulder strips take the colours of the top-down board (garment-blues-class-a-cadet-officer-board-*, board/board.json measured on that photo): body #171717, white bands #d9d9db, red #7f1b1e, blue #2a348c; the strips were #15171c / #f2f2f2 / #c8453f / #2b4aa0 (a lighter, more saturated set than the board seen from above).",
    "anchors": {
     "top_center": [
      1186.3,
@@ -14521,46 +14525,46 @@
    "id": "garment-blues-class-b-blouse-female-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-blues-class-b-blouse-female-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "rank_slot_right_center": [
-     515.2,
-     239.4
+     548.01,
+     284.5
     ],
     "rank_slot_left_center": [
-     1682.6,
-     239.4
+     1970.81,
+     284.5
     ],
     "rank_rule_point_right": [
-     428.62,
-     328.52
+     426.13,
+     381.77
     ],
     "rank_rule_point_left": [
-     1769.18,
-     328.52
+     2092.69,
+     381.77
     ]
    },
    "landmarks": [
@@ -14576,46 +14580,46 @@
    "id": "garment-blues-class-b-blouse-female-epaulet-sleeve-officer",
    "path": "garments/garment-blues-class-b-blouse-female-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "rank_slot_right_center": [
-     515.2,
-     239.4
+     548.01,
+     284.5
     ],
     "rank_slot_left_center": [
-     1682.6,
-     239.4
+     1970.81,
+     284.5
     ],
     "rank_rule_point_right": [
-     428.62,
-     328.52
+     426.13,
+     381.77
     ],
     "rank_rule_point_left": [
-     1769.18,
-     328.52
+     2092.69,
+     381.77
     ]
    },
    "landmarks": [
@@ -14631,34 +14635,34 @@
    "id": "garment-blues-class-b-blouse-female-general-officer-buckle",
    "path": "garments/garment-blues-class-b-blouse-female-general-officer-buckle.svg",
    "category": "garments",
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "Drawn on the buckle body of garment-blues-class-b-blouse-female (same box and origin); emblem about 0.75 x the smaller buckle dimension. The regulation gives no emblem dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "buckle_center": [
-     1074.08,
-     1837.8
+     1229.18,
+     2234.7
     ]
    },
    "landmarks": [
@@ -14671,46 +14675,46 @@
    "id": "garment-blues-class-b-blouse-female-long-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-blues-class-b-blouse-female-long-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "rank_slot_right_center": [
-     490.73,
-     225.4
+     514.12,
+     267.45
     ],
     "rank_slot_left_center": [
-     1658.83,
-     225.4
+     1937.62,
+     267.45
     ],
     "rank_rule_point_right": [
-     403.27,
-     312.95
+     391.36,
+     362.45
     ],
     "rank_rule_point_left": [
-     1746.29,
-     312.95
+     2060.38,
+     362.45
     ]
    },
    "landmarks": [
@@ -14726,46 +14730,46 @@
    "id": "garment-blues-class-b-blouse-female-long-epaulet-sleeve-officer",
    "path": "garments/garment-blues-class-b-blouse-female-long-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "rank_slot_right_center": [
-     490.73,
-     225.4
+     514.12,
+     267.45
     ],
     "rank_slot_left_center": [
-     1658.83,
-     225.4
+     1937.62,
+     267.45
     ],
     "rank_rule_point_right": [
-     403.27,
-     312.95
+     391.36,
+     362.45
     ],
     "rank_rule_point_left": [
-     1746.29,
-     312.95
+     2060.38,
+     362.45
     ]
    },
    "landmarks": [
@@ -14781,34 +14785,34 @@
    "id": "garment-blues-class-b-blouse-female-long-general-officer-buckle",
    "path": "garments/garment-blues-class-b-blouse-female-long-general-officer-buckle.svg",
    "category": "garments",
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "Drawn on the buckle body of garment-blues-class-b-blouse-female-long (same box and origin); emblem about 0.75 x the smaller buckle dimension. The regulation gives no emblem dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "buckle_center": [
-     1049.95,
-     1837.8
+     1195.64,
+     2234.7
     ]
    },
    "landmarks": [
@@ -14821,34 +14825,34 @@
    "id": "garment-blues-class-b-blouse-female-long-nametag-adult",
    "path": "garments/garment-blues-class-b-blouse-female-long-nametag-adult.svg",
    "category": "garments",
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "nametag_center": [
-     769.83,
-     697.1
+     854.62,
+     813.7
     ]
    },
    "landmarks": [
@@ -14861,34 +14865,34 @@
    "id": "garment-blues-class-b-blouse-female-long-nametag-cadet",
    "path": "garments/garment-blues-class-b-blouse-female-long-nametag-cadet.svg",
    "category": "garments",
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "nametag_center": [
-     769.83,
-     697.1
+     854.62,
+     813.7
     ]
    },
    "landmarks": [
@@ -14901,110 +14905,110 @@
    "id": "garment-blues-class-b-blouse-female-long",
    "path": "garments/garment-blues-class-b-blouse-female-long.svg",
    "category": "garments",
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Silhouette (long sleeves, collar, torso, trousers/skirt) measured from CAPR 39-1 Figure 4.11 (3 March 2020): the figure was rendered at 2.2x, traced, and scaled with the registration of its short-sleeve twin to the short-sleeve base image, so interior parts line up with garment-blues-class-b-blouse-female. No real garment was measured.",
+   "basis": "Silhouette (long sleeves, collar, torso, trousers/skirt) measured from CAPR 39-1 Figure 4.11 (3 March 2020): the figure was rendered at 2.2x, traced, and scaled with the registration of its short-sleeve twin to the short-sleeve base image, so interior parts line up with garment-blues-class-b-blouse-female. No real garment was measured. Then the whole sheet is scaled by 1.2171 (LIVE-ART2 item 1; 0.0385 in/px becomes 0.0469): the men's pocket measures 4.31 in wide on the traced image, and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 in wide x 6 in tall (ESTIMATE: AF shirt pattern dimension supplied with the task, no CAPR 39-1 or DAFI 36-2903 dimension; the CAPR 39-1 Fig 4.9 nametag (3 3/8 in) read as a ruler gives a smaller 4.56 in, the figure is schematic), so K = 5.25 / 4.313. The blouse has no pocket: it keeps its registration to the men's sleeve-to-sleeve width and takes the same K (button pitch 4.3 in; Fig 4.10 read with the nametag as a ruler gives 4.0). Nameplate, epaulet strap width, buttons and strokes stay true size.",
    "anchors": {
     "top_center": [
-     1074.78,
+     1225.87,
      0
     ],
     "bottom_center": [
-     1074.78,
-     2989.6
+     1225.87,
+     3634.41
     ],
     "center": [
-     1074.78,
-     1494.8
+     1225.87,
+     1817.21
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.21
     ],
     "right_edge": [
-     2149.56,
-     1494.8
+     2451.74,
+     1817.21
     ],
     "shoulder_seam_right": [
-     308.58,
-     267.9
+     293.37,
+     324
     ],
     "sleeve_bottom_right": [
-     334.68,
-     2401.4
+     325.37,
+     2920.7
     ],
     "elbow_right": [
-     282.78,
-     1441.3
+     276.27,
+     1752.1
     ],
     "chevron_halfway_right": [
-     253.08,
-     854.6
+     268.67,
+     1038.1
     ],
     "shoulder_seam_left": [
-     1840.98,
-     267.9
+     2158.37,
+     324
     ],
     "sleeve_bottom_left": [
-     1814.88,
-     2401.4
+     2126.37,
+     2920.7
     ],
     "elbow_left": [
-     1866.78,
-     1441.3
+     2175.47,
+     1752.1
     ],
     "chevron_halfway_left": [
-     1896.48,
-     854.6
+     2183.07,
+     1038.1
     ],
     "hem_center": [
-     1074.78,
-     2979.6
+     1225.87,
+     3624.41
     ],
     "nameplate_center": [
-     769.83,
-     697.1
+     854.62,
+     813.7
     ],
     "epaulet_right_center": [
-     555.78,
-     283.9
+     586.92,
+     324.3
     ],
     "epaulet_left_center": [
-     1593.78,
-     283.9
+     1864.82,
+     324.3
     ],
     "belt_buckle_center": [
-     1027.63,
-     1837.8
+     1168.47,
+     2234.7
     ],
     "collar_insignia_right": [
-     1342.57,
-     237.75
+     1570.21,
+     275.6
     ],
     "collar_insignia_left": [
-     806.99,
-     237.75
+     881.53,
+     275.6
     ],
     "button_1_center": [
-     1074.78,
-     547.07
+     1225.87,
+     663.69
     ],
     "button_2_center": [
-     1074.78,
-     916.68
+     1225.87,
+     1113.55
     ],
     "button_3_center": [
-     1074.78,
-     1251.63
+     1225.87,
+     1521.23
     ],
     "button_4_center": [
-     1074.78,
-     1615.45
+     1225.87,
+     1964.05
     ],
     "ribbon_row_bottom_center": [
-     1379.73,
-     734.6
+     1597.12,
+     851.2
     ]
    },
    "landmarks": [
@@ -15024,34 +15028,34 @@
    "id": "garment-blues-class-b-blouse-female-nametag-adult",
    "path": "garments/garment-blues-class-b-blouse-female-nametag-adult.svg",
    "category": "garments",
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "nametag_center": [
-     793.95,
-     697.1
+     888.16,
+     813.7
     ]
    },
    "landmarks": [
@@ -15064,34 +15068,34 @@
    "id": "garment-blues-class-b-blouse-female-nametag-cadet",
    "path": "garments/garment-blues-class-b-blouse-female-nametag-cadet.svg",
    "category": "garments",
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "nametag_center": [
-     793.95,
-     697.1
+     888.16,
+     813.7
     ]
    },
    "landmarks": [
@@ -15104,102 +15108,102 @@
    "id": "garment-blues-class-b-blouse-female",
    "path": "garments/garment-blues-class-b-blouse-female.svg",
    "category": "garments",
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/blues_class_b_female.webp (581x719 px) at 0.0385 in/px. Scaled so the blouse is the same sleeve-to-sleeve width as the men's shirt (20.7 in), as in CAPR 39-1 Figs 4.9/4.10 where the same nametag is the same fraction of both garments. No real garment was measured.",
+   "basis": "Silhouette traced from images/base/blues_class_b_female.webp (581x719 px) at 0.0385 in/px. Scaled so the blouse is the same sleeve-to-sleeve width as the men's shirt, as in CAPR 39-1 Figs 4.9/4.10 where the same nametag is the same fraction of both garments. No real garment was measured. Then the whole sheet is scaled by 1.2171 (LIVE-ART2 item 1; 0.0385 in/px becomes 0.0469): the men's pocket measures 4.31 in wide on the traced image, and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 in wide x 6 in tall (ESTIMATE: AF shirt pattern dimension supplied with the task, no CAPR 39-1 or DAFI 36-2903 dimension; the CAPR 39-1 Fig 4.9 nametag (3 3/8 in) read as a ruler gives a smaller 4.56 in, the figure is schematic), so K = 5.25 / 4.313. The blouse has no pocket: it keeps its registration to the men's sleeve-to-sleeve width and takes the same K (button pitch 4.3 in; Fig 4.10 read with the nametag as a ruler gives 4.0). Nameplate, epaulet strap width, buttons and strokes stay true size.",
    "anchors": {
     "top_center": [
-     1098.9,
+     1259.41,
      0
     ],
     "bottom_center": [
-     1098.9,
-     2711
+     1259.41,
+     3295.32
     ],
     "center": [
-     1098.9,
-     1355.5
+     1259.41,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.79,
-     1355.5
+     2518.82,
+     1647.66
     ],
     "shoulder_seam_right": [
-     332.7,
-     267.9
+     326.91,
+     324
     ],
     "sleeve_bottom_right": [
-     275.4,
-     1363.3
+     282.71,
+     1657.1
     ],
     "chevron_halfway_right": [
-     262.8,
-     815.6
+     290.11,
+     990.6
     ],
     "shoulder_seam_left": [
-     1865.1,
-     267.9
+     2191.91,
+     324
     ],
     "sleeve_bottom_left": [
-     1922.3,
-     1363.3
+     2235.91,
+     1657.1
     ],
     "chevron_halfway_left": [
-     1934.7,
-     815.6
+     2228.31,
+     990.6
     ],
     "hem_center": [
-     1098.9,
-     2701
+     1259.41,
+     3285.32
     ],
     "nameplate_center": [
-     793.95,
-     697.1
+     888.16,
+     813.7
     ],
     "epaulet_right_center": [
-     580.55,
-     297
+     621.11,
+     340.35
     ],
     "epaulet_left_center": [
-     1617.25,
-     297
+     1897.71,
+     340.35
     ],
     "belt_buckle_center": [
-     1051.75,
-     1837.8
+     1202.01,
+     2234.7
     ],
     "collar_insignia_right": [
-     1366.69,
-     237.75
+     1603.75,
+     275.6
     ],
     "collar_insignia_left": [
-     831.11,
-     237.75
+     915.07,
+     275.6
     ],
     "button_1_center": [
-     1098.9,
-     547.07
+     1259.41,
+     663.69
     ],
     "button_2_center": [
-     1098.9,
-     916.68
+     1259.41,
+     1113.55
     ],
     "button_3_center": [
-     1098.9,
-     1251.63
+     1259.41,
+     1521.23
     ],
     "button_4_center": [
-     1098.9,
-     1615.45
+     1259.41,
+     1964.05
     ],
     "ribbon_row_bottom_center": [
-     1403.85,
-     734.6
+     1630.66,
+     851.2
     ]
    },
    "landmarks": [
@@ -15219,46 +15223,46 @@
    "id": "garment-blues-class-b-shirt-male-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-blues-class-b-shirt-male-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "rank_slot_right_center": [
-     570.56,
-     261.85
+     606.62,
+     312.05
     ],
     "rank_slot_left_center": [
-     1778.06,
-     261.85
+     2079.32,
+     312.05
     ],
     "rank_rule_point_right": [
-     505.03,
-     358.28
+     508.99,
+     420.48
     ],
     "rank_rule_point_left": [
-     1843.59,
-     358.28
+     2176.95,
+     420.48
     ]
    },
    "landmarks": [
@@ -15274,46 +15278,46 @@
    "id": "garment-blues-class-b-shirt-male-epaulet-sleeve-officer",
    "path": "garments/garment-blues-class-b-shirt-male-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "rank_slot_right_center": [
-     570.56,
-     261.85
+     606.62,
+     312.05
     ],
     "rank_slot_left_center": [
-     1778.06,
-     261.85
+     2079.32,
+     312.05
     ],
     "rank_rule_point_right": [
-     505.03,
-     358.28
+     508.99,
+     420.48
     ],
     "rank_rule_point_left": [
-     1843.59,
-     358.28
+     2176.95,
+     420.48
     ]
    },
    "landmarks": [
@@ -15329,34 +15333,34 @@
    "id": "garment-blues-class-b-shirt-male-general-officer-buckle",
    "path": "garments/garment-blues-class-b-shirt-male-general-officer-buckle.svg",
    "category": "garments",
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "Drawn on the buckle body of garment-blues-class-b-shirt-male (same box and origin); emblem about 0.75 x the smaller buckle dimension. The regulation gives no emblem dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "buckle_center": [
-     1222.46,
-     1990.15
+     1401.51,
+     2420.1
     ]
    },
    "landmarks": [
@@ -15369,46 +15373,46 @@
    "id": "garment-blues-class-b-shirt-male-long-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-blues-class-b-shirt-male-long-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "rank_slot_right_center": [
-     521.9,
-     247.95
+     556.43,
+     295.2
     ],
     "rank_slot_left_center": [
-     1730.1,
-     247.95
+     2029.83,
+     295.2
     ],
     "rank_rule_point_right": [
-     455.61,
-     342.82
+     458.04,
+     401.31
     ],
     "rank_rule_point_left": [
-     1796.39,
-     342.82
+     2128.22,
+     401.31
     ]
    },
    "landmarks": [
@@ -15424,46 +15428,46 @@
    "id": "garment-blues-class-b-shirt-male-long-epaulet-sleeve-officer",
    "path": "garments/garment-blues-class-b-shirt-male-long-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "rank_slot_right_center": [
-     521.9,
-     247.95
+     556.43,
+     295.2
     ],
     "rank_slot_left_center": [
-     1730.1,
-     247.95
+     2029.83,
+     295.2
     ],
     "rank_rule_point_right": [
-     455.61,
-     342.82
+     458.04,
+     401.31
     ],
     "rank_rule_point_left": [
-     1796.39,
-     342.82
+     2128.22,
+     401.31
     ]
    },
    "landmarks": [
@@ -15479,34 +15483,34 @@
    "id": "garment-blues-class-b-shirt-male-long-general-officer-buckle",
    "path": "garments/garment-blues-class-b-shirt-male-long-general-officer-buckle.svg",
    "category": "garments",
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "Drawn on the buckle body of garment-blues-class-b-shirt-male-long (same box and origin); emblem about 0.75 x the smaller buckle dimension. The regulation gives no emblem dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "buckle_center": [
-     1174.15,
-     1990.15
+     1351.66,
+     2420.1
     ]
    },
    "landmarks": [
@@ -15519,34 +15523,34 @@
    "id": "garment-blues-class-b-shirt-male-long-nametag-adult",
    "path": "garments/garment-blues-class-b-shirt-male-long-nametag-adult.svg",
    "category": "garments",
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "nametag_center": [
-     746.85,
-     742.7
+     831.58,
+     910
     ]
    },
    "landmarks": [
@@ -15559,34 +15563,34 @@
    "id": "garment-blues-class-b-shirt-male-long-nametag-cadet",
    "path": "garments/garment-blues-class-b-shirt-male-long-nametag-cadet.svg",
    "category": "garments",
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "nametag_center": [
-     746.85,
-     742.7
+     831.58,
+     910
     ]
    },
    "landmarks": [
@@ -15599,122 +15603,122 @@
    "id": "garment-blues-class-b-shirt-male-long",
    "path": "garments/garment-blues-class-b-shirt-male-long.svg",
    "category": "garments",
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Silhouette (long sleeves, collar, torso, trousers/skirt) measured from CAPR 39-1 Figure 4.8 (3 March 2020): the figure was rendered at 2.2x, traced, and scaled with the registration of its short-sleeve twin to the short-sleeve base image, so interior parts line up with garment-blues-class-b-shirt-male. No real garment was measured.",
+   "basis": "Silhouette (long sleeves, collar, torso, trousers/skirt) measured from CAPR 39-1 Figure 4.8 (3 March 2020): the figure was rendered at 2.2x, traced, and scaled with the registration of its short-sleeve twin to the short-sleeve base image, so interior parts line up with garment-blues-class-b-shirt-male. No real garment was measured. Then the whole sheet is scaled by 1.2171 (LIVE-ART2 item 1; 0.0474 in/px becomes 0.0577): the men's pocket measures 4.31 in wide on the traced image, and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 in wide x 6 in tall (ESTIMATE: AF shirt pattern dimension supplied with the task, no CAPR 39-1 or DAFI 36-2903 dimension; the CAPR 39-1 Fig 4.9 nametag (3 3/8 in) read as a ruler gives a smaller 4.56 in, the figure is schematic), so K = 5.25 / 4.313. The pocket is drawn 5.25 x 6.0 in, flap 2.02 in deep. Nameplate, epaulet strap width, buttons and strokes stay true size.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.13,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.13,
+     3291.06
     ],
     "center": [
-     1126,
-     1353.75
+     1293.13,
+     1645.53
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.53
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.26,
+     1645.53
     ],
     "shoulder_seam_right": [
-     334.4,
-     330
+     329.63,
+     399.4
     ],
     "sleeve_bottom_right": [
-     351.3,
-     2594.5
+     350.53,
+     3155.7
     ],
     "elbow_right": [
-     269.1,
-     1575.5
+     250.83,
+     1915.4
     ],
     "chevron_halfway_right": [
-     240.9,
-     952.7
+     252.33,
+     1157.4
     ],
     "shoulder_seam_left": [
-     1917.6,
-     330
+     2256.63,
+     399.4
     ],
     "sleeve_bottom_left": [
-     1900.7,
-     2594.5
+     2235.73,
+     3155.7
     ],
     "elbow_left": [
-     1982.9,
-     1575.5
+     2335.43,
+     1915.4
     ],
     "chevron_halfway_left": [
-     2011.1,
-     952.7
+     2333.83,
+     1157.4
     ],
     "hem_center": [
-     1126,
-     2697.5
+     1293.13,
+     3281.06
     ],
     "nameplate_center": [
-     746.85,
-     742.7
+     831.58,
+     910
     ],
     "epaulet_right_center": [
-     585.8,
-     300.25
+     627.38,
+     344.95
     ],
     "epaulet_left_center": [
-     1666.2,
-     300.25
+     1958.88,
+     344.95
     ],
     "belt_buckle_center": [
-     1192.4,
-     1990.15
+     1373.88,
+     2420.1
     ],
     "collar_insignia_right": [
-     1388.39,
-     267.73
+     1631.67,
+     313.58
     ],
     "collar_insignia_left": [
-     863.61,
-     267.73
+     954.59,
+     313.58
     ],
     "button_1_center": [
-     1126,
-     578.8
+     1293.13,
+     702.31
     ],
     "button_2_center": [
-     1126,
-     950.89
+     1293.13,
+     1155.19
     ],
     "button_3_center": [
-     1126,
-     1318.24
+     1293.13,
+     1602.31
     ],
     "button_4_center": [
-     1126,
-     1683.22
+     1293.13,
+     2046.54
     ],
     "pocket_right_top_center": [
-     746.75,
-     780.2
+     831.63,
+     947.5
     ],
     "pocket_left_top_center": [
-     1505.15,
-     780.2
+     1754.63,
+     947.5
     ],
     "ribbon_row_bottom_center": [
-     1505.15,
-     780.2
+     1754.63,
+     947.5
     ],
     "nameplate_rest_center": [
-     746.75,
-     780.2
+     831.63,
+     947.5
     ]
    },
    "landmarks": [
@@ -15736,34 +15740,34 @@
    "id": "garment-blues-class-b-shirt-male-nametag-adult",
    "path": "garments/garment-blues-class-b-shirt-male-nametag-adult.svg",
    "category": "garments",
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "nametag_center": [
-     795.16,
-     742.7
+     881.42,
+     910
     ]
    },
    "landmarks": [
@@ -15776,34 +15780,34 @@
    "id": "garment-blues-class-b-shirt-male-nametag-cadet",
    "path": "garments/garment-blues-class-b-shirt-male-nametag-cadet.svg",
    "category": "garments",
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "nametag_center": [
-     795.16,
-     742.7
+     881.42,
+     910
     ]
    },
    "landmarks": [
@@ -15816,114 +15820,114 @@
    "id": "garment-blues-class-b-shirt-male",
    "path": "garments/garment-blues-class-b-shirt-male.svg",
    "category": "garments",
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/blues_class_b_male.webp (581x719 px) at 0.0474 in/px. Same canvas and scale assumption as the Class A coat. No real garment was measured.",
+   "basis": "Silhouette traced from images/base/blues_class_b_male.webp (581x719 px) at 0.0474 in/px. Same canvas and scale assumption as the Class A coat. No real garment was measured. Then the whole sheet is scaled by 1.2171 (LIVE-ART2 item 1; 0.0474 in/px becomes 0.0577): the men's pocket measures 4.31 in wide on the traced image, and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 in wide x 6 in tall (ESTIMATE: AF shirt pattern dimension supplied with the task, no CAPR 39-1 or DAFI 36-2903 dimension; the CAPR 39-1 Fig 4.9 nametag (3 3/8 in) read as a ruler gives a smaller 4.56 in, the figure is schematic), so K = 5.25 / 4.313. The pocket is drawn 5.25 x 6.0 in, flap 2.02 in deep. Nameplate, epaulet strap width, buttons and strokes stay true size.",
    "anchors": {
     "top_center": [
-     1174.31,
+     1342.97,
      0
     ],
     "bottom_center": [
-     1174.31,
-     2428
+     1342.97,
+     2950.87
     ],
     "center": [
-     1174.31,
-     1214
+     1342.97,
+     1475.43
     ],
     "left_edge": [
      0,
-     1214
+     1475.43
     ],
     "right_edge": [
-     2348.63,
-     1214
+     2685.94,
+     1475.43
     ],
     "shoulder_seam_right": [
-     382.71,
-     330
+     379.47,
+     399.4
     ],
     "sleeve_bottom_right": [
-     316.81,
-     1311.8
+     301.77,
+     1594.5
     ],
     "chevron_halfway_right": [
-     262.11,
-     820.9
+     284.97,
+     996.9
     ],
     "shoulder_seam_left": [
-     1965.91,
-     330
+     2306.47,
+     399.4
     ],
     "sleeve_bottom_left": [
-     2031.81,
-     1311.8
+     2384.17,
+     1594.5
     ],
     "chevron_halfway_left": [
-     2086.51,
-     820.9
+     2401.27,
+     996.9
     ],
     "hem_center": [
-     1174.31,
-     2418
+     1342.97,
+     2940.87
     ],
     "nameplate_center": [
-     795.16,
-     742.7
+     881.42,
+     910
     ],
     "epaulet_right_center": [
-     634.71,
-     313
+     677.82,
+     360.6
     ],
     "epaulet_left_center": [
-     1713.91,
-     313
+     2008.12,
+     360.6
     ],
     "belt_buckle_center": [
-     1240.71,
-     1990.15
+     1423.72,
+     2420.1
     ],
     "collar_insignia_right": [
-     1436.7,
-     267.73
+     1681.51,
+     313.58
     ],
     "collar_insignia_left": [
-     911.92,
-     267.73
+     1004.43,
+     313.58
     ],
     "button_1_center": [
-     1174.31,
-     578.8
+     1342.97,
+     702.31
     ],
     "button_2_center": [
-     1174.31,
-     950.89
+     1342.97,
+     1155.19
     ],
     "button_3_center": [
-     1174.31,
-     1318.24
+     1342.97,
+     1602.31
     ],
     "button_4_center": [
-     1174.31,
-     1683.22
+     1342.97,
+     2046.54
     ],
     "pocket_right_top_center": [
-     795.06,
-     780.2
+     881.47,
+     947.5
     ],
     "pocket_left_top_center": [
-     1553.46,
-     780.2
+     1804.47,
+     947.5
     ],
     "ribbon_row_bottom_center": [
-     1553.46,
-     780.2
+     1804.47,
+     947.5
     ],
     "nameplate_rest_center": [
-     795.06,
-     780.2
+     881.47,
+     947.5
     ]
    },
    "landmarks": [
@@ -16042,11 +16046,11 @@
     ],
     "flag_left_center": [
      4345.62,
-     501.04
+     416.3
     ],
     "loop_square_right_center": [
      423.63,
-     576.04
+     491.3
     ]
    },
    "landmarks": [
@@ -16177,7 +16181,11 @@
     "baseball_cap_back_name_tape",
     "boonie_hat_front",
     "boonie_hat_front_insignia_zone",
-    "boonie_hat_back"
+    "boonie_hat_back",
+    "collar_lapel_right",
+    "collar_leading_edge_right",
+    "collar_lapel_left",
+    "collar_leading_edge_left"
    ],
    "has_spec": true,
    "issues": []
@@ -16429,11 +16437,11 @@
     ],
     "flag_left_center": [
      4345.62,
-     501.04
+     416.3
     ],
     "loop_square_right_center": [
      423.63,
-     576.04
+     491.3
     ]
    },
    "landmarks": [
@@ -16518,11 +16526,11 @@
     ],
     "flag_left_center": [
      5140,
-     255
+     240
     ],
     "loop_square_right_center": [
      440,
-     330
+     315
     ]
    },
    "landmarks": [
@@ -16607,11 +16615,11 @@
     ],
     "flag_left_center": [
      5140,
-     255
+     240
     ],
     "loop_square_right_center": [
      440,
-     330
+     315
     ]
    },
    "landmarks": [
@@ -17333,118 +17341,118 @@
    "id": "garment-overblouse-female-long",
    "path": "garments/garment-overblouse-female-long.svg",
    "category": "garments",
-   "w_in": 24.0282,
-   "h_in": 24.4982,
+   "w_in": 26.6633,
+   "h_in": 29.4881,
    "size_source": "estimated",
-   "basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured. The short sleeves are then widened (dimensions.sleeve_widening); the bodice keeps the 21.0 in scale.",
+   "basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured. The sleeves are then widened (dimensions.sleeve_widening); the bodice keeps the 21.0 in scale. Then the whole sheet is scaled by 1.2037 (LIVE-ART2 item 1): the men's aviator shirt's traced pocket is 4.36 in wide and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 x 6 in (ESTIMATE: AF shirt pattern dimension supplied with the task, no CAPR 39-1 or DAFI 36-2903 dimension); the overblouse has no pocket and is the women's piece of the 4.2.6 aviator uniform, so it takes the aviator shirts' factor (sleeve to sleeve 21.0 in becomes 25.3 in before widening). The nametag slot (centre 1 1/2 in below the first button, 4.2.6.2.6.1.2) and ribbon slot keep their true size.",
    "anchors": {
     "top_center": [
-     1201.41,
+     1333.17,
      0
     ],
     "bottom_center": [
-     1201.41,
-     2449.82
+     1333.17,
+     2948.82
     ],
     "center": [
-     1201.41,
-     1224.91
+     1333.17,
+     1474.41
     ],
     "left_edge": [
      0,
-     1224.91
+     1474.41
     ],
     "right_edge": [
-     2402.82,
-     1224.91
+     2666.32,
+     1474.41
     ],
     "shoulder_seam_right": [
-     625.08,
-     326.62
+     639.45,
+     393.15
     ],
     "elbow_right": [
-     367.22,
-     1285.39
+     397.77,
+     1547.21
     ],
     "sleeve_bottom_right": [
-     101.82,
-     2069.83
+     122.56,
+     2491.43
     ],
     "chevron_halfway_right": [
-     454.42,
-     806.01
+     490.5,
+     970.18
     ],
     "shoulder_seam_left": [
-     1777.74,
-     326.62
+     2026.88,
+     393.15
     ],
     "elbow_left": [
-     2035.6,
-     1285.39
+     2268.55,
+     1547.21
     ],
     "sleeve_bottom_left": [
-     2301,
-     2069.83
+     2543.76,
+     2491.43
     ],
     "chevron_halfway_left": [
-     1948.4,
-     806.01
+     2175.83,
+     970.18
     ],
     "hem_center": [
-     1201.41,
-     2037.81
+     1333.17,
+     2452.88
     ],
     "nameplate_slot_center": [
-     899.06,
-     419.1
+     969.17,
+     474.67
     ],
     "ribbon_slot_center": [
-     1503.76,
-     381.6
+     1697.1,
+     437.18
     ],
     "button_1_center": [
-     1197.85,
-     269.7
+     1328.88,
+     324.63
     ],
     "badge_above_nametag_center": [
-     899.06,
-     331.6
+     969.17,
+     387.18
     ],
     "command_pin_above_nametag_center": [
-     899.06,
-     331.6
+     969.17,
+     387.18
     ],
     "command_pin_below_nametag_center": [
-     899.06,
-     506.6
+     969.17,
+     562.17
     ],
     "badge_left_above_ribbons_center": [
-     1503.76,
-     256.6
+     1697.1,
+     312.19
     ],
     "nco_chevron_right_center": [
-     518.36,
-     749.97
+     510.98,
+     902.73
     ],
     "nco_chevron_left_center": [
-     1884.46,
-     749.97
+     2155.35,
+     902.73
     ],
     "collar_insignia_right_center": [
-     1055.55,
-     162.98
+     1157.6,
+     196.18
     ],
     "collar_insignia_left_center": [
-     1347.27,
-     162.98
+     1508.74,
+     196.18
     ],
     "epaulet_right_center": [
-     761.51,
-     221.65
+     803.67,
+     266.8
     ],
     "epaulet_left_center": [
-     1641.31,
-     221.65
+     1862.67,
+     266.8
     ]
    },
    "landmarks": [
@@ -17464,110 +17472,110 @@
    "id": "garment-overblouse-female",
    "path": "garments/garment-overblouse-female.svg",
    "category": "garments",
-   "w_in": 24.6,
-   "h_in": 24.4982,
+   "w_in": 27.3589,
+   "h_in": 29.4881,
    "size_source": "estimated",
-   "basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured. The short sleeves are then widened (dimensions.sleeve_widening); the bodice keeps the 21.0 in scale.",
+   "basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured. The sleeves are then widened (dimensions.sleeve_widening); the bodice keeps the 21.0 in scale. Then the whole sheet is scaled by 1.2037 (LIVE-ART2 item 1): the men's aviator shirt's traced pocket is 4.36 in wide and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 x 6 in (ESTIMATE: AF shirt pattern dimension supplied with the task, no CAPR 39-1 or DAFI 36-2903 dimension); the overblouse has no pocket and is the women's piece of the 4.2.6 aviator uniform, so it takes the aviator shirts' factor (sleeve to sleeve 21.0 in becomes 25.3 in before widening). The nametag slot (centre 1 1/2 in below the first button, 4.2.6.2.6.1.2) and ribbon slot keep their true size.",
    "anchors": {
     "top_center": [
-     1230,
+     1367.94,
      0
     ],
     "bottom_center": [
-     1230,
-     2449.82
+     1367.94,
+     2948.82
     ],
     "center": [
-     1230,
-     1224.91
+     1367.94,
+     1474.41
     ],
     "left_edge": [
      0,
-     1224.91
+     1474.41
     ],
     "right_edge": [
-     2460,
-     1224.91
+     2735.88,
+     1474.41
     ],
     "shoulder_seam_right": [
-     687.67,
-     541.93
+     719,
+     686.67
     ],
     "sleeve_bottom_right": [
-     248.91,
-     1083.64
+     299.61,
+     1304.36
     ],
     "chevron_halfway_right": [
-     468.29,
-     812.78
+     509.3,
+     995.51
     ],
     "shoulder_seam_left": [
-     1772.33,
-     541.93
+     2016.9,
+     686.67
     ],
     "sleeve_bottom_left": [
-     2211.09,
-     1083.64
+     2436.27,
+     1304.36
     ],
     "chevron_halfway_left": [
-     1991.71,
-     812.78
+     2226.58,
+     995.51
     ],
     "hem_center": [
-     1230,
-     2037.81
+     1367.94,
+     2452.88
     ],
     "nameplate_slot_center": [
-     927.65,
-     419.1
+     1003.95,
+     474.67
     ],
     "ribbon_slot_center": [
-     1532.35,
-     381.6
+     1731.88,
+     437.18
     ],
     "button_1_center": [
-     1226.44,
-     269.7
+     1363.66,
+     324.63
     ],
     "badge_above_nametag_center": [
-     927.65,
-     331.6
+     1003.95,
+     387.18
     ],
     "command_pin_above_nametag_center": [
-     927.65,
-     331.6
+     1003.95,
+     387.18
     ],
     "command_pin_below_nametag_center": [
-     927.65,
-     506.6
+     1003.95,
+     562.17
     ],
     "badge_left_above_ribbons_center": [
-     1532.35,
-     256.6
+     1731.88,
+     312.19
     ],
     "nco_chevron_right_center": [
-     411.76,
-     1080.83
+     383.04,
+     1300.98
     ],
     "nco_chevron_left_center": [
-     2048.24,
-     1080.83
+     2352.85,
+     1300.98
     ],
     "collar_insignia_right_center": [
-     1084.14,
-     162.98
+     1192.37,
+     196.18
     ],
     "collar_insignia_left_center": [
-     1375.86,
-     162.98
+     1543.51,
+     196.18
     ],
     "epaulet_right_center": [
-     790.1,
-     221.65
+     838.44,
+     266.8
     ],
     "epaulet_left_center": [
-     1669.9,
-     221.65
+     1897.44,
+     266.8
     ]
    },
    "landmarks": [
@@ -21363,7 +21371,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21405,7 +21413,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21447,7 +21455,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21489,7 +21497,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21531,7 +21539,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21573,7 +21581,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21615,7 +21623,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21657,7 +21665,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21695,7 +21703,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21737,7 +21745,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21779,7 +21787,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21821,7 +21829,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21863,7 +21871,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21901,7 +21909,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21943,7 +21951,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -21985,7 +21993,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -22027,7 +22035,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -22069,7 +22077,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -22107,7 +22115,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
    "anchors": {
     "top_center": [
      98.3,
@@ -34167,42 +34175,42 @@
    "id": "garment-blues-class-b-epaulet-top-female-cadet-officer-left",
    "path": "garments/garment-blues-class-b-epaulet-top-female-cadet-officer-left.svg",
    "category": "garments",
-   "w_in": 3.537,
-   "h_in": 1.95,
+   "w_in": 4.261,
+   "h_in": 1.949,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     176.85000000000002,
+     213.05,
      0
     ],
     "bottom_center": [
-     176.85000000000002,
-     195
+     213.05,
+     194.9
     ],
     "center": [
-     176.85000000000002,
-     97.5
+     213.05,
+     97.45
     ],
     "left_edge": [
      0,
-     97.5
+     97.45
     ],
     "right_edge": [
-     353.70000000000005,
-     97.5
+     426.1,
+     97.45
     ],
     "rank_slot_center": [
-     218.7,
-     97.5
+     291.1,
+     97.45
     ],
     "rank_rule_point": [
-     281.2,
-     97.5
+     353.6,
+     97.45
     ],
     "outer_end_center": [
-     343.7,
-     97.5
+     416.1,
+     97.45
     ]
    },
    "landmarks": [
@@ -34216,42 +34224,42 @@
    "id": "garment-blues-class-b-epaulet-top-female-cadet-officer-right",
    "path": "garments/garment-blues-class-b-epaulet-top-female-cadet-officer-right.svg",
    "category": "garments",
-   "w_in": 3.537,
-   "h_in": 1.95,
+   "w_in": 4.261,
+   "h_in": 1.949,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     176.85000000000002,
+     213.05,
      0
     ],
     "bottom_center": [
-     176.85000000000002,
-     195
+     213.05,
+     194.9
     ],
     "center": [
-     176.85000000000002,
-     97.5
+     213.05,
+     97.45
     ],
     "left_edge": [
      0,
-     97.5
+     97.45
     ],
     "right_edge": [
-     353.70000000000005,
-     97.5
+     426.1,
+     97.45
     ],
     "rank_slot_center": [
      135,
-     97.5
+     97.45
     ],
     "rank_rule_point": [
      72.5,
-     97.5
+     97.45
     ],
     "outer_end_center": [
      10,
-     97.5
+     97.45
     ]
    },
    "landmarks": [
@@ -34265,42 +34273,42 @@
    "id": "garment-blues-class-b-epaulet-top-female-officer-left",
    "path": "garments/garment-blues-class-b-epaulet-top-female-officer-left.svg",
    "category": "garments",
-   "w_in": 3.537,
-   "h_in": 1.95,
+   "w_in": 4.261,
+   "h_in": 1.949,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     176.85000000000002,
+     213.05,
      0
     ],
     "bottom_center": [
-     176.85000000000002,
-     195
+     213.05,
+     194.9
     ],
     "center": [
-     176.85000000000002,
-     97.5
+     213.05,
+     97.45
     ],
     "left_edge": [
      0,
-     97.5
+     97.45
     ],
     "right_edge": [
-     353.70000000000005,
-     97.5
+     426.1,
+     97.45
     ],
     "rank_slot_center": [
-     218.7,
-     97.5
+     291.1,
+     97.45
     ],
     "rank_rule_point": [
-     281.2,
-     97.5
+     353.6,
+     97.45
     ],
     "outer_end_center": [
-     343.7,
-     97.5
+     416.1,
+     97.45
     ]
    },
    "landmarks": [
@@ -34314,42 +34322,42 @@
    "id": "garment-blues-class-b-epaulet-top-female-officer-right",
    "path": "garments/garment-blues-class-b-epaulet-top-female-officer-right.svg",
    "category": "garments",
-   "w_in": 3.537,
-   "h_in": 1.95,
+   "w_in": 4.261,
+   "h_in": 1.949,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     176.85000000000002,
+     213.05,
      0
     ],
     "bottom_center": [
-     176.85000000000002,
-     195
+     213.05,
+     194.9
     ],
     "center": [
-     176.85000000000002,
-     97.5
+     213.05,
+     97.45
     ],
     "left_edge": [
      0,
-     97.5
+     97.45
     ],
     "right_edge": [
-     353.70000000000005,
-     97.5
+     426.1,
+     97.45
     ],
     "rank_slot_center": [
      135,
-     97.5
+     97.45
     ],
     "rank_rule_point": [
      72.5,
-     97.5
+     97.45
     ],
     "outer_end_center": [
      10,
-     97.5
+     97.45
     ]
    },
    "landmarks": [
@@ -34363,21 +34371,21 @@
    "id": "garment-blues-class-b-epaulet-top-male-cadet-officer-left",
    "path": "garments/garment-blues-class-b-epaulet-top-male-cadet-officer-left.svg",
    "category": "garments",
-   "w_in": 3.352,
+   "w_in": 4.037,
    "h_in": 1.95,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     167.60000000000002,
+     201.85,
      0
     ],
     "bottom_center": [
-     167.60000000000002,
+     201.85,
      195
     ],
     "center": [
-     167.60000000000002,
+     201.85,
      97.5
     ],
     "left_edge": [
@@ -34385,19 +34393,19 @@
      97.5
     ],
     "right_edge": [
-     335.20000000000005,
+     403.7,
      97.5
     ],
     "rank_slot_center": [
-     200.2,
+     268.7,
      97.5
     ],
     "rank_rule_point": [
-     262.7,
+     331.2,
      97.5
     ],
     "outer_end_center": [
-     325.2,
+     393.7,
      97.5
     ]
    },
@@ -34412,21 +34420,21 @@
    "id": "garment-blues-class-b-epaulet-top-male-cadet-officer-right",
    "path": "garments/garment-blues-class-b-epaulet-top-male-cadet-officer-right.svg",
    "category": "garments",
-   "w_in": 3.352,
+   "w_in": 4.037,
    "h_in": 1.95,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     167.60000000000002,
+     201.85,
      0
     ],
     "bottom_center": [
-     167.60000000000002,
+     201.85,
      195
     ],
     "center": [
-     167.60000000000002,
+     201.85,
      97.5
     ],
     "left_edge": [
@@ -34434,7 +34442,7 @@
      97.5
     ],
     "right_edge": [
-     335.20000000000005,
+     403.7,
      97.5
     ],
     "rank_slot_center": [
@@ -34461,21 +34469,21 @@
    "id": "garment-blues-class-b-epaulet-top-male-officer-left",
    "path": "garments/garment-blues-class-b-epaulet-top-male-officer-left.svg",
    "category": "garments",
-   "w_in": 3.352,
+   "w_in": 4.037,
    "h_in": 1.95,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     167.60000000000002,
+     201.85,
      0
     ],
     "bottom_center": [
-     167.60000000000002,
+     201.85,
      195
     ],
     "center": [
-     167.60000000000002,
+     201.85,
      97.5
     ],
     "left_edge": [
@@ -34483,19 +34491,19 @@
      97.5
     ],
     "right_edge": [
-     335.20000000000005,
+     403.7,
      97.5
     ],
     "rank_slot_center": [
-     200.2,
+     268.7,
      97.5
     ],
     "rank_rule_point": [
-     262.7,
+     331.2,
      97.5
     ],
     "outer_end_center": [
-     325.2,
+     393.7,
      97.5
     ]
    },
@@ -34510,21 +34518,21 @@
    "id": "garment-blues-class-b-epaulet-top-male-officer-right",
    "path": "garments/garment-blues-class-b-epaulet-top-male-officer-right.svg",
    "category": "garments",
-   "w_in": 3.352,
+   "w_in": 4.037,
    "h_in": 1.95,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     167.60000000000002,
+     201.85,
      0
     ],
     "bottom_center": [
-     167.60000000000002,
+     201.85,
      195
     ],
     "center": [
-     167.60000000000002,
+     201.85,
      97.5
     ],
     "left_edge": [
@@ -34532,7 +34540,7 @@
      97.5
     ],
     "right_edge": [
-     335.20000000000005,
+     403.7,
      97.5
     ],
     "rank_slot_center": [
@@ -34871,42 +34879,42 @@
    "id": "garment-aviator-epaulet-top-female-cadet-officer-left",
    "path": "garments/garment-aviator-epaulet-top-female-cadet-officer-left.svg",
    "category": "garments",
-   "w_in": 3.301,
-   "h_in": 1.53,
+   "w_in": 3.933,
+   "h_in": 1.801,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     165.05,
+     196.65,
      0
     ],
     "bottom_center": [
-     165.05,
-     153
+     196.65,
+     180.1
     ],
     "center": [
-     165.05,
-     76.5
+     196.65,
+     90.05
     ],
     "left_edge": [
      0,
-     76.5
+     90.05
     ],
     "right_edge": [
-     330.1,
-     76.5
+     393.3,
+     90.05
     ],
     "rank_slot_center": [
-     195.1,
-     76.5
+     258.3,
+     90.05
     ],
     "rank_rule_point": [
-     257.6,
-     76.5
+     320.8,
+     90.05
     ],
     "outer_end_center": [
-     320.1,
-     76.5
+     383.3,
+     90.05
     ]
    },
    "landmarks": [
@@ -34920,42 +34928,42 @@
    "id": "garment-aviator-epaulet-top-female-cadet-officer-right",
    "path": "garments/garment-aviator-epaulet-top-female-cadet-officer-right.svg",
    "category": "garments",
-   "w_in": 3.067,
-   "h_in": 1.619,
+   "w_in": 3.651,
+   "h_in": 1.908,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     153.35000000000002,
+     182.55,
      0
     ],
     "bottom_center": [
-     153.35000000000002,
-     161.9
+     182.55,
+     190.79999999999998
     ],
     "center": [
-     153.35000000000002,
-     80.95
+     182.55,
+     95.39999999999999
     ],
     "left_edge": [
      0,
-     80.95
+     95.39999999999999
     ],
     "right_edge": [
-     306.70000000000005,
-     80.95
+     365.1,
+     95.39999999999999
     ],
     "rank_slot_center": [
      135,
-     80.95
+     95.4
     ],
     "rank_rule_point": [
      72.5,
-     80.95
+     95.4
     ],
     "outer_end_center": [
      10,
-     80.95
+     95.4
     ]
    },
    "landmarks": [
@@ -34969,42 +34977,42 @@
    "id": "garment-aviator-epaulet-top-female-officer-left",
    "path": "garments/garment-aviator-epaulet-top-female-officer-left.svg",
    "category": "garments",
-   "w_in": 3.301,
-   "h_in": 1.53,
+   "w_in": 3.933,
+   "h_in": 1.801,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     165.05,
+     196.65,
      0
     ],
     "bottom_center": [
-     165.05,
-     153
+     196.65,
+     180.1
     ],
     "center": [
-     165.05,
-     76.5
+     196.65,
+     90.05
     ],
     "left_edge": [
      0,
-     76.5
+     90.05
     ],
     "right_edge": [
-     330.1,
-     76.5
+     393.3,
+     90.05
     ],
     "rank_slot_center": [
-     195.1,
-     76.5
+     258.3,
+     90.05
     ],
     "rank_rule_point": [
-     257.6,
-     76.5
+     320.8,
+     90.05
     ],
     "outer_end_center": [
-     320.1,
-     76.5
+     383.3,
+     90.05
     ]
    },
    "landmarks": [
@@ -35018,42 +35026,42 @@
    "id": "garment-aviator-epaulet-top-female-officer-right",
    "path": "garments/garment-aviator-epaulet-top-female-officer-right.svg",
    "category": "garments",
-   "w_in": 3.067,
-   "h_in": 1.619,
+   "w_in": 3.651,
+   "h_in": 1.908,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     153.35000000000002,
+     182.55,
      0
     ],
     "bottom_center": [
-     153.35000000000002,
-     161.9
+     182.55,
+     190.79999999999998
     ],
     "center": [
-     153.35000000000002,
-     80.95
+     182.55,
+     95.39999999999999
     ],
     "left_edge": [
      0,
-     80.95
+     95.39999999999999
     ],
     "right_edge": [
-     306.70000000000005,
-     80.95
+     365.1,
+     95.39999999999999
     ],
     "rank_slot_center": [
      135,
-     80.95
+     95.4
     ],
     "rank_rule_point": [
      72.5,
-     80.95
+     95.4
     ],
     "outer_end_center": [
      10,
-     80.95
+     95.4
     ]
    },
    "landmarks": [
@@ -35067,42 +35075,42 @@
    "id": "garment-aviator-epaulet-top-male-cadet-officer-left",
    "path": "garments/garment-aviator-epaulet-top-male-cadet-officer-left.svg",
    "category": "garments",
-   "w_in": 3.112,
-   "h_in": 1.427,
+   "w_in": 3.704,
+   "h_in": 1.677,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     155.6,
+     185.20000000000002,
      0
     ],
     "bottom_center": [
-     155.6,
-     142.70000000000002
+     185.20000000000002,
+     167.70000000000002
     ],
     "center": [
-     155.6,
-     71.35000000000001
+     185.20000000000002,
+     83.85000000000001
     ],
     "left_edge": [
      0,
-     71.35000000000001
+     83.85000000000001
     ],
     "right_edge": [
-     311.2,
-     71.35000000000001
+     370.40000000000003,
+     83.85000000000001
     ],
     "rank_slot_center": [
-     176.2,
-     71.35
+     235.4,
+     83.85
     ],
     "rank_rule_point": [
-     238.7,
-     71.35
+     297.9,
+     83.85
     ],
     "outer_end_center": [
-     301.2,
-     71.35
+     360.4,
+     83.85
     ]
    },
    "landmarks": [
@@ -35116,42 +35124,42 @@
    "id": "garment-aviator-epaulet-top-male-cadet-officer-right",
    "path": "garments/garment-aviator-epaulet-top-male-cadet-officer-right.svg",
    "category": "garments",
-   "w_in": 3.112,
-   "h_in": 1.427,
+   "w_in": 3.704,
+   "h_in": 1.677,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     155.6,
+     185.20000000000002,
      0
     ],
     "bottom_center": [
-     155.6,
-     142.70000000000002
+     185.20000000000002,
+     167.70000000000002
     ],
     "center": [
-     155.6,
-     71.35000000000001
+     185.20000000000002,
+     83.85000000000001
     ],
     "left_edge": [
      0,
-     71.35000000000001
+     83.85000000000001
     ],
     "right_edge": [
-     311.2,
-     71.35000000000001
+     370.40000000000003,
+     83.85000000000001
     ],
     "rank_slot_center": [
      135,
-     71.35
+     83.85
     ],
     "rank_rule_point": [
      72.5,
-     71.35
+     83.85
     ],
     "outer_end_center": [
      10,
-     71.35
+     83.85
     ]
    },
    "landmarks": [
@@ -35165,42 +35173,42 @@
    "id": "garment-aviator-epaulet-top-male-officer-left",
    "path": "garments/garment-aviator-epaulet-top-male-officer-left.svg",
    "category": "garments",
-   "w_in": 3.112,
-   "h_in": 1.427,
+   "w_in": 3.704,
+   "h_in": 1.677,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     155.6,
+     185.20000000000002,
      0
     ],
     "bottom_center": [
-     155.6,
-     142.70000000000002
+     185.20000000000002,
+     167.70000000000002
     ],
     "center": [
-     155.6,
-     71.35000000000001
+     185.20000000000002,
+     83.85000000000001
     ],
     "left_edge": [
      0,
-     71.35000000000001
+     83.85000000000001
     ],
     "right_edge": [
-     311.2,
-     71.35000000000001
+     370.40000000000003,
+     83.85000000000001
     ],
     "rank_slot_center": [
-     176.2,
-     71.35
+     235.4,
+     83.85
     ],
     "rank_rule_point": [
-     238.7,
-     71.35
+     297.9,
+     83.85
     ],
     "outer_end_center": [
-     301.2,
-     71.35
+     360.4,
+     83.85
     ]
    },
    "landmarks": [
@@ -35214,42 +35222,42 @@
    "id": "garment-aviator-epaulet-top-male-officer-right",
    "path": "garments/garment-aviator-epaulet-top-male-officer-right.svg",
    "category": "garments",
-   "w_in": 3.112,
-   "h_in": 1.427,
+   "w_in": 3.704,
+   "h_in": 1.677,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     155.6,
+     185.20000000000002,
      0
     ],
     "bottom_center": [
-     155.6,
-     142.70000000000002
+     185.20000000000002,
+     167.70000000000002
     ],
     "center": [
-     155.6,
-     71.35000000000001
+     185.20000000000002,
+     83.85000000000001
     ],
     "left_edge": [
      0,
-     71.35000000000001
+     83.85000000000001
     ],
     "right_edge": [
-     311.2,
-     71.35000000000001
+     370.40000000000003,
+     83.85000000000001
     ],
     "rank_slot_center": [
      135,
-     71.35
+     83.85
     ],
     "rank_rule_point": [
      72.5,
-     71.35
+     83.85
     ],
     "outer_end_center": [
      10,
-     71.35
+     83.85
     ]
    },
    "landmarks": [
@@ -35263,46 +35271,46 @@
    "id": "garment-aviator-shirt-female-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-aviator-shirt-female-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 22.448,
-   "h_in": 26.09,
+   "w_in": 25.3352,
+   "h_in": 31.4042,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1122.3999999999999,
+     1266.76,
      0
     ],
     "bottom_center": [
-     1122.3999999999999,
-     2609
+     1266.76,
+     3140.42
     ],
     "center": [
-     1122.3999999999999,
-     1304.5
+     1266.76,
+     1570.21
     ],
     "left_edge": [
      0,
-     1304.5
+     1570.21
     ],
     "right_edge": [
-     2244.7999999999997,
-     1304.5
+     2533.52,
+     1570.21
     ],
     "rank_slot_right_center": [
-     464.03,
-     277.36
+     472.63,
+     330.14
     ],
     "rank_slot_left_center": [
-     1782.56,
-     289.49
+     2063.58,
+     345.01
     ],
     "rank_rule_point_right": [
-     406.43,
-     343.49
+     392.68,
+     416.8
     ],
     "rank_rule_point_left": [
-     1846.87,
-     352.91
+     2151.12,
+     427.99
     ]
    },
    "landmarks": [
@@ -35318,46 +35326,46 @@
    "id": "garment-aviator-shirt-female-epaulet-sleeve-officer",
    "path": "garments/garment-aviator-shirt-female-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 22.448,
-   "h_in": 26.09,
+   "w_in": 25.3352,
+   "h_in": 31.4042,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1122.3999999999999,
+     1266.76,
      0
     ],
     "bottom_center": [
-     1122.3999999999999,
-     2609
+     1266.76,
+     3140.42
     ],
     "center": [
-     1122.3999999999999,
-     1304.5
+     1266.76,
+     1570.21
     ],
     "left_edge": [
      0,
-     1304.5
+     1570.21
     ],
     "right_edge": [
-     2244.7999999999997,
-     1304.5
+     2533.52,
+     1570.21
     ],
     "rank_slot_right_center": [
-     464.03,
-     277.36
+     472.63,
+     330.14
     ],
     "rank_slot_left_center": [
-     1782.56,
-     289.49
+     2063.58,
+     345.01
     ],
     "rank_rule_point_right": [
-     406.43,
-     343.49
+     392.68,
+     416.8
     ],
     "rank_rule_point_left": [
-     1846.87,
-     352.91
+     2151.12,
+     427.99
     ]
    },
    "landmarks": [
@@ -35373,46 +35381,46 @@
    "id": "garment-aviator-shirt-female-long-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-aviator-shirt-female-long-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 22.448,
-   "h_in": 27.9,
+   "w_in": 25.3352,
+   "h_in": 33.5829,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1122.3999999999999,
+     1266.76,
      0
     ],
     "bottom_center": [
-     1122.3999999999999,
-     2790
+     1266.76,
+     3358.29
     ],
     "center": [
-     1122.3999999999999,
-     1395
+     1266.76,
+     1679.14
     ],
     "left_edge": [
      0,
-     1395
+     1679.14
     ],
     "right_edge": [
-     2244.7999999999997,
-     1395
+     2533.52,
+     1679.14
     ],
     "rank_slot_right_center": [
-     464.03,
-     277.36
+     472.63,
+     330.14
     ],
     "rank_slot_left_center": [
-     1782.56,
-     289.49
+     2063.58,
+     345.01
     ],
     "rank_rule_point_right": [
-     406.43,
-     343.49
+     392.68,
+     416.8
     ],
     "rank_rule_point_left": [
-     1846.87,
-     352.91
+     2151.12,
+     427.99
     ]
    },
    "landmarks": [
@@ -35428,46 +35436,46 @@
    "id": "garment-aviator-shirt-female-long-epaulet-sleeve-officer",
    "path": "garments/garment-aviator-shirt-female-long-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 22.448,
-   "h_in": 27.9,
+   "w_in": 25.3352,
+   "h_in": 33.5829,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1122.3999999999999,
+     1266.76,
      0
     ],
     "bottom_center": [
-     1122.3999999999999,
-     2790
+     1266.76,
+     3358.29
     ],
     "center": [
-     1122.3999999999999,
-     1395
+     1266.76,
+     1679.14
     ],
     "left_edge": [
      0,
-     1395
+     1679.14
     ],
     "right_edge": [
-     2244.7999999999997,
-     1395
+     2533.52,
+     1679.14
     ],
     "rank_slot_right_center": [
-     464.03,
-     277.36
+     472.63,
+     330.14
     ],
     "rank_slot_left_center": [
-     1782.56,
-     289.49
+     2063.58,
+     345.01
     ],
     "rank_rule_point_right": [
-     406.43,
-     343.49
+     392.68,
+     416.8
     ],
     "rank_rule_point_left": [
-     1846.87,
-     352.91
+     2151.12,
+     427.99
     ]
    },
    "landmarks": [
@@ -35483,38 +35491,38 @@
    "id": "garment-aviator-shirt-female-long-tie-tab",
    "path": "garments/garment-aviator-shirt-female-long-tie-tab.svg",
    "category": "garments",
-   "w_in": 22.448,
-   "h_in": 27.9,
+   "w_in": 25.3352,
+   "h_in": 33.5829,
    "size_source": "estimated",
    "basis": "Same inverted-V tab as accessories/tie-tab-inverted-v (2.7 x 1.6 in), hung from the collar V; no dimension in the regulation.",
    "anchors": {
     "top_center": [
-     1122.3999999999999,
+     1266.76,
      0
     ],
     "bottom_center": [
-     1122.3999999999999,
-     2790
+     1266.76,
+     3358.29
     ],
     "center": [
-     1122.3999999999999,
-     1395
+     1266.76,
+     1679.14
     ],
     "left_edge": [
      0,
-     1395
+     1679.14
     ],
     "right_edge": [
-     2244.7999999999997,
-     1395
+     2533.52,
+     1679.14
     ],
     "tie_tab_center": [
-     1110.8,
-     229.28
+     1252.8,
+     259.68
     ],
     "tie_tab_top_center": [
-     1110.8,
-     149.28
+     1252.8,
+     179.69
     ]
    },
    "landmarks": [
@@ -35527,38 +35535,38 @@
    "id": "garment-aviator-shirt-female-tie-tab",
    "path": "garments/garment-aviator-shirt-female-tie-tab.svg",
    "category": "garments",
-   "w_in": 22.448,
-   "h_in": 26.09,
+   "w_in": 25.3352,
+   "h_in": 31.4042,
    "size_source": "estimated",
    "basis": "Same inverted-V tab as accessories/tie-tab-inverted-v (2.7 x 1.6 in), hung from the collar V; no dimension in the regulation.",
    "anchors": {
     "top_center": [
-     1122.3999999999999,
+     1266.76,
      0
     ],
     "bottom_center": [
-     1122.3999999999999,
-     2609
+     1266.76,
+     3140.42
     ],
     "center": [
-     1122.3999999999999,
-     1304.5
+     1266.76,
+     1570.21
     ],
     "left_edge": [
      0,
-     1304.5
+     1570.21
     ],
     "right_edge": [
-     2244.7999999999997,
-     1304.5
+     2533.52,
+     1570.21
     ],
     "tie_tab_center": [
-     1122.4,
-     612.45
+     1266.76,
+     720.91
     ],
     "tie_tab_top_center": [
-     1122.4,
-     532.45
+     1266.76,
+     640.9
     ]
    },
    "landmarks": [
@@ -35571,46 +35579,46 @@
    "id": "garment-aviator-shirt-male-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-aviator-shirt-male-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 24.756,
-   "h_in": 23.66,
+   "w_in": 27.4652,
+   "h_in": 28.4792,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1237.8,
+     1373.26,
      0
     ],
     "bottom_center": [
-     1237.8,
-     2366
+     1373.26,
+     2847.92
     ],
     "center": [
-     1237.8,
-     1183
+     1373.26,
+     1423.96
     ],
     "left_edge": [
      0,
-     1183
+     1423.96
     ],
     "right_edge": [
-     2475.6,
-     1183
+     2746.52,
+     1423.96
     ],
     "rank_slot_right_center": [
-     565.44,
-     290.19
+     563.1,
+     345.31
     ],
     "rank_slot_left_center": [
-     1910.16,
-     290.19
+     2183.42,
+     345.31
     ],
     "rank_rule_point_right": [
-     496.61,
-     360.65
+     469.25,
+     438.74
     ],
     "rank_rule_point_left": [
-     1978.99,
-     360.65
+     2277.28,
+     438.74
     ]
    },
    "landmarks": [
@@ -35626,46 +35634,46 @@
    "id": "garment-aviator-shirt-male-epaulet-sleeve-officer",
    "path": "garments/garment-aviator-shirt-male-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 24.756,
-   "h_in": 23.66,
+   "w_in": 27.4652,
+   "h_in": 28.4792,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1237.8,
+     1373.26,
      0
     ],
     "bottom_center": [
-     1237.8,
-     2366
+     1373.26,
+     2847.92
     ],
     "center": [
-     1237.8,
-     1183
+     1373.26,
+     1423.96
     ],
     "left_edge": [
      0,
-     1183
+     1423.96
     ],
     "right_edge": [
-     2475.6,
-     1183
+     2746.52,
+     1423.96
     ],
     "rank_slot_right_center": [
-     565.44,
-     290.19
+     563.1,
+     345.31
     ],
     "rank_slot_left_center": [
-     1910.16,
-     290.19
+     2183.42,
+     345.31
     ],
     "rank_rule_point_right": [
-     496.61,
-     360.65
+     469.25,
+     438.74
     ],
     "rank_rule_point_left": [
-     1978.99,
-     360.65
+     2277.28,
+     438.74
     ]
    },
    "landmarks": [
@@ -35681,46 +35689,46 @@
    "id": "garment-aviator-shirt-male-long-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-aviator-shirt-male-long-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 24.156,
-   "h_in": 26.24,
+   "w_in": 26.0652,
+   "h_in": 31.5847,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1207.8,
+     1303.26,
      0
     ],
     "bottom_center": [
-     1207.8,
-     2624
+     1303.26,
+     3158.47
     ],
     "center": [
-     1207.8,
-     1312
+     1303.26,
+     1579.24
     ],
     "left_edge": [
      0,
-     1312
+     1579.24
     ],
     "right_edge": [
-     2415.6,
-     1312
+     2606.52,
+     1579.24
     ],
     "rank_slot_right_center": [
-     535.44,
-     290.25
+     493.09,
+     345.39
     ],
     "rank_slot_left_center": [
-     1880.16,
-     290.25
+     2113.42,
+     345.39
     ],
     "rank_rule_point_right": [
-     466.61,
-     360.74
+     399.24,
+     438.85
     ],
     "rank_rule_point_left": [
-     1948.99,
-     360.74
+     2207.27,
+     438.85
     ]
    },
    "landmarks": [
@@ -35736,46 +35744,46 @@
    "id": "garment-aviator-shirt-male-long-epaulet-sleeve-officer",
    "path": "garments/garment-aviator-shirt-male-long-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 24.156,
-   "h_in": 26.24,
+   "w_in": 26.0652,
+   "h_in": 31.5847,
    "size_source": "estimated",
    "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1207.8,
+     1303.26,
      0
     ],
     "bottom_center": [
-     1207.8,
-     2624
+     1303.26,
+     3158.47
     ],
     "center": [
-     1207.8,
-     1312
+     1303.26,
+     1579.24
     ],
     "left_edge": [
      0,
-     1312
+     1579.24
     ],
     "right_edge": [
-     2415.6,
-     1312
+     2606.52,
+     1579.24
     ],
     "rank_slot_right_center": [
-     535.44,
-     290.25
+     493.09,
+     345.39
     ],
     "rank_slot_left_center": [
-     1880.16,
-     290.25
+     2113.42,
+     345.39
     ],
     "rank_rule_point_right": [
-     466.61,
-     360.74
+     399.24,
+     438.85
     ],
     "rank_rule_point_left": [
-     1948.99,
-     360.74
+     2207.27,
+     438.85
     ]
    },
    "landmarks": [
@@ -35791,42 +35799,42 @@
    "id": "garment-aviator-shirt-male-long-tie",
    "path": "garments/garment-aviator-shirt-male-long-tie.svg",
    "category": "garments",
-   "w_in": 24.156,
-   "h_in": 26.24,
+   "w_in": 26.0652,
+   "h_in": 31.5847,
    "size_source": "estimated",
    "basis": "Visible blade of the blazer base tie, stretched to run from the collar V to the middle of the belt buckle (the tip covers part of the buckle, 4.2.5.1.4); width profile as the blazer tie. No dimension in the regulation.",
    "anchors": {
     "top_center": [
-     1207.8,
+     1303.26,
      0
     ],
     "bottom_center": [
-     1207.8,
-     2624
+     1303.26,
+     3158.47
     ],
     "center": [
-     1207.8,
-     1312
+     1303.26,
+     1579.24
     ],
     "left_edge": [
      0,
-     1312
+     1579.24
     ],
     "right_edge": [
-     2415.6,
-     1312
+     2606.52,
+     1579.24
     ],
     "tie_knot_top_center": [
-     1213.44,
-     187.86
+     1310.04,
+     226.12
     ],
     "tie_tip_center": [
-     1213.44,
-     2010.32
+     1310.04,
+     2419.8
     ],
     "tie_tack_center": [
-     1213.44,
-     1134.09
+     1310.04,
+     1365.09
     ]
    },
    "landmarks": [
@@ -35839,42 +35847,42 @@
    "id": "garment-aviator-shirt-male-tie",
    "path": "garments/garment-aviator-shirt-male-tie.svg",
    "category": "garments",
-   "w_in": 24.756,
-   "h_in": 23.66,
+   "w_in": 27.4652,
+   "h_in": 28.4792,
    "size_source": "estimated",
    "basis": "Visible blade of the blazer base tie, stretched to run from the collar V to the middle of the belt buckle (the tip covers part of the buckle, 4.2.5.1.4); width profile as the blazer tie. No dimension in the regulation.",
    "anchors": {
     "top_center": [
-     1237.8,
+     1373.26,
      0
     ],
     "bottom_center": [
-     1237.8,
-     2366
+     1373.26,
+     2847.92
     ],
     "center": [
-     1237.8,
-     1183
+     1373.26,
+     1423.96
     ],
     "left_edge": [
      0,
-     1183
+     1423.96
     ],
     "right_edge": [
-     2475.6,
-     1183
+     2746.52,
+     1423.96
     ],
     "tie_knot_top_center": [
-     1243.44,
-     533.92
+     1380.05,
+     642.67
     ],
     "tie_tip_center": [
-     1243.44,
-     2010.32
+     1380.05,
+     2419.8
     ],
     "tie_tack_center": [
-     1243.44,
-     1307.12
+     1380.05,
+     1573.36
     ]
    },
    "landmarks": [
@@ -37343,38 +37351,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "cord_start": [
-     1865.79,
-     201.1
+     2192.67,
+     257.11
     ],
     "cord_end": [
-     1667.95,
-     1357.5
+     1956.36,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37387,38 +37395,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "cord_start": [
-     1865.79,
-     201.1
+     2192.67,
+     257.11
     ],
     "cord_end": [
-     1667.95,
-     1357.5
+     1956.36,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37431,38 +37439,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "cord_start": [
-     1865.79,
-     201.1
+     2192.67,
+     257.11
     ],
     "cord_end": [
-     1667.95,
-     1357.5
+     1956.36,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37475,38 +37483,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "cord_start": [
-     1865.79,
-     201.1
+     2192.67,
+     257.11
     ],
     "cord_end": [
-     1667.95,
-     1357.5
+     1956.36,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37519,38 +37527,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "cord_start": [
-     1865.79,
-     201.1
+     2192.67,
+     257.11
     ],
     "cord_end": [
-     1667.95,
-     1357.5
+     1956.36,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37563,38 +37571,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "cord_start": [
-     1865.79,
-     201.1
+     2192.67,
+     257.11
     ],
     "cord_end": [
-     1667.95,
-     1357.5
+     1956.36,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37607,38 +37615,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "cord_start": [
-     1865.79,
-     201.1
+     2192.67,
+     257.11
     ],
     "cord_end": [
-     1667.95,
-     1357.5
+     1956.36,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37651,38 +37659,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "cord_start": [
-     1841.68,
-     201.1
+     2159.13,
+     257.11
     ],
     "cord_end": [
-     1643.83,
-     1357.5
+     1922.83,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37695,38 +37703,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "cord_start": [
-     1841.68,
-     201.1
+     2159.13,
+     257.11
     ],
     "cord_end": [
-     1643.83,
-     1357.5
+     1922.83,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37739,38 +37747,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "cord_start": [
-     1841.68,
-     201.1
+     2159.13,
+     257.11
     ],
     "cord_end": [
-     1643.83,
-     1357.5
+     1922.83,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37783,38 +37791,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "cord_start": [
-     1841.68,
-     201.1
+     2159.13,
+     257.11
     ],
     "cord_end": [
-     1643.83,
-     1357.5
+     1922.83,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37827,38 +37835,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "cord_start": [
-     1841.68,
-     201.1
+     2159.13,
+     257.11
     ],
     "cord_end": [
-     1643.83,
-     1357.5
+     1922.83,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37871,38 +37879,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "cord_start": [
-     1841.68,
-     201.1
+     2159.13,
+     257.11
     ],
     "cord_end": [
-     1643.83,
-     1357.5
+     1922.83,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37915,38 +37923,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "cord_start": [
-     1841.68,
-     201.1
+     2159.13,
+     257.11
     ],
     "cord_end": [
-     1643.83,
-     1357.5
+     1922.83,
+     1650.09
     ]
    },
    "landmarks": [
@@ -37959,38 +37967,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "cord_start": [
-     1960.31,
-     261.45
+     2300.85,
+     330.92
     ],
     "cord_end": [
-     1779.99,
-     1301.65
+     2084.51,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38003,38 +38011,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "cord_start": [
-     1960.31,
-     261.45
+     2300.85,
+     330.92
     ],
     "cord_end": [
-     1779.99,
-     1301.65
+     2084.51,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38047,38 +38055,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "cord_start": [
-     1960.31,
-     261.45
+     2300.85,
+     330.92
     ],
     "cord_end": [
-     1779.99,
-     1301.65
+     2084.51,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38091,38 +38099,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "cord_start": [
-     1960.31,
-     261.45
+     2300.85,
+     330.92
     ],
     "cord_end": [
-     1779.99,
-     1301.65
+     2084.51,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38135,38 +38143,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "cord_start": [
-     1960.31,
-     261.45
+     2300.85,
+     330.92
     ],
     "cord_end": [
-     1779.99,
-     1301.65
+     2084.51,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38179,38 +38187,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "cord_start": [
-     1960.31,
-     261.45
+     2300.85,
+     330.92
     ],
     "cord_end": [
-     1779.99,
-     1301.65
+     2084.51,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38223,38 +38231,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "cord_start": [
-     1960.31,
-     261.45
+     2300.85,
+     330.92
     ],
     "cord_end": [
-     1779.99,
-     1301.65
+     2084.51,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38267,38 +38275,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "cord_start": [
-     1912,
-     261.45
+     2251.01,
+     330.92
     ],
     "cord_end": [
-     1731.68,
-     1301.65
+     2034.67,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38311,38 +38319,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "cord_start": [
-     1912,
-     261.45
+     2251.01,
+     330.92
     ],
     "cord_end": [
-     1731.68,
-     1301.65
+     2034.67,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38355,38 +38363,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "cord_start": [
-     1912,
-     261.45
+     2251.01,
+     330.92
     ],
     "cord_end": [
-     1731.68,
-     1301.65
+     2034.67,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38399,38 +38407,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "cord_start": [
-     1912,
-     261.45
+     2251.01,
+     330.92
     ],
     "cord_end": [
-     1731.68,
-     1301.65
+     2034.67,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38443,38 +38451,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "cord_start": [
-     1912,
-     261.45
+     2251.01,
+     330.92
     ],
     "cord_end": [
-     1731.68,
-     1301.65
+     2034.67,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38487,38 +38495,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "cord_start": [
-     1912,
-     261.45
+     2251.01,
+     330.92
     ],
     "cord_end": [
-     1731.68,
-     1301.65
+     2034.67,
+     1582.12
     ]
    },
    "landmarks": [
@@ -38531,38 +38539,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "cord_start": [
-     1912,
-     261.45
+     2251.01,
+     330.92
     ],
     "cord_end": [
-     1731.68,
-     1301.65
+     2034.67,
+     1582.12
     ]
    },
    "landmarks": [
@@ -39317,38 +39325,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.4863,
-   "h_in": 24.28,
+   "w_in": 26.8594,
+   "h_in": 29.5087,
    "size_source": "estimated",
    "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
    "anchors": {
     "top_center": [
-     1174.3135441762117,
+     1342.9676342368648,
      0
     ],
     "bottom_center": [
-     1174.3135441762117,
-     2427.9999999999995
+     1342.9676342368648,
+     2950.87
     ],
     "center": [
-     1174.3135441762117,
-     1213.9999999999998
+     1342.9676342368648,
+     1475.435
     ],
     "left_edge": [
      0,
-     1213.9999999999998
+     1475.435
     ],
     "right_edge": [
-     2348.6270883524235,
-     1213.9999999999998
+     2685.9352684737296,
+     1475.435
     ],
     "epaulet_plain_right_center": [
-     634.71,
-     313
+     677.82,
+     360.6
     ],
     "epaulet_plain_left_center": [
-     1713.91,
-     313
+     2008.12,
+     360.6
     ]
    },
    "landmarks": [
@@ -39362,38 +39370,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 22.52,
-   "h_in": 27.075,
+   "w_in": 25.8626,
+   "h_in": 32.9106,
    "size_source": "estimated",
    "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male-long, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
    "anchors": {
     "top_center": [
-     1126,
+     1293.1299999999999,
      0
     ],
     "bottom_center": [
-     1126,
-     2707.5
+     1293.1299999999999,
+     3291.0600000000004
     ],
     "center": [
-     1126,
-     1353.75
+     1293.1299999999999,
+     1645.5300000000002
     ],
     "left_edge": [
      0,
-     1353.75
+     1645.5300000000002
     ],
     "right_edge": [
-     2252,
-     1353.75
+     2586.2599999999998,
+     1645.5300000000002
     ],
     "epaulet_plain_right_center": [
-     585.8,
-     300.25
+     627.38,
+     344.95
     ],
     "epaulet_plain_left_center": [
-     1666.2,
-     300.25
+     1958.88,
+     344.95
     ]
    },
    "landmarks": [
@@ -39407,38 +39415,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.9779,
-   "h_in": 27.11,
+   "w_in": 25.1882,
+   "h_in": 32.9532,
    "size_source": "estimated",
    "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
    "anchors": {
     "top_center": [
-     1098.896597554959,
+     1259.4099999999999,
      0
     ],
     "bottom_center": [
-     1098.896597554959,
-     2711
+     1259.4099999999999,
+     3295.32
     ],
     "center": [
-     1098.896597554959,
-     1355.5
+     1259.4099999999999,
+     1647.66
     ],
     "left_edge": [
      0,
-     1355.5
+     1647.66
     ],
     "right_edge": [
-     2197.793195109918,
-     1355.5
+     2518.8199999999997,
+     1647.66
     ],
     "epaulet_plain_right_center": [
-     580.55,
-     297
+     621.11,
+     340.35
     ],
     "epaulet_plain_left_center": [
-     1617.25,
-     297
+     1897.71,
+     340.35
     ]
    },
    "landmarks": [
@@ -39452,38 +39460,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.4956,
-   "h_in": 29.896,
+   "w_in": 24.5174,
+   "h_in": 36.3441,
    "size_source": "estimated",
    "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female-long, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
    "anchors": {
     "top_center": [
-     1074.7818012025655,
+     1225.8712042116981,
      0
     ],
     "bottom_center": [
-     1074.7818012025655,
-     2989.6
+     1225.8712042116981,
+     3634.4100000000003
     ],
     "center": [
-     1074.7818012025655,
-     1494.8
+     1225.8712042116981,
+     1817.2050000000002
     ],
     "left_edge": [
      0,
-     1494.8
+     1817.2050000000002
     ],
     "right_edge": [
-     2149.563602405131,
-     1494.8
+     2451.7424084233962,
+     1817.2050000000002
     ],
     "epaulet_plain_right_center": [
-     555.78,
-     283.9
+     586.92,
+     324.3
     ],
     "epaulet_plain_left_center": [
-     1593.78,
-     283.9
+     1864.82,
+     324.3
     ]
    },
    "landmarks": [

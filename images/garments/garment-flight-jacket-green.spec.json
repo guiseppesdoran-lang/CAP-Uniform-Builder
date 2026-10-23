@@ -93,11 +93,11 @@
   ],
   "flag_left_center": [
    5140,
-   255
+   240
   ],
   "loop_square_right_center": [
    440,
-   330
+   315
   ]
  },
  "landmarks": {
@@ -145,25 +145,25 @@
   },
   "patch_flag_left": {
    "x": 4965,
-   "y": 155,
+   "y": 140,
    "w": 350,
    "h": 200
   },
   "patch_loop_square_right": {
    "x": 265,
-   "y": 155,
+   "y": 140,
    "w": 350,
    "h": 350
   },
   "sleeve_pocket_left": {
    "x": 4977.5,
-   "y": 780,
+   "y": 765,
    "w": 325,
    "h": 575
   },
   "pen_pocket_left": {
    "x": 5187.5,
-   "y": 820,
+   "y": 805,
    "w": 87.5,
    "h": 465
   },
@@ -365,7 +365,18 @@
   "loop_square_in": [
    3.5,
    3.5
-  ]
+  ],
+  "sheet_alignment": {
+   "note": "Jacket and both flat sleeve panels share one top line (collar top = top of the arch) and one bottom line (jacket cuff bottom = panel cuff bottom). Y in artwork-box inches.",
+   "top_line_y_in": 0.9,
+   "panel_arch_top_y_in": 0.9,
+   "cuff_line_y_in": 31.975,
+   "panel_cuff_bottom_y_in": 31.975,
+   "waistband_bottom_y_in": 27.4,
+   "flat_sleeve_length_in": 30.63,
+   "flat_sleeve_length_source": "ESTIMATE: jacket cuff bottom up to the corner line under the arch; the sleeve outer edge measures 31.3 in along the edge (OUT); the spec gives the 16 3/8 in inseam only",
+   "symmetry": "silhouette, sleeves, cuffs, collar, waistband and flap pockets are one half mirrored about the zip line (audit-flight.js checks it to 0.05 in); only the patches differ side to side"
+  }
  },
  "documented": [
   "green flight jacket (MA-1, CWU-36/P, CWU-45/P) is the only authorized outer garment with the FDU (8.2.7, Figure 8.3)",

@@ -2,60 +2,60 @@
  "asset_id": "garment-blues-class-b-shirt-male-epaulet-plain",
  "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only) plain epaulet straps (overlay, registered to garment-blues-class-b-shirt-male; no grade)",
  "size_in": {
-  "w": 23.4863,
-  "h": 24.28
+  "w": 26.8594,
+  "h": 29.5087
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2348.63,
-  2428
+  2685.94,
+  2950.87
  ],
  "size_source": "estimated",
  "size_basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
  "anchors": {
   "top_center": [
-   1174.3135441762117,
+   1342.9676342368648,
    0
   ],
   "bottom_center": [
-   1174.3135441762117,
-   2427.9999999999995
+   1342.9676342368648,
+   2950.87
   ],
   "center": [
-   1174.3135441762117,
-   1213.9999999999998
+   1342.9676342368648,
+   1475.435
   ],
   "left_edge": [
    0,
-   1213.9999999999998
+   1475.435
   ],
   "right_edge": [
-   2348.6270883524235,
-   1213.9999999999998
+   2685.9352684737296,
+   1475.435
   ],
   "epaulet_plain_right_center": [
-   634.71,
-   313
+   677.82,
+   360.6
   ],
   "epaulet_plain_left_center": [
-   1713.91,
-   313
+   2008.12,
+   360.6
   ]
  },
  "landmarks": {
   "epaulet_plain_right": {
-   "x": 415.91,
-   "y": 163.9,
-   "w": 437.6,
-   "h": 298.2
+   "x": 419.87,
+   "y": 196.9,
+   "w": 515.9,
+   "h": 327.4
   },
   "epaulet_plain_left": {
-   "x": 1495.11,
-   "y": 163.9,
-   "w": 437.6,
-   "h": 298.2
+   "x": 1750.17,
+   "y": 196.9,
+   "w": 515.9,
+   "h": 327.4
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",

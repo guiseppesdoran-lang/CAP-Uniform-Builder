@@ -2,48 +2,48 @@
  "asset_id": "garment-blues-class-b-blouse-female-long-nametag-cadet",
  "name": "Women's Class B blue long-sleeve blouse nametag, cadet (overlay, registered to garment-blues-class-b-blouse-female-long; name left blank)",
  "size_in": {
-  "w": 21.4956,
-  "h": 29.896
+  "w": 24.5174,
+  "h": 36.3441
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2149.56,
-  2989.6
+  2451.74,
+  3634.41
  ],
  "size_source": "estimated",
  "size_basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension. Adult plate assumed the same size.",
  "anchors": {
   "top_center": [
-   1074.7818012025655,
+   1225.8712042116981,
    0
   ],
   "bottom_center": [
-   1074.7818012025655,
-   2989.6
+   1225.8712042116981,
+   3634.4100000000003
   ],
   "center": [
-   1074.7818012025655,
-   1494.8
+   1225.8712042116981,
+   1817.2050000000002
   ],
   "left_edge": [
    0,
-   1494.8
+   1817.2050000000002
   ],
   "right_edge": [
-   2149.563602405131,
-   1494.8
+   2451.7424084233962,
+   1817.2050000000002
   ],
   "nametag_center": [
-   769.83,
-   697.1
+   854.62,
+   813.7
   ]
  },
  "landmarks": {
   "nametag": {
-   "x": 601.08,
-   "y": 659.6,
+   "x": 685.87,
+   "y": 776.2,
    "w": 337.5,
    "h": 75
   }
