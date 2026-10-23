@@ -211,25 +211,19 @@ const boxInside = (l, poly, grow) => P.helpers.boxInPolygon(poly, centreOf(l), l
 
 for(const uniform of ['abu', 'corporate_field']){
   for(const gender of ['male', 'female']){
-    test(`${uniform} ${gender}: the cadet NCO chevron's long edge lies along the leaf's front edge, apex toward the tip, mirrored on the two leaves, centred on the leaf (5.1.1.1.1.4, 5.2.1.1.1, COLLAR8)`, async () => {
+    test(`${uniform} ${gender}: the cadet NCO chevron stands upright in the seam's frame, bottom edge parallel to the leaf's lower seam, the same on both leaves, centred on the leaf (5.1.1.1.1.4, 5.2.1.1.1, COLLAR9)`, async () => {
+      // D8 (COLLAR9): COLLAR8 laid the chevron along the front edge; Ethan: "parallel to the bottom seam, same as the officer insignia".
       const spec = await store.load(SHEETS[uniform]);
       for(const [rank, fs] of NCO_BUILDS){
         const scene = await P.composeUniform(buildNco(uniform, gender, rank, fs), store);
-        const turns = {};
         for(const side of ['right', 'left']){
-          const l = layer(scene, side), e = leadingOf(spec, side);
+          const l = layer(scene, side);
           assert.ok(l, `${ncoLabel(rank, fs)} ${side}`);
-          turns[side] = l.rotate;
-          assert.ok(Math.abs(l.rotate - e.turn) < 0.01, `${ncoLabel(rank, fs)} ${side}: turned ${l.rotate.toFixed(3)}, the front edge calls for ${e.turn.toFixed(3)}`);
-          assert.ok(Math.abs(l.rotate - e.angle_deg) < 0.1, `${ncoLabel(rank, fs)} ${side}: ${l.rotate.toFixed(2)} vs the sheet's stated ${e.angle_deg} degrees`);
-          // the chevron's vertical axis (the long edge) is parallel to the edge's direction: their cross product vanishes
-          const a = l.rotate * Math.PI / 180, ax = { x: Math.sin(a), y: -Math.cos(a) }, ed = { x: e.top.x - e.bottom.x, y: e.top.y - e.bottom.y }, len = Math.hypot(ed.x, ed.y);
-          assert.ok(Math.abs(ax.x * ed.y - ax.y * ed.x) / len < 1e-4, `${ncoLabel(rank, fs)} ${side}: the long edge is parallel to the front edge`);
-          assert.ok(ax.x * ed.x + ax.y * ed.y > 0, `${ncoLabel(rank, fs)} ${side}: the apex points toward the tip, not the apex of the V`);
+          const seam = spec.raw.collar_slots[side].bottom_edge, seamDeg = seam && Number.isFinite(seam.angle_deg) ? seam.angle_deg : 0;
+          assert.ok(Math.abs(l.rotate - seamDeg) < 0.01, `${ncoLabel(rank, fs)} ${side}: turned ${l.rotate.toFixed(3)}, the seam calls for ${seamDeg}`);
           const c = centreOf(l), want = centroidOf(polyOf(spec, side));
           assert.ok(Math.hypot(c.x - want.x, c.y - want.y) < 0.02, `${ncoLabel(rank, fs)} ${side}: centred on the leaf`);
         }
-        assert.ok(Math.abs(turns.right + turns.left) < 0.01 && Math.abs(turns.right) > 20, `${ncoLabel(rank, fs)}: mirrored turns (${turns.right} / ${turns.left})`);
       }
     });
 
