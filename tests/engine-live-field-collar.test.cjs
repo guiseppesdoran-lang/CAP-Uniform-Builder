@@ -3,6 +3,10 @@
 // on the leaf, 1 in from it (CAPR 39-1 5.1.1.1.1.3-4, 5.2.1.1.1.4-6: 'one inch from the front of the collar and centered', 'parallel to the
 // front of the collar'). The leading edge is the sheet's collar_slots[side].leading_edge when it states one, else the longest edge of the
 // collar_left / collar_right polygon; one code for both leaves, so the two are mirror images.
+// FIELD2 (Ethan: 'needs to be parallel to the bottom line', 'abu ranks still aren't parallel to the collar'): the cadet officer row and the
+// officers' Lieutenant and Captain bars lie parallel to the BOTTOM edge of the leaf (the free edge from the collar point toward the shoulder,
+// read from the polygon's two lowest vertices), the row 1 in from the front (leading) edge and centred, the bars centred 1 in from the bottom
+// as the text says (5.1.1.1.1.1, 5.1.1.1.1.3, 5.2.1.1.1); the cadet NCO chevron keeps 'parallel to the front of the collar' (5.1.1.1.1.4).
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -56,6 +60,18 @@ function across(l, edge){
   const c = { x: l.x + l.w / 2, y: l.y + l.h / 2 };
   return Math.abs((c.x - edge.a.x) * e.y - (c.y - edge.a.y) * e.x) / el;
 }
+// The bottom edge of the leaf, the one between its two lowest vertices (largest y), as an edge {a, b}, and the nearest distance from the
+// leading edge's line to the rotated box of a layer.
+function bottomEdge(spec, side){
+  const pts = core.landmark(spec, side === 'right' ? 'collar_right' : 'collar_left').points.slice().sort((p, q) => q.y - p.y).slice(0, 2);
+  return { a: pts[0], b: pts[1] };
+}
+function nearestToEdge(l, edge){
+  const e = { x: edge.b.x - edge.a.x, y: edge.b.y - edge.a.y }, el = Math.hypot(e.x, e.y);
+  const c = { x: l.x + l.w / 2, y: l.y + l.h / 2 }, a = l.rotate * Math.PI / 180;
+  const corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * l.w / 2 * Math.cos(a) - j * l.h / 2 * Math.sin(a), y: c.y + i * l.w / 2 * Math.sin(a) + j * l.h / 2 * Math.cos(a) }));
+  return Math.min(...corners.map(q => Math.abs((q.x - edge.a.x) * e.y - (q.y - edge.a.y) * e.x) / el));
+}
 const upAxis = l => ({ x: Math.sin(l.rotate * Math.PI / 180), y: -Math.cos(l.rotate * Math.PI / 180) });
 const widthAxis = l => ({ x: Math.cos(l.rotate * Math.PI / 180), y: Math.sin(l.rotate * Math.PI / 180) });
 
@@ -77,27 +93,31 @@ for(const uniform of ['abu', 'corporate_field']){
       }
     });
 
-    test(`${uniform} ${gender}: the cadet officer row lies along the leading edge, near outline 1 in from it (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
+    test(`${uniform} ${gender}: the cadet officer row lies parallel to the bottom edge, near outline 1 in from the leading edge, mirrored (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
       const spec = await store.load(SHEETS[uniform]);
-      for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col']){
+      for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col']){
         const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank), store);
         for(const side of ['right', 'left']){
-          const l = layer(scene, side), edge = expectedEdge(spec, side);
-          assert.ok(between(widthAxis(l), edge) < 0.5, `${rank} ${side}: row ${between(widthAxis(l), edge).toFixed(2)} deg off the leading edge`);
-          assert.ok(Math.abs(across(l, edge) - l.h / 2 - 1) < 0.02, `${rank} ${side}: near outline ${(across(l, edge) - l.h / 2).toFixed(3)} in from the edge`);
+          const l = layer(scene, side), front = expectedEdge(spec, side), bottom = bottomEdge(spec, side);
+          assert.ok(l, `${rank} ${side}`);
+          assert.ok(between(widthAxis(l), bottom) < 0.1, `${rank} ${side}: row ${between(widthAxis(l), bottom).toFixed(2)} deg off the bottom edge`);
+          assert.ok(Math.abs(nearestToEdge(l, front) - 1) < 0.02, `${rank} ${side}: near outline ${nearestToEdge(l, front).toFixed(3)} in from the leading edge`);
         }
+        const r = layer(scene, 'right'), lft = layer(scene, 'left');
+        assert.ok(Math.abs(r.rotate + lft.rotate) < 0.01, `${rank}: mirrored turns ${r.rotate} / ${lft.rotate}`);
       }
     });
 
-    test(`${uniform} ${gender}: the Flight Officer, Lieutenant and Captain bars lie along the leading edge, mirrored; Major, Lt Col, Col keep the regulation's own turn (5.1.1.1.1.1, 5.2.1.1.1.1)`, async () => {
+    test(`${uniform} ${gender}: the Lieutenant and Captain bars lie parallel to the bottom edge, mirrored; Major, Lt Col, Col keep the regulation's own turn (5.1.1.1.1.1, 5.2.1.1.1.1)`, async () => {
       const spec = await store.load(SHEETS[uniform]);
       for(const rank of ['2d Lt', '1st Lt', 'Capt']){
         const scene = await P.composeUniform(build(uniform, gender, 'senior', rank), store);
         for(const side of ['right', 'left']){
-          const l = layer(scene, side), edge = expectedEdge(spec, side);
-          assert.ok(between(upAxis(l), edge) < 0.5, `${rank} ${side}: bars ${between(upAxis(l), edge).toFixed(2)} deg off the leading edge`);
+          const l = layer(scene, side), bottom = bottomEdge(spec, side);
+          // The bars' long end is the art's tall axis.
+          assert.ok(between(upAxis(l), bottom) < 0.1, `${rank} ${side}: bars ${between(upAxis(l), bottom).toFixed(2)} deg off the bottom edge`);
         }
-        assert.ok(Math.abs(layer(scene, 'right').rotate + layer(scene, 'left').rotate) < 2.5, `${rank}: mirrored`);
+        assert.ok(Math.abs(layer(scene, 'right').rotate + layer(scene, 'left').rotate) < 0.01, `${rank}: mirrored`);
       }
       const rot = async (rank, side) => layer(await P.composeUniform(build(uniform, gender, 'senior', rank), store), side).rotate;
       assert.equal(await rot('Maj', 'right'), 90); assert.equal(await rot('Maj', 'left'), -90);

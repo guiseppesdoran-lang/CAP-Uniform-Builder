@@ -332,29 +332,30 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
     const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
     const spec = await ST.load(garment);
     const slots = spec.raw.collar_slots;
-    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the row (the art's width) runs parallel to the leaf's front edge, its NEAR OUTLINE
-    // 1 in from that edge, centred on the leaf, drawn from the sheet's collar_left / collar_right polygons (it was the sheet's slot centre, 1.44 in from the edge, so the near edge was 0.69 in
-    // from it; D8: the old assertion pinned the slot's turn and not the distance). Cadet NCO: the chevron follows Figure A5-5 like the shirts' (tests/engine-e5-chevrons.test.cjs).
+    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the row (the art's width) lies parallel to the leaf's BOTTOM edge (FIELD2, Ethan:
+    // 'needs to be parallel to the bottom line'; D8: the old assertion had it along the front edge), its NEAR OUTLINE 1 in from the front edge, centred on the leaf, drawn from the sheet's
+    // collar_left / collar_right polygons. Cadet NCO: the chevron follows Figure A5-5 like the shirts' (tests/engine-e5-chevrons.test.cjs).
     for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col']){
       const scene = await P.composeUniform(build(u, 'cadet', rank), store());
       for(const side of ['right', 'left']){
         const g = scene.layers.find(l => l.key === 'grade:' + side);
         assert.ok(g, `${u} ${rank} ${side}`);
         const d = slots[side].front_edge.dir_down;
-        // the row's long axis (its width) points down the front edge
+        // the row's width axis runs along the bottom edge (the slot states it from p1 to p2)
+        const be = slots[side].bottom_edge, bd = { x: (be.p2[0] - be.p1[0]) / 100, y: (be.p2[1] - be.p1[1]) / 100 }, bl = Math.hypot(bd.x, bd.y);
         const axis = core.rotatePoint({ x: 1, y: 0 }, { x: 0, y: 0 }, g.rotate);
-        assert.ok(Math.abs(axis.x * d[1] - axis.y * d[0]) < 0.01, `${u} ${rank} ${side}: row parallel to the front edge`);
+        assert.ok(Math.abs(axis.x * bd.y / bl - axis.y * bd.x / bl) < 0.01, `${u} ${rank} ${side}: row parallel to the bottom edge`);
         // distance from the front edge line to the nearest point of the rotated box: 1 in
         const p1 = slots[side].front_edge.p1.map(v => v / 100), n = { x: d[1], y: -d[0] };
         const c = { x: g.x + g.w / 2, y: g.y + g.h / 2 }, a = (g.rotate * Math.PI) / 180;
         const corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([i, j]) => ({ x: c.x + i * g.w / 2 * Math.cos(a) - j * g.h / 2 * Math.sin(a), y: c.y + i * g.w / 2 * Math.sin(a) + j * g.h / 2 * Math.cos(a) }));
         const dist = corners.map(q => Math.abs((q.x - p1[0]) * n.x + (q.y - p1[1]) * n.y));
         assert.ok(Math.abs(Math.min(...dist) - 1) < 0.01, `${u} ${rank} ${side}: near outline ${Math.min(...dist).toFixed(3)} in from the front edge`);
-        const m = measures(scene).find(x => Math.abs(Math.hypot(x.to.x - x.from.x, x.to.y - x.from.y) - 1) < 0.01 && Math.hypot(x.to.x - c.x, x.to.y - c.y) < 1.2 && Math.hypot(x.to.x - c.x, x.to.y - c.y) > 0.4);
+        const m = measures(scene).find(x => Math.abs(Math.hypot(x.to.x - x.from.x, x.to.y - x.from.y) - 1) < 0.01 && Math.hypot(x.to.x - c.x, x.to.y - c.y) < 1.5 && Math.hypot(x.to.x - c.x, x.to.y - c.y) > 0.4);
         assert.ok(m, `${u} ${rank} ${side}: the 1 in measure is drawn`);
       }
     }
-    // Officers: bars along the leading edge for Capt, stem parallel to the ground for Maj/Lt Col, beak forward for Col.
+    // Officers: bars along the bottom edge for Capt, stem parallel to the ground for Maj/Lt Col, beak forward for Col.
     const rotOf = async (rank, side) => (await P.composeUniform(build(u, 'senior', rank), store())).layers.find(l => l.key === 'grade:' + side);
     assert.equal((await rotOf('Maj', 'right')).rotate, 90);
     assert.equal((await rotOf('Maj', 'left')).rotate, -90);
@@ -362,10 +363,12 @@ test('ABU and CFU collar grade is turned as each collar leaf\'s slot says (5.1.1
     assert.equal((await rotOf('Lt Col', 'left')).rotate, -90);
     assert.equal((await rotOf('Col', 'right')).flipX, true);
     assert.equal((await rotOf('Col', 'left')).flipX, undefined);
-    // The bars lie along the collar's leading edge (LIVE-FIELD B7, Ethan; D8: they were turned by the slot's angle, square to the bottom edge):
-    // the front edge's direction, tests/engine-live-field-collar.test.cjs.
-    assert.ok(Math.abs((await rotOf('Capt', 'right')).rotate - slots.right.front_edge.angle_deg) < 0.2);
-    assert.ok(Math.abs((await rotOf('Capt', 'left')).rotate - slots.left.front_edge.angle_deg) < 0.2);
+    // The bars lie along the bottom edge of the leaf, long end along it (FIELD2, Ethan; D8: LIVE-FIELD B7 had them along the front edge, before that square to the bottom edge):
+    // the art's tall axis is turned a quarter onto the bottom edge, so the turn is the slot's own angle (the bottom edge's) plus or minus 90.
+    for(const side of ['right', 'left']){
+      const r = (await rotOf('Capt', side)).rotate, want = slots[side].officer.angle_deg + (slots[side].officer.angle_deg > 0 ? -90 : 90);
+      assert.ok(Math.abs(r - want) < 0.5, `${u} ${side}: Capt bars turned ${r}, bottom edge says ${want}`);
+    }
   }
 });
 

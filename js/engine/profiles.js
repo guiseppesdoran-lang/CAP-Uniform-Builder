@@ -234,9 +234,12 @@
     return { collarPoint: tip, rollEnd: other, inward: nrm };
   }
 
-  // `opts.edgeOf(poly, centerX)`, when given (the ABU and CFU, profiles-field.js), supplies the leading edge in place of the polygon search.
-  // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4): the grade's row (its width) runs parallel to the front edge, its near outline 1 in from it,
-  // centred on the leaf along it (chord of the leaf on that line), like the cadet NCO chevron's 1 in rule; a 1 in measure from the edge to the near outline.
+  // `opts.edgeOf(poly, centerX)`, when given (the ABU and CFU, profiles-field.js), supplies the front (leading) edge in place of the polygon search.
+  // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'): the row lies parallel
+  // to the BOTTOM edge of the leaf (Ethan: 'needs to be parallel to the bottom line'; the text states no orientation), the art's width along that edge
+  // (collarBottomEdge, from the leaf polygon, the same code for both leaves), its near outline 1 in from the front edge, centred on the leaf along it
+  // (chord of the leaf on that line), a 1 in measure from the front edge to the near outline. The row is turned, so its near outline is where its
+  // corner reaches toward the front edge: the 1 in is taken to that corner.
   async function collarOfficerRow(ctx, g, opts){
     const id = G.cadetOfficerInsignia(g, 'cloth-bordered-regular');
     const polys = collarPolygons(ctx);
@@ -248,13 +251,31 @@
       const edge = opts && opts.edgeOf ? opts.edgeOf(poly, centerX) : collarFrontEdge(poly.points, centerX);
       if(!edge) continue;
       const side = edge.collarPoint.x < centerX ? 'right' : 'left';
-      const pl = chevronOnLeadingEdge(edge, s.h, 1, poly.points);   // the row's height is across the edge
-      const dx = edge.rollEnd.x - edge.collarPoint.x, dy = edge.rollEnd.y - edge.collarPoint.y;
-      let rotate = Math.atan2(dy, dx) * 180 / Math.PI;                 // the row (the art's width) turned onto the edge
-      if(rotate > 90) rotate -= 180; if(rotate <= -90) rotate += 180;
+      const rotate = collarBottomAngle(poly.points, centerX);
+      const r = rotate * Math.PI / 180, b = { x: Math.cos(r), y: Math.sin(r) }, n = { x: -b.y, y: b.x };
+      // The perpendicular of the front edge on the leaf's side; the row's half-extent toward the edge is its corner reach.
+      const dx = edge.rollEnd.x - edge.collarPoint.x, dy = edge.rollEnd.y - edge.collarPoint.y, len = Math.hypot(dx, dy);
+      let u = { x: -dy / len, y: dx / len };
+      if(u.x * edge.inward.x + u.y * edge.inward.y < 0) u = { x: -u.x, y: -u.y };
+      const reach = Math.abs(b.x * u.x + b.y * u.y) * s.w / 2 + Math.abs(n.x * u.x + n.y * u.y) * s.h / 2;
+      const pl = chevronOnLeadingEdge(edge, 2 * reach, 1, poly.points);
       await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate, z: opts && opts.z != null ? opts.z : Z.insignia, role: 'grade', key: 'grade:' + side });
       ctx.measure(pl.foot, pl.near);
     }
+  }
+
+  // The bottom edge of a collar leaf polygon (the free edge, from the collar point toward the shoulder): of its edges the one whose outward normal points most
+  // nearly straight down, the same search that finds the shirts' leading edge (collarLeadingEdge). Returns { collarPoint, rollEnd, inward } or null.
+  function collarBottomEdge(points, centerX){
+    return collarLeadingEdge(points, centerX);
+  }
+  // SVG rotate, degrees in (-90, 90], that lays the x axis of a piece along the bottom edge of the leaf: the same for a leaf and its mirror image (mirrored sign).
+  function collarBottomAngle(points, centerX){
+    const e = collarBottomEdge(points, centerX);
+    if(!e) return 0;
+    let d = Math.atan2(e.rollEnd.y - e.collarPoint.y, e.rollEnd.x - e.collarPoint.x) * 180 / Math.PI;
+    if(d > 90) d -= 180; if(d <= -90) d += 180;
+    return d;
   }
 
   // Cadet NCO and Airman chevrons on both collars, by the rule of Figure A5-5 ('shirt without necktie',
@@ -747,5 +768,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarBottomEdge, collarBottomAngle, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

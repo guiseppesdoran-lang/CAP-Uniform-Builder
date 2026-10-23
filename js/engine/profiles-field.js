@@ -173,8 +173,8 @@
   // ABU and CFU: grade on both collars (5.1.1.1.1, 5.2.1.1.1); NCO chevrons on the sleeves.
   // The sheets give a slot per side and kind: its centre (0.01 in) and the turn, clockwise, for an
   // insignia whose long axis is upright. Cadet NCO chevrons follow Figure A5-5 like the shirts' (parallel
-  // to the leaf's leading edge, 1 in from it, H.collarChevrons); cadet officers' row runs along the
-  // leaf's front edge, 1 in from it, centred (H.collarOfficerRow); officers' grade sits 1 in from the bottom of the collar, square to its edge.
+  // to the leaf's leading edge, 1 in from it, H.collarChevrons); cadet officers' row lies parallel to the
+  // leaf's bottom edge, 1 in from the front edge, centred (H.collarOfficerRow); the officers' bars lie parallel to the bottom edge, 1 in from it.
   // The cloth border around every insignia is 1/8 in on each side (R5).
   const CLOTH_BORDER = 0.125;
 
@@ -215,12 +215,6 @@
     if(inward.x * (inside.x - collarPoint.x) + inward.y * (inside.y - collarPoint.y) < 0) inward = { x: -inward.x, y: -inward.y };
     return { collarPoint, rollEnd, inward };
   }
-  // Turn (SVG rotate, clockwise, degrees in (-90, 90]) that puts the long axis of an upright piece along the leading edge.
-  function edgeTurn(edge){
-    let d = Math.atan2(edge.rollEnd.x - edge.collarPoint.x, -(edge.rollEnd.y - edge.collarPoint.y)) * 180 / Math.PI;
-    if(d > 90) d -= 180; if(d <= -90) d += 180;
-    return d;
-  }
   async function collarGrade(ctx, b){
     const g = b.grade;
     const slots = ctx.base && ctx.base.raw && ctx.base.raw.collar_slots;
@@ -234,8 +228,8 @@
         // The shirts' rule, Figure A5-5 (H.collarChevrons, from the sheet's collar leaf polygon); drawn once, for both leaves.
         if(side === 'right') await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => fieldLeadingEdge(ctx, poly) });
       }else if(g.category === 'cadet-officer'){
-        // 'One inch from the front of the collar and centered' (5.1.1.1.1.3, 5.2.1.1.1.4): the row parallel to the leaf's front edge, its near outline 1 in
-        // from it, centred on the leaf (H.collarOfficerRow, from the sheet's collar_left / collar_right polygons); drawn once, for both leaves.
+        // 'One inch from the front of the collar and centered' (5.1.1.1.1.3, 5.2.1.1.1.4): the row parallel to the leaf's bottom edge, its near outline 1 in
+        // from the front edge, centred on the leaf (H.collarOfficerRow, from the sheet's collar_left / collar_right polygons); drawn once, for both leaves.
         if(side === 'right') await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => fieldLeadingEdge(ctx, poly) });
       }else if(g.officer && !g.cadet){
         const s = slot('officer');
@@ -244,13 +238,17 @@
         // Major and Lt Col: stem parallel to the ground, pointing away from the neck. Colonel: beak
         // facing forward on both collars.
         let rotate = s.deg;
-        // The bars (Flight Officer, Lieutenant, Captain) have their long axis along the collar's leading edge (LIVE-FIELD B7; 5.1.1.1.1.1,
-        // 5.2.1.1.1.1 give only 'the long end centered 1 inch from the bottom of the collar'); the stem rules of the Major and Lieutenant Colonel
-        // and the Colonel's and generals' 'perpendicular to the bottom of the collar' are regulation text and stay.
+        // The bars (Flight Officer, Lieutenant, Captain) lie parallel to the bottom edge of the leaf, their long end along it (Ethan: 'needs to be
+        // parallel to the bottom line'; 5.1.1.1.1.1, 5.2.1.1.1.1: 'the long end of the Lieutenant and Captain bars will be centered 1 inch from the
+        // bottom of the collar'), centred 1 in from that edge as the slot gives. The art's long axis is vertical, so it is turned a quarter onto the
+        // bottom edge (H.collarBottomAngle, from the leaf polygon, mirrored on the other leaf). The stem rules of the Major and Lieutenant Colonel
+        // (horizontal) and the Colonel's and generals' 'perpendicular to the bottom of the collar' are regulation text and stay.
         if(['second-lieutenant', 'first-lieutenant', 'captain', 'flight-officer', 'technical-flight-officer', 'senior-flight-officer'].includes(g.key)){
           const poly = H.collarPolygons(ctx).find(q => leafSide(ctx, q) === side);
-          const le = poly && fieldLeadingEdge(ctx, poly);
-          if(le) rotate = edgeTurn(le);
+          if(poly){
+            rotate = H.collarBottomAngle(poly.points, ctx.base.w / 2) + 90;
+            if(rotate > 90) rotate -= 180;
+          }
         }
         if(g.key === 'major' || g.key === 'lieutenant-colonel') rotate = R ? 90 : -90;
         // "Centered 1 inch from the bottom of the collar" (5.1.1.1.1.1, 5.2.1.1.1.1): from the free
