@@ -383,8 +383,35 @@
     return withSfx(markup);
   }
 
+  // ---- Where a worn miniature rack is centred across (CAPR 39-1) ---------------------------------------------------
+  // Two different rules, one per uniform (Doran: "the medals need to move left"):
+  //  - Corporate semi-formal, 4.2.2.4 as rewritten by ICL 25-02: "centered above the pocket" (the lowest row 1/2 in above
+  //    the CAP crest or service badge); the rack's centre is the pocket's centre, the crest's x. Nothing in the text
+  //    moves it toward the arm. (4.2.1.4 states the same for the corporate service dress.)
+  //  - Mess dress, 4.1.1.1.2.2: "centered on the wearer's left between the lapel and arm seam" and midway between the top
+  //    shoulder seam and the top button: the centre is the midpoint of the lapel's outer edge and the arm seam, both
+  //    taken at the rack's height.
+  // x values share one frame (the caller's: garment inches or art units); `y` is the rack's centre line.
+  function xAtY(points, y, pick){
+    const xs = [];
+    for(let i = 0; i < points.length - 1; i++){
+      const a = points[i], b = points[i + 1];
+      if(a[1] !== b[1] && (a[1] - y) * (b[1] - y) <= 0) xs.push(a[0] + (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]));
+    }
+    if(!xs.length) return null;
+    return pick === 'min' ? Math.min(...xs) : Math.max(...xs);
+  }
+  // geometry: { pocketCenterX } for the semi-formal; { lapelEdgeX, armSeamX } for the mess dress. null when the uniform has no rule or the numbers are missing.
+  function miniRackCenterX(uniform, geometry){
+    const g = geometry || {};
+    if(uniform === 'semi_formal') return Number.isFinite(g.pocketCenterX) ? g.pocketCenterX : null;
+    if(uniform === 'mess_dress') return Number.isFinite(g.lapelEdgeX) && Number.isFinite(g.armSeamX) ? (g.lapelEdgeX + g.armSeamX) / 2 : null;
+    return null;
+  }
+
   return {
     RIBBON_W, RIBBON_H, MAX_DEVICES, DEVICE,
+    xAtY, miniRackCenterX,
     deviceInner, deviceMetal, DEVICE_EDGE_IN, DEVICE_EDGE_COLOR, DEVICE_EDGE_OPACITY, DEVICE_TONE,
     claspsFor, splitAwardCount, layoutDevices, DEVICE_END_MARGIN, sortRun,
     rackRows, layoutRack, coverage, pointInPolygon, LAPEL_COVER_TOLERANCE,
