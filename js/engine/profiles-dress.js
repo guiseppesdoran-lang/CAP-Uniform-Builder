@@ -1703,13 +1703,15 @@
     const pocketTop = ctx.point('pocket_top_center');
     const ruleBottom = crestTop - 0.5;
     const bottomY = pocketTop ? Math.min(ruleBottom, pocketTop.y) : ruleBottom;
-    // The rack lies between the lapel and the arm seam (11.2.8; 4.2.1.4, 4.2.2.4 with ICL 25-02), whole: no drape,
-    // medal, device or the chaplain badge is under the lapel, and nothing clips it. It starts centred over the crest;
-    // where the lapel edge reaches it, the whole rack moves toward the arm by the least that clears the lapel (0.02 in
-    // steps, the lowest row keeping its line); the badge 1/2 in above the top row moves with it and clears the lapel
-    // the same way. Where the lapel and the arm seam leave less room than the rack needs, the rack has one column
-    // fewer (4 to 1; 7 to 1 for a held rack) and the rows are one more: each column count is drawn, the first whose
-    // rack and badge stay within TOLERANCE of the seam and the shoulder line wins, else the one that overshoots least.
+    // The rack is centred over the pocket (4.2.2.4 as rewritten by ICL 25-02: 'centered above the pocket'), and it is
+    // never slid toward the arm: Doran, looking at the build where it had been slid clear of the lapel, said the medals
+    // need to move left (toward the pocket centre). Where the lapel edge crosses the rack's inner corner the lapel lies
+    // over the medals, as a real jacket's lapel lies over the top row's corner (11.1.8; the lapel foreground drawn above
+    // the medal layers at the end of this function); the chaplain badge keeps its place 1/2 in above the top row (4.2.1.5,
+    // 4.2.2.5), under the lapel too if it reaches it. Only where the rack would cross the arm seam (or the shoulder
+    // line) is it narrowed, one column fewer (4 to 1; 7 to 1 for a held rack) and one row more: each column count is
+    // drawn, the first whose rack and badge stay within TOLERANCE of the seam and the shoulder line wins, else the one
+    // that overshoots least. D8: the lapel clearance (a slide toward the arm and fewer columns for the lapel) is gone.
     const lapelPoly = blazerLapel(ctx, female).map(q => Array.isArray(q) ? { x: q[0], y: q[1] } : { x: q.x, y: q.y });
     const widest = b.opt.miniStyle !== 'holding' ? 4 : 7;
     const TOLERANCE = 0.1;
@@ -1720,43 +1722,32 @@
     for(let cols = widest; cols >= 1; cols--){
       const snap = { layers: ctx.layers.length, notes: ctx.notes.length };
       const report = {};
-      const bx = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, avoid: [lapelPoly], avoidDir: 1, avoidGap: 0.05, maxShift: 2, report });
+      const bx = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, report });
       if(!bx) break;
       let over = report.boxes.map(q => blazerOvershoot(ctx, female, q)).reduce(worseOver, { seam: 0, shoulder: 0 });
       let badgeAt = null;
       if(cs){
         const y = bx.y - 0.5;
-        const hitsLapel = x => C.rectHitsPolygon({ x: x - cs.w / 2 - 0.05, y: y - cs.h, w: cs.w + 0.1, h: cs.h }, lapelPoly);
-        let x = (cb ? cb.x : medalX) + report.slide;
-        for(let n = 0; n < 200 && hitsLapel(x); n++) x += 0.02;
-        badgeAt = { x, y, blocked: hitsLapel(x) };
+        const x = cb ? cb.x : medalX;
+        badgeAt = { x, y };
         over = worseOver(over, blazerOvershoot(ctx, female, { x0: x - cs.w / 2, x1: x + cs.w / 2, y0: y - cs.h, y1: y }));
       }
-      tries.push({ cols, over, slide: report.slide, blocked: report.blocked || (badgeAt && badgeAt.blocked), badgeAt });
+      tries.push({ cols, over, badgeAt });
       ctx.layers.length = snap.layers; ctx.notes.length = snap.notes;
-      if(!tries[tries.length - 1].blocked && overScore(over) <= TOLERANCE) break;
+      if(overScore(over) <= TOLERANCE) break;
     }
-    // The winner: the first try with no lapel hit within the tolerance, else the clear try that overshoots least
-    // (more columns on a tie), else none clears the lapel.
-    const clear = tries.filter(t => !t.blocked);
-    const win = clear.find(t => overScore(t.over) <= TOLERANCE) || clear.slice().sort((p, q) => overScore(p.over) - overScore(q.over) || q.cols - p.cols)[0] || null;
-    let slide = 0, cols = widest;
+    // The winner: the first try within the tolerance of the seam and the shoulder line, else the one that overshoots
+    // least (more columns on a tie).
+    const win = tries.find(t => overScore(t.over) <= TOLERANCE) || tries.slice().sort((p, q) => overScore(p.over) - overScore(q.over) || q.cols - p.cols)[0] || null;
+    let cols = widest;
     if(tries.length){
       if(win){
         cols = win.cols;
-        box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, avoid: [lapelPoly], avoidDir: 1, avoidGap: 0.05, maxShift: 2 });
-        slide = win.slide;
-        if(overScore(win.over) > TOLERANCE) ctx.note('The miniature medals' + (cs ? ' and the chaplain badge' : '') + ' do not all fit between the lapel and the arm seam on this coat: up to ' + Math.max(win.over.seam, win.over.shoulder).toFixed(1) + ' in of them lies past the seam or the shoulder line (CAPR 39-1 11.2.8)');
-        if(cols < Math.min(widest, (b.medals || []).length)) ctx.note(`The miniature medals are worn ${cols} to a row: between the lapel and the arm seam there is no room for more (CAPR 39-1 11.2.8)`);
-        if(slide) ctx.note('The miniature medals are moved toward the arm until they clear the lapel (CAPR 39-1 11.2.8)');
-      }else{
-        // No column count clears the lapel: centred over the crest, the lapel lies over them (11.1.8).
-        box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: 1 });
-        cols = 1;
-        ctx.note('The miniature medals do not fit between the lapel and the arm seam: the lapel lies over them');
+        box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols });
+        if(overScore(win.over) > TOLERANCE) ctx.note('The miniature medals' + (cs ? ' and the chaplain badge' : '') + ' do not all fit inside the arm seam and the shoulder line on this coat: up to ' + Math.max(win.over.seam, win.over.shoulder).toFixed(1) + ' in of them lies past the seam or the shoulder line (CAPR 39-1 11.2.8)');
+        if(cols < Math.min(widest, (b.medals || []).length)) ctx.note(`The miniature medals are worn ${cols} to a row: inside the arm seam there is no room for more (CAPR 39-1 11.2.8)`);
       }
     }
-    const cleared = !!win;
     if(box && bottomY === ruleBottom) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 });
     if(box && bottomY < ruleBottom) ctx.note('The miniature medals end at the top of the pocket: the crest is centred on the pocket (CAPR 39-1, 4.2.3.1.1.1), so the 1/2 in above the crest (4.2.1.4) would put them over the pocket');
     if(chaplain){
@@ -1769,16 +1760,18 @@
     // The lapel (and the collar, over the bow tie) is drawn again above the garment layers, under the tie.
     ctx.foreground(['lapel-foreground'], Z.garmentLayer + 0.5);
     // The collar lies over every badge (Ethan 2026-10-22; CAPR 39-1 11.1.8 lets the lapel cover part of the awards, never the
-    // reverse). Normally nothing is under the wearer's left lapel (the rack and the chaplain badge are moved clear of it); where
-    // a miniature, a device or a badge does meet it (not even one column clears the lapel and the arm seam, or the badge could not
-    // be moved clear), the wearer's left lapel is drawn once more above them (Z.badge + 0.5, the Class A coats' order), clipped
-    // to its own polygon grown by the edge stroke's half width. No badge is lifted over it.
-    const touching = ctx.layers.filter(l => l.role === 'badge' && !(l.rotate || 0) && C.rectHitsPolygon(l, lapelPoly));
-    if((box && !cleared) || touching.length){
+    // reverse). The rack is centred over the pocket (4.2.2.4, ICL 25-02), so the lapel edge may cross its inner corner and the
+    // chaplain badge 1/2 in above it: where a miniature, a device or the badge meets the wearer's left lapel, the lapel is drawn
+    // once more above them (Z.badge + 0.5, the Class A coats' order), clipped to its own polygon grown by the edge stroke's half
+    // width. No medal or badge is lifted over it.
+    const RACK_ROLES = ['mini-drape', 'mini-medal', 'mini', 'device'];
+    const touching = ctx.layers.filter(l => (l.role === 'badge' || RACK_ROLES.includes(l.role)) && !(l.rotate || 0) && C.rectHitsPolygon(core.layerBounds(l), lapelPoly));
+    if(touching.length){
       ctx.foreground(['lapel-foreground'], Z.badge + 0.5);
       ctx.layers[ctx.layers.length - 1].clip = growPolygon(lapelPoly, 0.03);
     }
-    for(const l of touching) ctx.note(`The lapel lies over part of the ${l.title || 'badge'}: it is worn under the collar there (CAPR 39-1 11.1.8)`);
+    if(touching.some(l => RACK_ROLES.includes(l.role))) ctx.note('The lapel lies over the inner corner of the miniature medals: the rack is centred above the pocket (CAPR 39-1 4.2.2.4, ICL 25-02) and the collar is worn over awards (11.1.8)');
+    for(const l of touching.filter(l => l.role === 'badge')) ctx.note(`The lapel lies over part of the ${l.title || 'badge'}: it is worn under the collar there (CAPR 39-1 11.1.8)`);
   }
 
   P.register('blues_a', { title: 'Service Dress (Class A)', compose: composeClassA });

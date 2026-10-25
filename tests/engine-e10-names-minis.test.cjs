@@ -175,11 +175,14 @@ for(const sex of ['male', 'female']){
     const rows = new Map();
     drapes.forEach(l => { const k = l.y.toFixed(3); rows.set(k, [...(rows.get(k) || []), l]); });
     const ys = [...rows.keys()].map(Number).sort((a, b) => b - a);
-    // The men's coat has room for rows of four beside the lapel; the women's, whose lapel and arm seam leave less,
-    // wears three to a row (the rack has one column fewer where it would not fit between them, 11.2.8; FINAL semi-formal lapel fix, D8).
-    // The rows lie closer now (a body and a 0.2 in band apart, Doran's photo L1837), so the rack is shorter and the least-overshoot column
-    // count the women's coat settles on is two to a row (it was three at the old 1.65 in pitch; D8).
-    assert.deepEqual(ys.map(y => rows.get(y.toFixed(3)).length), sex === 'male' ? [4, 4, 1] : [2, 2, 2, 2, 1], sex === 'male' ? 'rows of four, then the remainder' : 'rows of two');
+    // The men's coat has room for rows of four; the women's, whose arm seam is nearer the pocket, wears three to a row (the rack has
+    // one column fewer where it would cross the arm seam, 11.2.8). The rack is centred above the pocket (4.2.2.4 as rewritten by
+    // ICL 25-02) and is no longer narrowed to clear the lapel, which lies over its inner corner instead (11.1.8), so the women's
+    // nine medals are three rows of three, not the rows of two the lapel clearance forced (D8; Doran: "the medals need to move left").
+    assert.deepEqual(ys.map(y => rows.get(y.toFixed(3)).length), sex === 'male' ? [4, 4, 1] : [3, 3, 3], sex === 'male' ? 'rows of four, then the remainder' : 'rows of three');
+    const sheet = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
+    const lowest = rows.get(ys[0].toFixed(3));
+    near((Math.min(...lowest.map(l => l.x)) + Math.max(...lowest.map(l => l.x + l.w))) / 2, core.anchor(sheet, 'crest_center').x, 0.02, 'the rack is centred above the pocket, not slid toward the arm (4.2.2.4, ICL 25-02)');
     for(const [, row] of rows){
       row.sort((a, b) => a.x - b.x);
       for(let i = 1; i < row.length; i++) near(row[i].x - row[i - 1].x, W, 1e-6, 'step between medals in a row');
