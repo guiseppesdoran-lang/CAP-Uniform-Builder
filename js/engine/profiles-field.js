@@ -206,11 +206,12 @@
   const COLLAR_CHEVRON_TALL = 2.5;
   // A leaf's front (leading) edge as { top, bottom } in sheet inches, the tip end first: the sheet's collar_slots[side].leading_edge (two points, 0.01 in) when it states one, else the leaf polygon's
   // longest edge (the front edge of the leaf on both sheets, H.collarLeadingEdge). Null when neither is found.
-  // An edge standing up from the leaf's centroid in the seam's frame (bottom at the centroid, top one inch above it along the seam's normal): H.collarChevrons lays the chevron's upward axis along it,
-  // so the chevron's bottom edge is parallel to the lower seam (COLLAR9).
-  function seamUpEdge(ctx, poly){
-    const c = H.polygonCentroid(poly.points), a = seamAngle(ctx, poly) * Math.PI / 180;
-    return { bottom: { x: c.x, y: c.y }, top: { x: c.x + Math.sin(a), y: c.y - Math.cos(a) } };
+  // An edge from the leaf's centroid, one inch long, pointing along the seam toward the placket V (COLLAR10): on the wearer's right leaf (the viewer's left) the seam's direction, on the wearer's left
+  // leaf the reverse, so H.collarChevrons lays the chevron's apex (the art's top) along it and the two apexes face each other across the V: the turn is the seam's angle + 90 on the wearer's right
+  // leaf and - 90 on the wearer's left.
+  function seamInwardEdge(ctx, poly){
+    const c = H.polygonCentroid(poly.points), a = seamAngle(ctx, poly) * Math.PI / 180, k = leafSide(ctx, poly) === 'right' ? 1 : -1;
+    return { bottom: { x: c.x, y: c.y }, top: { x: c.x + k * Math.cos(a), y: c.y + k * Math.sin(a) } };
   }
   function leadingEdgeOf(ctx, poly){
     const side = leafSide(ctx, poly), slots = ctx.base && ctx.base.raw && ctx.base.raw.collar_slots, le = slots && slots[side] && slots[side].leading_edge;
@@ -233,9 +234,11 @@
       // COLLAR8 (Ethan, on the C/CMSgt chevrons standing small and upright on each leaf: "the long edge needs to be parallel to the collar, and the chief specifically needs to be bigger. for all enlisted
       // things."): the chevron's long edge lies along the leaf's FRONT (leading) edge, 'one inch from and parallel to the front of the collar' (5.1.1.1.1.4, 5.2.1.1.1), apex toward the tip, centred on the
       // leaf, and every enlisted collar chevron is scaled by one common factor so the C/CMSgt one stands 2.5 in tall (H.collarChevrons: an estimate, no collar size is published).
-      // COLLAR9 (Ethan, on the tilted chevrons: "parallel to the bottom seam, same as the officer insignia"): the chevron stands upright in the seam's frame, its bottom edge parallel to the leaf's lower
-      // seam (unturned when the seam is level), centred, keeping the COLLAR8 size; the leading edge no longer sets the turn.
-      await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => seamUpEdge(ctx, poly), tallIn: COLLAR_CHEVRON_TALL, clearIn: 0.1 });
+      // COLLAR9 (Ethan, on the tilted chevrons: "parallel to the bottom seam, same as the officer insignia"): the chevron's bottom edge was parallel to the leaf's lower seam, centred, keeping the COLLAR8 size.
+      // COLLAR10 (Ethan: "flip it 90 so the points are basically pointing at each other"): the chevron is turned a quarter turn from that frame so its apex points inward toward the placket V (seam
+      // angle + 90 on the wearer's right leaf, - 90 on the left), the two apexes facing each other; still centred on the leaf centroid at the COLLAR8 common scale, which shrinks (0.1 in clear) if the
+      // turned chevron would cross the leaf outline.
+      await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => seamInwardEdge(ctx, poly), tallIn: COLLAR_CHEVRON_TALL, clearIn: 0.1 });
     }else if(g.category === 'cadet-officer'){
       // Centred on the leaf (5.1.1.1.1.3, 5.2.1.1.1.4), turned a quarter turn from the seam's frame so the cloth's long side stands vertical (COLLAR6), drawn once for both leaves (H.collarOfficerRow, from
       // the sheet's collar_left / collar_right polygons). Every cadet officer wears the regular-size cloth; the miniature form

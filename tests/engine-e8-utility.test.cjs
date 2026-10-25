@@ -320,7 +320,7 @@ test('the CAP tape is kept clear of overlay labels on ABU and CFU too', async ()
 
 // ---- D26 (4), COLLAR5: collar grade orientation on the ABU and CFU ------------------------------------------
 
-test('ABU and CFU collar grade is centred on the leaf and stands in the frame of its horizontal lower seam: cloth rows and bars a quarter turn, chevrons upright on the seam, stems and beak as the regulation says (5.1.1.1.1.1, 5.1.1.1.1.3-4, 5.2.1.1.1)', async () => {
+test('ABU and CFU collar grade is centred on the leaf and stands in the frame of its horizontal lower seam: cloth rows and bars a quarter turn, chevrons a quarter turn with the apex toward the V, stems and beak as the regulation says (5.1.1.1.1.1, 5.1.1.1.1.3-4, 5.2.1.1.1)', async () => {
   // D8 (COLLAR6): this test had the cadet pieces 1 in from the front edge, unturned, and the officers 1 in above the seam; Ethan: "flip it 90 degrees, and center it, and apply that logic for everything else."
   // The full matrix is in tests/engine-live-field-collar.test.cjs; this is the overlay's own check.
   const centroid = pts => { let a = 0, cx = 0, cy = 0; for(let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i + 1) % pts.length], cr = p.x * q.y - q.x * p.y; a += cr; cx += (p.x + q.x) * cr; cy += (p.y + q.y) * cr; } return { x: cx / (3 * a), y: cy / (3 * a) }; };
@@ -333,15 +333,16 @@ test('ABU and CFU collar grade is centred on the leaf and stands in the frame of
       assert.equal(be.p1[1], be.p2[1], `${u} ${side}: the seam is level`);
       assert.equal(be.angle_deg, 0, `${u} ${side}: the seam's angle`);
     }
-    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4): a quarter turn from the seam (90), long side vertical; cadet NCO chevron upright in the seam's frame (COLLAR9); both centred on the leaf, no measure drawn.
+    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4): a quarter turn from the seam (90), long side vertical; cadet NCO chevron a quarter turn, apex toward the V (COLLAR10); both centred on the leaf, no measure drawn.
     for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col', 'C/Lt Col', 'C/SSgt', 'C/MSgt']){
       const scene = await P.composeUniform(build(u, 'cadet', rank), store());
       for(const side of ['right', 'left']){
         const g = scene.layers.find(l => l.key === 'grade:' + side);
         assert.ok(g, `${u} ${rank} ${side}`);
-        if(/SSgt|MSgt/.test(rank)){   // D8 (COLLAR9): the chevron stands upright in the seam's frame (Ethan: "parallel to the bottom seam, same as the officer insignia")
+        if(/SSgt|MSgt/.test(rank)){   // D8 (COLLAR10): a quarter turn from the seam's frame, the apex (the art's top) toward the V: +90 on the wearer's right leaf, -90 on the left (Ethan: "flip it 90 so the points are basically pointing at each other")
           const seam = spec.raw.collar_slots[side].bottom_edge, sd = seam && Number.isFinite(seam.angle_deg) ? seam.angle_deg : 0;
-          assert.ok(Math.abs(g.rotate - sd) < 0.1, `${u} ${rank} ${side}: turn ${g.rotate} vs the seam ${sd}`);
+          assert.ok(Math.abs(g.rotate - (sd + (side === 'right' ? 90 : -90))) < 0.1, `${u} ${rank} ${side}: turn ${g.rotate} vs the seam ${sd} +/- 90`);
+          assert.ok((side === 'right' ? 1 : -1) * Math.sin(g.rotate * Math.PI / 180) > 0.99, `${u} ${rank} ${side}: apex points toward the V`);
         }else assert.equal(g.rotate, 90, `${u} ${rank} ${side}: turn`);
         const want = centroid(core.landmark(spec, 'collar_' + side).points), c = { x: g.x + g.w / 2, y: g.y + g.h / 2 };
         assert.ok(Math.hypot(c.x - want.x, c.y - want.y) < 0.02, `${u} ${rank} ${side}: centred on the leaf`);

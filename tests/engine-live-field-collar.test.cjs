@@ -2,12 +2,13 @@
 // ABU and Corporate Field Uniform collar grade (CAPR 39-1 5.1.1.1.1, 5.2.1.1.1), COLLAR6.
 // Ethan, on the cadet Lt Col cloth drawn as a level rectangle pushed toward the leaf's outer side: "flip it 90 degrees, and center it, and apply that logic for everything else." Every collar grade
 // piece is centred on its leaf (its centre the centroid of the collar_left / collar_right polygon, both axes) and stands in the frame of the leaf's lower seam (collar_slots[side].bottom_edge, level on
-// both sheets): the cadet officers' cloth and the bars are turned a quarter turn from that frame so the cloth's long side stands vertical, the cadet NCO metal chevron stays upright, the Major's and
+// both sheets): the cadet officers' cloth and the bars are turned a quarter turn from that frame so the cloth's long side stands vertical, the cadet NCO metal chevron is turned so its apex points at the V (COLLAR10), the Major's and
 // Lieutenant Colonel's stem stays parallel to the ground away from the neck, the Colonel's beak forward, the generals' stars stacked perpendicular to the seam. D8: the COLLAR5 tests had the cadet pieces
 // 1 in from the front edge and the officers 1 in above the seam, unturned; Ethan's ruling replaces those positions.
 // COLLAR8 (Ethan, on the C/CMSgt chevrons standing small and upright on each leaf: "the long edge needs to be parallel to the collar, and the chief specifically needs to be bigger. for all enlisted
 // things."): the cadet NCO metal chevron's long edge lies along the leaf's front (leading) edge, mirrored on the two leaves, and all enlisted collar chevrons are scaled by one common factor so the
 // C/CMSgt one stands 2.5 in tall (less if it would not clear the leaf outline by 0.1 in). D8: the COLLAR6 tests had the chevrons upright.
+// COLLAR10 (Ethan: "flip it 90 so the points are basically pointing at each other"): the chevron is a quarter turn from the seam's frame, apex inward toward the V (seam + 90 on the wearer's right leaf, - 90 on the left).
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -96,7 +97,7 @@ for(const uniform of ['abu', 'corporate_field']){
           assert.ok(l, `${rank} ${side}`);
           // cloth rows (the six cadet officers) and the bars: seam + 90, so the long side stands vertical (diamonds and discs stacked, bars lying along the seam); the stem: seam + 90 on the right
           // leaf, seam - 90 on the left; the chevrons, the Colonel and the generals: the seam's own angle
-          if(membership === 'cadet' && CADET_NCOS.includes(rank)) continue;   // the chevrons follow the leaf's front edge (COLLAR8, below)
+          if(membership === 'cadet' && CADET_NCOS.includes(rank)) continue;   // the chevrons: a quarter turn, apex inward (COLLAR10, below)
           let want = 0;
           if(membership === 'cadet' && CADET_OFFICERS.includes(rank)) want = 90;
           else if(membership === 'senior' && (BARS.includes(rank))) want = 90;
@@ -211,19 +212,31 @@ const boxInside = (l, poly, grow) => P.helpers.boxInPolygon(poly, centreOf(l), l
 
 for(const uniform of ['abu', 'corporate_field']){
   for(const gender of ['male', 'female']){
-    test(`${uniform} ${gender}: the cadet NCO chevron stands upright in the seam's frame, bottom edge parallel to the leaf's lower seam, the same on both leaves, centred on the leaf (5.1.1.1.1.4, 5.2.1.1.1, COLLAR9)`, async () => {
-      // D8 (COLLAR9): COLLAR8 laid the chevron along the front edge; Ethan: "parallel to the bottom seam, same as the officer insignia".
+    test(`${uniform} ${gender}: the cadet NCO chevron is turned a quarter turn from the seam's frame so its apex points inward at the placket V, mirrored on the two leaves, centred on the leaf (5.1.1.1.1.4, 5.2.1.1.1, COLLAR10)`, async () => {
+      // D8 (COLLAR10): COLLAR9 stood the chevron upright in the seam's frame; Ethan: "flip it 90 so the points are basically pointing at each other."
       const spec = await store.load(SHEETS[uniform]);
       for(const [rank, fs] of NCO_BUILDS){
         const scene = await P.composeUniform(buildNco(uniform, gender, rank, fs), store);
+        const apex = {};
         for(const side of ['right', 'left']){
           const l = layer(scene, side);
           assert.ok(l, `${ncoLabel(rank, fs)} ${side}`);
           const seam = spec.raw.collar_slots[side].bottom_edge, seamDeg = seam && Number.isFinite(seam.angle_deg) ? seam.angle_deg : 0;
-          assert.ok(Math.abs(l.rotate - seamDeg) < 0.01, `${ncoLabel(rank, fs)} ${side}: turned ${l.rotate.toFixed(3)}, the seam calls for ${seamDeg}`);
-          const c = centreOf(l), want = centroidOf(polyOf(spec, side));
-          assert.ok(Math.hypot(c.x - want.x, c.y - want.y) < 0.02, `${ncoLabel(rank, fs)} ${side}: centred on the leaf`);
+          // the wearer's right leaf is the viewer's left: seam + 90 there, seam - 90 on the wearer's left leaf
+          const want = seamDeg + (side === 'right' ? 90 : -90);
+          assert.ok(Math.abs(l.rotate - want) < 0.01, `${ncoLabel(rank, fs)} ${side}: turned ${l.rotate.toFixed(3)}, a quarter turn from the seam calls for ${want}`);
+          const c = centreOf(l), want0 = centroidOf(polyOf(spec, side));
+          assert.ok(Math.hypot(c.x - want0.x, c.y - want0.y) < 0.02, `${ncoLabel(rank, fs)} ${side}: centred on the leaf`);
+          // the apex is the art's top_center anchor: turned by rotate about the centre, it lies half a height from the centre along (sin, -cos)
+          const art = await store.load(l.id), r = l.rotate * Math.PI / 180, top = art.raw.anchors.top_center, mid = art.raw.anchors.center;
+          assert.ok(Math.abs(top[0] - mid[0]) < 1e-6 && top[1] < mid[1], `${l.id}: the apex is the top of the art`);
+          apex[side] = { x: c.x + Math.sin(r) * l.h / 2, y: c.y - Math.cos(r) * l.h / 2, c };
+          const toward = side === 'right' ? 1 : -1;   // the V lies to the viewer's right of the wearer's right leaf
+          assert.ok((apex[side].x - c.x) * toward > l.h / 2 - 0.01, `${ncoLabel(rank, fs)} ${side}: the apex points inward toward the V`);
         }
+        assert.ok(apex.right.x < apex.left.x, `${ncoLabel(rank, fs)}: the two apexes face each other across the V`);
+        const rs = layer(scene, 'right'), ls = layer(scene, 'left');
+        assert.ok(Math.abs(rs.rotate + ls.rotate) < 0.01, `${ncoLabel(rank, fs)}: mirrored turns on the level seams (${rs.rotate} / ${ls.rotate})`);
       }
     });
 
@@ -308,16 +321,27 @@ test('the seam angle is read from the sheet: a seam stated 10 degrees off turns 
   assert.equal(layer(sc, 'left').rotate, 90);
 });
 
-test('the centre is the leaf polygon\'s centroid whatever the sheet states for a leading edge; the stated leading_edge turns the chevron and nothing else (COLLAR8)', async () => {
+test('the centre is the leaf polygon\'s centroid whatever the sheet states for a leading edge; the stated leading_edge no longer turns the chevron (COLLAR10: the seam and the side do)', async () => {
   const base = await P.composeUniform(build('abu', 'male', 'cadet', 'C/SSgt'), store);
   const st = edited(j => { j.collar_slots.right.leading_edge = { points: [[1709, 807], [1709, 1110]] }; });
   const moved = await P.composeUniform(build('abu', 'male', 'cadet', 'C/SSgt'), st);
   for(const side of ['right', 'left']){
-    const a = centreOf(layer(base, side)), b = centreOf(layer(moved, side));   // the size may differ (the clear-the-outline factor follows the turn); the centre does not
+    const a = centreOf(layer(base, side)), b = centreOf(layer(moved, side));
     assert.ok(Math.abs(a.x - b.x) < 0.01 && Math.abs(a.y - b.y) < 0.01, `${side}: same centre`);
+    assert.equal(layer(moved, side).rotate, layer(base, side).rotate, `${side}: the stated front edge does not turn the chevron`);
   }
-  assert.equal(layer(moved, 'right').rotate, 0, 'a vertical front edge stands the chevron upright');
-  assert.equal(layer(moved, 'left').rotate, layer(base, 'left').rotate, 'the other leaf keeps its own edge');
+  assert.equal(layer(moved, 'right').rotate, 90);
+  assert.equal(layer(moved, 'left').rotate, -90);
+});
+
+test('a seam stated 10 degrees off turns the chevron by 10 degrees from its quarter turn, apex still inward on that leaf (COLLAR10)', async () => {
+  const st = edited(j => { j.collar_slots.right.bottom_edge = { points: [[1467, 1237], [1737, 1237 + Math.round(270 * Math.tan(10 * Math.PI / 180))]] }; });
+  const want = deg(Math.atan2(Math.round(270 * Math.tan(10 * Math.PI / 180)), 270));
+  const sc = await P.composeUniform(build('abu', 'male', 'cadet', 'C/SSgt'), st);
+  assert.ok(Math.abs(layer(sc, 'right').rotate - (want + 90)) < 0.01, `right: ${layer(sc, 'right').rotate}`);
+  assert.equal(layer(sc, 'left').rotate, -90);
+  const l = layer(sc, 'right'), r = l.rotate * Math.PI / 180;
+  assert.ok(Math.sin(r) > 0.9, 'the apex still points toward the V (to the viewer\'s right)');
 });
 
 test('H.polygonCentroid is the area centroid (a right triangle: a third of each leg); H.boxInPolygon tests a turned box against the outline (COLLAR6)', () => {
