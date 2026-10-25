@@ -3,14 +3,14 @@
  "name": "Women's Aviator Shirt Uniform cadet officer epaulet sleeve, right shoulder, top-down (blank grade)",
  "size_in": {
   "w": 3.651,
-  "h": 1.908
+  "h": 1.239
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   365.1,
-  190.8
+  123.9
  ],
  "size_source": "estimated",
  "size_basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
@@ -21,31 +21,31 @@
   ],
   "bottom_center": [
    182.55,
-   190.79999999999998
+   123.89999999999999
   ],
   "center": [
    182.55,
-   95.39999999999999
+   61.949999999999996
   ],
   "left_edge": [
    0,
-   95.39999999999999
+   61.949999999999996
   ],
   "right_edge": [
    365.1,
-   95.39999999999999
+   61.949999999999996
   ],
   "rank_slot_center": [
    135,
-   95.4
+   61.95
   ],
   "rank_rule_point": [
    72.5,
-   95.4
+   61.95
   ],
   "outer_end_center": [
    10,
-   95.4
+   61.95
   ]
  },
  "landmarks": {
@@ -53,24 +53,24 @@
    "x": 10,
    "y": 10,
    "w": 345.1,
-   "h": 170.79999999999998
+   "h": 103.89999999999999
   },
   "rank_slot": {
    "x": 20,
    "y": 20,
    "w": 230,
-   "h": 150.8
+   "h": 83.9
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form; rank_rule_point is the 5/8 in from the outer end point for single forms",
  "dimensions": {
   "sleeve_in": [
    3.451,
-   1.708
+   1.039
   ],
   "rank_slot_in": [
    2.3,
-   1.51
+   0.84
   ]
  },
  "documented": [

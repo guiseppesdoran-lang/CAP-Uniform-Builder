@@ -1,31 +1,31 @@
 {
  "asset_id": "enamel-nra-sharpshooter",
- "width_in": 0.88,
- "height_in": 1.388,
+ "width_in": 1.23,
+ "height_in": 1.94,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
+ "size_basis": "estimated: no Vanguard listing found; no regulation size and no Vanguard listing. 1.23 in wide (1.4 x the 0.88 in of A4b): Doran, \"The NRA badge is too small\" (2026-10-25, screenshot 3804446621659690750), measured on that screenshot: the Marksman badge is 67 x 100 px next to the 1.5 in Aerospace Education pin at 80 px, i.e. about 1.25 in x 1.9 in; all six NRA levels scale together so their proportions stay",
  "citation": null,
  "anchors": {
   "top_center": [
-   44,
+   61.5,
    0
   ],
   "bottom_center": [
-   44,
-   138.8
+   61.5,
+   194
   ],
   "center": [
-   44,
-   69.418
+   61.5,
+   97.027
   ],
   "left_edge": [
    0,
-   69.418
+   97.027
   ],
   "right_edge": [
-   88,
-   69.418
+   123,
+   97.027
   ]
  },
  "dimensions": {
@@ -45,5 +45,5 @@
   "silhouette_iou_approx": null,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.1 x 1.735 in to 0.88 x 1.388 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.1 x 1.735 in to 0.88 x 1.388 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image. Rescaled uniformly x1.3977 (A4b) from 0.88 x 1.388 in to 1.23 x 1.94 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }

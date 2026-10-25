@@ -9611,30 +9611,30 @@
    "id": "enamel-nra-distinguished-expert",
    "path": "enamel/enamel-nra-distinguished-expert/enamel-nra-distinguished-expert.svg",
    "category": "enamel",
-   "w_in": 0.88,
-   "h_in": 2.205,
+   "w_in": 1.23,
+   "h_in": 3.082,
    "size_source": "estimated",
-   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
+   "basis": "estimated: no Vanguard listing found; no regulation size and no Vanguard listing. 1.23 in wide (1.4 x the 0.88 in of A4b): Doran, \"The NRA badge is too small\" (2026-10-25, screenshot 3804446621659690750), measured on that screenshot: the Marksman badge is 67 x 100 px next to the 1.5 in Aerospace Education pin at 80 px, i.e. about 1.25 in x 1.9 in; all six NRA levels scale together so their proportions stay",
    "anchors": {
     "top_center": [
-     44,
+     61.5,
      0
     ],
     "bottom_center": [
-     44,
-     220.5
+     61.5,
+     308.199
     ],
     "center": [
-     44,
-     110.257
+     61.5,
+     154.109
     ],
     "left_edge": [
      0,
-     110.257
+     154.109
     ],
     "right_edge": [
-     88,
-     110.257
+     123,
+     154.109
     ]
    },
    "landmarks": [],
@@ -9645,30 +9645,30 @@
    "id": "enamel-nra-expert",
    "path": "enamel/enamel-nra-expert/enamel-nra-expert.svg",
    "category": "enamel",
-   "w_in": 0.88,
-   "h_in": 1.388,
+   "w_in": 1.23,
+   "h_in": 1.94,
    "size_source": "estimated",
-   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
+   "basis": "estimated: no Vanguard listing found; no regulation size and no Vanguard listing. 1.23 in wide (1.4 x the 0.88 in of A4b): Doran, \"The NRA badge is too small\" (2026-10-25, screenshot 3804446621659690750), measured on that screenshot: the Marksman badge is 67 x 100 px next to the 1.5 in Aerospace Education pin at 80 px, i.e. about 1.25 in x 1.9 in; all six NRA levels scale together so their proportions stay",
    "anchors": {
     "top_center": [
-     44,
+     61.5,
      0
     ],
     "bottom_center": [
-     44,
-     138.8
+     61.5,
+     194
     ],
     "center": [
-     44,
-     69.418
+     61.5,
+     97.027
     ],
     "left_edge": [
      0,
-     69.418
+     97.027
     ],
     "right_edge": [
-     88,
-     69.418
+     123,
+     97.027
     ]
    },
    "landmarks": [],
@@ -9679,30 +9679,30 @@
    "id": "enamel-nra-marksman-first-class",
    "path": "enamel/enamel-nra-marksman-first-class/enamel-nra-marksman-first-class.svg",
    "category": "enamel",
-   "w_in": 0.88,
-   "h_in": 1.591,
+   "w_in": 1.23,
+   "h_in": 2.224,
    "size_source": "estimated",
-   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
+   "basis": "estimated: no Vanguard listing found; no regulation size and no Vanguard listing. 1.23 in wide (1.4 x the 0.88 in of A4b): Doran, \"The NRA badge is too small\" (2026-10-25, screenshot 3804446621659690750), measured on that screenshot: the Marksman badge is 67 x 100 px next to the 1.5 in Aerospace Education pin at 80 px, i.e. about 1.25 in x 1.9 in; all six NRA levels scale together so their proportions stay",
    "anchors": {
     "top_center": [
-     44,
+     61.5,
      0
     ],
     "bottom_center": [
-     44,
-     159.054
+     61.5,
+     222.314
     ],
     "center": [
-     44,
-     79.527
+     61.5,
+     111.157
     ],
     "left_edge": [
      0,
-     79.527
+     111.157
     ],
     "right_edge": [
-     88,
-     79.527
+     123,
+     111.157
     ]
    },
    "landmarks": [],
@@ -9713,30 +9713,30 @@
    "id": "enamel-nra-marksman",
    "path": "enamel/enamel-nra-marksman/enamel-nra-marksman.svg",
    "category": "enamel",
-   "w_in": 0.88,
-   "h_in": 1.388,
+   "w_in": 1.23,
+   "h_in": 1.94,
    "size_source": "estimated",
-   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
+   "basis": "estimated: no Vanguard listing found; no regulation size and no Vanguard listing. 1.23 in wide (1.4 x the 0.88 in of A4b): Doran, \"The NRA badge is too small\" (2026-10-25, screenshot 3804446621659690750), measured on that screenshot: the Marksman badge is 67 x 100 px next to the 1.5 in Aerospace Education pin at 80 px, i.e. about 1.25 in x 1.9 in; all six NRA levels scale together so their proportions stay",
    "anchors": {
     "top_center": [
-     44,
+     61.5,
      0
     ],
     "bottom_center": [
-     44,
-     138.8
+     61.5,
+     194
     ],
     "center": [
-     44,
-     69.418
+     61.5,
+     97.027
     ],
     "left_edge": [
      0,
-     69.418
+     97.027
     ],
     "right_edge": [
-     88,
-     69.418
+     123,
+     97.027
     ]
    },
    "landmarks": [],
@@ -9747,30 +9747,30 @@
    "id": "enamel-nra-pro-marksman",
    "path": "enamel/enamel-nra-pro-marksman/enamel-nra-pro-marksman.svg",
    "category": "enamel",
-   "w_in": 0.88,
-   "h_in": 1.388,
+   "w_in": 1.23,
+   "h_in": 1.94,
    "size_source": "estimated",
-   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
+   "basis": "estimated: no Vanguard listing found; no regulation size and no Vanguard listing. 1.23 in wide (1.4 x the 0.88 in of A4b): Doran, \"The NRA badge is too small\" (2026-10-25, screenshot 3804446621659690750), measured on that screenshot: the Marksman badge is 67 x 100 px next to the 1.5 in Aerospace Education pin at 80 px, i.e. about 1.25 in x 1.9 in; all six NRA levels scale together so their proportions stay",
    "anchors": {
     "top_center": [
-     44,
+     61.5,
      0
     ],
     "bottom_center": [
-     44,
-     138.8
+     61.5,
+     194
     ],
     "center": [
-     44,
-     69.418
+     61.5,
+     97.027
     ],
     "left_edge": [
      0,
-     69.418
+     97.027
     ],
     "right_edge": [
-     88,
-     69.418
+     123,
+     97.027
     ]
    },
    "landmarks": [],
@@ -9781,30 +9781,30 @@
    "id": "enamel-nra-sharpshooter",
    "path": "enamel/enamel-nra-sharpshooter/enamel-nra-sharpshooter.svg",
    "category": "enamel",
-   "w_in": 0.88,
-   "h_in": 1.388,
+   "w_in": 1.23,
+   "h_in": 1.94,
    "size_source": "estimated",
-   "basis": "estimated: no Vanguard listing found; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
+   "basis": "estimated: no Vanguard listing found; no regulation size and no Vanguard listing. 1.23 in wide (1.4 x the 0.88 in of A4b): Doran, \"The NRA badge is too small\" (2026-10-25, screenshot 3804446621659690750), measured on that screenshot: the Marksman badge is 67 x 100 px next to the 1.5 in Aerospace Education pin at 80 px, i.e. about 1.25 in x 1.9 in; all six NRA levels scale together so their proportions stay",
    "anchors": {
     "top_center": [
-     44,
+     61.5,
      0
     ],
     "bottom_center": [
-     44,
-     138.8
+     61.5,
+     194
     ],
     "center": [
-     44,
-     69.418
+     61.5,
+     97.027
     ],
     "left_edge": [
      0,
-     69.418
+     97.027
     ],
     "right_edge": [
-     88,
-     69.418
+     123,
+     97.027
     ]
    },
    "landmarks": [],
@@ -13095,12 +13095,12 @@
      971.5
     ],
     "epaulet_right_center": [
-     540.32,
-     380.32
+     536.25,
+     347.18
     ],
     "epaulet_left_center": [
-     1994.83,
-     385.08
+     1998.31,
+     359.67
     ],
     "tie_mount_center": [
      1252.8,
@@ -13214,12 +13214,12 @@
      971.5
     ],
     "epaulet_right_center": [
-     540.32,
-     380.32
+     536.25,
+     347.18
     ],
     "epaulet_left_center": [
-     1994.83,
-     385.08
+     1998.31,
+     359.67
     ],
     "tie_mount_center": [
      1266.76,
@@ -13341,12 +13341,12 @@
      882.9
     ],
     "epaulet_right_center": [
-     555.83,
-     384.1
+     551.79,
+     361.89
     ],
     "epaulet_left_center": [
-     2050.68,
-     384.1
+     2054.72,
+     361.89
     ],
     "tie_mount_center": [
      1310.04,
@@ -13460,12 +13460,12 @@
      882.9
     ],
     "epaulet_right_center": [
-     625.83,
-     384.04
+     621.8,
+     361.83
     ],
     "epaulet_left_center": [
-     2120.69,
-     384.04
+     2124.72,
+     361.83
     ],
     "tie_mount_center": [
      1380.05,
@@ -14561,12 +14561,12 @@
      284.5
     ],
     "rank_rule_point_right": [
-     426.13,
-     381.77
+     417.73,
+     345.22
     ],
     "rank_rule_point_left": [
-     2092.69,
-     381.77
+     2101.09,
+     345.22
     ]
    },
    "landmarks": [
@@ -14616,12 +14616,12 @@
      284.5
     ],
     "rank_rule_point_right": [
-     426.13,
-     381.77
+     417.73,
+     345.22
     ],
     "rank_rule_point_left": [
-     2092.69,
-     381.77
+     2101.09,
+     345.22
     ]
    },
    "landmarks": [
@@ -14711,12 +14711,12 @@
      267.45
     ],
     "rank_rule_point_right": [
-     391.36,
-     362.45
+     383.61,
+     325.8
     ],
     "rank_rule_point_left": [
-     2060.38,
-     362.45
+     2068.13,
+     325.8
     ]
    },
    "landmarks": [
@@ -14766,12 +14766,12 @@
      267.45
     ],
     "rank_rule_point_right": [
-     391.36,
-     362.45
+     383.61,
+     325.8
     ],
     "rank_rule_point_left": [
-     2060.38,
-     362.45
+     2068.13,
+     325.8
     ]
    },
    "landmarks": [
@@ -14973,12 +14973,12 @@
      813.7
     ],
     "epaulet_right_center": [
-     586.92,
-     324.3
+     583.07,
+     287.65
     ],
     "epaulet_left_center": [
-     1864.82,
-     324.3
+     1868.67,
+     287.65
     ],
     "belt_buckle_center": [
      1168.47,
@@ -15168,12 +15168,12 @@
      813.7
     ],
     "epaulet_right_center": [
-     621.11,
-     340.35
+     616.91,
+     303.8
     ],
     "epaulet_left_center": [
-     1897.71,
-     340.35
+     1901.91,
+     303.8
     ],
     "belt_buckle_center": [
      1202.01,
@@ -15259,12 +15259,12 @@
      312.05
     ],
     "rank_rule_point_right": [
-     508.99,
-     420.48
+     495.89,
+     385.33
     ],
     "rank_rule_point_left": [
-     2176.95,
-     420.48
+     2190.05,
+     385.33
     ]
    },
    "landmarks": [
@@ -15314,12 +15314,12 @@
      312.05
     ],
     "rank_rule_point_right": [
-     508.99,
-     420.48
+     495.89,
+     385.33
     ],
     "rank_rule_point_left": [
-     2176.95,
-     420.48
+     2190.05,
+     385.33
     ]
    },
    "landmarks": [
@@ -15401,20 +15401,20 @@
      1645.5300000000002
     ],
     "rank_slot_right_center": [
-     556.43,
+     556.48,
      295.2
     ],
     "rank_slot_left_center": [
-     2029.83,
+     2029.78,
      295.2
     ],
     "rank_rule_point_right": [
-     458.04,
-     401.31
+     445.59,
+     365.92
     ],
     "rank_rule_point_left": [
-     2128.22,
-     401.31
+     2140.67,
+     365.92
     ]
    },
    "landmarks": [
@@ -15456,20 +15456,20 @@
      1645.5300000000002
     ],
     "rank_slot_right_center": [
-     556.43,
+     556.48,
      295.2
     ],
     "rank_slot_left_center": [
-     2029.83,
+     2029.78,
      295.2
     ],
     "rank_rule_point_right": [
-     458.04,
-     401.31
+     445.59,
+     365.92
     ],
     "rank_rule_point_left": [
-     2128.22,
-     401.31
+     2140.67,
+     365.92
     ]
    },
    "landmarks": [
@@ -15671,12 +15671,12 @@
      910
     ],
     "epaulet_right_center": [
-     627.38,
-     344.95
+     621.13,
+     309.55
     ],
     "epaulet_left_center": [
-     1958.88,
-     344.95
+     1965.13,
+     309.55
     ],
     "belt_buckle_center": [
      1373.88,
@@ -15880,12 +15880,12 @@
      910
     ],
     "epaulet_right_center": [
-     677.82,
-     360.6
+     671.27,
+     325.45
     ],
     "epaulet_left_center": [
-     2008.12,
-     360.6
+     2014.67,
+     325.45
     ],
     "belt_buckle_center": [
      1423.72,
@@ -17452,11 +17452,11 @@
     ],
     "epaulet_right_center": [
      803.67,
-     266.8
+     252.83
     ],
     "epaulet_left_center": [
      1862.67,
-     266.8
+     252.83
     ]
    },
    "landmarks": [
@@ -17575,11 +17575,11 @@
     ],
     "epaulet_right_center": [
      838.44,
-     266.8
+     252.83
     ],
     "epaulet_left_center": [
      1897.44,
-     266.8
+     252.83
     ]
    },
    "landmarks": [
@@ -34180,7 +34180,7 @@
    "path": "garments/garment-blues-class-b-epaulet-top-female-cadet-officer-left.svg",
    "category": "garments",
    "w_in": 4.261,
-   "h_in": 1.949,
+   "h_in": 1.199,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
@@ -34190,31 +34190,31 @@
     ],
     "bottom_center": [
      213.05,
-     194.9
+     119.9
     ],
     "center": [
      213.05,
-     97.45
+     59.95
     ],
     "left_edge": [
      0,
-     97.45
+     59.95
     ],
     "right_edge": [
      426.1,
-     97.45
+     59.95
     ],
     "rank_slot_center": [
      291.1,
-     97.45
+     59.95
     ],
     "rank_rule_point": [
      353.6,
-     97.45
+     59.95
     ],
     "outer_end_center": [
      416.1,
-     97.45
+     59.95
     ]
    },
    "landmarks": [
@@ -34229,7 +34229,7 @@
    "path": "garments/garment-blues-class-b-epaulet-top-female-cadet-officer-right.svg",
    "category": "garments",
    "w_in": 4.261,
-   "h_in": 1.949,
+   "h_in": 1.199,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
@@ -34239,31 +34239,31 @@
     ],
     "bottom_center": [
      213.05,
-     194.9
+     119.9
     ],
     "center": [
      213.05,
-     97.45
+     59.95
     ],
     "left_edge": [
      0,
-     97.45
+     59.95
     ],
     "right_edge": [
      426.1,
-     97.45
+     59.95
     ],
     "rank_slot_center": [
      135,
-     97.45
+     59.95
     ],
     "rank_rule_point": [
      72.5,
-     97.45
+     59.95
     ],
     "outer_end_center": [
      10,
-     97.45
+     59.95
     ]
    },
    "landmarks": [
@@ -34278,7 +34278,7 @@
    "path": "garments/garment-blues-class-b-epaulet-top-female-officer-left.svg",
    "category": "garments",
    "w_in": 4.261,
-   "h_in": 1.949,
+   "h_in": 1.199,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
@@ -34288,31 +34288,31 @@
     ],
     "bottom_center": [
      213.05,
-     194.9
+     119.9
     ],
     "center": [
      213.05,
-     97.45
+     59.95
     ],
     "left_edge": [
      0,
-     97.45
+     59.95
     ],
     "right_edge": [
      426.1,
-     97.45
+     59.95
     ],
     "rank_slot_center": [
      291.1,
-     97.45
+     59.95
     ],
     "rank_rule_point": [
      353.6,
-     97.45
+     59.95
     ],
     "outer_end_center": [
      416.1,
-     97.45
+     59.95
     ]
    },
    "landmarks": [
@@ -34327,7 +34327,7 @@
    "path": "garments/garment-blues-class-b-epaulet-top-female-officer-right.svg",
    "category": "garments",
    "w_in": 4.261,
-   "h_in": 1.949,
+   "h_in": 1.199,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
@@ -34337,31 +34337,31 @@
     ],
     "bottom_center": [
      213.05,
-     194.9
+     119.9
     ],
     "center": [
      213.05,
-     97.45
+     59.95
     ],
     "left_edge": [
      0,
-     97.45
+     59.95
     ],
     "right_edge": [
      426.1,
-     97.45
+     59.95
     ],
     "rank_slot_center": [
      135,
-     97.45
+     59.95
     ],
     "rank_rule_point": [
      72.5,
-     97.45
+     59.95
     ],
     "outer_end_center": [
      10,
-     97.45
+     59.95
     ]
    },
    "landmarks": [
@@ -34376,7 +34376,7 @@
    "path": "garments/garment-blues-class-b-epaulet-top-male-cadet-officer-left.svg",
    "category": "garments",
    "w_in": 4.037,
-   "h_in": 1.95,
+   "h_in": 1.2,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
@@ -34386,31 +34386,31 @@
     ],
     "bottom_center": [
      201.85,
-     195
+     120
     ],
     "center": [
      201.85,
-     97.5
+     60
     ],
     "left_edge": [
      0,
-     97.5
+     60
     ],
     "right_edge": [
      403.7,
-     97.5
+     60
     ],
     "rank_slot_center": [
      268.7,
-     97.5
+     60
     ],
     "rank_rule_point": [
      331.2,
-     97.5
+     60
     ],
     "outer_end_center": [
      393.7,
-     97.5
+     60
     ]
    },
    "landmarks": [
@@ -34425,7 +34425,7 @@
    "path": "garments/garment-blues-class-b-epaulet-top-male-cadet-officer-right.svg",
    "category": "garments",
    "w_in": 4.037,
-   "h_in": 1.95,
+   "h_in": 1.2,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
@@ -34435,31 +34435,31 @@
     ],
     "bottom_center": [
      201.85,
-     195
+     120
     ],
     "center": [
      201.85,
-     97.5
+     60
     ],
     "left_edge": [
      0,
-     97.5
+     60
     ],
     "right_edge": [
      403.7,
-     97.5
+     60
     ],
     "rank_slot_center": [
      135,
-     97.5
+     60
     ],
     "rank_rule_point": [
      72.5,
-     97.5
+     60
     ],
     "outer_end_center": [
      10,
-     97.5
+     60
     ]
    },
    "landmarks": [
@@ -34474,7 +34474,7 @@
    "path": "garments/garment-blues-class-b-epaulet-top-male-officer-left.svg",
    "category": "garments",
    "w_in": 4.037,
-   "h_in": 1.95,
+   "h_in": 1.2,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
@@ -34484,31 +34484,31 @@
     ],
     "bottom_center": [
      201.85,
-     195
+     120
     ],
     "center": [
      201.85,
-     97.5
+     60
     ],
     "left_edge": [
      0,
-     97.5
+     60
     ],
     "right_edge": [
      403.7,
-     97.5
+     60
     ],
     "rank_slot_center": [
      268.7,
-     97.5
+     60
     ],
     "rank_rule_point": [
      331.2,
-     97.5
+     60
     ],
     "outer_end_center": [
      393.7,
-     97.5
+     60
     ]
    },
    "landmarks": [
@@ -34523,7 +34523,7 @@
    "path": "garments/garment-blues-class-b-epaulet-top-male-officer-right.svg",
    "category": "garments",
    "w_in": 4.037,
-   "h_in": 1.95,
+   "h_in": 1.2,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
@@ -34533,31 +34533,31 @@
     ],
     "bottom_center": [
      201.85,
-     195
+     120
     ],
     "center": [
      201.85,
-     97.5
+     60
     ],
     "left_edge": [
      0,
-     97.5
+     60
     ],
     "right_edge": [
      403.7,
-     97.5
+     60
     ],
     "rank_slot_center": [
      135,
-     97.5
+     60
     ],
     "rank_rule_point": [
      72.5,
-     97.5
+     60
     ],
     "outer_end_center": [
      10,
-     97.5
+     60
     ]
    },
    "landmarks": [
@@ -34884,7 +34884,7 @@
    "path": "garments/garment-aviator-epaulet-top-female-cadet-officer-left.svg",
    "category": "garments",
    "w_in": 3.933,
-   "h_in": 1.801,
+   "h_in": 1.311,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
@@ -34894,31 +34894,31 @@
     ],
     "bottom_center": [
      196.65,
-     180.1
+     131.1
     ],
     "center": [
      196.65,
-     90.05
+     65.55
     ],
     "left_edge": [
      0,
-     90.05
+     65.55
     ],
     "right_edge": [
      393.3,
-     90.05
+     65.55
     ],
     "rank_slot_center": [
      258.3,
-     90.05
+     65.55
     ],
     "rank_rule_point": [
      320.8,
-     90.05
+     65.55
     ],
     "outer_end_center": [
      383.3,
-     90.05
+     65.55
     ]
    },
    "landmarks": [
@@ -34933,7 +34933,7 @@
    "path": "garments/garment-aviator-epaulet-top-female-cadet-officer-right.svg",
    "category": "garments",
    "w_in": 3.651,
-   "h_in": 1.908,
+   "h_in": 1.239,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
@@ -34943,31 +34943,31 @@
     ],
     "bottom_center": [
      182.55,
-     190.79999999999998
+     123.89999999999999
     ],
     "center": [
      182.55,
-     95.39999999999999
+     61.949999999999996
     ],
     "left_edge": [
      0,
-     95.39999999999999
+     61.949999999999996
     ],
     "right_edge": [
      365.1,
-     95.39999999999999
+     61.949999999999996
     ],
     "rank_slot_center": [
      135,
-     95.4
+     61.95
     ],
     "rank_rule_point": [
      72.5,
-     95.4
+     61.95
     ],
     "outer_end_center": [
      10,
-     95.4
+     61.95
     ]
    },
    "landmarks": [
@@ -34982,7 +34982,7 @@
    "path": "garments/garment-aviator-epaulet-top-female-officer-left.svg",
    "category": "garments",
    "w_in": 3.933,
-   "h_in": 1.801,
+   "h_in": 1.311,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
@@ -34992,31 +34992,31 @@
     ],
     "bottom_center": [
      196.65,
-     180.1
+     131.1
     ],
     "center": [
      196.65,
-     90.05
+     65.55
     ],
     "left_edge": [
      0,
-     90.05
+     65.55
     ],
     "right_edge": [
      393.3,
-     90.05
+     65.55
     ],
     "rank_slot_center": [
      258.3,
-     90.05
+     65.55
     ],
     "rank_rule_point": [
      320.8,
-     90.05
+     65.55
     ],
     "outer_end_center": [
      383.3,
-     90.05
+     65.55
     ]
    },
    "landmarks": [
@@ -35031,7 +35031,7 @@
    "path": "garments/garment-aviator-epaulet-top-female-officer-right.svg",
    "category": "garments",
    "w_in": 3.651,
-   "h_in": 1.908,
+   "h_in": 1.239,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
@@ -35041,31 +35041,31 @@
     ],
     "bottom_center": [
      182.55,
-     190.79999999999998
+     123.89999999999999
     ],
     "center": [
      182.55,
-     95.39999999999999
+     61.949999999999996
     ],
     "left_edge": [
      0,
-     95.39999999999999
+     61.949999999999996
     ],
     "right_edge": [
      365.1,
-     95.39999999999999
+     61.949999999999996
     ],
     "rank_slot_center": [
      135,
-     95.4
+     61.95
     ],
     "rank_rule_point": [
      72.5,
-     95.4
+     61.95
     ],
     "outer_end_center": [
      10,
-     95.4
+     61.95
     ]
    },
    "landmarks": [
@@ -35080,7 +35080,7 @@
    "path": "garments/garment-aviator-epaulet-top-male-cadet-officer-left.svg",
    "category": "garments",
    "w_in": 3.704,
-   "h_in": 1.677,
+   "h_in": 1.223,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
@@ -35090,31 +35090,31 @@
     ],
     "bottom_center": [
      185.20000000000002,
-     167.70000000000002
+     122.29999999999998
     ],
     "center": [
      185.20000000000002,
-     83.85000000000001
+     61.14999999999999
     ],
     "left_edge": [
      0,
-     83.85000000000001
+     61.14999999999999
     ],
     "right_edge": [
      370.40000000000003,
-     83.85000000000001
+     61.14999999999999
     ],
     "rank_slot_center": [
      235.4,
-     83.85
+     61.15
     ],
     "rank_rule_point": [
      297.9,
-     83.85
+     61.15
     ],
     "outer_end_center": [
      360.4,
-     83.85
+     61.15
     ]
    },
    "landmarks": [
@@ -35129,7 +35129,7 @@
    "path": "garments/garment-aviator-epaulet-top-male-cadet-officer-right.svg",
    "category": "garments",
    "w_in": 3.704,
-   "h_in": 1.677,
+   "h_in": 1.223,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
@@ -35139,31 +35139,31 @@
     ],
     "bottom_center": [
      185.20000000000002,
-     167.70000000000002
+     122.29999999999998
     ],
     "center": [
      185.20000000000002,
-     83.85000000000001
+     61.14999999999999
     ],
     "left_edge": [
      0,
-     83.85000000000001
+     61.14999999999999
     ],
     "right_edge": [
      370.40000000000003,
-     83.85000000000001
+     61.14999999999999
     ],
     "rank_slot_center": [
      135,
-     83.85
+     61.15
     ],
     "rank_rule_point": [
      72.5,
-     83.85
+     61.15
     ],
     "outer_end_center": [
      10,
-     83.85
+     61.15
     ]
    },
    "landmarks": [
@@ -35178,7 +35178,7 @@
    "path": "garments/garment-aviator-epaulet-top-male-officer-left.svg",
    "category": "garments",
    "w_in": 3.704,
-   "h_in": 1.677,
+   "h_in": 1.223,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
@@ -35188,31 +35188,31 @@
     ],
     "bottom_center": [
      185.20000000000002,
-     167.70000000000002
+     122.29999999999998
     ],
     "center": [
      185.20000000000002,
-     83.85000000000001
+     61.14999999999999
     ],
     "left_edge": [
      0,
-     83.85000000000001
+     61.14999999999999
     ],
     "right_edge": [
      370.40000000000003,
-     83.85000000000001
+     61.14999999999999
     ],
     "rank_slot_center": [
      235.4,
-     83.85
+     61.15
     ],
     "rank_rule_point": [
      297.9,
-     83.85
+     61.15
     ],
     "outer_end_center": [
      360.4,
-     83.85
+     61.15
     ]
    },
    "landmarks": [
@@ -35227,7 +35227,7 @@
    "path": "garments/garment-aviator-epaulet-top-male-officer-right.svg",
    "category": "garments",
    "w_in": 3.704,
-   "h_in": 1.677,
+   "h_in": 1.223,
    "size_source": "estimated",
    "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
    "anchors": {
@@ -35237,31 +35237,31 @@
     ],
     "bottom_center": [
      185.20000000000002,
-     167.70000000000002
+     122.29999999999998
     ],
     "center": [
      185.20000000000002,
-     83.85000000000001
+     61.14999999999999
     ],
     "left_edge": [
      0,
-     83.85000000000001
+     61.14999999999999
     ],
     "right_edge": [
      370.40000000000003,
-     83.85000000000001
+     61.14999999999999
     ],
     "rank_slot_center": [
      135,
-     83.85
+     61.15
     ],
     "rank_rule_point": [
      72.5,
-     83.85
+     61.15
     ],
     "outer_end_center": [
      10,
-     83.85
+     61.15
     ]
    },
    "landmarks": [
@@ -35301,20 +35301,20 @@
      1570.21
     ],
     "rank_slot_right_center": [
-     472.63,
-     330.14
+     474.57,
+     329.14
     ],
     "rank_slot_left_center": [
-     2063.58,
-     345.01
+     2061.27,
+     343.29
     ],
     "rank_rule_point_right": [
-     392.68,
-     416.8
+     384.14,
+     383.96
     ],
     "rank_rule_point_left": [
-     2151.12,
-     427.99
+     2157.92,
+     402.45
     ]
    },
    "landmarks": [
@@ -35356,20 +35356,20 @@
      1570.21
     ],
     "rank_slot_right_center": [
-     472.63,
-     330.14
+     474.57,
+     329.14
     ],
     "rank_slot_left_center": [
-     2063.58,
-     345.01
+     2061.27,
+     343.29
     ],
     "rank_rule_point_right": [
-     392.68,
-     416.8
+     384.14,
+     383.96
     ],
     "rank_rule_point_left": [
-     2151.12,
-     427.99
+     2157.92,
+     402.45
     ]
    },
    "landmarks": [
@@ -35411,20 +35411,20 @@
      1679.14
     ],
     "rank_slot_right_center": [
-     472.63,
-     330.14
+     474.57,
+     329.14
     ],
     "rank_slot_left_center": [
-     2063.58,
-     345.01
+     2061.27,
+     343.29
     ],
     "rank_rule_point_right": [
-     392.68,
-     416.8
+     384.14,
+     383.96
     ],
     "rank_rule_point_left": [
-     2151.12,
-     427.99
+     2157.92,
+     402.45
     ]
    },
    "landmarks": [
@@ -35466,20 +35466,20 @@
      1679.14
     ],
     "rank_slot_right_center": [
-     472.63,
-     330.14
+     474.57,
+     329.14
     ],
     "rank_slot_left_center": [
-     2063.58,
-     345.01
+     2061.27,
+     343.29
     ],
     "rank_rule_point_right": [
-     392.68,
-     416.8
+     384.14,
+     383.96
     ],
     "rank_rule_point_left": [
-     2151.12,
-     427.99
+     2157.92,
+     402.45
     ]
    },
    "landmarks": [
@@ -35610,19 +35610,19 @@
     ],
     "rank_slot_right_center": [
      563.1,
-     345.31
+     345.33
     ],
     "rank_slot_left_center": [
-     2183.42,
-     345.31
+     2183.43,
+     345.33
     ],
     "rank_rule_point_right": [
-     469.25,
-     438.74
+     464.5,
+     416.56
     ],
     "rank_rule_point_left": [
-     2277.28,
-     438.74
+     2282.02,
+     416.56
     ]
    },
    "landmarks": [
@@ -35665,19 +35665,19 @@
     ],
     "rank_slot_right_center": [
      563.1,
-     345.31
+     345.33
     ],
     "rank_slot_left_center": [
-     2183.42,
-     345.31
+     2183.43,
+     345.33
     ],
     "rank_rule_point_right": [
-     469.25,
-     438.74
+     464.5,
+     416.56
     ],
     "rank_rule_point_left": [
-     2277.28,
-     438.74
+     2282.02,
+     416.56
     ]
    },
    "landmarks": [
@@ -35727,12 +35727,12 @@
      345.39
     ],
     "rank_rule_point_right": [
-     399.24,
-     438.85
+     394.5,
+     416.67
     ],
     "rank_rule_point_left": [
-     2207.27,
-     438.85
+     2212.02,
+     416.67
     ]
    },
    "landmarks": [
@@ -35782,12 +35782,12 @@
      345.39
     ],
     "rank_rule_point_right": [
-     399.24,
-     438.85
+     394.5,
+     416.67
     ],
     "rank_rule_point_left": [
-     2207.27,
-     438.85
+     2212.02,
+     416.67
     ]
    },
    "landmarks": [
@@ -39332,7 +39332,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male, width 1.0 in, Fig 4.8): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -39355,12 +39355,12 @@
      1475.435
     ],
     "epaulet_plain_right_center": [
-     677.82,
-     360.6
+     671.27,
+     325.45
     ],
     "epaulet_plain_left_center": [
-     2008.12,
-     360.6
+     2014.67,
+     325.45
     ]
    },
    "landmarks": [
@@ -39377,7 +39377,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male-long, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male-long, width 1.0 in, Fig 4.8): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -39400,12 +39400,12 @@
      1645.5300000000002
     ],
     "epaulet_plain_right_center": [
-     627.38,
-     344.95
+     621.13,
+     309.55
     ],
     "epaulet_plain_left_center": [
-     1958.88,
-     344.95
+     1965.13,
+     309.55
     ]
    },
    "landmarks": [
@@ -39422,7 +39422,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female, width 1.0 in, Fig 4.8): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -39445,12 +39445,12 @@
      1647.66
     ],
     "epaulet_plain_right_center": [
-     621.11,
-     340.35
+     616.91,
+     303.8
     ],
     "epaulet_plain_left_center": [
-     1897.71,
-     340.35
+     1901.91,
+     303.8
     ]
    },
    "landmarks": [
@@ -39467,7 +39467,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female-long, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+   "basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female-long, width 1.0 in, Fig 4.8): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -39490,12 +39490,12 @@
      1817.2050000000002
     ],
     "epaulet_plain_right_center": [
-     586.92,
-     324.3
+     583.07,
+     287.65
     ],
     "epaulet_plain_left_center": [
-     1864.82,
-     324.3
+     1868.67,
+     287.65
     ]
    },
    "landmarks": [

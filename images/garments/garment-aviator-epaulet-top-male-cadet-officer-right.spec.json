@@ -3,14 +3,14 @@
  "name": "Men's Aviator Shirt Uniform cadet officer epaulet sleeve, right shoulder, top-down (blank grade)",
  "size_in": {
   "w": 3.704,
-  "h": 1.677
+  "h": 1.223
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   370.4,
-  167.7
+  122.3
  ],
  "size_source": "estimated",
  "size_basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
@@ -21,31 +21,31 @@
   ],
   "bottom_center": [
    185.20000000000002,
-   167.70000000000002
+   122.29999999999998
   ],
   "center": [
    185.20000000000002,
-   83.85000000000001
+   61.14999999999999
   ],
   "left_edge": [
    0,
-   83.85000000000001
+   61.14999999999999
   ],
   "right_edge": [
    370.40000000000003,
-   83.85000000000001
+   61.14999999999999
   ],
   "rank_slot_center": [
    135,
-   83.85
+   61.15
   ],
   "rank_rule_point": [
    72.5,
-   83.85
+   61.15
   ],
   "outer_end_center": [
    10,
-   83.85
+   61.15
   ]
  },
  "landmarks": {
@@ -53,24 +53,24 @@
    "x": 10,
    "y": 10,
    "w": 350.4,
-   "h": 147.70000000000002
+   "h": 102.3
   },
   "rank_slot": {
    "x": 20,
    "y": 20,
    "w": 230,
-   "h": 127.7
+   "h": 82.3
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form; rank_rule_point is the 5/8 in from the outer end point for single forms",
  "dimensions": {
   "sleeve_in": [
    3.504,
-   1.477
+   1.023
   ],
   "rank_slot_in": [
    2.3,
-   1.28
+   0.82
   ]
  },
  "documented": [

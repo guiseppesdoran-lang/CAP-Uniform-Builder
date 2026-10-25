@@ -3,14 +3,14 @@
  "name": "Women's Class B blue short-sleeve blouse and skirt (nametag position only) cadet officer epaulet sleeve, left shoulder, top-down (blank grade)",
  "size_in": {
   "w": 4.261,
-  "h": 1.949
+  "h": 1.199
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   426.1,
-  194.9
+  119.9
  ],
  "size_source": "estimated",
  "size_basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
@@ -21,31 +21,31 @@
   ],
   "bottom_center": [
    213.05,
-   194.9
+   119.9
   ],
   "center": [
    213.05,
-   97.45
+   59.95
   ],
   "left_edge": [
    0,
-   97.45
+   59.95
   ],
   "right_edge": [
    426.1,
-   97.45
+   59.95
   ],
   "rank_slot_center": [
    291.1,
-   97.45
+   59.95
   ],
   "rank_rule_point": [
    353.6,
-   97.45
+   59.95
   ],
   "outer_end_center": [
    416.1,
-   97.45
+   59.95
   ]
  },
  "landmarks": {
@@ -53,24 +53,24 @@
    "x": 10,
    "y": 10,
    "w": 406.1,
-   "h": 174.9
+   "h": 99.9
   },
   "rank_slot": {
    "x": 176.1,
    "y": 20,
    "w": 230,
-   "h": 154.9
+   "h": 79.9
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form (Major General star pair 2.2 x 1.2 in); rank_rule_point is the 5/8 in from the outer end point for single forms",
  "dimensions": {
   "sleeve_in": [
    4.061,
-   1.749
+   0.999
   ],
   "rank_slot_in": [
    2.3,
-   1.55
+   0.8
   ]
  },
  "documented": [

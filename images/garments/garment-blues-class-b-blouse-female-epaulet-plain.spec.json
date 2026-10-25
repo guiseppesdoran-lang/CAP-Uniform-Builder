@@ -13,7 +13,7 @@
   3295.32
  ],
  "size_source": "estimated",
- "size_basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female, width 1.75 in): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+ "size_basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female, width 1.0 in, Fig 4.8): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
  "anchors": {
   "top_center": [
    1259.4099999999999,
@@ -36,26 +36,26 @@
    1647.66
   ],
   "epaulet_plain_right_center": [
-   621.11,
-   340.35
+   616.91,
+   303.8
   ],
   "epaulet_plain_left_center": [
-   1897.71,
-   340.35
+   1901.91,
+   303.8
   ]
  },
  "landmarks": {
   "epaulet_plain_right": {
    "x": 345.61,
    "y": 199.7,
-   "w": 551,
-   "h": 281.3
+   "w": 542.6,
+   "h": 208.2
   },
   "epaulet_plain_left": {
-   "x": 1622.21,
+   "x": 1630.61,
    "y": 199.7,
-   "w": 551,
-   "h": 281.3
+   "w": 542.6,
+   "h": 208.2
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
