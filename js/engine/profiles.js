@@ -297,6 +297,10 @@
     }
   }
 
+  // How much narrower than its flat width a chevron or patch looks when it is worn on the outer arm and seen edge-on from the front, hanging off the arm's side: the OCP sheet's own edge view is 0.5, and
+  // the ABU and CFU figure's arms and the dress sleeves use the same value (an estimate, D2; FIX-R-OTHER-r2 #7, SLEEVE1).
+  const EDGE_SX = 0.5;
+
   // The SVG turn (degrees) that lays a piece's upward axis along the edge { top, bottom }, pointing from `bottom` to `top`.
   function edgeTurn(e){
     const dx = e.top.x - e.bottom.x, dy = e.top.y - e.bottom.y;
@@ -784,5 +788,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

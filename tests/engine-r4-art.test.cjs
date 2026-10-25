@@ -125,11 +125,11 @@ async function chevronClearance(garment, rank, sleeve){
   const scene = await P.composeUniform(build('aviator', 'female', 'senior', rank, { sleeve, femaleTop: 'overblouse' }), store);
   const l = scene.layers.find(x => x.role === 'grade' && x.key === 'grade:sleeve-right');
   assert.ok(l, `${garment} ${rank}: right chevron`);
-  assert.equal(l.w, 3.5);
+  assert.equal(l.w, 3.5 * P.helpers.EDGE_SX, 'the 3 1/2 in chevron seen edge-on at half width (SLEEVE1)');
   const cx = l.x + l.w / 2, cy = l.y + l.h / 2, r = l.rotate * Math.PI / 180;
   let worst = -Infinity;
   for(const [px, py] of inkPoints(l.id)){
-    const dx = px - l.w / 2, dy = py - l.h / 2;
+    const dx = px * l.w / 3.5 - l.w / 2, dy = py - l.h / 2;
     worst = Math.max(worst, cx + dx * Math.cos(r) - dy * Math.sin(r) - seamX(cy + dx * Math.sin(r) + dy * Math.cos(r)));
   }
   return { scene, spec, layer: l, worst };
@@ -144,12 +144,12 @@ test('the 3 1/2 in sleeve chevron on the short overblouse lies between the outli
   for(const rank of ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt']){
     const { scene, spec, layer: l, worst } = await chevronClearance('garment-overblouse-female', rank, 'short');
     assert.ok(worst <= -SEAM_CLEAR, `${rank}: chevron ink ${worst.toFixed(3)} in past the armhole seam (want at least ${SEAM_CLEAR} in clear)`);
-    // the turn follows the sheet's own sleeve axis (shoulder_seam -> sleeve_bottom), the wearer's left mirrors it
-    const s = core.anchor(spec, 'shoulder_seam_right'), e = core.anchor(spec, 'sleeve_bottom_right');
-    const turn = Math.atan2(s.x - e.x, e.y - s.y) * 180 / Math.PI;
-    assert.ok(Math.abs(l.rotate - turn) < 0.05, `${rank}: rotate ${l.rotate}, sleeve axis ${turn.toFixed(2)}`);
-    const left = scene.layers.find(x => x.role === 'grade' && x.key === 'grade:sleeve-left');
-    assert.ok(Math.abs(left.rotate + l.rotate) < 0.01 && Math.abs((left.x + left.w / 2) - (spec.w - (l.x + l.w / 2))) < 0.01, `${rank}: left mirrors right`);
+    // D8 (SLEEVE1): the turn follows the sleeve's outer edge there (the engine's table of the sheet's outline), centred on it
+    const edge = require('../scripts/measure-sleeve-edge.cjs').compute()['garment-overblouse-female'].right;
+    const turn = Math.atan2(-(edge[2][0] - edge[0][0]), edge[2][1] - edge[0][1]) * 180 / Math.PI;
+    assert.ok(Math.abs(l.rotate - turn) < 0.05, `${rank}: rotate ${l.rotate}, outer edge ${turn.toFixed(2)}`);
+    assert.ok(Math.abs(l.x + l.w / 2 - edge[1][0]) < 0.01, `${rank}: centred on the outer edge`);
+    assert.equal(l.clipSil, 'garment-overblouse-female');
   }
 });
 
@@ -161,9 +161,11 @@ test('the long overblouse states its sleeve anchors and its 3 1/2 in chevron lie
   for(const rank of ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt']){
     const { layer: l, worst } = await chevronClearance('garment-overblouse-female-long', rank, 'long');
     assert.ok(worst <= -SEAM_CLEAR, `${rank}: chevron ink ${worst.toFixed(3)} in past the armhole seam (want at least ${SEAM_CLEAR} in clear)`);
-    assert.ok(Math.abs((l.x + l.w / 2) - half.x) < 0.05 && Math.abs((l.y + l.h / 2) - half.y) < 0.05, `${rank}: centred on chevron_halfway`);
-    const turn = Math.atan2(sh.x - el.x, el.y - sh.y) * 180 / Math.PI;
-    assert.ok(Math.abs(l.rotate - turn) < 0.05, `${rank}: rotate ${l.rotate}, sleeve axis ${turn.toFixed(2)} (the engine's literal 31 deg is gone)`);
+    // D8 (SLEEVE1): at the chevron_halfway height, centred on the sleeve's outer edge there, turned along it
+    const edge = require('../scripts/measure-sleeve-edge.cjs').compute()['garment-overblouse-female-long'].right;
+    assert.ok(Math.abs((l.x + l.w / 2) - edge[1][0]) < 0.01 && Math.abs((l.y + l.h / 2) - half.y) < 0.01, `${rank}: centred on the outer edge at the chevron_halfway height`);
+    const turn = Math.atan2(-(edge[2][0] - edge[0][0]), edge[2][1] - edge[0][1]) * 180 / Math.PI;
+    assert.ok(Math.abs(l.rotate - turn) < 0.05, `${rank}: rotate ${l.rotate}, outer edge ${turn.toFixed(2)} (the engine's literal 31 deg is gone)`);
   }
 });
 

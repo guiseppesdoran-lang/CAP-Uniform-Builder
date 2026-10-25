@@ -8,6 +8,7 @@ const path = require('node:path');
 
 const root = path.join(__dirname, '..');
 const core = require('../js/engine/core.js');
+const EDGE = require('../scripts/measure-sleeve-edge.cjs').compute();
 const G = require('../js/engine/grades.js');
 const P = require('../js/engine/profiles.js');
 require('../js/engine/profiles-field.js');
@@ -97,7 +98,7 @@ const inSil = (pt, polys) => polys.reduce((c, poly) => {
 }, false);
 
 for(const sex of ['male', 'female']){
-  test(`mess dress ${sex}: the sleeve chevron is centred on the sheet's chevron_halfway, turned by the seam-to-elbow line, and the sheet states a clear fit (4.1.1.1.1.4, 4.1.2.1.1.4)`, async () => {
+  test(`mess dress ${sex}: the sleeve chevron hangs on the sleeve's outer edge at the chevron_halfway height, and the sheet states a clear fit (4.1.1.1.1.4, 4.1.2.1.1.4)`, async () => {
     const garment = `garment-mess-dress-${sex}`, sp = await store.load(garment), fit = spec(garment).dimensions.sleeve_widening.chevron_fit;
     const sil = silhouette(garment);
     const opts = sex === 'female' ? [{ chevron: '4' }, { chevron: '3.5' }] : [{}];
@@ -107,14 +108,14 @@ for(const sex of ['male', 'female']){
       for(const side of ['right', 'left']){
         const l = scene.layers.find(x => x.key === 'grade:sleeve-' + side);
         assert.ok(l, `${sex} ${rank} ${side}: chevron drawn`);
-        const c = core.anchor(sp, 'chevron_halfway_' + side), s = core.anchor(sp, 'shoulder_seam_' + side), e = core.anchor(sp, 'elbow_' + side);
-        near(l.x + l.w / 2, c.x, 0.05, `${sex} ${rank} ${side}: centred on chevron_halfway (x)`);
-        near(l.y + l.h / 2, c.y, 0.05, `${sex} ${rank} ${side}: centred on chevron_halfway (y)`);
-        near(l.w, w, 0.01, `${sex} ${rank} ${side}: true width`);
-        near(l.rotate, Math.atan2(s.x - e.x, e.y - s.y) * 180 / Math.PI, 0.05, `${sex} ${rank} ${side}: turned by the seam-to-elbow line`);
-        // the box's ends at the chevron's centre row lie on the sleeve (outline side), clear by 0.1 in
-        const cy = l.y + l.h / 2, out = side === 'right' ? l.x : l.x + l.w;
-        assert.ok(inSil({ x: out, y: cy }, sil), `${sex} ${rank} ${side}: the box's outer end lies inside the drawn silhouette`);
+        // D8 (SLEEVE1, Ethan: "hanging off the side like they do in the utilities"): the chevron is centred on the sleeve's outer edge at the chevron_halfway height, narrowed to half and turned along the edge,
+        // cut to the sheet's silhouette; it used to be centred on chevron_halfway at the true width, turned by the seam-to-elbow line.
+        const c = core.anchor(sp, 'chevron_halfway_' + side), edge = EDGE[garment][side];
+        near(l.y + l.h / 2, c.y, 0.01, `${sex} ${rank} ${side}: at the chevron_halfway height`);
+        near(l.x + l.w / 2, edge[1][0], 0.01, `${sex} ${rank} ${side}: centred on the sleeve's outer edge`);
+        near(l.w, w * 0.5, 0.01, `${sex} ${rank} ${side}: the regulation ${w} in chevron seen edge-on`);
+        near(l.rotate, Math.atan2(-(edge[2][0] - edge[0][0]), edge[2][1] - edge[0][1]) * 180 / Math.PI, 0.01, `${sex} ${rank} ${side}: turned along the outer edge`);
+        assert.equal(l.clipSil, garment, `${sex} ${rank} ${side}: cut to the silhouette`);
         const f = fit[side][opt.chevron === '3.5' ? '3p5' : '4'];
         assert.ok(f.outer_clearance_in >= 0.05 && f.seam_clearance_in >= 0.05, `${sex} ${side} ${w} in: the ink clears the outline by ${f.outer_clearance_in} in and the seam by ${f.seam_clearance_in} in`);
       }

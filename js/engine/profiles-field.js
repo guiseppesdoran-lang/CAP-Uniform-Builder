@@ -143,7 +143,7 @@
   };
   // ARM_EDGE end
   const SLEEVE_LENGTH = 27.66;   // the flat sleeve view, seam to cuff (both sheets); the arm's own length is the table's arc
-  const EDGE_SX = 0.5;
+  const EDGE_SX = H.EDGE_SX;
 
   // Where on the figure's arm a piece lies that is `down` inches below the seam on the flat sleeve, and the turn of the
   // arm's edge there. Null on a sheet with no table.

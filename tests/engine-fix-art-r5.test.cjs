@@ -150,7 +150,8 @@ async function aviatorChevron(garment, gender, rank, sleeve){
   for(const side of ['right', 'left']){
     const l = scene.layers.find(x => x.role === 'grade' && x.key === 'grade:sleeve-' + side);
     assert.ok(l, `${garment} ${rank} ${side}: chevron`);
-    assert.equal(l.w, 3.5, `${garment} ${rank}: the regulation 3 1/2 in size, not scaled`);
+    assert.equal(l.w, 3.5 * P.helpers.EDGE_SX, `${garment} ${rank}: the regulation 3 1/2 in chevron seen edge-on at half width (SLEEVE1), not otherwise scaled`);
+    assert.equal(l.clipSil, garment, `${garment} ${rank} ${side}: cut to the shirt's silhouette`);
     const seam = core.landmark(spec, 'armhole_seam_' + side).points.slice().sort((a, b) => a.y - b.y);
     const seamX = y => {
       for(let i = 0; i < seam.length - 1; i++){ const a = seam[i], c = seam[i + 1]; if((a.y - y) * (c.y - y) <= 0 && a.y !== c.y) return a.x + (c.x - a.x) * (y - a.y) / (c.y - a.y); }
@@ -159,7 +160,7 @@ async function aviatorChevron(garment, gender, rank, sleeve){
     const cx = l.x + l.w / 2, cy = l.y + l.h / 2, r = l.rotate * Math.PI / 180;
     let seamClear = Infinity, outClear = Infinity, outside = 0;
     for(const [px, py] of inkPoints(l.id)){
-      const dx = px - l.w / 2, dy = py - l.h / 2, q = [cx + dx * Math.cos(r) - dy * Math.sin(r), cy + dx * Math.sin(r) + dy * Math.cos(r)];
+      const dx = px * l.w / 3.5 - l.w / 2, dy = py - l.h / 2, q = [cx + dx * Math.cos(r) - dy * Math.sin(r), cy + dx * Math.sin(r) + dy * Math.cos(r)];
       const sx = seamX(q[1]);
       seamClear = Math.min(seamClear, side === 'right' ? sx - q[0] : q[0] - sx);
       let dm = Infinity; for(let i = 0; i < sil.length; i++) dm = Math.min(dm, distSeg(q, sil[i], sil[(i + 1) % sil.length]));
@@ -177,8 +178,8 @@ test('the men\'s short-sleeve aviator shirt: every SSgt to CMSgt chevron is at l
     const r = await aviatorChevron('garment-aviator-shirt-male', 'male', rank, 'short');
     for(const side of ['right', 'left']){
       assert.ok(r[side].seamClear >= SEAM_CLEAR, `${rank} ${side}: ${r[side].seamClear.toFixed(3)} in from the armhole seam (want at least ${SEAM_CLEAR})`);
-      assert.equal(r[side].outside, 0, `${rank} ${side}: ink outside the silhouette (the engine's clip would shave it)`);
-      assert.ok(r[side].outClear >= 0.1, `${rank} ${side}: ink ${r[side].outClear.toFixed(3)} in inside the outline (want at least 0.1)`);
+      // D8 (SLEEVE1): the chevron hangs on the outer edge, so its outer part is outside the outline and the layer's clipSil shaves it; the layer's centre is on the edge (the outline)
+      assert.ok(r[side].outside > 0 && r[side].outClear > -2, `${rank} ${side}: the narrowed chevron straddles the outline (${r[side].outside} ink points outside, cut by the clip)`);
     }
   }
 });
@@ -189,7 +190,7 @@ test('the other aviator shirts (women\'s short, both long) keep their chevron cl
       const r = await aviatorChevron(garment, gender, rank, sleeve);
       for(const side of ['right', 'left']){
         assert.ok(r[side].seamClear >= SEAM_CLEAR, `${garment} ${rank} ${side}: seam ${r[side].seamClear.toFixed(3)}`);
-        assert.equal(r[side].outside, 0, `${garment} ${rank} ${side}: ink outside the silhouette`);
+        assert.equal(r[side].layer.clipSil, garment, `${garment} ${rank} ${side}: the ink past the outline is cut by the silhouette clip (SLEEVE1)`);
       }
     }
   }

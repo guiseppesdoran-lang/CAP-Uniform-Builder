@@ -29,6 +29,14 @@ function build(uniform, gender, membership, rank, opt){
     ribbons: [], medals: [], badges: [], command: null, militaryBadges: [], patches: [], cord: null
   };
 }
+const EDGE = require('../scripts/measure-sleeve-edge.cjs').compute();
+const EDGE_SX = P.helpers.EDGE_SX;
+const FIELD = ['abu', 'corporate_field'];
+const distToPolyline = (p, poly) => Math.min(...poly.slice(1).map((b, i) => {
+  const a = poly[i], dx = b[0] - a[0], dy = b[1] - a[1];
+  const t = Math.max(0, Math.min(1, ((p.x - a[0]) * dx + (p.y - a[1]) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(p.x - (a[0] + t * dx), p.y - (a[1] + t * dy));
+}));
 const gradeLayer = (scene, side) => scene.layers.find(l => l.role === 'grade' && l.key === side);
 
 // ---- sleeve chevrons: size, proportion, place ----------------------------------------------------------
@@ -59,7 +67,7 @@ const SLEEVE_CASES = [
 
 for(const [uniform, gender, opt, size, para] of SLEEVE_CASES){
   for(const rank of ['SSgt', 'SMSgt', 'CMSgt']){
-    test(`${uniform} ${gender} ${JSON.stringify(opt)} ${rank}: sleeve chevron is ${size} in wide at the art's own proportions, never squeezed (${para})`, async () => {
+    test(`${uniform} ${gender} ${JSON.stringify(opt)} ${rank}: sleeve chevron is the ${size} in art at its own height, shown edge-on on the dress sleeves (SLEEVE1) (${para})`, async () => {
       const scene = await P.composeUniform(build(uniform, gender, 'senior', rank, opt), store);
       const g = G.gradeInfo('senior', rank, {});
       // The flat sleeve views; the ABU and CFU figure's arms carry a narrowed edge-on copy (':edge', FIX-R-OTHER-r2 #7).
@@ -69,54 +77,72 @@ for(const [uniform, gender, opt, size, para] of SLEEVE_CASES){
         const spec = await store.load(l.id);
         const white = uniform === 'mess_dress' ? 'white-' : '';
         assert.equal(l.id, `rank-senior-${g.key}-chevron-${white}${size === 3.5 ? '3p5in' : '4in'}`, 'the art for the size');
-        assert.ok(Math.abs(l.w - size) < 0.001, `${l.key}: ${l.w} in wide, regulation ${size}`);
-        // the art is drawn at its stated width: its own width is the regulation size and the box keeps its ratio
+        // SLEEVE1 (Ethan: "hanging off the side like they do in the utilities"): the dress sleeves show the chevron edge-on on the outer arm, narrowed to EDGE_SX of its regulation width like the ABU and CFU
+        // figure's arm; the field sheets' flat sleeve view is the true width. The art is always the regulation size.
+        const shown = FIELD.includes(uniform) ? size : size * EDGE_SX;
+        assert.ok(Math.abs(l.w - shown) < 0.001, `${l.key}: ${l.w} in wide, regulation ${size} shown at ${shown}`);
+        // the art is drawn at its stated width: its own width is the regulation size and the height keeps the art's
         assert.ok(Math.abs(spec.w - size) < 0.001, `${l.id} art width ${spec.w}`);
-        assert.ok(Math.abs(l.h / l.w - spec.h / spec.w) < 1e-6, `${l.key}: box ${l.w} x ${l.h} keeps the art's ${spec.w} x ${spec.h}`);
+        assert.ok(Math.abs(l.h - spec.h) < 1e-6, `${l.key}: ${l.h} in tall is the art's ${spec.h}, never shortened`);
         assert.ok(!l.scale || l.scale === 1, 'not scaled');
       }
     });
   }
 }
 
-// Where the sheet states the shoulder seam, elbow and the halfway point, the chevron is centred on that
-// point and turned to the line from the seam to the elbow (4.1.5.2.1.2 and the paragraphs above).
+// Where the sheet states the shoulder seam, elbow and the halfway point, the chevron's height is that point's (4.1.5.2.1.2 and the paragraphs above); SLEEVE1: it hangs on the sleeve's outer edge there,
+// centred on the edge at that height (the sheet's silhouette, scripts/measure-sleeve-edge.cjs), turned along the edge, narrowed by EDGE_SX and cut to the silhouette.
 for(const [uniform, gender, opt, garment] of [
   ['blues_a', 'male', {}, 'garment-blues-class-a-coat'],
   ['blues_a', 'female', {}, 'garment-blues-class-a-coat-female'],
   ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long'],
+  ['blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male'],
   ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long'],
+  ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female'],
   ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male'],
   ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long'],
   ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female'],
-  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long']
+  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long'],
+  ['aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 'garment-overblouse-female'],
+  ['aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long'],
+  ['mess_dress', 'male', {}, 'garment-mess-dress-male'],
+  ['mess_dress', 'female', {}, 'garment-mess-dress-female']
 ]){
-  test(`${uniform} ${gender}: sleeve chevron centred on the sheet's chevron_halfway point, halfway between the shoulder seam and the elbow`, async () => {
+  test(`${uniform} ${gender} ${JSON.stringify(opt)}: sleeve chevron at the chevron_halfway height, centred on the sleeve's outer edge, turned along it, narrowed, cut to the silhouette (SLEEVE1)`, async () => {
     const spec = await store.load(garment);
-    const scene = await P.composeUniform(build(uniform, gender, 'senior', 'SMSgt', opt), store);
-    for(const side of ['right', 'left']){
-      const c = core.anchor(spec, 'chevron_halfway_' + side), s = core.anchor(spec, 'shoulder_seam_' + side), e = core.anchor(spec, 'elbow_' + side) || core.anchor(spec, 'sleeve_bottom_' + side);
-      const l = gradeLayer(scene, 'grade:sleeve-' + side);
-      assert.ok(l && c && s && e, side);
-      assert.ok(Math.hypot(l.x + l.w / 2 - c.x, l.y + l.h / 2 - c.y) < 0.01, `${side}: centre ${l.x + l.w / 2},${l.y + l.h / 2} vs ${c.x},${c.y}`);
-      const turn = Math.atan2(s.x - e.x, e.y - s.y) * 180 / Math.PI;
-      assert.ok(Math.abs(l.rotate - turn) < 0.01, `${side}: turned ${l.rotate} vs the arm's ${turn}`);
-      // halfway down the arm: the anchor's height is the middle of the seam-to-elbow height (long sleeves: the elbow is 55 % of the way to the cuff, so the middle of seam and elbow)
-      assert.ok(Math.abs(c.y - (s.y + e.y) / 2) < 0.1, `${side}: anchor ${c.y} in, middle of seam and elbow ${(s.y + e.y) / 2} in`);
+    for(const rank of ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt']){
+      const scene = await P.composeUniform(build(uniform, gender, 'senior', rank, opt), store);
+      for(const side of ['right', 'left']){
+        const c = core.anchor(spec, 'chevron_halfway_' + side), s = core.anchor(spec, 'shoulder_seam_' + side), e = core.anchor(spec, 'elbow_' + side) || core.anchor(spec, 'sleeve_bottom_' + side);
+        const l = gradeLayer(scene, 'grade:sleeve-' + side), edge = EDGE[garment][side];
+        assert.ok(l && c && s && e, `${rank} ${side}`);
+        assert.equal(l.clipSil, garment, `${rank} ${side}: cut to the garment's own silhouette, so no ink lies past it`);
+        const centre = { x: l.x + l.w / 2, y: l.y + l.h / 2 };
+        // the height is the sheet's chevron_halfway
+        assert.ok(Math.abs(centre.y - c.y) < 0.01, `${rank} ${side}: centre height ${centre.y} vs chevron_halfway ${c.y}`);
+        assert.ok(Math.abs(c.y - (s.y + e.y) / 2) < 0.1 || /overblouse/.test(garment), `${side}: anchor ${c.y} in, middle of seam and elbow ${(s.y + e.y) / 2} in`);
+        // the centre lies on the sleeve's outer edge (the utilities' test allows 0.05 in); the visual centre of the narrowed art is its box centre
+        assert.ok(distToPolyline(centre, edge) < 0.05, `${rank} ${side}: centre ${centre.x.toFixed(2)},${centre.y.toFixed(2)} is ${distToPolyline(centre, edge).toFixed(3)} in from the outer edge`);
+        // turned with the edge: clockwise on the wearer's right arm (the picture's left, the edge runs down and out to the left), the other way on the left
+        const turn = Math.atan2(-(edge[2][0] - edge[0][0]), edge[2][1] - edge[0][1]) * 180 / Math.PI;
+        assert.ok(Math.abs(l.rotate - turn) < 0.01, `${rank} ${side}: turned ${l.rotate} vs the edge's ${turn}`);
+        assert.ok(side === 'right' ? l.rotate >= 0 : l.rotate <= 0, `${rank} ${side}: turn ${l.rotate} leans with the sleeve`);
+        assert.ok(Math.abs(l.w - (/-4in|4in$/.test(l.id) ? 4 : 3.5) * EDGE_SX) < 0.001, `${rank} ${side}: narrowed to ${EDGE_SX}`);
+      }
     }
   });
 }
 
-// The aviator shirt's sleeves are drawn wide enough for the regulation 3 1/2 in chevron (4.2.5.1.1.3, 4.2.6.2.3): the chevron's rotated box lies inside the garment's own box,
-// so nothing hangs off the shirt into the background (it used to pass the outline by 0.27 in on the men's short sleeve and 0.62 in beside the blazer).
+// SLEEVE1: the narrowed chevron hangs on the sleeve's outer edge and the part past the edge is cut by the silhouette clip, so nothing hangs off the shirt into the background (it used to pass the outline by
+// 0.27 in on the men's short sleeve and 0.62 in beside the blazer); the centre stays on the garment's own box and the layer carries the clip.
 for(const [gender, sleeve] of [['male', 'short'], ['male', 'long'], ['female', 'short'], ['female', 'long']]){
-  test(`aviator ${gender} ${sleeve}: the 3 1/2 in sleeve chevron does not leave the shirt's box`, async () => {
+  test(`aviator ${gender} ${sleeve}: the sleeve chevron is clipped to the shirt and its centre lies on the shirt's box`, async () => {
     const scene = await P.composeUniform(build('aviator', gender, 'senior', 'SMSgt', { sleeve }), store);
     const sh = scene.layers.find(l => l.role === 'garment' || /^base:/.test(l.key));
     for(const side of ['right', 'left']){
-      const l = gradeLayer(scene, 'grade:sleeve-' + side), th = l.rotate * Math.PI / 180, cx = l.x + l.w / 2, cy = l.y + l.h / 2;
-      const hw = (Math.abs(Math.cos(th)) * l.w + Math.abs(Math.sin(th)) * l.h) / 2;
-      assert.ok(cx - hw >= sh.x - 0.01 && cx + hw <= sh.x + sh.w + 0.01, `${side}: chevron spans ${(cx - hw).toFixed(2)}..${(cx + hw).toFixed(2)} in, shirt box ${sh.x}..${sh.x + sh.w}`);
+      const l = gradeLayer(scene, 'grade:sleeve-' + side), cx = l.x + l.w / 2;
+      assert.equal(l.clipSil, sh.id, `${side}: clipped to the shirt's silhouette`);
+      assert.ok(cx >= sh.x && cx <= sh.x + sh.w, `${side}: centre ${cx.toFixed(2)} in, shirt box ${sh.x}..${sh.x + sh.w}`);
     }
   });
 }
@@ -142,7 +168,7 @@ for(const [uniform, gender, opt] of CLIPPED){
       for(const side of ['right', 'left']){
         const l = gradeLayer(scene, 'grade:sleeve-' + side);
         assert.equal(l.clipSil, garment.id, `${rank} ${side}: clipped to the garment's own silhouette`);
-        assert.ok(l.w === 3.5 || l.w === 4, `${rank} ${side}: ${l.w} in is a regulation width, never scaled`);
+        assert.ok(l.w === 3.5 * EDGE_SX || l.w === 4 * EDGE_SX, `${rank} ${side}: ${l.w} in is a regulation width narrowed by ${EDGE_SX} (edge-on), never scaled`);
       }
     }
   });
@@ -359,6 +385,27 @@ test('the art\'s top_center lands closer to the roll-line end than to the collar
       assert.ok(along > 0.99, `${garment} ${side}: art top points ${along.toFixed(3)} along the edge toward the roll end`);
       assert.ok(dRoll < dPoint + (garment.includes('overblouse') ? 0.1 : 0), `${garment} ${side}: art top ${dRoll.toFixed(2)} in from the roll end, ${dPoint.toFixed(2)} in from the collar point`);
       assert.ok(art && art.w > 0);
+    }
+  }
+});
+
+// ---- SLEEVE1: the engine's outer-edge table is the sheets' own outline -------------------------------------
+
+test('the engine\'s SLEEVE_EDGE table is the outer edge of the sleeves of the current dress sheets at the chevron height (regenerate with scripts/measure-sleeve-edge.cjs)', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
+  const body = /\/\/ SLEEVE_EDGE begin\n([\s\S]*?)\/\/ SLEEVE_EDGE end/.exec(src);
+  assert.ok(body);
+  assert.deepEqual(new Function(body[1] + '; return SLEEVE_EDGE;')(), EDGE);
+});
+
+test('every dress sheet that carries a senior NCO sleeve chevron has an outer-edge row, on both sides, left of centre for the wearer\'s right (SLEEVE1)', async () => {
+  for(const [id, row] of Object.entries(EDGE)){
+    const spec = await store.load(id);
+    for(const side of ['right', 'left']){
+      assert.equal(row[side].length, 3, `${id} ${side}`);
+      const c = core.anchor(spec, 'chevron_halfway_' + side);
+      assert.ok(Math.abs(row[side][1][1] - c.y) < 0.001, `${id} ${side}: the middle point is at the chevron_halfway height`);
+      assert.ok(side === 'right' ? row[side][1][0] < spec.w / 2 && row[side][1][0] < c.x : row[side][1][0] > spec.w / 2 && row[side][1][0] > c.x, `${id} ${side}: the edge lies outside the sleeve's midline anchor`);
     }
   }
 });

@@ -112,10 +112,12 @@ test('Class B short sleeve: the sleeve chevron is centred on the drawn sleeve ha
     const scene = await compose(build('blues_b', sex, 'senior', 'SMSgt', [], { opt: { sleeve: 'short', headgear: 'auto' } }));
     const r = byKey(scene, 'grade:sleeve-right'), l = byKey(scene, 'grade:sleeve-left');
     assert.ok(r && l, `${sex}: both sleeves carry the chevron`);
-    near(r.x + r.w / 2, half.x, 0.03, `${sex}: right chevron centred on the sleeve's midline`);
-    near(l.x + l.w / 2, halfL.x, 0.03, `${sex}: left chevron centred on its midline`);
+    // D8 (SLEEVE1, Ethan: "hanging off the side like they do in the utilities"): the chevron's height is chevron_halfway's, its centre is on the sleeve's outer edge there (this asserted the sleeve's midline), seen edge-on at half the regulation width.
+    const edge = require('../scripts/measure-sleeve-edge.cjs').compute()[garment];
+    near(r.x + r.w / 2, edge.right[1][0], 0.01, `${sex}: right chevron centred on the sleeve's outer edge`);
+    near(l.x + l.w / 2, edge.left[1][0], 0.01, `${sex}: left chevron centred on the outer edge`);
     near(r.y + r.h / 2, (sh.y + bottom.y) / 2, 0.05, `${sex}: halfway between the shoulder seam and the bottom edge of the sleeve`);
-    near(r.w, size, 0.01, `${sex}: regulation 3 1/2 in width, not scaled`);
+    near(r.w, size * 0.5, 0.01, `${sex}: regulation 3 1/2 in chevron seen edge-on, half its width`);
     // The sleeve is wide enough: every row of the chevron clears the outer edge and the armhole seam (recorded by the art generator, base-art/make-blues-b.js).
     const fit = JSON.parse(fs.readFileSync(path.join(root, 'images', 'garments', garment + '.spec.json'), 'utf8')).dimensions.sleeve_widening.chevron_3p5_fit;
     for(const side of ['right', 'left']){
@@ -285,7 +287,7 @@ function inPoly(p, poly){
   return c;
 }
 
-test('Class B short sleeve: the sleeve chevron layer carries the sheet silhouette clip, at full size, centred on chevron_halfway', async () => {
+test('Class B short sleeve: the sleeve chevron layer carries the sheet silhouette clip, edge-on at half width, centred on the outer edge at the chevron_halfway height', async () => {
   for(const [sex, garment, chevron] of [['male', 'garment-blues-class-b-shirt-male', ''], ['female', 'garment-blues-class-b-blouse-female', ''], ['female', 'garment-blues-class-b-blouse-female', '4']]){
     const spec = await store.load(garment);
     const sil = silhouette(garment);
@@ -293,13 +295,14 @@ test('Class B short sleeve: the sleeve chevron layer carries the sheet silhouett
     for(const side of ['right', 'left']){
       const l = byKey(scene, 'grade:sleeve-' + side);
       assert.equal(l.clipSil, garment, `${sex} ${chevron || '3.5'} ${side}: clipped to the sheet's silhouette`);
-      assert.ok(l.w >= 3.5 - 0.01, 'not scaled down (R1)');
-      // The clip is the silhouette itself: the chevron's centre is on the garment, and the armhole seam is not a clip edge (the shirt front beyond it is inside).
-      assert.ok(inPoly({ x: l.x + l.w / 2, y: l.y + l.h / 2 }, sil), `${sex} ${side}: centre inside the silhouette`);
+      assert.ok(l.w >= (chevron === '4' ? 4 : 3.5) * 0.5 - 0.01, 'edge-on at half the regulation width, never scaled down further (R1, SLEEVE1)');
+      // D8 (SLEEVE1): the centre is on the sleeve's outer edge, which is the silhouette itself, so the clip cuts the outer half of the narrowed chevron; the half that shows lies on the sleeve.
+      const edge = require('../scripts/measure-sleeve-edge.cjs').compute()[garment][side];
+      near(l.x + l.w / 2, edge[1][0], 0.01, `${sex} ${side}: centred on the sleeve's outer edge`);
       const inner = side === 'right' ? l.x + l.w : l.x;
-      assert.ok(inPoly({ x: inner, y: l.y + l.h / 2 }, sil), `${sex} ${side}: the part past the armhole seam lies on the shirt front, inside the silhouette`);
+      assert.ok(inPoly({ x: inner, y: l.y + l.h / 2 }, sil), `${sex} ${side}: the inner end lies on the sleeve, inside the silhouette`);
     }
-    near(byKey(scene, 'grade:sleeve-right').x + byKey(scene, 'grade:sleeve-right').w / 2, core.anchor(spec, 'chevron_halfway_right').x, 0.03, `${sex}: centred on the sheet's chevron_halfway`);
+    near(byKey(scene, 'grade:sleeve-right').y + byKey(scene, 'grade:sleeve-right').h / 2, core.anchor(spec, 'chevron_halfway_right').y, 0.03, `${sex}: at the sheet's chevron_halfway height`);
     assert.ok(spec.w > 0);
   }
   // The long sleeve is clipped the same way (E5-CHEVRONS: every dress sleeve chevron carries the clip, R8).
