@@ -15,6 +15,7 @@
     "cadet-suas-field": "field/cadet-suas-field/cadet-suas-field.svg",
     "cap-device-cadet-officer-service": "accessories/cap-device-cadet-officer-service.svg",
     "cap-device-nco-flight": "accessories/cap-device-nco-flight.svg",
+    "cap-device-nco-senior": "accessories/cap-device-nco-senior.svg",
     "cap-device-officer-flight": "accessories/cap-device-officer-flight.svg",
     "cap-device-officer-service": "accessories/cap-device-officer-service.svg",
     "cap-suas-pilot": "silver/cap-suas-pilot/cap-suas-pilot.svg",
@@ -1085,7 +1086,7 @@
     "uas-technician-senior-field": "field/uas-technician-senior-field/uas-technician-senior-field.svg",
     "uas-technician-senior-mini": "mini/uas-technician-senior-mini/uas-technician-senior-mini.svg"
   };
-  Object.defineProperty(index, 'version', { value: "2a1b3770e5", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "a73018bd44", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "2a1b3770e5"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "a73018bd44"; }
 })(typeof self !== 'undefined' ? self : this);

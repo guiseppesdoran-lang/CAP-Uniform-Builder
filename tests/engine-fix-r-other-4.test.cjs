@@ -387,7 +387,7 @@ const critique = JSON.parse(execFileSync(process.execPath, [path.join(root, 'scr
 test('critique set: blues_a service-cap builds for both cuts, company grade, field grade, general, senior NCO and cadet officer; the cap is seated on the collar, cut for the member, with its device on the slot (6.2.1.1-6.2.1.3, ICL 25-02 (g); R6)', async () => {
   const want = [
     ['Capt', 'senior', 'officer-nco', 'cap-device-officer-service'], ['Col', 'senior', 'field-grade', 'cap-device-officer-service'],
-    ['MajGen', 'senior', 'general', 'cap-device-officer-service'], ['SMSgt', 'senior', 'officer-nco', 'cap-device-nco-flight'],
+    ['MajGen', 'senior', 'general', 'cap-device-officer-service'], ['SMSgt', 'senior', 'officer-nco', 'cap-device-nco-senior'],
     ['CMaj', 'cadet', 'cadet-officer', 'cap-device-cadet-officer-service']
   ];
   for(const gender of ['male', 'female']){

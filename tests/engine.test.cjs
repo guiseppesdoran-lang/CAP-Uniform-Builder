@@ -122,7 +122,7 @@ test('hats are drawn on top of the uniform, with the right device', async () => 
   const hat = layersBy(nco, l => l.role === 'hat')[0];
   const device = layersBy(nco, l => l.role === 'hat-device')[0];
   assert.equal(hat.id, 'hat-flight-cap-men-cadet', 'the men\'s flight cap for a man');
-  assert.equal(device.id, 'cap-device-nco-flight', 'ICL 25-02: NCO device on the flight cap');
+  assert.equal(device.id, 'cap-device-nco-senior', 'ICL 25-02 (g): the senior member NCO device (6.2.1.1.1), not the cadet disc, on the flight cap');
   assert.ok(hat.z > Math.max(...nco.layers.filter(l => l.role !== 'hat' && l.role !== 'hat-device').map(l => l.z)));
   const mess = await P.composeUniform(build('mess_dress', 'senior', 'Col'), store());
   assert.equal(layersBy(mess, l => l.role === 'hat').length, 0, 'no headgear with mess dress');

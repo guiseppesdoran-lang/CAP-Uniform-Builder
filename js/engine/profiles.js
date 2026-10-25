@@ -439,9 +439,12 @@
       return { hat: 'hat-flight-cap-officer', device: 'cap-device-officer-flight' };
     }
     if(g.category === 'senior-nco'){
-      // ICL 25-02 (g): senior NCOs wear the NCO device on the flight cap and the service cap.
-      if(service) return { hat: `hat-service-cap-${sex}-officer-nco`, device: 'cap-device-nco-flight' };
-      return { hat: 'hat-flight-cap-cadet', device: 'cap-device-nco-flight' };
+      // ICL 25-02 (g): senior NCOs wear the NCO device on the flight cap and the service cap (6.2.2.2.1 still says
+      // they wear none on the flight cap; the ICL wins). The senior member's device is the round silver piece of
+      // 6.2.1.1.1 / 6.2.1.2.1, cap-device-nco-senior, not the cadet Airman prop-and-wings disc of Fig A5-8
+      // (cap-device-nco-flight), which only cadet NCOs wear.
+      if(service) return { hat: `hat-service-cap-${sex}-officer-nco`, device: 'cap-device-nco-senior' };
+      return { hat: 'hat-flight-cap-cadet', device: 'cap-device-nco-senior' };
     }
     // Adults without grade (1.4.1.1, 1.4.2.1): officer-track flight cap, or the plain blue one.
     if(g.track === 'officer') return { hat: 'hat-flight-cap-officer', device: 'cap-device-officer-flight' };

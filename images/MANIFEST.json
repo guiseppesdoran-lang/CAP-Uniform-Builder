@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1083,
+ "count": 1084,
  "by_category": {
   "accessories": 30,
   "badges": 1,
@@ -45481,6 +45481,44 @@
     "right_edge": [
      137.5,
      18.75
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cap-device-nco-senior",
+   "path": "accessories/cap-device-nco-senior.svg",
+   "category": "accessories",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.25,
+   "h_in": 1.25,
+   "size_source": "estimated",
+   "basis": "Diameter 1.25 in, estimated: neither CAPR 39-1, ICL 25-02 nor the Vanguard product page (\"Civil Air Patrol Cap Device: NCO Cap Device\", SKU CAP0748R) prints a size. The listed shipping weight, 18 g, equals the officer flight cap device (SKU CAP0748OA, 18 g), which Vanguard prints at 1 1/4 x 1 1/4 in, so the NCO device is drawn 1.25 in across. It is round: the outer ring of the listing photo fits a true circle (radius 294.6 px, residual within 5 px), so height = width (the photo frame is 600 x 623 px only because of its white margins)",
+   "anchors": {
+    "top_center": [
+     62.5,
+     0
+    ],
+    "bottom_center": [
+     62.5,
+     125
+    ],
+    "center": [
+     62.5,
+     62.5
+    ],
+    "left_edge": [
+     0,
+     62.5
+    ],
+    "right_edge": [
+     125,
+     62.5
+    ],
+    "mount_center": [
+     62.5,
+     62.5
     ]
    },
    "landmarks": []
