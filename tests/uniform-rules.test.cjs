@@ -140,8 +140,8 @@ const REG={
     para:'ICL 25-06 7.1.1.3.1 (four badges above the CAP tape; military badges per DAFI 36-2903)'},
   flight_suit:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:2,shared:false,
     para:'8.2.1 (active members), 11.1.3 (no ribbons), 8.2.4.1 (up to two badges on the nametag, military aviation badges allowed)'},
-  corporate_flight_suit:{style:'corporate',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:2,shared:false,
-    para:'8.3.1 (active members), 11.1.3 (no ribbons), 8.3.4.1 (up to two badges on the nametag)'}
+  corporate_flight_suit:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:2,shared:false,
+    para:'8.3.1 (active members), 1.2.5.2 (cadets only as adult cadets over the weight standard), 11.1.3 (no ribbons), 8.3.4.1 (up to two badges on the nametag)'}
 };
 
 test('every value in the table is the one the regulation states',()=>{
@@ -174,7 +174,7 @@ test('every rule that states a limit or a restriction carries its paragraph',()=
 });
 
 test('a cadet reaches Corporate uniforms only as an adult cadet, and never the Working Uniform (39-1 1.2.5.2)',()=>{
-  for(const id of ['semi_formal','aviator','aviator_blazer','corporate_field']){
+  for(const id of ['semi_formal','aviator','aviator_blazer','corporate_field','corporate_flight_suit']){
     assert.equal(rules.isUniformAllowedFor(id,'cadet'),false,`${id}: a cadet by default`);
     assert.equal(rules.isUniformAllowedFor(id,'cadet',{adultCadet:true}),true,`${id}: an adult cadet`);
     assert.equal(rules.isUniformAllowedFor(id,'senior'),true,`${id}: a senior member`);

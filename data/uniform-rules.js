@@ -78,9 +78,11 @@
     flight_suit:{group:'field',style:'usaf',membership:['cadet','senior'],adultCadet:false,
       ribbons:'none',mini:false,usafAwards:true,rackColumns:[],badgeCap:2,
       refs:{who:'8.2.1',ribbons:'11.1.3',badges:'8.2.4.1'}},
-    corporate_flight_suit:{group:'field',style:'corporate',membership:['cadet','senior'],adultCadet:false,
+    // 8.3.1 opens it to active members, but a cadet is a member only of the USAF-style uniforms (1.2.5.2),
+    // so a cadet reaches it only as an adult cadet over the weight standard.
+    corporate_flight_suit:{group:'field',style:'corporate',membership:['senior'],adultCadet:true,
       ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:2,
-      refs:{who:'8.3.1',ribbons:'11.1.3',badges:'8.3.4.1'}}
+      refs:{who:'8.3.1',ribbons:'11.1.3',badges:'8.3.4.1',adultCadet:'1.2.5.2'}}
   });
 
   // Uniforms the regulation authorizes that the builder does not draw yet. They are listed so
