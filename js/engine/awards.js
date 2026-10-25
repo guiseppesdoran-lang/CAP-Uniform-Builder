@@ -317,8 +317,75 @@
     return { placements: out, rows };
   }
 
+
+  // ---- Device legibility (Doran: "it's still making the devices blend in") -------------------------------------
+  // The device artwork is part transparent (a star's facets are 90 and 55 percent opaque) and light (a silver
+  // star is nearly white), so on a white, orange or yellow ribbon it fades into the cloth. A real device is a
+  // piece of opaque metal darker than most ribbons, with a dark edge. deviceInner() turns a device's symbol markup
+  // into that: every colour in the artwork is darkened by its metal's factor, an opaque base of the metal's
+  // mid tone goes under the translucent facets, and a thin dark edge (0.01 in, #1a1a1a at 70 percent) runs around
+  // the outside, as the badges' dark edge does. The artwork files stay as they are; this works on the markup the
+  // renderer has loaded. Pure string work so a test can run it in node.
+  const DEVICE_EDGE_IN = 0.01;
+  const DEVICE_EDGE_COLOR = '#1a1a1a';
+  const DEVICE_EDGE_OPACITY = 0.7;
+  // Multiplier on every RGB channel: silver is darker than the white and light-blue ribbons, bronze a darker bronze.
+  const DEVICE_TONE = Object.freeze({ silver: 0.72, bronze: 0.74, gold: 0.8 });
+  function darkenHex(hex, f){
+    const n = parseInt(hex.slice(1), 16);
+    const c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(v => Math.max(0, Math.min(255, Math.round(v * f))));
+    return '#' + c.map(v => v.toString(16).padStart(2, '0')).join('');
+  }
+  function deviceMetal(inner){
+    const m = /"metal"\s*:\s*"([a-z]+)"/.exec(String(inner));
+    return m && DEVICE_TONE[m[1]] ? m[1] : 'silver';
+  }
+  // inner: the device svg's markup (title, metadata, defs, geometry); unitsPerInch: symbol units per inch
+  // (viewBox width over width in inches); suffix: appended to every id and url(#id) so the copy cannot clash with the
+  // plain symbol. Returns markup for a <symbol> with overflow visible.
+  function deviceInner(inner, unitsPerInch, suffix){
+    const sfx = suffix == null ? '--dev' : suffix;
+    const text = String(inner);
+    const metal = deviceMetal(text);
+    const tone = DEVICE_TONE[metal];
+    const meta = (/<metadata[\s\S]*?<\/metadata>/.exec(text) || [''])[0];
+    const defs = (/<defs[\s\S]*?<\/defs>/.exec(text) || [''])[0];
+    let body = text.replace(/<title[\s\S]*?<\/title>/, '').replace(/<metadata[\s\S]*?<\/metadata>/, '').replace(/<defs[\s\S]*?<\/defs>/, '');
+    const dark = t => t.replace(/#[0-9a-fA-F]{6}\b/g, h => darkenHex(h, tone));
+    const mid = /offset="\.?0?\.5"[^>]*stop-color="(#[0-9a-fA-F]{6})"/.exec(dark(defs));
+    const base = mid ? mid[1] : darkenHex('#c3c8ce', tone);
+    const edge = DEVICE_EDGE_IN * (unitsPerInch || 100);
+    const outerScale = Number((/scale\(\s*([\d.]+)/.exec(body) || [0, 1])[1]) || 1;
+    const attrs = tag => { const o = {}; tag.replace(/([\w:-]+)="([^"]*)"/g, (m, k, v) => { o[k] = v; return m; }); return o; };
+    // One shape rewritten as flat edge or base colour. A shape with no fill (an outline or a highlight stroke) is dropped:
+    // the filled shapes under it already cover its silhouette.
+    function flat(tagText, pass){
+      return tagText.replace(/<(path|polygon|polyline|circle|ellipse|rect)\b([^>]*?)\/?>/g, (m, name, rest) => {
+        const a = attrs(rest);
+        if(a.fill === 'none') return '';
+        const own = Number((/scale\(\s*([\d.]+)/.exec(a.transform || '') || [0, 1])[1]) || 1;
+        const k = outerScale * own;
+        const keep = Object.keys(a).filter(n => !/^(fill|stroke|stroke-width|stroke-linejoin|stroke-linecap|stroke-opacity|fill-opacity|opacity|id)$/.test(n)).map(n => `${n}="${a[n]}"`).join(' ');
+        const sw = Number(a['stroke-width'] || 0);
+        const paint = pass === 'edge'
+          ? `fill="${DEVICE_EDGE_COLOR}" stroke="${DEVICE_EDGE_COLOR}" stroke-width="${((sw * k + 2 * edge) / k).toFixed(3)}" stroke-linejoin="round"`
+          : `fill="${base}"`;
+        return `<${name} ${keep} ${paint}/>`;
+      });
+    }
+    // The groups stay (they carry the transforms), only the shapes are rewritten; the copies lose their ids.
+    const structure = (t, pass) => flat(t, pass).replace(/\sid="[^"]*"/g, '');
+    const withSfx = t => t.replace(/\bid="([^"]+)"/g, (m, v) => `id="${v}${sfx}"`).replace(/url\(#([^)]+)\)/g, (m, v) => `url(#${v}${sfx})`).replace(/href="#([^"]+)"/g, (m, v) => `href="#${v}${sfx}"`);
+    const markup = meta + dark(defs)
+      + `<g opacity="${DEVICE_EDGE_OPACITY}">${structure(body, 'edge')}</g>`
+      + structure(body, 'base')
+      + dark(body);
+    return withSfx(markup);
+  }
+
   return {
     RIBBON_W, RIBBON_H, MAX_DEVICES, DEVICE,
+    deviceInner, deviceMetal, DEVICE_EDGE_IN, DEVICE_EDGE_COLOR, DEVICE_EDGE_OPACITY, DEVICE_TONE,
     claspsFor, splitAwardCount, layoutDevices, DEVICE_END_MARGIN, sortRun,
     rackRows, layoutRack, coverage, pointInPolygon, LAPEL_COVER_TOLERANCE,
     miniMedalRows, layoutMiniMedals

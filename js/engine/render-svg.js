@@ -25,7 +25,8 @@
         const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
         const svg = doc.documentElement;
         if(!svg || svg.nodeName.toLowerCase() !== 'svg') throw new Error('Not an SVG: ' + path);
-        return { viewBox: svg.getAttribute('viewBox'), inner: svg.innerHTML };
+        const widthIn = /^([\d.]+)in$/.exec(svg.getAttribute('width') || '');
+        return { viewBox: svg.getAttribute('viewBox'), inner: svg.innerHTML, widthIn: widthIn ? Number(widthIn[1]) : null };
       });
     symbolCache.set(id, p);
     p.catch(() => symbolCache.delete(id));
@@ -115,6 +116,11 @@
     const defs = el('defs');
     svg.appendChild(defs);
 
+    // Ribbon and medal devices are drawn from a copy with an opaque metal base, darker metal and a thin dark edge
+    // (awards.deviceInner), so they read on any ribbon colour. The copy is a separate symbol; overflow is visible
+    // because the edge lies outside the artwork's own box.
+    const AW = root.CAPUBEngine && root.CAPUBEngine.awards;
+    const deviceSyms = new Set();
     // Variants of a symbol with named groups hidden, or with only named groups shown.
     function variantKey(layer){
       if(layer.hideGroups && layer.hideGroups.length) return layer.id + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
@@ -136,6 +142,17 @@
       defs.appendChild(sym);
       loaded.set(id, true);
     });
+    if(AW && AW.deviceInner){
+      for(const id of new Set(scene.layers.filter(l => l.type === 'asset' && l.role === 'device').map(l => l.id))){
+        const s = symbolData.get(id);
+        if(!s) continue;
+        const vb = s.viewBox.split(/\s+/).map(Number);
+        const sym = el('symbol', { id: 'sym-' + id + '--dev', viewBox: s.viewBox, preserveAspectRatio: 'none', overflow: 'visible' });
+        sym.innerHTML = AW.deviceInner(s.inner, s.widthIn ? vb[2] / s.widthIn : 100, '--dev');
+        defs.appendChild(sym);
+        deviceSyms.add(id);
+      }
+    }
     // Variant symbols. Their own ids get a suffix so they cannot clash with the original's.
     for(const layer of scene.layers){
       if(layer.type !== 'asset') continue;
@@ -191,8 +208,8 @@
     for(const layer of layers){
       let node = null;
       if(layer.type === 'asset'){
-        const key = variantKey(layer);
-        if(!loaded.get(key)) continue;
+        const key = layer.role === 'device' && deviceSyms.has(layer.id) ? layer.id + '--dev' : variantKey(layer);
+        if(!loaded.get(layer.role === 'device' ? layer.id : key)) continue;
         node = el('use', { href: '#sym-' + key, x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h) });
         node.setAttributeNS(XLINK_NS, 'xlink:href', '#sym-' + key);
       }else if(layer.type === 'raster'){
