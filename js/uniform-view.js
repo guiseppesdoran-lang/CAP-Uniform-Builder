@@ -136,7 +136,7 @@
       if(!badge) continue;
       const rep = getMilitaryBadgeRepresentation(badge);
       if(!rep?.asset) continue;
-      out.push({ id, title: badge.officialName || id, href: ASSET(rep.asset), family: String(badge.family || '').toUpperCase() });
+      out.push({ id, variant: sel.variant || rep.variant || '', title: badge.officialName || id, href: ASSET(rep.asset), family: String(badge.family || '').toUpperCase() });
     }
     return out;
   }

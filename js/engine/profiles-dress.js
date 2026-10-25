@@ -5,10 +5,10 @@
 (function(root, factory){
   const node = typeof module === 'object' && module.exports;
   const deps = node
-    ? { core: require('./core.js'), C: require('./compose.js'), G: require('./grades.js'), P: require('./profiles.js'), B: require('../../data/badge-catalog.js') }
-    : { core: root.CAPUBEngine.core, C: root.CAPUBEngine.compose, G: root.CAPUBEngine.grades, P: root.CAPUBEngine.profiles, B: root.CAPUBBadgeCatalog };
-  factory(deps.core, deps.C, deps.G, deps.P, deps.B);
-})(typeof self !== 'undefined' ? self : this, function(core, C, G, P, B){
+    ? { core: require('./core.js'), C: require('./compose.js'), G: require('./grades.js'), P: require('./profiles.js'), B: require('../../data/badge-catalog.js'), M: require('../../data/military-badge-sizes.js') }
+    : { core: root.CAPUBEngine.core, C: root.CAPUBEngine.compose, G: root.CAPUBEngine.grades, P: root.CAPUBEngine.profiles, B: root.CAPUBBadgeCatalog, M: root.CAPUBMilitaryBadgeSizes };
+  factory(deps.core, deps.C, deps.G, deps.P, deps.B, deps.M);
+})(typeof self !== 'undefined' ? self : this, function(core, C, G, P, B, MIL_SIZES){
   'use strict';
   const Z = C.Z;
   const H = P.helpers;
@@ -65,7 +65,7 @@
     const o = opts || {};
     // Over the left pocket, bottom first: occupational under aviation, chaplain always on top.
     const olpAll = [...set.occupational, ...set.aviation, ...set.chaplain];
-    const military = (b.militaryBadges || []).map(m => ({ id: m.id, raster: m.href, title: m.title, family: 'military' }));
+    const military = (b.militaryBadges || []).map(m => ({ id: m.id, variant: m.variant, raster: m.href, title: m.title, family: 'military' }));
     let olp = olpAll;
     if(military.length){
       // Military aviation badges are worn below the CAP aviation badge (10.10.1.2, ICL 25-02).
@@ -105,13 +105,44 @@
     return { olp, nationalStaff, rest, pin: H.commandPin(ctx, b, 'dress') };
   }
 
+  // ---- U.S. military badges at their real size ---------------------------------------------------
+  // A military badge is a raster (the page's PNG), not an SVG asset, so it has no spec of its own. data/military-badge-sizes.js
+  // (scripts/build-military-badge-sizes.cjs) gives each badge/variant the size of its in-house SVG badge: Vanguard's
+  // regulation-size listing where there is one (size_source measured), the badge's aspect otherwise (estimated; art commit
+  // afe8b075; neither CAPR 39-1 nor DAFI 36-2903 prints a badge size), and the badge's box inside the PNG. The PNG is drawn
+  // cropped to that box, contained in the real width x height, centred on the place the badge takes (CAPR 39-1 4.1.5.2.2).
+  // A badge with no entry keeps the old fixed 2.75 x 0.75 in box, the whole image contained in it (MIL_FALLBACK).
+  const MIL_FALLBACK = (MIL_SIZES && MIL_SIZES.FALLBACK) || { w: 2.75, h: 0.75 };
+  let milByAsset = null;
+  function milEntry(item){
+    if(!MIL_SIZES) return null;
+    if(item.variant && MIL_SIZES[`${item.id}/${item.variant}`]) return MIL_SIZES[`${item.id}/${item.variant}`];
+    if(!milByAsset){
+      milByAsset = new Map();
+      for(const e of Object.values(MIL_SIZES)) if(e.asset) milByAsset.set(e.asset.replace(/^images\//, ''), e);
+    }
+    const m = /(military-badges\/[^?#]+\.png)/.exec(String(item.raster || ''));
+    return m && milByAsset.get(m[1]) || null;
+  }
+  // { w, h, crop, source, artId } for a military raster: the badge's size in inches and the part of the image it is.
+  function militaryBox(item){
+    const e = milEntry(item);
+    if(!e) return { w: MIL_FALLBACK.w, h: MIL_FALLBACK.h, crop: null, fallback: true };
+    const inkW = e.ink[2] - e.ink[0], inkH = e.ink[3] - e.ink[1];
+    const s = Math.min(e.w / inkW, e.h / inkH); // inches per image pixel: contain the badge's box in w x h
+    return { w: inkW * s, h: inkH * s, crop: [e.ink[0] / e.img[0], e.ink[1] / e.img[1], e.ink[2] / e.img[0], e.ink[3] / e.img[1]], source: e.source, artId: e.artId };
+  }
+
   // Place a dress badge (or a military raster) with a given anchor at a point.
   async function putBadge(ctx, item, at, anchor, key){
     if(item.raster){
-      const w = 2.75, h = 0.75;
+      const box = militaryBox(item);
+      const w = box.w, h = box.h;
       const x = at.x - w / 2;
       const y = anchor === 'bottom_center' ? at.y - h : anchor === 'top_center' ? at.y : at.y - h / 2;
-      const l = ctx.raster({ href: item.raster, x, y, w, h, z: Z.badge, role: 'badge', key: key || 'badge:' + item.id, title: item.title, className: 'badge' });
+      const opts = { href: item.raster, x, y, w, h, z: Z.badge, role: 'badge', key: key || 'badge:' + item.id, title: item.title, className: 'badge' };
+      if(box.crop){ opts.crop = box.crop; opts.fit = 'stretch'; opts.sizeSource = box.source; opts.artId = box.artId; }
+      const l = ctx.raster(opts);
       return { x, y, w, h, layer: l };
     }
     const s = await ctx.spec(item.art);
@@ -134,7 +165,7 @@
   // viewer's left first.
   async function rowOfBadges(ctx, items, cx, bottomY, gap, anchor){
     const widths = [];
-    for(const it of items) widths.push(it.raster ? 2.75 : (await ctx.spec(it.art)).w);
+    for(const it of items) widths.push(it.raster ? militaryBox(it).w : (await ctx.spec(it.art)).w);
     const total = widths.reduce((a, w) => a + w, 0) + gap * (items.length - 1);
     let x = cx - total / 2;
     let top = bottomY;

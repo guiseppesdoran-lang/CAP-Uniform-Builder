@@ -215,9 +215,20 @@
       }else if(layer.type === 'raster'){
         const data = rasters.get(layer.href);
         if(!data) continue;
-        node = el('image', { x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h), preserveAspectRatio: layer.fit === 'stretch' ? 'none' : 'xMidYMid meet' });
-        node.setAttribute('href', data);
-        node.setAttributeNS(XLINK_NS, 'xlink:href', data);
+        if(Array.isArray(layer.crop) && layer.crop.length === 4){
+          // Only the box layer.crop = [x0, y0, x1, y1] (fractions of the image) is drawn, filling the layer's rectangle: a badge
+          // PNG with margin or cloth around it, drawn at the badge's own size (a nested svg whose viewBox is that box of a unit image).
+          const c = layer.crop;
+          node = el('svg', { x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h), viewBox: `${c[0]} ${c[1]} ${c[2] - c[0]} ${c[3] - c[1]}`, preserveAspectRatio: 'none', overflow: 'hidden' });
+          const im = el('image', { x: 0, y: 0, width: 1, height: 1, preserveAspectRatio: 'none' });
+          im.setAttribute('href', data);
+          im.setAttributeNS(XLINK_NS, 'xlink:href', data);
+          node.appendChild(im);
+        }else{
+          node = el('image', { x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h), preserveAspectRatio: layer.fit === 'stretch' ? 'none' : 'xMidYMid meet' });
+          node.setAttribute('href', data);
+          node.setAttributeNS(XLINK_NS, 'xlink:href', data);
+        }
       }else if(layer.type === 'rect'){
         node = el('rect', { x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h), rx: layer.rx ? fmt(layer.rx) : null, fill: layer.fill || 'none', 'fill-opacity': layer.fillOpacity != null ? layer.fillOpacity : null, stroke: layer.stroke || null, 'stroke-width': layer.strokeWidth ? fmt(layer.strokeWidth) : null });
       }else if(layer.type === 'text'){

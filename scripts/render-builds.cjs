@@ -269,7 +269,7 @@ const HARNESS = `<!doctype html><meta charset="utf-8"><title>render</title>
 <style>html,body{margin:0;padding:0;background:#fff}svg{display:block}</style>
 <div id="out"></div>
 ${['core', 'awards', 'grades', 'compose'].map(f => `<script src="/js/engine/${f}.js"></script>`).join('\n')}
-<script src="/data/ribbon-awards.js"></script><script src="/data/badge-catalog.js"></script>
+<script src="/data/ribbon-awards.js"></script><script src="/data/badge-catalog.js"></script><script src="/data/military-badge-sizes.js"></script>
 ${['profiles', 'profiles-field', 'profiles-dress', 'measure-layout', 'render-svg'].map(f => `<script src="/js/engine/${f}.js"></script>`).join('\n')}
 <script>
 window.__warnings = [];
