@@ -15,7 +15,19 @@ function build(){
   const manifest = JSON.parse(manifestText);
   // Version stamp for artwork URLs: a changed manifest gives a changed query, so edge caches (Cloudflare
   // keeps SVGs for hours) never serve an older copy of an asset after a deploy.
-  const version = crypto.createHash('md5').update(manifestText).digest('hex').slice(0, 10);
+  // The hash covers the manifest and every file under images/, so an asset redrawn without a change to
+  // its manifest row (same id, size and anchors) still gets a new query string.
+  const h = crypto.createHash('md5').update(manifestText);
+  const images = path.join(root, 'images');
+  const walk = dir => fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name < b.name ? -1 : 1).flatMap(e => {
+    const full = path.join(dir, e.name);
+    return e.isDirectory() ? walk(full) : [full];
+  });
+  for(const file of walk(images)){
+    if(path.basename(file) === 'MANIFEST.json') continue;
+    h.update(path.relative(images, file)).update(fs.readFileSync(file));
+  }
+  const version = h.digest('hex').slice(0, 10);
   const index = {};
   for(const a of manifest.assets || []) index[a.id] = a.path;
   const lines = Object.keys(index).sort().map(id => `  ${JSON.stringify(id)}: ${JSON.stringify(index[id])}`);
