@@ -32,9 +32,12 @@ const NAME = { first: 'Pat', last: 'Doe', show: true };
 const hb = (uniform, gender, membership, rank, opt, cord) => Object.assign(HARNESS.makeBuild({ uniform, gender, membership, rank, name: NAME, opt: Object.assign({ rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' }, opt || {}) }), { cord });
 
 const CORD_MEETS_STRAP = 0.02;
-// The sheets whose cord starts past the strap by more than that (measured after the 1.2x rescale; art follow-up in
-// .scratch/FOLLOWUPS.md: move cord_start to the strap's outer corner). The bound is the measured gap, so it cannot grow unseen.
-const KNOWN_STRAP_GAP = { 'garment-blues-class-b-shirt-male': 0.1, 'garment-blues-class-b-shirt-male-long': 0.13, 'garment-blues-class-b-blouse-female': 0.04 };
+// The sheets whose cord starts past the strap by more than that. The bound is the measured gap (a little over), so it cannot grow unseen. Since the art
+// round that redrew the Class B straps (84f10ebe) and regenerated their cords to the finished seam (d735a305) the cap meets the strap to 0.000 (men's short),
+// 0.005 (men's long) and 0.014 in (women's short): the three entries the old straps needed (0.10, 0.13, 0.04) are gone. The women's long blouse's cord is
+// regenerated to the new seam and its cap corner lies 0.028 in off the strap's outer top corner (the strap the sheet draws, its plain overlay and its
+// epaulet_left landmark are the same polygon, so the gap is the art's: LIVE8-5, art follow-up in .scratch/FOLLOWUPS.md: move the cord's start 0.03 in toward the strap).
+const KNOWN_STRAP_GAP = { 'garment-blues-class-b-blouse-female-long': 0.03 };
 const TOL = 0.02;
 const KINDS = ['group', 'wing', 'region', 'national', 'color-guard', 'honor-guard', 'aide-de-camp'];
 // [garment id, uniform, gender, opt]
@@ -123,12 +126,17 @@ test('the cord\'s start meets the epaulet strap: the engine\'s strip on the Clas
       const o = l.origin || { x: l.x, y: l.y };
       strap = [[l.x, l.y], [l.x + l.w, l.y], [l.x + l.w, l.y + l.h], [l.x, l.y + l.h]].map(([x, y]) => { const q = core.rotatePoint({ x, y }, o, l.rotate || 0); return [q.x, q.y]; });
     } else {
-      // The strap as the sheet draws it (the plain epaulet overlay's left body), a little outside the epaulet landmark.
-      const eid = `${gid}-epaulet-plain`, svg = read(eid);
+      // The strap as the sheet draws it (its own epaulet-left-strap path, the one the member sees under the cord; the plain epaulet overlay's left body and the
+      // epaulet_left landmark are the same polygon, which the next assertion pins).
+      const svg = read(gid);
       const t = svg.match(/__art" transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/);
-      const body = svg.match(/id="[^"]*epaulet-plain-left-body" d="([^"]+)"/);
-      assert.ok(t && body, `${eid}: art transform and left strap body`);
+      const body = svg.match(new RegExp(`id="${gid}__epaulet-left-strap" d="([^"]+)"`));
+      assert.ok(t && body, `${gid}: art transform and the drawn left strap`);
       strap = body[1].match(/[ML][-\d.]+,[-\d.]+/g).map(c => c.slice(1).split(',').map(Number)).map(([x, y]) => [(Number(t[1]) + Number(t[3]) * x) / 100, (Number(t[2]) + Number(t[3]) * y) / 100]);
+    }
+    if(uniform !== 'blues_a'){
+      const lm = spec(gid).landmarks.epaulet_left.map(([x, y]) => [x / 100, y / 100]);
+      assert.ok(strap.every(p => polyDist(p, lm) <= 0.03) && lm.every(p => polyDist(p, strap) <= 0.03), `${gid}: the drawn strap is the epaulet_left landmark`);
     }
     const gap = Math.min(...cap.map(p => polyDist(p, strap)));
     assert.ok(gap <= (KNOWN_STRAP_GAP[gid] || CORD_MEETS_STRAP), `${gid}: the cord's start cap is ${gap.toFixed(3)} in from the strap`);
