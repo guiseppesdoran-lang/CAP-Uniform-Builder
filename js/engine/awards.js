@@ -330,7 +330,9 @@
   const DEVICE_EDGE_COLOR = '#1a1a1a';
   const DEVICE_EDGE_OPACITY = 0.7;
   // Multiplier on every RGB channel: silver is darker than the white and light-blue ribbons, bronze a darker bronze.
-  const DEVICE_TONE = Object.freeze({ silver: 0.72, bronze: 0.74, gold: 0.8 });
+  // Silver 0.88: Ethan, 2026-10-26, "the color of the silver star needs to be lighter" (it was 0.72, which read as pewter);
+  // the dark edge and the opaque base still keep it off a white ribbon.
+  const DEVICE_TONE = Object.freeze({ silver: 0.88, bronze: 0.74, gold: 0.8 });
   function darkenHex(hex, f){
     const n = parseInt(hex.slice(1), 16);
     const c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(v => Math.max(0, Math.min(255, Math.round(v * f))));

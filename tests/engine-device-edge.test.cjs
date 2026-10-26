@@ -60,7 +60,7 @@ test('silver is darker than a white ribbon, bronze darker than before, gold dark
   }
   const silver = A.deviceInner(load('device-star-silver.svg').inner, 100);
   const lightest = Math.max(...[...silver.matchAll(/fill="(#[0-9a-f]{6})" opacity="0\.9"/g)].map(m => lum(m[1])));
-  assert.ok(lightest < 0.75, `the silver star's lightest facet (${lightest.toFixed(2)}) stays darker than a white ribbon`);
+  assert.ok(lightest < 0.92 && lightest > 0.8, `the silver star's lightest facet (${lightest.toFixed(2)}) is a light silver (0.88 tone), still darker than a white ribbon`);
 });
 
 test('the renderer draws every device layer from the edged copy', () => {
