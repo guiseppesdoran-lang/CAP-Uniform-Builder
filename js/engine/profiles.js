@@ -158,7 +158,21 @@
     let top = points[0];
     for(const p of points) if(p.y < top.y) top = p;
     if(top === edge.collarPoint || top === edge.rollEnd) return points;
+    // The roll line is a chord of the polygon (the band between it and the neck opening lies beyond it). The aviator shirts' pointed collar (LIVE8-1) states the leaf alone: its neck edge is a
+    // curve that cuts across the chord top vertex -> roll end, so the chord's middle lies outside the polygon and the whole polygon is the leaf.
+    const mid = { x: (top.x + edge.rollEnd.x) / 2, y: (top.y + edge.rollEnd.y) / 2 };
+    if(!pointInPolygon(mid, points)) return points;
     return [top, edge.collarPoint, edge.rollEnd];
+  }
+
+  // Whether a point (inches) lies inside a polygon given as points [{x, y}] (even-odd).
+  function pointInPolygon(p, points){
+    let c = false;
+    for(let i = 0, j = points.length - 1; i < points.length; j = i++){
+      const a = points[i], b = points[j];
+      if((a.y > p.y) !== (b.y > p.y) && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x) c = !c;
+    }
+    return c;
   }
 
   // Where and how a collar chevron sits on a leading edge { collarPoint, rollEnd, inward }: its axis

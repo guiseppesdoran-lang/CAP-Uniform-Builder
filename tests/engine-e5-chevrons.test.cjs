@@ -244,10 +244,12 @@ const COLLAR_CASES = [
   ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long', 1, 2, true],
   ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female', 1, 2, true],
   ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 1, 2, true],
-  ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male', 1, 2, true],
-  ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long', 1, 2, false],   // the long sheets draw the closed collar (tie worn): a leaf of its own, no roll line
-  ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female', 1, 2, true],
-  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long', 3, 2, false],   // closed collar: the leaf is top, inner top, junction, collar point; the bottom edge runs junction -> collar point
+  // The aviator sheets' pointed collar (art bb1b47a0, LIVE8-1): the polygon is the leaf alone, vertices top end 0, collar point 1, the leading edge's other end 2 (the knot's shoulder on the men's, the front of
+  // the neck on the women's), then the neck edge as a curve back to the top end. No roll line lies inside it, so the whole polygon is the leaf, on the short sheets and the long.
+  ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male', 1, 2, false],
+  ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long', 1, 2, false],
+  ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female', 1, 2, false],
+  ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long', 1, 2, false],
   ['aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 'garment-overblouse-female', 4, 3, false],
   ['aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long', 4, 3, false]
 ];
@@ -339,10 +341,14 @@ for(const [uniform, gender, opt, garment, iPoint, iRoll, roll] of COLLAR_CASES){
             // its lower edge is 2.07 in, 3.0 in on the Vanguard-photo leaf it replaced): the chevron 1 in from that edge is taller than the leaf is
             // high, so the wing ends pass the outer edge by up to 0.31 in (C/CMSgt) and the apex tip by up to 0.15 in (C/CMSgt; art
             // follow-up: the regulation size is kept, 4.2.6.2.5).
-            // The long aviator sheets draw the closed collar (the tie is worn, 4.2.5.1.4, 4.2.6.3): the leaf is the blazer under-shirt's measured proportion, 2 in wide, so the wing
-            // ends of the wider chevrons pass the outer edge by up to 0.32 in (C/CMSgt, men's) and 0.19 in (women's), the apex tip by 0.03 in (art follow-up: regulation size kept, 4.2.5.1.1.5, 4.2.6.2.5).
-            const closedCollar = /aviator-shirt-(male|female)-long$/.test(garment);
-            const limit = closedCollar ? (along2 < 0 ? 0.35 : 0.05) : !garment.includes('overblouse') ? 0.02 : along2 < 0 ? 0.32 : 0.15;
+            // The aviator shirts' pointed collar (art bb1b47a0, estimated dimensions: the regulation draws none): the leaf is a wedge 1.1 to 1.4 in wide along the leading edge at the chevron's line, narrower
+            // than the 1.5 to 1.75 in chevrons are long and than the old leaf's 1.9 in, so at the regulation size (4.2.5.1.1.5, 4.2.6.2.5) the chevron's ends pass the leaf. Measured on the four sheets, both
+            // leaves: apex tip up to 0.28 in (women's C/TSgt) and wing ends up to 0.48 in for C/Amn to C/TSgt; apex 0.59 in and wing ends 0.80 in for C/MSgt to C/CMSgt (women's C/CMSgt); the men's
+            // are 0.1 to 0.15 in less. The bounds are those maxima plus 0.02 in (art follow-up: a wider leaf; the engine keeps the rule and the size).
+            const pointed = /aviator-shirt-(male|female)(-long)?$/.test(garment);
+            const limit = pointed ? (OVERHANGING.includes(rank) ? (along2 < 0 ? 0.82 : 0.62) : (along2 < 0 ? 0.5 : 0.3))
+              : !garment.includes('overblouse') ? 0.02 : along2 < 0 ? 0.32 : 0.15;
+            if(pointed) assert.ok(inPolygon({ x: cx, y: cy }, poly), `${side}: the chevron's centre lies on the leaf`);
             assert.ok(inPolygon(pt, poly) || distToPolygon(pt, poly) < limit, `${side}: chevron point ${pt.x.toFixed(2)},${pt.y.toFixed(2)} off the leaf`);
           }
         }
