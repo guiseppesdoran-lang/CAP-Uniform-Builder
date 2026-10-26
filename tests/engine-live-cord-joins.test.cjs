@@ -265,10 +265,10 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
       const tb = b.type === 'Q' ? [b.c[0] - b.a[0], b.c[1] - b.a[1]] : [b.b[0] - b.a[0], b.b[1] - b.a[1]];
       assert.ok(angDiff(ang(ta), ang(tb)) <= 5, `${tag}: the tangent turns ${angDiff(ang(ta), ang(tb)).toFixed(1)} degrees where piece ${i - 1} meets piece ${i}`);
     }
-    // The pieces run from the top end to the end of the run under the arm (0.3 in past the armpit, straight on).
+    // The pieces run from the top end to the end of the run under the arm (0.6 in past the armpit, straight on: LIVE9-2, was 0.3).
     const under = cl.cordPath.under;
     assert.ok(Math.hypot(pieces[0].a[0] - top[0], pieces[0].a[1] - top[1]) < 1e-6 && Math.hypot(pieces[pieces.length - 1].b[0] - under[0], pieces[pieces.length - 1].b[1] - under[1]) < 1e-6, `${tag}: the pieces run from top to the end under the arm`);
-    assert.ok(Math.abs(Math.hypot(under[0] - bottom[0], under[1] - bottom[1]) - 0.3) < 1e-6, `${tag}: the run goes on 0.3 in past the armpit`);
+    assert.ok(Math.abs(Math.hypot(under[0] - bottom[0], under[1] - bottom[1]) - 0.6) < 1e-6, `${tag}: the run goes on 0.6 in past the armpit`);
     assert.ok(Math.min(...pieces.map(pc => segDist(bottom, pc.a, pc.b))) < 0.01, `${tag}: the run passes through the armpit`);
     // The top end is on the shoulder's outline as the sheet draws it; the bottom end is the armpit as the sheet draws it.
     const ring = outerRing(gid);
@@ -277,19 +277,23 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     assert.ok(Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]) <= 0.1, `${tag}: the run's bottom end is ${Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]).toFixed(3)} in from the armpit`);
     // The armpit is the notch of the silhouette, measured independently of the table: 0.05 in.
     assert.ok(Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]) <= 0.05, `${tag}: the run's armpit end is ${Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]).toFixed(3)} in from the silhouette's notch`);
-    // The last 0.3 in is behind the sleeve: the braid's band past the armpit is hidden by the silhouette (the gap or the hem is not cloth) and by
-    // the tongue that narrows to a point; at most a third of the band's area past the armpit shows (the tongue's point, 0.15 in long, and cloth on both sides of a sliver gap).
-    const vis = cl.cordPath.visible, tg = [(under[0] - bottom[0]) / 0.3, (under[1] - bottom[1]) / 0.3], nm = [-tg[1], tg[0]], sil = silhouette(read(gid));
+    // The last 0.6 in is behind the sleeve (LIVE9-2, Ethan: "cords need to go slightly more down"; it was 0.3 in with a 0.15 in tongue): the braid's band past the
+    // armpit is hidden by the silhouette (the gap or the hem is not cloth) and by the tongue, which keeps the braid's full width 0.35 in past the notch and then
+    // narrows to a point over a further 0.25 in. What shows is at most that tongue (the old limit of a third of the band was the 0.15 in tongue's), and where
+    // there is cloth under the arm the braid does go on past the notch: the share of the tongue's own area that shows is printed in the failure message.
+    const vis = cl.cordPath.visible, tg = [(under[0] - bottom[0]) / 0.6, (under[1] - bottom[1]) / 0.6], nm = [-tg[1], tg[0]], sil = silhouette(read(gid));
     assert.ok(vis && vis.length >= 5, `${tag}: the run carries the polygon of what stays visible`);
-    let shown = 0, total = 0;
-    for(let i = 0; i < 12; i++) for(let j = -8; j <= 8; j++){
-      const sd = (i + 0.5) / 12 * 0.3, w = j / 8 * 0.2, q = [bottom[0] + tg[0] * sd + nm[0] * w, bottom[1] + tg[1] * sd + nm[1] * w];
-      total++;
-      if(inRing(q, vis) && inSil(q, sil)) shown++;
-      // The tongue is as wide as the braid's remaining length under the arm: past its width nothing shows.
-      if(Math.abs(w) > 0.25 * Math.max(0, 1 - sd / 0.15) + 1e-9) assert.ok(!inRing(q, vis), `${tag}: braid at ${sd.toFixed(2)} in under, ${w.toFixed(2)} in aside is not hidden`);
+    let shown = 0, total = 0, tongue = 0;
+    for(let i = 0; i < 24; i++) for(let j = -8; j <= 8; j++){
+      const sd = (i + 0.5) / 24 * 0.6, w = j / 8 * 0.3, q = [bottom[0] + tg[0] * sd + nm[0] * w, bottom[1] + tg[1] * sd + nm[1] * w];
+      if(Math.abs(w) <= 0.2){ total++; if(inRing(q, vis) && inSil(q, sil)) shown++; if(Math.abs(w) <= 0.25 * Math.min(1, Math.max(0, (0.6 - sd) / 0.25))) tongue++; }
+      // The tongue is the braid's full width (0.25 in each side of the run's line) for 0.35 in, then narrows to a point over 0.25 in: past that width nothing shows.
+      const half = 0.25 * Math.min(1, Math.max(0, (0.6 - sd) / 0.25));
+      if(Math.abs(w) > half + 1e-9) assert.ok(!inRing(q, vis), `${tag}: braid at ${sd.toFixed(2)} in under, ${w.toFixed(2)} in aside is not hidden`);
     }
-    assert.ok(shown / total <= 0.33, `${tag}: ${(100 * shown / total).toFixed(0)} percent of the braid under the arm shows`);
+    assert.ok(shown <= tongue, `${tag}: ${(100 * shown / total).toFixed(0)} percent of the braid under the arm shows, more than the tongue's ${(100 * tongue / total).toFixed(0)}`);
+    assert.ok(tongue / total > 0.6 && tongue / total < 0.85, `${tag}: the tongue is ${(100 * tongue / total).toFixed(0)} percent of the band (0.35 in full width, 0.25 in taper of 0.6 in)`);
+    assert.ok(shown / tongue > 0.25, `${tag}: only ${(100 * shown / tongue).toFixed(0)} percent of the tongue shows: the braid does not go on past the notch`);
     // Only the straight run is stretched: the length changes by no more than 15 percent (the sheets draw no loop or tip to keep).
     assert.ok(stretch.to / stretch.from > 0.85 && stretch.to / stretch.from < 1.15, `${tag}: length ${stretch.from.toFixed(2)} to ${stretch.to.toFixed(2)} in`);
     assert.equal(cl.clipSil, gid, `${tag}: cut to the sheet's silhouette`);

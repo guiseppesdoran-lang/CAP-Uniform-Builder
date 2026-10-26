@@ -208,7 +208,8 @@
   // end shifts its arc length gives it, so the ends land on the landmarks exactly. The corners of the fitted polyline are then rounded
   // with quadratic curves that leave each corner along one segment and arrive along the next, so the cord is one smooth line (the same
   // point and tangent where the straight run meets the curve) instead of a bend.
-  const CORD_HALF = 0.25;      // half the width the braid's tongue starts with at the armpit (the braid is 0.4 in with its outline)
+  const CORD_HALF = 0.25;      // half the width of the braid under the arm (the braid is 0.4 in with its outline)
+  const CORD_TAPER = 0.25;     // the braid narrows to a point over this last stretch of its run under the arm (LIVE9-2)
   const CORD_ROUND = 1.0;      // longest stretch of a segment a corner's curve may take (in)
   const CORD_REACH = 3;        // how far along its own line the run is searched for the shoulder outline (in)
 
@@ -269,9 +270,11 @@
     });
     fitted[0] = top; fitted[n - 1] = bottom;
     const len = pts => pts.reduce((s, p, i) => s + (i ? Math.hypot(p[0] - pts[i - 1][0], p[1] - pts[i - 1][1]) : 0), 0);
-    // Under the arm (`under` inches): the run goes on past the armpit along its own direction, where the garment's silhouette and a tongue
-    // narrowing to a point hide it, so the braid dives under the arm instead of stopping. `visible` is that tongue with everything above
-    // the armpit, a polygon in sheet inches that the renderer clips the layer to.
+    // Under the arm (`under` inches): the run goes on past the armpit along its own direction, where the garment's silhouette hides what lies over
+    // the gap and a tongue hides the rest, so the braid dives under the arm instead of stopping. LIVE9-2 (Ethan: "cords need to go slightly more down"): the
+    // braid goes on at its full width until CORD_TAPER short of the end of the run, then narrows to a point over that last CORD_TAPER (0.35 in full width and
+    // 0.25 in taper for the 0.6 in the engine asks for). `visible` is that tongue with everything above the armpit, a polygon in sheet inches that the
+    // renderer clips the layer to.
     let drawn = fitted, visible = null;
     if(under > 0){
       const a = fitted[n - 2], l = Math.hypot(bottom[0] - a[0], bottom[1] - a[1]) || 1;
@@ -279,8 +282,8 @@
       const at = (u, v) => [bottom[0] + t[0] * u + nn[0] * v, bottom[1] + t[1] * u + nn[1] * v];
       const tip = at(under, 0);
       drawn = fitted.concat([tip]);
-      const point = at(under / 2, 0);
-      visible = [at(-60, -60), at(-60, 60), at(0, 60), at(0, CORD_HALF), point, at(0, -CORD_HALF), at(0, -60)];
+      const full = Math.max(0, under - CORD_TAPER);
+      visible = [at(-60, -60), at(-60, 60), at(0, 60), at(0, CORD_HALF), at(full, CORD_HALF), tip, at(full, -CORD_HALF), at(0, -CORD_HALF), at(0, -60)];
     }
     const r = roundPolyline(drawn, CORD_ROUND);
     return { points: fitted, pieces: r.pieces, d: r.d, top, bottom, under: drawn[drawn.length - 1], visible, stretch: { from: len(orig), to: len(fitted), dTop, dBottom: dBot } };
