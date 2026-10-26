@@ -944,13 +944,19 @@
   // 'shoulder cords dont line up' (the run bent where its two straight pieces met). The run is fitted to the sheet: top end on the shoulder
   // outline, bottom end on the armpit (core.fitCord stretches only the straight run), corners rounded so the line is smooth. The layer
   // carries the fitted path (`cordPath`, sheet inches) for the renderer, and is cut to the sheet's silhouette so no braid lands on the gap.
+  // Ethan, live, the Group cord: 'a real cord literally wraps around someone's seam in the front in the back, so it needs to look like
+  // that': the run ends squarely at the armpit looked like a cord that stops. It now goes on 0.3 in past the armpit, straight on, and that
+  // last stretch is hidden: by the silhouette (the gap between arm and body, or the area under the sleeve's hem, is not cloth) and by a
+  // tongue that narrows to a point 0.15 in past the armpit (`cordPath.visible`, the polygon the renderer clips the layer to), so the braid
+  // dives into the notch the way a cord goes round under the arm. The sheets draw no back, so the part on the back is not drawn.
+  const CORD_UNDER = 0.3; // the run goes on this far under the arm past the armpit and is hidden there
   function fitCordLayer(ctx, spec){
     const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
     if(!layer || !lm || !lm.points || lm.points.length < 2) return;
     const ring = GARMENT_TOP[id];
     const outline = ring ? ring.slice(1).concat([ring[0]]) : null;
-    const fit = core.fitCord(lm.points.map(p => [p.x, p.y]), outline, ARMPIT[id] || null);
-    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, stretch: fit.stretch };
+    const fit = core.fitCord(lm.points.map(p => [p.x, p.y]), outline, ARMPIT[id] || null, CORD_UNDER);
+    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, under: fit.under, visible: fit.visible, stretch: fit.stretch };
     layer.clipSil = id;
   }
 

@@ -192,6 +192,31 @@ const ringDist = (p, ring) => Math.min(...ring.map((a, i) => segDist(p, a, ring[
 const ang = v => Math.atan2(v[0], v[1]) * 180 / Math.PI;
 const angDiff = (a, b) => { let d = Math.abs(a - b) % 360; return d > 180 ? 360 - d : d; };
 
+// The notch of the garment's silhouette, measured here from the outline alone (not from the engine's table or scripts/measure-armpit.cjs):
+// where the sleeve is apart from the body the silhouette has a hole between arm and torso on the sheet's right and the notch is the apex of
+// that hole (its topmost vertex); where a short sleeve lies against the body there is no hole, and the notch is the inner end of the sleeve's
+// hem, the left end of the longest near-horizontal edge on the right half of the outline.
+function notchOf(id){
+  const rings = silhouette(read(id)).sort((a, b) => area(b) - area(a)), outer = rings[0];
+  const cx = (Math.min(...outer.map(p => p[0])) + Math.max(...outer.map(p => p[0]))) / 2;
+  const hole = rings.slice(1).find(h => h.reduce((s, p) => s + p[0], 0) / h.length > cx);
+  if(hole) return hole.reduce((a, b) => (b[1] < a[1] ? b : a));
+  // The hem: the longest chain of consecutive near-horizontal edges (rising or falling less than 0.35 in per in) on the right half of the
+  // outline above its lowest third, which is the garment's own hem; the chain's end nearest the body is the notch.
+  const ys = outer.map(p => p[1]), lowY = Math.min(...ys) + 0.66 * (Math.max(...ys) - Math.min(...ys));
+  let best = null, bl = 0, chain = [];
+  const flush = () => { if(chain.length){ const x0 = Math.min(...chain.map(p => p[0])), x1 = Math.max(...chain.map(p => p[0])); if(x1 - x0 > bl){ bl = x1 - x0; best = chain.reduce((u, v) => (v[0] < u[0] ? v : u)); } } chain = []; };
+  for(let k = 0; k < 2 * outer.length; k++){
+    const a = outer[k % outer.length], c = outer[(k + 1) % outer.length], dx = Math.abs(c[0] - a[0]), dy = Math.abs(c[1] - a[1]);
+    if(a[0] > cx && c[0] > cx && a[1] < lowY && dx > 0.01 && dy <= 0.35 * dx){ if(!chain.length || chain[chain.length - 1] !== a) chain.push(a); chain.push(c); }
+    else flush();
+  }
+  flush();
+  return best;
+}
+const inRing = (p, ring) => { let c = false; for(let i = 0, j = ring.length - 1; i < ring.length; j = i++){ const a = ring[i], b = ring[j]; if((a[1] > p[1]) !== (b[1] > p[1]) && p[0] < (b[0] - a[0]) * (p[1] - a[1]) / (b[1] - a[1]) + a[0]) c = !c; } return c; };
+const inSil = (p, rings) => rings.reduce((n, r) => n + (inRing(p, r) ? 1 : 0), 0) % 2 === 1;
+
 test('the engine\'s ARMPIT table is the armpit of the current cord sheets (regenerate with scripts/measure-armpit.cjs)', () => {
   const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
   const body = /\/\/ ARMPIT begin\n([\s\S]*?)\/\/ ARMPIT end/.exec(src);
@@ -217,12 +242,31 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
       const tb = b.type === 'Q' ? [b.c[0] - b.a[0], b.c[1] - b.a[1]] : [b.b[0] - b.a[0], b.b[1] - b.a[1]];
       assert.ok(angDiff(ang(ta), ang(tb)) <= 5, `${tag}: the tangent turns ${angDiff(ang(ta), ang(tb)).toFixed(1)} degrees where piece ${i - 1} meets piece ${i}`);
     }
-    assert.ok(Math.hypot(pieces[0].a[0] - top[0], pieces[0].a[1] - top[1]) < 1e-6 && Math.hypot(pieces[pieces.length - 1].b[0] - bottom[0], pieces[pieces.length - 1].b[1] - bottom[1]) < 1e-6, `${tag}: the pieces run from top to bottom`);
+    // The pieces run from the top end to the end of the run under the arm (0.3 in past the armpit, straight on).
+    const under = cl.cordPath.under;
+    assert.ok(Math.hypot(pieces[0].a[0] - top[0], pieces[0].a[1] - top[1]) < 1e-6 && Math.hypot(pieces[pieces.length - 1].b[0] - under[0], pieces[pieces.length - 1].b[1] - under[1]) < 1e-6, `${tag}: the pieces run from top to the end under the arm`);
+    assert.ok(Math.abs(Math.hypot(under[0] - bottom[0], under[1] - bottom[1]) - 0.3) < 1e-6, `${tag}: the run goes on 0.3 in past the armpit`);
+    assert.ok(Math.min(...pieces.map(pc => segDist(bottom, pc.a, pc.b))) < 0.01, `${tag}: the run passes through the armpit`);
     // The top end is on the shoulder's outline as the sheet draws it; the bottom end is the armpit as the sheet draws it.
     const ring = outerRing(gid);
     assert.ok(ringDist(top, ring) <= 0.1, `${tag}: the run's top end is ${ringDist(top, ring).toFixed(3)} in from the shoulder outline`);
-    const ap = armpits[gid];
+    const ap = armpits[gid], notch = notchOf(gid);
     assert.ok(Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]) <= 0.1, `${tag}: the run's bottom end is ${Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]).toFixed(3)} in from the armpit`);
+    // The armpit is the notch of the silhouette, measured independently of the table: 0.05 in.
+    assert.ok(Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]) <= 0.05, `${tag}: the run's armpit end is ${Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]).toFixed(3)} in from the silhouette's notch`);
+    // The last 0.3 in is behind the sleeve: the braid's band past the armpit is hidden by the silhouette (the gap or the hem is not cloth) and by
+    // the tongue that narrows to a point; at most a third of the band's area past the armpit shows (the tongue's point, 0.15 in long, and cloth on both sides of a sliver gap).
+    const vis = cl.cordPath.visible, tg = [(under[0] - bottom[0]) / 0.3, (under[1] - bottom[1]) / 0.3], nm = [-tg[1], tg[0]], sil = silhouette(read(gid));
+    assert.ok(vis && vis.length >= 5, `${tag}: the run carries the polygon of what stays visible`);
+    let shown = 0, total = 0;
+    for(let i = 0; i < 12; i++) for(let j = -8; j <= 8; j++){
+      const sd = (i + 0.5) / 12 * 0.3, w = j / 8 * 0.2, q = [bottom[0] + tg[0] * sd + nm[0] * w, bottom[1] + tg[1] * sd + nm[1] * w];
+      total++;
+      if(inRing(q, vis) && inSil(q, sil)) shown++;
+      // The tongue is as wide as the braid's remaining length under the arm: past its width nothing shows.
+      if(Math.abs(w) > 0.25 * Math.max(0, 1 - sd / 0.15) + 1e-9) assert.ok(!inRing(q, vis), `${tag}: braid at ${sd.toFixed(2)} in under, ${w.toFixed(2)} in aside is not hidden`);
+    }
+    assert.ok(shown / total <= 0.33, `${tag}: ${(100 * shown / total).toFixed(0)} percent of the braid under the arm shows`);
     // Only the straight run is stretched: the length changes by no more than 15 percent (the sheets draw no loop or tip to keep).
     assert.ok(stretch.to / stretch.from > 0.85 && stretch.to / stretch.from < 1.15, `${tag}: length ${stretch.from.toFixed(2)} to ${stretch.to.toFixed(2)} in`);
     assert.equal(cl.clipSil, gid, `${tag}: cut to the sheet's silhouette`);

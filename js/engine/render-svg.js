@@ -367,6 +367,15 @@
           node = g;
         }
       }
+      if(layer.cordPath && layer.cordPath.visible){
+        // The run past the armpit narrows to a point: the braid dives under the arm (sheet inches, the sheet's box at the layer's origin).
+        const cp = el('clipPath', { id: 'cordtail-' + clipIds.size + '-' + drawn.length, clipPathUnits: 'userSpaceOnUse' });
+        cp.appendChild(el('polygon', { points: layer.cordPath.visible.map(p => fmt(layer.x + p[0]) + ',' + fmt(layer.y + p[1])).join(' ') }));
+        defs.appendChild(cp);
+        const g = el('g', { 'clip-path': `url(#${cp.getAttribute('id')})` });
+        g.appendChild(node);
+        node = g;
+      }
       const wrap = el('g', {
         class: 'layer ' + (layer.className || ''),
         'data-calib-key': layer.key || null,

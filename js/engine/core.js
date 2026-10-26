@@ -208,6 +208,7 @@
   // end shifts its arc length gives it, so the ends land on the landmarks exactly. The corners of the fitted polyline are then rounded
   // with quadratic curves that leave each corner along one segment and arrive along the next, so the cord is one smooth line (the same
   // point and tangent where the straight run meets the curve) instead of a bend.
+  const CORD_HALF = 0.25;      // half the width the braid's tongue starts with at the armpit (the braid is 0.4 in with its outline)
   const CORD_ROUND = 1.0;      // longest stretch of a segment a corner's curve may take (in)
   const CORD_REACH = 3;        // how far along its own line the run is searched for the shoulder outline (in)
 
@@ -246,8 +247,9 @@
   }
 
   // `points`: the sheet's cord landmark in inches ([x, y] pairs, top first); `outline`: the garment's upper outline (an open polyline, inches) or
-  // null; `armpit`: [x, y] or null. Returns { points, pieces, d, top, bottom, stretch }.
-  function fitCord(points, outline, armpit){
+  // null; `armpit`: [x, y] or null; `under`: inches the run goes on under the arm past the armpit (0 for none).
+  // Returns { points, pieces, d, top, bottom, under (the run's last point), visible (polygon or null), stretch }.
+  function fitCord(points, outline, armpit, under){
     const orig = points.map(p => [p[0], p[1]]);
     const n = orig.length;
     const lens = [0];
@@ -267,8 +269,21 @@
     });
     fitted[0] = top; fitted[n - 1] = bottom;
     const len = pts => pts.reduce((s, p, i) => s + (i ? Math.hypot(p[0] - pts[i - 1][0], p[1] - pts[i - 1][1]) : 0), 0);
-    const r = roundPolyline(fitted, CORD_ROUND);
-    return { points: fitted, pieces: r.pieces, d: r.d, top, bottom, stretch: { from: len(orig), to: len(fitted), dTop, dBottom: dBot } };
+    // Under the arm (`under` inches): the run goes on past the armpit along its own direction, where the garment's silhouette and a tongue
+    // narrowing to a point hide it, so the braid dives under the arm instead of stopping. `visible` is that tongue with everything above
+    // the armpit, a polygon in sheet inches that the renderer clips the layer to.
+    let drawn = fitted, visible = null;
+    if(under > 0){
+      const a = fitted[n - 2], l = Math.hypot(bottom[0] - a[0], bottom[1] - a[1]) || 1;
+      const t = [(bottom[0] - a[0]) / l, (bottom[1] - a[1]) / l], nn = [-t[1], t[0]];
+      const at = (u, v) => [bottom[0] + t[0] * u + nn[0] * v, bottom[1] + t[1] * u + nn[1] * v];
+      const tip = at(under, 0);
+      drawn = fitted.concat([tip]);
+      const point = at(under / 2, 0);
+      visible = [at(-60, -60), at(-60, 60), at(0, 60), at(0, CORD_HALF), point, at(0, -CORD_HALF), at(0, -60)];
+    }
+    const r = roundPolyline(drawn, CORD_ROUND);
+    return { points: fitted, pieces: r.pieces, d: r.d, top, bottom, under: drawn[drawn.length - 1], visible, stretch: { from: len(orig), to: len(fitted), dTop, dBottom: dBot } };
   }
 
   return {
