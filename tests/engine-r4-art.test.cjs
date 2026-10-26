@@ -205,7 +205,7 @@ const shirtLayer = (scene, figure) => scene.layers.find(l => l.key === 'base:jac
 test('the aviator sheets draw one collar state: pointed leaves after the tie group (over it), no closed-collar group, the tie stated as a landmark', async () => {
   for(const [gender, sleeve, id] of AVIATOR_SHEETS){
     const spec = await store.load(id), svg = readSvg(id);
-    assert.doesNotMatch(svg, /closed-collar/, `${id}: one collar state, no closed-collar group`);
+    assert.doesNotMatch(svg, /id="[^"]*closed-collar[^"]*"/, `${id}: one collar state, no closed-collar group`); // the sheet's basis text may name the form; only a group id counts
     for(const part of ['collar-back', 'collar-right', 'collar-left']) assert.match(svg, new RegExp(`id="${id}__${part}"`), `${id}: ${part}`);
     const tieAt = svg.indexOf(`id="${id}__tie"`), collarAt = svg.indexOf(`id="${id}__collar"`);
     assert.ok(tieAt > 0 && collarAt > tieAt, `${id}: the tie group comes before the collar group, so the leaves lie over the tie`);

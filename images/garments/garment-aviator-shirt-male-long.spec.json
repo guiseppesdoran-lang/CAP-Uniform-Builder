@@ -112,12 +112,12 @@
    1007.9
   ],
   "collar_insignia_right_center": [
-   1124.53,
-   220.92
+   1155.3,
+   182.76
   ],
   "collar_insignia_left_center": [
-   1480.55,
-   220.92
+   1449.78,
+   182.76
   ]
  },
  "landmarks": {
@@ -183,7 +183,7 @@
     52.04
    ],
    [
-    1102.54,
+    982.53,
     402.03
    ],
    [
@@ -195,40 +195,40 @@
     272.03
    ],
    [
-    1254.86,
-    269.57
+    1279.49,
+    241.38
    ],
    [
-    1209.55,
-    262.25
+    1255.01,
+    212.64
    ],
    [
-    1167.26,
-    250.29
+    1229.11,
+    185.84
    ],
    [
-    1128.6,
-    233.88
+    1201.76,
+    160.94
    ],
    [
-    1094.2,
-    213.18
+    1172.97,
+    137.99
    ],
    [
-    1064.65,
-    188.4
+    1142.76,
+    116.95
    ],
    [
-    1040.59,
-    159.71
+    1111.1,
+    97.84
    ],
    [
-    1022.64,
-    127.29
+    1078.02,
+    80.65
    ],
    [
-    1011.42,
-    91.35
+    1043.5,
+    65.38
    ]
   ],
   "collar_left": [
@@ -237,7 +237,7 @@
     52.04
    ],
    [
-    1502.54,
+    1622.53,
     402.03
    ],
    [
@@ -249,40 +249,40 @@
     272.03
    ],
    [
-    1350.22,
-    269.57
+    1325.58,
+    241.38
    ],
    [
-    1395.52,
-    262.25
+    1350.06,
+    212.64
    ],
    [
-    1437.82,
-    250.29
+    1375.97,
+    185.84
    ],
    [
-    1476.47,
-    233.88
+    1403.32,
+    160.94
    ],
    [
-    1510.88,
-    213.18
+    1432.1,
+    137.99
    ],
    [
-    1540.43,
-    188.4
+    1462.32,
+    116.95
    ],
    [
-    1564.48,
-    159.71
+    1493.97,
+    97.84
    ],
    [
-    1582.44,
-    127.29
+    1527.06,
+    80.65
    ],
    [
-    1593.66,
-    91.35
+    1561.58,
+    65.38
    ]
   ],
   "tie": {
@@ -341,9 +341,16 @@
    "note": "the regulation draws no collar dimension (Fig 4.16 / 4.17 show the open camp collar worn without a tie: 4.2.5.1.9 \"undershirt will not be visible if the collar is worn open\"); a standard shirt's",
    "band_top_ends_from_centre_in": 2.95,
    "leaf_point_from_top_end_in": 3.5,
-   "leaf_point_from_centre_in": 2,
+   "leaf_point_from_centre_in": 3.2,
    "neck_opening_depth_in": 2.2,
-   "knot_shoulder_from_centre_in": 0.9
+   "knot_shoulder_from_centre_in": 0.9,
+   "front_edge_vertex_from_centre_in": 0.9,
+   "front_edge_vertex_below_front_of_neck_in": 0.78,
+   "roll_line_bow_in": -0.4,
+   "chevron_fit": {
+    "size_source": "measured",
+    "note": "LIVE8-ART 1. Fig 4.16 / 4.17, 8x, pocket 5.25 in = 354 px (67.4 px/in): the figures draw the open camp collar, top ends 3.0 in from the centre line, points 5.4-5.7 in out, free edge 2.9-3.0 in, outer edge 5.7-6.1 in (the pointed collar here is the smaller closed-collar form, AVIATOR-ART-3). The regulation-size cadet NCO chevron (Fig A5-5: 1.09 in wide, 0.71 to 1.75 in long, axis along the leading edge, near outline 1 in from it, centred) must lie on cloth: the leaf is 2.91 / 2.43 / 1.86 in across at 1.0 / 1.54 (the chevron's middle) / 2.09 in from the leading edge (was 1.16 / 0.59 / 0.20), and all eight grades clear its edges by at least 0.21 in (base-art/audit-aviator.js; before: overhang up to 0.58 in)"
+   }
   },
   "tie": {
    "group": "tie",
