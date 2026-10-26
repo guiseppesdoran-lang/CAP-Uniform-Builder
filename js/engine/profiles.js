@@ -137,42 +137,13 @@
     return { collarPoint, rollEnd, inward: best.inward };
   }
 
-  // The collar leaf proper of a collar polygon, as a point list. Figure A5-5 centres the chevron on the
-  // leaf ('centered on the collar'), not on the band between the roll line and the neck opening, which the
-  // Class B and aviator sheets include in the collar polygon. Those sheets draw the roll line from the
-  // polygon's top vertex down to the roll end of the leading edge, and the outline turns back (a reflex
-  // corner) at the roll end where it passes onto the band: the leaf is then the triangle top vertex,
-  // collar point, roll end. A polygon that is convex at the roll end (the ABU/CFU five-point leaf, the
-  // overblouse kite) has no roll line inside it: the leaf is the whole polygon. One rule, no vertex
-  // indices. `edge` is collarLeadingEdge(points, centerX).
+  // The collar leaf of a collar polygon, as a point list. Figure A5-5 centres the chevron on the leaf ('centered on the collar'). Every sheet states the leaf alone as its collar polygon:
+  // the ABU/CFU five-point leaf, the overblouse kite, the aviator shirts' pointed collar (LIVE8-1) and, since the Class B collar was rebuilt like the Class A coat's (LIVE9-ART 1: top end,
+  // shoulder vertex, collar point, the junction at the knot, the neck edge back up), the Class B shirt and blouse. The old Class B polygon also took in the band between a roll line and a
+  // neck opening, and the leaf was then a triangle cut from it; no sheet draws that any more, so the polygon is the leaf and the chevron is centred on its chord at its own line.
+  // `edge` is collarLeadingEdge(points, centerX) and is kept for the call's shape.
   function collarLeaf(points, edge){
-    if(!edge) return points;
-    const n = points.length, at = points.indexOf(edge.rollEnd);
-    if(at < 0) return points;
-    let area = 0;
-    for(let i = 0; i < n; i++){ const p = points[i], q = points[(i + 1) % n]; area += p.x * q.y - q.x * p.y; }
-    const prev = points[(at + n - 1) % n], next = points[(at + 1) % n], re = edge.rollEnd;
-    // reflex at the roll end: the turn there runs against the polygon's own winding
-    const turn = (re.x - prev.x) * (next.y - re.y) - (re.y - prev.y) * (next.x - re.x);
-    if(turn * area >= 0) return points;
-    let top = points[0];
-    for(const p of points) if(p.y < top.y) top = p;
-    if(top === edge.collarPoint || top === edge.rollEnd) return points;
-    // The roll line is a chord of the polygon (the band between it and the neck opening lies beyond it). The aviator shirts' pointed collar (LIVE8-1) states the leaf alone: its neck edge is a
-    // curve that cuts across the chord top vertex -> roll end, so the chord's middle lies outside the polygon and the whole polygon is the leaf.
-    const mid = { x: (top.x + edge.rollEnd.x) / 2, y: (top.y + edge.rollEnd.y) / 2 };
-    if(!pointInPolygon(mid, points)) return points;
-    return [top, edge.collarPoint, edge.rollEnd];
-  }
-
-  // Whether a point (inches) lies inside a polygon given as points [{x, y}] (even-odd).
-  function pointInPolygon(p, points){
-    let c = false;
-    for(let i = 0, j = points.length - 1; i < points.length; j = i++){
-      const a = points[i], b = points[j];
-      if((a.y > p.y) !== (b.y > p.y) && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x) c = !c;
-    }
-    return c;
+    return points;
   }
 
   // Where and how a collar chevron sits on a leading edge { collarPoint, rollEnd, inward }: its axis

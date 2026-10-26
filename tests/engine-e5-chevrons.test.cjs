@@ -234,16 +234,16 @@ function distToPolygon(pt, poly){
 // [uniform, gender, options, sheet, vertex of the collar point, vertex of the roll-line end, roll line] for
 // the leaf on the LEFT of the picture (the wearer's right); the right leaf mirrors it by its own polygon
 // (same vertex order: the figure's bottom edge runs between these two vertices of each leaf). `roll` is
-// true on the sheets that draw the roll line from the polygon's top vertex (vertex 0) down to the roll
-// end (Class B and aviator shirt, checked in the SVG): the polygon then also takes in the band between
-// the roll line and the neck opening, and the collar leaf proper is the triangle vertex 0, collar point,
-// roll end. The overblouse kite and the ABU/CFU five-point leaf draw no such line: the leaf is the whole
-// polygon.
+// true only for a sheet whose collar polygon also takes in a band beyond a roll line, so that the leaf is a
+// triangle cut from it; no current sheet is (LIVE9-ART 1 rebuilt the Class B collar like the Class A coat's:
+// the polygon is the leaf alone, so every sheet's leaf is the whole polygon and the chevron lies on it).
 const COLLAR_CASES = [
-  ['blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male', 1, 2, true],
-  ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long', 1, 2, true],
-  ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female', 1, 2, true],
-  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 1, 2, true],
+  // The Class B shirt and blouse (art 34f2770b, LIVE9-ART 1): top end 0, shoulder vertex 1, collar point 2, the junction at the knot 3 (the roll end: the leading edge is collar point -> junction, 3.08 in), then
+  // the neck edge back up to the top end. Men's 7 vertices, women's 8.
+  ['blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male', 2, 3, false],
+  ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long', 2, 3, false],
+  ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female', 2, 3, false],
+  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 2, 3, false],
   // The aviator sheets' pointed collar (art bb1b47a0, LIVE8-1): the polygon is the leaf alone, vertices top end 0, collar point 1, the leading edge's other end 2 (the knot's shoulder on the men's, the front of
   // the neck on the women's), then the neck edge as a curve back to the top end. No roll line lies inside it, so the whole polygon is the leaf, on the short sheets and the long.
   ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male', 1, 2, false],
@@ -369,6 +369,21 @@ test('the collar chevron turn has one sign convention on every sheet: the wearer
     seen.add(garment);
   }
   assert.equal(seen.size, new Set(COLLAR_CASES.map(c => c[3])).size);
+});
+
+// The vertex layout the cases above name is what the engine finds on its own by geometry (no vertex indices in the engine): of the leaf's edges 1 in or longer, the one whose outward normal points most
+// nearly down; its end farther from the centre line is the collar point. On the Class B sheets that is collar point -> junction at the knot (LIVE9-ART 1), on every other sheet as before.
+test('the engine finds each collar leaf\'s leading edge between the vertices the cases name, and the leaf is the whole polygon (Figure A5-5)', async () => {
+  for(const [uniform, gender, opt, garment, iPoint, iRoll] of COLLAR_CASES){
+    const spec = await store.load(garment);
+    for(const poly of collarPolygonsOf(garment, spec)){
+      const edge = P.helpers.collarLeadingEdge(poly, spec.w / 2);
+      assert.ok(edge, garment);
+      assert.equal(edge.collarPoint, poly[iPoint], `${garment}: collar point is vertex ${iPoint}`);
+      assert.equal(edge.rollEnd, poly[iRoll], `${garment}: roll end is vertex ${iRoll}`);
+      assert.equal(P.helpers.collarLeaf(poly, edge), poly, `${garment}: the polygon is the leaf`);
+    }
+  }
 });
 
 // Figure A5-5 ('shirt without necktie', male and female panels): the starred canton of the C/SSgt shield (the
