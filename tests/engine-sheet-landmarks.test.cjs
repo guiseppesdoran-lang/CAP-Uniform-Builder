@@ -1,7 +1,8 @@
 'use strict';
-// The engine reads the Class A coat's strap axis from the sheets' own specs and keeps no copy of it (the men's coat was redrawn at true scale
-// in art e1b1ab14 and the literal measured on the old sheet put the boards, grades and cord joins 0.4 to 0.9 in off). Each test moves the number
-// in the spec the engine loads and expects the scene to follow; a literal in the engine would not.
+// The engine reads the Class A coat's strap and the corporate blazers' lapel, arm seam and shoulder line from the sheets' own specs, and
+// keeps no copy of them (the men's coat was redrawn at true scale in art e1b1ab14 and every literal measured on the old sheet went stale;
+// the blazer sheets state lapel_left, arm_seam_left and shoulder_left since art ab7ab7d6). Each test moves the number in the spec the
+// engine loads and expects the scene to follow; a literal in the engine would not.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -43,8 +44,34 @@ test('Class A coat without a stated strap axis: no board is invented from a lite
   assert.ok(scene.notes.some(n => /^No artwork for the shoulder strap position/.test(n)), 'the note says the strap position is missing');
 });
 
-test('the engine keeps no literal copy of the Class A strap axis', () => {
+// The corporate semi-formal's twelve miniatures (as tests/engine-final-semi-lapel.test.cjs): the rack takes as many columns as fit between the
+// lapel and the arm seam under the shoulder line (11.2.8).
+const TWELVE = [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['air_search_and_rescue_ribbon'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
+const semi = gender => HARNESS.makeBuild({ uniform: 'semi_formal', gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, ribbonSel: TWELVE, medalSel: true, opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' } });
+const perRowMax = scene => { const rows = new Map(); scene.layers.filter(l => l.role === 'mini-drape').forEach(l => rows.set(l.y.toFixed(3), (rows.get(l.y.toFixed(3)) || 0) + 1)); return Math.max(...rows.values()); };
+
+test('corporate blazers: the miniature rack is held to the arm seam and the shoulder line the sheet states (landmarks), men\'s and women\'s', async () => {
+  for(const [sex, id] of [['male', 'garment-corporate-service-dress-blazer-male'], ['female', 'garment-corporate-service-dress-blazer-female']]){
+    const edit = (dx, dy) => storeWith((p, j) => {
+      if(p.endsWith(id + '.spec.json')){
+        j.landmarks.arm_seam_left = j.landmarks.arm_seam_left.map(([x, y]) => [x + dx, y]);
+        j.landmarks.shoulder_left = j.landmarks.shoulder_left.map(([x, y]) => [x, y + dy]);
+      }
+      return j;
+    });
+    const asShipped = await P.composeUniform(semi(sex), edit(0, 0));
+    const seamIn = await P.composeUniform(semi(sex), edit(-300, 0));
+    assert.equal(asShipped.layers.filter(l => l.role === 'mini-drape').length, 12, `${sex}: twelve miniatures`);
+    const strays = scene => scene.notes.some(n => /past the seam or the shoulder line/.test(n));
+    assert.ok(!strays(asShipped), `${sex}: the sheet as shipped holds the rack inside its arm seam and shoulder line`);
+    assert.ok(perRowMax(seamIn) < perRowMax(asShipped) || strays(seamIn), `${sex}: with the arm seam 3 in nearer the centre the rack is narrowed (${perRowMax(asShipped)} to ${perRowMax(seamIn)} to a row) or noted as straying`);
+    const lowShoulder = await P.composeUniform(semi(sex), edit(0, 600));
+    assert.ok(perRowMax(lowShoulder) < perRowMax(asShipped) || strays(lowShoulder), `${sex}: with the shoulder line 6 in lower the rack is narrowed or noted as straying`);
+  }
+});
+
+test('the engine keeps no literal copy of the blazer lapel, arm seam or shoulder line, nor of the Class A strap axis', () => {
   const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
-  assert.ok(!/\bstrapPair\b/.test(src), 'the strapPair table is gone');
+  for(const name of ['BLAZER_LAPEL_LEFT', 'BLAZER_ARM_SEAM_LEFT', 'BLAZER_SHOULDER_LEFT', 'strapPair']) assert.ok(!new RegExp('\\b' + name + '\\b').test(src), name + ' is gone');
   assert.ok(!/\[16\.5[27], ?[12]\.\d+\], ?\[20\.[02]\d?, ?\d\.\d+\]/.test(src), 'no strap axis literal');
 });

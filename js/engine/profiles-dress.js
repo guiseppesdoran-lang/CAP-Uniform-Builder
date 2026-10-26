@@ -1605,31 +1605,18 @@
     female: { garment: 'garment-corporate-service-dress-blazer-female', plate: null, underlayer: { turtleneck: 'garment-underlayer-turtleneck-female', shell: 'garment-underlayer-shell-female' }, cover: ['shirt', 'tie-tab'] }
   };
 
-  // The wearer's left lapel of each blazer sheet (the `lapel-left` path of its lapel-foreground group, in garment
-  // inches: the group's art frame translate + the path's points), used to keep the miniature medals clear of it. A
-  // sheet that states a `lapel_left` landmark polygon wins. FOLLOWUP (art): state lapel_left / lapel_right on the
-  // blazer sheets as the Class A coats do.
-  const BLAZER_LAPEL_LEFT = {
-    male: [[15.98, 1.07], [15.3, 0.95], [12.74, 15.03], [13.02, 17.07], [13.39, 16.4], [14.13, 15.06], [15.24, 13.05], [16.72, 10.37], [17.73, 8.32], [18.27, 6.9], [18.34, 6.11], [17.94, 5.94], [17.64, 5.82], [17.44, 5.73], [17.34, 5.69]],
-    female: [[9.56, 13.79], [9.99, 12.93], [10.23, 12.06], [10.46, 11.2], [10.68, 10.34], [10.89, 9.47], [11.07, 8.59], [11.22, 7.71], [11.35, 6.83], [11.47, 5.94], [11.56, 5.05], [11.65, 4.17], [11.7, 3.27], [11.71, 2.38], [11.64, 1.49], [11.56, 0.9], [11.54, 0.49], [11.88, 0.96], [12.55, 1.9], [13.18, 2.8], [13.78, 3.64], [14.19, 4.51], [14.41, 5.4], [14.11, 6.68], [13.29, 8.34], [12.45, 9.93], [11.58, 11.45], [10.71, 12.82], [9.84, 14.06], [9.41, 14.69]]
-  };
-  function blazerLapel(ctx, female){
-    const l = ctx.landmark('lapel_left');
-    return l && l.points && l.points.length > 2 ? l.points : BLAZER_LAPEL_LEFT[female ? 'female' : 'male'];
+  // The lines the miniature rack must stay inside, read from the blazer sheets' own landmarks (art ab7ab7d6; the engine kept literal copies of the
+  // men's and the women's before, traced from the same paths): the wearer's left lapel (the lapel-foreground face, a polygon), the left arm seam
+  // (the sleeve seam: the `seams` group's left armhole path, sampled), and the top edge of the left shoulder (the coat outline from the neck to the
+  // sleeve head). The miniature medals lie between the lapel and the arm seam and under the shoulder line (11.2.8, 4.2.1.4, 4.2.2.4). A sheet
+  // that does not state one has no such line and the rack is not held to it.
+  function blazerLine(ctx, name){
+    const l = ctx.landmark(name);
+    return l && l.points && l.points.length > 1 ? l.points.map(q => Array.isArray(q) ? { x: q[0], y: q[1] } : { x: q.x, y: q.y }) : null;
   }
-  // The wearer's left arm seam (sleeve seam) of each blazer sheet: the `seams` group's left armhole path in garment
-  // inches, sampled about every 0.8 in. The miniature medals lie between the lapel and this seam (11.2.8, 4.2.1.4,
-  // 4.2.2.4); the region beyond it, closed above the seam's top and to the right, is what the rack must not reach.
-  // FOLLOWUP (art): state arm_seam_left on the blazer sheets next to lapel_left.
-  const BLAZER_ARM_SEAM_LEFT = {
-    male: [[22.64,4.06],[22.66,4.74],[22.59,5.55],[22.49,6.35],[22.43,7.17],[22.34,7.97],[22.24,8.77],[22.16,9.58],[22.06,10.38],[21.95,11.18],[21.84,11.97],[21.72,12.76],[21.58,13.54],[21.44,14.31],[21.32,15.05]],
-    female: [[17.15,4.06],[17.10,4.18],[16.99,4.42],[16.84,4.77],[16.63,5.24],[16.42,5.75],[16.21,6.30],[16.01,6.88],[15.81,7.50],[15.63,8.15],[15.45,8.83],[15.29,9.55],[15.14,10.29],[15.02,11.07],[14.92,11.88],[14.84,12.71],[14.80,13.58],[14.77,14.45],[14.75,15.32],[14.76,16.19],[14.78,17.06],[14.80,17.71],[14.81,18.14],[14.82,18.36]]
-  };
-  // The top edge of the wearer's left shoulder (the coat outline from the neck to the sleeve head), in garment inches.
-  const BLAZER_SHOULDER_LEFT = {
-    male: [[15.46,1.05],[17.03,2.41],[22.29,3.69]],
-    female: [[12.55,1.35],[13.59,1.92],[14.71,2.33],[15.81,2.78],[16.83,3.38],[17.29,3.74],[17.59,4.23]]
-  };
+  function blazerLapel(ctx){
+    return blazerLine(ctx, 'lapel_left') || [];
+  }
   function lerpAt(poly, v, axis){
     // poly: [[x,y]...] monotone in `axis` (0 = x, 1 = y); the other coordinate at v, clamped to the ends.
     const k = axis, o = 1 - axis;
@@ -1642,12 +1629,13 @@
   // How far a box (x0/x1/y0/y1) lies past the arm seam or above the shoulder, in inches (0 when it is between the
   // lapel and the seam and under the shoulder line): the larger of the horizontal overshoot past the seam at the
   // box's top and bottom, and the vertical overshoot above the shoulder at its inner and outer edge.
-  function blazerOvershoot(ctx, female, bx){
-    const seam = BLAZER_ARM_SEAM_LEFT[female ? 'female' : 'male'], sh = BLAZER_SHOULDER_LEFT[female ? 'female' : 'male'];
-    const sx = y => lerpAt(seam, y, 1);
+  function blazerOvershoot(ctx, bx){
+    const seam = blazerLine(ctx, 'arm_seam_left'), sh = blazerLine(ctx, 'shoulder_left');
+    const sx = y => lerpAt((seam || []).map(q => [q.x, q.y]), y, 1);
+    const top = x => lerpAt((sh || []).map(q => [q.x, q.y]), x, 0);
     return {
-      seam: Math.max(0, bx.x1 - Math.min(sx(bx.y0), sx(bx.y1))),
-      shoulder: Math.max(0, Math.max(lerpAt(sh, bx.x0, 0), lerpAt(sh, bx.x1, 0)) - bx.y0)
+      seam: seam ? Math.max(0, bx.x1 - Math.min(sx(bx.y0), sx(bx.y1))) : 0,
+      shoulder: sh ? Math.max(0, Math.max(top(bx.x0), top(bx.x1)) - bx.y0) : 0
     };
   }
   const worseOver = (a, b) => ({ seam: Math.max(a.seam, b.seam), shoulder: Math.max(a.shoulder, b.shoulder) });
@@ -1723,7 +1711,7 @@
       // edge runs under the slot) clears the wearer's right lapel by 0.1 in. The lapel polygon is the wearer's
       // left lapel mirrored about the blazer's centre line; the tag keeps its top edge and moves outward (4.2.4.1.1.2).
       if(female && plateAt){
-        const lapelR = blazerLapel(ctx, true).map(q => Array.isArray(q) ? { x: ctx.base.w - q[0], y: q[1] } : { x: ctx.base.w - q.x, y: q.y });
+        const lapelR = blazerLapel(ctx).map(q => ({ x: ctx.base.w - q.x, y: q.y }));
         const GAP = 0.1;
         let moved = 0;
         const hits = d => C.rectHitsPolygon({ x: plateAt.x - ps.w / 2 - GAP - d, y: plateAt.y - ps.h / 2, w: ps.w + 2 * GAP, h: ps.h }, lapelR);
@@ -1785,7 +1773,7 @@
     // line) is it narrowed, one column fewer (4 to 1; 7 to 1 for a held rack) and one row more: each column count is
     // drawn, the first whose rack and badge stay within TOLERANCE of the seam and the shoulder line wins, else the one
     // that overshoots least. D8: the lapel clearance (a slide toward the arm and fewer columns for the lapel) is gone.
-    const lapelPoly = blazerLapel(ctx, female).map(q => Array.isArray(q) ? { x: q[0], y: q[1] } : { x: q.x, y: q.y });
+    const lapelPoly = blazerLapel(ctx);
     const widest = b.opt.miniStyle !== 'holding' ? 4 : 7;
     const TOLERANCE = 0.1;
     const cs = chaplain ? await ctx.spec(chaplain.art) : null;
@@ -1797,13 +1785,13 @@
       const report = {};
       const bx = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, report });
       if(!bx) break;
-      let over = report.boxes.map(q => blazerOvershoot(ctx, female, q)).reduce(worseOver, { seam: 0, shoulder: 0 });
+      let over = report.boxes.map(q => blazerOvershoot(ctx, q)).reduce(worseOver, { seam: 0, shoulder: 0 });
       let badgeAt = null;
       if(cs){
         const y = bx.y - 0.5;
         const x = cb ? cb.x : medalX;
         badgeAt = { x, y };
-        over = worseOver(over, blazerOvershoot(ctx, female, { x0: x - cs.w / 2, x1: x + cs.w / 2, y0: y - cs.h, y1: y }));
+        over = worseOver(over, blazerOvershoot(ctx, { x0: x - cs.w / 2, x1: x + cs.w / 2, y0: y - cs.h, y1: y }));
       }
       tries.push({ cols, over, badgeAt });
       ctx.layers.length = snap.layers; ctx.notes.length = snap.notes;
