@@ -689,7 +689,20 @@ header h1::after{
 .ribbonSelectorTile:has(.rbAwardSelect option:checked:not([value=""])){border-color:var(--select-line);background:var(--select-bg)}
 .ribbonAwardLabel{display:block;margin-top:var(--s2);font-size:var(--t-xs);font-weight:700;color:var(--muted)}
 .ribbonAwardLabel select.rbAwardSelect{width:100%;margin-top:var(--s1);padding:var(--s2);font-size:var(--t-sm)}
-.ribbonDeviceSummary{margin-top:6px}
+/* A ribbon tile is the same height whether or not it is picked and whether or not it carries devices (the picked line
+   and the counting rule used to add lines, so the grid reflowed and everything below jumped): the preview sits in a
+   fixed slot, the picked line in a fixed three-line area, and the counting rule is a popover over the tile. */
+.ribbonSelectorTile{position:relative}
+.ribbonSelectorTile:hover,.ribbonSelectorTile:focus-within,.ribbonSelectorTile:has(.ribbonRuleBtn[aria-expanded="true"]){z-index:3}
+.ribbonSelectorTile:not(.militaryRibbonSelectorTile) > img,
+.ribbonSelectorTile:not(.militaryRibbonSelectorTile) > svg.ribbonPreviewSvg{width:96px;height:56px;flex:none;display:block;object-fit:contain;border:0;border-radius:0;background:transparent}
+.ribbonDeviceArea{position:relative;margin-top:6px;height:calc(3 * 1.3 * var(--t-xs))}
+.ribbonDeviceArea .ribbonDeviceSummary{margin:0;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3}
+.ribbonDeviceArea.hasRule .ribbonDeviceSummary{padding-right:30px}
+.ribbonRuleBtn{position:absolute;z-index:5;top:0;right:0;width:26px;height:26px;min-height:0;padding:0;margin:0;border-radius:50%;font-size:var(--t-xs);font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;background:var(--panel-2);color:var(--muted);border:1px solid var(--line-strong);cursor:pointer}
+.ribbonRuleBtn:hover,.ribbonRuleBtn[aria-expanded="true"]{color:var(--ink);border-color:var(--select-line)}
+.ribbonRulePop{position:absolute;left:0;right:0;top:0;min-height:100%;z-index:4;visibility:hidden;padding:var(--s2) 36px var(--s2) var(--s3);border:1px solid var(--line-strong);border-radius:var(--r);background:var(--panel-2);color:var(--ink);font-size:var(--t-xs);line-height:1.35;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.ribbonRuleBtn[aria-expanded="true"] + .ribbonRulePop,.ribbonRuleBtn:hover + .ribbonRulePop,.ribbonRuleBtn:focus-visible + .ribbonRulePop{visibility:visible}
 .ribbonGallerySectionTitle{
   grid-column:1 / -1;
   margin:var(--s3) 0 0;

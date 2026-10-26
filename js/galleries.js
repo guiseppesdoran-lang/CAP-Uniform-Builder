@@ -1055,6 +1055,19 @@ function buildRibbonGallery(options={}){
     const specialControls=military ? specialIds.map(deviceId=>
       `<label><input type="checkbox" class="militarySpecialDevice" data-ribbon-id="${escapeHtml(id)}" data-device-id="${escapeHtml(deviceId)}" ${(sel.specialAuthorizations || []).includes(deviceId)?'checked':''}>${escapeHtml(deviceMeta[deviceId]?.label || deviceId.replaceAll('_',' '))}</label>`
     ).join('') + (advanced ? `<label>Numeral <input type="number" class="militaryNumeralDevice" data-ribbon-id="${escapeHtml(id)}" min="0" max="99" value="${Number(sel.manualNumeral)||0}" style="width:62px" title="0 means no numeral"></label>` : '') : '';
+    // The device area is the same size whether or not the ribbon is picked and whether or not it carries devices
+    // (Ethan: "the ui keeps shifting down because tiles increase size"). The picked line is clamped to the
+    // reserved height (full text in title and in the page text); the counting rule is a "?" popover laid over
+    // the tile, never a paragraph in the flow.
+    const ruleHint = !military && window.CAPUBRibbonAwards ? CAPUBRibbonAwards.hint(id) : '';
+    const pickedLine = sel.checked
+      ? `Selected: <b>${escapeHtml(sel.awardLabel || 'Earned')}</b>${deviceSummary ? ` \u2022 ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` \u2022 ${escapeHtml(sel.deviceWarnings.join(' '))}` : ''}`
+      : '';
+    const pickedText = pickedLine.replace(/<[^>]*>/g, '');
+    const deviceArea = `<div class="ribbonDeviceArea${ruleHint ? ' hasRule' : ''}">
+          <div class="sub ribbonDeviceSummary"${pickedText ? ` title="${pickedText}"` : ''}>${pickedLine}</div>
+          ${ruleHint ? `<button type="button" class="ribbonRuleBtn" aria-expanded="false" aria-label="Counting rule for ${escapeHtml(title)}">?</button><div class="ribbonRulePop" role="note">${escapeHtml(ruleHint)}</div>` : ''}
+        </div>`;
     tile.innerHTML = `
       ${military ? `<span class="militaryRibbonArt"><img loading="lazy" decoding="async" alt="${escapeHtml(title)}"></span>` : `<img loading="lazy" decoding="async" alt="${escapeHtml(title)}">`}
       <div style="flex:1;min-width:0;">
@@ -1069,10 +1082,7 @@ function buildRibbonGallery(options={}){
           </select>
         </label>
         ${military ? `<div class="militarySpecialDeviceRow" title="Select only devices authorized on your award orders.">${specialControls}</div>` : ''}
-        ${!military && window.CAPUBRibbonAwards && CAPUBRibbonAwards.hint(id) ? `<div class="sub ribbonRuleHint">${escapeHtml(CAPUBRibbonAwards.hint(id))}</div>` : ''}
-        <div class="sub ribbonDeviceSummary">
-          ${sel.checked ? `Selected: <b>${escapeHtml(sel.awardLabel || 'Earned')}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` • ${escapeHtml(sel.deviceWarnings.join(' '))}` : ''}` : ''}
-        </div>
+        ${deviceArea}
       </div>
     `;
     const ribbonPreview = tile.querySelector('.militaryRibbonArt img, :scope > img');
@@ -1502,3 +1512,19 @@ function buildPatchGallery(){
     wrap.appendChild(tile);
   }
 }
+
+// The "?" on a ribbon tile opens that ribbon's counting rule as a popover over the tile (it never takes room in the
+// grid). One listener on the document, because the picker window is a copy of the sidebar's markup.
+document.addEventListener('click', event => {
+  const btn = event.target.closest?.('.ribbonRuleBtn');
+  document.querySelectorAll('.ribbonRuleBtn[aria-expanded="true"]').forEach(b => { if(b !== btn) b.setAttribute('aria-expanded', 'false'); });
+  if(btn) btn.setAttribute('aria-expanded', btn.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+});
+document.addEventListener('keydown', event => {
+  if(event.key !== 'Escape') return;
+  const open = document.querySelector('.ribbonRuleBtn[aria-expanded="true"]');
+  if(!open) return;
+  open.setAttribute('aria-expanded', 'false');
+  open.focus();
+  event.stopPropagation();
+}, true);
