@@ -404,7 +404,13 @@
       await Promise.all(lapelIds.map(id => fetch(assetUrl(manifestPath(id).replace(/\.svg$/, '.spec.json')), { cache: 'no-cache' })
         .then(r => (r.ok ? r.json() : null)).then(raw => { if(raw && CORE0) landmarks.set(id, CORE0.normalizeSpec({ id }, raw).landmarks); }).catch(() => null)));
       const pieces = ML.lapelPieces(scene, id => landmarks.get(id) || null);
-      const drawings = ML.layout(scene, { px, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }, pieces });
+      const drawings = ML.layout(scene, { px, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }, calloutArea: ML.calloutRoom(vb, px), pieces });
+      // The magnified insets are set outside the garment, above the figure or beside it: the frame grows to hold the ones that do not fit in it.
+      const frame = ML.frameFor(vb, drawings, px);
+      if(frame.some((v, i) => Math.abs(v - vb[i]) > 1e-9)){
+        svg.setAttribute('viewBox', frame.map(fmt).join(' '));
+        if(options.widthPx){ svg.setAttribute('width', fmt(options.widthPx)); svg.setAttribute('height', fmt(options.widthPx * frame[3] / frame[2])); }
+      }
       // The magnified insets draw copies of the layers that reach their window, as the page draws them but not as layers of their own.
       const CORE = root.CAPUBEngine && root.CAPUBEngine.core;
       const copies = win => drawn.filter(({ layer }) => layer.role !== 'measure' && layer.role !== 'clear' && (() => {

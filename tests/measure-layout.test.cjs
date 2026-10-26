@@ -38,7 +38,8 @@ async function laidOut(b){
   const vb = [B.x - 0.4, B.y - 0.4, B.w + 0.8, B.h + 0.8];
   const px = ML.previewPx(vb);
   const area = { x: vb[0], y: vb[1], w: vb[2], h: vb[3] };
-  return { scene, px, area, drawings: ML.layout(scene, { px, area }) };
+  const calloutArea = ML.calloutRoom(vb, px);
+  return { scene, px, area, calloutArea, drawings: ML.layout(scene, { px, area, calloutArea }) };
 }
 
 function overlap(a, b){
@@ -62,7 +63,7 @@ const CASES = [
 
 for(const [name, b] of CASES){
   test(`measurement labels sit clear on the ${name}`, async () => {
-    const { scene, px, area, drawings } = await laidOut(b);
+    const { scene, px, area, calloutArea, drawings } = await laidOut(b);
     assert.ok(drawings.length > 0, 'something is measured');
     const solids = ML.obstaclesOf(scene);
     const tol = (2 * px) ** 2;
@@ -79,7 +80,7 @@ for(const [name, b] of CASES){
     drawings.forEach((d, i) => {
       const L = d.label;
       const own = ownerOf(d);
-      assert.ok(overlap(L, area) > L.w * L.h - tol, `${L.text} label inside the drawing`);
+      assert.ok(overlap(L, d.callout ? calloutArea : area) > L.w * L.h - tol, `${L.text} label inside the drawing (a callout's label, inside its inset, inside the room made for it)`);
       for(const s of solids) if(s !== own) assert.ok(overlap(L, s) <= 4 * tol, `${L.text} label clear of a piece at ${s.x.toFixed(2)},${s.y.toFixed(2)}`);
       drawings.slice(i + 1).forEach(e => assert.equal(overlap(L, e.label), 0, `${L.text} and ${e.label.text} labels apart`));
     });
@@ -125,7 +126,7 @@ const EIGHTH_CASES = [
 ];
 for(const [name, b] of EIGHTH_CASES){
   test(`the 1/8 in measures on the ${name} carry a 4x callout, joined to the corner, clear of artwork and labels`, async () => {
-    const { scene, px, area, drawings } = await laidOut(b);
+    const { scene, px, area, calloutArea, drawings } = await laidOut(b);
     const eighths = drawings.filter(d => d.label.text === '⅛ in');
     assert.ok(eighths.length > 0, 'a 1/8 in measure is drawn');
     assert.ok(scene.layers.some(l => /^clear:drawn:/.test(l.key || '')), 'the sheet-drawn pieces are kept clear');
@@ -143,7 +144,7 @@ for(const [name, b] of EIGHTH_CASES){
       assert.ok(Math.hypot(tip.x - m.from.x, tip.y - m.from.y) < 3, 'leader ends at the measured piece');
       assert.ok(Math.hypot(co.real.lines[0][1].x - tip.x, co.real.lines[0][1].y - tip.y) < 1e-6 || co.kind === 'gap', 'the cut edge is outlined from the leader tip');
       // The inset and its caption cover no piece (the one it measures included) and no other label, and lie in the drawing.
-      assert.ok(overlap(co.box, area) >= co.box.w * co.box.h - 1e-6, 'inset inside the drawing');
+      assert.ok(overlap(co.box, calloutArea) >= co.box.w * co.box.h - 1e-6, 'inset inside the room made for it');
       for(const s of solids) assert.ok(overlap(co.box, grow(s, -0.25 * px)) === 0, `inset clear of a piece at ${s.x.toFixed(2)},${s.y.toFixed(2)}`);
       for(const e of drawings) if(e !== d) assert.equal(overlap(co.box, e.label), 0, `inset clear of the ${e.label.text} label`);
       // ... nor any piece the garment sheet draws itself (flag, AUX, command patch / crest, tapes, sleeve pocket and loop outlines).
@@ -386,4 +387,49 @@ test('MEAS3: the stacked-badge build keeps its 1/2 in lines off the badges and i
   const { scene, drawings, solids } = await laidOutWithPieces(b);
   assert.deepEqual(crossings(drawings, solids, 'stacked badges', scene), []);
   checkAttached(scene, drawings, 'stacked badges');
+});
+
+// ---- FIELD7-4: the magnified callouts lie outside the garment, the hats and the flat sleeves ----
+// Ethan: "all magnifying glasses throughout the board shouldn't overlap with the uniform or hat, should be above or to the side." The circle and its
+// caption are set off the cloth of the sheet (its footprint, GARMENT_FOOTPRINT) and off every hat view and sleeve flat; the leader line may cross cloth.
+test('FIELD7-4: the footprint table in the engine is the one scripts/measure-garment-footprint.cjs makes from the sheets', () => {
+  const t = require('../scripts/measure-garment-footprint.cjs').compute();
+  assert.deepEqual(Object.keys(ML.GARMENT_FOOTPRINT).sort(), Object.keys(t).sort());
+  for(const id of Object.keys(t)) assert.deepEqual(ML.GARMENT_FOOTPRINT[id], t[id], `${id}: regenerate GARMENT_FOOTPRINT (node scripts/measure-garment-footprint.cjs)`);
+});
+
+test('FIELD7-4: every garment sheet the matrix draws has a footprint', async () => {
+  const RB = require('../scripts/render-builds.cjs');
+  const seen = new Set();
+  for(const b of RB.matrix().builds){
+    const scene = await P.composeUniform(RB.makeBuild(b.build), store());
+    scene.layers.filter(l => l.role === 'garment' && l.type === 'asset').forEach(l => seen.add(l.id));
+  }
+  for(const id of seen) assert.ok(ML.GARMENT_FOOTPRINT[id], `${id} has a footprint`);
+});
+
+test('FIELD7-4: on every build of the standard matrix, no callout circle or caption touches the garment\'s cloth, a hat view, a hat or a flat sleeve; all are placed clear of pieces and labels', async () => {
+  const RB = require('../scripts/render-builds.cjs');
+  let callouts = 0;
+  for(const b of RB.matrix().builds){
+    const scene = await P.composeUniform(RB.makeBuild(b.build), store());
+    const B = scene.bounds, vb = [B.x - 0.4, B.y - 0.4, B.w + 0.8, B.h + 0.8], px = ML.previewPx(vb);
+    const area = { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }, calloutArea = ML.calloutRoom(vb, px);
+    const drawings = ML.layout(scene, { px, area, calloutArea });
+    const cloth = ML.clothBoxes(scene);
+    assert.ok(cloth.length > 0, `${b.name}: the sheet's cloth is known`);
+    const views = scene.layers.filter(l => l.type !== 'measure' && ['hat', 'hat-view', 'sleeve-flat'].includes(l.role)).map(l => l.obstacle || core.layerBounds(l));
+    for(const d of drawings.filter(x => x && x.callout)){
+      callouts++;
+      const co = d.callout;
+      assert.ok(co.hard && co.offCloth, `${b.name} ${d.label.text}: placed off the cloth with the leader clear of pieces`);
+      for(const c of cloth) assert.equal(overlap(co.box, c), 0, `${b.name} ${d.label.text}: callout over the cloth at ${c.x.toFixed(1)},${c.y.toFixed(1)}`);
+      for(const v of views) assert.equal(overlap(co.box, v), 0, `${b.name} ${d.label.text}: callout over a hat or flat sleeve`);
+      assert.ok(overlap(co.box, calloutArea) >= co.box.w * co.box.h - 1e-6, `${b.name}: inside the room made for it`);
+      // The frame the renderer takes holds it.
+      const fr = ML.frameFor(vb, drawings, px);
+      assert.ok(co.box.x >= fr[0] - 1e-9 && co.box.y >= fr[1] - 1e-9 && co.box.x + co.box.w <= fr[0] + fr[2] + 1e-9 && co.box.y + co.box.h <= fr[1] + fr[3] + 1e-9, `${b.name}: inside the frame`);
+    }
+  }
+  assert.ok(callouts >= 50, `${callouts} callouts checked`);
 });
