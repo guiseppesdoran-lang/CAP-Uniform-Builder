@@ -232,3 +232,60 @@ test('the renderer draws a centre mark as an unfilled ring on the dark halo, wit
   delete global.document;
   if(!hadSelf) delete global.self;
 });
+
+// ---- LIVE6-2: a label stays attached to its own dimension ----
+// Ethan, on the women's Class A cadet NCO: "the 1/2 inch placement here doesnt make any sense". The two badges stacked above the ribbons
+// are measured 1/2 in apart on the line between them; both sides of that line are badges, so the label was carried 2 label heights along
+// the line's axis, to where the lapel's dashed seam line runs, and read as a measure of the lapel. A label's box now lies within one
+// label height of the middle of its dimension line (the offset line, where the line was moved off the artwork); where no clear spot
+// exists that near, the dimension line itself moves out, with its extension lines perpendicular to the measured edges. A label has no
+// leader: it sits against its own line.
+const lineMid = d => ({ x: (d.dim[0].x + d.dim[1].x) / 2, y: (d.dim[0].y + d.dim[1].y) / 2 });
+function checkAttached(scene, drawings, tag){
+  for(const d of drawings){
+    assert.ok(!d.leader, `${tag}: a label has no leader, it sits against its own line`);
+    if(d.callout) continue;   // the 1/8 in callouts (b750eb14, 0e4d69e7) have their own circle, caption and leader
+    const m = scene.layers.find(l => l.type === 'measure' && l.key === d.key);
+    const radius = ML.LABEL_RADIUS * d.label.h;
+    const dist = ML.labelDistance(d.dim[0], d.dim[1], d.label);
+    assert.ok(dist <= radius + 1e-9, `${tag}: '${d.label.text}' label is ${(dist / d.label.h).toFixed(2)} label heights from its dimension (${m.from.x.toFixed(2)},${m.from.y.toFixed(2)} to ${m.to.x.toFixed(2)},${m.to.y.toFixed(2)})`);
+    // An offset line keeps perpendicular extension lines back to the measured edges (a tick on the dimension's own axis is not one).
+    const u = { x: m.to.x - m.from.x, y: m.to.y - m.from.y }, ul = Math.hypot(u.x, u.y);
+    for(const [p, q] of d.ext){
+      const e = { x: q.x - p.x, y: q.y - p.y }, el = Math.hypot(e.x, e.y);
+      if(el < 1e-9 || m.opts && m.opts.reference) continue;
+      assert.ok(Math.abs((e.x * u.x + e.y * u.y) / (el * ul)) < 1e-6, `${tag}: '${d.label.text}' extension line is perpendicular to the measured edge`);
+    }
+  }
+}
+test('every label of the standard matrix lies within one label height of its dimension line', async () => {
+  const { builds } = R.matrix();
+  let n = 0;
+  for(const { name, build: spec } of builds){
+    const { scene, drawings } = await laidOut(R.makeBuild(spec));
+    checkAttached(scene, drawings, name);
+    n += drawings.length;
+  }
+  assert.ok(n > 100, `${n} labels checked`);
+});
+test('the stacked badges\' 1/2 in labels sit beside their own lines on the women\'s Class A cadet NCO, not out by the lapel seam', async () => {
+  const b = R.makeBuild({ uniform: 'blues_a', gender: 'female', membership: 'cadet', rank: 'C/SSgt', badgeIds: ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge'],
+    opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' }, ribbonSel: [['wright_brothers_award'], ['curry_achievement'], ['encampment_ribbon']] });
+  const { scene, drawings } = await laidOut(b);
+  const halves = scene.layers.filter(l => l.type === 'measure' && l.label === '½ in');
+  assert.equal(halves.length, 2, 'wings to the badge below, that badge to the ribbons');
+  for(const m of halves){
+    const d = drawings.find(x => x.key === m.key);
+    assert.ok(ML.labelDistance(d.dim[0], d.dim[1], d.label) <= d.label.h, 'label within one label height of its line');
+    // Not carried along the line's axis past its end (the old place): the label's centre is level with the line, beside it.
+    const lc = { x: d.label.x + d.label.w / 2, y: d.label.y + d.label.h / 2 };
+    assert.ok(Math.abs(lc.y - lineMid(d).y) < d.label.h / 2, 'level with the line, not above or below it');
+    // Every seam the sheet states as a landmark is kept away from: the label does not lie across the lapel's gorge seam.
+  }
+  const dr = halves.map(m => drawings.find(x => x.key === m.key));
+  assert.ok(dr[0].label.y !== dr[1].label.y && Math.abs(dr[0].label.y - dr[1].label.y) > dr[0].label.h * 0.9, 'the two labels are apart');
+  // The wings-to-badge line is the upper of the two, and its own label is the upper one.
+  const wings = halves.reduce((a, m) => (Math.min(m.from.y, m.to.y) < Math.min(a.from.y, a.to.y) ? m : a));
+  const other = halves.find(m => m !== wings);
+  assert.ok(drawings.find(x => x.key === wings.key).label.y < drawings.find(x => x.key === other.key).label.y, 'the wings label is above the other');
+});

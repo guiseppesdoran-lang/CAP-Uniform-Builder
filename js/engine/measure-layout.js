@@ -28,6 +28,10 @@
     minOffset: 10, step: 4, maxOffset: 170
   };
 
+  // How near a label stays to its own dimension line, in label heights (see labelDistance).
+  const LABEL_RADIUS = 1;
+  const SLIDE_LINES = 3;
+
   // Placed pieces the overlay keeps clear of. Garment sheets and their overlays are the cloth itself;
   // `clear` marks drawn-in pieces (a nametag on the sheet) that the profile asks to keep clear.
   const SOLID = new Set(['badge', 'grade', 'hat', 'hat-view', 'hat-device', 'sleeve-flat', 'epaulet-top', 'mini', 'mini-drape', 'mini-medal', 'nametag', 'patch', 'ribbon', 'device', 'text', 'clear']);
@@ -57,6 +61,24 @@
 
   function grow(b, e){ return { x: b.x - e, y: b.y - e, w: b.w + 2 * e, h: b.h + 2 * e }; }
   function contains(b, p){ return p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h; }
+  // Distance from a point to a box (0 inside it).
+  function pointBoxDistance(p, b){
+    return Math.hypot(Math.max(b.x - p.x, 0, p.x - b.x - b.w), Math.max(b.y - p.y, 0, p.y - b.y - b.h));
+  }
+  // Distance from the segment a-b to a box (0 where they meet).
+  function segBoxDistance(a, b, box){
+    if(contains(box, a) || contains(box, b) || insideLength(a, b, box) > 0) return 0;
+    const corners = [{ x: box.x, y: box.y }, { x: box.x + box.w, y: box.y }, { x: box.x + box.w, y: box.y + box.h }, { x: box.x, y: box.y + box.h }];
+    const toSeg = p => { const d = sub(b, a), t = Math.max(0, Math.min(1, dot(sub(p, a), d) / (dot(d, d) || 1))); return len(sub(p, add(a, mul(d, t)))); };
+    return Math.min(pointBoxDistance(a, box), pointBoxDistance(b, box), ...corners.map(toSeg));
+  }
+  // How far a label is from its own dimension line (`a` to `b`, as drawn), in the same units as the points. A label rides along a line
+  // longer than SLIDE_LINES of its own lengths (so a long line past a chevron keeps it on clear cloth) and is measured from the line itself;
+  // on a shorter line it is measured from the line's middle. Both must come to LABEL_RADIUS label heights or less.
+  function labelDistance(a, b, box){
+    const u = unit(sub(b, a)), extent = Math.abs(u.x) * box.w + Math.abs(u.y) * box.h;
+    return len(sub(b, a)) > SLIDE_LINES * extent ? segBoxDistance(a, b, box) : pointBoxDistance(mul(add(a, b), 0.5), box);
+  }
   function overlap(a, b){
     const w = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
     const h = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
@@ -371,7 +393,7 @@
       // `hard`: the label may not lie over any piece, over another label or over a dimension already drawn, and no dimension
       // may cross a label already placed (D26: every measurement readable). The first pass is hard; only where it finds
       // nothing does the cost-only search run, which accepts the least bad place.
-      const search = (solidsX, shrunkX, strict, outside, hard) => {
+      const search = (solidsX, shrunkX, strict, outside, hard, rad) => {
         const candidates = [];
         if(!o.offsetOnly) candidates.push({ side: sides[0], d: 0, inline: true });
         for(const s of sides){
@@ -433,8 +455,11 @@
 
           // The halfway tick stays in view.
           const tickAt = o.mid ? add(a, mul(u, dot(sub(o.mid, A), u))) : null;
+          // The label belongs to its own dimension: its box lies within one label height of the middle of the line as drawn (the offset
+          // line, when the line was moved off the artwork). Where no clear spot exists that near, the line is offset further, not the label.
           for(const md of modes){
             const box = { x: md.at.x - lw / 2, y: md.at.y - lh / 2, w: lw, h: lh };
+            if(rad < Infinity && labelDistance(a, b, box) > rad) continue;
             if(strict && others.some(r => overlap(box, r) > 0)) continue;
             if(outside && overlap(box, outside) > 0) continue;
             if(hard){
@@ -460,10 +485,17 @@
       };
 
       // First beside the view, label outside it (the seated cap's own measure); then, where no side is free, on its cloth.
-      let best = search(solids, shrunk, !!owner, owner, true) || search(solids, shrunk, !!owner, owner, false);
-      if(!best && owner){
-        const solids2 = solids.filter(b => !(b.x === owner.x && b.y === owner.y && b.w === owner.w && b.h === owner.h));
-        best = search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true, null);
+      // The label stays within LABEL_RADIUS label heights of its dimension (the offset line keeps moving out until it finds a clear spot that
+      // near); only if even the farthest offset has none does the old, unconstrained search run, so that no measure is dropped.
+      const near = lh * LABEL_RADIUS;
+      let best = null;
+      for(const rad of [near, Infinity]){
+        best = search(solids, shrunk, !!owner, owner, true, rad) || search(solids, shrunk, !!owner, owner, false, rad);
+        if(!best && owner){
+          const solids2 = solids.filter(b => !(b.x === owner.x && b.y === owner.y && b.w === owner.w && b.h === owner.h));
+          best = search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true, null, false, rad);
+        }
+        if(best) break;
       }
       if(!best) continue;
 
@@ -513,5 +545,5 @@
     return Math.max(vb[3] / s.h, vb[2] / s.maxW);
   }
 
-  return { layout, previewPx, obstaclesOf, textWidth, centreMark, PX, CALLOUT: CO };
+  return { layout, previewPx, obstaclesOf, textWidth, centreMark, pointBoxDistance, labelDistance, PX, CALLOUT: CO, LABEL_RADIUS, SLIDE_LINES };
 });
