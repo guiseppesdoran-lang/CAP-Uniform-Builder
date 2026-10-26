@@ -292,9 +292,19 @@
    "y": 969.5,
    "w": 412.5,
    "h": 150
+  },
+  "sleeve_flat_view": {
+   "left": {
+    "x": 3027.33,
+    "y": 348.7
+   },
+   "right": {
+    "x": -449.87,
+    "y": 348.7
+   }
   }
  },
- "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box; sleeve_flat_view {left:{x,y},right:{x,y}} is where the top_center of the flat sleeve asset <this id>-sleeve-flat-left / -right sits beside the figure (outboard of each arm, the sleeve shoulder seam point at the figure shoulder seam height, 1 in clear of the sleeve outline; it lies outside this artwork box)",
  "dimensions": {
   "coat_length_in": 32.13,
   "max_width_in": 25.27,

@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1084,
+ "count": 1112,
  "by_category": {
   "accessories": 30,
   "badges": 1,
@@ -13142,6 +13142,7 @@
     "epaulet_left",
     "collar_right",
     "collar_left",
+    "sleeve_flat_view",
     "armhole_seam_right",
     "armhole_seam_left"
    ],
@@ -13261,6 +13262,7 @@
     "epaulet_left",
     "collar_right",
     "collar_left",
+    "sleeve_flat_view",
     "armhole_seam_right",
     "armhole_seam_left"
    ],
@@ -13388,6 +13390,7 @@
     "epaulet_left",
     "collar_right",
     "collar_left",
+    "sleeve_flat_view",
     "armhole_seam_right",
     "armhole_seam_left"
    ],
@@ -13507,6 +13510,7 @@
     "epaulet_left",
     "collar_right",
     "collar_left",
+    "sleeve_flat_view",
     "armhole_seam_right",
     "armhole_seam_left"
    ],
@@ -14005,43 +14009,43 @@
     ],
     "gorge_seam_right_p1": [
      764.46,
-     402.07
+     367.07
     ],
     "gorge_seam_right_p2": [
-     1029.16,
-     439.3
+     1017.99,
+     404.3
     ],
     "gorge_seam_right_mid": [
-     896.81,
-     420.68
+     891.22,
+     385.69
     ],
     "lapel_insignia_rest_right": [
-     896.81,
-     420.68
+     891.22,
+     385.69
     ],
     "lapel_insignia_right": [
-     896.81,
-     395.68
+     891.22,
+     360.69
     ],
     "gorge_seam_left_p1": [
      1674.38,
-     402.07
+     367.07
     ],
     "gorge_seam_left_p2": [
-     1409.67,
-     439.3
+     1420.84,
+     404.3
     ],
     "gorge_seam_left_mid": [
-     1542.02,
-     420.68
+     1547.6,
+     385.69
     ],
     "lapel_insignia_rest_left": [
-     1542.02,
-     420.68
+     1547.6,
+     385.69
     ],
     "lapel_insignia_left": [
-     1542.02,
-     395.68
+     1547.6,
+     360.69
     ],
     "button_1_center": [
      1169.78,
@@ -14070,6 +14074,7 @@
     "lapel_left",
     "shirt",
     "tie_tab",
+    "sleeve_flat_view",
     "ribbon_slot"
    ],
    "has_spec": true,
@@ -14518,7 +14523,8 @@
     "lapel_left",
     "shirt",
     "tie",
-    "ribbon_slot"
+    "ribbon_slot",
+    "sleeve_flat_view"
    ],
    "has_spec": true,
    "issues": []
@@ -15020,6 +15026,7 @@
     "collar_right",
     "epaulet_left",
     "collar_left",
+    "sleeve_flat_view",
     "collar_insignia_angle_deg",
     "ribbon_slot"
    ],
@@ -15215,6 +15222,7 @@
     "collar_right",
     "epaulet_left",
     "collar_left",
+    "sleeve_flat_view",
     "collar_insignia_angle_deg",
     "ribbon_slot"
    ],
@@ -15732,6 +15740,7 @@
     "collar_right",
     "epaulet_left",
     "collar_left",
+    "sleeve_flat_view",
     "collar_insignia_angle_deg",
     "ribbon_slot"
    ],
@@ -15941,6 +15950,7 @@
     "collar_right",
     "epaulet_left",
     "collar_left",
+    "sleeve_flat_view",
     "collar_insignia_angle_deg",
     "ribbon_slot"
    ],
@@ -17478,6 +17488,7 @@
     "epaulet_left",
     "collar_right",
     "collar_left",
+    "sleeve_flat_view",
     "armhole_seam_right",
     "armhole_seam_left"
    ],
@@ -17601,6 +17612,7 @@
     "epaulet_left",
     "collar_right",
     "collar_left",
+    "sleeve_flat_view",
     "armhole_seam_right",
     "armhole_seam_left"
    ],
@@ -17686,43 +17698,43 @@
     ],
     "gorge_seam_right_p1": [
      764.46,
-     402.07
+     367.07
     ],
     "gorge_seam_right_p2": [
-     1029.16,
-     439.3
+     1017.99,
+     404.3
     ],
     "gorge_seam_right_mid": [
-     896.81,
-     420.68
+     891.22,
+     385.69
     ],
     "lapel_insignia_rest_right": [
-     896.81,
-     420.68
+     891.22,
+     385.69
     ],
     "lapel_insignia_right": [
-     896.81,
-     395.68
+     891.22,
+     360.69
     ],
     "gorge_seam_left_p1": [
      1674.38,
-     402.07
+     367.07
     ],
     "gorge_seam_left_p2": [
-     1409.67,
-     439.3
+     1420.84,
+     404.3
     ],
     "gorge_seam_left_mid": [
-     1542.02,
-     420.68
+     1547.6,
+     385.69
     ],
     "lapel_insignia_rest_left": [
-     1542.02,
-     420.68
+     1547.6,
+     385.69
     ],
     "lapel_insignia_left": [
-     1542.02,
-     395.68
+     1547.6,
+     360.69
     ],
     "button_1_center": [
      1169.78,
@@ -17746,6 +17758,7 @@
     "lapel_left",
     "shirt",
     "tie_tab",
+    "sleeve_flat_view",
     "ribbon_slot"
    ],
    "has_spec": true,
@@ -17889,7 +17902,8 @@
     "lapel_right",
     "lapel_left",
     "shirt",
-    "tie"
+    "tie",
+    "sleeve_flat_view"
    ],
    "has_spec": true,
    "issues": []
@@ -45534,6 +45548,1524 @@
     ]
    },
    "landmarks": []
+  },
+  {
+   "id": "garment-aviator-shirt-female-long-sleeve-flat-left",
+   "path": "garments/garment-aviator-shirt-female-long-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.2561,
+   "h_in": 29.7332,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-female-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.70 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 29.49 in (the straight axis is 29.00 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.47 in at its widest, 3.99 in at the elbow, 2.61 in at the cuff (0.4 in above the lower edge); flat widths: 7.02 in at its widest (the cap width, the width below the shoulder seam), 6.27 in at the elbow, 4.11 in at the cuff, i.e. 14.03 in around at the widest and 8.21 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.6.2.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 8.11 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "anchors": {
+    "top_center": [
+     362.8,
+     0
+    ],
+    "bottom_center": [
+     362.8,
+     2973.32
+    ],
+    "center": [
+     362.8,
+     1486.66
+    ],
+    "left_edge": [
+     0,
+     1486.66
+    ],
+    "right_edge": [
+     725.61,
+     1486.66
+    ],
+    "shoulder_seam_center": [
+     362.8,
+     62
+    ],
+    "cuff_center": [
+     362.8,
+     2961.32
+    ],
+    "chevron_center": [
+     362.8,
+     823.06
+    ],
+    "elbow_center": [
+     362.8,
+     1634.13
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-aviator-shirt-female-long-sleeve-flat-right",
+   "path": "garments/garment-aviator-shirt-female-long-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.2561,
+   "h_in": 29.7332,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-female-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.70 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 29.49 in (the straight axis is 29.00 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.47 in at its widest, 3.99 in at the elbow, 2.61 in at the cuff (0.4 in above the lower edge); flat widths: 7.02 in at its widest (the cap width, the width below the shoulder seam), 6.27 in at the elbow, 4.11 in at the cuff, i.e. 14.03 in around at the widest and 8.21 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.6.2.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 8.11 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "anchors": {
+    "top_center": [
+     362.8,
+     0
+    ],
+    "bottom_center": [
+     362.8,
+     2973.32
+    ],
+    "center": [
+     362.8,
+     1486.66
+    ],
+    "left_edge": [
+     0,
+     1486.66
+    ],
+    "right_edge": [
+     725.61,
+     1486.66
+    ],
+    "shoulder_seam_center": [
+     362.8,
+     62
+    ],
+    "cuff_center": [
+     362.8,
+     2961.32
+    ],
+    "chevron_center": [
+     362.8,
+     823.06
+    ],
+    "elbow_center": [
+     362.8,
+     1634.13
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-aviator-shirt-female-sleeve-flat-left",
+   "path": "garments/garment-aviator-shirt-female-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.311,
+   "h_in": 14.418,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-female (traced short sleeve; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 3.15 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 14.18 in (the straight axis is 13.80 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.50 in at its widest, 4.50 in at the hem (0.4 in above the lower edge); flat widths: 7.07 in at its widest (the cap width, the width below the shoulder seam), 7.07 in at the hem, i.e. 14.14 in around at the widest and 14.14 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.6.2.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.09 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "anchors": {
+    "top_center": [
+     365.55,
+     0
+    ],
+    "bottom_center": [
+     365.55,
+     1441.8
+    ],
+    "center": [
+     365.55,
+     720.9
+    ],
+    "left_edge": [
+     0,
+     720.9
+    ],
+    "right_edge": [
+     731.1,
+     720.9
+    ],
+    "shoulder_seam_center": [
+     365.55,
+     62
+    ],
+    "cuff_center": [
+     365.55,
+     1429.8
+    ],
+    "chevron_center": [
+     365.55,
+     720.9
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-aviator-shirt-female-sleeve-flat-right",
+   "path": "garments/garment-aviator-shirt-female-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.311,
+   "h_in": 14.418,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-female (traced short sleeve; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 3.15 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 14.18 in (the straight axis is 13.80 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.50 in at its widest, 4.50 in at the hem (0.4 in above the lower edge); flat widths: 7.07 in at its widest (the cap width, the width below the shoulder seam), 7.07 in at the hem, i.e. 14.14 in around at the widest and 14.14 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.6.2.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.09 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "anchors": {
+    "top_center": [
+     365.55,
+     0
+    ],
+    "bottom_center": [
+     365.55,
+     1441.8
+    ],
+    "center": [
+     365.55,
+     720.9
+    ],
+    "left_edge": [
+     0,
+     720.9
+    ],
+    "right_edge": [
+     731.1,
+     720.9
+    ],
+    "shoulder_seam_center": [
+     365.55,
+     62
+    ],
+    "cuff_center": [
+     365.55,
+     1429.8
+    ],
+    "chevron_center": [
+     365.55,
+     720.9
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-aviator-shirt-male-long-sleeve-flat-left",
+   "path": "garments/garment-aviator-shirt-male-long-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.221,
+   "h_in": 28.0258,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.85 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 27.79 in (the straight axis is 27.20 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.44 in at its widest, 4.28 in at the elbow, 2.65 in at the cuff (0.4 in above the lower edge); flat widths: 6.98 in at its widest (the cap width, the width below the shoulder seam), 6.72 in at the elbow, 4.17 in at the cuff, i.e. 13.96 in around at the widest and 8.33 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.64 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "anchors": {
+    "top_center": [
+     361.05,
+     0
+    ],
+    "bottom_center": [
+     361.05,
+     2802.58
+    ],
+    "center": [
+     361.05,
+     1401.29
+    ],
+    "left_edge": [
+     0,
+     1401.29
+    ],
+    "right_edge": [
+     722.1,
+     1401.29
+    ],
+    "shoulder_seam_center": [
+     361.05,
+     62
+    ],
+    "cuff_center": [
+     361.05,
+     2790.58
+    ],
+    "chevron_center": [
+     361.05,
+     776.11
+    ],
+    "elbow_center": [
+     361.05,
+     1540.22
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-aviator-shirt-male-long-sleeve-flat-right",
+   "path": "garments/garment-aviator-shirt-male-long-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.221,
+   "h_in": 28.0258,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.85 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 27.79 in (the straight axis is 27.20 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.44 in at its widest, 4.28 in at the elbow, 2.65 in at the cuff (0.4 in above the lower edge); flat widths: 6.98 in at its widest (the cap width, the width below the shoulder seam), 6.72 in at the elbow, 4.17 in at the cuff, i.e. 13.96 in around at the widest and 8.33 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.64 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "anchors": {
+    "top_center": [
+     361.05,
+     0
+    ],
+    "bottom_center": [
+     361.05,
+     2802.58
+    ],
+    "center": [
+     361.05,
+     1401.29
+    ],
+    "left_edge": [
+     0,
+     1401.29
+    ],
+    "right_edge": [
+     722.1,
+     1401.29
+    ],
+    "shoulder_seam_center": [
+     361.05,
+     62
+    ],
+    "cuff_center": [
+     361.05,
+     2790.58
+    ],
+    "chevron_center": [
+     361.05,
+     776.11
+    ],
+    "elbow_center": [
+     361.05,
+     1540.22
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-aviator-shirt-male-sleeve-flat-left",
+   "path": "garments/garment-aviator-shirt-male-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 9.0652,
+   "h_in": 13.0701,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male (traced short sleeve; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 4.10 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 12.83 in (the straight axis is 11.95 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.62 in at its widest, 5.62 in at the hem (0.4 in above the lower edge); flat widths: 8.83 in at its widest (the cap width, the width below the shoulder seam), 8.83 in at the hem, i.e. 17.65 in around at the widest and 17.65 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.42 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "anchors": {
+    "top_center": [
+     453.26,
+     0
+    ],
+    "bottom_center": [
+     453.26,
+     1307.01
+    ],
+    "center": [
+     453.26,
+     653.5
+    ],
+    "left_edge": [
+     0,
+     653.5
+    ],
+    "right_edge": [
+     906.52,
+     653.5
+    ],
+    "shoulder_seam_center": [
+     453.26,
+     62
+    ],
+    "cuff_center": [
+     453.26,
+     1295.01
+    ],
+    "chevron_center": [
+     453.26,
+     653.5
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-aviator-shirt-male-sleeve-flat-right",
+   "path": "garments/garment-aviator-shirt-male-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 9.0652,
+   "h_in": 13.0701,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male (traced short sleeve; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 4.10 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 12.83 in (the straight axis is 11.95 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.62 in at its widest, 5.62 in at the hem (0.4 in above the lower edge); flat widths: 8.83 in at its widest (the cap width, the width below the shoulder seam), 8.83 in at the hem, i.e. 17.65 in around at the widest and 17.65 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.42 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "anchors": {
+    "top_center": [
+     453.26,
+     0
+    ],
+    "bottom_center": [
+     453.26,
+     1307.01
+    ],
+    "center": [
+     453.26,
+     653.5
+    ],
+    "left_edge": [
+     0,
+     653.5
+    ],
+    "right_edge": [
+     906.52,
+     653.5
+    ],
+    "shoulder_seam_center": [
+     453.26,
+     62
+    ],
+    "cuff_center": [
+     453.26,
+     1295.01
+    ],
+    "chevron_center": [
+     453.26,
+     653.5
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-sleeve-flat-left",
+   "path": "garments/garment-blues-class-a-coat-female-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.4616,
+   "h_in": 27.347,
+   "size_source": "measured",
+   "basis": "Measured on the sheet's own sleeve (garment-blues-class-a-coat-female; outline jacket_female.webp (612x753 px) traced at 0.047 in/px, scaled x0.88 (COAT_K)), straightened, then widened from the hanging view to the flat. Length 27.11 in = the outer edge's arc length from the shoulder seam point (the top of the armhole seam) down the drawn outline to the cuff's outer corner (the sheet's vertical drop is 26.22 in). Widths: a hanging sleeve seen from the front shows its diameter (circumference / pi); laid flat it measures circumference / 2, so each flat width = the hanging width measured on the sheet (square to the sleeve axis) x pi/2 = 1.5708. Hanging widths: full cap 4.63 in (the widest up to the elbow; the hanging sleeve is hidden under the shoulder, so its drawn width at the seam itself is 0), elbow 4.24 in (55 percent of the length, 14.91 in down), cuff edge 2.66 in (corner to corner as drawn, 10.98, 28.66 to 8.33, 28.44 in the sheet's frame). Flat widths: cap 7.28 in, elbow 6.67 in, cuff 4.17 in. Cross-check: the same factor as the men's flat; the women's 40R-equivalent circumference is not cited in the regulation. Box 7.46 x 27.35 in = sleeve plus 0.12 in on every side.",
+   "anchors": {
+    "top_center": [
+     373.08,
+     0
+    ],
+    "bottom_center": [
+     373.08,
+     2734.7
+    ],
+    "center": [
+     373.08,
+     1367.35
+    ],
+    "left_edge": [
+     0,
+     1367.35
+    ],
+    "right_edge": [
+     746.16,
+     1367.35
+    ],
+    "chevron_center": [
+     373.08,
+     757.46
+    ],
+    "elbow_center": [
+     373.08,
+     1502.91
+    ],
+    "shoulder_seam_center": [
+     373.07,
+     306.79
+    ],
+    "cuff_center": [
+     373.08,
+     2722.7
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-sleeve-flat-right",
+   "path": "garments/garment-blues-class-a-coat-female-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.4616,
+   "h_in": 27.347,
+   "size_source": "measured",
+   "basis": "Measured on the sheet's own sleeve (garment-blues-class-a-coat-female; outline jacket_female.webp (612x753 px) traced at 0.047 in/px, scaled x0.88 (COAT_K)), straightened, then widened from the hanging view to the flat. Length 27.11 in = the outer edge's arc length from the shoulder seam point (the top of the armhole seam) down the drawn outline to the cuff's outer corner (the sheet's vertical drop is 26.22 in). Widths: a hanging sleeve seen from the front shows its diameter (circumference / pi); laid flat it measures circumference / 2, so each flat width = the hanging width measured on the sheet (square to the sleeve axis) x pi/2 = 1.5708. Hanging widths: full cap 4.63 in (the widest up to the elbow; the hanging sleeve is hidden under the shoulder, so its drawn width at the seam itself is 0), elbow 4.24 in (55 percent of the length, 14.91 in down), cuff edge 2.66 in (corner to corner as drawn, 10.98, 28.66 to 8.33, 28.44 in the sheet's frame). Flat widths: cap 7.28 in, elbow 6.67 in, cuff 4.17 in. Cross-check: the same factor as the men's flat; the women's 40R-equivalent circumference is not cited in the regulation. Box 7.46 x 27.35 in = sleeve plus 0.12 in on every side.",
+   "anchors": {
+    "top_center": [
+     373.08,
+     0
+    ],
+    "bottom_center": [
+     373.08,
+     2734.7
+    ],
+    "center": [
+     373.08,
+     1367.35
+    ],
+    "left_edge": [
+     0,
+     1367.35
+    ],
+    "right_edge": [
+     746.16,
+     1367.35
+    ],
+    "chevron_center": [
+     373.08,
+     757.46
+    ],
+    "elbow_center": [
+     373.08,
+     1502.91
+    ],
+    "shoulder_seam_center": [
+     373.07,
+     306.79
+    ],
+    "cuff_center": [
+     373.08,
+     2722.7
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-sleeve-flat-left",
+   "path": "garments/garment-blues-class-a-coat-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.4969,
+   "h_in": 26.93,
+   "size_source": "measured",
+   "basis": "Measured on the sheet's own sleeve (garment-blues-class-a-coat; outline jacket_male.webp (581x719 px) traced at 0.0474 in/px, scaled x1.0882 to true size (coat-scale.js)), straightened, then widened from the hanging view to the flat. Length 26.69 in = the outer edge's arc length from the shoulder seam point (the top of the armhole seam) down the drawn outline to the cuff's outer corner (the sheet's vertical drop is 26.05 in). Widths: a hanging sleeve seen from the front shows its diameter (circumference / pi); laid flat it measures circumference / 2, so each flat width = the hanging width measured on the sheet (square to the sleeve axis) x pi/2 = 1.5708. Hanging widths: full cap 4.66 in (the widest up to the elbow; the hanging sleeve is hidden under the shoulder, so its drawn width at the seam itself is 0), elbow 4.40 in (55 percent of the length, 14.68 in down), cuff edge 3.46 in (corner to corner as drawn, 11.61, 29.53 to 8.16, 29.29 in the sheet's frame). Flat widths: cap 7.32 in, elbow 6.92 in, cuff 5.43 in. Cross-check: a men's 40R service coat sleeve is about 16 in around at the bicep, so about 8 in flat; the measured cap of 7.32 in flat is a 14.6 in circumference at the sheet's fullest point, in line with it. Box 7.50 x 26.93 in = sleeve plus 0.12 in on every side.",
+   "anchors": {
+    "top_center": [
+     374.85,
+     0
+    ],
+    "bottom_center": [
+     374.85,
+     2693
+    ],
+    "center": [
+     374.85,
+     1346.5
+    ],
+    "left_edge": [
+     0,
+     1346.5
+    ],
+    "right_edge": [
+     749.69,
+     1346.5
+    ],
+    "chevron_center": [
+     374.84,
+     745.97
+    ],
+    "elbow_center": [
+     374.85,
+     1479.93
+    ],
+    "shoulder_seam_center": [
+     374.85,
+     308.93
+    ],
+    "cuff_center": [
+     374.85,
+     2681
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-sleeve-flat-right",
+   "path": "garments/garment-blues-class-a-coat-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.4969,
+   "h_in": 26.93,
+   "size_source": "measured",
+   "basis": "Measured on the sheet's own sleeve (garment-blues-class-a-coat; outline jacket_male.webp (581x719 px) traced at 0.0474 in/px, scaled x1.0882 to true size (coat-scale.js)), straightened, then widened from the hanging view to the flat. Length 26.69 in = the outer edge's arc length from the shoulder seam point (the top of the armhole seam) down the drawn outline to the cuff's outer corner (the sheet's vertical drop is 26.05 in). Widths: a hanging sleeve seen from the front shows its diameter (circumference / pi); laid flat it measures circumference / 2, so each flat width = the hanging width measured on the sheet (square to the sleeve axis) x pi/2 = 1.5708. Hanging widths: full cap 4.66 in (the widest up to the elbow; the hanging sleeve is hidden under the shoulder, so its drawn width at the seam itself is 0), elbow 4.40 in (55 percent of the length, 14.68 in down), cuff edge 3.46 in (corner to corner as drawn, 11.61, 29.53 to 8.16, 29.29 in the sheet's frame). Flat widths: cap 7.32 in, elbow 6.92 in, cuff 5.43 in. Cross-check: a men's 40R service coat sleeve is about 16 in around at the bicep, so about 8 in flat; the measured cap of 7.32 in flat is a 14.6 in circumference at the sheet's fullest point, in line with it. Box 7.50 x 26.93 in = sleeve plus 0.12 in on every side.",
+   "anchors": {
+    "top_center": [
+     374.85,
+     0
+    ],
+    "bottom_center": [
+     374.85,
+     2693
+    ],
+    "center": [
+     374.85,
+     1346.5
+    ],
+    "left_edge": [
+     0,
+     1346.5
+    ],
+    "right_edge": [
+     749.69,
+     1346.5
+    ],
+    "chevron_center": [
+     374.84,
+     745.97
+    ],
+    "elbow_center": [
+     374.85,
+     1479.93
+    ],
+    "shoulder_seam_center": [
+     374.85,
+     308.93
+    ],
+    "cuff_center": [
+     374.85,
+     2681
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-sleeve-flat-left",
+   "path": "garments/garment-blues-class-b-blouse-female-long-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.6761,
+   "h_in": 26.7946,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-blouse-female-long (long-sleeve outline measured from CAPR 39-1 Fig 4.11, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.38 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 26.55 in (the straight axis is 25.96 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.73 in at its widest, 4.60 in at the elbow, 2.73 in at the cuff (0.4 in above the lower edge); flat widths: 7.44 in at its widest (the cap width, the width below the shoulder seam), 7.22 in at the elbow, 4.29 in at the cuff, i.e. 14.87 in around at the widest and 8.58 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.12.2.3.3: \"NCOs will wear 3 ½ or 4 inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.30 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "anchors": {
+    "top_center": [
+     383.8,
+     0
+    ],
+    "bottom_center": [
+     383.8,
+     2679.46
+    ],
+    "center": [
+     383.8,
+     1339.73
+    ],
+    "left_edge": [
+     0,
+     1339.73
+    ],
+    "right_edge": [
+     767.61,
+     1339.73
+    ],
+    "shoulder_seam_center": [
+     383.8,
+     62
+    ],
+    "cuff_center": [
+     383.8,
+     2667.46
+    ],
+    "chevron_center": [
+     383.8,
+     742.25
+    ],
+    "elbow_center": [
+     383.8,
+     1472.5
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-sleeve-flat-right",
+   "path": "garments/garment-blues-class-b-blouse-female-long-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.6761,
+   "h_in": 26.7946,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-blouse-female-long (long-sleeve outline measured from CAPR 39-1 Fig 4.11, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.38 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 26.55 in (the straight axis is 25.96 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.73 in at its widest, 4.60 in at the elbow, 2.73 in at the cuff (0.4 in above the lower edge); flat widths: 7.44 in at its widest (the cap width, the width below the shoulder seam), 7.22 in at the elbow, 4.29 in at the cuff, i.e. 14.87 in around at the widest and 8.58 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.12.2.3.3: \"NCOs will wear 3 ½ or 4 inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.30 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "anchors": {
+    "top_center": [
+     383.8,
+     0
+    ],
+    "bottom_center": [
+     383.8,
+     2679.46
+    ],
+    "center": [
+     383.8,
+     1339.73
+    ],
+    "left_edge": [
+     0,
+     1339.73
+    ],
+    "right_edge": [
+     767.61,
+     1339.73
+    ],
+    "shoulder_seam_center": [
+     383.8,
+     62
+    ],
+    "cuff_center": [
+     383.8,
+     2667.46
+    ],
+    "chevron_center": [
+     383.8,
+     742.25
+    ],
+    "elbow_center": [
+     383.8,
+     1472.5
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-sleeve-flat-left",
+   "path": "garments/garment-blues-class-b-blouse-female-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 8.3599,
+   "h_in": 14.0405,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-blouse-female (traced short sleeve, widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 1.97 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 13.80 in (the straight axis is 13.33 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.17 in at its widest, 5.17 in at the hem (0.4 in above the lower edge); flat widths: 8.12 in at its widest (the cap width, the width below the shoulder seam), 8.12 in at the hem, i.e. 16.24 in around at the widest and 16.24 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.12.2.3.3: \"NCOs will wear 3 ½ or 4 inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.90 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "anchors": {
+    "top_center": [
+     418,
+     0
+    ],
+    "bottom_center": [
+     418,
+     1404.05
+    ],
+    "center": [
+     418,
+     702.03
+    ],
+    "left_edge": [
+     0,
+     702.03
+    ],
+    "right_edge": [
+     835.99,
+     702.03
+    ],
+    "shoulder_seam_center": [
+     418,
+     62
+    ],
+    "cuff_center": [
+     418,
+     1392.05
+    ],
+    "chevron_center": [
+     418,
+     702.03
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-sleeve-flat-right",
+   "path": "garments/garment-blues-class-b-blouse-female-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 8.3599,
+   "h_in": 14.0405,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-blouse-female (traced short sleeve, widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 1.97 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 13.80 in (the straight axis is 13.33 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.17 in at its widest, 5.17 in at the hem (0.4 in above the lower edge); flat widths: 8.12 in at its widest (the cap width, the width below the shoulder seam), 8.12 in at the hem, i.e. 16.24 in around at the widest and 16.24 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.12.2.3.3: \"NCOs will wear 3 ½ or 4 inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.90 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "anchors": {
+    "top_center": [
+     418,
+     0
+    ],
+    "bottom_center": [
+     418,
+     1404.05
+    ],
+    "center": [
+     418,
+     702.03
+    ],
+    "left_edge": [
+     0,
+     702.03
+    ],
+    "right_edge": [
+     835.99,
+     702.03
+    ],
+    "shoulder_seam_center": [
+     418,
+     62
+    ],
+    "cuff_center": [
+     418,
+     1392.05
+    ],
+    "chevron_center": [
+     418,
+     702.03
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-sleeve-flat-left",
+   "path": "garments/garment-blues-class-b-shirt-male-long-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.9152,
+   "h_in": 28.3694,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-shirt-male-long (long-sleeve outline measured from CAPR 39-1 Fig 4.8, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans -0.43 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 28.13 in (the straight axis is 27.56 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.89 in at its widest, 4.60 in at the elbow, 3.66 in at the cuff (0.4 in above the lower edge); flat widths: 7.68 in at its widest (the cap width, the width below the shoulder seam), 7.23 in at the elbow, 5.75 in at the cuff, i.e. 15.35 in around at the widest and 11.50 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.11.1.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.74 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "anchors": {
+    "top_center": [
+     395.76,
+     0
+    ],
+    "bottom_center": [
+     395.76,
+     2836.94
+    ],
+    "center": [
+     395.76,
+     1418.47
+    ],
+    "left_edge": [
+     0,
+     1418.47
+    ],
+    "right_edge": [
+     791.52,
+     1418.47
+    ],
+    "shoulder_seam_center": [
+     395.76,
+     62
+    ],
+    "cuff_center": [
+     395.76,
+     2824.94
+    ],
+    "chevron_center": [
+     395.76,
+     785.56
+    ],
+    "elbow_center": [
+     395.76,
+     1559.12
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-sleeve-flat-right",
+   "path": "garments/garment-blues-class-b-shirt-male-long-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.9152,
+   "h_in": 28.3694,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-shirt-male-long (long-sleeve outline measured from CAPR 39-1 Fig 4.8, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans -0.43 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 28.13 in (the straight axis is 27.56 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.89 in at its widest, 4.60 in at the elbow, 3.66 in at the cuff (0.4 in above the lower edge); flat widths: 7.68 in at its widest (the cap width, the width below the shoulder seam), 7.23 in at the elbow, 5.75 in at the cuff, i.e. 15.35 in around at the widest and 11.50 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.11.1.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.74 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "anchors": {
+    "top_center": [
+     395.76,
+     0
+    ],
+    "bottom_center": [
+     395.76,
+     2836.94
+    ],
+    "center": [
+     395.76,
+     1418.47
+    ],
+    "left_edge": [
+     0,
+     1418.47
+    ],
+    "right_edge": [
+     791.52,
+     1418.47
+    ],
+    "shoulder_seam_center": [
+     395.76,
+     62
+    ],
+    "cuff_center": [
+     395.76,
+     2824.94
+    ],
+    "chevron_center": [
+     395.76,
+     785.56
+    ],
+    "elbow_center": [
+     395.76,
+     1559.12
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-sleeve-flat-left",
+   "path": "garments/garment-blues-class-b-shirt-male-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 8.869,
+   "h_in": 13.014,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-shirt-male (traced short sleeve, widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 3.88 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 12.77 in (the straight axis is 11.97 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.49 in at its widest, 5.49 in at the hem (0.4 in above the lower edge); flat widths: 8.63 in at its widest (the cap width, the width below the shoulder seam), 8.63 in at the hem, i.e. 17.26 in around at the widest and 17.26 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.11.1.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.39 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "anchors": {
+    "top_center": [
+     443.45,
+     0
+    ],
+    "bottom_center": [
+     443.45,
+     1301.4
+    ],
+    "center": [
+     443.45,
+     650.7
+    ],
+    "left_edge": [
+     0,
+     650.7
+    ],
+    "right_edge": [
+     886.9,
+     650.7
+    ],
+    "shoulder_seam_center": [
+     443.45,
+     62
+    ],
+    "cuff_center": [
+     443.45,
+     1289.4
+    ],
+    "chevron_center": [
+     443.45,
+     650.7
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-sleeve-flat-right",
+   "path": "garments/garment-blues-class-b-shirt-male-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 8.869,
+   "h_in": 13.014,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-shirt-male (traced short sleeve, widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 3.88 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 12.77 in (the straight axis is 11.97 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.49 in at its widest, 5.49 in at the hem (0.4 in above the lower edge); flat widths: 8.63 in at its widest (the cap width, the width below the shoulder seam), 8.63 in at the hem, i.e. 17.26 in around at the widest and 17.26 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.11.1.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.39 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "anchors": {
+    "top_center": [
+     443.45,
+     0
+    ],
+    "bottom_center": [
+     443.45,
+     1301.4
+    ],
+    "center": [
+     443.45,
+     650.7
+    ],
+    "left_edge": [
+     0,
+     650.7
+    ],
+    "right_edge": [
+     886.9,
+     650.7
+    ],
+    "shoulder_seam_center": [
+     443.45,
+     62
+    ],
+    "cuff_center": [
+     443.45,
+     1289.4
+    ],
+    "chevron_center": [
+     443.45,
+     650.7
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-overblouse-female-long-sleeve-flat-left",
+   "path": "garments/garment-overblouse-female-long-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.9132,
+   "h_in": 22.1569,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-overblouse-female-long (long sleeve spliced from the traced short sleeve to the wrist, widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 13.60 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 21.92 in (the straight axis is 21.59 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.88 in at its widest, 4.23 in at the elbow, 2.30 in at the cuff (0.4 in above the lower edge); flat widths: 7.67 in at its widest (the cap width, the width below the shoulder seam), 6.64 in at the elbow, 3.61 in at the cuff, i.e. 15.35 in around at the widest and 7.23 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.6.2.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.03 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "anchors": {
+    "top_center": [
+     395.66,
+     0
+    ],
+    "bottom_center": [
+     395.66,
+     2215.69
+    ],
+    "center": [
+     395.66,
+     1107.84
+    ],
+    "left_edge": [
+     0,
+     1107.84
+    ],
+    "right_edge": [
+     791.32,
+     1107.84
+    ],
+    "shoulder_seam_center": [
+     395.66,
+     62
+    ],
+    "cuff_center": [
+     395.66,
+     2203.69
+    ],
+    "chevron_center": [
+     395.66,
+     614.71
+    ],
+    "elbow_center": [
+     395.66,
+     1217.43
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-overblouse-female-long-sleeve-flat-right",
+   "path": "garments/garment-overblouse-female-long-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.9132,
+   "h_in": 22.1569,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-overblouse-female-long (long sleeve spliced from the traced short sleeve to the wrist, widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 13.60 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 21.92 in (the straight axis is 21.59 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.88 in at its widest, 4.23 in at the elbow, 2.30 in at the cuff (0.4 in above the lower edge); flat widths: 7.67 in at its widest (the cap width, the width below the shoulder seam), 6.64 in at the elbow, 3.61 in at the cuff, i.e. 15.35 in around at the widest and 7.23 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.6.2.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.03 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "anchors": {
+    "top_center": [
+     395.66,
+     0
+    ],
+    "bottom_center": [
+     395.66,
+     2215.69
+    ],
+    "center": [
+     395.66,
+     1107.84
+    ],
+    "left_edge": [
+     0,
+     1107.84
+    ],
+    "right_edge": [
+     791.32,
+     1107.84
+    ],
+    "shoulder_seam_center": [
+     395.66,
+     62
+    ],
+    "cuff_center": [
+     395.66,
+     2203.69
+    ],
+    "chevron_center": [
+     395.66,
+     614.71
+    ],
+    "elbow_center": [
+     395.66,
+     1217.43
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-overblouse-female-sleeve-flat-left",
+   "path": "garments/garment-overblouse-female-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 11.2691,
+   "h_in": 9.1401,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-overblouse-female (traced short sleeve, widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 20.94 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 8.90 in (the straight axis is 7.91 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 7.02 in at its widest, 7.02 in at the hem (0.4 in above the lower edge); flat widths: 11.03 in at its widest (the cap width, the width below the shoulder seam), 11.03 in at the hem, i.e. 22.06 in around at the widest and 22.06 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.6.2.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 4.45 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "anchors": {
+    "top_center": [
+     563.45,
+     0
+    ],
+    "bottom_center": [
+     563.45,
+     914.01
+    ],
+    "center": [
+     563.45,
+     457.01
+    ],
+    "left_edge": [
+     0,
+     457.01
+    ],
+    "right_edge": [
+     1126.91,
+     457.01
+    ],
+    "shoulder_seam_center": [
+     563.45,
+     62
+    ],
+    "cuff_center": [
+     563.45,
+     902.01
+    ],
+    "chevron_center": [
+     563.45,
+     457.01
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-overblouse-female-sleeve-flat-right",
+   "path": "garments/garment-overblouse-female-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 11.2691,
+   "h_in": 9.1401,
+   "size_source": "estimated",
+   "basis": "Measured on the sleeve of the sheet garment-overblouse-female (traced short sleeve, widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 20.94 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 8.90 in (the straight axis is 7.91 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 7.02 in at its widest, 7.02 in at the hem (0.4 in above the lower edge); flat widths: 11.03 in at its widest (the cap width, the width below the shoulder seam), 11.03 in at the hem, i.e. 22.06 in around at the widest and 22.06 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.6.2.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 4.45 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "anchors": {
+    "top_center": [
+     563.45,
+     0
+    ],
+    "bottom_center": [
+     563.45,
+     914.01
+    ],
+    "center": [
+     563.45,
+     457.01
+    ],
+    "left_edge": [
+     0,
+     457.01
+    ],
+    "right_edge": [
+     1126.91,
+     457.01
+    ],
+    "shoulder_seam_center": [
+     563.45,
+     62
+    ],
+    "cuff_center": [
+     563.45,
+     902.01
+    ],
+    "chevron_center": [
+     563.45,
+     457.01
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-female-sleeve-flat-left",
+   "path": "garments/garment-semiformal-class-a-coat-female-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.4616,
+   "h_in": 27.347,
+   "size_source": "measured",
+   "basis": "Measured on the sheet's own sleeve (garment-semiformal-class-a-coat-female, which shares the Class A coat sheet, outline and scale; outline jacket_female.webp (612x753 px) traced at 0.047 in/px, scaled x0.88 (COAT_K)), straightened, then widened from the hanging view to the flat. Length 27.11 in = the outer edge's arc length from the shoulder seam point (the top of the armhole seam) down the drawn outline to the cuff's outer corner (the sheet's vertical drop is 26.22 in). Widths: a hanging sleeve seen from the front shows its diameter (circumference / pi); laid flat it measures circumference / 2, so each flat width = the hanging width measured on the sheet (square to the sleeve axis) x pi/2 = 1.5708. Hanging widths: full cap 4.63 in (the widest up to the elbow; the hanging sleeve is hidden under the shoulder, so its drawn width at the seam itself is 0), elbow 4.24 in (55 percent of the length, 14.91 in down), cuff edge 2.66 in (corner to corner as drawn, 10.98, 28.66 to 8.33, 28.44 in the sheet's frame). Flat widths: cap 7.28 in, elbow 6.67 in, cuff 4.17 in. Cross-check: the same factor as the men's flat; the women's 40R-equivalent circumference is not cited in the regulation. Box 7.46 x 27.35 in = sleeve plus 0.12 in on every side.",
+   "anchors": {
+    "top_center": [
+     373.08,
+     0
+    ],
+    "bottom_center": [
+     373.08,
+     2734.7
+    ],
+    "center": [
+     373.08,
+     1367.35
+    ],
+    "left_edge": [
+     0,
+     1367.35
+    ],
+    "right_edge": [
+     746.16,
+     1367.35
+    ],
+    "chevron_center": [
+     373.08,
+     757.46
+    ],
+    "elbow_center": [
+     373.08,
+     1502.91
+    ],
+    "shoulder_seam_center": [
+     373.07,
+     306.79
+    ],
+    "cuff_center": [
+     373.08,
+     2722.7
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-female-sleeve-flat-right",
+   "path": "garments/garment-semiformal-class-a-coat-female-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.4616,
+   "h_in": 27.347,
+   "size_source": "measured",
+   "basis": "Measured on the sheet's own sleeve (garment-semiformal-class-a-coat-female, which shares the Class A coat sheet, outline and scale; outline jacket_female.webp (612x753 px) traced at 0.047 in/px, scaled x0.88 (COAT_K)), straightened, then widened from the hanging view to the flat. Length 27.11 in = the outer edge's arc length from the shoulder seam point (the top of the armhole seam) down the drawn outline to the cuff's outer corner (the sheet's vertical drop is 26.22 in). Widths: a hanging sleeve seen from the front shows its diameter (circumference / pi); laid flat it measures circumference / 2, so each flat width = the hanging width measured on the sheet (square to the sleeve axis) x pi/2 = 1.5708. Hanging widths: full cap 4.63 in (the widest up to the elbow; the hanging sleeve is hidden under the shoulder, so its drawn width at the seam itself is 0), elbow 4.24 in (55 percent of the length, 14.91 in down), cuff edge 2.66 in (corner to corner as drawn, 10.98, 28.66 to 8.33, 28.44 in the sheet's frame). Flat widths: cap 7.28 in, elbow 6.67 in, cuff 4.17 in. Cross-check: the same factor as the men's flat; the women's 40R-equivalent circumference is not cited in the regulation. Box 7.46 x 27.35 in = sleeve plus 0.12 in on every side.",
+   "anchors": {
+    "top_center": [
+     373.08,
+     0
+    ],
+    "bottom_center": [
+     373.08,
+     2734.7
+    ],
+    "center": [
+     373.08,
+     1367.35
+    ],
+    "left_edge": [
+     0,
+     1367.35
+    ],
+    "right_edge": [
+     746.16,
+     1367.35
+    ],
+    "chevron_center": [
+     373.08,
+     757.46
+    ],
+    "elbow_center": [
+     373.08,
+     1502.91
+    ],
+    "shoulder_seam_center": [
+     373.07,
+     306.79
+    ],
+    "cuff_center": [
+     373.08,
+     2722.7
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-male-sleeve-flat-left",
+   "path": "garments/garment-semiformal-class-a-coat-male-sleeve-flat-left.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.4969,
+   "h_in": 26.93,
+   "size_source": "measured",
+   "basis": "Measured on the sheet's own sleeve (garment-semiformal-class-a-coat-male, which shares the Class A coat sheet, outline and scale; outline jacket_male.webp (581x719 px) traced at 0.0474 in/px, scaled x1.0882 to true size (coat-scale.js)), straightened, then widened from the hanging view to the flat. Length 26.69 in = the outer edge's arc length from the shoulder seam point (the top of the armhole seam) down the drawn outline to the cuff's outer corner (the sheet's vertical drop is 26.05 in). Widths: a hanging sleeve seen from the front shows its diameter (circumference / pi); laid flat it measures circumference / 2, so each flat width = the hanging width measured on the sheet (square to the sleeve axis) x pi/2 = 1.5708. Hanging widths: full cap 4.66 in (the widest up to the elbow; the hanging sleeve is hidden under the shoulder, so its drawn width at the seam itself is 0), elbow 4.40 in (55 percent of the length, 14.68 in down), cuff edge 3.46 in (corner to corner as drawn, 11.61, 29.53 to 8.16, 29.29 in the sheet's frame). Flat widths: cap 7.32 in, elbow 6.92 in, cuff 5.43 in. Cross-check: a men's 40R service coat sleeve is about 16 in around at the bicep, so about 8 in flat; the measured cap of 7.32 in flat is a 14.6 in circumference at the sheet's fullest point, in line with it. Box 7.50 x 26.93 in = sleeve plus 0.12 in on every side.",
+   "anchors": {
+    "top_center": [
+     374.85,
+     0
+    ],
+    "bottom_center": [
+     374.85,
+     2693
+    ],
+    "center": [
+     374.85,
+     1346.5
+    ],
+    "left_edge": [
+     0,
+     1346.5
+    ],
+    "right_edge": [
+     749.69,
+     1346.5
+    ],
+    "chevron_center": [
+     374.84,
+     745.97
+    ],
+    "elbow_center": [
+     374.85,
+     1479.93
+    ],
+    "shoulder_seam_center": [
+     374.85,
+     308.93
+    ],
+    "cuff_center": [
+     374.85,
+     2681
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
+  },
+  {
+   "id": "garment-semiformal-class-a-coat-male-sleeve-flat-right",
+   "path": "garments/garment-semiformal-class-a-coat-male-sleeve-flat-right.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 7.4969,
+   "h_in": 26.93,
+   "size_source": "measured",
+   "basis": "Measured on the sheet's own sleeve (garment-semiformal-class-a-coat-male, which shares the Class A coat sheet, outline and scale; outline jacket_male.webp (581x719 px) traced at 0.0474 in/px, scaled x1.0882 to true size (coat-scale.js)), straightened, then widened from the hanging view to the flat. Length 26.69 in = the outer edge's arc length from the shoulder seam point (the top of the armhole seam) down the drawn outline to the cuff's outer corner (the sheet's vertical drop is 26.05 in). Widths: a hanging sleeve seen from the front shows its diameter (circumference / pi); laid flat it measures circumference / 2, so each flat width = the hanging width measured on the sheet (square to the sleeve axis) x pi/2 = 1.5708. Hanging widths: full cap 4.66 in (the widest up to the elbow; the hanging sleeve is hidden under the shoulder, so its drawn width at the seam itself is 0), elbow 4.40 in (55 percent of the length, 14.68 in down), cuff edge 3.46 in (corner to corner as drawn, 11.61, 29.53 to 8.16, 29.29 in the sheet's frame). Flat widths: cap 7.32 in, elbow 6.92 in, cuff 5.43 in. Cross-check: a men's 40R service coat sleeve is about 16 in around at the bicep, so about 8 in flat; the measured cap of 7.32 in flat is a 14.6 in circumference at the sheet's fullest point, in line with it. Box 7.50 x 26.93 in = sleeve plus 0.12 in on every side.",
+   "anchors": {
+    "top_center": [
+     374.85,
+     0
+    ],
+    "bottom_center": [
+     374.85,
+     2693
+    ],
+    "center": [
+     374.85,
+     1346.5
+    ],
+    "left_edge": [
+     0,
+     1346.5
+    ],
+    "right_edge": [
+     749.69,
+     1346.5
+    ],
+    "chevron_center": [
+     374.84,
+     745.97
+    ],
+    "elbow_center": [
+     374.85,
+     1479.93
+    ],
+    "shoulder_seam_center": [
+     374.85,
+     308.93
+    ],
+    "cuff_center": [
+     374.85,
+     2681
+    ]
+   },
+   "landmarks": [
+    "shoulder_seam",
+    "outer_edge",
+    "elbow",
+    "cuff",
+    "chevron_center"
+   ]
   }
  ],
  "scope": "Non-military set only. Military ribbons, medals, badges and ROTC/JROTC ribbons are imported later."

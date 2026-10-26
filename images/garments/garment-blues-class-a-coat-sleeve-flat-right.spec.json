@@ -1,0 +1,215 @@
+{
+ "asset_id": "garment-blues-class-a-coat-sleeve-flat-right",
+ "name": "Men's Class A service dress coat, wearer's right sleeve laid flat (outer arm toward the viewer, plain Class A cuff, no braid), for NCO chevrons",
+ "size_in": {
+  "w": 7.4969,
+  "h": 26.93
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  749.69,
+  2693
+ ],
+ "size_source": "measured",
+ "size_basis": "Measured on the sheet's own sleeve (garment-blues-class-a-coat; outline jacket_male.webp (581x719 px) traced at 0.0474 in/px, scaled x1.0882 to true size (coat-scale.js)), straightened, then widened from the hanging view to the flat. Length 26.69 in = the outer edge's arc length from the shoulder seam point (the top of the armhole seam) down the drawn outline to the cuff's outer corner (the sheet's vertical drop is 26.05 in). Widths: a hanging sleeve seen from the front shows its diameter (circumference / pi); laid flat it measures circumference / 2, so each flat width = the hanging width measured on the sheet (square to the sleeve axis) x pi/2 = 1.5708. Hanging widths: full cap 4.66 in (the widest up to the elbow; the hanging sleeve is hidden under the shoulder, so its drawn width at the seam itself is 0), elbow 4.40 in (55 percent of the length, 14.68 in down), cuff edge 3.46 in (corner to corner as drawn, 11.61, 29.53 to 8.16, 29.29 in the sheet's frame). Flat widths: cap 7.32 in, elbow 6.92 in, cuff 5.43 in. Cross-check: a men's 40R service coat sleeve is about 16 in around at the bicep, so about 8 in flat; the measured cap of 7.32 in flat is a 14.6 in circumference at the sheet's fullest point, in line with it. Box 7.50 x 26.93 in = sleeve plus 0.12 in on every side.",
+ "anchors": {
+  "top_center": [
+   374.85,
+   0
+  ],
+  "bottom_center": [
+   374.85,
+   2693
+  ],
+  "center": [
+   374.85,
+   1346.5
+  ],
+  "left_edge": [
+   0,
+   1346.5
+  ],
+  "right_edge": [
+   749.69,
+   1346.5
+  ],
+  "chevron_center": [
+   374.84,
+   745.97
+  ],
+  "elbow_center": [
+   374.85,
+   1479.93
+  ],
+  "shoulder_seam_center": [
+   374.85,
+   308.93
+  ],
+  "cuff_center": [
+   374.85,
+   2681
+  ]
+ },
+ "landmarks": {
+  "shoulder_seam": {
+   "p1": [
+    736.19,
+    308.93
+   ],
+   "p2": [
+    13.5,
+    308.93
+   ]
+  },
+  "outer_edge": {
+   "p1": [
+    13.5,
+    308.93
+   ],
+   "p2": [
+    103.37,
+    2681
+   ]
+  },
+  "elbow": {
+   "y": 1479.93
+  },
+  "cuff": {
+   "p1": [
+    646.32,
+    2681
+   ],
+   "p2": [
+    103.37,
+    2681
+   ]
+  },
+  "chevron_center": {
+   "x": 374.84,
+   "y": 745.97
+  }
+ },
+ "landmarks_note": "user units (0.01 in), origin top-left of this asset's box. shoulder_seam {p1,p2}: the chord across the sleeve head where the cap reaches its full width (p1 inner end, p2 outer end; the dome above it is the sleeve cap and top_center is its crown, the shoulder seam point from which every length is measured); outer_edge {p1,p2}: the outer arm edge from that chord to the cuff's outer corner; elbow {y}: the elbow line, 55 percent of the way from the crown to the cuff edge (the elbow anchors of the coat sheet sit at the same fraction; CAPR 39-1 puts the chevron halfway to the elbow bent at 90 degrees); cuff {p1,p2}: the cuff edge (p1 inner, p2 outer); chevron_center {x,y}: the senior NCO chevron's centre, on the sleeve axis halfway between the crown and the elbow (CAPR 39-1 4.1.5.2.1.2 / 4.1.9.3.3).",
+ "view_of": "garment-blues-class-a-coat",
+ "side": "wearer's right sleeve (outer edge toward -x, the viewer's left on the figure)",
+ "dimensions": {
+  "length_in": 26.69,
+  "cap_width_in": 7.32,
+  "elbow_width_in": 6.92,
+  "cuff_width_in": 5.43,
+  "elbow_from_crown_in": 14.68,
+  "elbow_fraction": 0.55,
+  "chevron_from_crown_in": 7.34,
+  "chevron": {
+   "width_in": 4,
+   "rule": "CAPR 39-1 4.1.5.2.1.2 (\"NCOs will wear 4 inch, chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle\")",
+   "sleeve_width_at_chevron_in": 7.26,
+   "margin_each_side_in": 1.63,
+   "narrowest_sleeve_width_over_tallest_chevron_in": 7.26,
+   "margin_each_side_over_tallest_chevron_in": 1.63,
+   "tallest_chevron": "rank-senior-chief-master-sergeant-chevron-4in, 4 x 6.766 in"
+  },
+  "hanging_width_profile_on_sheet_in": [
+   {
+    "at_fraction_of_outer_edge": 0.05,
+    "width_in": 0.629
+   },
+   {
+    "at_fraction_of_outer_edge": 0.1,
+    "width_in": 1.179
+   },
+   {
+    "at_fraction_of_outer_edge": 0.15,
+    "width_in": 1.774
+   },
+   {
+    "at_fraction_of_outer_edge": 0.2,
+    "width_in": 2.347
+   },
+   {
+    "at_fraction_of_outer_edge": 0.25,
+    "width_in": 2.912
+   },
+   {
+    "at_fraction_of_outer_edge": 0.3,
+    "width_in": 3.453
+   },
+   {
+    "at_fraction_of_outer_edge": 0.35,
+    "width_in": 3.944
+   },
+   {
+    "at_fraction_of_outer_edge": 0.4,
+    "width_in": 4.352
+   },
+   {
+    "at_fraction_of_outer_edge": 0.45,
+    "width_in": 4.66
+   },
+   {
+    "at_fraction_of_outer_edge": 0.5,
+    "width_in": 4.569
+   },
+   {
+    "at_fraction_of_outer_edge": 0.55,
+    "width_in": 4.405
+   },
+   {
+    "at_fraction_of_outer_edge": 0.6,
+    "width_in": 4.292
+   },
+   {
+    "at_fraction_of_outer_edge": 0.65,
+    "width_in": 4.22
+   },
+   {
+    "at_fraction_of_outer_edge": 0.7,
+    "width_in": 4.163
+   },
+   {
+    "at_fraction_of_outer_edge": 0.75,
+    "width_in": 4.092
+   },
+   {
+    "at_fraction_of_outer_edge": 0.8,
+    "width_in": 4.037
+   },
+   {
+    "at_fraction_of_outer_edge": 0.85,
+    "width_in": 4.019
+   },
+   {
+    "at_fraction_of_outer_edge": 0.9,
+    "width_in": 4.259
+   },
+   {
+    "at_fraction_of_outer_edge": 0.95,
+    "width_in": 4.304
+   }
+  ],
+  "flat_width_factor": "pi/2 (circumference/2 over circumference/pi)",
+  "hanging_widths_in": {
+   "cap": 4.66,
+   "elbow": 4.4,
+   "cuff": 3.46
+  },
+  "sleeve_end": "plain cuff, as the sheet draws it (no cuff band, no buttons); sleeves end 1/4 to 1/2 in below the wrist (CAPR 39-1 4.1.5.2 / 4.1.9.2)"
+ },
+ "documented": [
+  "CAPR 39-1 4.1.5.2.1.2 (\"NCOs will wear 4 inch, chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle\")",
+  "no braid on this view: sleeve braid is worn by officers only (4.1.5.2 / 4.1.9.2); NCOs wear the coat without epaulets"
+ ],
+ "assumed": [
+  "the sleeve is a round tube: flat width = hanging (diameter) width x pi/2; a real coat sleeve is a little elliptical, which this does not model",
+  "the cap dome (a half ellipse 0.45 of the width deep) and the plateau to the widest measured width are the drawing of sleeve-flat.js, not measured",
+  "elbow at 55 percent of the length, the sheet's own elbow anchor fraction (an anatomical estimate; the contract for the flat views said halfway)",
+  "colour and stroke are the coat sheet's (#001c52, #00102f at .6)"
+ ],
+ "fit": {
+  "method": "measured on the sheet outline",
+  "score": null
+ },
+ "grade": "garment"
+}

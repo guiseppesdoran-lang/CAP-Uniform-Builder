@@ -237,6 +237,16 @@
     273.85
    ]
   ],
+  "sleeve_flat_view": {
+   "left": {
+    "x": 2975,
+    "y": 409.29
+   },
+   "right": {
+    "x": -441.48,
+    "y": 409.29
+   }
+  },
   "armhole_seam_right": [
    [
     322.76,
@@ -394,7 +404,7 @@
    ]
   ]
  },
- "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left",
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left; sleeve_flat_view {left:{x,y},right:{x,y}} is where the top_center of the flat sleeve assets <id>-sleeve-flat-left / -right sits beside the figure (outboard of each arm, its top at the shoulder seam height, 1 in clear of the sleeve outline; it lies outside this artwork box)",
  "dimensions": {
   "scale": {
    "k": 1.2037,

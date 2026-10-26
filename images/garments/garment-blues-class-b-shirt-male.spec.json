@@ -225,6 +225,16 @@
     661.9
    ]
   ],
+  "sleeve_flat_view": {
+   "left": {
+    "x": 3209.38,
+    "y": 387.42
+   },
+   "right": {
+    "x": -523.45,
+    "y": 387.42
+   }
+  },
   "collar_insignia_angle_deg": {
    "right": 62.1,
    "left": 117.9
@@ -236,7 +246,7 @@
    "h": 150
   }
  },
- "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box; sleeve_flat_view {left:{x,y},right:{x,y}} is where the top_center of the flat sleeve assets <id>-sleeve-flat-left / -right sits beside the figure (outboard of each arm, its top at the shoulder seam height, 1 in clear of the sleeve outline; it lies outside this artwork box)",
  "dimensions": {
   "scale": {
    "k": 1.2171,

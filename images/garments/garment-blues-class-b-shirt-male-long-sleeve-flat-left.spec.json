@@ -1,0 +1,134 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-long-sleeve-flat-left",
+ "name": "Men's Class B blue long-sleeve shirt, left sleeve laid flat (outer arm facing)",
+ "size_in": {
+  "w": 7.9152,
+  "h": 28.3694
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  791.52,
+  2836.94
+ ],
+ "size_source": "estimated",
+ "size_basis": "Measured on the sleeve of the sheet garment-blues-class-b-shirt-male-long (long-sleeve outline measured from CAPR 39-1 Fig 4.8, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans -0.43 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 28.13 in (the straight axis is 27.56 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.89 in at its widest, 4.60 in at the elbow, 3.66 in at the cuff (0.4 in above the lower edge); flat widths: 7.68 in at its widest (the cap width, the width below the shoulder seam), 7.23 in at the elbow, 5.75 in at the cuff, i.e. 15.35 in around at the widest and 11.50 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.11.1.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.74 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+ "anchors": {
+  "top_center": [
+   395.76,
+   0
+  ],
+  "bottom_center": [
+   395.76,
+   2836.94
+  ],
+  "center": [
+   395.76,
+   1418.47
+  ],
+  "left_edge": [
+   0,
+   1418.47
+  ],
+  "right_edge": [
+   791.52,
+   1418.47
+  ],
+  "shoulder_seam_center": [
+   395.76,
+   62
+  ],
+  "cuff_center": [
+   395.76,
+   2824.94
+  ],
+  "chevron_center": [
+   395.76,
+   785.56
+  ],
+  "elbow_center": [
+   395.76,
+   1559.12
+  ]
+ },
+ "landmarks": {
+  "shoulder_seam": {
+   "p1": [
+    594.64,
+    62
+   ],
+   "p2": [
+    196.88,
+    62
+   ]
+  },
+  "outer_edge": {
+   "p1": [
+    495.13,
+    14
+   ],
+   "p2": [
+    683.38,
+    2824.94
+   ]
+  },
+  "elbow": {
+   "y": 1559.12
+  },
+  "cuff": {
+   "p1": [
+    683.38,
+    2824.94
+   ],
+   "p2": [
+    108.15,
+    2824.94
+   ]
+  },
+  "chevron_center": {
+   "x": 395.76,
+   "y": 785.56
+  }
+ },
+ "landmarks_note": "points are [x,y] and {x,y} in user units (0.01 in), origin top-left of the artwork box; shoulder_seam is the cap edge 0.5 in below the top of the sleeve, outer_edge runs along the arm's outer edge from the seam to the hem, chevron_center is where the senior NCO chevron is centred",
+ "dimensions": {
+  "sleeve_length_in": 28.13,
+  "cap_width_in": 7.68,
+  "hanging_width_in": {
+   "cap": 4.89,
+   "cuff": 3.66
+  },
+  "flat_over_hanging": 1.5708,
+  "around_in": {
+   "cap": 15.35,
+   "cuff": 11.5
+  },
+  "max_width_in": 7.68,
+  "cuff_width_in": 5.75,
+  "axis_lean_deg_on_sheet": -0.43,
+  "elbow_from_seam_in": 15.47,
+  "elbow_fraction": 0.55,
+  "chevron_center_from_seam_in": 7.74,
+  "chevron_3p5_fit": {
+   "side_clearance_in": 2.088,
+   "top_below_seam_in": 4.87,
+   "bottom_above_lower_edge_in": 17.46
+  }
+ },
+ "overlay_of": "garment-blues-class-b-shirt-male-long",
+ "documented": [
+  "chevron centred on the outer arm halfway between the shoulder seam and the elbow (long sleeve) or the bottom edge of the sleeve (short sleeve) (CAPR 39-1 4.1.11.1.1.1.3)",
+  "long sleeves end 1/4 to 1/2 in below the wrist (4.1.11.1.1 / 4.1.12.2)"
+ ],
+ "assumed": [
+  "sleeve width: the sheet's hanging, widened view straightened (no sleeve dimension in CAPR 39-1)",
+  "elbow at 55 % of the sleeve length (anatomical estimate, as on the sheet)",
+  "cuff band height read off the sheet's cuff line; cuff button position schematic"
+ ],
+ "fit": {
+  "method": "measured from the garment sheet",
+  "score": null
+ },
+ "grade": "accessory"
+}
