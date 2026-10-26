@@ -50,7 +50,9 @@ function cordStrokes(id){
   const t = svg.match(/__art" transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/);
   assert.ok(t, id + ': the art group states its translate and scale');
   const [tx, ty, s] = [Number(t[1]), Number(t[2]), Number(t[3])];
-  const g = svg.slice(svg.indexOf('__cord"'));
+  // The cord group only: the aide-de-camp overlays also carry aiguillette groups after it.
+  let g = svg.slice(svg.indexOf('__cord"'));
+  const next = g.indexOf('<g ', 1); if(next > 0) g = g.slice(0, next);
   const ds = [...g.matchAll(/<path[^>]* d="([^"]+)"/g)].map(m => m[1]);
   return ds.map(d => ({ d, cmds: d.match(/[ML][-\d.]+,[-\d.]+/g), pts: (d.match(/[ML][-\d.]+,[-\d.]+/g) || []).map(c => c.slice(1).split(',').map(Number)).map(([x, y]) => [(tx + s * x) / 100, (ty + s * y) / 100]) }));
 }
