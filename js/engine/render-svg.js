@@ -167,6 +167,33 @@
     return out;
   }
 
+  // Every id in a built drawing (the symbols, the patterns, gradients and clip paths inside them, the clips the engine adds) is renamed with a suffix that
+  // belongs to that drawing alone, and every reference to it (href, xlink:href, url(#...) in any attribute, style included) follows. Ids inside an asset are
+  // namespaced with the asset's id, so within one drawing they cannot clash, but a document holds more than one drawing (the uniform, the ribbon previews, the
+  // exported copy), and a url(#id) is resolved against the whole document: when another drawing earlier in it (a hidden preview, a stale copy) carries the same id,
+  // the reference goes there, and a pattern or gradient that lives in a drawing the browser does not paint paints nothing: the mess dress bullion eagle came out as
+  // the board's blue with its grey outline (LIVE10-5). Reproduced in Chrome with a hidden decoy pattern of the same id ahead of the uniform; tests/bullion-browser.cjs.
+  let drawingCount = 0;
+  function scopeIds(svg){
+    const suffix = '--d' + (++drawingCount).toString(36);
+    const ids = new Set();
+    svg.querySelectorAll('[id]').forEach(n => ids.add(n.getAttribute('id')));
+    if(!ids.size) return suffix;
+    const refUrl = /url\(\s*(['"]?)#([^)'"\s]+)\1\s*\)/g;
+    for(const n of [svg, ...svg.querySelectorAll('*')]){
+      for(const a of Array.from(n.attributes)){
+        const v = a.value;
+        if(a.name === 'id'){ if(ids.has(v)) a.value = v + suffix; continue; }
+        if((a.localName === 'href') && v.charAt(0) === '#'){ if(ids.has(v.slice(1))) a.value = v + suffix; continue; }
+        if(v.indexOf('url(') >= 0){
+          const w = v.replace(refUrl, (m, q, id) => ids.has(id) ? `url(${q}#${id}${suffix}${q})` : m);
+          if(w !== v) a.value = w;
+        }
+      }
+    }
+    return suffix;
+  }
+
   // Build the <svg> for a scene. `manifestPath(id)` resolves an asset id to its path.
   async function buildSvg(scene, manifestPath, opts){
     const options = opts || {};
@@ -431,6 +458,7 @@
       });
       measureNodes(drawings, px, ML.PX.font, defs, copies).forEach(n => svg.appendChild(n));
     }
+    scopeIds(svg);
     return svg;
   }
 
@@ -463,5 +491,5 @@
   }
 
   root.CAPUBEngine = root.CAPUBEngine || {};
-  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, loadSymbol, measureNodes, cordPathToArt, hashText };
+  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, loadSymbol, measureNodes, cordPathToArt, hashText, scopeIds };
 })(typeof self !== 'undefined' ? self : this);
