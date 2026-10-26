@@ -43,7 +43,9 @@ test('Class A and cadet semi-formal coats: a cadet officer\'s edge-on strip carr
       assert.match(edge.id, /-metal-regular$/, `${label}: edge-on grade is the regular size (${edge.id})`);
       assert.equal(edge.id, top.id, `${label}: one grade in both views`);
       const r = rad(edge.rotate || 0), axis = { x: -Math.sin(r), y: Math.cos(r) }, cross = { x: Math.cos(r), y: Math.sin(r) };
-      assert.ok(Math.abs(along(edge, axis) - along(top, axis)) <= 0.05, `${label}: along the strap ${along(edge, axis).toFixed(3)} edge-on vs ${along(top, axis).toFixed(3)} from above`);
+      // The top view is level (DORAN5-ENG-3): its board's long axis is horizontal, so the grade's length along the board is measured horizontally.
+      const level = { x: 1, y: 0 };
+      assert.ok(Math.abs(along(edge, axis) - along(top, level)) <= 0.05, `${label}: along the strap ${along(edge, axis).toFixed(3)} edge-on vs ${along(top, level).toFixed(3)} from above`);
       assert.ok(along(edge, cross) <= 0.425, `${label}: squeezed to the 0.5 in board strip (${along(edge, cross).toFixed(3)} across)`);
       n++;
     }

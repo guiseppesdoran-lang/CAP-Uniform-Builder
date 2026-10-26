@@ -121,7 +121,9 @@ for(const [label, uniform, gender, opt, garment] of CUTS){
         const box = corners(seated(top));
         const cx = box.reduce((a, c) => a + c.x, 0) / 4;
         const gap = topY(poly, cx) - bottomY(box, cx);
-        assert.ok(gap >= 0 && gap <= 0.4, `${tag} ${side}: the top view is ${gap.toFixed(2)} in above the shoulder at its centre`);
+        // The view is level (DORAN5-ENG-3): its lower edge clears the highest point of the shoulder under it, so at its centre it
+        // stands up to a slope's rise higher (1.4 in) than the 0.4 in a view turned onto the strap did.
+        assert.ok(gap >= 0 && gap <= 1.4, `${tag} ${side}: the top view is ${gap.toFixed(2)} in above the shoulder at its centre`);
         const xs = poly.map(p => p.x), lo = Math.max(Math.min(...box.map(c => c.x)), Math.min(...xs)), hi = Math.min(Math.max(...box.map(c => c.x)), Math.max(...xs));
         for(let i = 0; i <= 20; i++){
           const x = lo + (hi - lo) * i / 20;

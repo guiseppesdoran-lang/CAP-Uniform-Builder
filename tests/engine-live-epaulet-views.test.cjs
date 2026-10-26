@@ -104,10 +104,14 @@ test('the grade on the top view is as far from the strap\'s outer end as the gra
       const c = { x: v.x + v.w / 2, y: v.y + v.h / 2 };
       const top = scene.layers.find(l => l.key === `grade:top-${side}`);
       const at = top ? { x: top.x + top.w / 2, y: top.y + top.h / 2 } : core.rotatePoint({ x: v.x + ins.x, y: v.y + ins.y }, c, v.rotate || 0);
-      // The strap axis toward the neck: the sleeve art stands button end up, so up turned by the layer's rotation.
-      const rot = (v.rotate || 0) * Math.PI / 180, ax = { x: Math.sin(rot), y: -Math.cos(rot) };
+      // The strip's grade lies along the strap (the sheet's epaulet landmark frame) this far from its outer end; the top view is
+      // level (DORAN5-ENG-3), so its grade lies this far from the same outer end horizontally, toward the collar.
+      const spec = await store.load(scene.garment);
+      const f = P.helpers.frameFromPolygon({ base: { w: spec.w } }, side, spec.landmarks[`epaulet_${side}`].points);
       const e = { x: edge.x + edge.w / 2, y: edge.y + edge.h / 2 };
-      const d = (at.x - e.x) * ax.x + (at.y - e.y) * ax.y;
+      const onStrap = (e.x - f.outer.x) * f.axis.x + (e.y - f.outer.y) * f.axis.y;
+      const level = (at.x - f.outer.x) * Math.sign(f.axis.x);
+      const d = level - onStrap;
       assert.ok(Math.abs(d) < 0.03, `${label} ${r} ${side}: the top view's grade is ${d.toFixed(3)} in along the strap from the strip's grade`);
       checked++;
     }

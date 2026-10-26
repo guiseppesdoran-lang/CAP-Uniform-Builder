@@ -45,7 +45,8 @@ test('mess dress boards: the colonel\'s eagle lies with its wings across the boa
       const sgn = top.flipX ? 1 : -1;
       const beak = { x: sgn * Math.cos(r), y: sgn * Math.sin(r) };    // beak direction
       // Board axis toward the collar end: along the strip, away from the outer end; the strip lies toward the front.
-      const e = edge.rotate * Math.PI / 180, axis = { x: Math.cos(e), y: Math.sin(e) };
+      // The top view's board is level (DORAN5-ENG-3): its axis is horizontal; the edge-on strip lies below it, on the shoulder.
+      const axis = { x: 1, y: 0 };
       const ec = centre(edge), tc = centre(top);
       const toStrip = { x: ec.x - tc.x, y: ec.y - tc.y };
       const neckEnd = side === 'right' ? 1 : -1;   // the right shoulder's collar end is at the picture's right

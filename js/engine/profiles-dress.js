@@ -589,7 +589,9 @@
     'garment-overblouse-female': [[3.792,6],[23.567,6],[23.002,5.195],[22.055,3.792],[21.82,3.479],[21.547,3.198],[20.68,2.442],[20.479,2.295],[20.155,2.103],[19.93,1.993],[19.579,1.86],[19.153,1.749],[18.084,1.567],[17.02,1.319],[15.906,0.12],[15.093,1.148],[14.536,1.919],[13.679,2.347],[12.822,1.919],[12.266,1.148],[11.453,0.12],[10.339,1.319],[9.275,1.567],[8.083,1.775],[7.661,1.901],[7.316,2.046],[6.986,2.228],[6.629,2.481],[5.812,3.198],[5.581,3.429],[5.304,3.792],[4.357,5.195]],
     'garment-overblouse-female-long': [[4.083,6],[22.58,6],[21.853,4.97],[21.422,4.294],[21.239,3.954],[21.085,3.616],[20.965,3.278],[20.888,2.938],[20.43,2.521],[20.183,2.332],[19.918,2.163],[19.582,1.993],[19.231,1.86],[18.805,1.749],[17.736,1.567],[16.672,1.319],[15.558,0.12],[14.745,1.148],[14.189,1.919],[13.332,2.347],[12.475,1.919],[11.918,1.148],[11.105,0.12],[9.991,1.319],[8.927,1.567],[7.736,1.775],[7.313,1.901],[6.911,2.074],[6.638,2.228],[6.331,2.442],[5.775,2.938],[5.698,3.278],[5.579,3.616],[5.425,3.954],[5.242,4.294],[4.811,4.97]],
     'garment-semiformal-class-a-coat-female': [[22.114,6],[2.288,6],[2.868,4.33],[3.553,2.741],[4.894,2.328],[8.162,1.702],[9.715,0.254],[9.852,0.325],[10.206,0.94],[10.725,1.459],[12.049,2.168],[12.504,2.109],[13.663,1.459],[14.182,0.94],[14.537,0.325],[14.649,0.26],[16.226,1.702],[19.495,2.328],[20.806,2.718],[20.954,2.925],[21.474,4.206]],
-    'garment-semiformal-class-a-coat-male': [[21.448,6],[2.277,6],[2.952,4.178],[3.385,3.277],[8.071,2.045],[9.845,1.002],[9.872,1.239],[10.19,1.808],[10.57,2.214],[11.579,2.817],[11.768,2.871],[12.147,2.817],[12.906,2.404],[13.536,1.808],[13.82,1.334],[13.881,1.002],[15.655,2.045],[20.375,3.304],[20.774,4.178]]
+    'garment-semiformal-class-a-coat-male': [[21.448,6],[2.277,6],[2.952,4.178],[3.385,3.277],[8.071,2.045],[9.845,1.002],[9.872,1.239],[10.19,1.808],[10.57,2.214],[11.579,2.817],[11.768,2.871],[12.147,2.817],[12.906,2.404],[13.536,1.808],[13.82,1.334],[13.881,1.002],[15.655,2.045],[20.375,3.304],[20.774,4.178]],
+    'garment-mess-dress-female': [[24.533,6],[1.678,6],[2.565,3.876],[2.927,3.233],[3.483,3.05],[8.697,2.143],[8.92,1.98],[10.376,0.301],[10.498,0.416],[10.613,1.032],[10.593,1.98],[10.688,2.359],[10.701,3.497],[10.83,3.971],[10.83,5.014],[10.965,5.494],[11.094,5.413],[12.157,3.619],[12.624,2.989],[12.868,2.881],[13.437,2.894],[13.586,2.989],[14.161,3.781],[15.143,5.454],[15.265,5.474],[15.38,5.014],[15.38,3.971],[15.509,3.497],[15.522,2.359],[15.617,1.98],[15.597,1.032],[15.712,0.416],[15.814,0.314],[15.996,0.416],[17.29,1.98],[17.513,2.143],[22.727,3.05],[23.243,3.206],[23.557,3.686]],
+    'garment-mess-dress-male': [[25.987,6],[2.551,6],[3.332,4.303],[3.525,4.045],[4.046,3.815],[8.028,2.346],[8.597,1.96],[9.308,1.858],[10.865,0.517],[10.96,0.565],[10.967,1.222],[11.15,1.899],[12.009,1.933],[12.944,2.149],[12.897,1.933],[11.359,0.301],[12.294,1.174],[13.215,2.251],[13.716,2.529],[14.664,2.549],[15.185,2.353],[16.228,1.174],[17.135,0.308],[15.585,1.98],[15.578,2.149],[16.513,1.933],[17.372,1.899],[17.555,1.222],[17.562,0.565],[17.657,0.517],[19.214,1.858],[19.925,1.96],[20.494,2.346],[24.997,4.045],[25.19,4.303]]
   };
   // GARMENT_TOP end
 
@@ -651,6 +653,7 @@
         if(m !== l && m.key !== 'grade:top-' + side) continue;
         m.x += n.x * lift; m.y += n.y * lift;
         if(m.origin) m.origin = { x: m.origin.x + n.x * lift, y: m.origin.y + n.y * lift };
+        if(m.clip) m.clip = m.clip.map(q => ({ x: q.x + n.x * lift, y: q.y + n.y * lift }));
       }
     }
   }
@@ -798,9 +801,23 @@
     }
   }
 
-  // The epaulet sleeves seen from above, each just above its shoulder: turned to lie along the strap,
-  // its near edge TOP_VIEW_CLEAR above the garment's shoulder line (the epaulet landmark's top
-  // boundary), the grade in place. Class B, aviator shirt and overblouse (R7).
+  // Every top-down view (the shirts' epaulet sleeves, the Class A shoulder boards, the mess dress boards) is drawn LEVEL, its
+  // long axis horizontal, not turned onto the strap (Doran: "the top one should be horizontal in the image"; CAPR 39-1 4.1.6.1.4,
+  // 4.1.11.1.1, 4.2.5.1). The collar end of the piece is toward the figure's centre and its outer end toward the arm, as the
+  // epaulet lies on the shoulder, on both sides (the pair is mirrored: the wearer's right view is turned a quarter turn clockwise,
+  // the left a quarter turn counter-clockwise from the art, which has its collar end up, so the lettering and the grade turn with
+  // the piece as in Fig A5-1 and A5-3), its lower edge TOP_VIEW_CLEAR above the highest point of the shoulder it lies over, then
+  // lifted clear of the garment's outline (seatViewsAboveOutline). The edge-on strap on the shoulder keeps its turn along the strap.
+  // levelFrame(f): the strap frame f with its axis (outer end toward the collar) and normal (up) made horizontal and vertical;
+  // `deg` is the turn that stands art drawn with its collar end up so that end points along the axis.
+  function levelFrame(f, side){
+    const dx = Math.sign(f.neck.x - f.outer.x) || (side === 'right' ? 1 : -1);
+    return Object.assign({}, f, { axis: { x: dx, y: 0 }, normal: { x: 0, y: -1 }, deg: 90 * dx, level: true });
+  }
+
+  // The epaulet sleeves seen from above, each just above its shoulder: drawn level (levelFrame), its lower edge TOP_VIEW_CLEAR above
+  // the garment's shoulder line (the epaulet landmark's top boundary), the grade in place. Class B, aviator shirt and overblouse
+  // (R7).
   async function epauletViews(ctx, g, strips, frames){
     const sleeveId = epauletSleeveId(g);
     if(!sleeveId || !ctx.has(sleeveId)) return;
@@ -808,9 +825,10 @@
     const eagle = g.key === 'colonel' && !g.cadet ? G.seniorOfficerInsignia(g, 'thread') : null;
     const ins = core.anchor(s, 'insignia_center');
     for(const side of ['right', 'left']){
-      const f = (frames && frames[side]) || H.epauletFrame(ctx, side);
-      if(!f) continue;
-      // Centre when the lower edge lies on the strap's outer side, then lifted until it clears the
+      const strap = (frames && frames[side]) || H.epauletFrame(ctx, side);
+      if(!strap) continue;
+      const f = levelFrame(strap, side);
+      // Centre when the lower edge lies a half strap width above the strap's centre, then lifted until it clears the
       // shoulder line everywhere it overlaps the strap.
       const half = { a: s.h / 2, n: s.w / 2 };
       const c0 = { x: f.center.x + f.normal.x * (f.width / 2 + half.n), y: f.center.y + f.normal.y * (f.width / 2 + half.n) };
@@ -832,9 +850,9 @@
       const edge = ctx.layers.find(l => l.key === `grade:edge-${side}`);
       if(edge && ins){
         const at = core.rotatePoint({ x: c.x + (ins.x - s.w / 2), y: c.y + (ins.y - s.h / 2) }, c, f.deg);
-        const along = p => (p.x - f.outer.x) * f.axis.x + (p.y - f.outer.y) * f.axis.y;
-        const shift = along({ x: edge.x + edge.w / 2, y: edge.y + edge.h / 2 }) - along(at);
-        c = { x: c.x + f.axis.x * shift, y: c.y + f.axis.y * shift };
+        const along = p => (p.x - strap.outer.x) * strap.axis.x + (p.y - strap.outer.y) * strap.axis.y;
+        const shift = along({ x: edge.x + edge.w / 2, y: edge.y + edge.h / 2 }) - (at.x - strap.outer.x) * f.axis.x;
+        c = { x: c.x + f.axis.x * shift, y: c.y };
       }
       const mirror = mirrorsEagle(g, side) && eagle && ins && ctx.has(eagle);
       await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: c, rotate: f.deg, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, seen from above` }, mirror ? { hideGroups: ['grade'] } : {}));
@@ -976,12 +994,13 @@
     const frames = strapFrames(ctx, A);
     for(const side of ['right', 'left']){
       const id = `garment-blues-shoulder-board-top-${sex}-${side}`;
-      const f = frames[side];
-      if(!ctx.has(id) || !f) continue;
+      const strap = frames[side];
+      if(!ctx.has(id) || !strap) continue;
+      const f = levelFrame(strap, side);
       const s = await ctx.spec(id);
-      // The board lies along the strap, its button end toward the neck: turn the art's outer-to-button
-      // direction onto the strap's outer-to-neck axis, then rest its near edge TOP_VIEW_CLEAR above the
-      // shoulder line (the strap polygon's top boundary), the same lift epauletViews applies.
+      // The board lies level, its button end toward the neck: turn the art's outer-to-button direction onto the horizontal
+      // outer-to-neck axis (levelFrame), then rest its lower edge TOP_VIEW_CLEAR above the shoulder line (the strap polygon's
+      // top boundary), the same lift epauletViews applies.
       const board = core.landmarkBounds(s, 'board'), outer = core.anchor(s, 'board_outer_end'), button = core.anchor(s, 'button_end_center');
       const rot = Math.round((Math.atan2(f.axis.y, f.axis.x) - Math.atan2(button.y - outer.y, button.x - outer.x)) * 18000 / Math.PI) / 100;
       const half = { a: board.w / 2, n: board.h / 2 };
@@ -1316,16 +1335,28 @@
       if(d.y < 0){ d.x = -d.x; d.y = -d.y; }
       // The board's upper outer corner: its x is the box's outer side, its lower corner is the box's bottom.
       const A = { x: side === 'right' ? box.x : box.x + box.w, y: box.y + box.h - W * d.y };
-      const lift = { x: -d.x * (W + TOP_VIEW_CLEAR), y: -d.y * (W + TOP_VIEW_CLEAR) };
-      // The view from above: the overlay, lifted, clipped to the board's box.
+      // The view from above is drawn level (levelFrame: long axis horizontal, button end toward the figure's centre, Doran: "the
+      // top one should be horizontal in the image"): the sheet draws the board lying along the shoulder, so its overlay is turned
+      // about the board's centre by the angle that lays the outer-to-neck direction `a` along the horizontal, then moved up until
+      // the board's lower edge is TOP_VIEW_CLEAR above the board's highest point (its neck end). The overlay is clipped to the
+      // board's box, turned and moved with it.
+      const cB = { x: box.x + box.w / 2, y: box.y + box.h / 2 };
+      const toNeck = a.x >= 0 ? 0 : 180;
+      let turnView = toNeck - frame.deg;
+      while(turnView > 180) turnView -= 360;
+      while(turnView <= -180) turnView += 360;
+      const top = Math.min(A.y, A.y + a.y * L);
+      const lift = { x: 0, y: top - TOP_VIEW_CLEAR - W / 2 - cB.y };
+      const cL = { x: cB.x + lift.x, y: cB.y + lift.y };
+      const onView = p => core.rotatePoint({ x: p.x + lift.x, y: p.y + lift.y }, cL, turnView);
       const pad = 0.15;
-      ctx.layers.push({ type: 'asset', id, x: lift.x, y: lift.y, w: s.w, h: s.h, rotate: 0, origin: { x: lift.x, y: lift.y }, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`,
+      ctx.layers.push({ type: 'asset', id, x: lift.x, y: lift.y, w: s.w, h: s.h, rotate: turnView, origin: cL, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`,
         title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above`,
-        clip: [{ x: box.x - pad + lift.x, y: box.y - pad + lift.y }, { x: box.x + box.w + pad + lift.x, y: box.y - pad + lift.y }, { x: box.x + box.w + pad + lift.x, y: box.y + box.h + pad + lift.y }, { x: box.x - pad + lift.x, y: box.y + box.h + pad + lift.y }] });
+        clip: [{ x: box.x - pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y + box.h + pad }, { x: box.x - pad, y: box.y + box.h + pad }].map(onView) });
       if(gradeId && ctx.has(gradeId)){
         const slot = ctx.point(`rank_slot_${side}_center`);
-        const turn = boardGradeTurn(gradeId, frame.deg);
-        if(slot) await ctx.place(gradeId, { pieceAnchor: 'center', at: { x: slot.x + lift.x, y: slot.y + lift.y }, rotate: side === 'left' && turn < -180 ? turn + 360 : turn,
+        const turn = boardGradeTurn(gradeId, frame.deg) + turnView;
+        if(slot) await ctx.place(gradeId, { pieceAnchor: 'center', at: onView(slot), rotate: turn,
           flipX: side === 'right' && /colonel-(bullion|thread)$/.test(gradeId) && !/lieutenant/.test(gradeId), z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-' + side });
       }
       // The edge-on view.
@@ -1355,6 +1386,7 @@
           title: `${side === 'right' ? 'Right' : 'Left'} shoulder board grade, edge-on` });
       }
     }
+    seatViewsAboveOutline(ctx);
   }
 
   async function composeMess(ctx, b){

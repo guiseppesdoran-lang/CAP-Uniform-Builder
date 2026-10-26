@@ -45,7 +45,10 @@ test('mess dress: the bars of 2d Lt, 1st Lt and Captain lie across the shoulder 
           // The art's bars stand along its height, so their long axis is the layer's turn + 90 deg.
           const spec = await store.load(l.id);
           assert.ok(spec.h > spec.w, `${l.id}: the bars' long axis is the art's height`);
-          const dot = Math.cos(rad(l.rotate + 90 - frame));
+          // The top view is drawn level (DORAN5-ENG-3): its board lies along the horizontal, outer end away from the centre line
+          // (0 deg on the wearer's right, 180 on the left); the edge-on strip lies along the sheet's strap frame.
+          const boardDeg = key.startsWith('grade:top') ? (side === 'right' ? 0 : 180) : frame;
+          const dot = Math.cos(rad(l.rotate + 90 - boardDeg));
           assert.ok(Math.abs(dot) < 0.01, `${sex} ${rank} ${key}: bar axis is perpendicular to the board (cos ${dot.toFixed(4)})`);
         }
       }
@@ -60,7 +63,8 @@ test('mess dress: the leaf, stars and eagle keep their quarter turn to the board
       const scene = await compose(build('mess_dress', sex, 'senior', rank));
       const frame = boards.landmarks.rank_slot_right_frame.deg;
       const l = byKey(scene, 'grade:top-right');
-      assert.ok(Math.abs(Math.cos(rad(l.rotate - frame - 90))) > 0.999, `${sex} ${rank}: turned frame + 90 (${l.rotate} vs ${frame})`);
+      // The top view is level: the board lies along 0 deg on the wearer's right (DORAN5-ENG-3), the grade a quarter turn on it.
+      assert.ok(Math.abs(Math.cos(rad(l.rotate - 0 - 90))) > 0.999, `${sex} ${rank}: turned a quarter turn to the level board (${l.rotate}; sheet frame ${frame})`);
     }
   }
 });

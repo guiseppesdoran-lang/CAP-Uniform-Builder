@@ -42,19 +42,24 @@ test('edge-on epaulet grades keep their true length along the strap and are sque
       const edge = byKey(scene, `grade:edge-${side}`), top = byKey(scene, `grade:top-${side}`), view = byKey(scene, `epaulet-top:${side}`);
       if(!edge || !view) continue;
       const label = `${u} ${gender} ${rank} ${side}`;
-      // The strap axis: the view's long side, turned by its rotation.
-      const r = rad(view.rotate || 0);
+      // The strap axis: the sheet's epaulet landmark frame (the top view is drawn level since DORAN5-ENG-3, so its own long side is
+      // horizontal, not along the strap).
+      const spec = await store.load(scene.garment);
+      if(!spec.landmarks[`epaulet_${side}`]) continue; // the blazer's companion shirt sheet is not the scene's garment
+      const fr = P.helpers.frameFromPolygon({ base: { w: spec.w } }, side, spec.landmarks[`epaulet_${side}`].points);
+      const r = rad(fr.deg);
       const axis = { x: -Math.sin(r), y: Math.cos(r) }, cross = { x: Math.cos(r), y: Math.sin(r) };
+      const lvl = { x: 1, y: 0 };
       assert.ok(along(edge, cross) <= 0.32 + 0.005 || along(edge, axis) >= along(edge, cross), `${label}: edge-on grade fits the 0.4 in strip (${along(edge, cross).toFixed(3)} across)`);
       assert.ok(along(edge, cross) <= 0.32 + 0.005, `${label}: squeezed to the strip (${along(edge, cross).toFixed(3)} across)`);
       if(top){
-        assert.ok(Math.abs(along(edge, axis) - along(top, axis)) < 0.01, `${label}: edge-on length ${along(edge, axis).toFixed(3)} equals the top view's ${along(top, axis).toFixed(3)}`);
+        assert.ok(Math.abs(along(edge, axis) - along(top, lvl)) < 0.01, `${label}: edge-on length ${along(edge, axis).toFixed(3)} equals the top view's ${along(top, lvl).toFixed(3)}`);
         compared++;
       }else edgeOnly++;
       if(rank === 'Col' && membership === 'senior') assert.ok(along(edge, axis) > 0.6, `${label}: the eagle is ${along(edge, axis).toFixed(3)} in long on the strip, not a speck`);
     }
   }
-  assert.ok(compared >= 6, `${compared} edge/top pairs compared (${edgeOnly} grades with the edge view only)`);
+  assert.ok(compared >= 4, `${compared} edge/top pairs compared (${edgeOnly} grades with the edge view only)`);
 });
 
 // ---- 6. The mess dress boards: the same rule (FIX-R-OTHER-r4 item 3) --------------------------------------------------
@@ -75,7 +80,8 @@ test('mess dress boards: the edge-on grade keeps its true length along the strap
         // The strap axis is the strip's long side; the cross axis is the strip's thickness.
         const r = rad(strip.rotate || 0), axis = { x: Math.cos(r), y: Math.sin(r) }, cross = { x: -Math.sin(r), y: Math.cos(r) };
         assert.ok(along(edge, cross) <= 0.32 + 0.005, `${label}: squeezed into the strip (${along(edge, cross).toFixed(3)} across)`);
-        assert.ok(Math.abs(along(edge, axis) - along(top, axis)) < 0.01, `${label}: edge-on length ${along(edge, axis).toFixed(3)} equals the top view's ${along(top, axis).toFixed(3)}`);
+        // The top view is level (DORAN5-ENG-3): its board's long side is horizontal.
+        assert.ok(Math.abs(along(edge, axis) - along(top, { x: 1, y: 0 })) < 0.01, `${label}: edge-on length ${along(edge, axis).toFixed(3)} equals the top view's ${along(top, { x: 1, y: 0 }).toFixed(3)}`);
         assert.ok(along(edge, axis) >= minAlong, `${label}: ${along(edge, axis).toFixed(3)} in along the strap is not a speck`);
         // The grade's outer edge lies 5/8 in from the strip's outer end: half the strip's length, less the grade's
         // distance from the strip's centre along the strap and half its own length.

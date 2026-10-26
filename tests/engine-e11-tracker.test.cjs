@@ -70,15 +70,18 @@ for(const [sex, membership, rank] of [
       assert.ok(view, `${side} view`);
       const c = corners(seated(view));
       const lowest = Math.max(...c.map(p => p.y));
-      // Not on the coat (it lies above the shoulder seam), and not floating: within 0.9 in of it. The old
-      // rule hung the view 0.75 in over the sheet's top edge, 3 in above the shoulder.
+      // Not on the coat (it lies above the shoulder seam), and not floating: within 1.6 in of it (the view is level, so
+      // it clears the highest point of the sloping shoulder and stands that much higher over its arm end; DORAN5-ENG-3).
+      // The old rule hung the view 0.75 in over the sheet's top edge, 3 in above the shoulder.
       assert.ok(lowest <= seam[side].y + 0.05, `${side}: the view's lowest corner ${lowest.toFixed(2)} is above the seam height ${seam[side].y.toFixed(2)}`);
-      assert.ok(seam[side].y - lowest < 0.9, `${side}: within 0.9 in of the shoulder (${(seam[side].y - lowest).toFixed(2)})`);
+      assert.ok(seam[side].y - lowest < 1.6, `${side}: within 1.6 in of the shoulder (${(seam[side].y - lowest).toFixed(2)})`);
       // Over its own shoulder: the view's centre is on the shoulder's side of the centre line.
       assert.ok(side === 'right' ? view.origin.x < coat.w / 2 : view.origin.x > coat.w / 2, `${side} on its own side`);
-      // Turned to lie along the strap, not left upright: some tilt, never more than a quarter turn off.
+      // Drawn level (DORAN5-ENG-3, Doran: "the top one should be horizontal in the image"): a right-angle turn, long axis horizontal.
       const turn = Math.abs(((view.rotate % 90) + 90) % 90);
-      assert.ok(turn > 5 && turn < 85, `${side}: lies along the sloping strap (rotate ${view.rotate})`);
+      assert.ok(turn < 0.01 || turn > 89.99, `${side}: level (rotate ${view.rotate})`);
+      const xs = c.map(p => p.x), ys = c.map(p => p.y);
+      assert.ok(Math.max(...xs) - Math.min(...xs) > Math.max(...ys) - Math.min(...ys), `${side}: long axis horizontal`);
     }
     // The grade is on every view from above.
     assert.ok(scene.layers.filter(l => /^grade:top-/.test(l.key)).length >= 1 || membership === 'senior', 'cadet boards carry the grade');
@@ -92,7 +95,7 @@ test('Class A: the cadet semi-formal coat also shows its boards just above the s
   const view = byKey(scene, 'epaulet-top:right');
   assert.ok(view);
   assert.ok(Math.max(...corners(view).map(p => p.y)) <= seam.y + 0.05);
-  assert.ok(seam.y - Math.max(...corners(view).map(p => p.y)) < 0.9);
+  assert.ok(seam.y - Math.max(...corners(view).map(p => p.y)) < 1.6);
 });
 
 // ---- blazer turtleneck --------------------------------------------------------------------------

@@ -23,7 +23,8 @@ const IDS = [
   'garment-blues-class-a-coat', 'garment-blues-class-a-coat-female',
   'garment-blues-class-b-blouse-female', 'garment-blues-class-b-blouse-female-long', 'garment-blues-class-b-shirt-male', 'garment-blues-class-b-shirt-male-long',
   'garment-overblouse-female', 'garment-overblouse-female-long',
-  'garment-semiformal-class-a-coat-female', 'garment-semiformal-class-a-coat-male'
+  'garment-semiformal-class-a-coat-female', 'garment-semiformal-class-a-coat-male',
+  'garment-mess-dress-female', 'garment-mess-dress-male'
 ];
 
 const area = p => { let a = 0; for(let i = 0; i < p.length; i++){ const q = p[(i + 1) % p.length]; a += p[i][0] * q[1] - q[0] * p[i][1]; } return Math.abs(a) / 2; };
