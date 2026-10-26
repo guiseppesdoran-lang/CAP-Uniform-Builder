@@ -629,6 +629,8 @@
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's.",
  "dimensions": {
+  "print_cell_in": 0.125,
+  "print_tile_in": 28,
   "coat_length_in": 29.96,
   "max_width_in": 24.6,
   "chest_pocket_in": [
@@ -649,6 +651,7 @@
   ]
  },
  "documented": [
+  "Desert Tan short or long-sleeved t-shirt worn under the ABU coat, its crew neck shown in the open V (5.1.1.2)",
   "button front, hip length (CAPR 39-1 5.1.1.1); all closures are concealed, so no buttons are drawn",
   "name tape above wearer's right upper pocket, CAP tape above left, cut to pocket width, light silver on dark blue (5.1.1.1.2.1)",
   "badges 1/2 in above the CAP tape (5.1.1.1.2.4)"
@@ -657,7 +660,8 @@
   "px-to-inch scale",
   "pocket sizes/positions (measured off the ABU raster, then scaled)",
   "lower pocket size",
-  "tiger-stripe print is procedural; palette sampled from the raster",
+  "tiger-stripe print is seeded and generated (base-art/abu-print.js) from 1/8 in cells, the cell measured on the ABU raster against its 5 1/4 x 1 in CAP tape; palette sampled from the raster",
+  "T-shirt colours in the neck (Desert Tan, estimated; the regulation names the colour, not a value)",
   "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)"
  ],
  "fit": {
