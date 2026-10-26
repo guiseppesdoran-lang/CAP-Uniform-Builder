@@ -25,20 +25,29 @@ function polys(svg){
   return out;
 }
 function flatten(d,M){
-  const toks=d.match(/[MLHVQCZA]|-?\d*\.?\d+(?:e-?\d+)?/gi);let i=0,cmd,x=0,y=0,sx=0,sy=0;const res=[];let cur=null;
-  const T=(px,py)=>[M[0]*px+M[2]*py+M[4],M[1]*px+M[3]*py+M[5]];
+  // Every SVG 1.1 path command, absolute and relative (the official CAP seal uses relative cubics and
+  // smooth curves); relative coordinates are made absolute against the current point before sampling.
+  const toks=d.match(/[MLHVQCSTZAmlhvqcstza]|-?\d*\.?\d+(?:e-?\d+)?/g);let i=0,cmd,x=0,y=0,sx=0,sy=0;const res=[];let cur=null;
+  let px2=null,py2=null; // last control point, for S and T
+  const T=(ax,ay)=>[M[0]*ax+M[2]*ay+M[4],M[1]*ax+M[3]*ay+M[5]];
   const num=()=>+toks[i++];
+  const cubic=(a,b,c,e,ex,ey)=>{for(let k=1;k<=8;k++){const t=k/8,u=1-t;cur.push(T(u**3*x+3*u*u*t*a+3*u*t*t*c+t**3*ex,u**3*y+3*u*u*t*b+3*u*t*t*e+t**3*ey));}px2=c;py2=e;x=ex;y=ey;};
+  const quad=(cx,cy,ex,ey)=>{for(let k=1;k<=8;k++){const t=k/8;cur.push(T((1-t)**2*x+2*(1-t)*t*cx+t*t*ex,(1-t)**2*y+2*(1-t)*t*cy+t*t*ey));}px2=cx;py2=cy;x=ex;y=ey;};
   while(i<toks.length){
-    if(/[A-Za-z]/.test(toks[i])) cmd=toks[i++]; 
-    if(cmd==='M'){x=num();y=num();sx=x;sy=y;cur=[T(x,y)];res.push(cur);cmd='L';}
-    else if(cmd==='L'){x=num();y=num();cur.push(T(x,y));}
-    else if(cmd==='H'){x=num();cur.push(T(x,y));}
-    else if(cmd==='V'){y=num();cur.push(T(x,y));}
-    else if(cmd==='Q'){const cx=num(),cy=num(),ex=num(),ey=num();for(let k=1;k<=8;k++){const t=k/8;cur.push(T((1-t)**2*x+2*(1-t)*t*cx+t*t*ex,(1-t)**2*y+2*(1-t)*t*cy+t*t*ey));}x=ex;y=ey;}
-    else if(cmd==='C'){const a=num(),b=num(),c=num(),e=num(),ex=num(),ey=num();for(let k=1;k<=8;k++){const t=k/8,u=1-t;cur.push(T(u**3*x+3*u*u*t*a+3*u*t*t*c+t**3*ex,u**3*y+3*u*u*t*b+3*u*t*t*e+t**3*ey));}x=ex;y=ey;}
-    else if(cmd==='A'){
+    if(/[A-Za-z]/.test(toks[i])) cmd=toks[i++];
+    const rel=cmd===cmd.toLowerCase()&&cmd!=='z'; const C=cmd.toUpperCase();
+    const rx0=rel?x:0, ry0=rel?y:0;
+    if(C==='M'){x=num()+rx0;y=num()+ry0;sx=x;sy=y;cur=[T(x,y)];res.push(cur);cmd=rel?'l':'L';px2=py2=null;}
+    else if(C==='L'){x=num()+rx0;y=num()+ry0;cur.push(T(x,y));px2=py2=null;}
+    else if(C==='H'){x=num()+rx0;cur.push(T(x,y));px2=py2=null;}
+    else if(C==='V'){y=num()+ry0;cur.push(T(x,y));px2=py2=null;}
+    else if(C==='Q'){const cx=num()+rx0,cy=num()+ry0,ex=num()+rx0,ey=num()+ry0;quad(cx,cy,ex,ey);}
+    else if(C==='T'){const cx=px2==null?x:2*x-px2,cy=py2==null?y:2*y-py2,ex=num()+rx0,ey=num()+ry0;quad(cx,cy,ex,ey);}
+    else if(C==='C'){const a=num()+rx0,b=num()+ry0,c=num()+rx0,e=num()+ry0,ex=num()+rx0,ey=num()+ry0;cubic(a,b,c,e,ex,ey);}
+    else if(C==='S'){const a=px2==null?x:2*x-px2,b=py2==null?y:2*y-py2,c=num()+rx0,e=num()+ry0,ex=num()+rx0,ey=num()+ry0;cubic(a,b,c,e,ex,ey);}
+    else if(C==='A'){
       // Elliptical arc, endpoint form (SVG 1.1 F.6.5): the men's service cap's crown is two half-ellipse arcs.
-      let rx=Math.abs(num()),ry=Math.abs(num());const phi=num()*Math.PI/180,fa=num(),fs=num(),ex=num(),ey=num();
+      let rx=Math.abs(num()),ry=Math.abs(num());const phi=num()*Math.PI/180,fa=num(),fs=num(),ex=num()+rx0,ey=num()+ry0;
       const c=Math.cos(phi),s=Math.sin(phi),dx=(x-ex)/2,dy=(y-ey)/2,x1=c*dx+s*dy,y1=-s*dx+c*dy;
       const lam=x1*x1/(rx*rx)+y1*y1/(ry*ry);if(lam>1){rx*=Math.sqrt(lam);ry*=Math.sqrt(lam);}
       const num2=rx*rx*ry*ry-rx*rx*y1*y1-ry*ry*x1*x1,den=rx*rx*y1*y1+ry*ry*x1*x1,k=(fa===fs?-1:1)*Math.sqrt(Math.max(0,num2/den));
@@ -47,8 +56,8 @@ function flatten(d,M){
       const th1=ang(1,0,(x1-cxp)/rx,(y1-cyp)/ry);let dth=ang((x1-cxp)/rx,(y1-cyp)/ry,(-x1-cxp)/rx,(-y1-cyp)/ry);
       if(!fs&&dth>0)dth-=2*Math.PI;else if(fs&&dth<0)dth+=2*Math.PI;
       for(let k2=1;k2<=24;k2++){const t=th1+dth*k2/24;cur.push(T(c*rx*Math.cos(t)-s*ry*Math.sin(t)+cx,s*rx*Math.cos(t)+c*ry*Math.sin(t)+cy));}
-      x=ex;y=ey;}
-    else if(cmd==='Z'||cmd==='z'){x=sx;y=sy;}
+      x=ex;y=ey;px2=py2=null;}
+    else if(C==='Z'){x=sx;y=sy;px2=py2=null;}
     else throw new Error('cmd '+cmd);
   }
   return res;
