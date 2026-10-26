@@ -23,6 +23,62 @@
     epauletTop: 32, epauletTopGrade: 32.5
   };
 
+  // Pieces a garment sheet draws itself, which the measurement overlay's callouts, captions and labels keep clear of like any placed
+  // piece (ctx.keepClear). A sheet states some of them as landmarks, but not all (the flag and AUX patches, the sleeve pocket and loop
+  // outlines, the CFDU crest) and the landmark is a zone, not the drawn group, so these are the bounding boxes of the sheet's own groups
+  // `<sheet id>__<name>`, MEASURED FROM THE SHEET'S SVG (headless Chrome getBoundingClientRect, 1 viewBox unit = 1 px, so sheet
+  // units: 100 = 1 in): [group, x, y, w, h]. Re-measure after an art sync that moves a sheet (the tapes and name-tape equal the
+  // sheet's own landmarks to 0.01 in). The cap views' tapes are not listed: they travel with the cap view, whose box is already kept clear.
+  const DRAWN_PIECES = {};
+  const DRAWN_0 = [
+    ['sleeve-pocket-edge-right', 738.78, 1179.36, 444.8, 1073.82],
+    ['patch-flag-edge-right', 872.49, 1564.57, 197.57, 211.86],
+    ['sleeve-pocket-edge-left', 3046.13, 1179.36, 444.8, 1073.82],
+    ['patch-aux-edge-left', 3159.65, 1564.57, 197.57, 211.86],
+    ['sleeve-pocket-right', 124.96, 1027.5, 450, 1050],
+    ['patch-flag-right', 187.46, 1415, 325, 181.25],
+    ['sleeve-pocket-left', 3654.75, 1027.5, 450, 1050],
+    ['patch-aux-left', 3717.25, 1415, 325, 181.25],
+    ['name-tape', 1352.35, 1537.8, 525, 100],
+    ['cap-tape', 2352.35, 1537.8, 525, 100],
+    ['cap-tape-lettering', 2388.65, 1557.83, 453.38, 59.96]
+  ];
+  DRAWN_PIECES['garment-ocp-coat-abu-cut'] = DRAWN_0;
+  const DRAWN_1 = [
+    ['name-tape', 1330, 1605, 500, 90],
+    ['cap-tape', 2100, 1605, 500, 90],
+    ['cap-tape-lettering', 2134.6, 1620.03, 431.88, 59.96]
+  ];
+  DRAWN_PIECES['garment-abu-coat'] = DRAWN_1;
+  const DRAWN_2 = [
+    ['name-tape', 1330, 2175, 500, 90],
+    ['cap-tape', 2100, 2175, 500, 90],
+    ['cap-tape-lettering', 2134.6, 2190.03, 431.88, 59.96]
+  ];
+  DRAWN_PIECES['garment-cfu-coat'] = DRAWN_2;
+  const DRAWN_3 = [
+    ['name-tape', 2762.7, 1049.98, 400, 200],
+    ['patch-command', 1656.68, 1005.43, 299.96, 289.06],
+    ['sleeve-front-loop-right', 971.6, 596.8, 325.57, 394.21],
+    ['sleeve-front-flag-left', 3464.92, 584.43, 265.32, 268.98],
+    ['sleeve-front-pocket-left', 3596.77, 1247.14, 300.48, 573.59],
+    ['patch-flag-left', 4170.62, 316.3, 350, 200],
+    ['sleeve-pocket-left', 4225.69, 750.5, 240, 550]
+  ];
+  DRAWN_PIECES['garment-cfdu-flight-suit'] = DRAWN_3;
+  DRAWN_PIECES['garment-fdu-flight-suit'] = DRAWN_3;
+  const DRAWN_4 = [
+    ['name-tape', 3240, 870, 400, 200],
+    ['patch-command', 1990, 825.5, 300, 289],
+    ['sleeve-front-loop-right', 1405.04, 496.86, 330.32, 394.27],
+    ['sleeve-front-flag-left', 3835.31, 508.29, 259.39, 265.43],
+    ['sleeve-front-pocket-left', 4137.86, 1048.38, 535.88, 658.25],
+    ['patch-flag-left', 4965, 140, 350, 200],
+    ['sleeve-pocket-left', 4977.5, 765, 325, 575]
+  ];
+  DRAWN_PIECES['garment-flight-jacket-blue'] = DRAWN_4;
+  DRAWN_PIECES['garment-flight-jacket-green'] = DRAWN_4;
+
   function createContext(build, store){
     const ctx = {
       build, store,
@@ -36,6 +92,9 @@
         const s = await store.load(id);
         ctx.base = s;
         ctx.layers.push(Object.assign(core.registerAtOrigin(s, Z.garment, 'garment'), { key: 'base:jacket', className: 'jacket' }, opts || {}));
+        // The patches and tapes are pieces like any other (labels and callouts keep off them); the sleeve pocket and loop outlines are the
+        // surfaces the engine's own patches and measures lie on, so only the callouts' circles and captions keep off those (`surface`).
+        for(const [name, x, y, w, h] of DRAWN_PIECES[id] || []) ctx.keepClear({ x: x / 100, y: y / 100, w: w / 100, h: h / 100 }, 'drawn:' + name, /^(sleeve-pocket|sleeve-front)/.test(name));
         return s;
       },
       // Redraw named groups of the base garment above everything placed so far (a lapel that may
@@ -124,9 +183,9 @@
       },
       // A piece the garment sheet draws itself (a nametag, a tape) that the measurement labels keep
       // clear of, like the pieces placed on top. Not drawn.
-      keepClear(rect, key){
+      keepClear(rect, key, surface){
         if(!rect) return;
-        ctx.layers.push({ type: 'clear', x: rect.x, y: rect.y, w: rect.w, h: rect.h, rotate: 0, origin: { x: rect.x, y: rect.y }, z: 0, role: 'clear', key: 'clear:' + (key || ctx.layers.length), noBounds: true });
+        ctx.layers.push({ type: 'clear', x: rect.x, y: rect.y, w: rect.w, h: rect.h, rotate: 0, origin: { x: rect.x, y: rect.y }, z: 0, role: surface ? 'surface' : 'clear', key: 'clear:' + (key || ctx.layers.length), noBounds: true });
       }
     };
     return ctx;

@@ -235,8 +235,13 @@
         // The measured piece is the one solid the circle may touch (the cap view it sits on is not: the circle stays off it). The leader
         // starts on the piece and may cross the cloth it lies on (the cap view's own box) but no other piece.
         const isOwn = s => ownBounds && contains(grow(s, 0.03), C) && s.w * s.h <= 1.5 * ownBounds.w * ownBounds.h;
-        const others = solids.filter(s => !isOwn(s));
-        const leaderSolids = (ownBounds ? solids.filter(s => !contains(grow(s, 0.03), C)) : solids).map(s => grow(s, -1.5 * P)).filter(s => s.w > 0 && s.h > 0);
+        // The sheet's sleeve pocket and loop outlines (role 'surface') are not obstacles to labels, only to the circle and its caption.
+        const surfaces = scene.layers.filter(l => l.role === 'surface').map(l => ({ x: l.x, y: l.y, w: l.w, h: l.h }));
+        const others = solids.filter(s => !isOwn(s)).concat(surfaces);
+        // The leader is a hairline: it may cross a tape or patch the garment sheet draws (role 'clear'), which the circle and the captions
+        // keep clear of, but not a piece placed on the garment (a badge, a grade, a patch, a label).
+        const placedSolids = obstaclesOf({ layers: scene.layers.filter(l => l.role !== 'clear') });
+        const leaderSolids = (ownBounds ? placedSolids.filter(s => !contains(grow(s, 0.03), C)) : placedSolids).map(s => grow(s, -1.5 * P)).filter(s => s.w > 0 && s.h > 0);
         const garments = scene.layers.filter(l => l.type !== 'measure' && l.role === 'garment').map(l => core.layerBounds(l));
         let best = null;
         for(const hard of [true, false]){
@@ -271,6 +276,8 @@
                 for(const [p, q] of placedLines) cost += 20 * insideLength(p, q, boxAll) / P;
                 for(const s of leaderSolids) cost += 60 * insideLength(rim, C, s) / P;
               }
+              // A leader across a tape or patch the sheet draws is allowed but not liked.
+              for(const l of scene.layers) if(l.role === 'clear') cost += 2 * insideLength(rim, C, { x: l.x, y: l.y, w: l.w, h: l.h }) / P;
               // Outboard of the figure when it can be: the garment sheet's own cloth is the last choice.
               for(const g of garments) cost += 0.004 * overlap(circ, g) / (P * P);
               if(!best || cost < best.cost) best = { cost, c, circ, cap, boxAll, rim, hard };

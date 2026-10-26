@@ -128,6 +128,7 @@ for(const [name, b] of EIGHTH_CASES){
     const { scene, px, area, drawings } = await laidOut(b);
     const eighths = drawings.filter(d => d.label.text === '⅛ in');
     assert.ok(eighths.length > 0, 'a 1/8 in measure is drawn');
+    assert.ok(scene.layers.some(l => /^clear:drawn:/.test(l.key || '')), 'the sheet-drawn pieces are kept clear');
     const solids = ML.obstaclesOf(scene);
     for(const d of eighths){
       const co = d.callout;
@@ -145,6 +146,8 @@ for(const [name, b] of EIGHTH_CASES){
       assert.ok(overlap(co.box, area) >= co.box.w * co.box.h - 1e-6, 'inset inside the drawing');
       for(const s of solids) assert.ok(overlap(co.box, grow(s, -0.25 * px)) === 0, `inset clear of a piece at ${s.x.toFixed(2)},${s.y.toFixed(2)}`);
       for(const e of drawings) if(e !== d) assert.equal(overlap(co.box, e.label), 0, `inset clear of the ${e.label.text} label`);
+      // ... nor any piece the garment sheet draws itself (flag, AUX, command patch / crest, tapes, sleeve pocket and loop outlines).
+      for(const l of scene.layers.filter(l => /^clear:drawn:/.test(l.key || ''))) assert.ok(overlap(co.box, grow(l, -0.25 * px)) === 0, `inset and caption clear of the sheet's ${l.key.slice(12)}`);
       // The dimension line across the band is the band's width magnified 4x.
       const across = Math.hypot(d.dim[1].x - d.dim[0].x, d.dim[1].y - d.dim[0].y);
       assert.ok(Math.abs(across - 4 * co.border) < 1e-6, 'dimension line is the band at 4x');
