@@ -446,29 +446,29 @@ function capubRibbonOptionOverride(id){
     return [pick,
       { label:'Group level (no device)', value:'cac_group', devices:{} },
       { label:'Wing level (bronze star)', value:'cac_wing', devices:{} },
-      { label:'Region level (silver star)', value:'cac_region', devices:{} },
+      { label:'Region level', value:'cac_region', devices:{} },
       { label:'National level (gold star)', value:'cac_national', devices:{} }];
   }
   if(id === 'mitchell_award'){
     return [pick, { label:'Earned', value:'earned', devices:{} },
-      { label:'Earned + COS graduate (silver star)', value:'earned_cos_star', devices:{} }];
+      { label:'Earned + COS graduate', value:'earned_cos_star', devices:{} }];
   }
   // Honor credit: a silver star on achievements 1-8 (CAPR 39-3 is silent on it; the vendor ribbons and
   // the eServices cadet report carry it). Goddard also takes the rocketry star (14h).
   if(id === 'goddard_achievement'){
     return [pick, { label:'Earned', value:'earned', devices:{} },
-      { label:'Earned with Honor Credit (silver star)', value:'honor_credit', devices:{} },
+      { label:'Earned with Honor Credit', value:'honor_credit', devices:{} },
       { label:'Earned + Model Rocketry Badge (silver star, Mitchell required)', value:'rocketry_star', devices:{} },
       { label:'Earned + Honor Credit and Model Rocketry Badge (two silver stars)', value:'honor_credit_and_rocketry', devices:{} }];
   }
   if(CAPUB_HONOR_CREDIT_RIBBONS.has(id)){
     return [pick, { label:'Earned', value:'earned', devices:{} },
-      { label:'Earned with Honor Credit (silver star)', value:'honor_credit', devices:{} }];
+      { label:'Earned with Honor Credit', value:'honor_credit', devices:{} }];
   }
   if(CAPUB_COS_STAR_RIBBONS.has(id)){
     if(State.membership === 'cadet') return ribbonSelectOnlyOptions();
     return [pick, { label:'Earned', value:'earned', devices:{} },
-      { label:'Earned + COS star moved from the Mitchell (silver star)', value:'earned_cos_star', devices:{} }];
+      { label:'Earned + COS star moved from the Mitchell', value:'earned_cos_star', devices:{} }];
   }
   if(CAPUB_PLAIN_ACHIEVEMENT_RIBBONS.has(id)) return ribbonSelectOnlyOptions();
   return null;

@@ -35,7 +35,7 @@ function build(uniform, membership, rank, extra){
 
 test('a star device is drawn as tall as the propeller device on the same Class A rack, with its own aspect', async () => {
   const rs = ribbons([
-    ['mitchell_award', 'earned_cos_star', 'Earned + COS graduate (silver star)', 'cadet'],
+    ['mitchell_award', 'earned_cos_star', 'Earned + COS graduate', 'cadet'],
     ['search_find_ribbon', 'mcchord_24500', '2nd w/Prop', 'cadet'],
     ['cap_gill_robb_wilson_ribbon', 'sos', 'Squadron Officer School (bronze star)', 'senior']
   ]);
