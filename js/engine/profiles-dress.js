@@ -509,9 +509,15 @@
   // sloping seam: the letters by their ink (INK_REST per side), the NCO circle tangent to it. The sheet holds both
   // lapels; the circle's two are mirrored, so one shift serves both. The letters are not mirrored, so each lapel's
   // letters rest on their own seam: the sheet is drawn once per side (onlyGroups), each moved by its own amount.
+  // The cadet officers' CAP cutouts rest on the seam as the coat sheet draws it, not on the lifted line the US pins and the chevrons use
+  // (art e212600b moved the gorge_seam_* anchors 0.35 in above the drawn seam for Doran's 'The US is too low'; the drawn seam did not move).
+  // Ethan, on the cadet officer lapels: 'also 99% sure the cap things should be touching the line'; his ruling over the lifted line (D3).
+  // CAPR 39-1 4.1.5.2.2.1.2 (men), 4.1.9.4.1.2 (women): the CAP cutouts 'rest on the seam', as the figure draws them (Fig 4.6, 4.7a).
+  const DRAWN_SEAM_DROP = 0.35;
   function restOverlayOnSeam(ctx, spec, circle){
     const layer = ctx.layers[ctx.layers.length - 1];
     if(!layer || layer.type !== 'asset') return;
+    const drop = /lapel-cap$/.test(spec.id) ? DRAWN_SEAM_DROP : 0;
     const letters = !circle && ['right', 'left'].every(side => INK_REST[`${spec.id}#${side}`] && seamLine(ctx, side));
     if(letters){
       const group = /cap/.test(spec.id) ? 'lapel-cap' : 'lapel-us';
@@ -519,7 +525,7 @@
       layer.onlyGroups = [`${group}-right`];
       for(const [l, side] of [[layer, 'right'], [left, 'left']]){
         const L = seamLine(ctx, side);
-        const dy = Math.min(...INK_REST[`${spec.id}#${side}`].map(([x, y]) => L.yAt(x) - y));
+        const dy = Math.min(...INK_REST[`${spec.id}#${side}`].map(([x, y]) => L.yAt(x) + drop - y));
         l.y += dy;
         l.origin = { x: l.origin.x, y: l.origin.y + dy };
         l.noBounds = true; // the garment sheet sets the scene box; the shift only moves the insignia
@@ -532,7 +538,7 @@
       const r = core.landmarkBounds(spec, 'lapel_us_' + side) || core.landmarkBounds(spec, 'lapel_cap_' + side);
       const rest = r && seamRest(ctx, side, r.w);
       if(!rest) continue;
-      const d = circle ? (rest.yAtCenter - r.h / 2 / rest.cos) - (r.y + r.h / 2) : rest.y - (r.y + r.h);
+      const d = circle ? (rest.yAtCenter - r.h / 2 / rest.cos) - (r.y + r.h / 2) : rest.y + drop - (r.y + r.h);
       dy = dy == null ? d : Math.min(dy, d);
     }
     if(dy == null) return;

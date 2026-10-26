@@ -20,10 +20,14 @@ function placedInkGap(coatSpec, side, layer){
   return Math.min(...hull.map(([px, py]) => seamYAt(coatSpec, side, layer.x + px) - (layer.y + py)));
 }
 // The lapel letters overlay: the hull is in sheet inches, moved by the layer's offset.
-function overlayInkGap(coatSpec, side, layer){
+// `drop`: the line is that many inches below the sheet's gorge_seam_* line (the CAP cutouts rest on the drawn seam, DRAWN_SEAM_DROP below
+// the lifted line the anchors state).
+function overlayInkGap(coatSpec, side, layer, drop){
   const hull = allHulls()[`${layer.id}#${side}`];
   if(!hull) throw new Error('no ink hull for ' + layer.id + ' ' + side);
-  return Math.min(...hull.map(([x, y]) => seamYAt(coatSpec, side, x + layer.x) - (y + layer.y)));
+  return Math.min(...hull.map(([x, y]) => seamYAt(coatSpec, side, x + layer.x) + (drop || 0) - (y + layer.y)));
 }
+// Art e212600b: the drawn gorge seam lies this far below the lifted line the anchors state (ASSET_NOTES, DORAN4-ART 1).
+const DRAWN_SEAM_DROP = 0.35;
 
-module.exports = { allHulls, placedInkGap, overlayInkGap, seamYAt };
+module.exports = { allHulls, placedInkGap, overlayInkGap, seamYAt, DRAWN_SEAM_DROP };

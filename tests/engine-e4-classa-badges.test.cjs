@@ -147,7 +147,7 @@ for(const sex of ['male', 'female']){
           // FIX-R-OTHER-r2 #1 (D8): the box's bottom edge on the seam's high point left the letters 0.04 to 0.1 in above
           // the seam; the ink rests on it: the lowest point of the drawn letters touches the seam line, none is over it.
           const layer = sideLayer(scene, id, box.side);
-          const gap = INK.overlayInkGap(coat.spec, box.side, layer);
+          const gap = INK.overlayInkGap(coat.spec, box.side, layer, sheet === 'lapel-cap' ? INK.DRAWN_SEAM_DROP : 0);
           near(gap, 0, 0.006, `${box.side} lowest ink of the letters on the seam`);
           assert.ok(gap >= -0.0015, `${box.side} insignia not over the seam (${gap.toFixed(4)})`);
           void bottom;

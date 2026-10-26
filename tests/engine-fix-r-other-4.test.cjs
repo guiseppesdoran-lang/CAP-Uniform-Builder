@@ -297,7 +297,7 @@ test('lapel US letters (officers, men and women) and cadet officer CAP letters: 
   for(const uniform of ['blues_a', 'semi_formal_usaf']){
     for(const sex of ['male', 'female']){
       const coat = await store.load(COATS[sex]);
-      for(const [membership, rank, sheet] of [['senior', 'Capt', 'lapel-us'], ['senior', 'Col', 'lapel-us'], ['senior', 'Maj Gen', 'lapel-us'], ['cadet', 'C/Maj', 'lapel-cap'], ['cadet', 'C/Col', 'lapel-cap']]){
+      for(const [membership, rank, sheet] of [['senior', 'Capt', 'lapel-us'], ['senior', 'Col', 'lapel-us'], ['senior', 'Maj Gen', 'lapel-us'], ['cadet', 'C/2d Lt', 'lapel-cap'], ['cadet', 'C/1st Lt', 'lapel-cap'], ['cadet', 'C/Capt', 'lapel-cap'], ['cadet', 'C/Maj', 'lapel-cap'], ['cadet', 'C/Lt Col', 'lapel-cap'], ['cadet', 'C/Col', 'lapel-cap']]){
         if(uniform === 'semi_formal_usaf' && membership === 'senior') continue; // the semi-formal is a cadet uniform
         const scene = await compose(hb(uniform, sex, membership, rank, {}));
         const id = `${COATS[sex]}-${sheet}`;
@@ -305,15 +305,17 @@ test('lapel US letters (officers, men and women) and cadet officer CAP letters: 
           const l = scene.layers.find(x => x.id === id && (side === 'left' ? x.key.endsWith(':left') : !x.key.endsWith(':left')));
           assert.ok(l, `${uniform} ${sex} ${rank} ${side}: letters drawn`);
           assert.deepEqual(l.onlyGroups, [`${sheet}-${side}`], 'one side per layer');
-          const gap = INK.overlayInkGap(coat, side, l);
+          const gap = INK.overlayInkGap(coat, side, l, sheet === 'lapel-cap' ? INK.DRAWN_SEAM_DROP : 0);
           near(gap, 0, 0.003, `${uniform} ${sex} ${rank} ${side}: lowest ink of the letters on the seam`);
+          // The CAP cutouts rest on the seam as drawn, 0.35 in below the lifted line the US pins keep (Ethan's ruling over Doran's lift); not on the lifted line.
+          if(sheet === 'lapel-cap') assert.ok(INK.overlayInkGap(coat, side, l, 0) < -0.3, `${uniform} ${sex} ${rank} ${side}: the CAP is below the lifted line`);
           assert.ok(gap >= -0.001, `${uniform} ${sex} ${rank} ${side}: not over the seam (${gap.toFixed(4)})`);
           checked++;
         }
       }
     }
   }
-  assert.ok(checked >= 28, String(checked));
+  assert.ok(checked >= 56, String(checked));
 });
 
 test('the CAP collar insignia of an adult on the NCO track rests by its ink too', async () => {
