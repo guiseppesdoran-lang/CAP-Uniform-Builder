@@ -199,6 +199,78 @@
     return { x: origin.x + dx * Math.cos(r) - dy * Math.sin(r), y: origin.y + dx * Math.sin(r) + dy * Math.cos(r) };
   }
 
+  // ---- shoulder cords: fit a garment's cord path to the sheet's landmarks, then round its corners ----
+  //
+  // A cord overlay draws one braided run as a polyline along the wearer's left armhole seam (its `cord` landmark, sheet inches). The
+  // run is fitted to two landmarks of the sheet: its top end goes to where the run's own line meets the shoulder's outline (the top of the
+  // shoulder, under the epaulet strap), and its bottom end to the armpit (the highest point between arm and body, or the inner end of a
+  // short sleeve's hem). Only the straight run is stretched: the vertices between keep their shape, each moved by the share of the two
+  // end shifts its arc length gives it, so the ends land on the landmarks exactly. The corners of the fitted polyline are then rounded
+  // with quadratic curves that leave each corner along one segment and arrive along the next, so the cord is one smooth line (the same
+  // point and tangent where the straight run meets the curve) instead of a bend.
+  const CORD_ROUND = 1.0;      // longest stretch of a segment a corner's curve may take (in)
+  const CORD_REACH = 3;        // how far along its own line the run is searched for the shoulder outline (in)
+
+  // The point where the line through `p0` along `dir` first meets the open polyline `ring`, within CORD_REACH of p0 either way.
+  function lineMeetsRing(p0, dir, ring){
+    let best = null;
+    for(let i = 0; i < ring.length - 1; i++){
+      const a = ring[i], b = ring[i + 1];
+      const ex = b[0] - a[0], ey = b[1] - a[1], den = dir[0] * ey - dir[1] * ex;
+      if(Math.abs(den) < 1e-9) continue;
+      const t = ((a[0] - p0[0]) * ey - (a[1] - p0[1]) * ex) / den, u = ((a[0] - p0[0]) * dir[1] - (a[1] - p0[1]) * dir[0]) / den;
+      if(u < 0 || u > 1 || Math.abs(t) > CORD_REACH) continue;
+      if(!best || Math.abs(t) < Math.abs(best.t)) best = { t, p: [p0[0] + t * dir[0], p0[1] + t * dir[1]] };
+    }
+    return best;
+  }
+
+  // Rounded polyline: pieces [{ type: 'L', a, b } | { type: 'Q', a, c, b }] and their path data (sheet inches).
+  function roundPolyline(pts, reach){
+    const n = pts.length, pieces = [];
+    let cur = pts[0];
+    for(let i = 1; i < n - 1; i++){
+      const v = pts[i], a = pts[i - 1], b = pts[i + 1];
+      const la = Math.hypot(v[0] - a[0], v[1] - a[1]), lb = Math.hypot(b[0] - v[0], b[1] - v[1]);
+      const D = Math.min(reach, 0.45 * la, 0.45 * lb);
+      const s = [v[0] + (a[0] - v[0]) * D / la, v[1] + (a[1] - v[1]) * D / la], e = [v[0] + (b[0] - v[0]) * D / lb, v[1] + (b[1] - v[1]) * D / lb];
+      if(Math.hypot(s[0] - cur[0], s[1] - cur[1]) > 1e-9) pieces.push({ type: 'L', a: cur, b: s });
+      pieces.push({ type: 'Q', a: s, c: v, b: e });
+      cur = e;
+    }
+    pieces.push({ type: 'L', a: cur, b: pts[n - 1] });
+    const f = v => String(Math.round(v * 10000) / 10000);
+    let d = `M${f(pts[0][0])},${f(pts[0][1])}`;
+    for(const p of pieces) d += p.type === 'L' ? `L${f(p.b[0])},${f(p.b[1])}` : `Q${f(p.c[0])},${f(p.c[1])} ${f(p.b[0])},${f(p.b[1])}`;
+    return { pieces, d };
+  }
+
+  // `points`: the sheet's cord landmark in inches ([x, y] pairs, top first); `outline`: the garment's upper outline (an open polyline, inches) or
+  // null; `armpit`: [x, y] or null. Returns { points, pieces, d, top, bottom, stretch }.
+  function fitCord(points, outline, armpit){
+    const orig = points.map(p => [p[0], p[1]]);
+    const n = orig.length;
+    const lens = [0];
+    for(let i = 1; i < n; i++) lens.push(lens[i - 1] + Math.hypot(orig[i][0] - orig[i - 1][0], orig[i][1] - orig[i - 1][1]));
+    const total = lens[n - 1] || 1;
+    let top = orig[0];
+    if(outline){
+      const d0 = [orig[0][0] - orig[1][0], orig[0][1] - orig[1][1]], l0 = Math.hypot(d0[0], d0[1]) || 1;
+      const hit = lineMeetsRing(orig[0], [d0[0] / l0, d0[1] / l0], outline);
+      if(hit) top = hit.p;
+    }
+    const bottom = armpit ? [armpit[0], armpit[1]] : orig[n - 1];
+    const dTop = [top[0] - orig[0][0], top[1] - orig[0][1]], dBot = [bottom[0] - orig[n - 1][0], bottom[1] - orig[n - 1][1]];
+    const fitted = orig.map((p, i) => {
+      const u = lens[i] / total;
+      return [p[0] + dTop[0] * (1 - u) + dBot[0] * u, p[1] + dTop[1] * (1 - u) + dBot[1] * u];
+    });
+    fitted[0] = top; fitted[n - 1] = bottom;
+    const len = pts => pts.reduce((s, p, i) => s + (i ? Math.hypot(p[0] - pts[i - 1][0], p[1] - pts[i - 1][1]) : 0), 0);
+    const r = roundPolyline(fitted, CORD_ROUND);
+    return { points: fitted, pieces: r.pieces, d: r.d, top, bottom, stretch: { from: len(orig), to: len(fitted), dTop, dBottom: dBot } };
+  }
+
   return {
     UNITS_PER_INCH,
     ANCHOR_ALIASES,
@@ -215,6 +287,8 @@
     layerBounds,
     unionBounds,
     rotatePoint,
+    fitCord,
+    roundPolyline,
     round
   };
 });

@@ -925,6 +925,35 @@
     return f ? [[f.neck.x, f.neck.y], [f.outer.x, f.outer.y]] : null;
   }
 
+  // The armpit of the wearer's left arm on each garment sheet that offers a shoulder cord, sheet inches: the highest point of the gap between
+  // arm and body, or the inner end of a short sleeve's hem. The sheets state the shoulder seam but no armpit, so it is read from the sheet's
+  // silhouette (scripts/measure-armpit.cjs); tests/engine-live-cord-joins.test.cjs compares this table with that output.
+  // ARMPIT begin
+  const ARMPIT = {
+    'garment-blues-class-a-coat': [20.686, 15.409],
+    'garment-blues-class-a-coat-female': [19.08, 12.884],
+    'garment-blues-class-b-shirt-male': [21.403, 15.648],
+    'garment-blues-class-b-shirt-male-long': [21.046, 16.044],
+    'garment-blues-class-b-blouse-female': [19.6, 16.35],
+    'garment-blues-class-b-blouse-female-long': [19.434, 15.442]
+  };
+  // ARMPIT end
+
+  // The cord overlay is one braided run drawn along the armhole seam, and the sheet's polyline stops short of the armpit and of the top
+  // of the shoulder. Ethan, live: 'cords are still fucked up. they arent going to the top of the shoulder nor the bottom of the thing', and
+  // 'shoulder cords dont line up' (the run bent where its two straight pieces met). The run is fitted to the sheet: top end on the shoulder
+  // outline, bottom end on the armpit (core.fitCord stretches only the straight run), corners rounded so the line is smooth. The layer
+  // carries the fitted path (`cordPath`, sheet inches) for the renderer, and is cut to the sheet's silhouette so no braid lands on the gap.
+  function fitCordLayer(ctx, spec){
+    const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
+    if(!layer || !lm || !lm.points || lm.points.length < 2) return;
+    const ring = GARMENT_TOP[id];
+    const outline = ring ? ring.slice(1).concat([ring[0]]) : null;
+    const fit = core.fitCord(lm.points.map(p => [p.x, p.y]), outline, ARMPIT[id] || null);
+    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, stretch: fit.stretch };
+    layer.clipSil = id;
+  }
+
   // Shoulder cord on the wearer's left shoulder (9.3): the cord's neck end on the strap axis, the
   // cord turned to follow it and moved 1/8 in toward the neck.
   async function shoulderCord(ctx, b, axis){
@@ -934,7 +963,11 @@
     const id = String(b.cord).startsWith('cord-') ? b.cord : 'cord-' + String(b.cord).replace(/_/g, '-');
     // The garment's own cord, drawn along its left armhole seam and passing under the epaulet.
     const own = ctx.base && `${ctx.base.id}-${id}`;
-    if(own && ctx.has(own)){ await ctx.overlay(own, Z.epauletLayer - 0.5); return; }
+    if(own && ctx.has(own)){
+      const s = await ctx.overlay(own, Z.epauletLayer - 0.5);
+      if(s) fitCordLayer(ctx, s);
+      return;
+    }
     if(!axis) return;
     if(!ctx.has(id)){ ctx.note('No artwork for the selected shoulder cord'); return; }
     const [n, a] = axis;

@@ -174,3 +174,82 @@ test('the cadet semi-formal wears no shoulder cord (9.3, 9.4.1 name the Service 
     assert.ok(!scene.layers.some(l => /-cord-|^cord-/.test(l.id || '')), `${k}: no cord on the semi-formal`);
   }
 });
+
+// ---- LIVE6-1: the cord is one smooth run from the top of the shoulder to the armpit, on every garment that offers one ----
+// Ethan, live: "shoulder cords dont line up", then "cords are still fucked up. they arent going to the top of the shoulder nor the bottom
+// of the thing". The sheets draw the run as a polyline along the armhole seam that bends 9 to 18 degrees at its vertices and stops short
+// of the armpit (0.4 to 0.7 in on the Class A coat and the long shirt) and of the shoulder's outline. The engine fits the run to the sheet
+// (core.fitCord): top end on the shoulder outline, bottom end on the armpit, only the straight run stretched, corners rounded. CAPR 39-1
+// 9.3 ("worn on the left shoulder ... under the epaulet"). What the sheet states is read from the sheet here, not from the engine.
+const MEASURE_ARMPIT = require('../scripts/measure-armpit.cjs');
+const FIT_GARMENTS = [
+  ['garment-blues-class-a-coat', 'blues_a', 'male', {}], ['garment-blues-class-a-coat-female', 'blues_a', 'female', {}],
+  ['garment-blues-class-b-shirt-male', 'blues_b', 'male', { sleeve: 'short' }], ['garment-blues-class-b-shirt-male-long', 'blues_b', 'male', { sleeve: 'long' }],
+  ['garment-blues-class-b-blouse-female', 'blues_b', 'female', { sleeve: 'short' }], ['garment-blues-class-b-blouse-female-long', 'blues_b', 'female', { sleeve: 'long' }]
+];
+const outerRing = id => silhouette(read(id)).sort((a, b) => area(b) - area(a))[0];
+const ringDist = (p, ring) => Math.min(...ring.map((a, i) => segDist(p, a, ring[(i + 1) % ring.length])));
+const ang = v => Math.atan2(v[0], v[1]) * 180 / Math.PI;
+const angDiff = (a, b) => { let d = Math.abs(a - b) % 360; return d > 180 ? 360 - d : d; };
+
+test('the engine\'s ARMPIT table is the armpit of the current cord sheets (regenerate with scripts/measure-armpit.cjs)', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
+  const body = /\/\/ ARMPIT begin\n([\s\S]*?)\/\/ ARMPIT end/.exec(src);
+  assert.ok(body, 'the table is marked in the engine');
+  assert.deepEqual(new Function(body[1] + '; return ARMPIT;')(), MEASURE_ARMPIT.compute());
+});
+
+test('every cord kind on every garment and both sexes: one smooth run from the top of the shoulder to the armpit (9.3)', async () => {
+  const armpits = MEASURE_ARMPIT.compute();
+  let checked = 0;
+  for(const [gid, uniform, gender, opt] of FIT_GARMENTS) for(const k of KINDS){
+    const scene = await P.composeUniform(hb(uniform, gender, 'cadet', 'C/Maj', opt, k.replace(/-/g, '_')), store);
+    const cl = scene.layers.find(l => l.id === `${gid}-cord-${k}`);
+    const tag = `${gid} ${k}`;
+    assert.ok(cl && cl.cordPath, `${tag}: the cord is drawn with its fitted path`);
+    const { pieces, top, bottom, stretch } = cl.cordPath;
+    // Continuity: each piece starts where the one before ends, along the same tangent.
+    assert.ok(pieces.length >= 3, `${tag}: ${pieces.length} pieces`);
+    for(let i = 1; i < pieces.length; i++){
+      const a = pieces[i - 1], b = pieces[i];
+      assert.ok(Math.hypot(a.b[0] - b.a[0], a.b[1] - b.a[1]) <= 0.02, `${tag}: piece ${i} starts ${Math.hypot(a.b[0] - b.a[0], a.b[1] - b.a[1]).toFixed(3)} in from where piece ${i - 1} ends`);
+      const ta = a.type === 'Q' ? [a.b[0] - a.c[0], a.b[1] - a.c[1]] : [a.b[0] - a.a[0], a.b[1] - a.a[1]];
+      const tb = b.type === 'Q' ? [b.c[0] - b.a[0], b.c[1] - b.a[1]] : [b.b[0] - b.a[0], b.b[1] - b.a[1]];
+      assert.ok(angDiff(ang(ta), ang(tb)) <= 5, `${tag}: the tangent turns ${angDiff(ang(ta), ang(tb)).toFixed(1)} degrees where piece ${i - 1} meets piece ${i}`);
+    }
+    assert.ok(Math.hypot(pieces[0].a[0] - top[0], pieces[0].a[1] - top[1]) < 1e-6 && Math.hypot(pieces[pieces.length - 1].b[0] - bottom[0], pieces[pieces.length - 1].b[1] - bottom[1]) < 1e-6, `${tag}: the pieces run from top to bottom`);
+    // The top end is on the shoulder's outline as the sheet draws it; the bottom end is the armpit as the sheet draws it.
+    const ring = outerRing(gid);
+    assert.ok(ringDist(top, ring) <= 0.1, `${tag}: the run's top end is ${ringDist(top, ring).toFixed(3)} in from the shoulder outline`);
+    const ap = armpits[gid];
+    assert.ok(Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]) <= 0.1, `${tag}: the run's bottom end is ${Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]).toFixed(3)} in from the armpit`);
+    // Only the straight run is stretched: the length changes by no more than 15 percent (the sheets draw no loop or tip to keep).
+    assert.ok(stretch.to / stretch.from > 0.85 && stretch.to / stretch.from < 1.15, `${tag}: length ${stretch.from.toFixed(2)} to ${stretch.to.toFixed(2)} in`);
+    assert.equal(cl.clipSil, gid, `${tag}: cut to the sheet's silhouette`);
+    if(uniform === 'blues_a'){
+      // Under the shoulder board's strip at the shoulder seam: the strip covers the run's top end (it is drawn over the cord).
+      const strip = scene.layers.find(x => x.key === 'epaulet:left'), o = strip.origin, R = strip.rotate || 0;
+      const poly = [[strip.x, strip.y], [strip.x + strip.w, strip.y], [strip.x + strip.w, strip.y + strip.h], [strip.x, strip.y + strip.h]].map(([x, y]) => { const q = core.rotatePoint({ x, y }, o, R); return [q.x, q.y]; });
+      assert.ok(polyDist(top, poly) <= 0.1, `${tag}: the run's top end is ${polyDist(top, poly).toFixed(3)} in from the strip`);
+      assert.ok(cl.z < strip.z, `${tag}: under the strip`);
+    }
+    checked++;
+  }
+  assert.equal(checked, FIT_GARMENTS.length * KINDS.length);
+});
+
+test('the fitted path is the sheet\'s braid: the renderer maps it back to the sheet\'s drawing units, and a path of the sheet\'s own points comes out as the sheet\'s own path', () => {
+  global.self = global.self || global;
+  require('../js/engine/render-svg.js');
+  const RS = global.self.CAPUBEngine.renderSvg;
+  for(const [gid] of FIT_GARMENTS){
+    const id = `${gid}-cord-wing`, svg = read(id);
+    const t = svg.match(/__art" transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/);
+    const own = /<path id="[^"]*__cord-path" d="([^"]+)"/.exec(svg)[1];
+    const inches = cordStrokes(id)[0].pts;
+    const d = 'M' + inches.map(p => `${p[0]},${p[1]}`).join('L');
+    const back = RS.cordPathToArt(d, Number(t[1]), Number(t[2]), Number(t[3])).match(/-?[\d.]+/g).map(Number), ref = own.match(/-?[\d.]+/g).map(Number);
+    assert.equal(back.length, ref.length);
+    back.forEach((v, i) => assert.ok(Math.abs(v - ref[i]) < 0.002, `${id}: coordinate ${i} ${v} against ${ref[i]}`));
+  }
+});

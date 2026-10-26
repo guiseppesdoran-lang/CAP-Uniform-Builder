@@ -57,6 +57,19 @@
 
   function fmt(n){ return Number.isFinite(n) ? String(Math.round(n * 10000) / 10000) : '0'; }
 
+  // Short stable text for a variant symbol's id.
+  function hashText(t){
+    let h = 5381;
+    for(let i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0;
+    return h.toString(36);
+  }
+
+  // A path in sheet inches (M, L and Q with x,y pairs) in the sheet's drawing units: an art group `translate(tx ty) scale(s)` in 0.01 in
+  // units draws its own coordinate c at (tx + s * c) / 100 inches.
+  function cordPathToArt(d, tx, ty, s){
+    return String(d).replace(/(-?[\d.]+),(-?[\d.]+)/g, (m, x, y) => `${fmt((Number(x) * 100 - tx) / s)},${fmt((Number(y) * 100 - ty) / s)}`);
+  }
+
   function transformFor(layer){
     const parts = [];
     if(layer.rotate) parts.push(`rotate(${fmt(layer.rotate)} ${fmt(layer.origin.x)} ${fmt(layer.origin.y)})`);
@@ -175,6 +188,7 @@
     const deviceSyms = new Set();
     // Variants of a symbol with named groups hidden, or with only named groups shown.
     function variantKey(layer){
+      if(layer.cordPath && layer.cordPath.d) return layer.id + '--cord-' + hashText(layer.cordPath.d);
       if(layer.hideGroups && layer.hideGroups.length) return layer.id + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
       if(layer.onlyGroups && layer.onlyGroups.length) return layer.id + '--only-' + layer.onlyGroups.join('-').replace(/[^a-z0-9-]/gi, '');
       return layer.id;
@@ -215,7 +229,15 @@
       const sym = el('symbol', { id: 'sym-' + key, viewBox: s.viewBox, preserveAspectRatio: 'none' });
       sym.innerHTML = s.inner.replace(/\bid="([^"]+)"/g, (m, v) => `id="${v}${suffix}"`).replace(/url\(#([^)]+)\)/g, (m, v) => `url(#${v}${suffix})`).replace(/href="#([^"]+)"/g, (m, v) => `href="#${v}${suffix}"`);
       const byId = name => sym.querySelector(`[id="${layer.id}__${name}${suffix}"]`);
-      if(layer.hideGroups){
+      if(layer.cordPath && layer.cordPath.d){
+        // The fitted cord path (engine: core.fitCord) replaces the sheet's polyline in every stroke of the braid; the art group's own
+        // translate and scale take the path from sheet inches back to the sheet's drawing units.
+        const art = byId('art'), cord = byId('cord'), t = art && /translate\(([-\d.]+)[ ,]+([-\d.]+)\)\s*scale\(([-\d.]+)\)/.exec(art.getAttribute('transform') || '');
+        if(cord && t){
+          const d = cordPathToArt(layer.cordPath.d, Number(t[1]), Number(t[2]), Number(t[3]));
+          cord.querySelectorAll('path').forEach(pn => { if(/^M/.test(pn.getAttribute('d') || '')) pn.setAttribute('d', d); });
+        }
+      }else if(layer.hideGroups){
         layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
       }else{
         // Draw nothing but the named groups: hide everything, then show those groups.
@@ -411,5 +433,5 @@
   }
 
   root.CAPUBEngine = root.CAPUBEngine || {};
-  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, loadSymbol, measureNodes };
+  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, loadSymbol, measureNodes, cordPathToArt, hashText };
 })(typeof self !== 'undefined' ? self : this);
