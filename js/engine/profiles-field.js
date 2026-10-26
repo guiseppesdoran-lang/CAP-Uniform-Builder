@@ -82,8 +82,10 @@
       // "1/2 inch from the visor": the zone's bottom edge already sits 1/2 in above the visor.
       const at = mode === 'visor' ? { x: z.x + z.w / 2, y: z.y + z.h } : core.rectCenter(z);
       // On the cap seated on the figure the grade lies over the hat (R6).
-      await ctx.place(id, { pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: Z.hatDevice, role: 'grade', key: 'grade:' + name });
+      const cg = await ctx.place(id, { pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: Z.hatDevice, role: 'grade', key: 'grade:' + name });
       if(mode === 'visor') ctx.measure({ x: at.x, y: at.y + 0.5 }, at);
+      // OCP caps: 'only 1/8th inch of blue fabric showing past the widest and tallest part of the insignia' (7.1.1.8).
+      if(b.uniform === 'ocp') await H.blueBorder(ctx, cg);
     }
   }
 
@@ -246,6 +248,9 @@
         await ctx.place(id, { pieceAnchor: 'center', at: H.polygonCentroid(poly.points), rotate, flipX: g.key === 'colonel' && R, z: Z_COLLAR_GRADE, role: 'grade', key: 'grade:' + side });
       }
     }
+    // The cloth grade on the collar shows 1/8 in of blue past the embroidery (5.1.1.1.1.1, 5.1.1.1.1.3, 5.2.1.1.1.1, 5.2.1.1.1.4):
+    // measured once, on the wearer's right leaf.
+    if(g.category === 'cadet-officer' || (g.officer && !g.cadet)) await H.blueBorder(ctx, ctx.layers.filter(l => l.key === 'grade:right').pop());
     if(g.category === 'senior-nco'){
       const id = G.seniorChevron(g, { size: b.opt.chevron });
       let drawn = 0;
@@ -726,7 +731,11 @@
     nameTapes(ctx, b);
     if(b.uniform === 'ocp') await ocpGrade(ctx, b);
     else await collarGrade(ctx, b);
+    const beforeBadges = ctx.layers.length;
     await fieldBadges(ctx, b);
+    // The 1/8 in of blue left past the embroidery, shown once, on the highest chest badge (7.1.1.3.1, 5.1.1.1.2.4, 5.2.1.1.2.6).
+    const chest = ctx.layers.slice(beforeBadges).filter(l => l.role === 'badge' && l.type === 'asset');
+    if(chest.length) await H.blueBorder(ctx, chest.reduce((a, l) => (l.y < a.y ? l : a)));
     await fieldCommand(ctx, b);
     await fieldPatches(ctx, b);
     // The collar leaves and lapels over the badges, command pin and patches that reach them (the OCP coat has the same group).

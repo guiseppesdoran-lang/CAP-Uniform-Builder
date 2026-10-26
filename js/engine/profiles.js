@@ -327,6 +327,27 @@
   }
 
   // Scale a piece so it fits maxW x maxH (never up), centred on a point.
+  // The 1/8 in of blue cloth left showing past the embroidery when a cloth badge or grade piece is cut out (Ethan: "1/8th inch
+  // of blue on the badges!"): 7.1.1.3.1 and 7.1.1.8 (OCP chest badges, cap grade), 5.1.1.1.1.1, 5.1.1.1.1.3, 5.1.1.1.2.4 (ABU collar
+  // grade, chest badges), 5.2.1.1.1.1, 5.2.1.1.1.4, 5.2.1.1.2.6 (CFU), 8.3.5.1 (CFDU cloth grade, "1/8 inch larger than the
+  // insignia"). One measure on the piece `layer`, at its top edge in its own frame (turned with it): from the blue edge in to the
+  // embroidery, labelled with the regulation's 1/8 in. The border is the art's own: the art_top_center anchor of a field badge or
+  // dimensions.border_each_side_in of a cloth-bordered insignia; a piece whose border is not 1/8 in (the 1 x 1 in command patch)
+  // gets none. Returns the measure layer or null.
+  async function blueBorder(ctx, layer){
+    if(!layer || layer.type !== 'asset' || !ctx.has(layer.id)) return null;
+    const spec = await ctx.spec(layer.id);
+    const top = core.anchor(spec, 'art_top_center');
+    const dims = spec.raw && spec.raw.dimensions;
+    const border = top && top.y > 0.01 ? top.y : (dims && dims.border_each_side_in) || null;
+    if(!border || Math.abs(border - 0.125) > 0.01) return null;
+    const k = layer.h / spec.h;
+    const o = layer.origin || { x: layer.x, y: layer.y };
+    const edge = core.rotatePoint({ x: layer.x + layer.w / 2, y: layer.y }, o, layer.rotate || 0);
+    const inner = core.rotatePoint({ x: layer.x + layer.w / 2, y: layer.y + border * k }, o, layer.rotate || 0);
+    return ctx.measure(edge, inner, '⅛ in');
+  }
+
   async function placeFitted(ctx, id, at, maxW, maxH, opts){
     const s = await ctx.spec(id);
     const scale = Math.min(1, maxW / s.w, maxH / s.h);
@@ -600,8 +621,11 @@
 
   // Officer grade on the shoulders (8.2.3, 8.3.3): cloth-bordered, centred in each grade zone; general
   // officers' stars centred on the shoulder with a point toward the neck.
-  async function flightGrade(ctx, g){
+  async function flightGrade(ctx, g, b){
     if(!g.officer || g.cadet) return;
+    // The CFDU's embroidered grade is folded 'to create a rectangle that is 1/8 inch larger than the insignia' (8.3.5.1): measured
+    // once, on the wearer's right shoulder of the suit (the jacket beside it is configured the same, 8.3.7).
+    const border = async () => { if(b && b.uniform === 'corporate_flight_suit' && !b.opt.asJacket) await blueBorder(ctx, ctx.layers.filter(l => l.key === 'grade:right').pop()); };
     if(g.general){
       const id = G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: false });
       for(const side of ['right', 'left']){
@@ -610,6 +634,7 @@
         // The stacked form turned a quarter turn lies along the shoulder, points toward the neck.
         await ctx.place(id, { pieceAnchor: 'center', at: core.rectCenter(zone), rotate: side === 'right' ? 90 : -90, z: Z.insignia, role: 'grade', key: 'grade:' + side });
       }
+      await border();
       return;
     }
     // Officers (not generals): the cloth grade is 'centered on top of each shoulder with bottom edge of insignia
@@ -642,6 +667,7 @@
       await ctx.place(id, { pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: bars ? 0 : side === 'right' ? 90 : -90, flipX: !bars && side === 'right' && g.key === 'colonel',
         z: Z.insignia, role: 'grade', key: 'grade:' + side });
     }
+    await border();
   }
 
   // The 2 x 4 in embroidered name tag over the left breast pocket (8.2.4.1, 8.3.4.1, Fig A6-3).
@@ -727,7 +753,7 @@
       ? (corporate ? 'garment-flight-jacket-blue' : 'garment-flight-jacket-green')
       : (corporate ? 'garment-cfdu-flight-suit' : 'garment-fdu-flight-suit');
     await ctx.garment(garment);
-    await flightGrade(ctx, b.grade);
+    await flightGrade(ctx, b.grade, b);
     await flightNametag(ctx, b);
     await flightPatches(ctx, b);
     if(b.opt.scarf && !jacket){
@@ -791,5 +817,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, helpers: { blueBorder, pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });
