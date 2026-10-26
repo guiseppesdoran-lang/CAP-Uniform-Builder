@@ -386,6 +386,17 @@ test('the engine finds each collar leaf\'s leading edge between the vertices the
   }
 });
 
+// The Class B sheets draw their collar-foreground group again above the badges and ribbons (collarOverBadges, Z.badge + 0.5); the chevron is worn on the collar, so it must lie above that group or the
+// leaf covers it and the collar shows no chevron (seen on the matrix render of every cadet NCO Class B build before LIVE9-6).
+test('Class B cadet NCO collar chevrons are drawn above the collar-foreground group that covers badges and ribbons (4.1.11.1.1.1.4, 4.1.12.2.3.5)', async () => {
+  for(const [uniform, gender, opt, garment] of COLLAR_CASES.filter(c => c[0] === 'blues_b')){
+    const scene = await P.composeUniform(build(uniform, gender, 'cadet', 'C/SSgt', opt), store);
+    const fg = scene.layers.filter(l => l.role === 'garment-foreground');
+    assert.ok(fg.length >= 1, `${garment}: the collar foreground is drawn`);
+    for(const side of ['right', 'left']) for(const f of fg) assert.ok(gradeLayer(scene, 'grade:' + side).z > f.z, `${garment} ${side}: the chevron (z ${gradeLayer(scene, 'grade:' + side).z}) is above the collar foreground (z ${f.z})`);
+  }
+});
+
 // Figure A5-5 ('shirt without necktie', male and female panels): the starred canton of the C/SSgt shield (the
 // top of the art) faces the shirt's centre, toward the roll-line end; the round rocker side faces the collar
 // point. Pinned from the art's own top_center and the polygon vertices, on every sheet and both collars.

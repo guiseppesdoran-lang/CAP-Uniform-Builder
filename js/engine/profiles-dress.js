@@ -1526,7 +1526,9 @@
     await threeLineName(ctx, b, tag, g.cadet);
 
     if(g.category === 'cadet-nco'){
-      await H.collarChevrons(ctx, g);
+      // The cadet NCO chevron is worn ON the collar (4.1.11.1.1.1.4, 4.1.12.2.3.5, Figure A5-5), so it lies above the collar leaves the sheet's collar-foreground group draws again over the badges and
+      // ribbons (collarOverBadges below, Z.badge + 0.5): at the insignia layer the leaf covered it and the collar showed no chevron at all.
+      await H.collarChevrons(ctx, g, { z: Z.badge + 0.6 });
     }else if(g.category === 'senior-nco'){
       // Men: 3 1/2 in (4.1.11.1.1.1.3). Women: 3 1/2 or 4 in on either sleeve (4.1.12.2.3.3).
       const size = female && b.opt.chevron === '4' ? '4' : '3.5';
