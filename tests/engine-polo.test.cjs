@@ -225,17 +225,32 @@ test('a graded member is told the polo wears no grade; a member without grade is
   assert.ok(!sm.notes.some(n => /No grade insignia/.test(n)));
 });
 
-test('the CAP baseball cap is optional headgear, seated on the figure like the other caps (5.3.7)', async () => {
+test('the CAP baseball cap is optional headgear, front and back views in the boxes the sheet states, above the shoulders (5.3.7)', async () => {
   const off = await compose(build());
-  assert.ok(!off.layers.some(l => l.role === 'hat'), 'headgear is not required with this uniform');
-  const on = await compose(build({ opt: { baseballCap: true } }));
-  const hat = on.layers.find(l => l.role === 'hat');
-  assert.ok(hat, 'the cap is drawn');
-  assert.ok(/^hat-baseball-cap/.test(hat.id));
-  const sheet = await store.load('garment-polo-male');
-  near(hat.origin.x, sheet.anchors.top_center.x, 0.01, 'on the sheet\'s centre line');
-  assert.ok(hat.y < sheet.h * 0.1, 'above the shoulders');
-  assert.ok(!on.layers.some(l => l.role === 'hat-device'), 'the baseball cap carries no cap device here');
+  assert.ok(!off.layers.some(l => l.role === 'hat' || l.role === 'hat-view'), 'headgear is not required with this uniform');
+  for(const [sex, long] of CUTS){
+    const on = await compose(build({ build: { gender: sex }, opt: { baseballCap: true, sleeve: long ? 'long' : 'short' } }));
+    const sheet = await store.load(sheetOf(sex, long));
+    const view = sheet.raw.landmarks.hat_view;
+    const front = on.layers.find(l => l.role === 'hat'), back = on.layers.find(l => l.role === 'hat-view');
+    assert.ok(front && /^hat-baseball-cap/.test(front.id), 'the cap is drawn');
+    near(front.x, view.front.x / 100, 0.01, 'front view at the sheet\'s box x');
+    near(front.y, view.front.y / 100, 0.01, 'front view at the sheet\'s box y');
+    near(front.w, view.front.w / 100, 0.01, 'front view at the box width');
+    assert.ok(front.y + front.h <= 0.6, `${sex} ${long}: the cap sits above the shoulders`);
+    assert.ok(back && /-back$/.test(back.id), 'the back view');
+    near(back.x, view.back.x / 100, 0.01, 'back view at the sheet\'s box x');
+    assert.ok(back.x >= front.x + front.w, 'the back view lies to the picture\'s right of the front');
+    assert.ok(!on.layers.some(l => l.role === 'hat-device'), 'the baseball cap carries no cap device');
+  }
+});
+
+test('the printed polo hides the men\'s pocket: it has no pocket or accoutrements (5.3.1.2, 5.3.2.1.2)', async () => {
+  const print = await compose(build({ opt: { poloShirt: 'print' } }));
+  assert.deepEqual([...print.layers[0].hideGroups], ['pocket']);
+  const knit = await compose(build());
+  assert.ok(!knit.layers[0].hideGroups);
+  assert.ok(!print.layers.some(l => l.role === 'surface' && l.key === 'clear:pocket'), 'no pocket zone is kept clear on the printed shirt');
 });
 
 test('no epaulet, sleeve flat, cord or collar views are drawn, and the scene is just the figure, its print or seal, name and badge', async () => {
@@ -246,7 +261,7 @@ test('no epaulet, sleeve flat, cord or collar views are drawn, and the scene is 
 test('with the polo sheets synced: every slot is on the sheet, the seal on the right breast, the print and name on the left (5.3.1)', { skip: polo.real ? false : 'polo sheets not synced yet (garment-polo-male ... not in images/MANIFEST.json)' }, async () => {
   for(const [sex, long] of CUTS){
     const sheet = await store.load(sheetOf(sex, long));
-    for(const name of ['seal_slot', 'name_slot', 'print_seal_slot', 'pen_pocket_slot']){
+    for(const name of ['seal_slot', 'name_slot', 'badge_slot', 'print_seal_slot']){
       const r = polo.slot(sheet, name);
       assert.ok(r, `${sheet.id} states ${name}`);
       assert.ok(r.x >= 0 && r.y >= 0 && r.x + r.w <= sheet.w + 1e-6 && r.y + r.h <= sheet.h + 1e-6, `${sheet.id} ${name} inside the sheet`);
@@ -258,6 +273,7 @@ test('with the polo sheets synced: every slot is on the sheet, the seal on the r
     const badge = polo.point(sheet, 'badge_slot');
     assert.ok(badge && badge.y < nm.y, `${sheet.id}: badge slot above the name`);
     assert.equal(!!polo.slot(sheet, 'pocket'), sex === 'male', `${sheet.id}: the left chest pocket is the men's (5.3.1.1)`);
-    assert.ok(sheet.anchors.top_center, `${sheet.id}: top_center for the cap`);
+    assert.ok(sheet.anchors.top_center && sheet.raw.landmarks.hat_view.front, `${sheet.id}: hat_view for the cap`);
+    near(polo.slot(sheet, 'badge_slot').y + polo.slot(sheet, 'badge_slot').h + 0.5, nm.y, 0.02, `${sheet.id}: the badge slot ends 1/2 in over the name slot (5.3.2.1.1)`);
   }
 });
