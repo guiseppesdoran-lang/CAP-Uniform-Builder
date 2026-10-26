@@ -18,6 +18,7 @@ const C = require('../js/engine/compose.js');
 const P = require('../js/engine/profiles.js');
 require('../js/engine/profiles-field.js');
 require('../js/engine/profiles-dress.js');
+require('../js/engine/profiles-polo.js');
 const R = require('../scripts/render-builds.cjs');
 
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8'));
@@ -55,7 +56,8 @@ const CITE = {
   ocpPair: '½ in: badges side by side (7.1.1.3.1.3-4)',
   ocpStack: '¼ in: between stacked badges (7.1.1.3.1.3-4)',
   fduGrade: '½ in: officer grade from the shoulder seam (8.2.3.2, 8.3.3.2)',
-  fduFlag: '½ in: U.S. flag below the shoulder seam (8.2.4.4, 8.3.4.4)'
+  fduFlag: '½ in: U.S. flag below the shoulder seam (8.2.4.4, 8.3.4.4)',
+  poloOverName: '½ in: the one badge or duty title over the name, from the top of the name to the bottom of the badge or title (5.3.2.1.1)'
 };
 const L = key => CITE[key].split(':')[0];
 
@@ -107,7 +109,14 @@ const TABLE = [
   ['x-aviator-male-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons']],
   ['x-aviator-female-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag']],
   ['x-overblouse-short-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'aboveNametag']],
-  ['x-overblouse-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag']]
+  ['x-overblouse-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag']],
+  // The polo (5.3): the 1/2 in over the name is its only distance, on every cut and both the badge and the title; nothing on the printed shirt (5.3.2.1.2).
+  ['polo-male-senior-Capt', ['poloOverName']],
+  ['polo-female-senior-SMSgt', ['poloOverName']],
+  ['polo-male-senior-Col', ['poloOverName']],
+  ['x-polo-female-long-title', ['poloOverName']],
+  ['x-polo-male-tactical-badge', ['poloOverName']],
+  ['x-polo-male-print', []]
 ];
 
 const UNIT = { id: 'sequoyah_cadet_squadron_patch', title: 'Unit', href: 'images/patches/sequoyah_cadet_squadron_patch.webp', aspect: 1, slot: 'R_SHOULDER', kind: 'unit' };
@@ -136,6 +145,9 @@ function spec(name){
     case 'x-blues_b-female-long-SMSgt': return from('blues_b-female-senior-SMSgt', { opt: { sleeve: 'long' } });
     case 'x-aviator-male-long-SMSgt': return from('aviator-male-senior-SMSgt', { opt: { sleeve: 'long' } });
     case 'x-aviator-female-long-SMSgt': return from('aviator-female-senior-SMSgt', { opt: { sleeve: 'long' } });
+    case 'x-polo-female-long-title': return from('polo-female-senior-Capt', { opt: { sleeve: 'long', poloMark: 'title', dutyTitle: 'Squadron Commander' } });
+    case 'x-polo-male-tactical-badge': return from('polo-male-senior-Capt', { opt: { poloShirt: 'tactical' } });
+    case 'x-polo-male-print': return from('polo-male-senior-Capt', { opt: { poloShirt: 'print' } });
     case 'x-overblouse-short-SMSgt': return from('aviator-female-senior-SMSgt', { opt: { sleeve: 'short', femaleTop: 'overblouse' } });
     case 'x-overblouse-long-SMSgt': return from('aviator-female-senior-SMSgt', { opt: { sleeve: 'long', femaleTop: 'overblouse' } });
     default: return from(name, {});

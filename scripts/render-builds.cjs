@@ -266,6 +266,31 @@ function matrix(){
       }
     }
   }
+  // The polo's other shirts and options (CAPR 39-1 5.3): the long sleeve, the tactical and the screen-printed shirt, the embroidered duty title in place of
+  // the badge, no name, the baseball cap, and the women's choice of the men's cut. One senior Capt each, both cuts; a variant waits for the art it draws.
+  if(RULES.RULES.polo){
+    const POLO_VARIANTS = [
+      ['long', { sleeve: 'long' }, []],
+      ['tactical', { poloShirt: 'tactical' }, ['-tactical']],
+      ['tactical-long', { poloShirt: 'tactical', sleeve: 'long' }, ['-long-tactical']],
+      ['print', { poloShirt: 'print' }, ['-seal-print']],
+      ['print-long', { poloShirt: 'print', sleeve: 'long' }, ['-long-seal-print']],
+      ['title', { poloMark: 'title', dutyTitle: 'Squadron Commander' }, []],
+      ['no-name', { poloName: false }, []],
+      ['cap', { baseballCap: true }, ['HAT']],
+      ['cap-long-tactical', { baseballCap: true, poloShirt: 'tactical', sleeve: 'long' }, ['HAT', '-long-tactical']]
+    ];
+    for(const gender of ['male', 'female']){
+      const sheet = `garment-polo-${gender}`;
+      for(const [tag, opt, needs] of POLO_VARIANTS){
+        const name = `polo-${gender}-senior-Capt-${tag}`;
+        const missing = needs.map(n => n === 'HAT' ? 'hat-baseball-cap-blue' : sheet + n).find(id => !manifestIds.has(id));
+        if(missing){ skipped.push({ name, reason: `${missing} is not in images/MANIFEST.json yet` }); continue; }
+        ok.push({ name, build: { uniform: 'polo', gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, opt: Object.assign({ rackColumns: 3 }, opt), badgeIds: [AVIATION_BADGE.senior] } });
+      }
+      if(gender === 'female') ok.push({ name: 'polo-female-senior-Capt-mens-cut', build: { uniform: 'polo', gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, opt: { poloCut: 'male' }, badgeIds: [AVIATION_BADGE.senior] } });
+    }
+  }
   return { builds: ok, skipped, warnings };
 }
 

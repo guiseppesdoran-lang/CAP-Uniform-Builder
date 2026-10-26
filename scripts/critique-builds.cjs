@@ -155,4 +155,21 @@ mk('ocp-male-senior-Capt-4-badges', 'ocp', 'male', 'senior', 'Capt', { badgeIds:
 mk('abu-male-cadet-CMaj-2-badges', 'abu', 'male', 'cadet', 'C/Maj', { badgeIds: [AIRCREW, GT] });
 mk('flight_suit-male-senior-Capt-wings-ground-team-pin', 'flight_suit', 'male', 'senior', 'Capt', { badgeIds: [A4[0], GT], command: GROUP_PIN });
 
+// The polo, the Corporate Working Uniform (CAPR 39-1 5.3, Figure 5.5): the embroidered knit, tactical and screen-printed shirts, short and long, both cuts,
+// with and without the name and the badge, the duty title, the badge choice among several, a woman in the men's cut, and the baseball cap (5.3.7).
+const POLO_BADGE = A4[0], POLO_OCC = 'ground_team_basic_badge';
+for(const g of ['male', 'female']){
+  for(const sleeve of ['short', 'long']){
+    mk(`polo-${g}-${sleeve}-knit-badge`, 'polo', g, 'senior', 'Capt', { badgeIds: [POLO_BADGE], opt: { sleeve } });
+    mk(`polo-${g}-${sleeve}-tactical-badge`, 'polo', g, 'senior', 'Capt', { badgeIds: [POLO_BADGE], opt: { sleeve, poloShirt: 'tactical' } });
+    mk(`polo-${g}-${sleeve}-print`, 'polo', g, 'senior', 'Capt', { badgeIds: [POLO_BADGE], opt: { sleeve, poloShirt: 'print' } });
+  }
+  mk(`polo-${g}-knit-title`, 'polo', g, 'senior', 'Col', { opt: { poloMark: 'title', dutyTitle: 'Wing Director of Operations' } });
+  mk(`polo-${g}-knit-no-name-badge`, 'polo', g, 'senior', 'SM', { badgeIds: [POLO_OCC], name: { first: '', last: '', show: false } });
+  mk(`polo-${g}-knit-two-badges-one-worn`, 'polo', g, 'senior', 'Capt', { badgeIds: [POLO_BADGE, POLO_OCC], badgeChoices: { polo: POLO_OCC } });
+  mk(`polo-${g}-knit-baseball-cap`, 'polo', g, 'senior', 'Capt', { badgeIds: [POLO_BADGE], opt: { baseballCap: true } });
+  mk(`polo-${g}-knit-all-the-trimmings-refused`, 'polo', g, 'senior', 'Maj Gen', { ribbonSel: rib(), badgeIds: [POLO_BADGE, 'command_council_badge'], command: GROUP_PIN, cord: 'wing' });
+}
+mk('polo-female-mens-cut-badge', 'polo', 'female', 'senior', 'Capt', { badgeIds: [POLO_BADGE], opt: { poloCut: 'male' } });
+
 process.stdout.write(JSON.stringify(out, null, 1) + '\n');
