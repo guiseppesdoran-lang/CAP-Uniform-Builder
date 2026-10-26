@@ -1,30 +1,30 @@
 {
  "asset_id": "garment-aviator-shirt-male-long-tie",
- "name": "Men's Aviator Shirt Uniform AF blue tie (overlay, registered to garment-aviator-shirt-male-long)",
+ "name": "Men's Aviator Shirt Uniform blue tie (overlay, registered to garment-aviator-shirt-male-long; also the group \"tie\" of the sheet)",
  "size_in": {
-  "w": 26.0652,
+  "w": 26.0508,
   "h": 31.5847
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2606.52,
+  2605.08,
   3158.47
  ],
  "size_source": "estimated",
- "size_basis": "Visible blade of the blazer base tie, stretched to run from the collar V to the middle of the belt buckle (the tip covers part of the buckle, 4.2.5.1.4); width profile as the blazer tie. No dimension in the regulation.",
+ "size_basis": "The tie of the sheet's group \"tie\" as an overlay: the Class A construction (base-art/tie.js: knot apex at the front of the collar, knot shoulder on the leaves' leading edge, neck, blade, tip) at the Class A coat's proportions (knot 1.8 in wide, blade 3 in at its widest), 21.9 in from knot apex to tip, the tip 80 % of the way down the belt buckle so it covers part of it and does not extend below it (4.2.5.1.4). No dimension in the regulation.",
  "anchors": {
   "top_center": [
-   1303.26,
+   1302.54,
    0
   ],
   "bottom_center": [
-   1303.26,
+   1302.54,
    3158.47
   ],
   "center": [
-   1303.26,
+   1302.54,
    1579.24
   ],
   "left_edge": [
@@ -32,37 +32,37 @@
    1579.24
   ],
   "right_edge": [
-   2606.52,
+   2605.08,
    1579.24
   ],
   "tie_knot_top_center": [
-   1310.04,
-   226.12
+   1302.53,
+   272.03
   ],
   "tie_tip_center": [
-   1310.04,
-   2419.8
+   1302.53,
+   2461.79
   ],
   "tie_tack_center": [
-   1310.04,
-   1365.09
+   1302.53,
+   1444.41
   ]
  },
  "landmarks": {
   "tie": {
-   "x": 1133.17,
-   "y": 226.12,
-   "w": 353.74,
-   "h": 2193.67
+   "x": 1152.54,
+   "y": 272.03,
+   "w": 299.99,
+   "h": 2189.76
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
  "overlay_of": "garment-aviator-shirt-male-long",
  "documented": [
-  "AF blue tie (blue polyester or silk, herringbone twill); the CAP regimental tie is not authorized with the aviator shirt uniform; tip covers part of the buckle but not below it (CAPR 39-1 4.2.5.1.4)"
+  "blue tie (blue polyester or silk, herringbone twill); the CAP regimental tie is not authorized with the aviator shirt uniform; tip covers part of the buckle but not below it (CAPR 39-1 4.2.5.1.4)"
  ],
  "assumed": [
-  "blue shade",
+  "tie colour (the Class A tie, tie.js)",
   "tie width and length"
  ],
  "fit": {

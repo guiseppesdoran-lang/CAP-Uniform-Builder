@@ -2,71 +2,71 @@
  "asset_id": "garment-blues-class-b-epaulet-top-female-officer-right",
  "name": "Women's Class B blue short-sleeve blouse and skirt (nametag position only) adult officer epaulet sleeve, right shoulder, top-down (blank grade)",
  "size_in": {
-  "w": 4.261,
-  "h": 1.199
+  "w": 4.134,
+  "h": 1.2
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  426.1,
-  119.9
+  413.4,
+  120
  ],
  "size_source": "estimated",
- "size_basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+ "size_basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
  "anchors": {
   "top_center": [
-   213.05,
+   206.70000000000002,
    0
   ],
   "bottom_center": [
-   213.05,
-   119.9
+   206.70000000000002,
+   120
   ],
   "center": [
-   213.05,
-   59.95
+   206.70000000000002,
+   60
   ],
   "left_edge": [
    0,
-   59.95
+   60
   ],
   "right_edge": [
-   426.1,
-   59.95
+   413.40000000000003,
+   60
   ],
   "rank_slot_center": [
    135,
-   59.95
+   60
   ],
   "rank_rule_point": [
    72.5,
-   59.95
+   60
   ],
   "outer_end_center": [
    10,
-   59.95
+   60
   ]
  },
  "landmarks": {
   "sleeve": {
    "x": 10,
    "y": 10,
-   "w": 406.1,
-   "h": 99.9
+   "w": 393.40000000000003,
+   "h": 100
   },
   "rank_slot": {
    "x": 20,
    "y": 20,
    "w": 230,
-   "h": 79.9
+   "h": 80
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form (Major General star pair 2.2 x 1.2 in); rank_rule_point is the 5/8 in from the outer end point for single forms",
  "dimensions": {
   "sleeve_in": [
-   4.061,
-   0.999
+   3.934,
+   1
   ],
   "rank_slot_in": [
    2.3,

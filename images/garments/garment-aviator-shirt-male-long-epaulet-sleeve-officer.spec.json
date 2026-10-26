@@ -2,29 +2,29 @@
  "asset_id": "garment-aviator-shirt-male-long-epaulet-sleeve-officer",
  "name": "Men's Aviator Shirt Uniform adult officer epaulet sleeves (overlay, registered to garment-aviator-shirt-male-long; blank grade)",
  "size_in": {
-  "w": 26.0652,
+  "w": 26.0508,
   "h": 31.5847
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2606.52,
+  2605.08,
   3158.47
  ],
  "size_source": "estimated",
- "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
+ "size_basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap polygon itself (0.9 in wide, one axis from the armhole seam to the collar end) cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
  "anchors": {
   "top_center": [
-   1303.26,
+   1302.54,
    0
   ],
   "bottom_center": [
-   1303.26,
+   1302.54,
    3158.47
   ],
   "center": [
-   1303.26,
+   1302.54,
    1579.24
   ],
   "left_edge": [
@@ -32,51 +32,95 @@
    1579.24
   ],
   "right_edge": [
-   2606.52,
+   2605.08,
    1579.24
   ],
   "rank_slot_right_center": [
-   493.09,
-   345.39
+   577.83,
+   340.1
   ],
   "rank_slot_left_center": [
-   2113.42,
-   345.39
+   2027.25,
+   340.1
   ],
   "rank_rule_point_right": [
-   394.5,
-   416.67
+   389.02,
+   412.25
   ],
   "rank_rule_point_left": [
-   2212.02,
-   416.67
+   2216.06,
+   412.25
   ]
  },
  "landmarks": {
   "epaulet_sleeve_right": {
-   "x": 325.62,
-   "y": 262.26,
-   "w": 334.94,
-   "h": 166.25
+   "x": 321.26,
+   "y": 205.6,
+   "w": 513.13,
+   "h": 273.54
   },
   "rank_slot_right": {
-   "x": 325.62,
-   "y": 262.26,
-   "w": 334.94,
-   "h": 166.25
+   "x": 321.26,
+   "y": 205.6,
+   "w": 513.13,
+   "h": 273.54
   },
+  "epaulet_sleeve_poly_right": [
+   [
+    321.26,
+    389.96
+   ],
+   [
+    383.76,
+    358.22
+   ],
+   [
+    802.05,
+    205.6
+   ],
+   [
+    834.4,
+    290.24
+   ],
+   [
+    340.01,
+    479.15
+   ]
+  ],
   "epaulet_sleeve_left": {
-   "x": 1945.95,
-   "y": 262.26,
-   "w": 334.94,
-   "h": 166.25
+   "x": 1770.68,
+   "y": 205.6,
+   "w": 513.13,
+   "h": 273.54
   },
   "rank_slot_left": {
-   "x": 1945.95,
-   "y": 262.26,
-   "w": 334.94,
-   "h": 166.25
-  }
+   "x": 1770.68,
+   "y": 205.6,
+   "w": 513.13,
+   "h": 273.54
+  },
+  "epaulet_sleeve_poly_left": [
+   [
+    2283.81,
+    389.96
+   ],
+   [
+    2221.31,
+    358.22
+   ],
+   [
+    1803.01,
+    205.6
+   ],
+   [
+    1770.68,
+    290.24
+   ],
+   [
+    2265.07,
+    479.15
+   ]
+  ]
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
  "overlay_of": "garment-aviator-shirt-male-long",
@@ -85,8 +129,8 @@
   "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
  ],
  "assumed": [
-  "sleeve length (covers the outer 82% of the strap)",
-  "grade not drawn: placed by the rank insignia assets at rank_slot"
+  "sleeve length (ends short of the strap button)",
+  "grade not drawn: placed by the rank insignia assets at rank_slot (centre of the sleeve, on the strap axis)"
  ],
  "fit": {
   "method": "original",

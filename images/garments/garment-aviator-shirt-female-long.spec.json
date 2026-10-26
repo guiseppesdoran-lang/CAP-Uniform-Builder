@@ -80,16 +80,16 @@
    971.5
   ],
   "epaulet_right_center": [
-   536.25,
-   347.18
+   537.9,
+   333.83
   ],
   "epaulet_left_center": [
-   1998.31,
-   359.67
+   1985.88,
+   346.59
   ],
   "tie_mount_center": [
-   1252.8,
-   179.69
+   1244.65,
+   257.04
   ],
   "badge_right_pocket_center": [
    861.83,
@@ -112,12 +112,12 @@
    1096.49
   ],
   "collar_insignia_right_center": [
-   1102.41,
-   132.21
+   1071.58,
+   200.12
   ],
   "collar_insignia_left_center": [
-   1431.11,
-   132.21
+   1417.73,
+   200.12
   ]
  },
  "landmarks": {
@@ -135,84 +135,157 @@
   },
   "epaulet_right": [
    [
-    297.48,
-    355.3
+    291.27,
+    353.37
    ],
    [
-    704.73,
-    249.42
+    743.85,
+    231.43
    ],
    [
-    775.04,
-    279.86
+    784.53,
+    267.09
    ],
    [
-    728.09,
-    340.62
+    767.27,
+    318.34
    ],
    [
-    350.07,
-    444.94
+    329.68,
+    436.23
    ]
   ],
   "epaulet_left": [
    [
-    2254.66,
-    376.25
+    2235.07,
+    368.87
    ],
    [
-    1814.82,
-    258.95
+    1777.66,
+    241.57
    ],
    [
-    1741.95,
-    292.68
+    1736.69,
+    276.88
    ],
    [
-    1786.03,
-    358.33
+    1753.53,
+    328.28
    ],
    [
-    2182.09,
-    460.4
+    2196.7,
+    451.61
    ]
   ],
   "collar_right": [
    [
-    977.02,
-    17.85
+    969.65,
+    52.04
    ],
    [
-    1204.35,
-    23.44
+    1054.65,
+    387.03
    ],
    [
-    1225,
-    197.01
+    1244.65,
+    257.04
    ],
    [
-    1003.27,
-    290.56
+    1200.2,
+    254.72
+   ],
+   [
+    1157.97,
+    247.92
+   ],
+   [
+    1118.55,
+    236.78
+   ],
+   [
+    1082.51,
+    221.48
+   ],
+   [
+    1050.43,
+    202.2
+   ],
+   [
+    1022.89,
+    179.11
+   ],
+   [
+    1000.47,
+    152.36
+   ],
+   [
+    983.74,
+    122.16
+   ],
+   [
+    973.26,
+    88.66
    ]
   ],
   "collar_left": [
    [
-    1528.57,
-    17.85
+    1519.65,
+    52.04
    ],
    [
-    1301.25,
-    23.44
+    1434.65,
+    387.03
    ],
    [
-    1280.58,
-    197.01
+    1244.65,
+    257.04
    ],
    [
-    1502.32,
-    290.56
+    1289.1,
+    254.72
+   ],
+   [
+    1331.33,
+    247.92
+   ],
+   [
+    1370.76,
+    236.78
+   ],
+   [
+    1406.8,
+    221.48
+   ],
+   [
+    1438.88,
+    202.2
+   ],
+   [
+    1466.42,
+    179.11
+   ],
+   [
+    1488.84,
+    152.36
+   ],
+   [
+    1505.57,
+    122.16
+   ],
+   [
+    1516.03,
+    88.66
    ]
   ],
+  "tie": {
+   "kind": "tab",
+   "knot": {
+    "x": 1244.65,
+    "y": 257.04
+   },
+   "w_in": 2.9,
+   "length_in": 2.07
+  },
   "sleeve_flat_view": {
    "left": {
     "x": 2972.25,
@@ -382,6 +455,29 @@
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left; sleeve_flat_view {left:{x,y},right:{x,y}} is where the top_center of the flat sleeve assets <id>-sleeve-flat-left / -right sits beside the figure (outboard of each arm, its top at the shoulder seam height, 1 in clear of the sleeve outline; it lies outside this artwork box)",
  "dimensions": {
+  "collar": {
+   "kind": "standard pointed shirt collar, leaves lying on the shirt, points toward the chest (CAPR 39-1 4.2.5.1 / 4.2.6.1.1: straight collars only, no button downs)",
+   "size_source": "estimated",
+   "note": "the regulation draws no collar dimension (Fig 4.16 / 4.17 show the open camp collar worn without a tie: 4.2.5.1.9 \"undershirt will not be visible if the collar is worn open\"); a standard shirt's",
+   "band_top_ends_from_centre_in": 2.75,
+   "leaf_point_from_top_end_in": 3.35,
+   "leaf_point_from_centre_in": 1.9,
+   "neck_opening_depth_in": 2.05,
+   "knot_shoulder_from_centre_in": null
+  },
+  "tie": {
+   "group": "tie",
+   "kind": "tab",
+   "w_in": 2.9,
+   "length_in": 2.07,
+   "knot_w_in": null,
+   "construction": "base-art/tie.js, the Class A coats' tie (knot apex, shoulder, neck, blade, tip) / tab (inverted V); apex at the front of the collar, under the leaves",
+   "size_source": "estimated",
+   "note": "required with the long-sleeve shirt, optional with the short (4.2.5.1.4 men, 4.2.6.3 women's tab); the builder hides the group when the option is off. Men: the tip is 80 % of the way down the belt buckle (covers part of it, not below it)"
+  },
+  "seams": {
+   "armhole_seam": "traced line art (strokes meet by construction); armpit notch is the vertex where the sleeve hem stroke meets the body side stroke"
+  },
   "scale": {
    "k": 1.2037,
    "in_per_px": 0.04526,

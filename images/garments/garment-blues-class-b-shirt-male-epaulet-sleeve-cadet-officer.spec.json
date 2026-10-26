@@ -13,7 +13,7 @@
   2950.87
  ],
  "size_source": "estimated",
- "size_basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
+ "size_basis": "Edge-on strip (0.4 in deep) along the top edge of the garment epaulet strap (the shoulder line), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
  "anchors": {
   "top_center": [
    1342.9676342368648,
@@ -36,46 +36,46 @@
    1475.435
   ],
   "rank_slot_right_center": [
-   606.62,
-   312.05
+   603.72,
+   319.9
   ],
   "rank_slot_left_center": [
-   2079.32,
-   312.05
+   2082.22,
+   319.9
   ],
   "rank_rule_point_right": [
-   495.89,
-   385.33
+   453.25,
+   410.7
   ],
   "rank_rule_point_left": [
-   2190.05,
-   385.33
+   2232.69,
+   410.7
   ]
  },
  "landmarks": {
   "epaulet_sleeve_right": {
-   "x": 419.87,
-   "y": 226.3,
-   "w": 373.5,
-   "h": 171.5
+   "x": 376.87,
+   "y": 215.7,
+   "w": 453.7,
+   "h": 208.4
   },
   "rank_slot_right": {
-   "x": 419.87,
-   "y": 226.3,
-   "w": 373.5,
-   "h": 171.5
+   "x": 376.87,
+   "y": 215.7,
+   "w": 453.7,
+   "h": 208.4
   },
   "epaulet_sleeve_left": {
-   "x": 1892.57,
-   "y": 226.3,
-   "w": 373.5,
-   "h": 171.5
+   "x": 1855.37,
+   "y": 215.7,
+   "w": 453.7,
+   "h": 208.4
   },
   "rank_slot_left": {
-   "x": 1892.57,
-   "y": 226.3,
-   "w": 373.5,
-   "h": 171.5
+   "x": 1855.37,
+   "y": 215.7,
+   "w": 453.7,
+   "h": 208.4
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
@@ -85,7 +85,7 @@
   "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
  ],
  "assumed": [
-  "sleeve length (covers the outer 82% of the strap)",
+  "sleeve length: 82 % of the strap (Fig 4.8 shows a gray sleeve about 5.9 x 1.0 in on the long-sleeve figure; this sheet's whole shoulder line is 5.9 in)",
   "grade insignia not drawn: placed by the rank insignia assets at rank_slot"
  ],
  "fit": {

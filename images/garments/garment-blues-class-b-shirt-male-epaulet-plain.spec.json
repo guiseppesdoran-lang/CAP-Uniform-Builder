@@ -36,26 +36,26 @@
    1475.435
   ],
   "epaulet_plain_right_center": [
-   671.27,
-   325.45
+   653.72,
+   341.15
   ],
   "epaulet_plain_left_center": [
-   2014.67,
-   325.45
+   2032.22,
+   341.15
   ]
  },
  "landmarks": {
   "epaulet_plain_right": {
-   "x": 419.87,
-   "y": 196.9,
-   "w": 502.8,
-   "h": 257.1
+   "x": 376.87,
+   "y": 196.3,
+   "w": 553.7,
+   "h": 289.7
   },
   "epaulet_plain_left": {
-   "x": 1763.27,
-   "y": 196.9,
-   "w": 502.8,
-   "h": 257.1
+   "x": 1755.37,
+   "y": 196.3,
+   "w": 553.7,
+   "h": 289.7
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",

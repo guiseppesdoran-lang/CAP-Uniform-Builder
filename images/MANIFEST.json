@@ -13103,16 +13103,16 @@
      971.5
     ],
     "epaulet_right_center": [
-     536.25,
-     347.18
+     537.9,
+     333.83
     ],
     "epaulet_left_center": [
-     1998.31,
-     359.67
+     1985.88,
+     346.59
     ],
     "tie_mount_center": [
-     1252.8,
-     179.69
+     1244.65,
+     257.04
     ],
     "badge_right_pocket_center": [
      861.83,
@@ -13135,12 +13135,12 @@
      1096.49
     ],
     "collar_insignia_right_center": [
-     1102.41,
-     132.21
+     1071.58,
+     200.12
     ],
     "collar_insignia_left_center": [
-     1431.11,
-     132.21
+     1417.73,
+     200.12
     ]
    },
    "landmarks": [
@@ -13150,6 +13150,7 @@
     "epaulet_left",
     "collar_right",
     "collar_left",
+    "tie",
     "sleeve_flat_view",
     "armhole_seam_right",
     "armhole_seam_left"
@@ -13223,16 +13224,16 @@
      971.5
     ],
     "epaulet_right_center": [
-     536.25,
-     347.18
+     537.9,
+     333.83
     ],
     "epaulet_left_center": [
-     1998.31,
-     359.67
+     1985.88,
+     346.59
     ],
     "tie_mount_center": [
-     1266.76,
-     640.9
+     1244.65,
+     257.04
     ],
     "badge_right_pocket_center": [
      861.83,
@@ -13255,12 +13256,12 @@
      1096.49
     ],
     "collar_insignia_right_center": [
-     1082.62,
-     518.5
+     1071.58,
+     200.12
     ],
     "collar_insignia_left_center": [
-     1450.9,
-     518.5
+     1417.73,
+     200.12
     ]
    },
    "landmarks": [
@@ -13270,6 +13271,7 @@
     "epaulet_left",
     "collar_right",
     "collar_left",
+    "tie",
     "sleeve_flat_view",
     "armhole_seam_right",
     "armhole_seam_left"
@@ -13281,21 +13283,21 @@
    "id": "garment-aviator-shirt-male-long",
    "path": "garments/garment-aviator-shirt-male-long.svg",
    "category": "garments",
-   "w_in": 26.0652,
+   "w_in": 26.0508,
    "h_in": 31.5847,
    "size_source": "estimated",
    "basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 0.3 in (smooth ramp from the shoulder end at 4.33 in to full at 9.03 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line (x 1.204 after the scale). The widening is an estimate (the regulation gives no sleeve width). Then the whole sheet is scaled by 1.2037 (LIVE-ART2 item 1; 0.0376 in/px becomes 0.0453): the men's pocket measures 4.36 in wide on the traced image and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 x 6 in (ESTIMATE: AF shirt pattern dimension supplied with the task; no CAPR 39-1 or DAFI 36-2903 dimension), so the men's pocket is drawn 5.25 x 6.0 in. Nametag and ribbon slots, edge-on strip thickness and the tie tab keep their true size. No real garment was measured.",
    "anchors": {
     "top_center": [
-     1303.26,
+     1302.53,
      0
     ],
     "bottom_center": [
-     1303.26,
+     1302.53,
      3158.47
     ],
     "center": [
-     1303.26,
+     1302.53,
      1579.24
     ],
     "left_edge": [
@@ -13303,92 +13305,92 @@
      1579.24
     ],
     "right_edge": [
-     2606.52,
+     2605.08,
      1579.24
     ],
     "shoulder_seam_right": [
-     323.41,
-     396.74
+     321.26,
+     389.96
     ],
     "elbow_right": [
-     279.41,
-     1893.18
+     277.43,
+     1890.14
     ],
     "sleeve_bottom_right": [
-     283.59,
+     282.87,
      3117.55
     ],
     "chevron_halfway_right": [
-     262.91,
-     1144.96
+     262.36,
+     1140.05
     ],
     "shoulder_seam_left": [
-     2283.1,
-     396.74
+     2283.81,
+     389.96
     ],
     "elbow_left": [
-     2327.1,
-     1893.18
+     2327.65,
+     1890.14
     ],
     "sleeve_bottom_left": [
-     2322.93,
+     2322.21,
      3117.55
     ],
     "chevron_halfway_left": [
-     2343.61,
-     1144.96
+     2342.72,
+     1140.05
     ],
     "hem_center": [
-     1303.26,
+     1302.53,
      3141.62
     ],
     "nameplate_slot_center": [
-     834.78,
+     834.06,
      920.4
     ],
     "ribbon_slot_center": [
-     1771.67,
+     1770.95,
      882.9
     ],
     "epaulet_right_center": [
-     551.79,
-     361.89
+     602.7,
+     335.46
     ],
     "epaulet_left_center": [
-     2054.72,
-     361.89
+     2002.37,
+     335.46
     ],
     "tie_mount_center": [
-     1310.04,
-     226.12
+     1302.53,
+     272.03
     ],
     "badge_right_pocket_center": [
-     834.83,
+     834.11,
      1382.4
     ],
     "badge_left_pocket_center": [
-     1771.68,
+     1770.96,
      1382.4
     ],
     "badge_above_ribbons_center": [
-     1771.67,
+     1770.95,
      757.91
     ],
     "command_pin_above_nametag_center": [
-     834.78,
+     834.06,
      832.9
     ],
     "command_pin_below_nametag_center": [
-     834.78,
+     834.06,
      1007.9
     ],
     "collar_insignia_right_center": [
-     1130.08,
-     296.76
+     1124.53,
+     220.92
     ],
     "collar_insignia_left_center": [
-     1476.44,
-     296.76
+     1480.55,
+     220.92
     ]
    },
    "landmarks": [
@@ -13398,6 +13400,7 @@
     "epaulet_left",
     "collar_right",
     "collar_left",
+    "tie",
     "sleeve_flat_view",
     "armhole_seam_right",
     "armhole_seam_left"
@@ -13409,21 +13412,21 @@
    "id": "garment-aviator-shirt-male",
    "path": "garments/garment-aviator-shirt-male.svg",
    "category": "garments",
-   "w_in": 27.4652,
+   "w_in": 27.4508,
    "h_in": 28.4792,
    "size_source": "estimated",
    "basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 1 in (smooth ramp from the shoulder end at 3.85 in to full at 6.86 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line (x 1.204 after the scale). The widening is an estimate (the regulation gives no sleeve width). Then the whole sheet is scaled by 1.2037 (LIVE-ART2 item 1; 0.0376 in/px becomes 0.0453): the men's pocket measures 4.36 in wide on the traced image and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 x 6 in (ESTIMATE: AF shirt pattern dimension supplied with the task; no CAPR 39-1 or DAFI 36-2903 dimension), so the men's pocket is drawn 5.25 x 6.0 in. Nametag and ribbon slots, edge-on strip thickness and the tie tab keep their true size. No real garment was measured.",
    "anchors": {
     "top_center": [
-     1373.26,
+     1372.54,
      0
     ],
     "bottom_center": [
-     1373.26,
+     1372.54,
      2847.92
     ],
     "center": [
-     1373.26,
+     1372.54,
      1423.96
     ],
     "left_edge": [
@@ -13431,84 +13434,84 @@
      1423.96
     ],
     "right_edge": [
-     2746.52,
+     2745.08,
      1423.96
     ],
     "shoulder_seam_right": [
-     393.41,
-     396.74
+     391.28,
+     389.9
     ],
     "sleeve_bottom_right": [
-     310.79,
+     310.32,
      1590.55
     ],
     "chevron_halfway_right": [
-     291.85,
-     993.64
+     291.18,
+     990.22
     ],
     "shoulder_seam_left": [
-     2353.11,
-     396.74
+     2353.8,
+     389.9
     ],
     "sleeve_bottom_left": [
-     2435.73,
+     2434.75,
      1590.55
     ],
     "chevron_halfway_left": [
-     2454.68,
-     993.64
+     2453.9,
+     990.22
     ],
     "hem_center": [
-     1373.26,
+     1372.54,
      2835.89
     ],
     "nameplate_slot_center": [
-     904.79,
+     904.07,
      920.4
     ],
     "ribbon_slot_center": [
-     1841.68,
+     1840.95,
      882.9
     ],
     "epaulet_right_center": [
-     621.8,
-     361.83
+     672.72,
+     335.48
     ],
     "epaulet_left_center": [
-     2124.72,
-     361.83
+     2072.35,
+     335.48
     ],
     "tie_mount_center": [
-     1380.05,
-     642.67
+     1372.54,
+     272.03
     ],
     "badge_right_pocket_center": [
-     904.84,
+     904.11,
      1382.4
     ],
     "badge_left_pocket_center": [
-     1841.69,
+     1840.97,
      1382.4
     ],
     "badge_above_ribbons_center": [
-     1841.68,
+     1840.95,
      757.91
     ],
     "command_pin_above_nametag_center": [
-     904.79,
+     904.07,
      832.9
     ],
     "command_pin_below_nametag_center": [
-     904.79,
+     904.07,
      1007.9
     ],
     "collar_insignia_right_center": [
-     1090.4,
-     418.23
+     1194.53,
+     220.92
     ],
     "collar_insignia_left_center": [
-     1656.13,
-     418.23
+     1550.54,
+     220.92
     ]
    },
    "landmarks": [
@@ -13518,6 +13521,7 @@
     "epaulet_left",
     "collar_right",
     "collar_left",
+    "tie",
     "sleeve_flat_view",
     "armhole_seam_right",
     "armhole_seam_left"
@@ -14544,7 +14548,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
+   "basis": "Edge-on strip (0.4 in deep) along the top edge of the garment epaulet strap (the shoulder line), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -14567,20 +14571,20 @@
      1647.66
     ],
     "rank_slot_right_center": [
-     548.01,
-     284.5
+     522.41,
+     300.5
     ],
     "rank_slot_left_center": [
-     1970.81,
-     284.5
+     1996.31,
+     299.35
     ],
     "rank_rule_point_right": [
-     417.73,
-     345.22
+     396.95,
+     356.77
     ],
     "rank_rule_point_left": [
-     2101.09,
-     345.22
+     2122.51,
+     355.16
     ]
    },
    "landmarks": [
@@ -14599,7 +14603,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
+   "basis": "Edge-on strip (0.4 in deep) along the top edge of the garment epaulet strap (the shoulder line), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -14622,20 +14626,20 @@
      1647.66
     ],
     "rank_slot_right_center": [
-     548.01,
-     284.5
+     522.41,
+     300.5
     ],
     "rank_slot_left_center": [
-     1970.81,
-     284.5
+     1996.31,
+     299.35
     ],
     "rank_rule_point_right": [
-     417.73,
-     345.22
+     396.95,
+     356.77
     ],
     "rank_rule_point_left": [
-     2101.09,
-     345.22
+     2122.51,
+     355.16
     ]
    },
    "landmarks": [
@@ -14694,7 +14698,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
+   "basis": "Edge-on strip (0.4 in deep) along the top edge of the garment epaulet strap (the shoulder line), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -14717,20 +14721,20 @@
      1817.2050000000002
     ],
     "rank_slot_right_center": [
-     514.12,
-     267.45
+     500.52,
+     281.25
     ],
     "rank_slot_left_center": [
-     1937.62,
-     267.45
+     1951.27,
+     280.85
     ],
     "rank_rule_point_right": [
-     383.61,
-     325.8
+     366.79,
+     352.1
     ],
     "rank_rule_point_left": [
-     2068.13,
-     325.8
+     2085.08,
+     351.6
     ]
    },
    "landmarks": [
@@ -14749,7 +14753,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
+   "basis": "Edge-on strip (0.4 in deep) along the top edge of the garment epaulet strap (the shoulder line), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -14772,20 +14776,20 @@
      1817.2050000000002
     ],
     "rank_slot_right_center": [
-     514.12,
-     267.45
+     500.52,
+     281.25
     ],
     "rank_slot_left_center": [
-     1937.62,
-     267.45
+     1951.27,
+     280.85
     ],
     "rank_rule_point_right": [
-     383.61,
-     325.8
+     366.79,
+     352.1
     ],
     "rank_rule_point_left": [
-     2068.13,
-     325.8
+     2085.08,
+     351.6
     ]
    },
    "landmarks": [
@@ -14955,7 +14959,7 @@
      2920.7
     ],
     "elbow_right": [
-     276.27,
+     274.27,
      1752.1
     ],
     "chevron_halfway_right": [
@@ -14971,7 +14975,7 @@
      2920.7
     ],
     "elbow_left": [
-     2175.47,
+     2177.47,
      1752.1
     ],
     "chevron_halfway_left": [
@@ -14987,12 +14991,12 @@
      813.7
     ],
     "epaulet_right_center": [
-     583.07,
-     287.65
+     546.37,
+     303.75
     ],
     "epaulet_left_center": [
-     1868.67,
-     287.65
+     1905.47,
+     303.5
     ],
     "belt_buckle_center": [
      1168.47,
@@ -15034,6 +15038,9 @@
     "collar_right",
     "epaulet_left",
     "collar_left",
+    "epaulet_axis",
+    "tie",
+    "armpit_apex",
     "sleeve_flat_view",
     "collar_insignia_angle_deg",
     "ribbon_slot"
@@ -15183,12 +15190,12 @@
      813.7
     ],
     "epaulet_right_center": [
-     616.91,
-     303.8
+     565.76,
+     325.2
     ],
     "epaulet_left_center": [
-     1901.91,
-     303.8
+     1952.91,
+     324.1
     ],
     "belt_buckle_center": [
      1202.01,
@@ -15230,6 +15237,9 @@
     "collar_right",
     "epaulet_left",
     "collar_left",
+    "epaulet_axis",
+    "tie",
+    "armpit_apex",
     "sleeve_flat_view",
     "collar_insignia_angle_deg",
     "ribbon_slot"
@@ -15244,7 +15254,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
+   "basis": "Edge-on strip (0.4 in deep) along the top edge of the garment epaulet strap (the shoulder line), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -15267,20 +15277,20 @@
      1475.435
     ],
     "rank_slot_right_center": [
-     606.62,
-     312.05
+     603.72,
+     319.9
     ],
     "rank_slot_left_center": [
-     2079.32,
-     312.05
+     2082.22,
+     319.9
     ],
     "rank_rule_point_right": [
-     495.89,
-     385.33
+     453.25,
+     410.7
     ],
     "rank_rule_point_left": [
-     2190.05,
-     385.33
+     2232.69,
+     410.7
     ]
    },
    "landmarks": [
@@ -15299,7 +15309,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
+   "basis": "Edge-on strip (0.4 in deep) along the top edge of the garment epaulet strap (the shoulder line), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -15322,20 +15332,20 @@
      1475.435
     ],
     "rank_slot_right_center": [
-     606.62,
-     312.05
+     603.72,
+     319.9
     ],
     "rank_slot_left_center": [
-     2079.32,
-     312.05
+     2082.22,
+     319.9
     ],
     "rank_rule_point_right": [
-     495.89,
-     385.33
+     453.25,
+     410.7
     ],
     "rank_rule_point_left": [
-     2190.05,
-     385.33
+     2232.69,
+     410.7
     ]
    },
    "landmarks": [
@@ -15394,7 +15404,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
+   "basis": "Edge-on strip (0.4 in deep) along the top edge of the garment epaulet strap (the shoulder line), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -15417,20 +15427,20 @@
      1645.5300000000002
     ],
     "rank_slot_right_center": [
-     556.48,
-     295.2
+     555.43,
+     299
     ],
     "rank_slot_left_center": [
-     2029.78,
-     295.2
+     2030.83,
+     299
     ],
     "rank_rule_point_right": [
-     445.59,
-     365.92
+     396.56,
+     385.78
     ],
     "rank_rule_point_left": [
-     2140.67,
-     365.92
+     2189.7,
+     385.78
     ]
    },
    "landmarks": [
@@ -15449,7 +15459,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
+   "basis": "Edge-on strip (0.4 in deep) along the top edge of the garment epaulet strap (the shoulder line), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -15472,20 +15482,20 @@
      1645.5300000000002
     ],
     "rank_slot_right_center": [
-     556.48,
-     295.2
+     555.43,
+     299
     ],
     "rank_slot_left_center": [
-     2029.78,
-     295.2
+     2030.83,
+     299
     ],
     "rank_rule_point_right": [
-     445.59,
-     365.92
+     396.56,
+     385.78
     ],
     "rank_rule_point_left": [
-     2140.67,
-     365.92
+     2189.7,
+     385.78
     ]
    },
    "landmarks": [
@@ -15687,12 +15697,12 @@
      910
     ],
     "epaulet_right_center": [
-     621.13,
-     309.55
+     607.08,
+     320.25
     ],
     "epaulet_left_center": [
-     1965.13,
-     309.55
+     1979.18,
+     320.25
     ],
     "belt_buckle_center": [
      1373.88,
@@ -15748,6 +15758,9 @@
     "collar_right",
     "epaulet_left",
     "collar_left",
+    "epaulet_axis",
+    "tie",
+    "armpit_apex",
     "sleeve_flat_view",
     "collar_insignia_angle_deg",
     "ribbon_slot"
@@ -15897,12 +15910,12 @@
      910
     ],
     "epaulet_right_center": [
-     671.27,
-     325.45
+     653.72,
+     341.15
     ],
     "epaulet_left_center": [
-     2014.67,
-     325.45
+     2032.22,
+     341.15
     ],
     "belt_buckle_center": [
      1423.72,
@@ -15958,6 +15971,9 @@
     "collar_right",
     "epaulet_left",
     "collar_left",
+    "epaulet_axis",
+    "tie",
+    "armpit_apex",
     "sleeve_flat_view",
     "collar_insignia_angle_deg",
     "ribbon_slot"
@@ -34213,42 +34229,42 @@
    "id": "garment-blues-class-b-epaulet-top-female-cadet-officer-left",
    "path": "garments/garment-blues-class-b-epaulet-top-female-cadet-officer-left.svg",
    "category": "garments",
-   "w_in": 4.261,
-   "h_in": 1.199,
+   "w_in": 4.144,
+   "h_in": 1.2,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+   "basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     213.05,
+     207.20000000000002,
      0
     ],
     "bottom_center": [
-     213.05,
-     119.9
+     207.20000000000002,
+     120
     ],
     "center": [
-     213.05,
-     59.95
+     207.20000000000002,
+     60
     ],
     "left_edge": [
      0,
-     59.95
+     60
     ],
     "right_edge": [
-     426.1,
-     59.95
+     414.40000000000003,
+     60
     ],
     "rank_slot_center": [
-     291.1,
-     59.95
+     279.4,
+     60
     ],
     "rank_rule_point": [
-     353.6,
-     59.95
+     341.9,
+     60
     ],
     "outer_end_center": [
-     416.1,
-     59.95
+     404.4,
+     60
     ]
    },
    "landmarks": [
@@ -34262,42 +34278,42 @@
    "id": "garment-blues-class-b-epaulet-top-female-cadet-officer-right",
    "path": "garments/garment-blues-class-b-epaulet-top-female-cadet-officer-right.svg",
    "category": "garments",
-   "w_in": 4.261,
-   "h_in": 1.199,
+   "w_in": 4.134,
+   "h_in": 1.2,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+   "basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     213.05,
+     206.70000000000002,
      0
     ],
     "bottom_center": [
-     213.05,
-     119.9
+     206.70000000000002,
+     120
     ],
     "center": [
-     213.05,
-     59.95
+     206.70000000000002,
+     60
     ],
     "left_edge": [
      0,
-     59.95
+     60
     ],
     "right_edge": [
-     426.1,
-     59.95
+     413.40000000000003,
+     60
     ],
     "rank_slot_center": [
      135,
-     59.95
+     60
     ],
     "rank_rule_point": [
      72.5,
-     59.95
+     60
     ],
     "outer_end_center": [
      10,
-     59.95
+     60
     ]
    },
    "landmarks": [
@@ -34311,42 +34327,42 @@
    "id": "garment-blues-class-b-epaulet-top-female-officer-left",
    "path": "garments/garment-blues-class-b-epaulet-top-female-officer-left.svg",
    "category": "garments",
-   "w_in": 4.261,
-   "h_in": 1.199,
+   "w_in": 4.144,
+   "h_in": 1.2,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+   "basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     213.05,
+     207.20000000000002,
      0
     ],
     "bottom_center": [
-     213.05,
-     119.9
+     207.20000000000002,
+     120
     ],
     "center": [
-     213.05,
-     59.95
+     207.20000000000002,
+     60
     ],
     "left_edge": [
      0,
-     59.95
+     60
     ],
     "right_edge": [
-     426.1,
-     59.95
+     414.40000000000003,
+     60
     ],
     "rank_slot_center": [
-     291.1,
-     59.95
+     279.4,
+     60
     ],
     "rank_rule_point": [
-     353.6,
-     59.95
+     341.9,
+     60
     ],
     "outer_end_center": [
-     416.1,
-     59.95
+     404.4,
+     60
     ]
    },
    "landmarks": [
@@ -34360,42 +34376,42 @@
    "id": "garment-blues-class-b-epaulet-top-female-officer-right",
    "path": "garments/garment-blues-class-b-epaulet-top-female-officer-right.svg",
    "category": "garments",
-   "w_in": 4.261,
-   "h_in": 1.199,
+   "w_in": 4.134,
+   "h_in": 1.2,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+   "basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     213.05,
+     206.70000000000002,
      0
     ],
     "bottom_center": [
-     213.05,
-     119.9
+     206.70000000000002,
+     120
     ],
     "center": [
-     213.05,
-     59.95
+     206.70000000000002,
+     60
     ],
     "left_edge": [
      0,
-     59.95
+     60
     ],
     "right_edge": [
-     426.1,
-     59.95
+     413.40000000000003,
+     60
     ],
     "rank_slot_center": [
      135,
-     59.95
+     60
     ],
     "rank_rule_point": [
      72.5,
-     59.95
+     60
     ],
     "outer_end_center": [
      10,
-     59.95
+     60
     ]
    },
    "landmarks": [
@@ -34409,21 +34425,21 @@
    "id": "garment-blues-class-b-epaulet-top-male-cadet-officer-left",
    "path": "garments/garment-blues-class-b-epaulet-top-male-cadet-officer-left.svg",
    "category": "garments",
-   "w_in": 4.037,
+   "w_in": 4.913,
    "h_in": 1.2,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+   "basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     201.85,
+     245.65,
      0
     ],
     "bottom_center": [
-     201.85,
+     245.65,
      120
     ],
     "center": [
-     201.85,
+     245.65,
      60
     ],
     "left_edge": [
@@ -34431,19 +34447,19 @@
      60
     ],
     "right_edge": [
-     403.7,
+     491.3,
      60
     ],
     "rank_slot_center": [
-     268.7,
+     356.3,
      60
     ],
     "rank_rule_point": [
-     331.2,
+     418.8,
      60
     ],
     "outer_end_center": [
-     393.7,
+     481.3,
      60
     ]
    },
@@ -34458,21 +34474,21 @@
    "id": "garment-blues-class-b-epaulet-top-male-cadet-officer-right",
    "path": "garments/garment-blues-class-b-epaulet-top-male-cadet-officer-right.svg",
    "category": "garments",
-   "w_in": 4.037,
+   "w_in": 4.913,
    "h_in": 1.2,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+   "basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     201.85,
+     245.65,
      0
     ],
     "bottom_center": [
-     201.85,
+     245.65,
      120
     ],
     "center": [
-     201.85,
+     245.65,
      60
     ],
     "left_edge": [
@@ -34480,7 +34496,7 @@
      60
     ],
     "right_edge": [
-     403.7,
+     491.3,
      60
     ],
     "rank_slot_center": [
@@ -34507,21 +34523,21 @@
    "id": "garment-blues-class-b-epaulet-top-male-officer-left",
    "path": "garments/garment-blues-class-b-epaulet-top-male-officer-left.svg",
    "category": "garments",
-   "w_in": 4.037,
+   "w_in": 4.913,
    "h_in": 1.2,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+   "basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     201.85,
+     245.65,
      0
     ],
     "bottom_center": [
-     201.85,
+     245.65,
      120
     ],
     "center": [
-     201.85,
+     245.65,
      60
     ],
     "left_edge": [
@@ -34529,19 +34545,19 @@
      60
     ],
     "right_edge": [
-     403.7,
+     491.3,
      60
     ],
     "rank_slot_center": [
-     268.7,
+     356.3,
      60
     ],
     "rank_rule_point": [
-     331.2,
+     418.8,
      60
     ],
     "outer_end_center": [
-     393.7,
+     481.3,
      60
     ]
    },
@@ -34556,21 +34572,21 @@
    "id": "garment-blues-class-b-epaulet-top-male-officer-right",
    "path": "garments/garment-blues-class-b-epaulet-top-male-officer-right.svg",
    "category": "garments",
-   "w_in": 4.037,
+   "w_in": 4.913,
    "h_in": 1.2,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+   "basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     201.85,
+     245.65,
      0
     ],
     "bottom_center": [
-     201.85,
+     245.65,
      120
     ],
     "center": [
-     201.85,
+     245.65,
      60
     ],
     "left_edge": [
@@ -34578,7 +34594,7 @@
      60
     ],
     "right_edge": [
-     403.7,
+     491.3,
      60
     ],
     "rank_slot_center": [
@@ -34917,42 +34933,42 @@
    "id": "garment-aviator-epaulet-top-female-cadet-officer-left",
    "path": "garments/garment-aviator-epaulet-top-female-cadet-officer-left.svg",
    "category": "garments",
-   "w_in": 3.933,
-   "h_in": 1.311,
+   "w_in": 4.543,
+   "h_in": 1.1,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
+   "basis": "Length and width of the slide-on sleeve the garment overlay draws on the strap (the strap polygon cut short of its button); colour and CAP lettering placement as the Class B top-down sleeves. Fig 4.16 gives about 0.9 x 5.7 in at the pocket scale; the regulation states no dimension.",
    "anchors": {
     "top_center": [
-     196.65,
+     227.15,
      0
     ],
     "bottom_center": [
-     196.65,
-     131.1
+     227.15,
+     110.00000000000001
     ],
     "center": [
-     196.65,
-     65.55
+     227.15,
+     55.00000000000001
     ],
     "left_edge": [
      0,
-     65.55
+     55.00000000000001
     ],
     "right_edge": [
-     393.3,
-     65.55
+     454.3,
+     55.00000000000001
     ],
     "rank_slot_center": [
-     258.3,
-     65.55
+     319.3,
+     55
     ],
     "rank_rule_point": [
-     320.8,
-     65.55
+     381.8,
+     55
     ],
     "outer_end_center": [
-     383.3,
-     65.55
+     444.3,
+     55
     ]
    },
    "landmarks": [
@@ -34966,42 +34982,42 @@
    "id": "garment-aviator-epaulet-top-female-cadet-officer-right",
    "path": "garments/garment-aviator-epaulet-top-female-cadet-officer-right.svg",
    "category": "garments",
-   "w_in": 3.651,
-   "h_in": 1.239,
+   "w_in": 4.483,
+   "h_in": 1.1,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
+   "basis": "Length and width of the slide-on sleeve the garment overlay draws on the strap (the strap polygon cut short of its button); colour and CAP lettering placement as the Class B top-down sleeves. Fig 4.16 gives about 0.9 x 5.7 in at the pocket scale; the regulation states no dimension.",
    "anchors": {
     "top_center": [
-     182.55,
+     224.15000000000003,
      0
     ],
     "bottom_center": [
-     182.55,
-     123.89999999999999
+     224.15000000000003,
+     110.00000000000001
     ],
     "center": [
-     182.55,
-     61.949999999999996
+     224.15000000000003,
+     55.00000000000001
     ],
     "left_edge": [
      0,
-     61.949999999999996
+     55.00000000000001
     ],
     "right_edge": [
-     365.1,
-     61.949999999999996
+     448.30000000000007,
+     55.00000000000001
     ],
     "rank_slot_center": [
      135,
-     61.95
+     55
     ],
     "rank_rule_point": [
      72.5,
-     61.95
+     55
     ],
     "outer_end_center": [
      10,
-     61.95
+     55
     ]
    },
    "landmarks": [
@@ -35015,42 +35031,42 @@
    "id": "garment-aviator-epaulet-top-female-officer-left",
    "path": "garments/garment-aviator-epaulet-top-female-officer-left.svg",
    "category": "garments",
-   "w_in": 3.933,
-   "h_in": 1.311,
+   "w_in": 4.543,
+   "h_in": 1.1,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
+   "basis": "Length and width of the slide-on sleeve the garment overlay draws on the strap (the strap polygon cut short of its button); colour and CAP lettering placement as the Class B top-down sleeves. Fig 4.16 gives about 0.9 x 5.7 in at the pocket scale; the regulation states no dimension.",
    "anchors": {
     "top_center": [
-     196.65,
+     227.15,
      0
     ],
     "bottom_center": [
-     196.65,
-     131.1
+     227.15,
+     110.00000000000001
     ],
     "center": [
-     196.65,
-     65.55
+     227.15,
+     55.00000000000001
     ],
     "left_edge": [
      0,
-     65.55
+     55.00000000000001
     ],
     "right_edge": [
-     393.3,
-     65.55
+     454.3,
+     55.00000000000001
     ],
     "rank_slot_center": [
-     258.3,
-     65.55
+     319.3,
+     55
     ],
     "rank_rule_point": [
-     320.8,
-     65.55
+     381.8,
+     55
     ],
     "outer_end_center": [
-     383.3,
-     65.55
+     444.3,
+     55
     ]
    },
    "landmarks": [
@@ -35064,42 +35080,42 @@
    "id": "garment-aviator-epaulet-top-female-officer-right",
    "path": "garments/garment-aviator-epaulet-top-female-officer-right.svg",
    "category": "garments",
-   "w_in": 3.651,
-   "h_in": 1.239,
+   "w_in": 4.483,
+   "h_in": 1.1,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
+   "basis": "Length and width of the slide-on sleeve the garment overlay draws on the strap (the strap polygon cut short of its button); colour and CAP lettering placement as the Class B top-down sleeves. Fig 4.16 gives about 0.9 x 5.7 in at the pocket scale; the regulation states no dimension.",
    "anchors": {
     "top_center": [
-     182.55,
+     224.15000000000003,
      0
     ],
     "bottom_center": [
-     182.55,
-     123.89999999999999
+     224.15000000000003,
+     110.00000000000001
     ],
     "center": [
-     182.55,
-     61.949999999999996
+     224.15000000000003,
+     55.00000000000001
     ],
     "left_edge": [
      0,
-     61.949999999999996
+     55.00000000000001
     ],
     "right_edge": [
-     365.1,
-     61.949999999999996
+     448.30000000000007,
+     55.00000000000001
     ],
     "rank_slot_center": [
      135,
-     61.95
+     55
     ],
     "rank_rule_point": [
      72.5,
-     61.95
+     55
     ],
     "outer_end_center": [
      10,
-     61.95
+     55
     ]
    },
    "landmarks": [
@@ -35113,42 +35129,42 @@
    "id": "garment-aviator-epaulet-top-male-cadet-officer-left",
    "path": "garments/garment-aviator-epaulet-top-male-cadet-officer-left.svg",
    "category": "garments",
-   "w_in": 3.704,
-   "h_in": 1.223,
+   "w_in": 5.349,
+   "h_in": 1.1,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
+   "basis": "Length and width of the slide-on sleeve the garment overlay draws on the strap (the strap polygon cut short of its button); colour and CAP lettering placement as the Class B top-down sleeves. Fig 4.16 gives about 0.9 x 5.7 in at the pocket scale; the regulation states no dimension.",
    "anchors": {
     "top_center": [
-     185.20000000000002,
+     267.45,
      0
     ],
     "bottom_center": [
-     185.20000000000002,
-     122.29999999999998
+     267.45,
+     110.00000000000001
     ],
     "center": [
-     185.20000000000002,
-     61.14999999999999
+     267.45,
+     55.00000000000001
     ],
     "left_edge": [
      0,
-     61.14999999999999
+     55.00000000000001
     ],
     "right_edge": [
-     370.40000000000003,
-     61.14999999999999
+     534.9,
+     55.00000000000001
     ],
     "rank_slot_center": [
-     235.4,
-     61.15
+     399.9,
+     55
     ],
     "rank_rule_point": [
-     297.9,
-     61.15
+     462.4,
+     55
     ],
     "outer_end_center": [
-     360.4,
-     61.15
+     524.9,
+     55
     ]
    },
    "landmarks": [
@@ -35162,42 +35178,42 @@
    "id": "garment-aviator-epaulet-top-male-cadet-officer-right",
    "path": "garments/garment-aviator-epaulet-top-male-cadet-officer-right.svg",
    "category": "garments",
-   "w_in": 3.704,
-   "h_in": 1.223,
+   "w_in": 5.349,
+   "h_in": 1.1,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
+   "basis": "Length and width of the slide-on sleeve the garment overlay draws on the strap (the strap polygon cut short of its button); colour and CAP lettering placement as the Class B top-down sleeves. Fig 4.16 gives about 0.9 x 5.7 in at the pocket scale; the regulation states no dimension.",
    "anchors": {
     "top_center": [
-     185.20000000000002,
+     267.45,
      0
     ],
     "bottom_center": [
-     185.20000000000002,
-     122.29999999999998
+     267.45,
+     110.00000000000001
     ],
     "center": [
-     185.20000000000002,
-     61.14999999999999
+     267.45,
+     55.00000000000001
     ],
     "left_edge": [
      0,
-     61.14999999999999
+     55.00000000000001
     ],
     "right_edge": [
-     370.40000000000003,
-     61.14999999999999
+     534.9,
+     55.00000000000001
     ],
     "rank_slot_center": [
      135,
-     61.15
+     55
     ],
     "rank_rule_point": [
      72.5,
-     61.15
+     55
     ],
     "outer_end_center": [
      10,
-     61.15
+     55
     ]
    },
    "landmarks": [
@@ -35211,42 +35227,42 @@
    "id": "garment-aviator-epaulet-top-male-officer-left",
    "path": "garments/garment-aviator-epaulet-top-male-officer-left.svg",
    "category": "garments",
-   "w_in": 3.704,
-   "h_in": 1.223,
+   "w_in": 5.349,
+   "h_in": 1.1,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
+   "basis": "Length and width of the slide-on sleeve the garment overlay draws on the strap (the strap polygon cut short of its button); colour and CAP lettering placement as the Class B top-down sleeves. Fig 4.16 gives about 0.9 x 5.7 in at the pocket scale; the regulation states no dimension.",
    "anchors": {
     "top_center": [
-     185.20000000000002,
+     267.45,
      0
     ],
     "bottom_center": [
-     185.20000000000002,
-     122.29999999999998
+     267.45,
+     110.00000000000001
     ],
     "center": [
-     185.20000000000002,
-     61.14999999999999
+     267.45,
+     55.00000000000001
     ],
     "left_edge": [
      0,
-     61.14999999999999
+     55.00000000000001
     ],
     "right_edge": [
-     370.40000000000003,
-     61.14999999999999
+     534.9,
+     55.00000000000001
     ],
     "rank_slot_center": [
-     235.4,
-     61.15
+     399.9,
+     55
     ],
     "rank_rule_point": [
-     297.9,
-     61.15
+     462.4,
+     55
     ],
     "outer_end_center": [
-     360.4,
-     61.15
+     524.9,
+     55
     ]
    },
    "landmarks": [
@@ -35260,42 +35276,42 @@
    "id": "garment-aviator-epaulet-top-male-officer-right",
    "path": "garments/garment-aviator-epaulet-top-male-officer-right.svg",
    "category": "garments",
-   "w_in": 3.704,
-   "h_in": 1.223,
+   "w_in": 5.349,
+   "h_in": 1.1,
    "size_source": "estimated",
-   "basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and CAP lettering placement as the Class B top-down sleeves. The regulation gives no dimension.",
+   "basis": "Length and width of the slide-on sleeve the garment overlay draws on the strap (the strap polygon cut short of its button); colour and CAP lettering placement as the Class B top-down sleeves. Fig 4.16 gives about 0.9 x 5.7 in at the pocket scale; the regulation states no dimension.",
    "anchors": {
     "top_center": [
-     185.20000000000002,
+     267.45,
      0
     ],
     "bottom_center": [
-     185.20000000000002,
-     122.29999999999998
+     267.45,
+     110.00000000000001
     ],
     "center": [
-     185.20000000000002,
-     61.14999999999999
+     267.45,
+     55.00000000000001
     ],
     "left_edge": [
      0,
-     61.14999999999999
+     55.00000000000001
     ],
     "right_edge": [
-     370.40000000000003,
-     61.14999999999999
+     534.9,
+     55.00000000000001
     ],
     "rank_slot_center": [
      135,
-     61.15
+     55
     ],
     "rank_rule_point": [
      72.5,
-     61.15
+     55
     ],
     "outer_end_center": [
      10,
-     61.15
+     55
     ]
    },
    "landmarks": [
@@ -35312,7 +35328,7 @@
    "w_in": 25.3352,
    "h_in": 31.4042,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
+   "basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap polygon itself (0.9 in wide, one axis from the armhole seam to the collar end) cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
      1266.76,
@@ -35335,27 +35351,29 @@
      1570.21
     ],
     "rank_slot_right_center": [
-     474.57,
-     329.14
+     509.74,
+     341.11
     ],
     "rank_slot_left_center": [
-     2061.27,
-     343.29
+     2013.78,
+     353.99
     ],
     "rank_rule_point_right": [
-     384.14,
-     383.96
+     370.82,
+     378.54
     ],
     "rank_rule_point_left": [
-     2157.92,
-     402.45
+     2155.67,
+     393.49
     ]
    },
    "landmarks": [
     "epaulet_sleeve_right",
     "rank_slot_right",
+    "epaulet_sleeve_poly_right",
     "epaulet_sleeve_left",
-    "rank_slot_left"
+    "rank_slot_left",
+    "epaulet_sleeve_poly_left"
    ],
    "has_spec": true,
    "issues": []
@@ -35367,7 +35385,7 @@
    "w_in": 25.3352,
    "h_in": 31.4042,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
+   "basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap polygon itself (0.9 in wide, one axis from the armhole seam to the collar end) cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
      1266.76,
@@ -35390,27 +35408,29 @@
      1570.21
     ],
     "rank_slot_right_center": [
-     474.57,
-     329.14
+     509.74,
+     341.11
     ],
     "rank_slot_left_center": [
-     2061.27,
-     343.29
+     2013.78,
+     353.99
     ],
     "rank_rule_point_right": [
-     384.14,
-     383.96
+     370.82,
+     378.54
     ],
     "rank_rule_point_left": [
-     2157.92,
-     402.45
+     2155.67,
+     393.49
     ]
    },
    "landmarks": [
     "epaulet_sleeve_right",
     "rank_slot_right",
+    "epaulet_sleeve_poly_right",
     "epaulet_sleeve_left",
-    "rank_slot_left"
+    "rank_slot_left",
+    "epaulet_sleeve_poly_left"
    ],
    "has_spec": true,
    "issues": []
@@ -35422,7 +35442,7 @@
    "w_in": 25.3352,
    "h_in": 33.5829,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
+   "basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap polygon itself (0.9 in wide, one axis from the armhole seam to the collar end) cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
      1266.76,
@@ -35445,27 +35465,29 @@
      1679.14
     ],
     "rank_slot_right_center": [
-     474.57,
-     329.14
+     509.74,
+     341.11
     ],
     "rank_slot_left_center": [
-     2061.27,
-     343.29
+     2013.78,
+     353.99
     ],
     "rank_rule_point_right": [
-     384.14,
-     383.96
+     370.82,
+     378.54
     ],
     "rank_rule_point_left": [
-     2157.92,
-     402.45
+     2155.67,
+     393.49
     ]
    },
    "landmarks": [
     "epaulet_sleeve_right",
     "rank_slot_right",
+    "epaulet_sleeve_poly_right",
     "epaulet_sleeve_left",
-    "rank_slot_left"
+    "rank_slot_left",
+    "epaulet_sleeve_poly_left"
    ],
    "has_spec": true,
    "issues": []
@@ -35477,7 +35499,7 @@
    "w_in": 25.3352,
    "h_in": 33.5829,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
+   "basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap polygon itself (0.9 in wide, one axis from the armhole seam to the collar end) cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
      1266.76,
@@ -35500,27 +35522,29 @@
      1679.14
     ],
     "rank_slot_right_center": [
-     474.57,
-     329.14
+     509.74,
+     341.11
     ],
     "rank_slot_left_center": [
-     2061.27,
-     343.29
+     2013.78,
+     353.99
     ],
     "rank_rule_point_right": [
-     384.14,
-     383.96
+     370.82,
+     378.54
     ],
     "rank_rule_point_left": [
-     2157.92,
-     402.45
+     2155.67,
+     393.49
     ]
    },
    "landmarks": [
     "epaulet_sleeve_right",
     "rank_slot_right",
+    "epaulet_sleeve_poly_right",
     "epaulet_sleeve_left",
-    "rank_slot_left"
+    "rank_slot_left",
+    "epaulet_sleeve_poly_left"
    ],
    "has_spec": true,
    "issues": []
@@ -35532,7 +35556,7 @@
    "w_in": 25.3352,
    "h_in": 33.5829,
    "size_source": "estimated",
-   "basis": "Same inverted-V tab as accessories/tie-tab-inverted-v (2.7 x 1.6 in), hung from the collar V; no dimension in the regulation.",
+   "basis": "The tab of the sheet's group \"tie\" as an overlay: tie.js's inverted V (Class A tab proportions, slope 1.2, scaled to 2.9 x 2.07 in), apex at the front of the collar under the leaves; no dimension in the regulation.",
    "anchors": {
     "top_center": [
      1266.76,
@@ -35555,12 +35579,12 @@
      1679.14
     ],
     "tie_tab_center": [
-     1252.8,
-     259.68
+     1244.65,
+     360.54
     ],
     "tie_tab_top_center": [
-     1252.8,
-     179.69
+     1244.65,
+     257.04
     ]
    },
    "landmarks": [
@@ -35576,7 +35600,7 @@
    "w_in": 25.3352,
    "h_in": 31.4042,
    "size_source": "estimated",
-   "basis": "Same inverted-V tab as accessories/tie-tab-inverted-v (2.7 x 1.6 in), hung from the collar V; no dimension in the regulation.",
+   "basis": "The tab of the sheet's group \"tie\" as an overlay: tie.js's inverted V (Class A tab proportions, slope 1.2, scaled to 2.9 x 2.07 in), apex at the front of the collar under the leaves; no dimension in the regulation.",
    "anchors": {
     "top_center": [
      1266.76,
@@ -35599,12 +35623,12 @@
      1570.21
     ],
     "tie_tab_center": [
-     1266.76,
-     720.91
+     1244.65,
+     360.54
     ],
     "tie_tab_top_center": [
-     1266.76,
-     640.9
+     1244.65,
+     257.04
     ]
    },
    "landmarks": [
@@ -35617,21 +35641,21 @@
    "id": "garment-aviator-shirt-male-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-aviator-shirt-male-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 27.4652,
+   "w_in": 27.4508,
    "h_in": 28.4792,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
+   "basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap polygon itself (0.9 in wide, one axis from the armhole seam to the collar end) cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1373.26,
+     1372.54,
      0
     ],
     "bottom_center": [
-     1373.26,
+     1372.54,
      2847.92
     ],
     "center": [
-     1373.26,
+     1372.54,
      1423.96
     ],
     "left_edge": [
@@ -35639,31 +35663,33 @@
      1423.96
     ],
     "right_edge": [
-     2746.52,
+     2745.08,
      1423.96
     ],
     "rank_slot_right_center": [
-     563.1,
-     345.33
+     647.85,
+     340.07
     ],
     "rank_slot_left_center": [
-     2183.43,
-     345.33
+     2097.23,
+     340.07
     ],
     "rank_rule_point_right": [
-     464.5,
-     416.56
+     458.85,
+     412.26
     ],
     "rank_rule_point_left": [
-     2282.02,
-     416.56
+     2286.22,
+     412.26
     ]
    },
    "landmarks": [
     "epaulet_sleeve_right",
     "rank_slot_right",
+    "epaulet_sleeve_poly_right",
     "epaulet_sleeve_left",
-    "rank_slot_left"
+    "rank_slot_left",
+    "epaulet_sleeve_poly_left"
    ],
    "has_spec": true,
    "issues": []
@@ -35672,21 +35698,21 @@
    "id": "garment-aviator-shirt-male-epaulet-sleeve-officer",
    "path": "garments/garment-aviator-shirt-male-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 27.4652,
+   "w_in": 27.4508,
    "h_in": 28.4792,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
+   "basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap polygon itself (0.9 in wide, one axis from the armhole seam to the collar end) cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1373.26,
+     1372.54,
      0
     ],
     "bottom_center": [
-     1373.26,
+     1372.54,
      2847.92
     ],
     "center": [
-     1373.26,
+     1372.54,
      1423.96
     ],
     "left_edge": [
@@ -35694,31 +35720,33 @@
      1423.96
     ],
     "right_edge": [
-     2746.52,
+     2745.08,
      1423.96
     ],
     "rank_slot_right_center": [
-     563.1,
-     345.33
+     647.85,
+     340.07
     ],
     "rank_slot_left_center": [
-     2183.43,
-     345.33
+     2097.23,
+     340.07
     ],
     "rank_rule_point_right": [
-     464.5,
-     416.56
+     458.85,
+     412.26
     ],
     "rank_rule_point_left": [
-     2282.02,
-     416.56
+     2286.22,
+     412.26
     ]
    },
    "landmarks": [
     "epaulet_sleeve_right",
     "rank_slot_right",
+    "epaulet_sleeve_poly_right",
     "epaulet_sleeve_left",
-    "rank_slot_left"
+    "rank_slot_left",
+    "epaulet_sleeve_poly_left"
    ],
    "has_spec": true,
    "issues": []
@@ -35727,21 +35755,21 @@
    "id": "garment-aviator-shirt-male-long-epaulet-sleeve-cadet-officer",
    "path": "garments/garment-aviator-shirt-male-long-epaulet-sleeve-cadet-officer.svg",
    "category": "garments",
-   "w_in": 26.0652,
+   "w_in": 26.0508,
    "h_in": 31.5847,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
+   "basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap polygon itself (0.9 in wide, one axis from the armhole seam to the collar end) cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1303.26,
+     1302.54,
      0
     ],
     "bottom_center": [
-     1303.26,
+     1302.54,
      3158.47
     ],
     "center": [
-     1303.26,
+     1302.54,
      1579.24
     ],
     "left_edge": [
@@ -35749,31 +35777,33 @@
      1579.24
     ],
     "right_edge": [
-     2606.52,
+     2605.08,
      1579.24
     ],
     "rank_slot_right_center": [
-     493.09,
-     345.39
+     577.83,
+     340.1
     ],
     "rank_slot_left_center": [
-     2113.42,
-     345.39
+     2027.25,
+     340.1
     ],
     "rank_rule_point_right": [
-     394.5,
-     416.67
+     389.02,
+     412.25
     ],
     "rank_rule_point_left": [
-     2212.02,
-     416.67
+     2216.06,
+     412.25
     ]
    },
    "landmarks": [
     "epaulet_sleeve_right",
     "rank_slot_right",
+    "epaulet_sleeve_poly_right",
     "epaulet_sleeve_left",
-    "rank_slot_left"
+    "rank_slot_left",
+    "epaulet_sleeve_poly_left"
    ],
    "has_spec": true,
    "issues": []
@@ -35782,21 +35812,21 @@
    "id": "garment-aviator-shirt-male-long-epaulet-sleeve-officer",
    "path": "garments/garment-aviator-shirt-male-long-epaulet-sleeve-officer.svg",
    "category": "garments",
-   "w_in": 26.0652,
+   "w_in": 26.0508,
    "h_in": 31.5847,
    "size_source": "estimated",
-   "basis": "Edge-on strip (0.4 in) along the outer 82% of the garment epaulet strap landmark, the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the edge-on strip and the view from above show one sleeve; the regulation gives no shade or dimension.",
+   "basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap polygon itself (0.9 in wide, one axis from the armhole seam to the collar end) cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
    "anchors": {
     "top_center": [
-     1303.26,
+     1302.54,
      0
     ],
     "bottom_center": [
-     1303.26,
+     1302.54,
      3158.47
     ],
     "center": [
-     1303.26,
+     1302.54,
      1579.24
     ],
     "left_edge": [
@@ -35804,31 +35834,33 @@
      1579.24
     ],
     "right_edge": [
-     2606.52,
+     2605.08,
      1579.24
     ],
     "rank_slot_right_center": [
-     493.09,
-     345.39
+     577.83,
+     340.1
     ],
     "rank_slot_left_center": [
-     2113.42,
-     345.39
+     2027.25,
+     340.1
     ],
     "rank_rule_point_right": [
-     394.5,
-     416.67
+     389.02,
+     412.25
     ],
     "rank_rule_point_left": [
-     2212.02,
-     416.67
+     2216.06,
+     412.25
     ]
    },
    "landmarks": [
     "epaulet_sleeve_right",
     "rank_slot_right",
+    "epaulet_sleeve_poly_right",
     "epaulet_sleeve_left",
-    "rank_slot_left"
+    "rank_slot_left",
+    "epaulet_sleeve_poly_left"
    ],
    "has_spec": true,
    "issues": []
@@ -35837,21 +35869,21 @@
    "id": "garment-aviator-shirt-male-long-tie",
    "path": "garments/garment-aviator-shirt-male-long-tie.svg",
    "category": "garments",
-   "w_in": 26.0652,
+   "w_in": 26.0508,
    "h_in": 31.5847,
    "size_source": "estimated",
-   "basis": "Visible blade of the blazer base tie, stretched to run from the collar V to the middle of the belt buckle (the tip covers part of the buckle, 4.2.5.1.4); width profile as the blazer tie. No dimension in the regulation.",
+   "basis": "The tie of the sheet's group \"tie\" as an overlay: the Class A construction (base-art/tie.js: knot apex at the front of the collar, knot shoulder on the leaves' leading edge, neck, blade, tip) at the Class A coat's proportions (knot 1.8 in wide, blade 3 in at its widest), 21.9 in from knot apex to tip, the tip 80 % of the way down the belt buckle so it covers part of it and does not extend below it (4.2.5.1.4). No dimension in the regulation.",
    "anchors": {
     "top_center": [
-     1303.26,
+     1302.54,
      0
     ],
     "bottom_center": [
-     1303.26,
+     1302.54,
      3158.47
     ],
     "center": [
-     1303.26,
+     1302.54,
      1579.24
     ],
     "left_edge": [
@@ -35859,20 +35891,20 @@
      1579.24
     ],
     "right_edge": [
-     2606.52,
+     2605.08,
      1579.24
     ],
     "tie_knot_top_center": [
-     1310.04,
-     226.12
+     1302.53,
+     272.03
     ],
     "tie_tip_center": [
-     1310.04,
-     2419.8
+     1302.53,
+     2461.79
     ],
     "tie_tack_center": [
-     1310.04,
-     1365.09
+     1302.53,
+     1444.41
     ]
    },
    "landmarks": [
@@ -35885,21 +35917,21 @@
    "id": "garment-aviator-shirt-male-tie",
    "path": "garments/garment-aviator-shirt-male-tie.svg",
    "category": "garments",
-   "w_in": 27.4652,
+   "w_in": 27.4508,
    "h_in": 28.4792,
    "size_source": "estimated",
-   "basis": "Visible blade of the blazer base tie, stretched to run from the collar V to the middle of the belt buckle (the tip covers part of the buckle, 4.2.5.1.4); width profile as the blazer tie. No dimension in the regulation.",
+   "basis": "The tie of the sheet's group \"tie\" as an overlay: the Class A construction (base-art/tie.js: knot apex at the front of the collar, knot shoulder on the leaves' leading edge, neck, blade, tip) at the Class A coat's proportions (knot 1.8 in wide, blade 3 in at its widest), 21.9 in from knot apex to tip, the tip 80 % of the way down the belt buckle so it covers part of it and does not extend below it (4.2.5.1.4). No dimension in the regulation.",
    "anchors": {
     "top_center": [
-     1373.26,
+     1372.54,
      0
     ],
     "bottom_center": [
-     1373.26,
+     1372.54,
      2847.92
     ],
     "center": [
-     1373.26,
+     1372.54,
      1423.96
     ],
     "left_edge": [
@@ -35907,20 +35939,20 @@
      1423.96
     ],
     "right_edge": [
-     2746.52,
+     2745.08,
      1423.96
     ],
     "tie_knot_top_center": [
-     1380.05,
-     642.67
+     1372.54,
+     272.03
     ],
     "tie_tip_center": [
-     1380.05,
-     2419.8
+     1372.54,
+     2461.79
     ],
     "tie_tack_center": [
-     1380.05,
-     1573.36
+     1372.54,
+     1444.41
     ]
    },
    "landmarks": [
@@ -37437,20 +37469,20 @@
      1647.66
     ],
     "cord_start": [
-     2192.67,
-     257.11
+     2195.55,
+     248.72
     ],
     "cord_end": [
-     1956.36,
-     1650.09
+     1939.99,
+     1635
     ],
     "aiguillette_attach": [
-     2136.35,
-     438.57
+     2137.99,
+     429.79
     ],
     "aiguillette_tip": [
-     1935.85,
-     801.57
+     1933.46,
+     790.53
     ]
    },
    "landmarks": [
@@ -37492,12 +37524,12 @@
      1647.66
     ],
     "cord_start": [
-     2192.67,
-     257.11
+     2195.55,
+     248.72
     ],
     "cord_end": [
-     1956.36,
-     1650.09
+     1939.99,
+     1635
     ]
    },
    "landmarks": [
@@ -37536,12 +37568,12 @@
      1647.66
     ],
     "cord_start": [
-     2192.67,
-     257.11
+     2195.55,
+     248.72
     ],
     "cord_end": [
-     1956.36,
-     1650.09
+     1939.99,
+     1635
     ]
    },
    "landmarks": [
@@ -37580,12 +37612,12 @@
      1647.66
     ],
     "cord_start": [
-     2192.67,
-     257.11
+     2195.55,
+     248.72
     ],
     "cord_end": [
-     1956.36,
-     1650.09
+     1939.99,
+     1635
     ]
    },
    "landmarks": [
@@ -37624,12 +37656,12 @@
      1647.66
     ],
     "cord_start": [
-     2192.67,
-     257.11
+     2195.55,
+     248.72
     ],
     "cord_end": [
-     1956.36,
-     1650.09
+     1939.99,
+     1635
     ]
    },
    "landmarks": [
@@ -37668,12 +37700,12 @@
      1647.66
     ],
     "cord_start": [
-     2192.67,
-     257.11
+     2195.55,
+     248.72
     ],
     "cord_end": [
-     1956.36,
-     1650.09
+     1939.99,
+     1635
     ]
    },
    "landmarks": [
@@ -37712,12 +37744,12 @@
      1647.66
     ],
     "cord_start": [
-     2192.67,
-     257.11
+     2195.55,
+     248.72
     ],
     "cord_end": [
-     1956.36,
-     1650.09
+     1939.99,
+     1635
     ]
    },
    "landmarks": [
@@ -37756,20 +37788,20 @@
      1817.2050000000002
     ],
     "cord_start": [
-     2159.13,
-     257.11
+     2161.09,
+     251.71
     ],
     "cord_end": [
-     1922.83,
-     1650.09
+     1923.37,
+     1544.2
     ],
     "aiguillette_attach": [
-     2102.81,
-     438.57
+     2103.51,
+     432.78
     ],
     "aiguillette_tip": [
-     1902.32,
-     801.57
+     1899.26,
+     793.67
     ]
    },
    "landmarks": [
@@ -37811,12 +37843,12 @@
      1817.2050000000002
     ],
     "cord_start": [
-     2159.13,
-     257.11
+     2161.09,
+     251.71
     ],
     "cord_end": [
-     1922.83,
-     1650.09
+     1923.37,
+     1544.2
     ]
    },
    "landmarks": [
@@ -37855,12 +37887,12 @@
      1817.2050000000002
     ],
     "cord_start": [
-     2159.13,
-     257.11
+     2161.09,
+     251.71
     ],
     "cord_end": [
-     1922.83,
-     1650.09
+     1923.37,
+     1544.2
     ]
    },
    "landmarks": [
@@ -37899,12 +37931,12 @@
      1817.2050000000002
     ],
     "cord_start": [
-     2159.13,
-     257.11
+     2161.09,
+     251.71
     ],
     "cord_end": [
-     1922.83,
-     1650.09
+     1923.37,
+     1544.2
     ]
    },
    "landmarks": [
@@ -37943,12 +37975,12 @@
      1817.2050000000002
     ],
     "cord_start": [
-     2159.13,
-     257.11
+     2161.09,
+     251.71
     ],
     "cord_end": [
-     1922.83,
-     1650.09
+     1923.37,
+     1544.2
     ]
    },
    "landmarks": [
@@ -37987,12 +38019,12 @@
      1817.2050000000002
     ],
     "cord_start": [
-     2159.13,
-     257.11
+     2161.09,
+     251.71
     ],
     "cord_end": [
-     1922.83,
-     1650.09
+     1923.37,
+     1544.2
     ]
    },
    "landmarks": [
@@ -38031,12 +38063,12 @@
      1817.2050000000002
     ],
     "cord_start": [
-     2159.13,
-     257.11
+     2161.09,
+     251.71
     ],
     "cord_end": [
-     1922.83,
-     1650.09
+     1923.37,
+     1544.2
     ]
    },
    "landmarks": [
@@ -38075,20 +38107,20 @@
      1475.435
     ],
     "cord_start": [
-     2300.85,
-     330.92
+     2304.04,
+     315.29
     ],
     "cord_end": [
-     2084.51,
-     1582.12
+     2089.31,
+     1562.93
     ],
     "aiguillette_attach": [
-     2261.71,
-     516.85
+     2265.29,
+     501.3
     ],
     "aiguillette_tip": [
-     2084.96,
-     891.99
+     2084.64,
+     874.57
     ]
    },
    "landmarks": [
@@ -38130,12 +38162,12 @@
      1475.435
     ],
     "cord_start": [
-     2300.85,
-     330.92
+     2304.04,
+     315.29
     ],
     "cord_end": [
-     2084.51,
-     1582.12
+     2089.31,
+     1562.93
     ]
    },
    "landmarks": [
@@ -38174,12 +38206,12 @@
      1475.435
     ],
     "cord_start": [
-     2300.85,
-     330.92
+     2304.04,
+     315.29
     ],
     "cord_end": [
-     2084.51,
-     1582.12
+     2089.31,
+     1562.93
     ]
    },
    "landmarks": [
@@ -38218,12 +38250,12 @@
      1475.435
     ],
     "cord_start": [
-     2300.85,
-     330.92
+     2304.04,
+     315.29
     ],
     "cord_end": [
-     2084.51,
-     1582.12
+     2089.31,
+     1562.93
     ]
    },
    "landmarks": [
@@ -38262,12 +38294,12 @@
      1475.435
     ],
     "cord_start": [
-     2300.85,
-     330.92
+     2304.04,
+     315.29
     ],
     "cord_end": [
-     2084.51,
-     1582.12
+     2089.31,
+     1562.93
     ]
    },
    "landmarks": [
@@ -38306,12 +38338,12 @@
      1475.435
     ],
     "cord_start": [
-     2300.85,
-     330.92
+     2304.04,
+     315.29
     ],
     "cord_end": [
-     2084.51,
-     1582.12
+     2089.31,
+     1562.93
     ]
    },
    "landmarks": [
@@ -38350,12 +38382,12 @@
      1475.435
     ],
     "cord_start": [
-     2300.85,
-     330.92
+     2304.04,
+     315.29
     ],
     "cord_end": [
-     2084.51,
-     1582.12
+     2089.31,
+     1562.93
     ]
    },
    "landmarks": [
@@ -38394,20 +38426,20 @@
      1645.5300000000002
     ],
     "cord_start": [
-     2251.01,
-     330.92
+     2260.06,
+     287.51
     ],
     "cord_end": [
-     2034.67,
-     1582.12
+     2084.6,
+     1604.45
     ],
     "aiguillette_attach": [
-     2211.87,
-     516.85
+     2221.28,
+     473.51
     ],
     "aiguillette_tip": [
-     2035.12,
-     891.99
+     2037.33,
+     845.17
     ]
    },
    "landmarks": [
@@ -38449,12 +38481,12 @@
      1645.5300000000002
     ],
     "cord_start": [
-     2251.01,
-     330.92
+     2260.06,
+     287.51
     ],
     "cord_end": [
-     2034.67,
-     1582.12
+     2084.6,
+     1604.45
     ]
    },
    "landmarks": [
@@ -38493,12 +38525,12 @@
      1645.5300000000002
     ],
     "cord_start": [
-     2251.01,
-     330.92
+     2260.06,
+     287.51
     ],
     "cord_end": [
-     2034.67,
-     1582.12
+     2084.6,
+     1604.45
     ]
    },
    "landmarks": [
@@ -38537,12 +38569,12 @@
      1645.5300000000002
     ],
     "cord_start": [
-     2251.01,
-     330.92
+     2260.06,
+     287.51
     ],
     "cord_end": [
-     2034.67,
-     1582.12
+     2084.6,
+     1604.45
     ]
    },
    "landmarks": [
@@ -38581,12 +38613,12 @@
      1645.5300000000002
     ],
     "cord_start": [
-     2251.01,
-     330.92
+     2260.06,
+     287.51
     ],
     "cord_end": [
-     2034.67,
-     1582.12
+     2084.6,
+     1604.45
     ]
    },
    "landmarks": [
@@ -38625,12 +38657,12 @@
      1645.5300000000002
     ],
     "cord_start": [
-     2251.01,
-     330.92
+     2260.06,
+     287.51
     ],
     "cord_end": [
-     2034.67,
-     1582.12
+     2084.6,
+     1604.45
     ]
    },
    "landmarks": [
@@ -38669,12 +38701,12 @@
      1645.5300000000002
     ],
     "cord_start": [
-     2251.01,
-     330.92
+     2260.06,
+     287.51
     ],
     "cord_end": [
-     2034.67,
-     1582.12
+     2084.6,
+     1604.45
     ]
    },
    "landmarks": [
@@ -39477,12 +39509,12 @@
      1475.435
     ],
     "epaulet_plain_right_center": [
-     671.27,
-     325.45
+     653.72,
+     341.15
     ],
     "epaulet_plain_left_center": [
-     2014.67,
-     325.45
+     2032.22,
+     341.15
     ]
    },
    "landmarks": [
@@ -39522,12 +39554,12 @@
      1645.5300000000002
     ],
     "epaulet_plain_right_center": [
-     621.13,
-     309.55
+     607.08,
+     320.25
     ],
     "epaulet_plain_left_center": [
-     1965.13,
-     309.55
+     1979.18,
+     320.25
     ]
    },
    "landmarks": [
@@ -39567,12 +39599,12 @@
      1647.66
     ],
     "epaulet_plain_right_center": [
-     616.91,
-     303.8
+     565.76,
+     325.2
     ],
     "epaulet_plain_left_center": [
-     1901.91,
-     303.8
+     1952.91,
+     324.1
     ]
    },
    "landmarks": [
@@ -39612,12 +39644,12 @@
      1817.2050000000002
     ],
     "epaulet_plain_right_center": [
-     583.07,
-     287.65
+     546.37,
+     303.75
     ],
     "epaulet_plain_left_center": [
-     1868.67,
-     287.65
+     1905.47,
+     303.5
     ]
    },
    "landmarks": [
@@ -45865,46 +45897,46 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 7.221,
-   "h_in": 28.0258,
+   "w_in": 7.2758,
+   "h_in": 28.1754,
    "size_source": "estimated",
-   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.85 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 27.79 in (the straight axis is 27.20 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.44 in at its widest, 4.28 in at the elbow, 2.65 in at the cuff (0.4 in above the lower edge); flat widths: 6.98 in at its widest (the cap width, the width below the shoulder seam), 6.72 in at the elbow, 4.17 in at the cuff, i.e. 13.96 in around at the widest and 8.33 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.64 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.82 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 27.94 in (the straight axis is 27.26 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.48 in at its widest, 4.32 in at the elbow, 2.65 in at the cuff (0.4 in above the lower edge); flat widths: 7.04 in at its widest (the cap width, the width below the shoulder seam), 6.79 in at the elbow, 4.17 in at the cuff, i.e. 14.07 in around at the widest and 8.33 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.68 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
    "anchors": {
     "top_center": [
-     361.05,
+     363.79,
      0
     ],
     "bottom_center": [
-     361.05,
-     2802.58
+     363.79,
+     2817.54
     ],
     "center": [
-     361.05,
-     1401.29
+     363.79,
+     1408.77
     ],
     "left_edge": [
      0,
-     1401.29
+     1408.77
     ],
     "right_edge": [
-     722.1,
-     1401.29
+     727.58,
+     1408.77
     ],
     "shoulder_seam_center": [
-     361.05,
+     363.79,
      62
     ],
     "cuff_center": [
-     361.05,
-     2790.58
+     363.79,
+     2805.54
     ],
     "chevron_center": [
-     361.05,
-     776.11
+     363.79,
+     780.22
     ],
     "elbow_center": [
-     361.05,
-     1540.22
+     363.79,
+     1548.45
     ]
    },
    "landmarks": [
@@ -45921,46 +45953,46 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 7.221,
-   "h_in": 28.0258,
+   "w_in": 7.2758,
+   "h_in": 28.1754,
    "size_source": "estimated",
-   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.85 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 27.79 in (the straight axis is 27.20 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.44 in at its widest, 4.28 in at the elbow, 2.65 in at the cuff (0.4 in above the lower edge); flat widths: 6.98 in at its widest (the cap width, the width below the shoulder seam), 6.72 in at the elbow, 4.17 in at the cuff, i.e. 13.96 in around at the widest and 8.33 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.64 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.82 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 27.94 in (the straight axis is 27.26 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.48 in at its widest, 4.32 in at the elbow, 2.65 in at the cuff (0.4 in above the lower edge); flat widths: 7.04 in at its widest (the cap width, the width below the shoulder seam), 6.79 in at the elbow, 4.17 in at the cuff, i.e. 14.07 in around at the widest and 8.33 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.68 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
    "anchors": {
     "top_center": [
-     361.05,
+     363.79,
      0
     ],
     "bottom_center": [
-     361.05,
-     2802.58
+     363.79,
+     2817.54
     ],
     "center": [
-     361.05,
-     1401.29
+     363.79,
+     1408.77
     ],
     "left_edge": [
      0,
-     1401.29
+     1408.77
     ],
     "right_edge": [
-     722.1,
-     1401.29
+     727.58,
+     1408.77
     ],
     "shoulder_seam_center": [
-     361.05,
+     363.79,
      62
     ],
     "cuff_center": [
-     361.05,
-     2790.58
+     363.79,
+     2805.54
     ],
     "chevron_center": [
-     361.05,
-     776.11
+     363.79,
+     780.22
     ],
     "elbow_center": [
-     361.05,
-     1540.22
+     363.79,
+     1548.45
     ]
    },
    "landmarks": [
@@ -45977,42 +46009,42 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 9.0652,
-   "h_in": 13.0701,
+   "w_in": 9.0664,
+   "h_in": 13.2211,
    "size_source": "estimated",
-   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male (traced short sleeve; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 4.10 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 12.83 in (the straight axis is 11.95 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.62 in at its widest, 5.62 in at the hem (0.4 in above the lower edge); flat widths: 8.83 in at its widest (the cap width, the width below the shoulder seam), 8.83 in at the hem, i.e. 17.65 in around at the widest and 17.65 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.42 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male (traced short sleeve; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 4.00 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 12.98 in (the straight axis is 12.03 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.62 in at its widest, 5.62 in at the hem (0.4 in above the lower edge); flat widths: 8.83 in at its widest (the cap width, the width below the shoulder seam), 8.83 in at the hem, i.e. 17.65 in around at the widest and 17.65 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.49 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
    "anchors": {
     "top_center": [
-     453.26,
+     453.32,
      0
     ],
     "bottom_center": [
-     453.26,
-     1307.01
+     453.32,
+     1322.11
     ],
     "center": [
-     453.26,
-     653.5
+     453.32,
+     661.06
     ],
     "left_edge": [
      0,
-     653.5
+     661.06
     ],
     "right_edge": [
-     906.52,
-     653.5
+     906.64,
+     661.06
     ],
     "shoulder_seam_center": [
-     453.26,
+     453.32,
      62
     ],
     "cuff_center": [
-     453.26,
-     1295.01
+     453.32,
+     1310.11
     ],
     "chevron_center": [
-     453.26,
-     653.5
+     453.32,
+     661.06
     ]
    },
    "landmarks": [
@@ -46028,42 +46060,42 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 9.0652,
-   "h_in": 13.0701,
+   "w_in": 9.0664,
+   "h_in": 13.2211,
    "size_source": "estimated",
-   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male (traced short sleeve; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 4.10 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 12.83 in (the straight axis is 11.95 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.62 in at its widest, 5.62 in at the hem (0.4 in above the lower edge); flat widths: 8.83 in at its widest (the cap width, the width below the shoulder seam), 8.83 in at the hem, i.e. 17.65 in around at the widest and 17.65 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.42 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+   "basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male (traced short sleeve; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 4.00 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 12.98 in (the straight axis is 12.03 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.62 in at its widest, 5.62 in at the hem (0.4 in above the lower edge); flat widths: 8.83 in at its widest (the cap width, the width below the shoulder seam), 8.83 in at the hem, i.e. 17.65 in around at the widest and 17.65 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.49 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
    "anchors": {
     "top_center": [
-     453.26,
+     453.32,
      0
     ],
     "bottom_center": [
-     453.26,
-     1307.01
+     453.32,
+     1322.11
     ],
     "center": [
-     453.26,
-     653.5
+     453.32,
+     661.06
     ],
     "left_edge": [
      0,
-     653.5
+     661.06
     ],
     "right_edge": [
-     906.52,
-     653.5
+     906.64,
+     661.06
     ],
     "shoulder_seam_center": [
-     453.26,
+     453.32,
      62
     ],
     "cuff_center": [
-     453.26,
-     1295.01
+     453.32,
+     1310.11
     ],
     "chevron_center": [
-     453.26,
-     653.5
+     453.32,
+     661.06
     ]
    },
    "landmarks": [
@@ -46306,7 +46338,7 @@
    "w_in": 7.6761,
    "h_in": 26.7946,
    "size_source": "estimated",
-   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-blouse-female-long (long-sleeve outline measured from CAPR 39-1 Fig 4.11, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.38 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 26.55 in (the straight axis is 25.96 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.73 in at its widest, 4.60 in at the elbow, 2.73 in at the cuff (0.4 in above the lower edge); flat widths: 7.44 in at its widest (the cap width, the width below the shoulder seam), 7.22 in at the elbow, 4.29 in at the cuff, i.e. 14.87 in around at the widest and 8.58 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.12.2.3.3: \"NCOs will wear 3 ½ or 4 inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.30 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-blouse-female-long (long-sleeve outline measured from CAPR 39-1 Fig 4.11, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.38 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 26.55 in (the straight axis is 25.96 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.73 in at its widest, 4.57 in at the elbow, 2.73 in at the cuff (0.4 in above the lower edge); flat widths: 7.44 in at its widest (the cap width, the width below the shoulder seam), 7.18 in at the elbow, 4.29 in at the cuff, i.e. 14.87 in around at the widest and 8.58 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.12.2.3.3: \"NCOs will wear 3 ½ or 4 inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.30 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
    "anchors": {
     "top_center": [
      383.8,
@@ -46362,7 +46394,7 @@
    "w_in": 7.6761,
    "h_in": 26.7946,
    "size_source": "estimated",
-   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-blouse-female-long (long-sleeve outline measured from CAPR 39-1 Fig 4.11, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.38 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 26.55 in (the straight axis is 25.96 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.73 in at its widest, 4.60 in at the elbow, 2.73 in at the cuff (0.4 in above the lower edge); flat widths: 7.44 in at its widest (the cap width, the width below the shoulder seam), 7.22 in at the elbow, 4.29 in at the cuff, i.e. 14.87 in around at the widest and 8.58 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.12.2.3.3: \"NCOs will wear 3 ½ or 4 inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.30 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+   "basis": "Measured on the sleeve of the sheet garment-blues-class-b-blouse-female-long (long-sleeve outline measured from CAPR 39-1 Fig 4.11, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.38 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 26.55 in (the straight axis is 25.96 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.73 in at its widest, 4.57 in at the elbow, 2.73 in at the cuff (0.4 in above the lower edge); flat widths: 7.44 in at its widest (the cap width, the width below the shoulder seam), 7.18 in at the elbow, 4.29 in at the cuff, i.e. 14.87 in around at the widest and 8.58 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.12.2.3.3: \"NCOs will wear 3 ½ or 4 inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.30 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
    "anchors": {
     "top_center": [
      383.8,
@@ -46517,21 +46549,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 7.9152,
+   "w_in": 7.9156,
    "h_in": 28.3694,
    "size_source": "estimated",
    "basis": "Measured on the sleeve of the sheet garment-blues-class-b-shirt-male-long (long-sleeve outline measured from CAPR 39-1 Fig 4.8, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans -0.43 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 28.13 in (the straight axis is 27.56 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.89 in at its widest, 4.60 in at the elbow, 3.66 in at the cuff (0.4 in above the lower edge); flat widths: 7.68 in at its widest (the cap width, the width below the shoulder seam), 7.23 in at the elbow, 5.75 in at the cuff, i.e. 15.35 in around at the widest and 11.50 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.11.1.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.74 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
    "anchors": {
     "top_center": [
-     395.76,
+     395.78,
      0
     ],
     "bottom_center": [
-     395.76,
+     395.78,
      2836.94
     ],
     "center": [
-     395.76,
+     395.78,
      1418.47
     ],
     "left_edge": [
@@ -46539,23 +46571,23 @@
      1418.47
     ],
     "right_edge": [
-     791.52,
+     791.56,
      1418.47
     ],
     "shoulder_seam_center": [
-     395.76,
+     395.78,
      62
     ],
     "cuff_center": [
-     395.76,
+     395.78,
      2824.94
     ],
     "chevron_center": [
-     395.76,
+     395.78,
      785.56
     ],
     "elbow_center": [
-     395.76,
+     395.78,
      1559.12
     ]
    },
@@ -46573,21 +46605,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 7.9152,
+   "w_in": 7.9156,
    "h_in": 28.3694,
    "size_source": "estimated",
    "basis": "Measured on the sleeve of the sheet garment-blues-class-b-shirt-male-long (long-sleeve outline measured from CAPR 39-1 Fig 4.8, sleeve widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans -0.43 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 28.13 in (the straight axis is 27.56 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.89 in at its widest, 4.60 in at the elbow, 3.66 in at the cuff (0.4 in above the lower edge); flat widths: 7.68 in at its widest (the cap width, the width below the shoulder seam), 7.23 in at the elbow, 5.75 in at the cuff, i.e. 15.35 in around at the widest and 11.50 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.11.1.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.74 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
    "anchors": {
     "top_center": [
-     395.76,
+     395.78,
      0
     ],
     "bottom_center": [
-     395.76,
+     395.78,
      2836.94
     ],
     "center": [
-     395.76,
+     395.78,
      1418.47
     ],
     "left_edge": [
@@ -46595,23 +46627,23 @@
      1418.47
     ],
     "right_edge": [
-     791.52,
+     791.56,
      1418.47
     ],
     "shoulder_seam_center": [
-     395.76,
+     395.78,
      62
     ],
     "cuff_center": [
-     395.76,
+     395.78,
      2824.94
     ],
     "chevron_center": [
-     395.76,
+     395.78,
      785.56
     ],
     "elbow_center": [
-     395.76,
+     395.78,
      1559.12
     ]
    },

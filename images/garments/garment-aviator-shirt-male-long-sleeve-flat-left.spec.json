@@ -2,118 +2,118 @@
  "asset_id": "garment-aviator-shirt-male-long-sleeve-flat-left",
  "name": "Men's Aviator Shirt Uniform: white long-sleeve aviator shirt, left sleeve laid flat (outer arm facing)",
  "size_in": {
-  "w": 7.221,
-  "h": 28.0258
+  "w": 7.2758,
+  "h": 28.1754
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  722.1,
-  2802.58
+  727.58,
+  2817.54
  ],
  "size_source": "estimated",
- "size_basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.85 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 27.79 in (the straight axis is 27.20 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.44 in at its widest, 4.28 in at the elbow, 2.65 in at the cuff (0.4 in above the lower edge); flat widths: 6.98 in at its widest (the cap width, the width below the shoulder seam), 6.72 in at the elbow, 4.17 in at the cuff, i.e. 13.96 in around at the widest and 8.33 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.64 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+ "size_basis": "Measured on the sleeve of the sheet garment-aviator-shirt-male-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.82 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 27.94 in (the straight axis is 27.26 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.48 in at its widest, 4.32 in at the elbow, 2.65 in at the cuff (0.4 in above the lower edge); flat widths: 7.04 in at its widest (the cap width, the width below the shoulder seam), 6.79 in at the elbow, 4.17 in at the cuff, i.e. 14.07 in around at the widest and 8.33 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.5.1.1.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 7.68 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
  "anchors": {
   "top_center": [
-   361.05,
+   363.79,
    0
   ],
   "bottom_center": [
-   361.05,
-   2802.58
+   363.79,
+   2817.54
   ],
   "center": [
-   361.05,
-   1401.29
+   363.79,
+   1408.77
   ],
   "left_edge": [
    0,
-   1401.29
+   1408.77
   ],
   "right_edge": [
-   722.1,
-   1401.29
+   727.58,
+   1408.77
   ],
   "shoulder_seam_center": [
-   361.05,
+   363.79,
    62
   ],
   "cuff_center": [
-   361.05,
-   2790.58
+   363.79,
+   2805.54
   ],
   "chevron_center": [
-   361.05,
-   776.11
+   363.79,
+   780.22
   ],
   "elbow_center": [
-   361.05,
-   1540.22
+   363.79,
+   1548.45
   ]
  },
  "landmarks": {
   "shoulder_seam": {
    "p1": [
-    549.98,
+    553.53,
     62
    ],
    "p2": [
-    172.11,
+    174.05,
     62
    ]
   },
   "outer_edge": {
    "p1": [
-    400.37,
+    403.27,
     14
    ],
    "p2": [
-    569.39,
-    2790.58
+    572.09,
+    2805.54
    ]
   },
   "elbow": {
-   "y": 1540.22
+   "y": 1548.45
   },
   "cuff": {
    "p1": [
-    569.39,
-    2790.58
+    572.09,
+    2805.54
    ],
    "p2": [
-    152.71,
-    2790.58
+    155.49,
+    2805.54
    ]
   },
   "chevron_center": {
-   "x": 361.05,
-   "y": 776.11
+   "x": 363.79,
+   "y": 780.22
   }
  },
  "landmarks_note": "points are [x,y] and {x,y} in user units (0.01 in), origin top-left of the artwork box; shoulder_seam is the cap edge 0.5 in below the top of the sleeve, outer_edge runs along the arm's outer edge from the seam to the hem, chevron_center is where the senior NCO chevron is centred",
  "dimensions": {
-  "sleeve_length_in": 27.79,
-  "cap_width_in": 6.98,
+  "sleeve_length_in": 27.94,
+  "cap_width_in": 7.04,
   "hanging_width_in": {
-   "cap": 4.44,
+   "cap": 4.48,
    "cuff": 2.65
   },
   "flat_over_hanging": 1.5708,
   "around_in": {
-   "cap": 13.96,
+   "cap": 14.07,
    "cuff": 8.33
   },
-  "max_width_in": 6.98,
+  "max_width_in": 7.04,
   "cuff_width_in": 4.17,
-  "axis_lean_deg_on_sheet": 0.85,
-  "elbow_from_seam_in": 15.28,
+  "axis_lean_deg_on_sheet": 0.82,
+  "elbow_from_seam_in": 15.36,
   "elbow_fraction": 0.55,
-  "chevron_center_from_seam_in": 7.64,
+  "chevron_center_from_seam_in": 7.68,
   "chevron_3p5_fit": {
-   "side_clearance_in": 1.668,
-   "top_below_seam_in": 4.78,
-   "bottom_above_lower_edge_in": 17.21
+   "side_clearance_in": 1.743,
+   "top_below_seam_in": 4.82,
+   "bottom_above_lower_edge_in": 17.32
   }
  },
  "overlay_of": "garment-aviator-shirt-male-long",

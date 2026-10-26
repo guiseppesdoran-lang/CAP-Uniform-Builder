@@ -2,29 +2,29 @@
  "asset_id": "garment-blues-class-b-epaulet-top-male-cadet-officer-left",
  "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only) cadet officer epaulet sleeve, left shoulder, top-down (blank grade)",
  "size_in": {
-  "w": 4.037,
+  "w": 4.913,
   "h": 1.2
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  403.7,
+  491.3,
   120
  ],
  "size_source": "estimated",
- "size_basis": "Length and width of the garment epaulet strap landmark (sleeve covers its outer 82%); colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
+ "size_basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
  "anchors": {
   "top_center": [
-   201.85,
+   245.65,
    0
   ],
   "bottom_center": [
-   201.85,
+   245.65,
    120
   ],
   "center": [
-   201.85,
+   245.65,
    60
   ],
   "left_edge": [
@@ -32,19 +32,19 @@
    60
   ],
   "right_edge": [
-   403.7,
+   491.3,
    60
   ],
   "rank_slot_center": [
-   268.7,
+   356.3,
    60
   ],
   "rank_rule_point": [
-   331.2,
+   418.8,
    60
   ],
   "outer_end_center": [
-   393.7,
+   481.3,
    60
   ]
  },
@@ -52,11 +52,11 @@
   "sleeve": {
    "x": 10,
    "y": 10,
-   "w": 383.70000000000005,
+   "w": 471.3,
    "h": 100
   },
   "rank_slot": {
-   "x": 153.7,
+   "x": 241.3,
    "y": 20,
    "w": 230,
    "h": 80
@@ -65,7 +65,7 @@
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form (Major General star pair 2.2 x 1.2 in); rank_rule_point is the 5/8 in from the outer end point for single forms",
  "dimensions": {
   "sleeve_in": [
-   3.837,
+   4.713,
    1
   ],
   "rank_slot_in": [

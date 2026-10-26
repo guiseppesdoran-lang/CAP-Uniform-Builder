@@ -76,12 +76,12 @@
    910
   ],
   "epaulet_right_center": [
-   621.13,
-   309.55
+   607.08,
+   320.25
   ],
   "epaulet_left_center": [
-   1965.13,
-   309.55
+   1979.18,
+   320.25
   ],
   "belt_buckle_center": [
    1373.88,
@@ -155,24 +155,24 @@
   },
   "epaulet_right": [
    [
-    370.03,
-    339.5
+    321.13,
+    359
    ],
    [
-    808.53,
-    185.3
+    829.43,
+    182.9
    ],
    [
-    872.23,
-    215.8
+    893.03,
+    213.7
    ],
    [
-    841.73,
-    279.6
+    862.13,
+    277.4
    ],
    [
-    403.23,
-    433.8
+    341.93,
+    457.6
    ]
   ],
   "collar_right": [
@@ -195,24 +195,24 @@
   ],
   "epaulet_left": [
    [
-    2216.23,
-    339.5
+    2265.13,
+    359
    ],
    [
-    1777.73,
-    185.3
+    1756.83,
+    182.9
    ],
    [
-    1714.03,
-    215.8
+    1693.23,
+    213.7
    ],
    [
-    1744.53,
-    279.6
+    1724.13,
+    277.4
    ],
    [
-    2183.03,
-    433.8
+    2244.33,
+    457.6
    ]
   ],
   "collar_left": [
@@ -233,13 +233,88 @@
     661.9
    ]
   ],
+  "epaulet_axis": {
+   "right": {
+    "p1": [
+     331.54,
+     408.31
+    ],
+    "p2": [
+     893.03,
+     213.74
+    ],
+    "w_in": 1,
+    "length_in": 5.94,
+    "square_length_in": 5.38,
+    "tip_in": 0.5,
+    "button": [
+     845.79,
+     230.11
+    ],
+    "button_from_tip_in": 0.5,
+    "shoulder_point": [
+     320.53,
+     356.03
+    ],
+    "neck_point": [
+     880.4,
+     162.02
+    ]
+   },
+   "left": {
+    "p1": [
+     2254.72,
+     408.31
+    ],
+    "p2": [
+     1693.23,
+     213.74
+    ],
+    "w_in": 1,
+    "length_in": 5.94,
+    "square_length_in": 5.38,
+    "tip_in": 0.5,
+    "button": [
+     1740.47,
+     230.11
+    ],
+    "button_from_tip_in": 0.5,
+    "shoulder_point": [
+     2265.73,
+     356.03
+    ],
+    "neck_point": [
+     1705.86,
+     162.02
+    ]
+   }
+  },
+  "tie": {
+   "kind": "tie",
+   "knot": {
+    "x": 1293.13,
+    "y": 235
+   },
+   "w_in": 3.09,
+   "length_in": 22.34
+  },
+  "armpit_apex": {
+   "right": [
+    481.66,
+    1604.45
+   ],
+   "left": [
+    2104.6,
+    1604.45
+   ]
+  },
   "sleeve_flat_view": {
    "left": {
-    "x": 3062.02,
+    "x": 3062.04,
     "y": 387.42
    },
    "right": {
-    "x": -475.76,
+    "x": -475.78,
     "y": 387.42
    }
   },
@@ -256,6 +331,54 @@
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box; sleeve_flat_view {left:{x,y},right:{x,y}} is where the top_center of the flat sleeve assets <id>-sleeve-flat-left / -right sits beside the figure (outboard of each arm, its top at the shoulder seam height, 1 in clear of the sleeve outline; it lies outside this artwork box)",
  "dimensions": {
+  "epaulet_strap": {
+   "size_source": "estimated",
+   "width_in": 1,
+   "point_in": 0.5,
+   "button_from_tip_in": 0.5,
+   "topstitch_in": 0.1,
+   "top_edge_inset_from_outline_in": 0.03,
+   "length_to_tip_in": {
+    "right": 5.88,
+    "left": 5.88
+   },
+   "square_length_in": {
+    "right": 5.38,
+    "left": 5.38
+   },
+   "tip_stops_short_of_neck_in": {
+    "right": 0.05,
+    "left": 0.05
+   },
+   "edge_on_cover": 0.82,
+   "measured": {
+    "figure": "CAPR 39-1 Fig 4.8 (men's long-sleeve figure) at this sheet's scale (x 0.03664, y 0.03299 in/px, make-long-outlines.js)",
+    "gray_sleeve_in": [
+     5.87,
+     1.01
+    ],
+    "slope_deg": 20.5,
+    "outer_end_abs_x_in": 9.84,
+    "inner_end_abs_x_in": 4.34,
+    "photo": "images/base/lt_col_blues_class_b_male.webp edge-on strip 117 px = 5.1 in at the 5.25 in pocket scale, slope 21 deg"
+   },
+   "note": "the strap lies along the shoulder line N-SP of the finished silhouette (dimensions.finishing), its outer end is the armhole seam, 1.0 in wide as commit 72a36ce9; the button 1/2 in from the tip is the brief's value, no figure shows it under the sleeve; the sheet's whole shoulder line is 5.93 in"
+  },
+  "tie": {
+   "size_source": "estimated",
+   "kind": "tie",
+   "w_in": 3.09,
+   "length_in": 22.34,
+   "knot_w_in": 2.12,
+   "source": "CAPR 39-1 Fig 4.8: knot 2.12 in wide 1.75 in below its apex, neck 1.4 in, blade 1.44 in widening to 3.0 in at the belt (row widths of the figure at this sheet's scale); the tip at 80 % of the buckle height"
+  },
+  "finishing": {
+   "note": "shoulder line straightened between the neck vertex and the shoulder point, armhole seam from the shoulder point to the armpit apex, hem hook / gap bulge removed (finishShoulderArmpit)",
+   "shoulder_straightened_max_dev_in_right": 0.137,
+   "armpit_gap_vertices_dropped_right": 2,
+   "shoulder_straightened_max_dev_in_left": 0.137,
+   "armpit_gap_vertices_dropped_left": 2
+  },
   "scale": {
    "k": 1.2171,
    "in_per_px": 0.05769,
@@ -322,7 +445,7 @@
  "assumed": [
   "px-to-inch scale (0.0474 in/px x K, K from the 5.25 in pocket width, an estimate)",
   "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate (blue plastic, 3 3/8 x 3/4 in); no dimension in CAPR 39-1 or DAFI 36-2903; no dimension in CAPR 39-1 or DAFI 36-2903)",
-  "epaulet strap size and shape (not drawn in the base image)",
+  "epaulet strap drawn on the sheet from the shoulder line: 1.0 in wide, 0.5 in point, button 1/2 in from the tip (the brief's value), topstitch 0.1 in (dimensions.epaulet_strap)",
   "collar leaf, pocket and seam geometry read off the base image",
   "shirt, trouser/skirt and line colours sampled from the base image",
   "sleeve widening: the sleeve is drawn wider than the traced hanging view (CFG.widen, dimensions.sleeve_widening)",
