@@ -183,12 +183,16 @@ test('semi-formal blazers: the miniature rack starts centred on the crest and mo
 // ---- 5. Shirts: the collar lies over every badge that reaches it, on the companion shirt figure too ------------
 
 const C = require('../js/engine/compose.js');
+const RAW_AWARDS = require('../data/ribbon-awards.js');
+// Every CAP ribbon family the page offers, in one rack (46 ribbons, about 16 rows): the only rack tall enough to reach the shirts' collar leaves since the sheets are at true size and the Class B
+// collar was rebuilt as a closed collar (LIVE9-ART 1), whose leaves hang 4.0 to 4.6 in below the sheet's top and so well above a rack of twelve.
+const FULL_RIB = Object.keys(RAW_AWARDS.FAMILIES).map(id => [id]);
 const TWELVE_RIB = [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['air_search_and_rescue_ribbon'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
 test('aviator and Class B shirts, the aviator beside the blazer included: a ribbon or device that reaches a collar leaf is cut out by the leaf polygons where the leaf really is, a badge never is (4.2.5.1.3.1, 4.1.11.1.1.2.3.1; Ethan 2026-10-22, D8)', async () => {
   const builds = [];
   for(const gender of ['male', 'female']){
     for(const rank of ['Capt', 'Col']){
-      for(const rib of [RIB, TWELVE_RIB]){
+      for(const rib of [RIB, TWELVE_RIB, FULL_RIB]){
         builds.push(['aviator_blazer', gender, rank, [PILOT, 'observer_badge', 'christian_chaplin'], rib]);
         builds.push(['aviator', gender, rank, [PILOT, 'observer_badge', 'christian_chaplin'], rib]);
         builds.push(['blues_b', gender, rank, [PILOT, 'emergency_services_badge', 'communications_technician_badge', 'christian_chaplin'], rib]);
@@ -196,6 +200,7 @@ test('aviator and Class B shirts, the aviator beside the blazer included: a ribb
     }
   }
   let reached = 0;
+  const cutAviator = new Set();   // `${uniform} ${gender} ${sleeve}` of every build in which a ribbon or device reached a leaf and was cut
   for(const [uniform, gender, rank, badgeIds, rib] of builds){
     for(const sleeve of ['short', 'long']){
       const scene = await compose(hb(uniform, gender, 'senior', rank, { badgeIds, ribbonSel: rib, opt: { headgear: 'none', sleeve, underlayer: 'shirt', femaleTop: 'shirt' } }));
@@ -213,14 +218,17 @@ test('aviator and Class B shirts, the aviator beside the blazer included: a ribb
           assert.ok(l.clipOut && l.clipOut.length, `${id}: reaches a collar leaf, so it is cut by it`);
           // The cut-out polygons are on this figure, not on the first one.
           assert.ok(l.clipOut.some(p => C.rectHitsPolygon(l, p)), `${id}: the cut-out polygon lies where the ribbon is (x ${l.x.toFixed(2)})`);
+          cutAviator.add(`${uniform} ${gender}`);
         }
       }
     }
   }
-  // The shirt sheets are drawn at true size since the art sync (the pocket is 5.25 in wide, Class B 1.2171, aviator 1.2036), so seven or twelve ribbons and the badges
-  // above them no longer reach a collar leaf on the aviator shirts; the aviator sheets draw one pointed collar (art bb1b47a0) with its leaves near the centre line. What
-  // still reaches a leaf is the chaplain badge over twelve ribbons on the Class B shirt and blouse: a badge, never cut, which is what the loop above asserts.
+  // The shirt sheets are drawn at true size (the pocket is 5.25 in wide), and the aviator sheets draw one pointed collar whose leaves hang near the centre line; the Class B collar is a closed one whose
+  // leaves end 4.5 in below the sheet's top (LIVE9-ART 1). Seven or twelve ribbons no longer reach a leaf anywhere; the rack of every CAP ribbon family (46) does on the men's aviator shirts (short, long and
+  // the shirt beside the blazer), where the ribbons it reaches are cut by the leaf polygons (asserted above), and on the Class B shirt and blouse (covered by order, no cut). The women's aviator
+  // shirts' leaves (3.90 in) end above the tallest rack of CAP ribbons (top row at 4.46 in): no lawful rack reaches them, so nothing there is cut, which the loop asserts for whatever does reach.
   assert.ok(reached >= 1, `${reached} layers reach a collar leaf`);
+  assert.deepEqual([...cutAviator].sort(), ['aviator male', 'aviator_blazer male'], 'a ribbon is cut by the leaf on the men\'s aviator shirt and on the shirt beside the blazer');
 });
 
 test('aviator beside the blazer: the chaplain badge on the shirt figure is never cut by the collar (the polygon moves with the figure)', async () => {
