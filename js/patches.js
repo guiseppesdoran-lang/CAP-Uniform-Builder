@@ -175,7 +175,7 @@ function syncShoulderCordControl(){
     note.textContent = meta && meta.note ? meta.note
       : (State.membership === 'senior'
         ? 'Senior members wear only the Aide de Camp cord; the other shoulder cords are for cadets (CAPR 39-1, 9.3).'
-        : 'Pick the cord you wear. A member report import fills in a Cadet Advisory Council cord.');
+        : '');
   }
 }
 
